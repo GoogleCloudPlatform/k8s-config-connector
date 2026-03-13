@@ -1,17 +1,3 @@
-// Copyright 2026 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 syntax = "proto2";
 package mockgcp.cloud.bigquery.v2;
 import "google/api/annotations.proto";
@@ -787,7 +773,7 @@ message DataMaskingStatistics {
   optional bool data_masking_applied = 1 [json_name="dataMaskingApplied"];
 }
 
-// Data policy option. For more information, see [Mask data by applying data policies to a column](https://cloud.google.com/bigquery/docs/column-data-masking#data-policies-on-column/).
+// Data policy option. For more information, see [Mask data by applying data policies to a column](https://docs.cloud.google.com/bigquery/docs/column-data-masking#data-policies-on-column).
 message DataPolicyOption {
   // Data policy resource name in the form of projects/project_id/locations/location_id/dataPolicies/data_policy_id.
   optional string name = 1 [json_name="name"];
@@ -967,10 +953,14 @@ message DimensionalityReductionMetrics {
 message DmlStatistics {
   // Output only. Number of deleted Rows. populated by DML DELETE, MERGE and TRUNCATE statements.
   optional int64 deleted_row_count = 1 [json_name="deletedRowCount"];
+  // Output only. DML mode used.
+  optional string dml_mode = 2 [json_name="dmlMode"];
+  // Output only. Reason for disabling fine-grained DML if applicable.
+  optional string fine_grained_dml_unused_reason = 3 [json_name="fineGrainedDmlUnusedReason"];
   // Output only. Number of inserted Rows. Populated by DML INSERT and MERGE statements
-  optional int64 inserted_row_count = 2 [json_name="insertedRowCount"];
+  optional int64 inserted_row_count = 4 [json_name="insertedRowCount"];
   // Output only. Number of updated Rows. Populated by DML UPDATE and MERGE statements.
-  optional int64 updated_row_count = 3 [json_name="updatedRowCount"];
+  optional int64 updated_row_count = 5 [json_name="updatedRowCount"];
 }
 
 // Discrete candidates of a double hyperparameter.
@@ -1442,10 +1432,18 @@ message HparamTuningTrial {
 message IncrementalResultStats {
   // Output only. Reason why incremental query results are/were not written by the query.
   optional string disabled_reason = 1 [json_name="disabledReason"];
+  // Output only. Additional human-readable clarification, if available, for DisabledReason.
+  optional string disabled_reason_details = 2 [json_name="disabledReasonDetails"];
+  // Output only. The time at which the first incremental result was written. If the query needed to restart internally, this only describes the final attempt.
+  optional .google.protobuf.Timestamp first_incremental_row_time = 3 [json_name="firstIncrementalRowTime"];
+  // Output only. Number of rows that were in the latest result set before query completion.
+  optional int64 incremental_row_count = 4 [json_name="incrementalRowCount"];
+  // Output only. The time at which the last incremental result was written. Does not include the final result written after query completion.
+  optional .google.protobuf.Timestamp last_incremental_row_time = 5 [json_name="lastIncrementalRowTime"];
   // Output only. The time at which the result table's contents were modified. May be absent if no results have been written or the query has completed.
-  optional .google.protobuf.Timestamp result_set_last_modify_time = 2 [json_name="resultSetLastModifyTime"];
+  optional .google.protobuf.Timestamp result_set_last_modify_time = 6 [json_name="resultSetLastModifyTime"];
   // Output only. The time at which the result table's contents were completely replaced. May be absent if no results have been written or the query has completed.
-  optional .google.protobuf.Timestamp result_set_last_replace_time = 3 [json_name="resultSetLastReplaceTime"];
+  optional .google.protobuf.Timestamp result_set_last_replace_time = 7 [json_name="resultSetLastReplaceTime"];
 }
 
 // Statistics for index pruning.
@@ -1949,40 +1947,42 @@ message JobStatistics2 {
   optional QueryInfo query_info = 28 [json_name="queryInfo"];
   // Output only. Describes execution plan for the query.
   repeated ExplainQueryStage query_plan = 29 [json_name="queryPlan"];
+  // Output only. Referenced property graphs for the job. Queries that reference more than 50 property graphs will not have a complete list.
+  repeated PropertyGraphReference referenced_property_graphs = 30 [json_name="referencedPropertyGraphs"];
   // Output only. Referenced routines for the job.
-  repeated RoutineReference referenced_routines = 30 [json_name="referencedRoutines"];
+  repeated RoutineReference referenced_routines = 31 [json_name="referencedRoutines"];
   // Output only. Referenced tables for the job.
-  repeated TableReference referenced_tables = 31 [json_name="referencedTables"];
+  repeated TableReference referenced_tables = 32 [json_name="referencedTables"];
   // Output only. Job resource usage breakdown by reservation. This field reported misleading information and will no longer be populated.
-  repeated JobStatistics2ReservationUsage reservation_usage = 32 [json_name="reservationUsage"];
+  repeated JobStatistics2ReservationUsage reservation_usage = 33 [json_name="reservationUsage"];
   // Output only. The schema of the results. Present only for successful dry run of non-legacy SQL queries.
-  optional TableSchema schema = 33 [json_name="schema"];
+  optional TableSchema schema = 34 [json_name="schema"];
   // Output only. Search query specific statistics.
-  optional SearchStatistics search_statistics = 34 [json_name="searchStatistics"];
+  optional SearchStatistics search_statistics = 35 [json_name="searchStatistics"];
   // Output only. Statistics of a Spark procedure job.
-  optional SparkStatistics spark_statistics = 35 [json_name="sparkStatistics"];
+  optional SparkStatistics spark_statistics = 36 [json_name="sparkStatistics"];
   // Output only. The type of query statement, if valid. Possible values: * `SELECT`: [`SELECT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#select_list) statement. * `ASSERT`: [`ASSERT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/debugging-statements#assert) statement. * `INSERT`: [`INSERT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/dml-syntax#insert_statement) statement. * `UPDATE`: [`UPDATE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/dml-syntax#update_statement) statement. * `DELETE`: [`DELETE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-manipulation-language) statement. * `MERGE`: [`MERGE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-manipulation-language) statement. * `CREATE_TABLE`: [`CREATE TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_table_statement) statement, without `AS SELECT`. * `CREATE_TABLE_AS_SELECT`: [`CREATE TABLE AS SELECT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_table_statement) statement. * `CREATE_VIEW`: [`CREATE VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_view_statement) statement. * `CREATE_MODEL`: [`CREATE MODEL`](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-create#create_model_statement) statement. * `CREATE_MATERIALIZED_VIEW`: [`CREATE MATERIALIZED VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_materialized_view_statement) statement. * `CREATE_FUNCTION`: [`CREATE FUNCTION`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_function_statement) statement. * `CREATE_TABLE_FUNCTION`: [`CREATE TABLE FUNCTION`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_table_function_statement) statement. * `CREATE_PROCEDURE`: [`CREATE PROCEDURE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_procedure) statement. * `CREATE_ROW_ACCESS_POLICY`: [`CREATE ROW ACCESS POLICY`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_row_access_policy_statement) statement. * `CREATE_SCHEMA`: [`CREATE SCHEMA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_schema_statement) statement. * `CREATE_SNAPSHOT_TABLE`: [`CREATE SNAPSHOT TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_snapshot_table_statement) statement. * `CREATE_SEARCH_INDEX`: [`CREATE SEARCH INDEX`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_search_index_statement) statement. * `DROP_TABLE`: [`DROP TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_table_statement) statement. * `DROP_EXTERNAL_TABLE`: [`DROP EXTERNAL TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_external_table_statement) statement. * `DROP_VIEW`: [`DROP VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_view_statement) statement. * `DROP_MODEL`: [`DROP MODEL`](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-drop-model) statement. * `DROP_MATERIALIZED_VIEW`: [`DROP MATERIALIZED VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_materialized_view_statement) statement. * `DROP_FUNCTION` : [`DROP FUNCTION`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_function_statement) statement. * `DROP_TABLE_FUNCTION` : [`DROP TABLE FUNCTION`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_table_function) statement. * `DROP_PROCEDURE`: [`DROP PROCEDURE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_procedure_statement) statement. * `DROP_SEARCH_INDEX`: [`DROP SEARCH INDEX`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_search_index) statement. * `DROP_SCHEMA`: [`DROP SCHEMA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_schema_statement) statement. * `DROP_SNAPSHOT_TABLE`: [`DROP SNAPSHOT TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_snapshot_table_statement) statement. * `DROP_ROW_ACCESS_POLICY`: [`DROP [ALL] ROW ACCESS POLICY|POLICIES`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_row_access_policy_statement) statement. * `ALTER_TABLE`: [`ALTER TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#alter_table_set_options_statement) statement. * `ALTER_VIEW`: [`ALTER VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#alter_view_set_options_statement) statement. * `ALTER_MATERIALIZED_VIEW`: [`ALTER MATERIALIZED VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#alter_materialized_view_set_options_statement) statement. * `ALTER_SCHEMA`: [`ALTER SCHEMA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#alter_schema_set_options_statement) statement. * `SCRIPT`: [`SCRIPT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/procedural-language). * `TRUNCATE_TABLE`: [`TRUNCATE TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/dml-syntax#truncate_table_statement) statement. * `CREATE_EXTERNAL_TABLE`: [`CREATE EXTERNAL TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_external_table_statement) statement. * `EXPORT_DATA`: [`EXPORT DATA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/other-statements#export_data_statement) statement. * `EXPORT_MODEL`: [`EXPORT MODEL`](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-export-model) statement. * `LOAD_DATA`: [`LOAD DATA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/other-statements#load_data_statement) statement. * `CALL`: [`CALL`](https://cloud.google.com/bigquery/docs/reference/standard-sql/procedural-language#call) statement.
-  optional string statement_type = 36 [json_name="statementType"];
+  optional string statement_type = 37 [json_name="statementType"];
   // Output only. Describes a timeline of job execution.
-  repeated QueryTimelineSample timeline = 37 [json_name="timeline"];
+  repeated QueryTimelineSample timeline = 38 [json_name="timeline"];
   // Output only. If the project is configured to use on-demand pricing, then this field contains the total bytes billed for the job. If the project is configured to use flat-rate pricing, then you are not billed for bytes and this field is informational only.
-  optional int64 total_bytes_billed = 38 [json_name="totalBytesBilled"];
+  optional int64 total_bytes_billed = 39 [json_name="totalBytesBilled"];
   // Output only. Total bytes processed for the job.
-  optional int64 total_bytes_processed = 39 [json_name="totalBytesProcessed"];
+  optional int64 total_bytes_processed = 40 [json_name="totalBytesProcessed"];
   // Output only. For dry-run jobs, totalBytesProcessed is an estimate and this field specifies the accuracy of the estimate. Possible values can be: UNKNOWN: accuracy of the estimate is unknown. PRECISE: estimate is precise. LOWER_BOUND: estimate is lower bound of what the query would cost. UPPER_BOUND: estimate is upper bound of what the query would cost.
-  optional string total_bytes_processed_accuracy = 40 [json_name="totalBytesProcessedAccuracy"];
+  optional string total_bytes_processed_accuracy = 41 [json_name="totalBytesProcessedAccuracy"];
   // Output only. Total number of partitions processed from all partitioned tables referenced in the job.
-  optional int64 total_partitions_processed = 41 [json_name="totalPartitionsProcessed"];
+  optional int64 total_partitions_processed = 42 [json_name="totalPartitionsProcessed"];
   // Output only. Total slot milliseconds for the job that ran on external services and billed on the services SKU. This field is only populated for jobs that have external service costs, and is the total of the usage for costs whose billing method is `"SERVICES_SKU"`.
-  optional int64 total_services_sku_slot_ms = 42 [json_name="totalServicesSkuSlotMs"];
+  optional int64 total_services_sku_slot_ms = 43 [json_name="totalServicesSkuSlotMs"];
   // Output only. Slot-milliseconds for the job.
-  optional int64 total_slot_ms = 43 [json_name="totalSlotMs"];
+  optional int64 total_slot_ms = 44 [json_name="totalSlotMs"];
   // Output only. Total bytes transferred for cross-cloud queries such as Cross Cloud Transfer and CREATE TABLE AS SELECT (CTAS).
-  optional int64 transferred_bytes = 44 [json_name="transferredBytes"];
+  optional int64 transferred_bytes = 45 [json_name="transferredBytes"];
   // Output only. GoogleSQL only: list of undeclared query parameters detected during a dry run validation.
-  repeated QueryParameter undeclared_query_parameters = 45 [json_name="undeclaredQueryParameters"];
+  repeated QueryParameter undeclared_query_parameters = 46 [json_name="undeclaredQueryParameters"];
   // Output only. Vector Search query specific statistics.
-  optional VectorSearchStatistics vector_search_statistics = 46 [json_name="vectorSearchStatistics"];
+  optional VectorSearchStatistics vector_search_statistics = 47 [json_name="vectorSearchStatistics"];
 }
 
 // Statistics for a load job.
@@ -2346,6 +2346,16 @@ message ProjectList {
 message ProjectReference {
   // Required. ID of the project. Can be either the numeric ID or the assigned ID of the project.
   optional string project_id = 1 [json_name="projectId"];
+}
+
+// Id path of a property graph.
+message PropertyGraphReference {
+  // Required. The ID of the dataset containing this property graph.
+  optional string dataset_id = 1 [json_name="datasetId"];
+  // Required. The ID of the project containing this property graph.
+  optional string project_id = 2 [json_name="projectId"];
+  // Required. The ID of the property graph. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 256 characters.
+  optional string property_graph_id = 3 [json_name="propertyGraphId"];
 }
 
 // The column metadata index pruning statistics.
