@@ -36,6 +36,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpwatch"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/parentprojectid"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -325,6 +326,8 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 
 		stateIntoSpecDefaulter := stateintospec.NewStateIntoSpecDefaulter(mgr.GetClient())
 
+		parentDefaulter := parentprojectid.NewDefaulter(mgr.GetClient())
+
 		if cfg.GCPAccessToken != "" {
 			controllerConfig.GCPTokenSource = oauth2.StaticTokenSource(&oauth2.Token{AccessToken: cfg.GCPAccessToken})
 		}
@@ -345,6 +348,7 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 			DCLConverter: dclConverter,
 			Defaulters: []k8s.Defaulter{
 				stateIntoSpecDefaulter,
+				parentDefaulter,
 			},
 		}
 
