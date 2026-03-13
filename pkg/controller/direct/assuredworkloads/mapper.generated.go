@@ -23,7 +23,6 @@ package assuredworkloads
 import (
 	pb "cloud.google.com/go/assuredworkloads/apiv1/assuredworkloadspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/assuredworkloads/v1alpha1"
-	krmbillingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -36,9 +35,6 @@ func AssuredWorkloadsWorkloadObservedState_FromProto(mapCtx *direct.MapContext, 
 	out.Resources = direct.Slice_FromProto(mapCtx, in.Resources, Workload_ResourceInfo_FromProto)
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	// MISSING: Etag
-	// MISSING: Labels
-	// MISSING: ProvisionedResourcesParent
-	// MISSING: KMSSettings
 	out.KajEnrollmentState = direct.Enum_FromProto(mapCtx, in.GetKajEnrollmentState())
 	out.SaaEnrollmentResponse = Workload_SaaEnrollmentResponse_FromProto(mapCtx, in.GetSaaEnrollmentResponse())
 	out.CompliantButDisallowedServices = in.CompliantButDisallowedServices
@@ -53,52 +49,9 @@ func AssuredWorkloadsWorkloadObservedState_ToProto(mapCtx *direct.MapContext, in
 	out.Resources = direct.Slice_ToProto(mapCtx, in.Resources, Workload_ResourceInfo_ToProto)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	// MISSING: Etag
-	// MISSING: Labels
-	// MISSING: ProvisionedResourcesParent
-	// MISSING: KMSSettings
 	out.KajEnrollmentState = direct.Enum_ToProto[pb.Workload_KajEnrollmentState](mapCtx, in.KajEnrollmentState)
 	out.SaaEnrollmentResponse = Workload_SaaEnrollmentResponse_ToProto(mapCtx, in.SaaEnrollmentResponse)
 	out.CompliantButDisallowedServices = in.CompliantButDisallowedServices
-	return out
-}
-func AssuredWorkloadsWorkloadSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workload) *krm.AssuredWorkloadsWorkloadSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AssuredWorkloadsWorkloadSpec{}
-	// MISSING: Name
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.ComplianceRegime = direct.Enum_FromProto(mapCtx, in.GetComplianceRegime())
-	if in.GetBillingAccount() != "" {
-		out.BillingAccountRef = &krmbillingv1alpha1.BillingAccountRef{External: in.GetBillingAccount()}
-	}
-	// MISSING: Etag
-	// MISSING: Labels
-	// MISSING: ProvisionedResourcesParent
-	// MISSING: KMSSettings
-	out.ResourceSettings = direct.Slice_FromProto(mapCtx, in.ResourceSettings, Workload_ResourceSettings_FromProto)
-	out.EnableSovereignControls = direct.LazyPtr(in.GetEnableSovereignControls())
-	out.Partner = direct.Enum_FromProto(mapCtx, in.GetPartner())
-	return out
-}
-func AssuredWorkloadsWorkloadSpec_ToProto(mapCtx *direct.MapContext, in *krm.AssuredWorkloadsWorkloadSpec) *pb.Workload {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Workload{}
-	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.ComplianceRegime = direct.Enum_ToProto[pb.Workload_ComplianceRegime](mapCtx, in.ComplianceRegime)
-	if in.BillingAccountRef != nil {
-		out.BillingAccount = in.BillingAccountRef.External
-	}
-	// MISSING: Etag
-	// MISSING: Labels
-	// MISSING: ProvisionedResourcesParent
-	// MISSING: KMSSettings
-	out.ResourceSettings = direct.Slice_ToProto(mapCtx, in.ResourceSettings, Workload_ResourceSettings_ToProto)
-	out.EnableSovereignControls = direct.ValueOf(in.EnableSovereignControls)
-	out.Partner = direct.Enum_ToProto[pb.Workload_Partner](mapCtx, in.Partner)
 	return out
 }
 func Workload_KMSSettings_FromProto(mapCtx *direct.MapContext, in *pb.Workload_KMSSettings) *krm.Workload_KMSSettings {
