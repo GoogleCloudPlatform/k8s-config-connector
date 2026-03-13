@@ -316,14 +316,18 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 			u2.Path = "/compute/v1/" + strings.TrimPrefix(u.Path, "/compute/beta/")
 			changed = true
 		}
+		if changed {
+			r = httpmux.RewriteRequest(r, &u2)
+		}
 
 		// Merge multiple 'paths' query parameters into a single comma-separated 'paths' parameter.
 		// This is needed because the Compute API (and Terraform) can send multiple 'paths' parameters,
 		// but our generated proto has 'paths' as a single string field, and grpc-gateway fails
 		// if it sees multiple values for a non-repeated field.
 		if r.URL.Query().Has("paths") {
-			q := u2.Query()
+			q := r.URL.Query()
 			if paths := q["paths"]; len(paths) > 1 {
+				u2 := *r.URL
 				// We avoid q.Encode() because it sorts query parameters alphabetically,
 				// which would cause diffs in the HTTP logs for many tests.
 				// Instead we do a surgical replacement.
@@ -333,12 +337,8 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 					u2.RawQuery = strings.ReplaceAll(u2.RawQuery, "&paths="+p, "")
 					u2.RawQuery = strings.ReplaceAll(u2.RawQuery, "paths="+p+"&", "")
 				}
-				changed = true
+				r = httpmux.RewriteRequest(r, &u2)
 			}
-		}
-
-		if changed {
-			r = httpmux.RewriteRequest(r, &u2)
 		}
 
 		mux.ServeHTTP(w, r)

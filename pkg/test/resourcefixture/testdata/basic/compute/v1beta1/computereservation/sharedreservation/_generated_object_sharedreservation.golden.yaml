@@ -12,11 +12,11 @@ metadata:
   labels:
     cnrm-test: "true"
     label-one: value-one
-  name: computereservation-${uniqueId}
+  name: ${reservationID}
   namespace: ${uniqueId}
 spec:
   description: Shared Reservation for 1 machines which will be shared with other projects.
-  resourceID: computereservation-${uniqueId}
+  resourceID: ${reservationID}
   shareSettings:
     projectMap:
     - idRef:
@@ -42,5 +42,5 @@ status:
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
   observedGeneration: 3
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/${reservationID}
   status: READY
