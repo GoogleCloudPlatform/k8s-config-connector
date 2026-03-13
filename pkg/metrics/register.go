@@ -25,11 +25,6 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-func RegisterControllerOpenCensusViews() error {
-	// Register the views
-	return view.Register(GetControllerViews()...)
-}
-
 func RegisterControllerOpenCensusViewsWithResourceNameLabel() error {
 	// Register the views
 	return view.Register(GetControllerViewsWithResourceNameLabel()...)
