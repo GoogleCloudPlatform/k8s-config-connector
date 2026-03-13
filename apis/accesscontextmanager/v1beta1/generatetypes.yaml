@@ -19,5 +19,3 @@ resources:
     protoName: AccessPolicy
   - kind: AccessContextManagerAccessLevel
     protoName: AccessLevel
-  - kind: AccessContextManagerServicePerimeterResource
-    protoName: ServicePerimeter
