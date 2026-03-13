@@ -21,6 +21,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -32,18 +33,34 @@ const (
 
 var _ identity.Identity = &TagsTagBindingIdentity{}
 
+var tagBindingURL = gcpurls.Template[TagsTagBindingIdentity](
+	"cloudresourcemanager.googleapis.com",
+	"tagBindings/{bindingID}",
+)
+
 // TagsTagBindingIdentity represents the identity of a TagsTagBinding.
 // +k8s:deepcopy-gen=false
 type TagsTagBindingIdentity struct {
-	Parent   string
-	TagValue string
+	BindingID string
+	Parent    string
+	TagValue  string
 }
 
 func (i *TagsTagBindingIdentity) String() string {
+	if i.BindingID != "" {
+		return tagBindingURL.ToString(*i)
+	}
 	return "tagBindings/" + i.Parent + "/tagValues/" + i.TagValue
 }
 
 func (i *TagsTagBindingIdentity) FromExternal(ref string) error {
+	if out, match, err := tagBindingURL.Parse(ref); err != nil {
+		return err
+	} else if match {
+		i.BindingID = out.BindingID
+		return nil
+	}
+
 	// TODO: Should be able to parse https://docs.cloud.google.com/asset-inventory/docs/asset-names
 	// But that format is //cloudresourcemanager.googleapis.com/tagBindings/TAG_BINDING
 	// which is not the format used by the service.
