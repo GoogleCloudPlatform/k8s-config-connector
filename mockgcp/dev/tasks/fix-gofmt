@@ -21,4 +21,4 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 
 cd ${REPO_ROOT}/mockgcp/
-find . -name "*.go" ! -name "*.pb.go" | xargs go run -mod=readonly golang.org/x/tools/cmd/goimports@v0.29.0 -w
+find . -name "*.go" ! -name "*.pb.go" | xargs go run golang.org/x/tools/cmd/goimports@v0.29.0 -w

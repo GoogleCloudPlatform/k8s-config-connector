@@ -35,4 +35,4 @@ go run . generate-mapper \
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@v0.29.0 -w  pkg/controller/direct/dataflow/
+go run golang.org/x/tools/cmd/goimports@v0.29.0 -w  pkg/controller/direct/dataflow/
