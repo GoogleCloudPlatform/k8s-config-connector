@@ -323,7 +323,7 @@ func generateFuzzer(ctx context.Context, opts *RunnerOptions, branch Branch, exe
 
 	cfg = CommandConfig{
 		Name:         "Import addition",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		WorkDir:      workDir,
 		Stdin:        strings.NewReader(stdinInput),
@@ -363,15 +363,15 @@ func setTypeSpecStatus(ctx context.Context, opts *RunnerOptions, branch Branch, 
 	resourceLower := strings.ToLower(branch.Resource)
 	resourceTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_types.go", resourceLower))
 	// Prepare prompt using the helper function
-	prompt, err := prepareCodebotPrompt(opts, branch, SET_TYPE_SPEC_STATUS)
+	prompt, err := preparePrompt(opts, branch, SET_TYPE_SPEC_STATUS)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	// Run codebot with the prepared prompt
+	// Run gemini with the prepared prompt
 	cfg := CommandConfig{
 		Name:         "Set spec and status",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(prompt),
 		WorkDir:      opts.branchRepoDir,
@@ -434,14 +434,14 @@ func setTypeParent(ctx context.Context, opts *RunnerOptions, branch Branch, exec
 	resourceLower := strings.ToLower(branch.Resource)
 	resourceTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_types.go", resourceLower))
 	// Prepare prompt using the helper function
-	prompt, err := prepareCodebotPrompt(opts, branch, SET_TYPE_PARENT)
+	prompt, err := preparePrompt(opts, branch, SET_TYPE_PARENT)
 	if err != nil {
 		return nil, nil, err
 	}
-	// Run codebot to adjust types
+	// Run gemini to adjust types
 	cfg := CommandConfig{
 		Name:         "Set parent",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(prompt),
 		WorkDir:      opts.branchRepoDir,
@@ -547,14 +547,14 @@ func adjustIdentityParent(ctx context.Context, opts *RunnerOptions, branch Branc
 	resourceLower := strings.ToLower(branch.Resource)
 	identityPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_identity.go", resourceLower))
 	// Prepare prompt using the helper function
-	prompt, err := prepareCodebotPrompt(opts, branch, ADJUST_IDENTITY_PARENT)
+	prompt, err := preparePrompt(opts, branch, ADJUST_IDENTITY_PARENT)
 	if err != nil {
 		return nil, nil, err
 	}
-	// Run codebot to adjust types
+	// Run gemini to adjust types
 	cfg := CommandConfig{
 		Name:         "Adjust identity parent",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(prompt),
 		WorkDir:      opts.branchRepoDir,
@@ -599,14 +599,14 @@ func adjustIdentityParentNewFunction(ctx context.Context, opts *RunnerOptions, b
 	resourceLower := strings.ToLower(branch.Resource)
 	identityPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_identity.go", resourceLower))
 	// Prepare prompt using the helper function
-	prompt, err := prepareCodebotPrompt(opts, branch, ADJUST_IDENTITY_PARENT_NEW_FUNCTION)
+	prompt, err := preparePrompt(opts, branch, ADJUST_IDENTITY_PARENT_NEW_FUNCTION)
 	if err != nil {
 		return nil, nil, err
 	}
-	// Run codebot to adjust types
+	// Run gemini to adjust types
 	cfg := CommandConfig{
 		Name:         "Adjust identity parent new function",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(prompt),
 		WorkDir:      opts.branchRepoDir,
@@ -644,14 +644,14 @@ func removeNameField(ctx context.Context, opts *RunnerOptions, branch Branch, ex
 	resourceLower := strings.ToLower(branch.Resource)
 	resourceTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_types.go", resourceLower))
 	// Prepare prompt using the helper function
-	prompt, err := prepareCodebotPrompt(opts, branch, REMOVE_NAME_FIELD)
+	prompt, err := preparePrompt(opts, branch, REMOVE_NAME_FIELD)
 	if err != nil {
 		return nil, nil, err
 	}
-	// Run codebot to adjust types
+	// Run gemini to adjust types
 	cfg := CommandConfig{
 		Name:         "Remove Name Field",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(prompt),
 		WorkDir:      opts.branchRepoDir,
@@ -687,15 +687,15 @@ func moveEtagField(ctx context.Context, opts *RunnerOptions, branch Branch, exec
 	resourceLower := strings.ToLower(branch.Resource)
 	resourceTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_types.go", resourceLower))
 	// Prepare prompt using the helper function
-	prompt, err := prepareCodebotPrompt(opts, branch, MOVE_ETAG_FIELD)
+	prompt, err := preparePrompt(opts, branch, MOVE_ETAG_FIELD)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	// Run codebot to adjust types
+	// Run gemini to adjust types
 	cfg := CommandConfig{
 		Name:         "Move Etag Field",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(prompt),
 		WorkDir:      opts.branchRepoDir,
@@ -740,14 +740,14 @@ func addRequiredFieldTags(ctx context.Context, opts *RunnerOptions, branch Branc
 	resourceTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_types.go", resourceLower))
 	generatedTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", "types.generated.go")
 	// Prepare prompt using the helper function
-	prompt, err := prepareCodebotPrompt(opts, branch, ADD_REQUIRED_FIELD_TAGS)
+	prompt, err := preparePrompt(opts, branch, ADD_REQUIRED_FIELD_TAGS)
 	if err != nil {
 		return nil, nil, err
 	}
-	// Run codebot to adjust types
+	// Run gemini to adjust types
 	cfg := CommandConfig{
 		Name:         "Add Required Field Tags",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(prompt),
 		WorkDir:      opts.branchRepoDir,
@@ -880,10 +880,10 @@ func fixAPICheckFailures(ctx context.Context, opts *RunnerOptions, branch Branch
 	prompt = strings.ReplaceAll(prompt, "${IDENTITY_FILE_CONTENTS}", string(identityContent))
 	prompt = strings.ReplaceAll(prompt, "${MAPPER_FILE_CONTENTS}", string(mapperContent))
 	prompt = strings.ReplaceAll(prompt, "${GENERATED_TYPES_FILE_CONTENTS}", string(generatedTypesContent))
-	// Run codebot to fix the issues
+	// Run gemini to fix the issues
 	cfg := CommandConfig{
 		Name:         "Fix API Check Failures",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(prompt),
 		WorkDir:      opts.branchRepoDir,
@@ -918,8 +918,8 @@ func extractAdditionsAndRemovals(stdout, stderr string) (string, string) {
 	return additions.String(), removals.String()
 }
 
-// prepareCodebotPrompt prepares a prompt for codebot by reading files and replacing placeholders
-func prepareCodebotPrompt(opts *RunnerOptions, branch Branch, promptTemplate string) (string, error) {
+// preparePrompt prepares a prompt for gemini by reading files and replacing placeholders
+func preparePrompt(opts *RunnerOptions, branch Branch, promptTemplate string) (string, error) {
 	// Create a map to store file contents
 	fileContents := make(map[string]string)
 
