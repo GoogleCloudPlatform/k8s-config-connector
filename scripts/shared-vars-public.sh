@@ -127,6 +127,7 @@ restorebackupalloydbcluster|\
 restorecontinuesbackupalloydbcluster|\
 cidrconnector|\
 cloudidsendpoint|\
+composerenvironment-full|\
 configcontrollerinstance|\
 containercluster|\
 containernodepool|\
