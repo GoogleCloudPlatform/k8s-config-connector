@@ -40,11 +40,11 @@ jobs:
             echo "No changes to commit"
             exit 0
           fi
-          BRANCH=update-googleapis-$(date +"%Y%m%d")
-          git checkout -b ${BRANCH}
+          BRANCH=automated-update-googleapis-sha
+          git checkout -b ${BRANCH} || git checkout ${BRANCH}
           git add mockgcp/git.versions
           git commit -m "Update googleapis SHA to latest"
-          git push origin ${BRANCH}
-          gh pr create --title "Update googleapis SHA to latest" --body "This PR updates the googleapis SHA in mockgcp/git.versions to the latest version. This was automatically triggered by a GitHub Action. Overseer generated PR."
+          git push origin ${BRANCH} --force
+          gh pr create --title "Update googleapis SHA to latest" --body "This PR updates the googleapis SHA in mockgcp/git.versions to the latest version. This was automatically triggered by a GitHub Action. Fixes #7006. Overseer generated PR." || echo "PR already exists or failed to create"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
