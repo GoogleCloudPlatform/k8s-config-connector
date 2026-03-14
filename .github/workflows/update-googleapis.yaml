@@ -1,0 +1,50 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: Update googleapis SHA
+
+on:
+  schedule:
+    # Run every Monday at midnight
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+
+jobs:
+  update-googleapis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: Update googleapis SHA
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "noreply@github.com"
+          ./dev/tasks/update-mockgcp
+      - name: Create PR
+        run: |
+          if [[ -z `git status --porcelain` ]]; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          BRANCH=update-googleapis-$(date +"%Y%m%d")
+          git checkout -b ${BRANCH}
+          git add mockgcp/git.versions
+          git commit -m "Update googleapis SHA to latest"
+          git push origin ${BRANCH}
+          gh pr create --title "Update googleapis SHA to latest" --body "This PR updates the googleapis SHA in mockgcp/git.versions to the latest version. This was automatically triggered by a GitHub Action. Overseer generated PR."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
