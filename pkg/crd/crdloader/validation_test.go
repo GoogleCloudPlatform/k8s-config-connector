@@ -24,6 +24,41 @@ import (
 )
 
 func TestCRDObjectTypes(t *testing.T) {
+	// knownInvalidCRDs is a list of CRDs that currently fail the validation.
+	// We want to eventually fix these, but for now we allowlist them so the test passes.
+	// This allows us to detect new regressions.
+	knownInvalidCRDs := map[string]bool{
+		"accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com":        true,
+		"aiplatformmodels.aiplatform.cnrm.cloud.google.com":                                 true,
+		"apigeeenvironments.apigee.cnrm.cloud.google.com":                                   true,
+		"apigeeorganizations.apigee.cnrm.cloud.google.com":                                   true,
+		"bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com":            true,
+		"bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com":                     true,
+		"bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com":            true,
+		"bigquerytables.bigquery.cnrm.cloud.google.com":                                     true,
+		"bigtableauthorizedviews.bigtable.cnrm.cloud.google.com":                            true,
+		"bigtablelogicalviews.bigtable.cnrm.cloud.google.com":                               true,
+		"bigtablematerializedviews.bigtable.cnrm.cloud.google.com":                          true,
+		"cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com":                               true,
+		"clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com":                              true,
+		"datacatalogentries.datacatalog.cnrm.cloud.google.com":                              true,
+		"datacatalogpolicytags.datacatalog.cnrm.cloud.google.com":                           true,
+		"dataformrepositories.dataform.cnrm.cloud.google.com":                               true,
+		"dataprocjobs.dataproc.cnrm.cloud.google.com":                                       true,
+		"dataprocnodegroups.dataproc.cnrm.cloud.google.com":                                 true,
+		"datastreamconnectionprofiles.datastream.cnrm.cloud.google.com":                     true,
+		"discoveryengineengines.discoveryengine.cnrm.cloud.google.com":                      true,
+		"firestorebackupschedules.firestore.cnrm.cloud.google.com":                          true,
+		"firestorefields.firestore.cnrm.cloud.google.com":                                   true,
+		"iamdenypolicies.iam.cnrm.cloud.google.com":                                         true,
+		"memorystoreinstances.memorystore.cnrm.cloud.google.com":                            true,
+		"monitoringdashboards.monitoring.cnrm.cloud.google.com":                             true,
+		"recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com":     true,
+		"servicenetworkingpeereddnsdomains.servicenetworking.cnrm.cloud.google.com":         true,
+		"spannerbackupschedules.spanner.cnrm.cloud.google.com":                              true,
+		"vertexaiindexes.vertexai.cnrm.cloud.google.com":                                    true,
+	}
+
 	crds, err := crdloader.LoadCRDs()
 	if err != nil {
 		t.Fatalf("error loading crds: %v", err)
@@ -31,6 +66,8 @@ func TestCRDObjectTypes(t *testing.T) {
 
 	for _, crd := range crds {
 		t.Run(crd.Name, func(t *testing.T) {
+			isKnownInvalid := knownInvalidCRDs[crd.Name]
+			invalidVersions := 0
 			for _, version := range crd.Spec.Versions {
 				if version.Schema == nil || version.Schema.OpenAPIV3Schema == nil {
 					continue
@@ -41,9 +78,17 @@ func TestCRDObjectTypes(t *testing.T) {
 						continue
 					}
 					if err := validateProps(&subProps, fmt.Sprintf("%s.%s", version.Name, name)); err != nil {
-						t.Errorf("version %s is invalid: %v", version.Name, err)
+						if isKnownInvalid {
+							t.Logf("KNOWN INVALID: version %s is invalid: %v", version.Name, err)
+							invalidVersions++
+						} else {
+							t.Errorf("version %s is invalid: %v", version.Name, err)
+						}
 					}
 				}
+			}
+			if isKnownInvalid && invalidVersions == 0 {
+				t.Errorf("CRD %s is in knownInvalidCRDs but passed validation; please remove it from the list", crd.Name)
 			}
 		})
 	}

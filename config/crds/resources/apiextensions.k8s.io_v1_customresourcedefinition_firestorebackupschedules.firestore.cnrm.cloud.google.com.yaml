@@ -58,14 +58,12 @@ spec:
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
-            additionalProperties: false
             type: object
           spec:
             description: FirestoreBackupScheduleSpec defines the desired state of
               FirestoreBackupSchedule
             properties:
               dailyRecurrence:
-                additionalProperties: false
                 description: For a schedule that runs daily.
                 type: object
               databaseRef:

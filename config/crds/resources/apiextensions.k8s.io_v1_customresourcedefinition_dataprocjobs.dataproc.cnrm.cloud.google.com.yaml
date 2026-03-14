@@ -57,7 +57,6 @@ spec:
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
-            additionalProperties: false
             type: object
           spec:
             description: DataprocJobSpec defines the desired state of DataprocJob
@@ -93,7 +92,6 @@ spec:
                       type: string
                     type: array
                   loggingConfig:
-                    additionalProperties: false
                     description: Optional. The runtime log config for job execution.
                     type: object
                   mainClass:
@@ -151,7 +149,6 @@ spec:
                       type: string
                     type: array
                   loggingConfig:
-                    additionalProperties: false
                     description: Optional. The runtime log config for job execution.
                     type: object
                   mainClass:
@@ -295,7 +292,6 @@ spec:
                       type: string
                     type: array
                   loggingConfig:
-                    additionalProperties: false
                     description: Optional. The runtime log config for job execution.
                     type: object
                   properties:
@@ -370,7 +366,6 @@ spec:
                       can be useful when executing independent parallel queries.
                     type: boolean
                   loggingConfig:
-                    additionalProperties: false
                     description: Optional. The runtime log config for job execution.
                     type: object
                   outputFormat:
@@ -444,7 +439,6 @@ spec:
                       type: string
                     type: array
                   loggingConfig:
-                    additionalProperties: false
                     description: Optional. The runtime log config for job execution.
                     type: object
                   mainPythonFileURI:
@@ -559,7 +553,6 @@ spec:
                       type: string
                     type: array
                   loggingConfig:
-                    additionalProperties: false
                     description: Optional. The runtime log config for job execution.
                     type: object
                   mainClass:
@@ -607,7 +600,6 @@ spec:
                       type: string
                     type: array
                   loggingConfig:
-                    additionalProperties: false
                     description: Optional. The runtime log config for job execution.
                     type: object
                   mainRFileURI:
@@ -634,7 +626,6 @@ spec:
                       type: string
                     type: array
                   loggingConfig:
-                    additionalProperties: false
                     description: Optional. The runtime log config for job execution.
                     type: object
                   properties:
@@ -691,7 +682,6 @@ spec:
                       can be useful when executing independent parallel queries.
                     type: boolean
                   loggingConfig:
-                    additionalProperties: false
                     description: Optional. The runtime log config for job execution.
                     type: object
                   outputFormat:

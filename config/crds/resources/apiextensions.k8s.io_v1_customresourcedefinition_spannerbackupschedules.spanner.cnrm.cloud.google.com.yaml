@@ -58,7 +58,6 @@ spec:
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
-            additionalProperties: false
             type: object
           spec:
             description: SpannerBackupScheduleSpec defines the desired state of SpannerBackupSchedule
@@ -148,11 +147,9 @@ spec:
                     type: array
                 type: object
               fullBackupSpec:
-                additionalProperties: false
                 description: The schedule creates only full backups.
                 type: object
               incrementalBackupSpec:
-                additionalProperties: false
                 description: The schedule creates incremental backup chains.
                 type: object
               resourceID:
@@ -329,7 +326,6 @@ spec:
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
-            additionalProperties: false
             type: object
           spec:
             description: SpannerBackupScheduleSpec defines the desired state of SpannerBackupSchedule
@@ -419,11 +415,9 @@ spec:
                     type: array
                 type: object
               fullBackupSpec:
-                additionalProperties: false
                 description: The schedule creates only full backups.
                 type: object
               incrementalBackupSpec:
-                additionalProperties: false
                 description: The schedule creates incremental backup chains.
                 type: object
               resourceID:

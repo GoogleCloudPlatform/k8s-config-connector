@@ -57,7 +57,6 @@ spec:
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
-            additionalProperties: false
             type: object
           spec:
             description: DataCatalogEntrySpec defines the desired state of DataCatalogEntry
@@ -225,7 +224,6 @@ spec:
                     type: string
                 type: object
               featureOnlineStoreSpec:
-                additionalProperties: false
                 description: FeatureonlineStore spec for Vertex AI Feature Store.
                 type: object
               filesetSpec:
@@ -260,15 +258,12 @@ spec:
                                     type: string
                                 type: object
                               csv:
-                                additionalProperties: false
                                 description: Marks a CSV-encoded data source.
                                 type: object
                               orc:
-                                additionalProperties: false
                                 description: Marks an ORC-encoded data source.
                                 type: object
                               parquet:
-                                additionalProperties: false
                                 description: Marks a Parquet-encoded data source.
                                 type: object
                               protobuf:
@@ -857,15 +852,12 @@ spec:
                                         type: string
                                     type: object
                                   csv:
-                                    additionalProperties: false
                                     description: Marks a CSV-encoded data source.
                                     type: object
                                   orc:
-                                    additionalProperties: false
                                     description: Marks an ORC-encoded data source.
                                     type: object
                                   parquet:
-                                    additionalProperties: false
                                     description: Marks a Parquet-encoded data source.
                                     type: object
                                   protobuf:
@@ -985,7 +977,6 @@ spec:
                         type: boolean
                     type: object
                   usageSignal:
-                    additionalProperties: false
                     description: Resource usage statistics.
                     type: object
                 type: object

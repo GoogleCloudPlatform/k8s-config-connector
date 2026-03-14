@@ -57,7 +57,6 @@ spec:
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
-            additionalProperties: false
             type: object
           spec:
             description: AIPlatformModelSpec defines the desired state of AIPlatformModel
@@ -1393,7 +1392,6 @@ spec:
                         type: string
                     type: object
                   originalModelInfo:
-                    additionalProperties: false
                     description: Output only. If this Model is a copy of another Model,
                       this contains info about the original.
                     type: object
@@ -1423,7 +1421,6 @@ spec:
                     description: Output only. The formats in which this Model may
                       be exported. If empty, this Model is not available for export.
                     items:
-                      additionalProperties: false
                       type: object
                     type: array
                   supportedInputStorageFormats:

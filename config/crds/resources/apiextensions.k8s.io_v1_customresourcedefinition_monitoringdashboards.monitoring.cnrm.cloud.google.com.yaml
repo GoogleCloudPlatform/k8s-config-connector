@@ -58,7 +58,6 @@ spec:
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
-            additionalProperties: false
             type: object
           spec:
             properties:
@@ -119,7 +118,6 @@ spec:
                                 - alertPolicyRef
                                 type: object
                               blank:
-                                additionalProperties: false
                                 description: A blank space.
                                 type: object
                               collapsibleGroup:
@@ -714,7 +712,6 @@ spec:
                                 description: A scorecard summarizing time series data.
                                 properties:
                                   blankView:
-                                    additionalProperties: false
                                     description: Will cause the `Scorecard` to show
                                       only the value, with no indicator to its value
                                       relative to its thresholds.
@@ -1134,7 +1131,6 @@ spec:
                                     type: string
                                 type: object
                               singleViewGroup:
-                                additionalProperties: false
                                 description: A widget that groups the other widgets
                                   by using a dropdown menu.
                                 type: object
@@ -2171,7 +2167,6 @@ spec:
                           - alertPolicyRef
                           type: object
                         blank:
-                          additionalProperties: false
                           description: A blank space.
                           type: object
                         collapsibleGroup:
@@ -2725,7 +2720,6 @@ spec:
                           description: A scorecard summarizing time series data.
                           properties:
                             blankView:
-                              additionalProperties: false
                               description: Will cause the `Scorecard` to show only
                                 the value, with no indicator to its value relative
                                 to its thresholds.
@@ -3103,7 +3097,6 @@ spec:
                               type: string
                           type: object
                         singleViewGroup:
-                          additionalProperties: false
                           description: A widget that groups the other widgets by using
                             a dropdown menu.
                           type: object
@@ -4039,7 +4032,6 @@ spec:
                               - alertPolicyRef
                               type: object
                             blank:
-                              additionalProperties: false
                               description: A blank space.
                               type: object
                             collapsibleGroup:
@@ -4617,7 +4609,6 @@ spec:
                               description: A scorecard summarizing time series data.
                               properties:
                                 blankView:
-                                  additionalProperties: false
                                   description: Will cause the `Scorecard` to show
                                     only the value, with no indicator to its value
                                     relative to its thresholds.
@@ -5017,7 +5008,6 @@ spec:
                                   type: string
                               type: object
                             singleViewGroup:
-                              additionalProperties: false
                               description: A widget that groups the other widgets
                                 by using a dropdown menu.
                               type: object
@@ -6053,7 +6043,6 @@ spec:
                                 - alertPolicyRef
                                 type: object
                               blank:
-                                additionalProperties: false
                                 description: A blank space.
                                 type: object
                               collapsibleGroup:
@@ -6648,7 +6637,6 @@ spec:
                                 description: A scorecard summarizing time series data.
                                 properties:
                                   blankView:
-                                    additionalProperties: false
                                     description: Will cause the `Scorecard` to show
                                       only the value, with no indicator to its value
                                       relative to its thresholds.
@@ -7068,7 +7056,6 @@ spec:
                                     type: string
                                 type: object
                               singleViewGroup:
-                                additionalProperties: false
                                 description: A widget that groups the other widgets
                                   by using a dropdown menu.
                                 type: object
