@@ -1,0 +1,2531 @@
+{
+  "AccessContextManagerAccessLevel": {
+    "expected_type": "accesscontextmanager.googleapis.com/AccessLevel",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "AccessLevel",
+    "setter_methods": {},
+    "update_request_message": "UpdateAccessLevelRequest"
+  },
+  "AccessContextManagerAccessPolicy": {
+    "expected_type": "accesscontextmanager.googleapis.com/AccessPolicy",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "AccessPolicy",
+    "setter_methods": {},
+    "update_request_message": "UpdateAccessPolicyRequest"
+  },
+  "AccessContextManagerServicePerimeter": {
+    "expected_type": "accesscontextmanager.googleapis.com/ServicePerimeter",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "ServicePerimeter",
+    "setter_methods": {},
+    "update_request_message": "UpdateServicePerimeterRequest"
+  },
+  "AccessContextManagerServicePerimeterResource": {
+    "expected_type": "accesscontextmanager.googleapis.com/ServicePerimeterResource",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "ServicePerimeterResource",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "AlloyDBBackup": {
+    "expected_type": "alloydb.googleapis.com/Backup",
+    "has_update_method": true,
+    "immutable_fields": [
+      "tags"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Backup",
+    "setter_methods": {},
+    "update_request_message": "UpdateBackupRequest"
+  },
+  "AlloyDBCluster": {
+    "expected_type": "alloydb.googleapis.com/Cluster",
+    "has_update_method": true,
+    "immutable_fields": [
+      "tags"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Cluster",
+    "setter_methods": {},
+    "update_request_message": "UpdateClusterRequest"
+  },
+  "AlloyDBUser": {
+    "expected_type": "alloydb.googleapis.com/User",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "User",
+    "setter_methods": {},
+    "update_request_message": "UpdateUserRequest"
+  },
+  "ApigeeEnvironment": {
+    "expected_type": "apigee/Environment",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Environment",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "ApigeeOrganization": {
+    "expected_type": "apigee/Organization",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Organization",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "ArtifactRegistryRepository": {
+    "expected_type": "artifactregistry.googleapis.com/Repository",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Repository",
+    "setter_methods": {},
+    "update_request_message": "UpdateRepositoryRequest"
+  },
+  "BigQueryDataset": {
+    "expected_type": "bigquery.googleapis.com/Dataset",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Dataset",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "BigQueryJob": {
+    "expected_type": "bigquery.googleapis.com/Job",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Job",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "BigQueryRoutine": {
+    "expected_type": "bigquery.googleapis.com/Routine",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Routine",
+    "setter_methods": {},
+    "update_request_message": "UpdateRoutineRequest"
+  },
+  "BigQueryTable": {
+    "expected_type": "bigquery.googleapis.com/Table",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Table",
+    "setter_methods": {},
+    "update_request_message": "UpdateTableRequest"
+  },
+  "BigtableAppProfile": {
+    "expected_type": "bigtableadmin.googleapis.com/AppProfile",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "AppProfile",
+    "setter_methods": {},
+    "update_request_message": "UpdateAppProfileRequest"
+  },
+  "BigtableGCPolicy": {
+    "expected_type": "bigtableadmin.googleapis.com/GCPolicy",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Table",
+    "setter_methods": {},
+    "update_request_message": "UpdateTableRequest"
+  },
+  "BigtableInstance": {
+    "expected_type": "bigtableadmin.googleapis.com/Instance",
+    "has_update_method": false,
+    "immutable_fields": [
+      "tags"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Instance",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "BigtableTable": {
+    "expected_type": "bigtableadmin.googleapis.com/Table",
+    "has_update_method": true,
+    "immutable_fields": [
+      "granularity"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Table",
+    "setter_methods": {},
+    "update_request_message": "UpdateTableRequest"
+  },
+  "BillingBudgetsBudget": {
+    "expected_type": "billingbudgets/Budget",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Budget",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "BinaryAuthorizationAttestor": {
+    "expected_type": "binaryauthorization/Attestor",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Attestor",
+    "setter_methods": {},
+    "update_request_message": "UpdateAttestorRequest"
+  },
+  "BinaryAuthorizationPolicy": {
+    "expected_type": "binaryauthorization/Policy",
+    "has_update_method": true,
+    "immutable_fields": [
+      "managing_authority",
+      "name",
+      "uid"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Policy",
+    "setter_methods": {},
+    "update_request_message": "UpdatePolicyRequest"
+  },
+  "CertificateManagerCertificate": {
+    "expected_type": "certificatemanager.googleapis.com/Certificate",
+    "has_update_method": true,
+    "immutable_fields": [
+      "dns_authorizations",
+      "domains",
+      "issuance_config",
+      "scope"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Certificate",
+    "setter_methods": {},
+    "update_request_message": "UpdateCertificateRequest"
+  },
+  "CertificateManagerCertificateMap": {
+    "expected_type": "certificatemanager.googleapis.com/CertificateMap",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "CertificateMap",
+    "setter_methods": {},
+    "update_request_message": "UpdateCertificateMapRequest"
+  },
+  "CertificateManagerCertificateMapEntry": {
+    "expected_type": "certificatemanager.googleapis.com/CertificateMapEntry",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "CertificateMapEntry",
+    "setter_methods": {},
+    "update_request_message": "UpdateCertificateMapEntryRequest"
+  },
+  "CloudBuildTrigger": {
+    "expected_type": "cloudbuild.googleapis.com/Trigger",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Trigger",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "CloudFunctionsFunction": {
+    "expected_type": "cloudfunctions/Function",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Function",
+    "setter_methods": {},
+    "update_request_message": "UpdateFunctionRequest"
+  },
+  "CloudIDSEndpoint": {
+    "expected_type": "cloudids.googleapis.com/Endpoint",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Endpoint",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "CloudSchedulerJob": {
+    "expected_type": "cloudscheduler/Job",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Job",
+    "setter_methods": {},
+    "update_request_message": "UpdateJobRequest"
+  },
+  "ComputeAddress": {
+    "expected_type": "compute.googleapis.com/Address",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [
+      "labels"
+    ],
+    "proto_message": "Address",
+    "setter_methods": {
+      "SetLabels": {
+        "description": "Sets the labels on a GlobalAddress. To learn more about labels, read the Labeling Resources documentation.",
+        "inferred_field": "labels",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "labels"
+      }
+    },
+    "update_request_message": ""
+  },
+  "ComputeBackendBucket": {
+    "expected_type": "compute.googleapis.com/BackendBucket",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [
+      "edge_security_policy"
+    ],
+    "proto_message": "BackendBucket",
+    "setter_methods": {
+      "SetEdgeSecurityPolicy": {
+        "description": "Sets the edge security policy for the specified backend bucket.",
+        "inferred_field": "edge_security_policy",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "edge_security_policy"
+      }
+    },
+    "update_request_message": "PatchBackendBucketRequest"
+  },
+  "ComputeBackendService": {
+    "expected_type": "compute.googleapis.com/BackendService",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [
+      "edge_security_policy",
+      "security_policy"
+    ],
+    "proto_message": "BackendService",
+    "setter_methods": {
+      "SetEdgeSecurityPolicy": {
+        "description": "Sets the edge security policy for the specified backend service.",
+        "inferred_field": "edge_security_policy",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "edge_security_policy"
+      },
+      "SetSecurityPolicy": {
+        "description": "Sets the Google Cloud Armor security policy for the specified backend service. For more information, see Google Cloud Armor Overview",
+        "inferred_field": "security_policy",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "security_policy"
+      }
+    },
+    "update_request_message": "PatchBackendServiceRequest"
+  },
+  "ComputeDisk": {
+    "expected_type": "compute.googleapis.com/Disk",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [
+      "labels"
+    ],
+    "proto_message": "Disk",
+    "setter_methods": {
+      "SetLabels": {
+        "description": "Sets the labels on the target regional disk.",
+        "inferred_field": "labels",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "labels"
+      }
+    },
+    "update_request_message": "UpdateDiskRequest"
+  },
+  "ComputeExternalVPNGateway": {
+    "expected_type": "compute.googleapis.com/ExternalVPNGateway",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [
+      "labels"
+    ],
+    "proto_message": "ExternalVPNGateway",
+    "setter_methods": {
+      "SetLabels": {
+        "description": "Sets the labels on an ExternalVpnGateway. To learn more about labels, read the Labeling Resources documentation.",
+        "inferred_field": "labels",
+        "is_field_in_resource": false,
+        "matched_field_in_resource": ""
+      }
+    },
+    "update_request_message": ""
+  },
+  "ComputeFirewall": {
+    "expected_type": "compute.googleapis.com/Firewall",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Firewall",
+    "setter_methods": {},
+    "update_request_message": "PatchFirewallRequest"
+  },
+  "ComputeFirewallPolicy": {
+    "expected_type": "compute/FirewallPolicy",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "FirewallPolicy",
+    "setter_methods": {},
+    "update_request_message": "PatchFirewallPolicyRequest"
+  },
+  "ComputeFirewallPolicyAssociation": {
+    "expected_type": "compute/FirewallPolicyAssociation",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "FirewallPolicyAssociation",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "ComputeForwardingRule": {
+    "expected_type": "compute.googleapis.com/ForwardingRule",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [
+      "target"
+    ],
+    "potentially_mutable_fields": [
+      "labels"
+    ],
+    "proto_message": "ForwardingRule",
+    "setter_methods": {
+      "SetLabels": {
+        "description": "Sets the labels on the specified resource. To learn more about labels, read the Labeling resources documentation.",
+        "inferred_field": "labels",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "labels"
+      },
+      "SetTarget": {
+        "description": "Changes target URL for the GlobalForwardingRule resource. The new target should be of the same type as the old target.",
+        "inferred_field": "target",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "target"
+      }
+    },
+    "update_request_message": "PatchForwardingRuleRequest"
+  },
+  "ComputeHTTPHealthCheck": {
+    "expected_type": "compute.googleapis.com/HTTPHealthCheck",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "HealthCheck",
+    "setter_methods": {},
+    "update_request_message": "PatchHealthCheckRequest"
+  },
+  "ComputeHTTPSHealthCheck": {
+    "expected_type": "compute.googleapis.com/HTTPSHealthCheck",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "HealthCheck",
+    "setter_methods": {},
+    "update_request_message": "PatchHealthCheckRequest"
+  },
+  "ComputeHealthCheck": {
+    "expected_type": "compute.googleapis.com/HealthCheck",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "HealthCheck",
+    "setter_methods": {},
+    "update_request_message": "PatchHealthCheckRequest"
+  },
+  "ComputeImage": {
+    "expected_type": "compute.googleapis.com/Image",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [
+      "labels"
+    ],
+    "proto_message": "Image",
+    "setter_methods": {
+      "SetLabels": {
+        "description": "Sets the labels on a machine image. To learn more about labels, read the Labeling Resources documentation.",
+        "inferred_field": "labels_machine",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "labels"
+      }
+    },
+    "update_request_message": "PatchImageRequest"
+  },
+  "ComputeInstance": {
+    "expected_type": "compute.googleapis.com/Instance",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [
+      "deletion_protection",
+      "machine_resources",
+      "machine_type",
+      "metadata",
+      "min_cpu_platform",
+      "name",
+      "scheduling",
+      "service_account",
+      "tags"
+    ],
+    "potentially_mutable_fields": [
+      "disks.auto_delete",
+      "labels",
+      "network_interfaces.access_configs.security_policy",
+      "shielded_instance_integrity_policy",
+      "shielded_vm_integrity_policy"
+    ],
+    "proto_message": "Instance",
+    "setter_methods": {
+      "SetDeletionProtection": {
+        "description": "Sets deletion protection on the instance.",
+        "inferred_field": "deletion_protection",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "deletion_protection"
+      },
+      "SetDiskAutoDelete": {
+        "description": "Sets the auto-delete flag for a disk attached to an instance.",
+        "inferred_field": "disk_auto_delete",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "disks.auto_delete"
+      },
+      "SetLabels": {
+        "description": "Sets labels on an instance. To learn more about labels, read the Labeling Resources documentation.",
+        "inferred_field": "labels",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "labels"
+      },
+      "SetMachineResources": {
+        "description": "Changes the number and/or type of accelerator for a stopped instance to the values specified in the request.",
+        "inferred_field": "machine_resources",
+        "is_field_in_resource": false,
+        "matched_field_in_resource": ""
+      },
+      "SetMachineType": {
+        "description": "Changes the machine type for a stopped instance to the machine type specified in the request.",
+        "inferred_field": "machine_type",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "machine_type"
+      },
+      "SetMetadata": {
+        "description": "Sets metadata for the specified instance to the data included in the request.",
+        "inferred_field": "metadata",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "metadata"
+      },
+      "SetMinCpuPlatform": {
+        "description": "Changes the minimum CPU platform that this instance should use. This method can only be called on a stopped instance. For more information, read Specifying a Minimum CPU Platform.",
+        "inferred_field": "min_cpu_platform",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "min_cpu_platform"
+      },
+      "SetName": {
+        "description": "Sets name of an instance.",
+        "inferred_field": "name",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "name"
+      },
+      "SetScheduling": {
+        "description": "Sets an instance's scheduling options. You can only call this method on a stopped instance, that is, a VM instance that is in a `TERMINATED` state. See Instance Life Cycle for more information on the possible instance states. For more information about setting scheduling options for a VM, see Set VM host maintenance policy.",
+        "inferred_field": "scheduling",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "scheduling"
+      },
+      "SetSecurityPolicy": {
+        "description": "Sets the Google Cloud Armor security policy for the specified target instance. For more information, see Google Cloud Armor Overview",
+        "inferred_field": "security_policy_target",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "network_interfaces.access_configs.security_policy"
+      },
+      "SetServiceAccount": {
+        "description": "Sets the service account on the instance. For more information, read Changing the service account and access scopes for an instance.",
+        "inferred_field": "service_account",
+        "is_field_in_resource": false,
+        "matched_field_in_resource": ""
+      },
+      "SetShieldedInstanceIntegrityPolicy": {
+        "description": "Sets the Shielded Instance integrity policy for an instance. You can only use this method on a running instance. This method supports PATCH semantics and uses the JSON merge patch format and processing rules.",
+        "inferred_field": "shielded_instance_integrity_policy",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "shielded_instance_integrity_policy"
+      },
+      "SetShieldedVmIntegrityPolicy": {
+        "description": "Sets the Shielded VM integrity policy for a VM instance. You can only use this method on a running VM instance. This method supports PATCH semantics and uses the JSON merge patch format and processing rules.",
+        "inferred_field": "shielded_vm_integrity_policy",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "shielded_vm_integrity_policy"
+      },
+      "SetTags": {
+        "description": "Sets network tags for the specified instance to the data included in the request.",
+        "inferred_field": "tags",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "tags"
+      }
+    },
+    "update_request_message": "UpdateInstanceRequest"
+  },
+  "ComputeInstanceGroup": {
+    "expected_type": "compute.googleapis.com/InstanceGroup",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [
+      "named_ports"
+    ],
+    "potentially_mutable_fields": [],
+    "proto_message": "InstanceGroup",
+    "setter_methods": {
+      "SetNamedPorts": {
+        "description": "Sets the named ports for the specified regional instance group.",
+        "inferred_field": "named_ports",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "named_ports"
+      }
+    },
+    "update_request_message": ""
+  },
+  "ComputeInstanceGroupManager": {
+    "expected_type": "compute/InstanceGroupManager",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [
+      "instance_template",
+      "target_pools"
+    ],
+    "potentially_mutable_fields": [
+      "auto_healing_policies"
+    ],
+    "proto_message": "InstanceGroupManager",
+    "setter_methods": {
+      "SetAutoHealingPolicies": {
+        "description": "Modifies the autohealing policy for the instances in this managed instance group. [Deprecated] This method is deprecated. Use regionInstanceGroupManagers.patch instead.",
+        "inferred_field": "auto_healing_policies",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "auto_healing_policies"
+      },
+      "SetInstanceTemplate": {
+        "description": "Sets the instance template to use when creating new instances or recreating instances in this group. Existing instances are not affected.",
+        "inferred_field": "instance_template",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "instance_template"
+      },
+      "SetTargetPools": {
+        "description": "Modifies the target pools to which all new instances in this group are assigned. Existing instances in the group are not affected.",
+        "inferred_field": "target_pools",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "target_pools"
+      }
+    },
+    "update_request_message": "PatchInstanceGroupManagerRequest"
+  },
+  "ComputeInstanceTemplate": {
+    "expected_type": "compute.googleapis.com/InstanceTemplate",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "InstanceTemplate",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "ComputeInterconnectAttachment": {
+    "expected_type": "compute.googleapis.com/InterconnectAttachment",
+    "has_update_method": true,
+    "immutable_fields": [
+      "id"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [
+      "labels"
+    ],
+    "proto_message": "InterconnectAttachment",
+    "setter_methods": {
+      "SetLabels": {
+        "description": "Sets the labels on an InterconnectAttachment. To learn more about labels, read the Labeling Resources documentation.",
+        "inferred_field": "labels",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "labels"
+      }
+    },
+    "update_request_message": "PatchInterconnectAttachmentRequest"
+  },
+  "ComputeManagedSSLCertificate": {
+    "expected_type": "compute.googleapis.com/ManagedSSLCertificate",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "ManagedSSLCertificate",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "ComputeNetwork": {
+    "expected_type": "compute.googleapis.com/Network",
+    "has_update_method": true,
+    "immutable_fields": [
+      "network",
+      "network_attachment",
+      "peered_network",
+      "peered_network_ip_range",
+      "peering",
+      "private_service_connect",
+      "public_ip_address_disabled",
+      "route_all_traffic"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [
+      "private_ip_google_access_sub"
+    ],
+    "proto_message": "Network",
+    "setter_methods": {
+      "SetPrivateIpGoogleAccess": {
+        "description": "Set whether VMs in this subnet can access Google services without assigning external IP addresses through Private Google Access.",
+        "inferred_field": "private_ip_google_access_sub",
+        "is_field_in_resource": false,
+        "matched_field_in_resource": ""
+      }
+    },
+    "update_request_message": "PatchNetworkRequest"
+  },
+  "ComputeNetworkEndpointGroup": {
+    "expected_type": "compute.googleapis.com/NetworkEndpointGroup",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "NetworkEndpointGroup",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "ComputeNetworkFirewallPolicy": {
+    "expected_type": "compute.googleapis.com/NetworkFirewallPolicy",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "NetworkFirewallPolicy",
+    "setter_methods": {},
+    "update_request_message": "PatchNetworkFirewallPolicyRequest"
+  },
+  "ComputeNetworkFirewallPolicyAssociation": {
+    "expected_type": "compute.googleapis.com/NetworkFirewallPolicyAssociation",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "NetworkFirewallPolicyAssociation",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "ComputeNetworkPeering": {
+    "expected_type": "compute.googleapis.com/NetworkPeering",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "NetworkPeering",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "ComputeNodeGroup": {
+    "expected_type": "compute.googleapis.com/NodeGroup",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [
+      "node_template"
+    ],
+    "potentially_mutable_fields": [],
+    "proto_message": "NodeGroup",
+    "setter_methods": {
+      "SetNodeTemplate": {
+        "description": "Updates the node template of the node group.",
+        "inferred_field": "node_template",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "node_template"
+      }
+    },
+    "update_request_message": "PatchNodeGroupRequest"
+  },
+  "ComputeNodeTemplate": {
+    "expected_type": "compute.googleapis.com/NodeTemplate",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "NodeTemplate",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "ComputePacketMirroring": {
+    "expected_type": "compute/PacketMirroring",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "PacketMirroring",
+    "setter_methods": {},
+    "update_request_message": "PatchPacketMirroringRequest"
+  },
+  "ComputeProjectMetadata": {
+    "expected_type": "compute.googleapis.com/ProjectMetadata",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [
+      "cloud_armor_tier",
+      "default_network_tier",
+      "managed_protection_tier"
+    ],
+    "potentially_mutable_fields": [
+      "common_instance_metadata",
+      "quotas.usage"
+    ],
+    "proto_message": "Project",
+    "setter_methods": {
+      "SetCloudArmorTier": {
+        "description": "Sets the Cloud Armor tier of the project. To set ENTERPRISE or above the billing account of the project must be subscribed to Cloud Armor Enterprise. See Subscribing to Cloud Armor Enterprise for more information.",
+        "inferred_field": "cloud_armor_tier",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "cloud_armor_tier"
+      },
+      "SetCommonInstanceMetadata": {
+        "description": "Sets metadata common to all instances within the specified project using the data included in the request.",
+        "inferred_field": "common_instance_metadata",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "common_instance_metadata"
+      },
+      "SetDefaultNetworkTier": {
+        "description": "Sets the default network tier of the project. The default network tier is used when an address/forwardingRule/instance is created without specifying the network tier field.",
+        "inferred_field": "default_network_tier",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "default_network_tier"
+      },
+      "SetManagedProtectionTier": {
+        "description": "Sets the Cloud Armor Managed Protection (CAMP) tier of the project. To set PLUS or above the billing account of the project must be subscribed to Managed Protection Plus. See Subscribing to Managed Protection Plus for more information.",
+        "inferred_field": "managed_protection_tier",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "managed_protection_tier"
+      },
+      "SetUsageExportBucket": {
+        "description": "Enables the usage export feature and sets the usage export bucket where reports are stored. If you provide an empty request body using this method, the usage export feature will be disabled.",
+        "inferred_field": "usage_export_bucket",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "quotas.usage"
+      }
+    },
+    "update_request_message": ""
+  },
+  "ComputeRegionNetworkEndpointGroup": {
+    "expected_type": "compute.googleapis.com/RegionNetworkEndpointGroup",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "RegionNetworkEndpointGroup",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "ComputeReservation": {
+    "expected_type": "compute.googleapis.com/Reservation",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Reservation",
+    "setter_methods": {},
+    "update_request_message": "UpdateReservationRequest"
+  },
+  "ComputeResourcePolicy": {
+    "expected_type": "compute.googleapis.com/ResourcePolicy",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "ResourcePolicy",
+    "setter_methods": {},
+    "update_request_message": "PatchResourcePolicyRequest"
+  },
+  "ComputeRoute": {
+    "expected_type": "compute.googleapis.com/Route",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Route",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "ComputeRouter": {
+    "expected_type": "compute.googleapis.com/Router",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Router",
+    "setter_methods": {},
+    "update_request_message": "PatchRouterRequest"
+  },
+  "ComputeRouterInterface": {
+    "expected_type": "compute.googleapis.com/RouterInterface",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "RouterInterface",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "ComputeRouterNAT": {
+    "expected_type": "compute.googleapis.com/RouterNAT",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "RouterNAT",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "ComputeRouterPeer": {
+    "expected_type": "compute.googleapis.com/RouterPeer",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "RouterPeer",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "ComputeSSLCertificate": {
+    "expected_type": "compute.googleapis.com/SSLCertificate",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "SSLCertificate",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "ComputeSSLPolicy": {
+    "expected_type": "compute.googleapis.com/SSLPolicy",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "SSLPolicy",
+    "setter_methods": {},
+    "update_request_message": "PatchSslPolicyRequest"
+  },
+  "ComputeSecurityPolicy": {
+    "expected_type": "compute.googleapis.com/SecurityPolicy",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [
+      "labels"
+    ],
+    "proto_message": "SecurityPolicy",
+    "setter_methods": {
+      "SetLabels": {
+        "description": "Sets the labels on a security policy. To learn more about labels, read the Labeling Resources documentation.",
+        "inferred_field": "labels",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "labels"
+      }
+    },
+    "update_request_message": "PatchSecurityPolicyRequest"
+  },
+  "ComputeServiceAttachment": {
+    "expected_type": "compute/ServiceAttachment",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "ServiceAttachment",
+    "setter_methods": {},
+    "update_request_message": "PatchServiceAttachmentRequest"
+  },
+  "ComputeSharedVPCHostProject": {
+    "expected_type": "compute.googleapis.com/SharedVPCHostProject",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "SharedVPCHostProject",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "ComputeSharedVPCServiceProject": {
+    "expected_type": "compute.googleapis.com/SharedVPCServiceProject",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "SharedVPCServiceProject",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "ComputeSnapshot": {
+    "expected_type": "compute.googleapis.com/Snapshot",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [
+      "labels"
+    ],
+    "proto_message": "Snapshot",
+    "setter_methods": {
+      "SetLabels": {
+        "description": "Sets the labels on a snapshot. To learn more about labels, read the Labeling Resources documentation.",
+        "inferred_field": "labels",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "labels"
+      }
+    },
+    "update_request_message": ""
+  },
+  "ComputeSubnetwork": {
+    "expected_type": "compute.googleapis.com/Subnetwork",
+    "has_update_method": true,
+    "immutable_fields": [
+      "consumers",
+      "subnetwork"
+    ],
+    "mutable_fields": [
+      "private_ip_google_access"
+    ],
+    "potentially_mutable_fields": [],
+    "proto_message": "Subnetwork",
+    "setter_methods": {
+      "SetPrivateIpGoogleAccess": {
+        "description": "Set whether VMs in this subnet can access Google services without assigning external IP addresses through Private Google Access.",
+        "inferred_field": "private_ip_google_access",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "private_ip_google_access"
+      }
+    },
+    "update_request_message": "PatchSubnetworkRequest"
+  },
+  "ComputeTargetGRPCProxy": {
+    "expected_type": "compute.googleapis.com/TargetGRPCProxy",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "TargetGRPCProxy",
+    "setter_methods": {},
+    "update_request_message": "PatchTargetGrpcProxyRequest"
+  },
+  "ComputeTargetHTTPProxy": {
+    "expected_type": "compute.googleapis.com/TargetHTTPProxy",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [
+      "url_map"
+    ],
+    "potentially_mutable_fields": [],
+    "proto_message": "TargetHTTPProxy",
+    "setter_methods": {
+      "SetUrlMap": {
+        "description": "Changes the URL map for TargetHttpProxy.",
+        "inferred_field": "url_map",
+        "is_field_in_resource": false,
+        "matched_field_in_resource": ""
+      }
+    },
+    "update_request_message": "PatchTargetHttpProxyRequest"
+  },
+  "ComputeTargetHTTPSProxy": {
+    "expected_type": "compute.googleapis.com/TargetHTTPSProxy",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [
+      "certificate_map",
+      "quic_override",
+      "ssl_certificates",
+      "ssl_policy",
+      "url_map"
+    ],
+    "proto_message": "TargetHTTPSProxy",
+    "setter_methods": {
+      "SetCertificateMap": {
+        "description": "Changes the Certificate Map for TargetHttpsProxy.",
+        "inferred_field": "certificate_map",
+        "is_field_in_resource": false,
+        "matched_field_in_resource": ""
+      },
+      "SetQuicOverride": {
+        "description": "Sets the QUIC override policy for TargetHttpsProxy.",
+        "inferred_field": "quic_override",
+        "is_field_in_resource": false,
+        "matched_field_in_resource": ""
+      },
+      "SetSslCertificates": {
+        "description": "Replaces SslCertificates for TargetHttpsProxy.",
+        "inferred_field": "ssl_certificates",
+        "is_field_in_resource": false,
+        "matched_field_in_resource": ""
+      },
+      "SetSslPolicy": {
+        "description": "Sets the SSL policy for TargetHttpsProxy. The SSL policy specifies the server-side support for SSL features. This affects connections between clients and the HTTPS proxy load balancer. They do not affect the connection between the load balancer and the backends.",
+        "inferred_field": "ssl_policy",
+        "is_field_in_resource": false,
+        "matched_field_in_resource": ""
+      },
+      "SetUrlMap": {
+        "description": "Changes the URL map for TargetHttpsProxy.",
+        "inferred_field": "url_map",
+        "is_field_in_resource": false,
+        "matched_field_in_resource": ""
+      }
+    },
+    "update_request_message": "PatchTargetHttpsProxyRequest"
+  },
+  "ComputeTargetInstance": {
+    "expected_type": "compute.googleapis.com/TargetInstance",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [
+      "security_policy"
+    ],
+    "proto_message": "TargetInstance",
+    "setter_methods": {
+      "SetSecurityPolicy": {
+        "description": "Sets the Google Cloud Armor security policy for the specified target instance. For more information, see Google Cloud Armor Overview",
+        "inferred_field": "security_policy",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "security_policy"
+      }
+    },
+    "update_request_message": ""
+  },
+  "ComputeTargetPool": {
+    "expected_type": "compute.googleapis.com/TargetPool",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [
+      "backup"
+    ],
+    "potentially_mutable_fields": [
+      "security_policy"
+    ],
+    "proto_message": "TargetPool",
+    "setter_methods": {
+      "SetBackup": {
+        "description": "Changes a backup target pool's configurations.",
+        "inferred_field": "backup",
+        "is_field_in_resource": false,
+        "matched_field_in_resource": ""
+      },
+      "SetSecurityPolicy": {
+        "description": "Sets the Google Cloud Armor security policy for the specified target pool. For more information, see Google Cloud Armor Overview",
+        "inferred_field": "security_policy",
+        "is_field_in_resource": true,
+        "matched_field_in_resource": "security_policy"
+      }
+    },
+    "update_request_message": ""
+  },
+  "ComputeTargetSSLProxy": {
+    "expected_type": "compute.googleapis.com/TargetSSLProxy",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [
+      "backend_service",
+      "certificate_map",
+      "proxy_header",
+      "ssl_certificates"
+    ],
+    "potentially_mutable_fields": [
+      "ssl_policy"
+    ],
+    "proto_message": "TargetSSLProxy",
+    "setter_methods": {
+      "SetBackendService": {
+        "description": "Changes the BackendService for TargetSslProxy.",
+        "inferred_field": "backend_service",
+        "is_field_in_resource": false,
+        "matched_field_in_resource": ""
+      },
+      "SetCertificateMap": {
+        "description": "Changes the Certificate Map for TargetSslProxy.",
+        "inferred_field": "certificate_map",
+        "is_field_in_resource": false,
+        "matched_field_in_resource": ""
+      },
+      "SetProxyHeader": {
+        "description": "Changes the ProxyHeaderType for TargetSslProxy.",
+        "inferred_field": "proxy_header",
+        "is_field_in_resource": false,
+        "matched_field_in_resource": ""
+      },
+      "SetSslCertificates": {
+        "description": "Changes SslCertificates for TargetSslProxy.",
+        "inferred_field": "ssl_certificates",
+        "is_field_in_resource": false,
+        "matched_field_in_resource": ""
+      },
+      "SetSslPolicy": {
+        "description": "Sets the SSL policy for TargetSslProxy. The SSL policy specifies the server-side support for SSL features. This affects connections between clients and the load balancer. They do not affect the connection between the load balancer and the backends.",
+        "inferred_field": "ssl_policy",
+        "is_field_in_resource": false,
+        "matched_field_in_resource": ""
+      }
+    },
+    "update_request_message": ""
+  },
+  "ComputeTargetTCPProxy": {
+    "expected_type": "compute.googleapis.com/TargetTCPProxy",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [
+      "backend_service",
+      "proxy_header"
+    ],
+    "potentially_mutable_fields": [],
+    "proto_message": "TargetTCPProxy",
+    "setter_methods": {
+      "SetBackendService": {
+        "description": "Changes the BackendService for TargetTcpProxy.",
+        "inferred_field": "backend_service",
+        "is_field_in_resource": false,
+        "matched_field_in_resource": ""
+      },
+      "SetProxyHeader": {
+        "description": "Changes the ProxyHeaderType for TargetTcpProxy.",
+        "inferred_field": "proxy_header",
+        "is_field_in_resource": false,
+        "matched_field_in_resource": ""
+      }
+    },
+    "update_request_message": ""
+  },
+  "ComputeTargetVPNGateway": {
+    "expected_type": "compute.googleapis.com/TargetVPNGateway",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [
+      "labels"
+    ],
+    "proto_message": "TargetVPNGateway",
+    "setter_methods": {
+      "SetLabels": {
+        "description": "Sets the labels on a TargetVpnGateway. To learn more about labels, read the Labeling Resources documentation.",
+        "inferred_field": "labels",
+        "is_field_in_resource": false,
+        "matched_field_in_resource": ""
+      }
+    },
+    "update_request_message": ""
+  },
+  "ComputeURLMap": {
+    "expected_type": "compute.googleapis.com/URLMap",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "URLMap",
+    "setter_methods": {},
+    "update_request_message": "PatchUrlMapRequest"
+  },
+  "ComputeVPNGateway": {
+    "expected_type": "compute.googleapis.com/VPNGateway",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [
+      "labels"
+    ],
+    "proto_message": "VPNGateway",
+    "setter_methods": {
+      "SetLabels": {
+        "description": "Sets the labels on a VpnGateway. To learn more about labels, read the Labeling Resources documentation.",
+        "inferred_field": "labels",
+        "is_field_in_resource": false,
+        "matched_field_in_resource": ""
+      }
+    },
+    "update_request_message": ""
+  },
+  "ComputeVPNTunnel": {
+    "expected_type": "compute.googleapis.com/VPNTunnel",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [
+      "labels"
+    ],
+    "proto_message": "VPNTunnel",
+    "setter_methods": {
+      "SetLabels": {
+        "description": "Sets the labels on a VpnTunnel. To learn more about labels, read the Labeling Resources documentation.",
+        "inferred_field": "labels",
+        "is_field_in_resource": false,
+        "matched_field_in_resource": ""
+      }
+    },
+    "update_request_message": ""
+  },
+  "ConfigControllerInstance": {
+    "expected_type": "configcontroller/Instance",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Instance",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "ContainerAnalysisNote": {
+    "expected_type": "containeranalysis/Note",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Note",
+    "setter_methods": {},
+    "update_request_message": "UpdateNoteRequest"
+  },
+  "ContainerAttachedCluster": {
+    "expected_type": "gkemulticloud.googleapis.com/Cluster",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Cluster",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "ContainerCluster": {
+    "expected_type": "container.googleapis.com/Cluster",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Cluster",
+    "setter_methods": {},
+    "update_request_message": "UpdateClusterRequest"
+  },
+  "ContainerNodePool": {
+    "expected_type": "container.googleapis.com/NodePool",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "NodePool",
+    "setter_methods": {},
+    "update_request_message": "UpdateNodePoolRequest"
+  },
+  "DLPDeidentifyTemplate": {
+    "expected_type": "dlp/DeidentifyTemplate",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "DeidentifyTemplate",
+    "setter_methods": {},
+    "update_request_message": "UpdateDeidentifyTemplateRequest"
+  },
+  "DLPInspectTemplate": {
+    "expected_type": "dlp/InspectTemplate",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "InspectTemplate",
+    "setter_methods": {},
+    "update_request_message": "UpdateInspectTemplateRequest"
+  },
+  "DLPJobTrigger": {
+    "expected_type": "dlp/JobTrigger",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "JobTrigger",
+    "setter_methods": {},
+    "update_request_message": "UpdateJobTriggerRequest"
+  },
+  "DLPStoredInfoType": {
+    "expected_type": "dlp/StoredInfoType",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "StoredInfoType",
+    "setter_methods": {},
+    "update_request_message": "UpdateStoredInfoTypeRequest"
+  },
+  "DNSManagedZone": {
+    "expected_type": "dns.googleapis.com/ManagedZone",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "ManagedZone",
+    "setter_methods": {},
+    "update_request_message": "PatchManagedZoneRequest"
+  },
+  "DNSPolicy": {
+    "expected_type": "dns.googleapis.com/Policy",
+    "has_update_method": true,
+    "immutable_fields": [
+      "managing_authority",
+      "name",
+      "uid"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Policy",
+    "setter_methods": {},
+    "update_request_message": "PatchPolicyRequest"
+  },
+  "DNSRecordSet": {
+    "expected_type": "dns.googleapis.com/RecordSet",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "ResourceRecordSet",
+    "setter_methods": {},
+    "update_request_message": "PatchResourceRecordSetRequest"
+  },
+  "DataCatalogPolicyTag": {
+    "expected_type": "datacatalog.googleapis.com/PolicyTag",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "PolicyTag",
+    "setter_methods": {},
+    "update_request_message": "UpdatePolicyTagRequest"
+  },
+  "DataCatalogTaxonomy": {
+    "expected_type": "datacatalog.googleapis.com/Taxonomy",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Taxonomy",
+    "setter_methods": {},
+    "update_request_message": "UpdateTaxonomyRequest"
+  },
+  "DataFusionInstance": {
+    "expected_type": "datafusion/Instance",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Instance",
+    "setter_methods": {},
+    "update_request_message": "UpdateInstanceRequest"
+  },
+  "DataflowFlexTemplateJob": {
+    "expected_type": "dataflow.googleapis.com/FlexTemplateJob",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "FlexTemplateJob",
+    "setter_methods": {},
+    "update_request_message": "UpdateJobRequest"
+  },
+  "DataflowJob": {
+    "expected_type": "dataflow.googleapis.com/Job",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Job",
+    "setter_methods": {},
+    "update_request_message": "UpdateJobRequest"
+  },
+  "DataprocAutoscalingPolicy": {
+    "expected_type": "dataproc/AutoscalingPolicy",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "AutoscalingPolicy",
+    "setter_methods": {},
+    "update_request_message": "UpdateAutoscalingPolicyRequest"
+  },
+  "DataprocCluster": {
+    "expected_type": "dataproc/Cluster",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Cluster",
+    "setter_methods": {},
+    "update_request_message": "UpdateClusterRequest"
+  },
+  "DataprocWorkflowTemplate": {
+    "expected_type": "dataproc/WorkflowTemplate",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "WorkflowTemplate",
+    "setter_methods": {},
+    "update_request_message": "UpdateWorkflowTemplateRequest"
+  },
+  "EdgeContainerCluster": {
+    "expected_type": "edgecontainer.googleapis.com/Cluster",
+    "has_update_method": true,
+    "immutable_fields": [
+      "authorization"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Cluster",
+    "setter_methods": {},
+    "update_request_message": "UpdateClusterRequest"
+  },
+  "EdgeContainerNodePool": {
+    "expected_type": "edgecontainer.googleapis.com/NodePool",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "NodePool",
+    "setter_methods": {},
+    "update_request_message": "UpdateNodePoolRequest"
+  },
+  "EdgeContainerVpnConnection": {
+    "expected_type": "edgecontainer.googleapis.com/VpnConnection",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "VpnConnection",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "EdgeNetworkNetwork": {
+    "expected_type": "edgenetwork.googleapis.com/Network",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Network",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "EdgeNetworkSubnet": {
+    "expected_type": "edgenetwork.googleapis.com/Subnet",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Subnet",
+    "setter_methods": {},
+    "update_request_message": "UpdateSubnetRequest"
+  },
+  "EventarcTrigger": {
+    "expected_type": "eventarc/Trigger",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Trigger",
+    "setter_methods": {},
+    "update_request_message": "UpdateTriggerRequest"
+  },
+  "FilestoreBackup": {
+    "expected_type": "filestore/Backup",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Backup",
+    "setter_methods": {},
+    "update_request_message": "UpdateBackupRequest"
+  },
+  "FilestoreInstance": {
+    "expected_type": "filestore/Instance",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Instance",
+    "setter_methods": {},
+    "update_request_message": "UpdateInstanceRequest"
+  },
+  "FirestoreIndex": {
+    "expected_type": "firestore.googleapis.com/Index",
+    "has_update_method": false,
+    "immutable_fields": [
+      "density"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Index",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "Folder": {
+    "expected_type": "cloudresourcemanager.googleapis.com/Folder",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Folder",
+    "setter_methods": {},
+    "update_request_message": "UpdateFolderRequest"
+  },
+  "GKEHubFeature": {
+    "expected_type": "gkehub/Feature",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Feature",
+    "setter_methods": {},
+    "update_request_message": "UpdateFeatureRequest"
+  },
+  "GKEHubMembership": {
+    "expected_type": "gkehub/Membership",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Membership",
+    "setter_methods": {},
+    "update_request_message": "UpdateMembershipRequest"
+  },
+  "IAMAccessBoundaryPolicy": {
+    "expected_type": "iam.googleapis.com/AccessBoundaryPolicy",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "AccessBoundaryPolicy",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "IAMCustomRole": {
+    "expected_type": "iam.googleapis.com/CustomRole",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "CustomRole",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "IAMServiceAccount": {
+    "expected_type": "iam.googleapis.com/ServiceAccount",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "ServiceAccount",
+    "setter_methods": {},
+    "update_request_message": "PatchServiceAccountRequest"
+  },
+  "IAMServiceAccountKey": {
+    "expected_type": "iam.googleapis.com/ServiceAccountKey",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "ServiceAccountKey",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "IAMWorkforcePool": {
+    "expected_type": "iam/WorkforcePool",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "WorkforcePool",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "IAMWorkforcePoolProvider": {
+    "expected_type": "iam/WorkforcePoolProvider",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "WorkforcePoolProvider",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "IAMWorkloadIdentityPool": {
+    "expected_type": "iam/WorkloadIdentityPool",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "WorkloadIdentityPool",
+    "setter_methods": {},
+    "update_request_message": "UpdateWorkloadIdentityPoolRequest"
+  },
+  "IAMWorkloadIdentityPoolProvider": {
+    "expected_type": "iam/WorkloadIdentityPoolProvider",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "WorkloadIdentityPoolProvider",
+    "setter_methods": {},
+    "update_request_message": "UpdateWorkloadIdentityPoolProviderRequest"
+  },
+  "IAPBrand": {
+    "expected_type": "iap/Brand",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Brand",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "IAPIdentityAwareProxyClient": {
+    "expected_type": "iap/IdentityAwareProxyClient",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "IdentityAwareProxyClient",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "IdentityPlatformConfig": {
+    "expected_type": "identitytoolkit/Config",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Config",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "IdentityPlatformOAuthIDPConfig": {
+    "expected_type": "identitytoolkit/OAuthIDPConfig",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "OAuthIdpConfig",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "IdentityPlatformTenant": {
+    "expected_type": "identitytoolkit/Tenant",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Tenant",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "IdentityPlatformTenantOAuthIDPConfig": {
+    "expected_type": "identitytoolkit/TenantOAuthIDPConfig",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "OAuthIdpConfig",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "KMSCryptoKey": {
+    "expected_type": "cloudkms.googleapis.com/CryptoKey",
+    "has_update_method": true,
+    "immutable_fields": [
+      "crypto_key_backend",
+      "destroy_scheduled_duration",
+      "import_only",
+      "kms_key",
+      "purpose"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "CryptoKey",
+    "setter_methods": {},
+    "update_request_message": "UpdateCryptoKeyRequest"
+  },
+  "KMSKeyRing": {
+    "expected_type": "cloudkms.googleapis.com/KeyRing",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "KeyRing",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "LoggingLogBucket": {
+    "expected_type": "logging/LogBucket",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "LogBucket",
+    "setter_methods": {},
+    "update_request_message": "UpdateBucketRequest"
+  },
+  "LoggingLogExclusion": {
+    "expected_type": "logging/LogExclusion",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "LogExclusion",
+    "setter_methods": {},
+    "update_request_message": "UpdateExclusionRequest"
+  },
+  "LoggingLogSink": {
+    "expected_type": "logging.googleapis.com/LogSink",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "LogSink",
+    "setter_methods": {},
+    "update_request_message": "UpdateSinkRequest"
+  },
+  "LoggingLogView": {
+    "expected_type": "logging/LogView",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "LogView",
+    "setter_methods": {},
+    "update_request_message": "UpdateViewRequest"
+  },
+  "MemcacheInstance": {
+    "expected_type": "memcache.googleapis.com/Instance",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Instance",
+    "setter_methods": {},
+    "update_request_message": "UpdateInstanceRequest"
+  },
+  "MonitoringAlertPolicy": {
+    "expected_type": "monitoring.googleapis.com/AlertPolicy",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "AlertPolicy",
+    "setter_methods": {},
+    "update_request_message": "UpdateAlertPolicyRequest"
+  },
+  "MonitoringGroup": {
+    "expected_type": "monitoring/Group",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Group",
+    "setter_methods": {},
+    "update_request_message": "UpdateGroupRequest"
+  },
+  "MonitoringMetricDescriptor": {
+    "expected_type": "monitoring/MetricDescriptor",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "MetricDescriptor",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "MonitoringMonitoredProject": {
+    "expected_type": "monitoring/MonitoredProject",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "MonitoredProject",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "MonitoringNotificationChannel": {
+    "expected_type": "monitoring.googleapis.com/NotificationChannel",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "NotificationChannel",
+    "setter_methods": {},
+    "update_request_message": "UpdateNotificationChannelRequest"
+  },
+  "MonitoringService": {
+    "expected_type": "monitoring/Service",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Service",
+    "setter_methods": {},
+    "update_request_message": "UpdateServiceRequest"
+  },
+  "MonitoringServiceLevelObjective": {
+    "expected_type": "monitoring/ServiceLevelObjective",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "ServiceLevelObjective",
+    "setter_methods": {},
+    "update_request_message": "UpdateServiceLevelObjectiveRequest"
+  },
+  "MonitoringUptimeCheckConfig": {
+    "expected_type": "monitoring/UptimeCheckConfig",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "UptimeCheckConfig",
+    "setter_methods": {},
+    "update_request_message": "UpdateUptimeCheckConfigRequest"
+  },
+  "NetworkConnectivityHub": {
+    "expected_type": "networkconnectivity/Hub",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Hub",
+    "setter_methods": {},
+    "update_request_message": "UpdateHubRequest"
+  },
+  "NetworkConnectivitySpoke": {
+    "expected_type": "networkconnectivity/Spoke",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Spoke",
+    "setter_methods": {},
+    "update_request_message": "UpdateSpokeRequest"
+  },
+  "NetworkSecurityAuthorizationPolicy": {
+    "expected_type": "networksecurity/AuthorizationPolicy",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "AuthorizationPolicy",
+    "setter_methods": {},
+    "update_request_message": "UpdateAuthorizationPolicyRequest"
+  },
+  "NetworkSecurityClientTLSPolicy": {
+    "expected_type": "networksecurity/ClientTLSPolicy",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "ClientTLSPolicy",
+    "setter_methods": {},
+    "update_request_message": "UpdateClientTlsPolicyRequest"
+  },
+  "NetworkSecurityServerTLSPolicy": {
+    "expected_type": "networksecurity/ServerTLSPolicy",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "ServerTLSPolicy",
+    "setter_methods": {},
+    "update_request_message": "UpdateServerTlsPolicyRequest"
+  },
+  "NetworkServicesEndpointPolicy": {
+    "expected_type": "networkservices/EndpointPolicy",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "EndpointPolicy",
+    "setter_methods": {},
+    "update_request_message": "UpdateEndpointPolicyRequest"
+  },
+  "NetworkServicesGRPCRoute": {
+    "expected_type": "networkservices/GRPCRoute",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "GRPCRoute",
+    "setter_methods": {},
+    "update_request_message": "UpdateGrpcRouteRequest"
+  },
+  "NetworkServicesGateway": {
+    "expected_type": "networkservices/Gateway",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Gateway",
+    "setter_methods": {},
+    "update_request_message": "UpdateGatewayRequest"
+  },
+  "NetworkServicesHTTPRoute": {
+    "expected_type": "networkservices/HTTPRoute",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "HTTPRoute",
+    "setter_methods": {},
+    "update_request_message": "UpdateHttpRouteRequest"
+  },
+  "NetworkServicesMesh": {
+    "expected_type": "networkservices/Mesh",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Mesh",
+    "setter_methods": {},
+    "update_request_message": "UpdateMeshRequest"
+  },
+  "NetworkServicesTCPRoute": {
+    "expected_type": "networkservices/TCPRoute",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "TCPRoute",
+    "setter_methods": {},
+    "update_request_message": "UpdateTcpRouteRequest"
+  },
+  "NetworkServicesTLSRoute": {
+    "expected_type": "networkservices/TLSRoute",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "TLSRoute",
+    "setter_methods": {},
+    "update_request_message": "UpdateTlsRouteRequest"
+  },
+  "OSConfigGuestPolicy": {
+    "expected_type": "osconfig/GuestPolicy",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "GuestPolicy",
+    "setter_methods": {},
+    "update_request_message": "UpdateGuestPolicyRequest"
+  },
+  "OSConfigOSPolicyAssignment": {
+    "expected_type": "osconfig/OSPolicyAssignment",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "OSPolicyAssignment",
+    "setter_methods": {},
+    "update_request_message": "UpdateOSPolicyAssignmentRequest"
+  },
+  "PrivateCACAPool": {
+    "expected_type": "privateca/CAPool",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "CAPool",
+    "setter_methods": {},
+    "update_request_message": "UpdateCaPoolRequest"
+  },
+  "PrivateCACertificate": {
+    "expected_type": "privateca/Certificate",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Certificate",
+    "setter_methods": {},
+    "update_request_message": "UpdateCertificateRequest"
+  },
+  "PrivateCACertificateAuthority": {
+    "expected_type": "privateca/CertificateAuthority",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "CertificateAuthority",
+    "setter_methods": {},
+    "update_request_message": "UpdateCertificateAuthorityRequest"
+  },
+  "PrivateCACertificateTemplate": {
+    "expected_type": "privateca/CertificateTemplate",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "CertificateTemplate",
+    "setter_methods": {},
+    "update_request_message": "UpdateCertificateTemplateRequest"
+  },
+  "Project": {
+    "expected_type": "cloudresourcemanager.googleapis.com/Project",
+    "has_update_method": true,
+    "immutable_fields": [
+      "project_id"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Project",
+    "setter_methods": {},
+    "update_request_message": "UpdateProjectRequest"
+  },
+  "PubSubLiteReservation": {
+    "expected_type": "pubsublite.googleapis.com/Reservation",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Reservation",
+    "setter_methods": {},
+    "update_request_message": "UpdateReservationRequest"
+  },
+  "PubSubSchema": {
+    "expected_type": "pubsub.googleapis.com/Schema",
+    "has_update_method": false,
+    "immutable_fields": [
+      "revision_id"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Schema",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "PubSubSubscription": {
+    "expected_type": "pubsub.googleapis.com/Subscription",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Subscription",
+    "setter_methods": {},
+    "update_request_message": "UpdateSubscriptionRequest"
+  },
+  "PubSubTopic": {
+    "expected_type": "pubsub.googleapis.com/Topic",
+    "has_update_method": true,
+    "immutable_fields": [
+      "pubsub_topic"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Topic",
+    "setter_methods": {},
+    "update_request_message": "UpdateTopicRequest"
+  },
+  "RecaptchaEnterpriseKey": {
+    "expected_type": "recaptchaenterprise/Key",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Key",
+    "setter_methods": {},
+    "update_request_message": "UpdateKeyRequest"
+  },
+  "RedisInstance": {
+    "expected_type": "redis.googleapis.com/Instance",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Instance",
+    "setter_methods": {},
+    "update_request_message": "UpdateInstanceRequest"
+  },
+  "ResourceManagerLien": {
+    "expected_type": "cloudresourcemanager.googleapis.com/Lien",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Lien",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "ResourceManagerPolicy": {
+    "expected_type": "cloudresourcemanager.googleapis.com/Policy",
+    "has_update_method": false,
+    "immutable_fields": [
+      "managing_authority",
+      "name",
+      "uid"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Policy",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "RunJob": {
+    "expected_type": "run.googleapis.com/Job",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Job",
+    "setter_methods": {},
+    "update_request_message": "UpdateJobRequest"
+  },
+  "RunService": {
+    "expected_type": "run.googleapis.com/Service",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Service",
+    "setter_methods": {},
+    "update_request_message": "UpdateServiceRequest"
+  },
+  "SQLDatabase": {
+    "expected_type": "sqladmin.googleapis.com/Database",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Database",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "SQLSSLCert": {
+    "expected_type": "sqladmin.googleapis.com/SSLCert",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "SSLCert",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "SQLUser": {
+    "expected_type": "sqladmin.googleapis.com/User",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "User",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "SecretManagerSecret": {
+    "expected_type": "secretmanager.googleapis.com/Secret",
+    "has_update_method": true,
+    "immutable_fields": [
+      "replication",
+      "tags"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Secret",
+    "setter_methods": {},
+    "update_request_message": "UpdateSecretRequest"
+  },
+  "SecretManagerSecretVersion": {
+    "expected_type": "secretmanager.googleapis.com/SecretVersion",
+    "has_update_method": false,
+    "immutable_fields": [
+      "webhook_secret_secret_version"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "SecretVersion",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "Service": {
+    "expected_type": "serviceusage.googleapis.com/Service",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Service",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "ServiceDirectoryEndpoint": {
+    "expected_type": "servicedirectory.googleapis.com/Endpoint",
+    "has_update_method": true,
+    "immutable_fields": [
+      "name",
+      "network"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Endpoint",
+    "setter_methods": {},
+    "update_request_message": "UpdateEndpointRequest"
+  },
+  "ServiceDirectoryNamespace": {
+    "expected_type": "servicedirectory.googleapis.com/Namespace",
+    "has_update_method": true,
+    "immutable_fields": [
+      "name"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Namespace",
+    "setter_methods": {},
+    "update_request_message": "UpdateNamespaceRequest"
+  },
+  "ServiceDirectoryService": {
+    "expected_type": "servicedirectory.googleapis.com/Service",
+    "has_update_method": true,
+    "immutable_fields": [
+      "name"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Service",
+    "setter_methods": {},
+    "update_request_message": "UpdateServiceRequest"
+  },
+  "ServiceIdentity": {
+    "expected_type": "serviceusage.googleapis.com/ServiceIdentity",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "ServiceIdentity",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "ServiceNetworkingConnection": {
+    "expected_type": "servicenetworking.googleapis.com/Connection",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Connection",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "SourceRepoRepository": {
+    "expected_type": "sourcerepo.googleapis.com/Repository",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Repository",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "SpannerDatabase": {
+    "expected_type": "spanner.googleapis.com/Database",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Database",
+    "setter_methods": {},
+    "update_request_message": "UpdateDatabaseRequest"
+  },
+  "SpannerInstance": {
+    "expected_type": "spanner.googleapis.com/Instance",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Instance",
+    "setter_methods": {},
+    "update_request_message": "UpdateInstanceRequest"
+  },
+  "StorageBucket": {
+    "expected_type": "storage.googleapis.com/Bucket",
+    "has_update_method": true,
+    "immutable_fields": [
+      "bucket",
+      "destination_bucket",
+      "destination_name",
+      "generation",
+      "location",
+      "name",
+      "project"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Bucket",
+    "setter_methods": {},
+    "update_request_message": "UpdateBucketRequest"
+  },
+  "StorageBucketAccessControl": {
+    "expected_type": "storage.googleapis.com/BucketAccessControl",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "BucketAccessControl",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "StorageDefaultObjectAccessControl": {
+    "expected_type": "storage.googleapis.com/DefaultObjectAccessControl",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "DefaultObjectAccessControl",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "StorageNotification": {
+    "expected_type": "storage.googleapis.com/Notification",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Notification",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "StorageTransferJob": {
+    "expected_type": "storagetransfer.googleapis.com/Job",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Job",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "TagsTagBinding": {
+    "expected_type": "tags.googleapis.com/TagBinding",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "TagBinding",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "TagsTagKey": {
+    "expected_type": "tags.googleapis.com/TagKey",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "TagKey",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "TagsTagValue": {
+    "expected_type": "tags.googleapis.com/TagValue",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "TagValue",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "VPCAccessConnector": {
+    "expected_type": "vpcaccess.googleapis.com/Connector",
+    "has_update_method": false,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Connector",
+    "setter_methods": {},
+    "update_request_message": ""
+  },
+  "VertexAIDataset": {
+    "expected_type": "aiplatform.googleapis.com/Dataset",
+    "has_update_method": true,
+    "immutable_fields": [],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Dataset",
+    "setter_methods": {},
+    "update_request_message": "UpdateDatasetRequest"
+  },
+  "VertexAIEndpoint": {
+    "expected_type": "aiplatform.googleapis.com/Endpoint",
+    "has_update_method": true,
+    "immutable_fields": [
+      "deployed_model_id",
+      "endpoint"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Endpoint",
+    "setter_methods": {},
+    "update_request_message": "UpdateEndpointRequest"
+  },
+  "VertexAIIndex": {
+    "expected_type": "aiplatform.googleapis.com/Index",
+    "has_update_method": true,
+    "immutable_fields": [
+      "encryption_spec",
+      "index_update_method",
+      "metadata_schema_uri"
+    ],
+    "mutable_fields": [],
+    "potentially_mutable_fields": [],
+    "proto_message": "Index",
+    "setter_methods": {},
+    "update_request_message": "UpdateIndexRequest"
+  }
+}
