@@ -36,6 +36,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -175,14 +176,19 @@ func (a *lakeAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 
 	a.desired.Name = a.id.String()
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(a.desired.DisplayName, a.actual.DisplayName) {
+		report.AddField("display_name", a.actual.DisplayName, a.desired.DisplayName)
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
 	if !reflect.DeepEqual(a.desired.Description, a.actual.Description) {
+		report.AddField("description", a.actual.Description, a.desired.Description)
 		updateMask.Paths = append(updateMask.Paths, "description")
 	}
 	if !reflect.DeepEqual(a.desired.Labels, a.actual.Labels) {
+		report.AddField("labels", a.actual.Labels, a.desired.Labels)
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
 
@@ -190,9 +196,11 @@ func (a *lakeAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 	// default value: metastore: {} (i.e. metastore.service: "")
 	if a.desired.Metastore != nil {
 		if !reflect.DeepEqual(a.desired.Metastore, a.actual.Metastore) {
+			report.AddField("metastore", a.actual.Metastore, a.desired.Metastore)
 			updateMask.Paths = append(updateMask.Paths, "metastore")
 		}
 	} else if a.actual.Metastore.Service != "" {
+		report.AddField("metastore", a.actual.Metastore, nil)
 		updateMask.Paths = append(updateMask.Paths, "metastore")
 	}
 
@@ -203,6 +211,7 @@ func (a *lakeAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 		// even though there is no update, we still want to update KRM status
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		req := &pb.UpdateLakeRequest{
 			UpdateMask: updateMask,
 			Lake:       a.desired,
