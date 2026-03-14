@@ -149,9 +149,11 @@ spec:
               fullBackupSpec:
                 description: The schedule creates only full backups.
                 type: object
+                additionalProperties: false
               incrementalBackupSpec:
                 description: The schedule creates incremental backup chains.
                 type: object
+                additionalProperties: false
               resourceID:
                 description: The SpannerBackupSchedule name. If not given, the metadata.name
                   will be used.
@@ -417,9 +419,11 @@ spec:
               fullBackupSpec:
                 description: The schedule creates only full backups.
                 type: object
+                additionalProperties: false
               incrementalBackupSpec:
                 description: The schedule creates incremental backup chains.
                 type: object
+                additionalProperties: false
               resourceID:
                 description: The SpannerBackupSchedule name. If not given, the metadata.name
                   will be used.

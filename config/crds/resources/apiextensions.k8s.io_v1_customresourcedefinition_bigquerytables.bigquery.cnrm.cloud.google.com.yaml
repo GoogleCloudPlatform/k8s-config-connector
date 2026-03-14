@@ -723,10 +723,6 @@ spec:
                   the resource.
                 format: int64
                 type: integer
-              observedState:
-                description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
-                type: object
               selfLink:
                 description: Output only. A URL that can be used to access this resource
                   again.

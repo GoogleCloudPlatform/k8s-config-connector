@@ -226,6 +226,7 @@ spec:
               featureOnlineStoreSpec:
                 description: FeatureonlineStore spec for Vertex AI Feature Store.
                 type: object
+                additionalProperties: false
               filesetSpec:
                 description: Specification that applies to a fileset resource. Valid
                   only for entries with the `FILESET` type.
@@ -260,12 +261,15 @@ spec:
                               csv:
                                 description: Marks a CSV-encoded data source.
                                 type: object
+                                additionalProperties: false
                               orc:
                                 description: Marks an ORC-encoded data source.
                                 type: object
+                                additionalProperties: false
                               parquet:
                                 description: Marks a Parquet-encoded data source.
                                 type: object
+                                additionalProperties: false
                               protobuf:
                                 description: Schema in protocol buffer format.
                                 properties:
@@ -854,12 +858,15 @@ spec:
                                   csv:
                                     description: Marks a CSV-encoded data source.
                                     type: object
+                                    additionalProperties: false
                                   orc:
                                     description: Marks an ORC-encoded data source.
                                     type: object
+                                    additionalProperties: false
                                   parquet:
                                     description: Marks a Parquet-encoded data source.
                                     type: object
+                                    additionalProperties: false
                                   protobuf:
                                     description: Schema in protocol buffer format.
                                     properties:
@@ -979,6 +986,7 @@ spec:
                   usageSignal:
                     description: Resource usage statistics.
                     type: object
+                    additionalProperties: false
                 type: object
             type: object
         required:

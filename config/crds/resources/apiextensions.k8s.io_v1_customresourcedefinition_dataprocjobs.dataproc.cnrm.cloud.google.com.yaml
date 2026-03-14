@@ -94,6 +94,7 @@ spec:
                   loggingConfig:
                     description: Optional. The runtime log config for job execution.
                     type: object
+                    additionalProperties: false
                   mainClass:
                     description: The name of the driver's main class. The jar file
                       that contains the class must be in the default CLASSPATH or
@@ -151,6 +152,7 @@ spec:
                   loggingConfig:
                     description: Optional. The runtime log config for job execution.
                     type: object
+                    additionalProperties: false
                   mainClass:
                     description: The name of the driver's main class. The jar file
                       containing the class must be in the default CLASSPATH or specified
@@ -294,6 +296,7 @@ spec:
                   loggingConfig:
                     description: Optional. The runtime log config for job execution.
                     type: object
+                    additionalProperties: false
                   properties:
                     additionalProperties:
                       type: string
@@ -368,6 +371,7 @@ spec:
                   loggingConfig:
                     description: Optional. The runtime log config for job execution.
                     type: object
+                    additionalProperties: false
                   outputFormat:
                     description: Optional. The format in which query output will be
                       displayed. See the Presto documentation for supported output
@@ -441,6 +445,7 @@ spec:
                   loggingConfig:
                     description: Optional. The runtime log config for job execution.
                     type: object
+                    additionalProperties: false
                   mainPythonFileURI:
                     description: Required. The HCFS URI of the main Python file to
                       use as the driver. Must be a .py file.
@@ -555,6 +560,7 @@ spec:
                   loggingConfig:
                     description: Optional. The runtime log config for job execution.
                     type: object
+                    additionalProperties: false
                   mainClass:
                     description: The name of the driver's main class. The jar file
                       that contains the class must be in the default CLASSPATH or
@@ -602,6 +608,7 @@ spec:
                   loggingConfig:
                     description: Optional. The runtime log config for job execution.
                     type: object
+                    additionalProperties: false
                   mainRFileURI:
                     description: Required. The HCFS URI of the main R file to use
                       as the driver. Must be a .R file.
@@ -628,6 +635,7 @@ spec:
                   loggingConfig:
                     description: Optional. The runtime log config for job execution.
                     type: object
+                    additionalProperties: false
                   properties:
                     additionalProperties:
                       type: string
@@ -684,6 +692,7 @@ spec:
                   loggingConfig:
                     description: Optional. The runtime log config for job execution.
                     type: object
+                    additionalProperties: false
                   outputFormat:
                     description: Optional. The format in which query output will be
                       displayed. See the Trino documentation for supported output

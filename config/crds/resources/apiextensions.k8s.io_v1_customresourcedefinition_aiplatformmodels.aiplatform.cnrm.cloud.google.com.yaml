@@ -1395,6 +1395,7 @@ spec:
                     description: Output only. If this Model is a copy of another Model,
                       this contains info about the original.
                     type: object
+                    additionalProperties: false
                   satisfiesPzi:
                     description: Output only. Reserved for future use.
                     type: boolean
@@ -1422,6 +1423,7 @@ spec:
                       be exported. If empty, this Model is not available for export.
                     items:
                       type: object
+                      additionalProperties: false
                     type: array
                   supportedInputStorageFormats:
                     description: |-

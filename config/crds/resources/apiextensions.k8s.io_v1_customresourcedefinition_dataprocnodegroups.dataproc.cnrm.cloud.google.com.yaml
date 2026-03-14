@@ -408,6 +408,7 @@ spec:
                               results in the group.
                             items:
                               type: object
+                              additionalProperties: false
                             type: array
                         type: object
                       instanceNames:
@@ -449,6 +450,7 @@ spec:
                           Group Manager that manages this group. This is only used
                           for preemptible instance groups.
                         type: object
+                        additionalProperties: false
                     type: object
                 type: object
             type: object

@@ -96,6 +96,7 @@ spec:
               cloudResource:
                 description: Use Cloud Resource properties.
                 type: object
+                additionalProperties: false
               cloudSQL:
                 description: Cloud SQL properties.
                 properties:
@@ -609,6 +610,7 @@ spec:
               cloudResource:
                 description: Use Cloud Resource properties.
                 type: object
+                additionalProperties: false
               cloudSQL:
                 description: Cloud SQL properties.
                 properties:
