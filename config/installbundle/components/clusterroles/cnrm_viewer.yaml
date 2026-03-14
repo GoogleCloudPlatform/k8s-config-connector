@@ -687,6 +687,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - modelarmor.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - monitoring.cnrm.cloud.google.com
   resources:
   - '*'

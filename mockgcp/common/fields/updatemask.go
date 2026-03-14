@@ -94,13 +94,20 @@ func walk(original, update proto.Message, path string) error {
 }
 
 func replace(original, update protoreflect.Message, fieldName string) error {
-	originalFd := original.Descriptor().Fields().ByJSONName(fieldName)
-	originalVal := original.Get(originalFd)
-	updateFd := update.Descriptor().Fields().ByJSONName(fieldName)
+	originalFd := findField(original, fieldName)
+	if originalFd == nil {
+		return fmt.Errorf("field %q not found in message %q", fieldName, original.Descriptor().FullName())
+	}
+	updateFd := findField(update, fieldName)
+	if updateFd == nil {
+		return fmt.Errorf("field %q not found in message %q", fieldName, update.Descriptor().FullName())
+	}
+
 	updateVal := update.Get(updateFd)
 
 	// Update Map
 	if originalFd.IsMap() {
+		originalVal := original.Mutable(originalFd)
 		originalVal.Map().Range(func(k protoreflect.MapKey, v protoreflect.Value) bool {
 			originalVal.Map().Clear(k)
 			return true
@@ -113,6 +120,7 @@ func replace(original, update protoreflect.Message, fieldName string) error {
 	}
 	// Update List
 	if originalFd.IsList() {
+		originalVal := original.Mutable(originalFd)
 		originalVal.List().Truncate(0)
 		for i := 0; i < updateVal.List().Len(); i++ {
 			originalVal.List().Append(updateVal.List().Get(i))
@@ -133,13 +141,27 @@ func replace(original, update protoreflect.Message, fieldName string) error {
 	}
 }
 
+func findField(m protoreflect.Message, name string) protoreflect.FieldDescriptor {
+	fd := m.Descriptor().Fields().ByJSONName(name)
+	if fd == nil {
+		fd = m.Descriptor().Fields().ByName(protoreflect.Name(name))
+	}
+	return fd
+}
+
 // originalChildMessage get the orignal Message's mutable reference to the `fieldName“ composite.
 func originalChildMessage(m protoreflect.Message, fieldName string) proto.Message {
-	fd := m.Descriptor().Fields().ByJSONName(fieldName)
+	fd := findField(m, fieldName)
+	if fd == nil {
+		panic(fmt.Errorf("field %q not found in message %q", fieldName, m.Descriptor().FullName()))
+	}
 	return m.Mutable(fd).Message().Interface()
 }
 
 func updateChildMessage(m protoreflect.Message, fieldName string) proto.Message {
-	fd := m.Descriptor().Fields().ByJSONName(fieldName)
+	fd := findField(m, fieldName)
+	if fd == nil {
+		panic(fmt.Errorf("field %q not found in message %q", fieldName, m.Descriptor().FullName()))
+	}
 	return m.Get(fd).Message().Interface()
 }

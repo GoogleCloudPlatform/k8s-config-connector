@@ -180,3 +180,11 @@ experiments/mcp/**/*.egg-info
 
 # MCP eval
 experiments/**/__pycache__/
+
+# Temporary log files from failed runs
+run-*.log
+
+# Agent testing/build outputs
+stdout.*
+stderr.*
+test_mcp*.py

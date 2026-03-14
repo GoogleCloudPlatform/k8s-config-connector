@@ -1,0 +1,13 @@
+apiVersion: modelarmor.cnrm.cloud.google.com/v1alpha1
+kind: ModelArmorFloorSetting
+metadata:
+  name: modelarmorfloorsetting-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: "us-central1"
+  filterConfig:
+    raiSettings:
+      raiFilters:
+      - filterType: "HATE_SPEECH"
+        confidenceLevel: "MEDIUM_AND_ABOVE"
