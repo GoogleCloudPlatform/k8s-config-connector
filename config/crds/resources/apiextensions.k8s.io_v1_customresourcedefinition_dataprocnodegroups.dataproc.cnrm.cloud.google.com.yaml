@@ -57,6 +57,7 @@ spec:
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
+            additionalProperties: false
             type: object
           spec:
             description: DataprocNodeGroupSpec defines the desired state of DataprocNodeGroup
@@ -407,8 +408,8 @@ spec:
                             description: Output only. A list of instance selection
                               results in the group.
                             items:
-                              type: object
                               additionalProperties: false
+                              type: object
                             type: array
                         type: object
                       instanceNames:
@@ -446,11 +447,11 @@ spec:
                           contains preemptible instances.
                         type: boolean
                       managedGroupConfig:
+                        additionalProperties: false
                         description: Output only. The config for Compute Engine Instance
                           Group Manager that manages this group. This is only used
                           for preemptible instance groups.
                         type: object
-                        additionalProperties: false
                     type: object
                 type: object
             type: object

@@ -23,6 +23,7 @@ import (
 	"os"
 
 	backportalpha "github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/cmd/backport-alpha"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/cmd/cleanupemptyobjects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/cmd/deleteannotation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/cmd/deletefield"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/cmd/reflowdescriptions"
@@ -46,6 +47,7 @@ func run(ctx context.Context) error {
 	}
 
 	backportalpha.AddCommand(rootCmd)
+	cleanupemptyobjects.AddCommand(rootCmd)
 	deleteannotation.AddCommand(rootCmd)
 	deletefield.AddCommand(rootCmd)
 	reflowdescriptions.AddCommand(rootCmd)

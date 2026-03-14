@@ -57,6 +57,7 @@ spec:
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
+            additionalProperties: false
             type: object
           spec:
             description: DataprocJobSpec defines the desired state of DataprocJob
@@ -92,9 +93,9 @@ spec:
                       type: string
                     type: array
                   loggingConfig:
+                    additionalProperties: false
                     description: Optional. The runtime log config for job execution.
                     type: object
-                    additionalProperties: false
                   mainClass:
                     description: The name of the driver's main class. The jar file
                       that contains the class must be in the default CLASSPATH or
@@ -150,9 +151,9 @@ spec:
                       type: string
                     type: array
                   loggingConfig:
+                    additionalProperties: false
                     description: Optional. The runtime log config for job execution.
                     type: object
-                    additionalProperties: false
                   mainClass:
                     description: The name of the driver's main class. The jar file
                       containing the class must be in the default CLASSPATH or specified
@@ -294,9 +295,9 @@ spec:
                       type: string
                     type: array
                   loggingConfig:
+                    additionalProperties: false
                     description: Optional. The runtime log config for job execution.
                     type: object
-                    additionalProperties: false
                   properties:
                     additionalProperties:
                       type: string
@@ -369,9 +370,9 @@ spec:
                       can be useful when executing independent parallel queries.
                     type: boolean
                   loggingConfig:
+                    additionalProperties: false
                     description: Optional. The runtime log config for job execution.
                     type: object
-                    additionalProperties: false
                   outputFormat:
                     description: Optional. The format in which query output will be
                       displayed. See the Presto documentation for supported output
@@ -443,9 +444,9 @@ spec:
                       type: string
                     type: array
                   loggingConfig:
+                    additionalProperties: false
                     description: Optional. The runtime log config for job execution.
                     type: object
-                    additionalProperties: false
                   mainPythonFileURI:
                     description: Required. The HCFS URI of the main Python file to
                       use as the driver. Must be a .py file.
@@ -558,9 +559,9 @@ spec:
                       type: string
                     type: array
                   loggingConfig:
+                    additionalProperties: false
                     description: Optional. The runtime log config for job execution.
                     type: object
-                    additionalProperties: false
                   mainClass:
                     description: The name of the driver's main class. The jar file
                       that contains the class must be in the default CLASSPATH or
@@ -606,9 +607,9 @@ spec:
                       type: string
                     type: array
                   loggingConfig:
+                    additionalProperties: false
                     description: Optional. The runtime log config for job execution.
                     type: object
-                    additionalProperties: false
                   mainRFileURI:
                     description: Required. The HCFS URI of the main R file to use
                       as the driver. Must be a .R file.
@@ -633,9 +634,9 @@ spec:
                       type: string
                     type: array
                   loggingConfig:
+                    additionalProperties: false
                     description: Optional. The runtime log config for job execution.
                     type: object
-                    additionalProperties: false
                   properties:
                     additionalProperties:
                       type: string
@@ -690,9 +691,9 @@ spec:
                       can be useful when executing independent parallel queries.
                     type: boolean
                   loggingConfig:
+                    additionalProperties: false
                     description: Optional. The runtime log config for job execution.
                     type: object
-                    additionalProperties: false
                   outputFormat:
                     description: Optional. The format in which query output will be
                       displayed. See the Trino documentation for supported output

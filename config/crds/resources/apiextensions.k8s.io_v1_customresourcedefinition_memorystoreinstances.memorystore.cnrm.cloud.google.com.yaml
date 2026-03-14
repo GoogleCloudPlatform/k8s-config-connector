@@ -58,6 +58,7 @@ spec:
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
+            additionalProperties: false
             type: object
           spec:
             description: MemorystoreInstanceSpec defines the desired state of MemorystoreInstance
@@ -400,10 +401,10 @@ spec:
                       of the instance.
                     properties:
                       updateInfo:
+                        additionalProperties: false
                         description: Output only. Describes ongoing update when instance
                           state is UPDATING.
                         type: object
-                        additionalProperties: false
                     type: object
                   uid:
                     description: Output only. System assigned, unique identifier for
@@ -454,6 +455,7 @@ spec:
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
+            additionalProperties: false
             type: object
           spec:
             description: MemorystoreInstanceSpec defines the desired state of MemorystoreInstance
@@ -796,10 +798,10 @@ spec:
                       of the instance.
                     properties:
                       updateInfo:
+                        additionalProperties: false
                         description: Output only. Describes ongoing update when instance
                           state is UPDATING.
                         type: object
-                        additionalProperties: false
                     type: object
                   uid:
                     description: Output only. System assigned, unique identifier for
