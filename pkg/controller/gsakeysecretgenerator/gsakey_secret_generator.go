@@ -66,7 +66,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, deps 
 	_, err := builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
-		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
+		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter(), SkipNameValidation: &deps.SkipNameValidation}).
 		For(obj, builder.OnlyMetadata).
 		Build(r)
 	if err != nil {
