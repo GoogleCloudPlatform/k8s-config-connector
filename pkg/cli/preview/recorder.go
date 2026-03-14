@@ -22,6 +22,8 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+
+	constants "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -367,7 +369,7 @@ func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config, namespa
 		return fmt.Errorf("failed to get preferred resources: %w", err)
 	}
 	for _, apiResourceList := range apiResourceLists {
-		if !strings.Contains(apiResourceList.GroupVersion, ".cnrm.cloud.google.com/") {
+		if !strings.Contains(apiResourceList.GroupVersion, "."+constants.CNRMDomain+"/") {
 			continue
 		}
 
@@ -383,19 +385,8 @@ func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config, namespa
 			if !contains(apiResource.Verbs, "list") {
 				continue
 			}
-			gvr := schema.GroupVersionResource{
-				Group:    apiResource.Group,
-				Version:  apiResource.Version,
-				Resource: apiResource.Name,
-			}
-			if gvr.Group == "" {
-				gvr.Group = apiResourceListGroupVersion.Group
-			}
-			if gvr.Version == "" {
-				gvr.Version = apiResourceListGroupVersion.Version
-			}
-			// Not tracking CC and CCC objects.
-			if strings.HasSuffix(gvr.Group, "core.cnrm.cloud.google.com") {
+			gvr, ok := toTrackedGVR(apiResource, apiResourceListGroupVersion)
+			if !ok {
 				continue
 			}
 			var resources *unstructured.UnstructuredList
@@ -444,4 +435,35 @@ func contains(slice []string, str string) bool {
 		}
 	}
 	return false
+}
+
+// toTrackedGVR converts an APIResource to a tracked GVR.
+// It returns the GVR and a boolean indicating whether it should be tracked.
+func toTrackedGVR(apiResource metav1.APIResource, apiResourceListGroupVersion schema.GroupVersion) (schema.GroupVersionResource, bool) {
+	gvr := schema.GroupVersionResource{
+		Group:    apiResource.Group,
+		Version:  apiResource.Version,
+		Resource: apiResource.Name,
+	}
+	if gvr.Group == "" {
+		gvr.Group = apiResourceListGroupVersion.Group
+	}
+	if gvr.Version == "" {
+		gvr.Version = apiResourceListGroupVersion.Version
+	}
+	// Not tracking CC and CCC objects.
+	if strings.HasSuffix(gvr.Group, constants.CoreCNRMGroup) {
+		return gvr, false
+	}
+
+	// Not tracking non-CNRM objects.
+	if !(strings.HasSuffix(gvr.Group, "."+constants.CNRMDomain) || gvr.Group == constants.CNRMDomain) {
+		return gvr, false
+	}
+
+	// Not tracking ignored CRDs.
+	if _, ok := constants.IgnoredCRDList[strings.ToLower(gvr.Resource)+"."+strings.ToLower(gvr.Group)]; ok {
+		return gvr, false
+	}
+	return gvr, true
 }

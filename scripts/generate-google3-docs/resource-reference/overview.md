@@ -139,6 +139,10 @@ issues for {{product_name_short}}.
 </tr>
 <tr>
   <td><a href="/bigquery/docs/">{{bigquery_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/bigquery/bigqueryroutine.md">BigQueryRoutine</a></td>
+</tr>
+<tr>
+  <td><a href="/bigquery/docs/">{{bigquery_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/bigquery/bigquerytable.md">BigQueryTable</a></td>
 </tr>
 <tr>
@@ -483,6 +487,14 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/container-analysis/docs/">{{container_analysis_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/containeranalysis/containeranalysisnote.md">ContainerAnalysisNote</a></td>
+</tr>
+<tr>
+  <td><a href="/data-catalog/docs/">Data Catalog</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/datacatalog/datacatalogpolicytag.md">DataCatalogPolicyTag</a></td>
+</tr>
+<tr>
+  <td><a href="/data-catalog/docs/">Data Catalog</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/datacatalog/datacatalogtaxonomy.md">DataCatalogTaxonomy</a></td>
 </tr>
 <tr>
   <td><a href="/dataflow/docs/">{{dataflow_name}}</a></td>
@@ -995,6 +1007,22 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/storage-transfer/docs/">{{transfer_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/storagetransfer/storagetransferjob.md">StorageTransferJob</a></td>
+</tr>
+<tr>
+  <td><a href="/resource-manager/docs/tags/tags-overview">Tags</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/tags/tagslocationtagbinding.md">TagsLocationTagBinding</a></td>
+</tr>
+<tr>
+  <td><a href="/resource-manager/docs/tags/tags-overview">Tags</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/tags/tagstagbinding.md">TagsTagBinding</a></td>
+</tr>
+<tr>
+  <td><a href="/resource-manager/docs/tags/tags-overview">Tags</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/tags/tagstagkey.md">TagsTagKey</a></td>
+</tr>
+<tr>
+  <td><a href="/resource-manager/docs/tags/tags-overview">Tags</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/tags/tagstagvalue.md">TagsTagValue</a></td>
 </tr>
 <tr>
   <td><a href="/traffic-director/docs/">{{td_name}}</a></td>

@@ -20,6 +20,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"testing"
 	"time"
@@ -57,6 +58,82 @@ func TestSmoketest(t *testing.T) {
 	imageTag := "dev-" + time.Now().Format("20060102T150405")
 	imagePrefix := "registry.kind/"
 
+	// Read current stable version to patch manifests
+	stableVersionFile := filepath.Join(root, "operator/channels/stable")
+	stableVersionBytes, err := os.ReadFile(stableVersionFile)
+	if err != nil {
+		t.Fatalf("failed to read stable version: %v", err)
+	}
+	re := regexp.MustCompile(`version:\s+([0-9.]+)`)
+	matches := re.FindStringSubmatch(string(stableVersionBytes))
+	if len(matches) < 2 {
+		t.Fatalf("failed to extract stable version from %s", string(stableVersionBytes))
+	}
+	stableVersion := matches[1]
+
+	t.Logf("Detected stable version %q, patching manifests to %q", stableVersion, imageTag)
+
+	// Update pull policy to IfNotPresent for all components and update image tags
+	patchManifests := func(dir string) {
+		err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
+			if !info.IsDir() && (strings.HasSuffix(info.Name(), ".yaml") || strings.HasSuffix(info.Name(), ".yml")) {
+				content, err := os.ReadFile(path)
+				if err != nil {
+					return err
+				}
+				newContent := string(content)
+				newContent = strings.ReplaceAll(newContent, "imagePullPolicy: Always", "imagePullPolicy: IfNotPresent")
+				newContent = strings.ReplaceAll(newContent, ":"+stableVersion, ":"+imageTag)
+				if newContent != string(content) {
+					if err := os.WriteFile(path, []byte(newContent), info.Mode()); err != nil {
+						return err
+					}
+				}
+			}
+			return nil
+		})
+		if err != nil {
+			t.Fatalf("failed to patch manifests in %s: %v", dir, err)
+		}
+	}
+
+	patchManifests(filepath.Join(root, "operator/channels/packages/configconnector"))
+	patchManifests(filepath.Join(root, "operator/autopilot-channels/packages/configconnector"))
+
+	// Revert patches at the end of the test to keep workspace clean
+	t.Cleanup(func() {
+		t.Logf("Reverting manifest patches")
+		revertManifests := func(dir string) {
+			if err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+				if err != nil {
+					return err
+				}
+				if !info.IsDir() && (strings.HasSuffix(info.Name(), ".yaml") || strings.HasSuffix(info.Name(), ".yml")) {
+					content, err := os.ReadFile(path)
+					if err != nil {
+						return err
+					}
+					newContent := string(content)
+					newContent = strings.ReplaceAll(newContent, "imagePullPolicy: IfNotPresent", "imagePullPolicy: Always")
+					newContent = strings.ReplaceAll(newContent, ":"+imageTag, ":"+stableVersion)
+					if newContent != string(content) {
+						if err := os.WriteFile(path, []byte(newContent), info.Mode()); err != nil {
+							return err
+						}
+					}
+				}
+				return nil
+			}); err != nil {
+				t.Errorf("failed to revert manifests in %s: %v", dir, err)
+			}
+		}
+		revertManifests(filepath.Join(root, "operator/channels/packages/configconnector"))
+		revertManifests(filepath.Join(root, "operator/autopilot-channels/packages/configconnector"))
+	})
+
 	t.Logf("Building images with tag %q", imageTag)
 	buildCmd := exec.CommandContext(ctx, filepath.Join(root, "dev/tasks/build-images"))
 	buildCmd.Dir = root
@@ -68,10 +145,21 @@ func TestSmoketest(t *testing.T) {
 		t.Fatalf("failed to build images: %v\nOutput: %s", err, string(output))
 	}
 
-	t.Logf("Loading operator image into kind")
-	operatorImage := imagePrefix + "operator:" + imageTag
-	if err := runCommand(ctx, t, root, "kind", "load", "--name", clusterName, "docker-image", operatorImage); err != nil {
-		t.Fatalf("failed to load image into kind: %v", err)
+	t.Logf("Loading images into kind")
+	imagesToLoad := []string{
+		"operator",
+		"controller",
+		"recorder",
+		"webhook",
+		"deletiondefender",
+		"unmanageddetector",
+	}
+	for _, img := range imagesToLoad {
+		fullImage := imagePrefix + img + ":" + imageTag
+		t.Logf("Loading image %q into kind", fullImage)
+		if err := runCommand(ctx, t, root, "kind", "load", "--name", clusterName, "docker-image", fullImage); err != nil {
+			t.Fatalf("failed to load image %q into kind: %v", fullImage, err)
+		}
 	}
 
 	t.Logf("Deploying operator to kind")
@@ -89,6 +177,8 @@ func TestSmoketest(t *testing.T) {
 	// So kustomize build should already have the right image.
 	// However, we want to ensure imagePullPolicy is IfNotPresent so kind uses the loaded image.
 	manifests = strings.ReplaceAll(manifests, "imagePullPolicy: Always", "imagePullPolicy: IfNotPresent")
+	// Set --image-prefix so the operator uses local kind registry
+	manifests = strings.ReplaceAll(manifests, "- --local-repo=/configconnector-operator/channels", "- --local-repo=/configconnector-operator/channels\n        - --image-prefix="+imagePrefix)
 
 	applyCmd := exec.CommandContext(ctx, "kubectl", "apply", "--server-side", "-f", "-")
 	applyCmd.Stdin = strings.NewReader(manifests)
