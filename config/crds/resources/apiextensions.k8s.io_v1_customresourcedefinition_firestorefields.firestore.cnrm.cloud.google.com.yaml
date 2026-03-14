@@ -155,6 +155,7 @@ spec:
                                     description: Indicates the vector index is a flat
                                       index.
                                     type: object
+                                    additionalProperties: false
                                 type: object
                             type: object
                           type: array

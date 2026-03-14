@@ -66,6 +66,7 @@ spec:
               bigQueryProfile:
                 description: BigQuery Connection Profile configuration.
                 type: object
+                additionalProperties: false
               displayName:
                 description: Required. Display name.
                 type: string
@@ -407,6 +408,7 @@ spec:
               staticServiceIPConnectivity:
                 description: Static Service IP connectivity.
                 type: object
+                additionalProperties: false
             required:
             - displayName
             - location

@@ -326,6 +326,7 @@ spec:
                               Configuration options for using brute force search, which simply implements the
                               standard linear search in the database for each query.
                             type: object
+                            additionalProperties: false
                           treeAhConfig:
                             description: |-
                               Configuration options for using the tree-AH algorithm (Shallow tree + Asymmetric Hashing).

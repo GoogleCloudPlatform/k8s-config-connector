@@ -76,18 +76,22 @@ spec:
                       description: The user request did not match any policy and should
                         be allowed access to the requested resource.
                       type: object
+                      additionalProperties: false
                     block:
                       description: This action denies access to a given page. The
                         user gets an HTTP error code.
                       type: object
+                      additionalProperties: false
                     includeRecaptchaScript:
                       description: This action injects reCAPTCHA JavaScript code into
                         the HTML page returned by the site backend.
                       type: object
+                      additionalProperties: false
                     redirect:
                       description: This action redirects the request to a reCAPTCHA
                         interstitial to attach a token.
                       type: object
+                      additionalProperties: false
                     setHeader:
                       description: This action sets a custom header but allow the
                         request to continue to the customer backend.

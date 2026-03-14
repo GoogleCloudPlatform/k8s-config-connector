@@ -403,6 +403,7 @@ spec:
                         description: Output only. Describes ongoing update when instance
                           state is UPDATING.
                         type: object
+                        additionalProperties: false
                     type: object
                   uid:
                     description: Output only. System assigned, unique identifier for
@@ -798,6 +799,7 @@ spec:
                         description: Output only. Describes ongoing update when instance
                           state is UPDATING.
                         type: object
+                        additionalProperties: false
                     type: object
                   uid:
                     description: Output only. System assigned, unique identifier for

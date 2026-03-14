@@ -120,6 +120,7 @@ spec:
                               blank:
                                 description: A blank space.
                                 type: object
+                                additionalProperties: false
                               collapsibleGroup:
                                 description: A widget that groups the other widgets.
                                   All widgets that are within the area spanned by
@@ -716,6 +717,7 @@ spec:
                                       only the value, with no indicator to its value
                                       relative to its thresholds.
                                     type: object
+                                    additionalProperties: false
                                   gaugeView:
                                     description: Will cause the scorecard to show
                                       a gauge chart.
@@ -1134,6 +1136,7 @@ spec:
                                 description: A widget that groups the other widgets
                                   by using a dropdown menu.
                                 type: object
+                                additionalProperties: false
                               text:
                                 description: A raw string or markdown displaying textual
                                   content.
@@ -2169,6 +2172,7 @@ spec:
                         blank:
                           description: A blank space.
                           type: object
+                          additionalProperties: false
                         collapsibleGroup:
                           description: A widget that groups the other widgets. All
                             widgets that are within the area spanned by the grouping
@@ -2724,6 +2728,7 @@ spec:
                                 the value, with no indicator to its value relative
                                 to its thresholds.
                               type: object
+                              additionalProperties: false
                             gaugeView:
                               description: Will cause the scorecard to show a gauge
                                 chart.
@@ -3100,6 +3105,7 @@ spec:
                           description: A widget that groups the other widgets by using
                             a dropdown menu.
                           type: object
+                          additionalProperties: false
                         text:
                           description: A raw string or markdown displaying textual
                             content.
@@ -4034,6 +4040,7 @@ spec:
                             blank:
                               description: A blank space.
                               type: object
+                              additionalProperties: false
                             collapsibleGroup:
                               description: A widget that groups the other widgets.
                                 All widgets that are within the area spanned by the
@@ -4613,6 +4620,7 @@ spec:
                                     only the value, with no indicator to its value
                                     relative to its thresholds.
                                   type: object
+                                  additionalProperties: false
                                 gaugeView:
                                   description: Will cause the scorecard to show a
                                     gauge chart.
@@ -5011,6 +5019,7 @@ spec:
                               description: A widget that groups the other widgets
                                 by using a dropdown menu.
                               type: object
+                              additionalProperties: false
                             text:
                               description: A raw string or markdown displaying textual
                                 content.
@@ -6045,6 +6054,7 @@ spec:
                               blank:
                                 description: A blank space.
                                 type: object
+                                additionalProperties: false
                               collapsibleGroup:
                                 description: A widget that groups the other widgets.
                                   All widgets that are within the area spanned by
@@ -6641,6 +6651,7 @@ spec:
                                       only the value, with no indicator to its value
                                       relative to its thresholds.
                                     type: object
+                                    additionalProperties: false
                                   gaugeView:
                                     description: Will cause the scorecard to show
                                       a gauge chart.
@@ -7059,6 +7070,7 @@ spec:
                                 description: A widget that groups the other widgets
                                   by using a dropdown menu.
                                 type: object
+                                additionalProperties: false
                               text:
                                 description: A raw string or markdown displaying textual
                                   content.

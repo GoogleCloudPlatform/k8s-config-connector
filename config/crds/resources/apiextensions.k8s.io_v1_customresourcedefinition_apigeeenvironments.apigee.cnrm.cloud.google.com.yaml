@@ -161,10 +161,6 @@ spec:
                   the resource.
                 format: int64
                 type: integer
-              observedState:
-                description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
-                type: object
               state:
                 description: Output only. State of the environment. Values other than
                   ACTIVE means the resource is not ready to use.

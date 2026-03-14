@@ -292,10 +292,6 @@ spec:
                   the resource.
                 format: int64
                 type: integer
-              observedState:
-                description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
-                type: object
               projectId:
                 description: Output only. Project ID associated with the Apigee organization.
                 type: string

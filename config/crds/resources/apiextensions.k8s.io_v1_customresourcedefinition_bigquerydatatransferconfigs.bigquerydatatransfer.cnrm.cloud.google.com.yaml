@@ -708,6 +708,7 @@ spec:
                       invokes StartManualTransferRuns.  This is equivalent to disable_auto_scheduling
                       = true.
                     type: object
+                    additionalProperties: false
                   timeBasedSchedule:
                     description: Time based transfer schedule options. This is the
                       default schedule option.
