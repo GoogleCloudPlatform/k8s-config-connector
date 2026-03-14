@@ -25,7 +25,7 @@ body:
         required: true
       - label: 'I did not find a solution in the troubleshooting guide: (https://cloud.google.com/config-connector/docs/troubleshooting)'
         required: true
-      - label: 'If this issue is time-sensitive, I have submitted a corresponding issue with [GCP support](https://cloud.google.com/support-hub).'
+      - label: 'If this issue is time-sensitive, I have submitted a corresponding issue with [GCP support](https://cloud.google.com/support-hub). NOTE : Only KCC on GKE is supported by GCP Support'
         required: true
 - type: 'markdown'
   attributes:
