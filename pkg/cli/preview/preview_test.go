@@ -145,11 +145,15 @@ spec:
 
 	authorization := harness.GCPAuthorization()
 
-	preview, err := NewPreviewInstance(recorder, PreviewInstanceOptions{
-		UpstreamRESTConfig:       upstreamRESTConfig,
+	upstreamKubeClient, upstreamKubeRESTMapper, err := BuildKubeClient(upstreamRESTConfig)
+	previewInstanceOptions := PreviewInstanceOptions{
+		UpstreamKubeClient:       upstreamKubeClient,
+		UpstreamKubeRESTMapper:   upstreamKubeRESTMapper,
 		UpstreamGCPAuthorization: authorization,
 		UpstreamGCPHTTPClient:    harness.GCPHTTPClient(),
-	})
+	}
+
+	preview, err := NewPreviewInstance(recorder, previewInstanceOptions)
 	if err != nil {
 		t.Fatalf("building preview instance: %v", err)
 	}

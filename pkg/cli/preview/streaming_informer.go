@@ -16,7 +16,6 @@ package preview
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"sync"
 	"sync/atomic"
@@ -315,13 +314,5 @@ func (i *streamingInformer) Get(ctx context.Context, key client.ObjectKey, obj c
 		return apierrors.NewNotFound(i.typeInfo.GroupResource(), key.String())
 	}
 
-	// TODO: How do we want to copy objects?
-	b, err := json.Marshal(existing)
-	if err != nil {
-		return fmt.Errorf("error copying %T: %w", obj, err)
-	}
-	if err := json.Unmarshal(b, obj); err != nil {
-		return fmt.Errorf("error copying %T: %w", obj, err)
-	}
-	return nil
+	return i.typeInfo.CopyObjectInto(existing, obj)
 }

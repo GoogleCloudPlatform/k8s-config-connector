@@ -44,6 +44,10 @@ type GKNN struct {
 	Name      string
 }
 
+func (gknn GKNN) GroupKind() GroupKind {
+	return GroupKind{Group: gknn.Group, Kind: gknn.Kind}
+}
+
 // Recorder holds the information from reconciling the objects
 type Recorder struct {
 	mutex   sync.Mutex
@@ -149,6 +153,11 @@ func (l *structuredReportingListener) OnReconcileStart(ctx context.Context, u *u
 // OnReconcileEnd is called by the structured reporting subsystem when a reconcile ends.
 func (l *structuredReportingListener) OnReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error, t k8s.ReconcilerType) {
 	l.recorder.recordReconcileEnd(ctx, u, result, err, t)
+}
+
+// OnReconcileEnd is called by the structured reporting subsystem when a reconcile ends.
+func (l *structuredReportingListener) OnReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error) {
+	l.recorder.recordReconcileEnd(ctx, u, result, err)
 }
 
 // OnDiff is called by the structured reporting subsystem when a diff occurs.
@@ -266,6 +275,19 @@ func (r *Recorder) recordKubeAction(ctx context.Context, method string, args []a
 
 		case []client.UpdateOption:
 			// ignore
+
+		case []client.PatchOption:
+			// ignore
+			for _, patchOption := range arg {
+				switch patchOption := patchOption.(type) {
+				// case *client.RawPatchOption:
+				// 	// ignore
+				case client.FieldOwner:
+					// ignore
+				default:
+					klog.Fatalf("unhandled patch option type %T", patchOption)
+				}
+			}
 
 		default:
 			klog.Fatalf("unhandled arg type %T", arg)
