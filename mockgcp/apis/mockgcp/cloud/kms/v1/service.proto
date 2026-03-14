@@ -1,17 +1,3 @@
-// Copyright 2026 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 syntax = "proto2";
 package mockgcp.cloud.kms.v1;
 import "google/api/annotations.proto";
@@ -150,7 +136,7 @@ service ProjectsLocationsServer {
     };
   };
 
-  // Lists information about the supported locations for this service.
+  // Lists information about the supported locations for this service. This method can be called in two ways: * **List all public locations:** Use the path `GET /v1/locations`. * **List project-visible locations:** Use the path `GET /v1/projects/{project_id}/locations`. This may include public locations as well as private or other locations specifically visible to the project.
   rpc ListProjectsLocations(ListProjectsLocationsRequest) returns (ListLocationsResponse) {
     option (google.api.http) = {
       get: "/v1/{name=projects/*}/locations"
@@ -277,6 +263,13 @@ service ProjectsLocationsKeyRingsCryptoKeysServer {
     };
   };
 
+  // Permanently deletes the given CryptoKey. All child CryptoKeyVersions must have been previously deleted using KeyManagementService.DeleteCryptoKeyVersion. The specified crypto key will be immediately and permanently deleted upon calling this method. This action cannot be undone.
+  rpc DeleteProjectsLocationsKeyRingsCryptoKey(DeleteProjectsLocationsKeyRingsCryptoKeyRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*}"
+    };
+  };
+
   // Encrypts data, so that it can only be recovered by a call to Decrypt. The CryptoKey.purpose must be ENCRYPT_DECRYPT.
   rpc EncryptProjectsLocationsKeyRingsCryptoKey(EncryptProjectsLocationsKeyRingsCryptoKeyRequest) returns (EncryptResponse) {
     option (google.api.http) = {
@@ -347,6 +340,13 @@ service ProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionsServer {
     option (google.api.http) = {
       post: "/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:decapsulate"
       body: "projects_locations_key_rings_crypto_keys_crypto_key_version"
+    };
+  };
+
+  // Permanently deletes the given CryptoKeyVersion. Only possible if the version has not been previously imported and if its state is one of DESTROYED, IMPORT_FAILED, or GENERATION_FAILED. Successfully imported CryptoKeyVersions cannot be deleted at this time. The specified version will be immediately and permanently deleted upon calling this method. This action cannot be undone.
+  rpc DeleteProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersion(DeleteProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}"
     };
   };
 
@@ -457,6 +457,23 @@ service ProjectsLocationsKeyRingsImportJobsServer {
   rpc ListProjectsLocationsKeyRingsImportJobs(ListProjectsLocationsKeyRingsImportJobsRequest) returns (ListImportJobsResponse) {
     option (google.api.http) = {
       get: "/v1/{parent=projects/*/locations/*/keyRings/*}/importJobs"
+    };
+  };
+}
+
+service ProjectsLocationsRetiredResourcesServer {
+
+  // Retrieves a specific RetiredResource resource, which represents the record of a deleted CryptoKey.
+  rpc GetProjectsLocationsRetiredResource(GetProjectsLocationsRetiredResourceRequest) returns (RetiredResource) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/retiredResources/*}"
+    };
+  };
+
+  // Lists the RetiredResources which are the records of deleted CryptoKeys. RetiredResources prevent the reuse of these resource names after deletion.
+  rpc ListProjectsLocationsRetiredResources(ListProjectsLocationsRetiredResourcesRequest) returns (ListRetiredResourcesResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*}/retiredResources"
     };
   };
 }
@@ -622,10 +639,12 @@ message AutokeyConfig {
   optional string etag = 1 [json_name="etag"];
   // Optional. Name of the key project, e.g. `projects/{PROJECT_ID}` or `projects/{PROJECT_NUMBER}`, where Cloud KMS Autokey will provision a new CryptoKey when a KeyHandle is created. On UpdateAutokeyConfig, the caller will require `cloudkms.cryptoKeys.setIamPolicy` permission on this key project. Once configured, for Cloud KMS Autokey to function properly, this key project must have the Cloud KMS API activated and the Cloud KMS Service Agent for this key project must be granted the `cloudkms.admin` role (or pertinent permissions). A request with an empty key project field will clear the configuration.
   optional string key_project = 2 [json_name="keyProject"];
-  // Identifier. Name of the AutokeyConfig resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig`
-  optional string name = 3 [json_name="name"];
+  // Optional. KeyProjectResolutionMode for the AutokeyConfig. Valid values are `DEDICATED_KEY_PROJECT`, `RESOURCE_PROJECT`, or `DISABLED`.
+  optional string key_project_resolution_mode = 3 [json_name="keyProjectResolutionMode"];
+  // Identifier. Name of the AutokeyConfig resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig` or `projects/{PROJECT_NUMBER}/autokeyConfig`.
+  optional string name = 4 [json_name="name"];
   // Output only. The state for the AutokeyConfig.
-  optional string state = 4 [json_name="state"];
+  optional string state = 5 [json_name="state"];
 }
 
 // Associates `members`, or principals, with a `role`.
@@ -822,12 +841,14 @@ message DestroyCryptoKeyVersionRequest {
 
 // A Digest holds a cryptographic message digest.
 message Digest {
+  // A message digest produced with SHAKE-256, to be used with ML-DSA external-μ algorithms only. See "message representative" note in section 6.2, algorithm 7 of the FIPS-204 standard: https://doi.org/10.6028/nist.fips.204
+  optional bytes external_mu = 1 [json_name="externalMu"];
   // A message digest produced with the SHA-256 algorithm.
-  optional bytes sha256 = 1 [json_name="sha256"];
+  optional bytes sha256 = 2 [json_name="sha256"];
   // A message digest produced with the SHA-384 algorithm.
-  optional bytes sha384 = 2 [json_name="sha384"];
+  optional bytes sha384 = 3 [json_name="sha384"];
   // A message digest produced with the SHA-512 algorithm.
-  optional bytes sha512 = 3 [json_name="sha512"];
+  optional bytes sha512 = 4 [json_name="sha512"];
 }
 
 // Disable the SingleTenantHsmInstance. The SingleTenantHsmInstance must be in the ACTIVE state to perform this operation.
@@ -954,7 +975,7 @@ message ImportJob {
   optional KeyOperationAttestation attestation = 1 [json_name="attestation"];
   // Output only. The time at which this ImportJob was created.
   optional .google.protobuf.Timestamp create_time = 2 [json_name="createTime"];
-  // Immutable. The resource name of the backend environment where the key material for the wrapping key resides and where all related cryptographic operations are performed. Currently, this field is only populated for keys stored in HSM_SINGLE_TENANT. Note, this list is non-exhaustive and may apply to additional ProtectionLevels in the future.
+  // Immutable. The resource name of the backend environment where the key material for the wrapping key resides and where all related cryptographic operations are performed. Currently, this field is only populated for keys stored in HSM_SINGLE_TENANT. Note, this list is non-exhaustive and may apply to additional ProtectionLevels in the future. Supported resources: * `"projects/*/locations/*/singleTenantHsmInstances/*"`
   optional string crypto_key_backend = 3 [json_name="cryptoKeyBackend"];
   // Output only. The time this ImportJob expired. Only present if state is EXPIRED.
   optional .google.protobuf.Timestamp expire_event_time = 4 [json_name="expireEventTime"];
@@ -1088,6 +1109,16 @@ message ListLocationsResponse {
   repeated Location locations = 1 [json_name="locations"];
   // The standard List next-page token.
   optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+// Response message for KeyManagementService.ListRetiredResources.
+message ListRetiredResourcesResponse {
+  // A token to retrieve the next page of results. Pass this value in ListRetiredResourcesRequest.page_token to retrieve the next page of results.
+  optional string next_page_token = 1 [json_name="nextPageToken"];
+  // The list of RetiredResources.
+  repeated RetiredResource retired_resources = 2 [json_name="retiredResources"];
+  // The total number of RetiredResources that matched the query.
+  optional int64 total_size = 3 [json_name="totalSize"];
 }
 
 // Response message for HsmManagement.ListSingleTenantHsmInstanceProposals.
@@ -1354,6 +1385,18 @@ message RequiredActionQuorumReply {
 
 // Request message for KeyManagementService.RestoreCryptoKeyVersion.
 message RestoreCryptoKeyVersionRequest {
+}
+
+// A RetiredResource resource represents the record of a deleted CryptoKey. Its purpose is to provide visibility into retained user data and to prevent reuse of these names for new CryptoKeys.
+message RetiredResource {
+  // Output only. The time at which the original resource was deleted and this RetiredResource record was created.
+  optional .google.protobuf.Timestamp delete_time = 1 [json_name="deleteTime"];
+  // Output only. Identifier. The resource name for this RetiredResource in the format `projects/*/locations/*/retiredResources/*`.
+  optional string name = 2 [json_name="name"];
+  // Output only. The full resource name of the original CryptoKey that was deleted in the format `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
+  optional string original_resource = 3 [json_name="originalResource"];
+  // Output only. The resource type of the original deleted resource.
+  optional string resource_type = 4 [json_name="resourceType"];
 }
 
 // A ServiceResolver represents an EKM replica that can be reached within an EkmConnection.
@@ -1656,6 +1699,10 @@ message DecryptProjectsLocationsKeyRingsCryptoKeyRequest {
   optional DecryptRequest projects_locations_key_rings_crypto_key = 2;
 }
 
+message DeleteProjectsLocationsKeyRingsCryptoKeyRequest {
+  optional string name = 1;
+}
+
 message EncryptProjectsLocationsKeyRingsCryptoKeyRequest {
   optional string name = 1;
   optional EncryptRequest projects_locations_key_rings_crypto_key = 2;
@@ -1703,6 +1750,10 @@ message CreateProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest {
 message DecapsulateProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest {
   optional string name = 1;
   optional DecapsulateRequest projects_locations_key_rings_crypto_keys_crypto_key_version = 2;
+}
+
+message DeleteProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest {
+  optional string name = 1;
 }
 
 message DestroyProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest {
@@ -1780,6 +1831,16 @@ message ListProjectsLocationsKeyRingsImportJobsRequest {
   optional int32 page_size = 3;
   optional string page_token = 4;
   optional string parent = 5;
+}
+
+message GetProjectsLocationsRetiredResourceRequest {
+  optional string name = 1;
+}
+
+message ListProjectsLocationsRetiredResourcesRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+  optional string parent = 3;
 }
 
 message CreateProjectsLocationsSingleTenantHsmInstanceRequest {

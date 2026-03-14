@@ -7,6 +7,7 @@
 package reservationpb
 
 import (
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	context "context"
 	empty "github.com/golang/protobuf/ptypes/empty"
 	grpc "google.golang.org/grpc"
@@ -217,6 +218,51 @@ type ReservationServiceClient interface {
 	// greater than 0. In order to release BI capacity reservation size
 	// must be set to 0.
 	UpdateBiReservation(ctx context.Context, in *UpdateBiReservationRequest, opts ...grpc.CallOption) (*BiReservation, error)
+	// Gets the access control policy for a resource.
+	// May return:
+	//
+	//   - A`NOT_FOUND` error if the resource doesn't exist or you don't have the
+	//     permission to view it.
+	//   - An empty policy if the resource exists but doesn't have a set policy.
+	//
+	// Supported resources are:
+	// - Reservations
+	// - ReservationAssignments
+	//
+	// To call this method, you must have the following Google IAM permissions:
+	//
+	// - `bigqueryreservation.reservations.getIamPolicy` to get policies on
+	// reservations.
+	GetIamPolicy(ctx context.Context, in *iampb.GetIamPolicyRequest, opts ...grpc.CallOption) (*iampb.Policy, error)
+	// Sets an access control policy for a resource. Replaces any existing
+	// policy.
+	//
+	// Supported resources are:
+	// - Reservations
+	//
+	// To call this method, you must have the following Google IAM permissions:
+	//
+	// - `bigqueryreservation.reservations.setIamPolicy` to set policies on
+	// reservations.
+	SetIamPolicy(ctx context.Context, in *iampb.SetIamPolicyRequest, opts ...grpc.CallOption) (*iampb.Policy, error)
+	// Gets your permissions on a resource. Returns an empty set of permissions if
+	// the resource doesn't exist.
+	//
+	// Supported resources are:
+	// - Reservations
+	//
+	// No Google IAM permissions are required to call this method.
+	TestIamPermissions(ctx context.Context, in *iampb.TestIamPermissionsRequest, opts ...grpc.CallOption) (*iampb.TestIamPermissionsResponse, error)
+	// Creates a new reservation group.
+	CreateReservationGroup(ctx context.Context, in *CreateReservationGroupRequest, opts ...grpc.CallOption) (*ReservationGroup, error)
+	// Returns information about the reservation group.
+	GetReservationGroup(ctx context.Context, in *GetReservationGroupRequest, opts ...grpc.CallOption) (*ReservationGroup, error)
+	// Deletes a reservation.
+	// Returns `google.rpc.Code.FAILED_PRECONDITION` when reservation has
+	// assignments.
+	DeleteReservationGroup(ctx context.Context, in *DeleteReservationGroupRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Lists all the reservation groups for the project in the specified location.
+	ListReservationGroups(ctx context.Context, in *ListReservationGroupsRequest, opts ...grpc.CallOption) (*ListReservationGroupsResponse, error)
 }
 
 type reservationServiceClient struct {
@@ -426,6 +472,69 @@ func (c *reservationServiceClient) UpdateBiReservation(ctx context.Context, in *
 	return out, nil
 }
 
+func (c *reservationServiceClient) GetIamPolicy(ctx context.Context, in *iampb.GetIamPolicyRequest, opts ...grpc.CallOption) (*iampb.Policy, error) {
+	out := new(iampb.Policy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.reservation.v1.ReservationService/GetIamPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *reservationServiceClient) SetIamPolicy(ctx context.Context, in *iampb.SetIamPolicyRequest, opts ...grpc.CallOption) (*iampb.Policy, error) {
+	out := new(iampb.Policy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.reservation.v1.ReservationService/SetIamPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *reservationServiceClient) TestIamPermissions(ctx context.Context, in *iampb.TestIamPermissionsRequest, opts ...grpc.CallOption) (*iampb.TestIamPermissionsResponse, error) {
+	out := new(iampb.TestIamPermissionsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.reservation.v1.ReservationService/TestIamPermissions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *reservationServiceClient) CreateReservationGroup(ctx context.Context, in *CreateReservationGroupRequest, opts ...grpc.CallOption) (*ReservationGroup, error) {
+	out := new(ReservationGroup)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.reservation.v1.ReservationService/CreateReservationGroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *reservationServiceClient) GetReservationGroup(ctx context.Context, in *GetReservationGroupRequest, opts ...grpc.CallOption) (*ReservationGroup, error) {
+	out := new(ReservationGroup)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.reservation.v1.ReservationService/GetReservationGroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *reservationServiceClient) DeleteReservationGroup(ctx context.Context, in *DeleteReservationGroupRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.reservation.v1.ReservationService/DeleteReservationGroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *reservationServiceClient) ListReservationGroups(ctx context.Context, in *ListReservationGroupsRequest, opts ...grpc.CallOption) (*ListReservationGroupsResponse, error) {
+	out := new(ListReservationGroupsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.reservation.v1.ReservationService/ListReservationGroups", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ReservationServiceServer is the server API for ReservationService service.
 // All implementations must embed UnimplementedReservationServiceServer
 // for forward compatibility
@@ -624,6 +733,51 @@ type ReservationServiceServer interface {
 	// greater than 0. In order to release BI capacity reservation size
 	// must be set to 0.
 	UpdateBiReservation(context.Context, *UpdateBiReservationRequest) (*BiReservation, error)
+	// Gets the access control policy for a resource.
+	// May return:
+	//
+	//   - A`NOT_FOUND` error if the resource doesn't exist or you don't have the
+	//     permission to view it.
+	//   - An empty policy if the resource exists but doesn't have a set policy.
+	//
+	// Supported resources are:
+	// - Reservations
+	// - ReservationAssignments
+	//
+	// To call this method, you must have the following Google IAM permissions:
+	//
+	// - `bigqueryreservation.reservations.getIamPolicy` to get policies on
+	// reservations.
+	GetIamPolicy(context.Context, *iampb.GetIamPolicyRequest) (*iampb.Policy, error)
+	// Sets an access control policy for a resource. Replaces any existing
+	// policy.
+	//
+	// Supported resources are:
+	// - Reservations
+	//
+	// To call this method, you must have the following Google IAM permissions:
+	//
+	// - `bigqueryreservation.reservations.setIamPolicy` to set policies on
+	// reservations.
+	SetIamPolicy(context.Context, *iampb.SetIamPolicyRequest) (*iampb.Policy, error)
+	// Gets your permissions on a resource. Returns an empty set of permissions if
+	// the resource doesn't exist.
+	//
+	// Supported resources are:
+	// - Reservations
+	//
+	// No Google IAM permissions are required to call this method.
+	TestIamPermissions(context.Context, *iampb.TestIamPermissionsRequest) (*iampb.TestIamPermissionsResponse, error)
+	// Creates a new reservation group.
+	CreateReservationGroup(context.Context, *CreateReservationGroupRequest) (*ReservationGroup, error)
+	// Returns information about the reservation group.
+	GetReservationGroup(context.Context, *GetReservationGroupRequest) (*ReservationGroup, error)
+	// Deletes a reservation.
+	// Returns `google.rpc.Code.FAILED_PRECONDITION` when reservation has
+	// assignments.
+	DeleteReservationGroup(context.Context, *DeleteReservationGroupRequest) (*empty.Empty, error)
+	// Lists all the reservation groups for the project in the specified location.
+	ListReservationGroups(context.Context, *ListReservationGroupsRequest) (*ListReservationGroupsResponse, error)
 	mustEmbedUnimplementedReservationServiceServer()
 }
 
@@ -696,6 +850,27 @@ func (UnimplementedReservationServiceServer) GetBiReservation(context.Context, *
 }
 func (UnimplementedReservationServiceServer) UpdateBiReservation(context.Context, *UpdateBiReservationRequest) (*BiReservation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateBiReservation not implemented")
+}
+func (UnimplementedReservationServiceServer) GetIamPolicy(context.Context, *iampb.GetIamPolicyRequest) (*iampb.Policy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetIamPolicy not implemented")
+}
+func (UnimplementedReservationServiceServer) SetIamPolicy(context.Context, *iampb.SetIamPolicyRequest) (*iampb.Policy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetIamPolicy not implemented")
+}
+func (UnimplementedReservationServiceServer) TestIamPermissions(context.Context, *iampb.TestIamPermissionsRequest) (*iampb.TestIamPermissionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
+}
+func (UnimplementedReservationServiceServer) CreateReservationGroup(context.Context, *CreateReservationGroupRequest) (*ReservationGroup, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateReservationGroup not implemented")
+}
+func (UnimplementedReservationServiceServer) GetReservationGroup(context.Context, *GetReservationGroupRequest) (*ReservationGroup, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetReservationGroup not implemented")
+}
+func (UnimplementedReservationServiceServer) DeleteReservationGroup(context.Context, *DeleteReservationGroupRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteReservationGroup not implemented")
+}
+func (UnimplementedReservationServiceServer) ListReservationGroups(context.Context, *ListReservationGroupsRequest) (*ListReservationGroupsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListReservationGroups not implemented")
 }
 func (UnimplementedReservationServiceServer) mustEmbedUnimplementedReservationServiceServer() {}
 
@@ -1106,6 +1281,132 @@ func _ReservationService_UpdateBiReservation_Handler(srv interface{}, ctx contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ReservationService_GetIamPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(iampb.GetIamPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReservationServiceServer).GetIamPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.bigquery.reservation.v1.ReservationService/GetIamPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReservationServiceServer).GetIamPolicy(ctx, req.(*iampb.GetIamPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ReservationService_SetIamPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(iampb.SetIamPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReservationServiceServer).SetIamPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.bigquery.reservation.v1.ReservationService/SetIamPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReservationServiceServer).SetIamPolicy(ctx, req.(*iampb.SetIamPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ReservationService_TestIamPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(iampb.TestIamPermissionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReservationServiceServer).TestIamPermissions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.bigquery.reservation.v1.ReservationService/TestIamPermissions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReservationServiceServer).TestIamPermissions(ctx, req.(*iampb.TestIamPermissionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ReservationService_CreateReservationGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateReservationGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReservationServiceServer).CreateReservationGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.bigquery.reservation.v1.ReservationService/CreateReservationGroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReservationServiceServer).CreateReservationGroup(ctx, req.(*CreateReservationGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ReservationService_GetReservationGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetReservationGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReservationServiceServer).GetReservationGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.bigquery.reservation.v1.ReservationService/GetReservationGroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReservationServiceServer).GetReservationGroup(ctx, req.(*GetReservationGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ReservationService_DeleteReservationGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteReservationGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReservationServiceServer).DeleteReservationGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.bigquery.reservation.v1.ReservationService/DeleteReservationGroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReservationServiceServer).DeleteReservationGroup(ctx, req.(*DeleteReservationGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ReservationService_ListReservationGroups_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListReservationGroupsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReservationServiceServer).ListReservationGroups(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.bigquery.reservation.v1.ReservationService/ListReservationGroups",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReservationServiceServer).ListReservationGroups(ctx, req.(*ListReservationGroupsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ReservationService_ServiceDesc is the grpc.ServiceDesc for ReservationService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1200,6 +1501,34 @@ var ReservationService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateBiReservation",
 			Handler:    _ReservationService_UpdateBiReservation_Handler,
+		},
+		{
+			MethodName: "GetIamPolicy",
+			Handler:    _ReservationService_GetIamPolicy_Handler,
+		},
+		{
+			MethodName: "SetIamPolicy",
+			Handler:    _ReservationService_SetIamPolicy_Handler,
+		},
+		{
+			MethodName: "TestIamPermissions",
+			Handler:    _ReservationService_TestIamPermissions_Handler,
+		},
+		{
+			MethodName: "CreateReservationGroup",
+			Handler:    _ReservationService_CreateReservationGroup_Handler,
+		},
+		{
+			MethodName: "GetReservationGroup",
+			Handler:    _ReservationService_GetReservationGroup_Handler,
+		},
+		{
+			MethodName: "DeleteReservationGroup",
+			Handler:    _ReservationService_DeleteReservationGroup_Handler,
+		},
+		{
+			MethodName: "ListReservationGroups",
+			Handler:    _ReservationService_ListReservationGroups_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

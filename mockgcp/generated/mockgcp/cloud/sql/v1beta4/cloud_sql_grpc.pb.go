@@ -611,8 +611,22 @@ type SqlInstancesServiceClient interface {
 	// instance. Required to prepare for a certificate rotation. If a CA version
 	// was previously added but never used in a certificate rotation, this
 	// operation replaces that version. There cannot be more than one CA version
-	// waiting to be rotated in.
+	// waiting to be rotated in. For instances that have enabled Certificate
+	// Authority Service (CAS) based server CA, use AddServerCertificate to add a
+	// new server certificate.
 	AddServerCa(ctx context.Context, in *SqlInstancesAddServerCaRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Add a new trusted server certificate version for the specified instance
+	// using Certificate Authority Service (CAS) server CA. Required to prepare
+	// for a certificate rotation. If a server certificate version was previously
+	// added but never used in a certificate rotation, this operation replaces
+	// that version. There cannot be more than one certificate version waiting to
+	// be rotated in. For instances not using CAS server CA, use AddServerCa
+	// instead.
+	AddServerCertificate(ctx context.Context, in *SqlInstancesAddServerCertificateRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Adds a new Entra ID certificate for the specified instance. If an Entra ID
+	// certificate was previously added but never used in a certificate rotation,
+	// this operation replaces that version.
+	AddEntraIdCertificate(ctx context.Context, in *SqlInstancesAddEntraIdCertificateRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Creates a Cloud SQL instance as a clone of the source instance. Using this
 	// operation might cause your instance to restart.
 	Clone(ctx context.Context, in *SqlInstancesCloneRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -653,6 +667,18 @@ type SqlInstancesServiceClient interface {
 	// yet used to sign a certificate, and a CA used to sign a certificate that
 	// has previously rotated out.
 	ListServerCas(ctx context.Context, in *SqlInstancesListServerCasRequest, opts ...grpc.CallOption) (*InstancesListServerCasResponse, error)
+	// Lists all versions of server certificates and certificate authorities (CAs)
+	// for the specified instance. There can be up to three sets of certs listed:
+	// the certificate that is currently in use, a future that has been added but
+	// not yet used to sign a certificate, and a certificate that has been rotated
+	// out. For instances not using Certificate Authority Service (CAS) server CA,
+	// use ListServerCas instead.
+	ListServerCertificates(ctx context.Context, in *SqlInstancesListServerCertificatesRequest, opts ...grpc.CallOption) (*InstancesListServerCertificatesResponse, error)
+	// Lists all versions of EntraID certificates for the specified instance.
+	// There can be up to three sets of certificates listed: the certificate that
+	// is currently in use, a future that has been added but not yet used to sign
+	// a certificate, and a certificate that has been rotated out.
+	ListEntraIdCertificates(ctx context.Context, in *SqlInstancesListEntraIdCertificatesRequest, opts ...grpc.CallOption) (*InstancesListEntraIdCertificatesResponse, error)
 	// Partially updates settings of a Cloud SQL instance by merging the request
 	// with the current configuration. This method supports patch semantics.
 	Patch(ctx context.Context, in *SqlInstancesPatchRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -660,7 +686,7 @@ type SqlInstancesServiceClient interface {
 	// primary instance.
 	// Using this operation might cause your instance to restart.
 	PromoteReplica(ctx context.Context, in *SqlInstancesPromoteReplicaRequest, opts ...grpc.CallOption) (*Operation, error)
-	// Switches over from the primary instance to the designated DR replica
+	// Switches over from the primary instance to the DR replica
 	// instance.
 	Switchover(ctx context.Context, in *SqlInstancesSwitchoverRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Deletes all client certificates and generates a new server SSL certificate
@@ -672,8 +698,17 @@ type SqlInstancesServiceClient interface {
 	// your instance to restart.
 	RestoreBackup(ctx context.Context, in *SqlInstancesRestoreBackupRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Rotates the server certificate to one signed by the Certificate Authority
-	// (CA) version previously added with the addServerCA method.
+	// (CA) version previously added with the addServerCA method. For instances
+	// that have enabled Certificate Authority Service (CAS) based server CA,
+	// use RotateServerCertificate to rotate the server certificate.
 	RotateServerCa(ctx context.Context, in *SqlInstancesRotateServerCaRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Rotates the server certificate version to one previously added with the
+	// addServerCertificate method. For instances not using Certificate Authority
+	// Service (CAS) server CA, use RotateServerCa instead.
+	RotateServerCertificate(ctx context.Context, in *SqlInstancesRotateServerCertificateRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Rotates the Entra Id certificate version to one previously added with the
+	// addEntraIdCertificate method.
+	RotateEntraIdCertificate(ctx context.Context, in *SqlInstancesRotateEntraIdCertificateRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Starts the replication in the read replica instance.
 	StartReplica(ctx context.Context, in *SqlInstancesStartReplicaRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Stops the replication in the read replica instance.
@@ -703,10 +738,17 @@ type SqlInstancesServiceClient interface {
 	ResetReplicaSize(ctx context.Context, in *SqlInstancesResetReplicaSizeRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Get Latest Recovery Time for a given instance.
 	GetLatestRecoveryTime(ctx context.Context, in *SqlInstancesGetLatestRecoveryTimeRequest, opts ...grpc.CallOption) (*SqlInstancesGetLatestRecoveryTimeResponse, error)
+	// Execute SQL statements.
+	ExecuteSql(ctx context.Context, in *SqlInstancesExecuteSqlRequest, opts ...grpc.CallOption) (*SqlInstancesExecuteSqlResponse, error)
 	// Acquire a lease for the setup of SQL Server Reporting Services (SSRS).
 	AcquireSsrsLease(ctx context.Context, in *SqlInstancesAcquireSsrsLeaseRequest, opts ...grpc.CallOption) (*SqlInstancesAcquireSsrsLeaseResponse, error)
 	// Release a lease for the setup of SQL Server Reporting Services (SSRS).
 	ReleaseSsrsLease(ctx context.Context, in *SqlInstancesReleaseSsrsLeaseRequest, opts ...grpc.CallOption) (*SqlInstancesReleaseSsrsLeaseResponse, error)
+	// Execute MVU Pre-checks
+	PreCheckMajorVersionUpgrade(ctx context.Context, in *SqlInstancesPreCheckMajorVersionUpgradeRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Point in time restore for an instance managed by Google Cloud Backup and
+	// Disaster Recovery.
+	PointInTimeRestore(ctx context.Context, in *SqlInstancesPointInTimeRestoreRequest, opts ...grpc.CallOption) (*Operation, error)
 }
 
 type sqlInstancesServiceClient struct {
@@ -720,6 +762,24 @@ func NewSqlInstancesServiceClient(cc grpc.ClientConnInterface) SqlInstancesServi
 func (c *sqlInstancesServiceClient) AddServerCa(ctx context.Context, in *SqlInstancesAddServerCaRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/AddServerCa", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sqlInstancesServiceClient) AddServerCertificate(ctx context.Context, in *SqlInstancesAddServerCertificateRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/AddServerCertificate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sqlInstancesServiceClient) AddEntraIdCertificate(ctx context.Context, in *SqlInstancesAddEntraIdCertificateRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/AddEntraIdCertificate", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -834,6 +894,24 @@ func (c *sqlInstancesServiceClient) ListServerCas(ctx context.Context, in *SqlIn
 	return out, nil
 }
 
+func (c *sqlInstancesServiceClient) ListServerCertificates(ctx context.Context, in *SqlInstancesListServerCertificatesRequest, opts ...grpc.CallOption) (*InstancesListServerCertificatesResponse, error) {
+	out := new(InstancesListServerCertificatesResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/ListServerCertificates", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sqlInstancesServiceClient) ListEntraIdCertificates(ctx context.Context, in *SqlInstancesListEntraIdCertificatesRequest, opts ...grpc.CallOption) (*InstancesListEntraIdCertificatesResponse, error) {
+	out := new(InstancesListEntraIdCertificatesResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/ListEntraIdCertificates", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *sqlInstancesServiceClient) Patch(ctx context.Context, in *SqlInstancesPatchRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/Patch", in, out, opts...)
@@ -891,6 +969,24 @@ func (c *sqlInstancesServiceClient) RestoreBackup(ctx context.Context, in *SqlIn
 func (c *sqlInstancesServiceClient) RotateServerCa(ctx context.Context, in *SqlInstancesRotateServerCaRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/RotateServerCa", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sqlInstancesServiceClient) RotateServerCertificate(ctx context.Context, in *SqlInstancesRotateServerCertificateRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/RotateServerCertificate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sqlInstancesServiceClient) RotateEntraIdCertificate(ctx context.Context, in *SqlInstancesRotateEntraIdCertificateRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/RotateEntraIdCertificate", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1005,6 +1101,15 @@ func (c *sqlInstancesServiceClient) GetLatestRecoveryTime(ctx context.Context, i
 	return out, nil
 }
 
+func (c *sqlInstancesServiceClient) ExecuteSql(ctx context.Context, in *SqlInstancesExecuteSqlRequest, opts ...grpc.CallOption) (*SqlInstancesExecuteSqlResponse, error) {
+	out := new(SqlInstancesExecuteSqlResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/ExecuteSql", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *sqlInstancesServiceClient) AcquireSsrsLease(ctx context.Context, in *SqlInstancesAcquireSsrsLeaseRequest, opts ...grpc.CallOption) (*SqlInstancesAcquireSsrsLeaseResponse, error) {
 	out := new(SqlInstancesAcquireSsrsLeaseResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/AcquireSsrsLease", in, out, opts...)
@@ -1023,6 +1128,24 @@ func (c *sqlInstancesServiceClient) ReleaseSsrsLease(ctx context.Context, in *Sq
 	return out, nil
 }
 
+func (c *sqlInstancesServiceClient) PreCheckMajorVersionUpgrade(ctx context.Context, in *SqlInstancesPreCheckMajorVersionUpgradeRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/PreCheckMajorVersionUpgrade", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sqlInstancesServiceClient) PointInTimeRestore(ctx context.Context, in *SqlInstancesPointInTimeRestoreRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/PointInTimeRestore", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SqlInstancesServiceServer is the server API for SqlInstancesService service.
 // All implementations must embed UnimplementedSqlInstancesServiceServer
 // for forward compatibility
@@ -1031,8 +1154,22 @@ type SqlInstancesServiceServer interface {
 	// instance. Required to prepare for a certificate rotation. If a CA version
 	// was previously added but never used in a certificate rotation, this
 	// operation replaces that version. There cannot be more than one CA version
-	// waiting to be rotated in.
+	// waiting to be rotated in. For instances that have enabled Certificate
+	// Authority Service (CAS) based server CA, use AddServerCertificate to add a
+	// new server certificate.
 	AddServerCa(context.Context, *SqlInstancesAddServerCaRequest) (*Operation, error)
+	// Add a new trusted server certificate version for the specified instance
+	// using Certificate Authority Service (CAS) server CA. Required to prepare
+	// for a certificate rotation. If a server certificate version was previously
+	// added but never used in a certificate rotation, this operation replaces
+	// that version. There cannot be more than one certificate version waiting to
+	// be rotated in. For instances not using CAS server CA, use AddServerCa
+	// instead.
+	AddServerCertificate(context.Context, *SqlInstancesAddServerCertificateRequest) (*Operation, error)
+	// Adds a new Entra ID certificate for the specified instance. If an Entra ID
+	// certificate was previously added but never used in a certificate rotation,
+	// this operation replaces that version.
+	AddEntraIdCertificate(context.Context, *SqlInstancesAddEntraIdCertificateRequest) (*Operation, error)
 	// Creates a Cloud SQL instance as a clone of the source instance. Using this
 	// operation might cause your instance to restart.
 	Clone(context.Context, *SqlInstancesCloneRequest) (*Operation, error)
@@ -1073,6 +1210,18 @@ type SqlInstancesServiceServer interface {
 	// yet used to sign a certificate, and a CA used to sign a certificate that
 	// has previously rotated out.
 	ListServerCas(context.Context, *SqlInstancesListServerCasRequest) (*InstancesListServerCasResponse, error)
+	// Lists all versions of server certificates and certificate authorities (CAs)
+	// for the specified instance. There can be up to three sets of certs listed:
+	// the certificate that is currently in use, a future that has been added but
+	// not yet used to sign a certificate, and a certificate that has been rotated
+	// out. For instances not using Certificate Authority Service (CAS) server CA,
+	// use ListServerCas instead.
+	ListServerCertificates(context.Context, *SqlInstancesListServerCertificatesRequest) (*InstancesListServerCertificatesResponse, error)
+	// Lists all versions of EntraID certificates for the specified instance.
+	// There can be up to three sets of certificates listed: the certificate that
+	// is currently in use, a future that has been added but not yet used to sign
+	// a certificate, and a certificate that has been rotated out.
+	ListEntraIdCertificates(context.Context, *SqlInstancesListEntraIdCertificatesRequest) (*InstancesListEntraIdCertificatesResponse, error)
 	// Partially updates settings of a Cloud SQL instance by merging the request
 	// with the current configuration. This method supports patch semantics.
 	Patch(context.Context, *SqlInstancesPatchRequest) (*Operation, error)
@@ -1080,7 +1229,7 @@ type SqlInstancesServiceServer interface {
 	// primary instance.
 	// Using this operation might cause your instance to restart.
 	PromoteReplica(context.Context, *SqlInstancesPromoteReplicaRequest) (*Operation, error)
-	// Switches over from the primary instance to the designated DR replica
+	// Switches over from the primary instance to the DR replica
 	// instance.
 	Switchover(context.Context, *SqlInstancesSwitchoverRequest) (*Operation, error)
 	// Deletes all client certificates and generates a new server SSL certificate
@@ -1092,8 +1241,17 @@ type SqlInstancesServiceServer interface {
 	// your instance to restart.
 	RestoreBackup(context.Context, *SqlInstancesRestoreBackupRequest) (*Operation, error)
 	// Rotates the server certificate to one signed by the Certificate Authority
-	// (CA) version previously added with the addServerCA method.
+	// (CA) version previously added with the addServerCA method. For instances
+	// that have enabled Certificate Authority Service (CAS) based server CA,
+	// use RotateServerCertificate to rotate the server certificate.
 	RotateServerCa(context.Context, *SqlInstancesRotateServerCaRequest) (*Operation, error)
+	// Rotates the server certificate version to one previously added with the
+	// addServerCertificate method. For instances not using Certificate Authority
+	// Service (CAS) server CA, use RotateServerCa instead.
+	RotateServerCertificate(context.Context, *SqlInstancesRotateServerCertificateRequest) (*Operation, error)
+	// Rotates the Entra Id certificate version to one previously added with the
+	// addEntraIdCertificate method.
+	RotateEntraIdCertificate(context.Context, *SqlInstancesRotateEntraIdCertificateRequest) (*Operation, error)
 	// Starts the replication in the read replica instance.
 	StartReplica(context.Context, *SqlInstancesStartReplicaRequest) (*Operation, error)
 	// Stops the replication in the read replica instance.
@@ -1123,10 +1281,17 @@ type SqlInstancesServiceServer interface {
 	ResetReplicaSize(context.Context, *SqlInstancesResetReplicaSizeRequest) (*Operation, error)
 	// Get Latest Recovery Time for a given instance.
 	GetLatestRecoveryTime(context.Context, *SqlInstancesGetLatestRecoveryTimeRequest) (*SqlInstancesGetLatestRecoveryTimeResponse, error)
+	// Execute SQL statements.
+	ExecuteSql(context.Context, *SqlInstancesExecuteSqlRequest) (*SqlInstancesExecuteSqlResponse, error)
 	// Acquire a lease for the setup of SQL Server Reporting Services (SSRS).
 	AcquireSsrsLease(context.Context, *SqlInstancesAcquireSsrsLeaseRequest) (*SqlInstancesAcquireSsrsLeaseResponse, error)
 	// Release a lease for the setup of SQL Server Reporting Services (SSRS).
 	ReleaseSsrsLease(context.Context, *SqlInstancesReleaseSsrsLeaseRequest) (*SqlInstancesReleaseSsrsLeaseResponse, error)
+	// Execute MVU Pre-checks
+	PreCheckMajorVersionUpgrade(context.Context, *SqlInstancesPreCheckMajorVersionUpgradeRequest) (*Operation, error)
+	// Point in time restore for an instance managed by Google Cloud Backup and
+	// Disaster Recovery.
+	PointInTimeRestore(context.Context, *SqlInstancesPointInTimeRestoreRequest) (*Operation, error)
 	mustEmbedUnimplementedSqlInstancesServiceServer()
 }
 
@@ -1136,6 +1301,12 @@ type UnimplementedSqlInstancesServiceServer struct {
 
 func (UnimplementedSqlInstancesServiceServer) AddServerCa(context.Context, *SqlInstancesAddServerCaRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddServerCa not implemented")
+}
+func (UnimplementedSqlInstancesServiceServer) AddServerCertificate(context.Context, *SqlInstancesAddServerCertificateRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddServerCertificate not implemented")
+}
+func (UnimplementedSqlInstancesServiceServer) AddEntraIdCertificate(context.Context, *SqlInstancesAddEntraIdCertificateRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddEntraIdCertificate not implemented")
 }
 func (UnimplementedSqlInstancesServiceServer) Clone(context.Context, *SqlInstancesCloneRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Clone not implemented")
@@ -1173,6 +1344,12 @@ func (UnimplementedSqlInstancesServiceServer) List(context.Context, *SqlInstance
 func (UnimplementedSqlInstancesServiceServer) ListServerCas(context.Context, *SqlInstancesListServerCasRequest) (*InstancesListServerCasResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListServerCas not implemented")
 }
+func (UnimplementedSqlInstancesServiceServer) ListServerCertificates(context.Context, *SqlInstancesListServerCertificatesRequest) (*InstancesListServerCertificatesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListServerCertificates not implemented")
+}
+func (UnimplementedSqlInstancesServiceServer) ListEntraIdCertificates(context.Context, *SqlInstancesListEntraIdCertificatesRequest) (*InstancesListEntraIdCertificatesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListEntraIdCertificates not implemented")
+}
 func (UnimplementedSqlInstancesServiceServer) Patch(context.Context, *SqlInstancesPatchRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Patch not implemented")
 }
@@ -1193,6 +1370,12 @@ func (UnimplementedSqlInstancesServiceServer) RestoreBackup(context.Context, *Sq
 }
 func (UnimplementedSqlInstancesServiceServer) RotateServerCa(context.Context, *SqlInstancesRotateServerCaRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RotateServerCa not implemented")
+}
+func (UnimplementedSqlInstancesServiceServer) RotateServerCertificate(context.Context, *SqlInstancesRotateServerCertificateRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RotateServerCertificate not implemented")
+}
+func (UnimplementedSqlInstancesServiceServer) RotateEntraIdCertificate(context.Context, *SqlInstancesRotateEntraIdCertificateRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RotateEntraIdCertificate not implemented")
 }
 func (UnimplementedSqlInstancesServiceServer) StartReplica(context.Context, *SqlInstancesStartReplicaRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method StartReplica not implemented")
@@ -1230,11 +1413,20 @@ func (UnimplementedSqlInstancesServiceServer) ResetReplicaSize(context.Context, 
 func (UnimplementedSqlInstancesServiceServer) GetLatestRecoveryTime(context.Context, *SqlInstancesGetLatestRecoveryTimeRequest) (*SqlInstancesGetLatestRecoveryTimeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLatestRecoveryTime not implemented")
 }
+func (UnimplementedSqlInstancesServiceServer) ExecuteSql(context.Context, *SqlInstancesExecuteSqlRequest) (*SqlInstancesExecuteSqlResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExecuteSql not implemented")
+}
 func (UnimplementedSqlInstancesServiceServer) AcquireSsrsLease(context.Context, *SqlInstancesAcquireSsrsLeaseRequest) (*SqlInstancesAcquireSsrsLeaseResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AcquireSsrsLease not implemented")
 }
 func (UnimplementedSqlInstancesServiceServer) ReleaseSsrsLease(context.Context, *SqlInstancesReleaseSsrsLeaseRequest) (*SqlInstancesReleaseSsrsLeaseResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReleaseSsrsLease not implemented")
+}
+func (UnimplementedSqlInstancesServiceServer) PreCheckMajorVersionUpgrade(context.Context, *SqlInstancesPreCheckMajorVersionUpgradeRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PreCheckMajorVersionUpgrade not implemented")
+}
+func (UnimplementedSqlInstancesServiceServer) PointInTimeRestore(context.Context, *SqlInstancesPointInTimeRestoreRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PointInTimeRestore not implemented")
 }
 func (UnimplementedSqlInstancesServiceServer) mustEmbedUnimplementedSqlInstancesServiceServer() {}
 
@@ -1263,6 +1455,42 @@ func _SqlInstancesService_AddServerCa_Handler(srv interface{}, ctx context.Conte
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SqlInstancesServiceServer).AddServerCa(ctx, req.(*SqlInstancesAddServerCaRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SqlInstancesService_AddServerCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SqlInstancesAddServerCertificateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SqlInstancesServiceServer).AddServerCertificate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/AddServerCertificate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SqlInstancesServiceServer).AddServerCertificate(ctx, req.(*SqlInstancesAddServerCertificateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SqlInstancesService_AddEntraIdCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SqlInstancesAddEntraIdCertificateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SqlInstancesServiceServer).AddEntraIdCertificate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/AddEntraIdCertificate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SqlInstancesServiceServer).AddEntraIdCertificate(ctx, req.(*SqlInstancesAddEntraIdCertificateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1483,6 +1711,42 @@ func _SqlInstancesService_ListServerCas_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SqlInstancesService_ListServerCertificates_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SqlInstancesListServerCertificatesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SqlInstancesServiceServer).ListServerCertificates(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/ListServerCertificates",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SqlInstancesServiceServer).ListServerCertificates(ctx, req.(*SqlInstancesListServerCertificatesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SqlInstancesService_ListEntraIdCertificates_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SqlInstancesListEntraIdCertificatesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SqlInstancesServiceServer).ListEntraIdCertificates(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/ListEntraIdCertificates",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SqlInstancesServiceServer).ListEntraIdCertificates(ctx, req.(*SqlInstancesListEntraIdCertificatesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _SqlInstancesService_Patch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SqlInstancesPatchRequest)
 	if err := dec(in); err != nil {
@@ -1605,6 +1869,42 @@ func _SqlInstancesService_RotateServerCa_Handler(srv interface{}, ctx context.Co
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SqlInstancesServiceServer).RotateServerCa(ctx, req.(*SqlInstancesRotateServerCaRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SqlInstancesService_RotateServerCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SqlInstancesRotateServerCertificateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SqlInstancesServiceServer).RotateServerCertificate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/RotateServerCertificate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SqlInstancesServiceServer).RotateServerCertificate(ctx, req.(*SqlInstancesRotateServerCertificateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SqlInstancesService_RotateEntraIdCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SqlInstancesRotateEntraIdCertificateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SqlInstancesServiceServer).RotateEntraIdCertificate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/RotateEntraIdCertificate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SqlInstancesServiceServer).RotateEntraIdCertificate(ctx, req.(*SqlInstancesRotateEntraIdCertificateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1825,6 +2125,24 @@ func _SqlInstancesService_GetLatestRecoveryTime_Handler(srv interface{}, ctx con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SqlInstancesService_ExecuteSql_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SqlInstancesExecuteSqlRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SqlInstancesServiceServer).ExecuteSql(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/ExecuteSql",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SqlInstancesServiceServer).ExecuteSql(ctx, req.(*SqlInstancesExecuteSqlRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _SqlInstancesService_AcquireSsrsLease_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SqlInstancesAcquireSsrsLeaseRequest)
 	if err := dec(in); err != nil {
@@ -1861,6 +2179,42 @@ func _SqlInstancesService_ReleaseSsrsLease_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SqlInstancesService_PreCheckMajorVersionUpgrade_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SqlInstancesPreCheckMajorVersionUpgradeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SqlInstancesServiceServer).PreCheckMajorVersionUpgrade(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/PreCheckMajorVersionUpgrade",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SqlInstancesServiceServer).PreCheckMajorVersionUpgrade(ctx, req.(*SqlInstancesPreCheckMajorVersionUpgradeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SqlInstancesService_PointInTimeRestore_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SqlInstancesPointInTimeRestoreRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SqlInstancesServiceServer).PointInTimeRestore(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/PointInTimeRestore",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SqlInstancesServiceServer).PointInTimeRestore(ctx, req.(*SqlInstancesPointInTimeRestoreRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SqlInstancesService_ServiceDesc is the grpc.ServiceDesc for SqlInstancesService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1871,6 +2225,14 @@ var SqlInstancesService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddServerCa",
 			Handler:    _SqlInstancesService_AddServerCa_Handler,
+		},
+		{
+			MethodName: "AddServerCertificate",
+			Handler:    _SqlInstancesService_AddServerCertificate_Handler,
+		},
+		{
+			MethodName: "AddEntraIdCertificate",
+			Handler:    _SqlInstancesService_AddEntraIdCertificate_Handler,
 		},
 		{
 			MethodName: "Clone",
@@ -1921,6 +2283,14 @@ var SqlInstancesService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _SqlInstancesService_ListServerCas_Handler,
 		},
 		{
+			MethodName: "ListServerCertificates",
+			Handler:    _SqlInstancesService_ListServerCertificates_Handler,
+		},
+		{
+			MethodName: "ListEntraIdCertificates",
+			Handler:    _SqlInstancesService_ListEntraIdCertificates_Handler,
+		},
+		{
 			MethodName: "Patch",
 			Handler:    _SqlInstancesService_Patch_Handler,
 		},
@@ -1947,6 +2317,14 @@ var SqlInstancesService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RotateServerCa",
 			Handler:    _SqlInstancesService_RotateServerCa_Handler,
+		},
+		{
+			MethodName: "RotateServerCertificate",
+			Handler:    _SqlInstancesService_RotateServerCertificate_Handler,
+		},
+		{
+			MethodName: "RotateEntraIdCertificate",
+			Handler:    _SqlInstancesService_RotateEntraIdCertificate_Handler,
 		},
 		{
 			MethodName: "StartReplica",
@@ -1997,12 +2375,24 @@ var SqlInstancesService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _SqlInstancesService_GetLatestRecoveryTime_Handler,
 		},
 		{
+			MethodName: "ExecuteSql",
+			Handler:    _SqlInstancesService_ExecuteSql_Handler,
+		},
+		{
 			MethodName: "AcquireSsrsLease",
 			Handler:    _SqlInstancesService_AcquireSsrsLease_Handler,
 		},
 		{
 			MethodName: "ReleaseSsrsLease",
 			Handler:    _SqlInstancesService_ReleaseSsrsLease_Handler,
+		},
+		{
+			MethodName: "PreCheckMajorVersionUpgrade",
+			Handler:    _SqlInstancesService_PreCheckMajorVersionUpgrade_Handler,
+		},
+		{
+			MethodName: "PointInTimeRestore",
+			Handler:    _SqlInstancesService_PointInTimeRestore_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -2019,6 +2409,7 @@ type SqlOperationsServiceClient interface {
 	// SQL instance in the reverse chronological order of the start time.
 	List(ctx context.Context, in *SqlOperationsListRequest, opts ...grpc.CallOption) (*OperationsListResponse, error)
 	// Cancels an instance operation that has been performed on an instance.
+	// Ordinarily, this method name should be `CancelSqlOperation`.
 	Cancel(ctx context.Context, in *SqlOperationsCancelRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 }
 
@@ -2067,6 +2458,7 @@ type SqlOperationsServiceServer interface {
 	// SQL instance in the reverse chronological order of the start time.
 	List(context.Context, *SqlOperationsListRequest) (*OperationsListResponse, error)
 	// Cancels an instance operation that has been performed on an instance.
+	// Ordinarily, this method name should be `CancelSqlOperation`.
 	Cancel(context.Context, *SqlOperationsCancelRequest) (*empty.Empty, error)
 	mustEmbedUnimplementedSqlOperationsServiceServer()
 }
@@ -2381,6 +2773,250 @@ var SqlSslCertsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _SqlSslCertsService_List_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/sql/v1beta4/cloud_sql.proto",
+}
+
+// SqlBackupsServiceClient is the client API for SqlBackupsService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type SqlBackupsServiceClient interface {
+	// Creates a backup for a Cloud SQL instance. This API can be used only to
+	// create on-demand backups.
+	CreateBackup(ctx context.Context, in *CreateBackupRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Retrieves a resource containing information about a backup.
+	GetBackup(ctx context.Context, in *GetBackupRequest, opts ...grpc.CallOption) (*Backup, error)
+	// Lists all backups associated with the project.
+	ListBackups(ctx context.Context, in *ListBackupsRequest, opts ...grpc.CallOption) (*ListBackupsResponse, error)
+	// Updates the retention period and the description of the backup. You can use
+	// this API to update final backups only.
+	UpdateBackup(ctx context.Context, in *UpdateBackupRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Deletes the backup.
+	DeleteBackup(ctx context.Context, in *DeleteBackupRequest, opts ...grpc.CallOption) (*Operation, error)
+}
+
+type sqlBackupsServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewSqlBackupsServiceClient(cc grpc.ClientConnInterface) SqlBackupsServiceClient {
+	return &sqlBackupsServiceClient{cc}
+}
+
+func (c *sqlBackupsServiceClient) CreateBackup(ctx context.Context, in *CreateBackupRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.sql.v1beta4.SqlBackupsService/CreateBackup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sqlBackupsServiceClient) GetBackup(ctx context.Context, in *GetBackupRequest, opts ...grpc.CallOption) (*Backup, error) {
+	out := new(Backup)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.sql.v1beta4.SqlBackupsService/GetBackup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sqlBackupsServiceClient) ListBackups(ctx context.Context, in *ListBackupsRequest, opts ...grpc.CallOption) (*ListBackupsResponse, error) {
+	out := new(ListBackupsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.sql.v1beta4.SqlBackupsService/ListBackups", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sqlBackupsServiceClient) UpdateBackup(ctx context.Context, in *UpdateBackupRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.sql.v1beta4.SqlBackupsService/UpdateBackup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sqlBackupsServiceClient) DeleteBackup(ctx context.Context, in *DeleteBackupRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.sql.v1beta4.SqlBackupsService/DeleteBackup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// SqlBackupsServiceServer is the server API for SqlBackupsService service.
+// All implementations must embed UnimplementedSqlBackupsServiceServer
+// for forward compatibility
+type SqlBackupsServiceServer interface {
+	// Creates a backup for a Cloud SQL instance. This API can be used only to
+	// create on-demand backups.
+	CreateBackup(context.Context, *CreateBackupRequest) (*Operation, error)
+	// Retrieves a resource containing information about a backup.
+	GetBackup(context.Context, *GetBackupRequest) (*Backup, error)
+	// Lists all backups associated with the project.
+	ListBackups(context.Context, *ListBackupsRequest) (*ListBackupsResponse, error)
+	// Updates the retention period and the description of the backup. You can use
+	// this API to update final backups only.
+	UpdateBackup(context.Context, *UpdateBackupRequest) (*Operation, error)
+	// Deletes the backup.
+	DeleteBackup(context.Context, *DeleteBackupRequest) (*Operation, error)
+	mustEmbedUnimplementedSqlBackupsServiceServer()
+}
+
+// UnimplementedSqlBackupsServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedSqlBackupsServiceServer struct {
+}
+
+func (UnimplementedSqlBackupsServiceServer) CreateBackup(context.Context, *CreateBackupRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateBackup not implemented")
+}
+func (UnimplementedSqlBackupsServiceServer) GetBackup(context.Context, *GetBackupRequest) (*Backup, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBackup not implemented")
+}
+func (UnimplementedSqlBackupsServiceServer) ListBackups(context.Context, *ListBackupsRequest) (*ListBackupsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListBackups not implemented")
+}
+func (UnimplementedSqlBackupsServiceServer) UpdateBackup(context.Context, *UpdateBackupRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateBackup not implemented")
+}
+func (UnimplementedSqlBackupsServiceServer) DeleteBackup(context.Context, *DeleteBackupRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteBackup not implemented")
+}
+func (UnimplementedSqlBackupsServiceServer) mustEmbedUnimplementedSqlBackupsServiceServer() {}
+
+// UnsafeSqlBackupsServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to SqlBackupsServiceServer will
+// result in compilation errors.
+type UnsafeSqlBackupsServiceServer interface {
+	mustEmbedUnimplementedSqlBackupsServiceServer()
+}
+
+func RegisterSqlBackupsServiceServer(s grpc.ServiceRegistrar, srv SqlBackupsServiceServer) {
+	s.RegisterService(&SqlBackupsService_ServiceDesc, srv)
+}
+
+func _SqlBackupsService_CreateBackup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateBackupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SqlBackupsServiceServer).CreateBackup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.sql.v1beta4.SqlBackupsService/CreateBackup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SqlBackupsServiceServer).CreateBackup(ctx, req.(*CreateBackupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SqlBackupsService_GetBackup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBackupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SqlBackupsServiceServer).GetBackup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.sql.v1beta4.SqlBackupsService/GetBackup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SqlBackupsServiceServer).GetBackup(ctx, req.(*GetBackupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SqlBackupsService_ListBackups_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListBackupsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SqlBackupsServiceServer).ListBackups(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.sql.v1beta4.SqlBackupsService/ListBackups",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SqlBackupsServiceServer).ListBackups(ctx, req.(*ListBackupsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SqlBackupsService_UpdateBackup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateBackupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SqlBackupsServiceServer).UpdateBackup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.sql.v1beta4.SqlBackupsService/UpdateBackup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SqlBackupsServiceServer).UpdateBackup(ctx, req.(*UpdateBackupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SqlBackupsService_DeleteBackup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteBackupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SqlBackupsServiceServer).DeleteBackup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.sql.v1beta4.SqlBackupsService/DeleteBackup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SqlBackupsServiceServer).DeleteBackup(ctx, req.(*DeleteBackupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// SqlBackupsService_ServiceDesc is the grpc.ServiceDesc for SqlBackupsService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var SqlBackupsService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.sql.v1beta4.SqlBackupsService",
+	HandlerType: (*SqlBackupsServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateBackup",
+			Handler:    _SqlBackupsService_CreateBackup_Handler,
+		},
+		{
+			MethodName: "GetBackup",
+			Handler:    _SqlBackupsService_GetBackup_Handler,
+		},
+		{
+			MethodName: "ListBackups",
+			Handler:    _SqlBackupsService_ListBackups_Handler,
+		},
+		{
+			MethodName: "UpdateBackup",
+			Handler:    _SqlBackupsService_UpdateBackup_Handler,
+		},
+		{
+			MethodName: "DeleteBackup",
+			Handler:    _SqlBackupsService_DeleteBackup_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

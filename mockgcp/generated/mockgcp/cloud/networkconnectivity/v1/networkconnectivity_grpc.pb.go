@@ -76,7 +76,7 @@ type ProjectsLocationsServerClient interface {
 	CheckConsumerConfigProjectsLocation(ctx context.Context, in *CheckConsumerConfigProjectsLocationRequest, opts ...grpc.CallOption) (*CheckConsumerConfigResponse, error)
 	// Gets information about a location.
 	GetProjectsLocation(ctx context.Context, in *GetProjectsLocationRequest, opts ...grpc.CallOption) (*Location, error)
-	// Lists information about the supported locations for this service.
+	// Lists information about the supported locations for this service. This method can be called in two ways: * **List all public locations:** Use the path `GET /v1/locations`. * **List project-visible locations:** Use the path `GET /v1/projects/{project_id}/locations`. This may include public locations as well as private or other locations specifically visible to the project.
 	ListProjectsLocations(ctx context.Context, in *ListProjectsLocationsRequest, opts ...grpc.CallOption) (*ListLocationsResponse, error)
 }
 
@@ -123,7 +123,7 @@ type ProjectsLocationsServerServer interface {
 	CheckConsumerConfigProjectsLocation(context.Context, *CheckConsumerConfigProjectsLocationRequest) (*CheckConsumerConfigResponse, error)
 	// Gets information about a location.
 	GetProjectsLocation(context.Context, *GetProjectsLocationRequest) (*Location, error)
-	// Lists information about the supported locations for this service.
+	// Lists information about the supported locations for this service. This method can be called in two ways: * **List all public locations:** Use the path `GET /v1/locations`. * **List project-visible locations:** Use the path `GET /v1/projects/{project_id}/locations`. This may include public locations as well as private or other locations specifically visible to the project.
 	ListProjectsLocations(context.Context, *ListProjectsLocationsRequest) (*ListLocationsResponse, error)
 	mustEmbedUnimplementedProjectsLocationsServerServer()
 }

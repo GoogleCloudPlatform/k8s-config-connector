@@ -1418,6 +1418,8 @@ var DefaultObjectAccessControlsServer_ServiceDesc = grpc.ServiceDesc{
 type FoldersServerClient interface {
 	// Permanently deletes a folder. Only applicable to buckets with hierarchical namespace enabled.
 	DeleteFolder(ctx context.Context, in *DeleteFolderRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Deletes a folder recursively. Only applicable to buckets with hierarchical namespace enabled.
+	DeleteRecursiveFolder(ctx context.Context, in *DeleteRecursiveFolderRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Returns metadata for the specified folder. Only applicable to buckets with hierarchical namespace enabled.
 	GetFolder(ctx context.Context, in *GetFolderRequest, opts ...grpc.CallOption) (*Folder, error)
 	// Creates a new folder. Only applicable to buckets with hierarchical namespace enabled.
@@ -1439,6 +1441,15 @@ func NewFoldersServerClient(cc grpc.ClientConnInterface) FoldersServerClient {
 func (c *foldersServerClient) DeleteFolder(ctx context.Context, in *DeleteFolderRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
 	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.FoldersServer/DeleteFolder", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *foldersServerClient) DeleteRecursiveFolder(ctx context.Context, in *DeleteRecursiveFolderRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.FoldersServer/DeleteRecursiveFolder", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1487,6 +1498,8 @@ func (c *foldersServerClient) RenameFolder(ctx context.Context, in *RenameFolder
 type FoldersServerServer interface {
 	// Permanently deletes a folder. Only applicable to buckets with hierarchical namespace enabled.
 	DeleteFolder(context.Context, *DeleteFolderRequest) (*empty.Empty, error)
+	// Deletes a folder recursively. Only applicable to buckets with hierarchical namespace enabled.
+	DeleteRecursiveFolder(context.Context, *DeleteRecursiveFolderRequest) (*longrunningpb.Operation, error)
 	// Returns metadata for the specified folder. Only applicable to buckets with hierarchical namespace enabled.
 	GetFolder(context.Context, *GetFolderRequest) (*Folder, error)
 	// Creates a new folder. Only applicable to buckets with hierarchical namespace enabled.
@@ -1504,6 +1517,9 @@ type UnimplementedFoldersServerServer struct {
 
 func (UnimplementedFoldersServerServer) DeleteFolder(context.Context, *DeleteFolderRequest) (*empty.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteFolder not implemented")
+}
+func (UnimplementedFoldersServerServer) DeleteRecursiveFolder(context.Context, *DeleteRecursiveFolderRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteRecursiveFolder not implemented")
 }
 func (UnimplementedFoldersServerServer) GetFolder(context.Context, *GetFolderRequest) (*Folder, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFolder not implemented")
@@ -1544,6 +1560,24 @@ func _FoldersServer_DeleteFolder_Handler(srv interface{}, ctx context.Context, d
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FoldersServerServer).DeleteFolder(ctx, req.(*DeleteFolderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FoldersServer_DeleteRecursiveFolder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRecursiveFolderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FoldersServerServer).DeleteRecursiveFolder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.storage.v1.FoldersServer/DeleteRecursiveFolder",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FoldersServerServer).DeleteRecursiveFolder(ctx, req.(*DeleteRecursiveFolderRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1630,6 +1664,10 @@ var FoldersServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteFolder",
 			Handler:    _FoldersServer_DeleteFolder_Handler,
+		},
+		{
+			MethodName: "DeleteRecursiveFolder",
+			Handler:    _FoldersServer_DeleteRecursiveFolder_Handler,
 		},
 		{
 			MethodName: "GetFolder",

@@ -1,17 +1,3 @@
-// Copyright 2026 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 syntax = "proto3";
 package mockgcp.cloud.apigee.v1;
 import "google/api/annotations.proto";
@@ -2988,6 +2974,20 @@ service ProjectsServer {
   };
 }
 
+// Profile describing the data handling characteristics of an MCP tool. When used within the McpTool.meta field, this message should be packed into a google.protobuf.Any and associated with the key: "google.com/tool.profiles/data_handling"
+message ApiservingMcpMcpToolDataHandlingProfile {
+  // // The data access level of the tool's inputs.
+  string input_data_access_level = 1 [json_name="inputDataAccessLevel"];
+  // The data access level of the tool's outputs.
+  string output_data_access_level = 2 [json_name="outputDataAccessLevel"];
+}
+
+// Profile describing the lifecycle stage of an MCP tool. When used within the McpTool.meta field, this message should be packed into a google.protobuf.Any and associated with the key: "google.com/tool.profiles/lifecycle"
+message ApiservingMcpMcpToolLifecycleProfile {
+  // Output only. The current launch state of the MCP tool.
+  string launch_state = 1 [json_name="launchState"];
+}
+
 // Describes why a bundle is invalid. Intended for use in error details.
 message EdgeConfigstoreBundleBadBundle {
   // Describes all precondition violations.
@@ -5910,7 +5910,7 @@ message GoogleCloudApigeeV1RuntimeConfig {
   string trace_bucket = 4 [json_name="traceBucket"];
 }
 
-// NEXT ID: 8 RuntimeTraceConfig defines the configurations for distributed trace in an environment.
+// NEXT ID: 9 RuntimeTraceConfig defines the configurations for distributed trace in an environment.
 message GoogleCloudApigeeV1RuntimeTraceConfig {
   // Endpoint of the exporter.
   string endpoint = 1 [json_name="endpoint"];
@@ -5918,30 +5918,34 @@ message GoogleCloudApigeeV1RuntimeTraceConfig {
   string exporter = 2 [json_name="exporter"];
   // Name of the trace config in the following format: `organizations/{org}/environment/{env}/traceConfig`
   string name = 3 [json_name="name"];
+  // If `true`, the runtime uses OpenTelemetry Protocol (OTLP) to send trace data. Configuration Requirements (if `open_telemetry_protocol_enabled` is `true`): - Allowed `Exporter`s: `CLOUD_TRACE` or `OPEN_TELEMETRY_COLLECTOR`. - If `Exporter` is `OPEN_TELEMETRY_COLLECTOR`: - `endpoint` refers to a valid OTLP collector URL. - If `Exporter` is `CLOUD_TRACE`: - `endpoint` refers to a valid project ID
+  bool open_telemetry_protocol_enabled = 4 [json_name="openTelemetryProtocolEnabled"];
   // List of trace configuration overrides for spicific API proxies.
-  repeated GoogleCloudApigeeV1RuntimeTraceConfigOverride overrides = 4 [json_name="overrides"];
+  repeated GoogleCloudApigeeV1RuntimeTraceConfigOverride overrides = 5 [json_name="overrides"];
   // The timestamp that the revision was created or updated.
-  .google.protobuf.Timestamp revision_create_time = 5 [json_name="revisionCreateTime"];
+  .google.protobuf.Timestamp revision_create_time = 6 [json_name="revisionCreateTime"];
   // Revision number which can be used by the runtime to detect if the trace config has changed between two versions.
-  string revision_id = 6 [json_name="revisionId"];
+  string revision_id = 7 [json_name="revisionId"];
   // Trace configuration for all API proxies in an environment.
-  GoogleCloudApigeeV1RuntimeTraceSamplingConfig sampling_config = 7 [json_name="samplingConfig"];
+  GoogleCloudApigeeV1RuntimeTraceSamplingConfig sampling_config = 8 [json_name="samplingConfig"];
 }
 
-// NEXT ID: 7 Trace configuration override for a specific API proxy in an environment.
+// NEXT ID: 8 Trace configuration override for a specific API proxy in an environment.
 message GoogleCloudApigeeV1RuntimeTraceConfigOverride {
   // Name of the API proxy that will have its trace configuration overridden following format: `organizations/{org}/apis/{api}`
   string api_proxy = 1 [json_name="apiProxy"];
   // Name of the trace config override in the following format: `organizations/{org}/environment/{env}/traceConfig/overrides/{override}`
   string name = 2 [json_name="name"];
+  // If `true`, the runtime uses OpenTelemetry Protocol (OTLP) to send trace data. Configuration Requirements (if `open_telemetry_protocol_enabled` is `true`): - Allowed `Exporter`s: `CLOUD_TRACE` or `OPEN_TELEMETRY_COLLECTOR`. - If `Exporter` is `OPEN_TELEMETRY_COLLECTOR`: - `endpoint` refers to a valid OTLP collector URL. - If `Exporter` is `CLOUD_TRACE`: - `endpoint` refers to a valid project ID
+  bool open_telemetry_protocol_enabled = 3 [json_name="openTelemetryProtocolEnabled"];
   // The timestamp that the revision was created or updated.
-  .google.protobuf.Timestamp revision_create_time = 3 [json_name="revisionCreateTime"];
+  .google.protobuf.Timestamp revision_create_time = 4 [json_name="revisionCreateTime"];
   // Revision number which can be used by the runtime to detect if the trace config override has changed between two versions.
-  string revision_id = 4 [json_name="revisionId"];
+  string revision_id = 5 [json_name="revisionId"];
   // Trace configuration override for a specific API proxy in an environment.
-  GoogleCloudApigeeV1RuntimeTraceSamplingConfig sampling_config = 5 [json_name="samplingConfig"];
+  GoogleCloudApigeeV1RuntimeTraceSamplingConfig sampling_config = 6 [json_name="samplingConfig"];
   // Unique ID for the configuration override. The ID will only change if the override is deleted and recreated. Corresponds to name's "override" field.
-  string uid = 6 [json_name="uid"];
+  string uid = 7 [json_name="uid"];
 }
 
 // NEXT ID: 3 RuntimeTraceSamplingConfig represents the detail settings of distributed tracing. Only the fields that are defined in the distributed trace configuration can be overridden using the distribute trace configuration override APIs.
@@ -6142,12 +6146,14 @@ message GoogleCloudApigeeV1SecurityAssessmentResult {
 message GoogleCloudApigeeV1SecurityAssessmentResultResource {
   // Output only. Additional details for the API Hub deployment.
   GoogleCloudApigeeV1SecurityAssessmentResultResourceApiHubDeploymentDetails api_hub_deployment_details = 1 [json_name="apiHubDeploymentDetails"];
+  // Optional. 
+  string api_hub_gateway_type = 2 [json_name="apiHubGatewayType"];
   // Required. Name of this resource. For an Apigee API Proxy, this should be the id of the API proxy. For an API Hub Deployment, this should be the id of the deployment.
-  string name = 2 [json_name="name"];
+  string name = 3 [json_name="name"];
   // The revision id for the resource. In case of Apigee, this is proxy revision id.
-  string resource_revision_id = 3 [json_name="resourceRevisionId"];
+  string resource_revision_id = 4 [json_name="resourceRevisionId"];
   // Required. Type of this resource.
-  string type = 4 [json_name="type"];
+  string type = 5 [json_name="type"];
 }
 
 // Additional details if the resource is an API Hub deployment.
@@ -6259,24 +6265,28 @@ message GoogleCloudApigeeV1SecurityIncident {
 
 // Security monitoring condition for risk assessment version 2.
 message GoogleCloudApigeeV1SecurityMonitoringCondition {
+  // Optional. The API Hub gateway monitored by the security monitoring condition. This should only be set if risk_assessment_type is API_HUB. Format: `projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}`
+  string api_hub_gateway = 1 [json_name="apiHubGateway"];
   // Output only. The time of the security monitoring condition creation.
-  .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  .google.protobuf.Timestamp create_time = 2 [json_name="createTime"];
   // Include only these resources.
-  GoogleCloudApigeeV1BatchComputeSecurityAssessmentResultsRequestResourceArray include = 2 [json_name="include"];
+  GoogleCloudApigeeV1BatchComputeSecurityAssessmentResultsRequestResourceArray include = 3 [json_name="include"];
   // Include all resources under the scope.
-  GoogleCloudApigeeV1BatchComputeSecurityAssessmentResultsRequestIncludeAll include_all_resources = 3 [json_name="includeAllResources"];
+  GoogleCloudApigeeV1BatchComputeSecurityAssessmentResultsRequestIncludeAll include_all_resources = 4 [json_name="includeAllResources"];
   // Identifier. Name of the security monitoring condition resource. Format: organizations/{org}/securityMonitoringConditions/{security_monitoring_condition}
-  string name = 4 [json_name="name"];
+  string name = 5 [json_name="name"];
   // Required. ID of security profile of the security monitoring condition.
-  string profile = 5 [json_name="profile"];
-  // Optional. Scope of the security monitoring condition. For Apigee, the environment is the scope of the resources.
-  string scope = 6 [json_name="scope"];
+  string profile = 6 [json_name="profile"];
+  // Optional. The risk assessment type of the security monitoring condition. Defaults to ADVANCED_API_SECURITY.
+  string risk_assessment_type = 7 [json_name="riskAssessmentType"];
+  // Optional. Scope of the security monitoring condition. When RiskAssessmentType is APIGEE, the scope should be set to the environment of the resources. When RiskAssessmentType is API_HUB, the scope should not be set.
+  string scope = 8 [json_name="scope"];
   // Output only. Total number of deployed resources within scope.
-  int32 total_deployed_resources = 7 [json_name="totalDeployedResources"];
+  int32 total_deployed_resources = 9 [json_name="totalDeployedResources"];
   // Output only. Total number of monitored resources within this condition.
-  int32 total_monitored_resources = 8 [json_name="totalMonitoredResources"];
+  int32 total_monitored_resources = 10 [json_name="totalMonitoredResources"];
   // Output only. The time of the security monitoring condition update.
-  .google.protobuf.Timestamp update_time = 9 [json_name="updateTime"];
+  .google.protobuf.Timestamp update_time = 11 [json_name="updateTime"];
 }
 
 // Represents a SecurityProfile resource.
@@ -8546,10 +8556,12 @@ message CreateOrganizationsSecurityMonitoringConditionRequest {
 
 message DeleteOrganizationsSecurityMonitoringConditionRequest {
   string name = 1;
+  string risk_assessment_type = 2;
 }
 
 message GetOrganizationsSecurityMonitoringConditionRequest {
   string name = 1;
+  string risk_assessment_type = 2;
 }
 
 message ListOrganizationsSecurityMonitoringConditionsRequest {
@@ -8557,6 +8569,7 @@ message ListOrganizationsSecurityMonitoringConditionsRequest {
   int32 page_size = 2;
   string page_token = 3;
   string parent = 4;
+  string risk_assessment_type = 5;
 }
 
 message PatchOrganizationsSecurityMonitoringConditionRequest {

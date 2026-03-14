@@ -22,16 +22,16 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AutokeyAdminClient interface {
-	// Updates the [AutokeyConfig][mockgcp.cloud.kms.v1.AutokeyConfig] for a
-	// folder. The caller must have both `cloudkms.autokeyConfigs.update`
+	// Updates the [AutokeyConfig][mockgcp.cloud.kms.v1.AutokeyConfig] for a folder
+	// or a project. The caller must have both `cloudkms.autokeyConfigs.update`
 	// permission on the parent folder and `cloudkms.cryptoKeys.setIamPolicy`
 	// permission on the provided key project. A
 	// [KeyHandle][mockgcp.cloud.kms.v1.KeyHandle] creation in the folder's
 	// descendant projects will use this configuration to determine where to
 	// create the resulting [CryptoKey][mockgcp.cloud.kms.v1.CryptoKey].
 	UpdateAutokeyConfig(ctx context.Context, in *UpdateAutokeyConfigRequest, opts ...grpc.CallOption) (*AutokeyConfig, error)
-	// Returns the [AutokeyConfig][mockgcp.cloud.kms.v1.AutokeyConfig] for a
-	// folder.
+	// Returns the [AutokeyConfig][mockgcp.cloud.kms.v1.AutokeyConfig] for a folder
+	// or project.
 	GetAutokeyConfig(ctx context.Context, in *GetAutokeyConfigRequest, opts ...grpc.CallOption) (*AutokeyConfig, error)
 	// Returns the effective Cloud KMS Autokey configuration for a given project.
 	ShowEffectiveAutokeyConfig(ctx context.Context, in *ShowEffectiveAutokeyConfigRequest, opts ...grpc.CallOption) (*ShowEffectiveAutokeyConfigResponse, error)
@@ -76,16 +76,16 @@ func (c *autokeyAdminClient) ShowEffectiveAutokeyConfig(ctx context.Context, in 
 // All implementations must embed UnimplementedAutokeyAdminServer
 // for forward compatibility
 type AutokeyAdminServer interface {
-	// Updates the [AutokeyConfig][mockgcp.cloud.kms.v1.AutokeyConfig] for a
-	// folder. The caller must have both `cloudkms.autokeyConfigs.update`
+	// Updates the [AutokeyConfig][mockgcp.cloud.kms.v1.AutokeyConfig] for a folder
+	// or a project. The caller must have both `cloudkms.autokeyConfigs.update`
 	// permission on the parent folder and `cloudkms.cryptoKeys.setIamPolicy`
 	// permission on the provided key project. A
 	// [KeyHandle][mockgcp.cloud.kms.v1.KeyHandle] creation in the folder's
 	// descendant projects will use this configuration to determine where to
 	// create the resulting [CryptoKey][mockgcp.cloud.kms.v1.CryptoKey].
 	UpdateAutokeyConfig(context.Context, *UpdateAutokeyConfigRequest) (*AutokeyConfig, error)
-	// Returns the [AutokeyConfig][mockgcp.cloud.kms.v1.AutokeyConfig] for a
-	// folder.
+	// Returns the [AutokeyConfig][mockgcp.cloud.kms.v1.AutokeyConfig] for a folder
+	// or project.
 	GetAutokeyConfig(context.Context, *GetAutokeyConfigRequest) (*AutokeyConfig, error)
 	// Returns the effective Cloud KMS Autokey configuration for a given project.
 	ShowEffectiveAutokeyConfig(context.Context, *ShowEffectiveAutokeyConfigRequest) (*ShowEffectiveAutokeyConfigResponse, error)

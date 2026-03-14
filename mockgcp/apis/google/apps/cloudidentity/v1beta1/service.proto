@@ -1,17 +1,3 @@
-// Copyright 2026 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 syntax = "proto2";
 package google.apps.cloudidentity.v1beta1;
 import "google/api/annotations.proto";
@@ -612,9 +598,9 @@ message BlockDeviceUserResponse {
   optional DeviceUser device_user = 1 [json_name="deviceUser"];
 }
 
-// Contains information about browser profiles reported by the [Endpoint Verification extension](https://chromewebstore.google.com/detail/endpoint-verification/callobklhcbilhphinckomhgkigmfocg?pli=1).
+// Contains information about browser profiles reported by the Clients on the device (e.g. [Endpoint Verification extension](https://chromewebstore.google.com/detail/endpoint-verification/callobklhcbilhphinckomhgkigmfocg?pli=1)).
 message BrowserAttributes {
-  // Represents the current state of the [Chrome browser attributes](https://cloud.google.com/access-context-manager/docs/browser-attributes) sent by the [Endpoint Verification extension](https://chromewebstore.google.com/detail/endpoint-verification/callobklhcbilhphinckomhgkigmfocg?pli=1).
+  // Represents the current state of the [Chrome browser attributes](https://cloud.google.com/access-context-manager/docs/browser-attributes) sent by the clients on the device, such as [Endpoint Verification extension](https://chromewebstore.google.com/detail/endpoint-verification/callobklhcbilhphinckomhgkigmfocg?pli=1).
   optional BrowserInfo chrome_browser_info = 1 [json_name="chromeBrowserInfo"];
   // Chrome profile ID that is exposed by the Chrome API. It is unique for each device.
   optional string chrome_profile_id = 2 [json_name="chromeProfileId"];
@@ -622,7 +608,7 @@ message BrowserAttributes {
   optional .google.protobuf.Timestamp last_profile_sync_time = 3 [json_name="lastProfileSyncTime"];
 }
 
-// Browser-specific fields reported by the [Endpoint Verification extension](https://chromewebstore.google.com/detail/endpoint-verification/callobklhcbilhphinckomhgkigmfocg?pli=1).
+// Browser-specific fields reported by clients on the device, such as [Endpoint Verification extension](https://chromewebstore.google.com/detail/endpoint-verification/callobklhcbilhphinckomhgkigmfocg?pli=1).
 message BrowserInfo {
   // Output only. Browser's management state.
   optional string browser_management_state = 1 [json_name="browserManagementState"];
@@ -650,8 +636,10 @@ message BrowserInfo {
   optional bool is_third_party_blocking_enabled = 12 [json_name="isThirdPartyBlockingEnabled"];
   // Current state of [password protection trigger](https://chromeenterprise.google/policies/#PasswordProtectionWarningTrigger).
   optional string password_protection_warning_trigger = 13 [json_name="passwordProtectionWarningTrigger"];
+  // Output only. Chrome policies information for the browser as can be seen in chrome://policy. Full possibilities of policies can be consulted in [Chrome Enterprise Policy List](https://chromeenterprise.google/policies/).
+  repeated ChromePolicy policies = 14 [json_name="policies"];
   // Current state of [Safe Browsing protection level](https://chromeenterprise.google/policies/#SafeBrowsingProtectionLevel).
-  optional string safe_browsing_protection_level = 14 [json_name="safeBrowsingProtectionLevel"];
+  optional string safe_browsing_protection_level = 15 [json_name="safeBrowsingProtectionLevel"];
 }
 
 // Request to cancel sent invitation for target email in UserInvitation.
@@ -718,6 +706,20 @@ message CertificateTemplate {
 message CheckTransitiveMembershipResponse {
   // Response does not include the possible roles of a member since the behavior of this rpc is not all-or-nothing unlike the other rpcs. So, it may not be possible to list all the roles definitively, due to possible lack of authorization in some of the paths.
   optional bool has_membership = 1 [json_name="hasMembership"];
+}
+
+// Represents a Chrome policy and its current state.
+message ChromePolicy {
+  // Output only. A list of other policy values for the same policy name that were not applied due to lower precedence. This field is empty if there were no conflicts.
+  repeated PolicyConflict conflicts = 1 [json_name="conflicts"];
+  // Output only. The unique name of the Chrome policy. These names correspond to the policy names listed in [Chrome Enterprise Policy List](https://chromeenterprise.google/policies/)
+  optional string name = 2 [json_name="name"];
+  // Output only. The scope at which the *applied* policy value is set (USER or MACHINE).
+  optional string scope = 3 [json_name="scope"];
+  // Output only. The source from which the *applied* policy value originated.
+  optional string source = 4 [json_name="source"];
+  // Output only. The currently applied value of the policy. The format depends on the policy type (e.g., boolean, string, JSON array/object).
+  optional string value = 5 [json_name="value"];
 }
 
 // Represents the state associated with an API client calling the Devices API. Resource representing ClientState and supports updates from API users
@@ -810,62 +812,64 @@ message Device {
   optional string bootloader_version = 4 [json_name="bootloaderVersion"];
   // Output only. Device brand. Example: Samsung.
   optional string brand = 5 [json_name="brand"];
+  // Browser profiles on the device. This is a copy of the BrowserAttributes message defined in EndpointVerificationSpecificAttributes. We are replicating it here since EndpointVerification isn't the only client reporting browser profiles.
+  repeated BrowserAttributes browser_profiles = 6 [json_name="browserProfiles"];
   // Output only. Build number of the device.
-  optional string build_number = 6 [json_name="buildNumber"];
+  optional string build_number = 7 [json_name="buildNumber"];
   // List of the clients the device is reporting to.
-  repeated string client_types = 7 [json_name="clientTypes"];
+  repeated string client_types = 8 [json_name="clientTypes"];
   // Output only. Represents whether the Device is compromised.
-  optional string compromised_state = 8 [json_name="compromisedState"];
+  optional string compromised_state = 9 [json_name="compromisedState"];
   // Output only. When the Company-Owned device was imported. This field is empty for BYOD devices.
-  optional .google.protobuf.Timestamp create_time = 9 [json_name="createTime"];
+  optional .google.protobuf.Timestamp create_time = 10 [json_name="createTime"];
   // Unique identifier for the device.
-  optional string device_id = 10 [json_name="deviceId"];
+  optional string device_id = 11 [json_name="deviceId"];
   // Output only. Type of device.
-  optional string device_type = 11 [json_name="deviceType"];
+  optional string device_type = 12 [json_name="deviceType"];
   // Output only. Whether developer options is enabled on device.
-  optional bool enabled_developer_options = 12 [json_name="enabledDeveloperOptions"];
+  optional bool enabled_developer_options = 13 [json_name="enabledDeveloperOptions"];
   // Output only. Whether USB debugging is enabled on device.
-  optional bool enabled_usb_debugging = 13 [json_name="enabledUsbDebugging"];
+  optional bool enabled_usb_debugging = 14 [json_name="enabledUsbDebugging"];
   // Output only. Device encryption state.
-  optional string encryption_state = 14 [json_name="encryptionState"];
+  optional string encryption_state = 15 [json_name="encryptionState"];
   // Output only. Attributes specific to [Endpoint Verification](https://cloud.google.com/endpoint-verification/docs/overview) devices.
-  optional EndpointVerificationSpecificAttributes endpoint_verification_specific_attributes = 15 [json_name="endpointVerificationSpecificAttributes"];
+  optional EndpointVerificationSpecificAttributes endpoint_verification_specific_attributes = 16 [json_name="endpointVerificationSpecificAttributes"];
   // Host name of the device.
-  optional string hostname = 16 [json_name="hostname"];
+  optional string hostname = 17 [json_name="hostname"];
   // Output only. IMEI number of device if GSM device; empty otherwise.
-  optional string imei = 17 [json_name="imei"];
+  optional string imei = 18 [json_name="imei"];
   // Output only. Kernel version of the device.
-  optional string kernel_version = 18 [json_name="kernelVersion"];
+  optional string kernel_version = 19 [json_name="kernelVersion"];
   // Most recent time when device synced with this service.
-  optional .google.protobuf.Timestamp last_sync_time = 19 [json_name="lastSyncTime"];
+  optional .google.protobuf.Timestamp last_sync_time = 20 [json_name="lastSyncTime"];
   // Output only. Management state of the device
-  optional string management_state = 20 [json_name="managementState"];
+  optional string management_state = 21 [json_name="managementState"];
   // Output only. Device manufacturer. Example: Motorola.
-  optional string manufacturer = 21 [json_name="manufacturer"];
+  optional string manufacturer = 22 [json_name="manufacturer"];
   // Output only. MEID number of device if CDMA device; empty otherwise.
-  optional string meid = 22 [json_name="meid"];
+  optional string meid = 23 [json_name="meid"];
   // Output only. Model name of device. Example: Pixel 3.
-  optional string model = 23 [json_name="model"];
+  optional string model = 24 [json_name="model"];
   // Output only. [Resource name](https://cloud.google.com/apis/design/resource_names) of the Device in format: `devices/{device_id}`, where device_id is the unique id assigned to the Device.
-  optional string name = 24 [json_name="name"];
+  optional string name = 25 [json_name="name"];
   // Output only. Mobile or network operator of device, if available.
-  optional string network_operator = 25 [json_name="networkOperator"];
+  optional string network_operator = 26 [json_name="networkOperator"];
   // Output only. OS version of the device. Example: Android 8.1.0.
-  optional string os_version = 26 [json_name="osVersion"];
+  optional string os_version = 27 [json_name="osVersion"];
   // Output only. Domain name for Google accounts on device. Type for other accounts on device. On Android, will only be populated if |ownership_privilege| is |PROFILE_OWNER| or |DEVICE_OWNER|. Does not include the account signed in to the device policy app if that account's domain has only one account. Examples: "com.example", "xyz.com".
-  repeated string other_accounts = 27 [json_name="otherAccounts"];
+  repeated string other_accounts = 28 [json_name="otherAccounts"];
   // Output only. Whether the device is owned by the company or an individual
-  optional string owner_type = 28 [json_name="ownerType"];
+  optional string owner_type = 29 [json_name="ownerType"];
   // Output only. OS release version. Example: 6.0.
-  optional string release_version = 29 [json_name="releaseVersion"];
+  optional string release_version = 30 [json_name="releaseVersion"];
   // Output only. OS security patch update time on device.
-  optional .google.protobuf.Timestamp security_patch_time = 30 [json_name="securityPatchTime"];
+  optional .google.protobuf.Timestamp security_patch_time = 31 [json_name="securityPatchTime"];
   // Serial Number of device. Example: HT82V1A01076.
-  optional string serial_number = 31 [json_name="serialNumber"];
+  optional string serial_number = 32 [json_name="serialNumber"];
   // Output only. Unified device id of the device.
-  optional string unified_device_id = 32 [json_name="unifiedDeviceId"];
+  optional string unified_device_id = 33 [json_name="unifiedDeviceId"];
   // WiFi MAC addresses of device.
-  repeated string wifi_mac_addresses = 33 [json_name="wifiMacAddresses"];
+  repeated string wifi_mac_addresses = 34 [json_name="wifiMacAddresses"];
 }
 
 // Represents a user's use of a Device in the Cloud Identity Devices API. A DeviceUser is a resource representing a user's use of a Device
@@ -1657,6 +1661,16 @@ message Policy {
   optional Setting setting = 4 [json_name="setting"];
   // Output only. The type of the policy.
   optional string type = 5 [json_name="type"];
+}
+
+// Represents a policy value from a source that was not applied because a higher-priority source took precedence.
+message PolicyConflict {
+  // Output only. The scope at which this lower-priority policy is set (USER or MACHINE).
+  optional string scope = 1 [json_name="scope"];
+  // Output only. The source from which this lower-priority policy value originated.
+  optional string source = 2 [json_name="source"];
+  // Output only. The policy value from this lower-priority source.
+  optional string value = 3 [json_name="value"];
 }
 
 // PolicyQuery
