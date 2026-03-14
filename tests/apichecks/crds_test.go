@@ -79,6 +79,7 @@ func TestMissingRefs(t *testing.T) {
 
 				isRef := false
 				desc := field.props.Description
+
 				// Heuristic: look for descriptions like "should be of the form projects/{projectID}/locations/{location}/bars/{name}"
 				if strings.Contains(desc, " projects/") {
 					isRef = true
@@ -529,6 +530,126 @@ func TestCRDShortNames(t *testing.T) {
 	test.CompareGoldenFile(t, "testdata/exceptions/shortnames.txt", want)
 }
 
+// TestGCPLabelsUpToDate makes sure the supported_labels.txt file is up-to-date
+// with the KCC resources on whether the GCP server supports labels (by checking
+// the existance of the `spec.labels` field). This is used by fixture tests to
+// enhance test coverage for metadata.labels.
+func TestGCPLabelsUpToDate(t *testing.T) {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading CRDs: %v", err)
+	}
+
+	var message []string
+	for _, crd := range crds {
+		for _, version := range crd.Spec.Versions {
+			visitCRDVersion(version, func(field *CRDField) {
+				if field.FieldPath != ".spec.labels" {
+					return
+				}
+				// GCP labels are a map of strings
+				if field.props == nil || field.props.Type != "object" || field.props.AdditionalProperties == nil || field.props.AdditionalProperties.Schema == nil || field.props.AdditionalProperties.Schema.Type != "string" {
+					return
+				}
+
+				parts := strings.Split(field.FieldPath, ".")
+				if len(parts) == 0 {
+					return
+				}
+				message = append(message, fmt.Sprintf("[gcplabels] crd=%s version=%v: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`", crd.Name, version.Name))
+			})
+		}
+	}
+
+	sort.Strings(message)
+	want := strings.Join(message, "\n")
+	test.CompareGoldenFile(t, "testdata/supported_labels.txt", want)
+}
+
+func TestLegacyCompatibleLabels(t *testing.T) {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading CRDs: %v", err)
+	}
+
+	unstructs := loadAllTestFixtures(t)
+	unstructsByKind := make(map[string][]*unstructured.Unstructured)
+	for _, u := range unstructs {
+		kind := u.GetKind()
+		unstructsByKind[kind] = append(unstructsByKind[kind], u)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		for _, version := range crd.Spec.Versions {
+			visitCRDVersion(version, func(field *CRDField) {
+				if field.FieldPath != ".spec.labels" {
+					return
+				}
+				// GCP labels are a map of strings
+				if field.props == nil || field.props.Type != "object" || field.props.AdditionalProperties == nil || field.props.AdditionalProperties.Schema == nil || field.props.AdditionalProperties.Schema.Type != "string" {
+					return
+				}
+
+				parts := strings.Split(field.FieldPath, ".")
+				if len(parts) == 0 {
+					return
+				}
+
+				// This is a valid label field, check if it is always set
+				kind := crd.Spec.Names.Kind
+				kindUnstructs := unstructsByKind[kind]
+				if len(kindUnstructs) == 0 {
+					return
+				}
+				alwaysSet := true
+				for _, u := range kindUnstructs {
+					if !hasField(u.Object, field.FieldPath) {
+						alwaysSet = false
+						break
+					}
+				}
+				if alwaysSet {
+					errs = append(errs, fmt.Sprintf("[missing_legacy_label_tests] crd=%s version=%v: field %s is always set in tests", crd.Name, version.Name, strings.TrimPrefix(field.FieldPath, ".")))
+				}
+			})
+		}
+	}
+
+	sort.Strings(errs)
+	want := strings.Join(errs, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/missing_legacy_label_tests.txt", want)
+}
+
+func TestBadLabels(t *testing.T) {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading CRDs: %v", err)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		for _, version := range crd.Spec.Versions {
+			visitCRDVersion(version, func(field *CRDField) {
+				if !strings.HasPrefix(field.FieldPath, ".spec.") {
+					return
+				}
+				if field.FieldPath != ".spec.labels" {
+					return
+				}
+				// GCP labels are a map of strings
+				if field.props == nil || field.props.Type != "object" || field.props.AdditionalProperties == nil || field.props.AdditionalProperties.Schema == nil || field.props.AdditionalProperties.Schema.Type != "string" {
+					errs = append(errs, fmt.Sprintf("[bad_labels] crd=%s version=%v: field %s is not a map of strings", crd.Name, version.Name, strings.TrimPrefix(field.FieldPath, ".")))
+				}
+			})
+		}
+	}
+
+	sort.Strings(errs)
+	want := strings.Join(errs, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/bad_labels.txt", want)
+}
+
 // Run this test with WRITE_GOLDEN_OUTPUT set to update the exceptions list.
 func TestCRDFieldPresenceInTests(t *testing.T) {
 	t.Parallel()
@@ -579,7 +700,7 @@ func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiexten
 		t.Fatalf("error loading CRDs: %v", err)
 	}
 
-	unstructs := loadUnstructs(t)
+	unstructs := loadAllTestFixtures(t)
 	outputOnlySpecFields, err := loadOutputOnlySpecFields()
 	if err != nil {
 		t.Fatalf("error loading output-only spec fields from file: %v", err)
@@ -729,7 +850,7 @@ func loadOutputOnlySpecFields() (map[string]bool, error) {
 	return outputOnlySpecFields, nil
 }
 
-func loadUnstructs(t *testing.T) []*unstructured.Unstructured {
+func loadAllTestFixtures(t *testing.T) []*unstructured.Unstructured {
 	t.Helper()
 	unstructs := []*unstructured.Unstructured{}
 	fixtures := resourcefixture.Load(t)
