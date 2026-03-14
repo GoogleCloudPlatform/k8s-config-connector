@@ -40,4 +40,4 @@ status:
       privateEndpoint: 10.128.0.2
       publicEndpoint: 8.8.8.8
   selfLink: https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/clusters/containercluster-${uniqueId}
-  servicesIpv4Cidr: 34.118.224.0/20
+  servicesIpv4Cidr: ${servicesIpv4Cidr}

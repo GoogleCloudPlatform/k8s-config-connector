@@ -431,7 +431,7 @@ X-Xss-Protection: 0
       },
       "name": "default-pool",
       "networkConfig": {
-        "podIpv4CidrBlock": "10.92.0.0/14",
+        "podIpv4CidrBlock": "${clusterIpv4Cidr}",
         "podIpv4RangeUtilization": 0.001,
         "podRange": "default-pool-pods-12345678",
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
@@ -777,7 +777,7 @@ X-Xss-Protection: 0
       },
       "name": "default-pool",
       "networkConfig": {
-        "podIpv4CidrBlock": "10.92.0.0/14",
+        "podIpv4CidrBlock": "${clusterIpv4Cidr}",
         "podIpv4RangeUtilization": 0.001,
         "podRange": "default-pool-pods-12345678",
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
@@ -1053,12 +1053,12 @@ X-Xss-Protection: 0
   },
   "name": "nodepool-sample-${uniqueId}",
   "networkConfig": {
-    "podIpv4CidrBlock": "${podIpv4CidrBlock}",
+    "podIpv4CidrBlock": "${clusterIpv4Cidr}",
     "podIpv4RangeUtilization": 0.001,
     "podRange": "nodepool-sample-${uniqueId}-pods-12345678",
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
   },
-  "podIpv4CidrSize": "24",
+  "podIpv4CidrSize": 24,
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}",
   "status": "RUNNING",
   "upgradeSettings": {
@@ -1177,12 +1177,12 @@ X-Xss-Protection: 0
   },
   "name": "nodepool-sample-${uniqueId}",
   "networkConfig": {
-    "podIpv4CidrBlock": "${podIpv4CidrBlock}",
+    "podIpv4CidrBlock": "${clusterIpv4Cidr}",
     "podIpv4RangeUtilization": 0.001,
     "podRange": "nodepool-sample-${uniqueId}-pods-12345678",
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
   },
-  "podIpv4CidrSize": "24",
+  "podIpv4CidrSize": 24,
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}",
   "status": "RUNNING",
   "upgradeSettings": {
@@ -1301,12 +1301,12 @@ X-Xss-Protection: 0
   },
   "name": "nodepool-sample-${uniqueId}",
   "networkConfig": {
-    "podIpv4CidrBlock": "${podIpv4CidrBlock}",
+    "podIpv4CidrBlock": "${clusterIpv4Cidr}",
     "podIpv4RangeUtilization": 0.001,
     "podRange": "nodepool-sample-${uniqueId}-pods-12345678",
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
   },
-  "podIpv4CidrSize": "24",
+  "podIpv4CidrSize": 24,
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}",
   "status": "RUNNING",
   "upgradeSettings": {
@@ -1425,12 +1425,12 @@ X-Xss-Protection: 0
   },
   "name": "nodepool-sample-${uniqueId}",
   "networkConfig": {
-    "podIpv4CidrBlock": "${podIpv4CidrBlock}",
+    "podIpv4CidrBlock": "${clusterIpv4Cidr}",
     "podIpv4RangeUtilization": 0.001,
     "podRange": "nodepool-sample-${uniqueId}-pods-12345678",
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
   },
-  "podIpv4CidrSize": "24",
+  "podIpv4CidrSize": 24,
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}",
   "status": "RUNNING",
   "upgradeSettings": {
@@ -1827,7 +1827,7 @@ X-Xss-Protection: 0
       },
       "name": "default-pool",
       "networkConfig": {
-        "podIpv4CidrBlock": "10.92.0.0/14",
+        "podIpv4CidrBlock": "${clusterIpv4Cidr}",
         "podIpv4RangeUtilization": 0.001,
         "podRange": "default-pool-pods-12345678",
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
@@ -1964,12 +1964,12 @@ X-Xss-Protection: 0
   },
   "name": "nodepool-sample-${uniqueId}",
   "networkConfig": {
-    "podIpv4CidrBlock": "${podIpv4CidrBlock}",
+    "podIpv4CidrBlock": "${clusterIpv4Cidr}",
     "podIpv4RangeUtilization": 0.001,
     "podRange": "nodepool-sample-${uniqueId}-pods-12345678",
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
   },
-  "podIpv4CidrSize": "24",
+  "podIpv4CidrSize": 24,
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}",
   "status": "RUNNING",
   "upgradeSettings": {
@@ -2088,12 +2088,12 @@ X-Xss-Protection: 0
   },
   "name": "nodepool-sample-${uniqueId}",
   "networkConfig": {
-    "podIpv4CidrBlock": "${podIpv4CidrBlock}",
+    "podIpv4CidrBlock": "${clusterIpv4Cidr}",
     "podIpv4RangeUtilization": 0.001,
     "podRange": "nodepool-sample-${uniqueId}-pods-12345678",
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
   },
-  "podIpv4CidrSize": "24",
+  "podIpv4CidrSize": 24,
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}",
   "status": "RUNNING",
   "upgradeSettings": {
@@ -2212,12 +2212,12 @@ X-Xss-Protection: 0
   },
   "name": "nodepool-sample-${uniqueId}",
   "networkConfig": {
-    "podIpv4CidrBlock": "${podIpv4CidrBlock}",
+    "podIpv4CidrBlock": "${clusterIpv4Cidr}",
     "podIpv4RangeUtilization": 0.001,
     "podRange": "nodepool-sample-${uniqueId}-pods-12345678",
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
   },
-  "podIpv4CidrSize": "24",
+  "podIpv4CidrSize": 24,
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}",
   "status": "RUNNING",
   "upgradeSettings": {
@@ -2538,7 +2538,7 @@ X-Xss-Protection: 0
       },
       "name": "default-pool",
       "networkConfig": {
-        "podIpv4CidrBlock": "10.92.0.0/14",
+        "podIpv4CidrBlock": "${clusterIpv4Cidr}",
         "podIpv4RangeUtilization": 0.001,
         "podRange": "default-pool-pods-12345678",
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
@@ -2884,7 +2884,7 @@ X-Xss-Protection: 0
       },
       "name": "default-pool",
       "networkConfig": {
-        "podIpv4CidrBlock": "10.92.0.0/14",
+        "podIpv4CidrBlock": "${clusterIpv4Cidr}",
         "podIpv4RangeUtilization": 0.001,
         "podRange": "default-pool-pods-12345678",
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"

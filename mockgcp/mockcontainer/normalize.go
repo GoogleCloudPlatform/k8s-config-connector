@@ -32,23 +32,9 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 
 	// Cluster
 	{
-		replacements.ReplacePath(".clusterIpv4Cidr", "${clusterIpv4Cidr}")
-		replacements.ReplacePath(".servicesIpv4Cidr", "${servicesIpv4Cidr}")
-
-		replacements.ReplacePath(".ipAllocationPolicy.clusterIpv4Cidr", "${clusterIpv4Cidr}")
-		replacements.ReplacePath(".ipAllocationPolicy.clusterIpv4CidrBlock", "${clusterIpv4Cidr}")
-		replacements.ReplacePath(".ipAllocationPolicy.servicesIpv4Cidr", "${servicesIpv4Cidr}")
-		replacements.ReplacePath(".ipAllocationPolicy.servicesIpv4CidrBlock", "${servicesIpv4Cidr}")
-
 		replacements.ReplacePath(".maintenancePolicy.resourceVersion", "abcd1234")
 
 		replacements.SortSlice(".monitoringConfig.componentConfig.enableSystemComponents")
-	}
-
-	// NodePool
-	{
-		replacements.ReplacePath(".podIpv4CidrSize", "24")
-		replacements.ReplacePath(".networkConfig.podIpv4CidrBlock", "${podIpv4CidrBlock}")
 	}
 }
 
@@ -61,8 +47,18 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		return
 	}
 
-	// Replace public IP addresses with placeholders.
+	// Capture IP ranges and addresses for normalization.
 	event.VisitResponseStringValues(func(path string, value string) {
+		// Normalize Cluster and Service CIDR ranges.
+		// These values are often reused in different parts of the response (e.g. IpAllocationPolicy).
+		if path == ".clusterIpv4Cidr" {
+			replacements.ReplaceStringValue(value, "${clusterIpv4Cidr}")
+		}
+		if path == ".servicesIpv4Cidr" {
+			replacements.ReplaceStringValue(value, "${servicesIpv4Cidr}")
+		}
+
+		// Replace public/private endpoint IP addresses with placeholders.
 		switch path {
 		case ".controlPlaneEndpointsConfig.ipEndpointsConfig.publicEndpoint",
 			".privateClusterConfig.publicEndpoint":
