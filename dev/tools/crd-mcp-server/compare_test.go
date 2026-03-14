@@ -647,3 +647,121 @@ spec:
 		t.Error("expected diffs for type change")
 	}
 }
+
+func TestEquivalence_IntegerTypeChange(t *testing.T) {
+	oldCRDStr := `
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: foos.example.com
+spec:
+  group: example.com
+  names:
+    kind: Foo
+    plural: foos
+  scope: Namespaced
+  versions:
+  - name: v1beta1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              httpKeepAliveTimeoutSec:
+                type: integer
+              count:
+                type: integer
+          status:
+            type: object
+            properties:
+              observedGeneration:
+                type: integer
+              proxyId:
+                type: integer
+`
+
+	newCRDStr := `
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: foos.example.com
+spec:
+  group: example.com
+  names:
+    kind: Foo
+    plural: foos
+  scope: Namespaced
+  versions:
+  - name: v1beta1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              httpKeepAliveTimeoutSec:
+                type: integer
+                format: int32
+              count:
+                type: integer
+                format: int64
+          status:
+            type: object
+            properties:
+              observedGeneration:
+                type: integer
+                format: int64
+              proxyId:
+                type: integer
+                format: int64
+`
+
+	old, err := parseCRD([]byte(oldCRDStr))
+	if err != nil {
+		t.Fatal(err)
+	}
+	new, err := parseCRD([]byte(newCRDStr))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	result := compareEquivalence(old, new)
+
+	// In the old version:
+	// spec.httpKeepAliveTimeoutSec: integer -> int32 (should be ALLOWED)
+	// spec.count: integer -> int64 (should be BLOCKED)
+	// status.observedGeneration: integer -> int64 (should be ALLOWED)
+	// status.proxyId: integer -> int64 (should be ALLOWED)
+
+	expectedBlocked := []string{
+		"[v1beta1] field type changed: spec.count (integer -> int64)",
+	}
+
+	if len(result.Diffs) != len(expectedBlocked) {
+		t.Errorf("expected %d diffs, got %d: %v", len(expectedBlocked), len(result.Diffs), result.Diffs)
+	} else {
+		for i, d := range result.Diffs {
+			if d != expectedBlocked[i] {
+				t.Errorf("expected diff %q, got %q", expectedBlocked[i], d)
+			}
+		}
+	}
+
+	// Check notes for allowed changes
+	expectedNotes := []string{
+		"[v1beta1] field type changed: spec.httpKeepAliveTimeoutSec (integer -> int32) (allowed)",
+		"[v1beta1] field type changed: status.observedGeneration (integer -> int64) (allowed)",
+		"[v1beta1] field type changed: status.proxyId (integer -> int64) (allowed)",
+	}
+
+	if len(result.Notes) != len(expectedNotes) {
+		t.Errorf("expected %d notes, got %d: %v", len(expectedNotes), len(result.Notes), result.Notes)
+	}
+}
