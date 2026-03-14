@@ -176,18 +176,20 @@ SELECTED_GEN_PROTO_SOURCES = $(if $(SERVICE),$(shell echo $(GEN_PROTO_SOURCES) |
 
 .PHONY: gen-proto-no-fixup
 gen-proto-no-fixup:
-	PATH=bin/:${PATH} bin/protoc/bin/protoc \
-		-I ./third_party/googleapis \
-		-I ./apis \
-		--go_out ./generated \
-		--go_opt paths=source_relative \
-		--go-grpc_out ./generated \
-		--go-grpc_opt paths=source_relative \
-		--grpc-gateway_out ./generated \
-		--grpc-gateway_opt logtostderr=true \
-		--grpc-gateway_opt paths=source_relative \
-		--experimental_allow_proto3_optional \
-		$(SELECTED_GEN_PROTO_SOURCES)
+	@if [ -n "$(SELECTED_GEN_PROTO_SOURCES)" ]; then \
+		PATH=bin/:${PATH} bin/protoc/bin/protoc \
+			-I ./third_party/googleapis \
+			-I ./apis \
+			--go_out ./generated \
+			--go_opt paths=source_relative \
+			--go-grpc_out ./generated \
+			--go-grpc_opt paths=source_relative \
+			--grpc-gateway_out ./generated \
+			--grpc-gateway_opt logtostderr=true \
+			--grpc-gateway_opt paths=source_relative \
+			--experimental_allow_proto3_optional \
+			$(SELECTED_GEN_PROTO_SOURCES); \
+	fi
 
 
 GOOGLE_PROTO_SOURCES := \
@@ -212,14 +214,8 @@ GOOGLE_PROTO_SOURCES := \
 SELECTED_GOOGLE_PROTO_SOURCES = $(if $(SERVICE),$(shell echo $(GOOGLE_PROTO_SOURCES) | tr ' ' '\n' | grep $(SERVICE)),$(GOOGLE_PROTO_SOURCES))
 
 .PHONY: generate-grpc-for-google-protos
-generate-grpc-for-google-protos:
-	mkdir -p third_party
-	git clone https://github.com/googleapis/googleapis.git third_party/googleapis || (cd third_party/googleapis && git fetch --all)
-	git -C third_party/googleapis reset --hard $(GOOGLEAPI_VERSION)
-	git -C third_party/googleapis clean -df .
-	git -C third_party/googleapis status
+generate-grpc-for-google-protos: tools sync-repo
 	mkdir -p ./generated
-
 	@if [ -n "$(SELECTED_GOOGLE_PROTO_SOURCES)" ]; then \
 		PATH=bin/:${PATH} bin/protoc/bin/protoc \
 			-I ./third_party/googleapis \
