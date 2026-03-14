@@ -50,7 +50,7 @@ func resourcesWithDirect(smLoader *servicemappingloader.ServiceMappingLoader, se
 			delete(directGVKs, gvk)
 		}
 	}
-	for gvk, _ := range directGVKs {
+	for gvk := range directGVKs {
 		gvks = append(gvks, gvk)
 	}
 	return gvks, nil

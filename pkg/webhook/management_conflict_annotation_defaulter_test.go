@@ -64,7 +64,7 @@ func TestDefaultManagementConflictAnnotationForDCLBasedResources(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"labels": &openapi.Schema{
+					"labels": {
 						Type: "string",
 					},
 				},
@@ -103,7 +103,7 @@ func TestDefaultManagementConflictAnnotationForDCLBasedResources(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"labels": &openapi.Schema{
+					"labels": {
 						Type: "string",
 					},
 				},
@@ -147,7 +147,7 @@ func TestDefaultManagementConflictAnnotationForDCLBasedResources(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"labels": &openapi.Schema{
+					"labels": {
 						Type: "string",
 					},
 				},

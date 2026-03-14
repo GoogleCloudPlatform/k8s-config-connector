@@ -28,13 +28,13 @@ import (
 var testDCLSchema = &openapi.Schema{
 	Type: "object",
 	Properties: map[string]*openapi.Schema{
-		"project": &openapi.Schema{
+		"project": {
 			Type: "string",
 		},
-		"name": &openapi.Schema{
+		"name": {
 			Type: "string",
 		},
-		"labels": &openapi.Schema{
+		"labels": {
 			Type: "object",
 			AdditionalProperties: &openapi.Schema{
 				Type: "string",

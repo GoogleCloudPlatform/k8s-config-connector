@@ -605,7 +605,7 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	// TODO: Decide if we want to clean up default fields set in desired state.
 
 	topLevelFieldPaths := sets.New[string]()
-	for path, _ := range paths {
+	for path := range paths {
 		tokens := strings.Split(path, ".")
 		topLevelFieldPaths.Insert(tokens[0])
 	}
