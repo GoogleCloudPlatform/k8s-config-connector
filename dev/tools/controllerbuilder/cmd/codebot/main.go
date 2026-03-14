@@ -22,11 +22,11 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot"
 	codebotui "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot/ui"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/toolbot"
+
 	"k8s.io/klog/v2"
 )
 
@@ -65,7 +65,17 @@ type CodeBot struct {
 
 func (cb *CodeBot) run(ctx context.Context) error {
 	var o Options
-	o.InitDefaults()
+
+	llmClient, err := o.NewLLMClient(ctx)
+	if err != nil {
+		return fmt.Errorf("initializing LLM: %w", err)
+	}
+	defer llmClient.Close()
+
+	err = o.InitDefaultsWithLatestModelIfUnset(ctx, llmClient)
+	if err != nil {
+		return fmt.Errorf("initializing defaults: %w", err)
+	}
 
 	klog.InitFlags(nil)
 
@@ -118,14 +128,6 @@ func (cb *CodeBot) run(ctx context.Context) error {
 			Content: string(b),
 		}
 	}
-
-	llmClient, err := o.NewLLMClient(ctx)
-
-	if err != nil {
-		return fmt.Errorf("initializing LLM: %w", err)
-	}
-
-	defer llmClient.Close()
 
 	var tools []codebot.Tool
 	if o.ToolFilterInclude == "" && o.ToolFilterExclude == "" {
