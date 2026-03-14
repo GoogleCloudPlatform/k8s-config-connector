@@ -27,7 +27,7 @@
 <td>v1.defaultObjectAccessControls</td>
 </tr>
 <tr>
-<td>{{gcp_name_short}} RESTgo Resource Documentation</td>
+<td>{{gcp_name_short}} REST Resource Documentation</td>
 <td><a href="/storage/docs/json_api/v1/defaultObjectAccessControls">/storage/docs/json_api/v1/defaultObjectAccessControls</a></td>
 </tr>
 <tr>
