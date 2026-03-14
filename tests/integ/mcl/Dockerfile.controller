@@ -1,0 +1,10 @@
+FROM golang:1.24.6 AS builder
+WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o manager github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager
+
+FROM gcr.io/distroless/static:nonroot
+WORKDIR /configconnector/
+COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/manager .
+USER 1000
+ENTRYPOINT ["./manager"]
