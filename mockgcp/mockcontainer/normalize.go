@@ -21,25 +21,15 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
-const PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
-
-var _ mockgcpregistry.SupportsNormalization = &MockService{}
-
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
-	if !isContainerAPI(url) {
-		return
-	}
-
 	// Cluster
 	{
 		replacements.ReplacePath(".maintenancePolicy.resourceVersion", "abcd1234")
 
 		replacements.SortSlice(".monitoringConfig.componentConfig.enableSystemComponents")
+		replacements.SortSlice(".loggingConfig.componentConfig.enableComponents")
 	}
-}
 
-func isContainerAPI(url string) bool {
-	return strings.HasPrefix(url, "https://container.googleapis.com/")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
@@ -49,23 +39,35 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 
 	// Capture IP ranges and addresses for normalization.
 	event.VisitResponseStringValues(func(path string, value string) {
+		if value == "" {
+			return
+		}
+
 		// Normalize Cluster and Service CIDR ranges.
 		// These values are often reused in different parts of the response (e.g. IpAllocationPolicy).
-		if path == ".clusterIpv4Cidr" {
-			replacements.ReplaceStringValue(value, "${clusterIpv4Cidr}")
+		// We use ReplacePath to handle masks (like "/20") which might be the same for both cluster and services.
+		// We also use ReplaceStringValue for full ranges (containing ".") to ensure they are replaced globally.
+		if strings.HasSuffix(path, "clusterIpv4Cidr") || strings.HasSuffix(path, "clusterIpv4CidrBlock") || strings.HasSuffix(path, "podIpv4CidrBlock") {
+			replacements.ReplacePath(path, "${clusterIpv4Cidr}")
+			if strings.Contains(value, ".") {
+				replacements.ReplaceStringValue(value, "${clusterIpv4Cidr}")
+			}
 		}
-		if path == ".servicesIpv4Cidr" {
-			replacements.ReplaceStringValue(value, "${servicesIpv4Cidr}")
+		if strings.HasSuffix(path, "servicesIpv4Cidr") || strings.HasSuffix(path, "servicesIpv4CidrBlock") {
+			replacements.ReplacePath(path, "${servicesIpv4Cidr}")
+			if strings.Contains(value, ".") {
+				replacements.ReplaceStringValue(value, "${servicesIpv4Cidr}")
+			}
 		}
 
 		// Replace public/private endpoint IP addresses with placeholders.
 		switch path {
 		case ".controlPlaneEndpointsConfig.ipEndpointsConfig.publicEndpoint",
-			".privateClusterConfig.publicEndpoint":
+			".privateClusterConfig.publicEndpoint",
+			".endpoint":
 			if isIPv4Address(value) {
 				replacements.ReplaceStringValue(value, "${publicEndpointIPV4}")
 			}
-
 		case ".controlPlaneEndpointsConfig.ipEndpointsConfig.privateEndpoint",
 			".privateClusterConfig.privateEndpoint":
 			if isIPv4Address(value) {
@@ -73,6 +75,10 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 			}
 		}
 	})
+}
+
+func isContainerAPI(url string) bool {
+	return strings.Contains(url, "container.googleapis.com")
 }
 
 // Simple check for IPv4 address format.

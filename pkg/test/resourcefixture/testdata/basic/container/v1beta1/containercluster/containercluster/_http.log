@@ -865,11 +865,11 @@ X-Xss-Protection: 0
     "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
   ],
   "ipAllocationPolicy": {
-    "clusterIpv4Cidr": "/20",
-    "clusterIpv4CidrBlock": "/20",
+    "clusterIpv4Cidr": "${clusterIpv4Cidr}",
+    "clusterIpv4CidrBlock": "${clusterIpv4Cidr}",
     "podCidrOverprovisionConfig": {},
-    "servicesIpv4Cidr": "/20",
-    "servicesIpv4CidrBlock": "/20",
+    "servicesIpv4Cidr": "${servicesIpv4Cidr}",
+    "servicesIpv4CidrBlock": "${servicesIpv4Cidr}",
     "stackType": "IPV4",
     "useIpAliases": true
   },
@@ -1245,11 +1245,11 @@ X-Xss-Protection: 0
     "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
   ],
   "ipAllocationPolicy": {
-    "clusterIpv4Cidr": "/20",
-    "clusterIpv4CidrBlock": "/20",
+    "clusterIpv4Cidr": "${clusterIpv4Cidr}",
+    "clusterIpv4CidrBlock": "${clusterIpv4Cidr}",
     "podCidrOverprovisionConfig": {},
-    "servicesIpv4Cidr": "/20",
-    "servicesIpv4CidrBlock": "/20",
+    "servicesIpv4Cidr": "${servicesIpv4Cidr}",
+    "servicesIpv4CidrBlock": "${servicesIpv4Cidr}",
     "stackType": "IPV4",
     "useIpAliases": true
   },
@@ -1625,11 +1625,11 @@ X-Xss-Protection: 0
     "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
   ],
   "ipAllocationPolicy": {
-    "clusterIpv4Cidr": "/20",
-    "clusterIpv4CidrBlock": "/20",
+    "clusterIpv4Cidr": "${clusterIpv4Cidr}",
+    "clusterIpv4CidrBlock": "${clusterIpv4Cidr}",
     "podCidrOverprovisionConfig": {},
-    "servicesIpv4Cidr": "/20",
-    "servicesIpv4CidrBlock": "/20",
+    "servicesIpv4Cidr": "${servicesIpv4Cidr}",
+    "servicesIpv4CidrBlock": "${servicesIpv4Cidr}",
     "stackType": "IPV4",
     "useIpAliases": true
   },
@@ -2005,11 +2005,11 @@ X-Xss-Protection: 0
     "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
   ],
   "ipAllocationPolicy": {
-    "clusterIpv4Cidr": "/20",
-    "clusterIpv4CidrBlock": "/20",
+    "clusterIpv4Cidr": "${clusterIpv4Cidr}",
+    "clusterIpv4CidrBlock": "${clusterIpv4Cidr}",
     "podCidrOverprovisionConfig": {},
-    "servicesIpv4Cidr": "/20",
-    "servicesIpv4CidrBlock": "/20",
+    "servicesIpv4Cidr": "${servicesIpv4Cidr}",
+    "servicesIpv4CidrBlock": "${servicesIpv4Cidr}",
     "stackType": "IPV4",
     "useIpAliases": true
   },
@@ -2476,11 +2476,11 @@ X-Xss-Protection: 0
     "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
   ],
   "ipAllocationPolicy": {
-    "clusterIpv4Cidr": "/20",
-    "clusterIpv4CidrBlock": "/20",
+    "clusterIpv4Cidr": "${clusterIpv4Cidr}",
+    "clusterIpv4CidrBlock": "${clusterIpv4Cidr}",
     "podCidrOverprovisionConfig": {},
-    "servicesIpv4Cidr": "/20",
-    "servicesIpv4CidrBlock": "/20",
+    "servicesIpv4Cidr": "${servicesIpv4Cidr}",
+    "servicesIpv4CidrBlock": "${servicesIpv4Cidr}",
     "stackType": "IPV4",
     "useIpAliases": true
   },
@@ -2856,11 +2856,11 @@ X-Xss-Protection: 0
     "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
   ],
   "ipAllocationPolicy": {
-    "clusterIpv4Cidr": "/20",
-    "clusterIpv4CidrBlock": "/20",
+    "clusterIpv4Cidr": "${clusterIpv4Cidr}",
+    "clusterIpv4CidrBlock": "${clusterIpv4Cidr}",
     "podCidrOverprovisionConfig": {},
-    "servicesIpv4Cidr": "/20",
-    "servicesIpv4CidrBlock": "/20",
+    "servicesIpv4Cidr": "${servicesIpv4Cidr}",
+    "servicesIpv4CidrBlock": "${servicesIpv4Cidr}",
     "stackType": "IPV4",
     "useIpAliases": true
   },
@@ -3236,11 +3236,11 @@ X-Xss-Protection: 0
     "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
   ],
   "ipAllocationPolicy": {
-    "clusterIpv4Cidr": "/20",
-    "clusterIpv4CidrBlock": "/20",
+    "clusterIpv4Cidr": "${clusterIpv4Cidr}",
+    "clusterIpv4CidrBlock": "${clusterIpv4Cidr}",
     "podCidrOverprovisionConfig": {},
-    "servicesIpv4Cidr": "/20",
-    "servicesIpv4CidrBlock": "/20",
+    "servicesIpv4Cidr": "${servicesIpv4Cidr}",
+    "servicesIpv4CidrBlock": "${servicesIpv4Cidr}",
     "stackType": "IPV4",
     "useIpAliases": true
   },
