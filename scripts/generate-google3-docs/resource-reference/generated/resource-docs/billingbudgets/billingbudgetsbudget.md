@@ -799,7 +799,7 @@ spec:
   billingAccountRef:
     # Replace "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}" with the numeric ID for your billing account
     external: "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}"
-  displayName: "sample-budget"
+  displayName: "sample-calendar-budget"
   budgetFilter:
     projects:
     - name: "billingbudgetsbudget-dep-calb"
@@ -879,6 +879,7 @@ kind: BillingBudgetsBudget
 metadata:
   name: billingbudgetsbudget-sample-custombudget
 spec:
+  displayName: "sample-custom-budget"
   billingAccountRef:
     # Replace "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}" with the numeric ID for your billing account
     external: "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}"
@@ -888,7 +889,7 @@ spec:
     creditTypesTreatment: "INCLUDE_SPECIFIED_CREDITS"
     customPeriod:
       startDate:
-        year: 2140
+        year: 2145
         month: 1
         day: 1
       endDate:
