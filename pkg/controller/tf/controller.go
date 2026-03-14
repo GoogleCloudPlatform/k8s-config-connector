@@ -430,7 +430,20 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource, tf
 		r.logger.Error(err, "error applying desired state", "resource", krmResource.GetNamespacedName())
 		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource, fmt.Errorf("error applying desired state: %w", err))
 	}
-	return false, r.handleUpToDate(ctx, krmResource, newState, secretVersions)
+	failedApplyButCreated := liveState.Empty() && !newState.Empty()
+	if failedApplyButCreated {
+		r.logger.Info("successfully created underlying GCP resource; now updating Kubernetes status",
+			"resource", krmResource.GetNamespacedName(),
+			"gcpID", newState.ID)
+	}
+	err = r.handleUpToDate(ctx, krmResource, newState, secretVersions)
+	if err != nil && failedApplyButCreated {
+		r.logger.Error(err, "CRITICAL: Failed to update Kubernetes status after successful GCP resource creation. "+
+			"For resources like IAMServiceAccountKey, the private key may be lost if not already captured in logs/events.",
+			"resource", krmResource.GetNamespacedName(),
+			"gcpID", newState.ID)
+	}
+	return false, err
 }
 
 func (r *Reconciler) supportsImmediateReconciliations() bool {
