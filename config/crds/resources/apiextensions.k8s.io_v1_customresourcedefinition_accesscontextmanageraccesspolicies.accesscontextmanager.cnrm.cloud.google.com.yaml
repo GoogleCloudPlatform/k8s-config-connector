@@ -111,6 +111,10 @@ spec:
               createTime:
                 description: Output only. Time the AccessPolicy was created in UTC.
                 type: string
+              externalRef:
+                description: A unique specifier for the AccessContextManagerAccessPolicy
+                  resource in GCP.
+                type: string
               name:
                 description: 'Resource name of the AccessPolicy. Format: {policy_id}.'
                 type: string
