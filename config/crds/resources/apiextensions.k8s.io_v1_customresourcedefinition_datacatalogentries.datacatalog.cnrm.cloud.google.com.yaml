@@ -57,6 +57,7 @@ spec:
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
+            additionalProperties: false
             type: object
           spec:
             description: DataCatalogEntrySpec defines the desired state of DataCatalogEntry
@@ -224,9 +225,9 @@ spec:
                     type: string
                 type: object
               featureOnlineStoreSpec:
+                additionalProperties: false
                 description: FeatureonlineStore spec for Vertex AI Feature Store.
                 type: object
-                additionalProperties: false
               filesetSpec:
                 description: Specification that applies to a fileset resource. Valid
                   only for entries with the `FILESET` type.
@@ -259,17 +260,17 @@ spec:
                                     type: string
                                 type: object
                               csv:
+                                additionalProperties: false
                                 description: Marks a CSV-encoded data source.
                                 type: object
-                                additionalProperties: false
                               orc:
+                                additionalProperties: false
                                 description: Marks an ORC-encoded data source.
                                 type: object
-                                additionalProperties: false
                               parquet:
+                                additionalProperties: false
                                 description: Marks a Parquet-encoded data source.
                                 type: object
-                                additionalProperties: false
                               protobuf:
                                 description: Schema in protocol buffer format.
                                 properties:
@@ -856,17 +857,17 @@ spec:
                                         type: string
                                     type: object
                                   csv:
+                                    additionalProperties: false
                                     description: Marks a CSV-encoded data source.
                                     type: object
-                                    additionalProperties: false
                                   orc:
+                                    additionalProperties: false
                                     description: Marks an ORC-encoded data source.
                                     type: object
-                                    additionalProperties: false
                                   parquet:
+                                    additionalProperties: false
                                     description: Marks a Parquet-encoded data source.
                                     type: object
-                                    additionalProperties: false
                                   protobuf:
                                     description: Schema in protocol buffer format.
                                     properties:
@@ -984,9 +985,9 @@ spec:
                         type: boolean
                     type: object
                   usageSignal:
+                    additionalProperties: false
                     description: Resource usage statistics.
                     type: object
-                    additionalProperties: false
                 type: object
             type: object
         required:

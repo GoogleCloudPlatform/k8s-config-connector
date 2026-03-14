@@ -58,6 +58,7 @@ spec:
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
+            additionalProperties: false
             type: object
           spec:
             properties:
@@ -118,9 +119,9 @@ spec:
                                 - alertPolicyRef
                                 type: object
                               blank:
+                                additionalProperties: false
                                 description: A blank space.
                                 type: object
-                                additionalProperties: false
                               collapsibleGroup:
                                 description: A widget that groups the other widgets.
                                   All widgets that are within the area spanned by
@@ -713,11 +714,11 @@ spec:
                                 description: A scorecard summarizing time series data.
                                 properties:
                                   blankView:
+                                    additionalProperties: false
                                     description: Will cause the `Scorecard` to show
                                       only the value, with no indicator to its value
                                       relative to its thresholds.
                                     type: object
-                                    additionalProperties: false
                                   gaugeView:
                                     description: Will cause the scorecard to show
                                       a gauge chart.
@@ -1133,10 +1134,10 @@ spec:
                                     type: string
                                 type: object
                               singleViewGroup:
+                                additionalProperties: false
                                 description: A widget that groups the other widgets
                                   by using a dropdown menu.
                                 type: object
-                                additionalProperties: false
                               text:
                                 description: A raw string or markdown displaying textual
                                   content.
@@ -2170,9 +2171,9 @@ spec:
                           - alertPolicyRef
                           type: object
                         blank:
+                          additionalProperties: false
                           description: A blank space.
                           type: object
-                          additionalProperties: false
                         collapsibleGroup:
                           description: A widget that groups the other widgets. All
                             widgets that are within the area spanned by the grouping
@@ -2724,11 +2725,11 @@ spec:
                           description: A scorecard summarizing time series data.
                           properties:
                             blankView:
+                              additionalProperties: false
                               description: Will cause the `Scorecard` to show only
                                 the value, with no indicator to its value relative
                                 to its thresholds.
                               type: object
-                              additionalProperties: false
                             gaugeView:
                               description: Will cause the scorecard to show a gauge
                                 chart.
@@ -3102,10 +3103,10 @@ spec:
                               type: string
                           type: object
                         singleViewGroup:
+                          additionalProperties: false
                           description: A widget that groups the other widgets by using
                             a dropdown menu.
                           type: object
-                          additionalProperties: false
                         text:
                           description: A raw string or markdown displaying textual
                             content.
@@ -4038,9 +4039,9 @@ spec:
                               - alertPolicyRef
                               type: object
                             blank:
+                              additionalProperties: false
                               description: A blank space.
                               type: object
-                              additionalProperties: false
                             collapsibleGroup:
                               description: A widget that groups the other widgets.
                                 All widgets that are within the area spanned by the
@@ -4616,11 +4617,11 @@ spec:
                               description: A scorecard summarizing time series data.
                               properties:
                                 blankView:
+                                  additionalProperties: false
                                   description: Will cause the `Scorecard` to show
                                     only the value, with no indicator to its value
                                     relative to its thresholds.
                                   type: object
-                                  additionalProperties: false
                                 gaugeView:
                                   description: Will cause the scorecard to show a
                                     gauge chart.
@@ -5016,10 +5017,10 @@ spec:
                                   type: string
                               type: object
                             singleViewGroup:
+                              additionalProperties: false
                               description: A widget that groups the other widgets
                                 by using a dropdown menu.
                               type: object
-                              additionalProperties: false
                             text:
                               description: A raw string or markdown displaying textual
                                 content.
@@ -6052,9 +6053,9 @@ spec:
                                 - alertPolicyRef
                                 type: object
                               blank:
+                                additionalProperties: false
                                 description: A blank space.
                                 type: object
-                                additionalProperties: false
                               collapsibleGroup:
                                 description: A widget that groups the other widgets.
                                   All widgets that are within the area spanned by
@@ -6647,11 +6648,11 @@ spec:
                                 description: A scorecard summarizing time series data.
                                 properties:
                                   blankView:
+                                    additionalProperties: false
                                     description: Will cause the `Scorecard` to show
                                       only the value, with no indicator to its value
                                       relative to its thresholds.
                                     type: object
-                                    additionalProperties: false
                                   gaugeView:
                                     description: Will cause the scorecard to show
                                       a gauge chart.
@@ -7067,10 +7068,10 @@ spec:
                                     type: string
                                 type: object
                               singleViewGroup:
+                                additionalProperties: false
                                 description: A widget that groups the other widgets
                                   by using a dropdown menu.
                                 type: object
-                                additionalProperties: false
                               text:
                                 description: A raw string or markdown displaying textual
                                   content.

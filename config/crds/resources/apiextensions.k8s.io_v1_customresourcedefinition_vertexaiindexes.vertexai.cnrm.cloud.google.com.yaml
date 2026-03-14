@@ -55,6 +55,7 @@ spec:
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
+            additionalProperties: false
             type: object
           spec:
             properties:
@@ -294,6 +295,7 @@ spec:
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
+            additionalProperties: false
             type: object
           spec:
             properties:
@@ -322,11 +324,11 @@ spec:
                           used for efficient search.
                         properties:
                           bruteForceConfig:
+                            additionalProperties: false
                             description: |-
                               Configuration options for using brute force search, which simply implements the
                               standard linear search in the database for each query.
                             type: object
-                            additionalProperties: false
                           treeAhConfig:
                             description: |-
                               Configuration options for using the tree-AH algorithm (Shallow tree + Asymmetric Hashing).
