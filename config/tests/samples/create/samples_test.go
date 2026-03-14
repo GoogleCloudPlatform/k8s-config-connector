@@ -209,11 +209,6 @@ var testDisabledList = map[string]bool{
 	"basic-certificate":     true,
 	"cert-sign-certificate": true,
 	"complex-certificate":   true,
-	// TODO(b/240327420): The ApigeeEnvironment test seems to be timing out,
-	// thereby causing the samples test to fail and blocking the  release.
-	// Disable the test for now and re-enable it once the issue has been
-	// resolved.
-	"apigeeenvironment": true,
 	// This sample test is failing because of parallel deletion failure from the API.
 	// Disable the test for now while we are figuring out the long term fix with the
 	// service team (b/260214463).
