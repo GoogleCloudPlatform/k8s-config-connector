@@ -17,7 +17,9 @@ package servicenetworking
 // We don't have a proto for servicenetworking, so we write the mappers manually (TIP: do start with the generated mappers to make this easy)
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicenetworking/v1alpha1"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicenetworking/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	api "google.golang.org/api/servicenetworking/v1"
 )
@@ -56,5 +58,70 @@ func ServiceNetworkingPeeredDNSDomainSpec_ToProto(mapCtx *direct.MapContext, in 
 	out := &api.PeeredDnsDomain{}
 	out.DnsSuffix = direct.ValueOf(in.DNSSuffix)
 	// MISSING: Name
+	return out
+}
+
+func ServiceNetworkingConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *api.Connection) *krmv1beta1.ServiceNetworkingConnectionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.ServiceNetworkingConnectionObservedState{}
+	// MISSING: Peering
+	return out
+}
+func ServiceNetworkingConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.ServiceNetworkingConnectionObservedState) *api.Connection {
+	if in == nil {
+		return nil
+	}
+	out := &api.Connection{}
+	// MISSING: Peering
+	return out
+}
+func ServiceNetworkingConnectionSpec_FromProto(mapCtx *direct.MapContext, in *api.Connection) *krmv1beta1.ServiceNetworkingConnectionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.ServiceNetworkingConnectionSpec{}
+	if in.Network != "" {
+		out.NetworkRef = &refs.ComputeNetworkRef{External: in.Network}
+	}
+	// MISSING: Peering
+	out.ReservedPeeringRanges = ServiceNetworkingConnectionSpec_ReservedPeeringRanges_FromProto(mapCtx, in.ReservedPeeringRanges)
+	return out
+}
+func ServiceNetworkingConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.ServiceNetworkingConnectionSpec) *api.Connection {
+	if in == nil {
+		return nil
+	}
+	out := &api.Connection{}
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	// MISSING: Peering
+	out.ReservedPeeringRanges = ServiceNetworkingConnectionSpec_ReservedPeeringRanges_ToProto(mapCtx, in.ReservedPeeringRanges)
+	return out
+}
+
+func ServiceNetworkingConnectionSpec_ReservedPeeringRanges_FromProto(mapCtx *direct.MapContext, in []string) []*refs.ComputeAddressRef {
+	if in == nil {
+		return nil
+	}
+	out := make([]*refs.ComputeAddressRef, len(in))
+	for i, item := range in {
+		out[i] = &refs.ComputeAddressRef{External: item}
+	}
+	return out
+}
+func ServiceNetworkingConnectionSpec_ReservedPeeringRanges_ToProto(mapCtx *direct.MapContext, in []*refs.ComputeAddressRef) []string {
+	if in == nil {
+		return nil
+	}
+	out := make([]string, len(in))
+	for i, item := range in {
+		if item == nil {
+			continue
+		}
+		out[i] = item.External
+	}
 	return out
 }
