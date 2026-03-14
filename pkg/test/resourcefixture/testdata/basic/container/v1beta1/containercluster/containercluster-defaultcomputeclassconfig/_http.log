@@ -226,7 +226,7 @@ X-Xss-Protection: 0
     }
   },
   "binaryAuthorization": {},
-  "clusterIpv4Cidr": "10.112.0.0/14",
+  "clusterIpv4Cidr": "${clusterIpv4Cidr}",
   "clusterTelemetry": {
     "type": "ENABLED"
   },
@@ -270,11 +270,11 @@ X-Xss-Protection: 0
     "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
   ],
   "ipAllocationPolicy": {
-    "clusterIpv4Cidr": "10.112.0.0/14",
-    "clusterIpv4CidrBlock": "10.112.0.0/14",
+    "clusterIpv4Cidr": "${clusterIpv4Cidr}",
+    "clusterIpv4CidrBlock": "${clusterIpv4Cidr}",
     "podCidrOverprovisionConfig": {},
-    "servicesIpv4Cidr": "34.118.224.0/20",
-    "servicesIpv4CidrBlock": "34.118.224.0/20",
+    "servicesIpv4Cidr": "${servicesIpv4Cidr}",
+    "servicesIpv4CidrBlock": "${servicesIpv4Cidr}",
     "stackType": "IPV4",
     "useIpAliases": true
   },
@@ -481,7 +481,7 @@ X-Xss-Protection: 0
     "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
   },
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/containercluster-${uniqueId}",
-  "servicesIpv4Cidr": "34.118.224.0/20",
+  "servicesIpv4Cidr": "${servicesIpv4Cidr}",
   "shieldedNodes": {
     "enabled": true
   },
@@ -574,7 +574,7 @@ X-Xss-Protection: 0
     }
   },
   "binaryAuthorization": {},
-  "clusterIpv4Cidr": "10.112.0.0/14",
+  "clusterIpv4Cidr": "${clusterIpv4Cidr}",
   "clusterTelemetry": {
     "type": "ENABLED"
   },
@@ -618,11 +618,11 @@ X-Xss-Protection: 0
     "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
   ],
   "ipAllocationPolicy": {
-    "clusterIpv4Cidr": "10.112.0.0/14",
-    "clusterIpv4CidrBlock": "10.112.0.0/14",
+    "clusterIpv4Cidr": "${clusterIpv4Cidr}",
+    "clusterIpv4CidrBlock": "${clusterIpv4Cidr}",
     "podCidrOverprovisionConfig": {},
-    "servicesIpv4Cidr": "34.118.224.0/20",
-    "servicesIpv4CidrBlock": "34.118.224.0/20",
+    "servicesIpv4Cidr": "${servicesIpv4Cidr}",
+    "servicesIpv4CidrBlock": "${servicesIpv4Cidr}",
     "stackType": "IPV4",
     "useIpAliases": true
   },
@@ -829,7 +829,7 @@ X-Xss-Protection: 0
     "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
   },
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/containercluster-${uniqueId}",
-  "servicesIpv4Cidr": "34.118.224.0/20",
+  "servicesIpv4Cidr": "${servicesIpv4Cidr}",
   "shieldedNodes": {
     "enabled": true
   },
@@ -922,7 +922,7 @@ X-Xss-Protection: 0
     }
   },
   "binaryAuthorization": {},
-  "clusterIpv4Cidr": "10.112.0.0/14",
+  "clusterIpv4Cidr": "${clusterIpv4Cidr}",
   "clusterTelemetry": {
     "type": "ENABLED"
   },
@@ -966,11 +966,11 @@ X-Xss-Protection: 0
     "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
   ],
   "ipAllocationPolicy": {
-    "clusterIpv4Cidr": "10.112.0.0/14",
-    "clusterIpv4CidrBlock": "10.112.0.0/14",
+    "clusterIpv4Cidr": "${clusterIpv4Cidr}",
+    "clusterIpv4CidrBlock": "${clusterIpv4Cidr}",
     "podCidrOverprovisionConfig": {},
-    "servicesIpv4Cidr": "34.118.224.0/20",
-    "servicesIpv4CidrBlock": "34.118.224.0/20",
+    "servicesIpv4Cidr": "${servicesIpv4Cidr}",
+    "servicesIpv4CidrBlock": "${servicesIpv4Cidr}",
     "stackType": "IPV4",
     "useIpAliases": true
   },
@@ -1177,7 +1177,7 @@ X-Xss-Protection: 0
     "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
   },
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/containercluster-${uniqueId}",
-  "servicesIpv4Cidr": "34.118.224.0/20",
+  "servicesIpv4Cidr": "${servicesIpv4Cidr}",
   "shieldedNodes": {
     "enabled": true
   },
@@ -1270,7 +1270,7 @@ X-Xss-Protection: 0
     }
   },
   "binaryAuthorization": {},
-  "clusterIpv4Cidr": "10.112.0.0/14",
+  "clusterIpv4Cidr": "${clusterIpv4Cidr}",
   "clusterTelemetry": {
     "type": "ENABLED"
   },
@@ -1314,11 +1314,11 @@ X-Xss-Protection: 0
     "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
   ],
   "ipAllocationPolicy": {
-    "clusterIpv4Cidr": "10.112.0.0/14",
-    "clusterIpv4CidrBlock": "10.112.0.0/14",
+    "clusterIpv4Cidr": "${clusterIpv4Cidr}",
+    "clusterIpv4CidrBlock": "${clusterIpv4Cidr}",
     "podCidrOverprovisionConfig": {},
-    "servicesIpv4Cidr": "34.118.224.0/20",
-    "servicesIpv4CidrBlock": "34.118.224.0/20",
+    "servicesIpv4Cidr": "${servicesIpv4Cidr}",
+    "servicesIpv4CidrBlock": "${servicesIpv4Cidr}",
     "stackType": "IPV4",
     "useIpAliases": true
   },
@@ -1525,7 +1525,7 @@ X-Xss-Protection: 0
     "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
   },
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/containercluster-${uniqueId}",
-  "servicesIpv4Cidr": "34.118.224.0/20",
+  "servicesIpv4Cidr": "${servicesIpv4Cidr}",
   "shieldedNodes": {
     "enabled": true
   },
@@ -1649,7 +1649,7 @@ X-Xss-Protection: 0
     "defaultComputeClassConfig": {}
   },
   "binaryAuthorization": {},
-  "clusterIpv4Cidr": "10.112.0.0/14",
+  "clusterIpv4Cidr": "${clusterIpv4Cidr}",
   "clusterTelemetry": {
     "type": "ENABLED"
   },
@@ -1693,11 +1693,11 @@ X-Xss-Protection: 0
     "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
   ],
   "ipAllocationPolicy": {
-    "clusterIpv4Cidr": "10.112.0.0/14",
-    "clusterIpv4CidrBlock": "10.112.0.0/14",
+    "clusterIpv4Cidr": "${clusterIpv4Cidr}",
+    "clusterIpv4CidrBlock": "${clusterIpv4Cidr}",
     "podCidrOverprovisionConfig": {},
-    "servicesIpv4Cidr": "34.118.224.0/20",
-    "servicesIpv4CidrBlock": "34.118.224.0/20",
+    "servicesIpv4Cidr": "${servicesIpv4Cidr}",
+    "servicesIpv4CidrBlock": "${servicesIpv4Cidr}",
     "stackType": "IPV4",
     "useIpAliases": true
   },
@@ -1904,7 +1904,7 @@ X-Xss-Protection: 0
     "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
   },
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/containercluster-${uniqueId}",
-  "servicesIpv4Cidr": "34.118.224.0/20",
+  "servicesIpv4Cidr": "${servicesIpv4Cidr}",
   "shieldedNodes": {
     "enabled": true
   },
@@ -1995,7 +1995,7 @@ X-Xss-Protection: 0
     "defaultComputeClassConfig": {}
   },
   "binaryAuthorization": {},
-  "clusterIpv4Cidr": "10.112.0.0/14",
+  "clusterIpv4Cidr": "${clusterIpv4Cidr}",
   "clusterTelemetry": {
     "type": "ENABLED"
   },
@@ -2039,11 +2039,11 @@ X-Xss-Protection: 0
     "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
   ],
   "ipAllocationPolicy": {
-    "clusterIpv4Cidr": "10.112.0.0/14",
-    "clusterIpv4CidrBlock": "10.112.0.0/14",
+    "clusterIpv4Cidr": "${clusterIpv4Cidr}",
+    "clusterIpv4CidrBlock": "${clusterIpv4Cidr}",
     "podCidrOverprovisionConfig": {},
-    "servicesIpv4Cidr": "34.118.224.0/20",
-    "servicesIpv4CidrBlock": "34.118.224.0/20",
+    "servicesIpv4Cidr": "${servicesIpv4Cidr}",
+    "servicesIpv4CidrBlock": "${servicesIpv4Cidr}",
     "stackType": "IPV4",
     "useIpAliases": true
   },
@@ -2250,7 +2250,7 @@ X-Xss-Protection: 0
     "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
   },
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/containercluster-${uniqueId}",
-  "servicesIpv4Cidr": "34.118.224.0/20",
+  "servicesIpv4Cidr": "${servicesIpv4Cidr}",
   "shieldedNodes": {
     "enabled": true
   },
@@ -2341,7 +2341,7 @@ X-Xss-Protection: 0
     "defaultComputeClassConfig": {}
   },
   "binaryAuthorization": {},
-  "clusterIpv4Cidr": "10.112.0.0/14",
+  "clusterIpv4Cidr": "${clusterIpv4Cidr}",
   "clusterTelemetry": {
     "type": "ENABLED"
   },
@@ -2385,11 +2385,11 @@ X-Xss-Protection: 0
     "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
   ],
   "ipAllocationPolicy": {
-    "clusterIpv4Cidr": "10.112.0.0/14",
-    "clusterIpv4CidrBlock": "10.112.0.0/14",
+    "clusterIpv4Cidr": "${clusterIpv4Cidr}",
+    "clusterIpv4CidrBlock": "${clusterIpv4Cidr}",
     "podCidrOverprovisionConfig": {},
-    "servicesIpv4Cidr": "34.118.224.0/20",
-    "servicesIpv4CidrBlock": "34.118.224.0/20",
+    "servicesIpv4Cidr": "${servicesIpv4Cidr}",
+    "servicesIpv4CidrBlock": "${servicesIpv4Cidr}",
     "stackType": "IPV4",
     "useIpAliases": true
   },
@@ -2596,7 +2596,7 @@ X-Xss-Protection: 0
     "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
   },
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/containercluster-${uniqueId}",
-  "servicesIpv4Cidr": "34.118.224.0/20",
+  "servicesIpv4Cidr": "${servicesIpv4Cidr}",
   "shieldedNodes": {
     "enabled": true
   },

@@ -574,7 +574,7 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 	// }
 
 	if obj.ClusterIpv4Cidr == "" {
-		obj.ClusterIpv4Cidr = "10.92.0.0/14"
+		obj.ClusterIpv4Cidr = "10.112.0.0/14"
 	}
 
 	// ClusterTelemetry

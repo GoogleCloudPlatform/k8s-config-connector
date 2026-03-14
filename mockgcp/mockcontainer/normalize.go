@@ -32,15 +32,23 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 
 	// Cluster
 	{
-		replacements.ReplacePath(".clusterIpv4Cidr", "10.112.0.0/14")
+		replacements.ReplacePath(".clusterIpv4Cidr", "${clusterIpv4Cidr}")
+		replacements.ReplacePath(".servicesIpv4Cidr", "${servicesIpv4Cidr}")
 
-		replacements.ReplacePath(".clusterIpv4Cidr", "10.112.0.0/14")
-		replacements.ReplacePath(".ipAllocationPolicy.clusterIpv4Cidr", "10.112.0.0/14")
-		replacements.ReplacePath(".ipAllocationPolicy.clusterIpv4CidrBlock", "10.112.0.0/14")
+		replacements.ReplacePath(".ipAllocationPolicy.clusterIpv4Cidr", "${clusterIpv4Cidr}")
+		replacements.ReplacePath(".ipAllocationPolicy.clusterIpv4CidrBlock", "${clusterIpv4Cidr}")
+		replacements.ReplacePath(".ipAllocationPolicy.servicesIpv4Cidr", "${servicesIpv4Cidr}")
+		replacements.ReplacePath(".ipAllocationPolicy.servicesIpv4CidrBlock", "${servicesIpv4Cidr}")
 
 		replacements.ReplacePath(".maintenancePolicy.resourceVersion", "abcd1234")
 
 		replacements.SortSlice(".monitoringConfig.componentConfig.enableSystemComponents")
+	}
+
+	// NodePool
+	{
+		replacements.ReplacePath(".podIpv4CidrSize", "24")
+		replacements.ReplacePath(".networkConfig.podIpv4CidrBlock", "${podIpv4CidrBlock}")
 	}
 }
 
