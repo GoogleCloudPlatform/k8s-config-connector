@@ -179,7 +179,25 @@ func walkDepth(s *apiextensionsv1.JSONSchemaProps, depth int) any {
 			m[":type"] = res
 		}
 		for i, v := range s.XValidations {
-			m[fmt.Sprintf(":validation[%d]", i)] = v.Rule
+			val := map[string]any{
+				"rule": v.Rule,
+			}
+			if v.Message != "" {
+				val["message"] = v.Message
+			}
+			if v.MessageExpression != "" {
+				val["messageExpression"] = v.MessageExpression
+			}
+			if v.Reason != nil {
+				val["reason"] = string(*v.Reason)
+			}
+			if v.FieldPath != "" {
+				val["fieldPath"] = v.FieldPath
+			}
+			if v.OptionalOldSelf != nil {
+				val["optionalOldSelf"] = *v.OptionalOldSelf
+			}
+			m[fmt.Sprintf(":validation[%d]", i)] = val
 		}
 		return m
 	}

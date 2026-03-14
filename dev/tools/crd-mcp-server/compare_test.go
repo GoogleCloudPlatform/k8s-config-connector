@@ -772,10 +772,81 @@ spec:
 
 	result := compareEquivalence(old, new)
 	if len(result.Diffs) == 0 {
-		t.Error("expected diffs for validation rule change")
+	        t.Error("expected diffs for validation rule change")
+	}
+	}
+
+func TestEquivalence_ChangeValidationMessage(t *testing.T) {
+	oldYaml := `
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: foos.example.com
+spec:
+  group: example.com
+  names:
+    kind: Foo
+    plural: foos
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              region:
+                type: string
+                x-kubernetes-validations:
+                - rule: 'self == "us-central1"'
+                  message: "old message"
+`
+	newYaml := `
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: foos.example.com
+spec:
+  group: example.com
+  names:
+    kind: Foo
+    plural: foos
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              region:
+                type: string
+                x-kubernetes-validations:
+                - rule: 'self == "us-central1"'
+                  message: "new message"
+`
+	old, err := parseCRD([]byte(oldYaml))
+	if err != nil {
+		t.Fatal(err)
+	}
+	new, err := parseCRD([]byte(newYaml))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	result := compareEquivalence(old, new)
+	if len(result.Diffs) == 0 {
+		t.Error("expected diffs for validation message change")
 	}
 }
-
 func TestBackwardCompat_AddValidation(t *testing.T) {
 	modified := `
 apiVersion: apiextensions.k8s.io/v1
