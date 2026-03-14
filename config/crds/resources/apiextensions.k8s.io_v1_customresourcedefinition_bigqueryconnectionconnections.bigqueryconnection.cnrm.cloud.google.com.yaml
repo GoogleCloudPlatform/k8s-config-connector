@@ -58,7 +58,6 @@ spec:
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
-            additionalProperties: false
             type: object
           spec:
             description: BigQueryConnectionConnectionSpec defines the desired state
@@ -95,7 +94,6 @@ spec:
                 - customerTenantID
                 type: object
               cloudResource:
-                additionalProperties: false
                 description: Use Cloud Resource properties.
                 type: object
               cloudSQL:
@@ -573,7 +571,6 @@ spec:
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
-            additionalProperties: false
             type: object
           spec:
             description: BigQueryConnectionConnectionSpec defines the desired state
@@ -610,7 +607,6 @@ spec:
                 - customerTenantID
                 type: object
               cloudResource:
-                additionalProperties: false
                 description: Use Cloud Resource properties.
                 type: object
               cloudSQL:

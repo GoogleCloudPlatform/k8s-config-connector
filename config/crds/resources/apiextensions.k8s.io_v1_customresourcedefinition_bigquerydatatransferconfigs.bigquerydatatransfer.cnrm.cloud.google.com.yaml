@@ -58,7 +58,6 @@ spec:
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
-            additionalProperties: false
             type: object
           spec:
             description: BigQueryDataTransferConfigSpec defines the desired state
@@ -443,7 +442,6 @@ spec:
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
-            additionalProperties: false
             type: object
           spec:
             description: BigQueryDataTransferConfigSpec defines the desired state
@@ -705,7 +703,6 @@ spec:
                         type: object
                     type: object
                   manualSchedule:
-                    additionalProperties: false
                     description: Manual transfer schedule. If set, the transfer run
                       will not be auto-scheduled by the system, unless the client
                       invokes StartManualTransferRuns.  This is equivalent to disable_auto_scheduling

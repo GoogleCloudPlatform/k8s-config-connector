@@ -58,7 +58,6 @@ spec:
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
-            additionalProperties: false
             type: object
           spec:
             description: BigQueryTableSpec defines the desired state of BigQueryTable
@@ -724,6 +723,10 @@ spec:
                   the resource.
                 format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
               selfLink:
                 description: Output only. A URL that can be used to access this resource
                   again.

@@ -58,7 +58,6 @@ spec:
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
-            additionalProperties: false
             type: object
           spec:
             description: ReCAPTCHAEnterpriseFirewallPolicySpec defines the desired
@@ -74,22 +73,18 @@ spec:
                 items:
                   properties:
                     allow:
-                      additionalProperties: false
                       description: The user request did not match any policy and should
                         be allowed access to the requested resource.
                       type: object
                     block:
-                      additionalProperties: false
                       description: This action denies access to a given page. The
                         user gets an HTTP error code.
                       type: object
                     includeRecaptchaScript:
-                      additionalProperties: false
                       description: This action injects reCAPTCHA JavaScript code into
                         the HTML page returned by the site backend.
                       type: object
                     redirect:
-                      additionalProperties: false
                       description: This action redirects the request to a reCAPTCHA
                         interstitial to attach a token.
                       type: object

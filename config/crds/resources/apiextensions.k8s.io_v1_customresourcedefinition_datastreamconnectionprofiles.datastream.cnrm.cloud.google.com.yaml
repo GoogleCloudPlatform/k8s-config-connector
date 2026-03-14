@@ -58,14 +58,12 @@ spec:
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
-            additionalProperties: false
             type: object
           spec:
             description: DatastreamConnectionProfileSpec defines the desired state
               of DatastreamConnectionProfile
             properties:
               bigQueryProfile:
-                additionalProperties: false
                 description: BigQuery Connection Profile configuration.
                 type: object
               displayName:
@@ -407,7 +405,6 @@ spec:
                 - secretRef
                 type: object
               staticServiceIPConnectivity:
-                additionalProperties: false
                 description: Static Service IP connectivity.
                 type: object
             required:
