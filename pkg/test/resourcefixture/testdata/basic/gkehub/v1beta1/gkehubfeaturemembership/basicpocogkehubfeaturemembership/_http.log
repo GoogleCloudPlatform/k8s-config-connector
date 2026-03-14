@@ -1096,7 +1096,7 @@ X-Xss-Protection: 0
       },
       "name": "default-pool",
       "networkConfig": {
-        "podIpv4CidrBlock": "10.92.0.0/14",
+        "podIpv4CidrBlock": "${clusterIpv4Cidr}",
         "podIpv4RangeUtilization": 0.001,
         "podRange": "default-pool-pods-12345678",
         "subnetwork": "projects/example-project-01/regions/us-west1/subnetworks/default"
@@ -1444,7 +1444,7 @@ X-Xss-Protection: 0
       },
       "name": "default-pool",
       "networkConfig": {
-        "podIpv4CidrBlock": "10.92.0.0/14",
+        "podIpv4CidrBlock": "${clusterIpv4Cidr}",
         "podIpv4RangeUtilization": 0.001,
         "podRange": "default-pool-pods-12345678",
         "subnetwork": "projects/example-project-01/regions/us-west1/subnetworks/default"
@@ -2575,7 +2575,7 @@ X-Xss-Protection: 0
       },
       "name": "default-pool",
       "networkConfig": {
-        "podIpv4CidrBlock": "10.92.0.0/14",
+        "podIpv4CidrBlock": "${clusterIpv4Cidr}",
         "podIpv4RangeUtilization": 0.001,
         "podRange": "default-pool-pods-12345678",
         "subnetwork": "projects/example-project-01/regions/us-west1/subnetworks/default"
@@ -2923,7 +2923,7 @@ X-Xss-Protection: 0
       },
       "name": "default-pool",
       "networkConfig": {
-        "podIpv4CidrBlock": "10.92.0.0/14",
+        "podIpv4CidrBlock": "${clusterIpv4Cidr}",
         "podIpv4RangeUtilization": 0.001,
         "podRange": "default-pool-pods-12345678",
         "subnetwork": "projects/example-project-01/regions/us-west1/subnetworks/default"
