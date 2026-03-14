@@ -69,3 +69,7 @@ func (r *BillingAccountRef) ValidateExternal(ref string) error {
 func (r *BillingAccountRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
 }
+
+func (r *BillingAccountRef) GetExternalFromCustomFields() []string {
+	return nil
+}
