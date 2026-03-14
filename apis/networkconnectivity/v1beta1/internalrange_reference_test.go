@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1_test
+package v1beta1_test
 
 import (
 	"testing"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1beta1"
 )
 
 func TestInternalRangeRef_ValidateExternal(t *testing.T) {
@@ -55,7 +55,7 @@ func TestInternalRangeRef_ValidateExternal(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			r := &v1alpha1.InternalRangeRef{}
+			r := &v1beta1.InternalRangeRef{}
 			if err := r.ValidateExternal(tt.ref); (err != nil) != tt.wantErr {
 				t.Errorf("InternalRangeRef.ValidateExternal() error = %v, wantErr %v", err, tt.wantErr)
 			}
