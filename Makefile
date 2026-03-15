@@ -48,6 +48,13 @@ endif
 .PHONY: all
 all: test manager operator config-connector
 
+# Clean build artifacts and Go caches
+.PHONY: clean
+clean:
+	rm -rf bin
+	rm -rf .build
+	go clean -cache -modcache
+
 # Run tests
 .PHONY: test
 test: generate fmt vet manifests

@@ -170,7 +170,7 @@ func (a *gkeHubAdapter) Find(ctx context.Context) (bool, error) {
 func (a *gkeHubAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	exist, err := a.Find(ctx)
 	if err != nil {
-		return false, fmt.Errorf("finding feature for %s:%w", a.featureID, err)
+		return false, fmt.Errorf("finding feature for %q: %w", a.featureID, err)
 	}
 	if !exist {
 		// return (false, nil) if the object was not found but should be presumed deleted.
@@ -179,7 +179,7 @@ func (a *gkeHubAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteO
 	// emptying the membershipspec is sufficient
 	a.desired = &krm.GKEHubFeatureMembership{}
 	if _, err := a.patchMembershipSpec(ctx); err != nil {
-		return false, fmt.Errorf("deleting membershipspec for %s: %w", a.membershipID, err)
+		return false, fmt.Errorf("deleting membershipspec for %q: %w", a.membershipID, err)
 	}
 	return true, nil
 }

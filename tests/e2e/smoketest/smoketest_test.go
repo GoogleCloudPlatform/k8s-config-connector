@@ -251,6 +251,17 @@ spec:
 		t.Fatalf("StorageBucket CRD not established: %v", err)
 	}
 
+	t.Logf("Waiting for KCC components to be ready")
+	if err := runCommand(ctx, t, root, "kubectl", "wait", "-n", "cnrm-system", "--for=jsonpath={.status.readyReplicas}=1", "statefulset/cnrm-controller-manager", "--timeout=5m"); err != nil {
+		t.Fatalf("cnrm-controller-manager failed to become ready: %v", err)
+	}
+	if err := runCommand(ctx, t, root, "kubectl", "wait", "-n", "cnrm-system", "--for=condition=Available", "deployment/cnrm-webhook-manager", "--timeout=5m"); err != nil {
+		t.Fatalf("cnrm-webhook-manager failed to become ready: %v", err)
+	}
+	if err := runCommand(ctx, t, root, "kubectl", "wait", "-n", "cnrm-system", "--for=jsonpath={.status.readyReplicas}=1", "statefulset/cnrm-deletiondefender", "--timeout=5m"); err != nil {
+		t.Fatalf("cnrm-deletiondefender failed to become ready: %v", err)
+	}
+
 	t.Logf("Creating namespace and StorageBucket")
 	ns := "config-control"
 	if err := runCommand(ctx, t, root, "kubectl", "create", "ns", ns); err != nil && !strings.Contains(err.Error(), "already exists") {

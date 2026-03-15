@@ -19,6 +19,7 @@ import (
 	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1beta1"
+	gkehubv1 "google.golang.org/api/gkehub/v1"
 	featureapi "google.golang.org/api/gkehub/v1beta"
 )
 
@@ -250,6 +251,28 @@ func diffPolicycontroller(left *krm.FeaturemembershipPolicycontroller, right *fe
 	}
 	if left.Version != nil && !reflect.DeepEqual(left.Version, right.Version) {
 		diffs = append(diffs, "version")
+	}
+	return diffs
+}
+
+func diffGKEHubScope(left *krm.GKEHubScopeSpec, right *gkehubv1.Scope) []string {
+	var diffs []string
+	if !reflect.DeepEqual(left.Labels, right.Labels) {
+		diffs = append(diffs, "labels")
+	}
+	if !reflect.DeepEqual(left.NamespaceLabels, right.NamespaceLabels) {
+		diffs = append(diffs, "namespaceLabels")
+	}
+	return diffs
+}
+
+func diffGKEHubNamespace(left *krm.GKEHubNamespaceSpec, right *gkehubv1.Namespace) []string {
+	var diffs []string
+	if !reflect.DeepEqual(left.Labels, right.Labels) {
+		diffs = append(diffs, "labels")
+	}
+	if !reflect.DeepEqual(left.NamespaceLabels, right.NamespaceLabels) {
+		diffs = append(diffs, "namespaceLabels")
 	}
 	return diffs
 }
