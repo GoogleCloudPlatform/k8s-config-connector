@@ -1,0 +1,7 @@
+# ./pkg/cli/backup/...
+pattern ./pkg/cli/backup/...: lstat ./pkg/cli/backup/: no such file or directory
+FAIL	./pkg/cli/backup/... [setup failed]
+# ./pkg/cli/restore/...
+pattern ./pkg/cli/restore/...: lstat ./pkg/cli/restore/: no such file or directory
+FAIL	./pkg/cli/restore/... [setup failed]
+FAIL

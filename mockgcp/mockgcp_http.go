@@ -155,25 +155,30 @@ func (m *mockRoundTripper) prefilterRequest(req *http.Request) error {
 		}
 
 		if requestBody.Len() != 0 {
-			o := make(map[string]any)
-			if err := json.Unmarshal(requestBody.Bytes(), &o); err != nil {
-				return fmt.Errorf("parsing json: %w", err)
-			}
+			contentType := req.Header.Get("Content-Type")
+			if strings.HasPrefix(contentType, "application/json") {
+				o := make(map[string]any)
+				if err := json.Unmarshal(requestBody.Bytes(), &o); err != nil {
+					return fmt.Errorf("parsing json: %w", err)
+				}
 
-			if err := m.modifyUpdateMask(o); err != nil {
-				return err
-			}
+				if err := m.modifyUpdateMask(o); err != nil {
+					return err
+				}
 
-			if err := pruneNilArrays(o); err != nil {
-				return err
-			}
+				if err := pruneNilArrays(o); err != nil {
+					return err
+				}
 
-			b, err := json.Marshal(o)
-			if err != nil {
-				return fmt.Errorf("building json: %w", err)
-			}
+				b, err := json.Marshal(o)
+				if err != nil {
+					return fmt.Errorf("building json: %w", err)
+				}
 
-			req.Body = io.NopCloser(bytes.NewBuffer(b))
+				req.Body = io.NopCloser(bytes.NewBuffer(b))
+			} else {
+				req.Body = io.NopCloser(bytes.NewBuffer(requestBody.Bytes()))
+			}
 		}
 	} else {
 		// When sending a delete request for a ComputeFirewallPolicyRule resource,

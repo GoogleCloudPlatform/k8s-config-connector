@@ -1,0 +1,78 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Step 0: Create a Storage Bucket for backups
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  name: backup-bucket-${uniqueId}
+spec:
+  location: us-central1
+---
+# Step 1: Create a dummy resource to backup
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: backup-test-network-${uniqueId}
+spec:
+  autoCreateSubnetworks: false
+---
+# Step 2: Trigger a manual backup using the CLI
+apiVersion: RunCLI
+kind: RunCLI
+args:
+  - backup
+  - create
+  - --project
+  - ${projectId}
+  - --bucket
+  - backup-bucket-${uniqueId}
+---
+# Step 3: Verify backup status in GCS
+apiVersion: RunCLI
+kind: RunCLI
+args:
+  - backup
+  - status
+  - --project
+  - ${projectId}
+  - --bucket
+  - backup-bucket-${uniqueId}
+---
+# Step 4: Delete the dummy resource
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: backup-test-network-${uniqueId}
+TEST: DELETE
+---
+# Step 5: Restore from backup using the 'latest' keyword
+apiVersion: RunCLI
+kind: RunCLI
+args:
+  - backup
+  - restore
+  - --project
+  - ${projectId}
+  - --source-bucket
+  - backup-bucket-${uniqueId}
+  - --backup-timestamp
+  - latest
+---
+# Step 6: Wait for the resource to be Ready again (implied by APPLY in the test runner if we used APPLY, but here we just want to verify it exists)
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: backup-test-network-${uniqueId}
+TEST: READ-OBJECT

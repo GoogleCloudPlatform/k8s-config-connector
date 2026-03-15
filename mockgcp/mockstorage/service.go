@@ -15,11 +15,18 @@
 package mockstorage
 
 import (
+	"bytes"
 	"context"
+	"fmt"
+	"io"
+	"mime"
+	"mime/multipart"
 	"net/http"
 	"strings"
+	"sync"
 
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 
 	// Note we use "real" protos (not mockgcp) ones as it's GRPC API.
@@ -43,6 +50,9 @@ type MockService struct {
 	*common.MockEnvironment
 	storage    storage.Storage
 	operations *operations.Operations
+
+	mutex      sync.Mutex
+	objectData map[string][]byte
 }
 
 // New creates a MockService.
@@ -51,12 +61,13 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 		MockEnvironment: env,
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
+		objectData:      make(map[string][]byte),
 	}
 	return s
 }
 
 func (s *MockService) ExpectedHosts() []string {
-	return []string{"storage.googleapis.com"}
+	return []string{"storage.googleapis.com", "www.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
@@ -135,5 +146,129 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		}
 	}
 
-	return httpmux.FilterBodyOn204(mux)
+	filterBodyHandler, err := httpmux.FilterBodyOn204(mux)
+	if err != nil {
+		return nil, err
+	}
+
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasPrefix(r.URL.Path, "/upload/") {
+			r.URL.Path = strings.TrimPrefix(r.URL.Path, "/upload")
+			if r.Method == "POST" && strings.HasSuffix(r.URL.Path, "/o") {
+				// This is an upload.
+				bucket := strings.TrimPrefix(r.URL.Path, "/storage/v1/b/")
+				bucket = strings.TrimSuffix(bucket, "/o")
+
+				name := r.URL.Query().Get("name")
+
+				// Read the body
+				bodyBytes, err := io.ReadAll(r.Body)
+				if err != nil {
+					http.Error(w, err.Error(), http.StatusInternalServerError)
+					return
+				}
+
+				var data []byte
+				contentType := r.Header.Get("Content-Type")
+				if strings.HasPrefix(contentType, "multipart/related") {
+					_, params, err := mime.ParseMediaType(contentType)
+					if err != nil {
+						http.Error(w, err.Error(), http.StatusBadRequest)
+						return
+					}
+					boundary := params["boundary"]
+					mr := multipart.NewReader(bytes.NewReader(bodyBytes), boundary)
+					for {
+						part, err := mr.NextPart()
+						if err == io.EOF {
+							break
+						}
+						if err != nil {
+							http.Error(w, err.Error(), http.StatusInternalServerError)
+							return
+						}
+						partData, err := io.ReadAll(part)
+						if err != nil {
+							http.Error(w, err.Error(), http.StatusInternalServerError)
+							return
+						}
+						// The first part is metadata (JSON), the second part is media.
+						// We want the media.
+						if part.Header.Get("Content-Type") != "application/json" {
+							data = partData
+						}
+					}
+				} else {
+					data = bodyBytes
+				}
+
+				objectsClient := pb.NewObjectsServerClient(conn)
+				req := &pb.InsertObjectRequest{
+					Bucket: &bucket,
+					Name:   &name,
+				}
+				obj, err := objectsClient.InsertObject(r.Context(), req)
+				if err != nil {
+					http.Error(w, err.Error(), http.StatusInternalServerError)
+					return
+				}
+
+				// Store the data
+				s.mutex.Lock()
+				s.objectData[fmt.Sprintf("b/%s/o/%s", bucket, name)] = data
+				s.mutex.Unlock()
+
+				// Set some headers to match what ESF/GCS returns
+				w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+				w.WriteHeader(http.StatusOK)
+				b, _ := protojson.Marshal(obj)
+				w.Write(b)
+				return
+			}
+		}
+
+		if r.Method == "GET" && r.URL.Query().Get("alt") == "media" {
+			// This is a media download.
+			bucketAndObject := strings.TrimPrefix(r.URL.Path, "/storage/v1/b/")
+			parts := strings.SplitN(bucketAndObject, "/o/", 2)
+			if len(parts) == 2 {
+				bucket := parts[0]
+				name := parts[1]
+
+				s.mutex.Lock()
+				data, found := s.objectData[fmt.Sprintf("b/%s/o/%s", bucket, name)]
+				s.mutex.Unlock()
+
+				if found {
+					w.Header().Set("Content-Type", "application/octet-stream")
+					w.WriteHeader(http.StatusOK)
+					w.Write(data)
+					return
+				}
+			}
+		}
+
+		// Handle simple media download: storage.googleapis.com/{bucket}/{name}
+		if r.Method == "GET" && !strings.HasPrefix(r.URL.Path, "/storage/v1/") && !strings.HasPrefix(r.URL.Path, "/upload/") && !strings.HasPrefix(r.URL.Path, "/batch") {
+			path := strings.TrimPrefix(r.URL.Path, "/")
+			parts := strings.SplitN(path, "/", 2)
+			if len(parts) == 2 {
+				bucket := parts[0]
+				name := parts[1]
+
+				s.mutex.Lock()
+				data, found := s.objectData[fmt.Sprintf("b/%s/o/%s", bucket, name)]
+				s.mutex.Unlock()
+
+				if found {
+					w.Header().Set("Content-Type", "application/octet-stream")
+					w.WriteHeader(http.StatusOK)
+					w.Write(data)
+					return
+				}
+			}
+		}
+
+		filterBodyHandler.ServeHTTP(w, r)
+	}), nil
 }

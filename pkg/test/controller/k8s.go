@@ -149,6 +149,7 @@ func ReplaceTestVars(t *testing.T, b []byte, uniqueID string, project testgcp.GC
 	s = strings.Replace(s, "${uniqueId}", uniqueID, -1)
 	s = strings.Replace(s, "${futureTimestamp}", "2035-01-01T10:00:00Z", -1)
 	s = strings.Replace(s, "${projectId}", project.ProjectID, -1)
+	s = strings.Replace(s, "${namespace}", project.ProjectID, -1)
 	if strings.Contains(s, "${projectNumber}") {
 		projectNumber := strconv.FormatInt(project.ProjectNumber, 10)
 		s = strings.Replace(s, "${projectNumber}", projectNumber, -1)

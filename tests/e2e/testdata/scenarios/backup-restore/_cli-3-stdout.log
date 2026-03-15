@@ -1,0 +1,5 @@
+Recent Backup Jobs (Namespace: cnrm-system):
+No backup jobs found.
+
+Recent Backups for cluster default-cluster in GCS (gs://backup-bucket-${uniqueId}/default-cluster/):
+- / (2 resources)

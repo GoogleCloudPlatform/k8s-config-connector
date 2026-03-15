@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  name: cnrm-backup-daily
+  namespace: ${projectId}
+spec:
+  jobTemplate:
+    metadata:
+      labels:
+        app: cnrm-backup
+    spec:
+      template:
+        metadata:
+          labels:
+            app: cnrm-backup
+        spec:
+          containers:
+          - command:
+            - config-connector
+            - backup
+            - create
+            - --bucket
+            - config-bucket-${uniqueId}
+            - --project
+            - ${projectId}
+            - --namespace
+            - ${projectId}
+            image: gcr.io/gke-release/cnrm/config-connector-cli:${kccVersion}
+            name: backup
+          restartPolicy: OnFailure
+          serviceAccountName: cnrm-backup-manager
+  schedule: 0 0 * * *
