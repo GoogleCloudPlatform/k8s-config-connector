@@ -51,4 +51,4 @@ status:
     privateClusterConfig:
       privateEndpoint: 10.128.0.2
   selfLink: https://container.googleapis.com/v1beta1/projects/${projectId}/zones/northamerica-northeast1-a/clusters/containercluster-${uniqueId}
-  servicesIpv4Cidr: 34.118.224.0/20
+  servicesIpv4Cidr: ${servicesIpv4Cidr}

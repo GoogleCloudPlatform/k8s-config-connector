@@ -144,7 +144,7 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(project *projects.ProjectDat
 		obj.NetworkConfig.EnablePrivateNodes = cluster.NetworkConfig.DefaultEnablePrivateNodes
 	}
 	if obj.NetworkConfig.PodIpv4CidrBlock == "" {
-		obj.NetworkConfig.PodIpv4CidrBlock = "10.92.0.0/14"
+		obj.NetworkConfig.PodIpv4CidrBlock = cluster.ClusterIpv4Cidr
 	}
 	if obj.NetworkConfig.PodIpv4RangeUtilization == 0 {
 		obj.NetworkConfig.PodIpv4RangeUtilization = 0.001
