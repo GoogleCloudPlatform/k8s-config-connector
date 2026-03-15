@@ -940,6 +940,12 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 		obj.SecurityPostureConfig.VulnerabilityMode = PtrTo(pb.SecurityPostureConfig_VULNERABILITY_MODE_UNSPECIFIED)
 	}
 
+	if obj.ConfidentialNodes != nil && obj.ConfidentialNodes.Enabled {
+		if obj.ConfidentialNodes.ConfidentialInstanceType == pb.ConfidentialNodes_CONFIDENTIAL_INSTANCE_TYPE_UNSPECIFIED {
+			obj.ConfidentialNodes.ConfidentialInstanceType = pb.ConfidentialNodes_SEV
+		}
+	}
+
 	if obj.ShieldedNodes == nil {
 		obj.ShieldedNodes = &pb.ShieldedNodes{
 			Enabled: true,
