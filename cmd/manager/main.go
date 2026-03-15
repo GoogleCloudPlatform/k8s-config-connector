@@ -72,6 +72,10 @@ func main() {
 	flag.Float32Var(&rateLimitQps, "qps", 20.0, "The client-side token bucket rate limit qps.")
 	flag.IntVar(&rateLimitBurst, "burst", 30, "The client-side token bucket rate limit burst.")
 	flag.StringVar(&leaderElectionMode, "leader-election-type", "disabled", "Leader election mode. One of: default, multicluster.")
+	
+	var resourceReconcileConfig string
+	flag.StringVar(&resourceReconcileConfig, "resource-reconcile-config", "", "configuration for resource reconciliation")
+
 	profiler.AddFlag(flag.CommandLine)
 	flag.CommandLine.AddGoFlagSet(goflag.CommandLine)
 	flag.Parse()
@@ -116,7 +120,7 @@ func main() {
 	// Set client site rate limiter to optimize the configconnector re-reconciliation performance.
 	ratelimiter.SetMasterRateLimiter(restCfg, rateLimitQps, rateLimitBurst)
 	logger.Info("Creating the manager")
-	mgr, err := newManager(ctx, restCfg, scopedNamespace, userProjectOverride, billingProject, multiClusterElection)
+	mgr, err := newManager(ctx, restCfg, scopedNamespace, userProjectOverride, billingProject, multiClusterElection, resourceReconcileConfig)
 	if err != nil {
 		logging.Fatal(err, "error creating the manager")
 	}
@@ -172,7 +176,7 @@ func main() {
 	logging.ExitInfo("main.go finished execution; exiting ...")
 }
 
-func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace string, userProjectOverride bool, billingProject string, multiclusterlease bool) (manager.Manager, error) {
+func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace string, userProjectOverride bool, billingProject string, multiclusterlease bool, resourceReconcileConfig string) (manager.Manager, error) {
 	krmtotf.SetUserAgentForTerraformProvider()
 	controllersCfg := kccmanager.Config{
 		ManagerOptions: manager.Options{
@@ -189,6 +193,7 @@ func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace strin
 	controllersCfg.BillingProject = billingProject
 	// TODO(b/320784855): StateIntoSpecDefaultValue and StateIntoSpecUserOverride values should come from the flags.
 	controllersCfg.StateIntoSpecDefaultValue = stateintospec.StateIntoSpecDefaultValueV1Beta1
+	controllersCfg.ResourceReconcileConfig = resourceReconcileConfig
 	mgr, err := kccmanager.New(ctx, restCfg, controllersCfg)
 	if err != nil {
 		return nil, fmt.Errorf("error creating manager: %w", err)
