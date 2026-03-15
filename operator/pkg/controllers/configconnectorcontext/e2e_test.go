@@ -23,6 +23,7 @@ import (
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/main"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/util/wait"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -59,6 +60,26 @@ func TestConfigConnectorContextE2E(t *testing.T) {
 		t.Fatalf("failed to create ConfigConnector: %v", err)
 	}
 
+	// Wait for ConfigConnector to be healthy
+	ccKey := client.ObjectKeyFromObject(cc)
+	err := wait.PollUntilContextTimeout(ctx, 1*time.Second, 60*time.Second, true, func(ctx context.Context) (bool, error) {
+		newCC := &corev1beta1.ConfigConnector{}
+		if err := c.Get(ctx, ccKey, newCC); err != nil {
+			return false, err
+		}
+		status := newCC.GetCommonStatus()
+		if status.ObservedGeneration != newCC.Generation {
+			return false, nil
+		}
+		if !status.Healthy {
+			return false, nil
+		}
+		return true, nil
+	})
+	if err != nil {
+		t.Fatalf("error waiting for ConfigConnector to become healthy: %v", err)
+	}
+
 	ccc := &corev1beta1.ConfigConnectorContext{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      corev1beta1.ConfigConnectorContextAllowedName,
@@ -74,18 +95,27 @@ func TestConfigConnectorContextE2E(t *testing.T) {
 		t.Fatalf("failed to create ConfigConnectorContext: %v", err)
 	}
 
-	// TODO: Replace with a poll for status/observedGeneration
-	time.Sleep(15 * time.Second)
-
-	newCCC := &corev1beta1.ConfigConnectorContext{}
-	if err := c.Get(ctx, nn, newCCC); err != nil {
-		t.Errorf("failed to get ConfigConnectorContext: %v", err)
-	}
-	status := newCCC.GetCommonStatus()
-	if got, want := status.Healthy, true; got != want {
-		t.Errorf("unexpected value for status.healthy: got '%v', want '%v'", got, want)
-	}
-	if len(status.Errors) != 0 {
-		t.Errorf("unexpected number of errors in status.errors: got %v, want 0. Got errors: %v", len(status.Errors), status.Errors)
+	// Poll for status/observedGeneration
+	err = wait.PollUntilContextTimeout(ctx, 1*time.Second, 60*time.Second, true, func(ctx context.Context) (bool, error) {
+		newCCC := &corev1beta1.ConfigConnectorContext{}
+		if err := c.Get(ctx, nn, newCCC); err != nil {
+			return false, err
+		}
+		status := newCCC.GetCommonStatus()
+		if status.ObservedGeneration != newCCC.Generation {
+			return false, nil
+		}
+		if !status.Healthy {
+			return false, nil
+		}
+		return true, nil
+	})
+	if err != nil {
+		newCCC := &corev1beta1.ConfigConnectorContext{}
+		if err := c.Get(ctx, nn, newCCC); err == nil {
+			status := newCCC.GetCommonStatus()
+			t.Errorf("ConfigConnectorContext not healthy: healthy=%v, errors=%v", status.Healthy, status.Errors)
+		}
+		t.Fatalf("error waiting for ConfigConnectorContext to become healthy: %v", err)
 	}
 }

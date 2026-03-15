@@ -39,6 +39,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/dynamic"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -919,20 +920,31 @@ func TestHandleReconcileFailed(t *testing.T) {
 	mockEventRecorder.AssertEventRecorded(kind, nn, v1.EventTypeWarning, k8s.UpdateFailed, expectedErrMsg)
 
 	newCCC := &corev1beta1.ConfigConnectorContext{}
-	if err := c.Get(ctx, nn, newCCC); err != nil {
-		t.Errorf("failed to get ConfigConnectorContext after attempt to handle failed reconciliation: %v", err)
-	}
-	status := newCCC.GetCommonStatus()
-	if status.Healthy {
-		t.Errorf("unexpected value for status.healthy: got 'true', want 'false'")
-	}
-	if len(status.Errors) != 1 {
-		t.Errorf("unexpected number of errors in status.errors: got %v errors, want 1 error. Got the errors: %v", len(status.Errors), status.Errors)
-	} else if errMsg := status.Errors[0]; errMsg != expectedErrMsg {
-		t.Errorf("unexpected error in status.errors: got '%v', want '%v'", errMsg, expectedErrMsg)
-	}
-	if status.ObservedGeneration != 1 {
-		t.Errorf("unexpected value for status.observedGeneration: got %v, want 1", status.ObservedGeneration)
+	err := wait.PollUntilContextTimeout(ctx, 100*time.Millisecond, 10*time.Second, true, func(ctx context.Context) (bool, error) {
+		if err := c.Get(ctx, nn, newCCC); err != nil {
+			return false, err
+		}
+		status := newCCC.GetCommonStatus()
+		if status.Healthy {
+			return false, nil
+		}
+		if len(status.Errors) != 1 {
+			return false, nil
+		}
+		if status.Errors[0] != expectedErrMsg {
+			return false, nil
+		}
+		if status.ObservedGeneration != 1 {
+			return false, nil
+		}
+		return true, nil
+	})
+	if err != nil {
+		if err := c.Get(ctx, nn, newCCC); err == nil {
+			status := newCCC.GetCommonStatus()
+			t.Errorf("ConfigConnectorContext status not as expected: healthy=%v, errors=%v, observedGeneration=%v", status.Healthy, status.Errors, status.ObservedGeneration)
+		}
+		t.Fatalf("error waiting for ConfigConnectorContext status update: %v", err)
 	}
 }
 
@@ -973,18 +985,28 @@ func TestHandleReconcileSucceeded(t *testing.T) {
 	mockEventRecorder.AssertEventRecorded(kind, nn, v1.EventTypeNormal, k8s.UpToDate, k8s.UpToDateMessage)
 
 	newCCC := &corev1beta1.ConfigConnectorContext{}
-	if err := c.Get(ctx, nn, newCCC); err != nil {
-		t.Errorf("failed to get ConfigConnectorContext after attempt to handle failed reconciliation: %v", err)
-	}
-	status := newCCC.GetCommonStatus()
-	if !status.Healthy {
-		t.Errorf("unexpected value for status.healthy: got 'false', want 'true'")
-	}
-	if len(status.Errors) != 0 {
-		t.Errorf("unexpected number of errors in status.errors: got %v errors, want 0 errors. Got the errors: %v", len(status.Errors), status.Errors)
-	}
-	if status.ObservedGeneration != 1 {
-		t.Errorf("unexpected value for status.observedGeneration: got %v, want 1", status.ObservedGeneration)
+	err := wait.PollUntilContextTimeout(ctx, 100*time.Millisecond, 10*time.Second, true, func(ctx context.Context) (bool, error) {
+		if err := c.Get(ctx, nn, newCCC); err != nil {
+			return false, err
+		}
+		status := newCCC.GetCommonStatus()
+		if !status.Healthy {
+			return false, nil
+		}
+		if len(status.Errors) != 0 {
+			return false, nil
+		}
+		if status.ObservedGeneration != 1 {
+			return false, nil
+		}
+		return true, nil
+	})
+	if err != nil {
+		if err := c.Get(ctx, nn, newCCC); err == nil {
+			status := newCCC.GetCommonStatus()
+			t.Errorf("ConfigConnectorContext status not as expected: healthy=%v, errors=%v, observedGeneration=%v", status.Healthy, status.Errors, status.ObservedGeneration)
+		}
+		t.Fatalf("error waiting for ConfigConnectorContext status update: %v", err)
 	}
 }
 
@@ -1255,12 +1277,21 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 				return
 			}
 			updatedCR := &customizev1beta1.NamespacedControllerResource{}
-			if err := c.Get(ctx, types.NamespacedName{Namespace: tc.namespacedCustomizationCR.Namespace, Name: tc.namespacedCustomizationCR.Name}, updatedCR); err != nil {
-				t.Fatalf("unexpected error: %v", err)
-			}
-			gotStatus := updatedCR.Status
-			if !reflect.DeepEqual(gotStatus, tc.expectedCustomizationCRStatus) {
-				t.Fatalf("unexpected diff: %v", cmp.Diff(gotStatus, tc.expectedCustomizationCRStatus))
+			nn := types.NamespacedName{Namespace: tc.namespacedCustomizationCR.Namespace, Name: tc.namespacedCustomizationCR.Name}
+			err = wait.PollUntilContextTimeout(ctx, 100*time.Millisecond, 10*time.Second, true, func(ctx context.Context) (bool, error) {
+				if err := c.Get(ctx, nn, updatedCR); err != nil {
+					return false, err
+				}
+				if !reflect.DeepEqual(updatedCR.Status, tc.expectedCustomizationCRStatus) {
+					return false, nil
+				}
+				return true, nil
+			})
+			if err != nil {
+				if err := c.Get(ctx, nn, updatedCR); err == nil {
+					t.Fatalf("unexpected diff in status: %v", cmp.Diff(updatedCR.Status, tc.expectedCustomizationCRStatus))
+				}
+				t.Fatalf("error waiting for status update: %v", err)
 			}
 		})
 	}
@@ -1330,6 +1361,8 @@ func TestApplyNamespacedRateLimitCustomizations(t *testing.T) {
 						return
 					}
 					t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
+				} else if tc.expectCELFailure != "" {
+					t.Fatalf("expected CEL failure %q, but got no error", tc.expectCELFailure)
 				}
 			}
 			manifests := testcontroller.ParseObjects(ctx, t, tc.manifests)
@@ -1360,12 +1393,21 @@ func TestApplyNamespacedRateLimitCustomizations(t *testing.T) {
 
 			// check the status of namespaced customization CR
 			updatedCR := &customizev1beta1.NamespacedControllerReconciler{}
-			if err := c.Get(ctx, types.NamespacedName{Namespace: tc.controllerReconcilerCR.Namespace, Name: tc.controllerReconcilerCR.Name}, updatedCR); err != nil {
-				t.Fatalf("unexpected error: %v", err)
-			}
-			gotStatus := updatedCR.Status
-			if !reflect.DeepEqual(gotStatus, tc.expectedCRStatus) {
-				t.Fatalf("unexpected diff: %v", cmp.Diff(gotStatus, tc.expectedCRStatus))
+			nn := types.NamespacedName{Namespace: tc.controllerReconcilerCR.Namespace, Name: tc.controllerReconcilerCR.Name}
+			err = wait.PollUntilContextTimeout(ctx, 100*time.Millisecond, 10*time.Second, true, func(ctx context.Context) (bool, error) {
+				if err := c.Get(ctx, nn, updatedCR); err != nil {
+					return false, err
+				}
+				if !reflect.DeepEqual(updatedCR.Status, tc.expectedCRStatus) {
+					return false, nil
+				}
+				return true, nil
+			})
+			if err != nil {
+				if err := c.Get(ctx, nn, updatedCR); err == nil {
+					t.Fatalf("unexpected diff in status: %v", cmp.Diff(updatedCR.Status, tc.expectedCRStatus))
+				}
+				t.Fatalf("error waiting for status update: %v", err)
 			}
 		})
 	}
