@@ -1,0 +1,15 @@
+1. Discovering all Config Connector resources...
+Found 2 resources.
+2. Backing up resources to backup.yaml...
+3. Pausing reconciliation...
+Paused ConfigConnector /configconnector.core.cnrm.cloud.google.com
+4. Removing finalizers from resources to decouple them from GCP...
+
+Preparation complete!
+Next steps:
+1. Disable the Config Connector addon in your GKE cluster:
+   gcloud container clusters update <cluster-name> --update-addons ConfigConnector=DISABLED
+2. Install the Config Connector operator manually:
+   https://cloud.google.com/config-connector/docs/how-to/install-manually
+3. Run the finish command to resume reconciliation:
+   config-connector migrate gke-addon finish
