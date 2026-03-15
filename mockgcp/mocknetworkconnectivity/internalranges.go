@@ -123,7 +123,7 @@ func (r *internalRanges) PatchProjectsLocationsInternalRange(ctx context.Context
 			switch path {
 			case "prefixLength":
 				obj.PrefixLength = patch.PrefixLength
-			case "ip_cidr_range":
+			case "ipCidrRange", "ip_cidr_range":
 				obj.IpCidrRange = patch.IpCidrRange
 			case "labels":
 				obj.Labels = patch.Labels
@@ -133,7 +133,7 @@ func (r *internalRanges) PatchProjectsLocationsInternalRange(ctx context.Context
 				obj.Network = patch.Network
 			case "peering":
 				obj.Peering = patch.Peering
-			case "target_cidr_range":
+			case "targetCidrRange", "target_cidr_range":
 				obj.TargetCidrRange = patch.TargetCidrRange
 			case "usage":
 				obj.Usage = patch.Usage
