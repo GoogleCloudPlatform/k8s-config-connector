@@ -29,7 +29,8 @@ go run . generate-types \
   --api-version alloydb.cnrm.cloud.google.com/v1beta1 \
   --resource AlloyDBCluster:Cluster \
   --resource AlloyDBInstance:Instance \
-  --resource AlloyDBBackup:Backup
+  --resource AlloyDBBackup:Backup \
+  --resource AlloyDBUser:User
 
 go run . generate-mapper --service google.cloud.alloydb.v1beta --api-version alloydb.cnrm.cloud.google.com/v1beta1
 
