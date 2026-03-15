@@ -1,0 +1,2303 @@
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-1-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "mesh \"projects/${projectId}/locations/global/meshes/networkservicesmesh-1-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes?alt=json&meshId=networkservicesmesh-1-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-1-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-1-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-1-${uniqueId}",
+  "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-1-${uniqueId}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways?alt=json&gatewayId=networkservicesgateway-1-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}",
+  "ports": [
+    80,
+    443
+  ],
+  "scope": "networkservicesgateway-1-${uniqueId}-scope",
+  "type": "OPEN_MESH"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.Gateway",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}",
+    "ports": [
+      80,
+      443
+    ],
+    "scope": "networkservicesgateway-1-${uniqueId}-scope",
+    "type": "OPEN_MESH",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}",
+  "ports": [
+    80,
+    443
+  ],
+  "scope": "networkservicesgateway-1-${uniqueId}-scope",
+  "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}",
+  "type": "OPEN_MESH",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-2-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "mesh \"projects/${projectId}/locations/global/meshes/networkservicesmesh-2-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes?alt=json&meshId=networkservicesmesh-2-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-2-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-2-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-2-${uniqueId}",
+  "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-2-${uniqueId}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways?alt=json&gatewayId=networkservicesgateway-2-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}",
+  "ports": [
+    80,
+    443
+  ],
+  "scope": "networkservicesgateway-1-${uniqueId}-scope2",
+  "type": "OPEN_MESH"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.Gateway",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}",
+    "ports": [
+      80,
+      443
+    ],
+    "scope": "networkservicesgateway-1-${uniqueId}-scope2",
+    "type": "OPEN_MESH",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}",
+  "ports": [
+    80,
+    443
+  ],
+  "scope": "networkservicesgateway-1-${uniqueId}-scope2",
+  "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}",
+  "type": "OPEN_MESH",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/backendServices/${backendServiceID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/backendServices/${backendServiceID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "connectionDraining": {
+    "drainingTimeoutSec": 300
+  },
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecret": ""
+  },
+  "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
+  "name": "${backendServiceID}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "affinityCookieTtlSec": 0,
+  "connectionDraining": {
+    "drainingTimeoutSec": 300
+  },
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "enableCDN": false,
+  "fingerprint": "abcdef0123A=",
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecret": ""
+  },
+  "id": "000000000000000000000",
+  "kind": "compute#backendService",
+  "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
+  "name": "${backendServiceID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "sessionAffinity": "NONE"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/backendServices/${backendServiceID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/backendServices/${backendServiceID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "connectionDraining": {
+    "drainingTimeoutSec": 300
+  },
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecret": ""
+  },
+  "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
+  "name": "${backendServiceID}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "affinityCookieTtlSec": 0,
+  "connectionDraining": {
+    "drainingTimeoutSec": 300
+  },
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "enableCDN": false,
+  "fingerprint": "abcdef0123A=",
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecret": ""
+  },
+  "id": "000000000000000000000",
+  "kind": "compute#backendService",
+  "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
+  "name": "${backendServiceID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "sessionAffinity": "NONE"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "httpRoute \"projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes?alt=json&httpRouteId=networkserviceshttproute-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "description": "A test HttpRoute",
+  "gateways": [
+    "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}"
+  ],
+  "hostnames": [
+    "test1",
+    "test2"
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "foo": "bar",
+    "managed-by-cnrm": "true"
+  },
+  "meshes": [
+    "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-1-${uniqueId}"
+  ],
+  "name": "projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}",
+  "rules": [
+    {
+      "action": {
+        "corsPolicy": {
+          "allowCredentials": true,
+          "allowHeaders": [
+            "foo",
+            "bar"
+          ],
+          "allowMethods": [
+            "GET",
+            "POST"
+          ],
+          "allowOriginRegexes": [
+            ".*.foo.com",
+            ".*.bar.com"
+          ],
+          "allowOrigins": [
+            "foo.com",
+            "bar.com"
+          ],
+          "disabled": false,
+          "exposeHeaders": [
+            "foo",
+            "bar"
+          ],
+          "maxAge": "35"
+        },
+        "destinations": [
+          {
+            "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}",
+            "weight": 1
+          },
+          {
+            "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}",
+            "weight": 1
+          }
+        ],
+        "faultInjectionPolicy": {
+          "abort": {
+            "httpStatus": 501,
+            "percentage": 1
+          },
+          "delay": {
+            "fixedDelay": "10s",
+            "percentage": 2
+          }
+        },
+        "requestHeaderModifier": {
+          "add": {
+            "baz1": "qux1",
+            "foo1": "bar1"
+          },
+          "remove": [
+            "foo3",
+            "bar3"
+          ],
+          "set": {
+            "baz2": "qux2",
+            "foo2": "bar2"
+          }
+        },
+        "requestMirrorPolicy": {
+          "destination": {
+            "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}"
+          }
+        },
+        "responseHeaderModifier": {
+          "add": {
+            "baz1": "qux1",
+            "foo1": "bar1"
+          },
+          "remove": [
+            "foo3",
+            "bar3"
+          ],
+          "set": {
+            "baz2": "qux2",
+            "foo2": "bar2"
+          }
+        },
+        "retryPolicy": {
+          "numRetries": 3,
+          "perTryTimeout": "5s",
+          "retryConditions": [
+            "refused-stream",
+            "cancelled"
+          ]
+        },
+        "timeout": "30s",
+        "urlRewrite": {
+          "hostRewrite": "foo",
+          "pathPrefixRewrite": "foo"
+        }
+      },
+      "matches": [
+        {
+          "fullPathMatch": "/foo/bar",
+          "headers": [
+            {
+              "header": "foo-header",
+              "prefixMatch": "bar-value"
+            }
+          ]
+        },
+        {
+          "ignoreCase": true,
+          "prefixMatch": "/foo/"
+        },
+        {
+          "regexMatch": "/foo/.*/bar/.*"
+        },
+        {
+          "headers": [
+            {
+              "exactMatch": "bar",
+              "header": "foo"
+            },
+            {
+              "header": "foo",
+              "regexMatch": "b.*ar"
+            },
+            {
+              "header": "foo",
+              "prefixMatch": "ba"
+            },
+            {
+              "header": "foo",
+              "presentMatch": true
+            },
+            {
+              "header": "foo",
+              "suffixMatch": "ar"
+            },
+            {
+              "header": "foo",
+              "invertMatch": true,
+              "rangeMatch": {
+                "end": 5
+              }
+            }
+          ],
+          "prefixMatch": "/"
+        },
+        {
+          "prefixMatch": "/",
+          "queryParameters": [
+            {
+              "exactMatch": "bar",
+              "queryParameter": "foo"
+            },
+            {
+              "queryParameter": "foo",
+              "regexMatch": ".*bar.*"
+            },
+            {
+              "presentMatch": true,
+              "queryParameter": "foo"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "action": {
+        "redirect": {
+          "hostRedirect": "foo",
+          "httpsRedirect": true,
+          "portRedirect": 7777,
+          "responseCode": "MOVED_PERMANENTLY_DEFAULT",
+          "stripQuery": true
+        }
+      }
+    },
+    {
+      "action": {
+        "redirect": {
+          "hostRedirect": "test",
+          "prefixRewrite": "foo",
+          "responseCode": "FOUND"
+        }
+      }
+    },
+    {
+      "action": {
+        "redirect": {
+          "hostRedirect": "test",
+          "pathRedirect": "/foo",
+          "responseCode": "FOUND"
+        }
+      }
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "A test HttpRoute",
+  "gateways": [
+    "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}"
+  ],
+  "hostnames": [
+    "test1",
+    "test2"
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "foo": "bar",
+    "managed-by-cnrm": "true"
+  },
+  "meshes": [
+    "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-1-${uniqueId}"
+  ],
+  "name": "projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}",
+  "rules": [
+    {
+      "action": {
+        "corsPolicy": {
+          "allowCredentials": true,
+          "allowHeaders": [
+            "foo",
+            "bar"
+          ],
+          "allowMethods": [
+            "GET",
+            "POST"
+          ],
+          "allowOriginRegexes": [
+            ".*.foo.com",
+            ".*.bar.com"
+          ],
+          "allowOrigins": [
+            "foo.com",
+            "bar.com"
+          ],
+          "exposeHeaders": [
+            "foo",
+            "bar"
+          ],
+          "maxAge": "35"
+        },
+        "destinations": [
+          {
+            "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}",
+            "weight": 1
+          },
+          {
+            "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}",
+            "weight": 1
+          }
+        ],
+        "faultInjectionPolicy": {
+          "abort": {
+            "httpStatus": 501,
+            "percentage": 1
+          },
+          "delay": {
+            "fixedDelay": "10s",
+            "percentage": 2
+          }
+        },
+        "requestHeaderModifier": {
+          "add": {
+            "baz1": "qux1",
+            "foo1": "bar1"
+          },
+          "remove": [
+            "foo3",
+            "bar3"
+          ],
+          "set": {
+            "baz2": "qux2",
+            "foo2": "bar2"
+          }
+        },
+        "requestMirrorPolicy": {
+          "destination": {
+            "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}"
+          }
+        },
+        "responseHeaderModifier": {
+          "add": {
+            "baz1": "qux1",
+            "foo1": "bar1"
+          },
+          "remove": [
+            "foo3",
+            "bar3"
+          ],
+          "set": {
+            "baz2": "qux2",
+            "foo2": "bar2"
+          }
+        },
+        "retryPolicy": {
+          "numRetries": 3,
+          "perTryTimeout": "5s",
+          "retryConditions": [
+            "refused-stream",
+            "cancelled"
+          ]
+        },
+        "timeout": "30s",
+        "urlRewrite": {
+          "hostRewrite": "foo",
+          "pathPrefixRewrite": "foo"
+        }
+      },
+      "matches": [
+        {
+          "fullPathMatch": "/foo/bar",
+          "headers": [
+            {
+              "header": "foo-header",
+              "prefixMatch": "bar-value"
+            }
+          ]
+        },
+        {
+          "ignoreCase": true,
+          "prefixMatch": "/foo/"
+        },
+        {
+          "regexMatch": "/foo/.*/bar/.*"
+        },
+        {
+          "headers": [
+            {
+              "exactMatch": "bar",
+              "header": "foo"
+            },
+            {
+              "header": "foo",
+              "regexMatch": "b.*ar"
+            },
+            {
+              "header": "foo",
+              "prefixMatch": "ba"
+            },
+            {
+              "header": "foo",
+              "presentMatch": true
+            },
+            {
+              "header": "foo",
+              "suffixMatch": "ar"
+            },
+            {
+              "header": "foo",
+              "invertMatch": true,
+              "rangeMatch": {
+                "end": 5
+              }
+            }
+          ],
+          "prefixMatch": "/"
+        },
+        {
+          "prefixMatch": "/",
+          "queryParameters": [
+            {
+              "exactMatch": "bar",
+              "queryParameter": "foo"
+            },
+            {
+              "queryParameter": "foo",
+              "regexMatch": ".*bar.*"
+            },
+            {
+              "presentMatch": true,
+              "queryParameter": "foo"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "action": {
+        "redirect": {
+          "hostRedirect": "foo",
+          "httpsRedirect": true,
+          "portRedirect": 7777,
+          "responseCode": "MOVED_PERMANENTLY_DEFAULT",
+          "stripQuery": true
+        }
+      }
+    },
+    {
+      "action": {
+        "redirect": {
+          "hostRedirect": "test",
+          "prefixRewrite": "foo",
+          "responseCode": "FOUND"
+        }
+      }
+    },
+    {
+      "action": {
+        "redirect": {
+          "hostRedirect": "test",
+          "pathRedirect": "/foo",
+          "responseCode": "FOUND"
+        }
+      }
+    }
+  ]
+}
+
+---
+
+PATCH https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}?alt=json&updateMask=description%2Cgateways%2Chostnames%2Clabels%2Cmeshes%2Crules
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "description": "An updated test HttpRoute",
+  "gateways": [
+    "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}"
+  ],
+  "hostnames": [
+    "test1",
+    "test2",
+    "newhost"
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "foo": "bar",
+    "foo2": "bar2",
+    "managed-by-cnrm": "true"
+  },
+  "meshes": [
+    "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-2-${uniqueId}"
+  ],
+  "name": "projects/projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}",
+  "rules": [
+    {
+      "action": {
+        "corsPolicy": {
+          "allowCredentials": false,
+          "allowHeaders": [
+            "foo2",
+            "bar2"
+          ],
+          "allowMethods": [
+            "PUT",
+            "PATCH"
+          ],
+          "allowOriginRegexes": [
+            ".*.foo2.com",
+            ".*.bar2.com"
+          ],
+          "allowOrigins": [
+            "foo2.com",
+            "bar2.com"
+          ],
+          "disabled": true,
+          "exposeHeaders": [
+            "foo2",
+            "bar2"
+          ],
+          "maxAge": "36"
+        },
+        "destinations": [
+          {
+            "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}",
+            "weight": 2
+          },
+          {
+            "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}",
+            "weight": 2
+          }
+        ],
+        "faultInjectionPolicy": {
+          "abort": {
+            "httpStatus": 500,
+            "percentage": 2
+          },
+          "delay": {
+            "fixedDelay": "11s",
+            "percentage": 3
+          }
+        },
+        "requestHeaderModifier": {
+          "add": {
+            "baz2": "qux2",
+            "foo2": "bar2"
+          },
+          "remove": [
+            "foo4",
+            "bar4"
+          ],
+          "set": {
+            "baz3": "qux3",
+            "foo3": "bar3"
+          }
+        },
+        "requestMirrorPolicy": {
+          "destination": {
+            "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}"
+          }
+        },
+        "responseHeaderModifier": {
+          "add": {
+            "baz2": "qux2",
+            "foo2": "bar2"
+          },
+          "remove": [
+            "foo4",
+            "bar4"
+          ],
+          "set": {
+            "baz3": "qux3",
+            "foo3": "bar3"
+          }
+        },
+        "retryPolicy": {
+          "numRetries": 4,
+          "perTryTimeout": "6s",
+          "retryConditions": [
+            "refused-stream"
+          ]
+        },
+        "timeout": "31s",
+        "urlRewrite": {
+          "hostRewrite": "bar",
+          "pathPrefixRewrite": "bar"
+        }
+      },
+      "matches": [
+        {
+          "fullPathMatch": "/bar/foo",
+          "headers": [
+            {
+              "header": "foo-header2",
+              "prefixMatch": "bar-value2"
+            }
+          ],
+          "queryParameters": []
+        },
+        {
+          "headers": [],
+          "ignoreCase": false,
+          "prefixMatch": "/foo2/",
+          "queryParameters": []
+        },
+        {
+          "headers": [],
+          "queryParameters": [],
+          "regexMatch": "/foo2/.*/bar/.*"
+        },
+        {
+          "headers": [
+            {
+              "exactMatch": "bar2",
+              "header": "foo2"
+            },
+            {
+              "header": "foo2",
+              "regexMatch": "b.*ar2"
+            },
+            {
+              "header": "foo2",
+              "prefixMatch": "2ba"
+            },
+            {
+              "header": "foo2",
+              "presentMatch": false
+            },
+            {
+              "header": "foo2",
+              "suffixMatch": "ar2"
+            },
+            {
+              "header": "foo2",
+              "invertMatch": false,
+              "rangeMatch": {
+                "end": 6,
+                "start": 1
+              }
+            }
+          ],
+          "prefixMatch": "/",
+          "queryParameters": []
+        },
+        {
+          "headers": [],
+          "prefixMatch": "/",
+          "queryParameters": [
+            {
+              "exactMatch": "bar2",
+              "queryParameter": "foo2"
+            },
+            {
+              "queryParameter": "foo2",
+              "regexMatch": ".*bar2.*"
+            },
+            {
+              "presentMatch": false,
+              "queryParameter": "foo2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "action": {
+        "destinations": [],
+        "redirect": {
+          "hostRedirect": "foo2",
+          "httpsRedirect": false,
+          "portRedirect": 24601,
+          "responseCode": "FOUND",
+          "stripQuery": false
+        }
+      },
+      "matches": []
+    },
+    {
+      "action": {
+        "destinations": [],
+        "redirect": {
+          "hostRedirect": "test",
+          "prefixRewrite": "foo2",
+          "responseCode": "SEE_OTHER"
+        }
+      },
+      "matches": []
+    },
+    {
+      "action": {
+        "destinations": [],
+        "redirect": {
+          "hostRedirect": "test",
+          "pathRedirect": "/foo2",
+          "responseCode": "SEE_OTHER"
+        }
+      },
+      "matches": []
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "An updated test HttpRoute",
+  "gateways": [
+    "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}"
+  ],
+  "hostnames": [
+    "test1",
+    "test2",
+    "newhost"
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "foo": "bar",
+    "foo2": "bar2",
+    "managed-by-cnrm": "true"
+  },
+  "meshes": [
+    "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-2-${uniqueId}"
+  ],
+  "name": "projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}",
+  "rules": [
+    {
+      "action": {
+        "corsPolicy": {
+          "allowHeaders": [
+            "foo2",
+            "bar2"
+          ],
+          "allowMethods": [
+            "PUT",
+            "PATCH"
+          ],
+          "allowOriginRegexes": [
+            ".*.foo2.com",
+            ".*.bar2.com"
+          ],
+          "allowOrigins": [
+            "foo2.com",
+            "bar2.com"
+          ],
+          "disabled": true,
+          "exposeHeaders": [
+            "foo2",
+            "bar2"
+          ],
+          "maxAge": "36"
+        },
+        "destinations": [
+          {
+            "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}",
+            "weight": 2
+          },
+          {
+            "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}",
+            "weight": 2
+          }
+        ],
+        "faultInjectionPolicy": {
+          "abort": {
+            "httpStatus": 500,
+            "percentage": 2
+          },
+          "delay": {
+            "fixedDelay": "11s",
+            "percentage": 3
+          }
+        },
+        "requestHeaderModifier": {
+          "add": {
+            "baz2": "qux2",
+            "foo2": "bar2"
+          },
+          "remove": [
+            "foo4",
+            "bar4"
+          ],
+          "set": {
+            "baz3": "qux3",
+            "foo3": "bar3"
+          }
+        },
+        "requestMirrorPolicy": {
+          "destination": {
+            "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}"
+          }
+        },
+        "responseHeaderModifier": {
+          "add": {
+            "baz2": "qux2",
+            "foo2": "bar2"
+          },
+          "remove": [
+            "foo4",
+            "bar4"
+          ],
+          "set": {
+            "baz3": "qux3",
+            "foo3": "bar3"
+          }
+        },
+        "retryPolicy": {
+          "numRetries": 4,
+          "perTryTimeout": "6s",
+          "retryConditions": [
+            "refused-stream"
+          ]
+        },
+        "timeout": "31s",
+        "urlRewrite": {
+          "hostRewrite": "bar",
+          "pathPrefixRewrite": "bar"
+        }
+      },
+      "matches": [
+        {
+          "fullPathMatch": "/bar/foo",
+          "headers": [
+            {
+              "header": "foo-header2",
+              "prefixMatch": "bar-value2"
+            }
+          ]
+        },
+        {
+          "prefixMatch": "/foo2/"
+        },
+        {
+          "regexMatch": "/foo2/.*/bar/.*"
+        },
+        {
+          "headers": [
+            {
+              "exactMatch": "bar2",
+              "header": "foo2"
+            },
+            {
+              "header": "foo2",
+              "regexMatch": "b.*ar2"
+            },
+            {
+              "header": "foo2",
+              "prefixMatch": "2ba"
+            },
+            {
+              "header": "foo2",
+              "presentMatch": false
+            },
+            {
+              "header": "foo2",
+              "suffixMatch": "ar2"
+            },
+            {
+              "header": "foo2",
+              "rangeMatch": {
+                "end": 6,
+                "start": 1
+              }
+            }
+          ],
+          "prefixMatch": "/"
+        },
+        {
+          "prefixMatch": "/",
+          "queryParameters": [
+            {
+              "exactMatch": "bar2",
+              "queryParameter": "foo2"
+            },
+            {
+              "queryParameter": "foo2",
+              "regexMatch": ".*bar2.*"
+            },
+            {
+              "presentMatch": false,
+              "queryParameter": "foo2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "action": {
+        "redirect": {
+          "hostRedirect": "foo2",
+          "portRedirect": 24601,
+          "responseCode": "FOUND"
+        }
+      }
+    },
+    {
+      "action": {
+        "redirect": {
+          "hostRedirect": "test",
+          "prefixRewrite": "foo2",
+          "responseCode": "SEE_OTHER"
+        }
+      }
+    },
+    {
+      "action": {
+        "redirect": {
+          "hostRedirect": "test",
+          "pathRedirect": "/foo2",
+          "responseCode": "SEE_OTHER"
+        }
+      }
+    }
+  ]
+}
+
+---
+
+DELETE https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "httpRoute \"projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "affinityCookieTtlSec": 0,
+  "connectionDraining": {
+    "drainingTimeoutSec": 300
+  },
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "enableCDN": false,
+  "fingerprint": "abcdef0123A=",
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecret": ""
+  },
+  "id": "000000000000000000000",
+  "kind": "compute#backendService",
+  "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
+  "name": "${backendServiceID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "sessionAffinity": "NONE"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "affinityCookieTtlSec": 0,
+  "connectionDraining": {
+    "drainingTimeoutSec": 300
+  },
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "enableCDN": false,
+  "fingerprint": "abcdef0123A=",
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecret": ""
+  },
+  "id": "000000000000000000000",
+  "kind": "compute#backendService",
+  "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
+  "name": "${backendServiceID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "sessionAffinity": "NONE"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}",
+  "ports": [
+    80,
+    443
+  ],
+  "scope": "networkservicesgateway-1-${uniqueId}-scope2",
+  "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}",
+  "type": "OPEN_MESH",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-2-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-2-${uniqueId}",
+  "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-2-${uniqueId}"
+}
+
+---
+
+DELETE https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-2-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-2-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "mesh \"projects/${projectId}/locations/global/meshes/networkservicesmesh-2-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}",
+  "ports": [
+    80,
+    443
+  ],
+  "scope": "networkservicesgateway-1-${uniqueId}-scope",
+  "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}",
+  "type": "OPEN_MESH",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-1-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-1-${uniqueId}",
+  "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-1-${uniqueId}"
+}
+
+---
+
+DELETE https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-1-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-1-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "mesh \"projects/${projectId}/locations/global/meshes/networkservicesmesh-1-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
