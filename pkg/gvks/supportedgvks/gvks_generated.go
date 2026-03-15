@@ -123,14 +123,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	{
 		Group:   "apigateway.cnrm.cloud.google.com",
 		Version: "v1alpha1",
-		Kind:    "APIGatewayAPIConfig",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
-		Group:   "apigateway.cnrm.cloud.google.com",
-		Version: "v1alpha1",
 		Kind:    "APIGatewayGateway",
 	}: {
 		Terraform: true,
