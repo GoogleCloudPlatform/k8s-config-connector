@@ -176,6 +176,12 @@ encryption is used.`,
 				ForceNew:    true,
 				Description: `This must be unique within the project.`,
 			},
+			"location": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				ForceNew:    true,
+				Description: `The location of the secret.`,
+			},
 			"annotations": {
 				Type:     schema.TypeMap,
 				Optional: true,
@@ -413,7 +419,15 @@ func resourceSecretManagerSecretRead(d *schema.ResourceData, meta interface{}) e
 		return err
 	}
 
-	url, err := tpgresource.ReplaceVars(d, config, "{{SecretManagerBasePath}}projects/{{project}}/secrets/{{secret_id}}")
+	var url string
+	// Going by name here. Location is not always gauranteed
+	if strings.Contains(d.Id(), "regionalsecretmanagersecret")  {
+		url, err = tpgresource.ReplaceVars(d, config, "https://secretmanager.us-central1.rep.googleapis.com:443/v1/projects/{{project}}/locations/us-central1/secrets/{{secret_id}}")
+	} else 
+	{
+		url, err = tpgresource.ReplaceVars(d, config, "{{SecretManagerBasePath}}projects/{{project}}/secrets/{{secret_id}}")
+	}
+	
 	if err != nil {
 		return err
 	}
@@ -658,6 +672,8 @@ func resourceSecretManagerSecretDelete(d *schema.ResourceData, meta interface{})
 func resourceSecretManagerSecretImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*transport_tpg.Config)
 	if err := tpgresource.ParseImportId([]string{
+		// Hard coding us-central1 as it is anyways hard coded in service.go for host entry
+		"projects/(?P<project>[^/]+)/locations/us-central1/secrets/(?P<secret_id>[^/]+)",
 		"projects/(?P<project>[^/]+)/secrets/(?P<secret_id>[^/]+)",
 		"(?P<project>[^/]+)/(?P<secret_id>[^/]+)",
 		"(?P<secret_id>[^/]+)",
@@ -665,8 +681,19 @@ func resourceSecretManagerSecretImport(d *schema.ResourceData, meta interface{})
 		return nil, err
 	}
 
-	// Replace import id for the resource id
-	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/secrets/{{secret_id}}")
+	// Construct the resource ID using the parsed project and secret_id, and location if present
+	var id string
+	var err error
+	
+	// Check if the location is provided in the data source
+	if strings.Contains(d.Id(), "locations/") {
+		d.Set("location", "us-central1")
+		id, err = tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/us-central1/secrets/{{secret_id}}")
+	} else 
+	{
+		id, err = tpgresource.ReplaceVars(d, config, "projects/{{project}}/secrets/{{secret_id}}")
+	}
+	// id, err = tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/us-central1/secrets/{{secret_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
