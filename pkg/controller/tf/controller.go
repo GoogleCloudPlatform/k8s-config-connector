@@ -284,6 +284,11 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource, tf
 	if !krmResource.GetDeletionTimestamp().IsZero() {
 		// Deleting
 		r.logger.Info("finalizing resource deletion", "resource", k8s.GetNamespacedName(krmResource))
+		if k8s.HasForceAcquireAnnotation(&krmResource.Resource) {
+			r.logger.Info("force-acquire annotation present; abandoning underlying resource", "resource", k8s.GetNamespacedName(krmResource))
+			return false, r.handleDeleted(ctx, krmResource)
+		}
+
 		if !k8s.HasFinalizer(krmResource, k8s.ControllerFinalizerName) {
 			r.logger.Info("no controller finalizer is present; no finalization necessary",
 				"resource", k8s.GetNamespacedName(krmResource))
@@ -338,6 +343,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource, tf
 		}
 		return false, r.handleDeleted(ctx, krmResource)
 	}
+
 	liveState, err := krmtotf.FetchLiveStateForCreateAndUpdate(ctx, krmResource, r.provider, r, r.smLoader)
 	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
@@ -346,8 +352,10 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource, tf
 		}
 		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource, fmt.Errorf("error fetching live state: %w", err))
 	}
-	if err := r.obtainResourceLeaseIfNecessary(ctx, krmResource, liveState); err != nil {
-		return false, err
+	if !k8s.HasForceAcquireAnnotation(&krmResource.Resource) {
+		if err := r.obtainResourceLeaseIfNecessary(ctx, krmResource, liveState); err != nil {
+			return false, err
+		}
 	}
 	ok, err := r.hasServerGeneratedIDAndHadBeenCreatedOnceAlready(krmResource)
 	if err != nil {
@@ -386,6 +394,21 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource, tf
 	if err := r.EnsureFinalizers(ctx, krmResource.Original, &krmResource.Resource, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName); err != nil {
 		return false, err
 	}
+
+	// --- Force Acquire logic starts here for non-deletion cases ---
+	if k8s.HasForceAcquireAnnotation(&krmResource.Resource) {
+		if liveState.Empty() {
+			return false, r.HandleUpdateFailed(ctx, &krmResource.Resource, fmt.Errorf("resource %q not found in GCP; force-acquire requires the resource to exist", k8s.GetNamespacedName(krmResource)))
+		}
+		if !diff.Empty() {
+			return false, r.HandleUpdateFailed(ctx, &krmResource.Resource, fmt.Errorf("resource %q in GCP does not match KRM spec; force-acquire requires exact match to prevent drift: %v", k8s.GetNamespacedName(krmResource), tfresource.ImmutableFieldsFromDiff(diff)))
+		}
+		// If liveState exists and diff is empty, it means KRM matches GCP state.
+		r.logger.V(2).Info("force-acquire: resource already up to date and matches GCP state", "resource", k8s.GetNamespacedName(krmResource))
+		return false, r.handleUpToDate(ctx, krmResource, liveState, secretVersions)
+	}
+	// --- Force Acquire logic ends here ---
+
 	if diff.Empty() {
 		r.logger.V(2).Info("underlying resource already up to date", "resource", k8s.GetNamespacedName(krmResource))
 		return false, r.handleUpToDate(ctx, krmResource, liveState, secretVersions)

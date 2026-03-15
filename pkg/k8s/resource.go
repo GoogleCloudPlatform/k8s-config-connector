@@ -180,3 +180,7 @@ func MarshalObjectAsUnstructured(o metav1.Object) (*unstructured.Unstructured, e
 func IsDirectByAnnotation(r *Resource) bool {
 	return r.Annotations[AlphaReconcilerAnnotation] == "direct"
 }
+
+func HasForceAcquireAnnotation(r *Resource) bool {
+	return r.Annotations[ForceAcquireAnnotation] == "true"
+}

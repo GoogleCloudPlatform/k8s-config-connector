@@ -106,6 +106,8 @@ var (
 	DeletionPolicyAnnotation             = FormatAnnotation("deletion-policy")
 	ReconcileIntervalInSecondsAnnotation = FormatAnnotation("reconcile-interval-in-seconds")
 
+	ForceAcquireAnnotation = FormatAnnotation("force-acquire")
+
 	// Annotations for Container objects
 	ProjectIDAnnotation  = FormatAnnotation("project-id")
 	FolderIDAnnotation   = FormatAnnotation("folder-id")
