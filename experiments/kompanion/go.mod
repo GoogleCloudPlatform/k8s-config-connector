@@ -2,7 +2,7 @@ module github.com/GoogleCloudPlatform/k8s-config-connector/experiments/kompanion
 
 go 1.25
 
-toolchain go1.25.0
+toolchain go1.26.1
 
 require (
 	github.com/spf13/cobra v1.8.1
