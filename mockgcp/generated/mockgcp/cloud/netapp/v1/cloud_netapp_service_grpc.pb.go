@@ -154,6 +154,19 @@ type NetAppClient interface {
 	UpdateQuotaRule(ctx context.Context, in *UpdateQuotaRuleRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Deletes a quota rule.
 	DeleteQuotaRule(ctx context.Context, in *DeleteQuotaRuleRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Restore files from a backup to a volume.
+	RestoreBackupFiles(ctx context.Context, in *RestoreBackupFilesRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Returns a list of host groups in a `location`. Use `-` as location to list
+	// host groups across all locations.
+	ListHostGroups(ctx context.Context, in *ListHostGroupsRequest, opts ...grpc.CallOption) (*ListHostGroupsResponse, error)
+	// Returns details of the specified host group.
+	GetHostGroup(ctx context.Context, in *GetHostGroupRequest, opts ...grpc.CallOption) (*HostGroup, error)
+	// Creates a new host group.
+	CreateHostGroup(ctx context.Context, in *CreateHostGroupRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Updates an existing host group.
+	UpdateHostGroup(ctx context.Context, in *UpdateHostGroupRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deletes a host group.
+	DeleteHostGroup(ctx context.Context, in *DeleteHostGroupRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
 type netAppClient struct {
@@ -704,6 +717,60 @@ func (c *netAppClient) DeleteQuotaRule(ctx context.Context, in *DeleteQuotaRuleR
 	return out, nil
 }
 
+func (c *netAppClient) RestoreBackupFiles(ctx context.Context, in *RestoreBackupFilesRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.netapp.v1.NetApp/RestoreBackupFiles", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *netAppClient) ListHostGroups(ctx context.Context, in *ListHostGroupsRequest, opts ...grpc.CallOption) (*ListHostGroupsResponse, error) {
+	out := new(ListHostGroupsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.netapp.v1.NetApp/ListHostGroups", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *netAppClient) GetHostGroup(ctx context.Context, in *GetHostGroupRequest, opts ...grpc.CallOption) (*HostGroup, error) {
+	out := new(HostGroup)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.netapp.v1.NetApp/GetHostGroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *netAppClient) CreateHostGroup(ctx context.Context, in *CreateHostGroupRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.netapp.v1.NetApp/CreateHostGroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *netAppClient) UpdateHostGroup(ctx context.Context, in *UpdateHostGroupRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.netapp.v1.NetApp/UpdateHostGroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *netAppClient) DeleteHostGroup(ctx context.Context, in *DeleteHostGroupRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.netapp.v1.NetApp/DeleteHostGroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // NetAppServer is the server API for NetApp service.
 // All implementations must embed UnimplementedNetAppServer
 // for forward compatibility
@@ -839,6 +906,19 @@ type NetAppServer interface {
 	UpdateQuotaRule(context.Context, *UpdateQuotaRuleRequest) (*longrunningpb.Operation, error)
 	// Deletes a quota rule.
 	DeleteQuotaRule(context.Context, *DeleteQuotaRuleRequest) (*longrunningpb.Operation, error)
+	// Restore files from a backup to a volume.
+	RestoreBackupFiles(context.Context, *RestoreBackupFilesRequest) (*longrunningpb.Operation, error)
+	// Returns a list of host groups in a `location`. Use `-` as location to list
+	// host groups across all locations.
+	ListHostGroups(context.Context, *ListHostGroupsRequest) (*ListHostGroupsResponse, error)
+	// Returns details of the specified host group.
+	GetHostGroup(context.Context, *GetHostGroupRequest) (*HostGroup, error)
+	// Creates a new host group.
+	CreateHostGroup(context.Context, *CreateHostGroupRequest) (*longrunningpb.Operation, error)
+	// Updates an existing host group.
+	UpdateHostGroup(context.Context, *UpdateHostGroupRequest) (*longrunningpb.Operation, error)
+	// Deletes a host group.
+	DeleteHostGroup(context.Context, *DeleteHostGroupRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedNetAppServer()
 }
 
@@ -1025,6 +1105,24 @@ func (UnimplementedNetAppServer) UpdateQuotaRule(context.Context, *UpdateQuotaRu
 }
 func (UnimplementedNetAppServer) DeleteQuotaRule(context.Context, *DeleteQuotaRuleRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteQuotaRule not implemented")
+}
+func (UnimplementedNetAppServer) RestoreBackupFiles(context.Context, *RestoreBackupFilesRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RestoreBackupFiles not implemented")
+}
+func (UnimplementedNetAppServer) ListHostGroups(context.Context, *ListHostGroupsRequest) (*ListHostGroupsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListHostGroups not implemented")
+}
+func (UnimplementedNetAppServer) GetHostGroup(context.Context, *GetHostGroupRequest) (*HostGroup, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetHostGroup not implemented")
+}
+func (UnimplementedNetAppServer) CreateHostGroup(context.Context, *CreateHostGroupRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateHostGroup not implemented")
+}
+func (UnimplementedNetAppServer) UpdateHostGroup(context.Context, *UpdateHostGroupRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateHostGroup not implemented")
+}
+func (UnimplementedNetAppServer) DeleteHostGroup(context.Context, *DeleteHostGroupRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteHostGroup not implemented")
 }
 func (UnimplementedNetAppServer) mustEmbedUnimplementedNetAppServer() {}
 
@@ -2119,6 +2217,114 @@ func _NetApp_DeleteQuotaRule_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NetApp_RestoreBackupFiles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RestoreBackupFilesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetAppServer).RestoreBackupFiles(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.netapp.v1.NetApp/RestoreBackupFiles",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetAppServer).RestoreBackupFiles(ctx, req.(*RestoreBackupFilesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetApp_ListHostGroups_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListHostGroupsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetAppServer).ListHostGroups(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.netapp.v1.NetApp/ListHostGroups",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetAppServer).ListHostGroups(ctx, req.(*ListHostGroupsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetApp_GetHostGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetHostGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetAppServer).GetHostGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.netapp.v1.NetApp/GetHostGroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetAppServer).GetHostGroup(ctx, req.(*GetHostGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetApp_CreateHostGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateHostGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetAppServer).CreateHostGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.netapp.v1.NetApp/CreateHostGroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetAppServer).CreateHostGroup(ctx, req.(*CreateHostGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetApp_UpdateHostGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateHostGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetAppServer).UpdateHostGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.netapp.v1.NetApp/UpdateHostGroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetAppServer).UpdateHostGroup(ctx, req.(*UpdateHostGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetApp_DeleteHostGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteHostGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetAppServer).DeleteHostGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.netapp.v1.NetApp/DeleteHostGroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetAppServer).DeleteHostGroup(ctx, req.(*DeleteHostGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // NetApp_ServiceDesc is the grpc.ServiceDesc for NetApp service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2365,6 +2571,30 @@ var NetApp_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteQuotaRule",
 			Handler:    _NetApp_DeleteQuotaRule_Handler,
+		},
+		{
+			MethodName: "RestoreBackupFiles",
+			Handler:    _NetApp_RestoreBackupFiles_Handler,
+		},
+		{
+			MethodName: "ListHostGroups",
+			Handler:    _NetApp_ListHostGroups_Handler,
+		},
+		{
+			MethodName: "GetHostGroup",
+			Handler:    _NetApp_GetHostGroup_Handler,
+		},
+		{
+			MethodName: "CreateHostGroup",
+			Handler:    _NetApp_CreateHostGroup_Handler,
+		},
+		{
+			MethodName: "UpdateHostGroup",
+			Handler:    _NetApp_UpdateHostGroup_Handler,
+		},
+		{
+			MethodName: "DeleteHostGroup",
+			Handler:    _NetApp_DeleteHostGroup_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -22,9 +22,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type QuotaAdjusterSettingsManagerClient interface {
-	// RPC Method for updating QuotaAdjusterSettings based on the request
+	// Updates the QuotaAdjusterSettings for the specified resource.
 	UpdateQuotaAdjusterSettings(ctx context.Context, in *UpdateQuotaAdjusterSettingsRequest, opts ...grpc.CallOption) (*QuotaAdjusterSettings, error)
-	// RPC Method for getting QuotaAdjusterSettings based on the request
+	// Gets the QuotaAdjusterSettings for the specified resource.
 	GetQuotaAdjusterSettings(ctx context.Context, in *GetQuotaAdjusterSettingsRequest, opts ...grpc.CallOption) (*QuotaAdjusterSettings, error)
 }
 
@@ -58,9 +58,9 @@ func (c *quotaAdjusterSettingsManagerClient) GetQuotaAdjusterSettings(ctx contex
 // All implementations must embed UnimplementedQuotaAdjusterSettingsManagerServer
 // for forward compatibility
 type QuotaAdjusterSettingsManagerServer interface {
-	// RPC Method for updating QuotaAdjusterSettings based on the request
+	// Updates the QuotaAdjusterSettings for the specified resource.
 	UpdateQuotaAdjusterSettings(context.Context, *UpdateQuotaAdjusterSettingsRequest) (*QuotaAdjusterSettings, error)
-	// RPC Method for getting QuotaAdjusterSettings based on the request
+	// Gets the QuotaAdjusterSettings for the specified resource.
 	GetQuotaAdjusterSettings(context.Context, *GetQuotaAdjusterSettingsRequest) (*QuotaAdjusterSettings, error)
 	mustEmbedUnimplementedQuotaAdjusterSettingsManagerServer()
 }

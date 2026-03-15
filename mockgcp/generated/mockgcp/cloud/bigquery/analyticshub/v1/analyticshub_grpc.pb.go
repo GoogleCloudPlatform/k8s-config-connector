@@ -80,6 +80,20 @@ type AnalyticsHubServiceClient interface {
 	SetIamPolicy(ctx context.Context, in *iampb.SetIamPolicyRequest, opts ...grpc.CallOption) (*iampb.Policy, error)
 	// Returns the permissions that a caller has.
 	TestIamPermissions(ctx context.Context, in *iampb.TestIamPermissionsRequest, opts ...grpc.CallOption) (*iampb.TestIamPermissionsResponse, error)
+	// Creates a new QueryTemplate
+	CreateQueryTemplate(ctx context.Context, in *CreateQueryTemplateRequest, opts ...grpc.CallOption) (*QueryTemplate, error)
+	// Gets a QueryTemplate
+	GetQueryTemplate(ctx context.Context, in *GetQueryTemplateRequest, opts ...grpc.CallOption) (*QueryTemplate, error)
+	// Lists all QueryTemplates in a given project and location.
+	ListQueryTemplates(ctx context.Context, in *ListQueryTemplatesRequest, opts ...grpc.CallOption) (*ListQueryTemplatesResponse, error)
+	// Updates an existing QueryTemplate
+	UpdateQueryTemplate(ctx context.Context, in *UpdateQueryTemplateRequest, opts ...grpc.CallOption) (*QueryTemplate, error)
+	// Deletes a query template.
+	DeleteQueryTemplate(ctx context.Context, in *DeleteQueryTemplateRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Submits a query template for approval.
+	SubmitQueryTemplate(ctx context.Context, in *SubmitQueryTemplateRequest, opts ...grpc.CallOption) (*QueryTemplate, error)
+	// Approves a query template.
+	ApproveQueryTemplate(ctx context.Context, in *ApproveQueryTemplateRequest, opts ...grpc.CallOption) (*QueryTemplate, error)
 }
 
 type analyticsHubServiceClient struct {
@@ -288,6 +302,69 @@ func (c *analyticsHubServiceClient) TestIamPermissions(ctx context.Context, in *
 	return out, nil
 }
 
+func (c *analyticsHubServiceClient) CreateQueryTemplate(ctx context.Context, in *CreateQueryTemplateRequest, opts ...grpc.CallOption) (*QueryTemplate, error) {
+	out := new(QueryTemplate)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.analyticshub.v1.AnalyticsHubService/CreateQueryTemplate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analyticsHubServiceClient) GetQueryTemplate(ctx context.Context, in *GetQueryTemplateRequest, opts ...grpc.CallOption) (*QueryTemplate, error) {
+	out := new(QueryTemplate)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.analyticshub.v1.AnalyticsHubService/GetQueryTemplate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analyticsHubServiceClient) ListQueryTemplates(ctx context.Context, in *ListQueryTemplatesRequest, opts ...grpc.CallOption) (*ListQueryTemplatesResponse, error) {
+	out := new(ListQueryTemplatesResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ListQueryTemplates", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analyticsHubServiceClient) UpdateQueryTemplate(ctx context.Context, in *UpdateQueryTemplateRequest, opts ...grpc.CallOption) (*QueryTemplate, error) {
+	out := new(QueryTemplate)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.analyticshub.v1.AnalyticsHubService/UpdateQueryTemplate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analyticsHubServiceClient) DeleteQueryTemplate(ctx context.Context, in *DeleteQueryTemplateRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.analyticshub.v1.AnalyticsHubService/DeleteQueryTemplate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analyticsHubServiceClient) SubmitQueryTemplate(ctx context.Context, in *SubmitQueryTemplateRequest, opts ...grpc.CallOption) (*QueryTemplate, error) {
+	out := new(QueryTemplate)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.analyticshub.v1.AnalyticsHubService/SubmitQueryTemplate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analyticsHubServiceClient) ApproveQueryTemplate(ctx context.Context, in *ApproveQueryTemplateRequest, opts ...grpc.CallOption) (*QueryTemplate, error) {
+	out := new(QueryTemplate)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ApproveQueryTemplate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AnalyticsHubServiceServer is the server API for AnalyticsHubService service.
 // All implementations must embed UnimplementedAnalyticsHubServiceServer
 // for forward compatibility
@@ -347,6 +424,20 @@ type AnalyticsHubServiceServer interface {
 	SetIamPolicy(context.Context, *iampb.SetIamPolicyRequest) (*iampb.Policy, error)
 	// Returns the permissions that a caller has.
 	TestIamPermissions(context.Context, *iampb.TestIamPermissionsRequest) (*iampb.TestIamPermissionsResponse, error)
+	// Creates a new QueryTemplate
+	CreateQueryTemplate(context.Context, *CreateQueryTemplateRequest) (*QueryTemplate, error)
+	// Gets a QueryTemplate
+	GetQueryTemplate(context.Context, *GetQueryTemplateRequest) (*QueryTemplate, error)
+	// Lists all QueryTemplates in a given project and location.
+	ListQueryTemplates(context.Context, *ListQueryTemplatesRequest) (*ListQueryTemplatesResponse, error)
+	// Updates an existing QueryTemplate
+	UpdateQueryTemplate(context.Context, *UpdateQueryTemplateRequest) (*QueryTemplate, error)
+	// Deletes a query template.
+	DeleteQueryTemplate(context.Context, *DeleteQueryTemplateRequest) (*empty.Empty, error)
+	// Submits a query template for approval.
+	SubmitQueryTemplate(context.Context, *SubmitQueryTemplateRequest) (*QueryTemplate, error)
+	// Approves a query template.
+	ApproveQueryTemplate(context.Context, *ApproveQueryTemplateRequest) (*QueryTemplate, error)
 	mustEmbedUnimplementedAnalyticsHubServiceServer()
 }
 
@@ -419,6 +510,27 @@ func (UnimplementedAnalyticsHubServiceServer) SetIamPolicy(context.Context, *iam
 }
 func (UnimplementedAnalyticsHubServiceServer) TestIamPermissions(context.Context, *iampb.TestIamPermissionsRequest) (*iampb.TestIamPermissionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
+}
+func (UnimplementedAnalyticsHubServiceServer) CreateQueryTemplate(context.Context, *CreateQueryTemplateRequest) (*QueryTemplate, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateQueryTemplate not implemented")
+}
+func (UnimplementedAnalyticsHubServiceServer) GetQueryTemplate(context.Context, *GetQueryTemplateRequest) (*QueryTemplate, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetQueryTemplate not implemented")
+}
+func (UnimplementedAnalyticsHubServiceServer) ListQueryTemplates(context.Context, *ListQueryTemplatesRequest) (*ListQueryTemplatesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListQueryTemplates not implemented")
+}
+func (UnimplementedAnalyticsHubServiceServer) UpdateQueryTemplate(context.Context, *UpdateQueryTemplateRequest) (*QueryTemplate, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateQueryTemplate not implemented")
+}
+func (UnimplementedAnalyticsHubServiceServer) DeleteQueryTemplate(context.Context, *DeleteQueryTemplateRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteQueryTemplate not implemented")
+}
+func (UnimplementedAnalyticsHubServiceServer) SubmitQueryTemplate(context.Context, *SubmitQueryTemplateRequest) (*QueryTemplate, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitQueryTemplate not implemented")
+}
+func (UnimplementedAnalyticsHubServiceServer) ApproveQueryTemplate(context.Context, *ApproveQueryTemplateRequest) (*QueryTemplate, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ApproveQueryTemplate not implemented")
 }
 func (UnimplementedAnalyticsHubServiceServer) mustEmbedUnimplementedAnalyticsHubServiceServer() {}
 
@@ -829,6 +941,132 @@ func _AnalyticsHubService_TestIamPermissions_Handler(srv interface{}, ctx contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AnalyticsHubService_CreateQueryTemplate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateQueryTemplateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyticsHubServiceServer).CreateQueryTemplate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.bigquery.analyticshub.v1.AnalyticsHubService/CreateQueryTemplate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyticsHubServiceServer).CreateQueryTemplate(ctx, req.(*CreateQueryTemplateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AnalyticsHubService_GetQueryTemplate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetQueryTemplateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyticsHubServiceServer).GetQueryTemplate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.bigquery.analyticshub.v1.AnalyticsHubService/GetQueryTemplate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyticsHubServiceServer).GetQueryTemplate(ctx, req.(*GetQueryTemplateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AnalyticsHubService_ListQueryTemplates_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListQueryTemplatesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyticsHubServiceServer).ListQueryTemplates(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ListQueryTemplates",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyticsHubServiceServer).ListQueryTemplates(ctx, req.(*ListQueryTemplatesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AnalyticsHubService_UpdateQueryTemplate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateQueryTemplateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyticsHubServiceServer).UpdateQueryTemplate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.bigquery.analyticshub.v1.AnalyticsHubService/UpdateQueryTemplate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyticsHubServiceServer).UpdateQueryTemplate(ctx, req.(*UpdateQueryTemplateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AnalyticsHubService_DeleteQueryTemplate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteQueryTemplateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyticsHubServiceServer).DeleteQueryTemplate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.bigquery.analyticshub.v1.AnalyticsHubService/DeleteQueryTemplate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyticsHubServiceServer).DeleteQueryTemplate(ctx, req.(*DeleteQueryTemplateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AnalyticsHubService_SubmitQueryTemplate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SubmitQueryTemplateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyticsHubServiceServer).SubmitQueryTemplate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.bigquery.analyticshub.v1.AnalyticsHubService/SubmitQueryTemplate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyticsHubServiceServer).SubmitQueryTemplate(ctx, req.(*SubmitQueryTemplateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AnalyticsHubService_ApproveQueryTemplate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ApproveQueryTemplateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyticsHubServiceServer).ApproveQueryTemplate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ApproveQueryTemplate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyticsHubServiceServer).ApproveQueryTemplate(ctx, req.(*ApproveQueryTemplateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AnalyticsHubService_ServiceDesc is the grpc.ServiceDesc for AnalyticsHubService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -923,6 +1161,34 @@ var AnalyticsHubService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "TestIamPermissions",
 			Handler:    _AnalyticsHubService_TestIamPermissions_Handler,
+		},
+		{
+			MethodName: "CreateQueryTemplate",
+			Handler:    _AnalyticsHubService_CreateQueryTemplate_Handler,
+		},
+		{
+			MethodName: "GetQueryTemplate",
+			Handler:    _AnalyticsHubService_GetQueryTemplate_Handler,
+		},
+		{
+			MethodName: "ListQueryTemplates",
+			Handler:    _AnalyticsHubService_ListQueryTemplates_Handler,
+		},
+		{
+			MethodName: "UpdateQueryTemplate",
+			Handler:    _AnalyticsHubService_UpdateQueryTemplate_Handler,
+		},
+		{
+			MethodName: "DeleteQueryTemplate",
+			Handler:    _AnalyticsHubService_DeleteQueryTemplate_Handler,
+		},
+		{
+			MethodName: "SubmitQueryTemplate",
+			Handler:    _AnalyticsHubService_SubmitQueryTemplate_Handler,
+		},
+		{
+			MethodName: "ApproveQueryTemplate",
+			Handler:    _AnalyticsHubService_ApproveQueryTemplate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
