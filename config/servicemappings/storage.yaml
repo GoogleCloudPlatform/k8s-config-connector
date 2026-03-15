@@ -38,9 +38,13 @@ spec:
         targetField: name
       ignoredOutputOnlySpecFields:
         - soft_delete_policy.effective_time
+        - autoclass.terminal_storage_class_update_time
+        - autoclass.toggle_time
       observedFields:
         - soft_delete_policy.effective_time
         - soft_delete_policy.retention_duration_seconds
+        - autoclass.terminal_storage_class_update_time
+        - autoclass.toggle_time
       idTemplate: "{{name}}"
       # odd resource where the project is 'optional', needs more thought -- also not supported by gcloud (yet), problem applies to all Storage resources
       idTemplateCanBeUsedToMatchResourceName: false

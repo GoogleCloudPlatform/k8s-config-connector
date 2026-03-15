@@ -263,6 +263,22 @@ func ResourceStorageBucket() *schema.Resource {
 							Required:    true,
 							Description: `While set to true, autoclass automatically transitions objects in your bucket to appropriate storage classes based on each object's access pattern.`,
 						},
+						"terminal_storage_class": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Computed:    true,
+							Description: `The storage class that objects in the bucket eventually transition to if they are not accessed for some time. Supported values include: NEARLINE, ARCHIVE.`,
+						},
+						"terminal_storage_class_update_time": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: `The time at which the terminal_storage_class was last updated. This value is in RFC 3339 format.`,
+						},
+						"toggle_time": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: `The time at which the autoclass toggle was last changed. This value is in RFC 3339 format.`,
+						},
 					},
 				},
 				Description: `The bucket's autoclass configuration.`,
@@ -1168,6 +1184,11 @@ func expandBucketAutoclass(configured interface{}) *storage.BucketAutoclass {
 	bucketAutoclass.Enabled = autoclass["enabled"].(bool)
 	bucketAutoclass.ForceSendFields = append(bucketAutoclass.ForceSendFields, "Enabled")
 
+	if v, ok := autoclass["terminal_storage_class"]; ok && v != "" {
+		bucketAutoclass.TerminalStorageClass = v.(string)
+		bucketAutoclass.ForceSendFields = append(bucketAutoclass.ForceSendFields, "TerminalStorageClass")
+	}
+
 	return bucketAutoclass
 }
 
@@ -1194,6 +1215,15 @@ func flattenBucketAutoclass(bucketAutoclass *storage.BucketAutoclass) []map[stri
 
 	autoclass := map[string]interface{}{
 		"enabled": bucketAutoclass.Enabled,
+	}
+	if bucketAutoclass.TerminalStorageClass != "" {
+		autoclass["terminal_storage_class"] = bucketAutoclass.TerminalStorageClass
+	}
+	if bucketAutoclass.TerminalStorageClassUpdateTime != "" {
+		autoclass["terminal_storage_class_update_time"] = bucketAutoclass.TerminalStorageClassUpdateTime
+	}
+	if bucketAutoclass.ToggleTime != "" {
+		autoclass["toggle_time"] = bucketAutoclass.ToggleTime
 	}
 	autoclassList = append(autoclassList, autoclass)
 	return autoclassList

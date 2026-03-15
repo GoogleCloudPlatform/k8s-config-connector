@@ -34,6 +34,11 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".softDeletePolicy.effectiveTime", PlaceholderTimestamp)
 	replacements.ReplacePath(".items[].softDeletePolicy.effectiveTime", PlaceholderTimestamp)
 
+	replacements.ReplacePath(".autoclass.terminalStorageClassUpdateTime", PlaceholderTimestamp)
+	replacements.ReplacePath(".items[].autoclass.terminalStorageClassUpdateTime", PlaceholderTimestamp)
+	replacements.ReplacePath(".autoclass.toggleTime", PlaceholderTimestamp)
+	replacements.ReplacePath(".items[].autoclass.toggleTime", PlaceholderTimestamp)
+
 	replacements.ReplacePath(".acl[].etag", "abcdef0123A")
 	replacements.ReplacePath(".items[].acl[].etag", "abcdef0123A")
 	replacements.ReplacePath(".defaultObjectAcl[].etag", "abcdef0123A=")
