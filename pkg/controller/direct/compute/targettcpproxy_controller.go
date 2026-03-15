@@ -22,8 +22,8 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 
-	gcp "cloud.google.com/go/compute/apiv1"
-	computepb "cloud.google.com/go/compute/apiv1/computepb"
+	computev1 "cloud.google.com/go/compute/apiv1"
+	computepbv1 "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -53,10 +53,10 @@ var _ directbase.Model = &targetTCPProxyModel{}
 
 type targetTCPProxyAdapter struct {
 	id                             *krm.TargetTCPProxyIdentity
-	targetTcpProxiesClient         *gcp.TargetTcpProxiesClient
-	regionalTargetTcpProxiesClient *gcp.RegionTargetTcpProxiesClient
+	targetTcpProxiesClient         *computev1.TargetTcpProxiesClient
+	regionalTargetTcpProxiesClient *computev1.RegionTargetTcpProxiesClient
 	desired                        *krm.ComputeTargetTCPProxy
-	actual                         *computepb.TargetTcpProxy
+	actual                         *computepbv1.TargetTcpProxy
 	reader                         client.Reader
 }
 
@@ -158,15 +158,15 @@ func (a *targetTCPProxyAdapter) Create(ctx context.Context, createOp *directbase
 	tokens := strings.Split(a.id.String(), "/")
 	targetTCPProxy.Name = direct.LazyPtr(tokens[len(tokens)-1])
 
-	op := &gcp.Operation{}
+	op := &computev1.Operation{}
 	if parent.Location == "global" {
-		req := &computepb.InsertTargetTcpProxyRequest{
+		req := &computepbv1.InsertTargetTcpProxyRequest{
 			Project:                parent.ProjectID,
 			TargetTcpProxyResource: targetTCPProxy,
 		}
 		op, err = a.targetTcpProxiesClient.Insert(ctx, req)
 	} else {
-		req := &computepb.InsertRegionTargetTcpProxyRequest{
+		req := &computepbv1.InsertRegionTargetTcpProxyRequest{
 			Project:                parent.ProjectID,
 			Region:                 parent.Location,
 			TargetTcpProxyResource: targetTCPProxy,
@@ -186,7 +186,7 @@ func (a *targetTCPProxyAdapter) Create(ctx context.Context, createOp *directbase
 	log.V(2).Info("successfully created ComputeTargetTCPProxy", "name", a.id)
 
 	// Get the created resource
-	created := &computepb.TargetTcpProxy{}
+	created := &computepbv1.TargetTcpProxy{}
 	created, err = a.get(ctx)
 	if err != nil {
 		return fmt.Errorf("getting ComputeTargetTCPProxy %s: %w", a.id, err)
@@ -220,7 +220,7 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 
 	parent := a.id.Parent()
 	tokens := strings.Split(a.id.String(), "/")
-	updated := &computepb.TargetTcpProxy{}
+	updated := &computepbv1.TargetTcpProxy{}
 
 	// Assign API output-only values
 	// todo: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/4455
@@ -254,11 +254,11 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 			return fmt.Errorf("update operation not supported for regional ComputeTargetTCPProxy")
 		}
 
-		op := &gcp.Operation{}
+		op := &computev1.Operation{}
 		if !reflect.DeepEqual(targetTCPProxy.ProxyHeader, a.actual.ProxyHeader) {
-			setProxyHeaderReq := &computepb.SetProxyHeaderTargetTcpProxyRequest{
+			setProxyHeaderReq := &computepbv1.SetProxyHeaderTargetTcpProxyRequest{
 				Project: parent.ProjectID,
-				TargetTcpProxiesSetProxyHeaderRequestResource: &computepb.TargetTcpProxiesSetProxyHeaderRequest{ProxyHeader: targetTCPProxy.ProxyHeader},
+				TargetTcpProxiesSetProxyHeaderRequestResource: &computepbv1.TargetTcpProxiesSetProxyHeaderRequest{ProxyHeader: targetTCPProxy.ProxyHeader},
 				TargetTcpProxy: tokens[len(tokens)-1],
 			}
 			op, err = a.targetTcpProxiesClient.SetProxyHeader(ctx, setProxyHeaderReq)
@@ -275,9 +275,9 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 		}
 
 		if !reflect.DeepEqual(targetTCPProxy.Service, a.actual.Service) {
-			setBackendServiceReq := &computepb.SetBackendServiceTargetTcpProxyRequest{
+			setBackendServiceReq := &computepbv1.SetBackendServiceTargetTcpProxyRequest{
 				Project: parent.ProjectID,
-				TargetTcpProxiesSetBackendServiceRequestResource: &computepb.TargetTcpProxiesSetBackendServiceRequest{Service: targetTCPProxy.Service},
+				TargetTcpProxiesSetBackendServiceRequestResource: &computepbv1.TargetTcpProxiesSetBackendServiceRequest{Service: targetTCPProxy.Service},
 				TargetTcpProxy: tokens[len(tokens)-1],
 			}
 			op, err = a.targetTcpProxiesClient.SetBackendService(ctx, setBackendServiceReq)
@@ -342,16 +342,16 @@ func (a *targetTCPProxyAdapter) Delete(ctx context.Context, deleteOp *directbase
 	parent := a.id.Parent()
 
 	var err error
-	op := &gcp.Operation{}
+	op := &computev1.Operation{}
 	tokens := strings.Split(a.id.String(), "/")
 	if parent.Location == "global" {
-		delReq := &computepb.DeleteTargetTcpProxyRequest{
+		delReq := &computepbv1.DeleteTargetTcpProxyRequest{
 			Project:        parent.ProjectID,
 			TargetTcpProxy: tokens[len(tokens)-1],
 		}
 		op, err = a.targetTcpProxiesClient.Delete(ctx, delReq)
 	} else {
-		delReq := &computepb.DeleteRegionTargetTcpProxyRequest{
+		delReq := &computepbv1.DeleteRegionTargetTcpProxyRequest{
 			Project:        parent.ProjectID,
 			Region:         parent.Location,
 			TargetTcpProxy: tokens[len(tokens)-1],
@@ -372,19 +372,19 @@ func (a *targetTCPProxyAdapter) Delete(ctx context.Context, deleteOp *directbase
 	return true, nil
 }
 
-func (a *targetTCPProxyAdapter) get(ctx context.Context) (*computepb.TargetTcpProxy, error) {
+func (a *targetTCPProxyAdapter) get(ctx context.Context) (*computepbv1.TargetTcpProxy, error) {
 	parent := a.id.Parent()
 	location := parent.Location
 
 	tokens := strings.Split(a.id.String(), "/")
 	if location == "global" {
-		getReq := &computepb.GetTargetTcpProxyRequest{
+		getReq := &computepbv1.GetTargetTcpProxyRequest{
 			Project:        parent.ProjectID,
 			TargetTcpProxy: tokens[len(tokens)-1],
 		}
 		return a.targetTcpProxiesClient.Get(ctx, getReq)
 	} else {
-		getReq := &computepb.GetRegionTargetTcpProxyRequest{
+		getReq := &computepbv1.GetRegionTargetTcpProxyRequest{
 			Project:        parent.ProjectID,
 			Region:         location,
 			TargetTcpProxy: tokens[len(tokens)-1],

@@ -37,9 +37,9 @@ func ComputeFirewallPolicyRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, 
 	out.Priority = int64(in.GetPriority())
 	// MISSING: RuleName
 	// MISSING: SecurityProfileGroup
-	out.TargetResources = ComputeFirewallPolicyRuleSpec_TargetResources_FromProto(mapCtx, in.TargetResources)
+	out.TargetResources = ComputeFirewallPolicyRuleSpec_TargetResources_v1beta1_FromProto(mapCtx, in.TargetResources)
 	// MISSING: TargetSecureTags
-	out.TargetServiceAccounts = ComputeFirewallPolicyRuleSpec_TargetServiceAccounts_FromProto(mapCtx, in.TargetServiceAccounts)
+	out.TargetServiceAccounts = ComputeFirewallPolicyRuleSpec_TargetServiceAccounts_v1beta1_FromProto(mapCtx, in.TargetServiceAccounts)
 	// MISSING: TlsInspect
 	return out
 }
@@ -57,8 +57,8 @@ func ComputeFirewallPolicyRuleSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in
 	out.Priority = direct.LazyPtr(int32(in.Priority))
 	// MISSING: RuleName
 	// MISSING: SecurityProfileGroup
-	out.TargetResources = ComputeFirewallPolicyRuleSpec_TargetResources_ToProto(mapCtx, in.TargetResources)
-	out.TargetServiceAccounts = ComputeFirewallPolicyRuleSpec_TargetServiceAccounts_ToProto(mapCtx, in.TargetServiceAccounts)
+	out.TargetResources = ComputeFirewallPolicyRuleSpec_TargetResources_v1beta1_ToProto(mapCtx, in.TargetResources)
+	out.TargetServiceAccounts = ComputeFirewallPolicyRuleSpec_TargetServiceAccounts_v1beta1_ToProto(mapCtx, in.TargetServiceAccounts)
 	// MISSING: TlsInspect
 	return out
 }
@@ -82,7 +82,7 @@ func FirewallPolicyRuleMatcherLayer4Config_v1beta1_ToProto(mapCtx *direct.MapCon
 	return out
 }
 
-func ComputeFirewallPolicyRuleSpec_TargetResources_ToProto(mapCtx *direct.MapContext, in []*computev1beta1.ComputeNetworkRef) []string {
+func ComputeFirewallPolicyRuleSpec_TargetResources_v1beta1_ToProto(mapCtx *direct.MapContext, in []*computev1beta1.ComputeNetworkRef) []string {
 	if in == nil {
 		return nil
 	}
@@ -99,7 +99,7 @@ func ComputeFirewallPolicyRuleSpec_TargetResources_ToProto(mapCtx *direct.MapCon
 	return out
 }
 
-func ComputeFirewallPolicyRuleSpec_TargetServiceAccounts_ToProto(mapCtx *direct.MapContext, in []*refs.IAMServiceAccountRef) []string {
+func ComputeFirewallPolicyRuleSpec_TargetServiceAccounts_v1beta1_ToProto(mapCtx *direct.MapContext, in []*refs.IAMServiceAccountRef) []string {
 	if in == nil {
 		return nil
 	}
@@ -116,7 +116,7 @@ func ComputeFirewallPolicyRuleSpec_TargetServiceAccounts_ToProto(mapCtx *direct.
 	return out
 }
 
-func ComputeFirewallPolicyRuleSpec_TargetResources_FromProto(mapCtx *direct.MapContext, in []string) []*computev1beta1.ComputeNetworkRef {
+func ComputeFirewallPolicyRuleSpec_TargetResources_v1beta1_FromProto(mapCtx *direct.MapContext, in []string) []*computev1beta1.ComputeNetworkRef {
 	if in == nil {
 		return nil
 	}
@@ -129,7 +129,7 @@ func ComputeFirewallPolicyRuleSpec_TargetResources_FromProto(mapCtx *direct.MapC
 	return out
 }
 
-func ComputeFirewallPolicyRuleSpec_TargetServiceAccounts_FromProto(mapCtx *direct.MapContext, in []string) []*refs.IAMServiceAccountRef {
+func ComputeFirewallPolicyRuleSpec_TargetServiceAccounts_v1beta1_FromProto(mapCtx *direct.MapContext, in []string) []*refs.IAMServiceAccountRef {
 	if in == nil {
 		return nil
 	}

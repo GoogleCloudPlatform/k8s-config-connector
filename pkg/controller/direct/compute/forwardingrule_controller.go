@@ -22,8 +22,8 @@ import (
 
 	"k8s.io/klog/v2"
 
-	gcp "cloud.google.com/go/compute/apiv1"
-	computepb "cloud.google.com/go/compute/apiv1/computepb"
+	computev1 "cloud.google.com/go/compute/apiv1"
+	computepbv1 "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -53,10 +53,10 @@ var _ directbase.Model = &forwardingRuleModel{}
 
 type forwardingRuleAdapter struct {
 	id                          *krm.ForwardingRuleIdentity
-	forwardingRulesClient       *gcp.ForwardingRulesClient
-	globalForwardingRulesClient *gcp.GlobalForwardingRulesClient
+	forwardingRulesClient       *computev1.ForwardingRulesClient
+	globalForwardingRulesClient *computev1.GlobalForwardingRulesClient
 	desired                     *krm.ComputeForwardingRule
-	actual                      *computepb.ForwardingRule
+	actual                      *computepbv1.ForwardingRule
 	reader                      client.Reader
 }
 
@@ -121,7 +121,7 @@ func (a *forwardingRuleAdapter) Find(ctx context.Context) (bool, error) {
 	log.V(2).Info("getting ComputeForwardingRule", "name", a.id)
 
 	var err error
-	forwardingRule := &computepb.ForwardingRule{}
+	forwardingRule := &computepbv1.ForwardingRule{}
 	forwardingRule, err = a.get(ctx)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -166,15 +166,15 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 	}
 
 	// Create forwarding rule(labels are not set during Insert)
-	op := &gcp.Operation{}
+	op := &computev1.Operation{}
 	if a.id.ParentID.Location == "global" {
-		req := &computepb.InsertGlobalForwardingRuleRequest{
+		req := &computepbv1.InsertGlobalForwardingRuleRequest{
 			ForwardingRuleResource: forwardingRule,
 			Project:                a.id.ParentID.ProjectID,
 		}
 		op, err = a.globalForwardingRulesClient.Insert(ctx, req)
 	} else {
-		req := &computepb.InsertForwardingRuleRequest{
+		req := &computepbv1.InsertForwardingRuleRequest{
 			ForwardingRuleResource: forwardingRule,
 			Region:                 a.id.ParentID.Location,
 			Project:                a.id.ParentID.ProjectID,
@@ -193,7 +193,7 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 	log.V(2).Info("successfully created ComputeForwardingRule", "name", a.id)
 
 	// Get the created resource
-	created := &computepb.ForwardingRule{}
+	created := &computepbv1.ForwardingRule{}
 	created, err = a.get(ctx)
 	if err != nil {
 		return fmt.Errorf("getting ComputeForwardingRule %q: %w", a.id, err)
@@ -261,20 +261,20 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 
-	op := &gcp.Operation{}
-	updated := &computepb.ForwardingRule{}
+	op := &computev1.Operation{}
+	updated := &computepbv1.ForwardingRule{}
 	if !reflect.DeepEqual(forwardingRule.AllowGlobalAccess, a.actual.AllowGlobalAccess) {
 		report.AddField("allow_global_access", a.actual.AllowGlobalAccess, forwardingRule.AllowGlobalAccess)
 		// To match the request body in TF-controller log
 		// https://github.com/hashicorp/terraform-provider-google/blob/main/google/services/compute/resource_compute_forwarding_rule.go#L1151
-		reqBody := &computepb.ForwardingRule{AllowGlobalAccess: forwardingRule.AllowGlobalAccess}
+		reqBody := &computepbv1.ForwardingRule{AllowGlobalAccess: forwardingRule.AllowGlobalAccess}
 		if a.id.ParentID.Location == "global" {
 			// TF does not support allowGlobalAccess field for global forwarding rule
 			// Underlying API as well, error message: `Field allow-global-access is only supported for regional INTERNAL
 			// forwarding rules with backend service/target instance or regional INTERNAL_MANAGED forwarding rules.`
 			forwardingRule.AllowGlobalAccess = nil
 		} else {
-			patchReq := &computepb.PatchForwardingRuleRequest{
+			patchReq := &computepbv1.PatchForwardingRuleRequest{
 				ForwardingRule:         a.id.ResourceID,
 				ForwardingRuleResource: reqBody,
 				Project:                a.id.ParentID.ProjectID,
@@ -315,16 +315,16 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 	if !IsSelfLinkEqual(forwardingRule.Target, a.actual.Target) {
 		report.AddField("target", a.actual.Target, forwardingRule.Target)
 		if a.id.ParentID.Location == "global" {
-			setTargetReq := &computepb.SetTargetGlobalForwardingRuleRequest{
+			setTargetReq := &computepbv1.SetTargetGlobalForwardingRuleRequest{
 				ForwardingRule:          a.id.ResourceID,
-				TargetReferenceResource: &computepb.TargetReference{Target: forwardingRule.Target},
+				TargetReferenceResource: &computepbv1.TargetReference{Target: forwardingRule.Target},
 				Project:                 a.id.ParentID.ProjectID,
 			}
 			op, err = a.globalForwardingRulesClient.SetTarget(ctx, setTargetReq)
 		} else {
-			setTargetReq := &computepb.SetTargetForwardingRuleRequest{
+			setTargetReq := &computepbv1.SetTargetForwardingRuleRequest{
 				ForwardingRule:          a.id.ResourceID,
-				TargetReferenceResource: &computepb.TargetReference{Target: forwardingRule.Target},
+				TargetReferenceResource: &computepbv1.TargetReference{Target: forwardingRule.Target},
 				Project:                 a.id.ParentID.ProjectID,
 				Region:                  a.id.ParentID.Location,
 			}
@@ -394,15 +394,15 @@ func (a *forwardingRuleAdapter) Delete(ctx context.Context, deleteOp *directbase
 	log.V(2).Info("deleting ComputeForwardingRule", "name", a.id.ResourceID)
 
 	var err error
-	op := &gcp.Operation{}
+	op := &computev1.Operation{}
 	if a.id.ParentID.Location == "global" {
-		req := &computepb.DeleteGlobalForwardingRuleRequest{
+		req := &computepbv1.DeleteGlobalForwardingRuleRequest{
 			ForwardingRule: a.id.ResourceID,
 			Project:        a.id.ParentID.ProjectID,
 		}
 		op, err = a.globalForwardingRulesClient.Delete(ctx, req)
 	} else {
-		req := &computepb.DeleteForwardingRuleRequest{
+		req := &computepbv1.DeleteForwardingRuleRequest{
 			ForwardingRule: a.id.ResourceID,
 			Region:         a.id.ParentID.Location,
 			Project:        a.id.ParentID.ProjectID,
@@ -422,15 +422,15 @@ func (a *forwardingRuleAdapter) Delete(ctx context.Context, deleteOp *directbase
 	return true, nil
 }
 
-func (a *forwardingRuleAdapter) get(ctx context.Context) (*computepb.ForwardingRule, error) {
+func (a *forwardingRuleAdapter) get(ctx context.Context) (*computepbv1.ForwardingRule, error) {
 	if a.id.ParentID.Location == "global" {
-		getReq := &computepb.GetGlobalForwardingRuleRequest{
+		getReq := &computepbv1.GetGlobalForwardingRuleRequest{
 			ForwardingRule: a.id.ResourceID,
 			Project:        a.id.ParentID.ProjectID,
 		}
 		return a.globalForwardingRulesClient.Get(ctx, getReq)
 	} else {
-		getReq := &computepb.GetForwardingRuleRequest{
+		getReq := &computepbv1.GetForwardingRuleRequest{
 			ForwardingRule: a.id.ResourceID,
 			Region:         a.id.ParentID.Location,
 			Project:        a.id.ParentID.ProjectID,
@@ -439,20 +439,20 @@ func (a *forwardingRuleAdapter) get(ctx context.Context) (*computepb.ForwardingR
 	}
 }
 
-func (a *forwardingRuleAdapter) setLabels(ctx context.Context, fingerprint *string, labels map[string]string) (*gcp.Operation, error) {
-	op := &gcp.Operation{}
+func (a *forwardingRuleAdapter) setLabels(ctx context.Context, fingerprint *string, labels map[string]string) (*computev1.Operation, error) {
+	op := &computev1.Operation{}
 	var err error
 	if a.id.ParentID.Location == "global" {
-		setLabelsReq := &computepb.SetLabelsGlobalForwardingRuleRequest{
+		setLabelsReq := &computepbv1.SetLabelsGlobalForwardingRuleRequest{
 			Resource:                       a.id.ResourceID,
-			GlobalSetLabelsRequestResource: &computepb.GlobalSetLabelsRequest{LabelFingerprint: fingerprint, Labels: labels},
+			GlobalSetLabelsRequestResource: &computepbv1.GlobalSetLabelsRequest{LabelFingerprint: fingerprint, Labels: labels},
 			Project:                        a.id.ParentID.ProjectID,
 		}
 		op, err = a.globalForwardingRulesClient.SetLabels(ctx, setLabelsReq)
 	} else {
-		setLabelsReq := &computepb.SetLabelsForwardingRuleRequest{
+		setLabelsReq := &computepbv1.SetLabelsForwardingRuleRequest{
 			Resource:                       a.id.ResourceID,
-			RegionSetLabelsRequestResource: &computepb.RegionSetLabelsRequest{LabelFingerprint: fingerprint, Labels: labels},
+			RegionSetLabelsRequestResource: &computepbv1.RegionSetLabelsRequest{LabelFingerprint: fingerprint, Labels: labels},
 			Project:                        a.id.ParentID.ProjectID,
 			Region:                         a.id.ParentID.Location,
 		}

@@ -24,8 +24,8 @@ import (
 
 	"google.golang.org/api/option"
 
-	gcp "cloud.google.com/go/compute/apiv1"
-	computepb "cloud.google.com/go/compute/apiv1/computepb"
+	computev1 "cloud.google.com/go/compute/apiv1"
+	computepbv1 "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -55,21 +55,21 @@ var _ directbase.Model = &firewallPolicyRuleModel{}
 
 type firewallPolicyRuleAdapter struct {
 	id                     *krm.FirewallPolicyRuleIdentity
-	firewallPoliciesClient *gcp.FirewallPoliciesClient
+	firewallPoliciesClient *computev1.FirewallPoliciesClient
 	desired                *krm.ComputeFirewallPolicyRule
-	actual                 *computepb.FirewallPolicyRule
+	actual                 *computepbv1.FirewallPolicyRule
 	reader                 client.Reader
 }
 
 var _ directbase.Adapter = &firewallPolicyRuleAdapter{}
 
-func (m *firewallPolicyRuleModel) client(ctx context.Context) (*gcp.FirewallPoliciesClient, error) {
+func (m *firewallPolicyRuleModel) client(ctx context.Context) (*computev1.FirewallPoliciesClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewFirewallPoliciesRESTClient(ctx, opts...)
+	gcpClient, err := computev1.NewFirewallPoliciesRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building FirewallPolicy client: %w", err)
 	}
@@ -146,7 +146,7 @@ func (a *firewallPolicyRuleAdapter) Create(ctx context.Context, createOp *direct
 		return mapCtx.Err()
 	}
 
-	req := &computepb.AddRuleFirewallPolicyRequest{
+	req := &computepbv1.AddRuleFirewallPolicyRequest{
 		FirewallPolicyRuleResource: firewallPolicyRule,
 		FirewallPolicy:             a.id.Parent().FirewallPolicy,
 	}
@@ -206,7 +206,7 @@ func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *direct
 		return err
 	}
 
-	updated := &computepb.FirewallPolicyRule{}
+	updated := &computepbv1.FirewallPolicyRule{}
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.String())
 
@@ -234,7 +234,7 @@ func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *direct
 		firewallPolicyRule.Kind = nil
 		firewallPolicyRule.RuleTupleCount = nil
 
-		updateReq := &computepb.PatchRuleFirewallPolicyRequest{
+		updateReq := &computepbv1.PatchRuleFirewallPolicyRequest{
 			FirewallPolicyRuleResource: firewallPolicyRule,
 			FirewallPolicy:             a.id.Parent().FirewallPolicy,
 			Priority:                   direct.PtrTo(int32(priority)),
@@ -295,7 +295,7 @@ func (a *firewallPolicyRuleAdapter) Delete(ctx context.Context, deleteOp *direct
 	if err != nil {
 		return false, fmt.Errorf("error convert priority %s of ComputeFirewallPolicyRule %s to an integer: %w", tokens[5], a.id, err)
 	}
-	delReq := &computepb.RemoveRuleFirewallPolicyRequest{
+	delReq := &computepbv1.RemoveRuleFirewallPolicyRequest{
 		FirewallPolicy: a.id.Parent().FirewallPolicy,
 		Priority:       direct.PtrTo(int32(priority)),
 	}
@@ -319,7 +319,7 @@ func (a *firewallPolicyRuleAdapter) Delete(ctx context.Context, deleteOp *direct
 	return true, nil
 }
 
-func (a *firewallPolicyRuleAdapter) get(ctx context.Context) (*computepb.FirewallPolicyRule, error) {
+func (a *firewallPolicyRuleAdapter) get(ctx context.Context) (*computepbv1.FirewallPolicyRule, error) {
 	tokens := strings.Split(a.id.String(), "/")
 	priority, err := strconv.ParseInt(tokens[5], 10, 32)
 	// Should not hit this error because we have verified priority in parseComputeFirewallPolicyRuleExternal`
@@ -327,7 +327,7 @@ func (a *firewallPolicyRuleAdapter) get(ctx context.Context) (*computepb.Firewal
 		return nil, fmt.Errorf("error convert priority %s of ComputeFirewallPolicyRule %s to an integer: %w", tokens[5], a.id, err)
 	}
 
-	getReq := &computepb.GetRuleFirewallPolicyRequest{
+	getReq := &computepbv1.GetRuleFirewallPolicyRequest{
 		FirewallPolicy: a.id.Parent().FirewallPolicy,
 		Priority:       direct.PtrTo(int32(priority)),
 	}
