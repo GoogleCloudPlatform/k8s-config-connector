@@ -898,6 +898,11 @@ type ComputeBackendServiceSpec struct {
 	// +optional
 	SessionAffinity *string `json:"sessionAffinity,omitempty"`
 
+	/* The full or partial URL of the service lb policy that this backend service is associated with. Can only be set
+	if load balancing scheme is EXTERNAL, EXTERNAL_MANAGED, INTERNAL_MANAGED or INTERNAL_SELF_MANAGED and the scope is global. */
+	// +optional
+	ServiceLbPolicy *string `json:"serviceLbPolicy,omitempty"`
+
 	/* Subsetting configuration for this BackendService. Currently this is applicable only for Internal TCP/UDP load balancing and Internal HTTP(S) load balancing. */
 	// +optional
 	Subsetting *BackendserviceSubsetting `json:"subsetting,omitempty"`
