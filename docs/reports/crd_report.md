@@ -353,7 +353,7 @@
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityServerTLSPolicy                  | False        | True        | False  | DCL        | False       |
 | networkservices.cnrm.cloud.google.com         | NetworkServicesEdgeCacheKeyset                  | True         | False       | False  | Terraform  | False       |
 | networkservices.cnrm.cloud.google.com         | NetworkServicesEdgeCacheOrigin                  | True         | False       | False  | Terraform  | False       |
-| networkservices.cnrm.cloud.google.com         | NetworkServicesEdgeCacheService                 | True         | False       | False  | Terraform  | False       |
+| networkservices.cnrm.cloud.google.com         | NetworkServicesEdgeCacheService                 | True         | False       | False  | Direct     | True        |
 | networkservices.cnrm.cloud.google.com         | NetworkServicesEndpointPolicy                   | False        | True        | False  | DCL        | False       |
 | networkservices.cnrm.cloud.google.com         | NetworkServicesGateway                          | False        | True        | False  | DCL        | False       |
 | networkservices.cnrm.cloud.google.com         | NetworkServicesGRPCRoute                        | False        | True        | False  | DCL        | False       |

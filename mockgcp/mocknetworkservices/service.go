@@ -36,8 +36,7 @@ func init() {
 // MockService represents a mocked networkservices service.
 type MockService struct {
 	*common.MockEnvironment
-	storage storage.Storage
-
+	storage    storage.Storage
 	operations *operations.Operations
 
 	v1 *NetworkServicesServer
@@ -77,6 +76,16 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	if err != nil {
 		return nil, err
 	}
+
+	mux.ServeMux.HandlePath("GET", "/v1/projects/{project}/locations/global/edgeCacheServices/{name}", s.v1.GetEdgeCacheService)
+	mux.ServeMux.HandlePath("POST", "/v1/projects/{project}/locations/global/edgeCacheServices", s.v1.CreateEdgeCacheService)
+	mux.ServeMux.HandlePath("PATCH", "/v1/projects/{project}/locations/global/edgeCacheServices/{name}", s.v1.PatchEdgeCacheService)
+	mux.ServeMux.HandlePath("DELETE", "/v1/projects/{project}/locations/global/edgeCacheServices/{name}", s.v1.DeleteEdgeCacheService)
+
+	mux.ServeMux.HandlePath("GET", "/v1/projects/{project}/locations/global/edgeCacheOrigins/{name}", s.v1.GetEdgeCacheOrigin)
+	mux.ServeMux.HandlePath("POST", "/v1/projects/{project}/locations/global/edgeCacheOrigins", s.v1.CreateEdgeCacheOrigin)
+	mux.ServeMux.HandlePath("PATCH", "/v1/projects/{project}/locations/global/edgeCacheOrigins/{name}", s.v1.PatchEdgeCacheOrigin)
+	mux.ServeMux.HandlePath("DELETE", "/v1/projects/{project}/locations/global/edgeCacheOrigins/{name}", s.v1.DeleteEdgeCacheOrigin)
 
 	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
 		if error.Code == 404 {

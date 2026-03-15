@@ -1,0 +1,84 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1alpha1
+kind: NetworkServicesEdgeCacheService
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: edgecacheservice-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Full edge cache service
+  disableHttp2: false
+  disableQuic: false
+  logConfig:
+    enable: true
+    sampleRate: 1
+  projectRef:
+    external: ${projectId}
+  requireTls: false
+  routing:
+    hostRule:
+    - description: All hosts
+      hosts:
+      - '*'
+      pathMatcher: path-matcher
+    pathMatcher:
+    - description: Default path matcher
+      name: path-matcher
+      routeRule:
+      - description: Root route
+        headerAction:
+          requestHeaderToAdd:
+          - headerName: x-request-header
+            headerValue: value
+            replace: true
+          requestHeaderToRemove:
+          - headerName: x-remove-this
+          responseHeaderToAdd:
+          - headerName: x-response-header
+            headerValue: value
+            replace: true
+          responseHeaderToRemove:
+          - headerName: x-remove-this-too
+        matchRule:
+        - ignoreCase: true
+          prefixMatch: /
+        origin: projects/${projectId}/locations/global/edgeCacheOrigins/networkservicesedgecacheorigin${uniqueId}
+        priority: "1"
+        routeAction:
+          cdnPolicy:
+            cacheMode: CACHE_ALL_STATIC
+            clientTtl: 3600s
+            compressionMode: AUTOMATIC
+            defaultTtl: 3600s
+            maxTtl: 86400s
+          corsPolicy:
+            allowHeaders:
+            - Content-Type
+            allowMethods:
+            - GET
+            - POST
+            allowOrigins:
+            - '*'
+            disabled: false
+            maxAge: 3600s
+          urlRewrite:
+            pathPrefixRewrite: /
+        routeMethods:
+          allowedMethods:
+          - GET
+          - HEAD
+          - POST
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/edgeCacheServices/edgecacheservice-${uniqueId}
+  observedGeneration: 1
+  observedState: {}

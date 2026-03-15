@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,15 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
-kind: NetworkServicesMesh
+apiVersion: networkservices.cnrm.cloud.google.com/v1alpha1
+kind: NetworkServicesEdgeCacheOrigin
 metadata:
-  name: networkservicesmesh-${uniqueId}
-  labels:
-    foo: bar
+  name: networkservicesedgecacheorigin-${uniqueId}
 spec:
-  location: "global"
-  description: "Original description"
-  interceptionPort: 80
+  description: The default bucket for media edge test
+  originAddress: gs://media-edge-default
   projectRef:
-    external: "${projectId}"
+    external: ${projectId}
+  resourceID: networkservicesedgecacheorigin${uniqueId}
