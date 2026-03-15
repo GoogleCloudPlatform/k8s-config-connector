@@ -226,7 +226,8 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -484,6 +485,7 @@ X-Xss-Protection: 0
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
+      "queuedProvisioning": {},
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
@@ -588,7 +590,8 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -846,6 +849,7 @@ X-Xss-Protection: 0
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
+      "queuedProvisioning": {},
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
@@ -950,7 +954,8 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -1208,6 +1213,7 @@ X-Xss-Protection: 0
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
+      "queuedProvisioning": {},
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
@@ -1372,7 +1378,8 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -1630,6 +1637,7 @@ X-Xss-Protection: 0
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
+      "queuedProvisioning": {},
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
@@ -1734,7 +1742,8 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -1992,6 +2001,7 @@ X-Xss-Protection: 0
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
+      "queuedProvisioning": {},
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
@@ -2096,7 +2106,8 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -2354,6 +2365,7 @@ X-Xss-Protection: 0
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
+      "queuedProvisioning": {},
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
@@ -2581,7 +2593,8 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -2839,6 +2852,7 @@ X-Xss-Protection: 0
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
+      "queuedProvisioning": {},
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
@@ -2943,7 +2957,8 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -3201,6 +3216,7 @@ X-Xss-Protection: 0
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
+      "queuedProvisioning": {},
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
@@ -3305,7 +3321,8 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -3563,6 +3580,7 @@ X-Xss-Protection: 0
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
+      "queuedProvisioning": {},
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,

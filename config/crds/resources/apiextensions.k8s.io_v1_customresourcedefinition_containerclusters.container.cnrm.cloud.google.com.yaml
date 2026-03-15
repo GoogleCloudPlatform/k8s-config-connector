@@ -193,6 +193,16 @@ spec:
                     required:
                     - disabled
                     type: object
+                  parallelstoreCsiDriverConfig:
+                    description: The status of the Parallelstore CSI driver addon,
+                      which allows the usage of Parallelstore instance as volumes.
+                      Defaults to disabled; set enabled = true to enable.
+                    properties:
+                      enabled:
+                        type: boolean
+                    required:
+                    - enabled
+                    type: object
                 type: object
               allowNetAdmin:
                 description: Enable NET_ADMIN for this cluster.

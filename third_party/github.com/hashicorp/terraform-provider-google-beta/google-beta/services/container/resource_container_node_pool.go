@@ -441,6 +441,22 @@ var schemaNodePool = map[string]*schema.Schema{
 			},
 		},
 	},
+
+	"queued_provisioning": {
+		Type:        schema.TypeList,
+		Optional:    true,
+		MaxItems:    1,
+		Description: `Configuration for Queued Provisioning.`,
+		Elem: &schema.Resource{
+			Schema: map[string]*schema.Schema{
+				"enabled": {
+					Type:        schema.TypeBool,
+					Required:    true,
+					Description: `Whether Queued Provisioning is enabled.`,
+				},
+			},
+		},
+	},
 }
 
 type NodePoolInformation struct {
@@ -932,6 +948,14 @@ func expandNodePool(d *schema.ResourceData, prefix string) (*container.NodePool,
 		}
 	}
 
+	if v, ok := d.GetOk(prefix + "queued_provisioning"); ok {
+		queuedProvisioningConfig := v.([]interface{})[0].(map[string]interface{})
+		np.QueuedProvisioning = &container.QueuedProvisioning{
+			Enabled:         queuedProvisioningConfig["enabled"].(bool),
+			ForceSendFields: []string{"Enabled"},
+		}
+	}
+
 	if v, ok := d.GetOk(prefix + "management"); ok {
 		managementConfig := v.([]interface{})[0].(map[string]interface{})
 		np.Management = &container.NodeManagement{}
@@ -1121,6 +1145,14 @@ func flattenNodePool(d *schema.ResourceData, config *transport_tpg.Config, np *c
 
 	if np.MaxPodsConstraint != nil {
 		nodePool["max_pods_per_node"] = np.MaxPodsConstraint.MaxPodsPerNode
+	}
+
+	if np.QueuedProvisioning != nil {
+		nodePool["queued_provisioning"] = []map[string]interface{}{
+			{
+				"enabled": np.QueuedProvisioning.Enabled,
+			},
+		}
 	}
 
 	nodePool["management"] = []map[string]interface{}{
