@@ -33,47 +33,47 @@ func computeTargetHTTPSProxyFuzzer() fuzztesting.KRMFuzzer {
 		ComputeTargetHTTPSProxyObservedState_v1beta1_FromProto, ComputeTargetHTTPSProxyObservedState_v1beta1_ToProto,
 	)
 
+	// Spec fields
+	f.SpecFields.Insert(".authorization_policy")
+	f.SpecFields.Insert(".certificate_map")
+	f.SpecFields.Insert(".description")
+	f.SpecFields.Insert(".http_keep_alive_timeout_sec")
+	f.SpecFields.Insert(".proxy_bind")
+	f.SpecFields.Insert(".quic_override")
+	f.SpecFields.Insert(".server_tls_policy")
+	f.SpecFields.Insert(".ssl_certificates")
+	f.SpecFields.Insert(".ssl_policy")
+	f.SpecFields.Insert(".tls_early_data")
+	f.SpecFields.Insert(".url_map")
+
 	// KRM-only spec fields
 	f.SpecFields.Insert(".location")
 	f.SpecFields.Insert(".resourceID")
 	f.SpecFields.Insert(".projectRef")
 
+	// Status fields
+	f.StatusFields.Insert(".creation_timestamp")
+	f.StatusFields.Insert(".id")
+	f.StatusFields.Insert(".self_link")
+	f.StatusFields.Insert(".fingerprint")
+
 	// KRM-only status fields
 	f.StatusFields.Insert(".observedGeneration")
 	f.StatusFields.Insert(".externalRef")
 
-	// Volatile status fields (also in status but not in observedState)
-	f.StatusFields.Insert(".creationTimestamp")
-	f.StatusFields.Insert(".proxyId")
-	f.StatusFields.Insert(".selfLink")
-
 	// Unimplemented proto fields
-	f.UnimplementedFields.Insert(".id")
 	f.UnimplementedFields.Insert(".kind")
 	f.UnimplementedFields.Insert(".name")
 	f.UnimplementedFields.Insert(".region")
 	f.UnimplementedFields.Insert(".authorization_policy")
 	f.UnimplementedFields.Insert(".tls_early_data")
+	f.UnimplementedFields.Insert(".creation_timestamp")
+	f.UnimplementedFields.Insert(".id")
+	f.UnimplementedFields.Insert(".self_link")
 
 	f.FilterSpec = func(in *pb.TargetHttpsProxy) {
-		in.CreationTimestamp = nil
-		in.Id = nil
-		in.SelfLink = nil
-		in.Fingerprint = nil
 	}
 	f.FilterStatus = func(in *pb.TargetHttpsProxy) {
-		in.CertificateMap = nil
-		in.HttpKeepAliveTimeoutSec = nil
-		in.ProxyBind = nil
-		in.QuicOverride = nil
-		in.ServerTlsPolicy = nil
-		in.SslCertificates = nil
-		in.SslPolicy = nil
-		in.UrlMap = nil
-		in.Description = nil
-		in.CreationTimestamp = nil
-		in.Id = nil
-		in.SelfLink = nil
 	}
 
 	return f

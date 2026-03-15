@@ -31,6 +31,7 @@ func ComputeTargetHTTPSProxySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	}
 	out.ProxyBind = in.ProxyBind
 	out.QuicOverride = in.QuicOverride
+	out.Description = in.Description
 
 	if in.CertificateMapRef != nil {
 		out.CertificateMap = &in.CertificateMapRef.External
@@ -69,6 +70,7 @@ func ComputeTargetHTTPSProxySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	}
 	out.ProxyBind = in.ProxyBind
 	out.QuicOverride = in.QuicOverride
+	out.Description = in.Description
 
 	if in.CertificateMap != nil {
 		out.CertificateMapRef = &krm.CertificateManagerCertificateMapRef{External: *in.CertificateMap}
