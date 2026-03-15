@@ -104,7 +104,6 @@ func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (
 }
 
 // Patches the specified network with the data included in the request.
-// Only the following fields can be modified: routingConfig.routingMode.
 func (s *NetworksV1) Patch(ctx context.Context, req *pb.PatchNetworkRequest) (*pb.Operation, error) {
 	name, err := s.newNetworkName(req.GetProject(), req.GetNetwork())
 	if err != nil {

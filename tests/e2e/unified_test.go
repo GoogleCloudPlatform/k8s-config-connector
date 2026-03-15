@@ -267,6 +267,22 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 						"run.cnrm.cloud.google.com":
 						// Use SSA
 
+					case "compute.cnrm.cloud.google.com":
+						if primaryResource.GetKind() == "ComputeNetwork" {
+							// ComputeNetwork is currently failing with SSA in mockkubeapiserver
+							// because of boolean fields.
+							opt.DoNotUseServerSideApplyForCreate = true
+							opt.DoNotUseServerSideApplyForUpdate = true
+						} else {
+							// Share the rereconiliation ratchet, rather than introducing a second long list
+							if ShouldTestRereconiliation(t, fixture.Name, primaryResource) {
+								opt.DoNotUseServerSideApplyForCreate = false
+							} else {
+								t.Logf("not yet using SSA for create of resources in group %q", group)
+								opt.DoNotUseServerSideApplyForCreate = true
+							}
+						}
+
 					default:
 						// Share the rereconiliation ratchet, rather than introducing a second long list
 						if ShouldTestRereconiliation(t, fixture.Name, primaryResource) {

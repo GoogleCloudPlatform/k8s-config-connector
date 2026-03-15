@@ -121,6 +121,9 @@ type CreateDeleteTestOptions struct { //nolint:revive
 	// Note: we should use server-side apply for both create and update.
 	// If we mix-and-match, we get surprising behaviours e.g. we can't clear a field
 	DoNotUseServerSideApplyForCreate bool
+
+	// DoNotUseServerSideApplyForUpdate uses a normal update for object update
+	DoNotUseServerSideApplyForUpdate bool
 }
 
 func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
@@ -154,9 +157,26 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	if len(opt.Updates) != 0 {
 		// treat as a patch
 		for _, updateUnstruct := range opt.Updates {
-			t.Logf("using server-side apply to update object")
-			if err := t.GetClient().Patch(ctx, updateUnstruct, client.Apply, client.FieldOwner("kcc-tests"), client.ForceOwnership); err != nil {
-				t.Fatalf("error updating resource: %v", err)
+			if opt.DoNotUseServerSideApplyForUpdate {
+				t.Log("using legacy update to update object (should ideally use server-side apply)", "GVK", updateUnstruct.GroupVersionKind().String(), "name", updateUnstruct.GetName())
+				// We need to get the object first to get the resourceVersion and merge
+				current := &unstructured.Unstructured{}
+				current.SetGroupVersionKind(updateUnstruct.GroupVersionKind())
+				if err := t.GetClient().Get(ctx, k8s.GetNamespacedName(updateUnstruct), current); err != nil {
+					t.Fatalf("error getting resource for update: %v", err)
+				}
+
+				// Merge the update onto the current object
+				mergeMap(current.Object, updateUnstruct.Object)
+
+				if err := t.GetClient().Update(ctx, current); err != nil {
+					t.Fatalf("error updating resource: %v", err)
+				}
+			} else {
+				t.Log("using server-side apply to update object", "GVK", updateUnstruct.GroupVersionKind().String(), "name", updateUnstruct.GetName())
+				if err := t.GetClient().Patch(ctx, updateUnstruct, client.Apply, client.FieldOwner("kcc-tests"), client.ForceOwnership); err != nil {
+					t.Fatalf("error updating resource: %v", err)
+				}
 			}
 			if opt.CreateInOrder && !opt.SkipWaitForReady {
 				waitForReadySingleResource(t, updateUnstruct, DefaultWaitForReadyTimeout)
@@ -171,6 +191,18 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	// Clean up resources on success if CleanupResources flag is true
 	if opt.CleanupResources {
 		DeleteResources(t, opt)
+	}
+}
+
+func mergeMap(dst, src map[string]any) {
+	for k, v := range src {
+		if vMap, ok := v.(map[string]any); ok {
+			if dstMap, ok := dst[k].(map[string]any); ok {
+				mergeMap(dstMap, vMap)
+				continue
+			}
+		}
+		dst[k] = v
 	}
 }
 
