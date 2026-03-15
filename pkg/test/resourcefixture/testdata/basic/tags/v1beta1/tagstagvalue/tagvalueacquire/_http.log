@@ -4,7 +4,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "description": "For keyname resources.",
-  "parent": "organizations/${organizationID}",
+  "parent": "projects/${projectId}",
   "shortName": "keyname${uniqueId}"
 }
 
@@ -53,8 +53,8 @@ X-Xss-Protection: 0
     "description": "For keyname resources.",
     "etag": "abcdef0123A=",
     "name": "tagKeys/${tagKeyID}",
-    "namespacedName": "${organizationID}/keyname${uniqueId}",
-    "parent": "organizations/${organizationID}",
+    "namespacedName": "${projectId}/keyname${uniqueId}",
+    "parent": "projects/${projectNumber}",
     "shortName": "keyname${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -81,22 +81,22 @@ X-Xss-Protection: 0
   "description": "For keyname resources.",
   "etag": "abcdef0123A=",
   "name": "tagKeys/${tagKeyID}",
-  "namespacedName": "${organizationID}/keyname${uniqueId}",
-  "parent": "organizations/${organizationID}",
+  "namespacedName": "${projectId}/keyname${uniqueId}",
+  "parent": "projects/${projectNumber}",
   "shortName": "keyname${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-POST https://cloudresourcemanager.googleapis.com/v3/tagValues?alt=json
+POST https://cloudresourcemanager.googleapis.com/v3/tagValues?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "For valuename resources.",
   "parent": "tagKeys/${tagKeyID}",
-  "shortName": "valuename"
+  "shortName": "valuename${uniqueId}"
 }
 
 200 OK
@@ -118,9 +118,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
+GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=operations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -144,18 +145,80 @@ X-Xss-Protection: 0
     "description": "For valuename resources.",
     "etag": "abcdef0123A=",
     "name": "tagValues/${tagValueID}",
-    "namespacedName": "${organizationID}/keyname${uniqueId}/valuename",
+    "namespacedName": "${projectId}/keyname${uniqueId}/valuename${uniqueId}",
     "parent": "tagKeys/${tagKeyID}",
-    "shortName": "valuename",
+    "shortName": "valuename${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json
+POST https://cloudresourcemanager.googleapis.com/v3/tagValues?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "description": "For valuename resources.",
+  "parent": "tagKeys/${tagKeyID}",
+  "shortName": "valuename${uniqueId}"
+}
+
+409 Conflict
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 409,
+    "message": "A TagValue with short name 'valuename${uniqueId}' already exists under parent 'tagKeys/${tagKeyID}'",
+    "status": "ALREADY_EXISTS"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/tagValues?%24alt=json%3Benum-encoding%3Dint&parent=tagKeys%2F${tagKeyID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "tagValues": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "description": "For valuename resources.",
+      "etag": "abcdef0123A=",
+      "name": "tagValues/${tagValueID}",
+      "namespacedName": "${projectId}/keyname${uniqueId}/valuename${uniqueId}",
+      "parent": "tagKeys/${tagKeyID}",
+      "shortName": "valuename${uniqueId}",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ]
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=tagValues%2F${tagValueID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -172,179 +235,18 @@ X-Xss-Protection: 0
   "description": "For valuename resources.",
   "etag": "abcdef0123A=",
   "name": "tagValues/${tagValueID}",
-  "namespacedName": "${organizationID}/keyname${uniqueId}/valuename",
+  "namespacedName": "${projectId}/keyname${uniqueId}/valuename${uniqueId}",
   "parent": "tagKeys/${tagKeyID}",
-  "shortName": "valuename",
+  "shortName": "valuename${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-POST https://cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint
+DELETE https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "parent": "//cloudresourcemanager.googleapis.com/projects/${projectNumber}",
-  "tagValue": "tagValues/${tagValueID}"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagBinding",
-    "name": "tagBindings/%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}/tagValues/${tagValueID}",
-    "parent": "//cloudresourcemanager.googleapis.com/projects/${projectNumber}",
-    "tagValue": "tagValues/${tagValueID}",
-    "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename"
-  }
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint&parent=%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "tagBindings": [
-    {
-      "name": "tagBindings/%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}/tagValues/${tagValueID}",
-      "parent": "//cloudresourcemanager.googleapis.com/projects/${projectNumber}",
-      "tagValue": "tagValues/${tagValueID}",
-      "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename"
-    }
-  ]
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectNumber}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectNumber}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectNumber}",
-  "projectId": "${projectId}",
-  "state": 1
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint&parent=%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "tagBindings": [
-    {
-      "name": "tagBindings/%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}/tagValues/${tagValueID}",
-      "parent": "//cloudresourcemanager.googleapis.com/projects/${projectNumber}",
-      "tagValue": "tagValues/${tagValueID}",
-      "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename"
-    }
-  ]
-}
-
----
-
-DELETE https://cloudresourcemanager.googleapis.com/v3/tagBindings/%252F%252Fcloudresourcemanager.googleapis.com%252Fprojects%252F${projectNumber}/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=tagBindings%2F%252F%252Fcloudresourcemanager.googleapis.com%252Fprojects%252F${projectNumber}%2FtagValues%2F${tagValueID}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "response": {
-    "@type": "type.googleapis.com/google.protobuf.Empty"
-  }
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "For valuename resources.",
-  "etag": "abcdef0123A=",
-  "name": "tagValues/${tagValueID}",
-  "namespacedName": "${organizationID}/keyname${uniqueId}/valuename",
-  "parent": "tagKeys/${tagKeyID}",
-  "shortName": "valuename",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-DELETE https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=tagValues%2F${tagValueID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -365,9 +267,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
+GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=operations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -391,10 +294,42 @@ X-Xss-Protection: 0
     "description": "For valuename resources.",
     "etag": "abcdef0123A=",
     "name": "tagValues/${tagValueID}",
-    "namespacedName": "${organizationID}/keyname${uniqueId}/valuename",
+    "namespacedName": "${projectId}/keyname${uniqueId}/valuename${uniqueId}",
     "parent": "tagKeys/${tagKeyID}",
-    "shortName": "valuename",
+    "shortName": "valuename${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=tagValues%2F${tagValueID}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "tagValue \"tagValues/${tagValueID}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "tagValue \"tagValues/${tagValueID}\" not found",
+    "status": "NOT_FOUND"
   }
 }
 
@@ -419,8 +354,8 @@ X-Xss-Protection: 0
   "description": "For keyname resources.",
   "etag": "abcdef0123A=",
   "name": "tagKeys/${tagKeyID}",
-  "namespacedName": "${organizationID}/keyname${uniqueId}",
-  "parent": "organizations/${organizationID}",
+  "namespacedName": "${projectId}/keyname${uniqueId}",
+  "parent": "projects/${projectNumber}",
   "shortName": "keyname${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -476,8 +411,8 @@ X-Xss-Protection: 0
     "description": "For keyname resources.",
     "etag": "abcdef0123A=",
     "name": "tagKeys/${tagKeyID}",
-    "namespacedName": "${organizationID}/keyname${uniqueId}",
-    "parent": "organizations/${organizationID}",
+    "namespacedName": "${projectId}/keyname${uniqueId}",
+    "parent": "projects/${projectNumber}",
     "shortName": "keyname${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
