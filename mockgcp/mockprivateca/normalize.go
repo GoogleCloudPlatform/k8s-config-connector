@@ -15,15 +15,45 @@
 package mockprivateca
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
-func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
-	// No-op for now
+const NormalizedTimestamp = "2024-04-01T12:34:56.123456Z"
+
+func (s *MockService) ConfigureVisitor(url string, visitor mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "privateca.googleapis.com") {
+		return
+	}
+
+	visitor.ReplacePath(".createTime", NormalizedTimestamp)
+	visitor.ReplacePath(".updateTime", NormalizedTimestamp)
+	visitor.ReplacePath(".deleteTime", NormalizedTimestamp)
+	visitor.ReplacePath(".expireTime", NormalizedTimestamp)
+	visitor.ReplacePath(".endTime", NormalizedTimestamp)
+
+	visitor.ReplacePath(".response.createTime", NormalizedTimestamp)
+	visitor.ReplacePath(".response.updateTime", NormalizedTimestamp)
+	visitor.ReplacePath(".response.deleteTime", NormalizedTimestamp)
+	visitor.ReplacePath(".response.expireTime", NormalizedTimestamp)
+
+	visitor.ReplacePath(".metadata.createTime", NormalizedTimestamp)
+	visitor.ReplacePath(".metadata.endTime", NormalizedTimestamp)
+	visitor.ReplacePath(".metadata.requestedCancellation", false)
+	visitor.ReplacePath(".done", true)
+
+	visitor.ReplacePath(".caCertificateDescriptions[].subjectDescription.notBeforeTime", NormalizedTimestamp)
+	visitor.ReplacePath(".caCertificateDescriptions[].subjectDescription.notAfterTime", NormalizedTimestamp)
+
+	visitor.ReplacePath(".response.caCertificateDescriptions[].subjectDescription.notBeforeTime", NormalizedTimestamp)
+	visitor.ReplacePath(".response.caCertificateDescriptions[].subjectDescription.notAfterTime", NormalizedTimestamp)
+
+	visitor.ReplacePath(".status.caCertificateDescriptions[].subjectDescription.notBeforeTime", NormalizedTimestamp)
+	visitor.ReplacePath(".status.caCertificateDescriptions[].subjectDescription.notAfterTime", NormalizedTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
-	// No-op for now
 }

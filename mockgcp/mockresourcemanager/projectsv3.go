@@ -21,6 +21,7 @@ import (
 	"strconv"
 	"time"
 
+	"cloud.google.com/go/iam/apiv1/iampb"
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -34,6 +35,15 @@ import (
 type ProjectsV3 struct {
 	*MockService
 	pb.UnimplementedProjectsServer
+}
+
+func (s *ProjectsV3) TestIamPermissions(ctx context.Context, req *iampb.TestIamPermissionsRequest) (*iampb.TestIamPermissionsResponse, error) {
+	response := &iampb.TestIamPermissionsResponse{}
+	// HACK: assume all permissions
+	for _, permission := range req.Permissions {
+		response.Permissions = append(response.Permissions, permission)
+	}
+	return response, nil
 }
 
 func (s *ProjectsV3) GetProject(ctx context.Context, req *pb.GetProjectRequest) (*pb.Project, error) {
