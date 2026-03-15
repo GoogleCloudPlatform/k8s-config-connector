@@ -300,9 +300,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=us-central1&url_map=${urlMapID}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -330,12 +331,13 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=us-central1
 
 {
-  "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+  "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "description": "test regional URLMap",
   "hostRules": [
     {
@@ -348,7 +350,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "name": "${urlMapID}",
   "pathMatchers": [
     {
-      "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+      "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
       "name": "allpaths",
       "pathRules": [
         {
@@ -367,6 +369,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
               "allowOrigins": [
                 "Allowed origin"
               ],
+              "disabled": false,
               "exposeHeaders": [
                 "Exposed header"
               ],
@@ -386,7 +389,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
               }
             },
             "requestMirrorPolicy": {
-              "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
+              "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
             },
             "retryPolicy": {
               "numRetries": 4,
@@ -408,7 +411,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
             },
             "weightedBackendServices": [
               {
-                "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+                "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
                 "headerAction": {
                   "requestHeadersToAdd": [
                     {
@@ -423,7 +426,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
                   "responseHeadersToAdd": [
                     {
                       "headerName": "AddMe",
-                      "headerValue": "MyValue"
+                      "headerValue": "MyValue",
+                      "replace": false
                     }
                   ],
                   "responseHeadersToRemove": [
@@ -438,12 +442,11 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       ]
     }
   ],
-  "region": "projects/${projectId}/global/regions/us-central1",
   "tests": [
     {
       "host": "hi.com",
       "path": "/home",
-      "service": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
+      "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
     }
   ]
 }
@@ -476,8 +479,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=us-central1&operation=${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -508,9 +513,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=us-central1&url_map=${urlMapID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -524,7 +530,7 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+  "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "description": "test regional URLMap",
   "fingerprint": "abcdef0123A=",
   "hostRules": [
@@ -540,7 +546,7 @@ X-Xss-Protection: 0
   "name": "${urlMapID}",
   "pathMatchers": [
     {
-      "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+      "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
       "name": "allpaths",
       "pathRules": [
         {
@@ -559,6 +565,7 @@ X-Xss-Protection: 0
               "allowOrigins": [
                 "Allowed origin"
               ],
+              "disabled": false,
               "exposeHeaders": [
                 "Exposed header"
               ],
@@ -578,7 +585,7 @@ X-Xss-Protection: 0
               }
             },
             "requestMirrorPolicy": {
-              "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
+              "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
             },
             "retryPolicy": {
               "numRetries": 4,
@@ -600,7 +607,7 @@ X-Xss-Protection: 0
             },
             "weightedBackendServices": [
               {
-                "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+                "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
                 "headerAction": {
                   "requestHeadersToAdd": [
                     {
@@ -615,7 +622,8 @@ X-Xss-Protection: 0
                   "responseHeadersToAdd": [
                     {
                       "headerName": "AddMe",
-                      "headerValue": "MyValue"
+                      "headerValue": "MyValue",
+                      "replace": false
                     }
                   ],
                   "responseHeadersToRemove": [
@@ -636,19 +644,20 @@ X-Xss-Protection: 0
     {
       "host": "hi.com",
       "path": "/home",
-      "service": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
+      "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
     }
   ]
 }
 
 ---
 
-PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}?alt=json
+PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=us-central1&url_map=${urlMapID}
 
 {
-  "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+  "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "description": "updated regional URLMap",
   "fingerprint": "abcdef0123A=",
   "hostRules": [
@@ -662,7 +671,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "name": "${urlMapID}",
   "pathMatchers": [
     {
-      "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+      "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
       "name": "allpaths",
       "pathRules": [
         {
@@ -681,6 +690,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
               "allowOrigins": [
                 "Allowed origin"
               ],
+              "disabled": false,
               "exposeHeaders": [
                 "Exposed header"
               ],
@@ -700,7 +710,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
               }
             },
             "requestMirrorPolicy": {
-              "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
+              "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
             },
             "retryPolicy": {
               "numRetries": 4,
@@ -722,7 +732,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
             },
             "weightedBackendServices": [
               {
-                "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+                "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
                 "headerAction": {
                   "requestHeadersToAdd": [
                     {
@@ -737,7 +747,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
                   "responseHeadersToAdd": [
                     {
                       "headerName": "AddMe",
-                      "headerValue": "MyValue"
+                      "headerValue": "MyValue",
+                      "replace": false
                     }
                   ],
                   "responseHeadersToRemove": [
@@ -752,12 +763,11 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       ]
     }
   ],
-  "region": "projects/${projectId}/global/regions/us-central1",
   "tests": [
     {
       "host": "hi.com",
       "path": "/home",
-      "service": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
+      "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
     }
   ]
 }
@@ -790,8 +800,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=us-central1&operation=${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -822,9 +834,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=us-central1&url_map=${urlMapID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -838,7 +851,7 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+  "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "description": "updated regional URLMap",
   "fingerprint": "abcdef0123A=",
   "hostRules": [
@@ -860,7 +873,7 @@ X-Xss-Protection: 0
   "name": "${urlMapID}",
   "pathMatchers": [
     {
-      "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+      "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
       "name": "allpaths",
       "pathRules": [
         {
@@ -879,6 +892,7 @@ X-Xss-Protection: 0
               "allowOrigins": [
                 "Allowed origin"
               ],
+              "disabled": false,
               "exposeHeaders": [
                 "Exposed header"
               ],
@@ -898,7 +912,7 @@ X-Xss-Protection: 0
               }
             },
             "requestMirrorPolicy": {
-              "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
+              "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
             },
             "retryPolicy": {
               "numRetries": 4,
@@ -920,7 +934,7 @@ X-Xss-Protection: 0
             },
             "weightedBackendServices": [
               {
-                "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+                "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
                 "headerAction": {
                   "requestHeadersToAdd": [
                     {
@@ -935,7 +949,8 @@ X-Xss-Protection: 0
                   "responseHeadersToAdd": [
                     {
                       "headerName": "AddMe",
-                      "headerValue": "MyValue"
+                      "headerValue": "MyValue",
+                      "replace": false
                     }
                   ],
                   "responseHeadersToRemove": [
@@ -950,7 +965,7 @@ X-Xss-Protection: 0
       ]
     },
     {
-      "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+      "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
       "name": "allpaths",
       "pathRules": [
         {
@@ -969,6 +984,7 @@ X-Xss-Protection: 0
               "allowOrigins": [
                 "Allowed origin"
               ],
+              "disabled": false,
               "exposeHeaders": [
                 "Exposed header"
               ],
@@ -988,7 +1004,7 @@ X-Xss-Protection: 0
               }
             },
             "requestMirrorPolicy": {
-              "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
+              "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
             },
             "retryPolicy": {
               "numRetries": 4,
@@ -1010,7 +1026,7 @@ X-Xss-Protection: 0
             },
             "weightedBackendServices": [
               {
-                "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+                "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
                 "headerAction": {
                   "requestHeadersToAdd": [
                     {
@@ -1025,7 +1041,8 @@ X-Xss-Protection: 0
                   "responseHeadersToAdd": [
                     {
                       "headerName": "AddMe",
-                      "headerValue": "MyValue"
+                      "headerValue": "MyValue",
+                      "replace": false
                     }
                   ],
                   "responseHeadersToRemove": [
@@ -1040,27 +1057,28 @@ X-Xss-Protection: 0
       ]
     }
   ],
-  "region": "projects/${projectId}/global/regions/us-central1",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}",
   "tests": [
     {
       "host": "hi.com",
       "path": "/home",
-      "service": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
+      "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
     },
     {
       "host": "hi.com",
       "path": "/home",
-      "service": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
+      "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
     }
   ]
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=us-central1&url_map=${urlMapID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1090,8 +1108,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=us-central1&operation=${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
