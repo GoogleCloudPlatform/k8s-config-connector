@@ -1,0 +1,998 @@
+Downloading gcloud 546.0.0...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0  195M    0 64008    0     0  62823      0  0:54:19  0:00:01  0:54:18 62876 60  195M   60  118M    0     0  79.2M      0  0:00:02  0:00:01  0:00:01 79.2M100  195M  100  195M    0     0   110M      0  0:00:01  0:00:01 --:--:--  110M
+
+
+Your current Google Cloud CLI version is: 546.0.0
+Installing components from version: 546.0.0
+
+┌──────────────────────────────────────────────┐
+│     These components will be installed.      │
+├───────────────────────┬────────────┬─────────┤
+│          Name         │  Version   │   Size  │
+├───────────────────────┼────────────┼─────────┤
+│ gcloud Alpha Commands │ 2025.10.31 │ < 1 MiB │
+│ gcloud Beta Commands  │ 2025.10.31 │ < 1 MiB │
+└───────────────────────┴────────────┴─────────┘
+
+For the latest full release notes, please visit:
+  https://cloud.google.com/sdk/release_notes
+
+Performing in place update...
+
+╔════════════════════════════════════════════════════════════╗
+╠═ Downloading: gcloud Alpha Commands                       ═╣
+╚════════════════════════════════════════════════════════════╝
+╔════════════════════════════════════════════════════════════╗
+╠═ Downloading: gcloud Beta Commands                        ═╣
+╚════════════════════════════════════════════════════════════╝
+╔════════════════════════════════════════════════════════════╗
+╠═ Installing: gcloud Alpha Commands                        ═╣
+╚════════════════════════════════════════════════════════════╝
+╔════════════════════════════════════════════════════════════╗
+╠═ Installing: gcloud Beta Commands                         ═╣
+╚════════════════════════════════════════════════════════════╝
+
+Performing post processing steps...
+...........................................................done.
+
+Update done!
+
+Downloading envtest assets...
+Running unit tests...
+WARNING: [cnrm-barni-1.svc.id.goog] does not have permission to access projects instance [foobar] (or it may not exist): The caller does not have permission. This command is authenticated as cnrm-barni-1.svc.id.goog which is the active account specified by the [core/account] property
+Updated property [core/project].
+dev/tasks/generate-all
+/workspaces/k8s-config-connector/dev/tools/controllerbuilder /workspaces/k8s-config-connector
+Cloning into 'googleapis'...
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+Installing protoc
+apt update...
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Hit:1 http://deb.debian.org/debian trixie InRelease
+Get:2 http://deb.debian.org/debian trixie-updates InRelease [47.3 kB]
+Hit:3 http://deb.debian.org/debian-security trixie-security InRelease
+Fetched 47.3 kB in 0s (262 kB/s)
+Reading package lists...
+Building dependency tree...
+Reading state information...
+All packages are up to date.
+apt install...
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Installing:
+  protobuf-compiler
+
+Installing dependencies:
+  libprotobuf-dev  libprotobuf-lite32t64  libprotobuf32t64  libprotoc32t64
+
+Suggested packages:
+  protobuf-mode-el
+
+Summary:
+  Upgrading: 0, Installing: 5, Removing: 0, Not Upgrading: 0
+  Download size: 3592 kB
+  Space needed: 20.5 MB / 56.2 GB available
+
+Get:1 http://deb.debian.org/debian trixie/main amd64 libprotobuf32t64 amd64 3.21.12-11 [983 kB]
+Get:2 http://deb.debian.org/debian trixie/main amd64 libprotobuf-lite32t64 amd64 3.21.12-11 [274 kB]
+Get:3 http://deb.debian.org/debian trixie/main amd64 libprotobuf-dev amd64 3.21.12-11 [1328 kB]
+Get:4 http://deb.debian.org/debian trixie/main amd64 libprotoc32t64 amd64 3.21.12-11 [922 kB]
+Get:5 http://deb.debian.org/debian trixie/main amd64 protobuf-compiler amd64 3.21.12-11 [84.7 kB]
+debconf: unable to initialize frontend: Dialog
+debconf: (No usable dialog-like program is installed, so the dialog based frontend cannot be used. at /usr/share/perl5/Debconf/FrontEnd/Dialog.pm line 79, <STDIN> line 5.)
+debconf: falling back to frontend: Readline
+Fetched 3592 kB in 0s (27.0 MB/s)
+Selecting previously unselected package libprotobuf32t64:amd64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 63391 files and directories currently installed.)
+Preparing to unpack .../libprotobuf32t64_3.21.12-11_amd64.deb ...
+Unpacking libprotobuf32t64:amd64 (3.21.12-11) ...
+Selecting previously unselected package libprotobuf-lite32t64:amd64.
+Preparing to unpack .../libprotobuf-lite32t64_3.21.12-11_amd64.deb ...
+Unpacking libprotobuf-lite32t64:amd64 (3.21.12-11) ...
+Selecting previously unselected package libprotobuf-dev:amd64.
+Preparing to unpack .../libprotobuf-dev_3.21.12-11_amd64.deb ...
+Unpacking libprotobuf-dev:amd64 (3.21.12-11) ...
+Selecting previously unselected package libprotoc32t64:amd64.
+Preparing to unpack .../libprotoc32t64_3.21.12-11_amd64.deb ...
+Unpacking libprotoc32t64:amd64 (3.21.12-11) ...
+Selecting previously unselected package protobuf-compiler.
+Preparing to unpack .../protobuf-compiler_3.21.12-11_amd64.deb ...
+Unpacking protobuf-compiler (3.21.12-11) ...
+Setting up libprotobuf-lite32t64:amd64 (3.21.12-11) ...
+Setting up libprotobuf32t64:amd64 (3.21.12-11) ...
+Setting up libprotobuf-dev:amd64 (3.21.12-11) ...
+Setting up libprotoc32t64:amd64 (3.21.12-11) ...
+Setting up protobuf-compiler (3.21.12-11) ...
+Processing triggers for libc-bin (2.41-12+deb13u1) ...
+/workspaces/k8s-config-connector
+running apis/accesscontextmanager/v1beta1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+go: downloading github.com/GoogleCloudPlatform/kubectl-ai/gollm v0.0.0-20250423144723-a651944aad2d
+go: downloading github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai v0.7.2
+go: downloading github.com/ollama/ollama v0.5.13
+go: downloading github.com/Azure/azure-sdk-for-go/sdk/azcore v1.18.0
+go: downloading github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.9.0
+go: downloading google.golang.org/genai v1.0.0
+go: downloading github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.1
+go: downloading github.com/AzureAD/microsoft-authentication-library-for-go v1.4.2
+go: downloading github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
+go: downloading github.com/golang-jwt/jwt/v5 v5.2.2
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/alloydb/v1beta1/generate.sh
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/analytics/v1alpha1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/artifactregistry/v1beta1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+running apis/asset/v1beta1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+running apis/assuredworkloads/v1alpha1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+Skipping apis/backupdr/v1alpha1/generate.sh
+Skipping apis/backupdr/v1beta1/generate.sh
+running apis/batch/v1alpha1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+Skipping apis/bigquerybiglake/v1alpha1/generate.sh
+Skipping apis/bigquerybiglake/v1beta1/generate.sh
+running apis/bigquerydatatransfer/v1beta1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+I0307 17:30:20.277007   44059 generatetypescommand.go:163] "skipping scaffolding type, refs and identity files" resource="TransferConfig"
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/bigqueryreservation/v1beta1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+Skipping apis/bigtable/v1alpha1/generate.sh
+Skipping apis/bigtable/v1beta1/generate.sh
+running apis/billing/v1alpha1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/certificatemanager/v1alpha1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/certificatemanager/v1beta1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/clouddeploy/v1alpha1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/clouddeploy/v1beta1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/clouddms/v1alpha1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/cloudquota/v1beta1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+Skipping apis/composer/v1beta1/generate.sh
+running apis/compute/v1alpha1/generate.sh
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/compute/v1beta1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/configdelivery/v1alpha1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/dataflow/v1beta1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/dataplex/v1alpha1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+Skipping apis/datastream/v1alpha1/generate.sh
+Skipping apis/discoveryengine/v1alpha1/generate.sh
+Skipping apis/documentai/v1alpha1/generate.sh
+Skipping apis/documentai/v1beta1/generate.sh
+Skipping apis/edgecontainer/v1alpha1/generate.sh
+running apis/essentialcontacts/v1beta1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/firestore/v1alpha1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/firestore/v1beta1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+Skipping apis/gkebackup/v1alpha1/generate.sh
+running apis/gkehub/v1beta1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+New API file added /workspaces/k8s-config-connector/apis/gkehub/v1beta1/membershipfeaturespec_types.go
+Please EDIT it!
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/iam/v1alpha1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/iam/v1beta1/generate.sh
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/logging/v1beta1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/managedkafka/v1alpha1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/managedkafka/v1beta1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/monitoring/v1beta1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/networkmanagement/v1alpha1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/networksecurity/v1beta1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/networkservices/v1alpha1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+Skipping apis/orgpolicy/v1alpha1/generate.sh
+Skipping apis/orgpolicy/v1beta1/generate.sh
+running apis/parametermanager/v1alpha1/generate.sh
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/privateca/v1beta1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/pubsub/v1beta1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+running apis/run/v1beta1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/servicenetworking/v1alpha1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/serviceusage/v1beta1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+Skipping apis/speech/v1alpha1/generate.sh
+Skipping apis/speech/v1beta1/generate.sh
+running apis/sql/v1beta1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+I0307 17:32:36.994467   49176 generatetypescommand.go:163] "skipping scaffolding type, refs and identity files" resource="DatabaseInstance"
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/tags/v1alpha1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+running apis/tags/v1beta1/generate.sh
+HEAD is now at 731d7f2ab6 feat: add gkerecommender GkeInferenceQuickstart API v1
+/usr/bin/protoc
+Found protoc version libprotoc 3.21.12
+Using cached googleapis pb file at /workspaces/k8s-config-connector/.build/googleapis-731d7f2ab6e4e2ea15030c95039e2cb66174d4fb.pb
+SKIP_GENERATE_CRDS is set; skipping generation of CRDs
+Skipping apis/tpu/v1alpha1/generate.sh
+Skipping apis/vertexai/v1alpha1/generate.sh
+Skipping apis/vmwareengine/v1alpha1/generate.sh
+Skipping apis/vmwareengine/v1beta1/generate.sh
+Generating CRDs
+go: downloading k8s.io/apiextensions-apiserver v0.31.2
+go: downloading k8s.io/apimachinery v0.31.2
+go: downloading k8s.io/utils v0.0.0-20240711033017-18e509b52bc8
+go: downloading golang.org/x/tools v0.26.0
+go: downloading k8s.io/api v0.31.2
+go: downloading github.com/google/gofuzz v1.2.0
+go: downloading sigs.k8s.io/structured-merge-diff/v4 v4.4.1
+go: downloading sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd
+go: downloading golang.org/x/sys v0.26.0
+go: downloading golang.org/x/net v0.30.0
+go: downloading golang.org/x/sync v0.8.0
+go: downloading golang.org/x/mod v0.21.0
+go: downloading golang.org/x/text v0.19.0
+Writing output to pkg/gvks/supportedgvks/gvks_generated.go
+Generated config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_workstations.workstations.cnrm.cloud.google.com.yaml
+Generated docs/reports/crd_report.md
+++ git rev-parse --show-toplevel
++ REPO_ROOT=/workspaces/k8s-config-connector
++ cd /workspaces/k8s-config-connector
++ cat
+++ find dev/ci/presubmits -type f
+++ sort
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/capture-pprof
++ name=capture-pprof
++ cat
++ [[ capture-pprof == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ capture-pprof == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ capture-pprof == tests-e2e-* ]]
++ cat
++ [[ capture-pprof == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ capture-pprof == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ capture-pprof == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/fuzz-roundtrippers
++ name=fuzz-roundtrippers
++ cat
++ [[ fuzz-roundtrippers == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ fuzz-roundtrippers == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ fuzz-roundtrippers == tests-e2e-* ]]
++ cat
++ [[ fuzz-roundtrippers == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ fuzz-roundtrippers == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ fuzz-roundtrippers == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/golangci-lint
++ name=golangci-lint
++ cat
++ [[ golangci-lint == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ cat
++ continue
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/license-lint
++ name=license-lint
++ cat
++ [[ license-lint == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ license-lint == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ cat
++ continue
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/run-linters
++ name=run-linters
++ cat
++ [[ run-linters == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ run-linters == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ run-linters == tests-e2e-* ]]
++ cat
++ [[ run-linters == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ run-linters == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ run-linters == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/smoketest-with-kind
++ name=smoketest-with-kind
++ cat
++ [[ smoketest-with-kind == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ smoketest-with-kind == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ smoketest-with-kind == tests-e2e-* ]]
++ cat
++ [[ smoketest-with-kind == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ smoketest-with-kind == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ smoketest-with-kind == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/test-mockgcp
++ name=test-mockgcp
++ cat
++ [[ test-mockgcp == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ test-mockgcp == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ test-mockgcp == tests-e2e-* ]]
++ cat
++ [[ test-mockgcp == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ test-mockgcp == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ cat
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/test-pause
++ name=test-pause
++ cat
++ [[ test-pause == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ test-pause == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ test-pause == tests-e2e-* ]]
++ cat
++ [[ test-pause == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ test-pause == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ test-pause == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-direct-iam
++ name=tests-e2e-direct-iam
++ cat
++ [[ tests-e2e-direct-iam == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-direct-iam == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-direct-iam == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-direct-iam == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-direct-iam == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-direct-iam == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures
++ name=tests-e2e-fixtures
++ cat
++ [[ tests-e2e-fixtures == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-accesscontextmanager
++ name=tests-e2e-fixtures-accesscontextmanager
++ cat
++ [[ tests-e2e-fixtures-accesscontextmanager == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-accesscontextmanager == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-accesscontextmanager == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-accesscontextmanager == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-accesscontextmanager == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-accesscontextmanager == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-aiplatform
++ name=tests-e2e-fixtures-aiplatform
++ cat
++ [[ tests-e2e-fixtures-aiplatform == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-aiplatform == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-aiplatform == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-aiplatform == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-aiplatform == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-aiplatform == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-alloydb
++ name=tests-e2e-fixtures-alloydb
++ cat
++ [[ tests-e2e-fixtures-alloydb == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-alloydb == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-alloydb == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-alloydb == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-alloydb == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-alloydb == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-analytics
++ name=tests-e2e-fixtures-analytics
++ cat
++ [[ tests-e2e-fixtures-analytics == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-analytics == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-analytics == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-analytics == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-analytics == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-analytics == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-apigateway
++ name=tests-e2e-fixtures-apigateway
++ cat
++ [[ tests-e2e-fixtures-apigateway == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-apigateway == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-apigateway == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-apigateway == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-apigateway == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-apigateway == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-apigee
++ name=tests-e2e-fixtures-apigee
++ cat
++ [[ tests-e2e-fixtures-apigee == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-apigee == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-apigee == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-apigee == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-apigee == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-apigee == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-apikeys
++ name=tests-e2e-fixtures-apikeys
++ cat
++ [[ tests-e2e-fixtures-apikeys == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-apikeys == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-apikeys == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-apikeys == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-apikeys == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-apikeys == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-appengine
++ name=tests-e2e-fixtures-appengine
++ cat
++ [[ tests-e2e-fixtures-appengine == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-appengine == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-appengine == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-appengine == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-appengine == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-appengine == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-apphub
++ name=tests-e2e-fixtures-apphub
++ cat
++ [[ tests-e2e-fixtures-apphub == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-apphub == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-apphub == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-apphub == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-apphub == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-apphub == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-artifactregistry
++ name=tests-e2e-fixtures-artifactregistry
++ cat
++ [[ tests-e2e-fixtures-artifactregistry == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-artifactregistry == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-artifactregistry == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-artifactregistry == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-artifactregistry == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-artifactregistry == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-asset
++ name=tests-e2e-fixtures-asset
++ cat
++ [[ tests-e2e-fixtures-asset == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-asset == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-asset == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-asset == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-asset == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-asset == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-assuredworkloads
++ name=tests-e2e-fixtures-assuredworkloads
++ cat
++ [[ tests-e2e-fixtures-assuredworkloads == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-assuredworkloads == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-assuredworkloads == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-assuredworkloads == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-assuredworkloads == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-assuredworkloads == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-backupdr
++ name=tests-e2e-fixtures-backupdr
++ cat
++ [[ tests-e2e-fixtures-backupdr == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-backupdr == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-backupdr == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-backupdr == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-backupdr == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-backupdr == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-batch
++ name=tests-e2e-fixtures-batch
++ cat
++ [[ tests-e2e-fixtures-batch == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-batch == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-batch == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-batch == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-batch == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-batch == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-beyondcorp
++ name=tests-e2e-fixtures-beyondcorp
++ cat
++ [[ tests-e2e-fixtures-beyondcorp == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-beyondcorp == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-beyondcorp == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-beyondcorp == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-beyondcorp == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-beyondcorp == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-bigquery
++ name=tests-e2e-fixtures-bigquery
++ cat
++ [[ tests-e2e-fixtures-bigquery == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-bigquery == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-bigquery == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-bigquery == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-bigquery == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-bigquery == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-bigqueryanalyticshub
++ name=tests-e2e-fixtures-bigqueryanalyticshub
++ cat
++ [[ tests-e2e-fixtures-bigqueryanalyticshub == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-bigqueryanalyticshub == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-bigqueryanalyticshub == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-bigqueryanalyticshub == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-bigqueryanalyticshub == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-bigqueryanalyticshub == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-bigquerybiglake
++ name=tests-e2e-fixtures-bigquerybiglake
++ cat
++ [[ tests-e2e-fixtures-bigquerybiglake == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-bigquerybiglake == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-bigquerybiglake == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-bigquerybiglake == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-bigquerybiglake == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-bigquerybiglake == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-bigqueryconnection
++ name=tests-e2e-fixtures-bigqueryconnection
++ cat
++ [[ tests-e2e-fixtures-bigqueryconnection == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-bigqueryconnection == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-bigqueryconnection == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-bigqueryconnection == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-bigqueryconnection == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-bigqueryconnection == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-bigquerydatapolicy
++ name=tests-e2e-fixtures-bigquerydatapolicy
++ cat
++ [[ tests-e2e-fixtures-bigquerydatapolicy == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-bigquerydatapolicy == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-bigquerydatapolicy == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-bigquerydatapolicy == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-bigquerydatapolicy == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-bigquerydatapolicy == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-bigquerydatatransfer
++ name=tests-e2e-fixtures-bigquerydatatransfer
++ cat
++ [[ tests-e2e-fixtures-bigquerydatatransfer == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-bigquerydatatransfer == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-bigquerydatatransfer == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-bigquerydatatransfer == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-bigquerydatatransfer == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-bigquerydatatransfer == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-bigqueryreservation
++ name=tests-e2e-fixtures-bigqueryreservation
++ cat
++ [[ tests-e2e-fixtures-bigqueryreservation == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-bigqueryreservation == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-bigqueryreservation == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-bigqueryreservation == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-bigqueryreservation == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-bigqueryreservation == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-bigtable
++ name=tests-e2e-fixtures-bigtable
++ cat
++ [[ tests-e2e-fixtures-bigtable == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-bigtable == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-bigtable == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-bigtable == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-bigtable == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-bigtable == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-billing
++ name=tests-e2e-fixtures-billing
++ cat
++ [[ tests-e2e-fixtures-billing == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-billing == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-billing == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-billing == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-billing == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-billing == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-billingbudgets
++ name=tests-e2e-fixtures-billingbudgets
++ cat
++ [[ tests-e2e-fixtures-billingbudgets == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-billingbudgets == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-billingbudgets == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-billingbudgets == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-billingbudgets == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-billingbudgets == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-binaryauthorization
++ name=tests-e2e-fixtures-binaryauthorization
++ cat
++ [[ tests-e2e-fixtures-binaryauthorization == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-binaryauthorization == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-binaryauthorization == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-binaryauthorization == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-binaryauthorization == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-binaryauthorization == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-certificatemanager
++ name=tests-e2e-fixtures-certificatemanager
++ cat
++ [[ tests-e2e-fixtures-certificatemanager == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-certificatemanager == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-certificatemanager == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-certificatemanager == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-certificatemanager == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-certificatemanager == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-cloudasset
++ name=tests-e2e-fixtures-cloudasset
++ cat
++ [[ tests-e2e-fixtures-cloudasset == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-cloudasset == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-cloudasset == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-cloudasset == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-cloudasset == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-cloudasset == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-cloudbuild
++ name=tests-e2e-fixtures-cloudbuild
++ cat
++ [[ tests-e2e-fixtures-cloudbuild == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-cloudbuild == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-cloudbuild == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-cloudbuild == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-cloudbuild == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-cloudbuild == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-clouddeploy
++ name=tests-e2e-fixtures-clouddeploy
++ cat
++ [[ tests-e2e-fixtures-clouddeploy == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-clouddeploy == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-clouddeploy == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-clouddeploy == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-clouddeploy == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-clouddeploy == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-clouddms
++ name=tests-e2e-fixtures-clouddms
++ cat
++ [[ tests-e2e-fixtures-clouddms == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-clouddms == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-clouddms == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-clouddms == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-clouddms == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-clouddms == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-cloudfunctions
++ name=tests-e2e-fixtures-cloudfunctions
++ cat
++ [[ tests-e2e-fixtures-cloudfunctions == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-cloudfunctions == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-cloudfunctions == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-cloudfunctions == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-cloudfunctions == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-cloudfunctions == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-cloudfunctions2
++ name=tests-e2e-fixtures-cloudfunctions2
++ cat
++ [[ tests-e2e-fixtures-cloudfunctions2 == \g\o\l\a\n\g\c\i\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-cloudfunctions2 == \l\i\c\e\n\s\e\-\l\i\n\t ]]
++ [[ tests-e2e-fixtures-cloudfunctions2 == tests-e2e-* ]]
++ cat
++ cat
++ [[ tests-e2e-fixtures-cloudfunctions2 == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ [[ tests-e2e-fixtures-cloudfunctions2 == \t\e\s\t\-\m\o\c\k\g\c\p ]]
++ [[ tests-e2e-fixtures-cloudfunctions2 == \u\n\i\t\-\t\e\s\t\s ]]
++ cat
++ for f in $(find dev/ci/presubmits -type f | sort)
+++ basename dev/ci/presubmits/tests-e2e-fixtures-cloudidentity
+make: *** [Makefile:156: generate] Terminated

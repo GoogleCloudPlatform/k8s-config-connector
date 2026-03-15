@@ -149,6 +149,11 @@ func toHostRegex(host string) *regexp.Regexp {
 
 func (m *mockRoundTripper) prefilterRequest(req *http.Request) error {
 	if req.Body != nil {
+		contentType := req.Header.Get("Content-Type")
+		if !strings.HasPrefix(contentType, "application/json") {
+			return nil
+		}
+
 		var requestBody bytes.Buffer
 		if _, err := io.Copy(&requestBody, req.Body); err != nil {
 			return fmt.Errorf("error reading request body: %w", err)

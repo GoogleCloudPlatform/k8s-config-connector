@@ -16,10 +16,13 @@ package mockstorage
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strings"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 
 	// Note we use "real" protos (not mockgcp) ones as it's GRPC API.
@@ -135,5 +138,52 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		}
 	}
 
-	return httpmux.FilterBodyOn204(mux)
+	handler, err := httpmux.FilterBodyOn204(mux)
+	if err != nil {
+		return nil, err
+	}
+
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasPrefix(r.URL.Path, "/upload/storage/v1/b/") {
+			s.handleUpload(w, r)
+			return
+		}
+		handler.ServeHTTP(w, r)
+	}), nil
+}
+
+func (s *MockService) handleUpload(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	bucketName := strings.TrimPrefix(r.URL.Path, "/upload/storage/v1/b/")
+	bucketName = strings.Split(bucketName, "/")[0]
+	objectName := r.URL.Query().Get("name")
+
+	if objectName == "" {
+		http.Error(w, "name is required", http.StatusBadRequest)
+		return
+	}
+
+	fqn := fmt.Sprintf("buckets/%s/objects/%s", bucketName, objectName)
+	obj := &pb.Object{
+		Bucket: PtrTo(bucketName),
+		Name:   PtrTo(objectName),
+		Kind:   PtrTo("storage#object"),
+	}
+
+	// We don't actually store the body for now, just success
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.AlreadyExists {
+			if err := s.storage.Update(ctx, fqn, obj); err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+		} else {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "{\"kind\": \"storage#object\", \"name\": \"%s\", \"bucket\": \"%s\"}", objectName, bucketName)
 }
