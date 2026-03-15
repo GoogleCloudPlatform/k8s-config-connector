@@ -18,7 +18,7 @@
 package accesscontextmanager
 
 import (
-	//pb "cloud.google.com/go/accesscontextmanager/apiv1/accesscontextmanagerpb"
+	pb "cloud.google.com/go/accesscontextmanager/apiv1/accesscontextmanagerpb"
 	"google.golang.org/genproto/googleapis/type/expr"
 
 	acm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/accesscontextmanager/v1beta1"
@@ -117,4 +117,20 @@ func Condition_Members_ToProto(mapCtx *direct.MapContext, in []acm.Member) []str
 		out[index] = element
 	}
 	return out
+}
+
+func AccessContextManagerServicePerimeterResourceSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServicePerimeter) *acm.AccessContextManagerServicePerimeterResourceSpec {
+	return nil
+}
+
+func AccessContextManagerServicePerimeterResourceSpec_ToProto(mapCtx *direct.MapContext, in *acm.AccessContextManagerServicePerimeterResourceSpec) *pb.ServicePerimeter {
+	return nil
+}
+
+func AccessContextManagerServicePerimeterResourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServicePerimeter) *acm.AccessContextManagerServicePerimeterResourceObservedState {
+	return nil
+}
+
+func AccessContextManagerServicePerimeterResourceObservedState_ToProto(mapCtx *direct.MapContext, in *acm.AccessContextManagerServicePerimeterResourceObservedState) *pb.ServicePerimeter {
+	return nil
 }
