@@ -1,8 +1,8 @@
 module github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/tools/patch-proto
 
-go 1.24.0
+go 1.25
 
-toolchain go1.24.6
+toolchain go1.25.0
 
 require (
 	github.com/smacker/go-tree-sitter v0.0.0-20240625050157-a31a98a7c0f6
@@ -23,6 +23,7 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/testify v1.11.1 // indirect
 	golang.org/x/exp v0.0.0-20251125195548-87e1e737ad39 // indirect
-	golang.org/x/net v0.48.0 // indirect
-	golang.org/x/sys v0.39.0 // indirect
+	golang.org/x/net v0.49.0 // indirect
+	golang.org/x/sys v0.40.0 // indirect
+	golang.org/x/tools v0.41.0 // indirect
 )
