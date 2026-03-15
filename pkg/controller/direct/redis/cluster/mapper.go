@@ -21,6 +21,7 @@ import (
 
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -78,5 +79,109 @@ func PscConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.PscConfigSpec) *pb
 	if in.NetworkRef != nil {
 		out.Network = in.NetworkRef.External
 	}
+	return out
+}
+
+func CrossClusterReplicationConfig_FromProto(mapCtx *direct.MapContext, in *pb.CrossClusterReplicationConfig) *krm.CrossClusterReplicationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CrossClusterReplicationConfig{}
+	out.ClusterRole = direct.Enum_FromProto(mapCtx, in.GetClusterRole())
+	out.PrimaryCluster = CrossClusterReplicationConfig_RemoteCluster_FromProto(mapCtx, in.GetPrimaryCluster())
+	out.SecondaryClusters = direct.Slice_FromProto(mapCtx, in.SecondaryClusters, CrossClusterReplicationConfig_RemoteCluster_FromProto)
+	return out
+}
+
+func CrossClusterReplicationConfig_ToProto(mapCtx *direct.MapContext, in *krm.CrossClusterReplicationConfig) *pb.CrossClusterReplicationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CrossClusterReplicationConfig{}
+	out.ClusterRole = direct.Enum_ToProto[pb.CrossClusterReplicationConfig_ClusterRole](mapCtx, in.ClusterRole)
+	out.PrimaryCluster = CrossClusterReplicationConfig_RemoteCluster_ToProto(mapCtx, in.PrimaryCluster)
+	out.SecondaryClusters = direct.Slice_ToProto(mapCtx, in.SecondaryClusters, CrossClusterReplicationConfig_RemoteCluster_ToProto)
+	return out
+}
+
+func CrossClusterReplicationConfig_RemoteCluster_FromProto(mapCtx *direct.MapContext, in *pb.CrossClusterReplicationConfig_RemoteCluster) *krm.CrossClusterReplicationConfig_RemoteCluster {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CrossClusterReplicationConfig_RemoteCluster{}
+	if in.Cluster != "" {
+		out.ClusterRef = &refs.RedisClusterRef{External: in.Cluster}
+	}
+	return out
+}
+
+func CrossClusterReplicationConfig_RemoteCluster_ToProto(mapCtx *direct.MapContext, in *krm.CrossClusterReplicationConfig_RemoteCluster) *pb.CrossClusterReplicationConfig_RemoteCluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CrossClusterReplicationConfig_RemoteCluster{}
+	if in.ClusterRef != nil {
+		out.Cluster = in.ClusterRef.External
+	}
+	return out
+}
+
+func CrossClusterReplicationConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CrossClusterReplicationConfig) *krm.CrossClusterReplicationConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CrossClusterReplicationConfigObservedState{}
+	out.Membership = CrossClusterReplicationConfig_MembershipObservedState_FromProto(mapCtx, in.GetMembership())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func CrossClusterReplicationConfig_MembershipObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CrossClusterReplicationConfig_Membership) *krm.CrossClusterReplicationConfig_MembershipObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CrossClusterReplicationConfig_MembershipObservedState{}
+	out.PrimaryCluster = CrossClusterReplicationConfig_RemoteClusterObservedState_FromProto(mapCtx, in.GetPrimaryCluster())
+	out.SecondaryClusters = direct.Slice_FromProto(mapCtx, in.SecondaryClusters, CrossClusterReplicationConfig_RemoteClusterObservedState_FromProto)
+	return out
+}
+
+func CrossClusterReplicationConfig_RemoteClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CrossClusterReplicationConfig_RemoteCluster) *krm.CrossClusterReplicationConfig_RemoteClusterObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CrossClusterReplicationConfig_RemoteClusterObservedState{}
+	out.Cluster = direct.LazyPtr(in.GetCluster())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	return out
+}
+
+func CrossClusterReplicationConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CrossClusterReplicationConfigObservedState) *pb.CrossClusterReplicationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CrossClusterReplicationConfig{}
+	out.Membership = CrossClusterReplicationConfig_MembershipObservedState_ToProto(mapCtx, in.Membership)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func CrossClusterReplicationConfig_MembershipObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CrossClusterReplicationConfig_MembershipObservedState) *pb.CrossClusterReplicationConfig_Membership {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CrossClusterReplicationConfig_Membership{}
+	out.PrimaryCluster = CrossClusterReplicationConfig_RemoteClusterObservedState_ToProto(mapCtx, in.PrimaryCluster)
+	out.SecondaryClusters = direct.Slice_ToProto(mapCtx, in.SecondaryClusters, CrossClusterReplicationConfig_RemoteClusterObservedState_ToProto)
+	return out
+}
+
+func CrossClusterReplicationConfig_RemoteClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CrossClusterReplicationConfig_RemoteClusterObservedState) *pb.CrossClusterReplicationConfig_RemoteCluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CrossClusterReplicationConfig_RemoteCluster{}
+	out.Cluster = direct.ValueOf(in.Cluster)
+	out.Uid = direct.ValueOf(in.Uid)
 	return out
 }
