@@ -387,7 +387,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "backupSchedule \"projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules/spannerbackupschedule-${uniqueId}\" not found",
+    "message": "Backup schedule not found: projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules/spannerbackupschedule-${uniqueId}",
     "status": "NOT_FOUND"
   }
 }
