@@ -284,7 +284,11 @@ func schemaEquivalenceDiff(version string, oldPaths, newPaths map[string]string)
 		if !ok {
 			diffs = append(diffs, fmt.Sprintf("%sfield removed: %s (was %s)", prefix, path, oldType))
 		} else if oldType != newType {
-			diffs = append(diffs, fmt.Sprintf("%sfield type changed: %s (%s -> %s)", prefix, path, oldType, newType))
+			if isAllowedTypeChange(path, oldType, newType) {
+				notes = append(notes, fmt.Sprintf("%sfield type changed: %s (%s -> %s) (allowed)", prefix, path, oldType, newType))
+			} else {
+				diffs = append(diffs, fmt.Sprintf("%sfield type changed: %s (%s -> %s)", prefix, path, oldType, newType))
+			}
 		}
 	}
 
@@ -300,6 +304,18 @@ func schemaEquivalenceDiff(version string, oldPaths, newPaths map[string]string)
 	}
 
 	return diffs, notes
+}
+
+func isAllowedTypeChange(path, oldType, newType string) bool {
+	// If it is changed from integer to int32, then it should always be allowed.
+	if oldType == "integer" && newType == "int32" {
+		return true
+	}
+	// If it is changed from integer to int64, it should be an allowed change if this happens to a status field.
+	if oldType == "integer" && newType == "int64" && isUnderStatus(path) {
+		return true
+	}
+	return false
 }
 
 // compareBackwardCompatibility checks whether the change from oldCRD to newCRD is backward compatible.
@@ -351,7 +367,11 @@ func schemaBackwardCompatDiff(version string, oldPaths, newPaths map[string]stri
 		if !ok {
 			diffs = append(diffs, fmt.Sprintf("%sfield removed: %s (was %s)", prefix, path, oldType))
 		} else if oldType != newType {
-			diffs = append(diffs, fmt.Sprintf("%sfield type changed: %s (%s -> %s)", prefix, path, oldType, newType))
+			if isAllowedTypeChange(path, oldType, newType) {
+				notes = append(notes, fmt.Sprintf("%sfield type changed: %s (%s -> %s) (allowed)", prefix, path, oldType, newType))
+			} else {
+				diffs = append(diffs, fmt.Sprintf("%sfield type changed: %s (%s -> %s)", prefix, path, oldType, newType))
+			}
 		}
 	}
 
