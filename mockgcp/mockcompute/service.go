@@ -92,6 +92,9 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterGlobalOperationsServer(grpcServer, &GlobalOperationsV1{MockService: s})
 	pb.RegisterGlobalOrganizationOperationsServer(grpcServer, &GlobalOrganizationOperationsV1{MockService: s})
 
+	pb.RegisterInstanceGroupManagersServer(grpcServer, &InstanceGroupManagersV1{MockService: s})
+	pb.RegisterRegionInstanceGroupManagersServer(grpcServer, &RegionInstanceGroupManagersV1{MockService: s})
+
 	pb.RegisterNodeGroupsServer(grpcServer, &NodeGroupsV1{MockService: s})
 	pb.RegisterNodeTemplatesServer(grpcServer, &NodeTemplatesV1{MockService: s})
 
@@ -202,6 +205,13 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 	if err := pb.RegisterRegionUrlMapsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterInstanceGroupManagersHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterRegionInstanceGroupManagersHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 
