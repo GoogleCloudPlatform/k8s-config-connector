@@ -18,7 +18,6 @@ import (
 	"fmt"
 	"math/rand"
 	"testing"
-	"time"
 
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -96,10 +95,53 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 				}
 
 			case protoreflect.Int32Kind:
-				// TODO: handle []int32
+				listVal := msg.Mutable(field).List()
+				for j := 0; j < count; j++ {
+					v := randStream.Int31()
+					listVal.Append(protoreflect.ValueOfInt32(v))
+				}
 
 			case protoreflect.Uint32Kind:
-				// TODO: handle []uint32
+				listVal := msg.Mutable(field).List()
+				for j := 0; j < count; j++ {
+					v := randStream.Uint32()
+					listVal.Append(protoreflect.ValueOfUint32(v))
+				}
+
+			case protoreflect.Int64Kind:
+				listVal := msg.Mutable(field).List()
+				for j := 0; j < count; j++ {
+					v := randStream.Int63()
+					listVal.Append(protoreflect.ValueOfInt64(v))
+				}
+
+			case protoreflect.Uint64Kind:
+				listVal := msg.Mutable(field).List()
+				for j := 0; j < count; j++ {
+					v := randStream.Uint64()
+					listVal.Append(protoreflect.ValueOfUint64(v))
+				}
+
+			case protoreflect.BoolKind:
+				listVal := msg.Mutable(field).List()
+				for j := 0; j < count; j++ {
+					v := randStream.Intn(2) == 1
+					listVal.Append(protoreflect.ValueOfBool(v))
+				}
+
+			case protoreflect.FloatKind:
+				listVal := msg.Mutable(field).List()
+				for j := 0; j < count; j++ {
+					v := randStream.Float32()
+					listVal.Append(protoreflect.ValueOfFloat32(v))
+				}
+
+			case protoreflect.DoubleKind:
+				listVal := msg.Mutable(field).List()
+				for j := 0; j < count; j++ {
+					v := randStream.NormFloat64()
+					listVal.Append(protoreflect.ValueOfFloat64(v))
+				}
 
 			case protoreflect.BytesKind:
 				listVal := msg.Mutable(field).List()
@@ -168,8 +210,21 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 				mapVal := msg.Mutable(field).Map()
 				for j := 0; j < count; j++ {
 					k := randomString(randStream)
-					rand.Seed(time.Now().UnixNano())
-					v := rand.Int63()
+					v := randStream.Int63()
+					mapVal.Set(protoreflect.ValueOf(k).MapKey(), protoreflect.ValueOf(v))
+				}
+			case "string->bytes":
+				mapVal := msg.Mutable(field).Map()
+				for j := 0; j < count; j++ {
+					k := randomString(randStream)
+					v := randomBytes(randStream)
+					mapVal.Set(protoreflect.ValueOf(k).MapKey(), protoreflect.ValueOf(v))
+				}
+			case "string->int32":
+				mapVal := msg.Mutable(field).Map()
+				for j := 0; j < count; j++ {
+					k := randomString(randStream)
+					v := randStream.Int31()
 					mapVal.Set(protoreflect.ValueOf(k).MapKey(), protoreflect.ValueOf(v))
 				}
 
@@ -329,25 +384,16 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 					}
 					Visit(path+"[]", el.Message(), setter, visitor)
 				}
-			case protoreflect.StringKind:
-				for j := 0; j < count; j++ {
-					el := listVal.Get(j)
-					setter := func(v protoreflect.Value) {
-						listVal.Set(j, v)
-					}
-					visitor.VisitPrimitive(path+"[]", el, setter)
-				}
-
-			case protoreflect.EnumKind:
-				for j := 0; j < count; j++ {
-					el := listVal.Get(j)
-					setter := func(v protoreflect.Value) {
-						listVal.Set(j, v)
-					}
-					visitor.VisitPrimitive(path+"[]", el, setter)
-				}
-
-			case protoreflect.BytesKind:
+			case protoreflect.BoolKind,
+				protoreflect.DoubleKind,
+				protoreflect.FloatKind,
+				protoreflect.Int32Kind,
+				protoreflect.Uint32Kind,
+				protoreflect.Int64Kind,
+				protoreflect.Uint64Kind,
+				protoreflect.StringKind,
+				protoreflect.BytesKind,
+				protoreflect.EnumKind:
 				for j := 0; j < count; j++ {
 					el := listVal.Get(j)
 					setter := func(v protoreflect.Value) {
@@ -453,6 +499,48 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 					v := mapVal.Get(k)
 					Visit(mapPath, v.Message(), setter, visitor)
 
+					return true
+				})
+			case "string->bytes":
+				mapVal := msg.Mutable(field).Map()
+				setter := func(v protoreflect.Value) {
+					if v.IsValid() {
+						msg.Set(field, v)
+					} else {
+						msg.Clear(field)
+					}
+				}
+				visitor.VisitMap(path, mapVal, setter)
+
+				// In case the value changes
+				mapVal = msg.Mutable(field).Map()
+				mapVal.Range(func(k protoreflect.MapKey, val protoreflect.Value) bool {
+					mapPath := path + "[" + k.String() + "]"
+					setter := func(v protoreflect.Value) {
+						mapVal.Set(k, v)
+					}
+					visitor.VisitPrimitive(mapPath, val, setter)
+					return true
+				})
+			case "string->int32":
+				mapVal := msg.Mutable(field).Map()
+				setter := func(v protoreflect.Value) {
+					if v.IsValid() {
+						msg.Set(field, v)
+					} else {
+						msg.Clear(field)
+					}
+				}
+				visitor.VisitMap(path, mapVal, setter)
+
+				// In case the value changes
+				mapVal = msg.Mutable(field).Map()
+				mapVal.Range(func(k protoreflect.MapKey, val protoreflect.Value) bool {
+					mapPath := path + "[" + k.String() + "]"
+					setter := func(v protoreflect.Value) {
+						mapVal.Set(k, v)
+					}
+					visitor.VisitPrimitive(mapPath, val, setter)
 					return true
 				})
 

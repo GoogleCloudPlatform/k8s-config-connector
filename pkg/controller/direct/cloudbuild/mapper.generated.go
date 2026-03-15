@@ -698,6 +698,8 @@ func BuiltImageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BuiltIma
 	out.PushTiming = TimeSpan_ToProto(mapCtx, in.PushTiming)
 	return out
 }
+
+/* found existing non-generated mapping function "CloudBuildTriggerObservedState_FromProto", skipping
 func CloudBuildTriggerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BuildTrigger) *krm.CloudBuildTriggerObservedState {
 	if in == nil {
 		return nil
@@ -705,6 +707,7 @@ func CloudBuildTriggerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out := &krm.CloudBuildTriggerObservedState{}
 	// MISSING: ResourceName
 	// MISSING: ID
+	// (near miss): "ID" vs "Id"
 	// MISSING: Description
 	// MISSING: Name
 	// MISSING: Tags
@@ -716,7 +719,7 @@ func CloudBuildTriggerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: Build
 	// MISSING: Filename
 	// MISSING: GitFileSource
-	// MISSING: CreateTime
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	// MISSING: Disabled
 	// MISSING: Substitutions
 	// MISSING: IgnoredFiles
@@ -727,35 +730,42 @@ func CloudBuildTriggerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: RepositoryEventConfig
 	return out
 }
-func CloudBuildTriggerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudBuildTriggerObservedState) *pb.BuildTrigger {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "CloudBuildTriggerObservedState_ToProto", skipping
+
+	func CloudBuildTriggerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudBuildTriggerObservedState) *pb.BuildTrigger {
+		if in == nil {
+			return nil
+		}
+		out := &pb.BuildTrigger{}
+		// MISSING: ResourceName
+		// MISSING: ID
+		// (near miss): "ID" vs "Id"
+		// MISSING: Description
+		// MISSING: Name
+		// MISSING: Tags
+		// MISSING: TriggerTemplate
+		// MISSING: Github
+		// MISSING: PubsubConfig
+		// MISSING: WebhookConfig
+		// MISSING: Autodetect
+		// MISSING: Build
+		// MISSING: Filename
+		// MISSING: GitFileSource
+		out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+		// MISSING: Disabled
+		// MISSING: Substitutions
+		// MISSING: IgnoredFiles
+		// MISSING: IncludedFiles
+		// MISSING: Filter
+		// MISSING: SourceToBuild
+		// MISSING: ServiceAccount
+		// MISSING: RepositoryEventConfig
+		return out
 	}
-	out := &pb.BuildTrigger{}
-	// MISSING: ResourceName
-	// MISSING: ID
-	// MISSING: Description
-	// MISSING: Name
-	// MISSING: Tags
-	// MISSING: TriggerTemplate
-	// MISSING: Github
-	// MISSING: PubsubConfig
-	// MISSING: WebhookConfig
-	// MISSING: Autodetect
-	// MISSING: Build
-	// MISSING: Filename
-	// MISSING: GitFileSource
-	// MISSING: CreateTime
-	// MISSING: Disabled
-	// MISSING: Substitutions
-	// MISSING: IgnoredFiles
-	// MISSING: IncludedFiles
-	// MISSING: Filter
-	// MISSING: SourceToBuild
-	// MISSING: ServiceAccount
-	// MISSING: RepositoryEventConfig
-	return out
-}
+*/
 func CloudBuildTriggerSpec_ApprovalConfig_FromProto(mapCtx *direct.MapContext, in *pb.BuildTrigger) *krm.CloudBuildTriggerSpec_ApprovalConfig {
 	if in == nil {
 		return nil
