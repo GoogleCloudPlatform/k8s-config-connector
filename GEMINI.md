@@ -58,7 +58,7 @@ You can extract the name of the resource by running `cat <file> | yq '.spec.name
 
 A top-level parent controller routes reconciliation to one of three underlying controllers: Terraform (TF), DCL, or Direct. The controller is selected using the following order of precedence:
 
-1.  **Resource Annotation (deprecated):** A resource can specify a controller directly using the annotation `cnrm.cloud.google.com/reconciler: direct`. This is supported for backward compatibility, but its use is discouraged and it will be deprecated in the future.
+1.  **Resource Annotation (deprecated):** A resource can specify a controller directly using the annotation `alpha.cnrm.cloud.google.com/reconciler: direct`. This is supported for backward compatibility, but its use is discouraged and it will be deprecated in the future.
 
 2.  **ConfigConnectorContext Override:** The `ConfigConnectorContext` resource allows for overriding the controller for a specific resource `GroupKind` using the `spec.experiments.controllerOverrides` field.
 
