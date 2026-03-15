@@ -31,7 +31,8 @@ go run . generate-types \
   --resource ComputeForwardingRule:ForwardingRule \
   --resource ComputeSecurityPolicy:SecurityPolicy \
   --resource ComputeSubnetwork:Subnetwork \
-  --resource ComputeTargetTcpProxy:TargetTcpProxy
+  --resource ComputeTargetTcpProxy:TargetTcpProxy \
+  --resource ComputeTargetHTTPSProxy:TargetHttpsProxy
 
 go run . generate-mapper \
     --multiversion \

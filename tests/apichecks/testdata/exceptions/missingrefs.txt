@@ -26,7 +26,7 @@
 [refs] crd=computemachineimages.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.machineImageEncryptionKey.kmsKeyServiceAccount" should be a reference
 [refs] crd=computeorganizationsecuritypolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.parent" should be a reference
 [refs] crd=computeserviceattachments.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.consumerRejectLists[].external" should be a reference
-[refs] crd=computetargethttpsproxies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.certificateManagerCertificates[].external" should be a reference
+[refs] crd=computetargethttpsproxies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.sslCertificates[].external" should be a reference
 [refs] crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: field ".spec.googleServiceAccount" should be a reference
 [refs] crd=configconnectors.core.cnrm.cloud.google.com version=v1beta1: field ".spec.googleServiceAccount" should be a reference
 [refs] crd=containeranalysisnotes.containeranalysis.cnrm.cloud.google.com version=v1beta1: field ".spec.relatedNoteNames[].external" should be a reference

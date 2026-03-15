@@ -178,7 +178,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeSubnetwork                               | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeTargetGRPCProxy                          | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeTargetHTTPProxy                          | False        | True        | False  | Terraform  | False       |
-| compute.cnrm.cloud.google.com                 | ComputeTargetHTTPSProxy                         | False        | True        | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeTargetHTTPSProxy                         | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeTargetInstance                           | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeTargetPool                               | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeTargetSSLProxy                           | False        | True        | False  | Terraform  | False       |
