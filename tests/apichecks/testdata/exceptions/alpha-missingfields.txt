@@ -1946,23 +1946,12 @@
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].urlRedirect.redirectResponseCode" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].urlRedirect.stripQuery" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.sslPolicy" is not set in unstructured objects
-[missing_field] crd=networkserviceslbrouteextensions.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=networkserviceslbrouteextensions.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.extensionChains[].extensions[].authority" is not set in unstructured objects
-[missing_field] crd=networkserviceslbrouteextensions.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.extensionChains[].extensions[].backendServiceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=networkserviceslbrouteextensions.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.extensionChains[].extensions[].failOpen" is not set in unstructured objects
 [missing_field] crd=networkserviceslbrouteextensions.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.extensionChains[].extensions[].forwardHeaders[]" is not set in unstructured objects
 [missing_field] crd=networkserviceslbrouteextensions.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.extensionChains[].extensions[].metadata" is not set in unstructured objects
-[missing_field] crd=networkserviceslbrouteextensions.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.extensionChains[].extensions[].name" is not set in unstructured objects
 [missing_field] crd=networkserviceslbrouteextensions.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.extensionChains[].extensions[].supportedEvents[]" is not set in unstructured objects
-[missing_field] crd=networkserviceslbrouteextensions.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.extensionChains[].extensions[].timeout" is not set in unstructured objects
 [missing_field] crd=networkserviceslbrouteextensions.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.extensionChains[].extensions[].wasmPluginRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=networkserviceslbrouteextensions.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.extensionChains[].matchCondition.celExpression" is not set in unstructured objects
-[missing_field] crd=networkserviceslbrouteextensions.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.extensionChains[].name" is not set in unstructured objects
-[missing_field] crd=networkserviceslbrouteextensions.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.forwardingRuleRefs[]" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=networkserviceslbrouteextensions.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.loadBalancingScheme" is not set in unstructured objects
-[missing_field] crd=networkserviceslbrouteextensions.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=networkserviceslbrouteextensions.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadata" is not set in unstructured objects
-[missing_field] crd=networkserviceslbrouteextensions.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=networkservicesservicebindings.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=networkservicesservicebindings.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=notebooksenvironments.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.containerImage.tag" is not set in unstructured objects

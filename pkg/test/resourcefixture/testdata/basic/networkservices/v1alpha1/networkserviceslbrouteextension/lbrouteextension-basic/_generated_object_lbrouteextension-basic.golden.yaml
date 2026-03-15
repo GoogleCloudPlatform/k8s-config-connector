@@ -1,0 +1,41 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1alpha1
+kind: NetworkServicesLBRouteExtension
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: lbrouteextension-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: An updated sample LBRouteExtension
+  extensionChains:
+  - extensions:
+    - authority: updated.ext1.example.com
+      backendServiceRef:
+        name: ${backendServiceID}
+      name: ext1
+      timeout: 0.100s
+    matchCondition:
+      celExpression: request.host == 'updated.example.com'
+    name: chain1
+  forwardingRuleRefs:
+  - name: ${forwardingRuleID}
+  loadBalancingScheme: INTERNAL_MANAGED
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/lbRouteExtensions/lbrouteextension-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"
