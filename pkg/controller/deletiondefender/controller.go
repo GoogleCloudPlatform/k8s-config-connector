@@ -44,22 +44,29 @@ type Reconciler struct {
 	// any configuration.
 	clientSet *clientset.Clientset
 	mgr       manager.Manager
-	crd       *apiextensions.CustomResourceDefinition
-	gvk       schema.GroupVersionKind
-	logger    logr.Logger
+
+	// gvk is the GroupVersionKind that this controller is watching for deletion defender finalization.
+	gvk schema.GroupVersionKind
+
+	// crdName is the name of the CRD for the resource this reconciler is responsible for.
+	crdName string
+
+	logger logr.Logger
 }
 
-func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) error {
-	kind := crd.Spec.Names.Kind
-	apiVersion := k8s.GetAPIVersionFromCRD(crd)
-	controllerName := fmt.Sprintf("%v-deletion-defender-controller", strings.ToLower(kind))
-	r, err := NewReconciler(mgr, crd)
+func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) error {
+	apiVersion := gvk.GroupKind().String()
+
+	crdName := crd.Name
+
+	controllerName := fmt.Sprintf("%v-deletion-defender-controller", strings.ToLower(gvk.Kind))
+	r, err := NewReconciler(mgr, gvk, crdName)
 	if err != nil {
 		return err
 	}
 	obj := &unstructured.Unstructured{
 		Object: map[string]interface{}{
-			"kind":       kind,
+			"kind":       gvk.Kind,
 			"apiVersion": apiVersion,
 		},
 	}
@@ -73,12 +80,12 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) error
 		return fmt.Errorf("error creating new controller: %w", err)
 	}
 	log := mgr.GetLogger()
-	log.Info("Registered deletion-defender controller", "kind", kind, "apiVersion", apiVersion)
+	log.Info("Registered deletion-defender controller", "kind", gvk.Kind, "apiVersion", apiVersion)
 	return nil
 }
 
-func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) (*Reconciler, error) {
-	controllerName := fmt.Sprintf("%v-deletion-defender-controller", strings.ToLower(crd.Spec.Names.Kind))
+func NewReconciler(mgr manager.Manager, gvk schema.GroupVersionKind, crdName string) (*Reconciler, error) {
+	controllerName := fmt.Sprintf("%v-deletion-defender-controller", strings.ToLower(gvk.Kind))
 	clientSet, err := clientset.NewForConfig(mgr.GetConfig())
 	if err != nil {
 		return nil, fmt.Errorf("error creating new clientset: %w", err)
@@ -87,13 +94,9 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 		Client:    mgr.GetClient(),
 		clientSet: clientSet,
 		mgr:       mgr,
-		crd:       crd,
-		gvk: schema.GroupVersionKind{
-			Group:   crd.Spec.Group,
-			Version: k8s.GetVersionFromCRD(crd),
-			Kind:    crd.Spec.Names.Kind,
-		},
-		logger: logger.WithName(controllerName),
+		crdName:   crdName,
+		gvk:       gvk,
+		logger:    logger.WithName(controllerName),
 	}, nil
 }
 
@@ -146,9 +149,9 @@ func (r *Reconciler) isUninstalling(ctx context.Context) (bool, error) {
 	// it is important to use the clientset.Clientset here rather than the controller-runtime client.Client, because
 	// controller-runtime's client can have caches enabled, disabling them is tricky, and it would be easy for a bug to
 	// be introduced that re-enables the cache. We want the latest state of the CRD here so use the basic clientset.
-	crd, err := r.clientSet.ApiextensionsV1().CustomResourceDefinitions().Get(ctx, r.crd.GetName(), v1.GetOptions{})
+	crd, err := r.clientSet.ApiextensionsV1().CustomResourceDefinitions().Get(ctx, r.crdName, v1.GetOptions{})
 	if err != nil {
-		return false, fmt.Errorf("error getting CRD '%v': %w", r.crd.GetName(), err)
+		return false, fmt.Errorf("error getting CRD '%v': %w", r.crdName, err)
 	}
 	return !crd.GetDeletionTimestamp().IsZero(), nil
 }
