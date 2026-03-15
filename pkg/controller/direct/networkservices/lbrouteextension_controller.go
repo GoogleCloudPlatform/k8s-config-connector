@@ -37,6 +37,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -85,49 +86,11 @@ func (m *modelLBRouteExtension) AdapterForObject(ctx context.Context, op *direct
 		return nil, err
 	}
 
-	// Resolve references
-	for _, ref := range obj.Spec.ForwardingRuleRefs {
-		if err := ref.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
-			return nil, fmt.Errorf("resolving forwardingRuleRef: %w", err)
-		}
-		// GCP LBRouteExtension returns full URLs for forwarding rules.
-		// ForwardingRuleRef.Normalize strips the prefix, so we must add it back.
-		if ref.External != "" && !strings.HasPrefix(ref.External, "https://") {
-			ref.External = "https://www.googleapis.com/compute/v1/" + ref.External
-		}
-	}
-	for i := range obj.Spec.ExtensionChains {
-		chain := &obj.Spec.ExtensionChains[i]
-		for j := range chain.Extensions {
-			extension := &chain.Extensions[j]
-			if extension.BackendServiceRef != nil {
-				external, err := extension.BackendServiceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
-				if err != nil {
-					return nil, fmt.Errorf("resolving backendServiceRef: %w", err)
-				}
-				extension.BackendServiceRef.External = external
-			}
-			if extension.WasmPluginRef != nil {
-				if err := extension.WasmPluginRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
-					return nil, fmt.Errorf("resolving wasmPluginRef: %w", err)
-				}
-			}
-		}
-	}
-
-	mapCtx := &direct.MapContext{}
-	desired := NetworkServicesLBRouteExtensionSpec_ToProto(mapCtx, &obj.Spec)
-	if mapCtx.Err() != nil {
-		return nil, mapCtx.Err()
-	}
-
-	// Handle GCP Labels
-	desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
-
 	return &LBRouteExtensionAdapter{
 		id:        id,
 		gcpClient: gcpClient,
-		desired:   desired,
+		obj:       obj,
+		reader:    reader,
 	}, nil
 }
 
@@ -139,7 +102,8 @@ func (m *modelLBRouteExtension) AdapterForURL(ctx context.Context, url string) (
 type LBRouteExtensionAdapter struct {
 	id        *krm.LBRouteExtensionIdentity
 	gcpClient *gcp.DepClient
-	desired   *networkservicespb.LbRouteExtension
+	obj       *krm.NetworkServicesLBRouteExtension
+	reader    client.Reader
 	actual    *networkservicespb.LbRouteExtension
 }
 
@@ -197,12 +161,70 @@ func (a *LBRouteExtensionAdapter) normalizeURL(url string, projectID string) str
 	return strings.Join(tokens, "/")
 }
 
+func (a *LBRouteExtensionAdapter) resolve(ctx context.Context) (*networkservicespb.LbRouteExtension, error) {
+	reader := a.reader
+	obj := a.obj
+
+	// Resolve references
+	for _, ref := range obj.Spec.ForwardingRuleRefs {
+		if ref == nil {
+			continue
+		}
+		if err := ref.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+			return nil, fmt.Errorf("resolving forwardingRuleRef: %w", err)
+		}
+		// GCP LBRouteExtension returns full URLs for forwarding rules.
+		// ForwardingRuleRef.Normalize strips the prefix, so we must add it back.
+		if ref.External != "" && !strings.HasPrefix(ref.External, "https://") {
+			ref.External = "https://www.googleapis.com/compute/v1/" + ref.External
+		}
+	}
+	for i := range obj.Spec.ExtensionChains {
+		chain := &obj.Spec.ExtensionChains[i]
+		for j := range chain.Extensions {
+			extension := &chain.Extensions[j]
+			if extension.BackendServiceRef != nil {
+				external, err := extension.BackendServiceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+				if err != nil {
+					return nil, fmt.Errorf("resolving backendServiceRef: %w", err)
+				}
+				extension.BackendServiceRef.External = external
+			}
+			if extension.WasmPluginRef != nil {
+				if err := extension.WasmPluginRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+					return nil, fmt.Errorf("resolving wasmPluginRef: %w", err)
+				}
+			}
+		}
+	}
+
+	mapCtx := &direct.MapContext{}
+	desired := NetworkServicesLBRouteExtensionSpec_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	// Handle GCP Labels
+	labels := make(map[string]string)
+	for k, v := range obj.GetLabels() {
+		labels[k] = v
+	}
+	desired.Labels = label.NewGCPLabelsFromK8sLabels(labels)
+
+	return desired, nil
+}
+
 func (a *LBRouteExtensionAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating LBRouteExtension", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	resource := proto.Clone(a.desired).(*networkservicespb.LbRouteExtension)
+	desired, err := a.resolve(ctx)
+	if err != nil {
+		return err
+	}
+
+	resource := proto.Clone(desired).(*networkservicespb.LbRouteExtension)
 	resource.Name = a.id.String()
 
 	req := &networkservicespb.CreateLbRouteExtensionRequest{
@@ -234,7 +256,12 @@ func (a *LBRouteExtensionAdapter) Update(ctx context.Context, updateOp *directba
 	log.V(2).Info("updating LBRouteExtension", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	resource := proto.Clone(a.desired).(*networkservicespb.LbRouteExtension)
+	desired, err := a.resolve(ctx)
+	if err != nil {
+		return err
+	}
+
+	resource := proto.Clone(desired).(*networkservicespb.LbRouteExtension)
 	resource.Name = a.id.String()
 
 	diff, err := common.CompareProtoMessage(a.actual, resource, common.BasicDiff)
@@ -242,28 +269,28 @@ func (a *LBRouteExtensionAdapter) Update(ctx context.Context, updateOp *directba
 		return fmt.Errorf("comparing LBRouteExtension %s: %w", a.id, err)
 	}
 
+	updated := a.actual
 	if diff.Len() == 0 {
 		log.V(2).Info("no changes detected for LBRouteExtension", "name", a.id)
-		return nil
-	}
+	} else {
+		sortedPaths := diff.UnsortedList()
+		sort.Strings(sortedPaths)
+		updateMask := &fieldmaskpb.FieldMask{Paths: sortedPaths}
 
-	sortedPaths := diff.UnsortedList()
-	sort.Strings(sortedPaths)
-	updateMask := &fieldmaskpb.FieldMask{Paths: sortedPaths}
-
-	req := &networkservicespb.UpdateLbRouteExtensionRequest{
-		UpdateMask:       updateMask,
-		LbRouteExtension: resource,
+		req := &networkservicespb.UpdateLbRouteExtensionRequest{
+			UpdateMask:       updateMask,
+			LbRouteExtension: resource,
+		}
+		op, err := a.gcpClient.UpdateLbRouteExtension(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating LBRouteExtension %s: %w", a.id, err)
+		}
+		updated, err = op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("LBRouteExtension %s waiting update: %w", a.id, err)
+		}
+		log.V(2).Info("successfully updated LBRouteExtension", "name", a.id)
 	}
-	op, err := a.gcpClient.UpdateLbRouteExtension(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating LBRouteExtension %s: %w", a.id, err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("LBRouteExtension %s waiting update: %w", a.id, err)
-	}
-	log.V(2).Info("successfully updated LBRouteExtension", "name", a.id)
 
 	status := &krm.NetworkServicesLBRouteExtensionStatus{}
 	status.ObservedState = NetworkServicesLBRouteExtensionObservedState_FromProto(mapCtx, updated)

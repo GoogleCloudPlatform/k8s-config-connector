@@ -15,8 +15,6 @@
 package mocknetworkservices
 
 import (
-	"net/url"
-	"sort"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
@@ -42,25 +40,6 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 	// Only apply this logic if the request is for the networkservices API.
 	if !strings.Contains(event.URL(), "networkservices.googleapis.com") {
 		return
-	}
-
-	// Normalize updateMask in query parameters to ensure stable field order in logs.
-	rawURL := event.URL()
-	u, err := url.Parse(rawURL)
-	if err == nil {
-		q := u.Query()
-		mask := q.Get("updateMask")
-		if mask != "" {
-			// The mask might be comma-separated or encoded
-			paths := strings.Split(mask, ",")
-			sort.Strings(paths)
-			q.Set("updateMask", strings.Join(paths, ","))
-			u.RawQuery = q.Encode()
-			normalizedURL := u.String()
-			if normalizedURL != rawURL {
-				replacements.ReplaceStringValue(rawURL, normalizedURL)
-			}
-		}
 	}
 
 	// Normalize compute reference URLs in responses to match real GCP behavior.
