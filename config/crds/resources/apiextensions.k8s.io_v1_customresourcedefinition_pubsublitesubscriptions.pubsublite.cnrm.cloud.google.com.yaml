@@ -16,6 +16,7 @@ spec:
     categories:
     - gcp
     kind: PubSubLiteSubscription
+    listKind: PubSubLiteSubscriptionList
     plural: pubsublitesubscriptions
     shortNames:
     - gcppubsublitesubscription
@@ -43,34 +44,33 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: PubSubLiteSubscription is the Schema for the PubSubLiteSubscription
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: PubSubLiteSubscriptionSpec defines the desired state of PubSubLiteSubscription
             properties:
               deliveryConfig:
                 description: The settings for this subscription's message delivery.
                 properties:
                   deliveryRequirement:
-                    description: 'When this subscription should send messages to subscribers
-                      relative to messages persistence in storage. Possible values:
-                      ["DELIVER_IMMEDIATELY", "DELIVER_AFTER_STORED", "DELIVERY_REQUIREMENT_UNSPECIFIED"].'
+                    description: The DeliveryRequirement for this subscription.
                     type: string
-                required:
-                - deliveryRequirement
                 type: object
               projectRef:
-                description: The project that this resource belongs to.
+                description: Required. Defines the parent path of the resource.
                 oneOf:
                 - not:
                     required:
@@ -87,22 +87,22 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               region:
                 description: The region of the pubsub lite topic.
                 type: string
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for
-                  creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The PubSubLiteSubscription name. If not given, the metadata.name
+                  will be used.
                 type: string
               topic:
                 description: Immutable. A reference to a Topic resource.
@@ -116,10 +116,12 @@ spec:
             - zone
             type: object
           status:
+            description: PubSubLiteSubscriptionStatus defines the config connector
+              machine state of PubSubLiteSubscription
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -143,12 +145,17 @@ spec:
                       type: string
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the PubSubLiteSubscription resource
+                  in GCP.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
             type: object
         required:
@@ -158,9 +165,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
