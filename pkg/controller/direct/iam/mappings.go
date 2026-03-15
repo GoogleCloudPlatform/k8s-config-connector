@@ -189,3 +189,21 @@ func mapProtoLogTypeToKRM(logTypeEnum iampb.AuditLogConfig_LogType) string {
 		return LogTypeUnspecified
 	}
 }
+
+func IAMPolicyObservedState_ToProto(_ *direct.MapContext, in *krm.IAMPolicyStatus) *iampb.Policy {
+	if in == nil {
+		return nil
+	}
+
+	out := &iampb.Policy{}
+	return out
+}
+
+func IAMPolicyObservedState_FromProto(_ *direct.MapContext, in *iampb.Policy) *krm.IAMPolicyStatus {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.IAMPolicyStatus{}
+	return out
+}
