@@ -1,0 +1,482 @@
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
+
+{
+  "displayName": "Dashboard with Interval and Labels",
+  "gridLayout": {
+    "columns": "2",
+    "widgets": [
+      {
+        "timeSeriesTable": {
+          "dataSets": [
+            {
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "aggregation": {
+                    "alignmentPeriod": "60s",
+                    "perSeriesAligner": 12
+                  },
+                  "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" resource.type=\"gce_instance\"",
+                  "pickTimeSeriesFilter": {
+                    "direction": 1,
+                    "interval": {
+                      "endTime": "2026-03-04T00:00:00Z"
+                    },
+                    "numTimeSeries": 5,
+                    "rankingMethod": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "title": "Top 5 GCE Instances by CPU"
+      },
+      {
+        "title": "Chart with Thresholds",
+        "xyChart": {
+          "dataSets": [
+            {
+              "plotType": 1,
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" resource.type=\"gce_instance\""
+                }
+              }
+            }
+          ],
+          "thresholds": [
+            {
+              "label": "Critical",
+              "value": 0.8
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "labels": {
+    "user-label": "user-value"
+  },
+  "name": "projects/${projectId}/dashboards/${dashboardID}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Dashboard with Interval and Labels",
+  "etag": "abcdef0123A=",
+  "gridLayout": {
+    "columns": "2",
+    "widgets": [
+      {
+        "timeSeriesTable": {
+          "dataSets": [
+            {
+              "minAlignmentPeriod": "0s",
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "aggregation": {
+                    "alignmentPeriod": "60s",
+                    "perSeriesAligner": 12
+                  },
+                  "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" resource.type=\"gce_instance\"",
+                  "pickTimeSeriesFilter": {
+                    "direction": 1,
+                    "interval": {
+                      "endTime": "2026-03-04T00:00:00Z"
+                    },
+                    "numTimeSeries": 5,
+                    "rankingMethod": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "title": "Top 5 GCE Instances by CPU"
+      },
+      {
+        "title": "Chart with Thresholds",
+        "xyChart": {
+          "dataSets": [
+            {
+              "plotType": 1,
+              "targetAxis": 1,
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" resource.type=\"gce_instance\""
+                }
+              }
+            }
+          ],
+          "thresholds": [
+            {
+              "label": "Critical",
+              "value": 0.8
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "labels": {
+    "user-label": "user-value"
+  },
+  "name": "projects/${projectNumber}/dashboards/${dashboardID}"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Dashboard with Interval and Labels",
+  "etag": "abcdef0123A=",
+  "gridLayout": {
+    "columns": "2",
+    "widgets": [
+      {
+        "timeSeriesTable": {
+          "dataSets": [
+            {
+              "minAlignmentPeriod": "0s",
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "aggregation": {
+                    "alignmentPeriod": "60s",
+                    "perSeriesAligner": 12
+                  },
+                  "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" resource.type=\"gce_instance\"",
+                  "pickTimeSeriesFilter": {
+                    "direction": 1,
+                    "interval": {
+                      "endTime": "2026-03-04T00:00:00Z"
+                    },
+                    "numTimeSeries": 5,
+                    "rankingMethod": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "title": "Top 5 GCE Instances by CPU"
+      },
+      {
+        "title": "Chart with Thresholds",
+        "xyChart": {
+          "dataSets": [
+            {
+              "plotType": 1,
+              "targetAxis": 1,
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" resource.type=\"gce_instance\""
+                }
+              }
+            }
+          ],
+          "thresholds": [
+            {
+              "label": "Critical",
+              "value": 0.8
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "labels": {
+    "user-label": "user-value"
+  },
+  "name": "projects/${projectNumber}/dashboards/${dashboardID}"
+}
+
+---
+
+PATCH https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
+
+{
+  "displayName": "Dashboard with Interval and Labels",
+  "etag": "abcdef0123A=",
+  "gridLayout": {
+    "columns": "2",
+    "widgets": [
+      {
+        "timeSeriesTable": {
+          "dataSets": [
+            {
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "aggregation": {
+                    "alignmentPeriod": "60s",
+                    "perSeriesAligner": 12
+                  },
+                  "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" resource.type=\"gce_instance\"",
+                  "pickTimeSeriesFilter": {
+                    "direction": 1,
+                    "interval": {
+                      "endTime": "2026-03-04T00:00:00Z"
+                    },
+                    "numTimeSeries": 5,
+                    "rankingMethod": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "title": "Top 5 GCE Instances by CPU"
+      },
+      {
+        "title": "Chart with Thresholds",
+        "xyChart": {
+          "dataSets": [
+            {
+              "plotType": 1,
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" resource.type=\"gce_instance\""
+                }
+              }
+            }
+          ],
+          "thresholds": [
+            {
+              "label": "Critical",
+              "value": 0.8
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "labels": {
+    "user-label": "user-value"
+  },
+  "name": "projects/${projectId}/dashboards/${dashboardID}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Dashboard with Interval and Labels",
+  "etag": "abcdef0123A=",
+  "gridLayout": {
+    "columns": "2",
+    "widgets": [
+      {
+        "timeSeriesTable": {
+          "dataSets": [
+            {
+              "minAlignmentPeriod": "0s",
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "aggregation": {
+                    "alignmentPeriod": "60s",
+                    "perSeriesAligner": 12
+                  },
+                  "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" resource.type=\"gce_instance\"",
+                  "pickTimeSeriesFilter": {
+                    "direction": 1,
+                    "interval": {
+                      "endTime": "2026-03-04T00:00:00Z"
+                    },
+                    "numTimeSeries": 5,
+                    "rankingMethod": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "title": "Top 5 GCE Instances by CPU"
+      },
+      {
+        "title": "Chart with Thresholds",
+        "xyChart": {
+          "dataSets": [
+            {
+              "plotType": 1,
+              "targetAxis": 1,
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" resource.type=\"gce_instance\""
+                }
+              }
+            }
+          ],
+          "thresholds": [
+            {
+              "label": "Critical",
+              "value": 0.8
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "labels": {
+    "user-label": "user-value"
+  },
+  "name": "projects/${projectNumber}/dashboards/${dashboardID}"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Dashboard with Interval and Labels",
+  "etag": "abcdef0123A=",
+  "gridLayout": {
+    "columns": "2",
+    "widgets": [
+      {
+        "timeSeriesTable": {
+          "dataSets": [
+            {
+              "minAlignmentPeriod": "0s",
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "aggregation": {
+                    "alignmentPeriod": "60s",
+                    "perSeriesAligner": 12
+                  },
+                  "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" resource.type=\"gce_instance\"",
+                  "pickTimeSeriesFilter": {
+                    "direction": 1,
+                    "interval": {
+                      "endTime": "2026-03-04T00:00:00Z"
+                    },
+                    "numTimeSeries": 5,
+                    "rankingMethod": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "title": "Top 5 GCE Instances by CPU"
+      },
+      {
+        "title": "Chart with Thresholds",
+        "xyChart": {
+          "dataSets": [
+            {
+              "plotType": 1,
+              "targetAxis": 1,
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" resource.type=\"gce_instance\""
+                }
+              }
+            }
+          ],
+          "thresholds": [
+            {
+              "label": "Critical",
+              "value": 0.8
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "labels": {
+    "user-label": "user-value"
+  },
+  "name": "projects/${projectNumber}/dashboards/${dashboardID}"
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

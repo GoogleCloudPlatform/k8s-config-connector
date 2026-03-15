@@ -408,6 +408,20 @@ spec:
                                                         ranking to select time series
                                                         that pass through the filter.
                                                       type: string
+                                                    interval:
+                                                      description: Select the top
+                                                        N streams/time series within
+                                                        this time interval
+                                                      properties:
+                                                        endTime:
+                                                          description: Optional. Inclusive
+                                                            end of the interval.
+                                                          type: string
+                                                        startTime:
+                                                          description: Optional. Exclusive
+                                                            start of the interval.
+                                                          type: string
+                                                      type: object
                                                     numTimeSeries:
                                                       description: How many time series
                                                         to allow to pass through the
@@ -620,6 +634,20 @@ spec:
                                                         ranking to select time series
                                                         that pass through the filter.
                                                       type: string
+                                                    interval:
+                                                      description: Select the top
+                                                        N streams/time series within
+                                                        this time interval
+                                                      properties:
+                                                        endTime:
+                                                          description: Optional. Inclusive
+                                                            end of the interval.
+                                                          type: string
+                                                        startTime:
+                                                          description: Optional. Exclusive
+                                                            start of the interval.
+                                                          type: string
+                                                      type: object
                                                     numTimeSeries:
                                                       description: How many time series
                                                         to allow to pass through the
@@ -859,6 +887,19 @@ spec:
                                                   to select time series that pass
                                                   through the filter.
                                                 type: string
+                                              interval:
+                                                description: Select the top N streams/time
+                                                  series within this time interval
+                                                properties:
+                                                  endTime:
+                                                    description: Optional. Inclusive
+                                                      end of the interval.
+                                                    type: string
+                                                  startTime:
+                                                    description: Optional. Exclusive
+                                                      start of the interval.
+                                                    type: string
+                                                type: object
                                               numTimeSeries:
                                                 description: How many time series
                                                   to allow to pass through the filter.
@@ -1045,6 +1086,19 @@ spec:
                                                   to select time series that pass
                                                   through the filter.
                                                 type: string
+                                              interval:
+                                                description: Select the top N streams/time
+                                                  series within this time interval
+                                                properties:
+                                                  endTime:
+                                                    description: Optional. Inclusive
+                                                      end of the interval.
+                                                    type: string
+                                                  startTime:
+                                                    description: Optional. Exclusive
+                                                      start of the interval.
+                                                    type: string
+                                                type: object
                                               numTimeSeries:
                                                 description: How many time series
                                                   to allow to pass through the filter.
@@ -1308,6 +1362,20 @@ spec:
                                                         ranking to select time series
                                                         that pass through the filter.
                                                       type: string
+                                                    interval:
+                                                      description: Select the top
+                                                        N streams/time series within
+                                                        this time interval
+                                                      properties:
+                                                        endTime:
+                                                          description: Optional. Inclusive
+                                                            end of the interval.
+                                                          type: string
+                                                        startTime:
+                                                          description: Optional. Exclusive
+                                                            start of the interval.
+                                                          type: string
+                                                      type: object
                                                     numTimeSeries:
                                                       description: How many time series
                                                         to allow to pass through the
@@ -1520,6 +1588,20 @@ spec:
                                                         ranking to select time series
                                                         that pass through the filter.
                                                       type: string
+                                                    interval:
+                                                      description: Select the top
+                                                        N streams/time series within
+                                                        this time interval
+                                                      properties:
+                                                        endTime:
+                                                          description: Optional. Inclusive
+                                                            end of the interval.
+                                                          type: string
+                                                        startTime:
+                                                          description: Optional. Exclusive
+                                                            start of the interval.
+                                                          type: string
+                                                      type: object
                                                     numTimeSeries:
                                                       description: How many time series
                                                         to allow to pass through the
@@ -1721,6 +1803,20 @@ spec:
                                                         ranking to select time series
                                                         that pass through the filter.
                                                       type: string
+                                                    interval:
+                                                      description: Select the top
+                                                        N streams/time series within
+                                                        this time interval
+                                                      properties:
+                                                        endTime:
+                                                          description: Optional. Inclusive
+                                                            end of the interval.
+                                                          type: string
+                                                        startTime:
+                                                          description: Optional. Exclusive
+                                                            start of the interval.
+                                                          type: string
+                                                      type: object
                                                     numTimeSeries:
                                                       description: How many time series
                                                         to allow to pass through the
@@ -1933,6 +2029,20 @@ spec:
                                                         ranking to select time series
                                                         that pass through the filter.
                                                       type: string
+                                                    interval:
+                                                      description: Select the top
+                                                        N streams/time series within
+                                                        this time interval
+                                                      properties:
+                                                        endTime:
+                                                          description: Optional. Inclusive
+                                                            end of the interval.
+                                                          type: string
+                                                        startTime:
+                                                          description: Optional. Exclusive
+                                                            start of the interval.
+                                                          type: string
+                                                      type: object
                                                     numTimeSeries:
                                                       description: How many time series
                                                         to allow to pass through the
@@ -2448,6 +2558,19 @@ spec:
                                                   to select time series that pass
                                                   through the filter.
                                                 type: string
+                                              interval:
+                                                description: Select the top N streams/time
+                                                  series within this time interval
+                                                properties:
+                                                  endTime:
+                                                    description: Optional. Inclusive
+                                                      end of the interval.
+                                                    type: string
+                                                  startTime:
+                                                    description: Optional. Exclusive
+                                                      start of the interval.
+                                                    type: string
+                                                type: object
                                               numTimeSeries:
                                                 description: How many time series
                                                   to allow to pass through the filter.
@@ -2634,6 +2757,19 @@ spec:
                                                   to select time series that pass
                                                   through the filter.
                                                 type: string
+                                              interval:
+                                                description: Select the top N streams/time
+                                                  series within this time interval
+                                                properties:
+                                                  endTime:
+                                                    description: Optional. Inclusive
+                                                      end of the interval.
+                                                    type: string
+                                                  startTime:
+                                                    description: Optional. Exclusive
+                                                      start of the interval.
+                                                    type: string
+                                                type: object
                                               numTimeSeries:
                                                 description: How many time series
                                                   to allow to pass through the filter.
@@ -2854,6 +2990,19 @@ spec:
                                           description: How to use the ranking to select
                                             time series that pass through the filter.
                                           type: string
+                                        interval:
+                                          description: Select the top N streams/time
+                                            series within this time interval
+                                          properties:
+                                            endTime:
+                                              description: Optional. Inclusive end
+                                                of the interval.
+                                              type: string
+                                            startTime:
+                                              description: Optional. Exclusive start
+                                                of the interval.
+                                              type: string
+                                          type: object
                                         numTimeSeries:
                                           description: How many time series to allow
                                             to pass through the filter.
@@ -3018,6 +3167,19 @@ spec:
                                           description: How to use the ranking to select
                                             time series that pass through the filter.
                                           type: string
+                                        interval:
+                                          description: Select the top N streams/time
+                                            series within this time interval
+                                          properties:
+                                            endTime:
+                                              description: Optional. Inclusive end
+                                                of the interval.
+                                              type: string
+                                            startTime:
+                                              description: Optional. Exclusive start
+                                                of the interval.
+                                              type: string
+                                          type: object
                                         numTimeSeries:
                                           description: How many time series to allow
                                             to pass through the filter.
@@ -3265,6 +3427,19 @@ spec:
                                                   to select time series that pass
                                                   through the filter.
                                                 type: string
+                                              interval:
+                                                description: Select the top N streams/time
+                                                  series within this time interval
+                                                properties:
+                                                  endTime:
+                                                    description: Optional. Inclusive
+                                                      end of the interval.
+                                                    type: string
+                                                  startTime:
+                                                    description: Optional. Exclusive
+                                                      start of the interval.
+                                                    type: string
+                                                type: object
                                               numTimeSeries:
                                                 description: How many time series
                                                   to allow to pass through the filter.
@@ -3451,6 +3626,19 @@ spec:
                                                   to select time series that pass
                                                   through the filter.
                                                 type: string
+                                              interval:
+                                                description: Select the top N streams/time
+                                                  series within this time interval
+                                                properties:
+                                                  endTime:
+                                                    description: Optional. Inclusive
+                                                      end of the interval.
+                                                    type: string
+                                                  startTime:
+                                                    description: Optional. Exclusive
+                                                      start of the interval.
+                                                    type: string
+                                                type: object
                                               numTimeSeries:
                                                 description: How many time series
                                                   to allow to pass through the filter.
@@ -3640,6 +3828,19 @@ spec:
                                                   to select time series that pass
                                                   through the filter.
                                                 type: string
+                                              interval:
+                                                description: Select the top N streams/time
+                                                  series within this time interval
+                                                properties:
+                                                  endTime:
+                                                    description: Optional. Inclusive
+                                                      end of the interval.
+                                                    type: string
+                                                  startTime:
+                                                    description: Optional. Exclusive
+                                                      start of the interval.
+                                                    type: string
+                                                type: object
                                               numTimeSeries:
                                                 description: How many time series
                                                   to allow to pass through the filter.
@@ -3826,6 +4027,19 @@ spec:
                                                   to select time series that pass
                                                   through the filter.
                                                 type: string
+                                              interval:
+                                                description: Select the top N streams/time
+                                                  series within this time interval
+                                                properties:
+                                                  endTime:
+                                                    description: Optional. Inclusive
+                                                      end of the interval.
+                                                    type: string
+                                                  startTime:
+                                                    description: Optional. Exclusive
+                                                      start of the interval.
+                                                    type: string
+                                                type: object
                                               numTimeSeries:
                                                 description: How many time series
                                                   to allow to pass through the filter.
@@ -3971,6 +4185,11 @@ spec:
                           type: object
                       type: object
                     type: array
+                type: object
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. Labels applied to the dashboard
                 type: object
               mosaicLayout:
                 description: The content is arranged as a grid of tiles, with each
@@ -4319,6 +4538,20 @@ spec:
                                                       to select time series that pass
                                                       through the filter.
                                                     type: string
+                                                  interval:
+                                                    description: Select the top N
+                                                      streams/time series within this
+                                                      time interval
+                                                    properties:
+                                                      endTime:
+                                                        description: Optional. Inclusive
+                                                          end of the interval.
+                                                        type: string
+                                                      startTime:
+                                                        description: Optional. Exclusive
+                                                          start of the interval.
+                                                        type: string
+                                                    type: object
                                                   numTimeSeries:
                                                     description: How many time series
                                                       to allow to pass through the
@@ -4518,6 +4751,20 @@ spec:
                                                       to select time series that pass
                                                       through the filter.
                                                     type: string
+                                                  interval:
+                                                    description: Select the top N
+                                                      streams/time series within this
+                                                      time interval
+                                                    properties:
+                                                      endTime:
+                                                        description: Optional. Inclusive
+                                                          end of the interval.
+                                                        type: string
+                                                      startTime:
+                                                        description: Optional. Exclusive
+                                                          start of the interval.
+                                                        type: string
+                                                    type: object
                                                   numTimeSeries:
                                                     description: How many time series
                                                       to allow to pass through the
@@ -4750,6 +4997,19 @@ spec:
                                                 to select time series that pass through
                                                 the filter.
                                               type: string
+                                            interval:
+                                              description: Select the top N streams/time
+                                                series within this time interval
+                                              properties:
+                                                endTime:
+                                                  description: Optional. Inclusive
+                                                    end of the interval.
+                                                  type: string
+                                                startTime:
+                                                  description: Optional. Exclusive
+                                                    start of the interval.
+                                                  type: string
+                                              type: object
                                             numTimeSeries:
                                               description: How many time series to
                                                 allow to pass through the filter.
@@ -4927,6 +5187,19 @@ spec:
                                                 to select time series that pass through
                                                 the filter.
                                               type: string
+                                            interval:
+                                              description: Select the top N streams/time
+                                                series within this time interval
+                                              properties:
+                                                endTime:
+                                                  description: Optional. Inclusive
+                                                    end of the interval.
+                                                  type: string
+                                                startTime:
+                                                  description: Optional. Exclusive
+                                                    start of the interval.
+                                                  type: string
+                                              type: object
                                             numTimeSeries:
                                               description: How many time series to
                                                 allow to pass through the filter.
@@ -5183,6 +5456,20 @@ spec:
                                                       to select time series that pass
                                                       through the filter.
                                                     type: string
+                                                  interval:
+                                                    description: Select the top N
+                                                      streams/time series within this
+                                                      time interval
+                                                    properties:
+                                                      endTime:
+                                                        description: Optional. Inclusive
+                                                          end of the interval.
+                                                        type: string
+                                                      startTime:
+                                                        description: Optional. Exclusive
+                                                          start of the interval.
+                                                        type: string
+                                                    type: object
                                                   numTimeSeries:
                                                     description: How many time series
                                                       to allow to pass through the
@@ -5382,6 +5669,20 @@ spec:
                                                       to select time series that pass
                                                       through the filter.
                                                     type: string
+                                                  interval:
+                                                    description: Select the top N
+                                                      streams/time series within this
+                                                      time interval
+                                                    properties:
+                                                      endTime:
+                                                        description: Optional. Inclusive
+                                                          end of the interval.
+                                                        type: string
+                                                      startTime:
+                                                        description: Optional. Exclusive
+                                                          start of the interval.
+                                                        type: string
+                                                    type: object
                                                   numTimeSeries:
                                                     description: How many time series
                                                       to allow to pass through the
@@ -5580,6 +5881,20 @@ spec:
                                                       to select time series that pass
                                                       through the filter.
                                                     type: string
+                                                  interval:
+                                                    description: Select the top N
+                                                      streams/time series within this
+                                                      time interval
+                                                    properties:
+                                                      endTime:
+                                                        description: Optional. Inclusive
+                                                          end of the interval.
+                                                        type: string
+                                                      startTime:
+                                                        description: Optional. Exclusive
+                                                          start of the interval.
+                                                        type: string
+                                                    type: object
                                                   numTimeSeries:
                                                     description: How many time series
                                                       to allow to pass through the
@@ -5779,6 +6094,20 @@ spec:
                                                       to select time series that pass
                                                       through the filter.
                                                     type: string
+                                                  interval:
+                                                    description: Select the top N
+                                                      streams/time series within this
+                                                      time interval
+                                                    properties:
+                                                      endTime:
+                                                        description: Optional. Inclusive
+                                                          end of the interval.
+                                                        type: string
+                                                      startTime:
+                                                        description: Optional. Exclusive
+                                                          start of the interval.
+                                                        type: string
+                                                    type: object
                                                   numTimeSeries:
                                                     description: How many time series
                                                       to allow to pass through the
@@ -6333,6 +6662,20 @@ spec:
                                                         ranking to select time series
                                                         that pass through the filter.
                                                       type: string
+                                                    interval:
+                                                      description: Select the top
+                                                        N streams/time series within
+                                                        this time interval
+                                                      properties:
+                                                        endTime:
+                                                          description: Optional. Inclusive
+                                                            end of the interval.
+                                                          type: string
+                                                        startTime:
+                                                          description: Optional. Exclusive
+                                                            start of the interval.
+                                                          type: string
+                                                      type: object
                                                     numTimeSeries:
                                                       description: How many time series
                                                         to allow to pass through the
@@ -6545,6 +6888,20 @@ spec:
                                                         ranking to select time series
                                                         that pass through the filter.
                                                       type: string
+                                                    interval:
+                                                      description: Select the top
+                                                        N streams/time series within
+                                                        this time interval
+                                                      properties:
+                                                        endTime:
+                                                          description: Optional. Inclusive
+                                                            end of the interval.
+                                                          type: string
+                                                        startTime:
+                                                          description: Optional. Exclusive
+                                                            start of the interval.
+                                                          type: string
+                                                      type: object
                                                     numTimeSeries:
                                                       description: How many time series
                                                         to allow to pass through the
@@ -6784,6 +7141,19 @@ spec:
                                                   to select time series that pass
                                                   through the filter.
                                                 type: string
+                                              interval:
+                                                description: Select the top N streams/time
+                                                  series within this time interval
+                                                properties:
+                                                  endTime:
+                                                    description: Optional. Inclusive
+                                                      end of the interval.
+                                                    type: string
+                                                  startTime:
+                                                    description: Optional. Exclusive
+                                                      start of the interval.
+                                                    type: string
+                                                type: object
                                               numTimeSeries:
                                                 description: How many time series
                                                   to allow to pass through the filter.
@@ -6970,6 +7340,19 @@ spec:
                                                   to select time series that pass
                                                   through the filter.
                                                 type: string
+                                              interval:
+                                                description: Select the top N streams/time
+                                                  series within this time interval
+                                                properties:
+                                                  endTime:
+                                                    description: Optional. Inclusive
+                                                      end of the interval.
+                                                    type: string
+                                                  startTime:
+                                                    description: Optional. Exclusive
+                                                      start of the interval.
+                                                    type: string
+                                                type: object
                                               numTimeSeries:
                                                 description: How many time series
                                                   to allow to pass through the filter.
@@ -7233,6 +7616,20 @@ spec:
                                                         ranking to select time series
                                                         that pass through the filter.
                                                       type: string
+                                                    interval:
+                                                      description: Select the top
+                                                        N streams/time series within
+                                                        this time interval
+                                                      properties:
+                                                        endTime:
+                                                          description: Optional. Inclusive
+                                                            end of the interval.
+                                                          type: string
+                                                        startTime:
+                                                          description: Optional. Exclusive
+                                                            start of the interval.
+                                                          type: string
+                                                      type: object
                                                     numTimeSeries:
                                                       description: How many time series
                                                         to allow to pass through the
@@ -7445,6 +7842,20 @@ spec:
                                                         ranking to select time series
                                                         that pass through the filter.
                                                       type: string
+                                                    interval:
+                                                      description: Select the top
+                                                        N streams/time series within
+                                                        this time interval
+                                                      properties:
+                                                        endTime:
+                                                          description: Optional. Inclusive
+                                                            end of the interval.
+                                                          type: string
+                                                        startTime:
+                                                          description: Optional. Exclusive
+                                                            start of the interval.
+                                                          type: string
+                                                      type: object
                                                     numTimeSeries:
                                                       description: How many time series
                                                         to allow to pass through the
@@ -7646,6 +8057,20 @@ spec:
                                                         ranking to select time series
                                                         that pass through the filter.
                                                       type: string
+                                                    interval:
+                                                      description: Select the top
+                                                        N streams/time series within
+                                                        this time interval
+                                                      properties:
+                                                        endTime:
+                                                          description: Optional. Inclusive
+                                                            end of the interval.
+                                                          type: string
+                                                        startTime:
+                                                          description: Optional. Exclusive
+                                                            start of the interval.
+                                                          type: string
+                                                      type: object
                                                     numTimeSeries:
                                                       description: How many time series
                                                         to allow to pass through the
@@ -7858,6 +8283,20 @@ spec:
                                                         ranking to select time series
                                                         that pass through the filter.
                                                       type: string
+                                                    interval:
+                                                      description: Select the top
+                                                        N streams/time series within
+                                                        this time interval
+                                                      properties:
+                                                        endTime:
+                                                          description: Optional. Inclusive
+                                                            end of the interval.
+                                                          type: string
+                                                        startTime:
+                                                          description: Optional. Exclusive
+                                                            start of the interval.
+                                                          type: string
+                                                      type: object
                                                     numTimeSeries:
                                                       description: How many time series
                                                         to allow to pass through the
