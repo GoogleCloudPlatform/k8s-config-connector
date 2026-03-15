@@ -75,7 +75,7 @@ func (s *cloudDeploy) CreateTarget(ctx context.Context, req *pb.CreateTargetRequ
 	obj.UpdateTime = timestamppb.New(time.Now())
 	obj.Etag = "mock-etag"
 
-	s.defaultTarget(name.Project, obj)
+	s.defaultTarget(name, obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -84,11 +84,10 @@ func (s *cloudDeploy) CreateTarget(ctx context.Context, req *pb.CreateTargetRequ
 	// By default, immediately finish the LRO with success.
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
-		CreateTime:            timestamppb.New(time.Now()),
-		Target:                name.String(),
-		Verb:                  "create",
-		ApiVersion:            "v1",
-		RequestedCancellation: false,
+		CreateTime: timestamppb.New(time.Now()),
+		Target:     name.String(),
+		Verb:       "create",
+		ApiVersion: "v1",
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
@@ -115,7 +114,7 @@ func (s *cloudDeploy) UpdateTarget(ctx context.Context, req *pb.UpdateTargetRequ
 			obj.Uid = uuid.NewString()
 			obj.CreateTime = timestamppb.New(time.Now())
 			obj.Etag = "mock-etag"
-			s.defaultTarget(name.Project, obj)
+			s.defaultTarget(name, obj)
 		} else {
 			if status.Code(err) == codes.NotFound {
 				return nil, status.Errorf(codes.NotFound, "target %q not found", fqn)
@@ -141,7 +140,7 @@ func (s *cloudDeploy) UpdateTarget(ctx context.Context, req *pb.UpdateTargetRequ
 			return nil, fmt.Errorf("update field_mask.paths: %w", err)
 		}
 
-		s.defaultTarget(name.Project, obj)
+		s.defaultTarget(name, obj)
 
 		if err := s.storage.Update(ctx, fqn, obj); err != nil {
 			return nil, err
@@ -155,11 +154,10 @@ func (s *cloudDeploy) UpdateTarget(ctx context.Context, req *pb.UpdateTargetRequ
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
-		CreateTime:            timestamppb.New(time.Now()),
-		Target:                name.String(),
-		Verb:                  "update",
-		ApiVersion:            "v1",
-		RequestedCancellation: false,
+		CreateTime: timestamppb.New(time.Now()),
+		Target:     name.String(),
+		Verb:       "update",
+		ApiVersion: "v1",
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
@@ -218,11 +216,10 @@ func (s *cloudDeploy) DeleteTarget(ctx context.Context, req *pb.DeleteTargetRequ
 	// By default, immediately finish the LRO with success.
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
-		CreateTime:            timestamppb.New(time.Now()),
-		Target:                name.String(),
-		Verb:                  "delete",
-		ApiVersion:            "v1",
-		RequestedCancellation: false,
+		CreateTime: timestamppb.New(time.Now()),
+		Target:     name.String(),
+		Verb:       "delete",
+		ApiVersion: "v1",
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
@@ -230,10 +227,10 @@ func (s *cloudDeploy) DeleteTarget(ctx context.Context, req *pb.DeleteTargetRequ
 	})
 }
 
-func (s *cloudDeploy) defaultTarget(project *projects.ProjectData, obj *pb.Target) {
+func (s *cloudDeploy) defaultTarget(name *targetName, obj *pb.Target) {
 	if len(obj.ExecutionConfigs) == 0 {
-		sa := fmt.Sprintf("%d-compute@developer.gserviceaccount.com", project.Number)
-		bucket := fmt.Sprintf("gs://deploy-artifacts.%s.appspot.com", project.ID)
+		sa := fmt.Sprintf("%d-compute@developer.gserviceaccount.com", name.Project.Number)
+		bucket := fmt.Sprintf("gs://%s.deploy-artifacts.%s.appspot.com", name.Location, name.Project.ID)
 
 		obj.ExecutionConfigs = []*pb.ExecutionConfig{
 			{
