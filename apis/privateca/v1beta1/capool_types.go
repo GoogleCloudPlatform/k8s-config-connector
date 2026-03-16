@@ -214,11 +214,43 @@ type CAPool_PublishingOptions struct {
 	// EncodingFormat *string `json:"encodingFormat,omitempty"`
 }
 
+// +kcc:proto=google.cloud.security.privateca.v1.CertificateIdentityConstraints
+type CertificateIdentityConstraints struct {
+	// Optional. A CEL expression that may be used to validate the resolved X.509
+	//  Subject and/or Subject Alternative Name before a certificate is signed. To
+	//  see the full allowed syntax and some examples, see
+	//  https://cloud.google.com/certificate-authority-service/docs/using-cel
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateIdentityConstraints.cel_expression
+	CelExpression *Expr `json:"celExpression,omitempty"`
+
+	// Required. If this is true, the
+	//  [Subject][google.cloud.security.privateca.v1.Subject] field may be copied
+	//  from a certificate request into the signed certificate. Otherwise, the
+	//  requested [Subject][google.cloud.security.privateca.v1.Subject] will be
+	//  discarded.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateIdentityConstraints.allow_subject_passthrough
+	// +required
+	// +kubebuilder:validation:Required
+	AllowSubjectPassthrough *bool `json:"allowSubjectPassthrough"`
+
+	// Required. If this is true, the
+	//  [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames]
+	//  extension may be copied from a certificate request into the signed
+	//  certificate. Otherwise, the requested
+	//  [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames] will
+	//  be discarded.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateIdentityConstraints.allow_subject_alt_names_passthrough
+	// +required
+	// +kubebuilder:validation:Required
+	AllowSubjectAltNamesPassthrough *bool `json:"allowSubjectAltNamesPassthrough"`
+}
+
 // X509Extension
 type X509Extension struct {
 	// Required. The OID for this X.509 extension.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Extension.object_id
-	ObjectID *ObjectID `json:"objectId,omitempty"`
+	// +required
+	ObjectID *ObjectID `json:"objectId"`
 
 	// Optional. Indicates whether or not this extension is critical (i.e., if the
 	//  client does not know how to handle this extension, the client should
@@ -228,7 +260,8 @@ type X509Extension struct {
 
 	// Required. The value of this X.509 extension.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Extension.value
-	Value []byte `json:"value,omitempty"`
+	// +required
+	Value []byte `json:"value"`
 }
 
 // +kcc:proto=google.cloud.security.privateca.v1.ObjectId
@@ -236,6 +269,7 @@ type ObjectID struct {
 	// Required. The parts of an OID path. The most significant parts of the path
 	//  come first.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.ObjectId.object_id_path
+	// +required
 	ObjectIDPath []int32 `json:"objectIdPath,omitempty"`
 }
 

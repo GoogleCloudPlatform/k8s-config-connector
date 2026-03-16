@@ -18,6 +18,7 @@
 // krm.version: v1beta1
 // proto.service: google.cloud.security.privateca.v1
 // resource: PrivateCACAPool:CaPool
+// resource: PrivateCACertificateTemplate:CertificateTemplate
 
 package v1beta1
 
@@ -85,33 +86,6 @@ type CertificateExtensionConstraints struct {
 	//  to determine the full set of X.509 extensions.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateExtensionConstraints.additional_extensions
 	AdditionalExtensions []ObjectID `json:"additionalExtensions,omitempty"`
-}
-
-// +kcc:proto=google.cloud.security.privateca.v1.CertificateIdentityConstraints
-type CertificateIdentityConstraints struct {
-	// Optional. A CEL expression that may be used to validate the resolved X.509
-	//  Subject and/or Subject Alternative Name before a certificate is signed. To
-	//  see the full allowed syntax and some examples, see
-	//  https://cloud.google.com/certificate-authority-service/docs/using-cel
-	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateIdentityConstraints.cel_expression
-	CelExpression *Expr `json:"celExpression,omitempty"`
-
-	// Required. If this is true, the
-	//  [Subject][google.cloud.security.privateca.v1.Subject] field may be copied
-	//  from a certificate request into the signed certificate. Otherwise, the
-	//  requested [Subject][google.cloud.security.privateca.v1.Subject] will be
-	//  discarded.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateIdentityConstraints.allow_subject_passthrough
-	AllowSubjectPassthrough *bool `json:"allowSubjectPassthrough,omitempty"`
-
-	// Required. If this is true, the
-	//  [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames]
-	//  extension may be copied from a certificate request into the signed
-	//  certificate. Otherwise, the requested
-	//  [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames] will
-	//  be discarded.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateIdentityConstraints.allow_subject_alt_names_passthrough
-	AllowSubjectAltNamesPassthrough *bool `json:"allowSubjectAltNamesPassthrough,omitempty"`
 }
 
 // +kcc:proto=google.cloud.security.privateca.v1.KeyUsage
