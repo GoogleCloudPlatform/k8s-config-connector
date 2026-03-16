@@ -565,31 +565,32 @@ spec:
                 description: Top level wrapper for all access related setting in IAP
                 properties:
                   allowedDomainsSettings:
-                    description: Settings to configure and enable allowed domains.
+                    description: Optional. Settings to configure and enable allowed
+                      domains.
                     properties:
                       domains:
-                        description: List of trusted domains.
+                        description: Optional. List of trusted domains.
                         items:
                           type: string
                         type: array
                       enable:
-                        description: Configuration for customers to opt in for the
-                          feature.
+                        description: Optional. Configuration for customers to opt
+                          in for the feature.
                         type: boolean
                     type: object
                   corsSettings:
-                    description: Configuration to allow cross-origin requests via
-                      IAP.
+                    description: Optional. Configuration to allow cross-origin requests
+                      via IAP.
                     properties:
                       allowHTTPOptions:
-                        description: Configuration to allow HTTP OPTIONS calls to
-                          skip authorization. If undefined, IAP will not apply any
-                          special logic to OPTIONS requests.
+                        description: Configuration to allow HTTP `OPTIONS` calls to
+                          skip authentication and authorization. If undefined, IAP
+                          will not apply any special logic to `OPTIONS` requests.
                         type: boolean
                     type: object
                   gcipSettings:
-                    description: GCIP claims and endpoint configurations for 3p identity
-                      providers.
+                    description: Optional. GCIP claims and endpoint configurations
+                      for 3p identity providers.
                     properties:
                       loginPageURI:
                         description: Login page URI associated with the GCIP tenants.
@@ -609,8 +610,14 @@ spec:
                           type: string
                         type: array
                     type: object
+                  identitySources:
+                    description: Optional. Identity sources that IAP can use to authenticate
+                      the end user. Only one identity source can be configured.
+                    items:
+                      type: string
+                    type: array
                   oauthSettings:
-                    description: Settings to configure IAP's OAuth behavior.
+                    description: Optional. Settings to configure IAP's OAuth behavior.
                     properties:
                       loginHint:
                         description: 'Domain hint to send as hd=? parameter in OAuth
@@ -621,28 +628,52 @@ spec:
                           policies.'
                         type: string
                       programmaticClients:
-                        description: List of OAuth client IDs allowed to programmatically
-                          authenticate with IAP.
+                        description: Optional. List of client ids allowed to use IAP
+                          programmatically.
                         items:
                           type: string
                         type: array
                     type: object
                   reauthSettings:
-                    description: Settings to configure reauthentication policies in
-                      IAP.
+                    description: Optional. Settings to configure reauthentication
+                      policies in IAP.
                     properties:
                       maxAge:
-                        description: Reauth session lifetime, how long before a user
-                          has to reauthenticate again.
+                        description: Optional. Reauth session lifetime, how long before
+                          a user has to reauthenticate again.
                         type: string
                       method:
-                        description: Reauth method requested.
+                        description: Optional. Reauth method requested.
                         type: string
                       policyType:
-                        description: How IAP determines the effective policy in cases
-                          of hierarchial policies. Policies are merged from higher
-                          in the hierarchy to lower in the hierarchy.
+                        description: Optional. How IAP determines the effective policy
+                          in cases of hierarchical policies. Policies are merged from
+                          higher in the hierarchy to lower in the hierarchy.
                         type: string
+                    type: object
+                  workforceIdentitySettings:
+                    description: Optional. Settings to configure the workforce identity
+                      federation, including workforce pools and OAuth 2.0 settings.
+                    properties:
+                      oauth2:
+                        description: OAuth 2.0 settings for IAP to perform OIDC flow
+                          with workforce identity federation services.
+                        properties:
+                          clientID:
+                            description: The OAuth 2.0 client ID registered in the
+                              workforce identity federation OAuth 2.0 Server.
+                            type: string
+                          clientSecret:
+                            description: Input only. The OAuth 2.0 client secret created
+                              while registering the client ID.
+                            type: string
+                        type: object
+                      workforcePools:
+                        description: The workforce pool resources. Only one workforce
+                          pool is accepted.
+                        items:
+                          type: string
+                        type: array
                     type: object
                 type: object
               appEngineRef:
@@ -709,7 +740,7 @@ spec:
                   in IAP
                 properties:
                   accessDeniedPageSettings:
-                    description: Customization for Access Denied page.
+                    description: Optional. Customization for Access Denied page.
                     properties:
                       accessDeniedPageURI:
                         description: The URI to be redirected to when access is denied.
@@ -724,19 +755,19 @@ spec:
                         type: boolean
                     type: object
                   attributePropagationSettings:
-                    description: Settings to configure attribute propagation.
+                    description: Optional. Settings to configure attribute propagation.
                     properties:
                       enable:
-                        description: Whether the provided attribute propagation settings
-                          should be evaluated on user requests. If set to true, attributes
-                          returned from the expression will be propagated in the set
-                          output credentials.
+                        description: Optional. Whether the provided attribute propagation
+                          settings should be evaluated on user requests. If set to
+                          true, attributes returned from the expression will be propagated
+                          in the set output credentials.
                         type: boolean
                       expression:
                         description: |-
-                          Raw string CEL expression. Must return a list of attributes. A maximum of
-                           45 attributes can be selected. Expressions can select different attribute
-                           types from `attributes`: `attributes.saml_attributes`,
+                          Optional. Raw string CEL expression. Must return a list of attributes. A
+                           maximum of 45 attributes can be selected. Expressions can select different
+                           attribute types from `attributes`: `attributes.saml_attributes`,
                            `attributes.iap_attributes`. The following functions are supported:
 
                             - filter `<list>.filter(<iter_var>, <predicate>)`: Returns a subset of
@@ -764,9 +795,10 @@ spec:
                            ['test']).append(attributes.iap_attributes.selectByName('exact').emitAs('custom').strict())`
                         type: string
                       outputCredentials:
-                        description: Which output credentials attributes selected
-                          by the CEL expression should be propagated in. All attributes
-                          will be fully duplicated in each selected output credential.
+                        description: Optional. Which output credentials attributes
+                          selected by the CEL expression should be propagated in.
+                          All attributes will be fully duplicated in each selected
+                          output credential.
                         items:
                           type: string
                         type: array
@@ -777,8 +809,8 @@ spec:
                       at runtime if invalid.
                     type: string
                   csmSettings:
-                    description: Settings to configure IAP's behavior for a service
-                      mesh.
+                    description: Optional. Settings to configure IAP's behavior for
+                      a service mesh.
                     properties:
                       rctokenAud:
                         description: Audience claim set in the generated RCToken.

@@ -133,7 +133,7 @@ func (a *IAPSettingsAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log.V(2).Info("updating IAPSettings", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desiredPb := IAPSettingsSpec_ToProto(mapCtx, &a.desired.Spec)
+	desiredPb := IAPSettingsSpec_v1beta1_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -181,7 +181,7 @@ func (a *IAPSettingsAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 
 	obj := &krm.IAPSettings{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(IAPSettingsSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(IAPSettingsSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
