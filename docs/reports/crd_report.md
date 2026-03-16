@@ -297,7 +297,7 @@
 | iam.cnrm.cloud.google.com                     | IAMWorkforcePool                                | False        | True        | False  | DCL        | False       |
 | iam.cnrm.cloud.google.com                     | IAMWorkloadIdentityPoolProvider                 | False        | True        | False  | DCL        | False       |
 | iam.cnrm.cloud.google.com                     | IAMWorkloadIdentityPool                         | False        | True        | False  | DCL        | False       |
-| iap.cnrm.cloud.google.com                     | IAPBrand                                        | False        | True        | False  | DCL        | False       |
+| iap.cnrm.cloud.google.com                     | IAPBrand                                        | False        | True        | False  | DCL        | True        |
 | iap.cnrm.cloud.google.com                     | IAPIdentityAwareProxyClient                     | False        | True        | False  | DCL        | False       |
 | iap.cnrm.cloud.google.com                     | IAPSettings                                     | True         | True        | False  | Direct     | True        |
 | identityplatform.cnrm.cloud.google.com        | IdentityPlatformConfig                          | False        | True        | False  | DCL        | False       |
