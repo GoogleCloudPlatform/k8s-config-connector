@@ -58,7 +58,7 @@ func ResolveSQLInstanceRef(ctx context.Context, reader client.Reader, obj client
 		return nil, fmt.Errorf("must specify either name or external on instanceRef")
 	}
 	if ref.External != "" && ref.Name != "" {
-		return nil, fmt.Errorf("cannot specify both spec.instanceRef.name and spec.instanceRef.external")
+		return nil, fmt.Errorf("cannot specify both name and external")
 	}
 
 	if ref.External != "" {

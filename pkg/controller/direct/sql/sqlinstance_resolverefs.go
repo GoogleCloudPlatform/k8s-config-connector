@@ -40,6 +40,9 @@ func ResolveSQLInstanceRefs(ctx context.Context, kube client.Reader, obj *krm.SQ
 	if err := resolveMasterInstanceRef(ctx, kube, obj); err != nil {
 		return err
 	}
+	if err := resolveReplicationCluster(ctx, kube, obj); err != nil {
+		return err
+	}
 	if err := resolveReplicaPasswordRef(ctx, kube, obj); err != nil {
 		return err
 	}
@@ -152,6 +155,23 @@ func resolveMasterInstanceRef(ctx context.Context, kube client.Reader, obj *krm.
 	} else {
 		return fmt.Errorf("must specify either spec.masterInstanceRef.external or spec.masterInstanceRef.name")
 	}
+}
+
+func resolveReplicationCluster(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
+	if obj.Spec.ReplicationCluster == nil || obj.Spec.ReplicationCluster.FailoverDrReplicaRef == nil {
+		return nil
+	}
+
+	ref := *obj.Spec.ReplicationCluster.FailoverDrReplicaRef
+	instanceID, err := refs.ResolveSQLInstanceRef(ctx, kube, obj, &ref)
+	if err != nil {
+		return err
+	}
+
+	// The API requires the format of "{project}:{instance}" for the failover replica reference.
+	obj.Spec.ReplicationCluster.FailoverDrReplicaRef.External = fmt.Sprintf("%s:%s", instanceID.ProjectID, instanceID.SQLInstanceName)
+
+	return nil
 }
 
 func resolveReplicaPasswordRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
