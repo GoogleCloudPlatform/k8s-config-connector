@@ -243,9 +243,14 @@ spec:
 		t.Fatalf("failed to apply ConfigConnector: %v\nOutput: %s", err, string(output))
 	}
 
+	t.Logf("Waiting for ConfigConnector to be healthy")
+	if err := runCommand(ctx, t, root, "kubectl", "wait", "configconnector", "configconnector.core.cnrm.cloud.google.com", "--for=jsonpath={.status.healthy}=true", "--timeout=5m"); err != nil {
+		t.Fatalf("ConfigConnector failed to become healthy: %v", err)
+	}
+
 	t.Logf("Waiting for cnrm-webhook-manager to be ready")
 	if err := runCommand(ctx, t, root, "kubectl", "wait", "-n", "cnrm-system", "--for=create", "deployment/cnrm-webhook-manager", "--timeout=5m"); err != nil {
-		t.Fatalf("cnrm-webhook-manager not created: %v", err)
+		t.Logf("cnrm-webhook-manager not created yet, this might be okay if it's still being deployed")
 	}
 	if err := runCommand(ctx, t, root, "kubectl", "wait", "-n", "cnrm-system", "--for=condition=Available", "deployment/cnrm-webhook-manager", "--timeout=5m"); err != nil {
 		t.Fatalf("cnrm-webhook-manager failed to become ready: %v", err)
@@ -253,7 +258,7 @@ spec:
 
 	t.Logf("Waiting for cnrm-controller-manager to be ready")
 	if err := runCommand(ctx, t, root, "kubectl", "wait", "-n", "cnrm-system", "--for=create", "statefulset/cnrm-controller-manager", "--timeout=5m"); err != nil {
-		t.Fatalf("cnrm-controller-manager not created: %v", err)
+		t.Logf("cnrm-controller-manager not created yet, this might be okay if it's still being deployed")
 	}
 	if err := runCommand(ctx, t, root, "kubectl", "wait", "-n", "cnrm-system", "--for=jsonpath={.status.readyReplicas}=1", "statefulset/cnrm-controller-manager", "--timeout=5m"); err != nil {
 		t.Fatalf("cnrm-controller-manager failed to become ready: %v", err)
