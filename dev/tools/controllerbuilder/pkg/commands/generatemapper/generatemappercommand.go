@@ -163,7 +163,8 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 	}
 
 	goImports := map[string]string{
-		"krm": "github.com/GoogleCloudPlatform/k8s-config-connector/apis/" + strings.TrimSuffix(gv.Group, ".cnrm.cloud.google.com") + "/" + gv.Version,
+		"krm":             "github.com/GoogleCloudPlatform/k8s-config-connector/apis/" + strings.TrimSuffix(gv.Group, ".cnrm.cloud.google.com") + "/" + gv.Version,
+		"apiextensionsv1": "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1",
 	}
 	if err := mapperGenerator.GenerateMappers(goImports); err != nil {
 		return err
