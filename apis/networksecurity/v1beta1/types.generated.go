@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 // krm.version: v1beta1
 // proto.service: google.cloud.networksecurity.v1beta1
 // resource: NetworkSecurityAuthorizationPolicy:AuthorizationPolicy
+// resource: NetworkSecurityClientTLSPolicy:ClientTlsPolicy
 
 package v1beta1
 

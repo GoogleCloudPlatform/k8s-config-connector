@@ -104,6 +104,60 @@ func AuthorizationPolicy_Rule_Source_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.IpBlocks = in.IPBlocks
 	return out
 }
+func CertificateProvider_FromProto(mapCtx *direct.MapContext, in *pb.CertificateProvider) *krm.CertificateProvider {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateProvider{}
+	out.GrpcEndpoint = GrpcEndpoint_FromProto(mapCtx, in.GetGrpcEndpoint())
+	out.CertificateProviderInstance = CertificateProviderInstance_FromProto(mapCtx, in.GetCertificateProviderInstance())
+	return out
+}
+func CertificateProvider_ToProto(mapCtx *direct.MapContext, in *krm.CertificateProvider) *pb.CertificateProvider {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateProvider{}
+	if oneof := GrpcEndpoint_ToProto(mapCtx, in.GrpcEndpoint); oneof != nil {
+		out.Type = &pb.CertificateProvider_GrpcEndpoint{GrpcEndpoint: oneof}
+	}
+	if oneof := CertificateProviderInstance_ToProto(mapCtx, in.CertificateProviderInstance); oneof != nil {
+		out.Type = &pb.CertificateProvider_CertificateProviderInstance{CertificateProviderInstance: oneof}
+	}
+	return out
+}
+func CertificateProviderInstance_FromProto(mapCtx *direct.MapContext, in *pb.CertificateProviderInstance) *krm.CertificateProviderInstance {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateProviderInstance{}
+	out.PluginInstance = direct.LazyPtr(in.GetPluginInstance())
+	return out
+}
+func CertificateProviderInstance_ToProto(mapCtx *direct.MapContext, in *krm.CertificateProviderInstance) *pb.CertificateProviderInstance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateProviderInstance{}
+	out.PluginInstance = direct.ValueOf(in.PluginInstance)
+	return out
+}
+func GrpcEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.GrpcEndpoint) *krm.GrpcEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GrpcEndpoint{}
+	out.TargetURI = direct.LazyPtr(in.GetTargetUri())
+	return out
+}
+func GrpcEndpoint_ToProto(mapCtx *direct.MapContext, in *krm.GrpcEndpoint) *pb.GrpcEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GrpcEndpoint{}
+	out.TargetUri = direct.ValueOf(in.TargetURI)
+	return out
+}
 func NetworkSecurityAuthorizationPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy) *krm.NetworkSecurityAuthorizationPolicySpec {
 	if in == nil {
 		return nil
@@ -158,5 +212,109 @@ func NetworkSecurityAuthorizationPolicyStatus_ToProto(mapCtx *direct.MapContext,
 	// MISSING: Labels
 	// MISSING: Action
 	// MISSING: Rules
+	return out
+}
+func NetworkSecurityClientTLSPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ClientTlsPolicy) *krm.NetworkSecurityClientTLSPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkSecurityClientTLSPolicyObservedState{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	return out
+}
+func NetworkSecurityClientTLSPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSecurityClientTLSPolicyObservedState) *pb.ClientTlsPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ClientTlsPolicy{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	return out
+}
+func NetworkSecurityClientTLSPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.ClientTlsPolicy) *krm.NetworkSecurityClientTLSPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkSecurityClientTLSPolicySpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	out.Sni = direct.LazyPtr(in.GetSni())
+	out.ClientCertificate = CertificateProvider_FromProto(mapCtx, in.GetClientCertificate())
+	out.ServerValidationCA = direct.Slice_FromProto(mapCtx, in.ServerValidationCa, ValidationCA_FromProto)
+	return out
+}
+func NetworkSecurityClientTLSPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSecurityClientTLSPolicySpec) *pb.ClientTlsPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ClientTlsPolicy{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	out.Sni = direct.ValueOf(in.Sni)
+	out.ClientCertificate = CertificateProvider_ToProto(mapCtx, in.ClientCertificate)
+	out.ServerValidationCa = direct.Slice_ToProto(mapCtx, in.ServerValidationCA, ValidationCA_ToProto)
+	return out
+}
+func NetworkSecurityClientTLSPolicyStatus_FromProto(mapCtx *direct.MapContext, in *pb.ClientTlsPolicy) *krm.NetworkSecurityClientTLSPolicyStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkSecurityClientTLSPolicyStatus{}
+	// MISSING: Name
+	// MISSING: Description
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	// MISSING: Sni
+	// MISSING: ClientCertificate
+	// MISSING: ServerValidationCA
+	return out
+}
+func NetworkSecurityClientTLSPolicyStatus_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSecurityClientTLSPolicyStatus) *pb.ClientTlsPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ClientTlsPolicy{}
+	// MISSING: Name
+	// MISSING: Description
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	// MISSING: Sni
+	// MISSING: ClientCertificate
+	// MISSING: ServerValidationCA
+	return out
+}
+func ValidationCA_FromProto(mapCtx *direct.MapContext, in *pb.ValidationCA) *krm.ValidationCA {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ValidationCA{}
+	out.GrpcEndpoint = GrpcEndpoint_FromProto(mapCtx, in.GetGrpcEndpoint())
+	out.CertificateProviderInstance = CertificateProviderInstance_FromProto(mapCtx, in.GetCertificateProviderInstance())
+	return out
+}
+func ValidationCA_ToProto(mapCtx *direct.MapContext, in *krm.ValidationCA) *pb.ValidationCA {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ValidationCA{}
+	if oneof := GrpcEndpoint_ToProto(mapCtx, in.GrpcEndpoint); oneof != nil {
+		out.Type = &pb.ValidationCA_GrpcEndpoint{GrpcEndpoint: oneof}
+	}
+	if oneof := CertificateProviderInstance_ToProto(mapCtx, in.CertificateProviderInstance); oneof != nil {
+		out.Type = &pb.ValidationCA_CertificateProviderInstance{CertificateProviderInstance: oneof}
+	}
 	return out
 }

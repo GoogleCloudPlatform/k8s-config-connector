@@ -26,7 +26,9 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.cloud.networksecurity.v1beta1 \
     --api-version networksecurity.cnrm.cloud.google.com/v1beta1 \
-    --resource NetworkSecurityAuthorizationPolicy:AuthorizationPolicy
+    --resource NetworkSecurityAuthorizationPolicy:AuthorizationPolicy \
+    --resource NetworkSecurityClientTLSPolicy:ClientTlsPolicy \
+    --skip-scaffold-files
 
 go run . generate-mapper \
     --service google.cloud.networksecurity.v1beta1 \
