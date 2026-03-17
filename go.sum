@@ -83,6 +83,8 @@ cloud.google.com/go/eventarc v1.18.0 h1:8WWG1/ogInYur1NQjML6EMHQ0ZBzAdMDGlUVpLD5
 cloud.google.com/go/eventarc v1.18.0/go.mod h1:/6SDoqh5+9QNUqCX4/oQcJVK16fG/snHBSXu7lrJtO8=
 cloud.google.com/go/firestore v1.20.0 h1:JLlT12QP0fM2SJirKVyu2spBCO8leElaW0OOtPm6HEo=
 cloud.google.com/go/firestore v1.20.0/go.mod h1:jqu4yKdBmDN5srneWzx3HlKrHFWFdlkgjgQ6BKIOFQo=
+cloud.google.com/go/functions v1.19.7 h1:7LcOD18euIVGRUPaeCmgO6vfWSLNIsi6STWRQcdANG8=
+cloud.google.com/go/functions v1.19.7/go.mod h1:xbcKfS7GoIcaXr2FSwmtn9NXal1JR4TV6iYZlgXffwA=
 cloud.google.com/go/gkebackup v1.8.1 h1:gUgI3lZJYALZsHXE7YJOKI8bMpoAX/tF6jnNugvzT1g=
 cloud.google.com/go/gkebackup v1.8.1/go.mod h1:GAaAl+O5D9uISH5MnClUop2esQW4pDa2qe/95A4l7YQ=
 cloud.google.com/go/gkemulticloud v1.6.0 h1:m0FX9o7t7xVmSZhqzm/m8nEZn8LnC5Kh60Wg4Yx1lyQ=

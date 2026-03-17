@@ -18,6 +18,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"bytes"
 	"regexp"
 	"sort"
 	"strconv"
@@ -225,13 +226,17 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 
 func WriteMessageAsComment(out io.Writer, msg protoreflect.MessageDescriptor, reason string) {
 	fmt.Fprintf(out, "\n/* %s\n", reason)
-	WriteMessage(out, msg)
+	var b bytes.Buffer
+	WriteMessage(&b, msg)
+	out.Write([]byte(strings.ReplaceAll(b.String(), "*/", "* /")))
 	fmt.Fprintf(out, "*/\n")
 }
 
 func WriteObservedStateMessageAsComment(out io.Writer, msgDetails *OutputMessageDetails, reason string) {
 	fmt.Fprintf(out, "\n/* %s\n", reason)
-	WriteObservedStateMessage(out, msgDetails)
+	var b bytes.Buffer
+	WriteObservedStateMessage(&b, msgDetails)
+	out.Write([]byte(strings.ReplaceAll(b.String(), "*/", "* /")))
 	fmt.Fprintf(out, "*/\n")
 }
 

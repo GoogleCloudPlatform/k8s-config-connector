@@ -41,6 +41,7 @@ require (
 	cloud.google.com/go/essentialcontacts v1.7.7
 	cloud.google.com/go/eventarc v1.18.0
 	cloud.google.com/go/firestore v1.20.0
+	cloud.google.com/go/functions v1.19.7
 	cloud.google.com/go/gkebackup v1.8.1
 	cloud.google.com/go/gkemulticloud v1.6.0
 	cloud.google.com/go/iam v1.5.3
