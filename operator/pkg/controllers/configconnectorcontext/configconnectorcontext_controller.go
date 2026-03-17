@@ -106,7 +106,7 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 	preflight := preflight.NewCompositePreflight([]declarative.Preflight{
 		preflight.NewNameChecker(mgr.GetClient(), corev1beta1.ConfigConnectorContextAllowedName),
 		preflight.NewUpgradeChecker(mgr.GetClient(), repo),
-		preflight.NewConfigConnectorContextChecker(),
+		preflight.NewConfigConnectorContextChecker(mgr.GetClient()),
 	})
 
 	r := &Reconciler{

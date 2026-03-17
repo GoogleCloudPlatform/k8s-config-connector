@@ -252,16 +252,17 @@ func TestResourceExclusion(t *testing.T) {
 	})
 
 	// 3. Namespace Mode Precedence
-	t.Run("NamespaceModePrecedence", func(t *testing.T) {
-		ns := "test-ns-precedence-" + randomString()
+	t.Run("AdditiveExclusion", func(t *testing.T) {
+		ns := "test-ns-additive-" + randomString()
 		ensureNamespace(ctx, t, c, ns)
 
-		// 1. Configure ConfigConnector (Global) to DISABLE PubSubTopic
+		// 1. Create Global ConfigConnector disabling PubSubTopic
 		cc := &operatorv1beta1.ConfigConnector{
 			ObjectMeta: metav1.ObjectMeta{
 				Name: operatorv1beta1.ConfigConnectorAllowedName,
 			},
 			Spec: operatorv1beta1.ConfigConnectorSpec{
+				Mode: "namespaced",
 				Experiments: &operatorv1beta1.CCExperiments{
 					ResourceSettings: &operatorv1beta1.ResourceSettings{
 						Enabled: pointer.Bool(false),
@@ -291,11 +292,10 @@ func TestResourceExclusion(t *testing.T) {
 			}
 		}
 		defer func() {
-			// Cleanup: Ensure we don't leave it disabled
 			c.Delete(ctx, cc)
 		}()
 
-		// 2. Configure ConfigConnectorContext (NS) to ENABLE PubSubTopic (Precedence check)
+		// 2. Create Local ConfigConnectorContext disabling StorageBucket
 		ccc := &operatorv1beta1.ConfigConnectorContext{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      operatorv1beta1.ConfigConnectorContextAllowedName,
@@ -304,11 +304,11 @@ func TestResourceExclusion(t *testing.T) {
 			Spec: operatorv1beta1.ConfigConnectorContextSpec{
 				Experiments: &operatorv1beta1.Experiments{
 					ResourceSettings: &operatorv1beta1.ResourceSettings{
-						Enabled: pointer.Bool(true),
+						Enabled: pointer.Bool(false),
 						Resources: []operatorv1beta1.ResourceFilter{
 							{
-								Group: "pubsub.cnrm.cloud.google.com",
-								Kind:  "PubSubTopic",
+								Group: "storage.cnrm.cloud.google.com",
+								Kind:  "StorageBucket",
 							},
 						},
 					},
@@ -348,8 +348,8 @@ func TestResourceExclusion(t *testing.T) {
 			kccMgr.Start(mgrCtx)
 		}()
 
-		// 4. Create PubSubTopic in ns -> Should NOT be Reconciled (Validation ignores Local Enable -> Falls back to Global Disable)
-		topicName := "test-topic-precedence-" + randomString()
+		// 4. Create PubSubTopic in ns -> Should NOT be Reconciled (Disabled by Global)
+		topicName := "test-topic-additive-" + randomString()
 		topic := &unstructured.Unstructured{
 			Object: map[string]interface{}{
 				"apiVersion": "pubsub.cnrm.cloud.google.com/v1beta1",
@@ -386,73 +386,31 @@ func TestResourceExclusion(t *testing.T) {
 			return false, nil
 		})
 		if err == nil {
-			t.Fatalf("PubSubTopic should NOT have been reconciled (Local Enable ignored, Global Disable active), but obtained conditions")
+			t.Fatalf("PubSubTopic should NOT have been reconciled (Global Disable active), but obtained conditions")
 		}
 
-		// 5. Create another Namespace (ns2) WITHOUT CCC settings
-		ns2 := "test-ns-fallback-" + randomString()
-		ensureNamespace(ctx, t, c, ns2)
-		ccc2 := &operatorv1beta1.ConfigConnectorContext{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      operatorv1beta1.ConfigConnectorContextAllowedName,
-				Namespace: ns2,
-			},
-			// No ResourceSettings
-		}
-		if err := c.Create(ctx, ccc2); err != nil {
-			t.Fatalf("error creating ConfigConnectorContext 2: %v", err)
-		}
-
-		// 6. Start Manager for ns2
-		cfg2 := kccmanager.Config{
-			ManagerOptions: manager.Options{
-				Controller: config.Controller{
-					SkipNameValidation: &skipNameValidation,
-				},
-				Metrics: server.Options{
-					BindAddress: "0",
-				},
-				HealthProbeBindAddress: "0",
-				Cache: cache.Options{
-					DefaultNamespaces: map[string]cache.Config{
-						ns2: {},
-					},
-				},
-			},
-			ScopedNamespace: ns2,
-		}
-		kccMgr2, err := kccmanager.New(ctx, restConfig, cfg2)
-		if err != nil {
-			t.Fatalf("error creating kcc manager 2: %v", err)
-		}
-		mgrCtx2, cancel2 := context.WithCancel(ctx)
-		defer cancel2()
-		go func() {
-			kccMgr2.Start(mgrCtx2)
-		}()
-
-		// 7. Create PubSubTopic in ns2 -> Should NOT be Reconciled (CC Disabled applies)
-		topicName2 := "test-topic-fallback-" + randomString()
-		topic2 := &unstructured.Unstructured{
+		// 5. Create StorageBucket in ns -> Should NOT be Reconciled (Disabled by Local)
+		bucketName := "test-bucket-additive-" + randomString()
+		bucket := &unstructured.Unstructured{
 			Object: map[string]interface{}{
-				"apiVersion": "pubsub.cnrm.cloud.google.com/v1beta1",
-				"kind":       "PubSubTopic",
+				"apiVersion": "storage.cnrm.cloud.google.com/v1beta1",
+				"kind":       "StorageBucket",
 				"metadata": map[string]interface{}{
-					"name":      topicName2,
-					"namespace": ns2,
+					"name":      bucketName,
+					"namespace": ns,
 				},
 			},
 		}
-		if err := c.Create(ctx, topic2); err != nil {
-			t.Fatalf("error creating PubSubTopic 2: %v", err)
+		if err := c.Create(ctx, bucket); err != nil {
+			t.Fatalf("error creating StorageBucket: %v", err)
 		}
-		defer c.Delete(context.Background(), topic2)
+		defer c.Delete(context.Background(), bucket)
 
 		// Assert NO reconciliation
 		err = wait.PollImmediate(1*time.Second, 10*time.Second, func() (bool, error) {
 			u := &unstructured.Unstructured{}
-			u.SetGroupVersionKind(topic2.GroupVersionKind())
-			if err := c.Get(ctx, types.NamespacedName{Name: topicName2, Namespace: ns2}, u); err != nil {
+			u.SetGroupVersionKind(bucket.GroupVersionKind())
+			if err := c.Get(ctx, types.NamespacedName{Name: bucketName, Namespace: ns}, u); err != nil {
 				return false, err
 			}
 			status, ok := u.Object["status"].(map[string]interface{})
@@ -469,7 +427,7 @@ func TestResourceExclusion(t *testing.T) {
 			return false, nil
 		})
 		if err == nil {
-			t.Fatalf("PubSubTopic in ns2 (CCC nosettings) should NOT have been reconciled (CC=Disabled), but obtained conditions")
+			t.Fatalf("StorageBucket should NOT have been reconciled (Local Disable active), but obtained conditions")
 		}
 	})
 }

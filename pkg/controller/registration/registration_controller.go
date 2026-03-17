@@ -110,6 +110,14 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 		ccSettings = cc.Spec.Experiments.ResourceSettings
 	}
 
+	if ccSettings != nil && cccSettings != nil {
+		ccInclusive := ccSettings.Enabled != nil && *ccSettings.Enabled
+		cccInclusive := cccSettings.Enabled != nil && *cccSettings.Enabled
+		if ccInclusive != cccInclusive {
+			return fmt.Errorf("conflict: ConfigConnector and ConfigConnectorContext cannot mix inclusive (enabled: true) and exclusive (enabled: false) modes")
+		}
+	}
+
 	if err := add(mgr, rd,
 		registerDefaultControllers(ctx, controllerConfig, scopedNamespace, cccSettings, ccSettings), opt); err != nil {
 		return fmt.Errorf("error adding default registration controller: %w", err)
@@ -432,67 +440,44 @@ func registerDeletionDefenderController(r *ReconcileRegistration, crd *apiextens
 }
 
 func isResourceDisabled(ctx context.Context, gvk schema.GroupVersionKind, scopedNamespace string, cccSettings *operatorv1beta1.ResourceSettings, ccSettings *operatorv1beta1.ResourceSettings) bool {
-	// 1. Check ConfigConnectorContext (Namespace-level) setting
+	// Mode validation is already performed during controller startup,
+	// so ccSettings and cccSettings are guaranteed not to have conflicting modes at this point.
+	isInclusive := isInclusiveMode(ccSettings, cccSettings)
+
+	found := false
 	if scopedNamespace != "" && cccSettings != nil {
-		foundCCC, enabledCCC := getResourceSetting(cccSettings, gvk)
-		if foundCCC {
-			if !enabledCCC {
-				// Namespace mode explicitly disables
-				return true
-			}
-			// Namespace mode explicitly enables
-			return false
-		}
-		// If Inclusion Mode (enabled: true), and not found, disable
-		if cccSettings.Enabled != nil && *cccSettings.Enabled {
-			return true
-		}
-		// Exclusion Mode (enabled: false), and not found, keep enabled (so fallthrough or false)
-		return false
+		found = checkFound(cccSettings, gvk)
+	}
+	if !found && ccSettings != nil {
+		found = checkFound(ccSettings, gvk)
 	}
 
-	// 2. Check ConfigConnector (Cluster-level) setting
-	if ccSettings != nil {
-		foundCC, enabledCC := getResourceSetting(ccSettings, gvk)
-		if foundCC {
-			if !enabledCC {
-				// Cluster mode explicitly disables
-				return true
-			}
-			// Cluster mode explicitly enables
-			return false
-		}
-		// If Inclusion Mode (enabled: true), and not found, disable
-		if ccSettings.Enabled != nil && *ccSettings.Enabled {
-			return true
-		}
-		// Exclusion Mode (enabled: false), and not found, keep enabled
-		return false
+	if isInclusive {
+		return !found // Enabled if found
 	}
+	return found // Disabled if found
+}
 
-	// Default: Enabled: true
+func isInclusiveMode(ccSettings *operatorv1beta1.ResourceSettings, cccSettings *operatorv1beta1.ResourceSettings) bool {
+	if ccSettings != nil && ccSettings.Enabled != nil && *ccSettings.Enabled {
+		return true
+	}
+	if cccSettings != nil && cccSettings.Enabled != nil && *cccSettings.Enabled {
+		return true
+	}
 	return false
 }
 
-func getResourceSetting(settings *operatorv1beta1.ResourceSettings, gvk schema.GroupVersionKind) (found bool, enabled bool) {
+func checkFound(settings *operatorv1beta1.ResourceSettings, gvk schema.GroupVersionKind) bool {
 	if settings == nil {
-		return false, true
+		return false
 	}
-
-	isExclusionMode := true // Default is exclusion
-
-	if settings.Enabled != nil && *settings.Enabled {
-		isExclusionMode = false // Inclusion mode
-	}
-
 	for _, s := range settings.Resources {
 		if s.Group == gvk.Group {
-			// If kind is omitted, it's a group-level match
 			if s.Kind == "" || s.Kind == gvk.Kind {
-				return true, !isExclusionMode
+				return true
 			}
 		}
 	}
-	// Return false for found. If exclusion mode, enabled is true by default. If inclusion mode, enabled is false by default.
-	return false, isExclusionMode
+	return false
 }
