@@ -117,7 +117,7 @@ EOF
     continue
     fi
 
-    if [[ "${name}" == tests-e2e-* ]]; then
+    if [[ "${name}" == tests-e2e-* ]] && [[ "${name}" != "tests-e2e-mcl" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     needs: unit-tests
 EOF

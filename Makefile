@@ -29,7 +29,7 @@ GOLANGCI_LINT_VERSION := v2.7.1
 
 # Use Docker BuildKit when building images to allow usage of 'setcap' in
 # multi-stage builds (https://github.com/moby/moby/issues/38132)
-DOCKER_BUILD := DOCKER_BUILDKIT=1 docker build
+DOCKER_BUILD := docker build
 
 KUSTOMIZE=go run sigs.k8s.io/kustomize/kustomize/v5@v5.3.0
 

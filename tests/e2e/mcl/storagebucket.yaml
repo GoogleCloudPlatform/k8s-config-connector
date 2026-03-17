@@ -1,0 +1,7 @@
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  name: test-ha-bucket
+  namespace: tenant-a
+spec:
+  location: US
