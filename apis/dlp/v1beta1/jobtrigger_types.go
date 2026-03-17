@@ -120,12 +120,12 @@ type StorageConfig_TimespanConfig struct {
 	// Exclude files, tables, or rows older than this value. If not set, no lower
 	//  time limit is applied.
 	// +kcc:proto:field=google.privacy.dlp.v2.StorageConfig.TimespanConfig.start_time
-	StartTime *metav1.Time `json:"startTime,omitempty"`
+	StartTime *string `json:"startTime,omitempty"`
 
 	// Exclude files, tables, or rows newer than this value. If not set, no upper
 	//  time limit is applied.
 	// +kcc:proto:field=google.privacy.dlp.v2.StorageConfig.TimespanConfig.end_time
-	EndTime *metav1.Time `json:"endTime,omitempty"`
+	EndTime *string `json:"endTime,omitempty"`
 
 	// Specification of the field containing the timestamp of scanned items.
 	//  Used for data sources like Datastore and BigQuery. For BigQuery: If this
@@ -254,7 +254,7 @@ type DLPJobTriggerStatus struct {
 
 	// Output only. The creation timestamp of a triggeredJob.
 	// +kcc:proto:field=google.privacy.dlp.v2.JobTrigger.create_time
-	CreateTime *metav1.Time `json:"createTime,omitempty"`
+	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. A stream of errors encountered when the trigger was activated.
 	//  Repeated errors may result in the JobTrigger automatically being paused.
@@ -265,14 +265,14 @@ type DLPJobTriggerStatus struct {
 
 	// Output only. The timestamp of the last time this trigger executed.
 	// +kcc:proto:field=google.privacy.dlp.v2.JobTrigger.last_run_time
-	LastRunTime *metav1.Time `json:"lastRunTime,omitempty"`
+	LastRunTime *string `json:"lastRunTime,omitempty"`
 
 	// Output only. The geographic location where this resource is stored.
 	LocationId *string `json:"locationId,omitempty"`
 
 	// Output only. The last update timestamp of a triggeredJob.
 	// +kcc:proto:field=google.privacy.dlp.v2.JobTrigger.update_time
-	UpdateTime *metav1.Time `json:"updateTime,omitempty"`
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

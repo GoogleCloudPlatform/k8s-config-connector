@@ -1373,12 +1373,10 @@ spec:
                           endTime:
                             description: Exclude files, tables, or rows newer than
                               this value. If not set, no upper time limit is applied.
-                            format: date-time
                             type: string
                           startTime:
                             description: Exclude files, tables, or rows older than
                               this value. If not set, no lower time limit is applied.
-                            format: date-time
                             type: string
                           timestampField:
                             description: 'Specification of the field containing the
@@ -1517,7 +1515,6 @@ spec:
                 type: array
               createTime:
                 description: Output only. The creation timestamp of a triggeredJob.
-                format: date-time
                 type: string
               errors:
                 description: Output only. A stream of errors encountered when the
@@ -1601,7 +1598,6 @@ spec:
               lastRunTime:
                 description: Output only. The timestamp of the last time this trigger
                   executed.
-                format: date-time
                 type: string
               locationId:
                 description: Output only. The geographic location where this resource
@@ -1617,7 +1613,6 @@ spec:
                 type: integer
               updateTime:
                 description: Output only. The last update timestamp of a triggeredJob.
-                format: date-time
                 type: string
             type: object
         required:

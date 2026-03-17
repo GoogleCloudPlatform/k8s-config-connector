@@ -834,7 +834,8 @@ func (in *DLPJobTriggerStatus) DeepCopyInto(out *DLPJobTriggerStatus) {
 	}
 	if in.CreateTime != nil {
 		in, out := &in.CreateTime, &out.CreateTime
-		*out = (*in).DeepCopy()
+		*out = new(string)
+		**out = **in
 	}
 	if in.Errors != nil {
 		in, out := &in.Errors, &out.Errors
@@ -845,7 +846,8 @@ func (in *DLPJobTriggerStatus) DeepCopyInto(out *DLPJobTriggerStatus) {
 	}
 	if in.LastRunTime != nil {
 		in, out := &in.LastRunTime, &out.LastRunTime
-		*out = (*in).DeepCopy()
+		*out = new(string)
+		**out = **in
 	}
 	if in.LocationId != nil {
 		in, out := &in.LocationId, &out.LocationId
@@ -854,7 +856,8 @@ func (in *DLPJobTriggerStatus) DeepCopyInto(out *DLPJobTriggerStatus) {
 	}
 	if in.UpdateTime != nil {
 		in, out := &in.UpdateTime, &out.UpdateTime
-		*out = (*in).DeepCopy()
+		*out = new(string)
+		**out = **in
 	}
 }
 
@@ -1565,11 +1568,13 @@ func (in *StorageConfig_TimespanConfig) DeepCopyInto(out *StorageConfig_Timespan
 	*out = *in
 	if in.StartTime != nil {
 		in, out := &in.StartTime, &out.StartTime
-		*out = (*in).DeepCopy()
+		*out = new(string)
+		**out = **in
 	}
 	if in.EndTime != nil {
 		in, out := &in.EndTime, &out.EndTime
-		*out = (*in).DeepCopy()
+		*out = new(string)
+		**out = **in
 	}
 	if in.TimestampField != nil {
 		in, out := &in.TimestampField, &out.TimestampField
