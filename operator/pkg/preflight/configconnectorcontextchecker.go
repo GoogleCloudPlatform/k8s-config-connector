@@ -84,7 +84,7 @@ func validateResourceSettingsMode(cc *corev1beta1.ConfigConnector, ccc *corev1be
 	}
 	ccSettings := cc.Spec.Experiments.ResourceSettings
 	cccSettings := ccc.Spec.Experiments.ResourceSettings
-	
+
 	ccInclusive := ccSettings.Enabled != nil && *ccSettings.Enabled
 	cccInclusive := cccSettings.Enabled != nil && *cccSettings.Enabled
 
