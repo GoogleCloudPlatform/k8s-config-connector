@@ -1,21 +1,7 @@
-# Copyright 2023 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 fullname:
 - spec
 shortname: spec
-description: ""
+description: BinaryAuthorizationPolicySpec defines the desired state of BinaryAuthorizationPolicy
 type: object
 format: ""
 requirementlevel: Required
@@ -48,8 +34,9 @@ children:
       - namePattern
       shortname: namePattern
       description: An image name pattern to allowlist, in the form `registry/path/to/image`.
-        This supports a trailing `*` as a wildcard, but this is allowed only in text
-        after the `registry/` part.
+        This supports a trailing `*` wildcard, but this is allowed only in text after
+        the `registry/` part. This also supports a trailing `**` wildcard which matches
+        subdirectories of a given entry.
       type: string
       format: ""
       requirementlevel: Optional
@@ -75,9 +62,8 @@ children:
     - clusterAdmissionRules
     - enforcementMode
     shortname: enforcementMode
-    description: 'Required. The action when a pod creation is denied by the admission
-      rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED, ENFORCED_BLOCK_AND_AUDIT_LOG,
-      DRYRUN_AUDIT_LOG_ONLY'
+    description: Required. The action when a pod creation is denied by the admission
+      rule.
     type: string
     format: ""
     requirementlevel: RequiredWhenParentPresent
@@ -88,8 +74,7 @@ children:
     - clusterAdmissionRules
     - evaluationMode
     shortname: evaluationMode
-    description: 'Required. How this admission rule will be evaluated. Possible values:
-      ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
+    description: Required. How this admission rule will be evaluated.
     type: string
     format: ""
     requirementlevel: RequiredWhenParentPresent
@@ -100,7 +85,15 @@ children:
     - clusterAdmissionRules
     - requireAttestationsBy
     shortname: requireAttestationsBy
-    description: ""
+    description: |-
+      Optional. The resource names of the attestors that must attest to
+       a container image, in the format `projects/*/attestors/*`. Each
+       attestor must exist before a policy can reference it.  To add an attestor
+       to a policy the principal issuing the policy change request must be able
+       to read the attestor resource.
+
+       Note: this field must be non-empty when the evaluation_mode field specifies
+       REQUIRE_ATTESTATION, otherwise it must be empty.
     type: list (object)
     format: ""
     requirementlevel: Optional
@@ -123,8 +116,8 @@ children:
         - '[]'
         - external
         shortname: external
-        description: 'Allowed value: The Google Cloud resource name of a `BinaryAuthorizationAttestor`
-          resource (format: `projects/{{project}}/attestors/{{name}}`).'
+        description: A reference to an externally managed BinaryAuthorizationAttestor.
+          Should be in the format `projects/[project_id]/attestors/[attestor_id]`.
         type: string
         format: ""
         requirementlevel: Optional
@@ -137,7 +130,7 @@ children:
         - '[]'
         - name
         shortname: name
-        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+        description: The `name` of a `BinaryAuthorizationAttestor` resource.
         type: string
         format: ""
         requirementlevel: Optional
@@ -150,7 +143,7 @@ children:
         - '[]'
         - namespace
         shortname: namespace
-        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+        description: The `namespace` of a `BinaryAuthorizationAttestor` resource.
         type: string
         format: ""
         requirementlevel: Optional
@@ -163,7 +156,7 @@ children:
   - defaultAdmissionRule
   shortname: defaultAdmissionRule
   description: Required. Default admission rule for a cluster without a per-cluster,
-    per-kubernetes-service-account, or per-istio-service-identity admission rule.
+    per- kubernetes-service-account, or per-istio-service-identity admission rule.
   type: object
   format: ""
   requirementlevel: Required
@@ -173,9 +166,8 @@ children:
     - defaultAdmissionRule
     - enforcementMode
     shortname: enforcementMode
-    description: 'Required. The action when a pod creation is denied by the admission
-      rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED, ENFORCED_BLOCK_AND_AUDIT_LOG,
-      DRYRUN_AUDIT_LOG_ONLY'
+    description: Required. The action when a pod creation is denied by the admission
+      rule.
     type: string
     format: ""
     requirementlevel: Required
@@ -186,8 +178,7 @@ children:
     - defaultAdmissionRule
     - evaluationMode
     shortname: evaluationMode
-    description: 'Required. How this admission rule will be evaluated. Possible values:
-      ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
+    description: Required. How this admission rule will be evaluated.
     type: string
     format: ""
     requirementlevel: Required
@@ -198,7 +189,15 @@ children:
     - defaultAdmissionRule
     - requireAttestationsBy
     shortname: requireAttestationsBy
-    description: ""
+    description: |-
+      Optional. The resource names of the attestors that must attest to
+       a container image, in the format `projects/*/attestors/*`. Each
+       attestor must exist before a policy can reference it.  To add an attestor
+       to a policy the principal issuing the policy change request must be able
+       to read the attestor resource.
+
+       Note: this field must be non-empty when the evaluation_mode field specifies
+       REQUIRE_ATTESTATION, otherwise it must be empty.
     type: list (object)
     format: ""
     requirementlevel: Optional
@@ -221,8 +220,8 @@ children:
         - '[]'
         - external
         shortname: external
-        description: 'Allowed value: The Google Cloud resource name of a `BinaryAuthorizationAttestor`
-          resource (format: `projects/{{project}}/attestors/{{name}}`).'
+        description: A reference to an externally managed BinaryAuthorizationAttestor.
+          Should be in the format `projects/[project_id]/attestors/[attestor_id]`.
         type: string
         format: ""
         requirementlevel: Optional
@@ -235,7 +234,7 @@ children:
         - '[]'
         - name
         shortname: name
-        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+        description: The `name` of a `BinaryAuthorizationAttestor` resource.
         type: string
         format: ""
         requirementlevel: Optional
@@ -248,7 +247,7 @@ children:
         - '[]'
         - namespace
         shortname: namespace
-        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+        description: The `namespace` of a `BinaryAuthorizationAttestor` resource.
         type: string
         format: ""
         requirementlevel: Optional
@@ -271,11 +270,10 @@ children:
   - spec
   - globalPolicyEvaluationMode
   shortname: globalPolicyEvaluationMode
-  description: 'Optional. Controls the evaluation of a Google-maintained global admission
+  description: Optional. Controls the evaluation of a Google-maintained global admission
     policy for common system-level images. Images not covered by the global policy
     will be subject to the project admission policy. This setting has no effect when
-    specified inside a global admission policy. Possible values: GLOBAL_POLICY_EVALUATION_MODE_UNSPECIFIED,
-    ENABLE, DISABLE'
+    specified inside a global admission policy.
   type: string
   format: ""
   requirementlevel: Optional
@@ -297,9 +295,8 @@ children:
     - istioServiceIdentityAdmissionRules
     - enforcementMode
     shortname: enforcementMode
-    description: 'Required. The action when a pod creation is denied by the admission
-      rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED, ENFORCED_BLOCK_AND_AUDIT_LOG,
-      DRYRUN_AUDIT_LOG_ONLY'
+    description: Required. The action when a pod creation is denied by the admission
+      rule.
     type: string
     format: ""
     requirementlevel: RequiredWhenParentPresent
@@ -310,8 +307,7 @@ children:
     - istioServiceIdentityAdmissionRules
     - evaluationMode
     shortname: evaluationMode
-    description: 'Required. How this admission rule will be evaluated. Possible values:
-      ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
+    description: Required. How this admission rule will be evaluated.
     type: string
     format: ""
     requirementlevel: RequiredWhenParentPresent
@@ -322,7 +318,15 @@ children:
     - istioServiceIdentityAdmissionRules
     - requireAttestationsBy
     shortname: requireAttestationsBy
-    description: ""
+    description: |-
+      Optional. The resource names of the attestors that must attest to
+       a container image, in the format `projects/*/attestors/*`. Each
+       attestor must exist before a policy can reference it.  To add an attestor
+       to a policy the principal issuing the policy change request must be able
+       to read the attestor resource.
+
+       Note: this field must be non-empty when the evaluation_mode field specifies
+       REQUIRE_ATTESTATION, otherwise it must be empty.
     type: list (object)
     format: ""
     requirementlevel: Optional
@@ -345,8 +349,8 @@ children:
         - '[]'
         - external
         shortname: external
-        description: 'Allowed value: The Google Cloud resource name of a `BinaryAuthorizationAttestor`
-          resource (format: `projects/{{project}}/attestors/{{name}}`).'
+        description: A reference to an externally managed BinaryAuthorizationAttestor.
+          Should be in the format `projects/[project_id]/attestors/[attestor_id]`.
         type: string
         format: ""
         requirementlevel: Optional
@@ -359,7 +363,7 @@ children:
         - '[]'
         - name
         shortname: name
-        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+        description: The `name` of a `BinaryAuthorizationAttestor` resource.
         type: string
         format: ""
         requirementlevel: Optional
@@ -372,7 +376,7 @@ children:
         - '[]'
         - namespace
         shortname: namespace
-        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+        description: The `namespace` of a `BinaryAuthorizationAttestor` resource.
         type: string
         format: ""
         requirementlevel: Optional
@@ -396,9 +400,8 @@ children:
     - kubernetesNamespaceAdmissionRules
     - enforcementMode
     shortname: enforcementMode
-    description: 'Required. The action when a pod creation is denied by the admission
-      rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED, ENFORCED_BLOCK_AND_AUDIT_LOG,
-      DRYRUN_AUDIT_LOG_ONLY'
+    description: Required. The action when a pod creation is denied by the admission
+      rule.
     type: string
     format: ""
     requirementlevel: RequiredWhenParentPresent
@@ -409,8 +412,7 @@ children:
     - kubernetesNamespaceAdmissionRules
     - evaluationMode
     shortname: evaluationMode
-    description: 'Required. How this admission rule will be evaluated. Possible values:
-      ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
+    description: Required. How this admission rule will be evaluated.
     type: string
     format: ""
     requirementlevel: RequiredWhenParentPresent
@@ -421,7 +423,15 @@ children:
     - kubernetesNamespaceAdmissionRules
     - requireAttestationsBy
     shortname: requireAttestationsBy
-    description: ""
+    description: |-
+      Optional. The resource names of the attestors that must attest to
+       a container image, in the format `projects/*/attestors/*`. Each
+       attestor must exist before a policy can reference it.  To add an attestor
+       to a policy the principal issuing the policy change request must be able
+       to read the attestor resource.
+
+       Note: this field must be non-empty when the evaluation_mode field specifies
+       REQUIRE_ATTESTATION, otherwise it must be empty.
     type: list (object)
     format: ""
     requirementlevel: Optional
@@ -444,8 +454,8 @@ children:
         - '[]'
         - external
         shortname: external
-        description: 'Allowed value: The Google Cloud resource name of a `BinaryAuthorizationAttestor`
-          resource (format: `projects/{{project}}/attestors/{{name}}`).'
+        description: A reference to an externally managed BinaryAuthorizationAttestor.
+          Should be in the format `projects/[project_id]/attestors/[attestor_id]`.
         type: string
         format: ""
         requirementlevel: Optional
@@ -458,7 +468,7 @@ children:
         - '[]'
         - name
         shortname: name
-        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+        description: The `name` of a `BinaryAuthorizationAttestor` resource.
         type: string
         format: ""
         requirementlevel: Optional
@@ -471,7 +481,7 @@ children:
         - '[]'
         - namespace
         shortname: namespace
-        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+        description: The `namespace` of a `BinaryAuthorizationAttestor` resource.
         type: string
         format: ""
         requirementlevel: Optional
@@ -495,9 +505,8 @@ children:
     - kubernetesServiceAccountAdmissionRules
     - enforcementMode
     shortname: enforcementMode
-    description: 'Required. The action when a pod creation is denied by the admission
-      rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED, ENFORCED_BLOCK_AND_AUDIT_LOG,
-      DRYRUN_AUDIT_LOG_ONLY'
+    description: Required. The action when a pod creation is denied by the admission
+      rule.
     type: string
     format: ""
     requirementlevel: RequiredWhenParentPresent
@@ -508,8 +517,7 @@ children:
     - kubernetesServiceAccountAdmissionRules
     - evaluationMode
     shortname: evaluationMode
-    description: 'Required. How this admission rule will be evaluated. Possible values:
-      ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
+    description: Required. How this admission rule will be evaluated.
     type: string
     format: ""
     requirementlevel: RequiredWhenParentPresent
@@ -520,7 +528,15 @@ children:
     - kubernetesServiceAccountAdmissionRules
     - requireAttestationsBy
     shortname: requireAttestationsBy
-    description: ""
+    description: |-
+      Optional. The resource names of the attestors that must attest to
+       a container image, in the format `projects/*/attestors/*`. Each
+       attestor must exist before a policy can reference it.  To add an attestor
+       to a policy the principal issuing the policy change request must be able
+       to read the attestor resource.
+
+       Note: this field must be non-empty when the evaluation_mode field specifies
+       REQUIRE_ATTESTATION, otherwise it must be empty.
     type: list (object)
     format: ""
     requirementlevel: Optional
@@ -543,8 +559,8 @@ children:
         - '[]'
         - external
         shortname: external
-        description: 'Allowed value: The Google Cloud resource name of a `BinaryAuthorizationAttestor`
-          resource (format: `projects/{{project}}/attestors/{{name}}`).'
+        description: A reference to an externally managed BinaryAuthorizationAttestor.
+          Should be in the format `projects/[project_id]/attestors/[attestor_id]`.
         type: string
         format: ""
         requirementlevel: Optional
@@ -557,7 +573,7 @@ children:
         - '[]'
         - name
         shortname: name
-        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+        description: The `name` of a `BinaryAuthorizationAttestor` resource.
         type: string
         format: ""
         requirementlevel: Optional
@@ -570,7 +586,7 @@ children:
         - '[]'
         - namespace
         shortname: namespace
-        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+        description: The `namespace` of a `BinaryAuthorizationAttestor` resource.
         type: string
         format: ""
         requirementlevel: Optional
@@ -592,10 +608,19 @@ children:
     - projectRef
     - external
     shortname: external
-    description: |-
-      The project of the resource.
-
-      Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).
+    description: The `projectID` field of a project, when not managed by Config Connector.
+    type: string
+    format: ""
+    requirementlevel: Optional
+    children: []
+    additionalproperties: []
+  - fullname:
+    - spec
+    - projectRef
+    - kind
+    shortname: kind
+    description: The kind of the Project resource; optional but must be `Project`
+      if provided.
     type: string
     format: ""
     requirementlevel: Optional
@@ -606,7 +631,7 @@ children:
     - projectRef
     - name
     shortname: name
-    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+    description: The `name` field of a `Project` resource.
     type: string
     format: ""
     requirementlevel: Optional
@@ -617,7 +642,7 @@ children:
     - projectRef
     - namespace
     shortname: namespace
-    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+    description: The `namespace` field of a `Project` resource.
     type: string
     format: ""
     requirementlevel: Optional
