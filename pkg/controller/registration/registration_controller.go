@@ -56,7 +56,6 @@ import (
 	crcontroller "sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
-	crlog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/source"
@@ -243,7 +242,7 @@ type controllerContext struct {
 type registrationFunc func(*ReconcileRegistration, *apiextensions.CustomResourceDefinition, schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error)
 
 func (r *ReconcileRegistration) Reconcile(ctx context.Context, request reconcile.Request) (reconcile.Result, error) {
-	logger := crlog.FromContext(ctx)
+	logger := r.mgr.GetLogger()
 
 	// Fetch the TypeProvider tp
 	crd := &apiextensions.CustomResourceDefinition{}
@@ -306,7 +305,7 @@ func registerDefaultControllers(ctx context.Context, config *config.ControllerCo
 }
 
 func registerDefaultController(ctx context.Context, r *ReconcileRegistration, config *config.ControllerConfig, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind, scopedNamespace string, cccSettings *operatorv1beta1.ResourceSettings, ccSettings *operatorv1beta1.ResourceSettings) (k8s.SchemaReferenceUpdater, error) {
-	logger := crlog.FromContext(ctx)
+	logger := r.mgr.GetLogger()
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
 	}
