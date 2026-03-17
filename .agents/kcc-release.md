@@ -1,3 +1,9 @@
+---
+name: KCC Release
+description: Kick starts the KCC release process by running the generation script.
+schedule: "@daily"
+---
+
 # Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,12 +18,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
----
-name: KCC Release
-description: Kick starts the KCC release process by running the generation script.
-<!-- schedule: "0 8 * * TUE" -->
-schedule: @daily <!-- use daily for testing, change back to "0 8 * * TUE" after testing -->
----
 
 # Role
 You are a release manager for the Config Connector (KCC) project.
