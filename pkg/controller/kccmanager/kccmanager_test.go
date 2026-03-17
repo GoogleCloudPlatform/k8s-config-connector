@@ -63,6 +63,7 @@ func TestSchemeIsUniqueAcrossManagers(t *testing.T) {
 				BindAddress: "0",
 			},
 		},
+		SkipNameValidation: true,
 	}
 	schemePtrMap := make(map[*runtime.Scheme]string)
 	schemePtrMap[clusterModeManager.GetScheme()] = "clusterModeMgr"
@@ -79,9 +80,41 @@ func TestSchemeIsUniqueAcrossManagers(t *testing.T) {
 	}
 }
 
+func TestSkipNameValidation(t *testing.T) {
+	ctx := context.TODO()
+
+	controllersCfg := kccmanager.Config{
+		ManagerOptions: manager.Options{
+			// disable prometheus metrics as by default, the metrics server binds to the same port in all instances
+			Metrics: server.Options{
+				BindAddress: "0",
+			},
+		},
+		SkipNameValidation: false,
+	}
+
+	_, err := kccmanager.New(ctx, clusterModeManager.GetConfig(), controllersCfg)
+	if err != nil {
+		t.Fatalf("error creating manager 1: %v", err)
+	}
+
+	// This should fail because it tries to register controllers with same names.
+	// controller-runtime (at least in some versions) has a global registry of controller names.
+	_, err = kccmanager.New(ctx, clusterModeManager.GetConfig(), controllersCfg)
+	if err == nil {
+		t.Fatalf("expected error creating manager 2 without SkipNameValidation, but got nil")
+	}
+
+	controllersCfg.SkipNameValidation = true
+	_, err = kccmanager.New(ctx, clusterModeManager.GetConfig(), controllersCfg)
+	if err != nil {
+		t.Fatalf("error creating manager 3 with SkipNameValidation: %v", err)
+	}
+}
+
 func TestClusterModeManager(t *testing.T) {
 	ctx := context.TODO()
-	mgr, err := kccmanager.New(ctx, clusterModeManager.GetConfig(), kccmanager.Config{StateIntoSpecDefaultValue: stateintospec.StateIntoSpecDefaultValueV1Beta1})
+	mgr, err := kccmanager.New(ctx, clusterModeManager.GetConfig(), kccmanager.Config{StateIntoSpecDefaultValue: stateintospec.StateIntoSpecDefaultValueV1Beta1, SkipNameValidation: true})
 	if err != nil {
 		t.Fatalf("error creating manager: %v", err)
 	}
@@ -120,6 +153,7 @@ func TestNamespacedModeManager(t *testing.T) {
 				},
 			},
 		},
+		SkipNameValidation: true,
 	}
 	mgr1, err := kccmanager.New(ctx, namespacedModeManager.GetConfig(), controllersCfg1)
 	if err != nil {
@@ -163,6 +197,7 @@ func TestNamespacedModeManager(t *testing.T) {
 				},
 			},
 		},
+		SkipNameValidation: true,
 	}
 	// start controllers for the second namespace and verify that the second resource does reconcile
 	mgr2, err := kccmanager.New(ctx, namespacedModeManager.GetConfig(), controllersCfg2)

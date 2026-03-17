@@ -101,6 +101,9 @@ type Config struct {
 	// Configure manager to participate in leader election if MultiClusterLease is enabled.
 	MultiClusterLease bool
 
+	// SkipNameValidation bypasses the duplicate controller name check during registration
+	SkipNameValidation bool
+
 	// used for smoke testing only; options not meant to be used in production.
 	testConfig
 }
@@ -286,6 +289,7 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		GRPCUnaryClientInterceptor: cfg.GRPCUnaryClientInterceptor,
 		UserAgent:                  gcp.KCCUserAgent(),
 		EnableMetricsTransport:     cfg.EnableMetricsTransport,
+		SkipNameValidation:         cfg.SkipNameValidation,
 	}
 	if !cfg.skipControllerRegistration {
 		// Bootstrap the Google Terraform provider
@@ -346,6 +350,7 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 			Defaulters: []k8s.Defaulter{
 				stateIntoSpecDefaulter,
 			},
+			SkipNameValidation: cfg.SkipNameValidation,
 		}
 
 		fetcher, err := gcpwatch.NewIAMFetcher(ctx, controllerConfig)

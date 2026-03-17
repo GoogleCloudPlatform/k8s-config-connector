@@ -45,7 +45,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/rest"
-	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	crcontroller "sigs.k8s.io/controller-runtime/pkg/controller"
@@ -102,6 +101,7 @@ func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.Ge
 		jitterGenerator: deps.JitterGenerator,
 		defaulters:      deps.Defaulters,
 		iamDeps:         deps.IAMAdapterDeps,
+		SkipNameValidation: deps.SkipNameValidation,
 	}
 	return &r, nil
 }
@@ -116,7 +116,7 @@ func add(mgr manager.Manager, r *DirectReconciler) error {
 	controllerBuilder := builder.
 		ControllerManagedBy(mgr).
 		Named(r.controllerName).
-		WithOptions(crcontroller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, SkipNameValidation: ptr.To(true), RateLimiter: ratelimiter.NewRateLimiter()}).
+		WithOptions(crcontroller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, SkipNameValidation: &r.SkipNameValidation, RateLimiter: ratelimiter.NewRateLimiter()}).
 		WatchesRawSource(
 			source.TypedChannel(r.immediateReconcileRequests, &handler.EnqueueRequestForObject{})).
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicateList...))
@@ -161,6 +161,8 @@ type Deps struct {
 
 	// There are Dependencies for Adapters in particular (not the reconcilers)
 	IAMAdapterDeps *IAMAdapterDeps
+
+	SkipNameValidation bool
 }
 
 // TODO(kcc-team): we want to remove these in the future
@@ -193,6 +195,8 @@ type DirectReconciler struct {
 
 	// reconcilePredicate is the predicate which determines if we should be reconciling this object
 	reconcilePredicate predicate.Predicate
+
+	SkipNameValidation bool
 }
 
 type reconcileContext struct {
