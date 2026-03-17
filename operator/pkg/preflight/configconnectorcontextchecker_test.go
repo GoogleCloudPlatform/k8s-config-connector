@@ -159,7 +159,7 @@ func TestConfigConnectorContextChecker(t *testing.T) {
 		},
 	}
 
-	checker := NewConfigConnectorContextChecker()
+	checker := NewConfigConnectorContextChecker(nil)
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {

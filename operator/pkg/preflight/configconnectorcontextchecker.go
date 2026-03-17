@@ -64,9 +64,11 @@ func (c *ConfigConnectorContextChecker) Preflight(ctx context.Context, o declara
 
 	// Validate mode consistency with ConfigConnector
 	cc := &corev1beta1.ConfigConnector{}
-	if err := c.client.Get(ctx, types.NamespacedName{Name: "configconnector.core.cnrm.cloud.google.com"}, cc); err == nil {
-		if err := validateResourceSettingsMode(cc, ccc); err != nil {
-			return err
+	if c.client != nil {
+		if err := c.client.Get(ctx, types.NamespacedName{Name: "configconnector.core.cnrm.cloud.google.com"}, cc); err == nil {
+			if err := validateResourceSettingsMode(cc, ccc); err != nil {
+				return err
+			}
 		}
 	}
 
