@@ -1002,18 +1002,26 @@ func protoNameForOneOf(field protoreflect.FieldDescriptor) string {
 	name := protoNameForType(msg) + "_" + oneofKey
 
 	// Special case: check for a collision
-	if field.Message() != nil {
-		elemTypeName := protoNameForType(field.Message())
-		if name == elemTypeName {
-			name += "_"
+	collision := false
+	for i := 0; i < msg.Messages().Len(); i++ {
+		if name == protoNameForType(msg.Messages().Get(i)) {
+			collision = true
+			break
 		}
 	}
-	if field.Enum() != nil {
-		elemTypeName := protoNameForEnum(field.Enum())
-		if name == elemTypeName {
-			name += "_"
+	if !collision {
+		for i := 0; i < msg.Enums().Len(); i++ {
+			if name == protoNameForEnum(msg.Enums().Get(i)) {
+				collision = true
+				break
+			}
 		}
 	}
+
+	if collision {
+		name += "_"
+	}
+
 	return name
 }
 

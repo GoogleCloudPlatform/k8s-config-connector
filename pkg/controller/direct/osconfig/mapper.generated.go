@@ -284,7 +284,7 @@ func OSPolicy_Resource_ToProto(mapCtx *direct.MapContext, in *krm.OSPolicy_Resou
 		out.ResourceType = &pb.OSPolicy_Resource_Exec{Exec: oneof}
 	}
 	if oneof := OSPolicy_Resource_FileResource_ToProto(mapCtx, in.File); oneof != nil {
-		out.ResourceType = &pb.OSPolicy_Resource_File{File: oneof}
+		out.ResourceType = &pb.OSPolicy_Resource_File_{File: oneof}
 	}
 	return out
 }
