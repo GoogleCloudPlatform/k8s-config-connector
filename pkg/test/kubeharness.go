@@ -314,4 +314,15 @@ func (h *KubeHarness) CreateDummyCRD(gvk schema.GroupVersionKind) {
 	}
 	crd.SetGroupVersionKind(apiextensions.SchemeGroupVersion.WithKind("CustomResourceDefinition"))
 	h.waitForCRDReady(crd)
+	
+	// Wait for the RESTMapper to be updated
+	if err := wait.PollImmediate(1*time.Second, 15*time.Second, func() (bool, error) {
+		_, err := h.client.RESTMapper().RESTMapping(gvk.GroupKind(), gvk.Version)
+		if err != nil {
+			return false, nil
+		}
+		return true, nil
+	}); err != nil {
+		h.Fatalf("RESTMapper never updated for %v: %v", gvk, err)
+	}
 }
