@@ -58,6 +58,90 @@ func BigQueryDatasetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Big
 	out.DatasetId = direct.ValueOf(in.DatasetID)
 	return out
 }
+func CmekSettings_FromProto(mapCtx *direct.MapContext, in *pb.CmekSettings) *krm.CmekSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CmekSettings{}
+	// MISSING: Name
+	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
+	out.KMSKeyVersionName = direct.LazyPtr(in.GetKmsKeyVersionName())
+	// MISSING: ServiceAccountID
+	return out
+}
+func CmekSettings_ToProto(mapCtx *direct.MapContext, in *krm.CmekSettings) *pb.CmekSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CmekSettings{}
+	// MISSING: Name
+	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
+	out.KmsKeyVersionName = direct.ValueOf(in.KMSKeyVersionName)
+	// MISSING: ServiceAccountID
+	return out
+}
+func CmekSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CmekSettings) *krm.CmekSettingsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CmekSettingsObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: KMSKeyName
+	// MISSING: KMSKeyVersionName
+	out.ServiceAccountID = direct.LazyPtr(in.GetServiceAccountId())
+	return out
+}
+func CmekSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CmekSettingsObservedState) *pb.CmekSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CmekSettings{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: KMSKeyName
+	// MISSING: KMSKeyVersionName
+	out.ServiceAccountId = direct.ValueOf(in.ServiceAccountID)
+	return out
+}
+func IndexConfig_FromProto(mapCtx *direct.MapContext, in *pb.IndexConfig) *krm.IndexConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.IndexConfig{}
+	out.FieldPath = direct.LazyPtr(in.GetFieldPath())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	// MISSING: CreateTime
+	return out
+}
+func IndexConfig_ToProto(mapCtx *direct.MapContext, in *krm.IndexConfig) *pb.IndexConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IndexConfig{}
+	out.FieldPath = direct.ValueOf(in.FieldPath)
+	out.Type = direct.Enum_ToProto[pb.IndexType](mapCtx, in.Type)
+	// MISSING: CreateTime
+	return out
+}
+func IndexConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.IndexConfig) *krm.IndexConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.IndexConfigObservedState{}
+	// MISSING: FieldPath
+	// MISSING: Type
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	return out
+}
+func IndexConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.IndexConfigObservedState) *pb.IndexConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IndexConfig{}
+	// MISSING: FieldPath
+	// MISSING: Type
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	return out
+}
 func LoggingLinkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Link) *krm.LoggingLinkObservedState {
 	if in == nil {
 		return nil
@@ -96,5 +180,41 @@ func LoggingLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkSpec)
 	out := &pb.Link{}
 	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+func LoggingLogBucketSpec_FromProto(mapCtx *direct.MapContext, in *pb.LogBucket) *krm.LoggingLogBucketSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LoggingLogBucketSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.RetentionDays = direct.LazyPtr(in.GetRetentionDays())
+	out.Locked = direct.LazyPtr(in.GetLocked())
+	// MISSING: LifecycleState
+	out.AnalyticsEnabled = direct.LazyPtr(in.GetAnalyticsEnabled())
+	// MISSING: RestrictedFields
+	// MISSING: IndexConfigs
+	// MISSING: CmekSettings
+	return out
+}
+func LoggingLogBucketSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogBucketSpec) *pb.LogBucket {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LogBucket{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.RetentionDays = direct.ValueOf(in.RetentionDays)
+	out.Locked = direct.ValueOf(in.Locked)
+	// MISSING: LifecycleState
+	out.AnalyticsEnabled = direct.ValueOf(in.AnalyticsEnabled)
+	// MISSING: RestrictedFields
+	// MISSING: IndexConfigs
+	// MISSING: CmekSettings
 	return out
 }
