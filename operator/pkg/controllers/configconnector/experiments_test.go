@@ -19,6 +19,7 @@ import (
 	"testing"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/controller"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
@@ -85,7 +86,7 @@ func TestApplyMultiClusterLeaderElection(t *testing.T) {
 
 			foundStatefulSet := false
 			for _, item := range m.Items {
-				if IsControllerManagerStatefulSet(item) {
+				if controllers.IsControllerManagerStatefulSet(item) {
 					foundStatefulSet = true
 
 					// Check args

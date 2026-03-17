@@ -140,6 +140,7 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 		declarative.WithObjectTransform(r.addLabels()),
 		declarative.WithObjectTransform(r.handleCCContextLifecycle()),
 		declarative.WithObjectTransform(r.applyNamespacedCustomizations()),
+		declarative.WithObjectTransform(r.applyGlobalExperiments()),
 		declarative.WithStatus(&declarative.StatusBuilder{
 			PreflightImpl: preflight,
 		}))
@@ -523,6 +524,22 @@ func (r *Reconciler) applyNamespacedCustomizations() declarative.ObjectTransform
 			// return err
 		}
 		return nil
+	}
+}
+
+func (r *Reconciler) applyGlobalExperiments() declarative.ObjectTransform {
+	return func(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
+		cc, err := controllers.GetConfigConnector(ctx, r.client, controllers.ValidConfigConnectorNamespacedName)
+		if err != nil {
+			if apierrors.IsNotFound(err) {
+				return nil
+			}
+			return err
+		}
+		if cc.Spec.Experiments == nil || cc.Spec.Experiments.MultiClusterLease == nil {
+			return nil
+		}
+		return controllers.ApplyMultiClusterLeaderElection(m, cc.Spec.Experiments.MultiClusterLease)
 	}
 }
 
