@@ -40,9 +40,12 @@ func CloudFunctionsFunctionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Clou
 	out.EventTrigger = FunctionEventTrigger_FromProto(mapCtx, in.GetEventTrigger())
 	// MISSING: Status
 	out.EntryPoint = direct.LazyPtr(in.GetEntryPoint())
-	out.Runtime = direct.LazyPtr(in.GetRuntime())
+	out.Runtime = in.GetRuntime()
 	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
-	out.AvailableMemoryMb = direct.LazyPtr(in.GetAvailableMemoryMb())
+	if val := in.GetAvailableMemoryMb(); val != 0 {
+		v := int64(val)
+		out.AvailableMemoryMb = &v
+	}
 	// MISSING: ServiceAccountEmail
 	// MISSING: UpdateTime
 	// MISSING: VersionID
@@ -50,7 +53,10 @@ func CloudFunctionsFunctionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Clou
 	out.EnvironmentVariables = in.EnvironmentVariables
 	// MISSING: BuildEnvironmentVariables
 	// MISSING: Network
-	out.MaxInstances = direct.LazyPtr(in.GetMaxInstances())
+	if val := in.GetMaxInstances(); val != 0 {
+		v := int64(val)
+		out.MaxInstances = &v
+	}
 	// MISSING: MinInstances
 	if in.GetVpcConnector() != "" {
 		out.VPCConnectorRef = &krm.FunctionVpcConnectorRef{External: in.GetVpcConnector()}
@@ -93,9 +99,11 @@ func CloudFunctionsFunctionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Cloud
 	}
 	// MISSING: Status
 	out.EntryPoint = direct.ValueOf(in.EntryPoint)
-	out.Runtime = CloudFunctionsFunctionSpec_Runtime_ToProto(mapCtx, in.Runtime)
+	out.Runtime = in.Runtime
 	out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
-	out.AvailableMemoryMb = direct.ValueOf(in.AvailableMemoryMb)
+	if in.AvailableMemoryMb != nil {
+		out.AvailableMemoryMb = int32(*in.AvailableMemoryMb)
+	}
 	// MISSING: ServiceAccountEmail
 	// MISSING: UpdateTime
 	// MISSING: VersionID
@@ -103,7 +111,9 @@ func CloudFunctionsFunctionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Cloud
 	out.EnvironmentVariables = in.EnvironmentVariables
 	// MISSING: BuildEnvironmentVariables
 	// MISSING: Network
-	out.MaxInstances = direct.ValueOf(in.MaxInstances)
+	if in.MaxInstances != nil {
+		out.MaxInstances = int32(*in.MaxInstances)
+	}
 	// MISSING: MinInstances
 	if in.VPCConnectorRef != nil {
 		out.VpcConnector = in.VPCConnectorRef.External
@@ -225,12 +235,15 @@ func FunctionEventTrigger_FromProto(mapCtx *direct.MapContext, in *pb.EventTrigg
 		return nil
 	}
 	out := &krm.FunctionEventTrigger{}
-	out.EventType = direct.LazyPtr(in.GetEventType())
+	out.EventType = in.GetEventType()
 	if in.GetResource() != "" {
-		out.ResourceRef = &krm.FunctionResourceRef{External: in.GetResource()}
+		out.ResourceRef = krm.FunctionResourceRef{External: in.GetResource()}
 	}
 	out.Service = direct.LazyPtr(in.GetService())
-	out.FailurePolicy = bool_FromProto(mapCtx, in.GetFailurePolicy())
+	if in.GetFailurePolicy() != nil {
+		t := true
+		out.FailurePolicy = &t
+	}
 	return out
 }
 func FunctionEventTrigger_ToProto(mapCtx *direct.MapContext, in *krm.FunctionEventTrigger) *pb.EventTrigger {
@@ -238,12 +251,18 @@ func FunctionEventTrigger_ToProto(mapCtx *direct.MapContext, in *krm.FunctionEve
 		return nil
 	}
 	out := &pb.EventTrigger{}
-	out.EventType = FunctionEventTrigger_EventType_ToProto(mapCtx, in.EventType)
-	if in.ResourceRef != nil {
+	out.EventType = in.EventType
+	if in.ResourceRef.External != "" {
 		out.Resource = in.ResourceRef.External
 	}
 	out.Service = direct.ValueOf(in.Service)
-	out.FailurePolicy = bool_ToProto(mapCtx, in.FailurePolicy)
+	if in.FailurePolicy != nil && *in.FailurePolicy {
+		out.FailurePolicy = &pb.FailurePolicy{
+			Action: &pb.FailurePolicy_Retry_{
+				Retry: &pb.FailurePolicy_Retry{},
+			},
+		}
+	}
 	return out
 }
 func FunctionHttpsTrigger_FromProto(mapCtx *direct.MapContext, in *pb.HttpsTrigger) *krm.FunctionHttpsTrigger {
@@ -287,7 +306,7 @@ func FunctionSourceRepository_FromProto(mapCtx *direct.MapContext, in *pb.Source
 		return nil
 	}
 	out := &krm.FunctionSourceRepository{}
-	out.URL = direct.LazyPtr(in.GetUrl())
+	out.URL = in.GetUrl()
 	// MISSING: DeployedURL
 	return out
 }
@@ -296,7 +315,7 @@ func FunctionSourceRepository_ToProto(mapCtx *direct.MapContext, in *krm.Functio
 		return nil
 	}
 	out := &pb.SourceRepository{}
-	out.URL = FunctionSourceRepository_Url_ToProto(mapCtx, in.URL)
+	out.Url = in.URL
 	// MISSING: DeployedURL
 	return out
 }

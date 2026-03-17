@@ -99,7 +99,7 @@
 | clouddms.cnrm.cloud.google.com                | CloudDMSMigrationJob                            | True         | False       | False  | Direct     | True        |
 | clouddms.cnrm.cloud.google.com                | CloudDMSPrivateConnection                       | True         | False       | False  | Direct     | True        |
 | cloudfunctions2.cnrm.cloud.google.com         | CloudFunctions2Function                         | True         | False       | False  | Terraform  | False       |
-| cloudfunctions.cnrm.cloud.google.com          | CloudFunctionsFunction                          | False        | True        | False  | DCL        | False       |
+| cloudfunctions.cnrm.cloud.google.com          | CloudFunctionsFunction                          | False        | True        | False  | DCL        | True        |
 | cloudidentity.cnrm.cloud.google.com           | CloudIdentityGroup                              | False        | True        | False  | Direct     | True        |
 | cloudidentity.cnrm.cloud.google.com           | CloudIdentityMembership                         | False        | True        | False  | Direct     | True        |
 | cloudids.cnrm.cloud.google.com                | CloudIDSEndpoint                                | True         | True        | False  | Terraform  | False       |
