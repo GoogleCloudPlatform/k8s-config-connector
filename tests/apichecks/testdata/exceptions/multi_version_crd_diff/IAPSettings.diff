@@ -69,36 +69,7 @@
   							}, ""),
   							Type:   "object",
   							Format: "",
-  							... // 20 identical fields
-  							AnyOf: nil,
-  							Not:   nil,
-  							Properties: map[string]v1.JSONSchemaProps{
-  								"allowHTTPOptions": {
-  									ID:     "",
-  									Schema: "",
-  									Ref:    nil,
-  									Description: strings.Join({
-  										"Configuration to allow HTTP ",
-+ 										"`",
-  										"OPTIONS",
-+ 										"`",
-  										" calls to skip",
-+ 										" authentication and",
-  										" authorization. If undefined, IAP will not apply any special log",
-  										"ic to ",
-+ 										"`",
-  										"OPTIONS",
-+ 										"`",
-  										" requests.",
-  									}, ""),
-  									Type:   "boolean",
-  									Format: "",
-  									... // 38 identical fields
-  								},
-  							},
-  							AdditionalProperties: nil,
-  							PatternProperties:    nil,
-  							... // 13 identical fields
+  							... // 38 identical fields
   						},
   						"gcipSettings": {
   							ID:     "",

@@ -81,9 +81,9 @@ spec:
                       IAP.
                     properties:
                       allowHTTPOptions:
-                        description: Configuration to allow HTTP OPTIONS calls to
-                          skip authorization. If undefined, IAP will not apply any
-                          special logic to OPTIONS requests.
+                        description: Configuration to allow HTTP `OPTIONS` calls to
+                          skip authentication and authorization. If undefined, IAP
+                          will not apply any special logic to `OPTIONS` requests.
                         type: boolean
                     type: object
                   gcipSettings:

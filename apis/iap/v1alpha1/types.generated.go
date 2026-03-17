@@ -133,8 +133,9 @@ type AttributePropagationSettings struct {
 
 // +kcc:proto=google.cloud.iap.v1.CorsSettings
 type CorsSettings struct {
-	// Configuration to allow HTTP OPTIONS calls to skip authorization. If
-	//  undefined, IAP will not apply any special logic to OPTIONS requests.
+	// Configuration to allow HTTP `OPTIONS` calls to skip
+	//  authentication and authorization. If undefined, IAP will not apply any
+	//  special logic to `OPTIONS` requests.
 	// +kcc:proto:field=google.cloud.iap.v1.CorsSettings.allow_http_options
 	AllowHTTPOptions *bool `json:"allowHTTPOptions,omitempty"`
 }
