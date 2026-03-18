@@ -1,8 +1,6 @@
 module github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder
 
-go 1.26
-
-toolchain go1.26.1
+go 1.25
 
 require (
 	github.com/GoogleCloudPlatform/kubectl-ai/gollm v0.0.0-20250423144723-a651944aad2d

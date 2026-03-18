@@ -48,9 +48,14 @@ endif
 .PHONY: all
 all: test manager operator config-connector
 
+# Setup test environment with kubebuilder binaries
+.PHONY: setup-test-env
+setup-test-env:
+	go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use 1.25.0 -p path --bin-dir /usr/local/kubebuilder/bin
+
 # Run tests
 .PHONY: test
-test: generate fmt vet manifests
+test: generate fmt vet manifests setup-test-env
 	./scripts/unit-test.sh
 
 # Build config-connector binary
@@ -269,7 +274,7 @@ run: generate fmt vet
 # Ensures dependencies are up-to-date
 .PHONY: ensure
 ensure:
-	go mod tidy -compat=1.23
+	go mod tidy
 
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr

@@ -1,8 +1,6 @@
 module github.com/GoogleCloudPlatform/k8s-config-connector
 
-go 1.26
-
-toolchain go1.26.1
+go 1.25
 
 replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
@@ -116,6 +114,7 @@ require (
 	golang.org/x/oauth2 v0.34.0
 	golang.org/x/sync v0.19.0
 	golang.org/x/time v0.14.0
+	golang.org/x/tools v0.39.0
 	google.golang.org/api v0.258.0
 	google.golang.org/genproto v0.0.0-20250922171735-9219d122eba9
 	google.golang.org/genproto/googleapis/api v0.0.0-20251111163417-95abcf5c77ba
@@ -299,7 +298,6 @@ require (
 	golang.org/x/sys v0.40.0 // indirect
 	golang.org/x/term v0.38.0 // indirect
 	golang.org/x/text v0.32.0 // indirect
-	golang.org/x/tools v0.39.0
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	gomodules.xyz/jsonpatch/v2 v2.4.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
@@ -321,3 +319,5 @@ require (
 replace github.com/hashicorp/terraform-provider-google-beta => ./third_party/github.com/hashicorp/terraform-provider-google-beta
 
 replace github.com/GoogleCloudPlatform/declarative-resource-client-library => ./third_party/github.com/GoogleCloudPlatform/declarative-resource-client-library
+
+replace golang.org/x/tools => golang.org/x/tools v0.39.0
