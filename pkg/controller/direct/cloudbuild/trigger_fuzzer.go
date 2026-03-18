@@ -78,7 +78,7 @@ func cloudbuildTriggerFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".build.source.storage_source_manifest")
 	f.Unimplemented_NotYetTriaged(".build.source.git_source")
 	f.Unimplemented_NotYetTriaged(".build.source.connected_repository")
-        f.Unimplemented_NotYetTriaged(".build.source.storage_source.source_fetcher")
+	f.Unimplemented_NotYetTriaged(".build.source.storage_source.source_fetcher")
 	f.SpecField(".build.available_secrets")
 	f.Unimplemented_NotYetTriaged(".build.available_secrets.inline")
 	f.SpecField(".build.secrets")
