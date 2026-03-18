@@ -17,10 +17,10 @@ package dlp
 import (
 	"time"
 
-	"google.golang.org/genproto/googleapis/rpc/status"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dlp/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"google.golang.org/genproto/googleapis/rpc/status"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func Status_FromProto(mapCtx *direct.MapContext, in *status.Status) *krm.Status {

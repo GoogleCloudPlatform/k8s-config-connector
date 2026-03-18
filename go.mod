@@ -36,6 +36,7 @@ require (
 	cloud.google.com/go/datastream v1.15.1
 	cloud.google.com/go/deploy v1.27.3
 	cloud.google.com/go/discoveryengine v1.22.0
+	cloud.google.com/go/dlp v1.25.0
 	cloud.google.com/go/documentai v1.39.0
 	cloud.google.com/go/edgecontainer v1.4.4
 	cloud.google.com/go/essentialcontacts v1.7.7
