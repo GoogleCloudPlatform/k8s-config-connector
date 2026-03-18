@@ -46,7 +46,9 @@ func CloudFunctionsFunctionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Clou
 		v := int64(val)
 		out.AvailableMemoryMb = &v
 	}
-	// MISSING: ServiceAccountEmail
+	if in.GetServiceAccountEmail() != "" {
+		out.ServiceAccountRef = &krm.FunctionServiceAccountRef{External: in.GetServiceAccountEmail()}
+	}
 	// MISSING: UpdateTime
 	// MISSING: VersionID
 	// MISSING: Labels
@@ -104,7 +106,9 @@ func CloudFunctionsFunctionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Cloud
 	if in.AvailableMemoryMb != nil {
 		out.AvailableMemoryMb = int32(*in.AvailableMemoryMb)
 	}
-	// MISSING: ServiceAccountEmail
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccountEmail = in.ServiceAccountRef.External
+	}
 	// MISSING: UpdateTime
 	// MISSING: VersionID
 	// MISSING: Labels
@@ -157,7 +161,7 @@ func CloudFunctionsFunctionStatus_FromProto(mapCtx *direct.MapContext, in *pb.Cl
 	// MISSING: Runtime
 	// MISSING: Timeout
 	// MISSING: AvailableMemoryMb
-	// MISSING: ServiceAccountEmail
+	
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.VersionID = direct.LazyPtr(in.GetVersionId())
 	// MISSING: Labels
@@ -204,7 +208,7 @@ func CloudFunctionsFunctionStatus_ToProto(mapCtx *direct.MapContext, in *krm.Clo
 	// MISSING: Runtime
 	// MISSING: Timeout
 	// MISSING: AvailableMemoryMb
-	// MISSING: ServiceAccountEmail
+	
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.VersionId = direct.ValueOf(in.VersionID)
 	// MISSING: Labels
