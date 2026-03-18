@@ -17,7 +17,6 @@ package mockmemorystore
 import (
 	"context"
 	"fmt"
-	"math/rand/v2"
 	"strings"
 	"time"
 
@@ -73,8 +72,8 @@ func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 	obj := proto.Clone(req.GetInstance()).(*pb.Instance)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
-
-	obj.State = pb.Instance_CREATING
+	obj.UpdateTime = timestamppb.New(now)
+	obj.State = pb.Instance_ACTIVE
 
 	if err := r.populateDefaultsForInstance(name, obj); err != nil {
 		return nil, err
@@ -86,7 +85,7 @@ func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 
 	updatedObj := proto.Clone(obj).(*pb.Instance)
 	updatedObj.CreateTime = nil
-	prefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 
 	metadata := &pb.OperationMetadata{
 		ApiVersion: "v1",
@@ -119,21 +118,68 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 		obj.NodeType = pb.Instance_HIGHMEM_MEDIUM
 	}
 
-	if obj.Endpoints == nil {
-		pscConnectionID := time.Now().UnixNano()
-
+	if obj.Mode == pb.Instance_MODE_UNSPECIFIED {
+		obj.Mode = pb.Instance_CLUSTER
+	}
+	if obj.PscAttachmentDetails == nil {
+		var types []pb.ConnectionType
+		switch obj.GetMode() {
+		case pb.Instance_CLUSTER:
+			types = append(types, pb.ConnectionType_CONNECTION_TYPE_DISCOVERY)
+			types = append(types, pb.ConnectionType_CONNECTION_TYPE_UNSPECIFIED)
+		default:
+			types = append(types, pb.ConnectionType_CONNECTION_TYPE_PRIMARY)
+			types = append(types, pb.ConnectionType_CONNECTION_TYPE_READER)
+		}
+		obj.PscAttachmentDetails = []*pb.PscAttachmentDetail{
+			{
+				ServiceAttachment: fmt.Sprintf("projects/tp-%s/regions/%s/serviceAttachments/sa-%s", name.Name, name.Location, name.Name),
+				ConnectionType:    types[0],
+			},
+			{
+				ServiceAttachment: fmt.Sprintf("projects/tp-%s/regions/%s/serviceAttachments/sa-%s-2", name.Name, name.Location, name.Name),
+				ConnectionType:    types[1],
+			},
+		}
+	}
+	if len(obj.Endpoints) > 0 {
+		if len(obj.Endpoints[0].Connections) > 0 {
+			connections := obj.Endpoints[0].Connections
+			if len(connections) == 1 {
+				autoConnection := connections[0].GetPscAutoConnection()
+				if autoConnection != nil {
+					obj.Endpoints[0].Connections = append(obj.Endpoints[0].Connections, &pb.Instance_ConnectionDetail{
+						Connection: &pb.Instance_ConnectionDetail_PscAutoConnection{
+							PscAutoConnection: &pb.PscAutoConnection{
+								Ports:     autoConnection.Ports,
+								Network:   autoConnection.Network,
+								ProjectId: autoConnection.ProjectId,
+							},
+						},
+					})
+				}
+			}
+		}
+		pscConnectionID := int64(1234567890123456789)
 		for _, endpoint := range obj.Endpoints {
-			for _, connections := range endpoint.Connections {
+			for i, connections := range endpoint.Connections {
+				attachmentDetails := obj.PscAttachmentDetails[i%2]
 				if connections.GetPscAutoConnection() != nil {
 					autoConnection := connections.GetPscAutoConnection()
 					network, err := s.parseNetworkName(autoConnection.GetNetwork())
 					if err != nil {
 						return status.Errorf(codes.InvalidArgument, "unexpected format for network %q", autoConnection.Network)
 					}
-					forwardingRuleID := fmt.Sprintf("ssc-auto-fr-%x", pscConnectionID)
-					autoConnection.IpAddress = fmt.Sprintf("10.128.0.%d", rand.IntN(100))
-					autoConnection.ForwardingRule = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/%s", network.Project.ID, name.Location, forwardingRuleID)
+					autoConnection.IpAddress = fmt.Sprintf("10.128.0.%d", pscConnectionID%256)
+					autoConnection.ForwardingRule = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/sca-auto-fr-%x", network.Project.ID, name.Location, pscConnectionID)
 					autoConnection.PscConnectionId = fmt.Sprintf("%d", pscConnectionID)
+					autoConnection.ConnectionType = attachmentDetails.ConnectionType
+					autoConnection.ServiceAttachment = attachmentDetails.ServiceAttachment
+					if autoConnection.Ports == nil {
+						autoConnection.Ports = &pb.PscAutoConnection_Port{
+							Port: 6379,
+						}
+					}
 					pscConnectionID++
 				}
 				if connections.GetPscConnection() != nil {
@@ -142,11 +188,9 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 					if err != nil {
 						return status.Errorf(codes.InvalidArgument, "unexpected format for network %q", userConnection.Network)
 					}
-					forwardingRuleID := fmt.Sprintf("ssc-auto-fr-%x", pscConnectionID)
-					userConnection.IpAddress = fmt.Sprintf("10.128.0.%d", rand.IntN(100))
-					userConnection.ForwardingRule = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/%s", network.Project.ID, name.Location, forwardingRuleID)
-					userConnection.PscConnectionId = fmt.Sprintf("%d", pscConnectionID)
-					pscConnectionID++
+					userConnection.ProjectId = network.Project.ID
+					userConnection.PscConnectionStatus = pb.PscConnectionStatus_ACTIVE
+					userConnection.ConnectionType = attachmentDetails.ConnectionType
 				}
 			}
 		}
@@ -162,8 +206,8 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	if obj.ReplicaCount == nil {
 		obj.ReplicaCount = mocks.PtrTo[int32](0)
 	}
-	if obj.Mode == pb.Instance_MODE_UNSPECIFIED {
-		obj.Mode = pb.Instance_CLUSTER
+	if obj.NodeConfig == nil {
+		obj.NodeConfig = &pb.NodeConfig{}
 	}
 	nodeCapacity := float64(1)
 	switch obj.GetNodeType() {
@@ -178,18 +222,13 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	default:
 		return fmt.Errorf("unknown node type %v", obj.GetNodeType())
 	}
-
-	if obj.NodeConfig == nil {
-		obj.NodeConfig = &pb.NodeConfig{
-			SizeGb: *mocks.PtrTo(float64(nodeCapacity)),
-		}
-	}
+	obj.NodeConfig.SizeGb = *mocks.PtrTo(float64(nodeCapacity))
 
 	if obj.TransitEncryptionMode == pb.Instance_TRANSIT_ENCRYPTION_MODE_UNSPECIFIED {
 		obj.TransitEncryptionMode = pb.Instance_TRANSIT_ENCRYPTION_DISABLED
 	}
 	if obj.Uid == "" {
-		obj.Uid = fmt.Sprintf("%x", time.Now().UnixNano())
+		obj.Uid = fmt.Sprintf("instance-%s", name.Name)
 	}
 	if obj.ZoneDistributionConfig == nil {
 		obj.ZoneDistributionConfig = &pb.ZoneDistributionConfig{}
@@ -199,6 +238,59 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	}
 	if obj.EngineVersion == "" {
 		obj.EngineVersion = "VALKEY_7_2"
+	}
+	if obj.AutomatedBackupConfig == nil {
+		obj.AutomatedBackupConfig = &pb.AutomatedBackupConfig{}
+	}
+	if obj.AutomatedBackupConfig.AutomatedBackupMode == pb.AutomatedBackupConfig_AUTOMATED_BACKUP_MODE_UNSPECIFIED {
+		obj.AutomatedBackupConfig.AutomatedBackupMode = pb.AutomatedBackupConfig_DISABLED
+	}
+	if crr := obj.CrossInstanceReplicationConfig; crr != nil {
+		crr.UpdateTime = timestamppb.New(time.Now())
+		switch crr.InstanceRole {
+		case pb.CrossInstanceReplicationConfig_PRIMARY:
+			crr.PrimaryInstance = nil
+			crr.Membership = &pb.CrossInstanceReplicationConfig_Membership{
+				PrimaryInstance: &pb.CrossInstanceReplicationConfig_RemoteInstance{
+					Instance: name.String(),
+					Uid:      obj.Uid,
+				},
+				SecondaryInstances: []*pb.CrossInstanceReplicationConfig_RemoteInstance{},
+			}
+			for _, secondaryInstance := range crr.SecondaryInstances {
+				secondaryName, err := s.parseInstanceName(secondaryInstance.Instance)
+				if err != nil {
+					return err
+				}
+				secondaryInstance.Uid = fmt.Sprintf("instance-%s", secondaryName.Name)
+				crr.Membership.SecondaryInstances = append(crr.Membership.SecondaryInstances, &pb.CrossInstanceReplicationConfig_RemoteInstance{
+					Instance: secondaryInstance.Instance,
+					Uid:      secondaryInstance.Uid,
+				})
+			}
+		case pb.CrossInstanceReplicationConfig_SECONDARY:
+			primaryName, err := s.parseInstanceName(crr.PrimaryInstance.Instance)
+			if err != nil {
+				return err
+			}
+			crr.PrimaryInstance.Uid = fmt.Sprintf("instance-%s", primaryName.Name)
+			crr.Membership = &pb.CrossInstanceReplicationConfig_Membership{
+				PrimaryInstance: &pb.CrossInstanceReplicationConfig_RemoteInstance{
+					Instance: crr.PrimaryInstance.Instance,
+					Uid:      crr.PrimaryInstance.Uid,
+				},
+				SecondaryInstances: []*pb.CrossInstanceReplicationConfig_RemoteInstance{
+					&pb.CrossInstanceReplicationConfig_RemoteInstance{
+						Instance: name.String(),
+						Uid:      obj.Uid,
+					},
+				},
+			}
+		case pb.CrossInstanceReplicationConfig_NONE, pb.CrossInstanceReplicationConfig_INSTANCE_ROLE_UNSPECIFIED:
+			obj.CrossInstanceReplicationConfig = nil
+		default:
+			return fmt.Errorf("unknown instance role %v", crr.InstanceRole)
+		}
 	}
 	return nil
 }
@@ -242,22 +334,34 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 
 	for _, path := range paths {
 		switch path {
+		case "labels":
+			obj.Labels = req.Instance.Labels
 		case "replicaCount":
 			obj.ReplicaCount = req.Instance.ReplicaCount
 		case "shardCount":
 			obj.ShardCount = req.Instance.ShardCount
-		case "deletionProtectionEnabled":
-			obj.DeletionProtectionEnabled = req.Instance.DeletionProtectionEnabled
-		case "persistenceConfig":
-			obj.PersistenceConfig = req.Instance.PersistenceConfig
-		case "engineConfigs":
-			obj.EngineConfigs = req.Instance.EngineConfigs
-		case "endpoints":
-			obj.Endpoints = req.Instance.Endpoints
-		case "labels":
-			obj.Labels = req.Instance.Labels
 		case "nodeType":
 			obj.NodeType = req.Instance.NodeType
+		case "persistenceConfig":
+			obj.PersistenceConfig = req.Instance.PersistenceConfig
+		case "engineVersion":
+			obj.EngineVersion = req.Instance.EngineVersion
+		case "engineConfigs":
+			obj.EngineConfigs = req.Instance.EngineConfigs
+		case "deletionProtectionEnabled":
+			obj.DeletionProtectionEnabled = req.Instance.DeletionProtectionEnabled
+		case "endpoints":
+			obj.Endpoints = req.Instance.Endpoints
+		case "maintenancePolicy":
+			obj.MaintenancePolicy = req.Instance.MaintenancePolicy
+		case "automatedBackupConfig":
+			obj.AutomatedBackupConfig = req.Instance.AutomatedBackupConfig
+		case "crossInstanceReplicationConfig":
+			obj.CrossInstanceReplicationConfig = req.Instance.CrossInstanceReplicationConfig
+		case "gcsBucket":
+			obj.ImportSources = &pb.Instance_GcsSource{GcsSource: req.Instance.GetGcsSource()}
+		case "managedBackupSource":
+			obj.ImportSources = &pb.Instance_ManagedBackupSource_{ManagedBackupSource: req.Instance.GetManagedBackupSource()}
 
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
@@ -268,6 +372,8 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 		return nil, err
 	}
 
+	obj.State = pb.Instance_ACTIVE
+	obj.UpdateTime = timestamppb.New(time.Now())
 	if err := r.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
