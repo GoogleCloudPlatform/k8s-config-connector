@@ -69,7 +69,7 @@ type ListMetadata struct {
 // ListListener is a listener for list operations.
 type ListListener interface {
 	OnListBegin(metadata ListMetadata)
-	OnListObject(obj Object) error
+	OnListObject(ctx context.Context, obj Object) error
 	OnListEnd()
 }
 
@@ -178,7 +178,7 @@ func (c *StreamingClient) List(ctx context.Context, typeInfo *typeInfo, namespac
 		if err := json.Unmarshal(item, &t); err != nil {
 			return fmt.Errorf("decoding %T from %v: %w", t, u, err)
 		}
-		if err := listener.OnListObject(t); err != nil {
+		if err := listener.OnListObject(ctx, t); err != nil {
 			return err
 		}
 	}

@@ -16,6 +16,7 @@ package preview
 
 import (
 	"context"
+	"maps"
 
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -26,6 +27,7 @@ import (
 )
 
 func newReconcilerOverrideTransformer(namespace string, reconcilerOverride map[schema.GroupKind]k8s.ReconcilerType) ObjectTransformer {
+	reconcilerOverride = maps.Clone(reconcilerOverride)
 	return func(ctx context.Context, obj client.Object) error {
 		if ccc, ok := obj.(*corev1beta1.ConfigConnectorContext); ok {
 			if namespace != "" && ccc.GetNamespace() != namespace {

@@ -196,7 +196,6 @@ func (i *streamingInformer) doList(ctx context.Context) (*ListMetadata, error) {
 
 	isInInitialList := !i.hasSynced.Load()
 	listListener := &listListener{
-		ctx:                       ctx,
 		objects:                   &i.objects,
 		isInInitialList:           isInInitialList,
 		eventHandlerRegistrations: i.eventHandlerRegistrations,
@@ -214,7 +213,6 @@ func (i *streamingInformer) doList(ctx context.Context) (*ListMetadata, error) {
 
 // listListener is a listener for list operations.
 type listListener struct {
-	ctx                       context.Context
 	isInInitialList           bool
 	eventHandlerRegistrations []*eventHandlerRegistration
 	objectTransformers        []ObjectTransformer
@@ -228,8 +226,8 @@ func (i *listListener) OnListBegin(metadata ListMetadata) {
 }
 
 // OnListObject is called when an object is listed.
-func (i *listListener) OnListObject(obj Object) error {
-	return i.objects.OnListObject(i.ctx, obj, i.isInInitialList, i.eventHandlerRegistrations, i.objectTransformers)
+func (i *listListener) OnListObject(ctx context.Context, obj Object) error {
+	return i.objects.OnListObject(ctx, obj, i.isInInitialList, i.eventHandlerRegistrations, i.objectTransformers)
 }
 
 // OnListEnd is called when the list operation ends.

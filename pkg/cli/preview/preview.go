@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"slices"
 	"time"
 
 	"golang.org/x/oauth2"
@@ -105,7 +106,7 @@ func NewPreviewInstance(recorder *Recorder, options PreviewInstanceOptions) (*Pr
 	i.hookKube = hookKube
 	i.recorder = recorder
 	i.Namespace = options.Namespace
-	i.ObjectTransformers = options.ObjectTransformers
+	i.ObjectTransformers = slices.Clone(options.ObjectTransformers)
 
 	return i, nil
 }
