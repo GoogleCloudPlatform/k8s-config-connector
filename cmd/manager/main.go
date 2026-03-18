@@ -207,7 +207,7 @@ func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace strin
 		MultiClusterLease:  multiclusterlease,
 		SyncerIntegration:  enableSyncing,
 		SkipNameValidation: skipNameValidation,
-		ScopedNamespace:   scopedNamespace,
+		ScopedNamespace:    scopedNamespace,
 	}
 
 	controllersCfg.UserProjectOverride = userProjectOverride
