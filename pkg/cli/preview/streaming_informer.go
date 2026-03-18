@@ -67,6 +67,7 @@ func (o *objects) OnListObject(ctx context.Context, obj Object, isInInitialList 
 		for _, transformer := range objectTransformers {
 			if err := transformer(ctx, clientObj); err != nil {
 				klog.Errorf("transformer failed: %v", err)
+				return fmt.Errorf("transformer failed: %w", err)
 			}
 		}
 	}
