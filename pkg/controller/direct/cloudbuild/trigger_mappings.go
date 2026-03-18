@@ -15,6 +15,8 @@
 package cloudbuild
 
 import (
+	"strconv"
+
 	pb "cloud.google.com/go/cloudbuild/apiv1/v2/cloudbuildpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -53,7 +55,7 @@ func CloudBuildTriggerSpec_FromProto(mapCtx *direct.MapContext, in *pb.BuildTrig
 	out.Substitutions = in.Substitutions
 	out.Tags = in.Tags
 
-	out.ApprovalConfig = CloudBuildTriggerSpec_ApprovalConfig_FromProto(mapCtx, in)
+	// out.ApprovalConfig is missing from pb.BuildTrigger in this version of the library
 	out.Build = CloudBuildTriggerSpec_Build_FromProto(mapCtx, in.GetBuild())
 	out.Github = CloudBuildTriggerSpec_Github_FromProto(mapCtx, in.GetGithub())
 	out.PubsubConfig = CloudBuildTriggerSpec_PubsubConfig_FromProto(mapCtx, in.GetPubsubConfig())
@@ -107,14 +109,6 @@ func CloudBuildTriggerSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudBuild
 	return out
 }
 
-func CloudBuildTriggerSpec_ApprovalConfig_FromProto(mapCtx *direct.MapContext, in *pb.BuildTrigger) *krm.CloudBuildTriggerSpec_ApprovalConfig {
-	return nil
-}
-
-func CloudBuildTriggerSpec_ApprovalConfig_ToProto(mapCtx *direct.MapContext, in *krm.CloudBuildTriggerSpec_ApprovalConfig) *pb.BuildTrigger {
-	return nil
-}
-
 func CloudBuildTriggerSpec_Build_FromProto(mapCtx *direct.MapContext, in *pb.Build) *krm.CloudBuildTriggerSpec_Build {
 	if in == nil {
 		return nil
@@ -161,6 +155,18 @@ func CloudBuildTriggerSpec_Build_FromProto(mapCtx *direct.MapContext, in *pb.Bui
 			}
 		}
 	}
+
+	out.Artifacts = CloudBuildTriggerSpec_Build_Artifacts_FromProto(mapCtx, in.GetArtifacts())
+	out.Options = CloudBuildTriggerSpec_Build_Options_FromProto(mapCtx, in.GetOptions())
+	out.Source = CloudBuildTriggerSpec_Build_Source_FromProto(mapCtx, in.GetSource())
+	out.AvailableSecrets = CloudBuildTriggerSpec_Build_AvailableSecrets_FromProto(mapCtx, in.GetAvailableSecrets())
+	if len(in.GetSecrets()) > 0 {
+		out.Secret = make([]krm.CloudBuildTriggerSpec_Build_SecretItem, len(in.GetSecrets()))
+		for i, s := range in.GetSecrets() {
+			out.Secret[i] = CloudBuildTriggerSpec_Build_SecretItem_FromProto(mapCtx, s)
+		}
+	}
+
 	return out
 }
 
@@ -206,6 +212,246 @@ func CloudBuildTriggerSpec_Build_ToProto(mapCtx *direct.MapContext, in *krm.Clou
 					Path: direct.ValueOf(vol.Path),
 				}
 			}
+		}
+	}
+
+	out.Artifacts = CloudBuildTriggerSpec_Build_Artifacts_ToProto(mapCtx, in.Artifacts)
+	out.Options = CloudBuildTriggerSpec_Build_Options_ToProto(mapCtx, in.Options)
+	out.Source = CloudBuildTriggerSpec_Build_Source_ToProto(mapCtx, in.Source)
+	out.AvailableSecrets = CloudBuildTriggerSpec_Build_AvailableSecrets_ToProto(mapCtx, in.AvailableSecrets)
+	if len(in.Secret) > 0 {
+		out.Secrets = make([]*pb.Secret, len(in.Secret))
+		for i, s := range in.Secret {
+			out.Secrets[i] = CloudBuildTriggerSpec_Build_SecretItem_ToProto(mapCtx, s)
+		}
+	}
+
+	return out
+}
+
+func CloudBuildTriggerSpec_Build_Artifacts_FromProto(mapCtx *direct.MapContext, in *pb.Artifacts) *krm.CloudBuildTriggerSpec_Build_Artifacts {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudBuildTriggerSpec_Build_Artifacts{}
+	out.Images = in.Images
+	if in.Objects != nil {
+		out.Objects = &krm.CloudBuildTriggerSpec_Build_Artifacts_Objects{
+			Location: direct.LazyPtr(in.Objects.Location),
+			Paths:    in.Objects.Paths,
+		}
+	}
+	return out
+}
+
+func CloudBuildTriggerSpec_Build_Artifacts_ToProto(mapCtx *direct.MapContext, in *krm.CloudBuildTriggerSpec_Build_Artifacts) *pb.Artifacts {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Artifacts{}
+	out.Images = in.Images
+	if in.Objects != nil {
+		out.Objects = &pb.Artifacts_ArtifactObjects{
+			Location: direct.ValueOf(in.Objects.Location),
+			Paths:    in.Objects.Paths,
+		}
+	}
+	return out
+}
+
+func CloudBuildTriggerSpec_Build_Options_FromProto(mapCtx *direct.MapContext, in *pb.BuildOptions) *krm.CloudBuildTriggerSpec_Build_Options {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudBuildTriggerSpec_Build_Options{}
+	if len(in.SourceProvenanceHash) > 0 {
+		out.SourceProvenanceHash = make([]string, len(in.SourceProvenanceHash))
+		for i, h := range in.SourceProvenanceHash {
+			out.SourceProvenanceHash[i] = direct.ValueOf(direct.Enum_FromProto(mapCtx, h))
+		}
+	}
+	out.RequestedVerifyOption = direct.Enum_FromProto(mapCtx, in.RequestedVerifyOption)
+	out.MachineType = direct.Enum_FromProto(mapCtx, in.MachineType)
+	out.DiskSizeGb = direct.LazyPtr(int(in.DiskSizeGb))
+	out.SubstitutionOption = direct.Enum_FromProto(mapCtx, in.SubstitutionOption)
+	out.DynamicSubstitutions = direct.LazyPtr(in.DynamicSubstitutions)
+	out.LogStreamingOption = direct.Enum_FromProto(mapCtx, in.LogStreamingOption)
+	out.WorkerPool = direct.LazyPtr(in.WorkerPool)
+	out.Logging = direct.Enum_FromProto(mapCtx, in.Logging)
+	out.Env = in.Env
+	out.SecretEnv = in.SecretEnv
+	if len(in.Volumes) > 0 {
+		out.Volumes = make([]krm.CloudBuildTriggerSpec_Build_Options_VolumesItem, len(in.Volumes))
+		for i, vol := range in.Volumes {
+			out.Volumes[i] = krm.CloudBuildTriggerSpec_Build_Options_VolumesItem{
+				Name: direct.LazyPtr(vol.Name),
+				Path: direct.LazyPtr(vol.Path),
+			}
+		}
+	}
+	return out
+}
+
+func CloudBuildTriggerSpec_Build_Options_ToProto(mapCtx *direct.MapContext, in *krm.CloudBuildTriggerSpec_Build_Options) *pb.BuildOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BuildOptions{}
+	if len(in.SourceProvenanceHash) > 0 {
+		out.SourceProvenanceHash = make([]pb.Hash_HashType, len(in.SourceProvenanceHash))
+		for i, h := range in.SourceProvenanceHash {
+			out.SourceProvenanceHash[i] = direct.Enum_ToProto[pb.Hash_HashType](mapCtx, direct.LazyPtr(h))
+		}
+	}
+	out.RequestedVerifyOption = direct.Enum_ToProto[pb.BuildOptions_VerifyOption](mapCtx, in.RequestedVerifyOption)
+	out.MachineType = direct.Enum_ToProto[pb.BuildOptions_MachineType](mapCtx, in.MachineType)
+	out.DiskSizeGb = int64(direct.ValueOf(in.DiskSizeGb))
+	out.SubstitutionOption = direct.Enum_ToProto[pb.BuildOptions_SubstitutionOption](mapCtx, in.SubstitutionOption)
+	out.DynamicSubstitutions = direct.ValueOf(in.DynamicSubstitutions)
+	out.LogStreamingOption = direct.Enum_ToProto[pb.BuildOptions_LogStreamingOption](mapCtx, in.LogStreamingOption)
+	out.WorkerPool = direct.ValueOf(in.WorkerPool)
+	out.Logging = direct.Enum_ToProto[pb.BuildOptions_LoggingMode](mapCtx, in.Logging)
+	out.Env = in.Env
+	out.SecretEnv = in.SecretEnv
+	if len(in.Volumes) > 0 {
+		out.Volumes = make([]*pb.Volume, len(in.Volumes))
+		for i, vol := range in.Volumes {
+			out.Volumes[i] = &pb.Volume{
+				Name: direct.ValueOf(vol.Name),
+				Path: direct.ValueOf(vol.Path),
+			}
+		}
+	}
+	return out
+}
+
+func CloudBuildTriggerSpec_Build_Source_FromProto(mapCtx *direct.MapContext, in *pb.Source) *krm.CloudBuildTriggerSpec_Build_Source {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudBuildTriggerSpec_Build_Source{}
+	if repo := in.GetRepoSource(); repo != nil {
+		out.RepoSource = &krm.CloudBuildTriggerSpec_Build_Source_RepoSource{
+			ProjectId:     direct.LazyPtr(repo.ProjectId),
+			RepoRef:       &krm.CloudBuildTriggerSpec_Build_Source_RepoSource_RepoRef{External: direct.LazyPtr(repo.RepoName)},
+			Dir:           direct.LazyPtr(repo.Dir),
+			InvertRegex:   direct.LazyPtr(repo.InvertRegex),
+			Substitutions: repo.Substitutions,
+		}
+		switch r := repo.Revision.(type) {
+		case *pb.RepoSource_BranchName:
+			out.RepoSource.BranchName = direct.LazyPtr(r.BranchName)
+		case *pb.RepoSource_TagName:
+			out.RepoSource.TagName = direct.LazyPtr(r.TagName)
+		case *pb.RepoSource_CommitSha:
+			out.RepoSource.CommitSha = direct.LazyPtr(r.CommitSha)
+		}
+	}
+	if storage := in.GetStorageSource(); storage != nil {
+		out.StorageSource = &krm.CloudBuildTriggerSpec_Build_Source_StorageSource{
+			BucketRef:  &krm.CloudBuildTriggerSpec_Build_Source_StorageSource_BucketRef{External: direct.LazyPtr(storage.Bucket)},
+			Object:     direct.LazyPtr(storage.Object),
+			Generation: direct.LazyPtr(strconv.FormatInt(storage.Generation, 10)),
+		}
+	}
+	return out
+}
+
+func CloudBuildTriggerSpec_Build_Source_ToProto(mapCtx *direct.MapContext, in *krm.CloudBuildTriggerSpec_Build_Source) *pb.Source {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Source{}
+	if in.RepoSource != nil {
+		repo := &pb.RepoSource{
+			ProjectId:     direct.ValueOf(in.RepoSource.ProjectId),
+			RepoName:      direct.ValueOf(in.RepoSource.RepoRef.External),
+			Dir:           direct.ValueOf(in.RepoSource.Dir),
+			InvertRegex:   direct.ValueOf(in.RepoSource.InvertRegex),
+			Substitutions: in.RepoSource.Substitutions,
+		}
+		if in.RepoSource.BranchName != nil {
+			repo.Revision = &pb.RepoSource_BranchName{BranchName: *in.RepoSource.BranchName}
+		} else if in.RepoSource.TagName != nil {
+			repo.Revision = &pb.RepoSource_TagName{TagName: *in.RepoSource.TagName}
+		} else if in.RepoSource.CommitSha != nil {
+			repo.Revision = &pb.RepoSource_CommitSha{CommitSha: *in.RepoSource.CommitSha}
+		}
+		out.Source = &pb.Source_RepoSource{RepoSource: repo}
+	}
+	if in.StorageSource != nil {
+		storage := &pb.StorageSource{
+			Bucket: direct.ValueOf(in.StorageSource.BucketRef.External),
+			Object: direct.ValueOf(in.StorageSource.Object),
+		}
+		if in.StorageSource.Generation != nil {
+			gen, err := strconv.ParseInt(*in.StorageSource.Generation, 10, 64)
+			if err != nil {
+				mapCtx.Errorf("invalid generation %q: %v", *in.StorageSource.Generation, err)
+			} else {
+				storage.Generation = gen
+			}
+		}
+		out.Source = &pb.Source_StorageSource{StorageSource: storage}
+	}
+	return out
+}
+
+func CloudBuildTriggerSpec_Build_AvailableSecrets_FromProto(mapCtx *direct.MapContext, in *pb.Secrets) *krm.CloudBuildTriggerSpec_Build_AvailableSecrets {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudBuildTriggerSpec_Build_AvailableSecrets{}
+	if len(in.SecretManager) > 0 {
+		out.SecretManager = make([]krm.CloudBuildTriggerSpec_Build_AvailableSecrets_SecretManagerItem, len(in.SecretManager))
+		for i, s := range in.SecretManager {
+			out.SecretManager[i] = krm.CloudBuildTriggerSpec_Build_AvailableSecrets_SecretManagerItem{
+				VersionRef: &krm.CloudBuildTriggerSpec_Build_AvailableSecrets_SecretManagerItem_VersionRef{External: direct.LazyPtr(s.VersionName)},
+				Env:        direct.LazyPtr(s.Env),
+			}
+		}
+	}
+	return out
+}
+
+func CloudBuildTriggerSpec_Build_AvailableSecrets_ToProto(mapCtx *direct.MapContext, in *krm.CloudBuildTriggerSpec_Build_AvailableSecrets) *pb.Secrets {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Secrets{}
+	if len(in.SecretManager) > 0 {
+		out.SecretManager = make([]*pb.SecretManagerSecret, len(in.SecretManager))
+		for i, s := range in.SecretManager {
+			out.SecretManager[i] = &pb.SecretManagerSecret{
+				VersionName: direct.ValueOf(s.VersionRef.External),
+				Env:         direct.ValueOf(s.Env),
+			}
+		}
+	}
+	return out
+}
+
+func CloudBuildTriggerSpec_Build_SecretItem_FromProto(mapCtx *direct.MapContext, in *pb.Secret) krm.CloudBuildTriggerSpec_Build_SecretItem {
+	out := krm.CloudBuildTriggerSpec_Build_SecretItem{}
+	out.KmsKeyRef = &krm.CloudBuildTriggerSpec_Build_SecretItem_KmsKeyRef{External: direct.LazyPtr(in.KmsKeyName)}
+	if in.SecretEnv != nil {
+		out.SecretEnv = make(map[string]string)
+		for k, v := range in.SecretEnv {
+			out.SecretEnv[k] = string(v)
+		}
+	}
+	return out
+}
+
+func CloudBuildTriggerSpec_Build_SecretItem_ToProto(mapCtx *direct.MapContext, in krm.CloudBuildTriggerSpec_Build_SecretItem) *pb.Secret {
+	out := &pb.Secret{}
+	if in.KmsKeyRef != nil {
+		out.KmsKeyName = direct.ValueOf(in.KmsKeyRef.External)
+	}
+	if in.SecretEnv != nil {
+		out.SecretEnv = make(map[string][]byte)
+		for k, v := range in.SecretEnv {
+			out.SecretEnv[k] = []byte(v)
 		}
 	}
 	return out
