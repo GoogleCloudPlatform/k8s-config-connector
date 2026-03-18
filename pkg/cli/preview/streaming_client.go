@@ -69,7 +69,7 @@ type ListMetadata struct {
 // ListListener is a listener for list operations.
 type ListListener interface {
 	OnListBegin(metadata ListMetadata)
-	OnListObject(obj Object) error
+	OnListObject(ctx context.Context, obj Object) error
 	OnListEnd()
 }
 
@@ -178,7 +178,7 @@ func (c *StreamingClient) List(ctx context.Context, typeInfo *typeInfo, namespac
 		if err := json.Unmarshal(item, &t); err != nil {
 			return fmt.Errorf("decoding %T from %v: %w", t, u, err)
 		}
-		if err := listener.OnListObject(t); err != nil {
+		if err := listener.OnListObject(ctx, t); err != nil {
 			return err
 		}
 	}
@@ -196,7 +196,7 @@ type WatchOptions struct {
 
 // WatchListener is a listener for watch operations.
 type WatchListener interface {
-	OnWatchEvent(eventType string, object Object) error
+	OnWatchEvent(ctx context.Context, eventType string, object Object) error
 }
 
 // Watch watches the given type.
@@ -255,7 +255,7 @@ func (c *StreamingClient) Watch(ctx context.Context, typeInfo *typeInfo, namespa
 				return fmt.Errorf("decoding %T from %v: %w", object, u, err)
 			}
 		}
-		if err := listener.OnWatchEvent(event.Type, object); err != nil {
+		if err := listener.OnWatchEvent(ctx, event.Type, object); err != nil {
 			return err
 		}
 

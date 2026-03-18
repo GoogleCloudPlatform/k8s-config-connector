@@ -863,6 +863,13 @@ spec:
               observedState:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Time when the trigger was created.
+                    type: string
+                  id:
+                    description: Output only. Unique identifier of the trigger.
+                    type: string
                 type: object
               triggerId:
                 type: string
