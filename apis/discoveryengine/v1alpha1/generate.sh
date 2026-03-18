@@ -34,4 +34,4 @@ go run . generate-mapper --service google.cloud.discoveryengine.v1 --api-version
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@v0.29.0 -w  pkg/controller/direct/discoveryengine/
+go run golang.org/x/tools/cmd/goimports@v0.29.0 -w  pkg/controller/direct/discoveryengine/
