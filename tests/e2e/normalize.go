@@ -922,7 +922,6 @@ func findLinksInEvent(t *testing.T, replacement *Replacements, event *test.LogEn
 		".response.pscConnections[].network",
 		".selfLink",
 		".selfLinkWithId",
-		".targetLink",
 	)
 
 	wellKnownPaths := map[string]string{
@@ -1190,7 +1189,9 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	}
 
 	// Specific to ComputeReservation
-	visitor.SortSlice(".shareSettings.projectMap")
+	{
+		visitor.SortSlice(".shareSettings.projectMap")
+	}
 
 	// BigQueryConnection
 	{

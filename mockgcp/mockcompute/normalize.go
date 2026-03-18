@@ -75,6 +75,51 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		}
 	})
 
+	if isGetOperation(event) {
+		targetLink := ""
+		targetId := ""
+
+		event.VisitResponseStringValues(func(path string, value string) {
+			switch path {
+			case ".targetLink":
+				targetLink = value
+			case ".targetId":
+				targetId = value
+			}
+		})
+
+		if targetLink != "" && targetId != "" {
+			tokens := strings.Split(targetLink, "/")
+			n := len(tokens)
+			if n >= 2 {
+				kind := tokens[n-2]
+
+				placeholder := "${" + strings.TrimSuffix(kind, "s") + "ID}"
+				if strings.HasSuffix(kind, "ies") {
+					placeholder = "${" + strings.TrimSuffix(kind, "ies") + "yID}"
+				}
+				switch kind {
+				case "addresses":
+					placeholder = "${addressID}"
+				}
+
+				// We _should_ differentiate between ID and number.
+				// But this causes too many diffs right now.
+
+				klog.Infof("targetLink=%q, targetId=%q, placeholder=%q", targetLink, targetId, placeholder)
+
+				replacements.ReplaceStringValue(targetId, placeholder)
+
+				if v := tokens[n-1]; v == "default" {
+					// Don't replace, "default" is a well-known value used for both subnetwork and network
+					// We could instead do something like this:  replacements.ReplaceStringValue(kind + "/" + v, kind + "/" + placeholder)
+				} else {
+					replacements.ReplaceStringValue(v, placeholder)
+				}
+			}
+		}
+	}
+
 	if kind == "compute#routeList" {
 		// Sort the items list, because otherwise the order is by name, and the name includes an unpredictable hash.
 		replacements.SortSliceBy(".items", "destRange")
@@ -117,7 +162,6 @@ func isGetOperation(event mockgcpregistry.Event) bool {
 
 // isComputeAPI returns true if this is a compute URL
 func isComputeAPI(event mockgcpregistry.Event) bool {
-	fmt.Printf("DEBUG: isComputeAPI URL=%q\n", event.URL())
 	u, err := url.Parse(event.URL())
 	if err != nil {
 		klog.Fatalf("cannot parse URL %q", event.URL())

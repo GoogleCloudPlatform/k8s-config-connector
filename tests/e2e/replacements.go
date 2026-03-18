@@ -158,8 +158,6 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 		return "${processorID}"
 	case "processorVersions":
 		return "${processorVersionID}"
-	case "reservations":
-		return "${reservationID}"
 	case "keyHandles":
 		return "1a1a1a-222b-3cc3-d444-e555ee555555"
 	default:
