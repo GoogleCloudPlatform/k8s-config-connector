@@ -24,9 +24,12 @@ import (
 	k8s "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 )
 
-func newReconcilerOverrideTransformer(reconcilerOverride map[schema.GroupKind]k8s.ReconcilerType) ObjectTransformer {
+func newReconcilerOverrideTransformer(namespace string, reconcilerOverride map[schema.GroupKind]k8s.ReconcilerType) ObjectTransformer {
 	return func(ctx context.Context, obj client.Object) error {
 		if ccc, ok := obj.(*corev1beta1.ConfigConnectorContext); ok {
+			if namespace != "" && ccc.GetNamespace() != namespace {
+				return nil
+			}
 			if len(reconcilerOverride) == 0 {
 				return nil
 			}

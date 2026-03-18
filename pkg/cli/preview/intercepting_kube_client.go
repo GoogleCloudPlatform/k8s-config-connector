@@ -76,7 +76,7 @@ func newInterceptingKubeClient(recorder *Recorder, upstreamRestConfig *rest.Conf
 		upstreamClient:     upstreamClient,
 		upstreamRestMapper: upstreamRestMapper,
 		recorder:           recorder,
-		objectTransformers: objectTransformers,
+		objectTransformers: slices.Clone(objectTransformers),
 	}, nil
 }
 

@@ -95,7 +95,7 @@ func NewPreviewInstance(recorder *Recorder, options PreviewInstanceOptions) (*Pr
 	}
 
 	hookKube, err := newInterceptingKubeClient(recorder, upstreamRESTConfig, []ObjectTransformer{
-		newReconcilerOverrideTransformer(options.ReconcilerOverride),
+		newReconcilerOverrideTransformer(options.Namespace, options.ReconcilerOverride),
 	})
 	if err != nil {
 		return nil, err
