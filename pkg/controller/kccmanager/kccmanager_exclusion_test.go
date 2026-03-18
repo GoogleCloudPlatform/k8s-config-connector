@@ -19,6 +19,7 @@ package kccmanager_test
 
 import (
 	"context"
+	"strings"
 	"fmt"
 	"math/rand"
 	"testing"
@@ -88,7 +89,8 @@ func TestResourceExclusion(t *testing.T) {
 				},
 				HealthProbeBindAddress: "0",
 			},
-			ScopedNamespace: "", // Cluster mode
+			ScopedNamespace:   "", // Cluster mode
+			SkipNameValidation: true,
 		}
 
 		kccMgr, err := kccmanager.New(ctx, restConfig, cfg)
@@ -196,7 +198,8 @@ func TestResourceExclusion(t *testing.T) {
 					},
 				},
 			},
-			ScopedNamespace: ns,
+			ScopedNamespace:   ns,
+			SkipNameValidation: true,
 		}
 		kccMgr, err := kccmanager.New(ctx, restConfig, cfg)
 		if err != nil {
@@ -335,7 +338,8 @@ func TestResourceExclusion(t *testing.T) {
 					},
 				},
 			},
-			ScopedNamespace: ns,
+			ScopedNamespace:   ns,
+			SkipNameValidation: true,
 		}
 		kccMgr, err := kccmanager.New(ctx, restConfig, cfg)
 		if err != nil {
@@ -428,6 +432,200 @@ func TestResourceExclusion(t *testing.T) {
 		})
 		if err == nil {
 			t.Fatalf("StorageBucket should NOT have been reconciled (Local Disable active), but obtained conditions")
+		}
+	})
+
+	// 4. Namespace Mode Inclusion (Allow-list)
+	t.Run("InclusiveMode", func(t *testing.T) {
+		ns := "test-ns-inclusive-" + randomString()
+		ensureNamespace(ctx, t, c, ns)
+
+		// Create ConfigConnectorContext in ns with Inclusive Mode enabling only PubSubTopic
+		ccc := &operatorv1beta1.ConfigConnectorContext{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      operatorv1beta1.ConfigConnectorContextAllowedName,
+				Namespace: ns,
+			},
+			Spec: operatorv1beta1.ConfigConnectorContextSpec{
+				Experiments: &operatorv1beta1.Experiments{
+					ResourceSettings: &operatorv1beta1.ResourceSettings{
+						Enabled: pointer.Bool(true),
+						Resources: []operatorv1beta1.ResourceFilter{
+							{
+								Group: "pubsub.cnrm.cloud.google.com",
+								Kind:  "PubSubTopic",
+							},
+						},
+					},
+				},
+			},
+		}
+		if err := c.Create(ctx, ccc); err != nil {
+			t.Fatalf("error creating ConfigConnectorContext: %v", err)
+		}
+
+		// Start Manager in Namespace Mode
+		cfg := kccmanager.Config{
+			ManagerOptions: manager.Options{
+				Controller: config.Controller{
+					SkipNameValidation: &skipNameValidation,
+				},
+				Metrics: server.Options{
+					BindAddress: "0",
+				},
+				HealthProbeBindAddress: "0",
+				Cache: cache.Options{
+					DefaultNamespaces: map[string]cache.Config{
+						ns: {},
+					},
+				},
+			},
+			ScopedNamespace:   ns,
+			SkipNameValidation: true,
+		}
+		kccMgr, err := kccmanager.New(ctx, restConfig, cfg)
+		if err != nil {
+			t.Fatalf("error creating kcc manager: %v", err)
+		}
+
+		mgrCtx, cancel := context.WithCancel(ctx)
+		defer cancel()
+		go func() {
+			kccMgr.Start(mgrCtx)
+		}()
+
+		// A. Create PubSubTopic in ns -> Should be Reconciled (Enabled by Allow-list)
+		topicName := "test-topic-inclusive-" + randomString()
+		topic := &unstructured.Unstructured{
+			Object: map[string]interface{}{
+				"apiVersion": "pubsub.cnrm.cloud.google.com/v1beta1",
+				"kind":       "PubSubTopic",
+				"metadata": map[string]interface{}{
+					"name":      topicName,
+					"namespace": ns,
+				},
+			},
+		}
+		if err := c.Create(ctx, topic); err != nil {
+			t.Fatalf("error creating PubSubTopic: %v", err)
+		}
+		defer c.Delete(context.Background(), topic)
+
+		// Assert reconciliation (Check for Ready condition)
+		err = wait.PollImmediate(1*time.Second, 10*time.Second, func() (bool, error) {
+			u := &unstructured.Unstructured{}
+			u.SetGroupVersionKind(topic.GroupVersionKind())
+			if err := c.Get(ctx, types.NamespacedName{Name: topicName, Namespace: ns}, u); err != nil {
+				return false, err
+			}
+			status, ok := u.Object["status"].(map[string]interface{})
+			if !ok {
+				return false, nil
+			}
+			conditions, ok := status["conditions"].([]interface{})
+			if !ok {
+				return false, nil
+			}
+			if len(conditions) > 0 {
+				return true, nil
+			}
+			return false, nil
+		})
+		if err != nil {
+			t.Fatalf("PubSubTopic in inclusive mode was NOT reconciled within timeout: %v", err)
+		}
+
+		// B. Create StorageBucket in ns -> Should NOT be Reconciled (Not in Allow-list)
+		bucketName := "test-bucket-inclusive-" + randomString()
+		bucket := &unstructured.Unstructured{
+			Object: map[string]interface{}{
+				"apiVersion": "storage.cnrm.cloud.google.com/v1beta1",
+				"kind":       "StorageBucket",
+				"metadata": map[string]interface{}{
+					"name":      bucketName,
+					"namespace": ns,
+				},
+			},
+		}
+		if err := c.Create(ctx, bucket); err != nil {
+			t.Fatalf("error creating StorageBucket: %v", err)
+		}
+		defer c.Delete(context.Background(), bucket)
+
+		// Assert NO reconciliation
+		err = wait.PollImmediate(1*time.Second, 10*time.Second, func() (bool, error) {
+			u := &unstructured.Unstructured{}
+			u.SetGroupVersionKind(bucket.GroupVersionKind())
+			if err := c.Get(ctx, types.NamespacedName{Name: bucketName, Namespace: ns}, u); err != nil {
+				return false, err
+			}
+			status, ok := u.Object["status"].(map[string]interface{})
+			if !ok {
+				return false, nil
+			}
+			conditions, ok := status["conditions"].([]interface{})
+			if !ok {
+				return false, nil
+			}
+			if len(conditions) > 0 {
+				return true, nil
+			}
+			return false, nil
+		})
+		if err == nil {
+			t.Fatalf("StorageBucket should NOT have been reconciled (not in allow-list), but obtained conditions")
+		}
+	})
+
+	t.Run("ConflictMode", func(t *testing.T) {
+		ns := "test-ns-conflict-" + randomString()
+		ensureNamespace(ctx, t, c, ns)
+
+		// CC = Exclusive (false)
+		cc := &operatorv1beta1.ConfigConnector{
+			ObjectMeta: metav1.ObjectMeta{
+				Name: operatorv1beta1.ConfigConnectorAllowedName,
+			},
+			Spec: operatorv1beta1.ConfigConnectorSpec{
+				Experiments: &operatorv1beta1.CCExperiments{
+					ResourceSettings: &operatorv1beta1.ResourceSettings{
+						Enabled: pointer.Bool(false),
+					},
+				},
+			},
+		}
+		if err := c.Create(ctx, cc); err != nil {
+			t.Fatalf("error creating ConfigConnector: %v", err)
+		}
+		defer c.Delete(context.Background(), cc)
+
+		// CCC = Inclusive (true)
+		ccc := &operatorv1beta1.ConfigConnectorContext{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      operatorv1beta1.ConfigConnectorContextAllowedName,
+				Namespace: ns,
+			},
+			Spec: operatorv1beta1.ConfigConnectorContextSpec{
+				Experiments: &operatorv1beta1.Experiments{
+					ResourceSettings: &operatorv1beta1.ResourceSettings{
+						Enabled: pointer.Bool(true),
+					},
+				},
+			},
+		}
+		if err := c.Create(ctx, ccc); err != nil {
+			t.Fatalf("error creating ConfigConnectorContext: %v", err)
+		}
+		defer c.Delete(context.Background(), ccc)
+
+		cfg := kccmanager.Config{
+			ScopedNamespace: ns,
+		}
+		_, err := kccmanager.New(ctx, restConfig, cfg)
+		if err == nil {
+			t.Errorf("expected conflict error, but got nil")
+		} else if !strings.Contains(err.Error(), "conflict") {
+			t.Errorf("expected conflict error containing 'conflict', but got: %v", err)
 		}
 	})
 }

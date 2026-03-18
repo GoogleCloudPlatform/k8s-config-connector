@@ -140,6 +140,7 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 		declarative.WithObjectTransform(r.addLabels()),
 		declarative.WithObjectTransform(r.handleCCContextLifecycle()),
 		declarative.WithObjectTransform(r.applyNamespacedCustomizations()),
+		declarative.WithObjectTransform(r.checkResourceSettingsMode()),
 		declarative.WithStatus(&declarative.StatusBuilder{
 			PreflightImpl: preflight,
 		}))
@@ -801,4 +802,33 @@ func formatCNRMResourcesPresentError(kindToCount map[string]int64) error {
 	}
 	msg := "cannot finalize deletion until all Config Connector resources in namespace have been removed: there are %v Config Connector resource(s) in namespace (%v)"
 	return fmt.Errorf(msg, totalCount, strings.Join(kindCountStrings, ", "))
+}
+func (r *Reconciler) checkResourceSettingsMode() declarative.ObjectTransform {
+	return func(ctx context.Context, o declarative.DeclarativeObject, manifest *manifest.Objects) error {
+		ccc, ok := o.(*corev1beta1.ConfigConnectorContext)
+		if !ok {
+			return nil
+		}
+		cc, err := controllers.GetConfigConnector(ctx, r.client, controllers.ValidConfigConnectorNamespacedName)
+		if err != nil {
+			if apierrors.IsNotFound(err) {
+				return nil
+			}
+			return err
+		}
+
+		ccSettings := cc.Spec.Experiments.ResourceSettings
+		cccSettings := ccc.Spec.Experiments.ResourceSettings
+
+		// (Omitted, Inclusive)
+		if (ccSettings == nil || ccSettings.Enabled == nil) && (cccSettings != nil && cccSettings.Enabled != nil && *cccSettings.Enabled) {
+			r.recorder.Event(ccc, corev1.EventTypeWarning, "InconsistentResourceSettings", "Inclusive mode enabled via ConfigConnectorContext, but ConfigConnector has no explicit ResourceSettings. Please update ConfigConnector to Inclusive mode for consistency.")
+		}
+
+		// (Inclusive, Omitted)
+		if (cccSettings == nil || cccSettings.Enabled == nil) && (ccSettings != nil && ccSettings.Enabled != nil && *ccSettings.Enabled) {
+			r.recorder.Event(ccc, corev1.EventTypeWarning, "InconsistentResourceSettings", "Inclusive mode enabled via ConfigConnector, but ConfigConnectorContext has no explicit ResourceSettings for this namespace. Please update ConfigConnectorContext to Inclusive mode for consistency.")
+		}
+		return nil
+	}
 }

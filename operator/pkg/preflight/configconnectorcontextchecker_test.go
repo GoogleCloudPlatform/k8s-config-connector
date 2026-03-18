@@ -170,6 +170,105 @@ func TestConfigConnectorContextChecker(t *testing.T) {
 	}
 }
 
+func TestValidateResourceSettingsMode(t *testing.T) {
+	t.Parallel()
+	boolPtr := func(b bool) *bool { return &b }
+	tests := []struct {
+		name string
+		cc   *corev1beta1.ConfigConnector
+		ccc  *corev1beta1.ConfigConnectorContext
+		err  error
+	}{
+		{
+			name: "Both nil",
+			cc:   &corev1beta1.ConfigConnector{},
+			ccc:  &corev1beta1.ConfigConnectorContext{},
+			err:  nil,
+		},
+		{
+			name: "CC omitted, CCC inclusive",
+			cc:   &corev1beta1.ConfigConnector{},
+			ccc: &corev1beta1.ConfigConnectorContext{
+				Spec: corev1beta1.ConfigConnectorContextSpec{
+					Experiments: &corev1beta1.Experiments{
+						ResourceSettings: &corev1beta1.ResourceSettings{
+							Enabled: boolPtr(true),
+						},
+					},
+				},
+			},
+			err: nil,
+		},
+		{
+			name: "CC inclusive, CCC omitted",
+			cc: &corev1beta1.ConfigConnector{
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Experiments: &corev1beta1.CCExperiments{
+						ResourceSettings: &corev1beta1.ResourceSettings{
+							Enabled: boolPtr(true),
+						},
+					},
+				},
+			},
+			ccc: &corev1beta1.ConfigConnectorContext{},
+			err: nil,
+		},
+		{
+			name: "Explicit Conflict (CC: Exclusive, CCC: Inclusive)",
+			cc: &corev1beta1.ConfigConnector{
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Experiments: &corev1beta1.CCExperiments{
+						ResourceSettings: &corev1beta1.ResourceSettings{
+							Enabled: boolPtr(false),
+						},
+					},
+				},
+			},
+			ccc: &corev1beta1.ConfigConnectorContext{
+				Spec: corev1beta1.ConfigConnectorContextSpec{
+					Experiments: &corev1beta1.Experiments{
+						ResourceSettings: &corev1beta1.ResourceSettings{
+							Enabled: boolPtr(true),
+						},
+					},
+				},
+			},
+			err: fmt.Errorf("conflict: ConfigConnector and ConfigConnectorContext cannot mix inclusive (enabled: true) and exclusive (enabled: false) modes"),
+		},
+		{
+			name: "Explicit Match (CC: Inclusive, CCC: Inclusive)",
+			cc: &corev1beta1.ConfigConnector{
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Experiments: &corev1beta1.CCExperiments{
+						ResourceSettings: &corev1beta1.ResourceSettings{
+							Enabled: boolPtr(true),
+						},
+					},
+				},
+			},
+			ccc: &corev1beta1.ConfigConnectorContext{
+				Spec: corev1beta1.ConfigConnectorContextSpec{
+					Experiments: &corev1beta1.Experiments{
+						ResourceSettings: &corev1beta1.ResourceSettings{
+							Enabled: boolPtr(true),
+						},
+					},
+				},
+			},
+			err: nil,
+		},
+	}
+
+	for _, tc := range tests {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			err := validateResourceSettingsMode(tc.cc, tc.ccc)
+			asserts.AssertErrorIsExpected(t, err, tc.err)
+		})
+	}
+}
+
 func TestValidateGSAFormat(t *testing.T) {
 	tests := []struct {
 		name string

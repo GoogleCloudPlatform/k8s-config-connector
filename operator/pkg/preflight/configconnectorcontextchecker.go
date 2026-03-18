@@ -22,6 +22,7 @@ import (
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 
+	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -65,10 +66,15 @@ func (c *ConfigConnectorContextChecker) Preflight(ctx context.Context, o declara
 	// Validate mode consistency with ConfigConnector
 	cc := &corev1beta1.ConfigConnector{}
 	if c.client != nil {
-		if err := c.client.Get(ctx, types.NamespacedName{Name: "configconnector.core.cnrm.cloud.google.com"}, cc); err == nil {
-			if err := validateResourceSettingsMode(cc, ccc); err != nil {
-				return err
+		if err := c.client.Get(ctx, types.NamespacedName{Name: "configconnector.core.cnrm.cloud.google.com"}, cc); err != nil {
+			if !errors.IsNotFound(err) {
+				return fmt.Errorf("error getting ConfigConnector: %w", err)
 			}
+			// If not found, we use an empty CC object which defaults to Exclusion mode.
+			cc = &corev1beta1.ConfigConnector{}
+		}
+		if err := validateResourceSettingsMode(cc, ccc); err != nil {
+			return err
 		}
 	}
 
@@ -76,19 +82,21 @@ func (c *ConfigConnectorContextChecker) Preflight(ctx context.Context, o declara
 }
 
 func validateResourceSettingsMode(cc *corev1beta1.ConfigConnector, ccc *corev1beta1.ConfigConnectorContext) error {
-	if cc.Spec.Experiments == nil || cc.Spec.Experiments.ResourceSettings == nil {
+	var ccEnabled, cccEnabled *bool
+	if cc != nil && cc.Spec.Experiments != nil && cc.Spec.Experiments.ResourceSettings != nil {
+		ccEnabled = cc.Spec.Experiments.ResourceSettings.Enabled
+	}
+	if ccc != nil && ccc.Spec.Experiments != nil && ccc.Spec.Experiments.ResourceSettings != nil {
+		cccEnabled = ccc.Spec.Experiments.ResourceSettings.Enabled
+	}
+
+	// If one is omitted, we allow it for transition (lenient mode)
+	if ccEnabled == nil || cccEnabled == nil {
 		return nil
 	}
-	if ccc.Spec.Experiments == nil || ccc.Spec.Experiments.ResourceSettings == nil {
-		return nil
-	}
-	ccSettings := cc.Spec.Experiments.ResourceSettings
-	cccSettings := ccc.Spec.Experiments.ResourceSettings
 
-	ccInclusive := ccSettings.Enabled != nil && *ccSettings.Enabled
-	cccInclusive := cccSettings.Enabled != nil && *cccSettings.Enabled
-
-	if ccInclusive != cccInclusive {
+	// Direct Conflict (Reject)
+	if *ccEnabled != *cccEnabled {
 		return fmt.Errorf("conflict: ConfigConnector and ConfigConnectorContext cannot mix inclusive (enabled: true) and exclusive (enabled: false) modes")
 	}
 	return nil

@@ -56,6 +56,7 @@ import (
 	crcontroller "sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/source"
@@ -109,9 +110,13 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 		ccSettings = cc.Spec.Experiments.ResourceSettings
 	}
 
-	if ccSettings != nil && cccSettings != nil {
-		ccInclusive := ccSettings.Enabled != nil && *ccSettings.Enabled
-		cccInclusive := cccSettings.Enabled != nil && *cccSettings.Enabled
+	if (ccSettings == nil || ccSettings.Enabled == nil) && (cccSettings != nil && cccSettings.Enabled != nil && *cccSettings.Enabled) {
+		log.FromContext(ctx).Info("Warning: Inclusive mode enabled via ConfigConnectorContext, but ConfigConnector has no explicit ResourceSettings. Please update ConfigConnector to Inclusive mode for consistency.")
+	} else if (cccSettings == nil || cccSettings.Enabled == nil) && (ccSettings != nil && ccSettings.Enabled != nil && *ccSettings.Enabled) {
+		log.FromContext(ctx).Info("Warning: Inclusive mode enabled via ConfigConnector, but ConfigConnectorContext has no explicit ResourceSettings for this namespace. Please update ConfigConnectorContext to Inclusive mode for consistency.")
+	} else if ccSettings != nil && ccSettings.Enabled != nil && cccSettings != nil && cccSettings.Enabled != nil {
+		ccInclusive := *ccSettings.Enabled
+		cccInclusive := *cccSettings.Enabled
 		if ccInclusive != cccInclusive {
 			return fmt.Errorf("conflict: ConfigConnector and ConfigConnectorContext cannot mix inclusive (enabled: true) and exclusive (enabled: false) modes")
 		}
@@ -242,7 +247,7 @@ type controllerContext struct {
 type registrationFunc func(*ReconcileRegistration, *apiextensions.CustomResourceDefinition, schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error)
 
 func (r *ReconcileRegistration) Reconcile(ctx context.Context, request reconcile.Request) (reconcile.Result, error) {
-	logger := r.mgr.GetLogger()
+	logger := log.FromContext(ctx)
 
 	// Fetch the TypeProvider tp
 	crd := &apiextensions.CustomResourceDefinition{}
@@ -305,7 +310,7 @@ func registerDefaultControllers(ctx context.Context, config *config.ControllerCo
 }
 
 func registerDefaultController(ctx context.Context, r *ReconcileRegistration, config *config.ControllerConfig, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind, scopedNamespace string, cccSettings *operatorv1beta1.ResourceSettings, ccSettings *operatorv1beta1.ResourceSettings) (k8s.SchemaReferenceUpdater, error) {
-	logger := r.mgr.GetLogger()
+	logger := log.FromContext(ctx)
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
 	}
