@@ -58,6 +58,7 @@ require (
 	cloud.google.com/go/notebooks v1.12.7
 	cloud.google.com/go/orchestration v1.11.10
 	cloud.google.com/go/orgpolicy v1.15.1
+	cloud.google.com/go/osconfig v1.15.1
 	cloud.google.com/go/parametermanager v0.3.1
 	cloud.google.com/go/privilegedaccessmanager v0.3.1
 	cloud.google.com/go/profiler v0.4.3
@@ -141,7 +142,6 @@ require (
 require go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 
 require (
-	cloud.google.com/go/osconfig v1.15.1 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.31.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.54.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.54.0 // indirect
