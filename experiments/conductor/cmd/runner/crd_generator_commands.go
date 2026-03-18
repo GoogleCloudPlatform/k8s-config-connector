@@ -64,7 +64,7 @@ go run . generate-mapper \
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/<SERVICE>/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@v0.29.0 -w pkg/controller/direct/<SERVICE>/
 `
 
 // NOT USED
@@ -80,7 +80,7 @@ At the end of the script, ensure the following lines are present:
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/<SERVICE>/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@v0.29.0 -w pkg/controller/direct/<SERVICE>/
 `
 
 // NOT USED

@@ -25,7 +25,7 @@ generate-grpc-for-google-protos: tools
 		--go-grpc_opt paths=source_relative \
 		./.build/googleapis/google/cloud/sql/v1beta4/*.proto
 
-	go run -mod=readonly golang.org/x/tools/cmd/goimports@$(GOLANG_X_TOOLS_VERSION) -w generated
+	go run -mod=readonly golang.org/x/tools/cmd/goimports@v0.29.0 -w generated
 
 .PHONY: tools
 tools:
