@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	bigquery "google.golang.org/api/bigquery/v2"
 	"google.golang.org/api/option"
@@ -244,6 +245,10 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		log.Info("no diff detected for Table", "name", a.id)
 		return a.UpdateStatusForUpdate(ctx, updateOp, a.actual)
 	}
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	report.AddField("spec", a.actual, table)
+	structuredreporting.ReportDiff(ctx, report)
 
 	a.customTableLogic(table)
 	parent := a.id.Parent()
