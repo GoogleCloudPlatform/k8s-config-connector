@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
 	k8s "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 )
 
@@ -45,4 +46,19 @@ func newReconcilerOverrideTransformer(namespace string, reconcilerOverride map[s
 		}
 		return nil
 	}
+}
+
+// NewSetAlternativeOverrideTransformer returns a transformer that sets the controller override to the alternative controller for each resource.
+func NewSetAlternativeOverrideTransformer(namespace string) ObjectTransformer {
+	config := resourceconfig.LoadConfig()
+	alternativeOverride := make(map[schema.GroupKind]k8s.ReconcilerType)
+	for gk, controllerConfig := range config {
+		for _, rc := range controllerConfig.SupportedControllers {
+			if rc != controllerConfig.DefaultController {
+				alternativeOverride[gk] = rc
+				break
+			}
+		}
+	}
+	return newReconcilerOverrideTransformer(namespace, alternativeOverride)
 }

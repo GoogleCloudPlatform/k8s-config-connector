@@ -35,7 +35,7 @@ func TestObjectTransformer(t *testing.T) {
 	}
 
 	// 2. Define a transformer that modifies the object
-	transformer := func(ctx context.Context, obj client.Object) error {
+	transformer := ObjectTransformer(func(ctx context.Context, obj client.Object) error {
 		annotations := obj.GetAnnotations()
 		if annotations == nil {
 			annotations = make(map[string]string)
@@ -43,7 +43,7 @@ func TestObjectTransformer(t *testing.T) {
 		annotations["transformed"] = "true"
 		obj.SetAnnotations(annotations)
 		return nil
-	}
+	})
 
 	// 3. Define a dummy object
 	obj := &unstructured.Unstructured{}
