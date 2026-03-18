@@ -1,0 +1,278 @@
+POST https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/test-instance-${uniqueId}:backup?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "backupId": "test-backup-${uniqueId}",
+  "ttl": "86400s"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/instances/test-instance-${uniqueId}",
+    "verb": "backup"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/instances/test-instance-${uniqueId}",
+    "verb": "backup"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
+    "authorizationMode": "AUTH_DISABLED",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "DISABLED"
+    },
+    "backupCollection": "projects/${projectId}/locations/us-central1/backupCollections/ee37999e-2b25-44b8-a151-b994a309b58f",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deletionProtectionEnabled": false,
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20260217_02_00",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
+    "engineVersion": "VALKEY_7_2",
+    "mode": "CLUSTER_DISABLED",
+    "name": "projects/${projectId}/locations/us-central1/instances/test-instance-${uniqueId}",
+    "nodeConfig": {
+      "sizeGb": 13
+    },
+    "nodeType": "HIGHMEM_MEDIUM",
+    "persistenceConfig": {
+      "mode": "DISABLED"
+    },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_PRIMARY",
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      },
+      {
+        "connectionType": "CONNECTION_TYPE_READER",
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      }
+    ],
+    "replicaCount": 0,
+    "serverCaMode": "SERVER_CA_MODE_UNSPECIFIED",
+    "shardCount": 1,
+    "state": "ACTIVE",
+    "transitEncryptionMode": "TRANSIT_ENCRYPTION_DISABLED",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "zoneDistributionConfig": {
+      "mode": "SINGLE_ZONE",
+      "zone": "us-central1-a"
+    }
+  }
+}
+
+---
+
+GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/test-instance-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "authorizationMode": "AUTH_DISABLED",
+  "automatedBackupConfig": {
+    "automatedBackupMode": "DISABLED"
+  },
+  "backupCollection": "projects/${projectId}/locations/us-central1/backupCollections/ee37999e-2b25-44b8-a151-b994a309b58f",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deletionProtectionEnabled": false,
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20260217_02_00",
+  "encryptionInfo": {
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+  },
+  "engineVersion": "VALKEY_7_2",
+  "mode": "CLUSTER_DISABLED",
+  "name": "projects/${projectId}/locations/us-central1/instances/test-instance-${uniqueId}",
+  "nodeConfig": {
+    "sizeGb": 13
+  },
+  "nodeType": "HIGHMEM_MEDIUM",
+  "persistenceConfig": {
+    "mode": "DISABLED"
+  },
+  "pscAttachmentDetails": [
+    {
+      "connectionType": "CONNECTION_TYPE_PRIMARY",
+      "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+    },
+    {
+      "connectionType": "CONNECTION_TYPE_READER",
+      "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+    }
+  ],
+  "replicaCount": 0,
+  "serverCaMode": "SERVER_CA_MODE_UNSPECIFIED",
+  "shardCount": 1,
+  "state": "ACTIVE",
+  "transitEncryptionMode": "TRANSIT_ENCRYPTION_DISABLED",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "zoneDistributionConfig": {
+    "mode": "SINGLE_ZONE",
+    "zone": "us-central1-a"
+  }
+}
+
+---
+
+GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupCollections/ee37999e-2b25-44b8-a151-b994a309b58f/backups/test-backup-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backupFiles": [
+    {
+      "createTime": "2026-03-18T18:17:22.249Z",
+      "fileName": "422194abb71048816e6ac32e9513b3ec311e9634.rdb",
+      "sizeBytes": "141"
+    }
+  ],
+  "backupType": "ON_DEMAND",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "encryptionInfo": {
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION",
+    "lastUpdateTime": "2026-03-18T18:17:22.249Z"
+  },
+  "engineVersion": "VALKEY_7_2",
+  "expireTime": "2024-04-01T12:34:56.123456Z",
+  "instance": "projects/${projectId}/locations/us-central1/instances/test-instance-${uniqueId}",
+  "instanceUid": "c8ea3fab-2172-4a2b-8c0f-664b4b11177f",
+  "name": "projects/${projectId}/locations/us-central1/backupCollections/ee37999e-2b25-44b8-a151-b994a309b58f/backups/test-backup-${uniqueId}",
+  "nodeType": "HIGHMEM_MEDIUM",
+  "shardCount": 1,
+  "state": "ACTIVE",
+  "totalSizeBytes": "141",
+  "uid": "111111111111111111111"
+}
+
+---
+
+DELETE https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupCollections/ee37999e-2b25-44b8-a151-b994a309b58f/backups/test-backup-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/backupCollections/ee37999e-2b25-44b8-a151-b994a309b58f/backups/test-backup-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/backupCollections/ee37999e-2b25-44b8-a151-b994a309b58f/backups/test-backup-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

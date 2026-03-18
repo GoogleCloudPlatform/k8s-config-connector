@@ -1,0 +1,8 @@
+- pre: gcloud memorystore instances create test-instance-${uniqueId} --location=us-central1 --project=${projectId} --mode=cluster-disabled --zone-distribution-config-mode=single-zone --zone-distribution-config=us-central1-a --shard-count=1 --replica-count=0
+- exec: gcloud memorystore instances backup projects/${projectId}/locations/us-central1/instances/test-instance-${uniqueId} --backup-id=test-backup-${uniqueId} --ttl=1d
+- pre: |
+    rm -f /tmp/backup_collection_id
+    gcloud memorystore instances describe projects/${projectId}/locations/us-central1/instances/test-instance-${uniqueId} --format="value(backupCollection)" | sed 's|.*/backupCollections/||' > /tmp/backup_collection_id
+- exec: gcloud memorystore backup-collections backups describe projects/${projectId}/locations/us-central1/backupCollections/$(cat /tmp/backup_collection_id)/backups/test-backup-${uniqueId}
+- exec: gcloud memorystore backup-collections backups delete projects/${projectId}/locations/us-central1/backupCollections/$(cat /tmp/backup_collection_id)/backups/test-backup-${uniqueId} --quiet --async
+- post: gcloud memorystore instances delete projects/${projectId}/locations/us-central1/instances/test-instance-${uniqueId} --quiet --async
