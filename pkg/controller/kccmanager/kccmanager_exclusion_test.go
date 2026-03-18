@@ -19,9 +19,9 @@ package kccmanager_test
 
 import (
 	"context"
-	"strings"
 	"fmt"
 	"math/rand"
+	"strings"
 	"testing"
 	"time"
 
@@ -89,7 +89,7 @@ func TestResourceExclusion(t *testing.T) {
 				},
 				HealthProbeBindAddress: "0",
 			},
-			ScopedNamespace:   "", // Cluster mode
+			ScopedNamespace:    "", // Cluster mode
 			SkipNameValidation: true,
 		}
 
@@ -198,7 +198,7 @@ func TestResourceExclusion(t *testing.T) {
 					},
 				},
 			},
-			ScopedNamespace:   ns,
+			ScopedNamespace:    ns,
 			SkipNameValidation: true,
 		}
 		kccMgr, err := kccmanager.New(ctx, restConfig, cfg)
@@ -338,7 +338,7 @@ func TestResourceExclusion(t *testing.T) {
 					},
 				},
 			},
-			ScopedNamespace:   ns,
+			ScopedNamespace:    ns,
 			SkipNameValidation: true,
 		}
 		kccMgr, err := kccmanager.New(ctx, restConfig, cfg)
@@ -480,7 +480,7 @@ func TestResourceExclusion(t *testing.T) {
 					},
 				},
 			},
-			ScopedNamespace:   ns,
+			ScopedNamespace:    ns,
 			SkipNameValidation: true,
 		}
 		kccMgr, err := kccmanager.New(ctx, restConfig, cfg)
