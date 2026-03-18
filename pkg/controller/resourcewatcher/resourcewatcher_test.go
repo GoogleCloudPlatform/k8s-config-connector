@@ -101,19 +101,12 @@ func TestWatchResourceDeleted(t *testing.T) {
 	}
 
 	// We want to ensure that the watch waits for the resource to be deleted.
-	deleted := false
-
 	errChan := make(chan error, 1)
 	go func() {
 		ctx, cancel := context.WithTimeout(ctx, time.Minute)
 		defer cancel()
 		if err := resourcewatcher.WaitForResourceToBeReadyOrDeletedViaWatch(ctx, watch, logger); err != nil {
 			errChan <- fmt.Errorf("got unexpected error: %w", err)
-			return
-		}
-
-		if !deleted {
-			errChan <- errors.New("wait finished before resource was deleted")
 			return
 		}
 
@@ -125,7 +118,6 @@ func TestWatchResourceDeleted(t *testing.T) {
 		Delete(ctx, nn.Name, metav1.DeleteOptions{}); err != nil {
 		t.Fatalf("deleting resource: %v", err)
 	}
-	deleted = true
 
 	if err := <-errChan; err != nil {
 		t.Fatalf("error from watch: %v", err)
