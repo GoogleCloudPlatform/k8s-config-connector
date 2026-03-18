@@ -161,7 +161,7 @@ func CloudFunctionsFunctionStatus_FromProto(mapCtx *direct.MapContext, in *pb.Cl
 	// MISSING: Runtime
 	// MISSING: Timeout
 	// MISSING: AvailableMemoryMb
-	
+
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.VersionID = direct.LazyPtr(in.GetVersionId())
 	// MISSING: Labels
@@ -208,7 +208,7 @@ func CloudFunctionsFunctionStatus_ToProto(mapCtx *direct.MapContext, in *krm.Clo
 	// MISSING: Runtime
 	// MISSING: Timeout
 	// MISSING: AvailableMemoryMb
-	
+
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.VersionId = direct.ValueOf(in.VersionID)
 	// MISSING: Labels
