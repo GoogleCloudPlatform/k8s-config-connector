@@ -100,6 +100,20 @@ spec:
           desiredState: "INSTALLED"
           apt:
             name: "bazel"
+      - id: "yum-repo"
+        repository:
+          yum:
+            id: "yum-repo-id"
+            baseURL: "http://mirror.centos.org/centos/8/BaseOS/x86_64/os/"
+            displayName: "CentOS-8 - Base"
+            gpgKeys: ["http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-Official"]
+      - id: "zypper-repo"
+        repository:
+          zypper:
+            id: "zypper-repo-id"
+            baseURL: "http://download.opensuse.org/distribution/leap/15.2/repo/oss/"
+            displayName: "openSUSE-Leap-15.2-Oss"
+            gpgKeys: ["http://download.opensuse.org/distribution/leap/15.2/repo/oss/repodata/repomd.xml.key"]
       - id: "deb-local-path-to-gcs"
         pkg:
           desiredState: "INSTALLED"
@@ -154,5 +168,6 @@ spec:
     disruptionBudget:
       fixed: 1
     minWaitDuration: "3.5s"
+  skipAwaitRollout: true
   projectRef:
     external: "projects/${projectId}"

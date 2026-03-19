@@ -3125,9 +3125,6 @@
 [missing_field] crd=osconfigguestpolicies.osconfig.cnrm.cloud.google.com version=v1beta1: field ".spec.recipes[].updateSteps[].scriptRun.allowedExitCodes[]" is not set in unstructured objects
 [missing_field] crd=osconfigguestpolicies.osconfig.cnrm.cloud.google.com version=v1beta1: field ".spec.recipes[].updateSteps[].scriptRun.interpreter" is not set in unstructured objects
 [missing_field] crd=osconfigguestpolicies.osconfig.cnrm.cloud.google.com version=v1beta1: field ".spec.recipes[].updateSteps[].scriptRun.script" is not set in unstructured objects
-[missing_field] crd=osconfigospolicyassignments.osconfig.cnrm.cloud.google.com version=v1beta1: field ".spec.osPolicies[].resourceGroups[].resources[].repository.yum.baseURL" is not set in unstructured objects
-[missing_field] crd=osconfigospolicyassignments.osconfig.cnrm.cloud.google.com version=v1beta1: field ".spec.osPolicies[].resourceGroups[].resources[].repository.zypper.baseURL" is not set in unstructured objects
-[missing_field] crd=osconfigospolicyassignments.osconfig.cnrm.cloud.google.com version=v1beta1: field ".spec.skipAwaitRollout" is not set in unstructured objects
 [missing_field] crd=privatecacapools.privateca.cnrm.cloud.google.com version=v1beta1: field ".spec.issuancePolicy.baselineValues.caOptions.zeroMaxIssuerPathLength" is not set in unstructured objects
 [missing_field] crd=privatecacertificateauthorities.privateca.cnrm.cloud.google.com version=v1beta1: field ".spec.config.subjectConfig.subject.countryCode" is not set in unstructured objects
 [missing_field] crd=privatecacertificateauthorities.privateca.cnrm.cloud.google.com version=v1beta1: field ".spec.config.subjectConfig.subject.locality" is not set in unstructured objects

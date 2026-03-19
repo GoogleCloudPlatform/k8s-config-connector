@@ -91,6 +91,20 @@ spec:
           deb:
             source:
               localPath: "$HOME/new-package.deb"
+      - id: "yum-repo"
+        repository:
+          yum:
+            id: "yum-repo-id-updated"
+            baseURL: "http://mirror.centos.org/centos/8/BaseOS/x86_64/os/updated"
+            displayName: "CentOS-8 - Base Updated"
+            gpgKeys: ["http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-Official-Updated"]
+      - id: "zypper-repo"
+        repository:
+          zypper:
+            id: "zypper-repo-id-updated"
+            baseURL: "http://download.opensuse.org/distribution/leap/15.2/repo/oss/updated"
+            displayName: "openSUSE-Leap-15.2-Oss Updated"
+            gpgKeys: ["http://download.opensuse.org/distribution/leap/15.2/repo/oss/repodata/repomd.xml.key.updated"]
       - id: "deb-local-path-to-gcs"
         pkg:
           desiredState: "REMOVED"
@@ -143,5 +157,6 @@ spec:
     disruptionBudget:
       fixed: 2
     minWaitDuration: "7.5s"
+  skipAwaitRollout: true
   projectRef:
     external: "projects/${projectId}"
