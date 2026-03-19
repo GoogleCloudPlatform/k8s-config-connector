@@ -26,7 +26,7 @@ var MetastoreBackupGVK = GroupVersion.WithKind("MetastoreBackup")
 type MetastoreBackupParent struct {
 	// +required
 	// The MetastoreService that the backup belongs to.
-	ServiceRef metastorev1alpha1.ServiceRef `json:"serviceRef"`
+	ServiceRef MetastoreServiceRef `json:"serviceRef"`
 }
 
 // MetastoreBackupSpec defines the desired state of MetastoreBackup

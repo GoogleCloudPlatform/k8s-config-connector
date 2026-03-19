@@ -24,7 +24,6 @@ import (
 	"context"
 	"fmt"
 
-	krmv1alplpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -122,8 +121,8 @@ func (a *MetastoreBackupAdapter) Find(ctx context.Context) (bool, error) {
 func (a *MetastoreBackupAdapter) resolveReferences(ctx context.Context) error {
 	obj := a.desired
 
-	if _, err := obj.Spec.ServiceRef.NormalizedExternal(ctx, a.reader, obj.Namespace); err != nil {
-		return fmt.Errorf("resolving serviceRef: %w", err)
+	if err := obj.Spec.ServiceRef.Normalize(ctx, a.reader, obj.Namespace); err != nil {
+		return fmt.Errorf("normalizing serviceRef: %w", err)
 	}
 	return nil
 }
@@ -199,7 +198,7 @@ func (a *MetastoreBackupAdapter) Export(ctx context.Context) (*unstructured.Unst
 	}
 
 	// Populate required references from the ID
-	obj.Spec.ServiceRef = krmv1alplpha1.ServiceRef{
+	obj.Spec.ServiceRef = krm.MetastoreServiceRef{
 		External: a.id.Parent().String(), // Set external reference to the service name
 	}
 

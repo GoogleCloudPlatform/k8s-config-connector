@@ -20,10 +20,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
-
-	// TODO: Add import for the parent service reference if needed, e.g.,
-	// metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -64,28 +60,33 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *Metastore
 
 	// Get Parent components
 	serviceRef := obj.Spec.MetastoreBackupParent.ServiceRef
-	serviceExternalRef, err := serviceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
-	if err != nil {
+	if err := serviceRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 		return nil, err
 	}
-	serviceParent, serviceID, err := v1alpha1.ParseServiceExternal(serviceExternalRef)
-	if err != nil {
+	serviceExternalRef := serviceRef.External
+	if serviceExternalRef == "" {
+		return nil, fmt.Errorf("cannot resolve serviceRef")
+	}
+
+	serviceID := &MetastoreServiceIdentity{}
+	if err := serviceID.FromExternal(serviceExternalRef); err != nil {
 		return nil, err
 	}
 
-	projectID := serviceParent.ProjectID
+	projectID := serviceID.Project
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve projectID from serviceRef")
 	}
 
 	// Assuming Location is directly in Spec as per the original code and backup_types.go.
 	// If Location needs to be resolved from the parent Service, this logic would change.
-	location := serviceParent.Location
+	location := serviceID.Location
 	if location == "" {
 		return nil, fmt.Errorf("cannot resolve location from serviceRef")
 	}
 
-	if serviceID == "" {
+	serviceResourceID := serviceID.Service
+	if serviceResourceID == "" {
 		return nil, fmt.Errorf("cannot determine serviceID from serviceRef")
 	}
 
@@ -112,9 +113,9 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *Metastore
 		if actualParent.Location != location {
 			return nil, fmt.Errorf("spec.location changed, expect %s, got %s (immutable field)", actualParent.Location, location)
 		}
-		if actualParent.ServiceID != serviceID {
+		if actualParent.ServiceID != serviceResourceID {
 			// Assuming ServiceID is also immutable or derived from immutable fields.
-			return nil, fmt.Errorf("parent service changed, expect %s, got %s (immutable field)", actualParent.ServiceID, serviceID)
+			return nil, fmt.Errorf("parent service changed, expect %s, got %s (immutable field)", actualParent.ServiceID, serviceResourceID)
 		}
 		if actualResourceID != resourceID {
 			// Resource ID (backup name) might be mutable or immutable depending on GCP API. Assume immutable based on original code.
@@ -128,7 +129,7 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *Metastore
 		parent: &BackupParent{
 			ProjectID: projectID,
 			Location:  location,
-			ServiceID: serviceID, // Include the resolved ServiceID
+			ServiceID: serviceResourceID, // Include the resolved ServiceID
 		},
 		id: resourceID,
 	}, nil

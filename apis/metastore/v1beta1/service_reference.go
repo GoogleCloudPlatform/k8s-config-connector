@@ -16,11 +16,9 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
@@ -91,57 +89,11 @@ func (r *MetastoreServiceRef) ParseExternalToIdentity() (identity.Identity, erro
 
 func (r *MetastoreServiceRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		projectID, err := refs.ResolveProjectID(ctx, reader, u)
+		identity, err := getIdentityFromMetastoreServiceSpec(ctx, reader, u)
 		if err != nil {
 			return ""
-		}
-		location, err := refs.GetLocation(u)
-		if err != nil {
-			return ""
-		}
-		resourceID, err := refs.GetResourceID(u)
-		if err != nil {
-			return ""
-		}
-		identity := &MetastoreServiceIdentity{
-			Project:  projectID,
-			Location: location,
-			Service:  resourceID,
 		}
 		return identity.String()
 	}
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
-}
-
-// MetastoreServiceIdentity defines the identity for a MetastoreService resource.
-type MetastoreServiceIdentity struct {
-	Project  string
-	Location string
-	Service  string
-}
-
-var _ identity.Identity = &MetastoreServiceIdentity{}
-var _ identity.IdentityV2 = &MetastoreServiceIdentity{}
-
-var MetastoreServiceIdentityFormat = gcpurls.Template[MetastoreServiceIdentity]("metastore.googleapis.com", "projects/{project}/locations/{location}/services/{service}")
-
-func (i *MetastoreServiceIdentity) String() string {
-	return MetastoreServiceIdentityFormat.ToString(*i)
-}
-
-func (i *MetastoreServiceIdentity) FromExternal(ref string) error {
-	parsed, match, err := MetastoreServiceIdentityFormat.Parse(ref)
-	if err != nil {
-		return fmt.Errorf("format of MetastoreService external=%q was not known (use %s): %w", ref, MetastoreServiceIdentityFormat.CanonicalForm(), err)
-	}
-	if !match {
-		return fmt.Errorf("format of MetastoreService external=%q was not known (use %s)", ref, MetastoreServiceIdentityFormat.CanonicalForm())
-	}
-
-	*i = *parsed
-	return nil
-}
-
-func (i *MetastoreServiceIdentity) Host() string {
-	return MetastoreServiceIdentityFormat.Host()
 }
