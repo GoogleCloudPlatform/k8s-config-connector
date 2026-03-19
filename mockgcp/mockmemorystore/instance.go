@@ -24,13 +24,13 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/memorystore/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocks"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
 type instanceServer struct {
@@ -55,6 +55,7 @@ func (r *instanceServer) GetInstance(ctx context.Context, req *pb.GetInstanceReq
 	}
 
 	retObj := proto.Clone(obj).(*pb.Instance)
+	retObj.State = pb.Instance_ACTIVE
 	return retObj, nil
 }
 
@@ -73,7 +74,7 @@ func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
-	obj.State = pb.Instance_ACTIVE
+	obj.State = pb.Instance_CREATING
 
 	if err := r.populateDefaultsForInstance(name, obj); err != nil {
 		return nil, err
@@ -83,17 +84,13 @@ func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 		return nil, err
 	}
 
-	updatedObj := proto.Clone(obj).(*pb.Instance)
-	updatedObj.CreateTime = nil
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-
 	metadata := &pb.OperationMetadata{
 		ApiVersion: "v1",
 		CreateTime: timestamppb.New(now),
 		Target:     fqn,
 		Verb:       "create",
 	}
-
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
 
@@ -249,6 +246,9 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 		crr.UpdateTime = timestamppb.New(time.Now())
 		switch crr.InstanceRole {
 		case pb.CrossInstanceReplicationConfig_PRIMARY:
+			if len(crr.SecondaryInstances) == 0 {
+				return status.Errorf(codes.InvalidArgument, "no secondary instances specified")
+			}
 			crr.PrimaryInstance = nil
 			crr.Membership = &pb.CrossInstanceReplicationConfig_Membership{
 				PrimaryInstance: &pb.CrossInstanceReplicationConfig_RemoteInstance{
@@ -269,6 +269,9 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 				})
 			}
 		case pb.CrossInstanceReplicationConfig_SECONDARY:
+			if crr.PrimaryInstance == nil {
+				return status.Errorf(codes.InvalidArgument, "no primary instance specified")
+			}
 			primaryName, err := s.parseInstanceName(crr.PrimaryInstance.Instance)
 			if err != nil {
 				return err
@@ -310,7 +313,6 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 	if err := r.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	obj.State = pb.Instance_UPDATING
 
 	// Required. Mask of fields to update. At least one path must be supplied in
 	// this field. The elements of the repeated paths field may only include these
@@ -358,7 +360,7 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 			obj.AutomatedBackupConfig = req.Instance.AutomatedBackupConfig
 		case "crossInstanceReplicationConfig":
 			obj.CrossInstanceReplicationConfig = req.Instance.CrossInstanceReplicationConfig
-		case "gcsBucket":
+		case "gcsSource":
 			obj.ImportSources = &pb.Instance_GcsSource{GcsSource: req.Instance.GetGcsSource()}
 		case "managedBackupSource":
 			obj.ImportSources = &pb.Instance_ManagedBackupSource_{ManagedBackupSource: req.Instance.GetManagedBackupSource()}
@@ -372,7 +374,7 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 		return nil, err
 	}
 
-	obj.State = pb.Instance_ACTIVE
+	obj.State = pb.Instance_UPDATING
 	obj.UpdateTime = timestamppb.New(time.Now())
 	if err := r.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -477,13 +479,18 @@ func (r *instanceServer) BackupInstance(ctx context.Context, req *pb.BackupInsta
 		backupCollectionName = *instanceObj.BackupCollection
 	} else {
 		backupCollectionName = fmt.Sprintf("projects/%s/locations/%s/backupCollections/backupCollection-%s", instanceName.Project.ID, instanceName.Location, instanceName.Name)
-		instanceObj.BackupCollection = direct.LazyPtr(backupCollectionName)
+		instanceObj.BackupCollection = mocks.PtrTo(backupCollectionName)
 		if err := r.storage.Update(ctx, instanceFqn, instanceObj); err != nil {
 			return nil, err
 		}
 	}
 
-	reqName := fmt.Sprintf("%s/backups/%s", backupCollectionName, req.GetBackupId())
+	backupID := req.GetBackupId()
+	if backupID == "" {
+		backupID = fmt.Sprintf("%s-backup", instanceName.Name)
+	}
+
+	reqName := fmt.Sprintf("%s/backups/%s", backupCollectionName, backupID)
 	name, err := r.parseBackupName(reqName)
 	if err != nil {
 		return nil, err
@@ -492,17 +499,23 @@ func (r *instanceServer) BackupInstance(ctx context.Context, req *pb.BackupInsta
 	fqn := name.String()
 	now := time.Now()
 
+	// Default TTL is 100 years
+	ttl := durationpb.New(100 * 365 * 24 * time.Hour)
+	if req.GetTtl() != nil {
+		ttl = req.GetTtl()
+	}
+
 	obj := &pb.Backup{
 		BackupType: pb.Backup_ON_DEMAND,
 		BackupFiles: []*pb.BackupFile{
 			&pb.BackupFile{
-				FileName:   fmt.Sprintf("file-%s.rdb", req.GetBackupId()),
+				FileName:   fmt.Sprintf("file-%s.rdb", backupID),
 				SizeBytes:  141,
 				CreateTime: timestamppb.New(now),
 			},
 		},
 		CreateTime:     timestamppb.New(now),
-		ExpireTime:     timestamppb.New(now),
+		ExpireTime:     timestamppb.New(now.Add(ttl.AsDuration())),
 		EngineVersion:  instanceObj.EngineVersion,
 		Instance:       instanceName.String(),
 		InstanceUid:    instanceObj.Uid,
@@ -511,11 +524,7 @@ func (r *instanceServer) BackupInstance(ctx context.Context, req *pb.BackupInsta
 		ShardCount:     instanceObj.ShardCount,
 		State:          pb.Backup_ACTIVE,
 		TotalSizeBytes: 141,
-		Uid:            fmt.Sprintf("backup-%s", req.GetBackupId()),
-	}
-	if req.GetTtl() != nil {
-		ttl := now.Add(req.GetTtl().AsDuration())
-		obj.ExpireTime = timestamppb.New(ttl)
+		Uid:            fmt.Sprintf("backup-%s", backupID),
 	}
 	if err := r.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
