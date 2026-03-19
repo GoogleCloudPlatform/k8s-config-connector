@@ -817,8 +817,14 @@ func (r *Reconciler) checkResourceSettingsMode() declarative.ObjectTransform {
 			return err
 		}
 
-		ccSettings := cc.Spec.Experiments.ResourceSettings
-		cccSettings := ccc.Spec.Experiments.ResourceSettings
+		var ccSettings *corev1beta1.ResourceSettings
+		if cc.Spec.Experiments != nil {
+			ccSettings = cc.Spec.Experiments.ResourceSettings
+		}
+		var cccSettings *corev1beta1.ResourceSettings
+		if ccc.Spec.Experiments != nil {
+			cccSettings = ccc.Spec.Experiments.ResourceSettings
+		}
 
 		// (Omitted, Inclusive)
 		if (ccSettings == nil || ccSettings.Enabled == nil) && (cccSettings != nil && cccSettings.Enabled != nil && *cccSettings.Enabled) {
