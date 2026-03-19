@@ -1,6 +1,6 @@
 module github.com/GoogleCloudPlatform/k8s-config-connector/experiments/kubectl-plan
 
-go 1.25
+go 1.24.0
 
 require (
 	github.com/google/go-cmp v0.7.0

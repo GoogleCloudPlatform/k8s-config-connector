@@ -1,6 +1,6 @@
 module github.com/GoogleCloudPlatform/k8s-config-connector/experiments/composite
 
-go 1.25
+go 1.24.0
 
 require (
 	k8s.io/apimachinery v0.32.1

@@ -1,5 +1,5 @@
 module mymodule
 
-go 1.26
+go 1.24
 
 toolchain go1.26.1

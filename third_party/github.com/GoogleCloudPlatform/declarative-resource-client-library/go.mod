@@ -1,6 +1,6 @@
 module github.com/GoogleCloudPlatform/declarative-resource-client-library
 
-go 1.25
+go 1.24
 
 require (
 	bitbucket.org/creachadair/stringset v0.0.8
