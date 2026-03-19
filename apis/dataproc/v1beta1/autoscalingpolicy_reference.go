@@ -16,11 +16,9 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
@@ -34,12 +32,12 @@ var DataprocAutoscalingPolicyGVK = schema.GroupVersionKind{
 	Kind:    "DataprocAutoscalingPolicy",
 }
 
-var _ refsv1beta1.Ref = &DataprocAutoscalingPolicyRef{}
+var _ refs.Ref = &DataprocAutoscalingPolicyRef{}
 
 // DataprocAutoscalingPolicyRef is a reference to a DataprocAutoscalingPolicy resource.
 type DataprocAutoscalingPolicyRef struct {
 	// A reference to an externally managed DataprocAutoscalingPolicy resource.
-	// Should be in the format "projects/{project}/regions/{region}/autoscalingPolicies/{autoscalingPolicy}".
+	// Should be in the format "projects/{{projectID}}/regions/{{region}}/autoscalingPolicies/{{autoscalingPolicy}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a DataprocAutoscalingPolicy resource.
@@ -50,7 +48,7 @@ type DataprocAutoscalingPolicyRef struct {
 }
 
 func init() {
-	refsv1beta1.Register(&DataprocAutoscalingPolicyRef{})
+	refs.Register(&DataprocAutoscalingPolicyRef{})
 }
 
 func (r *DataprocAutoscalingPolicyRef) GetGVK() schema.GroupVersionKind {
@@ -96,70 +94,5 @@ func (r *DataprocAutoscalingPolicyRef) Normalize(ctx context.Context, reader cli
 		}
 		return identity.String()
 	}
-	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
-}
-
-// TODO: Move this to autoscalingpolicy_identity.go once it is generated/implemented
-var (
-	_ identity.IdentityV2 = &DataprocAutoscalingPolicyIdentity{}
-)
-
-// TODO: Move this to autoscalingpolicy_identity.go once it is generated/implemented
-var DataprocAutoscalingPolicyIdentityFormat = gcpurls.Template[DataprocAutoscalingPolicyIdentity]("dataproc.googleapis.com", "projects/{project}/regions/{region}/autoscalingPolicies/{autoscalingPolicy}")
-
-// TODO: Move this to autoscalingpolicy_identity.go once it is generated/implemented
-// +k8s:deepcopy-gen=false
-type DataprocAutoscalingPolicyIdentity struct {
-	Project           string
-	Region            string
-	AutoscalingPolicy string
-}
-
-// TODO: Move this to autoscalingpolicy_identity.go once it is generated/implemented
-func (i *DataprocAutoscalingPolicyIdentity) String() string {
-	return DataprocAutoscalingPolicyIdentityFormat.ToString(*i)
-}
-
-// TODO: Move this to autoscalingpolicy_identity.go once it is generated/implemented
-func (i *DataprocAutoscalingPolicyIdentity) FromExternal(ref string) error {
-	parsed, match, err := DataprocAutoscalingPolicyIdentityFormat.Parse(ref)
-	if err != nil {
-		return fmt.Errorf("format of DataprocAutoscalingPolicy external=%q was not known (use %s): %w", ref, DataprocAutoscalingPolicyIdentityFormat.CanonicalForm(), err)
-	}
-	if !match {
-		return fmt.Errorf("format of DataprocAutoscalingPolicy external=%q was not known (use %s)", ref, DataprocAutoscalingPolicyIdentityFormat.CanonicalForm())
-	}
-
-	*i = *parsed
-	return nil
-}
-
-// TODO: Move this to autoscalingpolicy_identity.go once it is generated/implemented
-func (i *DataprocAutoscalingPolicyIdentity) Host() string {
-	return DataprocAutoscalingPolicyIdentityFormat.Host()
-}
-
-// TODO: Move this to autoscalingpolicy_identity.go once it is generated/implemented
-func getIdentityFromDataprocAutoscalingPolicySpec(ctx context.Context, reader client.Reader, obj client.Object) (*DataprocAutoscalingPolicyIdentity, error) {
-	resourceID, err := refsv1beta1.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	location, err := refsv1beta1.GetLocation(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve location")
-	}
-
-	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-
-	identity := &DataprocAutoscalingPolicyIdentity{
-		Project:           projectID,
-		Region:            location,
-		AutoscalingPolicy: resourceID,
-	}
-	return identity, nil
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
