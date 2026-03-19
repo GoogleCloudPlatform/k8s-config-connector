@@ -56,6 +56,7 @@ func ResourcePolicyDiskConsistencyGroupPolicy_v1beta1_FromProto(mapCtx *direct.M
 	}
 	out := &krm.ResourcePolicyDiskConsistencyGroupPolicy{}
 	out.Enabled = direct.LazyPtr(true)
+	// Original CRD had 'enabled' but proto seems to have nothing or I missed it.
 	return out
 }
 
@@ -63,9 +64,12 @@ func ResourcePolicyDiskConsistencyGroupPolicy_v1beta1_ToProto(mapCtx *direct.Map
 	if in == nil {
 		return nil
 	}
+<<<<<<< HEAD
 	if in.Enabled != nil && !*in.Enabled {
 		return nil
 	}
+=======
+>>>>>>> 7ec7e86551 (Create direct CRD Go type for ComputeResourcePolicy)
 	out := &pb.ResourcePolicyDiskConsistencyGroupPolicy{}
 	return out
 }
@@ -303,6 +307,7 @@ func ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_ToProto(mapC
 	return out
 }
 
+<<<<<<< HEAD
 func ComputeResourcePolicyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ResourcePolicy) *krm.ComputeResourcePolicyObservedState {
 	if in == nil {
 		return nil
@@ -325,6 +330,8 @@ func ComputeResourcePolicyObservedState_v1beta1_ToProto(mapCtx *direct.MapContex
 	return out
 }
 
+=======
+>>>>>>> 7ec7e86551 (Create direct CRD Go type for ComputeResourcePolicy)
 func ConvertInt32ToInt(in *int32) *int {
 	if in == nil {
 		return nil

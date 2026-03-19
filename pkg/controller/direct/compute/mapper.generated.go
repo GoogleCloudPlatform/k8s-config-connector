@@ -396,6 +396,34 @@ func ComputePublicDelegatedPrefixSpec_v1beta1_ToProto(mapCtx *direct.MapContext,
 	// MISSING: Region
 	// MISSING: SelfLink
 	// MISSING: Status
+func ComputeResourcePolicyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ResourcePolicy) *krm.ComputeResourcePolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeResourcePolicyObservedState{}
+	// MISSING: CreationTimestamp
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: ResourceStatus
+	// MISSING: SelfLink
+	// MISSING: Status
+	// MISSING: WorkloadPolicy
+	return out
+}
+func ComputeResourcePolicyObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeResourcePolicyObservedState) *pb.ResourcePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcePolicy{}
+	// MISSING: CreationTimestamp
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: ResourceStatus
+	// MISSING: SelfLink
+	// MISSING: Status
+	// MISSING: WorkloadPolicy
 	return out
 }
 func ComputeSecurityPolicyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicy) *krm.ComputeSecurityPolicyObservedState {
@@ -908,6 +936,7 @@ func NetworkAttachmentConnectedEndpoint_v1alpha1_ToProto(mapCtx *direct.MapConte
 	out.SubnetworkCidrRange = in.SubnetworkCIDRRange
 	return out
 }
+
 func NodeTemplateNodeTypeFlexibility_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeTemplateNodeTypeFlexibility) *krm.NodeTemplateNodeTypeFlexibility {
 	if in == nil {
 		return nil
@@ -1018,6 +1047,7 @@ func ResourcePolicyWorkloadPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 	out.Type = in.Type
 	return out
 }
+
 func PublicDelegatedPrefixPublicDelegatedSubPrefix_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PublicDelegatedPrefixPublicDelegatedSubPrefix) *krm.PublicDelegatedPrefixPublicDelegatedSubPrefix {
 	if in == nil {
 		return nil
@@ -1048,6 +1078,81 @@ func PublicDelegatedPrefixPublicDelegatedSubPrefix_v1beta1_ToProto(mapCtx *direc
 	out.Name = in.Name
 	out.Region = in.Region
 	out.Status = in.Status
+	return out
+}
+
+func ResourcePolicyResourceStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ResourcePolicyResourceStatus) *krm.ResourcePolicyResourceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourcePolicyResourceStatus{}
+	out.InstanceSchedulePolicy = ResourcePolicyResourceStatusInstanceSchedulePolicyStatus_v1beta1_FromProto(mapCtx, in.GetInstanceSchedulePolicy())
+	return out
+}
+func ResourcePolicyResourceStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ResourcePolicyResourceStatus) *pb.ResourcePolicyResourceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcePolicyResourceStatus{}
+	out.InstanceSchedulePolicy = ResourcePolicyResourceStatusInstanceSchedulePolicyStatus_v1beta1_ToProto(mapCtx, in.InstanceSchedulePolicy)
+	return out
+}
+func ResourcePolicyResourceStatusInstanceSchedulePolicyStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus) *krm.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus{}
+	out.LastRunStartTime = in.LastRunStartTime
+	out.NextRunStartTime = in.NextRunStartTime
+	return out
+}
+func ResourcePolicyResourceStatusInstanceSchedulePolicyStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus) *pb.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus{}
+	out.LastRunStartTime = in.LastRunStartTime
+	out.NextRunStartTime = in.NextRunStartTime
+	return out
+}
+func ResourcePolicySnapshotSchedulePolicyScheduleWeeklyScheduleDayOfWeek_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ResourcePolicyWeeklyCycleDayOfWeek) *krm.ResourcePolicySnapshotSchedulePolicyScheduleWeeklyScheduleDayOfWeek {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourcePolicySnapshotSchedulePolicyScheduleWeeklyScheduleDayOfWeek{}
+	out.Day = in.Day
+	// MISSING: Duration
+	out.StartTime = in.StartTime
+	return out
+}
+func ResourcePolicySnapshotSchedulePolicyScheduleWeeklyScheduleDayOfWeek_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ResourcePolicySnapshotSchedulePolicyScheduleWeeklyScheduleDayOfWeek) *pb.ResourcePolicyWeeklyCycleDayOfWeek {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcePolicyWeeklyCycleDayOfWeek{}
+	out.Day = in.Day
+	// MISSING: Duration
+	out.StartTime = in.StartTime
+	return out
+}
+func ResourcePolicyWorkloadPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ResourcePolicyWorkloadPolicy) *krm.ResourcePolicyWorkloadPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourcePolicyWorkloadPolicy{}
+	out.AcceleratorTopology = in.AcceleratorTopology
+	out.MaxTopologyDistance = in.MaxTopologyDistance
+	out.Type = in.Type
+	return out
+}
+func ResourcePolicyWorkloadPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ResourcePolicyWorkloadPolicy) *pb.ResourcePolicyWorkloadPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcePolicyWorkloadPolicy{}
+	out.AcceleratorTopology = in.AcceleratorTopology
+	out.MaxTopologyDistance = in.MaxTopologyDistance
+	out.Type = in.Type
 	return out
 }
 func SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig) *krm.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig {
