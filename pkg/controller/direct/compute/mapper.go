@@ -304,10 +304,6 @@ func ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_ToProto(mapC
 	return out
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 8b560e0a5c (Address feedback: update observedGeneration to int64 and fix DiskConsistencyGroupPolicy mapping)
 func ComputeResourcePolicyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ResourcePolicy) *krm.ComputeResourcePolicyObservedState {
 	if in == nil {
 		return nil
@@ -330,11 +326,6 @@ func ComputeResourcePolicyObservedState_v1beta1_ToProto(mapCtx *direct.MapContex
 	return out
 }
 
-<<<<<<< HEAD
-=======
->>>>>>> 7ec7e86551 (Create direct CRD Go type for ComputeResourcePolicy)
-=======
->>>>>>> 8b560e0a5c (Address feedback: update observedGeneration to int64 and fix DiskConsistencyGroupPolicy mapping)
 func ConvertInt32ToInt(in *int32) *int {
 	if in == nil {
 		return nil

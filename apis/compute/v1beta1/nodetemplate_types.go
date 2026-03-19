@@ -62,7 +62,7 @@ type ComputeNodeTemplateSpec struct {
 	/* Immutable. CPU overcommit. Default value: "NONE" Possible
 	values: ["ENABLED", "NONE"]. */
 	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplate.cpu_overcommit_type
-	CPUOvercommitType *string `json:"cpuOvercommitType,omitempty"`
+	CpuOvercommitType *string `json:"cpuOvercommitType,omitempty"`
 
 	/* Immutable. An optional textual description of the resource. */
 	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplate.description
@@ -80,7 +80,8 @@ type ComputeNodeTemplateSpec struct {
 	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplate.node_type_flexibility
 	NodeTypeFlexibility *NodeTemplateNodeTypeFlexibility `json:"nodeTypeFlexibility,omitempty"`
 
-	/* Immutable. Region where nodes using the node template will be created. */
+	/* Immutable. Region where nodes using the node template will be created.
+	If it is not provided, the provider region is used. */
 	// +required
 	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplate.region
 	Region *string `json:"region"`

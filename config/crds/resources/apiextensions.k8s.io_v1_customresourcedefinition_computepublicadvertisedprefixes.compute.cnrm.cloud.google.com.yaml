@@ -75,11 +75,13 @@ spec:
                   this public advertised prefix.
                 type: string
               pdpScope:
-                description: Specifies how child public delegated prefix will be scoped.
-                  It could be one of following values "GLOBAL" - Child public delegated
-                  prefix will be scoped to the same region as the parent public advertised
-                  prefix. "REGIONAL" - Child public delegated prefix will be scoped
-                  to the same region as the parent public advertised prefix.
+                description: 'Specifies how child public delegated prefix will be
+                  scoped. It could be one of following values: "GLOBAL" - The public
+                  delegated prefix is global only. The provisioning will take ~4 weeks.
+                  "REGIONAL" - The public delegated prefix is regional only. The provisioning
+                  will take a few minutes. "GLOBAL_AND_REGIONAL" - Output only.: The
+                  public delegated prefixes is BYOIP V1 legacy prefix. This is output
+                  only value and no longer supported in BYOIP V2.'
                 type: string
               projectRef:
                 description: The project that this resource belongs to.

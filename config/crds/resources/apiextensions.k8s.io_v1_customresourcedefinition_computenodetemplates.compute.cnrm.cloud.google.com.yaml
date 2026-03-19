@@ -95,7 +95,7 @@ spec:
                 type: object
               region:
                 description: Immutable. Region where nodes using the node template
-                  will be created.
+                  will be created. If it is not provided, the provider region is used.
                 type: string
               resourceID:
                 description: Immutable. Optional. The name of the resource. Used for
