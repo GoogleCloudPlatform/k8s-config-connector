@@ -426,6 +426,7 @@ func ComputeResourcePolicyObservedState_v1beta1_ToProto(mapCtx *direct.MapContex
 	// MISSING: WorkloadPolicy
 	return out
 }
+
 func ComputeSecurityPolicyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicy) *krm.ComputeSecurityPolicyObservedState {
 	if in == nil {
 		return nil
