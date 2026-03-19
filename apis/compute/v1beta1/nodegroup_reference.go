@@ -16,25 +16,20 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // TODO: Move this to nodegroup_types.go once it is generated/implemented
-var ComputeNodeGroupGVK = schema.GroupVersionKind{
-	Group:   "compute.cnrm.cloud.google.com",
-	Version: "v1beta1",
-	Kind:    "ComputeNodeGroup",
-}
+var ComputeNodeGroupGVK = GroupVersion.WithKind("ComputeNodeGroup")
 
-var _ refsv1beta1.Ref = &ComputeNodeGroupRef{}
+var _ refs.Ref = &ComputeNodeGroupRef{}
 
 // ComputeNodeGroupRef is a reference to a ComputeNodeGroup resource.
 type ComputeNodeGroupRef struct {
@@ -50,7 +45,7 @@ type ComputeNodeGroupRef struct {
 }
 
 func init() {
-	refsv1beta1.Register(&ComputeNodeGroupRef{})
+	refs.Register(&ComputeNodeGroupRef{})
 }
 
 func (r *ComputeNodeGroupRef) GetGVK() schema.GroupVersionKind {
@@ -89,37 +84,20 @@ func (r *ComputeNodeGroupRef) ParseExternalToIdentity() (identity.Identity, erro
 }
 
 func (r *ComputeNodeGroupRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
-}
-
-// ComputeNodeGroupIdentity is a stub for the identity of a ComputeNodeGroup.
-// TODO: Move this to nodegroup_identity.go once it is generated/implemented
-type ComputeNodeGroupIdentity struct {
-	Project   string
-	Zone      string
-	NodeGroup string
-}
-
-var _ identity.Identity = &ComputeNodeGroupIdentity{}
-
-func (i *ComputeNodeGroupIdentity) String() string {
-	return fmt.Sprintf("projects/%s/zones/%s/nodeGroups/%s", i.Project, i.Zone, i.NodeGroup)
-}
-
-func (i *ComputeNodeGroupIdentity) FromExternal(ref string) error {
-	if ref == "" {
-		return fmt.Errorf("empty external reference")
-	}
-
-	trimmed := common.FixStaleComputeExternalFormat(ref)
-	tokens := strings.Split(trimmed, "/")
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "zones" && tokens[4] == "nodeGroups" {
-		i.Project = tokens[1]
-		i.Zone = tokens[3]
-		i.NodeGroup = tokens[5]
+	if r.External != "" {
+		if err := r.ValidateExternal(r.External); err != nil {
+			return err
+		}
+		r.External = common.FixStaleComputeExternalFormat(r.External)
 		return nil
 	}
 
-	return fmt.Errorf("invalid format for ComputeNodeGroup external reference: %q. "+
-		"Expected format: projects/{projectID}/zones/{zone}/nodeGroups/{nodeGroup}", ref)
+	fallback := func(u *unstructured.Unstructured) string {
+		selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
+		if selfLink != "" {
+			return common.FixStaleComputeExternalFormat(selfLink)
+		}
+		return ""
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
