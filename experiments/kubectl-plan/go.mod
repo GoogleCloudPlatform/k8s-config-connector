@@ -2,6 +2,8 @@ module github.com/GoogleCloudPlatform/k8s-config-connector/experiments/kubectl-p
 
 go 1.24.0
 
+toolchain go1.24.6
+
 require (
 	github.com/google/go-cmp v0.7.0
 	github.com/spf13/cobra v1.8.1
