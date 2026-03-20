@@ -117,7 +117,7 @@ type AccessContextManagerServicePerimeterConfig struct {
 	/* (Optional) A list of GCP resources that are inside of the service perimeter.
 	Currently only projects are allowed. */
 	// +optional
-	Resources []AccessContextManagerServicePerimeterResource `json:"resources,omitempty"`
+	Resources []AccessContextManagerServicePerimeterConfigResource `json:"resources,omitempty"`
 
 	/* GCP services that are subject to the Service Perimeter
 	restrictions. Must contain a list of services. For example, if
@@ -292,7 +292,7 @@ type AccessContextManagerServicePerimeterIngressResource struct {
 	ProjectRef *ServicePerimeterProjectRef `json:"projectRef,omitempty"`
 }
 
-type AccessContextManagerServicePerimeterResource struct {
+type AccessContextManagerServicePerimeterConfigResource struct {
 	/* (Optional) A list of GCP resources that are inside of the service perimeter.
 	Currently only projects are allowed. */
 	// +optional
