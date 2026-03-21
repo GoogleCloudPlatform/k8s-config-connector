@@ -315,7 +315,7 @@ func createControllerTest(ctx context.Context, opts *RunnerOptions, branch Branc
 
 	currentYear := time.Now().Year()
 
-	// Use codebot to generate the initial create.yaml content
+	// Use gemini to generate the initial create.yaml content
 	createPrompt := fmt.Sprintf(`Generate a %s/create.yaml file for testing a Kubernetes controller.
 
 First, read the CRD file at config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_<pluralized-kind>.%s.cnrm.cloud.google.com.yaml to understand the schema.
@@ -339,8 +339,8 @@ Respond only with the YAML content, no explanations.`,
 
 	cfg := CommandConfig{
 		Name:         "Generate Create YAML",
-		Cmd:          "codebot",
-		Args:         []string{"--prompt=/dev/stdin"},
+		Cmd:          "gemini",
+		Args:         []string{"--yolo", "--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(createPrompt),
 		WorkDir:      opts.branchRepoDir,
 		RetryBackoff: GenerativeCommandRetryBackoff,
@@ -350,7 +350,7 @@ Respond only with the YAML content, no explanations.`,
 		return nil, nil, fmt.Errorf("failed to generate create.yaml: %w", err)
 	}
 
-	// Use codebot to generate the update.yaml content by modifying create.yaml
+	// Use gemini to generate the update.yaml content by modifying create.yaml
 	updatePrompt := fmt.Sprintf(`Generate an %s/update.yaml file for testing a Kubernetes controller by modifying the create.yaml file.
 
 First, read the %s/create.yaml file that was just generated.
@@ -369,8 +369,8 @@ Respond only with the YAML content, no explanations.`,
 
 	cfg = CommandConfig{
 		Name:         "Generate Update YAML",
-		Cmd:          "codebot",
-		Args:         []string{"--prompt=/dev/stdin"},
+		Cmd:          "gemini",
+		Args:         []string{"--yolo", "--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(updatePrompt),
 		WorkDir:      opts.branchRepoDir,
 		RetryBackoff: GenerativeCommandRetryBackoff,
@@ -640,7 +640,7 @@ func createFullCoverageTest(ctx context.Context, opts *RunnerOptions, branch Bra
 		}
 
 		// 3. Generate testdata.
-		// Use codebot to generate the initial create.yaml content.
+		// Use gemini to generate the initial create.yaml content.
 		createPrompt := strings.ReplaceAll(CreateFullTestCreatePrompt, "${TEST_DIR}", testDir)
 		createPrompt = strings.ReplaceAll(createPrompt, "${GROUP}", branch.Group)
 		createPrompt = strings.ReplaceAll(createPrompt, "${KIND}", branch.Kind)
@@ -651,8 +651,8 @@ func createFullCoverageTest(ctx context.Context, opts *RunnerOptions, branch Bra
 		createPrompt = strings.ReplaceAll(createPrompt, "${MISSING_FIELDS}", fmt.Sprintf("%+v", missingFields))
 		cfg = CommandConfig{
 			Name:         "Generate Create YAML",
-			Cmd:          "codebot",
-			Args:         []string{"--prompt=/dev/stdin"},
+			Cmd:          "gemini",
+			Args:         []string{"--yolo", "--prompt=/dev/stdin"},
 			Stdin:        strings.NewReader(createPrompt),
 			WorkDir:      opts.branchRepoDir,
 			RetryBackoff: GenerativeCommandRetryBackoff,
@@ -662,14 +662,14 @@ func createFullCoverageTest(ctx context.Context, opts *RunnerOptions, branch Bra
 			return nil, nil, fmt.Errorf("failed to generate create.yaml: %w", err)
 		}
 
-		// Use codebot to generate the update.yaml content by modifying create.yaml
+		// Use gemini to generate the update.yaml content by modifying create.yaml
 		updatePrompt := strings.ReplaceAll(CreateFullTestUpdatePrompt, "${TEST_DIR}", testDir)
 		updatePrompt = strings.ReplaceAll(updatePrompt, "${GROUP}", branch.Group)
 		updatePrompt = strings.ReplaceAll(updatePrompt, "${KIND}", branch.Kind)
 		cfg = CommandConfig{
 			Name:         "Generate Update YAML",
-			Cmd:          "codebot",
-			Args:         []string{"--prompt=/dev/stdin"},
+			Cmd:          "gemini",
+			Args:         []string{"--yolo", "--prompt=/dev/stdin"},
 			Stdin:        strings.NewReader(updatePrompt),
 			WorkDir:      opts.branchRepoDir,
 			RetryBackoff: GenerativeCommandRetryBackoff,
@@ -679,15 +679,15 @@ func createFullCoverageTest(ctx context.Context, opts *RunnerOptions, branch Bra
 			return nil, nil, fmt.Errorf("failed to generate update.yaml: %w", err)
 		}
 
-		// Use codebot to generate the dependencies.yaml content based on create.yaml and update.yaml.
+		// Use gemini to generate the dependencies.yaml content based on create.yaml and update.yaml.
 		dependenciesPrompt := strings.ReplaceAll(CreateFullTestDependenciesPrompt, "${TEST_DIR}", testDir)
 		dependenciesPrompt = strings.ReplaceAll(dependenciesPrompt, "${GROUP}", branch.Group)
 		dependenciesPrompt = strings.ReplaceAll(dependenciesPrompt, "${KIND}", branch.Kind)
 		dependenciesPrompt = strings.ReplaceAll(dependenciesPrompt, "${CURRENT_YEAR}", fmt.Sprintf("%d", currentYear))
 		cfg = CommandConfig{
 			Name:         "Generate Dependencies YAML",
-			Cmd:          "codebot",
-			Args:         []string{"--prompt=/dev/stdin"},
+			Cmd:          "gemini",
+			Args:         []string{"--yolo", "--prompt=/dev/stdin"},
 			Stdin:        strings.NewReader(dependenciesPrompt),
 			WorkDir:      opts.branchRepoDir,
 			RetryBackoff: GenerativeCommandRetryBackoff,
@@ -784,7 +784,7 @@ func updateTestHarness(ctx context.Context, opts *RunnerOptions, branch Branch, 
 	// Default CRD group
 	crdGroup := fmt.Sprintf("%s.cnrm.cloud.google.com", branch.Group)
 
-	// Run codebot to update the test harness
+	// Run gemini to update the test harness
 	prompt := fmt.Sprintf(`Please add a case statement for Group "%s" and Kind "%s" to the switch statement in MaybeSkip,
 in the file config/tests/samples/create/harness.go
 
@@ -795,9 +795,9 @@ in the file config/tests/samples/create/harness.go
 `, crdGroup, branch.Kind)
 
 	cfg := CommandConfig{
-		Name:         "Codebot Update Harness",
-		Cmd:          "codebot",
-		Args:         []string{"--prompt=/dev/stdin"},
+		Name:         "Update Harness",
+		Cmd:          "gemini",
+		Args:         []string{"--yolo", "--prompt=/dev/stdin"},
 		WorkDir:      opts.branchRepoDir,
 		Stdin:        strings.NewReader(prompt),
 		RetryBackoff: GenerativeCommandRetryBackoff,
@@ -805,7 +805,7 @@ in the file config/tests/samples/create/harness.go
 
 	output, err := executeCommand(opts, cfg)
 	if err != nil {
-		return nil, nil, fmt.Errorf("failed to run codebot to update test harness: %w", err)
+		return nil, nil, fmt.Errorf("failed to run gemini to update test harness: %w", err)
 	}
 
 	log.Printf("Successfully updated test harness for %s", branch.Name)
@@ -955,10 +955,10 @@ func fixControllerBuild(ctx context.Context, opts *RunnerOptions, branch Branch,
 	prompt = strings.ReplaceAll(prompt, "${CONTROLLER_FILE_CONTENTS}", string(controllerContent))
 	prompt = strings.ReplaceAll(prompt, "${CLIENT_FILE_CONTENTS}", string(clientContent))
 
-	// Run codebot to fix the issues
+	// Run gemini to fix the issues
 	cfg := CommandConfig{
 		Name:         "Fix Controller Build Errors",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(prompt),
 		WorkDir:      opts.branchRepoDir,
@@ -1005,7 +1005,7 @@ func runGoldenMockTests(ctx context.Context, opts *RunnerOptions, branch Branch,
 }
 
 // fixGoldenTests fixes issues in the golden tests for the branch
-// It uses codebot to fix test errors in YAML files and controller code
+// It uses gemini to fix test errors in YAML files and controller code
 func fixGoldenTests(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	log.Printf("Fixing golden tests for branch %s", branch.Name)
 
@@ -1044,10 +1044,10 @@ func fixGoldenTests(ctx context.Context, opts *RunnerOptions, branch Branch, exe
 		}
 	}
 
-	// If there are still issues, use codebot to analyze and provide more detailed fixes
+	// If there are still issues, use gemini to analyze and provide more detailed fixes
 	log.Printf("Performing detailed error analysis for branch %s", branch.Name)
 
-	// Use codebot to analyze the test errors and provide more specific fixes
+	// Use gemini to analyze the test errors and provide more specific fixes
 	prompt := fmt.Sprintf(`Analyze the following test errors for a Kubernetes controller:
 
 %s
@@ -1083,8 +1083,8 @@ Use ReadFile, EditFile to make the changes.
 
 	cfg := CommandConfig{
 		Name:         "Fix Golden Tests",
-		Cmd:          "codebot",
-		Args:         []string{"--prompt=/dev/stdin"},
+		Cmd:          "gemini",
+		Args:         []string{"--yolo", "--prompt=/dev/stdin"},
 		WorkDir:      opts.branchRepoDir,
 		Stdin:        strings.NewReader(prompt),
 		RetryBackoff: GenerativeCommandRetryBackoff,
@@ -1248,8 +1248,8 @@ func fixMockGcpForGoldenTests(ctx context.Context, opts *RunnerOptions, branch B
 	// Run the LLM to generate the file.
 	cfg := CommandConfig{
 		Name:         "Fix mockgcp for golden failures",
-		Cmd:          "codebot",
-		Args:         []string{"--prompt=/dev/stdin"},
+		Cmd:          "gemini",
+		Args:         []string{"--yolo", "--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(prompt),
 		WorkDir:      filepath.Join(opts.branchRepoDir, "mockgcp"),
 		RetryBackoff: GenerativeCommandRetryBackoff,

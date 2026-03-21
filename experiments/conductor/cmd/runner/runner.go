@@ -145,6 +145,10 @@ func BuildRunnerCmd() *cobra.Command {
 		"", "", "Option to handle uncommitted local changes before switching to a different branch, available values: 'CLEANUP', 'COMMIT', 'FAIL'.")
 	cmd.Flags().StringVarP(&opts.testDirSuffix, testDirSuffixFlag,
 		"", "", "Suffix of the test to generate/run/fix for each branch")
+	cmd.Flags().BoolVarP(&opts.noSandbox, "no-sandbox",
+		"", false, "Disable sandboxing for generative commands")
+	cmd.Flags().StringVarP(&opts.sandboxImage, "sandbox-image",
+		"", "", "Sandbox image for generative commands")
 
 	return cmd
 }
@@ -169,6 +173,8 @@ type RunnerOptions struct {
 	controllerFilter  string // Filter the metadata for 1 type of controller. (Eg terraform-v1beta1)
 	handleLocalChange string // Option to handle uncommitted local changes before switching to a different branch
 	testDirSuffix     string // Suffix for test directory
+	noSandbox         bool   // Disable sandboxing for generative commands
+	sandboxImage      string // Sandbox image for generative commands
 }
 
 func (opts *RunnerOptions) validateAndDefaultFlags() error {
@@ -739,7 +745,7 @@ func addEnableAPIsModifier(opts *RunnerOptions, branch Branch, workDir string) B
 
 	cfg := CommandConfig{
 		Name:    "API Discovery",
-		Cmd:     "codebot",
+		Cmd:     "gemini",
 		Args:    []string{"--prompt=/dev/stdin"},
 		WorkDir: workDir,
 		Stdin: strings.NewReader(fmt.Sprintf(`Given the gcloud command %q, what Google Cloud APIs need to be enabled to use this command?
@@ -760,7 +766,7 @@ Only include APIs that are directly needed by this command.
 		return branch
 	}
 
-	// Parse the codebot output to get API list
+	// Parse the output to get API list
 	var filteredLines []string
 	for _, line := range strings.Split(strings.TrimSpace(output.Stdout), "\n") {
 		line = strings.TrimSpace(line)
