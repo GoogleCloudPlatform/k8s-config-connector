@@ -89,7 +89,7 @@ X-Xss-Protection: 0
     ],
     "replicaCount": 0,
     "shardCount": 1,
-    "state": "CREATING",
+    "state": "ACTIVE",
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_DISABLED",
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z",

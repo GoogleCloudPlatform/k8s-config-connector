@@ -55,7 +55,6 @@ func (r *instanceServer) GetInstance(ctx context.Context, req *pb.GetInstanceReq
 	}
 
 	retObj := proto.Clone(obj).(*pb.Instance)
-	retObj.State = pb.Instance_ACTIVE
 	return retObj, nil
 }
 
@@ -98,6 +97,7 @@ func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 		// pscConfigs is not included in the response
 		retObj.PscAutoConnections = nil
 		retObj.State = pb.Instance_ACTIVE
+		r.storage.Update(ctx, fqn, retObj)
 		return retObj, nil
 	})
 }
@@ -172,7 +172,7 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 					autoConnection.PscConnectionId = fmt.Sprintf("%d", pscConnectionID)
 					autoConnection.ConnectionType = attachmentDetails.ConnectionType
 					autoConnection.ServiceAttachment = attachmentDetails.ServiceAttachment
-					if autoConnection.Ports == nil {
+					if autoConnection.Ports == nil && autoConnection.ConnectionType != pb.ConnectionType_CONNECTION_TYPE_UNSPECIFIED {
 						autoConnection.Ports = &pb.PscAutoConnection_Port{
 							Port: 6379,
 						}
@@ -188,6 +188,11 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 					userConnection.ProjectId = network.Project.ID
 					userConnection.PscConnectionStatus = pb.PscConnectionStatus_ACTIVE
 					userConnection.ConnectionType = attachmentDetails.ConnectionType
+					if userConnection.Ports == nil && userConnection.ConnectionType != pb.ConnectionType_CONNECTION_TYPE_UNSPECIFIED {
+						userConnection.Ports = &pb.PscConnection_Port{
+							Port: 6379,
+						}
+					}
 				}
 			}
 		}
@@ -395,6 +400,7 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 		retObj.PscAutoConnections = nil
 		retObj.State = pb.Instance_ACTIVE
 		retObj.UpdateTime = timestamppb.New(time.Now())
+		r.storage.Update(ctx, fqn, retObj)
 		return retObj, nil
 	})
 }

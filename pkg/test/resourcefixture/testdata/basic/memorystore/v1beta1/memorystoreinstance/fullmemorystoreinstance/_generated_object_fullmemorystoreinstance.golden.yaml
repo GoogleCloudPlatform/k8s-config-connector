@@ -60,16 +60,16 @@ status:
     - connections:
       - pscAutoConnection:
           connectionType: CONNECTION_TYPE_DISCOVERY
-          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-91ccced1-a4b8-4ea4-a972-e9ed74272f3b
-          ipAddress: 10.128.0.2
+          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98115
+          ipAddress: 10.128.0.21
           port: 6379
-          pscConnectionID: "168060640244531202"
-          serviceAttachment: projects/735231710764/regions/us-central1/serviceAttachments/gcp-memorystore-auto-b560497c3c9047d6-psc-sa
+          pscConnectionID: "1234567890123456789"
+          serviceAttachment: projects/tp-memorystore-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystore-${uniqueId}
       - pscAutoConnection:
-          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-d2ee082f-a9b1-4ed8-9f7a-1e25712e4d5b
-          ipAddress: 10.128.0.3
-          pscConnectionID: "168060640244531203"
-          serviceAttachment: projects/735231710764/regions/us-central1/serviceAttachments/gcp-memorystore-auto-b560497c3c9047d6-psc-sa-2
+          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98116
+          ipAddress: 10.128.0.22
+          pscConnectionID: "1234567890123456790"
+          serviceAttachment: projects/tp-memorystore-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystore-${uniqueId}-2
     nodeConfig:
       sizeGB: 6.5
     state: ACTIVE

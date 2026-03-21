@@ -43,12 +43,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
     "verb": "create"
   },
@@ -79,7 +77,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
     "verb": "create"
   },
@@ -92,10 +89,6 @@ X-Xss-Protection: 0
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
-    "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_00",
-    "encryptionInfo": {
-      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
-    },
     "engineVersion": "VALKEY_7_2",
     "mode": "CLUSTER",
     "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
@@ -109,15 +102,13 @@ X-Xss-Protection: 0
     "pscAttachmentDetails": [
       {
         "connectionType": "CONNECTION_TYPE_DISCOVERY",
-        "serviceAttachment": "projects/886208510394/regions/us-central1/serviceAttachments/gcp-memorystore-auto-g6df18e4c841b340-psc-sa"
+        "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}"
       },
       {
-        "serviceAttachment": "projects/886208510394/regions/us-central1/serviceAttachments/gcp-memorystore-auto-g6df18e4c841b340-psc-sa-2"
+        "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}-2"
       }
     ],
     "replicaCount": 0,
-    "satisfiesPzi": false,
-    "serverCaMode": "SERVER_CA_MODE_UNSPECIFIED",
     "shardCount": 3,
     "state": "ACTIVE",
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_DISABLED",
@@ -153,10 +144,6 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
-  "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_00",
-  "encryptionInfo": {
-    "encryptionType": 1
-  },
   "engineVersion": "VALKEY_7_2",
   "mode": 2,
   "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
@@ -170,15 +157,13 @@ X-Xss-Protection: 0
   "pscAttachmentDetails": [
     {
       "connectionType": 1,
-      "serviceAttachment": "projects/886208510394/regions/us-central1/serviceAttachments/gcp-memorystore-auto-g6df18e4c841b340-psc-sa"
+      "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}"
     },
     {
-      "serviceAttachment": "projects/886208510394/regions/us-central1/serviceAttachments/gcp-memorystore-auto-g6df18e4c841b340-psc-sa-2"
+      "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}-2"
     }
   ],
   "replicaCount": 0,
-  "satisfiesPzi": false,
-  "serverCaMode": 0,
   "shardCount": 3,
   "state": 2,
   "transitEncryptionMode": 1,
@@ -212,12 +197,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
     "verb": "update"
   },
@@ -248,7 +231,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
     "verb": "update"
   },
@@ -261,10 +243,6 @@ X-Xss-Protection: 0
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
-    "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_00",
-    "encryptionInfo": {
-      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
-    },
     "engineVersion": "VALKEY_7_2",
     "mode": "CLUSTER",
     "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
@@ -278,15 +256,13 @@ X-Xss-Protection: 0
     "pscAttachmentDetails": [
       {
         "connectionType": "CONNECTION_TYPE_DISCOVERY",
-        "serviceAttachment": "projects/886208510394/regions/us-central1/serviceAttachments/gcp-memorystore-auto-g6df18e4c841b340-psc-sa"
+        "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}"
       },
       {
-        "serviceAttachment": "projects/886208510394/regions/us-central1/serviceAttachments/gcp-memorystore-auto-g6df18e4c841b340-psc-sa-2"
+        "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}-2"
       }
     ],
     "replicaCount": 0,
-    "satisfiesPzi": false,
-    "serverCaMode": "SERVER_CA_MODE_UNSPECIFIED",
     "shardCount": 10,
     "state": "ACTIVE",
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_DISABLED",
@@ -322,10 +298,6 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
-  "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_00",
-  "encryptionInfo": {
-    "encryptionType": 1
-  },
   "engineVersion": "VALKEY_7_2",
   "mode": 2,
   "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
@@ -339,15 +311,13 @@ X-Xss-Protection: 0
   "pscAttachmentDetails": [
     {
       "connectionType": 1,
-      "serviceAttachment": "projects/886208510394/regions/us-central1/serviceAttachments/gcp-memorystore-auto-g6df18e4c841b340-psc-sa"
+      "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}"
     },
     {
-      "serviceAttachment": "projects/886208510394/regions/us-central1/serviceAttachments/gcp-memorystore-auto-g6df18e4c841b340-psc-sa-2"
+      "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}-2"
     }
   ],
   "replicaCount": 0,
-  "satisfiesPzi": false,
-  "serverCaMode": 0,
   "shardCount": 10,
   "state": 2,
   "transitEncryptionMode": 1,
@@ -376,12 +346,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
     "verb": "delete"
   },
@@ -412,7 +380,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
     "verb": "delete"
   },
