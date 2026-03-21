@@ -34,6 +34,7 @@ type BillingBudgetsBudgetSpec struct {
 	Amount *BudgetAmount `json:"amount"`
 
 	// Immutable.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="BillingAccountRef field is immutable"
 	BillingAccountRef BillingAccountRef `json:"billingAccountRef"`
 
 	// Optional. Filters that define which resources are used to compute the actual spend against the budget amount, such as projects, services, and the budget's time period, as well as other filters.
@@ -45,6 +46,7 @@ type BillingBudgetsBudgetSpec struct {
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Optional. Rules that trigger alerts (notifications of thresholds being crossed) when spend exceeds the specified percentages of the budget.
@@ -130,8 +132,9 @@ type BudgetNotificationsRule struct {
 }
 
 // +kcc:proto=google.cloud.billing.budgets.v1.BudgetAmount
+// +kubebuilder:validation:XValidation:rule="has(self.specifiedAmount) != has(self.lastPeriodAmount)",message="Only one of specifiedAmount or lastPeriodAmount can be set"
 type BudgetAmount struct {
-	// Use the last period's actual spend as the budget for the present period. LastPeriodAmount can only be set when the budget's time period is a .
+	// Use the last period's actual spend as the budget for the present period. LastPeriodAmount can only be set when the budget's time period is a Filter.calendar_period.
 	// +kcc:proto:field=google.cloud.billing.budgets.v1.BudgetAmount.last_period_amount
 	LastPeriodAmount *apiextensionsv1.JSON `json:"lastPeriodAmount,omitempty"`
 
@@ -156,6 +159,7 @@ type Money struct {
 }
 
 // +kcc:proto=google.cloud.billing.budgets.v1.Filter
+// +kubebuilder:validation:XValidation:rule="has(self.calendarPeriod) != has(self.customPeriod)",message="Only one of calendarPeriod or customPeriod can be set"
 type BudgetFilter struct {
 	// Optional. Specifies to track usage for recurring calendar period. For example, assume that CalendarPeriod.QUARTER is set. The budget will track usage from April 1 to June 30, when the current calendar month is April, May, June. After that, it will track usage from July 1 to September 30 when the current calendar month is July, August, September, so on. Possible values: CALENDAR_PERIOD_UNSPECIFIED, MONTH, QUARTER, YEAR
 	// +kcc:proto:field=google.cloud.billing.budgets.v1.Filter.calendar_period
@@ -189,32 +193,32 @@ type BudgetFilter struct {
 }
 
 type BudgetLabels struct {
-	// Immutable. The values of the label
+	// The values of the label
 	Values []string `json:"values,omitempty"`
 }
 
 // +kcc:proto=google.cloud.billing.budgets.v1.CustomPeriod
 type BudgetCustomPeriod struct {
-	// Immutable. Optional. The end date of the time period. Budgets with elapsed end date won't be processed. If unset, specifies to track all usage incurred since the start_date.
+	// Optional. The end date of the time period. Budgets with elapsed end date won't be processed. If unset, specifies to track all usage incurred since the start_date.
 	// +kcc:proto:field=google.cloud.billing.budgets.v1.CustomPeriod.end_date
 	EndDate *Date `json:"endDate,omitempty"`
 
-	// Immutable. Required. The start date must be after January 1, 2017.
+	// Required. The start date must be after January 1, 2017.
 	// +kcc:proto:field=google.cloud.billing.budgets.v1.CustomPeriod.start_date
 	StartDate *Date `json:"startDate"`
 }
 
 // +kcc:proto=google.type.Date
 type Date struct {
-	// Immutable. Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.
+	// Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.
 	// +kcc:proto:field=google.type.Date.day
 	Day *int64 `json:"day,omitempty"`
 
-	// Immutable. Month of a year. Must be from 1 to 12, or 0 to specify a year without a month and day.
+	// Month of a year. Must be from 1 to 12, or 0 to specify a year without a month and day.
 	// +kcc:proto:field=google.type.Date.month
 	Month *int64 `json:"month,omitempty"`
 
-	// Immutable. Year of the date. Must be from 1 to 9999, or 0 to specify a date without a year.
+	// Year of the date. Must be from 1 to 9999, or 0 to specify a date without a year.
 	// +kcc:proto:field=google.type.Date.year
 	Year *int64 `json:"year,omitempty"`
 }

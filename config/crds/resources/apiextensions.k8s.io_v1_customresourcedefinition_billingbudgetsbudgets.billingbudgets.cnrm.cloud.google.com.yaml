@@ -146,7 +146,7 @@ spec:
                   lastPeriodAmount:
                     description: Use the last period's actual spend as the budget
                       for the present period. LastPeriodAmount can only be set when
-                      the budget's time period is a .
+                      the budget's time period is a Filter.calendar_period.
                     x-kubernetes-preserve-unknown-fields: true
                   specifiedAmount:
                     description: A specified amount to use as the budget. `currency_code`
@@ -175,6 +175,10 @@ spec:
                         type: integer
                     type: object
                 type: object
+                x-kubernetes-validations:
+                - message: Only one of specifiedAmount or lastPeriodAmount can be
+                    set
+                  rule: has(self.specifiedAmount) != has(self.lastPeriodAmount)
               billingAccountRef:
                 description: Immutable.
                 oneOf:
@@ -207,6 +211,9 @@ spec:
                     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: BillingAccountRef field is immutable
+                  rule: self == oldSelf
               budgetFilter:
                 description: Optional. Filters that define which resources are used
                   to compute the actual spend against the budget amount, such as projects,
@@ -239,50 +246,45 @@ spec:
                       is static, it does not recur.
                     properties:
                       endDate:
-                        description: Immutable. Optional. The end date of the time
-                          period. Budgets with elapsed end date won't be processed.
-                          If unset, specifies to track all usage incurred since the
-                          start_date.
+                        description: Optional. The end date of the time period. Budgets
+                          with elapsed end date won't be processed. If unset, specifies
+                          to track all usage incurred since the start_date.
                         properties:
                           day:
-                            description: Immutable. Day of a month. Must be from 1
-                              to 31 and valid for the year and month, or 0 to specify
-                              a year by itself or a year and month where the day isn't
-                              significant.
+                            description: Day of a month. Must be from 1 to 31 and
+                              valid for the year and month, or 0 to specify a year
+                              by itself or a year and month where the day isn't significant.
                             format: int64
                             type: integer
                           month:
-                            description: Immutable. Month of a year. Must be from
-                              1 to 12, or 0 to specify a year without a month and
-                              day.
+                            description: Month of a year. Must be from 1 to 12, or
+                              0 to specify a year without a month and day.
                             format: int64
                             type: integer
                           year:
-                            description: Immutable. Year of the date. Must be from
-                              1 to 9999, or 0 to specify a date without a year.
+                            description: Year of the date. Must be from 1 to 9999,
+                              or 0 to specify a date without a year.
                             format: int64
                             type: integer
                         type: object
                       startDate:
-                        description: Immutable. Required. The start date must be after
-                          January 1, 2017.
+                        description: Required. The start date must be after January
+                          1, 2017.
                         properties:
                           day:
-                            description: Immutable. Day of a month. Must be from 1
-                              to 31 and valid for the year and month, or 0 to specify
-                              a year by itself or a year and month where the day isn't
-                              significant.
+                            description: Day of a month. Must be from 1 to 31 and
+                              valid for the year and month, or 0 to specify a year
+                              by itself or a year and month where the day isn't significant.
                             format: int64
                             type: integer
                           month:
-                            description: Immutable. Month of a year. Must be from
-                              1 to 12, or 0 to specify a year without a month and
-                              day.
+                            description: Month of a year. Must be from 1 to 12, or
+                              0 to specify a year without a month and day.
                             format: int64
                             type: integer
                           year:
-                            description: Immutable. Year of the date. Must be from
-                              1 to 9999, or 0 to specify a date without a year.
+                            description: Year of the date. Must be from 1 to 9999,
+                              or 0 to specify a date without a year.
                             format: int64
                             type: integer
                         type: object
@@ -293,7 +295,7 @@ spec:
                     additionalProperties:
                       properties:
                         values:
-                          description: Immutable. The values of the label
+                          description: The values of the label
                           items:
                             type: string
                           type: array
@@ -373,6 +375,9 @@ spec:
                       type: object
                     type: array
                 type: object
+                x-kubernetes-validations:
+                - message: Only one of calendarPeriod or customPeriod can be set
+                  rule: has(self.calendarPeriod) != has(self.customPeriod)
               displayName:
                 description: User data for display name in UI. The name must be less
                   than or equal to 60 characters.
@@ -382,6 +387,9 @@ spec:
                   resource. Used for acquisition only. Leave unset to create a new
                   resource.
                 type: string
+                x-kubernetes-validations:
+                - message: ResourceID field is immutable
+                  rule: self == oldSelf
               thresholdRules:
                 description: Optional. Rules that trigger alerts (notifications of
                   thresholds being crossed) when spend exceeds the specified percentages

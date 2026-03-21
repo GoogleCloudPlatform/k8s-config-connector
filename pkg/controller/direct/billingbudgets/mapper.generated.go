@@ -46,34 +46,6 @@ func BillingBudgetsBudgetObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: Etag
 	return out
 }
-func BillingBudgetsBudgetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Budget) *krm.BillingBudgetsBudgetSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BillingBudgetsBudgetSpec{}
-	// MISSING: Name
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.BudgetFilter = BudgetFilter_FromProto(mapCtx, in.GetBudgetFilter())
-	out.Amount = BudgetAmount_FromProto(mapCtx, in.GetAmount())
-	out.ThresholdRules = direct.Slice_FromProto(mapCtx, in.ThresholdRules, BudgetThresholdRule_FromProto)
-	// MISSING: NotificationsRule
-	// MISSING: Etag
-	return out
-}
-func BillingBudgetsBudgetSpec_ToProto(mapCtx *direct.MapContext, in *krm.BillingBudgetsBudgetSpec) *pb.Budget {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Budget{}
-	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.BudgetFilter = BudgetFilter_ToProto(mapCtx, in.BudgetFilter)
-	out.Amount = BudgetAmount_ToProto(mapCtx, in.Amount)
-	out.ThresholdRules = direct.Slice_ToProto(mapCtx, in.ThresholdRules, BudgetThresholdRule_ToProto)
-	// MISSING: NotificationsRule
-	// MISSING: Etag
-	return out
-}
 func BudgetCustomPeriod_FromProto(mapCtx *direct.MapContext, in *pb.CustomPeriod) *krm.BudgetCustomPeriod {
 	if in == nil {
 		return nil
@@ -92,75 +64,11 @@ func BudgetCustomPeriod_ToProto(mapCtx *direct.MapContext, in *krm.BudgetCustomP
 	out.EndDate = Date_ToProto(mapCtx, in.EndDate)
 	return out
 }
-func BudgetFilter_FromProto(mapCtx *direct.MapContext, in *pb.Filter) *krm.BudgetFilter {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BudgetFilter{}
-	out.Projects = BudgetFilter_Projects_FromProto(mapCtx, in.Projects)
-	// MISSING: ResourceAncestors
-	out.CreditTypes = in.CreditTypes
-	out.CreditTypesTreatment = direct.Enum_FromProto(mapCtx, in.GetCreditTypesTreatment())
-	out.Services = in.Services
-	out.Subaccounts = BudgetFilter_Subaccounts_FromProto(mapCtx, in.Subaccounts)
-	// TODO: map type string message for field Labels
-	out.CalendarPeriod = direct.Enum_FromProto(mapCtx, in.GetCalendarPeriod())
-	out.CustomPeriod = BudgetCustomPeriod_FromProto(mapCtx, in.GetCustomPeriod())
-	return out
-}
-func BudgetFilter_ToProto(mapCtx *direct.MapContext, in *krm.BudgetFilter) *pb.Filter {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Filter{}
-	out.Projects = BudgetFilter_Projects_ToProto(mapCtx, in.Projects)
-	// MISSING: ResourceAncestors
-	out.CreditTypes = in.CreditTypes
-	out.CreditTypesTreatment = direct.Enum_ToProto[pb.Filter_CreditTypesTreatment](mapCtx, in.CreditTypesTreatment)
-	out.Services = in.Services
-	out.Subaccounts = BudgetFilter_Subaccounts_ToProto(mapCtx, in.Subaccounts)
-	// TODO: map type string message for field Labels
-	if oneof := BudgetFilter_CalendarPeriod_ToProto(mapCtx, in.CalendarPeriod); oneof != nil {
-		out.UsagePeriod = oneof
-	}
-	if oneof := BudgetCustomPeriod_ToProto(mapCtx, in.CustomPeriod); oneof != nil {
-		out.UsagePeriod = &pb.Filter_CustomPeriod{CustomPeriod: oneof}
-	}
-	return out
-}
 func BudgetFilter_CalendarPeriod_ToProto(mapCtx *direct.MapContext, in *string) *pb.Filter_CalendarPeriod {
 	if in == nil {
 		return nil
 	}
 	return &pb.Filter_CalendarPeriod{CalendarPeriod: direct.Enum_ToProto[pb.CalendarPeriod](mapCtx, in)}
-}
-func BudgetNotificationsRule_FromProto(mapCtx *direct.MapContext, in *pb.NotificationsRule) *krm.BudgetNotificationsRule {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BudgetNotificationsRule{}
-	if in.GetPubsubTopic() != "" {
-		out.PubsubTopicRef = &krm.PubSubTopicRef{External: in.GetPubsubTopic()}
-	}
-	out.SchemaVersion = direct.LazyPtr(in.GetSchemaVersion())
-	out.MonitoringNotificationChannels = BudgetNotificationsRule_MonitoringNotificationChannels_FromProto(mapCtx, in.MonitoringNotificationChannels)
-	out.DisableDefaultIAMRecipients = direct.LazyPtr(in.GetDisableDefaultIamRecipients())
-	// MISSING: EnableProjectLevelRecipients
-	return out
-}
-func BudgetNotificationsRule_ToProto(mapCtx *direct.MapContext, in *krm.BudgetNotificationsRule) *pb.NotificationsRule {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NotificationsRule{}
-	if in.PubsubTopicRef != nil {
-		out.PubsubTopic = in.PubsubTopicRef.External
-	}
-	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
-	out.MonitoringNotificationChannels = BudgetNotificationsRule_MonitoringNotificationChannels_ToProto(mapCtx, in.MonitoringNotificationChannels)
-	out.DisableDefaultIamRecipients = direct.ValueOf(in.DisableDefaultIAMRecipients)
-	// MISSING: EnableProjectLevelRecipients
-	return out
 }
 func BudgetThresholdRule_FromProto(mapCtx *direct.MapContext, in *pb.ThresholdRule) *krm.BudgetThresholdRule {
 	if in == nil {

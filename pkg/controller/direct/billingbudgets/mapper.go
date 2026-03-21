@@ -20,8 +20,91 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	datepb "google.golang.org/genproto/googleapis/type/date"
 	moneypb "google.golang.org/genproto/googleapis/type/money"
+	"google.golang.org/protobuf/types/known/structpb"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
+
+func BillingBudgetsBudgetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Budget) *krm.BillingBudgetsBudgetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BillingBudgetsBudgetSpec{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.BudgetFilter = BudgetFilter_FromProto(mapCtx, in.GetBudgetFilter())
+	out.Amount = BudgetAmount_FromProto(mapCtx, in.GetAmount())
+	out.ThresholdRules = direct.Slice_FromProto(mapCtx, in.ThresholdRules, BudgetThresholdRule_FromProto)
+	out.AllUpdatesRule = BudgetNotificationsRule_FromProto(mapCtx, in.GetNotificationsRule())
+	return out
+}
+
+func BillingBudgetsBudgetSpec_ToProto(mapCtx *direct.MapContext, in *krm.BillingBudgetsBudgetSpec) *pb.Budget {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Budget{}
+	if in.BillingAccountRef.Name != "" {
+		mapCtx.Errorf("BillingAccountRef: Name references are not yet supported, use External instead")
+		return nil
+	}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.BudgetFilter = BudgetFilter_ToProto(mapCtx, in.BudgetFilter)
+	out.Amount = BudgetAmount_ToProto(mapCtx, in.Amount)
+	out.ThresholdRules = direct.Slice_ToProto(mapCtx, in.ThresholdRules, BudgetThresholdRule_ToProto)
+	out.NotificationsRule = BudgetNotificationsRule_ToProto(mapCtx, in.AllUpdatesRule)
+	return out
+}
+
+func BillingBudgetsBudgetStatus_FromProto(mapCtx *direct.MapContext, in *pb.Budget) *krm.BillingBudgetsBudgetStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BillingBudgetsBudgetStatus{}
+	if in.GetEtag() != "" {
+		out.Etag = direct.LazyPtr(in.GetEtag())
+	}
+	return out
+}
+
+func BillingBudgetsBudgetStatus_ToProto(mapCtx *direct.MapContext, in *krm.BillingBudgetsBudgetStatus) *pb.Budget {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Budget{}
+	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
+
+func BudgetNotificationsRule_FromProto(mapCtx *direct.MapContext, in *pb.NotificationsRule) *krm.BudgetNotificationsRule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BudgetNotificationsRule{}
+	if in.GetPubsubTopic() != "" {
+		out.PubsubTopicRef = &krm.PubSubTopicRef{External: in.GetPubsubTopic()}
+	}
+	out.SchemaVersion = direct.LazyPtr(in.GetSchemaVersion())
+	out.MonitoringNotificationChannels = BudgetNotificationsRule_MonitoringNotificationChannels_FromProto(mapCtx, in.MonitoringNotificationChannels)
+	out.DisableDefaultIAMRecipients = direct.LazyPtr(in.GetDisableDefaultIamRecipients())
+	return out
+}
+
+func BudgetNotificationsRule_ToProto(mapCtx *direct.MapContext, in *krm.BudgetNotificationsRule) *pb.NotificationsRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotificationsRule{}
+	if in.PubsubTopicRef != nil {
+		if in.PubsubTopicRef.Name != "" {
+			mapCtx.Errorf("PubsubTopicRef: Name references are not yet supported, use External instead")
+			return nil
+		}
+		out.PubsubTopic = in.PubsubTopicRef.External
+	}
+	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
+	out.MonitoringNotificationChannels = BudgetNotificationsRule_MonitoringNotificationChannels_ToProto(mapCtx, in.MonitoringNotificationChannels)
+	out.DisableDefaultIamRecipients = direct.ValueOf(in.DisableDefaultIAMRecipients)
+	return out
+}
 
 func BudgetAmount_FromProto(mapCtx *direct.MapContext, in *pb.BudgetAmount) *krm.BudgetAmount {
 	if in == nil {
@@ -40,6 +123,10 @@ func BudgetAmount_ToProto(mapCtx *direct.MapContext, in *krm.BudgetAmount) *pb.B
 		return nil
 	}
 	out := &pb.BudgetAmount{}
+	if in.SpecifiedAmount != nil && in.LastPeriodAmount != nil {
+		mapCtx.Errorf("only one of SpecifiedAmount or LastPeriodAmount may be set")
+		return nil
+	}
 	if in.SpecifiedAmount != nil {
 		out.BudgetAmount = &pb.BudgetAmount_SpecifiedAmount{
 			SpecifiedAmount: Money_ToProto(mapCtx, in.SpecifiedAmount),
@@ -49,6 +136,70 @@ func BudgetAmount_ToProto(mapCtx *direct.MapContext, in *krm.BudgetAmount) *pb.B
 		out.BudgetAmount = &pb.BudgetAmount_LastPeriodAmount{
 			LastPeriodAmount: &pb.LastPeriodAmount{},
 		}
+	}
+	return out
+}
+
+func BudgetFilter_FromProto(mapCtx *direct.MapContext, in *pb.Filter) *krm.BudgetFilter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BudgetFilter{}
+	out.Projects = BudgetFilter_Projects_FromProto(mapCtx, in.Projects)
+	out.CreditTypes = in.CreditTypes
+	out.CreditTypesTreatment = direct.Enum_FromProto(mapCtx, in.GetCreditTypesTreatment())
+	out.Services = in.Services
+	out.Subaccounts = BudgetFilter_Subaccounts_FromProto(mapCtx, in.Subaccounts)
+
+	if in.GetLabels() != nil {
+		out.Labels = make(map[string]krm.BudgetLabels)
+		for k, v := range in.GetLabels() {
+			var vals []string
+			if v != nil {
+				for _, val := range v.GetValues() {
+					vals = append(vals, val.GetStringValue())
+				}
+			}
+			out.Labels[k] = krm.BudgetLabels{Values: vals}
+		}
+	}
+
+	out.CalendarPeriod = direct.Enum_FromProto(mapCtx, in.GetCalendarPeriod())
+	out.CustomPeriod = BudgetCustomPeriod_FromProto(mapCtx, in.GetCustomPeriod())
+	return out
+}
+
+func BudgetFilter_ToProto(mapCtx *direct.MapContext, in *krm.BudgetFilter) *pb.Filter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Filter{}
+	out.Projects = BudgetFilter_Projects_ToProto(mapCtx, in.Projects)
+	out.CreditTypes = in.CreditTypes
+	out.CreditTypesTreatment = direct.Enum_ToProto[pb.Filter_CreditTypesTreatment](mapCtx, in.CreditTypesTreatment)
+	out.Services = in.Services
+	out.Subaccounts = BudgetFilter_Subaccounts_ToProto(mapCtx, in.Subaccounts)
+
+	if in.Labels != nil {
+		out.Labels = make(map[string]*structpb.ListValue)
+		for k, v := range in.Labels {
+			lv := &structpb.ListValue{}
+			for _, val := range v.Values {
+				lv.Values = append(lv.Values, structpb.NewStringValue(val))
+			}
+			out.Labels[k] = lv
+		}
+	}
+
+	if direct.ValueOf(in.CalendarPeriod) != "" && in.CustomPeriod != nil {
+		mapCtx.Errorf("only one of calendarPeriod or customPeriod may be set")
+		return nil
+	}
+
+	if direct.ValueOf(in.CalendarPeriod) != "" {
+		out.UsagePeriod = &pb.Filter_CalendarPeriod{CalendarPeriod: direct.Enum_ToProto[pb.CalendarPeriod](mapCtx, in.CalendarPeriod)}
+	} else if in.CustomPeriod != nil {
+		out.UsagePeriod = &pb.Filter_CustomPeriod{CustomPeriod: BudgetCustomPeriod_ToProto(mapCtx, in.CustomPeriod)}
 	}
 	return out
 }
@@ -114,6 +265,10 @@ func BudgetFilter_Projects_ToProto(mapCtx *direct.MapContext, in []krm.ProjectRe
 	}
 	out := make([]string, len(in))
 	for i, r := range in {
+		if r.Name != "" {
+			mapCtx.Errorf("ProjectRef: Name references are not yet supported, use External instead")
+			return nil
+		}
 		out[i] = r.External
 	}
 	return out
@@ -136,6 +291,10 @@ func BudgetFilter_Subaccounts_ToProto(mapCtx *direct.MapContext, in []krm.CloudB
 	}
 	out := make([]string, len(in))
 	for i, r := range in {
+		if r.Name != "" {
+			mapCtx.Errorf("CloudBillingBillingAccountRef: Name references are not yet supported, use External instead")
+			return nil
+		}
 		out[i] = r.External
 	}
 	return out
@@ -158,6 +317,10 @@ func BudgetNotificationsRule_MonitoringNotificationChannels_ToProto(mapCtx *dire
 	}
 	out := make([]string, len(in))
 	for i, r := range in {
+		if r.Name != "" {
+			mapCtx.Errorf("MonitoringNotificationChannelRef: Name references are not yet supported, use External instead")
+			return nil
+		}
 		out[i] = r.External
 	}
 	return out
