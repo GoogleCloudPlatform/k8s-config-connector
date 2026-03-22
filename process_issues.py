@@ -15,111 +15,144 @@
 import json
 import os
 import subprocess
-import glob
 import yaml
 
-with open('all_issues.json') as f:
-    all_issues = json.load(f)
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Count pending (open) issues
-open_issues = [issue for issue in all_issues if issue.get("state", "OPEN") == "OPEN"]
+def get_all_issues():
+    if not os.path.exists('all_issues.json'):
+        try:
+            print('Fetching all issues via gh cli...')
+            subprocess.run(
+                ['gh', 'issue', 'list', '--state', 'all', '--limit', '10000', '--json', 'number,title,state,labels', '--label', 'auto-generated'],
+                check=True,
+                stdout=open('all_issues.json', 'w', encoding='utf-8')
+            )
+        except subprocess.CalledProcessError as e:
+            print(f'Failed to fetch issues: {e}')
+            raise
+    
+    try:
+        with open('all_issues.json', encoding='utf-8') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+
+all_issues = get_all_issues()
+
+# Count pending (open) issues managed by this script
+open_issues = [
+    issue for issue in all_issues 
+    if issue.get('state', 'OPEN').upper() == 'OPEN' and issue.get('title', '').startswith('Create generate.sh and types.go files for')
+]
 pending_count = len(open_issues)
 
 # Candidate resources
 candidate_files = []
-for root, _, files in os.walk("config/crds/resources"):
+crds_dir = os.path.join(SCRIPT_DIR, 'config', 'crds', 'resources')
+for root, _, files in os.walk(crds_dir):
     for file in files:
-        if file.endswith(".yaml"):
-            filepath = os.path.join(root, file)
-            with open(filepath) as f:
-                content = f.read()
-                if "cnrm.cloud.google.com/dcl2crd: \"true\"" in content:
-                    candidate_files.append(filepath)
+        if file.endswith('.yaml'):
+            candidate_files.append(os.path.join(root, file))
 
 candidates = []
 for filepath in candidate_files:
-    with open(filepath) as f:
-        docs = yaml.safe_load_all(f)
-        for doc in docs:
-            if not doc: continue
-            if doc.get("kind") == "CustomResourceDefinition":
-                group = doc["spec"]["group"]
-                kind = doc["spec"]["names"]["kind"]
-                plural = doc["spec"]["names"]["plural"]
-                versions = doc["spec"]["versions"]
-                
-                is_beta = any(v["name"] == "v1beta1" for v in versions)
-                if not is_beta:
+    try:
+        with open(filepath, encoding='utf-8') as f:
+            docs = yaml.safe_load_all(f)
+            for doc in docs:
+                if not isinstance(doc, dict):
                     continue
-                
-                group_prefix = group.split(".")[0]
-                
-                types_exists = False
-                dir_path = f"apis/{group_prefix}/v1beta1/"
-                if os.path.isdir(dir_path):
-                    for fname in os.listdir(dir_path):
-                        if fname.lower().replace("_", "") == f"{kind.lower()}types.go" or fname.endswith("_types.go") and kind.lower() in fname.lower():
-                            types_exists = True
-                            break
-                        if fname == f"{kind.lower()}_types.go":
-                            types_exists = True
-                            
-                if not types_exists:
-                    candidates.append((group, kind, group_prefix, plural))
+                if doc.get('kind') == 'CustomResourceDefinition':
+                    labels = doc.get('metadata', {}).get('labels', {})
+                    # Ensure we are looking at a terraform-managed CRD
+                    if str(labels.get('cnrm.cloud.google.com/tf2crd', '')).lower() != 'true':
+                        continue
 
-required_labels = {"overseer", "area/direct", "priority/medium"}
+                    spec = doc.get('spec', {})
+                    group = spec.get('group')
+                    names = spec.get('names', {})
+                    kind = names.get('kind')
+                    plural = names.get('plural')
+                    versions = spec.get('versions', [])
+                    
+                    if not (group and kind and plural and versions):
+                        continue
+                    
+                    is_beta = any(v.get('name') == 'v1beta1' for v in versions)
+                    if not is_beta:
+                        continue
+                    
+                    group_prefix = group.split('.')[0]
+                    
+                    types_exists = False
+                    dir_path = os.path.join(SCRIPT_DIR, 'apis', group_prefix, 'v1beta1')
+                    if os.path.isdir(dir_path):
+                        for fname in os.listdir(dir_path):
+                            fname_lower = fname.lower()
+                            if fname_lower == f'{kind.lower()}_types.go' or fname_lower == f'{kind.lower()}types.go':
+                                types_exists = True
+                                break
+                            
+                    if not types_exists:
+                        candidates.append((group, kind, group_prefix, plural))
+    except Exception as e:
+        print(f'Error processing {filepath}: {e}')
+
+required_labels = {'overseer', 'area/direct', 'priority/medium', 'auto-generated'}
 
 # To limit issue creation
 issue_created = False
 
 for group, kind, group_prefix, plural in candidates:
-    # Build possible titles
-    title1 = f"Create generate.sh and types.go files for {group} {kind}"
-    title2 = f"Create generate.sh and types.go files for {group_prefix} {kind}"
-    title3 = f"Create generate.sh and types.go files for {group_prefix.capitalize()} {kind}"
-    title4 = f"Create generate.sh and types.go files for {group_prefix.lower()} {kind}"
+    title = f'Create generate.sh and types.go files for {group} {kind}'
+    title_lower = title.lower()
     
     existing_issue = None
     for issue in all_issues:
-        t = issue["title"].lower()
-        if t == title1.lower() or t == title2.lower() or t == title3.lower() or t == title4.lower():
+        if issue.get('title', '').lower() == title_lower:
             existing_issue = issue
             break
             
     if existing_issue:
-        existing_labels = {lbl["name"] for lbl in existing_issue.get("labels", [])}
+        # Skip closed issues rather than blindly reopening them.
+        if existing_issue.get('state', 'OPEN').upper() == 'CLOSED':
+            continue
+
+        existing_labels = {lbl.get('name') for lbl in existing_issue.get('labels', []) if isinstance(lbl, dict) and 'name' in lbl}
         missing_labels = required_labels - existing_labels
         if missing_labels:
-            print(f"Injecting missing labels {missing_labels} for issue #{existing_issue['number']} ({existing_issue['title']})")
-            subprocess.run(["gh", "issue", "edit", str(existing_issue["number"]), "--add-label", ",".join(missing_labels)])
+            print(f'Injecting missing labels {missing_labels} for issue #{existing_issue.get("number")} ({existing_issue.get("title")})')
+            try:
+                subprocess.run(['gh', 'issue', 'edit', str(existing_issue.get('number')), '--add-label', ','.join(missing_labels)], check=True)
+            except subprocess.CalledProcessError as e:
+                print(f'Failed to update labels for issue #{existing_issue.get("number")}: {e}')
         continue
     else:
         # No existing issue found
         if not issue_created:
             if pending_count > 10:
-                print(f"There are already {pending_count} pending issues. Skipping creation of new issue for {group} {kind}.")
-                # Don't create, but don't exit either so we can continue fixing labels for other candidates
+                print(f'There are already {pending_count} pending issues. Skipping creation of new issue for {group} {kind}.')
             else:
-                print(f"Would create issue for {group} {kind} ...")
-                # Creating issue
+                print(f'Would create issue for {group} {kind} ...')
                 body = f"""As part of moving resources from terraform controllers to direct controllers (Epic #5954), we need to create the Go types for `{kind}`.
 
 Currently, `{kind}` is managed by the Terraform controller (marked with `tf2crd=true`). The goal is to create the Go types in `apis/{group_prefix}/v1beta1/` so that we can eventually migrate the controller implementation to the "direct" approach.
 
 ### Instructions
 
-1.  **Create a generate.sh**:
+1.  **Create a `generate.sh`**:
     Create `apis/{group_prefix}/v1beta1/generate.sh` which includes `{kind}`.
     It likely maps to something like `google.cloud.{group_prefix}.v1`.
     Example:
     ```bash
-    go run . generate-types \\
+    go run github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder generate-types \\
       --service google.cloud.{group_prefix}.v1 \\
       --api-version {group}/v1beta1 \\
       --resource {kind}:{kind} \\
       --include-skipped-output
 
-    go run . generate-mapper \\
+    go run github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder generate-mapper \\
       --service google.cloud.{group_prefix}.v1 \\
       --api-version {group}/v1beta1 \\
       --include-skipped-output
@@ -165,12 +198,15 @@ Currently, `{kind}` is managed by the Terraform controller (marked with `tf2crd=
 
 This issue is part of Epic #5954.
 """
-                title = f"Create generate.sh and types.go files for {group} {kind}"
-                with open('body.txt', 'w') as bf:
-                    bf.write(body)
-                
-                # I use the group as full Group
-                print(f"Creating issue: {title}")
-                subprocess.run(["gh", "issue", "create", "--title", title, "--body-file", "body.txt", "--label", "overseer,area/direct,priority/medium", "--milestone", "none"]) # milestones can't easily be set by name unless configured, ignoring
-                issue_created = True
-
+                print(f'Creating issue: {title}')
+                try:
+                    subprocess.run(
+                        ['gh', 'issue', 'create', '--title', title, '--label', 'overseer,area/direct,priority/medium,auto-generated'],
+                        input=body.encode('utf-8'),
+                        check=True
+                    )
+                    issue_created = True
+                    # Append newly created issue to prevent duplicates in the same run
+                    all_issues.append({'title': title, 'state': 'OPEN', 'labels': [{'name': l} for l in required_labels]})
+                except subprocess.CalledProcessError as e:
+                    print(f'Failed to create issue {title}: {e}')

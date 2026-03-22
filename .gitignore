@@ -184,3 +184,5 @@ operator/channels/packages/configconnector/*/namespaced/0-cnrm-system.yaml
 operator/autopilot-channels/packages/configconnector/*/cluster/
 operator/autopilot-channels/packages/configconnector/*/crds.yaml
 operator/autopilot-channels/packages/configconnector/*/namespaced/0-cnrm-system.yaml
+
+all_issues.json
