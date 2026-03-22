@@ -42,6 +42,8 @@ type AndroidKeySettings struct {
 }
 */
 
+/* found existing non-generated go type "AppleDeveloperID", skipping
+
 // +kcc:proto=google.cloud.recaptchaenterprise.v1.AppleDeveloperId
 type AppleDeveloperID struct {
 	// Required. Input only. A private key (downloaded as a text file with a .p8
@@ -59,10 +61,14 @@ type AppleDeveloperID struct {
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.AppleDeveloperId.team_id
 	TeamID *string `json:"teamID,omitempty"`
 }
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.recaptchaenterprise.v1.ExpressKeySettings", skipping
 
 // +kcc:proto=google.cloud.recaptchaenterprise.v1.ExpressKeySettings
 type ExpressKeySettings struct {
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.recaptchaenterprise.v1.IOSKeySettings", skipping
 

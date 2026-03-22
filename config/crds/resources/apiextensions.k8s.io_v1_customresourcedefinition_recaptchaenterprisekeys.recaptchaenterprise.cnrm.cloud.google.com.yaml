@@ -77,11 +77,19 @@ spec:
                     items:
                       type: string
                     type: array
+                  supportNonGoogleAppStoreDistribution:
+                    description: Set to true for keys that are used in an Android
+                      application that is available for download in app stores in
+                      addition to the Google Play Store.
+                    type: boolean
                 type: object
               displayName:
                 description: Human-readable display name of this key. Modifiable by
                   user.
                 type: string
+              expressSettings:
+                description: Settings for keys that can be used by reCAPTCHA Express.
+                type: object
               iosSettings:
                 description: Settings for keys that can be used by iOS apps.
                 properties:
@@ -95,9 +103,52 @@ spec:
                     items:
                       type: string
                     type: array
+                  appleDeveloperId:
+                    description: Optional. iOS Apple Developer Account details for
+                      app identity validation.
+                    properties:
+                      keyId:
+                        description: Required. The Apple developer key ID (10-character
+                          string).
+                        type: string
+                      privateKey:
+                        description: Required. Input only. A private key (downloaded
+                          as a text file with a .p8 file extension) generated for
+                          your Apple Developer account. Ensure that Apple DeviceCheck
+                          is enabled for the private key.
+                        properties:
+                          key:
+                            description: The key of the secret to select from.  Must
+                              be a valid secret key.
+                            type: string
+                          name:
+                            default: ""
+                            description: 'Name of the referent. This field is effectively
+                              required, but due to backwards compatibility is allowed
+                              to be empty. Instances of this type with an empty value
+                              here are almost certainly wrong. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                            type: string
+                          optional:
+                            description: Specify whether the Secret or its key must
+                              be defined
+                            type: boolean
+                        required:
+                        - key
+                        type: object
+                        x-kubernetes-map-type: atomic
+                      teamId:
+                        description: Required. The Apple team ID (10-character string)
+                          owning the provisioning profile used to build your application.
+                        type: string
+                    type: object
+                type: object
+              labels:
+                additionalProperties:
+                  type: string
+                description: See [Creating and managing labels](https://cloud.google.com/recaptcha/docs/labels).
                 type: object
               projectRef:
-                description: The project that this resource belongs to.
+                description: Immutable. The project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -129,8 +180,9 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The RecaptchaEnterpriseKey name. If not given, the metadata.name
-                  will be used.
+                description: Immutable. Optional. The service-generated name of the
+                  resource. Used for acquisition only. Leave unset to create a new
+                  resource.
                 type: string
               testingOptions:
                 description: Immutable. Options for user acceptance testing.
@@ -254,6 +306,12 @@ spec:
               observedState:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
+                properties:
+                  createTime:
+                    description: The timestamp corresponding to the creation of this
+                      Key.
+                    format: date-time
+                    type: string
                 type: object
             type: object
         required:

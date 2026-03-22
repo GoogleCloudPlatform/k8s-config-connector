@@ -17,6 +17,7 @@ package v1beta1
 import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -25,10 +26,10 @@ var RecaptchaEnterpriseKeyGVK = GroupVersion.WithKind("RecaptchaEnterpriseKey")
 // RecaptchaEnterpriseKeySpec defines the desired state of RecaptchaEnterpriseKey
 // +kcc:spec:proto=google.cloud.recaptchaenterprise.v1.Key
 type RecaptchaEnterpriseKeySpec struct {
-	// The project that this resource belongs to.
+	// Immutable. The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
-	// The RecaptchaEnterpriseKey name. If not given, the metadata.name will be used.
+	// Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Human-readable display name of this key. Modifiable by user.
@@ -55,6 +56,14 @@ type RecaptchaEnterpriseKeySpec struct {
 	// Immutable. Settings specific to keys that can be used for WAF (Web Application Firewall).
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.Key.waf_settings
 	WafSettings *KeyWafSettings `json:"wafSettings,omitempty"`
+
+	// Settings for keys that can be used by reCAPTCHA Express.
+	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.Key.express_settings
+	ExpressSettings *KeyExpressSettings `json:"expressSettings,omitempty"`
+
+	// See [Creating and managing labels](https://cloud.google.com/recaptcha/docs/labels).
+	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.Key.labels
+	Labels map[string]string `json:"labels,omitempty"`
 }
 
 // +kcc:proto=google.cloud.recaptchaenterprise.v1.WebKeySettings
@@ -90,6 +99,10 @@ type KeyAndroidSettings struct {
 	// Android package names of apps allowed to use the key. Example: 'com.companyname.appname'
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.AndroidKeySettings.allowed_package_names
 	AllowedPackageNames []string `json:"allowedPackageNames,omitempty"`
+
+	// Set to true for keys that are used in an Android application that is available for download in app stores in addition to the Google Play Store.
+	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.AndroidKeySettings.support_non_google_app_store_distribution
+	SupportNonGoogleAppStoreDistribution *bool `json:"supportNonGoogleAppStoreDistribution,omitempty"`
 }
 
 // +kcc:proto=google.cloud.recaptchaenterprise.v1.IOSKeySettings
@@ -101,6 +114,28 @@ type KeyIosSettings struct {
 	// iOS bundle ids of apps allowed to use the key. Example: 'com.companyname.productname.appname'
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.IOSKeySettings.allowed_bundle_ids
 	AllowedBundleIds []string `json:"allowedBundleIds,omitempty"`
+
+	// Optional. iOS Apple Developer Account details for app identity validation.
+	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.IOSKeySettings.apple_developer_id
+	AppleDeveloperID *AppleDeveloperID `json:"appleDeveloperId,omitempty"`
+}
+
+// +kcc:proto=google.cloud.recaptchaenterprise.v1.AppleDeveloperId
+type AppleDeveloperID struct {
+	// Required. Input only. A private key (downloaded as a text file with a .p8
+	// file extension) generated for your Apple Developer account. Ensure that
+	// Apple DeviceCheck is enabled for the private key.
+	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.AppleDeveloperId.private_key
+	PrivateKey *v1.SecretKeySelector `json:"privateKey,omitempty"`
+
+	// Required. The Apple developer key ID (10-character string).
+	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.AppleDeveloperId.key_id
+	KeyID *string `json:"keyId,omitempty"`
+
+	// Required. The Apple team ID (10-character string) owning the provisioning
+	// profile used to build your application.
+	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.AppleDeveloperId.team_id
+	TeamID *string `json:"teamId,omitempty"`
 }
 
 // +kcc:proto=google.cloud.recaptchaenterprise.v1.TestingOptions
@@ -108,7 +143,7 @@ type KeyTestingOptions struct {
 	// Immutable. All assessments for this Key will return this score. Must be between 0 (likely not legitimate) and 1 (likely legitimate) inclusive.
 	// +kubebuilder:validation:Format=double
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.TestingOptions.testing_score
-	TestingScore *float32 `json:"testingScore,omitempty"`
+	TestingScore *float64 `json:"testingScore,omitempty"`
 
 	// Immutable. For challenge-based keys only (CHECKBOX, INVISIBLE), all challenge requests for this site will return nocaptcha if NOCAPTCHA, or an unsolvable challenge if UNSOLVABLE_CHALLENGE. Possible values: TESTING_CHALLENGE_UNSPECIFIED, NOCAPTCHA, UNSOLVABLE_CHALLENGE
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.TestingOptions.testing_challenge
@@ -128,6 +163,11 @@ type KeyWafSettings struct {
 	WafFeature *string `json:"wafFeature"`
 }
 
+// Settings for keys that can be used by reCAPTCHA Express.
+// +kcc:proto=google.cloud.recaptchaenterprise.v1.ExpressKeySettings
+type KeyExpressSettings struct {
+}
+
 // RecaptchaEnterpriseKeyStatus defines the config connector machine state of RecaptchaEnterpriseKey
 type RecaptchaEnterpriseKeyStatus struct {
 	// Conditions represent the latest available observations of the
@@ -145,13 +185,16 @@ type RecaptchaEnterpriseKeyStatus struct {
 
 	// The timestamp corresponding to the creation of this Key.
 	// +kubebuilder:validation:Format=date-time
-	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.Key.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 }
 
 // RecaptchaEnterpriseKeyObservedState is the state of the RecaptchaEnterpriseKey resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.recaptchaenterprise.v1.Key
 type RecaptchaEnterpriseKeyObservedState struct {
+	// The timestamp corresponding to the creation of this Key.
+	// +kubebuilder:validation:Format=date-time
+	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.Key.create_time
+	CreateTime *string `json:"createTime,omitempty"`
 }
 
 // +genclient
