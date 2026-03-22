@@ -94,8 +94,6 @@ func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 		metadata.EndTime = timestamppb.Now()
 
 		retObj := proto.Clone(obj).(*pb.Instance)
-		// pscConfigs is not included in the response
-		retObj.PscAutoConnections = nil
 		retObj.State = pb.Instance_ACTIVE
 		r.storage.Update(ctx, fqn, retObj)
 		return retObj, nil
@@ -118,7 +116,7 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	if obj.Mode == pb.Instance_MODE_UNSPECIFIED {
 		obj.Mode = pb.Instance_CLUSTER
 	}
-	if obj.PscAttachmentDetails == nil {
+	if len(obj.PscAttachmentDetails) == 0 {
 		var types []pb.ConnectionType
 		switch obj.GetMode() {
 		case pb.Instance_CLUSTER:
@@ -140,7 +138,7 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 		}
 	}
 	if len(obj.Endpoints) > 0 {
-		if len(obj.Endpoints[0].Connections) > 0 {
+		if obj.Endpoints[0] != nil && len(obj.Endpoints[0].Connections) > 0 {
 			connections := obj.Endpoints[0].Connections
 			if len(connections) == 1 {
 				autoConnection := connections[0].GetPscAutoConnection()
@@ -248,7 +246,6 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 		obj.AutomatedBackupConfig.AutomatedBackupMode = pb.AutomatedBackupConfig_DISABLED
 	}
 	if crr := obj.CrossInstanceReplicationConfig; crr != nil {
-		crr.UpdateTime = timestamppb.New(time.Now())
 		switch crr.InstanceRole {
 		case pb.CrossInstanceReplicationConfig_PRIMARY:
 			if len(crr.SecondaryInstances) == 0 {
@@ -288,7 +285,7 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 					Uid:      crr.PrimaryInstance.Uid,
 				},
 				SecondaryInstances: []*pb.CrossInstanceReplicationConfig_RemoteInstance{
-					&pb.CrossInstanceReplicationConfig_RemoteInstance{
+					{
 						Instance: name.String(),
 						Uid:      obj.Uid,
 					},
@@ -300,6 +297,8 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 			return fmt.Errorf("unknown instance role %v", crr.InstanceRole)
 		}
 	}
+	// PscAutoConnections is not included in the response
+	obj.PscAutoConnections = nil
 	return nil
 }
 
@@ -366,10 +365,13 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 		case "crossInstanceReplicationConfig":
 			obj.CrossInstanceReplicationConfig = req.Instance.CrossInstanceReplicationConfig
 		case "gcsSource":
-			obj.ImportSources = &pb.Instance_GcsSource{GcsSource: req.Instance.GetGcsSource()}
+			if gcsSource := req.Instance.GetGcsSource(); gcsSource != nil {
+				obj.ImportSources = &pb.Instance_GcsSource{GcsSource: gcsSource}
+			}
 		case "managedBackupSource":
-			obj.ImportSources = &pb.Instance_ManagedBackupSource_{ManagedBackupSource: req.Instance.GetManagedBackupSource()}
-
+			if managedBackupSource := req.Instance.GetManagedBackupSource(); managedBackupSource != nil {
+				obj.ImportSources = &pb.Instance_ManagedBackupSource_{ManagedBackupSource: managedBackupSource}
+			}
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
 		}
@@ -396,8 +398,6 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 		metadata.EndTime = timestamppb.Now()
 
 		retObj := proto.Clone(obj).(*pb.Instance)
-		// pscConfigs is not included in the response
-		retObj.PscAutoConnections = nil
 		retObj.State = pb.Instance_ACTIVE
 		retObj.UpdateTime = timestamppb.New(time.Now())
 		r.storage.Update(ctx, fqn, retObj)
@@ -427,8 +427,8 @@ func (r *instanceServer) DeleteInstance(ctx context.Context, req *pb.DeleteInsta
 		return nil, status.Errorf(codes.FailedPrecondition, "The instance is deletion protected. Please disable deletion protection to delete the instance. To disable, update DeleteProtectionEnabled to false via the Update API")
 	}
 
-	deletedObj := &pb.Instance{}
-	if err := r.storage.Delete(ctx, fqn, deletedObj); err != nil {
+	obj.State = pb.Instance_DELETING
+	if err := r.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
@@ -441,6 +441,8 @@ func (r *instanceServer) DeleteInstance(ctx context.Context, req *pb.DeleteInsta
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
+		deletedObj := &pb.Instance{}
+		r.storage.Delete(ctx, fqn, deletedObj)
 		return &emptypb.Empty{}, nil
 	})
 }
@@ -493,7 +495,7 @@ func (r *instanceServer) BackupInstance(ctx context.Context, req *pb.BackupInsta
 
 	backupID := req.GetBackupId()
 	if backupID == "" {
-		backupID = fmt.Sprintf("%s-backup", instanceName.Name)
+		backupID = time.Now().Format("20060102150405")
 	}
 
 	reqName := fmt.Sprintf("%s/backups/%s", backupCollectionName, backupID)
@@ -514,7 +516,7 @@ func (r *instanceServer) BackupInstance(ctx context.Context, req *pb.BackupInsta
 	obj := &pb.Backup{
 		BackupType: pb.Backup_ON_DEMAND,
 		BackupFiles: []*pb.BackupFile{
-			&pb.BackupFile{
+			{
 				FileName:   fmt.Sprintf("file-%s.rdb", backupID),
 				SizeBytes:  141,
 				CreateTime: timestamppb.New(now),
@@ -528,7 +530,7 @@ func (r *instanceServer) BackupInstance(ctx context.Context, req *pb.BackupInsta
 		Name:           fqn,
 		NodeType:       instanceObj.NodeType,
 		ShardCount:     instanceObj.ShardCount,
-		State:          pb.Backup_ACTIVE,
+		State:          pb.Backup_CREATING,
 		TotalSizeBytes: 141,
 		Uid:            fmt.Sprintf("backup-%s", backupID),
 	}
@@ -546,6 +548,8 @@ func (r *instanceServer) BackupInstance(ctx context.Context, req *pb.BackupInsta
 
 	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
+		obj.State = pb.Backup_ACTIVE
+		r.storage.Update(ctx, fqn, obj)
 		return proto.Clone(instanceObj).(*pb.Instance), nil
 	})
 }
@@ -568,8 +572,8 @@ func (r *instanceServer) DeleteBackup(ctx context.Context, req *pb.DeleteBackupR
 		return nil, err
 	}
 
-	deletedObj := &pb.Backup{}
-	if err := r.storage.Delete(ctx, fqn, deletedObj); err != nil {
+	obj.State = pb.Backup_DELETING
+	if err := r.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
@@ -582,6 +586,8 @@ func (r *instanceServer) DeleteBackup(ctx context.Context, req *pb.DeleteBackupR
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
+		deletedObj := &pb.Backup{}
+		r.storage.Delete(ctx, fqn, deletedObj)
 		return &emptypb.Empty{}, nil
 	})
 }
