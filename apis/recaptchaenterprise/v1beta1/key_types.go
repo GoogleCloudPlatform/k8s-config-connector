@@ -109,15 +109,15 @@ type KeyAndroidSettings struct {
 type KeyIosSettings struct {
 	// If set to true, it means allowed_bundle_ids will not be enforced.
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.IOSKeySettings.allow_all_bundle_ids
-	AllowAllBundleIds *bool `json:"allowAllBundleIds,omitempty"`
+	AllowAllBundleIDs *bool `json:"allowAllBundleIDs,omitempty"`
 
 	// iOS bundle ids of apps allowed to use the key. Example: 'com.companyname.productname.appname'
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.IOSKeySettings.allowed_bundle_ids
-	AllowedBundleIds []string `json:"allowedBundleIds,omitempty"`
+	AllowedBundleIDs []string `json:"allowedBundleIDs,omitempty"`
 
 	// Optional. iOS Apple Developer Account details for app identity validation.
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.IOSKeySettings.apple_developer_id
-	AppleDeveloperID *AppleDeveloperID `json:"appleDeveloperId,omitempty"`
+	AppleDeveloperID *AppleDeveloperID `json:"appleDeveloperID,omitempty"`
 }
 
 // +kcc:proto=google.cloud.recaptchaenterprise.v1.AppleDeveloperId
@@ -130,12 +130,12 @@ type AppleDeveloperID struct {
 
 	// Required. The Apple developer key ID (10-character string).
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.AppleDeveloperId.key_id
-	KeyID *string `json:"keyId,omitempty"`
+	KeyID *string `json:"keyID,omitempty"`
 
 	// Required. The Apple team ID (10-character string) owning the provisioning
 	// profile used to build your application.
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.AppleDeveloperId.team_id
-	TeamID *string `json:"teamId,omitempty"`
+	TeamID *string `json:"teamID,omitempty"`
 }
 
 // +kcc:proto=google.cloud.recaptchaenterprise.v1.TestingOptions
@@ -165,6 +165,7 @@ type KeyWafSettings struct {
 
 // Settings for keys that can be used by reCAPTCHA Express.
 // +kcc:proto=google.cloud.recaptchaenterprise.v1.ExpressKeySettings
+// +kubebuilder:pruning:PreserveUnknownFields
 type KeyExpressSettings struct {
 }
 

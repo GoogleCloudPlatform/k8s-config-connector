@@ -219,26 +219,36 @@ func KeyExpressSettings_ToProto(mapCtx *direct.MapContext, in *krm.KeyExpressSet
 	out := &pb.ExpressKeySettings{}
 	return out
 }
+
+/* found existing non-generated mapping function "KeyIosSettings_FromProto", skipping
 func KeyIosSettings_FromProto(mapCtx *direct.MapContext, in *pb.IOSKeySettings) *krm.KeyIosSettings {
 	if in == nil {
 		return nil
 	}
 	out := &krm.KeyIosSettings{}
-	out.AllowAllBundleIds = direct.LazyPtr(in.GetAllowAllBundleIds())
-	out.AllowedBundleIds = in.AllowedBundleIds
+	// MISSING: AllowAllBundleIds
+	// (near miss): "AllowAllBundleIds" vs "AllowAllBundleIDs"
+	// MISSING: AllowedBundleIds
+	// (near miss): "AllowedBundleIds" vs "AllowedBundleIDs"
 	out.AppleDeveloperID = AppleDeveloperID_FromProto(mapCtx, in.GetAppleDeveloperId())
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "KeyIosSettings_ToProto", skipping
 func KeyIosSettings_ToProto(mapCtx *direct.MapContext, in *krm.KeyIosSettings) *pb.IOSKeySettings {
 	if in == nil {
 		return nil
 	}
 	out := &pb.IOSKeySettings{}
-	out.AllowAllBundleIds = direct.ValueOf(in.AllowAllBundleIds)
-	out.AllowedBundleIds = in.AllowedBundleIds
+	// MISSING: AllowAllBundleIds
+	// (near miss): "AllowAllBundleIds" vs "AllowAllBundleIDs"
+	// MISSING: AllowedBundleIds
+	// (near miss): "AllowedBundleIds" vs "AllowedBundleIDs"
 	out.AppleDeveloperId = AppleDeveloperID_ToProto(mapCtx, in.AppleDeveloperID)
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "KeyTestingOptions_FromProto", skipping
 func KeyTestingOptions_FromProto(mapCtx *direct.MapContext, in *pb.TestingOptions) *krm.KeyTestingOptions {

@@ -78,3 +78,25 @@ func KeyTestingOptions_ToProto(mapCtx *direct.MapContext, in *krm.KeyTestingOpti
 	}
 	return out
 }
+
+func KeyIosSettings_FromProto(mapCtx *direct.MapContext, in *pb.IOSKeySettings) *krm.KeyIosSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.KeyIosSettings{}
+	out.AllowAllBundleIDs = direct.LazyPtr(in.GetAllowAllBundleIds())
+	out.AllowedBundleIDs = in.AllowedBundleIds
+	out.AppleDeveloperID = AppleDeveloperID_FromProto(mapCtx, in.GetAppleDeveloperId())
+	return out
+}
+
+func KeyIosSettings_ToProto(mapCtx *direct.MapContext, in *krm.KeyIosSettings) *pb.IOSKeySettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IOSKeySettings{}
+	out.AllowAllBundleIds = direct.ValueOf(in.AllowAllBundleIDs)
+	out.AllowedBundleIds = in.AllowedBundleIDs
+	out.AppleDeveloperId = AppleDeveloperID_ToProto(mapCtx, in.AppleDeveloperID)
+	return out
+}

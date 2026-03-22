@@ -90,24 +90,25 @@ spec:
               expressSettings:
                 description: Settings for keys that can be used by reCAPTCHA Express.
                 type: object
+                x-kubernetes-preserve-unknown-fields: true
               iosSettings:
                 description: Settings for keys that can be used by iOS apps.
                 properties:
-                  allowAllBundleIds:
+                  allowAllBundleIDs:
                     description: If set to true, it means allowed_bundle_ids will
                       not be enforced.
                     type: boolean
-                  allowedBundleIds:
+                  allowedBundleIDs:
                     description: 'iOS bundle ids of apps allowed to use the key. Example:
                       ''com.companyname.productname.appname'''
                     items:
                       type: string
                     type: array
-                  appleDeveloperId:
+                  appleDeveloperID:
                     description: Optional. iOS Apple Developer Account details for
                       app identity validation.
                     properties:
-                      keyId:
+                      keyID:
                         description: Required. The Apple developer key ID (10-character
                           string).
                         type: string
@@ -136,7 +137,7 @@ spec:
                         - key
                         type: object
                         x-kubernetes-map-type: atomic
-                      teamId:
+                      teamID:
                         description: Required. The Apple team ID (10-character string)
                           owning the provisioning profile used to build your application.
                         type: string
