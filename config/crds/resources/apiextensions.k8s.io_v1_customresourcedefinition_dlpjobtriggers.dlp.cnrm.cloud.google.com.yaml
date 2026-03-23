@@ -1853,6 +1853,7 @@ spec:
                       description: For use with hybrid jobs. Jobs must be manually
                         created and finished.
                       type: object
+                      x-kubernetes-preserve-unknown-fields: true
                     schedule:
                       description: Create a job on a repeating basis based on the
                         elapse of time.

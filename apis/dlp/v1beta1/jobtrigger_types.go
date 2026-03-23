@@ -441,3 +441,8 @@ type DLPJobTriggerList struct {
 func init() {
 	SchemeBuilder.Register(&DLPJobTrigger{}, &DLPJobTriggerList{})
 }
+
+// +kcc:proto=google.privacy.dlp.v2.Manual
+// +kubebuilder:validation:XPreserveUnknownFields
+type Manual struct {
+}

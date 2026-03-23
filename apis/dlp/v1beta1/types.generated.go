@@ -922,9 +922,12 @@ type KindExpression struct {
 	Name *string `json:"name,omitempty"`
 }
 
+/* found existing non-generated go type "Manual", skipping
+
 // +kcc:proto=google.privacy.dlp.v2.Manual
 type Manual struct {
 }
+*/
 
 // +kcc:proto=google.privacy.dlp.v2.OutputStorageConfig
 type OutputStorageConfig struct {
