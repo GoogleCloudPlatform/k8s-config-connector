@@ -159,6 +159,8 @@ type Action_PublishFindingsToCloudDataCatalog struct {
 type Action_PublishSummaryToCscc struct {
 }
 
+/* found existing non-generated go type "Action_PublishToPubSub", skipping
+
 // +kcc:proto=google.privacy.dlp.v2.Action.PublishToPubSub
 type Action_PublishToPubSub struct {
 	// Cloud Pub/Sub topic to send notifications to. The topic must have given
@@ -168,6 +170,7 @@ type Action_PublishToPubSub struct {
 	// +kcc:proto:field=google.privacy.dlp.v2.Action.PublishToPubSub.topic
 	Topic *string `json:"topic,omitempty"`
 }
+*/
 
 // +kcc:proto=google.privacy.dlp.v2.Action.PublishToStackdriver
 type Action_PublishToStackdriver struct {
@@ -237,6 +240,8 @@ type BigQueryOptions struct {
 }
 */
 
+/* found existing non-generated go type "BigQueryTable", skipping
+
 // +kcc:proto=google.privacy.dlp.v2.BigQueryTable
 type BigQueryTable struct {
 	// The Google Cloud project ID of the project containing the table.
@@ -252,6 +257,7 @@ type BigQueryTable struct {
 	// +kcc:proto:field=google.privacy.dlp.v2.BigQueryTable.table_id
 	TableID *string `json:"tableID,omitempty"`
 }
+*/
 
 // +kcc:proto=google.privacy.dlp.v2.CloudStorageOptions
 type CloudStorageOptions struct {
@@ -953,7 +959,7 @@ type OutputStorageConfig struct {
 	OutputSchema *string `json:"outputSchema,omitempty"`
 }
 
-/* found existing non-generated go type with proto tag "google.privacy.dlp.v2.PartitionId", skipping
+/* found existing non-generated go type "PartitionID", skipping
 
 // +kcc:proto=google.privacy.dlp.v2.PartitionId
 type PartitionID struct {
@@ -1082,6 +1088,8 @@ type StorageConfig_TimespanConfig struct {
 }
 */
 
+/* found existing non-generated go type "StoredType", skipping
+
 // +kcc:proto=google.privacy.dlp.v2.StoredType
 type StoredType struct {
 	// Resource name of the requested `StoredInfoType`, for example
@@ -1095,6 +1103,7 @@ type StoredType struct {
 	// +kcc:proto:field=google.privacy.dlp.v2.StoredType.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 }
+*/
 
 // +kcc:proto=google.privacy.dlp.v2.TableOptions
 type TableOptions struct {
@@ -1105,6 +1114,8 @@ type TableOptions struct {
 	// +kcc:proto:field=google.privacy.dlp.v2.TableOptions.identifying_fields
 	IdentifyingFields []FieldID `json:"identifyingFields,omitempty"`
 }
+
+/* found existing non-generated go type "TransformationConfig", skipping
 
 // +kcc:proto=google.privacy.dlp.v2.TransformationConfig
 type TransformationConfig struct {
@@ -1134,6 +1145,7 @@ type TransformationConfig struct {
 	// +kcc:proto:field=google.privacy.dlp.v2.TransformationConfig.image_redact_template
 	ImageRedactTemplate *string `json:"imageRedactTemplate,omitempty"`
 }
+*/
 
 // +kcc:proto=google.privacy.dlp.v2.TransformationDetailsStorageConfig
 type TransformationDetailsStorageConfig struct {
@@ -1146,6 +1158,8 @@ type TransformationDetailsStorageConfig struct {
 	// +kcc:proto:field=google.privacy.dlp.v2.TransformationDetailsStorageConfig.table
 	Table *BigQueryTable `json:"table,omitempty"`
 }
+
+/* found existing non-generated go type "Any", skipping
 
 // +kcc:proto=google.protobuf.Any
 type Any struct {
@@ -1183,6 +1197,9 @@ type Any struct {
 	// +kcc:proto:field=google.protobuf.Any.value
 	Value []byte `json:"value,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "Status", skipping
 
 // +kcc:proto=google.rpc.Status
 type Status struct {
@@ -1203,6 +1220,7 @@ type Status struct {
 	// +kcc:proto:field=google.rpc.Status.details
 	Details []Any `json:"details,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.privacy.dlp.v2.JobTrigger", skipping
 

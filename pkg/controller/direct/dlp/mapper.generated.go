@@ -140,22 +140,34 @@ func Action_PublishSummaryToCscc_ToProto(mapCtx *direct.MapContext, in *krm.Acti
 	out := &pb.Action_PublishSummaryToCscc{}
 	return out
 }
+
+/* found existing non-generated mapping function "Action_PublishToPubSub_FromProto", skipping
 func Action_PublishToPubSub_FromProto(mapCtx *direct.MapContext, in *pb.Action_PublishToPubSub) *krm.Action_PublishToPubSub {
 	if in == nil {
 		return nil
 	}
 	out := &krm.Action_PublishToPubSub{}
-	out.Topic = direct.LazyPtr(in.GetTopic())
-	return out
-}
-func Action_PublishToPubSub_ToProto(mapCtx *direct.MapContext, in *krm.Action_PublishToPubSub) *pb.Action_PublishToPubSub {
-	if in == nil {
-		return nil
+	if in.GetTopic() != "" {
+		out.TopicRef = &krmpubsubv1beta1.PubSubTopicRef{External: in.GetTopic()}
 	}
-	out := &pb.Action_PublishToPubSub{}
-	out.Topic = direct.ValueOf(in.Topic)
 	return out
 }
+*/
+
+/*
+found existing non-generated mapping function "Action_PublishToPubSub_ToProto", skipping
+
+	func Action_PublishToPubSub_ToProto(mapCtx *direct.MapContext, in *krm.Action_PublishToPubSub) *pb.Action_PublishToPubSub {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Action_PublishToPubSub{}
+		if in.TopicRef != nil {
+			out.Topic = in.TopicRef.External
+		}
+		return out
+	}
+*/
 func Action_PublishToStackdriver_FromProto(mapCtx *direct.MapContext, in *pb.Action_PublishToStackdriver) *krm.Action_PublishToStackdriver {
 	if in == nil {
 		return nil
@@ -214,26 +226,34 @@ func BigQueryOptions_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryOptions)
 	out.IncludedFields = direct.Slice_ToProto(mapCtx, in.IncludedFields, FieldID_ToProto)
 	return out
 }
+
+/* found existing non-generated mapping function "BigQueryTable_FromProto", skipping
 func BigQueryTable_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryTable) *krm.BigQueryTable {
 	if in == nil {
 		return nil
 	}
 	out := &krm.BigQueryTable{}
-	out.ProjectID = direct.LazyPtr(in.GetProjectId())
-	out.DatasetID = direct.LazyPtr(in.GetDatasetId())
-	out.TableID = direct.LazyPtr(in.GetTableId())
+	// MISSING: ProjectID
+	// MISSING: DatasetID
+	// MISSING: TableID
 	return out
 }
-func BigQueryTable_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryTable) *pb.BigQueryTable {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "BigQueryTable_ToProto", skipping
+
+	func BigQueryTable_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryTable) *pb.BigQueryTable {
+		if in == nil {
+			return nil
+		}
+		out := &pb.BigQueryTable{}
+		// MISSING: ProjectID
+		// MISSING: DatasetID
+		// MISSING: TableID
+		return out
 	}
-	out := &pb.BigQueryTable{}
-	out.ProjectId = direct.ValueOf(in.ProjectID)
-	out.DatasetId = direct.ValueOf(in.DatasetID)
-	out.TableId = direct.ValueOf(in.TableID)
-	return out
-}
+*/
 func CloudStorageOptions_FromProto(mapCtx *direct.MapContext, in *pb.CloudStorageOptions) *krm.CloudStorageOptions {
 	if in == nil {
 		return nil
@@ -294,6 +314,8 @@ func CloudStoragePath_ToProto(mapCtx *direct.MapContext, in *krm.CloudStoragePat
 	out.Path = direct.ValueOf(in.Path)
 	return out
 }
+
+/* found existing non-generated mapping function "CloudStorageRegexFileSet_FromProto", skipping
 func CloudStorageRegexFileSet_FromProto(mapCtx *direct.MapContext, in *pb.CloudStorageRegexFileSet) *krm.CloudStorageRegexFileSet {
 	if in == nil {
 		return nil
@@ -304,16 +326,22 @@ func CloudStorageRegexFileSet_FromProto(mapCtx *direct.MapContext, in *pb.CloudS
 	out.ExcludeRegex = in.ExcludeRegex
 	return out
 }
-func CloudStorageRegexFileSet_ToProto(mapCtx *direct.MapContext, in *krm.CloudStorageRegexFileSet) *pb.CloudStorageRegexFileSet {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "CloudStorageRegexFileSet_ToProto", skipping
+
+	func CloudStorageRegexFileSet_ToProto(mapCtx *direct.MapContext, in *krm.CloudStorageRegexFileSet) *pb.CloudStorageRegexFileSet {
+		if in == nil {
+			return nil
+		}
+		out := &pb.CloudStorageRegexFileSet{}
+		// MISSING: BucketName
+		out.IncludeRegex = in.IncludeRegex
+		out.ExcludeRegex = in.ExcludeRegex
+		return out
 	}
-	out := &pb.CloudStorageRegexFileSet{}
-	// MISSING: BucketName
-	out.IncludeRegex = in.IncludeRegex
-	out.ExcludeRegex = in.ExcludeRegex
-	return out
-}
+*/
 func CustomInfoType_FromProto(mapCtx *direct.MapContext, in *pb.CustomInfoType) *krm.CustomInfoType {
 	if in == nil {
 		return nil
@@ -589,8 +617,7 @@ func DatastoreOptions_FromProto(mapCtx *direct.MapContext, in *pb.DatastoreOptio
 		return nil
 	}
 	out := &krm.DatastoreOptions{}
-	// MISSING: PartitionID
-	// (near miss): "PartitionID" vs "PartitionId"
+	out.PartitionID = PartitionID_FromProto(mapCtx, in.GetPartitionId())
 	out.Kind = KindExpression_FromProto(mapCtx, in.GetKind())
 	return out
 }
@@ -599,8 +626,7 @@ func DatastoreOptions_ToProto(mapCtx *direct.MapContext, in *krm.DatastoreOption
 		return nil
 	}
 	out := &pb.DatastoreOptions{}
-	// MISSING: PartitionID
-	// (near miss): "PartitionID" vs "PartitionId"
+	out.PartitionId = PartitionID_ToProto(mapCtx, in.PartitionID)
 	out.Kind = KindExpression_ToProto(mapCtx, in.Kind)
 	return out
 }
@@ -836,6 +862,8 @@ func InspectConfig_InfoTypeLikelihood_ToProto(mapCtx *direct.MapContext, in *krm
 	out.MinLikelihood = direct.Enum_ToProto[pb.Likelihood](mapCtx, in.MinLikelihood)
 	return out
 }
+
+/* found existing non-generated mapping function "InspectJobConfig_FromProto", skipping
 func InspectJobConfig_FromProto(mapCtx *direct.MapContext, in *pb.InspectJobConfig) *krm.InspectJobConfig {
 	if in == nil {
 		return nil
@@ -847,17 +875,23 @@ func InspectJobConfig_FromProto(mapCtx *direct.MapContext, in *pb.InspectJobConf
 	out.Actions = direct.Slice_FromProto(mapCtx, in.Actions, Action_FromProto)
 	return out
 }
-func InspectJobConfig_ToProto(mapCtx *direct.MapContext, in *krm.InspectJobConfig) *pb.InspectJobConfig {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "InspectJobConfig_ToProto", skipping
+
+	func InspectJobConfig_ToProto(mapCtx *direct.MapContext, in *krm.InspectJobConfig) *pb.InspectJobConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.InspectJobConfig{}
+		out.StorageConfig = StorageConfig_ToProto(mapCtx, in.StorageConfig)
+		out.InspectConfig = InspectConfig_ToProto(mapCtx, in.InspectConfig)
+		// MISSING: InspectTemplateName
+		out.Actions = direct.Slice_ToProto(mapCtx, in.Actions, Action_ToProto)
+		return out
 	}
-	out := &pb.InspectJobConfig{}
-	out.StorageConfig = StorageConfig_ToProto(mapCtx, in.StorageConfig)
-	out.InspectConfig = InspectConfig_ToProto(mapCtx, in.InspectConfig)
-	// MISSING: InspectTemplateName
-	out.Actions = direct.Slice_ToProto(mapCtx, in.Actions, Action_ToProto)
-	return out
-}
+*/
 func InspectionRule_FromProto(mapCtx *direct.MapContext, in *pb.InspectionRule) *krm.InspectionRule {
 	if in == nil {
 		return nil
@@ -970,26 +1004,32 @@ func OutputStorageConfig_ToProto(mapCtx *direct.MapContext, in *krm.OutputStorag
 	out.OutputSchema = direct.Enum_ToProto[pb.OutputStorageConfig_OutputSchema](mapCtx, in.OutputSchema)
 	return out
 }
-func PartitionId_FromProto(mapCtx *direct.MapContext, in *pb.PartitionId) *krm.PartitionId {
+
+/* found existing non-generated mapping function "PartitionID_FromProto", skipping
+func PartitionID_FromProto(mapCtx *direct.MapContext, in *pb.PartitionId) *krm.PartitionID {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PartitionId{}
+	out := &krm.PartitionID{}
 	// MISSING: ProjectID
-	// MISSING: NamespaceID
-	// (near miss): "NamespaceID" vs "NamespaceId"
+	out.NamespaceID = direct.LazyPtr(in.GetNamespaceId())
 	return out
 }
-func PartitionId_ToProto(mapCtx *direct.MapContext, in *krm.PartitionId) *pb.PartitionId {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "PartitionID_ToProto", skipping
+
+	func PartitionID_ToProto(mapCtx *direct.MapContext, in *krm.PartitionID) *pb.PartitionId {
+		if in == nil {
+			return nil
+		}
+		out := &pb.PartitionId{}
+		// MISSING: ProjectID
+		out.NamespaceId = direct.ValueOf(in.NamespaceID)
+		return out
 	}
-	out := &pb.PartitionId{}
-	// MISSING: ProjectID
-	// MISSING: NamespaceID
-	// (near miss): "NamespaceID" vs "NamespaceId"
-	return out
-}
+*/
 func Schedule_FromProto(mapCtx *direct.MapContext, in *pb.Schedule) *krm.Schedule {
 	if in == nil {
 		return nil
@@ -1078,24 +1118,36 @@ func StorageConfig_TimespanConfig_ToProto(mapCtx *direct.MapContext, in *krm.Sto
 	out.EnableAutoPopulationOfTimespanConfig = direct.ValueOf(in.EnableAutoPopulationOfTimespanConfig)
 	return out
 }
+
+/* found existing non-generated mapping function "StoredType_FromProto", skipping
 func StoredType_FromProto(mapCtx *direct.MapContext, in *pb.StoredType) *krm.StoredType {
 	if in == nil {
 		return nil
 	}
 	out := &krm.StoredType{}
-	out.Name = direct.LazyPtr(in.GetName())
+	if in.GetName() != "" {
+		out.NameRef = &krm.DLPStoredInfoTypeRef{External: in.GetName()}
+	}
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	return out
 }
-func StoredType_ToProto(mapCtx *direct.MapContext, in *krm.StoredType) *pb.StoredType {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "StoredType_ToProto", skipping
+
+	func StoredType_ToProto(mapCtx *direct.MapContext, in *krm.StoredType) *pb.StoredType {
+		if in == nil {
+			return nil
+		}
+		out := &pb.StoredType{}
+		if in.NameRef != nil {
+			out.Name = in.NameRef.External
+		}
+		out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+		return out
 	}
-	out := &pb.StoredType{}
-	out.Name = direct.ValueOf(in.Name)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	return out
-}
+*/
 func TableOptions_FromProto(mapCtx *direct.MapContext, in *pb.TableOptions) *krm.TableOptions {
 	if in == nil {
 		return nil
@@ -1112,26 +1164,46 @@ func TableOptions_ToProto(mapCtx *direct.MapContext, in *krm.TableOptions) *pb.T
 	out.IdentifyingFields = direct.Slice_ToProto(mapCtx, in.IdentifyingFields, FieldID_ToProto)
 	return out
 }
+
+/* found existing non-generated mapping function "TransformationConfig_FromProto", skipping
 func TransformationConfig_FromProto(mapCtx *direct.MapContext, in *pb.TransformationConfig) *krm.TransformationConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krm.TransformationConfig{}
-	out.DeidentifyTemplate = direct.LazyPtr(in.GetDeidentifyTemplate())
-	out.StructuredDeidentifyTemplate = direct.LazyPtr(in.GetStructuredDeidentifyTemplate())
-	out.ImageRedactTemplate = direct.LazyPtr(in.GetImageRedactTemplate())
-	return out
-}
-func TransformationConfig_ToProto(mapCtx *direct.MapContext, in *krm.TransformationConfig) *pb.TransformationConfig {
-	if in == nil {
-		return nil
+	if in.GetDeidentifyTemplate() != "" {
+		out.DeidentifyTemplateRef = &krm.DLPDeidentifyTemplateRef{External: in.GetDeidentifyTemplate()}
 	}
-	out := &pb.TransformationConfig{}
-	out.DeidentifyTemplate = direct.ValueOf(in.DeidentifyTemplate)
-	out.StructuredDeidentifyTemplate = direct.ValueOf(in.StructuredDeidentifyTemplate)
-	out.ImageRedactTemplate = direct.ValueOf(in.ImageRedactTemplate)
+	if in.GetStructuredDeidentifyTemplate() != "" {
+		out.StructuredDeidentifyTemplateRef = &krm.DLPDeidentifyTemplateRef{External: in.GetStructuredDeidentifyTemplate()}
+	}
+	if in.GetImageRedactTemplate() != "" {
+		out.ImageRedactTemplateRef = &krm.DLPDeidentifyTemplateRef{External: in.GetImageRedactTemplate()}
+	}
 	return out
 }
+*/
+
+/*
+found existing non-generated mapping function "TransformationConfig_ToProto", skipping
+
+	func TransformationConfig_ToProto(mapCtx *direct.MapContext, in *krm.TransformationConfig) *pb.TransformationConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.TransformationConfig{}
+		if in.DeidentifyTemplateRef != nil {
+			out.DeidentifyTemplate = in.DeidentifyTemplateRef.External
+		}
+		if in.StructuredDeidentifyTemplateRef != nil {
+			out.StructuredDeidentifyTemplate = in.StructuredDeidentifyTemplateRef.External
+		}
+		if in.ImageRedactTemplateRef != nil {
+			out.ImageRedactTemplate = in.ImageRedactTemplateRef.External
+		}
+		return out
+	}
+*/
 func TransformationDetailsStorageConfig_FromProto(mapCtx *direct.MapContext, in *pb.TransformationDetailsStorageConfig) *krm.TransformationDetailsStorageConfig {
 	if in == nil {
 		return nil

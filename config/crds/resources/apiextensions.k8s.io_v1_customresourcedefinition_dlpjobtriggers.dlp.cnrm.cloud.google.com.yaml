@@ -106,7 +106,7 @@ spec:
                               description: User specified deidentify templates and
                                 configs for structured, unstructured, and image files.
                               properties:
-                                deidentifyTemplate:
+                                deidentifyTemplateRef:
                                   description: De-identify template. If this template
                                     is specified, it will serve as the default de-identify
                                     template. This template cannot contain `record_transformations`
@@ -114,15 +114,69 @@ spec:
                                     such as free-form text files. If this template
                                     is not set, a default `ReplaceWithInfoTypeConfig`
                                     will be used to de-identify unstructured content.
-                                  type: string
-                                imageRedactTemplate:
+                                  oneOf:
+                                  - not:
+                                      required:
+                                      - external
+                                    required:
+                                    - name
+                                  - not:
+                                      anyOf:
+                                      - required:
+                                        - name
+                                      - required:
+                                        - namespace
+                                    required:
+                                    - external
+                                  properties:
+                                    external:
+                                      description: The self-link of the DLPDeidentifyTemplate
+                                        resource.
+                                      type: string
+                                    name:
+                                      description: The name of the DLPDeidentifyTemplate
+                                        resource.
+                                      type: string
+                                    namespace:
+                                      description: The namespace of the DLPDeidentifyTemplate
+                                        resource.
+                                      type: string
+                                  type: object
+                                imageRedactTemplateRef:
                                   description: Image redact template. If this template
                                     is specified, it will serve as the de-identify
                                     template for images. If this template is not set,
                                     all findings in the image will be redacted with
                                     a black box.
-                                  type: string
-                                structuredDeidentifyTemplate:
+                                  oneOf:
+                                  - not:
+                                      required:
+                                      - external
+                                    required:
+                                    - name
+                                  - not:
+                                      anyOf:
+                                      - required:
+                                        - name
+                                      - required:
+                                        - namespace
+                                    required:
+                                    - external
+                                  properties:
+                                    external:
+                                      description: The self-link of the DLPDeidentifyTemplate
+                                        resource.
+                                      type: string
+                                    name:
+                                      description: The name of the DLPDeidentifyTemplate
+                                        resource.
+                                      type: string
+                                    namespace:
+                                      description: The namespace of the DLPDeidentifyTemplate
+                                        resource.
+                                      type: string
+                                  type: object
+                                structuredDeidentifyTemplateRef:
                                   description: Structured de-identify template. If
                                     this template is specified, it will serve as the
                                     de-identify template for structured content such
@@ -132,7 +186,34 @@ spec:
                                     the structured content. If neither template is
                                     set, a default `ReplaceWithInfoTypeConfig` will
                                     be used to de-identify structured content.
-                                  type: string
+                                  oneOf:
+                                  - not:
+                                      required:
+                                      - external
+                                    required:
+                                    - name
+                                  - not:
+                                      anyOf:
+                                      - required:
+                                        - name
+                                      - required:
+                                        - namespace
+                                    required:
+                                    - external
+                                  properties:
+                                    external:
+                                      description: The self-link of the DLPDeidentifyTemplate
+                                        resource.
+                                      type: string
+                                    name:
+                                      description: The name of the DLPDeidentifyTemplate
+                                        resource.
+                                      type: string
+                                    namespace:
+                                      description: The namespace of the DLPDeidentifyTemplate
+                                        resource.
+                                      type: string
+                                  type: object
                               type: object
                             transformationDetailsStorageConfig:
                               description: |-
@@ -205,17 +286,104 @@ spec:
                                     Pacific time zone will be used for generating
                                     the date details.'
                                   properties:
-                                    datasetID:
+                                    datasetRef:
                                       description: Dataset ID of the table.
-                                      type: string
-                                    projectID:
+                                      oneOf:
+                                      - not:
+                                          required:
+                                          - external
+                                        required:
+                                        - name
+                                      - not:
+                                          anyOf:
+                                          - required:
+                                            - name
+                                          - required:
+                                            - namespace
+                                        required:
+                                        - external
+                                      properties:
+                                        external:
+                                          description: A reference to an externally-managed
+                                            BigQueryDataset resource. Should be in
+                                            the format "projects/{{projectID}}/datasets/{{datasetID}}".
+                                          type: string
+                                        name:
+                                          description: The name of a BigQueryDataset
+                                            resource.
+                                          type: string
+                                        namespace:
+                                          description: The namespace of a BigQueryDataset
+                                            resource.
+                                          type: string
+                                      type: object
+                                    projectRef:
                                       description: The Google Cloud project ID of
                                         the project containing the table. If omitted,
                                         project ID is inferred from the API call.
-                                      type: string
-                                    tableID:
+                                      oneOf:
+                                      - not:
+                                          required:
+                                          - external
+                                        required:
+                                        - name
+                                      - not:
+                                          anyOf:
+                                          - required:
+                                            - name
+                                          - required:
+                                            - namespace
+                                        required:
+                                        - external
+                                      properties:
+                                        external:
+                                          description: The `projectID` field of a
+                                            project, when not managed by Config Connector.
+                                          type: string
+                                        kind:
+                                          description: The kind of the Project resource;
+                                            optional but must be `Project` if provided.
+                                          type: string
+                                        name:
+                                          description: The `name` field of a `Project`
+                                            resource.
+                                          type: string
+                                        namespace:
+                                          description: The `namespace` field of a
+                                            `Project` resource.
+                                          type: string
+                                      type: object
+                                    tableRef:
                                       description: Name of the table.
-                                      type: string
+                                      oneOf:
+                                      - not:
+                                          required:
+                                          - external
+                                        required:
+                                        - name
+                                      - not:
+                                          anyOf:
+                                          - required:
+                                            - name
+                                          - required:
+                                            - namespace
+                                        required:
+                                        - external
+                                      properties:
+                                        external:
+                                          description: A reference to an externally-managed
+                                            BigQueryTable resource. Should be in the
+                                            format "projects/{{projectID}}/datasets/{{datasetID}}/tables/{{tableID}}".
+                                          type: string
+                                        name:
+                                          description: The name of a BigQueryTable
+                                            resource.
+                                          type: string
+                                        namespace:
+                                          description: The namespace of a BigQueryTable
+                                            resource.
+                                          type: string
+                                      type: object
                                   type: object
                               type: object
                           type: object
@@ -227,13 +395,39 @@ spec:
                         pubSub:
                           description: Publish a notification to a Pub/Sub topic.
                           properties:
-                            topic:
+                            topicRef:
                               description: Cloud Pub/Sub topic to send notifications
                                 to. The topic must have given publishing access rights
                                 to the DLP API service account executing the long
                                 running DlpJob sending the notifications. Format is
                                 projects/{project}/topics/{topic}.
-                              type: string
+                              oneOf:
+                              - not:
+                                  required:
+                                  - external
+                                required:
+                                - name
+                              - not:
+                                  anyOf:
+                                  - required:
+                                    - name
+                                  - required:
+                                    - namespace
+                                required:
+                                - external
+                              properties:
+                                external:
+                                  description: A reference to an externally managed
+                                    PubSubTopic resource. Should be in the format
+                                    "projects/{{projectID}}/topics/{{topicID}}".
+                                  type: string
+                                name:
+                                  description: The name of a PubSubTopic resource.
+                                  type: string
+                                namespace:
+                                  description: The namespace of a PubSubTopic resource.
+                                  type: string
+                              type: object
                           type: object
                         publishFindingsToCloudDataCatalog:
                           description: Publish findings to Cloud Datahub.
@@ -281,17 +475,104 @@ spec:
                                      compute a different privacy metric, or use different sets of
                                      quasi-identifiers, cannot store their results in the same table.
                                   properties:
-                                    datasetID:
+                                    datasetRef:
                                       description: Dataset ID of the table.
-                                      type: string
-                                    projectID:
+                                      oneOf:
+                                      - not:
+                                          required:
+                                          - external
+                                        required:
+                                        - name
+                                      - not:
+                                          anyOf:
+                                          - required:
+                                            - name
+                                          - required:
+                                            - namespace
+                                        required:
+                                        - external
+                                      properties:
+                                        external:
+                                          description: A reference to an externally-managed
+                                            BigQueryDataset resource. Should be in
+                                            the format "projects/{{projectID}}/datasets/{{datasetID}}".
+                                          type: string
+                                        name:
+                                          description: The name of a BigQueryDataset
+                                            resource.
+                                          type: string
+                                        namespace:
+                                          description: The namespace of a BigQueryDataset
+                                            resource.
+                                          type: string
+                                      type: object
+                                    projectRef:
                                       description: The Google Cloud project ID of
                                         the project containing the table. If omitted,
                                         project ID is inferred from the API call.
-                                      type: string
-                                    tableID:
+                                      oneOf:
+                                      - not:
+                                          required:
+                                          - external
+                                        required:
+                                        - name
+                                      - not:
+                                          anyOf:
+                                          - required:
+                                            - name
+                                          - required:
+                                            - namespace
+                                        required:
+                                        - external
+                                      properties:
+                                        external:
+                                          description: The `projectID` field of a
+                                            project, when not managed by Config Connector.
+                                          type: string
+                                        kind:
+                                          description: The kind of the Project resource;
+                                            optional but must be `Project` if provided.
+                                          type: string
+                                        name:
+                                          description: The `name` field of a `Project`
+                                            resource.
+                                          type: string
+                                        namespace:
+                                          description: The `namespace` field of a
+                                            `Project` resource.
+                                          type: string
+                                      type: object
+                                    tableRef:
                                       description: Name of the table.
-                                      type: string
+                                      oneOf:
+                                      - not:
+                                          required:
+                                          - external
+                                        required:
+                                        - name
+                                      - not:
+                                          anyOf:
+                                          - required:
+                                            - name
+                                          - required:
+                                            - namespace
+                                        required:
+                                        - external
+                                      properties:
+                                        external:
+                                          description: A reference to an externally-managed
+                                            BigQueryTable resource. Should be in the
+                                            format "projects/{{projectID}}/datasets/{{datasetID}}/tables/{{tableID}}".
+                                          type: string
+                                        name:
+                                          description: The name of a BigQueryTable
+                                            resource.
+                                          type: string
+                                        namespace:
+                                          description: The namespace of a BigQueryTable
+                                            resource.
+                                          type: string
+                                      type: object
                                   type: object
                               type: object
                           type: object
@@ -509,12 +790,40 @@ spec:
                                   description: Timestamp indicating when the version
                                     of the `StoredInfoType` used for inspection was
                                     created. Output-only field, populated by the system.
+                                  format: date-time
                                   type: string
-                                name:
+                                nameRef:
                                   description: Resource name of the requested `StoredInfoType`,
                                     for example `organizations/433245324/storedInfoTypes/432452342`
                                     or `projects/project-id/storedInfoTypes/432452342`.
-                                  type: string
+                                  oneOf:
+                                  - not:
+                                      required:
+                                      - external
+                                    required:
+                                    - name
+                                  - not:
+                                      anyOf:
+                                      - required:
+                                        - name
+                                      - required:
+                                        - namespace
+                                    required:
+                                    - external
+                                  properties:
+                                    external:
+                                      description: The self-link of the DLPStoredInfoType
+                                        resource.
+                                      type: string
+                                    name:
+                                      description: The name of the DLPStoredInfoType
+                                        resource.
+                                      type: string
+                                    namespace:
+                                      description: The namespace of the DLPStoredInfoType
+                                        resource.
+                                      type: string
+                                  type: object
                               type: object
                             surrogateType:
                               description: Message for detecting output from deidentification
@@ -1097,17 +1406,101 @@ spec:
                             description: Complete identifier of the table and project
                               ID, dataset ID, and table ID must be set.
                             properties:
-                              datasetID:
+                              datasetRef:
                                 description: Dataset ID of the table.
-                                type: string
-                              projectID:
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: A reference to an externally-managed
+                                      BigQueryDataset resource. Should be in the format
+                                      "projects/{{projectID}}/datasets/{{datasetID}}".
+                                    type: string
+                                  name:
+                                    description: The name of a BigQueryDataset resource.
+                                    type: string
+                                  namespace:
+                                    description: The namespace of a BigQueryDataset
+                                      resource.
+                                    type: string
+                                type: object
+                              projectRef:
                                 description: The Google Cloud project ID of the project
                                   containing the table. If omitted, project ID is
                                   inferred from the API call.
-                                type: string
-                              tableID:
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: The `projectID` field of a project,
+                                      when not managed by Config Connector.
+                                    type: string
+                                  kind:
+                                    description: The kind of the Project resource;
+                                      optional but must be `Project` if provided.
+                                    type: string
+                                  name:
+                                    description: The `name` field of a `Project` resource.
+                                    type: string
+                                  namespace:
+                                    description: The `namespace` field of a `Project`
+                                      resource.
+                                    type: string
+                                type: object
+                              tableRef:
                                 description: Name of the table.
-                                type: string
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: A reference to an externally-managed
+                                      BigQueryTable resource. Should be in the format
+                                      "projects/{{projectID}}/datasets/{{datasetID}}/tables/{{tableID}}".
+                                    type: string
+                                  name:
+                                    description: The name of a BigQueryTable resource.
+                                    type: string
+                                  namespace:
+                                    description: The namespace of a BigQueryTable
+                                      resource.
+                                    type: string
+                                type: object
                             type: object
                         required:
                         - tableReference
@@ -1252,12 +1645,12 @@ spec:
                                 description: The name of the kind.
                                 type: string
                             type: object
-                          partitionId:
+                          partitionID:
                             description: A partition ID identifies a grouping of entities.
                               The grouping is always by project and namespace, however
                               the namespace ID may be empty.
                             properties:
-                              namespaceId:
+                              namespaceID:
                                 description: If not empty, the ID of the namespace
                                   to which the entities belong.
                                 type: string
@@ -1373,10 +1766,12 @@ spec:
                           endTime:
                             description: Exclude files, tables, or rows newer than
                               this value. If not set, no upper time limit is applied.
+                            format: date-time
                             type: string
                           startTime:
                             description: Exclude files, tables, or rows older than
                               this value. If not set, no lower time limit is applied.
+                            format: date-time
                             type: string
                           timestampField:
                             description: 'Specification of the field containing the
@@ -1515,6 +1910,7 @@ spec:
                 type: array
               createTime:
                 description: Output only. The creation timestamp of a triggeredJob.
+                format: date-time
                 type: string
               errors:
                 description: Output only. A stream of errors encountered when the
@@ -1536,35 +1932,14 @@ spec:
                             is a common set of message types for APIs to use.
                           items:
                             properties:
-                              typeURL:
-                                description: |-
-                                  A URL/resource name that uniquely identifies the type of the serialized
-                                   protocol buffer message. This string must contain at least
-                                   one "/" character. The last segment of the URL's path must represent
-                                   the fully qualified name of the type (as in
-                                   `path/google.protobuf.Duration`). The name should be in a canonical form
-                                   (e.g., leading "." is not accepted).
-
-                                   In practice, teams usually precompile into the binary all types that they
-                                   expect it to use in the context of Any. However, for URLs which use the
-                                   scheme `http`, `https`, or no scheme, one can optionally set up a type
-                                   server that maps type URLs to message definitions as follows:
-
-                                   * If no scheme is provided, `https` is assumed.
-                                   * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-                                     value in binary format, or produce an error.
-                                   * Applications are allowed to cache lookup results based on the
-                                     URL, or have them precompiled into a binary to avoid any
-                                     lookup. Therefore, binary compatibility needs to be preserved
-                                     on changes to types. (Use versioned type names to manage
-                                     breaking changes.)
-
-                                   Note: this functionality is not currently available in the official
-                                   protobuf release, and it is not used for type URLs beginning with
-                                   type.googleapis.com.
-
-                                   Schemes other than `http`, `https` (or the empty scheme) might be
-                                   used with implementation specific semantics.
+                              typeUrl:
+                                description: A URL/resource name that uniquely identifies
+                                  the type of the serialized protocol buffer message.
+                                  This string must contain at least one "/" character.
+                                  The last segment of the URL's path must represent
+                                  the fully qualified name of the type (as in `path/google.protobuf.Duration`).
+                                  The name should be in a canonical form (e.g., leading
+                                  "." is not accepted).
                                 type: string
                               value:
                                 description: Must be a valid serialized protocol buffer
@@ -1598,8 +1973,9 @@ spec:
               lastRunTime:
                 description: Output only. The timestamp of the last time this trigger
                   executed.
+                format: date-time
                 type: string
-              locationId:
+              locationID:
                 description: Output only. The geographic location where this resource
                   is stored.
                 type: string
@@ -1613,6 +1989,7 @@ spec:
                 type: integer
               updateTime:
                 description: Output only. The last update timestamp of a triggeredJob.
+                format: date-time
                 type: string
             type: object
         required:
