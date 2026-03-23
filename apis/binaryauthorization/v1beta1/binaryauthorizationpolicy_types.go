@@ -37,6 +37,7 @@ type BinaryAuthorizationPolicySpec struct {
 	//  policy for common system-level images. Images not covered by the global
 	//  policy will be subject to the project admission policy. This setting
 	//  has no effect when specified inside a global admission policy.
+	//  Possible values: GLOBAL_POLICY_EVALUATION_MODE_UNSPECIFIED, ENABLE, DISABLE
 	// +kcc:proto:field=google.cloud.binaryauthorization.v1.Policy.global_policy_evaluation_mode
 	GlobalPolicyEvaluationMode *string `json:"globalPolicyEvaluationMode,omitempty"`
 
@@ -80,6 +81,7 @@ type BinaryAuthorizationPolicySpec struct {
 // +kcc:proto=google.cloud.binaryauthorization.v1.AdmissionRule
 type AdmissionRule struct {
 	// Required. How this admission rule will be evaluated.
+	//  Possible values: ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION
 	// +kcc:proto:field=google.cloud.binaryauthorization.v1.AdmissionRule.evaluation_mode
 	// +required
 	EvaluationMode *string `json:"evaluationMode"`
@@ -96,6 +98,7 @@ type AdmissionRule struct {
 	RequireAttestationsBy []refsv1beta1.BinaryAuthorizationAttestorRef `json:"requireAttestationsBy,omitempty"`
 
 	// Required. The action when a pod creation is denied by the admission rule.
+	//  Possible values: ENFORCEMENT_MODE_UNSPECIFIED, ENFORCED_BLOCK_AND_AUDIT_LOG, DRYRUN_AUDIT_LOG_ONLY
 	// +kcc:proto:field=google.cloud.binaryauthorization.v1.AdmissionRule.enforcement_mode
 	// +required
 	EnforcementMode *string `json:"enforcementMode"`

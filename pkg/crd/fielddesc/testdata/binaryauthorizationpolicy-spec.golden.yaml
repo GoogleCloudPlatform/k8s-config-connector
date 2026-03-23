@@ -62,8 +62,9 @@ children:
     - clusterAdmissionRules
     - enforcementMode
     shortname: enforcementMode
-    description: Required. The action when a pod creation is denied by the admission
-      rule.
+    description: 'Required. The action when a pod creation is denied by the admission
+      rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED, ENFORCED_BLOCK_AND_AUDIT_LOG,
+      DRYRUN_AUDIT_LOG_ONLY'
     type: string
     format: ""
     requirementlevel: RequiredWhenParentPresent
@@ -74,7 +75,8 @@ children:
     - clusterAdmissionRules
     - evaluationMode
     shortname: evaluationMode
-    description: Required. How this admission rule will be evaluated.
+    description: 'Required. How this admission rule will be evaluated. Possible values:
+      ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
     type: string
     format: ""
     requirementlevel: RequiredWhenParentPresent
@@ -166,8 +168,9 @@ children:
     - defaultAdmissionRule
     - enforcementMode
     shortname: enforcementMode
-    description: Required. The action when a pod creation is denied by the admission
-      rule.
+    description: 'Required. The action when a pod creation is denied by the admission
+      rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED, ENFORCED_BLOCK_AND_AUDIT_LOG,
+      DRYRUN_AUDIT_LOG_ONLY'
     type: string
     format: ""
     requirementlevel: Required
@@ -178,7 +181,8 @@ children:
     - defaultAdmissionRule
     - evaluationMode
     shortname: evaluationMode
-    description: Required. How this admission rule will be evaluated.
+    description: 'Required. How this admission rule will be evaluated. Possible values:
+      ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
     type: string
     format: ""
     requirementlevel: Required
@@ -270,10 +274,11 @@ children:
   - spec
   - globalPolicyEvaluationMode
   shortname: globalPolicyEvaluationMode
-  description: Optional. Controls the evaluation of a Google-maintained global admission
+  description: 'Optional. Controls the evaluation of a Google-maintained global admission
     policy for common system-level images. Images not covered by the global policy
     will be subject to the project admission policy. This setting has no effect when
-    specified inside a global admission policy.
+    specified inside a global admission policy. Possible values: GLOBAL_POLICY_EVALUATION_MODE_UNSPECIFIED,
+    ENABLE, DISABLE'
   type: string
   format: ""
   requirementlevel: Optional
@@ -295,8 +300,9 @@ children:
     - istioServiceIdentityAdmissionRules
     - enforcementMode
     shortname: enforcementMode
-    description: Required. The action when a pod creation is denied by the admission
-      rule.
+    description: 'Required. The action when a pod creation is denied by the admission
+      rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED, ENFORCED_BLOCK_AND_AUDIT_LOG,
+      DRYRUN_AUDIT_LOG_ONLY'
     type: string
     format: ""
     requirementlevel: RequiredWhenParentPresent
@@ -307,7 +313,8 @@ children:
     - istioServiceIdentityAdmissionRules
     - evaluationMode
     shortname: evaluationMode
-    description: Required. How this admission rule will be evaluated.
+    description: 'Required. How this admission rule will be evaluated. Possible values:
+      ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
     type: string
     format: ""
     requirementlevel: RequiredWhenParentPresent
@@ -400,8 +407,9 @@ children:
     - kubernetesNamespaceAdmissionRules
     - enforcementMode
     shortname: enforcementMode
-    description: Required. The action when a pod creation is denied by the admission
-      rule.
+    description: 'Required. The action when a pod creation is denied by the admission
+      rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED, ENFORCED_BLOCK_AND_AUDIT_LOG,
+      DRYRUN_AUDIT_LOG_ONLY'
     type: string
     format: ""
     requirementlevel: RequiredWhenParentPresent
@@ -412,7 +420,8 @@ children:
     - kubernetesNamespaceAdmissionRules
     - evaluationMode
     shortname: evaluationMode
-    description: Required. How this admission rule will be evaluated.
+    description: 'Required. How this admission rule will be evaluated. Possible values:
+      ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
     type: string
     format: ""
     requirementlevel: RequiredWhenParentPresent
@@ -505,8 +514,9 @@ children:
     - kubernetesServiceAccountAdmissionRules
     - enforcementMode
     shortname: enforcementMode
-    description: Required. The action when a pod creation is denied by the admission
-      rule.
+    description: 'Required. The action when a pod creation is denied by the admission
+      rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED, ENFORCED_BLOCK_AND_AUDIT_LOG,
+      DRYRUN_AUDIT_LOG_ONLY'
     type: string
     format: ""
     requirementlevel: RequiredWhenParentPresent
@@ -517,7 +527,8 @@ children:
     - kubernetesServiceAccountAdmissionRules
     - evaluationMode
     shortname: evaluationMode
-    description: Required. How this admission rule will be evaluated.
+    description: 'Required. How this admission rule will be evaluated. Possible values:
+      ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
     type: string
     format: ""
     requirementlevel: RequiredWhenParentPresent

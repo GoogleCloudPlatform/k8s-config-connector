@@ -502,37 +502,3 @@ func AdmissionWhitelistPattern_ToProto(mapCtx *direct.MapContext, in *krmv1beta1
 	out.NamePattern = direct.ValueOf(in.NamePattern)
 	return out
 }
-func BinaryAuthorizationPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *krmv1beta1.BinaryAuthorizationPolicySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1beta1.BinaryAuthorizationPolicySpec{}
-	// MISSING: Name
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.GlobalPolicyEvaluationMode = direct.Enum_FromProto(mapCtx, in.GetGlobalPolicyEvaluationMode())
-	out.AdmissionWhitelistPatterns = direct.Slice_FromProto(mapCtx, in.AdmissionWhitelistPatterns, AdmissionWhitelistPattern_FromProto)
-	// TODO: map type string message for field ClusterAdmissionRules
-	// TODO: map type string message for field KubernetesNamespaceAdmissionRules
-	// TODO: map type string message for field KubernetesServiceAccountAdmissionRules
-	// TODO: map type string message for field IstioServiceIdentityAdmissionRules
-	out.DefaultAdmissionRule = AdmissionRule_FromProto(mapCtx, in.GetDefaultAdmissionRule())
-	// MISSING: UpdateTime
-	return out
-}
-func BinaryAuthorizationPolicySpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.BinaryAuthorizationPolicySpec) *pb.Policy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Policy{}
-	// MISSING: Name
-	out.Description = direct.ValueOf(in.Description)
-	out.GlobalPolicyEvaluationMode = direct.Enum_ToProto[pb.Policy_GlobalPolicyEvaluationMode](mapCtx, in.GlobalPolicyEvaluationMode)
-	out.AdmissionWhitelistPatterns = direct.Slice_ToProto(mapCtx, in.AdmissionWhitelistPatterns, AdmissionWhitelistPattern_ToProto)
-	// TODO: map type string message for field ClusterAdmissionRules
-	// TODO: map type string message for field KubernetesNamespaceAdmissionRules
-	// TODO: map type string message for field KubernetesServiceAccountAdmissionRules
-	// TODO: map type string message for field IstioServiceIdentityAdmissionRules
-	out.DefaultAdmissionRule = AdmissionRule_ToProto(mapCtx, in.DefaultAdmissionRule)
-	// MISSING: UpdateTime
-	return out
-}

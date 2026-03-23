@@ -85,11 +85,13 @@ spec:
                 additionalProperties:
                   properties:
                     enforcementMode:
-                      description: Required. The action when a pod creation is denied
-                        by the admission rule.
+                      description: 'Required. The action when a pod creation is denied
+                        by the admission rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED,
+                        ENFORCED_BLOCK_AND_AUDIT_LOG, DRYRUN_AUDIT_LOG_ONLY'
                       type: string
                     evaluationMode:
-                      description: Required. How this admission rule will be evaluated.
+                      description: 'Required. How this admission rule will be evaluated.
+                        Possible values: ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
                       type: string
                     requireAttestationsBy:
                       description: |-
@@ -133,11 +135,13 @@ spec:
                   admission rule.
                 properties:
                   enforcementMode:
-                    description: Required. The action when a pod creation is denied
-                      by the admission rule.
+                    description: 'Required. The action when a pod creation is denied
+                      by the admission rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED,
+                      ENFORCED_BLOCK_AND_AUDIT_LOG, DRYRUN_AUDIT_LOG_ONLY'
                     type: string
                   evaluationMode:
-                    description: Required. How this admission rule will be evaluated.
+                    description: 'Required. How this admission rule will be evaluated.
+                      Possible values: ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
                     type: string
                   requireAttestationsBy:
                     description: |-
@@ -187,21 +191,24 @@ spec:
                 description: Optional. A descriptive comment.
                 type: string
               globalPolicyEvaluationMode:
-                description: Optional. Controls the evaluation of a Google-maintained
+                description: 'Optional. Controls the evaluation of a Google-maintained
                   global admission policy for common system-level images. Images not
                   covered by the global policy will be subject to the project admission
                   policy. This setting has no effect when specified inside a global
-                  admission policy.
+                  admission policy. Possible values: GLOBAL_POLICY_EVALUATION_MODE_UNSPECIFIED,
+                  ENABLE, DISABLE'
                 type: string
               istioServiceIdentityAdmissionRules:
                 additionalProperties:
                   properties:
                     enforcementMode:
-                      description: Required. The action when a pod creation is denied
-                        by the admission rule.
+                      description: 'Required. The action when a pod creation is denied
+                        by the admission rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED,
+                        ENFORCED_BLOCK_AND_AUDIT_LOG, DRYRUN_AUDIT_LOG_ONLY'
                       type: string
                     evaluationMode:
-                      description: Required. How this admission rule will be evaluated.
+                      description: 'Required. How this admission rule will be evaluated.
+                        Possible values: ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
                       type: string
                     requireAttestationsBy:
                       description: |-
@@ -241,11 +248,13 @@ spec:
                 additionalProperties:
                   properties:
                     enforcementMode:
-                      description: Required. The action when a pod creation is denied
-                        by the admission rule.
+                      description: 'Required. The action when a pod creation is denied
+                        by the admission rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED,
+                        ENFORCED_BLOCK_AND_AUDIT_LOG, DRYRUN_AUDIT_LOG_ONLY'
                       type: string
                     evaluationMode:
-                      description: Required. How this admission rule will be evaluated.
+                      description: 'Required. How this admission rule will be evaluated.
+                        Possible values: ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
                       type: string
                     requireAttestationsBy:
                       description: |-
@@ -284,11 +293,13 @@ spec:
                 additionalProperties:
                   properties:
                     enforcementMode:
-                      description: Required. The action when a pod creation is denied
-                        by the admission rule.
+                      description: 'Required. The action when a pod creation is denied
+                        by the admission rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED,
+                        ENFORCED_BLOCK_AND_AUDIT_LOG, DRYRUN_AUDIT_LOG_ONLY'
                       type: string
                     evaluationMode:
-                      description: Required. How this admission rule will be evaluated.
+                      description: 'Required. How this admission rule will be evaluated.
+                        Possible values: ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
                       type: string
                     requireAttestationsBy:
                       description: |-
