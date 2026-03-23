@@ -2048,25 +2048,20 @@
 [missing_field] crd=dlpinspecttemplates.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectConfig.customInfoTypes[].storedType.createTime" is not set in unstructured objects
 [missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.actions[].deidentify.cloudStorageOutput" is not set in unstructured objects
 [missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.actions[].deidentify.fileTypesToTransform[]" is not set in unstructured objects
-[missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.actions[].deidentify.transformationConfig.deidentifyTemplate" is not set in unstructured objects
-[missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.actions[].deidentify.transformationConfig.imageRedactTemplate" is not set in unstructured objects
-[missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.actions[].deidentify.transformationConfig.structuredDeidentifyTemplate" is not set in unstructured objects
-[missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.actions[].deidentify.transformationDetailsStorageConfig.table.datasetID" is not set in unstructured objects
-[missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.actions[].deidentify.transformationDetailsStorageConfig.table.projectID" is not set in unstructured objects
-[missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.actions[].deidentify.transformationDetailsStorageConfig.table.tableID" is not set in unstructured objects
+[missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.actions[].deidentify.transformationConfig.deidentifyTemplateRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.actions[].deidentify.transformationConfig.imageRedactTemplateRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.actions[].deidentify.transformationConfig.structuredDeidentifyTemplateRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.actions[].deidentify.transformationDetailsStorageConfig.table.datasetRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.actions[].deidentify.transformationDetailsStorageConfig.table.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.actions[].deidentify.transformationDetailsStorageConfig.table.tableRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.actions[].jobNotificationEmails" is not set in unstructured objects
-[missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.actions[].pubSub.topic" is not set in unstructured objects
 [missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.actions[].publishFindingsToCloudDataCatalog" is not set in unstructured objects
 [missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.actions[].publishSummaryToCscc" is not set in unstructured objects
 [missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.actions[].publishToStackdriver" is not set in unstructured objects
-[missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.actions[].saveFindings.outputConfig.table.datasetID" is not set in unstructured objects
-[missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.actions[].saveFindings.outputConfig.table.projectID" is not set in unstructured objects
-[missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.actions[].saveFindings.outputConfig.table.tableID" is not set in unstructured objects
 [missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.inspectConfig.contentOptions[]" is not set in unstructured objects
 [missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.inspectConfig.customInfoTypes[].infoType.sensitivityScore.score" is not set in unstructured objects
 [missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.inspectConfig.customInfoTypes[].sensitivityScore.score" is not set in unstructured objects
 [missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.inspectConfig.customInfoTypes[].storedType.createTime" is not set in unstructured objects
-[missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.inspectConfig.customInfoTypes[].storedType.name" is not set in unstructured objects
 [missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.inspectConfig.customInfoTypes[].surrogateType" is not set in unstructured objects
 [missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.inspectConfig.infoTypes[].sensitivityScore.score" is not set in unstructured objects
 [missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.inspectConfig.infoTypes[].version" is not set in unstructured objects
@@ -2081,9 +2076,8 @@
 [missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.inspectConfig.ruleSet[].rules[].exclusionRule.excludeByHotword.proximity.windowAfter" is not set in unstructured objects
 [missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.inspectConfig.ruleSet[].rules[].exclusionRule.excludeByHotword.proximity.windowBefore" is not set in unstructured objects
 [missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.inspectConfig.ruleSet[].rules[].exclusionRule.excludeInfoTypes.infoTypes[].sensitivityScore.score" is not set in unstructured objects
-[missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.storageConfig.bigQueryOptions.tableReference.datasetID" is not set in unstructured objects
-[missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.storageConfig.bigQueryOptions.tableReference.projectID" is not set in unstructured objects
-[missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.storageConfig.bigQueryOptions.tableReference.tableID" is not set in unstructured objects
+[missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.storageConfig.datastoreOptions.partitionID.namespaceID" is not set in unstructured objects
+[missing_field] crd=dlpjobtriggers.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.inspectJob.storageConfig.datastoreOptions.partitionID.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dlpstoredinfotypes.dlp.cnrm.cloud.google.com version=v1beta1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dnsmanagedzones.dns.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudLoggingConfig.enableLogging" is not set in unstructured objects
 [missing_field] crd=dnsmanagedzones.dns.cnrm.cloud.google.com version=v1beta1: field ".spec.dnssecConfig.defaultKeySpecs[].algorithm" is not set in unstructured objects

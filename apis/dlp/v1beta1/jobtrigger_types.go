@@ -15,6 +15,8 @@
 package v1beta1
 
 import (
+	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
+	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -97,7 +99,7 @@ type DatastoreOptions struct {
 	// A partition ID identifies a grouping of entities. The grouping is always
 	//  by project and namespace, however the namespace ID may be empty.
 	// +kcc:proto:field=google.privacy.dlp.v2.DatastoreOptions.partition_id
-	PartitionId *PartitionId `json:"partitionId,omitempty"`
+	PartitionID *PartitionID `json:"partitionID,omitempty"`
 
 	// The kind to process.
 	// +kcc:proto:field=google.privacy.dlp.v2.DatastoreOptions.kind
@@ -105,25 +107,27 @@ type DatastoreOptions struct {
 }
 
 // +kcc:proto=google.privacy.dlp.v2.PartitionId
-type PartitionId struct {
+type PartitionID struct {
 	// The ID of the project to which the entities belong.
 	// +kcc:proto:field=google.privacy.dlp.v2.PartitionId.project_id
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
 
 	// If not empty, the ID of the namespace to which the entities belong.
 	// +kcc:proto:field=google.privacy.dlp.v2.PartitionId.namespace_id
-	NamespaceId *string `json:"namespaceId,omitempty"`
+	NamespaceID *string `json:"namespaceID,omitempty"`
 }
 
 // +kcc:proto=google.privacy.dlp.v2.StorageConfig.TimespanConfig
 type StorageConfig_TimespanConfig struct {
 	// Exclude files, tables, or rows older than this value. If not set, no lower
 	//  time limit is applied.
+	// +kubebuilder:validation:Format=date-time
 	// +kcc:proto:field=google.privacy.dlp.v2.StorageConfig.TimespanConfig.start_time
 	StartTime *string `json:"startTime,omitempty"`
 
 	// Exclude files, tables, or rows newer than this value. If not set, no upper
 	//  time limit is applied.
+	// +kubebuilder:validation:Format=date-time
 	// +kcc:proto:field=google.privacy.dlp.v2.StorageConfig.TimespanConfig.end_time
 	EndTime *string `json:"endTime,omitempty"`
 
@@ -148,6 +152,22 @@ type StorageConfig_TimespanConfig struct {
 	//  time of the execution of the last run of the JobTrigger.
 	// +kcc:proto:field=google.privacy.dlp.v2.StorageConfig.TimespanConfig.enable_auto_population_of_timespan_config
 	EnableAutoPopulationOfTimespanConfig *bool `json:"enableAutoPopulationOfTimespanConfig,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.BigQueryTable
+type BigQueryTable struct {
+	// The Google Cloud project ID of the project containing the table.
+	//  If omitted, project ID is inferred from the API call.
+	// +kcc:proto:field=google.privacy.dlp.v2.BigQueryTable.project_id
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
+
+	// Dataset ID of the table.
+	// +kcc:proto:field=google.privacy.dlp.v2.BigQueryTable.dataset_id
+	DatasetRef *bigqueryv1beta1.DatasetRef `json:"datasetRef,omitempty"`
+
+	// Name of the table.
+	// +kcc:proto:field=google.privacy.dlp.v2.BigQueryTable.table_id
+	TableRef *bigqueryv1beta1.BigQueryTableRef `json:"tableRef,omitempty"`
 }
 
 // +kcc:proto=google.privacy.dlp.v2.Action.JobNotificationEmails
@@ -209,6 +229,114 @@ type BigQueryOptions struct {
 	IncludedFields []FieldID `json:"includedFields,omitempty"`
 }
 
+// +kcc:proto=google.privacy.dlp.v2.Action.PublishToPubSub
+type Action_PublishToPubSub struct {
+	// Cloud Pub/Sub topic to send notifications to. The topic must have given
+	//  publishing access rights to the DLP API service account executing
+	//  the long running DlpJob sending the notifications.
+	//  Format is projects/{project}/topics/{topic}.
+	// +kcc:proto:field=google.privacy.dlp.v2.Action.PublishToPubSub.topic
+	TopicRef *pubsubv1beta1.PubSubTopicRef `json:"topicRef,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.StoredType
+type StoredType struct {
+	// Resource name of the requested `StoredInfoType`, for example
+	//  `organizations/433245324/storedInfoTypes/432452342` or
+	//  `projects/project-id/storedInfoTypes/432452342`.
+	// +kcc:proto:field=google.privacy.dlp.v2.StoredType.name
+	NameRef *DLPStoredInfoTypeRef `json:"nameRef,omitempty"`
+
+	// Timestamp indicating when the version of the `StoredInfoType` used for
+	//  inspection was created. Output-only field, populated by the system.
+	// +kubebuilder:validation:Format=date-time
+	// +kcc:proto:field=google.privacy.dlp.v2.StoredType.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+}
+
+type DLPStoredInfoTypeRef struct {
+	/* The self-link of the DLPStoredInfoType resource. */
+	External string `json:"external,omitempty"`
+	/* The name of the DLPStoredInfoType resource. */
+	Name string `json:"name,omitempty"`
+	/* The namespace of the DLPStoredInfoType resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.TransformationConfig
+type TransformationConfig struct {
+	// De-identify template.
+	//  If this template is specified, it will serve as the default de-identify
+	//  template. This template cannot contain `record_transformations` since it
+	//  can be used for unstructured content such as free-form text files. If this
+	//  template is not set, a default `ReplaceWithInfoTypeConfig` will be used to
+	//  de-identify unstructured content.
+	// +kcc:proto:field=google.privacy.dlp.v2.TransformationConfig.deidentify_template
+	DeidentifyTemplateRef *DLPDeidentifyTemplateRef `json:"deidentifyTemplateRef,omitempty"`
+
+	// Structured de-identify template.
+	//  If this template is specified, it will serve as the de-identify template
+	//  for structured content such as delimited files and tables. If this template
+	//  is not set but the `deidentify_template` is set, then `deidentify_template`
+	//  will also apply to the structured content. If neither template is set, a
+	//  default `ReplaceWithInfoTypeConfig` will be used to de-identify structured
+	//  content.
+	// +kcc:proto:field=google.privacy.dlp.v2.TransformationConfig.structured_deidentify_template
+	StructuredDeidentifyTemplateRef *DLPDeidentifyTemplateRef `json:"structuredDeidentifyTemplateRef,omitempty"`
+
+	// Image redact template.
+	//  If this template is specified, it will serve as the de-identify template
+	//  for images. If this template is not set, all findings in the image will be
+	//  redacted with a black box.
+	// +kcc:proto:field=google.privacy.dlp.v2.TransformationConfig.image_redact_template
+	ImageRedactTemplateRef *DLPDeidentifyTemplateRef `json:"imageRedactTemplateRef,omitempty"`
+}
+
+type DLPDeidentifyTemplateRef struct {
+	/* The self-link of the DLPDeidentifyTemplate resource. */
+	External string `json:"external,omitempty"`
+	/* The name of the DLPDeidentifyTemplate resource. */
+	Name string `json:"name,omitempty"`
+	/* The namespace of the DLPDeidentifyTemplate resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
+// +kcc:proto=google.protobuf.Any
+type Any struct {
+	// A URL/resource name that uniquely identifies the type of the serialized
+	//  protocol buffer message. This string must contain at least
+	//  one "/" character. The last segment of the URL's path must represent
+	//  the fully qualified name of the type (as in
+	//  `path/google.protobuf.Duration`). The name should be in a canonical form
+	//  (e.g., leading "." is not accepted).
+	// +kcc:proto:field=google.protobuf.Any.type_url
+	TypeURL *string `json:"typeUrl,omitempty"`
+
+	// Must be a valid serialized protocol buffer of the above specified type.
+	// +kcc:proto:field=google.protobuf.Any.value
+	Value []byte `json:"value,omitempty"`
+}
+
+// +kcc:proto=google.rpc.Status
+type Status struct {
+	// The status code, which should be an enum value of
+	//  [google.rpc.Code][google.rpc.Code].
+	// +kcc:proto:field=google.rpc.Status.code
+	Code *int32 `json:"code,omitempty"`
+
+	// A developer-facing error message, which should be in English. Any
+	//  user-facing error message should be localized and sent in the
+	//  [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+	//  by the client.
+	// +kcc:proto:field=google.rpc.Status.message
+	Message *string `json:"message,omitempty"`
+
+	// A list of messages that carry the error details.  There is a common set of
+	//  message types for APIs to use.
+	// +kcc:proto:field=google.rpc.Status.details
+	Details []Any `json:"details,omitempty"`
+}
+
 // +kcc:proto=google.privacy.dlp.v2.CloudStorageRegexFileSet
 type CloudStorageRegexFileSet struct {
 	// +required
@@ -253,6 +381,7 @@ type DLPJobTriggerStatus struct {
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// Output only. The creation timestamp of a triggeredJob.
+	// +kubebuilder:validation:Format=date-time
 	// +kcc:proto:field=google.privacy.dlp.v2.JobTrigger.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
@@ -264,13 +393,15 @@ type DLPJobTriggerStatus struct {
 	Errors []Error `json:"errors,omitempty"`
 
 	// Output only. The timestamp of the last time this trigger executed.
+	// +kubebuilder:validation:Format=date-time
 	// +kcc:proto:field=google.privacy.dlp.v2.JobTrigger.last_run_time
 	LastRunTime *string `json:"lastRunTime,omitempty"`
 
 	// Output only. The geographic location where this resource is stored.
-	LocationId *string `json:"locationId,omitempty"`
+	LocationID *string `json:"locationID,omitempty"`
 
 	// Output only. The last update timestamp of a triggeredJob.
+	// +kubebuilder:validation:Format=date-time
 	// +kcc:proto:field=google.privacy.dlp.v2.JobTrigger.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
