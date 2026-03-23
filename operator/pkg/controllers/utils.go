@@ -387,6 +387,118 @@ func FindDuplicateStrings(strs []string) []string {
 	return duplicates
 }
 
+// AddWIFVolumes injects WIF-specific volumes, volumeMounts, and environment
+// variables into the controller manager StatefulSet for Workload Identity
+// Federation authentication.
+func AddWIFVolumes(obj *manifest.Object, wif *corev1beta1.WorkloadIdentityFederationSpec) (*manifest.Object, error) {
+	u := obj.UnstructuredObject().DeepCopy()
+
+	// 1. Get existing volumes (handle nil/missing gracefully).
+	volumes, _, err := unstructured.NestedSlice(u.Object, "spec", "template", "spec", "volumes")
+	if err != nil {
+		return nil, fmt.Errorf("error getting volumes from StatefulSet %v: %w", u.GetName(), err)
+	}
+	if volumes == nil {
+		volumes = []interface{}{}
+	}
+
+	// 2. Append a projected volume for the Kubernetes ServiceAccount token.
+	projectedVolume := map[string]interface{}{
+		"name": k8s.WIFProjectedTokenVolumeName,
+		"projected": map[string]interface{}{
+			"sources": []interface{}{
+				map[string]interface{}{
+					"serviceAccountToken": map[string]interface{}{
+						"audience":          wif.Audience,
+						"expirationSeconds": k8s.WIFTokenExpirationSeconds,
+						"path":              k8s.WIFProjectedTokenFileName,
+					},
+				},
+			},
+		},
+	}
+	volumes = append(volumes, projectedVolume)
+
+	// 3. Append a secret volume for the WIF credential configuration.
+	secretVolume := map[string]interface{}{
+		"name": k8s.WIFCredentialVolumeName,
+		"secret": map[string]interface{}{
+			"secretName": wif.CredentialSecretName,
+		},
+	}
+	volumes = append(volumes, secretVolume)
+
+	// 4. Set volumes back.
+	if err := unstructured.SetNestedSlice(u.Object, volumes, "spec", "template", "spec", "volumes"); err != nil {
+		return nil, fmt.Errorf("error setting volumes for StatefulSet %v: %w", u.GetName(), err)
+	}
+
+	// 5. Find the "manager" container in spec.template.spec.containers.
+	containers, found, err := unstructured.NestedSlice(u.Object, "spec", "template", "spec", "containers")
+	if err != nil || !found {
+		return nil, fmt.Errorf("couldn't find containers from StatefulSet %v: %w", u.GetName(), err)
+	}
+	managerFound := false
+	for i, c := range containers {
+		container, ok := c.(map[string]interface{})
+		if !ok {
+			continue
+		}
+		name, _, err := unstructured.NestedString(container, "name")
+		if err != nil || name != k8s.CNRMManagerContainerName {
+			continue
+		}
+		managerFound = true
+
+		// 6. Append volumeMounts.
+		volumeMounts, _, _ := unstructured.NestedSlice(container, "volumeMounts")
+		if volumeMounts == nil {
+			volumeMounts = []interface{}{}
+		}
+		volumeMounts = append(volumeMounts,
+			map[string]interface{}{
+				"name":      k8s.WIFProjectedTokenVolumeName,
+				"mountPath": k8s.WIFProjectedTokenMountPath,
+				"readOnly":  true,
+			},
+			map[string]interface{}{
+				"name":      k8s.WIFCredentialVolumeName,
+				"mountPath": k8s.WIFCredentialMountPath,
+				"readOnly":  true,
+			},
+		)
+		if err := unstructured.SetNestedSlice(container, volumeMounts, "volumeMounts"); err != nil {
+			return nil, fmt.Errorf("error setting volumeMounts for container %v: %w", name, err)
+		}
+
+		// 7. Append env var for GOOGLE_APPLICATION_CREDENTIALS.
+		envVars, _, _ := unstructured.NestedSlice(container, "env")
+		if envVars == nil {
+			envVars = []interface{}{}
+		}
+		envVars = append(envVars, map[string]interface{}{
+			"name":  "GOOGLE_APPLICATION_CREDENTIALS",
+			"value": k8s.WIFCredentialMountPath + "/" + k8s.WIFCredentialFileName,
+		})
+		if err := unstructured.SetNestedSlice(container, envVars, "env"); err != nil {
+			return nil, fmt.Errorf("error setting env for container %v: %w", name, err)
+		}
+
+		containers[i] = container
+		break
+	}
+	if !managerFound {
+		return nil, fmt.Errorf("couldn't find the manager container in StatefulSet %v", u.GetName())
+	}
+
+	// Write back containers.
+	if err := unstructured.SetNestedSlice(u.Object, containers, "spec", "template", "spec", "containers"); err != nil {
+		return nil, fmt.Errorf("error setting containers for StatefulSet %v: %w", u.GetName(), err)
+	}
+
+	return manifest.NewObject(u)
+}
+
 func GetValidatingWebhookConfigurationCustomization(ctx context.Context, c client.Client, name string) (*customizev1beta1.ValidatingWebhookConfigurationCustomization, error) {
 	obj := &customizev1beta1.ValidatingWebhookConfigurationCustomization{}
 	if err := c.Get(ctx, types.NamespacedName{Name: name}, obj); err != nil {

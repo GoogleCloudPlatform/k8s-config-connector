@@ -20,6 +20,22 @@ import (
 	addonv1alpha1 "sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/apis/v1alpha1"
 )
 
+// WorkloadIdentityFederationSpec defines the parameters for authenticating
+// via Workload Identity Federation (external_account ADC credentials).
+type WorkloadIdentityFederationSpec struct {
+	// CredentialSecretName is the name of the Kubernetes Secret containing the
+	// external_account credential configuration JSON (AIP-4117).
+	// The Secret must have a key named "credentials.json".
+	// +kubebuilder:validation:Required
+	CredentialSecretName string `json:"credentialSecretName"`
+
+	// Audience is the full workload identity pool provider resource name used
+	// as the audience for the projected Kubernetes ServiceAccount token.
+	// Example: //iam.googleapis.com/projects/PROJECT_NUM/locations/global/workloadIdentityPools/POOL_ID/providers/PROVIDER_ID
+	// +kubebuilder:validation:Required
+	Audience string `json:"audience"`
+}
+
 // ConfigConnectorSpec defines the desired state of ConfigConnector
 type ConfigConnectorSpec struct {
 	addonv1alpha1.CommonSpec `json:"-"`
@@ -33,11 +49,17 @@ type ConfigConnectorSpec struct {
 	// This field cannot be specified together with `googleServiceAccount`.
 	CredentialSecretName string `json:"credentialSecretName,omitempty"`
 
+	// WorkloadIdentityFederation configures authentication via Workload Identity
+	// Federation using projected ServiceAccount tokens and external_account credentials.
+	// Cannot be specified together with `googleServiceAccount` or `credentialSecretName`.
+	// +optional
+	WorkloadIdentityFederation *WorkloadIdentityFederationSpec `json:"workloadIdentityFederation,omitempty"`
+
 	// The mode that Config Connector will run in. This can be either 'cluster' or 'namespaced'. The default is 'namespaced'.
 	// Cluster mode uses a single Google Service Account to create and manage resources, even if you are using Config Connector to manage multiple Projects.
-	// You must specify either `credentialSecretName` or `googleServiceAccount` when in cluster mode, but not both.
+	// When in cluster mode, exactly one of `googleServiceAccount`, `credentialSecretName`, or `workloadIdentityFederation` must be set.
 	// Namespaced mode allows you to use different Google service accounts for different Projects.
-	// When in namespaced mode, you must create a ConfigConnectorContext object per namespace that you want to enable Config Connector in, and each must set `googleServiceAccount` to specify the Google Service Account to be used to authenticate with Google Cloud APIs for the namespace.
+	// When in namespaced mode, you must create a ConfigConnectorContext object per namespace that you want to enable Config Connector in, and each must set `googleServiceAccount` or `workloadIdentityFederation` to specify authentication for the namespace.
 	//+kubebuilder:validation:Enum=cluster;namespaced
 	Mode string `json:"mode,omitempty"`
 

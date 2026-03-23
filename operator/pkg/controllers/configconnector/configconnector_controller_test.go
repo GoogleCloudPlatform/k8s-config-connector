@@ -235,6 +235,29 @@ func TestHandleConfigConnectorCreate(t *testing.T) {
 			},
 		},
 		{
+			name: "1 CC in cluster-mode with WIF and no CCContext",
+			cc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-kcc-1",
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					WorkloadIdentityFederation: &corev1beta1.WorkloadIdentityFederationSpec{
+						CredentialSecretName: "wif-creds",
+						Audience:             "//iam.googleapis.com/projects/12345/locations/global/workloadIdentityPools/pool/providers/provider",
+					},
+					Mode: "cluster",
+				},
+			},
+			loadedManifest: testcontroller.GetClusterModeWIFManifest(),
+			resultsFunc: func(t *testing.T, c client.Client) []string {
+				wif := &corev1beta1.WorkloadIdentityFederationSpec{
+					CredentialSecretName: "wif-creds",
+					Audience:             "//iam.googleapis.com/projects/12345/locations/global/workloadIdentityPools/pool/providers/provider",
+				}
+				return testcontroller.ManuallyAddWIFVolumes(t, testcontroller.GetClusterModeWIFManifest(), wif)
+			},
+		},
+		{
 			name: "1 CC with 1 CCC (ignored), cluster mode",
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{

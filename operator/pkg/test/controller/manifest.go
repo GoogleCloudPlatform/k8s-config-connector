@@ -20,6 +20,7 @@ import (
 	"testing"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cluster"
 
@@ -411,6 +412,56 @@ spec:
     image: test-image
 `
 
+// ClusterModeOnlyWIFComponents is the base manifest for WIF mode.
+// It does NOT include the gcp-service-account secret volume because WIF
+// volumes are injected programmatically via AddWIFVolumes.
+var ClusterModeOnlyWIFComponents = []string{`
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cnrm-controller-manager
+  namespace: cnrm-system
+`, `
+apiVersion: v1
+kind: Service
+metadata:
+  name: cnrm-manager
+  namespace: cnrm-system
+spec:
+  ports:
+  - name: controller-manager
+    port: 443
+  - name: metrics
+    port: 8888
+  selector:
+    cnrm.cloud.google.com/component: cnrm-controller-manager
+    cnrm.cloud.google.com/system: "true"
+`, `
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    cnrm.cloud.google.com/component: cnrm-controller-manager
+    cnrm.cloud.google.com/system: "true"
+  name: cnrm-controller-manager
+  namespace: cnrm-system
+spec:
+  selector:
+    matchLabels:
+      cnrm.cloud.google.com/component: cnrm-controller-manager
+      cnrm.cloud.google.com/system: "true"
+  serviceName: cnrm-manager
+  template:
+    metadata:
+      labels:
+        cnrm.cloud.google.com/component: cnrm-controller-manager
+        cnrm.cloud.google.com/system: "true"
+    spec:
+      containers:
+      - name: manager
+        image: controller:latest
+`}
+
 var NamespacedControllerManagerPod = `apiVersion: v1
 kind: Pod
 metadata:
@@ -479,6 +530,46 @@ func GetClusterModeWorkloadIdentityManifest() []string {
 	res = append(res, GetSharedComponentsManifest()...)
 	res = append(res, ClusterModeOnlyWorkloadIdentityComponents...)
 	return res
+}
+
+func GetClusterModeWIFManifest() []string {
+	res := make([]string, 0)
+	res = append(res, GetSharedComponentsManifest()...)
+	res = append(res, ClusterModeOnlyWIFComponents...)
+	return res
+}
+
+// ManuallyAddWIFVolumes creates the expected result manifest by calling
+// controllers.AddWIFVolumes on the parsed objects. This produces the manifest
+// that should result from the WIF object transform.
+func ManuallyAddWIFVolumes(t *testing.T, components []string, wif *corev1beta1.WorkloadIdentityFederationSpec) []string {
+	ctx := context.TODO()
+	m := ParseObjects(ctx, t, components)
+	for i, obj := range m.Items {
+		if !controllers.IsControllerManagerStatefulSet(obj) {
+			continue
+		}
+		processed, err := controllers.AddWIFVolumes(obj, wif)
+		if err != nil {
+			t.Fatalf("error adding WIF volumes: %v", err)
+		}
+		m.Items[i] = processed
+	}
+	// Convert back to string slices.
+	var result []string
+	for _, obj := range m.Items {
+		u := obj.UnstructuredObject()
+		json, err := u.MarshalJSON()
+		if err != nil {
+			t.Fatalf("error marshalling to JSON: %v", err)
+		}
+		y, err := yaml.JSONToYAML(json)
+		if err != nil {
+			t.Fatalf("error converting JSON to YAML: %v", err)
+		}
+		result = append(result, string(y))
+	}
+	return result
 }
 
 func GetPerNamespaceManifest() []string {

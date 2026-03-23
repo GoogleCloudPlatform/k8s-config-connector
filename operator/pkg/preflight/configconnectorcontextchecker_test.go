@@ -157,6 +157,80 @@ func TestConfigConnectorContextChecker(t *testing.T) {
 			},
 			err: fmt.Errorf("spec.billingProject cannot be set if spec.requestProjectPolicy is not set to %v", k8s.BillingProjectPolicy),
 		},
+		{
+			name: "CCC with WIF only is valid",
+			ccc: &corev1beta1.ConfigConnectorContext{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
+					Namespace: "foo-ns",
+				},
+				Spec: corev1beta1.ConfigConnectorContextSpec{
+					WorkloadIdentityFederation: &corev1beta1.WorkloadIdentityFederationSpec{
+						CredentialSecretName: "my-wif-secret",
+						Audience:             "//iam.googleapis.com/projects/12345/locations/global/workloadIdentityPools/pool/providers/provider",
+					},
+				},
+			},
+			err: nil,
+		},
+		{
+			name: "CCC with both GSA and WIF is invalid",
+			ccc: &corev1beta1.ConfigConnectorContext{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
+					Namespace: "foo-ns",
+				},
+				Spec: corev1beta1.ConfigConnectorContextSpec{
+					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
+					WorkloadIdentityFederation: &corev1beta1.WorkloadIdentityFederationSpec{
+						CredentialSecretName: "my-wif-secret",
+						Audience:             "//iam.googleapis.com/projects/12345/locations/global/workloadIdentityPools/pool/providers/provider",
+					},
+				},
+			},
+			err: fmt.Errorf("spec.googleServiceAccount and spec.workloadIdentityFederation are mutually exclusive"),
+		},
+		{
+			name: "CCC with WIF missing credentialSecretName is invalid",
+			ccc: &corev1beta1.ConfigConnectorContext{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
+					Namespace: "foo-ns",
+				},
+				Spec: corev1beta1.ConfigConnectorContextSpec{
+					WorkloadIdentityFederation: &corev1beta1.WorkloadIdentityFederationSpec{
+						Audience: "//iam.googleapis.com/projects/12345/locations/global/workloadIdentityPools/pool/providers/provider",
+					},
+				},
+			},
+			err: fmt.Errorf("spec.workloadIdentityFederation.credentialSecretName is required"),
+		},
+		{
+			name: "CCC with WIF missing audience is invalid",
+			ccc: &corev1beta1.ConfigConnectorContext{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
+					Namespace: "foo-ns",
+				},
+				Spec: corev1beta1.ConfigConnectorContextSpec{
+					WorkloadIdentityFederation: &corev1beta1.WorkloadIdentityFederationSpec{
+						CredentialSecretName: "my-wif-secret",
+					},
+				},
+			},
+			err: fmt.Errorf("spec.workloadIdentityFederation.audience is required"),
+		},
+		{
+			name: "CCC with neither GSA nor WIF is invalid",
+			ccc: &corev1beta1.ConfigConnectorContext{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
+					Namespace: "foo-ns",
+				},
+				Spec: corev1beta1.ConfigConnectorContextSpec{},
+			},
+			err: fmt.Errorf("one of spec.googleServiceAccount or spec.workloadIdentityFederation must be set"),
+		},
 	}
 
 	checker := NewConfigConnectorContextChecker()

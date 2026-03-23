@@ -87,6 +87,8 @@ func (r *LocalRepository) LoadManifest(_ context.Context, componentName string, 
 		if cc.Spec.GoogleServiceAccount != "" {
 			authIdentity = "workload-identity"
 		} else {
+			// Both credentialSecretName and workloadIdentityFederation use the
+			// gcp-identity base. WIF-specific volumes are injected programmatically.
 			authIdentity = "gcp-identity"
 		}
 		rlog.Info("loading manifest", "component", componentName, "version", version, "mode", mode, "identity", authIdentity)

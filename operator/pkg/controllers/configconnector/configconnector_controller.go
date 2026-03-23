@@ -289,16 +289,28 @@ func (r *Reconciler) transformForClusterMode() declarative.ObjectTransform {
 			return fmt.Errorf("expected the resource to be a ConfigConnector, but it was not. Object: %v", o)
 		}
 		if cc.GetMode() == k8s.ClusterMode {
+			// Validate mutual exclusivity of auth modes.
+			authCount := 0
 			if cc.Spec.GoogleServiceAccount != "" {
-				// workload identity version
-				if err := r.objectTransformForWorkloadIdentity(cc, m); err != nil {
-					return errors.Wrap(err, "error transforming loadedManifest for workload identity version")
-				}
-			} else {
-				// gcp identity version
-				if err := r.objectTransformForGCPIdentity(cc, m); err != nil {
-					return errors.Wrap(err, "error transforming loadedManifest for gcp identity version")
-				}
+				authCount++
+			}
+			if cc.Spec.CredentialSecretName != "" {
+				authCount++
+			}
+			if cc.Spec.WorkloadIdentityFederation != nil {
+				authCount++
+			}
+			if authCount > 1 {
+				return fmt.Errorf("at most one of spec.googleServiceAccount, spec.credentialSecretName, or spec.workloadIdentityFederation may be set")
+			}
+
+			switch {
+			case cc.Spec.GoogleServiceAccount != "":
+				return r.objectTransformForWorkloadIdentity(cc, m)
+			case cc.Spec.WorkloadIdentityFederation != nil:
+				return r.objectTransformForWIF(cc, m)
+			default:
+				return r.objectTransformForGCPIdentity(cc, m)
 			}
 		}
 		return nil
@@ -337,6 +349,20 @@ func (r *Reconciler) objectTransformForGCPIdentity(cc *corev1beta1.ConfigConnect
 		}
 	}
 	m.Items = transformed
+	return nil
+}
+
+func (r *Reconciler) objectTransformForWIF(cc *corev1beta1.ConfigConnector, m *manifest.Objects) error {
+	for i, obj := range m.Items {
+		if !controllers.IsControllerManagerStatefulSet(obj) {
+			continue
+		}
+		processed, err := controllers.AddWIFVolumes(obj, cc.Spec.WorkloadIdentityFederation)
+		if err != nil {
+			return fmt.Errorf("error adding WIF volumes to StatefulSet %v: %w", obj.GetName(), err)
+		}
+		m.Items[i] = processed
+	}
 	return nil
 }
 

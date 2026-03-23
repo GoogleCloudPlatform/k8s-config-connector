@@ -37,6 +37,11 @@ type ConfigConnectorContextSpec struct {
 	// authenticate with Google Cloud APIs in the associated namespace.
 	GoogleServiceAccount string `json:"googleServiceAccount"`
 
+	// WorkloadIdentityFederation configures authentication via Workload Identity
+	// Federation for this namespace. Cannot be set together with `googleServiceAccount`.
+	// +optional
+	WorkloadIdentityFederation *WorkloadIdentityFederationSpec `json:"workloadIdentityFederation,omitempty"`
+
 	// Specifies which project to use for preconditions, quota, and billing for
 	// requests made to Google Cloud APIs for resources in the associated
 	// namespace. Must be one of 'SERVICE_ACCOUNT_PROJECT',

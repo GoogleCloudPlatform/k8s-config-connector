@@ -45,6 +45,26 @@ func (c *ConfigConnectorContextChecker) Preflight(_ context.Context, o declarati
 		return fmt.Errorf("expected the resource to be a ConfigConnectorContext, but it was not. Object: %v", o)
 	}
 
+	// Validate mutual exclusivity of auth modes
+	if ccc.Spec.GoogleServiceAccount != "" && ccc.Spec.WorkloadIdentityFederation != nil {
+		return fmt.Errorf("spec.googleServiceAccount and spec.workloadIdentityFederation are mutually exclusive")
+	}
+
+	// Validate WIF fields if WIF is configured
+	if ccc.Spec.WorkloadIdentityFederation != nil {
+		if ccc.Spec.WorkloadIdentityFederation.CredentialSecretName == "" {
+			return fmt.Errorf("spec.workloadIdentityFederation.credentialSecretName is required")
+		}
+		if ccc.Spec.WorkloadIdentityFederation.Audience == "" {
+			return fmt.Errorf("spec.workloadIdentityFederation.audience is required")
+		}
+	}
+
+	// Require at least one auth mode to be configured.
+	if ccc.Spec.GoogleServiceAccount == "" && ccc.Spec.WorkloadIdentityFederation == nil {
+		return fmt.Errorf("one of spec.googleServiceAccount or spec.workloadIdentityFederation must be set")
+	}
+
 	if ccc.GetRequestProjectPolicy() != k8s.BillingProjectPolicy && ccc.Spec.BillingProject != "" {
 		return fmt.Errorf("spec.billingProject cannot be set if spec.requestProjectPolicy is not set to %v", k8s.BillingProjectPolicy)
 	}
@@ -61,7 +81,7 @@ func (c *ConfigConnectorContextChecker) Preflight(_ context.Context, o declarati
 }
 
 func validateGSAFormat(gsa string) error {
-	if gsa == "" { // GoogleServiceAccount is a required field. We do not need to fail here.
+	if gsa == "" { // GSA format validation only applies when googleServiceAccount is set.
 		return nil
 	}
 	validGSAPattern := `^[A-Za-z0-9._%+\-]+@[a-z0-9.\-]+\.gserviceaccount.com$`

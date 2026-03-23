@@ -57,6 +57,15 @@ const (
 	ManagerNamespaceIsolationFlag      = "manager-namespace-isolation"
 	ManagerNamespaceIsolationShared    = "shared"
 	ManagerNamespaceIsolationDedicated = "dedicated"
+
+	// WIF volume and mount constants
+	WIFCredentialVolumeName     = "wif-credentials"
+	WIFCredentialMountPath      = "/var/run/secrets/wif"
+	WIFCredentialFileName       = "credentials.json"
+	WIFProjectedTokenVolumeName = "wif-projected-token"
+	WIFProjectedTokenMountPath  = "/var/run/secrets/tokens"
+	WIFProjectedTokenFileName   = "token"
+	WIFTokenExpirationSeconds   = int64(3600)
 )
 
 var (

@@ -1423,6 +1423,152 @@ func newConfigConnectorContextReconcilerWithCustomizationWatcher(m ctrl.Manager)
 	return r
 }
 
+func TestTransformNamespacedComponentsWithWIF(t *testing.T) {
+	t.Parallel()
+	ctx := context.TODO()
+	mgr, stop := testmain.StartTestManagerFromNewTestEnv()
+	defer stop()
+	c := mgr.GetClient()
+	testcontroller.EnsureNamespaceExists(c, k8s.OperatorSystemNamespace)
+	testcontroller.EnsureNamespaceExists(c, k8s.CNRMSystemNamespace)
+
+	wifSpec := &corev1beta1.WorkloadIdentityFederationSpec{
+		CredentialSecretName: "my-wif-secret",
+		Audience:             "//iam.googleapis.com/projects/12345/locations/global/workloadIdentityPools/pool/providers/provider",
+	}
+	ccc := &corev1beta1.ConfigConnectorContext{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      corev1beta1.ConfigConnectorContextAllowedName,
+			Namespace: "foo-ns",
+		},
+		Spec: corev1beta1.ConfigConnectorContextSpec{
+			WorkloadIdentityFederation: wifSpec,
+		},
+	}
+
+	m := testcontroller.ParseObjects(ctx, t, testcontroller.GetPerNamespaceManifest())
+	transformedObjs, err := transformNamespacedComponentTemplates(ctx, c, ccc, m.Items)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	// Verify: StatefulSet should have WIF volumes injected
+	foundStatefulSet := false
+	for _, obj := range transformedObjs {
+		if controllers.IsControllerManagerStatefulSet(obj) {
+			foundStatefulSet = true
+			u := obj.UnstructuredObject()
+
+			// Verify volumes contain WIF credential and projected token volumes
+			volumes, found, err := unstructured.NestedSlice(u.Object, "spec", "template", "spec", "volumes")
+			if err != nil {
+				t.Fatalf("error getting volumes: %v", err)
+			}
+			if !found || len(volumes) == 0 {
+				t.Fatalf("expected volumes to be present in StatefulSet, but none found")
+			}
+
+			wifCredVolFound := false
+			wifTokenVolFound := false
+			for _, v := range volumes {
+				vol, ok := v.(map[string]interface{})
+				if !ok {
+					continue
+				}
+				name, _, _ := unstructured.NestedString(vol, "name")
+				if name == k8s.WIFCredentialVolumeName {
+					wifCredVolFound = true
+				}
+				if name == k8s.WIFProjectedTokenVolumeName {
+					wifTokenVolFound = true
+				}
+			}
+			if !wifCredVolFound {
+				t.Errorf("expected volume %q in StatefulSet, but it was not found", k8s.WIFCredentialVolumeName)
+			}
+			if !wifTokenVolFound {
+				t.Errorf("expected volume %q in StatefulSet, but it was not found", k8s.WIFProjectedTokenVolumeName)
+			}
+		}
+
+		// Verify: ServiceAccount should NOT have the workload identity annotation set
+		// because GoogleServiceAccount is empty when using WIF
+		if obj.Kind == "ServiceAccount" && strings.HasPrefix(obj.GetName(), k8s.ServiceAccountNamePrefix) {
+			u := obj.UnstructuredObject()
+			annotations := u.GetAnnotations()
+			if gsaVal, exists := annotations[k8s.WorkloadIdentityAnnotation]; exists {
+				// The annotation may exist from the template with a placeholder value,
+				// but AnnotateServiceAccountObject should NOT have been called to set it
+				// to a real GSA value.
+				if gsaVal != "" && gsaVal != "${SERVICE_ACCOUNT?}" {
+					t.Errorf("expected ServiceAccount to NOT have a real GSA annotation in WIF mode, but found: %v", gsaVal)
+				}
+			}
+		}
+	}
+	if !foundStatefulSet {
+		t.Fatalf("no StatefulSet found in transformed objects")
+	}
+}
+
+func TestTransformNamespacedComponentsWithGSADoesNotInjectWIF(t *testing.T) {
+	t.Parallel()
+	ctx := context.TODO()
+	mgr, stop := testmain.StartTestManagerFromNewTestEnv()
+	defer stop()
+	c := mgr.GetClient()
+	testcontroller.EnsureNamespaceExists(c, k8s.OperatorSystemNamespace)
+	testcontroller.EnsureNamespaceExists(c, k8s.CNRMSystemNamespace)
+
+	ccc := &corev1beta1.ConfigConnectorContext{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      corev1beta1.ConfigConnectorContextAllowedName,
+			Namespace: "foo-ns",
+		},
+		Spec: corev1beta1.ConfigConnectorContextSpec{
+			GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
+		},
+	}
+
+	m := testcontroller.ParseObjects(ctx, t, testcontroller.GetPerNamespaceManifest())
+	transformedObjs, err := transformNamespacedComponentTemplates(ctx, c, ccc, m.Items)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	// Verify: StatefulSet should NOT have WIF volumes
+	for _, obj := range transformedObjs {
+		if controllers.IsControllerManagerStatefulSet(obj) {
+			u := obj.UnstructuredObject()
+			volumes, found, err := unstructured.NestedSlice(u.Object, "spec", "template", "spec", "volumes")
+			if err != nil {
+				t.Fatalf("error getting volumes: %v", err)
+			}
+			if found {
+				for _, v := range volumes {
+					vol, ok := v.(map[string]interface{})
+					if !ok {
+						continue
+					}
+					name, _, _ := unstructured.NestedString(vol, "name")
+					if name == k8s.WIFCredentialVolumeName || name == k8s.WIFProjectedTokenVolumeName {
+						t.Errorf("unexpected WIF volume %q found in StatefulSet when using GSA mode", name)
+					}
+				}
+			}
+		}
+
+		// Verify: ServiceAccount should have GSA annotation
+		if obj.Kind == "ServiceAccount" && strings.HasPrefix(obj.GetName(), k8s.ServiceAccountNamePrefix) {
+			u := obj.UnstructuredObject()
+			annotations := u.GetAnnotations()
+			if gsaVal, exists := annotations[k8s.WorkloadIdentityAnnotation]; !exists || gsaVal != "foo@bar.iam.gserviceaccount.com" {
+				t.Errorf("expected ServiceAccount to have GSA annotation %q, got %q", "foo@bar.iam.gserviceaccount.com", gsaVal)
+			}
+		}
+	}
+}
+
 func TestControllerOverridesField(t *testing.T) {
 	t.Parallel()
 	ccc := &corev1beta1.ConfigConnectorContext{

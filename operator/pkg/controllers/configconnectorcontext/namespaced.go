@@ -61,15 +61,24 @@ func transformNamespacedComponentTemplates(ctx context.Context, c client.Client,
 			if err != nil {
 				return nil, err
 			}
+			// If WIF is configured for this namespace, inject volumes
+			if ccc.Spec.WorkloadIdentityFederation != nil {
+				processed, err = controllers.AddWIFVolumes(processed, ccc.Spec.WorkloadIdentityFederation)
+				if err != nil {
+					return nil, fmt.Errorf("error applying WIF volumes to namespaced StatefulSet: %w", err)
+				}
+			}
 		}
 		processed, err := replaceNamespacePattern(processed, ccc.Namespace)
 		if err != nil {
 			return nil, err
 		}
 		if processed.Kind == rbacv1.ServiceAccountKind && strings.HasPrefix(processed.GetName(), k8s.ServiceAccountNamePrefix) {
-			processed, err = controllers.AnnotateServiceAccountObject(processed, ccc.Spec.GoogleServiceAccount)
-			if err != nil {
-				return nil, errors.Wrap(err, fmt.Sprintf("error annotating ServiceAccount %v/%v", obj.UnstructuredObject().GetNamespace(), obj.UnstructuredObject().GetName()))
+			if ccc.Spec.GoogleServiceAccount != "" {
+				processed, err = controllers.AnnotateServiceAccountObject(processed, ccc.Spec.GoogleServiceAccount)
+				if err != nil {
+					return nil, errors.Wrap(err, fmt.Sprintf("error annotating ServiceAccount %v/%v", obj.UnstructuredObject().GetNamespace(), obj.UnstructuredObject().GetName()))
+				}
 			}
 		}
 		transformedObjs = append(transformedObjs, processed)
@@ -94,6 +103,13 @@ func transformPerNamespaceComponentTemplates(ctx context.Context, c client.Clien
 			if err != nil {
 				return nil, err
 			}
+			// If WIF is configured for this namespace, inject volumes
+			if ccc.Spec.WorkloadIdentityFederation != nil {
+				processed, err = controllers.AddWIFVolumes(processed, ccc.Spec.WorkloadIdentityFederation)
+				if err != nil {
+					return nil, fmt.Errorf("error applying WIF volumes to per-namespace StatefulSet: %w", err)
+				}
+			}
 		}
 
 		if processed.Kind == rbacv1.ServiceAccountKind && strings.HasPrefix(processed.GetName(), k8s.ServiceAccountNamePrefix) {
@@ -101,6 +117,12 @@ func transformPerNamespaceComponentTemplates(ctx context.Context, c client.Clien
 			processed, err = handleControllerManagerServiceAccountNamespace(processed, ccc)
 			if err != nil {
 				return nil, err
+			}
+			if ccc.Spec.GoogleServiceAccount != "" {
+				processed, err = controllers.AnnotateServiceAccountObject(processed, ccc.Spec.GoogleServiceAccount)
+				if err != nil {
+					return nil, errors.Wrap(err, fmt.Sprintf("error annotating ServiceAccount %v/%v", processed.UnstructuredObject().GetNamespace(), processed.UnstructuredObject().GetName()))
+				}
 			}
 		}
 		if processed.Kind == "RoleBinding" || processed.Kind == "ClusterRoleBinding" {
