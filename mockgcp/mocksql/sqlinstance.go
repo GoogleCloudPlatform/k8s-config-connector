@@ -636,6 +636,10 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 		}
 	}
 
+	if settings.DataCacheConfig != nil && !settings.DataCacheConfig.DataCacheEnabled {
+		settings.DataCacheConfig = nil
+	}
+
 	if backupConfiguration.PointInTimeRecoveryEnabled != nil && isMysql(obj) {
 		backupConfiguration.PointInTimeRecoveryEnabled = nil
 	}
