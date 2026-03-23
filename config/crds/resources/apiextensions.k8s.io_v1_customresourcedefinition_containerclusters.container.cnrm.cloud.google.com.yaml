@@ -1129,7 +1129,7 @@ spec:
                     properties:
                       confidentialInstanceType:
                         description: Immutable. Confidential instance type for the
-                          cluster nodes. Valid values are SEV and SEV_SNP.
+                          nodes in the pool. Valid values are SEV and SEV_SNP.
                         type: string
                       enabled:
                         description: Immutable. Whether Confidential Nodes feature

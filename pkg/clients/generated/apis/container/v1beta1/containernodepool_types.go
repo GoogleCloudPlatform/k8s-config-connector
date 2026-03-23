@@ -107,7 +107,7 @@ type NodepoolConfidentialNodes struct {
 	/* Immutable. Whether Confidential Nodes feature is enabled for all nodes in this pool. */
 	Enabled bool `json:"enabled"`
 
-	/* Immutable. The type of confidential nodes to use. */
+	/* Immutable. Confidential instance type for the nodes in the pool. Valid values are SEV and SEV_SNP. */
 	// +optional
 	ConfidentialInstanceType *string `json:"confidentialInstanceType,omitempty"`
 }
