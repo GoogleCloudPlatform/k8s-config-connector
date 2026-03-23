@@ -1,42 +1,13 @@
-# Copyright 2025 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-branches:
-  - name: accessapproval-approvalrequest
-    local: resource-accessapproval-approvalrequest
-    remote: resource-accessapproval-approvalrequest
+skip:
+  - name: iam-iampolicymember
+    local: resource-iam-policymember
+    remote: resource-iam-policymember
     command: ""
-    group: accessapproval
-    resource: approvalrequest
-    controller: Unknown
-    kind: AccessApprovalApprovalRequest
-    package: google.cloud.accessapproval.v1
-    proto: ApprovalRequest
-    proto-path: google/cloud/accessapproval/v1/accessapproval.proto
-    proto-service: ""
-    proto-msg: google.cloud.accessapproval.v1.ApprovalRequest
-    host-name: ""
-    notes:
-      - No gcloud command found
-  - name: ai-customjobs
-    local: resource-ai-customjobs
-    remote: resource-ai-customjobs
-    command: gcloud ai custom-jobs
-    group: ai
-    resource: customjobs
-    controller: Unknown
-    kind: ""
+    group: iam
+    resource: iampolicymember
+    controller: direct
+    skip: false
+    kind: IAMPolicyMember
     package: ""
     proto: ""
     proto-path: ""
@@ -44,14 +15,630 @@ branches:
     proto-msg: ""
     host-name: ""
     notes: []
+    apis-enabled: []
+  - name: iam-partialpolicy
+    local: resource-iam-partialpolicy
+    remote: resource-iam-partialpolicy
+    command: ""
+    group: iam
+    resource: iampartialpolicy
+    controller: direct
+    skip: false
+    kind: IAMPartialPolicy
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: iam-serviceaccount
+    local: resource-iam-serviceaccount
+    remote: resource-iam-serviceaccount
+    command: ""
+    group: iam
+    resource: iamserviceaccount
+    controller: terraform-v1beta1
+    skip: false
+    kind: IAMServiceAccount
+    package: google.iam.admin.v1
+    proto: ServiceAccount
+    proto-path: google/iam/admin/v1/iam.proto
+    proto-service: ""
+    proto-msg: google.iam.admin.v1.ServiceAccount
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: pubsub-subscription
+    local: resource-pubsub-subscription
+    remote: resource-pubsub-subscription
+    command: ""
+    group: pubsub
+    resource: pubsubsubscription
+    controller: terraform-v1beta1
+    skip: false
+    kind: PubSubSubscription
+    package: google.pubsub.v1
+    proto: Subscription
+    proto-path: google/pubsub/v1/pubsub.proto
+    proto-service: ""
+    proto-msg: google.pubsub.v1.Subscription
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: serviceusage-service
+    local: resource-serviceusage-service
+    remote: resource-serviceusage-service
+    command: ""
+    group: serviceusage
+    resource: service
+    controller: terraform-v1beta1
+    skip: false
+    kind: Service
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: iam-policy
+    local: resource-iam-policy
+    remote: resource-iam-policy
+    command: gcloud iam policies
+    group: iam
+    resource: policy
+    controller: Unknown
+    skip: false
+    kind: IAMPolicy
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: pubsub-topic
+    local: resource-pubsub-topic
+    remote: resource-pubsub-topic
+    command: ""
+    group: pubsub
+    resource: pubsubtopic
+    controller: terraform-v1beta1
+    skip: false
+    kind: PubSubTopic
+    package: google.pubsub.v1
+    proto: Topic
+    proto-path: google/pubsub/v1/pubsub.proto
+    proto-service: ""
+    proto-msg: google.pubsub.v1.Topic
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: dns-dnsrecordset
+    local: resource-dns-dnsrecordset
+    remote: resource-dns-dnsrecordset
+    command: gcloud dns record-sets
+    group: dns
+    resource: dnsrecordset
+    controller: terraform-v1beta1
+    skip: false
+    kind: DNSRecordSet
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: storage-bucket
+    local: resource-storage-bucket
+    remote: resource-storage-bucket
+    command: ""
+    group: storage
+    resource: storagebucket
+    controller: terraform-v1beta1
+    skip: false
+    kind: StorageBucket
+    package: google.storage.v2
+    proto: Bucket
+    proto-path: google/storage/v2/storage.proto
+    proto-service: ""
+    proto-msg: google.storage.v2.Bucket
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: container-containernodepool
+    local: resource-container-containernodepool
+    remote: resource-container-containernodepool
+    command: gcloud container node-pools
+    group: container
+    resource: containernodepool
+    controller: terraform-v1beta1
+    skip: false
+    kind: ContainerNodePool
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: bigquery-bigquerytable
+    local: resource-bigquery-bigquerytable
+    remote: resource-bigquery-bigquerytable
+    command: ""
+    group: bigquery
+    resource: bigquerytable
+    controller: terraform-v1beta1
+    skip: false
+    kind: BigQueryTable
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: sql-sqluser
+    local: resource-sql-sqluser
+    remote: resource-sql-sqluser
+    command: ""
+    group: sql
+    resource: sqluser
+    controller: terraform-v1beta1
+    skip: false
+    kind: SQLUser
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: ""
+    local: resource-core-configconnectorcontext
+    remote: resource-core-configconnectorcontext
+    command: ""
+    group: core
+    resource: configconnectorcontext
+    controller: unknown
+    skip: false
+    kind: ConfigConnectorContext
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: secretmanager-secret
+    local: resource-secretmanager-secret
+    remote: resource-secretmanager-secret
+    command: ""
+    group: secretmanager
+    resource: secretmanagersecret
+    controller: terraform-v1beta1
+    skip: false
+    kind: SecretManagerSecret
+    package: google.cloud.secretmanager.v1
+    proto: Secret
+    proto-path: google/cloud/secretmanager/v1/service.proto
+    proto-service: ""
+    proto-msg: google.cloud.secretmanager.v1.Secret
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: ""
+    local: resource-core-configconnector
+    remote: resource-core-configconnector
+    command: ""
+    group: core
+    resource: configconnector
+    controller: unknown
+    skip: false
+    kind: ConfigConnector
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: sql-sqldatabase
+    local: resource-sql-sqldatabase
+    remote: resource-sql-sqldatabase
+    command: ""
+    group: sql
+    resource: sqldatabase
+    controller: terraform-v1beta1
+    skip: false
+    kind: SQLDatabase
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: bigquery-bigquerydataset
+    local: resource-bigquery-bigquerydataset
+    remote: resource-bigquery-bigquerydataset
+    command: ""
+    group: bigquery
+    resource: bigquerydataset
+    controller: terraform-v1beta1
+    skip: false
+    kind: BigQueryDataset
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: dns-dnsmanagedzone
+    local: resource-dns-dnsmanagedzone
+    remote: resource-dns-dnsmanagedzone
+    command: gcloud dns managed-zones
+    group: dns
+    resource: dnsmanagedzone
+    controller: terraform-v1beta1
+    skip: false
+    kind: DNSManagedZone
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: essentialcontacts-contact
+    local: resource-essentialcontacts-contact
+    remote: resource-essentialcontacts-contact
+    command: gcloud essential-contacts
+    group: essentialcontacts
+    resource: contact
+    controller: Unknown
+    skip: false
+    kind: EssentialContactsContact
+    package: google.cloud.essentialcontacts.v1
+    proto: Contact
+    proto-path: google/cloud/essentialcontacts/v1/service.proto
+    proto-service: ""
+    proto-msg: google.cloud.essentialcontacts.v1.Contact
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: kms-cryptokey
+    local: resource-kms-cryptokey
+    remote: resource-kms-cryptokey
+    command: ""
+    group: kms
+    resource: kmscryptokey
+    controller: terraform-v1beta1
+    skip: false
+    kind: KMSCryptoKey
+    package: google.cloud.kms.v1
+    proto: CryptoKey
+    proto-path: google/cloud/kms/v1/autokey.proto
+    proto-service: ""
+    proto-msg: google.cloud.kms.v1.CryptoKey
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: secretmanager-secretversion
+    local: resource-secretmanager-secretversion
+    remote: resource-secretmanager-secretversion
+    command: ""
+    group: secretmanager
+    resource: secretmanagersecretversion
+    controller: terraform-v1beta1
+    skip: false
+    kind: SecretManagerSecretVersion
+    package: google.cloud.secretmanager.v1
+    proto: SecretVersion
+    proto-path: google/cloud/secretmanager/v1/service.proto
+    proto-service: ""
+    proto-msg: google.cloud.secretmanager.v1.SecretVersion
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: monitoring-alertpolicy
+    local: resource-monitoring-alertpolicy
+    remote: resource-monitoring-alertpolicy
+    command: ""
+    group: monitoring
+    resource: alertpolicy
+    controller: terraform-v1beta1
+    skip: false
+    kind: MonitoringAlertPolicy
+    package: google.monitoring.v3
+    proto: AlertPolicy
+    proto-path: google/monitoring/v3/alert_service.proto
+    proto-service: ""
+    proto-msg: google.monitoring.v3.AlertPolicy
+    host-name: ""
+    notes:
+      - No gcloud command found
+    apis-enabled: []
+  - name: iam-serviceaccountkey
+    local: resource-iam-serviceaccountkey
+    remote: resource-iam-serviceaccountkey
+    command: ""
+    group: iam
+    resource: iamserviceaccountkey
+    controller: terraform-v1beta1
+    skip: false
+    kind: IAMServiceAccountKey
+    package: google.iam.admin.v1
+    proto: ServiceAccountKey
+    proto-path: google/iam/admin/v1/iam.proto
+    proto-service: ""
+    proto-msg: google.iam.admin.v1.ServiceAccountKey
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: ""
+    local: resource-sql-sqlinstance
+    remote: resource-sql-sqlinstance
+    command: ""
+    group: sql
+    resource: sqlinstance
+    controller: direct
+    skip: false
+    kind: SQLInstance
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: compute-computeaddress
+    local: resource-compute-computeaddress
+    remote: resource-compute-computeaddress
+    command: gcloud compute addresses
+    group: compute
+    resource: computeaddress
+    controller: terraform-v1beta1
+    skip: false
+    kind: ComputeAddress
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: compute-computefirewall
+    local: resource-compute-computefirewall
+    remote: resource-compute-computefirewall
+    command: ""
+    group: compute
+    resource: computefirewall
+    controller: terraform-v1beta1
+    skip: false
+    kind: ComputeFirewall
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: ""
+    local: resource-cloudidentity-cloudidentitymembership
+    remote: resource-cloudidentity-cloudidentitymembership
+    command: ""
+    group: cloudidentity
+    resource: cloudidentitymembership
+    controller: dcl
+    skip: false
+    kind: CloudIdentityMembership
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: compute-computeroute
+    local: resource-compute-computeroute
+    remote: resource-compute-computeroute
+    command: gcloud compute routes
+    group: compute
+    resource: computeroute
+    controller: terraform-v1beta1
+    skip: false
+    kind: ComputeRoute
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: resourcemanager-project
+    local: resource-resourcemanager-project
+    remote: resource-resourcemanager-project
+    command: ""
+    group: resourcemanager
+    resource: project
+    controller: terraform-v1beta1
+    skip: false
+    kind: Project
+    package: google.cloud.resourcemanager.v3
+    proto: Project
+    proto-path: google/cloud/resourcemanager/v3/projects.proto
+    proto-service: ""
+    proto-msg: google.cloud.resourcemanager.v3.Project
+    host-name: ""
+    notes:
+      - No gcloud command found
+    apis-enabled: []
+  - name: logging-logmetric
+    local: resource-logging-logmetric
+    remote: resource-logging-logmetric
+    command: ""
+    group: logging
+    resource: logginglogmetric
+    controller: direct
+    skip: false
+    kind: LoggingLogMetric
+    package: google.logging.v2
+    proto: LogMetric
+    proto-path: google/logging/v2/logging.proto
+    proto-service: ""
+    proto-msg: google.logging.v2.LogMetric
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: iam-customrole
+    local: resource-iam-customrole
+    remote: resource-iam-customrole
+    command: ""
+    group: iam
+    resource: iamcustomrole
+    controller: terraform-v1beta1
+    skip: false
+    kind: IAMCustomRole
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: spanner-database
+    local: resource-spanner-database
+    remote: resource-spanner-database
+    command: ""
+    group: spanner
+    resource: spannerdatabase
+    controller: terraform-v1beta1
+    skip: false
+    kind: SpannerDatabase
+    package: google.spanner.admin.database.v1
+    proto: Database
+    proto-path: google/spanner/admin/database/v1/spanner_database_admin.proto
+    proto-service: ""
+    proto-msg: google.spanner.admin.database.v1.Database
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: kms-keyring
+    local: resource-kms-keyring
+    remote: resource-kms-keyring
+    command: ""
+    group: kms
+    resource: kmskeyring
+    controller: terraform-v1beta1
+    skip: false
+    kind: KMSKeyRing
+    package: google.cloud.kms.v1
+    proto: KeyRing
+    proto-path: google/cloud/kms/v1/autokey.proto
+    proto-service: ""
+    proto-msg: google.cloud.kms.v1.KeyRing
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: compute-computesubnetwork
+    local: resource-compute-computesubnetwork
+    remote: resource-compute-computesubnetwork
+    command: ""
+    group: compute
+    resource: computesubnetwork
+    controller: terraform-v1beta1
+    skip: false
+    kind: ComputeSubnetwork
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: logging-logsink
+    local: resource-logging-logsink
+    remote: resource-logging-logsink
+    command: ""
+    group: logging
+    resource: logginglogsink
+    controller: terraform-v1beta1
+    skip: false
+    kind: LoggingLogSink
+    package: google.logging.v2
+    proto: LogSink
+    proto-path: google/logging/v2/logging.proto
+    proto-service: ""
+    proto-msg: google.logging.v2.LogSink
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: serviceusage-serviceidentity
+    local: resource-serviceusage-serviceidentity
+    remote: resource-serviceusage-serviceidentity
+    command: ""
+    group: serviceusage
+    resource: serviceidentity
+    controller: terraform-v1beta1
+    skip: false
+    kind: ServiceIdentity
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: osconfig-osconfigospolicyassignments
+    local: resource-osconfig-osconfigospolicyassignments
+    remote: resource-osconfig-osconfigospolicyassignments
+    command: ""
+    group: osconfig
+    resource: osconfigospolicyassignments
+    controller: dcl
+    skip: false
+    kind: OSConfigOSPolicyAssignment
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
   - name: compute-computebackendservice
     local: resource-compute-computebackendservice
     remote: resource-compute-computebackendservice
     command: gcloud compute backend-services
     group: compute
     resource: computebackendservice
-    controller: terraform
-    kind: ""
+    controller: terraform-v1beta1
+    skip: false
+    kind: ComputeBackendService
     package: ""
     proto: BackendService
     proto-path: google/cloud/compute/v1/compute.proto
@@ -59,3 +646,399 @@ branches:
     proto-msg: google.cloud.compute.v1.BackendService
     host-name: compute.googleapis.com
     notes: []
+    apis-enabled: []
+  - name: monitoring-servicelevelobjective
+    local: resource-monitoring-servicelevelobjective
+    remote: resource-monitoring-servicelevelobjective
+    command: ""
+    group: monitoring
+    resource: monitoringservicelevelobjective
+    controller: dcl
+    skip: false
+    kind: MonitoringServiceLevelObjective
+    package: google.monitoring.v3
+    proto: ServiceLevelObjective
+    proto-path: google/monitoring/v3/alert_service.proto
+    proto-service: ""
+    proto-msg: google.monitoring.v3.ServiceLevelObjective
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: ""
+    local: resource-cloudscheduler-cloudschedulerjob
+    remote: resource-cloudscheduler-cloudschedulerjob
+    command: ""
+    group: cloudscheduler
+    resource: cloudschedulerjob
+    controller: terraform-v1beta1
+    skip: false
+    kind: CloudSchedulerJob
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: spanner-instance
+    local: resource-spanner-instance
+    remote: resource-spanner-instance
+    command: ""
+    group: spanner
+    resource: spannerinstance
+    controller: terraform-v1beta1
+    skip: false
+    kind: SpannerInstance
+    package: google.spanner.admin.instance.v1
+    proto: Instance
+    proto-path: google/spanner/admin/instance/v1/spanner_instance_admin.proto
+    proto-service: ""
+    proto-msg: google.spanner.admin.instance.v1.Instance
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: artifactregistry-repository
+    local: resource-artifactregistry-repository
+    remote: resource-artifactregistry-repository
+    command: ""
+    group: artifactregistry
+    resource: artifactregistryrepository
+    controller: terraform-v1beta1
+    skip: false
+    kind: ArtifactRegistryRepository
+    package: google.devtools.artifactregistry.v1
+    proto: Repository
+    proto-path: google/devtools/artifactregistry/v1/service.proto
+    proto-service: ""
+    proto-msg: google.devtools.artifactregistry.v1.Repository
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: logging-logexclusion
+    local: resource-logging-logexclusion
+    remote: resource-logging-logexclusion
+    command: ""
+    group: logging
+    resource: logexclusion
+    controller: Unknown
+    skip: false
+    kind: LoggingLogExclusion
+    package: google.logging.v2
+    proto: LogExclusion
+    proto-path: google/logging/v2/logging.proto
+    proto-service: ""
+    proto-msg: google.logging.v2.LogExclusion
+    host-name: ""
+    notes:
+      - No gcloud command found
+    apis-enabled: []
+  - name: ""
+    local: resource-core-namespacedcontrollerresource
+    remote: resource-core-namespacedcontrollerresource
+    command: ""
+    group: core
+    resource: namespacedcontrollerresource
+    controller: unknown
+    skip: false
+    kind: NamespacedControllerResource
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: monitoring-notificationchannel
+    local: resource-monitoring-notificationchannel
+    remote: resource-monitoring-notificationchannel
+    command: ""
+    group: monitoring
+    resource: monitoringnotificationchannel
+    controller: terraform-v1beta1
+    skip: false
+    kind: MonitoringNotificationChannel
+    package: google.monitoring.v3
+    proto: NotificationChannel
+    proto-path: google/monitoring/v3/notification_service.proto
+    proto-service: ""
+    proto-msg: google.monitoring.v3.NotificationChannel
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: redis-instance
+    local: resource-redis-instance
+    remote: resource-redis-instance
+    command: ""
+    group: redis
+    resource: instance
+    controller: terraform-v1beta1
+    skip: false
+    kind: RedisInstance
+    package: google.cloud.redis.v1
+    proto: Instance
+    proto-path: google/cloud/redis/v1/cloud_redis.proto
+    proto-service: ""
+    proto-msg: google.cloud.redis.v1.Instance
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: compute-computeforwardingrule
+    local: resource-compute-computeforwardingrule
+    remote: resource-compute-computeforwardingrule
+    command: gcloud compute forwarding-rules
+    group: compute
+    resource: computeforwardingrule
+    controller: terraform-v1beta1
+    skip: false
+    kind: ComputeForwardingRule
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: compute-computehealthcheck
+    local: resource-compute-computehealthcheck
+    remote: resource-compute-computehealthcheck
+    command: gcloud compute health-checks
+    group: compute
+    resource: computehealthcheck
+    controller: terraform-v1beta1
+    skip: false
+    kind: ComputeHealthCheck
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: cloudbuild-trigger
+    local: resource-cloudbuild-trigger
+    remote: resource-cloudbuild-trigger
+    command: ""
+    group: cloudbuild
+    resource: cloudbuildtrigger
+    controller: terraform-v1beta1
+    skip: false
+    kind: CloudBuildTrigger
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: compute-computesharedvpcserviceproject
+    local: resource-compute-computesharedvpcserviceproject
+    remote: resource-compute-computesharedvpcserviceproject
+    command: gcloud compute shared-vpc associated-projects
+    group: compute
+    resource: computesharedvpcserviceproject
+    controller: terraform-v1beta1
+    skip: false
+    kind: ComputeSharedVPCServiceProject
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: storage-bucketaccesscontrol
+    local: resource-storage-bucketaccesscontrol
+    remote: resource-storage-bucketaccesscontrol
+    command: ""
+    group: storage
+    resource: storagebucketaccesscontrol
+    controller: terraform-v1beta1
+    skip: false
+    kind: StorageBucketAccessControl
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: certificatemanager-certificatemapentry
+    local: resource-certificatemanager-certificatemapentry
+    remote: resource-certificatemanager-certificatemapentry
+    command: ""
+    group: certificatemanager
+    resource: certificatemapentry
+    controller: terraform-v1beta1
+    skip: false
+    kind: CertificateManagerCertificateMapEntry
+    package: google.cloud.certificatemanager.v1
+    proto: CertificateMapEntry
+    proto-path: google/cloud/certificatemanager/v1/certificate_manager.proto
+    proto-service: ""
+    proto-msg: google.cloud.certificatemanager.v1.CertificateMapEntry
+    host-name: ""
+    notes:
+      - No gcloud command found
+    apis-enabled: []
+  - name: certificatemanager-certificatemanagercertificate
+    local: resource-certificatemanager-certificatemanagercertificate
+    remote: resource-certificatemanager-certificatemanagercertificate
+    command: ""
+    group: certificatemanager
+    resource: certificatemanagercertificate
+    controller: terraform-v1beta1
+    skip: false
+    kind: CertificateManagerCertificate
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: monitoring-monitoredproject
+    local: resource-monitoring-monitoredproject
+    remote: resource-monitoring-monitoredproject
+    command: ""
+    group: monitoring
+    resource: monitoringmonitoredproject
+    controller: dcl
+    skip: false
+    kind: MonitoringMonitoredProject
+    package: google.monitoring.metricsscope.v1
+    proto: MonitoredProject
+    proto-path: google/monitoring/metricsscope/v1/metrics_scopes.proto
+    proto-service: ""
+    proto-msg: google.monitoring.metricsscope.v1.MonitoredProject
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: compute-computeinstance
+    local: resource-compute-computeinstance
+    remote: resource-compute-computeinstance
+    command: gcloud compute instances
+    group: compute
+    resource: computeinstance
+    controller: terraform-v1beta1
+    skip: false
+    kind: ComputeInstance
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: bigtable-bigtable
+    local: resource-bigtable-bigtable
+    remote: resource-bigtable-bigtable
+    command: ""
+    group: bigtable
+    resource: bigtable
+    controller: terraform-v1beta1
+    skip: false
+    kind: BigtableTable
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: bigtable-appprofile
+    local: resource-bigtable-appprofile
+    remote: resource-bigtable-appprofile
+    command: gcloud bigtable app-profiles
+    group: bigtable
+    resource: bigtableappprofile
+    controller: terraform-v1beta1
+    skip: false
+    kind: BigtableAppProfile
+    package: google.bigtable.admin.v2
+    proto: AppProfile
+    proto-path: google/bigtable/admin/v2/bigtable_instance_admin.proto
+    proto-service: google.bigtable.admin.v2.Bigtable
+    proto-msg: google.bigtable.admin.v2.AppProfile
+    host-name: bigtableadmin.googleapis.com
+    notes:
+      - TF beta
+    apis-enabled: []
+  - name: container-containercluster
+    local: resource-container-containercluster
+    remote: resource-container-containercluster
+    command: gcloud container clusters
+    group: container
+    resource: containercluster
+    controller: terraform-v1beta1
+    skip: false
+    kind: ContainerCluster
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: storage-notification
+    local: resource-storage-notification
+    remote: resource-storage-notification
+    command: ""
+    group: storage
+    resource: storagenotification
+    controller: terraform-v1beta1
+    skip: false
+    kind: StorageNotification
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+  - name: compute-computenetwork
+    local: resource-compute-computenetwork
+    remote: resource-compute-computenetwork
+    command: gcloud compute networks
+    group: compute
+    resource: computenetwork
+    controller: terraform-v1beta1
+    skip: false
+    kind: ComputeNetwork
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+    apis-enabled: []
+branches:
+  - name: spanner-instance
+    local: resource-spanner-instance
+    remote: resource-spanner-instance
+    command: ""
+    group: spanner
+    resource: spannerinstance
+    controller: terraform-v1beta1
+    skip: false
+    kind: SpannerInstance
+    package: google.spanner.admin.instance.v1
+    proto: Instance
+    proto-path: google/spanner/admin/instance/v1/spanner_instance_admin.proto
+    proto-service: ""
+    proto-msg: google.spanner.admin.instance.v1.Instance
+    host-name: ""
+    notes: []
+    apis-enabled: []
