@@ -15,10 +15,10 @@
 package codegen
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"io"
-	"bytes"
 	"regexp"
 	"sort"
 	"strconv"
@@ -225,17 +225,21 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 }
 
 func WriteMessageAsComment(out io.Writer, msg protoreflect.MessageDescriptor, reason string) {
-	fmt.Fprintf(out, "\n/* %s\n", reason)
-	var b bytes.Buffer
-	WriteMessage(&b, msg)
-	out.Write([]byte(strings.ReplaceAll(b.String(), "*/", "* /")))
-	fmt.Fprintf(out, "*/\n")
+	writeSafeComment(out, reason, func(w io.Writer) {
+		WriteMessage(w, msg)
+	})
 }
 
 func WriteObservedStateMessageAsComment(out io.Writer, msgDetails *OutputMessageDetails, reason string) {
+	writeSafeComment(out, reason, func(w io.Writer) {
+		WriteObservedStateMessage(w, msgDetails)
+	})
+}
+
+func writeSafeComment(out io.Writer, reason string, writeFunc func(io.Writer)) {
 	fmt.Fprintf(out, "\n/* %s\n", reason)
 	var b bytes.Buffer
-	WriteObservedStateMessage(&b, msgDetails)
+	writeFunc(&b)
 	out.Write([]byte(strings.ReplaceAll(b.String(), "*/", "* /")))
 	fmt.Fprintf(out, "*/\n")
 }

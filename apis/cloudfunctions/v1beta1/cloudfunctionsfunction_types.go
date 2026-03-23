@@ -15,6 +15,8 @@
 package v1beta1
 
 import (
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vpcaccess/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -36,32 +38,45 @@ type CloudFunctionsFunctionSpec struct {
 	// system will try to use function named "function".
 	// For Node.js this is name of a function exported by the module specified
 	// in source_location.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="EntryPoint is immutable"
 	EntryPoint *string `json:"entryPoint,omitempty"`
 
 	// Environment variables that shall be available during function execution.
 	EnvironmentVariables map[string]string `json:"environmentVariables,omitempty"`
 
 	// Immutable. A source that fires events in response to a condition in another service.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="EventTrigger is immutable"
 	EventTrigger *FunctionEventTrigger `json:"eventTrigger,omitempty"`
 
 	// Immutable. An HTTPS endpoint type of source that can be triggered via URL.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="HTTPSTrigger is immutable"
 	HTTPSTrigger *FunctionHttpsTrigger `json:"httpsTrigger,omitempty"`
 
 	// The ingress settings for the function, controlling what traffic can reach
 	// it. Possible values: INGRESS_SETTINGS_UNSPECIFIED, ALLOW_ALL, ALLOW_INTERNAL_ONLY, ALLOW_INTERNAL_AND_GCLB
+	// +kubebuilder:validation:Enum=INGRESS_SETTINGS_UNSPECIFIED;ALLOW_ALL;ALLOW_INTERNAL_ONLY;ALLOW_INTERNAL_AND_GCLB
 	IngressSettings *string `json:"ingressSettings,omitempty"`
 
 	// The limit on the maximum number of function instances that may coexist at a
 	// given time.
+	// +kubebuilder:validation:Minimum=0
 	MaxInstances *int64 `json:"maxInstances,omitempty"`
 
+	// The limit on the minimum number of function instances that may coexist at a given time.
+	// +kubebuilder:validation:Minimum=0
+	MinInstances *int64 `json:"minInstances,omitempty"`
+
 	// Immutable. The Project that this resource belongs to.
-	ProjectRef FunctionProjectRef `json:"projectRef"`
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ProjectRef is immutable"
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
 
 	// Immutable. The name of the Cloud Functions region of the function.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Region is immutable"
 	Region string `json:"region"`
 
 	// Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of metadata.name is used as the default.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID is immutable"
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// The runtime in which to run the function. Required when deploying a new
@@ -72,24 +87,86 @@ type CloudFunctionsFunctionSpec struct {
 	Runtime string `json:"runtime"`
 
 	// Immutable.
-	ServiceAccountRef *FunctionServiceAccountRef `json:"serviceAccountRef,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ServiceAccountRef is immutable"
+	ServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
 
 	// Immutable. The Google Cloud Storage URL, starting with gs://, pointing to the zip archive which contains the function.
+	// +kubebuilder:validation:Pattern="^gs://.*"
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="SourceArchiveURL is immutable"
 	SourceArchiveURL *string `json:"sourceArchiveUrl,omitempty"`
 
 	// Immutable. Represents parameters related to source repository where a function is hosted.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="SourceRepository is immutable"
 	SourceRepository *FunctionSourceRepository `json:"sourceRepository,omitempty"`
 
 	// The function execution timeout. Execution is considered failed and
 	// can be terminated if the function is not completed at the end of the
 	// timeout period. Defaults to 60 seconds.
+	// +kubebuilder:validation:Pattern="^[0-9]+s$"
 	Timeout *string `json:"timeout,omitempty"`
 
 	// The egress settings for the connector, controlling what traffic is diverted
 	// through it. Possible values: VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED, PRIVATE_RANGES_ONLY, ALL_TRAFFIC
+	// +kubebuilder:validation:Enum=VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED;PRIVATE_RANGES_ONLY;ALL_TRAFFIC
 	VPCConnectorEgressSettings *string `json:"vpcConnectorEgressSettings,omitempty"`
 
-	VPCConnectorRef *FunctionVpcConnectorRef `json:"vpcConnectorRef,omitempty"`
+	VPCConnectorRef *vpcaccessv1beta1.VPCAccessConnectorRef `json:"vpcConnectorRef,omitempty"`
+
+	// Secret environment variables shall be available during function execution.
+	SecretEnvironmentVariables []FunctionSecretEnvironmentVariable `json:"secretEnvironmentVariables,omitempty"`
+
+	// Secret volumes shall be available during function execution.
+	SecretVolumes []FunctionSecretVolume `json:"secretVolumes,omitempty"`
+
+	// Immutable. Resource name of a KMS crypto key (managed by the user) used to encrypt/decrypt function resources.
+	// It must match the pattern projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="KMSKeyRef is immutable"
+	KMSKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+
+	// Name of the Cloud Build Custom Worker Pool that should be used to build the function.
+	BuildWorkerPool *string `json:"buildWorkerPool,omitempty"`
+
+	// User managed repository created in Artifact Registry optionally with a customer managed encryption key.
+	DockerRepository *string `json:"dockerRepository,omitempty"`
+
+	// The email of the service account for this function's build.
+	BuildServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:"buildServiceAccountRef,omitempty"`
+}
+
+type FunctionSecretEnvironmentVariable struct {
+	// Name of the environment variable.
+	Key string `json:"key"`
+
+	// Project identifier (project id or project number) of the project that contains the secret. If not set, it will be populated with the function's project, assuming that the secret exists in the same project as of the function.
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
+
+	// Name of the secret in secret manager.
+	Secret string `json:"secret"`
+
+	// Version of the secret (version number or the string 'latest'). It is recommended to use a numeric version for reproducible builds as the value of latest can change.
+	Version string `json:"version"`
+}
+
+type FunctionSecretVolume struct {
+	// The path within the container to mount the secret volume. For example, /etc/secret.
+	MountPath string `json:"mountPath"`
+
+	// Project identifier (project id or project number) of the project that contains the secret. If not set, it will be populated with the function's project, assuming that the secret exists in the same project as of the function.
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
+
+	// Name of the secret in secret manager.
+	Secret string `json:"secret"`
+
+	// List of secret versions to mount for this secret and the corresponding path relative to mount_path.
+	Versions []FunctionSecretVolumeVersion `json:"versions,omitempty"`
+}
+
+type FunctionSecretVolumeVersion struct {
+	// Relative path of the file under the mount path where the secret value will be placed. For example, /secret_file.
+	Path string `json:"path"`
+
+	// Version of the secret (version number or the string 'latest'). It is recommended to use a numeric version for reproducible builds as the value of latest can change.
+	Version string `json:"version"`
 }
 
 // +kcc:proto=google.cloud.functions.v1.EventTrigger
@@ -108,9 +185,11 @@ type FunctionEventTrigger struct {
 	// 3. action: The action that generates the event. For example, action for
 	//    a Google Cloud Storage Object is 'change'.
 	// These parts are lower case.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="EventType is immutable"
 	EventType string `json:"eventType"`
 
 	// Immutable. Specifies policy for failed executions.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="FailurePolicy is immutable"
 	FailurePolicy *bool `json:"failurePolicy,omitempty"`
 
 	// Immutable.
@@ -121,9 +200,11 @@ type FunctionEventTrigger struct {
 	// If no string is provided, the default service implementing the API will
 	// be used. For example, storage.googleapis.com is the default for all
 	// event types in the google.storage namespace.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Service is immutable"
 	Service *string `json:"service,omitempty"`
 }
 
+// +kubebuilder:validation:XValidation:rule="(!has(self.name) || self.name == ”) || (has(self.kind) && self.kind != ”)",message="kind is required if name is populated"
 type FunctionResourceRef struct {
 	// Required. The resource(s) from which to observe events, for example,
 	// projects/_/buckets/myBucket.
@@ -151,6 +232,7 @@ type FunctionResourceRef struct {
 	External string `json:"external,omitempty"`
 
 	// Kind of the referent. Allowed values: StorageBucket,PubSubTopic
+	// +kubebuilder:validation:Enum=StorageBucket;PubSubTopic
 	Kind string `json:"kind,omitempty"`
 
 	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
@@ -163,34 +245,8 @@ type FunctionResourceRef struct {
 // +kcc:proto=google.cloud.functions.v1.HttpsTrigger
 type FunctionHttpsTrigger struct {
 	// Immutable. Both HTTP and HTTPS requests with URLs that match the handler succeed without redirects. The application can examine the request to determine which protocol was used and respond accordingly. Possible values: SECURITY_LEVEL_UNSPECIFIED, SECURE_ALWAYS, SECURE_OPTIONAL
+	// +kubebuilder:validation:Enum=SECURITY_LEVEL_UNSPECIFIED;SECURE_ALWAYS;SECURE_OPTIONAL
 	SecurityLevel *string `json:"securityLevel,omitempty"`
-}
-
-type FunctionProjectRef struct {
-	// The project id of the function.
-	//
-	// Allowed value: The Google Cloud resource name of a Project resource (format: projects/{{name}}).
-	External string `json:"external,omitempty"`
-
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
-}
-
-type FunctionServiceAccountRef struct {
-	// The email of the function's service account. If empty, defaults to
-	// {project_id}@appspot.gserviceaccount.com.
-	//
-	// Allowed value: The email field of an IAMServiceAccount resource.
-	External string `json:"external,omitempty"`
-
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
 }
 
 // +kcc:proto=google.cloud.functions.v1.SourceRepository
@@ -209,22 +265,6 @@ type FunctionSourceRepository struct {
 	//
 	// You may omit paths/* if you want to use the main directory.
 	URL string `json:"url"`
-}
-
-type FunctionVpcConnectorRef struct {
-	// The VPC Network Connector that this cloud function can connect to. It can
-	// be either the fully-qualified URI, or the short name of the network
-	// connector resource. The format of this field is
-	// projects/*/locations/*/connectors/*
-	//
-	// Allowed value: The Google Cloud resource name of a VPCAccessConnector resource (format: projects/{{project}}/locations/{{location}}/connectors/{{name}}).
-	External string `json:"external,omitempty"`
-
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
 }
 
 // CloudFunctionsFunctionStatus defines the config connector machine state of CloudFunctionsFunction

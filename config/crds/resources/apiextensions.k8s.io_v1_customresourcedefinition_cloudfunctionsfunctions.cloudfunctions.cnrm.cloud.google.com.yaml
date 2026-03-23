@@ -69,8 +69,44 @@ spec:
                   is 256MB. Allowed values are: 128MB, 256MB, 512MB, 1024MB, and 2048MB.'
                 format: int64
                 type: integer
+              buildServiceAccountRef:
+                description: The email of the service account for this function's
+                  build.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `email` field of an `IAMServiceAccount` resource.
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              buildWorkerPool:
+                description: Name of the Cloud Build Custom Worker Pool that should
+                  be used to build the function.
+                type: string
               description:
                 description: User-provided description of a function.
+                type: string
+              dockerRepository:
+                description: User managed repository created in Artifact Registry
+                  optionally with a customer managed encryption key.
                 type: string
               entryPoint:
                 description: Immutable. The name of the function (as defined in source
@@ -80,6 +116,9 @@ spec:
                   "function". For Node.js this is name of a function exported by the
                   module specified in source_location.
                 type: string
+                x-kubernetes-validations:
+                - message: EntryPoint is immutable
+                  rule: self == oldSelf
               environmentVariables:
                 additionalProperties:
                   type: string
@@ -107,9 +146,15 @@ spec:
                          a Google Cloud Storage Object is 'change'.
                       These parts are lower case.
                     type: string
+                    x-kubernetes-validations:
+                    - message: EventType is immutable
+                      rule: self == oldSelf
                   failurePolicy:
                     description: Immutable. Specifies policy for failed executions.
                     type: boolean
+                    x-kubernetes-validations:
+                    - message: FailurePolicy is immutable
+                      rule: self == oldSelf
                   resourceRef:
                     description: Immutable.
                     oneOf:
@@ -155,6 +200,9 @@ spec:
                         type: string
                       kind:
                         description: 'Kind of the referent. Allowed values: StorageBucket,PubSubTopic'
+                        enum:
+                        - StorageBucket
+                        - PubSubTopic
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -163,6 +211,10 @@ spec:
                         description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                         type: string
                     type: object
+                    x-kubernetes-validations:
+                    - message: kind is required if name is populated
+                      rule: (!has(self.name) || self.name == '') || (has(self.kind)
+                        && self.kind != '')
                   service:
                     description: |-
                       Immutable. The hostname of the service that should be observed.
@@ -171,10 +223,16 @@ spec:
                       be used. For example, storage.googleapis.com is the default for all
                       event types in the google.storage namespace.
                     type: string
+                    x-kubernetes-validations:
+                    - message: Service is immutable
+                      rule: self == oldSelf
                 required:
                 - eventType
                 - resourceRef
                 type: object
+                x-kubernetes-validations:
+                - message: EventTrigger is immutable
+                  rule: self == oldSelf
               httpsTrigger:
                 description: Immutable. An HTTPS endpoint type of source that can
                   be triggered via URL.
@@ -185,17 +243,69 @@ spec:
                       can examine the request to determine which protocol was used
                       and respond accordingly. Possible values: SECURITY_LEVEL_UNSPECIFIED,
                       SECURE_ALWAYS, SECURE_OPTIONAL'
+                    enum:
+                    - SECURITY_LEVEL_UNSPECIFIED
+                    - SECURE_ALWAYS
+                    - SECURE_OPTIONAL
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: HTTPSTrigger is immutable
+                  rule: self == oldSelf
               ingressSettings:
                 description: 'The ingress settings for the function, controlling what
                   traffic can reach it. Possible values: INGRESS_SETTINGS_UNSPECIFIED,
                   ALLOW_ALL, ALLOW_INTERNAL_ONLY, ALLOW_INTERNAL_AND_GCLB'
+                enum:
+                - INGRESS_SETTINGS_UNSPECIFIED
+                - ALLOW_ALL
+                - ALLOW_INTERNAL_ONLY
+                - ALLOW_INTERNAL_AND_GCLB
                 type: string
+              kmsKeyRef:
+                description: Immutable. Resource name of a KMS crypto key (managed
+                  by the user) used to encrypt/decrypt function resources. It must
+                  match the pattern projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed KMSCryptoKey.
+                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    type: string
+                  name:
+                    description: The `name` of a `KMSCryptoKey` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    type: string
+                type: object
+                x-kubernetes-validations:
+                - message: KMSKeyRef is immutable
+                  rule: self == oldSelf
               maxInstances:
                 description: The limit on the maximum number of function instances
                   that may coexist at a given time.
                 format: int64
+                minimum: 0
+                type: integer
+              minInstances:
+                description: The limit on the minimum number of function instances
+                  that may coexist at a given time.
+                format: int64
+                minimum: 0
                 type: integer
               projectRef:
                 description: Immutable. The Project that this resource belongs to.
@@ -215,33 +325,173 @@ spec:
                   - external
                 properties:
                   external:
-                    description: |-
-                      The project id of the function.
-
-                      Allowed value: The Google Cloud resource name of a Project resource (format: projects/{{name}}).
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: ProjectRef is immutable
+                  rule: self == oldSelf
               region:
                 description: Immutable. The name of the Cloud Functions region of
                   the function.
                 type: string
+                x-kubernetes-validations:
+                - message: Region is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: Immutable. Optional. The name of the resource. Used for
                   creation and acquisition. When unset, the value of metadata.name
                   is used as the default.
                 type: string
+                x-kubernetes-validations:
+                - message: ResourceID is immutable
+                  rule: self == oldSelf
               runtime:
                 description: The runtime in which to run the function. Required when
                   deploying a new function, optional when updating an existing function.
                   For a complete list of possible choices, see the gcloud command
                   reference (/sdk/gcloud/reference/functions/deploy#--runtime).
                 type: string
+              secretEnvironmentVariables:
+                description: Secret environment variables shall be available during
+                  function execution.
+                items:
+                  properties:
+                    key:
+                      description: Name of the environment variable.
+                      type: string
+                    projectRef:
+                      description: Project identifier (project id or project number)
+                        of the project that contains the secret. If not set, it will
+                        be populated with the function's project, assuming that the
+                        secret exists in the same project as of the function.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: The `projectID` field of a project, when not
+                            managed by Config Connector.
+                          type: string
+                        kind:
+                          description: The kind of the Project resource; optional
+                            but must be `Project` if provided.
+                          type: string
+                        name:
+                          description: The `name` field of a `Project` resource.
+                          type: string
+                        namespace:
+                          description: The `namespace` field of a `Project` resource.
+                          type: string
+                      type: object
+                    secret:
+                      description: Name of the secret in secret manager.
+                      type: string
+                    version:
+                      description: Version of the secret (version number or the string
+                        'latest'). It is recommended to use a numeric version for
+                        reproducible builds as the value of latest can change.
+                      type: string
+                  required:
+                  - key
+                  - secret
+                  - version
+                  type: object
+                type: array
+              secretVolumes:
+                description: Secret volumes shall be available during function execution.
+                items:
+                  properties:
+                    mountPath:
+                      description: The path within the container to mount the secret
+                        volume. For example, /etc/secret.
+                      type: string
+                    projectRef:
+                      description: Project identifier (project id or project number)
+                        of the project that contains the secret. If not set, it will
+                        be populated with the function's project, assuming that the
+                        secret exists in the same project as of the function.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: The `projectID` field of a project, when not
+                            managed by Config Connector.
+                          type: string
+                        kind:
+                          description: The kind of the Project resource; optional
+                            but must be `Project` if provided.
+                          type: string
+                        name:
+                          description: The `name` field of a `Project` resource.
+                          type: string
+                        namespace:
+                          description: The `namespace` field of a `Project` resource.
+                          type: string
+                      type: object
+                    secret:
+                      description: Name of the secret in secret manager.
+                      type: string
+                    versions:
+                      description: List of secret versions to mount for this secret
+                        and the corresponding path relative to mount_path.
+                      items:
+                        properties:
+                          path:
+                            description: Relative path of the file under the mount
+                              path where the secret value will be placed. For example,
+                              /secret_file.
+                            type: string
+                          version:
+                            description: Version of the secret (version number or
+                              the string 'latest'). It is recommended to use a numeric
+                              version for reproducible builds as the value of latest
+                              can change.
+                            type: string
+                        required:
+                        - path
+                        - version
+                        type: object
+                      type: array
+                  required:
+                  - mountPath
+                  - secret
+                  type: object
+                type: array
               serviceAccountRef:
                 description: Immutable.
                 oneOf:
@@ -260,11 +510,7 @@ spec:
                   - external
                 properties:
                   external:
-                    description: |-
-                      The email of the function's service account. If empty, defaults to
-                      {project_id}@appspot.gserviceaccount.com.
-
-                      Allowed value: The email field of an IAMServiceAccount resource.
+                    description: The `email` field of an `IAMServiceAccount` resource.
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -273,10 +519,17 @@ spec:
                     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: ServiceAccountRef is immutable
+                  rule: self == oldSelf
               sourceArchiveUrl:
                 description: Immutable. The Google Cloud Storage URL, starting with
                   gs://, pointing to the zip archive which contains the function.
+                pattern: ^gs://.*
                 type: string
+                x-kubernetes-validations:
+                - message: SourceArchiveURL is immutable
+                  rule: self == oldSelf
               sourceRepository:
                 description: Immutable. Represents parameters related to source repository
                   where a function is hosted.
@@ -300,17 +553,28 @@ spec:
                 required:
                 - url
                 type: object
+                x-kubernetes-validations:
+                - message: SourceRepository is immutable
+                  rule: self == oldSelf
               timeout:
                 description: The function execution timeout. Execution is considered
                   failed and can be terminated if the function is not completed at
                   the end of the timeout period. Defaults to 60 seconds.
+                pattern: ^[0-9]+s$
                 type: string
               vpcConnectorEgressSettings:
                 description: 'The egress settings for the connector, controlling what
                   traffic is diverted through it. Possible values: VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED,
                   PRIVATE_RANGES_ONLY, ALL_TRAFFIC'
+                enum:
+                - VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED
+                - PRIVATE_RANGES_ONLY
+                - ALL_TRAFFIC
                 type: string
               vpcConnectorRef:
+                description: VPCAccessConnectorRef defines the resource reference
+                  to VPCAccessConnector, which "External" field holds the GCP identifier
+                  for the KRM object.
                 oneOf:
                 - not:
                     required:
@@ -327,19 +591,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: |-
-                      The VPC Network Connector that this cloud function can connect to. It can
-                      be either the fully-qualified URI, or the short name of the network
-                      connector resource. The format of this field is
-                      projects/*/locations/*/connectors/*
-
-                      Allowed value: The Google Cloud resource name of a VPCAccessConnector resource (format: projects/{{project}}/locations/{{location}}/connectors/{{name}}).
+                    description: A reference to an externally managed VPCAccessConnector
+                      resource. Should be in the format `projects/{project_id}/locations/{location}/connectors/{connector_id}`
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The name of a VPCAccessConnector resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The namespace of a VPCAccessConnector resource.
                     type: string
                 type: object
             required:

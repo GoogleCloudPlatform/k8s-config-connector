@@ -23,6 +23,8 @@ package cloudfunctions
 import (
 	pb "cloud.google.com/go/functions/apiv1/functionspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudfunctions/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vpcaccess/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -47,7 +49,7 @@ func CloudFunctionsFunctionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Clou
 		out.AvailableMemoryMb = &v
 	}
 	if in.GetServiceAccountEmail() != "" {
-		out.ServiceAccountRef = &krm.FunctionServiceAccountRef{External: in.GetServiceAccountEmail()}
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccountEmail()}
 	}
 	// MISSING: UpdateTime
 	// MISSING: VersionID
@@ -59,24 +61,31 @@ func CloudFunctionsFunctionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Clou
 		v := int64(val)
 		out.MaxInstances = &v
 	}
-	// MISSING: MinInstances
+	if val := in.GetMinInstances(); val != 0 {
+		v := int64(val)
+		out.MinInstances = &v
+	}
 	if in.GetVpcConnector() != "" {
-		out.VPCConnectorRef = &krm.FunctionVpcConnectorRef{External: in.GetVpcConnector()}
+		out.VPCConnectorRef = &vpcaccessv1beta1.VPCAccessConnectorRef{External: in.GetVpcConnector()}
 	}
 	out.VPCConnectorEgressSettings = direct.Enum_FromProto(mapCtx, in.GetVpcConnectorEgressSettings())
 	out.IngressSettings = direct.Enum_FromProto(mapCtx, in.GetIngressSettings())
-	// MISSING: KMSKeyName
-	// MISSING: BuildWorkerPool
+	if in.GetKmsKeyName() != "" {
+		out.KMSKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+	}
+	out.BuildWorkerPool = direct.LazyPtr(in.GetBuildWorkerPool())
 	// MISSING: BuildID
 	// MISSING: BuildName
-	// MISSING: SecretEnvironmentVariables
-	// MISSING: SecretVolumes
+	out.SecretEnvironmentVariables = direct.Slice_FromProto(mapCtx, in.GetSecretEnvironmentVariables(), FunctionSecretEnvironmentVariable_FromProto)
+	out.SecretVolumes = direct.Slice_FromProto(mapCtx, in.GetSecretVolumes(), FunctionSecretVolume_FromProto)
 	// MISSING: SourceToken
-	// MISSING: DockerRepository
+	out.DockerRepository = direct.LazyPtr(in.GetDockerRepository())
 	// MISSING: DockerRegistry
 	// MISSING: AutomaticUpdatePolicy
 	// MISSING: OnDeployUpdatePolicy
-	// MISSING: BuildServiceAccount
+	if in.GetBuildServiceAccount() != "" {
+		out.BuildServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetBuildServiceAccount()}
+	}
 	return out
 }
 func CloudFunctionsFunctionSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudFunctionsFunctionSpec) *pb.CloudFunction {
@@ -118,24 +127,30 @@ func CloudFunctionsFunctionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Cloud
 	if in.MaxInstances != nil {
 		out.MaxInstances = int32(*in.MaxInstances)
 	}
-	// MISSING: MinInstances
+	if in.MinInstances != nil {
+		out.MinInstances = int32(*in.MinInstances)
+	}
 	if in.VPCConnectorRef != nil {
 		out.VpcConnector = in.VPCConnectorRef.External
 	}
 	out.VpcConnectorEgressSettings = direct.Enum_ToProto[pb.CloudFunction_VpcConnectorEgressSettings](mapCtx, in.VPCConnectorEgressSettings)
 	out.IngressSettings = direct.Enum_ToProto[pb.CloudFunction_IngressSettings](mapCtx, in.IngressSettings)
-	// MISSING: KMSKeyName
-	// MISSING: BuildWorkerPool
+	if in.KMSKeyRef != nil {
+		out.KmsKeyName = in.KMSKeyRef.External
+	}
+	out.BuildWorkerPool = direct.ValueOf(in.BuildWorkerPool)
 	// MISSING: BuildID
 	// MISSING: BuildName
-	// MISSING: SecretEnvironmentVariables
-	// MISSING: SecretVolumes
+	out.SecretEnvironmentVariables = direct.Slice_ToProto(mapCtx, in.SecretEnvironmentVariables, FunctionSecretEnvironmentVariable_ToProto)
+	out.SecretVolumes = direct.Slice_ToProto(mapCtx, in.SecretVolumes, FunctionSecretVolume_ToProto)
 	// MISSING: SourceToken
-	// MISSING: DockerRepository
+	out.DockerRepository = direct.ValueOf(in.DockerRepository)
 	// MISSING: DockerRegistry
 	// MISSING: AutomaticUpdatePolicy
 	// MISSING: OnDeployUpdatePolicy
-	// MISSING: BuildServiceAccount
+	if in.BuildServiceAccountRef != nil {
+		out.BuildServiceAccount = in.BuildServiceAccountRef.External
+	}
 	return out
 }
 func CloudFunctionsFunctionSpec_SourceArchiveUrl_ToProto(mapCtx *direct.MapContext, in *string) *pb.CloudFunction_SourceArchiveUrl {
@@ -339,5 +354,81 @@ func FunctionSourceRepositoryStatus_ToProto(mapCtx *direct.MapContext, in *krm.F
 	out := &pb.SourceRepository{}
 	// MISSING: URL
 	out.DeployedUrl = direct.ValueOf(in.DeployedURL)
+	return out
+}
+
+func FunctionSecretEnvironmentVariable_FromProto(mapCtx *direct.MapContext, in *pb.SecretEnvVar) *krm.FunctionSecretEnvironmentVariable {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FunctionSecretEnvironmentVariable{}
+	out.Key = in.GetKey()
+	if in.GetProjectId() != "" {
+		out.ProjectRef = &refsv1beta1.ProjectRef{External: in.GetProjectId()}
+	}
+	out.Secret = in.GetSecret()
+	out.Version = in.GetVersion()
+	return out
+}
+
+func FunctionSecretEnvironmentVariable_ToProto(mapCtx *direct.MapContext, in *krm.FunctionSecretEnvironmentVariable) *pb.SecretEnvVar {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecretEnvVar{}
+	out.Key = in.Key
+	if in.ProjectRef != nil {
+		out.ProjectId = in.ProjectRef.External
+	}
+	out.Secret = in.Secret
+	out.Version = in.Version
+	return out
+}
+
+func FunctionSecretVolume_FromProto(mapCtx *direct.MapContext, in *pb.SecretVolume) *krm.FunctionSecretVolume {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FunctionSecretVolume{}
+	out.MountPath = in.GetMountPath()
+	if in.GetProjectId() != "" {
+		out.ProjectRef = &refsv1beta1.ProjectRef{External: in.GetProjectId()}
+	}
+	out.Secret = in.GetSecret()
+	out.Versions = direct.Slice_FromProto(mapCtx, in.GetVersions(), FunctionSecretVolumeVersion_FromProto)
+	return out
+}
+
+func FunctionSecretVolume_ToProto(mapCtx *direct.MapContext, in *krm.FunctionSecretVolume) *pb.SecretVolume {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecretVolume{}
+	out.MountPath = in.MountPath
+	if in.ProjectRef != nil {
+		out.ProjectId = in.ProjectRef.External
+	}
+	out.Secret = in.Secret
+	out.Versions = direct.Slice_ToProto(mapCtx, in.Versions, FunctionSecretVolumeVersion_ToProto)
+	return out
+}
+
+func FunctionSecretVolumeVersion_FromProto(mapCtx *direct.MapContext, in *pb.SecretVolume_SecretVersion) *krm.FunctionSecretVolumeVersion {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FunctionSecretVolumeVersion{}
+	out.Path = in.GetPath()
+	out.Version = in.GetVersion()
+	return out
+}
+
+func FunctionSecretVolumeVersion_ToProto(mapCtx *direct.MapContext, in *krm.FunctionSecretVolumeVersion) *pb.SecretVolume_SecretVersion {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecretVolume_SecretVersion{}
+	out.Path = in.Path
+	out.Version = in.Version
 	return out
 }
