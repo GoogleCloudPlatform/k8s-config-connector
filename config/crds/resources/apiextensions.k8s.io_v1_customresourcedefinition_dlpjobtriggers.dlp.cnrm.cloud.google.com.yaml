@@ -392,6 +392,7 @@ spec:
                             email goes to IAM project owners and technical [Essential
                             Contacts](https://cloud.google.com/resource-manager/docs/managing-notification-contacts).
                           type: object
+                          x-kubernetes-preserve-unknown-fields: true
                         pubSub:
                           description: Publish a notification to a Pub/Sub topic.
                           properties:

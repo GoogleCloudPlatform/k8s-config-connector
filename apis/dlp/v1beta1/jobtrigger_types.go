@@ -170,6 +170,7 @@ type BigQueryTable struct {
 	TableRef *bigqueryv1beta1.BigQueryTableRef `json:"tableRef,omitempty"`
 }
 
+// +kubebuilder:validation:XPreserveUnknownFields
 // +kcc:proto=google.privacy.dlp.v2.Action.JobNotificationEmails
 type Action_JobNotificationEmails struct {
 }
