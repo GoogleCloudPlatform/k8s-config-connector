@@ -109,6 +109,13 @@ func (in *CloudFunctionsFunctionSpec) DeepCopyInto(out *CloudFunctionsFunctionSp
 			(*out)[key] = val
 		}
 	}
+	if in.BuildEnvironmentVariables != nil {
+		in, out := &in.BuildEnvironmentVariables, &out.BuildEnvironmentVariables
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
+	}
 	if in.EventTrigger != nil {
 		in, out := &in.EventTrigger, &out.EventTrigger
 		*out = new(FunctionEventTrigger)

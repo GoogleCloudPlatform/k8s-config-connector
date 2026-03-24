@@ -69,6 +69,12 @@ spec:
                   is 256MB. Allowed values are: 128MB, 256MB, 512MB, 1024MB, and 2048MB.'
                 format: int64
                 type: integer
+              buildEnvironmentVariables:
+                additionalProperties:
+                  type: string
+                description: Build environment variables that shall be available during
+                  build time.
+                type: object
               buildServiceAccountRef:
                 description: The email of the service account for this function's
                   build.
@@ -602,7 +608,6 @@ spec:
                     type: string
                 type: object
             required:
-            - projectRef
             - region
             - runtime
             type: object

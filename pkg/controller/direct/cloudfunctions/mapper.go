@@ -55,7 +55,7 @@ func CloudFunctionsFunctionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Clou
 	// MISSING: VersionID
 	// MISSING: Labels
 	out.EnvironmentVariables = in.EnvironmentVariables
-	// MISSING: BuildEnvironmentVariables
+	out.BuildEnvironmentVariables = in.BuildEnvironmentVariables
 	// MISSING: Network
 	if val := in.GetMaxInstances(); val != 0 {
 		v := int64(val)
@@ -116,13 +116,17 @@ func CloudFunctionsFunctionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Cloud
 		out.AvailableMemoryMb = int32(*in.AvailableMemoryMb)
 	}
 	if in.ServiceAccountRef != nil {
-		out.ServiceAccountEmail = in.ServiceAccountRef.External
+		if in.ServiceAccountRef.External != "" {
+			out.ServiceAccountEmail = in.ServiceAccountRef.External
+		} else if in.ServiceAccountRef.Name != "" {
+			mapCtx.Errorf("serviceAccountRef.external must be set (reference %q not resolved)", in.ServiceAccountRef.Name)
+		}
 	}
 	// MISSING: UpdateTime
 	// MISSING: VersionID
 	// MISSING: Labels
 	out.EnvironmentVariables = in.EnvironmentVariables
-	// MISSING: BuildEnvironmentVariables
+	out.BuildEnvironmentVariables = in.BuildEnvironmentVariables
 	// MISSING: Network
 	if in.MaxInstances != nil {
 		out.MaxInstances = int32(*in.MaxInstances)
@@ -131,12 +135,20 @@ func CloudFunctionsFunctionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Cloud
 		out.MinInstances = int32(*in.MinInstances)
 	}
 	if in.VPCConnectorRef != nil {
-		out.VpcConnector = in.VPCConnectorRef.External
+		if in.VPCConnectorRef.External != "" {
+			out.VpcConnector = in.VPCConnectorRef.External
+		} else if in.VPCConnectorRef.Name != "" {
+			mapCtx.Errorf("vpcConnectorRef.external must be set (reference %q not resolved)", in.VPCConnectorRef.Name)
+		}
 	}
 	out.VpcConnectorEgressSettings = direct.Enum_ToProto[pb.CloudFunction_VpcConnectorEgressSettings](mapCtx, in.VPCConnectorEgressSettings)
 	out.IngressSettings = direct.Enum_ToProto[pb.CloudFunction_IngressSettings](mapCtx, in.IngressSettings)
 	if in.KMSKeyRef != nil {
-		out.KmsKeyName = in.KMSKeyRef.External
+		if in.KMSKeyRef.External != "" {
+			out.KmsKeyName = in.KMSKeyRef.External
+		} else if in.KMSKeyRef.Name != "" {
+			mapCtx.Errorf("kmsKeyRef.external must be set (reference %q not resolved)", in.KMSKeyRef.Name)
+		}
 	}
 	out.BuildWorkerPool = direct.ValueOf(in.BuildWorkerPool)
 	// MISSING: BuildID
@@ -149,7 +161,11 @@ func CloudFunctionsFunctionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Cloud
 	// MISSING: AutomaticUpdatePolicy
 	// MISSING: OnDeployUpdatePolicy
 	if in.BuildServiceAccountRef != nil {
-		out.BuildServiceAccount = in.BuildServiceAccountRef.External
+		if in.BuildServiceAccountRef.External != "" {
+			out.BuildServiceAccount = in.BuildServiceAccountRef.External
+		} else if in.BuildServiceAccountRef.Name != "" {
+			mapCtx.Errorf("buildServiceAccountRef.external must be set (reference %q not resolved)", in.BuildServiceAccountRef.Name)
+		}
 	}
 	return out
 }
@@ -273,6 +289,8 @@ func FunctionEventTrigger_ToProto(mapCtx *direct.MapContext, in *krm.FunctionEve
 	out.EventType = in.EventType
 	if in.ResourceRef.External != "" {
 		out.Resource = in.ResourceRef.External
+	} else if in.ResourceRef.Name != "" {
+		mapCtx.Errorf("resourceRef.external must be set (reference %q not resolved)", in.ResourceRef.Name)
 	}
 	out.Service = direct.ValueOf(in.Service)
 	if in.FailurePolicy != nil && *in.FailurePolicy {
@@ -378,7 +396,11 @@ func FunctionSecretEnvironmentVariable_ToProto(mapCtx *direct.MapContext, in *kr
 	out := &pb.SecretEnvVar{}
 	out.Key = in.Key
 	if in.ProjectRef != nil {
-		out.ProjectId = in.ProjectRef.External
+		if in.ProjectRef.External != "" {
+			out.ProjectId = in.ProjectRef.External
+		} else if in.ProjectRef.Name != "" {
+			mapCtx.Errorf("projectRef.external must be set (reference %q not resolved)", in.ProjectRef.Name)
+		}
 	}
 	out.Secret = in.Secret
 	out.Version = in.Version
@@ -406,7 +428,11 @@ func FunctionSecretVolume_ToProto(mapCtx *direct.MapContext, in *krm.FunctionSec
 	out := &pb.SecretVolume{}
 	out.MountPath = in.MountPath
 	if in.ProjectRef != nil {
-		out.ProjectId = in.ProjectRef.External
+		if in.ProjectRef.External != "" {
+			out.ProjectId = in.ProjectRef.External
+		} else if in.ProjectRef.Name != "" {
+			mapCtx.Errorf("projectRef.external must be set (reference %q not resolved)", in.ProjectRef.Name)
+		}
 	}
 	out.Secret = in.Secret
 	out.Versions = direct.Slice_ToProto(mapCtx, in.Versions, FunctionSecretVolumeVersion_ToProto)

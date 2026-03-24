@@ -44,6 +44,9 @@ type CloudFunctionsFunctionSpec struct {
 	// Environment variables that shall be available during function execution.
 	EnvironmentVariables map[string]string `json:"environmentVariables,omitempty"`
 
+	// Build environment variables that shall be available during build time.
+	BuildEnvironmentVariables map[string]string `json:"buildEnvironmentVariables,omitempty"`
+
 	// Immutable. A source that fires events in response to a condition in another service.
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="EventTrigger is immutable"
 	EventTrigger *FunctionEventTrigger `json:"eventTrigger,omitempty"`
@@ -67,7 +70,6 @@ type CloudFunctionsFunctionSpec struct {
 	MinInstances *int64 `json:"minInstances,omitempty"`
 
 	// Immutable. The Project that this resource belongs to.
-	// +required
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ProjectRef is immutable"
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
 
