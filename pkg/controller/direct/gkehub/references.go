@@ -110,16 +110,16 @@ func resolveFeatureRef(ctx context.Context, reader client.Reader, obj *krm.GKEHu
 }
 
 func resolveScopeRef(ctx context.Context, reader client.Reader, obj *krm.GKEHubNamespace, projectID string) (*Scope, error) {
-	ref := &obj.Spec.ScopeRef
+	ref := obj.Spec.ScopeRef
 	if err := ref.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 		return nil, err
 	}
 
-	return &Scope{id: ref.External}, nil
+	return &Scope{id: *ref.External}, nil
 }
 
-func resolveProjectID(ctx context.Context, reader client.Reader, namespace string, projectRef refs.ProjectRef) (string, error) {
-	project, err := refs.ResolveProject(ctx, reader, namespace, &projectRef)
+func resolveProjectID(ctx context.Context, reader client.Reader, namespace string, projectRef *refs.ProjectRef) (string, error) {
+	project, err := refs.ResolveProject(ctx, reader, namespace, projectRef)
 	if err != nil {
 		return "", err
 	}

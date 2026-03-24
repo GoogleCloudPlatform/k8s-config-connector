@@ -16,7 +16,7 @@ package v1beta1
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	k8s "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -27,7 +27,7 @@ type GKEHubNamespaceSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* The Scope that this resource belongs to. */
-	ScopeRef GKEHubScopeRef `json:"scopeRef"`
+	ScopeRef *GKEHubScopeRef `json:"scopeRef"`
 
 	/* Optional. Labels for this Namespace. */
 	// +optional
@@ -42,13 +42,13 @@ type GKEHubNamespaceSpec struct {
 	Location *string `json:"location,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef refs.ProjectRef `json:"projectRef"`
+	ProjectRef *refs.ProjectRef `json:"projectRef"`
 }
 
 type GKEHubNamespaceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   GKEHubNamespace's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8s.Condition `json:"conditions,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional

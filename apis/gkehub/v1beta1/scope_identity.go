@@ -15,7 +15,12 @@
 package v1beta1
 
 import (
+	"context"
 	"fmt"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 )
@@ -76,4 +81,50 @@ func (i *GKEHubScopeIdentity) DefaultLocationState(location string) {
 	if i.Location == "" {
 		i.Location = location
 	}
+}
+
+var _ identity.Identity = &GKEHubScopeIdentity{}
+var _ identity.Resource = &GKEHubScope{}
+
+func (c *GKEHubScope) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	projectID := ""
+	if c.Spec.ProjectRef != nil {
+		project, err := refs.ResolveProject(ctx, reader, c.GetNamespace(), c.Spec.ProjectRef)
+		if err != nil {
+			return nil, err
+		}
+		if project != nil {
+			projectID = project.ProjectID
+		}
+	}
+	if projectID == "" {
+		return nil, fmt.Errorf("cannot resolve project for GKEHubScope")
+	}
+
+	location := "global"
+	if c.Spec.Location != nil {
+		location = *c.Spec.Location
+	}
+
+	resourceID := ""
+	if c.Spec.ResourceID != nil {
+		resourceID = *c.Spec.ResourceID
+	}
+	if resourceID == "" {
+		resourceID = c.GetName()
+	}
+
+	id := NewGKEHubScopeIdentity(projectID, location, resourceID)
+
+	if c.Status.ExternalRef != nil && *c.Status.ExternalRef != "" {
+		statusID := &GKEHubScopeIdentity{}
+		if err := statusID.FromExternal(*c.Status.ExternalRef); err != nil {
+			return nil, err
+		}
+		if statusID.String() != id.String() {
+			return nil, fmt.Errorf("existing externalRef %q does not match identity resolved from spec %q", *c.Status.ExternalRef, id.String())
+		}
+	}
+
+	return id, nil
 }

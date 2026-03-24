@@ -31,18 +31,29 @@ func (r *GKEHubScopeRef) GetGVK() schema.GroupVersionKind {
 }
 
 func (r *GKEHubScopeRef) GetNamespacedName() types.NamespacedName {
+	name := ""
+	if r.Name != nil {
+		name = *r.Name
+	}
+	namespace := ""
+	if r.Namespace != nil {
+		namespace = *r.Namespace
+	}
 	return types.NamespacedName{
-		Name:      r.Name,
-		Namespace: r.Namespace,
+		Name:      name,
+		Namespace: namespace,
 	}
 }
 
 func (r *GKEHubScopeRef) GetExternal() string {
-	return r.External
+	if r.External != nil {
+		return *r.External
+	}
+	return ""
 }
 
 func (r *GKEHubScopeRef) SetExternal(ref string) {
-	r.External = ref
+	r.External = &ref
 }
 
 func (r *GKEHubScopeRef) ValidateExternal(ref string) error {
