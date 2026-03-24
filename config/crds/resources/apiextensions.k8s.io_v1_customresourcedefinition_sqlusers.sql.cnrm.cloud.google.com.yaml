@@ -16,6 +16,7 @@ spec:
     categories:
     - gcp
     kind: SQLUser
+    listKind: SQLUserList
     plural: sqlusers
     shortNames:
     - gcpsqluser
@@ -43,16 +44,17 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: SQLUser is the Schema for the sql user API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -81,31 +83,20 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `SQLInstance`
-                      resource.'
+                    description: The SQLInstance selfLink, when not managed by Config
+                      Connector.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `SQLInstance` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `SQLInstance` resource.
                     type: string
                 type: object
               password:
-                description: |-
-                  The password for the user. Can be updated. For Postgres instances this is a Required field, unless type is set to
-                                  either CLOUD_IAM_USER or CLOUD_IAM_SERVICE_ACCOUNT.
-                oneOf:
-                - not:
-                    required:
-                    - valueFrom
-                  required:
-                  - value
-                - not:
-                    required:
-                    - value
-                  required:
-                  - valueFrom
+                description: The password for the user. Can be updated. For Postgres
+                  instances this is a Required field, unless type is set to either
+                  CLOUD_IAM_USER or CLOUD_IAM_SERVICE_ACCOUNT.
                 properties:
                   value:
                     description: Value of the field. Cannot be used if 'valueFrom'
@@ -126,8 +117,8 @@ spec:
                             description: Name of the Secret to extract a value from.
                             type: string
                         required:
-                        - name
                         - key
+                        - name
                         type: object
                     type: object
                 type: object
@@ -136,6 +127,7 @@ spec:
                   allowedFailedAttempts:
                     description: Number of failed attempts allowed before the user
                       get locked.
+                    format: int64
                     type: integer
                   enableFailedAttemptsCheck:
                     description: If true, the check that will lock user after too
@@ -169,9 +161,10 @@ spec:
                   is used as the default.
                 type: string
               type:
-                description: |-
-                  Immutable. The user type. It determines the method to authenticate the user during login.
-                                  The default is the database's built-in user type. Flags include "BUILT_IN", "CLOUD_IAM_USER", or "CLOUD_IAM_SERVICE_ACCOUNT".
+                description: Immutable. The user type. It determines the method to
+                  authenticate the user during login. The default is the database's
+                  built-in user type. Flags include "BUILT_IN", "CLOUD_IAM_USER",
+                  or "CLOUD_IAM_SERVICE_ACCOUNT".
                 type: string
             required:
             - instanceRef
@@ -179,8 +172,8 @@ spec:
           status:
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the SQLUser's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -210,6 +203,7 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
               sqlServerUserDetails:
                 items:
@@ -225,16 +219,8 @@ spec:
                   type: object
                 type: array
             type: object
-        required:
-        - spec
         type: object
     served: true
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
