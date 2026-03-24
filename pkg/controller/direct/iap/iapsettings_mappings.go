@@ -49,6 +49,9 @@ func GcipSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GcipSettin
 	}
 	out := &krm.GcipSettings{}
 	out.TenantIDs = in.TenantIds
+	if len(out.TenantIDs) == 0 {
+		out.TenantIDs = nil
+	}
 	out.LoginPageURI = direct.StringValue_FromProto(mapCtx, in.GetLoginPageUri())
 	return out
 }
@@ -59,6 +62,9 @@ func GcipSettings_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GcipSetti
 	}
 	out := &krmv1alpha1.GcipSettings{}
 	out.TenantIDs = in.TenantIds
+	if len(out.TenantIDs) == 0 {
+		out.TenantIDs = nil
+	}
 	out.LoginPageURI = direct.StringValue_FromProto(mapCtx, in.GetLoginPageUri())
 	return out
 }

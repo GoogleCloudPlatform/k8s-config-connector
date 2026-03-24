@@ -31,7 +31,6 @@ import (
 
 type IapV1beta1Interface interface {
 	RESTClient() rest.Interface
-	IAPBrandsGetter
 	IAPIdentityAwareProxyClientsGetter
 	IAPSettingsesGetter
 }
@@ -39,10 +38,6 @@ type IapV1beta1Interface interface {
 // IapV1beta1Client is used to interact with features provided by the iap.cnrm.cloud.google.com group.
 type IapV1beta1Client struct {
 	restClient rest.Interface
-}
-
-func (c *IapV1beta1Client) IAPBrands(namespace string) IAPBrandInterface {
-	return newIAPBrands(c, namespace)
 }
 
 func (c *IapV1beta1Client) IAPIdentityAwareProxyClients(namespace string) IAPIdentityAwareProxyClientInterface {

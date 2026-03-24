@@ -19,18 +19,22 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+// IAPBrandGVK is the GroupVersionKind for the IAPBrand resource.
 var IAPBrandGVK = GroupVersion.WithKind("IAPBrand")
 
 // IAPBrandSpec defines the desired state of IAPBrand
 // +kcc:spec:proto=google.cloud.iap.v1.Brand
 type IAPBrandSpec struct {
 	// Immutable. Application name displayed on OAuth consent screen.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ApplicationTitle is immutable"
 	ApplicationTitle *string `json:"applicationTitle,omitempty"`
 
 	// Immutable. Support email displayed on the OAuth consent screen.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="SupportEmail is immutable"
 	SupportEmail *string `json:"supportEmail,omitempty"`
 
 	// Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID is immutable"
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
@@ -39,9 +43,13 @@ type IAPBrandSpec struct {
 type IAPBrandStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
+	// +listType=map
+	// +listMapKey=type
+	// +optional
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// Output only. Whether the brand is only intended for usage inside the G Suite organization only.
@@ -68,7 +76,8 @@ type IAPBrand struct {
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// +required
-	Spec   IAPBrandSpec   `json:"spec,omitempty"`
+	Spec IAPBrandSpec `json:"spec,omitempty"`
+	// +optional
 	Status IAPBrandStatus `json:"status,omitempty"`
 }
 

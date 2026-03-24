@@ -31,10 +31,6 @@ type FakeIapV1beta1 struct {
 	*testing.Fake
 }
 
-func (c *FakeIapV1beta1) IAPBrands(namespace string) v1beta1.IAPBrandInterface {
-	return &FakeIAPBrands{c, namespace}
-}
-
 func (c *FakeIapV1beta1) IAPIdentityAwareProxyClients(namespace string) v1beta1.IAPIdentityAwareProxyClientInterface {
 	return &FakeIAPIdentityAwareProxyClients{c, namespace}
 }

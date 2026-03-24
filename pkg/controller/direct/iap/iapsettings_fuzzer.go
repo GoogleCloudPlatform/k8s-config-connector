@@ -24,11 +24,29 @@ import (
 
 func init() {
 	fuzztesting.RegisterKRMSpecFuzzer(iapsettingsFuzzer())
+	fuzztesting.RegisterKRMSpecFuzzer(iapsettingsV1Alpha1Fuzzer())
 }
 
 func iapsettingsFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.IapSettings{},
 		IAPSettingsSpec_v1beta1_FromProto, IAPSettingsSpec_v1beta1_ToProto,
+	)
+
+	// Spec fields
+	f.SpecFields.Insert(".access_settings")
+	f.SpecFields.Insert(".application_settings")
+
+	f.IdentityField(".name")
+
+	f.Unimplemented_NotYetTriaged(".access_settings.identity_sources")
+	f.Unimplemented_NotYetTriaged(".access_settings.workforce_identity_settings")
+
+	return f
+}
+
+func iapsettingsV1Alpha1Fuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.IapSettings{},
+		IAPSettingsSpec_v1alpha1_FromProto, IAPSettingsSpec_v1alpha1_ToProto,
 	)
 
 	// Spec fields
