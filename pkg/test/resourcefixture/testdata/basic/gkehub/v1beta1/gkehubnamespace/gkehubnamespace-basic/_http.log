@@ -1,4 +1,4 @@
-GET https://gkehub.googleapis.com/v1beta/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-dep?alt=json&prettyPrint=false
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/scopes/gkehubscope-dep?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
@@ -14,14 +14,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "scope \"projects/${project_id}/locations/global/scopes/gkehubscope-dep\" not found",
+    "message": "scope \"projects/${projectId}/locations/global/scopes/gkehubscope-dep\" not found",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://gkehub.googleapis.com/v1beta/projects/$%7Bproject_id%7D/locations/global/scopes?alt=json&prettyPrint=false&scopeId=gkehubscope-dep
+POST https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/scopes?alt=json&prettyPrint=false&scopeId=gkehubscope-dep
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -41,12 +41,12 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.longrunning.Operation"
   },
-  "name": "projects/${project_id}/locations/global/scopes/gkehubscope-dep/operations/${operationID}"
+  "name": "projects/${projectId}/locations/global/scopes/gkehubscope-dep/operations/${operationID}"
 }
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-dep/operations/${operationID}?alt=json&prettyPrint=false
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/scopes/gkehubscope-dep/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -64,11 +64,11 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.longrunning.Operation"
   },
-  "name": "projects/${project_id}/locations/global/scopes/gkehubscope-dep/operations/${operationID}",
+  "name": "projects/${projectId}/locations/global/scopes/gkehubscope-dep/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.gkehub.v1.Scope",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "name": "projects/${project_id}/locations/global/scopes/gkehubscope-dep",
+    "name": "projects/${projectId}/locations/global/scopes/gkehubscope-dep",
     "state": {
       "code": "READY"
     },
@@ -79,7 +79,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-dep?alt=json&prettyPrint=false
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/scopes/gkehubscope-dep?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -94,7 +94,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${project_id}/locations/global/scopes/gkehubscope-dep",
+  "name": "projects/${projectId}/locations/global/scopes/gkehubscope-dep",
   "state": {
     "code": "READY"
   },
@@ -104,7 +104,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic?alt=json&prettyPrint=false
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
@@ -120,14 +120,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "namespace \"projects/${project_id}/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic\" not found",
+    "message": "namespace \"projects/${projectId}/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic\" not found",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://gkehub.googleapis.com/v1beta/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-dep/namespaces?alt=json&prettyPrint=false&scopeNamespaceId=gkehubnamespace-basic
+POST https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/scopes/gkehubscope-dep/namespaces?alt=json&prettyPrint=false&scopeNamespaceId=gkehubnamespace-basic
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -154,12 +154,12 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.longrunning.Operation"
   },
-  "name": "projects/${project_id}/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic/operations/${operationID}"
+  "name": "projects/${projectId}/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic/operations/${operationID}"
 }
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic/operations/${operationID}?alt=json&prettyPrint=false
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -177,14 +177,14 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.longrunning.Operation"
   },
-  "name": "projects/${project_id}/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic/operations/${operationID}",
+  "name": "projects/${projectId}/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.gkehub.v1.Namespace",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "labels": {
       "env": "dev"
     },
-    "name": "projects/${project_id}/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic",
+    "name": "projects/${projectId}/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic",
     "namespaceLabels": {
       "team": "backend"
     },
@@ -198,7 +198,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic?alt=json&prettyPrint=false
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -216,7 +216,7 @@ X-Xss-Protection: 0
   "labels": {
     "env": "dev"
   },
-  "name": "projects/${project_id}/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic",
+  "name": "projects/${projectId}/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic",
   "namespaceLabels": {
     "team": "backend"
   },
@@ -229,7 +229,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://gkehub.googleapis.com/v1beta/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic?alt=json&prettyPrint=false
+DELETE https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -246,12 +246,12 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.longrunning.Operation"
   },
-  "name": "projects/${project_id}/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic/operations/${operationID}"
+  "name": "projects/${projectId}/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic/operations/${operationID}"
 }
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic/operations/${operationID}?alt=json&prettyPrint=false
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -269,7 +269,7 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.longrunning.Operation"
   },
-  "name": "projects/${project_id}/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic/operations/${operationID}",
+  "name": "projects/${projectId}/locations/global/scopes/gkehubscope-dep/namespaces/gkehubnamespace-basic/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.gkehub.v1.Namespace"
   }
@@ -277,7 +277,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-dep?alt=json&prettyPrint=false
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/scopes/gkehubscope-dep?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -292,7 +292,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${project_id}/locations/global/scopes/gkehubscope-dep",
+  "name": "projects/${projectId}/locations/global/scopes/gkehubscope-dep",
   "state": {
     "code": "READY"
   },
@@ -302,7 +302,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://gkehub.googleapis.com/v1beta/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-dep?alt=json&prettyPrint=false
+DELETE https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/scopes/gkehubscope-dep?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -319,12 +319,12 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.longrunning.Operation"
   },
-  "name": "projects/${project_id}/locations/global/scopes/gkehubscope-dep/operations/${operationID}"
+  "name": "projects/${projectId}/locations/global/scopes/gkehubscope-dep/operations/${operationID}"
 }
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-dep/operations/${operationID}?alt=json&prettyPrint=false
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/scopes/gkehubscope-dep/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -342,7 +342,7 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.longrunning.Operation"
   },
-  "name": "projects/${project_id}/locations/global/scopes/gkehubscope-dep/operations/${operationID}",
+  "name": "projects/${projectId}/locations/global/scopes/gkehubscope-dep/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.gkehub.v1.Scope"
   }

@@ -16,7 +16,7 @@ spec:
   namespaceLabels:
     team: platform
   projectRef:
-    external: ${project_id}
+    external: ${projectId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -24,7 +24,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${project_id}/locations/global/scopes/gkehubscope-basic
+  externalRef: projects/${projectId}/locations/global/scopes/gkehubscope-basic
   observedGeneration: 1
   observedState:
     createTime: "1970-01-01T00:00:00Z"

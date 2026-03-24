@@ -18,7 +18,7 @@ metadata:
   name: gkehubscope-basic
 spec:
   projectRef:
-    external: ${project_id}
+    external: ${projectId}
   location: global
   labels:
     env: dev
