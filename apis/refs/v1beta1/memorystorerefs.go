@@ -26,7 +26,7 @@ import (
 
 var _ Ref = &MemorystoreInstanceRef{}
 
-// MemorystoreInstanceRef defines the resource reference to MemorystoreInstance, which "External" field
+// MemorystoreInstanceRef defines the resource reference to MemorystoreInstance, whose "External" field
 // holds the GCP identifier for the KRM object.
 type MemorystoreInstanceRef struct {
 	// A reference to an externally managed MemorystoreInstance resource.
@@ -73,7 +73,7 @@ func (r *MemorystoreInstanceRef) ValidateExternal(ref string) error {
 		return fmt.Errorf("invalid external reference format: %s", ref)
 	}
 	if parts[0] != "projects" || parts[2] != "locations" || parts[4] != "instances" {
-		return fmt.Errorf("invalid external reference format: %s", ref)
+		return fmt.Errorf("invalid external reference format (should be projects/.../locations/.../instances/...): %s", ref)
 	}
 	return nil
 }
@@ -86,7 +86,7 @@ func (r *MemorystoreInstanceRef) ValidateExternal(ref string) error {
 // If "External" is not set, the NamespacedName will be used to query the
 // referenced object from the K8s API and fetch it's external reference
 // value. If "Namespace" is not specified in the reference, the
-// `defaultNamespace“ will be used instead.
+// `defaultNamespace`“` will be used instead.
 func (r *MemorystoreInstanceRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	return Normalize(ctx, reader, r, defaultNamespace)
 }

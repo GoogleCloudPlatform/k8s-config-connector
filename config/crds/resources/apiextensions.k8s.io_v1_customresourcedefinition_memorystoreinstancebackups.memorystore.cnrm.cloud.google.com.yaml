@@ -63,11 +63,9 @@ spec:
             description: MemorystoreInstanceBackupSpec defines the desired state of
               MemorystoreInstanceBackup
             properties:
-              backupCollection:
-                description: Optional. The backup collection of this resource.
-                type: string
               instanceRef:
-                description: Optional. The Memorystore instance reference of the backup.
+                description: Required. The Memorystore instance reference of the backup.
+                  Immutable.
                 oneOf:
                 - not:
                     required:
@@ -95,13 +93,14 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: Optional. The MemorystoreInstanceBackup name. If not
-                  given, the metadata.name will be used.
+                description: Optional. The MemorystoreInstanceBackup name. Config
+                  Connector will always use metadata.name if ResourceID is unspecified,
+                  overriding the GCP default. Immutable.
                 type: string
               ttl:
-                description: Optional. How long to keep automated backups before the
-                  backups are deleted. The value should be between 1 day and 365 days.
-                  If not specified, the default value is 35 days.
+                description: Optional. TTL for the backup to expire. Value range is
+                  1 day to 100 years. If not specified, the default value is 100 years
+                  (or "876600h"). Immutable.
                 type: string
             required:
             - instanceRef
@@ -202,7 +201,7 @@ spec:
                     type: integer
                   state:
                     description: Output only. State of the backup. For valid values,
-                      see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.backupCollections.backups#backuptype
+                      see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.backupCollections.backups#state
                     type: string
                   totalSizeBytes:
                     description: Output only. Total size of the backup in bytes.

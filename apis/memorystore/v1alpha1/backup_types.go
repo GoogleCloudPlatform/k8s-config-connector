@@ -23,20 +23,22 @@ import (
 var MemorystoreInstanceBackupGVK = GroupVersion.WithKind("MemorystoreInstanceBackup")
 
 // MemorystoreInstanceBackupSpec defines the desired state of MemorystoreInstanceBackup
-// +kcc:spec:proto=google.cloud.memorystore.v1.Backup
+// +kcc:spec:proto=google.cloud.memorystore.v1.BackupInstanceRequest
 type MemorystoreInstanceBackupSpec struct {
-	// Optional. The backup collection of this resource.
-	BackupCollection *string `json:"backupCollection,omitempty"`
-
-	// Optional. The MemorystoreInstanceBackup name. If not given, the metadata.name will be used.
+	// Optional. The MemorystoreInstanceBackup name. Config Connector will always use
+	//  metadata.name if ResourceID is unspecified, overriding the GCP default.
+	// Immutable.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	// Optional. The Memorystore instance reference of the backup.
+	// Required. The Memorystore instance reference of the backup.
+	// Immutable.
+	// +kcc:proto:field=google.cloud.memorystore.v1.BackupInstanceRequest.name
+	// +required
 	InstanceRef *refsv1beta1.MemorystoreInstanceRef `json:"instanceRef"`
 
-	// Optional. How long to keep automated backups before the backups are
-	//  deleted. The value should be between 1 day and 365 days. If not specified,
-	//  the default value is 35 days.
+	// Optional. TTL for the backup to expire. Value range is 1 day to 100 years.
+	//  If not specified, the default value is 100 years (or "876600h").
+	// Immutable.
 	// +kcc:proto:field=google.cloud.memorystore.v1.BackupInstanceRequest.ttl
 	Ttl *string `json:"ttl,omitempty"`
 }
@@ -107,7 +109,7 @@ type MemorystoreInstanceBackupObservedState struct {
 	BackupType *string `json:"backupType,omitempty"`
 
 	// Output only. State of the backup. For valid values,
-	//  see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.backupCollections.backups#backuptype
+	//  see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.backupCollections.backups#state
 	// +kcc:proto:field=google.cloud.memorystore.v1.Backup.state
 	State *string `json:"state,omitempty"`
 

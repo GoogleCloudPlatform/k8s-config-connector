@@ -20,9 +20,6 @@
 package memorystore
 
 import (
-	"fmt"
-	"strings"
-
 	pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -94,13 +91,8 @@ func MemorystoreInstanceBackupSpec_FromProto(mapCtx *direct.MapContext, in *pb.B
 		return nil
 	}
 	out := &krm.MemorystoreInstanceBackupSpec{}
-	backupCollection, backupName := parseBackupExternal(mapCtx, in.Name)
-	out.BackupCollection = direct.LazyPtr(backupCollection)
-	out.ResourceID = direct.LazyPtr(backupName)
-	if in.Instance != "" {
-		out.InstanceRef = &refsv1beta1.MemorystoreInstanceRef{
-			External: in.Instance,
-		}
+	out.InstanceRef = &refsv1beta1.MemorystoreInstanceRef{
+		External: in.Instance,
 	}
 	return out
 }
@@ -109,15 +101,24 @@ func MemorystoreInstanceBackupSpec_ToProto(mapCtx *direct.MapContext, in *krm.Me
 		return nil
 	}
 	out := &pb.Backup{}
-	if in.BackupCollection != nil && in.ResourceID != nil {
-		out.Name = direct.ValueOf(in.BackupCollection) + "/" + direct.ValueOf(in.ResourceID)
-	}
 	if in.InstanceRef != nil {
 		out.Instance = in.InstanceRef.External
 	}
 	return out
 }
-func MemorystoreInstanceBackupSpec_ToProtoBackupInstanceRequest(mapCtx *direct.MapContext, in *krm.MemorystoreInstanceBackupSpec) *pb.BackupInstanceRequest {
+func MemorystoreInstanceBackupSpec_FromRequestProto(mapCtx *direct.MapContext, in *pb.BackupInstanceRequest) *krm.MemorystoreInstanceBackupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MemorystoreInstanceBackupSpec{}
+	out.ResourceID = in.BackupId
+	out.InstanceRef = &refsv1beta1.MemorystoreInstanceRef{
+		External: in.Name,
+	}
+	out.Ttl = direct.StringDuration_FromProto(mapCtx, in.Ttl)
+	return out
+}
+func MemorystoreInstanceBackupSpec_ToRequestProto(mapCtx *direct.MapContext, in *krm.MemorystoreInstanceBackupSpec) *pb.BackupInstanceRequest {
 	if in == nil {
 		return nil
 	}
@@ -128,15 +129,4 @@ func MemorystoreInstanceBackupSpec_ToProtoBackupInstanceRequest(mapCtx *direct.M
 	}
 	out.Ttl = direct.StringDuration_ToProto(mapCtx, in.Ttl)
 	return out
-}
-func parseBackupExternal(mapCtx *direct.MapContext, in string) (string, string) {
-	if in == "" {
-		return "", ""
-	}
-	tokens := strings.Split(in, "/")
-	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "backupCollections" || tokens[6] != "backups" {
-		mapCtx.Errorf("invalid backup name: %s", in)
-		return "", ""
-	}
-	return fmt.Sprintf("projects/%s/locations/%s/backupCollections/%s", tokens[1], tokens[3], tokens[5]), tokens[7]
 }

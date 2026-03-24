@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // +tool:fuzz-gen
-// proto.message: google.cloud.memorystore.v1.Instance
+// proto.message: google.cloud.memorystore.v1.Backup
 // api.group: memorystore.cnrm.cloud.google.com
 
 package memorystore
@@ -35,6 +35,8 @@ func memorystoreInstanceBackupFuzzer() fuzztesting.KRMFuzzer {
 
 	f.UnimplementedFields.Insert(".name") // Special field: resource name
 	f.UnimplementedFields.Insert(".encryption_info")
+
+	f.SpecFields.Insert(".instance")
 
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".instance")
