@@ -219,8 +219,8 @@ spec:
                     type: object
                     x-kubernetes-validations:
                     - message: kind is required if name is populated
-                      rule: (!has(self.name) || self.name == "") || (has(self.kind)
-                        && self.kind != "")
+                      rule: (!has(self.name) || size(self.name) == 0) || (has(self.kind)
+                        && size(self.kind) > 0)
                   service:
                     description: |-
                       Immutable. The hostname of the service that should be observed.

@@ -206,7 +206,7 @@ type FunctionEventTrigger struct {
 	Service *string `json:"service,omitempty"`
 }
 
-// +kubebuilder:validation:XValidation:rule="(!has(self.name) || self.name == \"\") || (has(self.kind) && self.kind != \"\")",message="kind is required if name is populated"
+// +kubebuilder:validation:XValidation:rule="(!has(self.name) || size(self.name) == 0) || (has(self.kind) && size(self.kind) > 0)",message="kind is required if name is populated"
 type FunctionResourceRef struct {
 	// Required. The resource(s) from which to observe events, for example,
 	// projects/_/buckets/myBucket.
