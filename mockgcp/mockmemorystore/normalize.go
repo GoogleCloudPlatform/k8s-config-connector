@@ -29,9 +29,13 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".backupFiles[].createTime", "2024-04-01T12:34:56.123456Z")
 	replacements.ReplacePath(".crossInstanceReplicationConfig.updateTime", "2024-04-01T12:34:56.123456Z")
 	replacements.ReplacePath(".expireTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".maintenancePolicy.createTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".maintenancePolicy.updateTime", "2024-04-01T12:34:56.123456Z")
 	replacements.ReplacePath(".response.backupFiles[].createTime", "2024-04-01T12:34:56.123456Z")
 	replacements.ReplacePath(".response.crossInstanceReplicationConfig.updateTime", "2024-04-01T12:34:56.123456Z")
 	replacements.ReplacePath(".response.expireTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".response.maintenancePolicy.createTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".response.maintenancePolicy.updateTime", "2024-04-01T12:34:56.123456Z")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

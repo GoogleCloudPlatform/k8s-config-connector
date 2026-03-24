@@ -145,11 +145,7 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 				if autoConnection != nil {
 					obj.Endpoints[0].Connections = append(obj.Endpoints[0].Connections, &pb.Instance_ConnectionDetail{
 						Connection: &pb.Instance_ConnectionDetail_PscAutoConnection{
-							PscAutoConnection: &pb.PscAutoConnection{
-								Ports:     autoConnection.Ports,
-								Network:   autoConnection.Network,
-								ProjectId: autoConnection.ProjectId,
-							},
+							PscAutoConnection: proto.Clone(autoConnection).(*pb.PscAutoConnection),
 						},
 					})
 				}
@@ -244,6 +240,10 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	}
 	if obj.AutomatedBackupConfig.AutomatedBackupMode == pb.AutomatedBackupConfig_AUTOMATED_BACKUP_MODE_UNSPECIFIED {
 		obj.AutomatedBackupConfig.AutomatedBackupMode = pb.AutomatedBackupConfig_DISABLED
+	}
+	if obj.MaintenancePolicy != nil && obj.MaintenancePolicy.CreateTime == nil {
+		obj.MaintenancePolicy.CreateTime = timestamppb.New(time.Now())
+		obj.MaintenancePolicy.UpdateTime = obj.MaintenancePolicy.CreateTime
 	}
 	if crr := obj.CrossInstanceReplicationConfig; crr != nil {
 		switch crr.InstanceRole {
@@ -359,11 +359,17 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 		case "endpoints":
 			obj.Endpoints = req.Instance.Endpoints
 		case "maintenancePolicy":
-			obj.MaintenancePolicy = req.Instance.MaintenancePolicy
+			if req.Instance.MaintenancePolicy != nil {
+				obj.MaintenancePolicy = req.Instance.MaintenancePolicy
+				obj.MaintenancePolicy.UpdateTime = timestamppb.New(now)
+			}
 		case "automatedBackupConfig":
 			obj.AutomatedBackupConfig = req.Instance.AutomatedBackupConfig
 		case "crossInstanceReplicationConfig":
-			obj.CrossInstanceReplicationConfig = req.Instance.CrossInstanceReplicationConfig
+			if req.Instance.CrossInstanceReplicationConfig != nil {
+				obj.CrossInstanceReplicationConfig = req.Instance.CrossInstanceReplicationConfig
+				obj.CrossInstanceReplicationConfig.UpdateTime = timestamppb.New(now)
+			}
 		case "gcsSource":
 			if gcsSource := req.Instance.GetGcsSource(); gcsSource != nil {
 				obj.ImportSources = &pb.Instance_GcsSource{GcsSource: gcsSource}
