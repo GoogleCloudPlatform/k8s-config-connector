@@ -20,7 +20,7 @@ import (
 	"strings"
 	"time"
 
-	gkehubv1 "google.golang.org/api/gkehub/v1"
+	featureapi "google.golang.org/api/gkehub/v1beta"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 
@@ -50,7 +50,7 @@ type namespaceAdapter struct {
 	scopeNamespaceID string
 
 	desired *krm.GKEHubNamespace
-	actual  *gkehubv1.Namespace
+	actual  *featureapi.Namespace
 
 	hubClient *gkeHubClient
 }
@@ -220,14 +220,14 @@ func (a *namespaceAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 	return nil, nil // TODO
 }
 
-func (a *namespaceAdapter) waitForOp(ctx context.Context, op *gkehubv1.Operation) error {
+func (a *namespaceAdapter) waitForOp(ctx context.Context, op *featureapi.Operation) error {
 	return a.waitForOpName(ctx, op.Name)
 }
 
 func (a *namespaceAdapter) waitForOpName(ctx context.Context, opName string) error {
 	retryPeriod := 5 * time.Second
 	for {
-		op, err := a.hubClient.v1OperationClient.Get(opName).Context(ctx).Do()
+		op, err := a.hubClient.operationClient.Get(opName).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("getting operation %q: %w", opName, err)
 		}

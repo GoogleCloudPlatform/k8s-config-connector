@@ -365,7 +365,6 @@ func (a *gkeHubScopeAdapterV1Beta1) Update(ctx context.Context, updateOp *direct
 		return mapCtx.Err()
 	}
 
-	// TODO: Labels update mask?
 	updateMask := "namespaceLabels,labels"
 	op, err := a.hubClient.scopeClient.Patch(a.id.String(), desired).UpdateMask(updateMask).Context(ctx).Do()
 	if err != nil {

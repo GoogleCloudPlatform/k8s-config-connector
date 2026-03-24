@@ -1,4 +1,4 @@
-GET https://gkehub.googleapis.com/v1/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-basic?alt=json&prettyPrint=false
+GET https://gkehub.googleapis.com/v1beta/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-basic?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
@@ -21,7 +21,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://gkehub.googleapis.com/v1/projects/$%7Bproject_id%7D/locations/global/scopes?alt=json&prettyPrint=false&scopeId=gkehubscope-basic
+POST https://gkehub.googleapis.com/v1beta/projects/$%7Bproject_id%7D/locations/global/scopes?alt=json&prettyPrint=false&scopeId=gkehubscope-basic
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -53,7 +53,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-basic/operations/${operationID}?alt=json&prettyPrint=false
+GET https://gkehub.googleapis.com/v1beta/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-basic/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -92,7 +92,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-basic?alt=json&prettyPrint=false
+GET https://gkehub.googleapis.com/v1beta/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-basic?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -123,7 +123,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://gkehub.googleapis.com/v1/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-basic?alt=json&prettyPrint=false
+DELETE https://gkehub.googleapis.com/v1beta/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-basic?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -145,7 +145,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-basic/operations/${operationID}?alt=json&prettyPrint=false
+GET https://gkehub.googleapis.com/v1beta/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-basic/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK

@@ -17,20 +17,20 @@ package gkehub
 import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	gkehubv1 "google.golang.org/api/gkehub/v1"
+	featureapi "google.golang.org/api/gkehub/v1beta"
 )
 
-func GKEHubNamespaceSpec_ToAPI(mapCtx *direct.MapContext, in *krm.GKEHubNamespaceSpec) *gkehubv1.Namespace {
+func GKEHubNamespaceSpec_ToAPI(mapCtx *direct.MapContext, in *krm.GKEHubNamespaceSpec) *featureapi.Namespace {
 	if in == nil {
 		return nil
 	}
-	out := &gkehubv1.Namespace{}
+	out := &featureapi.Namespace{}
 	out.Labels = in.Labels
 	out.NamespaceLabels = in.NamespaceLabels
 	return out
 }
 
-func GKEHubNamespaceStatus_FromAPI(mapCtx *direct.MapContext, in *gkehubv1.Namespace) *krm.GKEHubNamespaceStatus {
+func GKEHubNamespaceStatus_FromAPI(mapCtx *direct.MapContext, in *featureapi.Namespace) *krm.GKEHubNamespaceStatus {
 	if in == nil {
 		return nil
 	}
@@ -44,7 +44,7 @@ func GKEHubNamespaceStatus_FromAPI(mapCtx *direct.MapContext, in *gkehubv1.Names
 	return out
 }
 
-func NamespaceLifecycleStateStatus_FromAPI(mapCtx *direct.MapContext, in *gkehubv1.NamespaceLifecycleState) *krm.NamespaceLifecycleStateStatus {
+func NamespaceLifecycleStateStatus_FromAPI(mapCtx *direct.MapContext, in *featureapi.NamespaceLifecycleState) *krm.NamespaceLifecycleStateStatus {
 	if in == nil {
 		return nil
 	}
