@@ -67,15 +67,24 @@ spec:
                 description: Immutable. Application name displayed on OAuth consent
                   screen.
                 type: string
+                x-kubernetes-validations:
+                - message: ApplicationTitle is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: Immutable. Optional. The service-generated name of the
                   resource. Used for acquisition only. Leave unset to create a new
                   resource.
                 type: string
+                x-kubernetes-validations:
+                - message: ResourceID is immutable
+                  rule: self == oldSelf
               supportEmail:
                 description: Immutable. Support email displayed on the OAuth consent
                   screen.
                 type: string
+                x-kubernetes-validations:
+                - message: SupportEmail is immutable
+                  rule: self == oldSelf
             type: object
           status:
             description: IAPBrandStatus defines the config connector machine state

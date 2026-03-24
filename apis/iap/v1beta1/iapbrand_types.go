@@ -43,8 +43,6 @@ type IAPBrandSpec struct {
 type IAPBrandStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
-	// +listType=map
-	// +listMapKey=type
 	// +optional
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 
