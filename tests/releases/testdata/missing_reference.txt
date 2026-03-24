@@ -1,2 +1,0 @@
-gkehub.cnrm.cloud.google.com/v1beta1, Kind=GKEHubNamespace
-gkehub.cnrm.cloud.google.com/v1beta1, Kind=GKEHubScope
