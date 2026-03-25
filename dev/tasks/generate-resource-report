@@ -41,7 +41,9 @@ def analyze_crd(file_path):
     has_v1 = 'v1' in versions
 
     reconciler = 'Direct'
-    if labels.get('cnrm.cloud.google.com/tf2crd') == 'true':
+    if labels.get('cnrm.cloud.google.com/default-controller') == 'direct':
+        reconciler = 'Direct'
+    elif labels.get('cnrm.cloud.google.com/tf2crd') == 'true':
         reconciler = 'Terraform'
     elif labels.get('cnrm.cloud.google.com/dcl2crd') == 'true':
         reconciler = 'DCL'

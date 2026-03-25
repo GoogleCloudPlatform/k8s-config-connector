@@ -386,8 +386,8 @@ redis.cnrm.cloud.google.com,RedisCluster,True,True,False,Direct
 redis.cnrm.cloud.google.com,RedisInstance,False,True,False,Terraform
 resourcemanager.cnrm.cloud.google.com,ResourceManagerLien,False,True,False,Terraform
 resourcemanager.cnrm.cloud.google.com,ResourceManagerPolicy,False,True,False,Terraform
-run.cnrm.cloud.google.com,RunJob,False,True,False,Terraform
-run.cnrm.cloud.google.com,RunService,False,True,False,Terraform
+run.cnrm.cloud.google.com,RunJob,False,True,False,Direct
+run.cnrm.cloud.google.com,RunService,False,True,False,Direct
 secretmanager.cnrm.cloud.google.com,SecretManagerSecret,False,True,False,Terraform
 secretmanager.cnrm.cloud.google.com,SecretManagerSecretVersion,False,True,False,Terraform
 securesourcemanager.cnrm.cloud.google.com,SecureSourceManagerInstance,True,True,False,Direct
@@ -424,7 +424,7 @@ storage.cnrm.cloud.google.com,StorageManagedFolder,True,False,False,Direct
 storage.cnrm.cloud.google.com,StorageNotification,False,True,False,Terraform
 storagetransfer.cnrm.cloud.google.com,StorageTransferAgentPool,True,False,False,Terraform
 storagetransfer.cnrm.cloud.google.com,StorageTransferJob,False,True,False,Terraform
-tags.cnrm.cloud.google.com,TagsLocationTagBinding,True,True,False,Terraform
+tags.cnrm.cloud.google.com,TagsLocationTagBinding,True,True,False,Direct
 tags.cnrm.cloud.google.com,TagsTagBinding,False,True,False,Terraform
 tags.cnrm.cloud.google.com,TagsTagKey,False,True,False,Terraform
 tags.cnrm.cloud.google.com,TagsTagValue,False,True,False,Terraform

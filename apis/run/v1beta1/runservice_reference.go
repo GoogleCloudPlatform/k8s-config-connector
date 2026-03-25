@@ -26,8 +26,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-
-
 func init() {
 	refsv1beta1.Register(&RunServiceRef{})
 }

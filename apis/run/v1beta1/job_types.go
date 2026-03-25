@@ -157,6 +157,7 @@ type RunJobObservedState struct {
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/default-controller=direct"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
@@ -702,4 +703,15 @@ type Condition struct {
 
 	// A reason for the execution condition.
 	ExecutionReason *string `json:"executionReason,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.run.v2.Container
+type ContainerObservedState struct {
+	// Name of the container specified as a DNS_LABEL (RFC 1123).
+	// +kcc:proto:field=google.cloud.run.v2.Container.name
+	Name *string `json:"name,omitempty"`
+	// Base image for this container. Only supported for services. If set, it
+	//  indicates that the service is enrolled into automatic base image update.
+	// +kcc:proto:field=google.cloud.run.v2.Container.base_image_uri
+	BaseImageURI *string `json:"baseImageURI,omitempty"`
 }

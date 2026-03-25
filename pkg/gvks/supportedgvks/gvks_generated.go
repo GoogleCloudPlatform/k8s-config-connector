@@ -2185,6 +2185,14 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 		DCL:       false,
 	},
 	{
+		Group:   "run.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "RunService",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
 		Group:   "secretmanager.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "SecretManagerSecret",

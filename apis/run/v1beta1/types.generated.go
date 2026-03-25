@@ -440,3 +440,11 @@ type BuildInfoObservedState struct {
 	// +kcc:proto:field=google.cloud.run.v2.BuildInfo.source_location
 	SourceLocation *string `json:"sourceLocation,omitempty"`
 }
+
+// +kcc:observedstate:proto=google.cloud.run.v2.RevisionTemplate
+type RevisionTemplateObservedState struct {
+	// Holds the single container that defines the unit of execution for this
+	//  Revision.
+	// +kcc:proto:field=google.cloud.run.v2.RevisionTemplate.containers
+	Containers []ContainerObservedState `json:"containers,omitempty"`
+}

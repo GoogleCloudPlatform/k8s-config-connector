@@ -284,6 +284,48 @@ func Container_ToProto(mapCtx *direct.MapContext, in *krm.Container) *pb.Contain
 	// MISSING: BuildInfo
 	return out
 }
+func ContainerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Container) *krm.ContainerObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContainerObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: Image
+	// MISSING: Command
+	// MISSING: Args
+	// MISSING: Env
+	// MISSING: Resources
+	// MISSING: Ports
+	// MISSING: VolumeMounts
+	// MISSING: WorkingDir
+	// MISSING: LivenessProbe
+	// MISSING: StartupProbe
+	// MISSING: DependsOn
+	out.BaseImageURI = direct.LazyPtr(in.GetBaseImageUri())
+	// MISSING: BuildInfo
+	return out
+}
+func ContainerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ContainerObservedState) *pb.Container {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Container{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: Image
+	// MISSING: Command
+	// MISSING: Args
+	// MISSING: Env
+	// MISSING: Resources
+	// MISSING: Ports
+	// MISSING: VolumeMounts
+	// MISSING: WorkingDir
+	// MISSING: LivenessProbe
+	// MISSING: StartupProbe
+	// MISSING: DependsOn
+	out.BaseImageUri = direct.ValueOf(in.BaseImageURI)
+	// MISSING: BuildInfo
+	return out
+}
 func ContainerPort_FromProto(mapCtx *direct.MapContext, in *pb.ContainerPort) *krm.ContainerPort {
 	if in == nil {
 		return nil
@@ -654,7 +696,58 @@ func RevisionTemplate_ToProto(mapCtx *direct.MapContext, in *krm.RevisionTemplat
 	out.GpuZonalRedundancyDisabled = in.GpuZonalRedundancyDisabled
 	return out
 }
-
+func RevisionTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RevisionTemplate) *krm.RevisionTemplateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RevisionTemplateObservedState{}
+	// MISSING: Revision
+	// MISSING: Labels
+	// MISSING: Annotations
+	// MISSING: Scaling
+	// MISSING: VPCAccess
+	// MISSING: Timeout
+	// MISSING: ServiceAccount
+	out.Containers = direct.Slice_FromProto(mapCtx, in.Containers, ContainerObservedState_FromProto)
+	// MISSING: Volumes
+	// MISSING: ExecutionEnvironment
+	// MISSING: EncryptionKey
+	// MISSING: MaxInstanceRequestConcurrency
+	// MISSING: ServiceMesh
+	// MISSING: EncryptionKeyRevocationAction
+	// MISSING: EncryptionKeyShutdownDuration
+	// MISSING: SessionAffinity
+	// MISSING: HealthCheckDisabled
+	// MISSING: NodeSelector
+	// MISSING: GpuZonalRedundancyDisabled
+	return out
+}
+func RevisionTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RevisionTemplateObservedState) *pb.RevisionTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RevisionTemplate{}
+	// MISSING: Revision
+	// MISSING: Labels
+	// MISSING: Annotations
+	// MISSING: Scaling
+	// MISSING: VPCAccess
+	// MISSING: Timeout
+	// MISSING: ServiceAccount
+	out.Containers = direct.Slice_ToProto(mapCtx, in.Containers, ContainerObservedState_ToProto)
+	// MISSING: Volumes
+	// MISSING: ExecutionEnvironment
+	// MISSING: EncryptionKey
+	// MISSING: MaxInstanceRequestConcurrency
+	// MISSING: ServiceMesh
+	// MISSING: EncryptionKeyRevocationAction
+	// MISSING: EncryptionKeyShutdownDuration
+	// MISSING: SessionAffinity
+	// MISSING: HealthCheckDisabled
+	// MISSING: NodeSelector
+	// MISSING: GpuZonalRedundancyDisabled
+	return out
+}
 func RunJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.RunJobObservedState {
 	if in == nil {
 		return nil
@@ -927,7 +1020,6 @@ func SecretVolumeSource_ToProto(mapCtx *direct.MapContext, in *krm.SecretVolumeS
 	out.DefaultMode = direct.ValueOf(in.DefaultMode)
 	return out
 }
-
 func ServiceMesh_FromProto(mapCtx *direct.MapContext, in *pb.ServiceMesh) *krm.ServiceMesh {
 	if in == nil {
 		return nil
@@ -944,7 +1036,6 @@ func ServiceMesh_ToProto(mapCtx *direct.MapContext, in *krm.ServiceMesh) *pb.Ser
 	out.Mesh = direct.ValueOf(in.Mesh)
 	return out
 }
-
 func ServiceScaling_FromProto(mapCtx *direct.MapContext, in *pb.ServiceScaling) *krm.ServiceScaling {
 	if in == nil {
 		return nil
