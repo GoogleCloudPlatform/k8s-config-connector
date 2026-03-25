@@ -26,8 +26,7 @@ var BinaryAuthorizationPolicyGVK = GroupVersion.WithKind("BinaryAuthorizationPol
 // +kcc:spec:proto=google.cloud.binaryauthorization.v1.Policy
 type BinaryAuthorizationPolicySpec struct {
 	// Immutable. The Project that this resource belongs to.
-	// +required
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
 
 	// Optional. A descriptive comment.
 	// +kcc:proto:field=google.cloud.binaryauthorization.v1.Policy.description
@@ -38,6 +37,7 @@ type BinaryAuthorizationPolicySpec struct {
 	//  policy will be subject to the project admission policy. This setting
 	//  has no effect when specified inside a global admission policy.
 	//  Possible values: GLOBAL_POLICY_EVALUATION_MODE_UNSPECIFIED, ENABLE, DISABLE
+	// +kubebuilder:validation:Enum=GLOBAL_POLICY_EVALUATION_MODE_UNSPECIFIED;ENABLE;DISABLE
 	// +kcc:proto:field=google.cloud.binaryauthorization.v1.Policy.global_policy_evaluation_mode
 	GlobalPolicyEvaluationMode *string `json:"globalPolicyEvaluationMode,omitempty"`
 
@@ -82,6 +82,7 @@ type BinaryAuthorizationPolicySpec struct {
 type AdmissionRule struct {
 	// Required. How this admission rule will be evaluated.
 	//  Possible values: ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION
+	// +kubebuilder:validation:Enum=ALWAYS_ALLOW;ALWAYS_DENY;REQUIRE_ATTESTATION
 	// +kcc:proto:field=google.cloud.binaryauthorization.v1.AdmissionRule.evaluation_mode
 	// +required
 	EvaluationMode *string `json:"evaluationMode"`
@@ -99,6 +100,7 @@ type AdmissionRule struct {
 
 	// Required. The action when a pod creation is denied by the admission rule.
 	//  Possible values: ENFORCEMENT_MODE_UNSPECIFIED, ENFORCED_BLOCK_AND_AUDIT_LOG, DRYRUN_AUDIT_LOG_ONLY
+	// +kubebuilder:validation:Enum=ENFORCEMENT_MODE_UNSPECIFIED;ENFORCED_BLOCK_AND_AUDIT_LOG;DRYRUN_AUDIT_LOG_ONLY
 	// +kcc:proto:field=google.cloud.binaryauthorization.v1.AdmissionRule.enforcement_mode
 	// +required
 	EnforcementMode *string `json:"enforcementMode"`

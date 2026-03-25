@@ -88,10 +88,18 @@ spec:
                       description: 'Required. The action when a pod creation is denied
                         by the admission rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED,
                         ENFORCED_BLOCK_AND_AUDIT_LOG, DRYRUN_AUDIT_LOG_ONLY'
+                      enum:
+                      - ENFORCEMENT_MODE_UNSPECIFIED
+                      - ENFORCED_BLOCK_AND_AUDIT_LOG
+                      - DRYRUN_AUDIT_LOG_ONLY
                       type: string
                     evaluationMode:
                       description: 'Required. How this admission rule will be evaluated.
                         Possible values: ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
+                      enum:
+                      - ALWAYS_ALLOW
+                      - ALWAYS_DENY
+                      - REQUIRE_ATTESTATION
                       type: string
                     requireAttestationsBy:
                       description: |-
@@ -138,10 +146,18 @@ spec:
                     description: 'Required. The action when a pod creation is denied
                       by the admission rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED,
                       ENFORCED_BLOCK_AND_AUDIT_LOG, DRYRUN_AUDIT_LOG_ONLY'
+                    enum:
+                    - ENFORCEMENT_MODE_UNSPECIFIED
+                    - ENFORCED_BLOCK_AND_AUDIT_LOG
+                    - DRYRUN_AUDIT_LOG_ONLY
                     type: string
                   evaluationMode:
                     description: 'Required. How this admission rule will be evaluated.
                       Possible values: ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
+                    enum:
+                    - ALWAYS_ALLOW
+                    - ALWAYS_DENY
+                    - REQUIRE_ATTESTATION
                     type: string
                   requireAttestationsBy:
                     description: |-
@@ -197,6 +213,10 @@ spec:
                   policy. This setting has no effect when specified inside a global
                   admission policy. Possible values: GLOBAL_POLICY_EVALUATION_MODE_UNSPECIFIED,
                   ENABLE, DISABLE'
+                enum:
+                - GLOBAL_POLICY_EVALUATION_MODE_UNSPECIFIED
+                - ENABLE
+                - DISABLE
                 type: string
               istioServiceIdentityAdmissionRules:
                 additionalProperties:
@@ -205,10 +225,18 @@ spec:
                       description: 'Required. The action when a pod creation is denied
                         by the admission rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED,
                         ENFORCED_BLOCK_AND_AUDIT_LOG, DRYRUN_AUDIT_LOG_ONLY'
+                      enum:
+                      - ENFORCEMENT_MODE_UNSPECIFIED
+                      - ENFORCED_BLOCK_AND_AUDIT_LOG
+                      - DRYRUN_AUDIT_LOG_ONLY
                       type: string
                     evaluationMode:
                       description: 'Required. How this admission rule will be evaluated.
                         Possible values: ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
+                      enum:
+                      - ALWAYS_ALLOW
+                      - ALWAYS_DENY
+                      - REQUIRE_ATTESTATION
                       type: string
                     requireAttestationsBy:
                       description: |-
@@ -251,10 +279,18 @@ spec:
                       description: 'Required. The action when a pod creation is denied
                         by the admission rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED,
                         ENFORCED_BLOCK_AND_AUDIT_LOG, DRYRUN_AUDIT_LOG_ONLY'
+                      enum:
+                      - ENFORCEMENT_MODE_UNSPECIFIED
+                      - ENFORCED_BLOCK_AND_AUDIT_LOG
+                      - DRYRUN_AUDIT_LOG_ONLY
                       type: string
                     evaluationMode:
                       description: 'Required. How this admission rule will be evaluated.
                         Possible values: ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
+                      enum:
+                      - ALWAYS_ALLOW
+                      - ALWAYS_DENY
+                      - REQUIRE_ATTESTATION
                       type: string
                     requireAttestationsBy:
                       description: |-
@@ -296,10 +332,18 @@ spec:
                       description: 'Required. The action when a pod creation is denied
                         by the admission rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED,
                         ENFORCED_BLOCK_AND_AUDIT_LOG, DRYRUN_AUDIT_LOG_ONLY'
+                      enum:
+                      - ENFORCEMENT_MODE_UNSPECIFIED
+                      - ENFORCED_BLOCK_AND_AUDIT_LOG
+                      - DRYRUN_AUDIT_LOG_ONLY
                       type: string
                     evaluationMode:
                       description: 'Required. How this admission rule will be evaluated.
                         Possible values: ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
+                      enum:
+                      - ALWAYS_ALLOW
+                      - ALWAYS_DENY
+                      - REQUIRE_ATTESTATION
                       type: string
                     requireAttestationsBy:
                       description: |-
@@ -368,7 +412,6 @@ spec:
                 type: object
             required:
             - defaultAdmissionRule
-            - projectRef
             type: object
           status:
             description: BinaryAuthorizationPolicyStatus defines the config connector

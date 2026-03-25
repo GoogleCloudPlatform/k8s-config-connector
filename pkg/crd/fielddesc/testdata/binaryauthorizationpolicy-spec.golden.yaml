@@ -612,7 +612,7 @@ children:
   description: Immutable. The Project that this resource belongs to.
   type: object
   format: ""
-  requirementlevel: Required
+  requirementlevel: Optional
   children:
   - fullname:
     - spec
