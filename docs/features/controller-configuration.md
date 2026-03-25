@@ -27,7 +27,7 @@ metadata:
   name: configconnectorcontext.core.cnrm.cloud.google.com
   namespace: my-namespace
 spec:
-  googleServiceAccount: "kcc-sa@my-project.iam.gserviceaccount.com"
+  googleServiceAccount: "{kcc-sa}@{my-project}"
   experiments:
     controllerOverrides:
       BigQueryDataset.bigquery.cnrm.cloud.google.com: direct

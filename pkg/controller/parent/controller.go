@@ -140,7 +140,7 @@ func (r *ParentReconciler) Reconcile(ctx context.Context, req reconcile.Request)
 		ccc := &corekccv1alpha1.ConfigConnectorContext{}
 		cccNamespacedName := types.NamespacedName{
 			Namespace: req.Namespace,
-			Name:      "configconnectorcontext",
+			Name:      corekccv1alpha1.ConfigConnectorContextAllowedName,
 		}
 		if err := r.Get(ctx, cccNamespacedName, ccc); err != nil {
 			if !apierrors.IsNotFound(err) {
@@ -196,8 +196,19 @@ func (r *ParentReconciler) Reconcile(ctx context.Context, req reconcile.Request)
 func (r *ParentReconciler) determineControllerType(ctx context.Context, u *unstructured.Unstructured) (k8s.ReconcilerType, error) {
 	// Check for resource annotation
 	annotations := u.GetAnnotations()
-	if annotations[k8s.AlphaReconcilerAnnotation] == "direct" {
+	controllerTypeStr := annotations[k8s.AlphaReconcilerAnnotation]
+	if controllerTypeStr == "" {
+		controllerTypeStr = annotations[k8s.ReconcilerTypeAnnotation]
+	}
+
+	if controllerTypeStr == "direct" {
 		return k8s.ReconcilerTypeDirect, nil
+	}
+	if controllerTypeStr == "tf" {
+		return k8s.ReconcilerTypeTerraform, nil
+	}
+	if controllerTypeStr == "dcl" {
+		return k8s.ReconcilerTypeDCL, nil
 	}
 
 	// Special case handling. Will be removed after the resources have turned on direct as default.
