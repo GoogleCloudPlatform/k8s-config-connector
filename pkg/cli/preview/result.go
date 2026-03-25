@@ -132,20 +132,27 @@ func (r *Recorder) GenerateRecorderReconciledResults() *RecorderReconciledResult
 }
 
 func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, altResult *RecorderReconciledResults, altExpectedMap map[schema.GroupKind]k8s.ReconcilerType) error {
-	f, err := os.Create(summaryFile)
-	if err != nil {
-		return fmt.Errorf("error creating file %q: %w", summaryFile, err)
-	}
 	var combinedBadResult []*GKNNReconciledResult
 	if len(r.badResult) > 0 {
 		combinedBadResult = append(combinedBadResult, r.badResult...)
 	}
+	if altResult != nil && len(altResult.badResult) > 0 {
+		combinedBadResult = append(combinedBadResult, altResult.badResult...)
+	}
+
+	defer func() {
+		for _, result := range combinedBadResult {
+			klog.V(0).Info("\"PreviewResult\" ", result.FormatGKNNReconciledResult())
+		}
+	}()
+
+	f, err := os.Create(summaryFile)
+	if err != nil {
+		return fmt.Errorf("error creating file %q: %w", summaryFile, err)
+	}
 	fmt.Fprintf(f, "Detected %d good and %d bad objects in default run\n", r.goodCount, r.badCount)
 	if altResult != nil {
 		fmt.Fprintf(f, "Detected %d good and %d bad objects in alternative run\n", altResult.goodCount, altResult.badCount)
-		if len(altResult.badResult) > 0 {
-			combinedBadResult = append(combinedBadResult, altResult.badResult...)
-		}
 	}
 	w := tabwriter.NewWriter(f, 0, 0, 3, ' ', 0)
 	fmt.Fprintln(w, "GROUP\tKIND\tNAME\tDEFAULT-CONTROLLER\tDEFAULT-RESULT\tDEFAULT-DIFFS\tALTERNATIVE-CONTROLLER\tALTERNATIVE-RESULT\tALTERNATIVE-DIFFS")
@@ -244,9 +251,6 @@ func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, al
 	}
 
 	if len(combinedBadResult) > 0 {
-		for _, result := range combinedBadResult {
-			klog.V(0).Info("\"PreviewResult\" ", result.FormatGKNNReconciledResult())
-		}
 		if err := r.BadResultReport(summaryFile+"-detail", combinedBadResult); err != nil {
 			return fmt.Errorf("error creating bad result detail report: %w", err)
 		}
