@@ -26,6 +26,7 @@ import (
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/genproto/googleapis/rpc/status"
+	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -36,15 +37,7 @@ func Status_FromProto(mapCtx *direct.MapContext, in *status.Status) *krm.Status 
 	out := &krm.Status{}
 	out.Code = direct.LazyPtr(in.GetCode())
 	out.Message = direct.LazyPtr(in.GetMessage())
-	if in.Details != nil {
-		out.Details = make([]krm.Any, len(in.Details))
-		for i, d := range in.Details {
-			out.Details[i] = krm.Any{
-				TypeURL: direct.LazyPtr(d.GetTypeUrl()),
-				Value:   d.GetValue(),
-			}
-		}
-	}
+	out.Details = direct.Slice_FromProto(mapCtx, in.Details, Any_FromProto)
 	return out
 }
 
@@ -55,6 +48,27 @@ func Status_ToProto(mapCtx *direct.MapContext, in *krm.Status) *status.Status {
 	out := &status.Status{}
 	out.Code = direct.ValueOf(in.Code)
 	out.Message = direct.ValueOf(in.Message)
+	out.Details = direct.Slice_ToProto(mapCtx, in.Details, Any_ToProto)
+	return out
+}
+
+func Any_FromProto(mapCtx *direct.MapContext, in *anypb.Any) *krm.Any {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Any{}
+	out.TypeURL = direct.LazyPtr(in.GetTypeUrl())
+	out.Value = in.GetValue()
+	return out
+}
+
+func Any_ToProto(mapCtx *direct.MapContext, in *krm.Any) *anypb.Any {
+	if in == nil {
+		return nil
+	}
+	out := &anypb.Any{}
+	out.TypeUrl = direct.ValueOf(in.TypeURL)
+	out.Value = in.Value
 	return out
 }
 
@@ -152,6 +166,26 @@ func CloudStorageRegexFileSet_ToProto(mapCtx *direct.MapContext, in *krm.CloudSt
 	}
 	out.IncludeRegex = in.IncludeRegex
 	out.ExcludeRegex = in.ExcludeRegex
+	return out
+}
+
+func DatastoreOptions_FromProto(mapCtx *direct.MapContext, in *pb.DatastoreOptions) *krm.DatastoreOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DatastoreOptions{}
+	out.PartitionID = PartitionID_FromProto(mapCtx, in.GetPartitionId())
+	out.Kind = KindExpression_FromProto(mapCtx, in.GetKind())
+	return out
+}
+
+func DatastoreOptions_ToProto(mapCtx *direct.MapContext, in *krm.DatastoreOptions) *pb.DatastoreOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DatastoreOptions{}
+	out.PartitionId = PartitionID_ToProto(mapCtx, in.PartitionID)
+	out.Kind = KindExpression_ToProto(mapCtx, in.Kind)
 	return out
 }
 
