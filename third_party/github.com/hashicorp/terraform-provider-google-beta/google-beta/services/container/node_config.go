@@ -1351,7 +1351,15 @@ func flattenTaints(c []*container.NodeTaint, oldTaints []interface{}) []map[stri
 
 	result := []map[string]interface{}{}
 	for _, taint := range c {
-		if _, ok := taintKeys[taint.Key]; ok {
+		_, ok := taintKeys[taint.Key]
+		// KCC PATCH: Allow removed taints to be seen as drift so KCC deletes them.
+		// We only filter out known GKE implicit taint prefixes to prevent infinite drift.
+		isImplicit := strings.HasPrefix(taint.Key, "sandbox.gke.io/") ||
+			strings.HasPrefix(taint.Key, "components.gke.io/") ||
+			strings.HasPrefix(taint.Key, "node.kubernetes.io/") ||
+			strings.HasPrefix(taint.Key, "kubernetes.io/")
+
+		if ok || !isImplicit {
 			result = append(result, map[string]interface{}{
 				"key":    taint.Key,
 				"value":  taint.Value,
