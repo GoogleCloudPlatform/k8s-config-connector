@@ -31,9 +31,7 @@ func DiffInstances(desired *api.DatabaseInstance, actual *api.DatabaseInstance) 
 	if desired.DatabaseVersion != actual.DatabaseVersion {
 		diff.AddField(".databaseVersion", actual.DatabaseVersion, desired.DatabaseVersion)
 	}
-	if !DiskEncryptionConfigurationsMatch(desired.DiskEncryptionConfiguration, actual.DiskEncryptionConfiguration) {
-		diff.AddField(".diskEncryptionConfiguration", actual.DiskEncryptionConfiguration, desired.DiskEncryptionConfiguration)
-	}
+	diff.AddDiff(DiffDiskEncryptionConfiguration(desired.DiskEncryptionConfiguration, actual.DiskEncryptionConfiguration))
 	// Ignore GeminiConfig. It is not supported in KRM API.
 	if desired.InstanceType != actual.InstanceType {
 		diff.AddField(".instanceType", actual.InstanceType, desired.InstanceType)
@@ -53,12 +51,8 @@ func DiffInstances(desired *api.DatabaseInstance, actual *api.DatabaseInstance) 
 	if desired.Region != actual.Region {
 		diff.AddField(".region", actual.Region, desired.Region)
 	}
-	if !ReplicaConfigurationsMatch(desired.ReplicaConfiguration, actual.ReplicaConfiguration) {
-		diff.AddField(".replicaConfiguration", actual.ReplicaConfiguration, desired.ReplicaConfiguration)
-	}
-	if !ReplicationClustersMatch(desired.ReplicationCluster, actual.ReplicationCluster) {
-		diff.AddField(".replicationCluster", actual.ReplicationCluster, desired.ReplicationCluster)
-	}
+	diff.AddDiff(DiffReplicaConfiguration(desired.ReplicaConfiguration, actual.ReplicaConfiguration))
+	diff.AddDiff(DiffReplicationCluster(desired.ReplicationCluster, actual.ReplicationCluster))
 	// Ignore RootPassword. It is not exported.
 	diff.AddDiff(DiffSettings(desired.Settings, actual.Settings))
 
@@ -69,40 +63,42 @@ func DiffInstances(desired *api.DatabaseInstance, actual *api.DatabaseInstance) 
 	return diff
 }
 
-func DiskEncryptionConfigurationsMatch(desired *api.DiskEncryptionConfiguration, actual *api.DiskEncryptionConfiguration) bool {
+func DiffDiskEncryptionConfiguration(desired *api.DiskEncryptionConfiguration, actual *api.DiskEncryptionConfiguration) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
 	if desired == nil && actual == nil {
-		return true
+		return diff
 	}
 	if !PointersMatch(desired, actual) {
-		return false
+		diff.AddField(".diskEncryptionConfiguration", actual, desired)
+		return diff
 	}
 	// Ignore Kind. It is sometimes not set in API responses.
 	if desired.KmsKeyName != actual.KmsKeyName {
-		return false
+		diff.AddField(".diskEncryptionConfiguration.kmsKeyName", actual.KmsKeyName, desired.KmsKeyName)
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
-	return true
+	return diff
 }
 
-func ReplicaConfigurationsMatch(desired *api.ReplicaConfiguration, actual *api.ReplicaConfiguration) bool {
+func DiffReplicaConfiguration(desired *api.ReplicaConfiguration, actual *api.ReplicaConfiguration) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
 	if desired == nil && actual == nil {
-		return true
+		return diff
 	}
 	if !PointersMatch(desired, actual) {
-		return false
+		diff.AddField(".replicaConfiguration", actual, desired)
+		return diff
 	}
 	// Ignore CascadableReplica. It is not supported in KRM API.
 	if desired.FailoverTarget != actual.FailoverTarget {
-		return false
+		diff.AddField(".replicaConfiguration.failoverTarget", actual.FailoverTarget, desired.FailoverTarget)
 	}
 	// Ignore Kind. It is sometimes not set in API responses.
-	if !MysqlReplicaConfigurationsMatch(desired.MysqlReplicaConfiguration, actual.MysqlReplicaConfiguration) {
-		return false
-	}
+	diff.AddDiff(DiffMysqlReplicaConfiguration(desired.MysqlReplicaConfiguration, actual.MysqlReplicaConfiguration))
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
-	return true
+	return diff
 }
 
 func DiffSettings(desired *api.Settings, actual *api.Settings) *structuredreporting.Diff {
@@ -117,21 +113,15 @@ func DiffSettings(desired *api.Settings, actual *api.Settings) *structuredreport
 	if desired.ActivationPolicy != actual.ActivationPolicy {
 		diff.AddField(".settings.activationPolicy", actual.ActivationPolicy, desired.ActivationPolicy)
 	}
-	if !ActiveDirectoryConfigsMatch(desired.ActiveDirectoryConfig, actual.ActiveDirectoryConfig) {
-		diff.AddField(".settings.activeDirectoryConfig", actual.ActiveDirectoryConfig, desired.ActiveDirectoryConfig)
-	}
-	if !AdvancedMachineFeaturesMatch(desired.AdvancedMachineFeatures, actual.AdvancedMachineFeatures) {
-		diff.AddField(".settings.advancedMachineFeatures", actual.AdvancedMachineFeatures, desired.AdvancedMachineFeatures)
-	}
+	diff.AddDiff(DiffActiveDirectoryConfig(desired.ActiveDirectoryConfig, actual.ActiveDirectoryConfig))
+	diff.AddDiff(DiffAdvancedMachineFeatures(desired.AdvancedMachineFeatures, actual.AdvancedMachineFeatures))
 	if !slicesMatch(desired.AuthorizedGaeApplications, actual.AuthorizedGaeApplications) {
 		diff.AddField(".settings.authorizedGaeApplications", actual.AuthorizedGaeApplications, desired.AuthorizedGaeApplications)
 	}
 	if desired.AvailabilityType != actual.AvailabilityType {
 		diff.AddField(".settings.availabilityType", actual.AvailabilityType, desired.AvailabilityType)
 	}
-	if !BackupConfigurationsMatch(desired.BackupConfiguration, actual.BackupConfiguration) {
-		diff.AddField(".settings.backupConfiguration", actual.BackupConfiguration, desired.BackupConfiguration)
-	}
+	diff.AddDiff(DiffBackupConfiguration(desired.BackupConfiguration, actual.BackupConfiguration))
 	if desired.Collation != actual.Collation {
 		diff.AddField(".settings.collation", actual.Collation, desired.Collation)
 	}
@@ -139,9 +129,7 @@ func DiffSettings(desired *api.Settings, actual *api.Settings) *structuredreport
 		diff.AddField(".settings.connectorEnforcement", actual.ConnectorEnforcement, desired.ConnectorEnforcement)
 	}
 	// Ignore CrashSafeReplicationEnabled. It is only applicable to first-gen instances.
-	if !DataCacheConfigsMatch(desired.DataCacheConfig, actual.DataCacheConfig) {
-		diff.AddField(".settings.dataCacheConfig", actual.DataCacheConfig, desired.DataCacheConfig)
-	}
+	diff.AddDiff(DiffDataCacheConfig(desired.DataCacheConfig, actual.DataCacheConfig))
 	if desired.DataDiskSizeGb != actual.DataDiskSizeGb {
 		diff.AddField(".settings.dataDiskSizeGb", actual.DataDiskSizeGb, desired.DataDiskSizeGb)
 	}
@@ -163,22 +151,12 @@ func DiffSettings(desired *api.Settings, actual *api.Settings) *structuredreport
 	}
 	// Ignore EnableDataplexIntegration. It is not supported in KRM API.
 	// Ignore EnableGoogleMlIntegration. It is not supported in KRM API.
-	if !InsightsConfigsMatch(desired.InsightsConfig, actual.InsightsConfig) {
-		diff.AddField(".settings.insightsConfig", actual.InsightsConfig, desired.InsightsConfig)
-	}
-	if !IpConfigurationsMatch(desired.IpConfiguration, actual.IpConfiguration) {
-		diff.AddField(".settings.ipConfiguration", actual.IpConfiguration, desired.IpConfiguration)
-	}
+	diff.AddDiff(DiffInsightsConfig(desired.InsightsConfig, actual.InsightsConfig))
+	diff.AddDiff(DiffIpConfiguration(desired.IpConfiguration, actual.IpConfiguration))
 	// Ignore Kind. It is sometimes not set in API responses.
-	if !LocationPreferencesMatch(desired.LocationPreference, actual.LocationPreference) {
-		diff.AddField(".settings.locationPreference", actual.LocationPreference, desired.LocationPreference)
-	}
-	if !MaintenanceWindowsMatch(desired.MaintenanceWindow, actual.MaintenanceWindow) {
-		diff.AddField(".settings.maintenanceWindow", actual.MaintenanceWindow, desired.MaintenanceWindow)
-	}
-	if !PasswordValidationPoliciesMatch(desired.PasswordValidationPolicy, actual.PasswordValidationPolicy) {
-		diff.AddField(".settings.passwordValidationPolicy", actual.PasswordValidationPolicy, desired.PasswordValidationPolicy)
-	}
+	diff.AddDiff(DiffLocationPreference(desired.LocationPreference, actual.LocationPreference))
+	diff.AddDiff(DiffMaintenanceWindow(desired.MaintenanceWindow, actual.MaintenanceWindow))
+	diff.AddDiff(DiffPasswordValidationPolicy(desired.PasswordValidationPolicy, actual.PasswordValidationPolicy))
 	if desired.PricingPlan != actual.PricingPlan {
 		diff.AddField(".settings.pricingPlan", actual.PricingPlan, desired.PricingPlan)
 	}
@@ -188,12 +166,8 @@ func DiffSettings(desired *api.Settings, actual *api.Settings) *structuredreport
 	if desired.SettingsVersion != actual.SettingsVersion {
 		diff.AddField(".settings.settingsVersion", actual.SettingsVersion, desired.SettingsVersion)
 	}
-	if !SqlServerAuditConfigsMatch(desired.SqlServerAuditConfig, actual.SqlServerAuditConfig) {
-		diff.AddField(".settings.sqlServerAuditConfig", actual.SqlServerAuditConfig, desired.SqlServerAuditConfig)
-	}
-	if !StorageAutoResizesMatch(desired.StorageAutoResize, actual.StorageAutoResize) {
-		diff.AddField(".settings.storageAutoResize", actual.StorageAutoResize, desired.StorageAutoResize)
-	}
+	diff.AddDiff(DiffSqlServerAuditConfig(desired.SqlServerAuditConfig, actual.SqlServerAuditConfig))
+	diff.AddDiff(DiffStorageAutoResize(desired.StorageAutoResize, actual.StorageAutoResize))
 	if desired.StorageAutoResizeLimit != actual.StorageAutoResizeLimit {
 		diff.AddField(".settings.storageAutoResizeLimit", actual.StorageAutoResizeLimit, desired.StorageAutoResizeLimit)
 	}
@@ -223,135 +197,145 @@ func slicesMatch[T any](desired []T, actual []T) bool {
 	return reflect.DeepEqual(desired, actual)
 }
 
-func MysqlReplicaConfigurationsMatch(desired *api.MySqlReplicaConfiguration, actual *api.MySqlReplicaConfiguration) bool {
+func DiffMysqlReplicaConfiguration(desired *api.MySqlReplicaConfiguration, actual *api.MySqlReplicaConfiguration) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
 	if desired == nil && actual == nil {
-		return true
+		return diff
 	}
 	if !PointersMatch(desired, actual) {
-		return false
+		diff.AddField(".replicaConfiguration.mysqlReplicaConfiguration", actual, desired)
+		return diff
 	}
 	if desired.CaCertificate != actual.CaCertificate {
-		return false
+		diff.AddField(".replicaConfiguration.mysqlReplicaConfiguration.caCertificate", actual.CaCertificate, desired.CaCertificate)
 	}
 	if desired.ClientCertificate != actual.ClientCertificate {
-		return false
+		diff.AddField(".replicaConfiguration.mysqlReplicaConfiguration.clientCertificate", actual.ClientCertificate, desired.ClientCertificate)
 	}
 	if desired.ClientKey != actual.ClientKey {
-		return false
+		diff.AddField(".replicaConfiguration.mysqlReplicaConfiguration.clientKey", actual.ClientKey, desired.ClientKey)
 	}
 	if desired.ConnectRetryInterval != actual.ConnectRetryInterval {
-		return false
+		diff.AddField(".replicaConfiguration.mysqlReplicaConfiguration.connectRetryInterval", actual.ConnectRetryInterval, desired.ConnectRetryInterval)
 	}
 	if desired.DumpFilePath != actual.DumpFilePath {
-		return false
+		diff.AddField(".replicaConfiguration.mysqlReplicaConfiguration.dumpFilePath", actual.DumpFilePath, desired.DumpFilePath)
 	}
 	// Ignore Kind. It is sometimes not set in API responses.
 	if desired.MasterHeartbeatPeriod != actual.MasterHeartbeatPeriod {
-		return false
+		diff.AddField(".replicaConfiguration.mysqlReplicaConfiguration.masterHeartbeatPeriod", actual.MasterHeartbeatPeriod, desired.MasterHeartbeatPeriod)
 	}
 	// Ignore Password. It is not exported.
 	if desired.SslCipher != actual.SslCipher {
-		return false
+		diff.AddField(".replicaConfiguration.mysqlReplicaConfiguration.sslCipher", actual.SslCipher, desired.SslCipher)
 	}
 	if desired.Username != actual.Username {
-		return false
+		diff.AddField(".replicaConfiguration.mysqlReplicaConfiguration.username", actual.Username, desired.Username)
 	}
 	if desired.VerifyServerCertificate != actual.VerifyServerCertificate {
-		return false
+		diff.AddField(".replicaConfiguration.mysqlReplicaConfiguration.verifyServerCertificate", actual.VerifyServerCertificate, desired.VerifyServerCertificate)
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
-	return true
+	return diff
 }
 
-func ActiveDirectoryConfigsMatch(desired *api.SqlActiveDirectoryConfig, actual *api.SqlActiveDirectoryConfig) bool {
+func DiffActiveDirectoryConfig(desired *api.SqlActiveDirectoryConfig, actual *api.SqlActiveDirectoryConfig) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
 	if desired == nil && actual == nil {
-		return true
+		return diff
 	}
 	if !PointersMatch(desired, actual) {
-		return false
+		diff.AddField(".settings.activeDirectoryConfig", actual, desired)
+		return diff
 	}
 	if desired.Domain != actual.Domain {
-		return false
+		diff.AddField(".settings.activeDirectoryConfig.domain", actual.Domain, desired.Domain)
 	}
 	// Ignore Kind. It is sometimes not set in API responses.
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
-	return true
+	return diff
 }
 
-func AdvancedMachineFeaturesMatch(desired *api.AdvancedMachineFeatures, actual *api.AdvancedMachineFeatures) bool {
+func DiffAdvancedMachineFeatures(desired *api.AdvancedMachineFeatures, actual *api.AdvancedMachineFeatures) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
 	if desired == nil && actual == nil {
-		return true
+		return diff
 	}
 	if !PointersMatch(desired, actual) {
-		return false
+		diff.AddField(".settings.advancedMachineFeatures", actual, desired)
+		return diff
 	}
 	if desired.ThreadsPerCore != actual.ThreadsPerCore {
-		return false
+		diff.AddField(".settings.advancedMachineFeatures.threadsPerCore", actual.ThreadsPerCore, desired.ThreadsPerCore)
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
-	return true
+	return diff
 }
 
-func BackupConfigurationsMatch(desired *api.BackupConfiguration, actual *api.BackupConfiguration) bool {
+func DiffBackupConfiguration(desired *api.BackupConfiguration, actual *api.BackupConfiguration) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
 	if desired == nil && actual == nil {
-		return true
+		return diff
 	}
 	if !PointersMatch(desired, actual) {
-		return false
+		diff.AddField(".settings.backupConfiguration", actual, desired)
+		return diff
 	}
-	if !BackupRetentionSettingsMatch(desired.BackupRetentionSettings, actual.BackupRetentionSettings) {
-		return false
-	}
+	diff.AddDiff(DiffBackupRetentionSettings(desired.BackupRetentionSettings, actual.BackupRetentionSettings))
 	if desired.BinaryLogEnabled != actual.BinaryLogEnabled {
-		return false
+		diff.AddField(".settings.backupConfiguration.binaryLogEnabled", actual.BinaryLogEnabled, desired.BinaryLogEnabled)
 	}
 	if desired.Enabled != actual.Enabled {
-		return false
+		diff.AddField(".settings.backupConfiguration.enabled", actual.Enabled, desired.Enabled)
 	}
 	// Ignore Kind. It is sometimes not set in API responses.
 	if desired.Location != actual.Location {
-		return false
+		diff.AddField(".settings.backupConfiguration.location", actual.Location, desired.Location)
 	}
 	if desired.PointInTimeRecoveryEnabled != actual.PointInTimeRecoveryEnabled {
-		return false
+		diff.AddField(".settings.backupConfiguration.pointInTimeRecoveryEnabled", actual.PointInTimeRecoveryEnabled, desired.PointInTimeRecoveryEnabled)
 	}
 	// Ignore StartTime if it is not set. empty string is not a valid start time.
 	if desired.StartTime != "" && desired.StartTime != actual.StartTime {
-		return false
+		diff.AddField(".settings.backupConfiguration.startTime", actual.StartTime, desired.StartTime)
 	}
 	// Ignore TransactionLogRetentionDays if it is not set. 0 is not a valid transaction log retention days.
 	if desired.TransactionLogRetentionDays != 0 && desired.TransactionLogRetentionDays != actual.TransactionLogRetentionDays {
-		return false
+		diff.AddField(".settings.backupConfiguration.transactionLogRetentionDays", actual.TransactionLogRetentionDays, desired.TransactionLogRetentionDays)
 	}
 
 	// Ignore ReplicationLogArchivingEnabled. It is not supported in KRM API.
 	// Ignore TransactionalLogStorageState. It is not supported in KRM API.
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
-	return true
+	return diff
 }
-func BackupRetentionSettingsMatch(desired *api.BackupRetentionSettings, actual *api.BackupRetentionSettings) bool {
+
+func DiffBackupRetentionSettings(desired *api.BackupRetentionSettings, actual *api.BackupRetentionSettings) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
 	if desired == nil && actual == nil {
-		return true
+		return diff
 	}
 	if !PointersMatch(desired, actual) {
-		return false
+		diff.AddField(".settings.backupConfiguration.backupRetentionSettings", actual, desired)
+		return diff
 	}
 	if desired.RetainedBackups != actual.RetainedBackups {
-		return false
+		diff.AddField(".settings.backupConfiguration.backupRetentionSettings.retainedBackups", actual.RetainedBackups, desired.RetainedBackups)
 	}
 	if desired.RetentionUnit != actual.RetentionUnit {
-		return false
+		diff.AddField(".settings.backupConfiguration.backupRetentionSettings.retentionUnit", actual.RetentionUnit, desired.RetentionUnit)
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
-	return true
+	return diff
 }
 
-func DataCacheConfigsMatch(desired *api.DataCacheConfig, actual *api.DataCacheConfig) bool {
+func DiffDataCacheConfig(desired *api.DataCacheConfig, actual *api.DataCacheConfig) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
 	// GCP omits DataCacheConfig when DataCacheEnabled is false.
 	// Treat nil and false as equivalent.
 	desiredEnabled := false
@@ -362,7 +346,10 @@ func DataCacheConfigsMatch(desired *api.DataCacheConfig, actual *api.DataCacheCo
 	if actual != nil {
 		actualEnabled = actual.DataCacheEnabled
 	}
-	return desiredEnabled == actualEnabled
+	if desiredEnabled != actualEnabled {
+		diff.AddField(".settings.dataCacheConfig.dataCacheEnabled", actualEnabled, desiredEnabled)
+	}
+	return diff
 }
 
 func DatabaseFlagListsMatch(desired []*api.DatabaseFlags, actual []*api.DatabaseFlags) bool {
@@ -428,68 +415,70 @@ func DenyMaintenancePeriodsMatch(desired *api.DenyMaintenancePeriod, actual *api
 	return true
 }
 
-func InsightsConfigsMatch(desired *api.InsightsConfig, actual *api.InsightsConfig) bool {
+func DiffInsightsConfig(desired *api.InsightsConfig, actual *api.InsightsConfig) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
 	if desired == nil && actual == nil {
-		return true
+		return diff
 	}
 	if !PointersMatch(desired, actual) {
-		return false
+		diff.AddField(".settings.insightsConfig", actual, desired)
+		return diff
 	}
 	if desired.QueryInsightsEnabled != actual.QueryInsightsEnabled {
-		return false
+		diff.AddField(".settings.insightsConfig.queryInsightsEnabled", actual.QueryInsightsEnabled, desired.QueryInsightsEnabled)
 	}
 	if desired.QueryPlansPerMinute != actual.QueryPlansPerMinute {
-		return false
+		diff.AddField(".settings.insightsConfig.queryPlansPerMinute", actual.QueryPlansPerMinute, desired.QueryPlansPerMinute)
 	}
 	if desired.QueryStringLength != actual.QueryStringLength {
-		return false
+		diff.AddField(".settings.insightsConfig.queryStringLength", actual.QueryStringLength, desired.QueryStringLength)
 	}
 	if desired.RecordApplicationTags != actual.RecordApplicationTags {
-		return false
+		diff.AddField(".settings.insightsConfig.recordApplicationTags", actual.RecordApplicationTags, desired.RecordApplicationTags)
 	}
 	if desired.RecordClientAddress != actual.RecordClientAddress {
-		return false
+		diff.AddField(".settings.insightsConfig.recordClientAddress", actual.RecordClientAddress, desired.RecordClientAddress)
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
-	return true
+	return diff
 }
 
-func IpConfigurationsMatch(desired *api.IpConfiguration, actual *api.IpConfiguration) bool {
+func DiffIpConfiguration(desired *api.IpConfiguration, actual *api.IpConfiguration) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
 	if desired == nil && actual == nil {
-		return true
+		return diff
 	}
 	if !PointersMatch(desired, actual) {
-		return false
+		diff.AddField(".settings.ipConfiguration", actual, desired)
+		return diff
 	}
 	if desired.AllocatedIpRange != actual.AllocatedIpRange {
-		return false
+		diff.AddField(".settings.ipConfiguration.allocatedIpRange", actual.AllocatedIpRange, desired.AllocatedIpRange)
 	}
 	if !AclEntryListsMatch(desired.AuthorizedNetworks, actual.AuthorizedNetworks) {
-		return false
+		diff.AddField(".settings.ipConfiguration.authorizedNetworks", actual.AuthorizedNetworks, desired.AuthorizedNetworks)
 	}
 	if desired.EnablePrivatePathForGoogleCloudServices != actual.EnablePrivatePathForGoogleCloudServices {
-		return false
+		diff.AddField(".settings.ipConfiguration.enablePrivatePathForGoogleCloudServices", actual.EnablePrivatePathForGoogleCloudServices, desired.EnablePrivatePathForGoogleCloudServices)
 	}
 	if desired.Ipv4Enabled != actual.Ipv4Enabled {
-		return false
+		diff.AddField(".settings.ipConfiguration.ipv4Enabled", actual.Ipv4Enabled, desired.Ipv4Enabled)
 	}
 	if desired.PrivateNetwork != actual.PrivateNetwork {
-		return false
+		diff.AddField(".settings.ipConfiguration.privateNetwork", actual.PrivateNetwork, desired.PrivateNetwork)
 	}
-	if !PscConfigsMatch(desired.PscConfig, actual.PscConfig) {
-		return false
-	}
+	diff.AddDiff(DiffPscConfig(desired.PscConfig, actual.PscConfig))
 	if desired.RequireSsl != actual.RequireSsl {
-		return false
+		diff.AddField(".settings.ipConfiguration.requireSsl", actual.RequireSsl, desired.RequireSsl)
 	}
 	// Ignore ServerCaMode. It is not supported in KRM API.
 	if desired.SslMode != actual.SslMode {
-		return false
+		diff.AddField(".settings.ipConfiguration.sslMode", actual.SslMode, desired.SslMode)
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
-	return true
+	return diff
 }
 
 // AclEntriesByName implements sort.Interface for []*api.AclEntry based on the Name field.
@@ -538,132 +527,144 @@ func AclEntriesMatch(desired *api.AclEntry, actual *api.AclEntry) bool {
 	return true
 }
 
-func PscConfigsMatch(desired *api.PscConfig, actual *api.PscConfig) bool {
+func DiffPscConfig(desired *api.PscConfig, actual *api.PscConfig) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
 	if desired == nil && actual == nil {
-		return true
+		return diff
 	}
 	if !PointersMatch(desired, actual) {
-		return false
+		diff.AddField(".settings.ipConfiguration.pscConfig", actual, desired)
+		return diff
 	}
 	if !reflect.DeepEqual(desired.AllowedConsumerProjects, actual.AllowedConsumerProjects) {
-		return false
+		diff.AddField(".settings.ipConfiguration.pscConfig.allowedConsumerProjects", actual.AllowedConsumerProjects, desired.AllowedConsumerProjects)
 	}
 	if desired.PscEnabled != actual.PscEnabled {
-		return false
+		diff.AddField(".settings.ipConfiguration.pscConfig.pscEnabled", actual.PscEnabled, desired.PscEnabled)
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
-	return true
+	return diff
 }
 
-func LocationPreferencesMatch(desired *api.LocationPreference, actual *api.LocationPreference) bool {
+func DiffLocationPreference(desired *api.LocationPreference, actual *api.LocationPreference) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
 	if desired == nil && actual == nil {
-		return true
+		return diff
 	}
 	if !PointersMatch(desired, actual) {
-		return false
+		diff.AddField(".settings.locationPreference", actual, desired)
+		return diff
 	}
 	if desired.FollowGaeApplication != actual.FollowGaeApplication {
-		return false
+		diff.AddField(".settings.locationPreference.followGaeApplication", actual.FollowGaeApplication, desired.FollowGaeApplication)
 	}
 	// Ignore Kind. It is sometimes not set in API responses.
 	if desired.SecondaryZone != actual.SecondaryZone {
-		return false
+		diff.AddField(".settings.locationPreference.secondaryZone", actual.SecondaryZone, desired.SecondaryZone)
 	}
 	if desired.Zone != actual.Zone {
-		return false
+		diff.AddField(".settings.locationPreference.zone", actual.Zone, desired.Zone)
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
-	return true
+	return diff
 }
 
-func MaintenanceWindowsMatch(desired *api.MaintenanceWindow, actual *api.MaintenanceWindow) bool {
+func DiffMaintenanceWindow(desired *api.MaintenanceWindow, actual *api.MaintenanceWindow) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
 	if desired == nil && actual == nil {
-		return true
+		return diff
 	}
 	if !PointersMatch(desired, actual) {
-		return false
+		diff.AddField(".settings.maintenanceWindow", actual, desired)
+		return diff
 	}
 	if desired.Day != actual.Day {
-		return false
+		diff.AddField(".settings.maintenanceWindow.day", actual.Day, desired.Day)
 	}
 	if desired.Hour != actual.Hour {
-		return false
+		diff.AddField(".settings.maintenanceWindow.hour", actual.Hour, desired.Hour)
 	}
 	// Ignore Kind. It is sometimes not set in API responses.
 	if desired.UpdateTrack != actual.UpdateTrack {
-		return false
+		diff.AddField(".settings.maintenanceWindow.updateTrack", actual.UpdateTrack, desired.UpdateTrack)
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
-	return true
+	return diff
 }
 
-func PasswordValidationPoliciesMatch(desired *api.PasswordValidationPolicy, actual *api.PasswordValidationPolicy) bool {
+func DiffPasswordValidationPolicy(desired *api.PasswordValidationPolicy, actual *api.PasswordValidationPolicy) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
 	if desired == nil && actual == nil {
-		return true
+		return diff
 	}
 	if !PointersMatch(desired, actual) {
-		return false
+		diff.AddField(".settings.passwordValidationPolicy", actual, desired)
+		return diff
 	}
 	if desired.Complexity != actual.Complexity {
-		return false
+		diff.AddField(".settings.passwordValidationPolicy.complexity", actual.Complexity, desired.Complexity)
 	}
 	// Ignore DisallowCompromisedCredentials. It is not supported in KRM API.
 	if desired.DisallowUsernameSubstring != actual.DisallowUsernameSubstring {
-		return false
+		diff.AddField(".settings.passwordValidationPolicy.disallowUsernameSubstring", actual.DisallowUsernameSubstring, desired.DisallowUsernameSubstring)
 	}
 	if desired.EnablePasswordPolicy != actual.EnablePasswordPolicy {
-		return false
+		diff.AddField(".settings.passwordValidationPolicy.enablePasswordPolicy", actual.EnablePasswordPolicy, desired.EnablePasswordPolicy)
 	}
 	if desired.MinLength != actual.MinLength {
-		return false
+		diff.AddField(".settings.passwordValidationPolicy.minLength", actual.MinLength, desired.MinLength)
 	}
 	if desired.PasswordChangeInterval != actual.PasswordChangeInterval {
-		return false
+		diff.AddField(".settings.passwordValidationPolicy.passwordChangeInterval", actual.PasswordChangeInterval, desired.PasswordChangeInterval)
 	}
 	if desired.ReuseInterval != actual.ReuseInterval {
-		return false
+		diff.AddField(".settings.passwordValidationPolicy.reuseInterval", actual.ReuseInterval, desired.ReuseInterval)
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
-	return true
+	return diff
 }
 
-func SqlServerAuditConfigsMatch(desired *api.SqlServerAuditConfig, actual *api.SqlServerAuditConfig) bool {
+func DiffSqlServerAuditConfig(desired *api.SqlServerAuditConfig, actual *api.SqlServerAuditConfig) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
 	if desired == nil && actual == nil {
-		return true
+		return diff
 	}
 	if !PointersMatch(desired, actual) {
-		return false
+		diff.AddField(".settings.sqlServerAuditConfig", actual, desired)
+		return diff
 	}
 	if desired.Bucket != actual.Bucket {
-		return false
+		diff.AddField(".settings.sqlServerAuditConfig.bucket", actual.Bucket, desired.Bucket)
 	}
 	// Ignore Kind. It is sometimes not set in API responses.
 	if desired.RetentionInterval != actual.RetentionInterval {
-		return false
+		diff.AddField(".settings.sqlServerAuditConfig.retentionInterval", actual.RetentionInterval, desired.RetentionInterval)
 	}
 	if desired.UploadInterval != actual.UploadInterval {
-		return false
+		diff.AddField(".settings.sqlServerAuditConfig.uploadInterval", actual.UploadInterval, desired.UploadInterval)
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
-	return true
+	return diff
 }
 
-func StorageAutoResizesMatch(desired *bool, actual *bool) bool {
+func DiffStorageAutoResize(desired *bool, actual *bool) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
 	if desired == nil && actual == nil {
-		return true
+		return diff
 	}
 	if !PointersMatch(desired, actual) {
-		return false
+		diff.AddField(".settings.storageAutoResize", actual, desired)
+		return diff
 	}
 	if *desired != *actual {
-		return false
+		diff.AddField(".settings.storageAutoResize", *actual, *desired)
 	}
-	return true
+	return diff
 }
 
 func PointersMatch[T any](desired *T, actual *T) bool {
@@ -675,17 +676,19 @@ func PointersMatch[T any](desired *T, actual *T) bool {
 	return true
 }
 
-func ReplicationClustersMatch(desired *api.ReplicationCluster, actual *api.ReplicationCluster) bool {
+func DiffReplicationCluster(desired *api.ReplicationCluster, actual *api.ReplicationCluster) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
 	if desired == nil && actual == nil {
-		return true
+		return diff
 	}
 	if !PointersMatch(desired, actual) {
-		return false
+		diff.AddField(".replicationCluster", actual, desired)
+		return diff
 	}
 	if desired.FailoverDrReplicaName != actual.FailoverDrReplicaName {
-		return false
+		diff.AddField(".replicationCluster.failoverDrReplicaName", actual.FailoverDrReplicaName, desired.FailoverDrReplicaName)
 	}
 	// Ignore PsaWriteEndpoint. It is output only.
 	// Ignore DrReplica. It is output only.
-	return true
+	return diff
 }
