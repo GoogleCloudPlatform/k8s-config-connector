@@ -138,7 +138,7 @@ type AndroidAttributes struct {
 	OwnerProfileAccount *bool `protobuf:"varint,4,opt,name=owner_profile_account,json=ownerProfileAccount" json:"owner_profile_account,omitempty"`
 	// Ownership privileges on device.
 	OwnershipPrivilege *string `protobuf:"bytes,5,opt,name=ownership_privilege,json=ownershipPrivilege" json:"ownership_privilege,omitempty"`
-	// Whether device supports Android work profiles. If false, this service will not block access to corp data even if an administrator turns on the "Enforce Work Profile" policy.
+	// Whether the device supports Android work profiles. If false, this service will not block access to corp data even if an administrator turns on the "Enforce Work Profile" policy.
 	SupportsWorkProfile *bool `protobuf:"varint,6,opt,name=supports_work_profile,json=supportsWorkProfile" json:"supports_work_profile,omitempty"`
 	// Whether Android verified boot status is GREEN.
 	VerifiedBoot *bool `protobuf:"varint,7,opt,name=verified_boot,json=verifiedBoot" json:"verified_boot,omitempty"`
@@ -430,7 +430,7 @@ func (x *BlockDeviceUserResponse) GetDeviceUser() *DeviceUser {
 	return nil
 }
 
-// Contains information about browser profiles reported by the Clients on the device (e.g. [Endpoint Verification extension](https://chromewebstore.google.com/detail/endpoint-verification/callobklhcbilhphinckomhgkigmfocg?pli=1)).
+// Contains information about browser profiles reported by the clients on the device (e.g. [Endpoint Verification extension](https://chromewebstore.google.com/detail/endpoint-verification/callobklhcbilhphinckomhgkigmfocg?pli=1)).
 type BrowserAttributes struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

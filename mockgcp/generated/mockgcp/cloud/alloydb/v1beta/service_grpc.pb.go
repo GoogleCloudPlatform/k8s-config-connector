@@ -126,8 +126,6 @@ type AlloyDBAdminClient interface {
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 	// Lists Databases in a given project and location.
 	ListDatabases(ctx context.Context, in *ListDatabasesRequest, opts ...grpc.CallOption) (*ListDatabasesResponse, error)
-	// Creates a new Database in a given project, location, and cluster.
-	CreateDatabase(ctx context.Context, in *CreateDatabaseRequest, opts ...grpc.CallOption) (*Database, error)
 }
 
 type alloyDBAdminClient struct {
@@ -471,15 +469,6 @@ func (c *alloyDBAdminClient) ListDatabases(ctx context.Context, in *ListDatabase
 	return out, nil
 }
 
-func (c *alloyDBAdminClient) CreateDatabase(ctx context.Context, in *CreateDatabaseRequest, opts ...grpc.CallOption) (*Database, error) {
-	out := new(Database)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/CreateDatabase", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // AlloyDBAdminServer is the server API for AlloyDBAdmin service.
 // All implementations must embed UnimplementedAlloyDBAdminServer
 // for forward compatibility
@@ -586,8 +575,6 @@ type AlloyDBAdminServer interface {
 	DeleteUser(context.Context, *DeleteUserRequest) (*empty.Empty, error)
 	// Lists Databases in a given project and location.
 	ListDatabases(context.Context, *ListDatabasesRequest) (*ListDatabasesResponse, error)
-	// Creates a new Database in a given project, location, and cluster.
-	CreateDatabase(context.Context, *CreateDatabaseRequest) (*Database, error)
 	mustEmbedUnimplementedAlloyDBAdminServer()
 }
 
@@ -705,9 +692,6 @@ func (UnimplementedAlloyDBAdminServer) DeleteUser(context.Context, *DeleteUserRe
 }
 func (UnimplementedAlloyDBAdminServer) ListDatabases(context.Context, *ListDatabasesRequest) (*ListDatabasesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListDatabases not implemented")
-}
-func (UnimplementedAlloyDBAdminServer) CreateDatabase(context.Context, *CreateDatabaseRequest) (*Database, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateDatabase not implemented")
 }
 func (UnimplementedAlloyDBAdminServer) mustEmbedUnimplementedAlloyDBAdminServer() {}
 
@@ -1388,24 +1372,6 @@ func _AlloyDBAdmin_ListDatabases_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AlloyDBAdmin_CreateDatabase_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateDatabaseRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AlloyDBAdminServer).CreateDatabase(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/CreateDatabase",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AlloyDBAdminServer).CreateDatabase(ctx, req.(*CreateDatabaseRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // AlloyDBAdmin_ServiceDesc is the grpc.ServiceDesc for AlloyDBAdmin service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1560,10 +1526,6 @@ var AlloyDBAdmin_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListDatabases",
 			Handler:    _AlloyDBAdmin_ListDatabases_Handler,
-		},
-		{
-			MethodName: "CreateDatabase",
-			Handler:    _AlloyDBAdmin_CreateDatabase_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
