@@ -139,33 +139,21 @@ func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, al
 	if altResult != nil && len(altResult.badResult) > 0 {
 		combinedBadResult = append(combinedBadResult, altResult.badResult...)
 	}
-
-	defer func() {
-		for _, result := range combinedBadResult {
-			klog.V(0).Info("\"PreviewResult\" ", result.FormatGKNNReconciledResult())
-		}
-	}()
+	for _, result := range combinedBadResult {
+		klog.V(0).Info("\"PreviewResult\" ", result.FormatGKNNReconciledResult())
+	}
 
 	f, err := os.Create(summaryFile)
 	if err != nil {
 		return fmt.Errorf("error creating file %q: %w", summaryFile, err)
 	}
-	defer func() {
-		if err := f.Close(); err != nil {
-			klog.ErrorS(err, "failed to close file", "file", summaryFile)
-		}
-	}()
+	defer f.Close()
 
 	fmt.Fprintf(f, "Detected %d good and %d bad objects in default run\n", r.goodCount, r.badCount)
 	if altResult != nil {
 		fmt.Fprintf(f, "Detected %d good and %d bad objects in alternative run\n", altResult.goodCount, altResult.badCount)
 	}
 	w := tabwriter.NewWriter(f, 0, 0, 3, ' ', 0)
-	defer func() {
-		if err := w.Flush(); err != nil {
-			klog.ErrorS(err, "error flushing summary report", "file", summaryFile)
-		}
-	}()
 	fmt.Fprintln(w, "GROUP\tKIND\tNAME\tDEFAULT-CONTROLLER\tDEFAULT-RESULT\tDEFAULT-DIFFS\tALTERNATIVE-CONTROLLER\tALTERNATIVE-RESULT\tALTERNATIVE-DIFFS")
 	type resultPair struct {
 		def  *GKNNReconciledResult
@@ -259,6 +247,10 @@ func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, al
 		}
 
 		fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", pair.gknn.Group, pair.gknn.Kind, pair.gknn.Name, defCtrl, defStatus, defDiffs, altCtrl, altStatus, altDiffs)
+	}
+
+	if err := w.Flush(); err != nil {
+		return fmt.Errorf("error flushing summary report: %w", err)
 	}
 
 	if len(combinedBadResult) > 0 {
