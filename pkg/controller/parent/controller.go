@@ -34,7 +34,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -136,29 +135,6 @@ func (r *ParentReconciler) Reconcile(ctx context.Context, req reconcile.Request)
 		}
 		logger.V(1).Info("supported controller types", "resource", req.NamespacedName, "supportedControllers", config.SupportedControllers)
 
-		// Try to write a status on the CCC
-		ccc := &corekccv1alpha1.ConfigConnectorContext{}
-		cccNamespacedName := types.NamespacedName{
-			Namespace: req.Namespace,
-			Name:      corekccv1alpha1.ConfigConnectorContextAllowedName,
-		}
-		if err := r.Get(ctx, cccNamespacedName, ccc); err != nil {
-			if !apierrors.IsNotFound(err) {
-				logger.Error(err, "error getting ConfigConnectorContext, cannot write status", "resource", req.NamespacedName)
-			}
-		} else {
-			msg := fmt.Sprintf("controller type %q is not supported for resource %q. Supported types are: %v. Falling back to default %q.",
-				controllerType, r.gvk.GroupKind().String(), config.SupportedControllers, config.DefaultController)
-
-			cccToUpdate := ccc.DeepCopy()
-			cccToUpdate.Status.Healthy = false
-			cccToUpdate.Status.Errors = append(cccToUpdate.Status.Errors, msg)
-
-			if err := r.Status().Update(ctx, cccToUpdate); err != nil {
-				logger.Error(err, "error updating ConfigConnectorContext status", "resource", req.NamespacedName)
-			}
-		}
-
 		controllerType = config.DefaultController
 		logger.V(1).Info("falling back to default controller type", "resource", req.NamespacedName, "type", controllerType)
 	}
@@ -196,19 +172,8 @@ func (r *ParentReconciler) Reconcile(ctx context.Context, req reconcile.Request)
 func (r *ParentReconciler) determineControllerType(ctx context.Context, u *unstructured.Unstructured) (k8s.ReconcilerType, error) {
 	// Check for resource annotation
 	annotations := u.GetAnnotations()
-	controllerTypeStr := annotations[k8s.AlphaReconcilerAnnotation]
-	if controllerTypeStr == "" {
-		controllerTypeStr = annotations[k8s.ReconcilerTypeAnnotation]
-	}
-
-	if controllerTypeStr == "direct" {
+	if annotations[k8s.AlphaReconcilerAnnotation] == "direct" {
 		return k8s.ReconcilerTypeDirect, nil
-	}
-	if controllerTypeStr == "tf" {
-		return k8s.ReconcilerTypeTerraform, nil
-	}
-	if controllerTypeStr == "dcl" {
-		return k8s.ReconcilerTypeDCL, nil
 	}
 
 	// Special case handling. Will be removed after the resources have turned on direct as default.

@@ -207,20 +207,9 @@ func ReconcilerTypeForObject(u *unstructured.Unstructured, c client.Client) (k8s
 	case "IAMAuditConfig":
 		return k8s.ReconcilerTypeIAMAuditConfig, nil
 	default:
-		// Check for reconciler annotation.
-		annotations := u.GetAnnotations()
-		controllerTypeStr := annotations[k8s.AlphaReconcilerAnnotation]
-		if controllerTypeStr == "" {
-			controllerTypeStr = annotations[k8s.ReconcilerTypeAnnotation]
-		}
-		if controllerTypeStr == "direct" {
+		// Check for alpha annotation to opt in to direct reconciliation.
+		if _, ok := u.GetAnnotations()[k8s.ReconcilerTypeAnnotation]; ok {
 			return k8s.ReconcilerTypeDirect, nil
-		}
-		if controllerTypeStr == "tf" {
-			return k8s.ReconcilerTypeTerraform, nil
-		}
-		if controllerTypeStr == "dcl" {
-			return k8s.ReconcilerTypeDCL, nil
 		}
 
 		// Check for resource-specific fields that indicate the resource should be
