@@ -612,6 +612,8 @@ func DLPJobTriggerStatus_ToProto(mapCtx *direct.MapContext, in *krm.DLPJobTrigge
 	// MISSING: Status
 	return out
 }
+
+/* found existing non-generated mapping function "DatastoreOptions_FromProto", skipping
 func DatastoreOptions_FromProto(mapCtx *direct.MapContext, in *pb.DatastoreOptions) *krm.DatastoreOptions {
 	if in == nil {
 		return nil
@@ -621,15 +623,21 @@ func DatastoreOptions_FromProto(mapCtx *direct.MapContext, in *pb.DatastoreOptio
 	out.Kind = KindExpression_FromProto(mapCtx, in.GetKind())
 	return out
 }
-func DatastoreOptions_ToProto(mapCtx *direct.MapContext, in *krm.DatastoreOptions) *pb.DatastoreOptions {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "DatastoreOptions_ToProto", skipping
+
+	func DatastoreOptions_ToProto(mapCtx *direct.MapContext, in *krm.DatastoreOptions) *pb.DatastoreOptions {
+		if in == nil {
+			return nil
+		}
+		out := &pb.DatastoreOptions{}
+		out.PartitionId = PartitionID_ToProto(mapCtx, in.PartitionID)
+		out.Kind = KindExpression_ToProto(mapCtx, in.Kind)
+		return out
 	}
-	out := &pb.DatastoreOptions{}
-	out.PartitionId = PartitionID_ToProto(mapCtx, in.PartitionID)
-	out.Kind = KindExpression_ToProto(mapCtx, in.Kind)
-	return out
-}
+*/
 func Error_FromProto(mapCtx *direct.MapContext, in *pb.Error) *krm.Error {
 	if in == nil {
 		return nil
