@@ -150,11 +150,22 @@ func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, al
 	if err != nil {
 		return fmt.Errorf("error creating file %q: %w", summaryFile, err)
 	}
+	defer func() {
+		if err := f.Close(); err != nil {
+			klog.ErrorS(err, "failed to close file", "file", summaryFile)
+		}
+	}()
+
 	fmt.Fprintf(f, "Detected %d good and %d bad objects in default run\n", r.goodCount, r.badCount)
 	if altResult != nil {
 		fmt.Fprintf(f, "Detected %d good and %d bad objects in alternative run\n", altResult.goodCount, altResult.badCount)
 	}
 	w := tabwriter.NewWriter(f, 0, 0, 3, ' ', 0)
+	defer func() {
+		if err := w.Flush(); err != nil {
+			klog.ErrorS(err, "error flushing summary report", "file", summaryFile)
+		}
+	}()
 	fmt.Fprintln(w, "GROUP\tKIND\tNAME\tDEFAULT-CONTROLLER\tDEFAULT-RESULT\tDEFAULT-DIFFS\tALTERNATIVE-CONTROLLER\tALTERNATIVE-RESULT\tALTERNATIVE-DIFFS")
 	type resultPair struct {
 		def  *GKNNReconciledResult
