@@ -433,13 +433,16 @@ spec:
                         publishFindingsToCloudDataCatalog:
                           description: Publish findings to Cloud Datahub.
                           type: object
+                          x-kubernetes-preserve-unknown-fields: true
                         publishSummaryToCscc:
                           description: Publish summary to Cloud Security Command Center
                             (Alpha).
                           type: object
+                          x-kubernetes-preserve-unknown-fields: true
                         publishToStackdriver:
                           description: Enable Stackdriver metric dlp.googleapis.com/finding_count.
                           type: object
+                          x-kubernetes-preserve-unknown-fields: true
                         saveFindings:
                           description: Save resulting findings in a provided location.
                           properties:
@@ -830,6 +833,7 @@ spec:
                               description: Message for detecting output from deidentification
                                 transformations that support reversing.
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                           type: object
                         type: array
                       excludeInfoTypes:

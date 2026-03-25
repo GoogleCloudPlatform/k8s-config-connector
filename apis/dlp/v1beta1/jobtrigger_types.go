@@ -447,3 +447,23 @@ type DLPJobTriggerList struct {
 func init() {
 	SchemeBuilder.Register(&DLPJobTrigger{}, &DLPJobTriggerList{})
 }
+
+// +kubebuilder:validation:XPreserveUnknownFields
+// +kcc:proto=google.privacy.dlp.v2.Action.PublishFindingsToCloudDataCatalog
+type Action_PublishFindingsToCloudDataCatalog struct {
+}
+
+// +kubebuilder:validation:XPreserveUnknownFields
+// +kcc:proto=google.privacy.dlp.v2.Action.PublishSummaryToCscc
+type Action_PublishSummaryToCscc struct {
+}
+
+// +kubebuilder:validation:XPreserveUnknownFields
+// +kcc:proto=google.privacy.dlp.v2.Action.PublishToStackdriver
+type Action_PublishToStackdriver struct {
+}
+
+// +kubebuilder:validation:XPreserveUnknownFields
+// +kcc:proto=google.privacy.dlp.v2.CustomInfoType.SurrogateType
+type CustomInfoType_SurrogateType struct {
+}

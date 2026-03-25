@@ -151,13 +151,19 @@ type Action_JobNotificationEmails struct {
 }
 */
 
+/* found existing non-generated go type "Action_PublishFindingsToCloudDataCatalog", skipping
+
 // +kcc:proto=google.privacy.dlp.v2.Action.PublishFindingsToCloudDataCatalog
 type Action_PublishFindingsToCloudDataCatalog struct {
 }
+*/
+
+/* found existing non-generated go type "Action_PublishSummaryToCscc", skipping
 
 // +kcc:proto=google.privacy.dlp.v2.Action.PublishSummaryToCscc
 type Action_PublishSummaryToCscc struct {
 }
+*/
 
 /* found existing non-generated go type "Action_PublishToPubSub", skipping
 
@@ -172,9 +178,12 @@ type Action_PublishToPubSub struct {
 }
 */
 
+/* found existing non-generated go type "Action_PublishToStackdriver", skipping
+
 // +kcc:proto=google.privacy.dlp.v2.Action.PublishToStackdriver
 type Action_PublishToStackdriver struct {
 }
+*/
 
 // +kcc:proto=google.privacy.dlp.v2.Action.SaveFindings
 type Action_SaveFindings struct {
@@ -525,9 +534,12 @@ type CustomInfoType_Regex struct {
 	GroupIndexes []int32 `json:"groupIndexes,omitempty"`
 }
 
+/* found existing non-generated go type "CustomInfoType_SurrogateType", skipping
+
 // +kcc:proto=google.privacy.dlp.v2.CustomInfoType.SurrogateType
 type CustomInfoType_SurrogateType struct {
 }
+*/
 
 /* found existing non-generated go type "DatastoreOptions", skipping
 
