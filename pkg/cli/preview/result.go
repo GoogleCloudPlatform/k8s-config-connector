@@ -267,10 +267,7 @@ func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, al
 		}
 	}
 
-	if err := w.Flush(); err != nil {
-		return fmt.Errorf("error flushing summary report: %w", err)
-	}
-	return f.Close()
+	return nil
 }
 
 func (r *RecorderReconciledResults) BadResultReport(badResultFile string, badResult []*GKNNReconciledResult) error {
