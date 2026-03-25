@@ -1,0 +1,21 @@
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerNodePool
+metadata:
+  labels:
+    label-one: "value-one"
+  name: nodepool-sample-${uniqueId}
+spec:
+  location: us-central1-a
+  autoscaling:
+    minNodeCount: 1
+    maxNodeCount: 3
+  nodeConfig:
+    taint:
+    - effect: NO_SCHEDULE
+      key: taintA
+      value: anything
+    - effect: NO_SCHEDULE
+      key: taintB
+      value: anything
+  clusterRef:
+    name: cluster-sample-${uniqueId}
