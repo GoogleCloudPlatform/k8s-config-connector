@@ -175,6 +175,11 @@ type BigQueryTable struct {
 type Action_JobNotificationEmails struct {
 }
 
+// +kcc:proto=google.privacy.dlp.v2.Manual
+// +kubebuilder:validation:XPreserveUnknownFields
+type Manual struct {
+}
+
 // +kcc:proto=google.privacy.dlp.v2.BigQueryOptions
 type BigQueryOptions struct {
 	// +required
@@ -441,9 +446,4 @@ type DLPJobTriggerList struct {
 
 func init() {
 	SchemeBuilder.Register(&DLPJobTrigger{}, &DLPJobTriggerList{})
-}
-
-// +kcc:proto=google.privacy.dlp.v2.Manual
-// +kubebuilder:validation:XPreserveUnknownFields
-type Manual struct {
 }
