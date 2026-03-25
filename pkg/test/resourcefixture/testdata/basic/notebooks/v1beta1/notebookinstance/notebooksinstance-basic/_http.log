@@ -137,7 +137,7 @@ OK
       "enableIntegrityMonitoring": true,
       "enableVtpm": true
     },
-    "state": "PROVISIONING",
+    "state": "ACTIVE",
     "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
     "tags": [
       "deeplearning-vm",
@@ -232,7 +232,7 @@ OK
     "enableIntegrityMonitoring": true,
     "enableVtpm": true
   },
-  "state": "PROVISIONING",
+  "state": "ACTIVE",
   "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
   "tags": [
     "deeplearning-vm",
@@ -335,7 +335,7 @@ OK
     "enableIntegrityMonitoring": true,
     "enableVtpm": true
   },
-  "state": "PROVISIONING",
+  "state": "ACTIVE",
   "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
   "tags": [
     "deeplearning-vm",
@@ -426,7 +426,7 @@ OK
     "enableIntegrityMonitoring": true,
     "enableVtpm": true
   },
-  "state": "PROVISIONING",
+  "state": "ACTIVE",
   "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
   "tags": [
     "deeplearning-vm",
