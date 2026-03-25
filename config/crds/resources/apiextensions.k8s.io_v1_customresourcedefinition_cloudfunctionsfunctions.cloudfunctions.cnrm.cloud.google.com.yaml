@@ -203,6 +203,7 @@ spec:
                           Allowed values:
                           * The Google Cloud resource name of a StorageBucket resource (format: {{name}}).
                           * The Google Cloud resource name of a PubSubTopic resource (format: projects/{{project}}/topics/{{name}}).
+                        minLength: 1
                         type: string
                       kind:
                         description: 'Kind of the referent. Allowed values: StorageBucket,PubSubTopic'
@@ -254,6 +255,9 @@ spec:
                     - SECURE_ALWAYS
                     - SECURE_OPTIONAL
                     type: string
+                    x-kubernetes-validations:
+                    - message: SecurityLevel is immutable
+                      rule: self == oldSelf
                 type: object
                 x-kubernetes-validations:
                 - message: HTTPSTrigger is immutable

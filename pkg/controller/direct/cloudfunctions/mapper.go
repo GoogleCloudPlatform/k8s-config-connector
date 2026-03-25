@@ -291,6 +291,8 @@ func FunctionEventTrigger_ToProto(mapCtx *direct.MapContext, in *krm.FunctionEve
 		out.Resource = in.ResourceRef.External
 	} else if in.ResourceRef.Name != "" {
 		mapCtx.Errorf("resourceRef.external must be set (reference %q not resolved)", in.ResourceRef.Name)
+	} else {
+		mapCtx.Errorf("resourceRef.external or resourceRef.name must be set")
 	}
 	out.Service = direct.ValueOf(in.Service)
 	if in.FailurePolicy != nil && *in.FailurePolicy {

@@ -231,6 +231,7 @@ type FunctionResourceRef struct {
 	// Allowed values:
 	// * The Google Cloud resource name of a StorageBucket resource (format: {{name}}).
 	// * The Google Cloud resource name of a PubSubTopic resource (format: projects/{{project}}/topics/{{name}}).
+	// +kubebuilder:validation:MinLength=1
 	External string `json:"external,omitempty"`
 
 	// Kind of the referent. Allowed values: StorageBucket,PubSubTopic
@@ -248,6 +249,7 @@ type FunctionResourceRef struct {
 type FunctionHttpsTrigger struct {
 	// Immutable. Both HTTP and HTTPS requests with URLs that match the handler succeed without redirects. The application can examine the request to determine which protocol was used and respond accordingly. Possible values: SECURITY_LEVEL_UNSPECIFIED, SECURE_ALWAYS, SECURE_OPTIONAL
 	// +kubebuilder:validation:Enum=SECURITY_LEVEL_UNSPECIFIED;SECURE_ALWAYS;SECURE_OPTIONAL
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="SecurityLevel is immutable"
 	SecurityLevel *string `json:"securityLevel,omitempty"`
 }
 
