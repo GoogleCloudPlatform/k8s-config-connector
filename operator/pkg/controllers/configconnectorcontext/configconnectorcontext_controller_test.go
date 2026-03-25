@@ -1482,6 +1482,9 @@ func TestTransformNamespacedComponentsWithWIF(t *testing.T) {
 				if name == k8s.WIFProjectedTokenVolumeName {
 					wifTokenVolFound = true
 				}
+				if name == "gcp-service-account" {
+					t.Errorf("legacy volume %q should not be present in WIF mode", "gcp-service-account")
+				}
 			}
 			if !wifCredVolFound {
 				t.Errorf("expected volume %q in StatefulSet, but it was not found", k8s.WIFCredentialVolumeName)
@@ -1491,18 +1494,13 @@ func TestTransformNamespacedComponentsWithWIF(t *testing.T) {
 			}
 		}
 
-		// Verify: ServiceAccount should NOT have the workload identity annotation set
-		// because GoogleServiceAccount is empty when using WIF
+		// Verify: ServiceAccount should NOT have the workload identity annotation
+		// because AnnotateServiceAccountObject deletes it when GSA is empty (WIF mode)
 		if obj.Kind == "ServiceAccount" && strings.HasPrefix(obj.GetName(), k8s.ServiceAccountNamePrefix) {
 			u := obj.UnstructuredObject()
 			annotations := u.GetAnnotations()
 			if gsaVal, exists := annotations[k8s.WorkloadIdentityAnnotation]; exists {
-				// The annotation may exist from the template with a placeholder value,
-				// but AnnotateServiceAccountObject should NOT have been called to set it
-				// to a real GSA value.
-				if gsaVal != "" && gsaVal != "${SERVICE_ACCOUNT?}" {
-					t.Errorf("expected ServiceAccount to NOT have a real GSA annotation in WIF mode, but found: %v", gsaVal)
-				}
+				t.Errorf("expected ServiceAccount to NOT have workload identity annotation in WIF mode, but found: %q", gsaVal)
 			}
 		}
 	}

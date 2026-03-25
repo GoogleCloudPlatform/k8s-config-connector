@@ -78,7 +78,12 @@ func AnnotateServiceAccountObject(object *manifest.Object, gsa string) (*manifes
 	if annotations == nil {
 		annotations = make(map[string]string)
 	}
-	annotations[k8s.WorkloadIdentityAnnotation] = gsa
+	if gsa == "" {
+		// Remove the annotation to prevent template placeholders from leaking.
+		delete(annotations, k8s.WorkloadIdentityAnnotation)
+	} else {
+		annotations[k8s.WorkloadIdentityAnnotation] = gsa
+	}
 	u.SetAnnotations(annotations)
 	return manifest.NewObject(u)
 }
@@ -402,6 +407,22 @@ func AddWIFVolumes(obj *manifest.Object, wif *corev1beta1.WorkloadIdentityFedera
 		volumes = []interface{}{}
 	}
 
+	// 1a. Filter out legacy gcp-service-account volume from gcp-identity base.
+	filteredVolumes := make([]interface{}, 0, len(volumes))
+	for _, v := range volumes {
+		vol, ok := v.(map[string]interface{})
+		if !ok {
+			filteredVolumes = append(filteredVolumes, v)
+			continue
+		}
+		name, _, _ := unstructured.NestedString(vol, "name")
+		if name == "gcp-service-account" {
+			continue
+		}
+		filteredVolumes = append(filteredVolumes, v)
+	}
+	volumes = filteredVolumes
+
 	// 2. Append a projected volume for the Kubernetes ServiceAccount token.
 	projectedVolume := map[string]interface{}{
 		"name": k8s.WIFProjectedTokenVolumeName,
@@ -450,12 +471,25 @@ func AddWIFVolumes(obj *manifest.Object, wif *corev1beta1.WorkloadIdentityFedera
 		}
 		managerFound = true
 
-		// 6. Append volumeMounts.
+		// 6. Filter out legacy gcp-service-account volumeMount, then append WIF mounts.
 		volumeMounts, _, _ := unstructured.NestedSlice(container, "volumeMounts")
 		if volumeMounts == nil {
 			volumeMounts = []interface{}{}
 		}
-		volumeMounts = append(volumeMounts,
+		filteredMounts := make([]interface{}, 0, len(volumeMounts))
+		for _, vm := range volumeMounts {
+			mount, ok := vm.(map[string]interface{})
+			if !ok {
+				filteredMounts = append(filteredMounts, vm)
+				continue
+			}
+			name, _, _ := unstructured.NestedString(mount, "name")
+			if name == "gcp-service-account" {
+				continue
+			}
+			filteredMounts = append(filteredMounts, vm)
+		}
+		filteredMounts = append(filteredMounts,
 			map[string]interface{}{
 				"name":      k8s.WIFProjectedTokenVolumeName,
 				"mountPath": k8s.WIFProjectedTokenMountPath,
@@ -467,20 +501,33 @@ func AddWIFVolumes(obj *manifest.Object, wif *corev1beta1.WorkloadIdentityFedera
 				"readOnly":  true,
 			},
 		)
-		if err := unstructured.SetNestedSlice(container, volumeMounts, "volumeMounts"); err != nil {
+		if err := unstructured.SetNestedSlice(container, filteredMounts, "volumeMounts"); err != nil {
 			return nil, fmt.Errorf("error setting volumeMounts for container %v: %w", name, err)
 		}
 
-		// 7. Append env var for GOOGLE_APPLICATION_CREDENTIALS.
+		// 7. Filter out existing GOOGLE_APPLICATION_CREDENTIALS, then set WIF value.
 		envVars, _, _ := unstructured.NestedSlice(container, "env")
 		if envVars == nil {
 			envVars = []interface{}{}
 		}
-		envVars = append(envVars, map[string]interface{}{
+		filteredEnv := make([]interface{}, 0, len(envVars))
+		for _, e := range envVars {
+			env, ok := e.(map[string]interface{})
+			if !ok {
+				filteredEnv = append(filteredEnv, e)
+				continue
+			}
+			name, _, _ := unstructured.NestedString(env, "name")
+			if name == "GOOGLE_APPLICATION_CREDENTIALS" {
+				continue
+			}
+			filteredEnv = append(filteredEnv, e)
+		}
+		filteredEnv = append(filteredEnv, map[string]interface{}{
 			"name":  "GOOGLE_APPLICATION_CREDENTIALS",
 			"value": k8s.WIFCredentialMountPath + "/" + k8s.WIFCredentialFileName,
 		})
-		if err := unstructured.SetNestedSlice(container, envVars, "env"); err != nil {
+		if err := unstructured.SetNestedSlice(container, filteredEnv, "env"); err != nil {
 			return nil, fmt.Errorf("error setting env for container %v: %w", name, err)
 		}
 

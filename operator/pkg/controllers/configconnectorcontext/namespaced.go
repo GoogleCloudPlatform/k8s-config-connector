@@ -74,11 +74,9 @@ func transformNamespacedComponentTemplates(ctx context.Context, c client.Client,
 			return nil, err
 		}
 		if processed.Kind == rbacv1.ServiceAccountKind && strings.HasPrefix(processed.GetName(), k8s.ServiceAccountNamePrefix) {
-			if ccc.Spec.GoogleServiceAccount != "" {
-				processed, err = controllers.AnnotateServiceAccountObject(processed, ccc.Spec.GoogleServiceAccount)
-				if err != nil {
-					return nil, errors.Wrap(err, fmt.Sprintf("error annotating ServiceAccount %v/%v", obj.UnstructuredObject().GetNamespace(), obj.UnstructuredObject().GetName()))
-				}
+			processed, err = controllers.AnnotateServiceAccountObject(processed, ccc.Spec.GoogleServiceAccount)
+			if err != nil {
+				return nil, errors.Wrap(err, fmt.Sprintf("error annotating ServiceAccount %v/%v", obj.UnstructuredObject().GetNamespace(), obj.UnstructuredObject().GetName()))
 			}
 		}
 		transformedObjs = append(transformedObjs, processed)
@@ -118,11 +116,9 @@ func transformPerNamespaceComponentTemplates(ctx context.Context, c client.Clien
 			if err != nil {
 				return nil, err
 			}
-			if ccc.Spec.GoogleServiceAccount != "" {
-				processed, err = controllers.AnnotateServiceAccountObject(processed, ccc.Spec.GoogleServiceAccount)
-				if err != nil {
-					return nil, errors.Wrap(err, fmt.Sprintf("error annotating ServiceAccount %v/%v", processed.UnstructuredObject().GetNamespace(), processed.UnstructuredObject().GetName()))
-				}
+			processed, err = controllers.AnnotateServiceAccountObject(processed, ccc.Spec.GoogleServiceAccount)
+			if err != nil {
+				return nil, errors.Wrap(err, fmt.Sprintf("error annotating ServiceAccount %v/%v", processed.UnstructuredObject().GetNamespace(), processed.UnstructuredObject().GetName()))
 			}
 		}
 		if processed.Kind == "RoleBinding" || processed.Kind == "ClusterRoleBinding" {
