@@ -12,5 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# https://pkg.go.dev/github.com/buger/jsonparser@v1.1.1
+# https://pkg.go.dev/github.com/buger/jsonparser@v1.1.2
 license: MIT
