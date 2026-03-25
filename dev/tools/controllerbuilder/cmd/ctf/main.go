@@ -42,7 +42,17 @@ func main() {
 func run(ctx context.Context) error {
 
 	var options llm.Options
-	options.InitDefaults()
+
+	llmClient, err := options.NewLLMClient(ctx)
+	if err != nil {
+		return fmt.Errorf("initializing LLM: %w", err)
+	}
+	defer llmClient.Close()
+
+	err = options.InitDefaultsWithLatestModelIfUnset(ctx, llmClient)
+	if err != nil {
+		return fmt.Errorf("initializing defaults: %w", err)
+	}
 
 	scenario := ""
 	flag.StringVar(&scenario, "scenario", scenario, "scenario to run")
@@ -120,12 +130,6 @@ func run(ctx context.Context) error {
 	if buildResults.ExitCode == 0 {
 		return fmt.Errorf("expected build error from scenario, but got no error")
 	}
-
-	llmClient, err := options.NewLLMClient(ctx)
-	if err != nil {
-		return fmt.Errorf("initializing LLM: %w", err)
-	}
-	defer llmClient.Close()
 
 	u := ui.NewTerminalUI()
 
