@@ -437,7 +437,7 @@ spec:
         - /configconnector/webhook
         env:
         - name: GOMEMLIMIT
-          value: 110MiB
+          value: 230MiB
         - name: NAMESPACE
           valueFrom:
             fieldRef:
@@ -455,10 +455,10 @@ spec:
           periodSeconds: 3
         resources:
           limits:
-            memory: 128Mi
+            memory: 256Mi
           requests:
             cpu: 250m
-            memory: 128Mi
+            memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           privileged: false
@@ -471,8 +471,6 @@ spec:
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  annotations:
-    autoscaling.alpha.kubernetes.io/metrics: '[{"type":"Resource","resource":{"name":"memory","targetAverageUtilization":70}}]'
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-webhook
@@ -491,7 +489,7 @@ spec:
 // with the following differences:
 // - the "resources" section for cnrm-controller-manager/manager container.
 //
-// Note that the GOMEMLIMIT env for the webhook manager deployment still has the default "110MiB" value,
+// Note that the GOMEMLIMIT env for the webhook manager deployment still has the default "230MiB" value,
 // because there was no memory customization on the webhook manager.
 var ClusterModeComponentsWithCustomizedControllerManager = []string{`
 apiVersion: v1
@@ -576,7 +574,7 @@ spec:
         - /configconnector/webhook
         env:
         - name: GOMEMLIMIT
-          value: 110MiB
+          value: 230MiB
         - name: NAMESPACE
           valueFrom:
             fieldRef:
@@ -594,10 +592,10 @@ spec:
           periodSeconds: 3
         resources:
           limits:
-            memory: 128Mi
+            memory: 256Mi
           requests:
             cpu: 250m
-            memory: 128Mi
+            memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           privileged: false
@@ -610,8 +608,6 @@ spec:
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  annotations:
-    autoscaling.alpha.kubernetes.io/metrics: '[{"type":"Resource","resource":{"name":"memory","targetAverageUtilization":70}}]'
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-webhook
@@ -750,8 +746,6 @@ spec:
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  annotations:
-    autoscaling.alpha.kubernetes.io/metrics: '[{"type":"Resource","resource":{"name":"memory","targetAverageUtilization":70}}]'
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-webhook
@@ -891,8 +885,6 @@ spec:
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  annotations:
-    autoscaling.alpha.kubernetes.io/metrics: '[{"type":"Resource","resource":{"name":"memory","targetAverageUtilization":70}}]'
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-webhook
@@ -1166,7 +1158,7 @@ spec:
         - /configconnector/webhook
         env:
         - name: GOMEMLIMIT
-          value: 110MiB
+          value: 230MiB
         - name: NAMESPACE
           valueFrom:
             fieldRef:
@@ -1184,10 +1176,10 @@ spec:
           periodSeconds: 3
         resources:
           limits:
-            memory: 128Mi
+            memory: 256Mi
           requests:
             cpu: 250m
-            memory: 128Mi
+            memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           privileged: false
@@ -1200,8 +1192,6 @@ spec:
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  annotations:
-    autoscaling.alpha.kubernetes.io/metrics: '[{"type":"Resource","resource":{"name":"memory","targetAverageUtilization":70}}]'
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-webhook
