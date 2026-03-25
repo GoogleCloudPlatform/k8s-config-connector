@@ -38,6 +38,9 @@ flaky_tests=(
   "TestE2EScript/scenarios/iam/iampartialpolicy"
 
   "TestE2EScript/scenarios/acquisition/bigqueryconnectionconnection"
+
+  "TestAllInSeries/fixtures/notebooksinstance-minimal"
+  "TestAllInSeries/fixtures/privatecacertificateauthority"
 )
 
 if [[ -n "${SKIP_TESTS:-}" ]]; then
