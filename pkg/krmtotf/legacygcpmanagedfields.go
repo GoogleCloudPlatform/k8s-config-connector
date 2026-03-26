@@ -107,16 +107,6 @@ func resolveSQLInstanceDiskSize(r *Resource, config map[string]interface{}) erro
 }
 
 func resolveContainerClusterNodeVersion(r *Resource, config map[string]interface{}) error {
-	// If the customer sets a release channel on their cluster, then GKE assumes ownership
-	// of the node version and will automatically revert any changes.
-	releaseChannel, found, err := unstructured.NestedMap(config, "releaseChannel")
-	if err != nil {
-		return fmt.Errorf("error determining if release channel is set: %w", err)
-	}
-	if !found || releaseChannel == nil {
-		// Release channel is not specified, so no special behavior required.
-		return nil
-	}
 	if err := removeFromConfigIfNotApplied(r, config, "nodeVersion"); err != nil {
 		return fmt.Errorf("error resolving node version in config: %w", err)
 	}
@@ -140,7 +130,8 @@ func resolveContainerNodePoolVersion(r *Resource, config map[string]interface{})
 }
 
 // Remove `nodeConfig` from the desired config when `remove-default-node-pool`
-// directive is set to `true` and the liveState doesn't contain this field.
+// directive is set to `true` and the liveState doesn't contain this field,
+// or when `strip-default-node-pool-config-on-update` directive is set to `true`.
 //
 // When `remove-default-node-pool` directive is set to `true`, the default node
 // pool will be removed, and `spec.nodeConfig` field should be managed by the API.
@@ -148,11 +139,27 @@ func resolveContainerNodePoolVersion(r *Resource, config map[string]interface{})
 // lists, which are preserved by KCC even if the live state of the GCP resource
 // no longer has `nodeConfig` field, it triggers unexpected recreation of the
 // resource. So in this case, we need to manually clean up `nodeConfig` field.
+//
+// When `strip-default-node-pool-config-on-update` directive is set to `true`,
+// KCC will strip the `nodeConfig` from the desired state during updates, while
+// preserving it during initial cluster creation. This unblocks users who need
+// to specify `nodeConfig` for the temporary default pool (e.g. for custom
+// network tags) without causing a permanent reconciliation loop after the
+// default pool is removed by GKE.
 func resolveContainerClusterNodeConfig(r *Resource, liveState *terraform.InstanceState, config map[string]interface{}) error {
 	removeDefaultNodePoolDirective := "remove-default-node-pool"
+	stripNodeConfigOnUpdateDirective := "strip-default-node-pool-config-on-update"
 	nodeConfigFieldInTFState := "node_config"
 	nodeConfigFieldInKRMConfig := text.SnakeCaseToLowerCamelCase(nodeConfigFieldInTFState)
 
+	// Check if the opt-in stripping directive is set
+	stripOnUpdateKey := k8s.FormatAnnotation(stripNodeConfigOnUpdateDirective)
+	if val, ok := k8s.GetAnnotation(stripOnUpdateKey, r); ok && val == "true" {
+		unstructured.RemoveNestedField(config, nodeConfigFieldInKRMConfig)
+		return nil
+	}
+
+	// Legacy behavior for remove-default-node-pool
 	key := k8s.FormatAnnotation(removeDefaultNodePoolDirective)
 	val, ok := k8s.GetAnnotation(key, r)
 	if !ok || val != "true" {
@@ -317,7 +324,7 @@ func removeFromConfigIfNotApplied(r *Resource, config map[string]interface{}, pa
 	// in the KRM camelCase format.
 	_, found, err := getLastAppliedValue(r, path...)
 	if err != nil {
-		return fmt.Errorf("error finding last applied value for disk size: %w", err)
+		return fmt.Errorf("error finding last applied value for field %v: %w", path, err)
 	}
 	if !found {
 		// The value was not found in the last applied configuration. Delegate
