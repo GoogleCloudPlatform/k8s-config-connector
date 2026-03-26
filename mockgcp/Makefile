@@ -21,6 +21,10 @@ sync-repo:
 			echo "Cloning googleapis repository..."; \
 			git clone https://github.com/googleapis/googleapis.git third_party/googleapis; \
 	fi
+	@if [ -z "$(GOOGLEAPI_VERSION)" ]; then \
+			echo "Error: GOOGLEAPI_VERSION is empty. Please check your git.versions file."; \
+			exit 1; \
+	fi
 	@echo "Syncing to commit $(GOOGLEAPI_VERSION)...";
 	cd third_party/googleapis && git fetch --all && git reset --hard $(GOOGLEAPI_VERSION) && git clean -df . && git status
 
@@ -284,7 +288,7 @@ generate-protos-from-openapi:
 	@if [ -z "$(SERVICE)" ] || echo "cloudidentity" | grep -q "$(SERVICE)"; then \
 		wget -O temp/cloudidentity-api.json https://raw.githubusercontent.com/googleapis/google-api-go-client/refs/heads/main/cloudidentity/v1beta1/cloudidentity-api.json; \
 		mkdir -p apis/google/apps/cloudidentity/v1beta1/; \
-		cd tools/gapic; go run . --proto-version=2 --proto-package google.apps.cloudidentity.v1beta1 ../../temp/cloudidentity-api.json > ../../apis/google/apps/cloudidentity/v1beta1//service.proto; \
+		cd tools/gapic; go run . --proto-version=2 --proto-package google.apps.cloudidentity.v1beta1 ../../temp/cloudidentity-api.json > ../../apis/google/apps/cloudidentity/v1beta1/service.proto; \
 	fi
 
 	@if [ -z "$(SERVICE)" ] || echo "dns" | grep -q "$(SERVICE)"; then \
