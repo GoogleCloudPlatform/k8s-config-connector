@@ -482,7 +482,7 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: cnrm-webhook-manager
-  targetCPUUtilizationPercentage: 90
+  targetCPUUtilizationPercentage: 70
 `}
 
 // ClusterModeComponentsWithCustomizedControllerManager is the same as ClusterModeComponents
@@ -619,7 +619,7 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: cnrm-webhook-manager
-  targetCPUUtilizationPercentage: 90
+  targetCPUUtilizationPercentage: 70
 `}
 
 // ClusterModeComponentsWithCustomizedWebhookManager is the same as ClusterModeComponents
@@ -712,7 +712,7 @@ spec:
         - /configconnector/webhook
         env:
         - name: GOMEMLIMIT
-          value: "228170137B"
+          value: 230MiB
         - name: NAMESPACE
           valueFrom:
             fieldRef:
@@ -757,7 +757,7 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: cnrm-webhook-manager
-  targetCPUUtilizationPercentage: 90
+  targetCPUUtilizationPercentage: 70
 `}
 
 // ClusterModeComponentsWithCustomizedWebhookManagerWithLargeReplicas is the same as ClusterModeComponents
@@ -851,7 +851,7 @@ spec:
         - /configconnector/webhook
         env:
         - name: GOMEMLIMIT
-          value: "228170137B"
+          value: 230MiB
         - name: NAMESPACE
           valueFrom:
             fieldRef:
@@ -896,7 +896,7 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: cnrm-webhook-manager
-  targetCPUUtilizationPercentage: 90
+  targetCPUUtilizationPercentage: 70
 `}
 
 var NamespacedComponents = []string{`
@@ -1203,5 +1203,5 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: cnrm-webhook-manager
-  targetCPUUtilizationPercentage: 90
+  targetCPUUtilizationPercentage: 70
 `}
