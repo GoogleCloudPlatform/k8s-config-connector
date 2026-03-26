@@ -45,6 +45,6 @@ func KMSImportJobFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".attestation")
 
 	f.UnimplementedFields.Insert(".name") // special field
-
+	f.UnimplementedFields.Insert(".crypto_key_backend")
 	return f
 }

@@ -184,6 +184,12 @@ func Field_FromProto(mapCtx *direct.MapContext, in *pb.Value) any {
 	// 	return v.ReferenceValue
 	// case *pb.Value_GeoPointValue:
 	// 	return v.GeoPointValue
+	case *pb.Value_FieldReferenceValue:
+		return v.FieldReferenceValue
+	case *pb.Value_PipelineValue:
+		return v.PipelineValue
+	case *pb.Value_FunctionValue:
+		return v.FunctionValue
 
 	case *pb.Value_ArrayValue:
 		arr := make([]any, len(v.ArrayValue.Values))
