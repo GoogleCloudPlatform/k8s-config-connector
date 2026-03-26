@@ -16,7 +16,7 @@ limitations under the License.
 
 # Cloud Monitoring Dashboard Setup Guide for KCC
 
-As a Config Connector user, you likely prefer Infrastructure as Code (IaC) to manual UI configuration. This guide details how to route KCC Prometheus metrics from your GKE cluster directly into Google Cloud Monitoring, and instantly deploy a pre-configured dashboard using the `gcloud` CLI.
+As a Config Connector user, you likely prefer Infrastructure as Code (IaC) to manual UI configuration. This guide details how to route KCC Prometheus metrics from your GKE cluster directly into Google Cloud Monitoring, and instantly deploy a pre-configured dashboard using a Config Connector `MonitoringDashboard` resource.
 
 ## Prerequisites
 *   A GKE cluster with Config Connector installed.
@@ -73,19 +73,17 @@ Within a few minutes, KCC metrics are securely ingested into Google Cloud Monito
 
 ## Step 3: Deploy the Dashboard
 
-To instantly visualize the metrics, we provide a pre-configured dashboard as a JSON file (`kcc-dashboard.json` in this repository). This dashboard includes panels for:
+To instantly visualize the metrics, we provide a pre-configured KCC dashboard resource as a YAML file (`kcc-dashboard.yaml` in this repository). This dashboard includes panels for:
 *   **Total Managed Resources** (To view overall footprint / growth).
 *   **Reconciliation Errors by Kind** (To alert platform engineers of failing resources).
 *   **Reconciliation Delivery Latency** (To monitor KCC controller performance constraints).
 *   **System Health Metrics** including KCC Controller Working Set Memory, CPU Core Usage, and Container Restarts (Tracking native metrics in the `cnrm-system` namespace).
 
-You can deploy the dashboard into your Google Cloud project using `gcloud`:
+First, replace `${PROJECT_ID?}` and `${NAMESPACE?}` in `kcc-dashboard.yaml` with your Google Cloud Project ID and a Config Connector managed namespace. Then, apply it to your cluster:
 
 ```bash
-gcloud monitoring dashboards create --config-from-file=kcc-dashboard.json
+kubectl apply -f kcc-dashboard.yaml
 ```
-
-*Alternatively, this JSON can be embedded into Terraform using the `google_monitoring_dashboard` resource.*
 
 ## Step 4: Access the Dashboard
 1. Open the [Google Cloud Console](https://console.cloud.google.com).
