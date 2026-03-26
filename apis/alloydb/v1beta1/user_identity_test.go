@@ -37,6 +37,17 @@ func TestAlloyDBUserIdentity_FromExternal(t *testing.T) {
 			wantErr: false,
 		},
 		{
+			name:     "valid external with host",
+			external: "//alloydb.googleapis.com/projects/my-project/locations/us-central1/clusters/my-cluster/users/my-user",
+			want: &AlloyDBUserIdentity{
+				Project:  "my-project",
+				Location: "us-central1",
+				Cluster:  "my-cluster",
+				User:     "my-user",
+			},
+			wantErr: false,
+		},
+		{
 			name:     "invalid external - too few tokens",
 			external: "projects/my-project/locations/us-central1/clusters/my-cluster",
 			wantErr:  true,
