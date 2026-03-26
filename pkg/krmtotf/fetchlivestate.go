@@ -394,6 +394,9 @@ func getObjectAtFieldInState(state map[string]interface{}, tfKey string) (map[st
 func withDirectives(imported map[string]interface{}, r *Resource) map[string]interface{} {
 	ret := deepcopy.MapStringInterface(imported)
 	for _, d := range r.ResourceConfig.Directives {
+		if _, ok := r.TFResource.Schema[d]; !ok {
+			continue
+		}
 		key := k8s.FormatAnnotation(text.SnakeCaseToKebabCase(d))
 		if v, ok := k8s.GetAnnotation(key, r); ok {
 			ret[d] = v
