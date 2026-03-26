@@ -195,7 +195,7 @@ func NewFuzzTest[ProtoT proto.Message, KRMType any](protoType ProtoT, fromProto 
 }
 
 func (f *FuzzTest[ProtoT, KRMType]) Fuzz(t *testing.T, seed int64) {
-        randStream := rand.New(rand.NewSource(seed))
+	randStream := rand.New(rand.NewSource(seed))
 	p1 := proto.Clone(f.ProtoType).(ProtoT)
 	fuzz.FillWithRandom(t, randStream, p1)
 

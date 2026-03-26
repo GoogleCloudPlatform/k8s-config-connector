@@ -42,8 +42,8 @@ func bigtableTableFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".cluster_states")
 	f.UnimplementedFields.Insert(".column_families")
 	f.UnimplementedFields.Insert(".row_key_schema")
-	f.UnimplementedFields.Insert(".change_stream_config") // The value has to be a duration
-	f.UnimplementedFields.Insert(".restore_info")         // Fields under restore_info are not supported yet
+	f.UnimplementedFields.Insert(".change_stream_config")  // The value has to be a duration
+	f.UnimplementedFields.Insert(".restore_info")          // Fields under restore_info are not supported yet
 	f.UnimplementedFields.Insert(".tiered_storage_config") // Fields under tiered_storage_config are not supported yet
 	return f
 }

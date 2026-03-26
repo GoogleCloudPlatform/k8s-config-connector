@@ -28,13 +28,13 @@ import (
 // IDEA: Load all the samples, and check that we have all the KRM paths covered
 
 func FillWithRandom(t *testing.T, randStream *rand.Rand, msg proto.Message) {
-        fillWithRandom0(t, randStream, msg.ProtoReflect(), 0)
+	fillWithRandom0(t, randStream, msg.ProtoReflect(), 0)
 }
 
 func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Message, depth int) {
-        if depth > 5 {
-                return
-        }
+	if depth > 5 {
+		return
+	}
 	descriptor := msg.Descriptor()
 	if string(descriptor.FullName()) == "google.protobuf.Duration" {
 		count := randStream.Intn(10)
