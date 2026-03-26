@@ -1938,7 +1938,7 @@ spec:
                             is a common set of message types for APIs to use.
                           items:
                             properties:
-                              typeUrl:
+                              typeURL:
                                 description: A URL/resource name that uniquely identifies
                                   the type of the serialized protocol buffer message.
                                   This string must contain at least one "/" character.

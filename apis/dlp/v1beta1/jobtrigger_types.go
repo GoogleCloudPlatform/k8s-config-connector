@@ -316,7 +316,7 @@ type Any struct {
 	//  `path/google.protobuf.Duration`). The name should be in a canonical form
 	//  (e.g., leading "." is not accepted).
 	// +kcc:proto:field=google.protobuf.Any.type_url
-	TypeURL *string `json:"typeUrl,omitempty"`
+	TypeURL *string `json:"typeURL,omitempty"`
 
 	// Must be a valid serialized protocol buffer of the above specified type.
 	// +kcc:proto:field=google.protobuf.Any.value
