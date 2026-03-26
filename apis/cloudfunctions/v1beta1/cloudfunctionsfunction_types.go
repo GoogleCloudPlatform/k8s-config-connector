@@ -25,6 +25,8 @@ var CloudFunctionsFunctionGVK = GroupVersion.WithKind("CloudFunctionsFunction")
 
 // CloudFunctionsFunctionSpec defines the desired state of CloudFunctionsFunction
 // +kcc:spec:proto=google.cloud.functions.v1.CloudFunction
+// +kubebuilder:validation:XValidation:rule="has(self.eventTrigger) || has(self.httpsTrigger)",message="one of eventTrigger or httpsTrigger must be set"
+// +kubebuilder:validation:XValidation:rule="!(has(self.eventTrigger) && has(self.httpsTrigger))",message="only one of eventTrigger or httpsTrigger can be set"
 type CloudFunctionsFunctionSpec struct {
 	// Memory (in MB), available to the function. Default value is 256MB. Allowed values are: 128MB, 256MB, 512MB, 1024MB, and 2048MB.
 	AvailableMemoryMb *int64 `json:"availableMemoryMb,omitempty"`
@@ -187,6 +189,7 @@ type FunctionEventTrigger struct {
 	// 3. action: The action that generates the event. For example, action for
 	//    a Google Cloud Storage Object is 'change'.
 	// These parts are lower case.
+	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="EventType is immutable"
 	EventType string `json:"eventType"`
 
@@ -195,6 +198,7 @@ type FunctionEventTrigger struct {
 	FailurePolicy *bool `json:"failurePolicy,omitempty"`
 
 	// Immutable.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceRef is immutable"
 	ResourceRef FunctionResourceRef `json:"resourceRef"`
 
 	// Immutable. The hostname of the service that should be observed.
@@ -206,6 +210,8 @@ type FunctionEventTrigger struct {
 	Service *string `json:"service,omitempty"`
 }
 
+// +kubebuilder:validation:XValidation:rule="has(self.external) || has(self.name)",message="one of external or name must be set"
+// +kubebuilder:validation:XValidation:rule="!(has(self.external) && has(self.name))",message="only one of external or name can be set"
 // +kubebuilder:validation:XValidation:rule="(!has(self.name) || size(self.name) == 0) || (has(self.kind) && size(self.kind) > 0)",message="kind is required if name is populated"
 type FunctionResourceRef struct {
 	// Required. The resource(s) from which to observe events, for example,

@@ -151,6 +151,7 @@ spec:
                       3. action: The action that generates the event. For example, action for
                          a Google Cloud Storage Object is 'change'.
                       These parts are lower case.
+                    minLength: 1
                     type: string
                     x-kubernetes-validations:
                     - message: EventType is immutable
@@ -219,6 +220,12 @@ spec:
                         type: string
                     type: object
                     x-kubernetes-validations:
+                    - message: ResourceRef is immutable
+                      rule: self == oldSelf
+                    - message: one of external or name must be set
+                      rule: has(self.external) || has(self.name)
+                    - message: only one of external or name can be set
+                      rule: '!(has(self.external) && has(self.name))'
                     - message: kind is required if name is populated
                       rule: (!has(self.name) || size(self.name) == 0) || (has(self.kind)
                         && size(self.kind) > 0)
@@ -615,6 +622,11 @@ spec:
             - region
             - runtime
             type: object
+            x-kubernetes-validations:
+            - message: one of eventTrigger or httpsTrigger must be set
+              rule: has(self.eventTrigger) || has(self.httpsTrigger)
+            - message: only one of eventTrigger or httpsTrigger can be set
+              rule: '!(has(self.eventTrigger) && has(self.httpsTrigger))'
           status:
             description: CloudFunctionsFunctionStatus defines the config connector
               machine state of CloudFunctionsFunction
