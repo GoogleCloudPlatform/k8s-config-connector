@@ -38,6 +38,7 @@ func firestoreDocumentFuzzer() fuzztesting.KRMFuzzer {
 			removeUnsupportedFieldValues(field)
 		}
 	}
+	f.FilterStatus = f.FilterSpec
 
 	f.IdentityField(".name")
 
@@ -74,7 +75,7 @@ func removeUnsupportedFieldValues(v *pb.Value) {
 		}
 
 	// These types do not easily round-trip to JSON, so we omit them for now.
-	case *pb.Value_BytesValue, *pb.Value_TimestampValue, *pb.Value_ReferenceValue, *pb.Value_GeoPointValue:
+	case *pb.Value_BytesValue, *pb.Value_TimestampValue, *pb.Value_ReferenceValue, *pb.Value_GeoPointValue, *pb.Value_PipelineValue, *pb.Value_FunctionValue, *pb.Value_FieldReferenceValue:
 		v.ValueType = &pb.Value_NullValue{NullValue: structpb.NullValue_NULL_VALUE}
 	}
 }

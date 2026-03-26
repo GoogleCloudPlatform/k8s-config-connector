@@ -176,14 +176,8 @@ func Field_FromProto(mapCtx *direct.MapContext, in *pb.Value) any {
 		return v.StringValue
 
 		// These types do not easily round-trip to JSON, so we omit them for now.
-	// case *pb.Value_BytesValue:
-	// 	return v.BytesValue
-	// case *pb.Value_TimestampValue:
-	// 	return v.TimestampValue
-	// case *pb.Value_ReferenceValue:
-	// 	return v.ReferenceValue
-	// case *pb.Value_GeoPointValue:
-	// 	return v.GeoPointValue
+	case *pb.Value_BytesValue, *pb.Value_TimestampValue, *pb.Value_ReferenceValue, *pb.Value_GeoPointValue, *pb.Value_PipelineValue, *pb.Value_FunctionValue, *pb.Value_FieldReferenceValue:
+		return nil
 
 	case *pb.Value_ArrayValue:
 		arr := make([]any, len(v.ArrayValue.Values))

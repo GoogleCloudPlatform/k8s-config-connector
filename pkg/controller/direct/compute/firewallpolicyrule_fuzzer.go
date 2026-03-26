@@ -54,6 +54,8 @@ func computeFirewallPolicyRuleFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".match.src_networks")
 	f.UnimplementedFields.Insert(".match.src_network_type")
 	f.UnimplementedFields.Insert(".match.dest_network_type")
+	f.UnimplementedFields.Insert(".match.dest_network_context")
+	f.UnimplementedFields.Insert(".match.src_network_context")
 
 	return f
 }

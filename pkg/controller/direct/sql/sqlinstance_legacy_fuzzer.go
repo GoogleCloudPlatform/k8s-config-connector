@@ -257,6 +257,7 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.Unimplemented_NotYetTriaged(".Settings.ServerCaPool")
 	f.Unimplemented_NotYetTriaged(".Settings.ServerCertificateRotationMode")
 	f.Unimplemented_NotYetTriaged(".Settings.RetainBackupsOnDelete")
+	f.Unimplemented_NotYetTriaged(".Settings.AcceleratedReplicaMode")
 
 	f.Unimplemented_NotYetTriaged(".Settings.ActiveDirectoryConfig.AdminCredentialSecretName")
 	f.Unimplemented_NotYetTriaged(".Settings.ActiveDirectoryConfig.DnsServers")
@@ -308,6 +309,7 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.Unimplemented_NotYetTriaged(".Settings.DataCacheConfig.NullFields")
 	f.Unimplemented_NotYetTriaged(".Settings.InsightsConfig.ForceSendFields")
 	f.Unimplemented_NotYetTriaged(".Settings.InsightsConfig.NullFields")
+	f.Unimplemented_NotYetTriaged(".Settings.InsightsConfig.EnhancedQueryInsightsEnabled")
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.ForceSendFields")
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.NullFields")
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.ForceSendFields")
