@@ -27,8 +27,8 @@ import (
 	krmfirestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	structpb "github.com/golang/protobuf/ptypes/struct"
 	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
-	structpb "google.golang.org/protobuf/types/known/structpb"
 )
 
 func ArrayValue_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.ArrayValue) *krmfirestorev1alpha1.ArrayValue {
