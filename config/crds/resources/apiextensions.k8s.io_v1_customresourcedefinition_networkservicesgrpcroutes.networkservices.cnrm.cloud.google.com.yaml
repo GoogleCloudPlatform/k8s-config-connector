@@ -263,6 +263,7 @@ spec:
                                   all services, then, traffic is distributed in equal
                                   proportions to all of them.'
                                 format: int64
+                                minimum: 0
                                 type: integer
                             required:
                             - serviceRef
@@ -288,11 +289,15 @@ spec:
                                     the request. The value must be between 200 and
                                     599 inclusive.
                                   format: int64
+                                  maximum: 599
+                                  minimum: 200
                                   type: integer
                                 percentage:
                                   description: The percentage of traffic which will
                                     be aborted. The value must be between [0, 100]
                                   format: int64
+                                  maximum: 100
+                                  minimum: 0
                                   type: integer
                               type: object
                             delay:
@@ -302,12 +307,15 @@ spec:
                                 fixedDelay:
                                   description: Specify a fixed delay before forwarding
                                     the request.
+                                  pattern: ^[0-9]+(\.[0-9]+)?s$
                                   type: string
                                 percentage:
                                   description: The percentage of traffic on which
                                     delay will be injected. The value must be between
                                     [0, 100]
                                   format: int64
+                                  maximum: 100
+                                  minimum: 0
                                   type: integer
                               type: object
                           type: object
@@ -320,6 +328,7 @@ spec:
                                 This number must be > 0. If not specified, default
                                 to 1.
                               format: int64
+                              minimum: 1
                               type: integer
                             retryConditions:
                               description: '- connect-failure: Router will retry on
@@ -346,6 +355,7 @@ spec:
                             been fully processed (i.e. end of stream) up until the
                             response has been completely processed. Timeout includes
                             all retries.
+                          pattern: ^[0-9]+(\.[0-9]+)?s$
                           type: string
                       type: object
                     matches:
@@ -368,6 +378,15 @@ spec:
                                   description: Optional. Specifies how to match against
                                     the value of the header. If not specified, a default
                                     value of EXACT is used.
+                                  enum:
+                                  - TYPE_UNSPECIFIED
+                                  - EXACT
+                                  - REGULAR_EXPRESSION
+                                  - PREFIX
+                                  - SUFFIX
+                                  - CONTAINS
+                                  - PRESENT
+                                  - INTEGER_RANGE
                                   type: string
                                 value:
                                   description: Required. The value of the header.
@@ -398,10 +417,11 @@ spec:
                                 description: Optional. Specifies how to match against
                                   the name. If not specified, a default value of "EXACT"
                                   is used.
+                                enum:
+                                - TYPE_UNSPECIFIED
+                                - EXACT
+                                - REGULAR_EXPRESSION
                                 type: string
-                            required:
-                            - grpcMethod
-                            - grpcService
                             type: object
                         type: object
                       type: array

@@ -137,9 +137,11 @@ func NetworkServicesGRPCRouteSpec_Meshes_ToProto(mapCtx *direct.MapContext, in [
 	if in == nil {
 		return nil
 	}
-	out := make([]string, len(in))
-	for i, v := range in {
-		out[i] = v.External
+	out := make([]string, 0, len(in))
+	for _, v := range in {
+		if v != nil {
+			out = append(out, v.External)
+		}
 	}
 	return out
 }
@@ -159,9 +161,11 @@ func NetworkServicesGRPCRouteSpec_Gateways_ToProto(mapCtx *direct.MapContext, in
 	if in == nil {
 		return nil
 	}
-	out := make([]string, len(in))
-	for i, v := range in {
-		out[i] = v.External
+	out := make([]string, 0, len(in))
+	for _, v := range in {
+		if v != nil {
+			out = append(out, v.External)
+		}
 	}
 	return out
 }

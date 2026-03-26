@@ -102,18 +102,17 @@ type GrpcRoute_RouteMatch struct {
 // +kcc:proto=google.cloud.networkservices.v1.GrpcRoute.MethodMatch
 type GrpcRoute_MethodMatch struct {
 	// Optional. Specifies how to match against the name. If not specified, a default value of "EXACT" is used.
+	// +kubebuilder:validation:Enum=TYPE_UNSPECIFIED;EXACT;REGULAR_EXPRESSION
 	// +kcc:proto:field=google.cloud.networkservices.v1.GrpcRoute.MethodMatch.type
 	Type *string `json:"type,omitempty"`
 
 	// Required. Name of the service to match against. If unspecified, will match all services.
 	// +kcc:proto:field=google.cloud.networkservices.v1.GrpcRoute.MethodMatch.grpc_service
-	// +required
-	GrpcService *string `json:"grpcService"`
+	GrpcService *string `json:"grpcService,omitempty"`
 
 	// Required. Name of the method to match against. If unspecified, will match all methods.
 	// +kcc:proto:field=google.cloud.networkservices.v1.GrpcRoute.MethodMatch.grpc_method
-	// +required
-	GrpcMethod *string `json:"grpcMethod"`
+	GrpcMethod *string `json:"grpcMethod,omitempty"`
 
 	// Optional. Specifies that matches are case sensitive. The default value is true. case_sensitive must not be used with a type of REGULAR_EXPRESSION.
 	// +kcc:proto:field=google.cloud.networkservices.v1.GrpcRoute.MethodMatch.case_sensitive
@@ -123,6 +122,7 @@ type GrpcRoute_MethodMatch struct {
 // +kcc:proto=google.cloud.networkservices.v1.GrpcRoute.HeaderMatch
 type GrpcRoute_HeaderMatch struct {
 	// Optional. Specifies how to match against the value of the header. If not specified, a default value of EXACT is used.
+	// +kubebuilder:validation:Enum=TYPE_UNSPECIFIED;EXACT;REGULAR_EXPRESSION;PREFIX;SUFFIX;CONTAINS;PRESENT;INTEGER_RANGE
 	// +kcc:proto:field=google.cloud.networkservices.v1.GrpcRoute.HeaderMatch.type
 	Type *string `json:"type,omitempty"`
 
@@ -148,6 +148,7 @@ type GrpcRoute_RouteAction struct {
 	FaultInjectionPolicy *GrpcRoute_FaultInjectionPolicy `json:"faultInjectionPolicy,omitempty"`
 
 	// Optional. Specifies the timeout for selected route. Timeout is computed from the time the request has been fully processed (i.e. end of stream) up until the response has been completely processed. Timeout includes all retries.
+	// +kubebuilder:validation:Pattern="^[0-9]+(\\.[0-9]+)?s$"
 	// +kcc:proto:field=google.cloud.networkservices.v1.GrpcRoute.RouteAction.timeout
 	Timeout *string `json:"timeout,omitempty"`
 
@@ -164,6 +165,7 @@ type GrpcRoute_Destination struct {
 	ServiceRef *computev1beta1.ComputeBackendServiceRef `json:"serviceRef"`
 
 	// Optional. Specifies the proportion of requests forwarded to the backend referenced by the serviceName field. This is computed as: weight/Sum(weights in this destination list). For non-zero values, there may be some epsilon from the exact proportion defined here depending on the precision an implementation supports. If only one serviceName is specified and it has a weight greater than 0, 100% of the traffic is forwarded to that backend. If weights are specified for any one service name, they need to be specified for all of them. If weights are unspecified for all services, then, traffic is distributed in equal proportions to all of them.
+	// +kubebuilder:validation:Minimum=0
 	// +kcc:proto:field=google.cloud.networkservices.v1.GrpcRoute.Destination.weight
 	Weight *int64 `json:"weight,omitempty"`
 }
@@ -182,10 +184,13 @@ type GrpcRoute_FaultInjectionPolicy struct {
 // +kcc:proto=google.cloud.networkservices.v1.GrpcRoute.FaultInjectionPolicy.Delay
 type GrpcRoute_FaultInjectionPolicy_Delay struct {
 	// Specify a fixed delay before forwarding the request.
+	// +kubebuilder:validation:Pattern="^[0-9]+(\\.[0-9]+)?s$"
 	// +kcc:proto:field=google.cloud.networkservices.v1.GrpcRoute.FaultInjectionPolicy.Delay.fixed_delay
 	FixedDelay *string `json:"fixedDelay,omitempty"`
 
 	// The percentage of traffic on which delay will be injected. The value must be between [0, 100]
+	// +kubebuilder:validation:Minimum=0
+	// +kubebuilder:validation:Maximum=100
 	// +kcc:proto:field=google.cloud.networkservices.v1.GrpcRoute.FaultInjectionPolicy.Delay.percentage
 	Percentage *int64 `json:"percentage,omitempty"`
 }
@@ -193,10 +198,14 @@ type GrpcRoute_FaultInjectionPolicy_Delay struct {
 // +kcc:proto=google.cloud.networkservices.v1.GrpcRoute.FaultInjectionPolicy.Abort
 type GrpcRoute_FaultInjectionPolicy_Abort struct {
 	// The HTTP status code used to abort the request. The value must be between 200 and 599 inclusive.
+	// +kubebuilder:validation:Minimum=200
+	// +kubebuilder:validation:Maximum=599
 	// +kcc:proto:field=google.cloud.networkservices.v1.GrpcRoute.FaultInjectionPolicy.Abort.http_status
 	HTTPStatus *int64 `json:"httpStatus,omitempty"`
 
 	// The percentage of traffic which will be aborted. The value must be between [0, 100]
+	// +kubebuilder:validation:Minimum=0
+	// +kubebuilder:validation:Maximum=100
 	// +kcc:proto:field=google.cloud.networkservices.v1.GrpcRoute.FaultInjectionPolicy.Abort.percentage
 	Percentage *int64 `json:"percentage,omitempty"`
 }
@@ -208,6 +217,7 @@ type GrpcRoute_RetryPolicy struct {
 	RetryConditions []string `json:"retryConditions,omitempty"`
 
 	// Specifies the allowed number of retries. This number must be > 0. If not specified, default to 1.
+	// +kubebuilder:validation:Minimum=1
 	// +kcc:proto:field=google.cloud.networkservices.v1.GrpcRoute.RetryPolicy.num_retries
 	NumRetries *int64 `json:"numRetries,omitempty"`
 }
