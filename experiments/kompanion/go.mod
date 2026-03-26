@@ -8,6 +8,7 @@ require (
 	github.com/mark3labs/mcp-go v0.45.0
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
+	golang.org/x/sync v0.13.0
 	k8s.io/apimachinery v0.33.10
 	k8s.io/client-go v0.32.1
 	k8s.io/klog/v2 v2.130.1
@@ -16,7 +17,7 @@ require (
 
 require (
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
-	github.com/buger/jsonparser v1.1.1 // indirect
+	github.com/buger/jsonparser v1.1.2 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/emicklei/go-restful/v3 v3.12.1 // indirect
 	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
