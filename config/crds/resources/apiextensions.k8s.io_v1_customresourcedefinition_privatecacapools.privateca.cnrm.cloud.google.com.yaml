@@ -150,16 +150,11 @@ spec:
                                     format: int32
                                     type: integer
                                   type: array
-                              required:
-                              - objectIdPath
                               type: object
                             value:
                               description: Required. The value of this X.509 extension.
                               format: byte
                               type: string
-                          required:
-                          - objectId
-                          - value
                           type: object
                         type: array
                       aiaOcspServers:
@@ -285,8 +280,6 @@ spec:
                                     format: int32
                                     type: integer
                                   type: array
-                              required:
-                              - objectIdPath
                               type: object
                             type: array
                         type: object
@@ -302,8 +295,6 @@ spec:
                                 format: int32
                                 type: integer
                               type: array
-                          required:
-                          - objectIdPath
                           type: object
                         type: array
                     type: object
@@ -352,9 +343,6 @@ spec:
                               e.g. in UIs which allow to enter the expression.
                             type: string
                         type: object
-                    required:
-                    - allowSubjectAltNamesPassthrough
-                    - allowSubjectPassthrough
                     type: object
                   maximumLifetime:
                     description: Optional. The maximum lifetime allowed for issued
@@ -393,8 +381,6 @@ spec:
                                 format: int32
                                 type: integer
                               type: array
-                          required:
-                          - objectIdPath
                           type: object
                         type: array
                       knownExtensions:

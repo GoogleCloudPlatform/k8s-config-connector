@@ -7,7 +7,6 @@ metadata:
     cnrm.cloud.google.com/version: 0.0.0-dev
   creationTimestamp: null
   labels:
-    cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
@@ -113,12 +112,14 @@ spec:
                           UIs which allow to enter the expression.
                         type: string
                     type: object
-                required:
-                - allowSubjectAltNamesPassthrough
-                - allowSubjectPassthrough
                 type: object
               location:
                 description: Immutable. The location for the resource
+                type: string
+              maximumLifetime:
+                description: Optional. The maximum lifetime allowed for issued Certificates.
+                  Note that if the issuing CaPool's IssuancePolicy defines a maximum_lifetime,
+                  the effective lifetime will be explicitly truncated to match it.
                 type: string
               passthroughExtensions:
                 description: Optional. Describes the set of X.509 extensions that
@@ -144,8 +145,6 @@ spec:
                             format: int32
                             type: integer
                           type: array
-                      required:
-                      - objectIdPath
                       type: object
                     type: array
                   knownExtensions:
@@ -185,16 +184,11 @@ spec:
                                 format: int32
                                 type: integer
                               type: array
-                          required:
-                          - objectIdPath
                           type: object
                         value:
                           description: Required. The value of this X.509 extension.
                           format: byte
                           type: string
-                      required:
-                      - objectId
-                      - value
                       type: object
                     type: array
                   aiaOcspServers:
@@ -313,8 +307,6 @@ spec:
                                 format: int32
                                 type: integer
                               type: array
-                          required:
-                          - objectIdPath
                           type: object
                         type: array
                     type: object
@@ -330,8 +322,6 @@ spec:
                             format: int32
                             type: integer
                           type: array
-                      required:
-                      - objectIdPath
                       type: object
                     type: array
                 type: object

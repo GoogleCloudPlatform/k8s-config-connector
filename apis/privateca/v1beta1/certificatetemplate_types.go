@@ -35,6 +35,9 @@ type PrivateCACertificateTemplateSpec struct {
 	// +required
 	Location string `json:"location"`
 
+	// Optional. The maximum lifetime allowed for issued Certificates. Note that if the issuing CaPool's IssuancePolicy defines a maximum_lifetime, the effective lifetime will be explicitly truncated to match it.
+	MaximumLifetime *string `json:"maximumLifetime,omitempty"`
+
 	// Optional. Describes the set of X.509 extensions that may appear in a Certificate issued using this CertificateTemplate. If a certificate request sets extensions that don't appear in the passthrough_extensions, those extensions will be dropped. If the issuing CaPool's IssuancePolicy defines baseline_values that don't appear here, the certificate issuance request will fail. If this is omitted, then this template will not add restrictions on a certificate's X.509 extensions. These constraints do not apply to X.509 extensions set in this CertificateTemplate's predefined_values.
 	PassthroughExtensions *CertificateExtensionConstraints `json:"passthroughExtensions,omitempty"`
 
@@ -53,6 +56,7 @@ type PrivateCACertificateTemplateSpec struct {
 type PrivateCACertificateTemplateStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
+	// +optional
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 
 	// Output only. The time at which this CertificateTemplate was created.
@@ -76,7 +80,6 @@ type PrivateCACertificateTemplateStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"

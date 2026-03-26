@@ -25,14 +25,10 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 go run . generate-types \
-  --service google.cloud.security.privateca.v1 \
-  --api-version privateca.cnrm.cloud.google.com/v1beta1  \
-  --resource PrivateCACAPool:CaPool \
-  --resource PrivateCACertificateTemplate:CertificateTemplate
+  --config ${REPO_ROOT}/apis/privateca/v1beta1/generatetypes.yaml
 
 go run . generate-mapper \
-  --service google.cloud.security.privateca.v1 \
-  --api-version privateca.cnrm.cloud.google.com/v1beta1
+  --config ${REPO_ROOT}/apis/privateca/v1beta1/generatetypes.yaml
 
 cd ${REPO_ROOT}
 

@@ -19,8 +19,27 @@
 // proto.service: google.cloud.security.privateca.v1
 // resource: PrivateCACAPool:CaPool
 // resource: PrivateCACertificateTemplate:CertificateTemplate
+// resource: PrivateCACertificateAuthority:CertificateAuthority
+// resource: PrivateCACertificate:Certificate
 
 package v1beta1
+
+/* unreachable type AttributeTypeAndValue
+// +kcc:proto=google.cloud.security.privateca.v1.AttributeTypeAndValue
+type AttributeTypeAndValue struct {
+	// The attribute type of the attribute and value pair.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.AttributeTypeAndValue.type
+	Type *string `json:"type,omitempty"`
+
+	// Object ID for an attribute type of an attribute and value pair.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.AttributeTypeAndValue.object_id
+	ObjectID *ObjectID `json:"objectID,omitempty"`
+
+	// The value for the attribute type.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.AttributeTypeAndValue.value
+	Value *string `json:"value,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.security.privateca.v1.CaPool.IssuancePolicy.AllowedKeyType
 type CAPool_IssuancePolicy_AllowedKeyType struct {
@@ -71,6 +90,359 @@ type CAPool_IssuancePolicy_IssuanceModes struct {
 	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.IssuancePolicy.IssuanceModes.allow_config_based_issuance
 	AllowConfigBasedIssuance *bool `json:"allowConfigBasedIssuance,omitempty"`
 }
+
+/* unreachable type Certificate
+// +kcc:proto=google.cloud.security.privateca.v1.Certificate
+type Certificate struct {
+	// Identifier. The resource name for this
+	//  [Certificate][google.cloud.security.privateca.v1.Certificate] in the format
+	//  `projects/-*-/locations/-*-/caPools/-*-/certificates/-*`.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.name
+	Name *string `json:"name,omitempty"`
+
+	// Immutable. A pem-encoded X.509 certificate signing request (CSR).
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.pem_csr
+	PemCsr *string `json:"pemCsr,omitempty"`
+
+	// Immutable. A description of the certificate and key that does not require
+	//  X.509 or ASN.1.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.config
+	Config *CertificateConfig `json:"config,omitempty"`
+
+	// Required. Immutable. The desired lifetime of a certificate. Used to create
+	//  the "not_before_time" and "not_after_time" fields inside an X.509
+	//  certificate. Note that the lifetime may be truncated if it would extend
+	//  past the life of any certificate authority in the issuing chain.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.lifetime
+	Lifetime *string `json:"lifetime,omitempty"`
+
+	// Immutable. The resource name for a
+	//  [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate]
+	//  used to issue this certificate, in the format
+	//  `projects/-*-/locations/-*-/certificateTemplates/-*`.
+	//  If this is specified, the caller must have the necessary permission to
+	//  use this template. If this is omitted, no template will be used.
+	//  This template must be in the same location as the
+	//  [Certificate][google.cloud.security.privateca.v1.Certificate].
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.certificate_template
+	CertificateTemplate *string `json:"certificateTemplate,omitempty"`
+
+	// Immutable. Specifies how the
+	//  [Certificate][google.cloud.security.privateca.v1.Certificate]'s identity
+	//  fields are to be decided. If this is omitted, the `DEFAULT` subject mode
+	//  will be used.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.subject_mode
+	SubjectMode *string `json:"subjectMode,omitempty"`
+
+	// Optional. Labels with user-defined metadata.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.labels
+	Labels map[string]string `json:"labels,omitempty"`
+}
+*/
+
+/* unreachable type Certificate_RevocationDetails
+// +kcc:proto=google.cloud.security.privateca.v1.Certificate.RevocationDetails
+type Certificate_RevocationDetails struct {
+	// Indicates why a
+	//  [Certificate][google.cloud.security.privateca.v1.Certificate] was
+	//  revoked.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.RevocationDetails.revocation_state
+	RevocationState *string `json:"revocationState,omitempty"`
+
+	// The time at which this
+	//  [Certificate][google.cloud.security.privateca.v1.Certificate] was
+	//  revoked.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.RevocationDetails.revocation_time
+	RevocationTime *string `json:"revocationTime,omitempty"`
+}
+*/
+
+/* unreachable type CertificateAuthority
+// +kcc:proto=google.cloud.security.privateca.v1.CertificateAuthority
+type CertificateAuthority struct {
+	// Identifier. The resource name for this
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+	//  in the format `projects/-*-/locations/-*-/caPools/-*-/certificateAuthorities/-*`.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Immutable. The
+	//  [Type][google.cloud.security.privateca.v1.CertificateAuthority.Type] of
+	//  this
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.type
+	Type *string `json:"type,omitempty"`
+
+	// Required. Immutable. The config used to create a self-signed X.509
+	//  certificate or CSR.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.config
+	Config *CertificateConfig `json:"config,omitempty"`
+
+	// Required. Immutable. The desired lifetime of the CA certificate. Used to
+	//  create the "not_before_time" and "not_after_time" fields inside an X.509
+	//  certificate.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.lifetime
+	Lifetime *string `json:"lifetime,omitempty"`
+
+	// Required. Immutable. Used when issuing certificates for this
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
+	//  If this
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+	//  is a self-signed CertificateAuthority, this key is also used to sign the
+	//  self-signed CA certificate. Otherwise, it is used to sign a CSR.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.key_spec
+	KeySpec *CertificateAuthority_KeyVersionSpec `json:"keySpec,omitempty"`
+
+	// Optional. If this is a subordinate
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority],
+	//  this field will be set with the subordinate configuration, which describes
+	//  its issuers. This may be updated, but this
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+	//  must continue to validate.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.subordinate_config
+	SubordinateConfig *SubordinateConfig `json:"subordinateConfig,omitempty"`
+
+	// Immutable. The name of a Cloud Storage bucket where this
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+	//  will publish content, such as the CA certificate and CRLs. This must be a
+	//  bucket name, without any prefixes (such as `gs://`) or suffixes (such as
+	//  `.googleapis.com`). For example, to use a bucket named `my-bucket`, you
+	//  would simply specify `my-bucket`. If not specified, a managed bucket will
+	//  be created.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.gcs_bucket
+	GCSBucket *string `json:"gcsBucket,omitempty"`
+
+	// Optional. Labels with user-defined metadata.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. User-defined URLs for CA certificate and CRLs. The service does
+	//  not publish content to these URLs. It is up to the user to mirror content
+	//  to these URLs.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.user_defined_access_urls
+	UserDefinedAccessUrls *CertificateAuthority_UserDefinedAccessUrls `json:"userDefinedAccessUrls,omitempty"`
+}
+*/
+
+/* unreachable type CertificateAuthority_AccessUrls
+// +kcc:proto=google.cloud.security.privateca.v1.CertificateAuthority.AccessUrls
+type CertificateAuthority_AccessUrls struct {
+	// The URL where this
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s
+	//  CA certificate is published. This will only be set for CAs that have been
+	//  activated.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.AccessUrls.ca_certificate_access_url
+	CACertificateAccessURL *string `json:"caCertificateAccessURL,omitempty"`
+
+	// The URLs where this
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s
+	//  CRLs are published. This will only be set for CAs that have been
+	//  activated.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.AccessUrls.crl_access_urls
+	CrlAccessUrls []string `json:"crlAccessUrls,omitempty"`
+}
+*/
+
+/* unreachable type CertificateAuthority_KeyVersionSpec
+// +kcc:proto=google.cloud.security.privateca.v1.CertificateAuthority.KeyVersionSpec
+type CertificateAuthority_KeyVersionSpec struct {
+	// The resource name for an existing Cloud KMS CryptoKeyVersion in the
+	//  format
+	//  `projects/-*-/locations/-*-/keyRings/-*-/cryptoKeys/-*-/cryptoKeyVersions/-*`.
+	//  This option enables full flexibility in the key's capabilities and
+	//  properties.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.KeyVersionSpec.cloud_kms_key_version
+	CloudKMSKeyVersion *string `json:"cloudKMSKeyVersion,omitempty"`
+
+	// The algorithm to use for creating a managed Cloud KMS key for a for a
+	//  simplified experience. All managed keys will be have their
+	//  [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] as `HSM`.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.KeyVersionSpec.algorithm
+	Algorithm *string `json:"algorithm,omitempty"`
+}
+*/
+
+/* unreachable type CertificateAuthority_UserDefinedAccessUrls
+// +kcc:proto=google.cloud.security.privateca.v1.CertificateAuthority.UserDefinedAccessUrls
+type CertificateAuthority_UserDefinedAccessUrls struct {
+	// Optional. A list of URLs where the issuer CA certificate may be
+	//  downloaded, which appears in the "Authority Information Access" extension
+	//  in the certificate. If specified, the default [Cloud Storage
+	//  URLs][google.cloud.security.privateca.v1.CertificateAuthority.AccessUrls.ca_certificate_access_url]
+	//  will be omitted.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.UserDefinedAccessUrls.aia_issuing_certificate_urls
+	AiaIssuingCertificateUrls []string `json:"aiaIssuingCertificateUrls,omitempty"`
+
+	// Optional. A list of URLs where to obtain CRL information, i.e.
+	//  the DistributionPoint.fullName described by
+	//  https://tools.ietf.org/html/rfc5280#section-4.2.1.13.
+	//  If specified, the default
+	//  [Cloud Storage
+	//  URLs][google.cloud.security.privateca.v1.CertificateAuthority.AccessUrls.crl_access_urls]
+	//  will be omitted.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.UserDefinedAccessUrls.crl_access_urls
+	CrlAccessUrls []string `json:"crlAccessUrls,omitempty"`
+}
+*/
+
+/* unreachable type CertificateConfig
+// +kcc:proto=google.cloud.security.privateca.v1.CertificateConfig
+type CertificateConfig struct {
+	// Required. Specifies some of the values in a certificate that are related to
+	//  the subject.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateConfig.subject_config
+	SubjectConfig *CertificateConfig_SubjectConfig `json:"subjectConfig,omitempty"`
+
+	// Required. Describes how some of the technical X.509 fields in a certificate
+	//  should be populated.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateConfig.x509_config
+	X509Config *X509Parameters `json:"x509Config,omitempty"`
+
+	// Optional. The public key that corresponds to this config. This is, for
+	//  example, used when issuing
+	//  [Certificates][google.cloud.security.privateca.v1.Certificate], but not
+	//  when creating a self-signed
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+	//  or
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+	//  CSR.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateConfig.public_key
+	PublicKey *PublicKey `json:"publicKey,omitempty"`
+
+	// Optional. When specified this provides a custom SKI to be used in the
+	//  certificate. This should only be used to maintain a SKI of an existing CA
+	//  originally created outside CA service, which was not generated using method
+	//  (1) described in RFC 5280 section 4.2.1.2.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateConfig.subject_key_id
+	SubjectKeyID *CertificateConfig_KeyID `json:"subjectKeyID,omitempty"`
+}
+*/
+
+/* unreachable type CertificateConfig_KeyID
+// +kcc:proto=google.cloud.security.privateca.v1.CertificateConfig.KeyId
+type CertificateConfig_KeyID struct {
+	// Required. The value of this KeyId encoded in lowercase hexadecimal. This
+	//  is most likely the 160 bit SHA-1 hash of the public key.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateConfig.KeyId.key_id
+	KeyID *string `json:"keyID,omitempty"`
+}
+*/
+
+/* unreachable type CertificateConfig_SubjectConfig
+// +kcc:proto=google.cloud.security.privateca.v1.CertificateConfig.SubjectConfig
+type CertificateConfig_SubjectConfig struct {
+	// Optional. Contains distinguished name fields such as the common name,
+	//  location and organization.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateConfig.SubjectConfig.subject
+	Subject *Subject `json:"subject,omitempty"`
+
+	// Optional. The subject alternative name fields.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateConfig.SubjectConfig.subject_alt_name
+	SubjectAltName *SubjectAltNames `json:"subjectAltName,omitempty"`
+}
+*/
+
+/* unreachable type CertificateDescription
+// +kcc:proto=google.cloud.security.privateca.v1.CertificateDescription
+type CertificateDescription struct {
+	// Describes some of the values in a certificate that are related to the
+	//  subject and lifetime.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateDescription.subject_description
+	SubjectDescription *CertificateDescription_SubjectDescription `json:"subjectDescription,omitempty"`
+
+	// Describes some of the technical X.509 fields in a certificate.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateDescription.x509_description
+	X509Description *X509Parameters `json:"x509Description,omitempty"`
+
+	// The public key that corresponds to an issued certificate.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateDescription.public_key
+	PublicKey *PublicKey `json:"publicKey,omitempty"`
+
+	// Provides a means of identifiying certificates that contain a particular
+	//  public key, per https://tools.ietf.org/html/rfc5280#section-4.2.1.2.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateDescription.subject_key_id
+	SubjectKeyID *CertificateDescription_KeyID `json:"subjectKeyID,omitempty"`
+
+	// Identifies the subject_key_id of the parent certificate, per
+	//  https://tools.ietf.org/html/rfc5280#section-4.2.1.1
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateDescription.authority_key_id
+	AuthorityKeyID *CertificateDescription_KeyID `json:"authorityKeyID,omitempty"`
+
+	// Describes a list of locations to obtain CRL information, i.e.
+	//  the DistributionPoint.fullName described by
+	//  https://tools.ietf.org/html/rfc5280#section-4.2.1.13
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateDescription.crl_distribution_points
+	CrlDistributionPoints []string `json:"crlDistributionPoints,omitempty"`
+
+	// Describes lists of issuer CA certificate URLs that appear in the
+	//  "Authority Information Access" extension in the certificate.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateDescription.aia_issuing_certificate_urls
+	AiaIssuingCertificateUrls []string `json:"aiaIssuingCertificateUrls,omitempty"`
+
+	// The hash of the x.509 certificate.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateDescription.cert_fingerprint
+	CertFingerprint *CertificateDescription_CertificateFingerprint `json:"certFingerprint,omitempty"`
+
+	// The hash of the pre-signed certificate, which will be signed by the CA.
+	//  Corresponds to the TBS Certificate in
+	//  https://tools.ietf.org/html/rfc5280#section-4.1.2. The field will always be
+	//  populated.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateDescription.tbs_certificate_digest
+	TbsCertificateDigest *string `json:"tbsCertificateDigest,omitempty"`
+}
+*/
+
+/* unreachable type CertificateDescription_CertificateFingerprint
+// +kcc:proto=google.cloud.security.privateca.v1.CertificateDescription.CertificateFingerprint
+type CertificateDescription_CertificateFingerprint struct {
+	// The SHA 256 hash, encoded in hexadecimal, of the DER x509 certificate.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateDescription.CertificateFingerprint.sha256_hash
+	Sha256Hash *string `json:"sha256Hash,omitempty"`
+}
+*/
+
+/* unreachable type CertificateDescription_KeyID
+// +kcc:proto=google.cloud.security.privateca.v1.CertificateDescription.KeyId
+type CertificateDescription_KeyID struct {
+	// Optional. The value of this KeyId encoded in lowercase hexadecimal. This
+	//  is most likely the 160 bit SHA-1 hash of the public key.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateDescription.KeyId.key_id
+	KeyID *string `json:"keyID,omitempty"`
+}
+*/
+
+/* unreachable type CertificateDescription_SubjectDescription
+// +kcc:proto=google.cloud.security.privateca.v1.CertificateDescription.SubjectDescription
+type CertificateDescription_SubjectDescription struct {
+	// Contains distinguished name fields such as the common name, location and
+	//  / organization.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateDescription.SubjectDescription.subject
+	Subject *Subject `json:"subject,omitempty"`
+
+	// The subject alternative name fields.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateDescription.SubjectDescription.subject_alt_name
+	SubjectAltName *SubjectAltNames `json:"subjectAltName,omitempty"`
+
+	// The serial number encoded in lowercase hexadecimal.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateDescription.SubjectDescription.hex_serial_number
+	HexSerialNumber *string `json:"hexSerialNumber,omitempty"`
+
+	// For convenience, the actual lifetime of an issued certificate.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateDescription.SubjectDescription.lifetime
+	Lifetime *string `json:"lifetime,omitempty"`
+
+	// The time at which the certificate becomes valid.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateDescription.SubjectDescription.not_before_time
+	NotBeforeTime *string `json:"notBeforeTime,omitempty"`
+
+	// The time after which the certificate is expired.
+	//  Per RFC 5280, the validity period for a certificate is the period of time
+	//  from not_before_time through not_after_time, inclusive.
+	//  Corresponds to 'not_before_time' + 'lifetime' - 1 second.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateDescription.SubjectDescription.not_after_time
+	NotAfterTime *string `json:"notAfterTime,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.security.privateca.v1.CertificateExtensionConstraints
 type CertificateExtensionConstraints struct {
@@ -178,6 +550,127 @@ type KeyUsage_KeyUsageOptions struct {
 	DecipherOnly *bool `json:"decipherOnly,omitempty"`
 }
 
+/* unreachable type PublicKey
+// +kcc:proto=google.cloud.security.privateca.v1.PublicKey
+type PublicKey struct {
+	// Required. A public key. The padding and encoding
+	//  must match with the `KeyFormat` value specified for the `format` field.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.PublicKey.key
+	Key []byte `json:"key,omitempty"`
+
+	// Required. The format of the public key.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.PublicKey.format
+	Format *string `json:"format,omitempty"`
+}
+*/
+
+/* unreachable type RelativeDistinguishedName
+// +kcc:proto=google.cloud.security.privateca.v1.RelativeDistinguishedName
+type RelativeDistinguishedName struct {
+	// Attributes describes the attribute value assertions in the RDN.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.RelativeDistinguishedName.attributes
+	Attributes []AttributeTypeAndValue `json:"attributes,omitempty"`
+}
+*/
+
+/* unreachable type Subject
+// +kcc:proto=google.cloud.security.privateca.v1.Subject
+type Subject struct {
+	// The "common name" of the subject.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Subject.common_name
+	CommonName *string `json:"commonName,omitempty"`
+
+	// The country code of the subject.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Subject.country_code
+	CountryCode *string `json:"countryCode,omitempty"`
+
+	// The organization of the subject.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Subject.organization
+	Organization *string `json:"organization,omitempty"`
+
+	// The organizational_unit of the subject.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Subject.organizational_unit
+	OrganizationalUnit *string `json:"organizationalUnit,omitempty"`
+
+	// The locality or city of the subject.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Subject.locality
+	Locality *string `json:"locality,omitempty"`
+
+	// The province, territory, or regional state of the subject.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Subject.province
+	Province *string `json:"province,omitempty"`
+
+	// The street address of the subject.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Subject.street_address
+	StreetAddress *string `json:"streetAddress,omitempty"`
+
+	// The postal code of the subject.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Subject.postal_code
+	PostalCode *string `json:"postalCode,omitempty"`
+
+	// This field can be used in place of the named subject fields.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Subject.rdn_sequence
+	RdnSequence []RelativeDistinguishedName `json:"rdnSequence,omitempty"`
+}
+*/
+
+/* unreachable type SubjectAltNames
+// +kcc:proto=google.cloud.security.privateca.v1.SubjectAltNames
+type SubjectAltNames struct {
+	// Contains only valid, fully-qualified host names.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.SubjectAltNames.dns_names
+	DNSNames []string `json:"dnsNames,omitempty"`
+
+	// Contains only valid RFC 3986 URIs.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.SubjectAltNames.uris
+	Uris []string `json:"uris,omitempty"`
+
+	// Contains only valid RFC 2822 E-mail addresses.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.SubjectAltNames.email_addresses
+	EmailAddresses []string `json:"emailAddresses,omitempty"`
+
+	// Contains only valid 32-bit IPv4 addresses or RFC 4291 IPv6 addresses.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.SubjectAltNames.ip_addresses
+	IPAddresses []string `json:"ipAddresses,omitempty"`
+
+	// Contains additional subject alternative name values.
+	//  For each custom_san, the `value` field must contain an ASN.1 encoded
+	//  UTF8String.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.SubjectAltNames.custom_sans
+	CustomSans []X509Extension `json:"customSans,omitempty"`
+}
+*/
+
+/* unreachable type SubordinateConfig
+// +kcc:proto=google.cloud.security.privateca.v1.SubordinateConfig
+type SubordinateConfig struct {
+	// Required. This can refer to a
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+	//  that was used to create a subordinate
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
+	//  This field is used for information and usability purposes only. The
+	//  resource name is in the format
+	//  `projects/-*-/locations/-*-/caPools/-*-/certificateAuthorities/-*`.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.SubordinateConfig.certificate_authority
+	CertificateAuthority *string `json:"certificateAuthority,omitempty"`
+
+	// Required. Contains the PEM certificate chain for the issuers of this
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority],
+	//  but not pem certificate for this CA itself.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.SubordinateConfig.pem_issuer_chain
+	PemIssuerChain *SubordinateConfig_SubordinateConfigChain `json:"pemIssuerChain,omitempty"`
+}
+*/
+
+/* unreachable type SubordinateConfig_SubordinateConfigChain
+// +kcc:proto=google.cloud.security.privateca.v1.SubordinateConfig.SubordinateConfigChain
+type SubordinateConfig_SubordinateConfigChain struct {
+	// Required. Expected to be in leaf-to-root order according to RFC 5246.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.SubordinateConfig.SubordinateConfigChain.pem_certificates
+	PemCertificates []string `json:"pemCertificates,omitempty"`
+}
+*/
+
 /* unreachable type X509Parameters_NameConstraints
 // +kcc:proto=google.cloud.security.privateca.v1.X509Parameters.NameConstraints
 type X509Parameters_NameConstraints struct {
@@ -266,3 +759,122 @@ type Expr struct {
 	// +kcc:proto:field=google.type.Expr.location
 	Location *string `json:"location,omitempty"`
 }
+
+/* unreachable type CertificateObservedState
+// +kcc:observedstate:proto=google.cloud.security.privateca.v1.Certificate
+type CertificateObservedState struct {
+	// Output only. The resource name of the issuing
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+	//  in the format `projects/-*-/locations/-*-/caPools/-*-/certificateAuthorities/-*`.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.issuer_certificate_authority
+	IssuerCertificateAuthority *string `json:"issuerCertificateAuthority,omitempty"`
+
+	// Output only. Details regarding the revocation of this
+	//  [Certificate][google.cloud.security.privateca.v1.Certificate]. This
+	//  [Certificate][google.cloud.security.privateca.v1.Certificate] is considered
+	//  revoked if and only if this field is present.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.revocation_details
+	RevocationDetails *Certificate_RevocationDetails `json:"revocationDetails,omitempty"`
+
+	// Output only. The pem-encoded, signed X.509 certificate.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.pem_certificate
+	PemCertificate *string `json:"pemCertificate,omitempty"`
+
+	// Output only. A structured description of the issued X.509 certificate.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.certificate_description
+	CertificateDescription *CertificateDescription `json:"certificateDescription,omitempty"`
+
+	// Output only. The chain that may be used to verify the X.509 certificate.
+	//  Expected to be in issuer-to-root order according to RFC 5246.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.pem_certificate_chain
+	PemCertificateChain []string `json:"pemCertificateChain,omitempty"`
+
+	// Output only. The time at which this
+	//  [Certificate][google.cloud.security.privateca.v1.Certificate] was created.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time at which this
+	//  [Certificate][google.cloud.security.privateca.v1.Certificate] was updated.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* unreachable type CertificateAuthorityObservedState
+// +kcc:observedstate:proto=google.cloud.security.privateca.v1.CertificateAuthority
+type CertificateAuthorityObservedState struct {
+	// Output only. The
+	//  [CaPool.Tier][google.cloud.security.privateca.v1.CaPool.Tier] of the
+	//  [CaPool][google.cloud.security.privateca.v1.CaPool] that includes this
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.tier
+	Tier *string `json:"tier,omitempty"`
+
+	// Output only. The
+	//  [State][google.cloud.security.privateca.v1.CertificateAuthority.State] for
+	//  this
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. This
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s
+	//  certificate chain, including the current
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s
+	//  certificate. Ordered such that the root issuer is the final element
+	//  (consistent with RFC 5246). For a self-signed CA, this will only list the
+	//  current
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s
+	//  certificate.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.pem_ca_certificates
+	PemCACertificates []string `json:"pemCACertificates,omitempty"`
+
+	// Output only. A structured description of this
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s
+	//  CA certificate and its issuers. Ordered as self-to-root.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.ca_certificate_descriptions
+	CACertificateDescriptions []CertificateDescription `json:"caCertificateDescriptions,omitempty"`
+
+	// Output only. URLs for accessing content published by this CA, such as the
+	//  CA certificate and CRLs.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.access_urls
+	AccessUrls *CertificateAuthority_AccessUrls `json:"accessUrls,omitempty"`
+
+	// Output only. The time at which this
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+	//  was created.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time at which this
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+	//  was last updated.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The time at which this
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+	//  was soft deleted, if it is in the
+	//  [DELETED][google.cloud.security.privateca.v1.CertificateAuthority.State.DELETED]
+	//  state.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.delete_time
+	DeleteTime *string `json:"deleteTime,omitempty"`
+
+	// Output only. The time at which this
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+	//  will be permanently purged, if it is in the
+	//  [DELETED][google.cloud.security.privateca.v1.CertificateAuthority.State.DELETED]
+	//  state.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.expire_time
+	ExpireTime *string `json:"expireTime,omitempty"`
+
+	// Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.satisfies_pzi
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+}
+*/

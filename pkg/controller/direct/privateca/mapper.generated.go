@@ -331,7 +331,7 @@ func PrivateCACertificateTemplateSpec_FromProto(mapCtx *direct.MapContext, in *p
 	}
 	out := &krm.PrivateCACertificateTemplateSpec{}
 	// MISSING: Name
-	// MISSING: MaximumLifetime
+	out.MaximumLifetime = direct.StringDuration_FromProto(mapCtx, in.GetMaximumLifetime())
 	out.PredefinedValues = X509Parameters_FromProto(mapCtx, in.GetPredefinedValues())
 	out.IdentityConstraints = CertificateIdentityConstraints_FromProto(mapCtx, in.GetIdentityConstraints())
 	out.PassthroughExtensions = CertificateExtensionConstraints_FromProto(mapCtx, in.GetPassthroughExtensions())
@@ -347,7 +347,7 @@ func PrivateCACertificateTemplateSpec_ToProto(mapCtx *direct.MapContext, in *krm
 	}
 	out := &pb.CertificateTemplate{}
 	// MISSING: Name
-	// MISSING: MaximumLifetime
+	out.MaximumLifetime = direct.StringDuration_ToProto(mapCtx, in.MaximumLifetime)
 	out.PredefinedValues = X509Parameters_ToProto(mapCtx, in.PredefinedValues)
 	out.IdentityConstraints = CertificateIdentityConstraints_ToProto(mapCtx, in.IdentityConstraints)
 	out.PassthroughExtensions = CertificateExtensionConstraints_ToProto(mapCtx, in.PassthroughExtensions)

@@ -229,9 +229,7 @@ type CertificateIdentityConstraints struct {
 	//  requested [Subject][google.cloud.security.privateca.v1.Subject] will be
 	//  discarded.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateIdentityConstraints.allow_subject_passthrough
-	// +required
-	// +kubebuilder:validation:Required
-	AllowSubjectPassthrough *bool `json:"allowSubjectPassthrough"`
+	AllowSubjectPassthrough *bool `json:"allowSubjectPassthrough,omitempty"`
 
 	// Required. If this is true, the
 	//  [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames]
@@ -240,17 +238,14 @@ type CertificateIdentityConstraints struct {
 	//  [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames] will
 	//  be discarded.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateIdentityConstraints.allow_subject_alt_names_passthrough
-	// +required
-	// +kubebuilder:validation:Required
-	AllowSubjectAltNamesPassthrough *bool `json:"allowSubjectAltNamesPassthrough"`
+	AllowSubjectAltNamesPassthrough *bool `json:"allowSubjectAltNamesPassthrough,omitempty"`
 }
 
 // X509Extension
 type X509Extension struct {
 	// Required. The OID for this X.509 extension.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Extension.object_id
-	// +required
-	ObjectID *ObjectID `json:"objectId"`
+	ObjectID *ObjectID `json:"objectId,omitempty"`
 
 	// Optional. Indicates whether or not this extension is critical (i.e., if the
 	//  client does not know how to handle this extension, the client should
@@ -260,8 +255,7 @@ type X509Extension struct {
 
 	// Required. The value of this X.509 extension.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Extension.value
-	// +required
-	Value []byte `json:"value"`
+	Value []byte `json:"value,omitempty"`
 }
 
 // +kcc:proto=google.cloud.security.privateca.v1.ObjectId
@@ -269,7 +263,6 @@ type ObjectID struct {
 	// Required. The parts of an OID path. The most significant parts of the path
 	//  come first.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.ObjectId.object_id_path
-	// +required
 	ObjectIDPath []int32 `json:"objectIdPath,omitempty"`
 }
 

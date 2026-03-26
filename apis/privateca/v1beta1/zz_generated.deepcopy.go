@@ -651,6 +651,11 @@ func (in *PrivateCACertificateTemplateSpec) DeepCopyInto(out *PrivateCACertifica
 		*out = new(CertificateIdentityConstraints)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.MaximumLifetime != nil {
+		in, out := &in.MaximumLifetime, &out.MaximumLifetime
+		*out = new(string)
+		**out = **in
+	}
 	if in.PassthroughExtensions != nil {
 		in, out := &in.PassthroughExtensions, &out.PassthroughExtensions
 		*out = new(CertificateExtensionConstraints)
