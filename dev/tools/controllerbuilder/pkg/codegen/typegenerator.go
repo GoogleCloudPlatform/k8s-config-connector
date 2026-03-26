@@ -240,7 +240,10 @@ func writeSafeComment(out io.Writer, reason string, writeFunc func(io.Writer)) {
 	fmt.Fprintf(out, "\n/* %s\n", reason)
 	var b bytes.Buffer
 	writeFunc(&b)
-	out.Write([]byte(strings.ReplaceAll(b.String(), "*/", "* /")))
+	s := b.String()
+	s = strings.ReplaceAll(s, "*/", "* /")
+	s = strings.ReplaceAll(s, "/*", "/ *")
+	out.Write([]byte(s))
 	fmt.Fprintf(out, "*/\n")
 }
 
