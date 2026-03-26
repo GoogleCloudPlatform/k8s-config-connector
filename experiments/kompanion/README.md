@@ -31,6 +31,24 @@ Export function may take minutes to run as the tool searches all the api resourc
 
 The command will generate a timestamped report `tar.gz` file to use as a snapshot.
 
+## MCP
+
+Start a Model Context Protocol (MCP) server to interact with KCC resources in a cluster.
+
+```
+    # Start the MCP server using default kubeconfig
+    kompanion mcp
+
+    # Start the MCP server with a specific kubeconfig and context
+    kompanion mcp --kubeconfig /path/to/config --context my-context
+```
+
+This enables AI IDEs (like Cursor) and assistants (like Claude Desktop) to:
+* Get KCC CRD schemas.
+* List KCC resources.
+* Describe KCC resources and their status.
+* Apply KCC resource YAML via Server-Side Apply.
+
 # Light Roadmap
 
 * [ ] Debug/ audit logs for the tool itself
