@@ -314,6 +314,9 @@ func TestTerraformFieldsAreInResourceSchema(t *testing.T) {
 						// TODO(b/278948939): Remove once the unknown fields are cleaned up in google_apigee_addons_config.
 						if rc.Name == "google_apigee_addons_config" {
 							t.Logf("field '%v' mentioned in ServiceMapping for the auto-generated v1alpha1 resource '%v' but is not found in resource schema", f, rc.Name)
+						} else if f == "strip_default_node_pool_config_on_update" {
+							// strip_default_node_pool_config_on_update is a KCC-only directive and not in Terraform schema.
+							continue
 						} else {
 							t.Errorf("field '%v' mentioned in ServiceMapping for '%v' but is not found in resource schema", f, rc.Name)
 						}
