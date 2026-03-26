@@ -20,10 +20,10 @@ import (
 
 func TestAlloyDBUserIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
-		name       string
-		external   string
-		want       *AlloyDBUserIdentity
-		wantErr    bool
+		name     string
+		external string
+		want     *AlloyDBUserIdentity
+		wantErr  bool
 	}{
 		{
 			name:     "valid external",
