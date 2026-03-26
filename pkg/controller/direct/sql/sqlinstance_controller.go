@@ -285,14 +285,18 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 	},
 	"spec.settings.dataCacheConfig.dataCacheEnabled": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
-			if actual.Settings != nil && actual.Settings.DataCacheConfig != nil {
+			if actual.Settings != nil {
 				if out.Settings == nil {
 					out.Settings = &api.Settings{}
 				}
-				if out.Settings.DataCacheConfig == nil {
-					out.Settings.DataCacheConfig = &api.DataCacheConfig{}
+				if actual.Settings.DataCacheConfig == nil {
+					out.Settings.DataCacheConfig = nil
+				} else {
+					if out.Settings.DataCacheConfig == nil {
+						out.Settings.DataCacheConfig = &api.DataCacheConfig{}
+					}
+					out.Settings.DataCacheConfig.DataCacheEnabled = actual.Settings.DataCacheConfig.DataCacheEnabled
 				}
-				out.Settings.DataCacheConfig.DataCacheEnabled = actual.Settings.DataCacheConfig.DataCacheEnabled
 			}
 		},
 	},
