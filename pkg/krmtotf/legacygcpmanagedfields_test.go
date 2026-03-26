@@ -36,6 +36,7 @@ func TestResolveGCPManagedFields(t *testing.T) {
 		resourceExists    bool
 		inputConfig       map[string]interface{}
 		expectedConfig    map[string]interface{}
+		annotations       map[string]string
 	}{
 		{
 			name: "ContainerCluster treats node version as GCP-managed when release channel set",
@@ -530,6 +531,84 @@ func TestResolveGCPManagedFields(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "ContainerCluster strips nodeConfig when strip-default-node-pool-config-on-update is true during update",
+			kind: "ContainerCluster",
+			lastAppliedConfig: map[string]interface{}{
+				"spec": map[string]interface{}{
+					"location": "us-central1-a",
+				},
+			},
+			resourceExists: true,
+			inputConfig: map[string]interface{}{
+				"location": "us-central1-a",
+				"nodeConfig": map[string]interface{}{
+					"machineType": "n1-standard-1",
+				},
+			},
+			annotations: map[string]string{
+				"cnrm.cloud.google.com/strip-default-node-pool-config-on-update": "true",
+			},
+			expectedConfig: map[string]interface{}{
+				"location": "us-central1-a",
+			},
+		},
+		{
+			name:           "ContainerCluster does NOT strip nodeConfig during creation even if annotation is true",
+			kind:           "ContainerCluster",
+			resourceExists: false,
+			inputConfig: map[string]interface{}{
+				"location": "us-central1-a",
+				"nodeConfig": map[string]interface{}{
+					"machineType": "n1-standard-1",
+				},
+			},
+			annotations: map[string]string{
+				"cnrm.cloud.google.com/strip-default-node-pool-config-on-update": "true",
+			},
+			expectedConfig: map[string]interface{}{
+				"location": "us-central1-a",
+				"nodeConfig": map[string]interface{}{
+					"machineType": "n1-standard-1",
+				},
+			},
+		},
+		{
+			name: "ContainerCluster strips nodeVersion if not applied",
+			kind: "ContainerCluster",
+			lastAppliedConfig: map[string]interface{}{
+				"spec": map[string]interface{}{
+					"location": "us-central1-a",
+				},
+			},
+			resourceExists: true,
+			inputConfig: map[string]interface{}{
+				"location":    "us-central1-a",
+				"nodeVersion": "1.27",
+			},
+			expectedConfig: map[string]interface{}{
+				"location": "us-central1-a",
+			},
+		},
+		{
+			name: "ContainerCluster does NOT strip nodeVersion if it IS applied",
+			kind: "ContainerCluster",
+			lastAppliedConfig: map[string]interface{}{
+				"spec": map[string]interface{}{
+					"location":    "us-central1-a",
+					"nodeVersion": "1.27",
+				},
+			},
+			resourceExists: true,
+			inputConfig: map[string]interface{}{
+				"location":    "us-central1-a",
+				"nodeVersion": "1.27",
+			},
+			expectedConfig: map[string]interface{}{
+				"location":    "us-central1-a",
+				"nodeVersion": "1.27",
+			},
+		},
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
@@ -539,9 +618,13 @@ func TestResolveGCPManagedFields(t *testing.T) {
 			if err != nil {
 				t.Fatalf("error marshaling last applied config: %v", err)
 			}
-			r.SetAnnotations(map[string]string{
+			annotations := map[string]string{
 				k8s.LastAppliedConfigurationAnnotation: string(lastAppliedConfigJSON),
-			})
+			}
+			for k, v := range tc.annotations {
+				annotations[k] = v
+			}
+			r.SetAnnotations(annotations)
 			var liveState *terraform.InstanceState
 			if tc.resourceExists {
 				// The content of the instance state does not matter here,
