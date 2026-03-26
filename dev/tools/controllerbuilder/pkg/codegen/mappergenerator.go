@@ -239,6 +239,13 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 	versionSpecifier := ""
 	if v.multiversion {
 		versionSpecifier = "_" + lastGoComponent(pair.KRMType.GoPackage)
+
+		protoPkg := GoPackageForProto(msg.ParentFile())
+		if alias, ok := v.importedPackages[protoPkg]; ok {
+			if alias.alias != "pb" && alias.alias != "" {
+				versionSpecifier = "_" + alias.alias + versionSpecifier
+			}
+		}
 	}
 
 	funcName := goTypeName + versionSpecifier + "_FromProto"

@@ -24,7 +24,8 @@ import (
 
 	"google.golang.org/api/option"
 
-	compute "cloud.google.com/go/compute/apiv1"
+	computev1 "cloud.google.com/go/compute/apiv1"
+	computev1beta "cloud.google.com/go/compute/apiv1beta"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 )
 
@@ -39,13 +40,13 @@ func newGCPClient(config *config.ControllerConfig) (*gcpClient, error) {
 	return gcpClient, nil
 }
 
-func (m *gcpClient) newGlobalForwardingRuleClient(ctx context.Context) (*compute.GlobalForwardingRulesClient, error) {
+func (m *gcpClient) newGlobalForwardingRuleClient(ctx context.Context) (*computev1.GlobalForwardingRulesClient, error) {
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
 
-	client, err := compute.NewGlobalForwardingRulesRESTClient(ctx, opts...)
+	client, err := computev1.NewGlobalForwardingRulesRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building global compute ForwardingRule client: %w", err)
 
@@ -53,36 +54,36 @@ func (m *gcpClient) newGlobalForwardingRuleClient(ctx context.Context) (*compute
 	return client, err
 }
 
-func (m *gcpClient) forwardingRuleClient(ctx context.Context) (*compute.ForwardingRulesClient, error) {
+func (m *gcpClient) forwardingRuleClient(ctx context.Context) (*computev1.ForwardingRulesClient, error) {
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	client, err := compute.NewForwardingRulesRESTClient(ctx, opts...)
+	client, err := computev1.NewForwardingRulesRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building ComputeForwardingRule client: %w", err)
 	}
 	return client, err
 }
 
-func (m *gcpClient) newNetworkEdgeSecurityServicesClient(ctx context.Context) (*compute.NetworkEdgeSecurityServicesClient, error) {
+func (m *gcpClient) newNetworkEdgeSecurityServicesClient(ctx context.Context) (*computev1.NetworkEdgeSecurityServicesClient, error) {
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	client, err := compute.NewNetworkEdgeSecurityServicesRESTClient(ctx, opts...)
+	client, err := computev1.NewNetworkEdgeSecurityServicesRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building compute networkEdgeSecurityServices client: %w", err)
 	}
 	return client, err
 }
 
-func (m *gcpClient) newNetworkAttachmentsClient(ctx context.Context) (*compute.NetworkAttachmentsClient, error) {
+func (m *gcpClient) newNetworkAttachmentsClient(ctx context.Context) (*computev1.NetworkAttachmentsClient, error) {
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	client, err := compute.NewNetworkAttachmentsRESTClient(ctx, opts...)
+	client, err := computev1.NewNetworkAttachmentsRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building compute networkEdgeSecurityServices client: %w", err)
 
@@ -90,13 +91,13 @@ func (m *gcpClient) newNetworkAttachmentsClient(ctx context.Context) (*compute.N
 	return client, err
 }
 
-func (m *gcpClient) newTargetTcpProxiesClient(ctx context.Context) (*compute.TargetTcpProxiesClient, error) {
+func (m *gcpClient) newTargetTcpProxiesClient(ctx context.Context) (*computev1.TargetTcpProxiesClient, error) {
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
 
-	client, err := compute.NewTargetTcpProxiesRESTClient(ctx, opts...)
+	client, err := computev1.NewTargetTcpProxiesRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building compute TargetTcpProxiesClient client: %w", err)
 
@@ -104,15 +105,28 @@ func (m *gcpClient) newTargetTcpProxiesClient(ctx context.Context) (*compute.Tar
 	return client, err
 }
 
-func (m *gcpClient) newRegionalTargetTcpProxiesClient(ctx context.Context) (*compute.RegionTargetTcpProxiesClient, error) {
+func (m *gcpClient) newRegionalTargetTcpProxiesClient(ctx context.Context) (*computev1.RegionTargetTcpProxiesClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	client, err := compute.NewRegionTargetTcpProxiesRESTClient(ctx, opts...)
+	client, err := computev1.NewRegionTargetTcpProxiesRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building compute RegionalTargetTcpProxiesClient client: %w", err)
+
+	}
+	return client, err
+}
+
+func (m *gcpClient) newFutureReservationsClient(ctx context.Context) (*computev1beta.FutureReservationsClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := computev1beta.NewFutureReservationsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute futureReservations client: %w", err)
 
 	}
 	return client, err

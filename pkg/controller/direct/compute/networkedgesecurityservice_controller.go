@@ -27,8 +27,8 @@ import (
 	"sort"
 	"strings"
 
-	compute "cloud.google.com/go/compute/apiv1"
-	computepb "cloud.google.com/go/compute/apiv1/computepb"
+	computev1 "cloud.google.com/go/compute/apiv1"
+	computepbv1 "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -94,10 +94,10 @@ func (m *modelNetworkEdgeSecurityService) AdapterForURL(ctx context.Context, url
 }
 
 type NetworkEdgeSecurityServiceAdapter struct {
-	gcpClient *compute.NetworkEdgeSecurityServicesClient
+	gcpClient *computev1.NetworkEdgeSecurityServicesClient
 	id        *krm.NetworkEdgeSecurityServiceIdentity
 	desired   *krm.ComputeNetworkEdgeSecurityService
-	actual    *computepb.NetworkEdgeSecurityService
+	actual    *computepbv1.NetworkEdgeSecurityService
 	reader    client.Reader
 }
 
@@ -111,7 +111,7 @@ func (a *NetworkEdgeSecurityServiceAdapter) Find(ctx context.Context) (bool, err
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting ComputeNetworkEdgeSecurityService", "name", a.id)
 
-	req := &computepb.GetNetworkEdgeSecurityServiceRequest{
+	req := &computepbv1.GetNetworkEdgeSecurityServiceRequest{
 		Project:                    a.id.Parent().ProjectID,
 		Region:                     a.id.Parent().Location,
 		NetworkEdgeSecurityService: a.id.ID(),
@@ -146,7 +146,7 @@ func (a *NetworkEdgeSecurityServiceAdapter) Create(ctx context.Context, createOp
 	}
 	resource.Name = direct.LazyPtr(a.id.ID())
 
-	req := &computepb.InsertNetworkEdgeSecurityServiceRequest{
+	req := &computepbv1.InsertNetworkEdgeSecurityServiceRequest{
 		Project:                            a.id.Parent().ProjectID,
 		Region:                             a.id.Parent().Location,
 		NetworkEdgeSecurityServiceResource: resource,
@@ -226,7 +226,7 @@ func (a *NetworkEdgeSecurityServiceAdapter) Update(ctx context.Context, updateOp
 	sort.Strings(paths)
 	updateMask := strings.Join(paths, ",")
 
-	req := &computepb.PatchNetworkEdgeSecurityServiceRequest{
+	req := &computepbv1.PatchNetworkEdgeSecurityServiceRequest{
 		Project:                            a.id.Parent().ProjectID,
 		Region:                             a.id.Parent().Location,
 		NetworkEdgeSecurityService:         a.id.ID(),
@@ -296,7 +296,7 @@ func (a *NetworkEdgeSecurityServiceAdapter) Delete(ctx context.Context, deleteOp
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting ComputeNetworkEdgeSecurityService", "name", a.id)
 
-	req := &computepb.DeleteNetworkEdgeSecurityServiceRequest{
+	req := &computepbv1.DeleteNetworkEdgeSecurityServiceRequest{
 		Project:                    a.id.Parent().ProjectID,
 		Region:                     a.id.Parent().Location,
 		NetworkEdgeSecurityService: a.id.ID(),
@@ -316,8 +316,8 @@ func (a *NetworkEdgeSecurityServiceAdapter) Delete(ctx context.Context, deleteOp
 	return true, nil
 }
 
-func (a *NetworkEdgeSecurityServiceAdapter) get(ctx context.Context) (*computepb.NetworkEdgeSecurityService, error) {
-	getReq := &computepb.GetNetworkEdgeSecurityServiceRequest{
+func (a *NetworkEdgeSecurityServiceAdapter) get(ctx context.Context) (*computepbv1.NetworkEdgeSecurityService, error) {
+	getReq := &computepbv1.GetNetworkEdgeSecurityServiceRequest{
 		Project:                    a.id.Parent().ProjectID,
 		Region:                     a.id.Parent().Location,
 		NetworkEdgeSecurityService: a.id.ID(),

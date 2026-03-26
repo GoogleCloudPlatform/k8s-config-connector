@@ -20,6 +20,7 @@ import (
 	"time"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
+	pbv1beta "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1beta"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"k8s.io/apimachinery/pkg/util/uuid"
@@ -48,6 +49,10 @@ func (s *computeOperations) globalOrganizationOperationFQN(name string) string {
 
 func (s *computeOperations) regionalOperationFQN(projectID string, region string, name string) string {
 	return "projects/" + projectID + "/regions/" + region + "/operations/" + name
+}
+
+func (s *computeOperations) zonalOperationFQN(projectID string, zone string, name string) string {
+	return "projects/" + projectID + "/zones/" + zone + "/operations/" + name
 }
 
 // Deprecated: use startGlobalLRO
@@ -213,6 +218,87 @@ func (s *computeOperations) getOperation(ctx context.Context, fqn string) (*pb.O
 	if err := s.storage.Get(ctx, fqn, op); err != nil {
 		return nil, err
 	}
+
+	return op, nil
+}
+
+func (s *computeOperations) startZonalLRO(ctx context.Context, projectID string, zone string, op *pbv1beta.Operation, callback func() (proto.Message, error)) (*pbv1beta.Operation, error) {
+	now := time.Now()
+	millis := now.UnixMilli()
+	id := uuid.NewUUID()
+
+	name := fmt.Sprintf("operation-%d-%s", millis, id)
+	fqn := s.zonalOperationFQN(projectID, zone, name)
+
+	op.Name = PtrTo(name)
+	op.Zone = PtrTo(buildComputeSelfLink(ctx, "projects/"+projectID+"/zones/"+zone))
+	return s.startZonalLRO0(ctx, op, fqn, callback)
+}
+
+func (s *computeOperations) startZonalLRO0(ctx context.Context, op *pbv1beta.Operation, fqn string, callback func() (proto.Message, error)) (*pbv1beta.Operation, error) {
+	log := klog.FromContext(ctx)
+
+	now := time.Now()
+	nanos := now.UnixNano()
+
+	if op == nil {
+		op = &pbv1beta.Operation{}
+	}
+
+	op.StartTime = PtrTo(formatTime(now))
+	op.InsertTime = PtrTo(formatTime(now))
+	op.Id = PtrTo(uint64(nanos))
+
+	if op.Progress == nil {
+		op.Progress = PtrTo(int32(0))
+	}
+
+	if op.Status == nil {
+		op.Status = PtrTo(pbv1beta.Operation_RUNNING)
+	}
+
+	op.Kind = PtrTo("compute#operation")
+	op.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+
+	log.Info("storing v1beta operation", "fqn", fqn)
+	if err := s.storage.Create(ctx, fqn, op); err != nil {
+		return nil, err
+	}
+
+	go func() {
+		result, err := callback()
+		finished := &pbv1beta.Operation{}
+		if err2 := s.storage.Get(ctx, fqn, finished); err2 != nil {
+			klog.Warningf("error getting LRO: %v", err2)
+			return
+		}
+
+		finished.Progress = PtrTo(int32(100))
+		finished.Status = PtrTo(pbv1beta.Operation_DONE)
+		finished.EndTime = PtrTo(formatTime(time.Now()))
+
+		if err != nil {
+			code := status.Code(err)
+			message := err.Error()
+
+			finished.Error = &pbv1beta.Error{
+				Errors: []*pbv1beta.Errors{
+					{
+						Code:    PtrTo(code.String()),
+						Message: PtrTo(message),
+					},
+				},
+			}
+			klog.Warningf("TODO: more fully handle LRO error %v", err)
+		} else {
+			// The LRO result does not appear to be returned in the operation
+			klog.V(4).Infof("LRO result: %+v", result)
+		}
+		if err := s.storage.Update(ctx, fqn, finished); err != nil {
+			klog.Warningf("error updating LRO: %v", err)
+			return
+		}
+	}()
 
 	return op, nil
 }

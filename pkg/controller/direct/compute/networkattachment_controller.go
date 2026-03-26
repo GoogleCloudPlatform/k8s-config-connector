@@ -24,8 +24,8 @@ import (
 	"context"
 	"fmt"
 
-	compute "cloud.google.com/go/compute/apiv1"
-	computepb "cloud.google.com/go/compute/apiv1/computepb"
+	computev1 "cloud.google.com/go/compute/apiv1"
+	computepbv1 "cloud.google.com/go/compute/apiv1/computepb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -93,10 +93,10 @@ func (m *networkAttachmentModel) AdapterForURL(ctx context.Context, url string) 
 }
 
 type NetworkAttachmentAdapter struct {
-	gcpClient *compute.NetworkAttachmentsClient
+	gcpClient *computev1.NetworkAttachmentsClient
 	id        *v1alpha1.NetworkAttachmentIdentity
 	desired   *krm.ComputeNetworkAttachment
-	actual    *computepb.NetworkAttachment
+	actual    *computepbv1.NetworkAttachment
 	reader    client.Reader
 }
 
@@ -110,7 +110,7 @@ func (a *NetworkAttachmentAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting NetworkAttachment", "name", a.id)
 
-	req := &computepb.GetNetworkAttachmentRequest{
+	req := &computepbv1.GetNetworkAttachmentRequest{
 		Project:           a.id.Parent().ProjectID,
 		Region:            a.id.Parent().Location,
 		NetworkAttachment: a.id.ID(),
@@ -145,7 +145,7 @@ func (a *NetworkAttachmentAdapter) Create(ctx context.Context, createOp *directb
 	}
 	resource.Name = direct.LazyPtr(a.id.ID())
 
-	req := &computepb.InsertNetworkAttachmentRequest{
+	req := &computepbv1.InsertNetworkAttachmentRequest{
 		Project:                   a.id.Parent().ProjectID,
 		Region:                    a.id.Parent().Location,
 		NetworkAttachmentResource: resource,
@@ -198,7 +198,7 @@ func (a *NetworkAttachmentAdapter) Update(ctx context.Context, updateOp *directb
 		return err
 	}
 
-	var updated *computepb.NetworkAttachment
+	var updated *computepbv1.NetworkAttachment
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.String())
 		// even though there is no update, we still want to update KRM status
@@ -210,7 +210,7 @@ func (a *NetworkAttachmentAdapter) Update(ctx context.Context, updateOp *directb
 		}
 		structuredreporting.ReportDiff(ctx, report)
 
-		req := &computepb.PatchNetworkAttachmentRequest{
+		req := &computepbv1.PatchNetworkAttachmentRequest{
 			Project:                   a.id.Parent().ProjectID,
 			Region:                    a.id.Parent().Location,
 			NetworkAttachment:         a.id.ID(),
@@ -275,7 +275,7 @@ func (a *NetworkAttachmentAdapter) Delete(ctx context.Context, deleteOp *directb
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting NetworkAttachment", "name", a.id)
 
-	req := &computepb.DeleteNetworkAttachmentRequest{
+	req := &computepbv1.DeleteNetworkAttachmentRequest{
 		Project:           a.id.Parent().ProjectID,
 		Region:            a.id.Parent().Location,
 		NetworkAttachment: a.id.ID(),
@@ -296,8 +296,8 @@ func (a *NetworkAttachmentAdapter) Delete(ctx context.Context, deleteOp *directb
 	return true, nil
 }
 
-func (a *NetworkAttachmentAdapter) get(ctx context.Context) (*computepb.NetworkAttachment, error) {
-	getReq := &computepb.GetNetworkAttachmentRequest{
+func (a *NetworkAttachmentAdapter) get(ctx context.Context) (*computepbv1.NetworkAttachment, error) {
+	getReq := &computepbv1.GetNetworkAttachmentRequest{
 		Project:           a.id.Parent().ProjectID,
 		Region:            a.id.Parent().Location,
 		NetworkAttachment: a.id.ID(),
