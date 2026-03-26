@@ -69,24 +69,20 @@ func SnakeCaseToUpperCamelCase(s string) string {
 // Convert a snake_case_string to CamelCaseString.
 func snakeCaseToUpperCamelCase(s string) string {
 	split := strings.Split(s, "_")
-	ret := ""
+	var b strings.Builder
+	b.Grow(len(s))
 	for i, v := range split {
 		if i == 0 {
-			ret += v
+			b.WriteString(v)
 		} else {
-			ret += strings.Title(v)
+			b.WriteString(strings.Title(v))
 		}
 	}
-	return ret
+	return b.String()
 }
 
 func SnakeCaseToLowerCase(s string) string {
-	split := strings.Split(s, "_")
-	ret := ""
-	for _, v := range split {
-		ret += v
-	}
-	return ret
+	return strings.ReplaceAll(s, "_", "")
 }
 
 // AsSnakeCase returns the given string converted to lowercase snake_case. If the input is already snake_case, no
@@ -99,14 +95,15 @@ func AsSnakeCase(s string) string {
 
 // Convert a CamelCaseString to kebab-case-string.
 func CamelCaseToKebabCase(s string) string {
-	kebabed := ""
+	var b strings.Builder
+	b.Grow(len(s))
 	for i, r := range s {
 		if i != 0 && i != len(s)-1 && unicode.IsUpper(r) {
-			kebabed += "-"
+			b.WriteByte('-')
 		}
-		kebabed += strings.ToLower(string(r))
+		b.WriteRune(unicode.ToLower(r))
 	}
-	return kebabed
+	return b.String()
 }
 
 // Convert a kebab-case-string to lower_snake_case string.
