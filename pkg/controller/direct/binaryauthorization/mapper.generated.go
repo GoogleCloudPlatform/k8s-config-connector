@@ -562,30 +562,8 @@ func PkixPublicKey_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Pki
 	out.SignatureAlgorithm = direct.Enum_ToProto[pb.PkixPublicKey_SignatureAlgorithm](mapCtx, in.SignatureAlgorithm)
 	return out
 }
-func UserOwnedGrafeasNote_FromProto(mapCtx *direct.MapContext, in *pb.UserOwnedGrafeasNote) *krmv1beta1.UserOwnedGrafeasNote {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1beta1.UserOwnedGrafeasNote{}
-	if in.GetNoteReference() != "" {
-		out.NoteReferenceRef = &krmv1beta1.ContainerAnalysisNoteRef{External: in.GetNoteReference()}
-	}
-	out.PublicKeys = direct.Slice_FromProto(mapCtx, in.PublicKeys, AttestorPublicKey_FromProto)
-	// MISSING: DelegationServiceAccountEmail
-	return out
-}
-func UserOwnedGrafeasNote_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.UserOwnedGrafeasNote) *pb.UserOwnedGrafeasNote {
-	if in == nil {
-		return nil
-	}
-	out := &pb.UserOwnedGrafeasNote{}
-	if in.NoteReferenceRef != nil {
-		out.NoteReference = in.NoteReferenceRef.External
-	}
-	out.PublicKeys = direct.Slice_ToProto(mapCtx, in.PublicKeys, AttestorPublicKey_ToProto)
-	// MISSING: DelegationServiceAccountEmail
-	return out
-}
+
+
 func UserOwnedGrafeasNoteStatus_FromProto(mapCtx *direct.MapContext, in *pb.UserOwnedGrafeasNote) *krmv1beta1.UserOwnedGrafeasNoteStatus {
 	if in == nil {
 		return nil

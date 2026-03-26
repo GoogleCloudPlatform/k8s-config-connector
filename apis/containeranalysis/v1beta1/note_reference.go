@@ -12,5 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +kcc:proto=google.cloud.binaryauthorization.v1
 package v1beta1
+
+type ContainerAnalysisNoteRef struct {
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace string `json:"namespace,omitempty"`
+
+	/* Allowed value: The Google Cloud resource name of a `ContainerAnalysisNote` resource (format: `projects/{{project}}/notes/{{name}}`). */
+	// +optional
+	External string `json:"external,omitempty"`
+}

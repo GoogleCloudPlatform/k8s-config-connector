@@ -83,7 +83,7 @@
 | bigtable.cnrm.cloud.google.com                | BigtableTable                                   | False        | True        | False  | Terraform  | True        |
 | billing.cnrm.cloud.google.com                 | BillingAccount                                  | True         | False       | False  | Direct     | True        |
 | billingbudgets.cnrm.cloud.google.com          | BillingBudgetsBudget                            | False        | True        | False  | DCL        | False       |
-| binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationAttestor                     | False        | True        | False  | DCL        | True        |
+| binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationAttestor                     | False        | True        | False  | Direct     | True        |
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationPlatformPolicy               | True         | False       | False  | Direct     | True        |
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationPolicy                       | False        | True        | False  | DCL        | False       |
 | certificatemanager.cnrm.cloud.google.com      | CertificateManagerCertificateIssuanceConfig     | True         | False       | False  | Direct     | True        |

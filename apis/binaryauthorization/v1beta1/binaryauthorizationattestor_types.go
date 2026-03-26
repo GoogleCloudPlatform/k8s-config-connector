@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	containeranalysisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/containeranalysis/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -30,6 +31,7 @@ type BinaryAuthorizationAttestorSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
+	// +required
 	ProjectRef refsv1beta1.ProjectRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
@@ -45,25 +47,12 @@ type BinaryAuthorizationAttestorSpec struct {
 type UserOwnedGrafeasNote struct {
 	/* Immutable. */
 	// +required
-	NoteReferenceRef *ContainerAnalysisNoteRef `json:"noteRef"`
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1.UserOwnedGrafeasNote.note_reference
+	NoteRef *containeranalysisv1beta1.ContainerAnalysisNoteRef `json:"noteRef"`
 
 	/* Optional. Public keys that verify attestations signed by this attestor. This field may be updated. If this field is non-empty, one of the specified public keys must verify that an attestation was signed by this attestor for the image specified in the admission request. If this field is empty, this attestor always returns that no valid attestations exist. */
 	// +optional
 	PublicKeys []AttestorPublicKey `json:"publicKeys,omitempty"`
-}
-
-type ContainerAnalysisNoteRef struct {
-	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
-	// +optional
-	Name string `json:"name,omitempty"`
-
-	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
-	// +optional
-	Namespace string `json:"namespace,omitempty"`
-
-	/* Allowed value: The Google Cloud resource name of a `ContainerAnalysisNote` resource (format: `projects/{{project}}/notes/{{name}}`). */
-	// +optional
-	External string `json:"external,omitempty"`
 }
 
 // +kcc:proto=google.cloud.binaryauthorization.v1.AttestorPublicKey
@@ -93,6 +82,7 @@ type PkixPublicKey struct {
 
 	/* The signature algorithm used to verify a message against a signature using this key. These signature algorithm must match the structure and any object identifiers encoded in `public_key_pem` (i.e. this algorithm must match that of the public key). Possible values: SIGNATURE_ALGORITHM_UNSPECIFIED, RSA_PSS_2048_SHA256, RSA_PSS_3072_SHA256, RSA_PSS_4096_SHA256, RSA_PSS_4096_SHA512, RSA_SIGN_PKCS1_2048_SHA256, RSA_SIGN_PKCS1_3072_SHA256, RSA_SIGN_PKCS1_4096_SHA256, RSA_SIGN_PKCS1_4096_SHA512, ECDSA_P256_SHA256, EC_SIGN_P256_SHA256, ECDSA_P384_SHA384, EC_SIGN_P384_SHA384, ECDSA_P521_SHA512, EC_SIGN_P521_SHA512 */
 	// +optional
+	// +kubebuilder:validation:Enum=SIGNATURE_ALGORITHM_UNSPECIFIED;RSA_PSS_2048_SHA256;RSA_PSS_3072_SHA256;RSA_PSS_4096_SHA256;RSA_PSS_4096_SHA512;RSA_SIGN_PKCS1_2048_SHA256;RSA_SIGN_PKCS1_3072_SHA256;RSA_SIGN_PKCS1_4096_SHA256;RSA_SIGN_PKCS1_4096_SHA512;ECDSA_P256_SHA256;EC_SIGN_P256_SHA256;ECDSA_P384_SHA384;EC_SIGN_P384_SHA384;ECDSA_P521_SHA512;EC_SIGN_P521_SHA512
 	SignatureAlgorithm *string `json:"signatureAlgorithm,omitempty"`
 }
 
@@ -130,7 +120,6 @@ type UserOwnedGrafeasNoteStatus struct {
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

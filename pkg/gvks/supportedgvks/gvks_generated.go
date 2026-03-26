@@ -397,15 +397,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	{
 		Group:   "binaryauthorization.cnrm.cloud.google.com",
 		Version: "v1beta1",
-		Kind:    "BinaryAuthorizationAttestor",
-	}: {
-		Terraform:   false,
-		DCL:         true,
-		SupportsIAM: true,
-	},
-	{
-		Group:   "binaryauthorization.cnrm.cloud.google.com",
-		Version: "v1beta1",
 		Kind:    "BinaryAuthorizationPolicy",
 	}: {
 		Terraform:   false,
