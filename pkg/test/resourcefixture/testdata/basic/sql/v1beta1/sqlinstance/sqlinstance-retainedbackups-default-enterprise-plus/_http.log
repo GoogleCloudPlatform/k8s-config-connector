@@ -48,11 +48,14 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "binaryLogEnabled": true,
       "enabled": true,
       "kind": "sql#backupConfiguration",
+      "pointInTimeRecoveryEnabled": false,
       "startTime": "12:00",
       "transactionLogRetentionDays": 14
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskType": "PD_SSD",
+    "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE_PLUS",
     "ipConfiguration": {
       "ipv4Enabled": true,
@@ -62,6 +65,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "storageAutoResize": true,
+    "storageAutoResizeLimit": "0",
     "tier": "db-perf-optimized-N-2",
     "userLabels": {
       "cnrm-test": "true",
@@ -195,6 +199,7 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "CLOUD_STORAGE"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
@@ -452,6 +457,7 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "CLOUD_STORAGE"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
@@ -598,12 +604,15 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "binaryLogEnabled": true,
       "enabled": true,
       "kind": "sql#backupConfiguration",
+      "pointInTimeRecoveryEnabled": false,
       "startTime": "12:00",
       "transactionLogRetentionDays": 14
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
+    "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE_PLUS",
     "ipConfiguration": {
       "ipv4Enabled": true,
@@ -618,6 +627,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
+    "storageAutoResizeLimit": "0",
     "tier": "db-perf-optimized-N-2",
     "userLabels": {
       "cnrm-test": "true",
@@ -751,6 +761,7 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "CLOUD_STORAGE"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
