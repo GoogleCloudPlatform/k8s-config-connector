@@ -122,9 +122,8 @@ func InstanceReplicaConfigurationKRMToGCP(in *krm.InstanceReplicaConfiguration) 
 		MysqlReplicaConfiguration: InstanceMysqlReplicaConfigurationKRMToGCP(in),
 	}
 
-	if in.FailoverTarget != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "FailoverTarget")
-	}
+	// We should always send fields in an update, so we add ForceSendFields for all optional fields.
+	out.ForceSendFields = append(out.ForceSendFields, "FailoverTarget")
 
 	return out
 }
@@ -177,18 +176,11 @@ func InstanceSettingsKRMToGCP(in krm.InstanceSettings, labels map[string]string)
 		UserLabels:             label.NewGCPLabelsFromK8sLabels(labels),
 	}
 
-	if in.CrashSafeReplication != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "CrashSafeReplicationEnabled")
-	}
-	if in.DeletionProtectionEnabled != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "DeletionProtectionEnabled")
-	}
-	if in.DiskAutoresize != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "StorageAutoResize")
-	}
-	if in.DiskAutoresizeLimit != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "StorageAutoResizeLimit")
-	}
+	// We should always send fields in an update, so we add ForceSendFields for all optional fields.
+	out.ForceSendFields = append(out.ForceSendFields, "CrashSafeReplicationEnabled")
+	out.ForceSendFields = append(out.ForceSendFields, "DeletionProtectionEnabled")
+	out.ForceSendFields = append(out.ForceSendFields, "StorageAutoResize")
+	out.ForceSendFields = append(out.ForceSendFields, "StorageAutoResizeLimit")
 
 	return out
 }
@@ -228,15 +220,10 @@ func InstanceMysqlReplicaConfigurationKRMToGCP(in *krm.InstanceReplicaConfigurat
 		VerifyServerCertificate: direct.ValueOf(in.VerifyServerCertificate),
 	}
 
-	if in.ConnectRetryInterval != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "ConnectRetryInterval")
-	}
-	if in.MasterHeartbeatPeriod != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "MasterHeartbeatPeriod")
-	}
-	if in.VerifyServerCertificate != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "VerifyServerCertificate")
-	}
+	// We should always send fields in an update, so we add ForceSendFields for all optional fields.
+	out.ForceSendFields = append(out.ForceSendFields, "ConnectRetryInterval")
+	out.ForceSendFields = append(out.ForceSendFields, "MasterHeartbeatPeriod")
+	out.ForceSendFields = append(out.ForceSendFields, "VerifyServerCertificate")
 
 	return out
 }
@@ -294,18 +281,11 @@ func InstanceBackupConfigurationKRMToGCP(in *krm.InstanceBackupConfiguration) *a
 		// TransactionalLogStorageState is not supported in KRM API.
 	}
 
-	if in.BinaryLogEnabled != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "BinaryLogEnabled")
-	}
-	if in.Enabled != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "Enabled")
-	}
-	if in.PointInTimeRecoveryEnabled != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "PointInTimeRecoveryEnabled")
-	}
-	if in.TransactionLogRetentionDays != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "TransactionLogRetentionDays")
-	}
+	// We should always send fields in an update, so we add ForceSendFields for all optional fields.
+	out.ForceSendFields = append(out.ForceSendFields, "BinaryLogEnabled")
+	out.ForceSendFields = append(out.ForceSendFields, "Enabled")
+	out.ForceSendFields = append(out.ForceSendFields, "PointInTimeRecoveryEnabled")
+	out.ForceSendFields = append(out.ForceSendFields, "TransactionLogRetentionDays")
 
 	return out
 }
@@ -320,9 +300,8 @@ func InstanceBackupRetentionSettingsKRMToGCP(in *krm.InstanceBackupRetentionSett
 		RetentionUnit:   direct.ValueOf(in.RetentionUnit),
 	}
 
-	if in.RetainedBackups == 0 {
-		out.ForceSendFields = append(out.ForceSendFields, "RetainedBackups")
-	}
+	// We should always send fields in an update, so we add ForceSendFields for all optional fields.
+	out.ForceSendFields = append(out.ForceSendFields, "RetainedBackups")
 
 	return out
 }
@@ -336,9 +315,8 @@ func InstanceDataCacheConfigKRMToGCP(in *krm.InstanceDataCacheConfig) *api.DataC
 		DataCacheEnabled: direct.ValueOf(in.DataCacheEnabled),
 	}
 
-	if in.DataCacheEnabled != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "DataCacheEnabled")
-	}
+	// We should always send fields in an update, so we add ForceSendFields for all optional fields.
+	out.ForceSendFields = append(out.ForceSendFields, "DataCacheEnabled")
 
 	return out
 }
@@ -386,21 +364,12 @@ func InstanceInsightsConfigKRMToGCP(in *krm.InstanceInsightsConfig) *api.Insight
 		RecordClientAddress:   direct.ValueOf(in.RecordClientAddress),
 	}
 
-	if in.QueryInsightsEnabled != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "QueryInsightsEnabled")
-	}
-	if in.QueryPlansPerMinute != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "QueryPlansPerMinute")
-	}
-	if in.QueryStringLength != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "QueryStringLength")
-	}
-	if in.RecordApplicationTags != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "RecordApplicationTags")
-	}
-	if in.RecordClientAddress != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "RecordClientAddress")
-	}
+	// We should always send fields in an update, so we add ForceSendFields for all optional fields.
+	out.ForceSendFields = append(out.ForceSendFields, "QueryInsightsEnabled")
+	out.ForceSendFields = append(out.ForceSendFields, "QueryPlansPerMinute")
+	out.ForceSendFields = append(out.ForceSendFields, "QueryStringLength")
+	out.ForceSendFields = append(out.ForceSendFields, "RecordApplicationTags")
+	out.ForceSendFields = append(out.ForceSendFields, "RecordClientAddress")
 
 	return out
 }
@@ -467,9 +436,8 @@ func InstancePscConfigKRMToGCP(in []krm.InstancePscConfig) *api.PscConfig {
 		PscEnabled:              direct.ValueOf(inFixed.PscEnabled),
 	}
 
-	if inFixed.PscEnabled != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "PscEnabled")
-	}
+	// We should always send fields in an update, so we add ForceSendFields for all optional fields.
+	out.ForceSendFields = append(out.ForceSendFields, "PscEnabled")
 
 	return out
 }
@@ -501,9 +469,8 @@ func InstanceMaintenanceWindowKRMToGCP(in *krm.InstanceMaintenanceWindow) *api.M
 		UpdateTrack: direct.ValueOf(in.UpdateTrack),
 	}
 
-	if in.Hour != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "Hour")
-	}
+	// We should always send fields in an update, so we add ForceSendFields for all optional fields.
+	out.ForceSendFields = append(out.ForceSendFields, "Hour")
 
 	return out
 }
@@ -523,18 +490,11 @@ func InstancePasswordValidationPolicyKRMToGCP(in *krm.InstancePasswordValidation
 		ReuseInterval:             direct.ValueOf(in.ReuseInterval),
 	}
 
-	if in.DisallowUsernameSubstring != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "DisallowUsernameSubstring")
-	}
-	if !in.EnablePasswordPolicy {
-		out.ForceSendFields = append(out.ForceSendFields, "EnablePasswordPolicy")
-	}
-	if in.MinLength != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "MinLength")
-	}
-	if in.ReuseInterval != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "ReuseInterval")
-	}
+	// We should always send fields in an update, so we add ForceSendFields for all optional fields.
+	out.ForceSendFields = append(out.ForceSendFields, "DisallowUsernameSubstring")
+	out.ForceSendFields = append(out.ForceSendFields, "EnablePasswordPolicy")
+	out.ForceSendFields = append(out.ForceSendFields, "MinLength")
+	out.ForceSendFields = append(out.ForceSendFields, "ReuseInterval")
 
 	return out
 }
@@ -550,6 +510,10 @@ func InstanceSqlServerAuditConfigKRMToGCP(in *krm.InstanceSqlServerAuditConfig) 
 		RetentionInterval: direct.ValueOf(in.RetentionInterval),
 		UploadInterval:    direct.ValueOf(in.UploadInterval),
 	}
+
+	// We should always send fields in an update, so we add ForceSendFields for all optional fields.
+	out.ForceSendFields = append(out.ForceSendFields, "RetentionInterval")
+	out.ForceSendFields = append(out.ForceSendFields, "UploadInterval")
 
 	return out
 }
