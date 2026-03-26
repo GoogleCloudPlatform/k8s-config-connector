@@ -30,7 +30,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-/* found existing non-generated mapping function "AppleDeveloperID_FromProto", skipping
 func AppleDeveloperID_FromProto(mapCtx *direct.MapContext, in *pb.AppleDeveloperId) *krm.AppleDeveloperID {
 	if in == nil {
 		return nil
@@ -41,22 +40,30 @@ func AppleDeveloperID_FromProto(mapCtx *direct.MapContext, in *pb.AppleDeveloper
 	out.TeamID = direct.LazyPtr(in.GetTeamId())
 	return out
 }
-*/
-
-/*
-found existing non-generated mapping function "AppleDeveloperID_ToProto", skipping
-
-	func AppleDeveloperID_ToProto(mapCtx *direct.MapContext, in *krm.AppleDeveloperID) *pb.AppleDeveloperId {
-		if in == nil {
-			return nil
-		}
-		out := &pb.AppleDeveloperId{}
-		out.PrivateKey = AppleDeveloperID_PrivateKey_ToProto(mapCtx, in.PrivateKey)
-		out.KeyId = direct.ValueOf(in.KeyID)
-		out.TeamId = direct.ValueOf(in.TeamID)
-		return out
+func AppleDeveloperID_ToProto(mapCtx *direct.MapContext, in *krm.AppleDeveloperID) *pb.AppleDeveloperId {
+	if in == nil {
+		return nil
 	}
-*/
+	out := &pb.AppleDeveloperId{}
+	out.PrivateKey = direct.ValueOf(in.PrivateKey)
+	out.KeyId = direct.ValueOf(in.KeyID)
+	out.TeamId = direct.ValueOf(in.TeamID)
+	return out
+}
+func ExpressKeySettings_FromProto(mapCtx *direct.MapContext, in *pb.ExpressKeySettings) *krm.ExpressKeySettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExpressKeySettings{}
+	return out
+}
+func ExpressKeySettings_ToProto(mapCtx *direct.MapContext, in *krm.ExpressKeySettings) *pb.ExpressKeySettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExpressKeySettings{}
+	return out
+}
 func FirewallAction_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction) *krmrecaptchaenterprisev1alpha1.FirewallAction {
 	if in == nil {
 		return nil
@@ -192,7 +199,7 @@ func KeyAndroidSettings_FromProto(mapCtx *direct.MapContext, in *pb.AndroidKeySe
 	out := &krm.KeyAndroidSettings{}
 	out.AllowAllPackageNames = direct.LazyPtr(in.GetAllowAllPackageNames())
 	out.AllowedPackageNames = in.AllowedPackageNames
-	out.SupportNonGoogleAppStoreDistribution = direct.LazyPtr(in.GetSupportNonGoogleAppStoreDistribution())
+	// MISSING: SupportNonGoogleAppStoreDistribution
 	return out
 }
 func KeyAndroidSettings_ToProto(mapCtx *direct.MapContext, in *krm.KeyAndroidSettings) *pb.AndroidKeySettings {
@@ -202,53 +209,29 @@ func KeyAndroidSettings_ToProto(mapCtx *direct.MapContext, in *krm.KeyAndroidSet
 	out := &pb.AndroidKeySettings{}
 	out.AllowAllPackageNames = direct.ValueOf(in.AllowAllPackageNames)
 	out.AllowedPackageNames = in.AllowedPackageNames
-	out.SupportNonGoogleAppStoreDistribution = direct.ValueOf(in.SupportNonGoogleAppStoreDistribution)
+	// MISSING: SupportNonGoogleAppStoreDistribution
 	return out
 }
-func KeyExpressSettings_FromProto(mapCtx *direct.MapContext, in *pb.ExpressKeySettings) *krm.KeyExpressSettings {
-	if in == nil {
-		return nil
-	}
-	out := &krm.KeyExpressSettings{}
-	return out
-}
-func KeyExpressSettings_ToProto(mapCtx *direct.MapContext, in *krm.KeyExpressSettings) *pb.ExpressKeySettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ExpressKeySettings{}
-	return out
-}
-
-/* found existing non-generated mapping function "KeyIosSettings_FromProto", skipping
 func KeyIosSettings_FromProto(mapCtx *direct.MapContext, in *pb.IOSKeySettings) *krm.KeyIosSettings {
 	if in == nil {
 		return nil
 	}
 	out := &krm.KeyIosSettings{}
-	// MISSING: AllowAllBundleIds
-	// (near miss): "AllowAllBundleIds" vs "AllowAllBundleIDs"
-	// MISSING: AllowedBundleIds
-	// (near miss): "AllowedBundleIds" vs "AllowedBundleIDs"
-	out.AppleDeveloperID = AppleDeveloperID_FromProto(mapCtx, in.GetAppleDeveloperId())
+	out.AllowAllBundleIds = direct.LazyPtr(in.GetAllowAllBundleIds())
+	out.AllowedBundleIds = in.AllowedBundleIds
+	// MISSING: AppleDeveloperID
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "KeyIosSettings_ToProto", skipping
 func KeyIosSettings_ToProto(mapCtx *direct.MapContext, in *krm.KeyIosSettings) *pb.IOSKeySettings {
 	if in == nil {
 		return nil
 	}
 	out := &pb.IOSKeySettings{}
-	// MISSING: AllowAllBundleIds
-	// (near miss): "AllowAllBundleIds" vs "AllowAllBundleIDs"
-	// MISSING: AllowedBundleIds
-	// (near miss): "AllowedBundleIds" vs "AllowedBundleIDs"
-	out.AppleDeveloperId = AppleDeveloperID_ToProto(mapCtx, in.AppleDeveloperID)
+	out.AllowAllBundleIds = direct.ValueOf(in.AllowAllBundleIds)
+	out.AllowedBundleIds = in.AllowedBundleIds
+	// MISSING: AppleDeveloperID
 	return out
 }
-*/
 
 /* found existing non-generated mapping function "KeyTestingOptions_FromProto", skipping
 func KeyTestingOptions_FromProto(mapCtx *direct.MapContext, in *pb.TestingOptions) *krm.KeyTestingOptions {
@@ -347,6 +330,8 @@ func RecaptchaEnterpriseKeyObservedState_FromProto(mapCtx *direct.MapContext, in
 	}
 	out := &krm.RecaptchaEnterpriseKeyObservedState{}
 	// MISSING: Name
+	// MISSING: ExpressSettings
+	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	return out
 }
@@ -356,6 +341,8 @@ func RecaptchaEnterpriseKeyObservedState_ToProto(mapCtx *direct.MapContext, in *
 	}
 	out := &pb.Key{}
 	// MISSING: Name
+	// MISSING: ExpressSettings
+	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	return out
 }
@@ -369,8 +356,8 @@ func RecaptchaEnterpriseKeySpec_FromProto(mapCtx *direct.MapContext, in *pb.Key)
 	out.WebSettings = KeyWebSettings_FromProto(mapCtx, in.GetWebSettings())
 	out.AndroidSettings = KeyAndroidSettings_FromProto(mapCtx, in.GetAndroidSettings())
 	out.IosSettings = KeyIosSettings_FromProto(mapCtx, in.GetIosSettings())
-	out.ExpressSettings = KeyExpressSettings_FromProto(mapCtx, in.GetExpressSettings())
-	out.Labels = in.Labels
+	// MISSING: ExpressSettings
+	// MISSING: Labels
 	out.TestingOptions = KeyTestingOptions_FromProto(mapCtx, in.GetTestingOptions())
 	out.WafSettings = KeyWafSettings_FromProto(mapCtx, in.GetWafSettings())
 	return out
@@ -391,10 +378,8 @@ func RecaptchaEnterpriseKeySpec_ToProto(mapCtx *direct.MapContext, in *krm.Recap
 	if oneof := KeyIosSettings_ToProto(mapCtx, in.IosSettings); oneof != nil {
 		out.PlatformSettings = &pb.Key_IosSettings{IosSettings: oneof}
 	}
-	if oneof := KeyExpressSettings_ToProto(mapCtx, in.ExpressSettings); oneof != nil {
-		out.PlatformSettings = &pb.Key_ExpressSettings{ExpressSettings: oneof}
-	}
-	out.Labels = in.Labels
+	// MISSING: ExpressSettings
+	// MISSING: Labels
 	out.TestingOptions = KeyTestingOptions_ToProto(mapCtx, in.TestingOptions)
 	out.WafSettings = KeyWafSettings_ToProto(mapCtx, in.WafSettings)
 	return out

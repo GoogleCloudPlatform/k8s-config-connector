@@ -18,41 +18,7 @@ import (
 	pb "cloud.google.com/go/recaptchaenterprise/v2/apiv1/recaptchaenterprisepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/recaptchaenterprise/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	v1 "k8s.io/api/core/v1"
 )
-
-func AppleDeveloperID_PrivateKey_ToProto(mapCtx *direct.MapContext, in *v1.SecretKeySelector) string {
-	if in == nil {
-		return ""
-	}
-	return ""
-}
-
-func AppleDeveloperID_PrivateKey_FromProto(mapCtx *direct.MapContext, in string) *v1.SecretKeySelector {
-	return nil
-}
-
-func AppleDeveloperID_FromProto(mapCtx *direct.MapContext, in *pb.AppleDeveloperId) *krm.AppleDeveloperID {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AppleDeveloperID{}
-	out.PrivateKey = AppleDeveloperID_PrivateKey_FromProto(mapCtx, in.GetPrivateKey())
-	out.KeyID = direct.LazyPtr(in.GetKeyId())
-	out.TeamID = direct.LazyPtr(in.GetTeamId())
-	return out
-}
-
-func AppleDeveloperID_ToProto(mapCtx *direct.MapContext, in *krm.AppleDeveloperID) *pb.AppleDeveloperId {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AppleDeveloperId{}
-	out.PrivateKey = AppleDeveloperID_PrivateKey_ToProto(mapCtx, in.PrivateKey)
-	out.KeyId = direct.ValueOf(in.KeyID)
-	out.TeamId = direct.ValueOf(in.TeamID)
-	return out
-}
 
 func KeyTestingOptions_FromProto(mapCtx *direct.MapContext, in *pb.TestingOptions) *krm.KeyTestingOptions {
 	if in == nil {
@@ -76,27 +42,5 @@ func KeyTestingOptions_ToProto(mapCtx *direct.MapContext, in *krm.KeyTestingOpti
 	if in.TestingScore != nil {
 		out.TestingScore = float32(*in.TestingScore)
 	}
-	return out
-}
-
-func KeyIosSettings_FromProto(mapCtx *direct.MapContext, in *pb.IOSKeySettings) *krm.KeyIosSettings {
-	if in == nil {
-		return nil
-	}
-	out := &krm.KeyIosSettings{}
-	out.AllowAllBundleIDs = direct.LazyPtr(in.GetAllowAllBundleIds())
-	out.AllowedBundleIDs = in.AllowedBundleIds
-	out.AppleDeveloperID = AppleDeveloperID_FromProto(mapCtx, in.GetAppleDeveloperId())
-	return out
-}
-
-func KeyIosSettings_ToProto(mapCtx *direct.MapContext, in *krm.KeyIosSettings) *pb.IOSKeySettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.IOSKeySettings{}
-	out.AllowAllBundleIds = direct.ValueOf(in.AllowAllBundleIDs)
-	out.AllowedBundleIds = in.AllowedBundleIDs
-	out.AppleDeveloperId = AppleDeveloperID_ToProto(mapCtx, in.AppleDeveloperID)
 	return out
 }

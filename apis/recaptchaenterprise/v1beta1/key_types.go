@@ -15,9 +15,7 @@
 package v1beta1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
-	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -27,7 +25,7 @@ var RecaptchaEnterpriseKeyGVK = GroupVersion.WithKind("RecaptchaEnterpriseKey")
 // +kcc:spec:proto=google.cloud.recaptchaenterprise.v1.Key
 type RecaptchaEnterpriseKeySpec struct {
 	// Immutable. The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+	ProjectRef *ProjectRef `json:"projectRef"`
 
 	// Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -56,14 +54,6 @@ type RecaptchaEnterpriseKeySpec struct {
 	// Immutable. Settings specific to keys that can be used for WAF (Web Application Firewall).
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.Key.waf_settings
 	WafSettings *KeyWafSettings `json:"wafSettings,omitempty"`
-
-	// Settings for keys that can be used by reCAPTCHA Express.
-	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.Key.express_settings
-	ExpressSettings *KeyExpressSettings `json:"expressSettings,omitempty"`
-
-	// See [Creating and managing labels](https://cloud.google.com/recaptcha/docs/labels).
-	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.Key.labels
-	Labels map[string]string `json:"labels,omitempty"`
 }
 
 // +kcc:proto=google.cloud.recaptchaenterprise.v1.WebKeySettings
@@ -99,43 +89,17 @@ type KeyAndroidSettings struct {
 	// Android package names of apps allowed to use the key. Example: 'com.companyname.appname'
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.AndroidKeySettings.allowed_package_names
 	AllowedPackageNames []string `json:"allowedPackageNames,omitempty"`
-
-	// Set to true for keys that are used in an Android application that is available for download in app stores in addition to the Google Play Store.
-	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.AndroidKeySettings.support_non_google_app_store_distribution
-	SupportNonGoogleAppStoreDistribution *bool `json:"supportNonGoogleAppStoreDistribution,omitempty"`
 }
 
 // +kcc:proto=google.cloud.recaptchaenterprise.v1.IOSKeySettings
 type KeyIosSettings struct {
 	// If set to true, it means allowed_bundle_ids will not be enforced.
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.IOSKeySettings.allow_all_bundle_ids
-	AllowAllBundleIDs *bool `json:"allowAllBundleIDs,omitempty"`
+	AllowAllBundleIds *bool `json:"allowAllBundleIds,omitempty"`
 
 	// iOS bundle ids of apps allowed to use the key. Example: 'com.companyname.productname.appname'
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.IOSKeySettings.allowed_bundle_ids
-	AllowedBundleIDs []string `json:"allowedBundleIDs,omitempty"`
-
-	// Optional. iOS Apple Developer Account details for app identity validation.
-	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.IOSKeySettings.apple_developer_id
-	AppleDeveloperID *AppleDeveloperID `json:"appleDeveloperID,omitempty"`
-}
-
-// +kcc:proto=google.cloud.recaptchaenterprise.v1.AppleDeveloperId
-type AppleDeveloperID struct {
-	// Required. Input only. A private key (downloaded as a text file with a .p8
-	// file extension) generated for your Apple Developer account. Ensure that
-	// Apple DeviceCheck is enabled for the private key.
-	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.AppleDeveloperId.private_key
-	PrivateKey *v1.SecretKeySelector `json:"privateKey,omitempty"`
-
-	// Required. The Apple developer key ID (10-character string).
-	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.AppleDeveloperId.key_id
-	KeyID *string `json:"keyID,omitempty"`
-
-	// Required. The Apple team ID (10-character string) owning the provisioning
-	// profile used to build your application.
-	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.AppleDeveloperId.team_id
-	TeamID *string `json:"teamID,omitempty"`
+	AllowedBundleIds []string `json:"allowedBundleIds,omitempty"`
 }
 
 // +kcc:proto=google.cloud.recaptchaenterprise.v1.TestingOptions
@@ -163,10 +127,13 @@ type KeyWafSettings struct {
 	WafFeature *string `json:"wafFeature"`
 }
 
-// Settings for keys that can be used by reCAPTCHA Express.
-// +kcc:proto=google.cloud.recaptchaenterprise.v1.ExpressKeySettings
-// +kubebuilder:pruning:PreserveUnknownFields
-type KeyExpressSettings struct {
+type ProjectRef struct {
+	/* The `projectID` field of a project, when not managed by Config Connector. */
+	External string `json:"external,omitempty"`
+	/* The `name` field of a `Project` resource. */
+	Name string `json:"name,omitempty"`
+	/* The `namespace` field of a `Project` resource. */
+	Namespace string `json:"namespace,omitempty"`
 }
 
 // RecaptchaEnterpriseKeyStatus defines the config connector machine state of RecaptchaEnterpriseKey
@@ -176,6 +143,8 @@ type RecaptchaEnterpriseKeyStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+	// +kubebuilder:validation:Type=integer
+	// +kubebuilder:validation:Format=""
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// A unique specifier for the RecaptchaEnterpriseKey resource in GCP.
