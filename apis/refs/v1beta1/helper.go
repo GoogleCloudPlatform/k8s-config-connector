@@ -62,6 +62,26 @@ func GetLocation(obj runtime.Object) (string, error) {
 	return location, nil
 }
 
+func GetRegion(obj runtime.Object) (string, error) {
+	u, ok := obj.(*unstructured.Unstructured)
+	if !ok {
+		m, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+		if err != nil {
+			return "", fmt.Errorf("expected an Unstructured object but got %T; additionally, failed to convert to unstructured: %w", obj, err)
+		}
+		u = &unstructured.Unstructured{Object: m}
+	}
+
+	region, _, err := unstructured.NestedString(u.Object, "spec", "region")
+	if err != nil {
+		return "", fmt.Errorf("reading spec.region from %v %v/%v: %w", u.GroupVersionKind().Kind, u.GetNamespace(), u.GetName(), err)
+	}
+	if region == "" {
+		return "", fmt.Errorf("spec.region not set in %v %v/%v: %w", u.GroupVersionKind().Kind, u.GetNamespace(), u.GetName(), err)
+	}
+	return region, nil
+}
+
 // SetRefFields sets the Name, Namespace and External fields on a Ref using reflection.
 // It returns an error if a field exists but cannot be set, or if the field is missing and a non-empty value is provided.
 func SetRefFields(ref Ref, name, namespace, external string) error {
