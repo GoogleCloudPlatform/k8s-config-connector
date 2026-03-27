@@ -39,7 +39,7 @@ type DataCatalogPolicyTagSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	// +optional
-	ParentPolicyTagRef *PolicyTagRef `json:"parentPolicyTagRef,omitempty"`
+	ParentPolicyTagRef *DataCatalogPolicyTagRef `json:"parentPolicyTagRef,omitempty"`
 
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional
