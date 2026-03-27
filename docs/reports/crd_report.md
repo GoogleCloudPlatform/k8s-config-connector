@@ -463,6 +463,7 @@
 | vertexai.cnrm.cloud.google.com                | VertexAIIndexEndpoint                           | True         | False       | False  | Terraform  | False       |
 | vertexai.cnrm.cloud.google.com                | VertexAIIndex                                   | True         | True        | False  | Terraform  | False       |
 | vertexai.cnrm.cloud.google.com                | VertexAIMetadataStore                           | True         | True        | False  | Direct     | True        |
+| vertexai.cnrm.cloud.google.com                | VertexAIReasoningEngine                         | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                | VertexAITensorboard                             | True         | False       | False  | Terraform  | False       |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEngineExternalAccessRule                  | True         | False       | False  | Direct     | True        |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEngineExternalAddress                     | True         | True        | False  | Direct     | True        |

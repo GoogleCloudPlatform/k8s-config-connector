@@ -76,6 +76,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/evaluated_annotation.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/job_state.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/publisher_model.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/reasoning_engine*.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/io.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/operation.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/saved_query.proto \

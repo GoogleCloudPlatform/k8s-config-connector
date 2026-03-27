@@ -1,0 +1,13 @@
+apiVersion: vertexai.cnrm.cloud.google.com/v1alpha1
+kind: VertexAIReasoningEngine
+metadata:
+  name: vertexaireasoningengine-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: Sample Reasoning Engine
+  spec:
+    packageSpec:
+      pythonVersion: "3.10"
+      pickleObjectGCSURI: "gs://${projectId}-vcm/reasoning_engine/sample_reasoning_engine.pkl"
