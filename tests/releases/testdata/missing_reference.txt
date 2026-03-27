@@ -1,0 +1,1 @@
+notebooks.cnrm.cloud.google.com/v1alpha2, Kind=VertexAIWorkbenchInstance
