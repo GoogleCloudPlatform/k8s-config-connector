@@ -34,9 +34,8 @@ import (
 	gcp "cloud.google.com/go/logging/apiv2"
 	loggingpb "cloud.google.com/go/logging/apiv2/loggingpb"
 	"google.golang.org/api/option"
-
-	//"google.golang.org/api/option"
-	//"google.golang.org/protobuf/types/known/fieldmaskpb"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -186,14 +185,29 @@ func (a *LoggingLinkAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	desiredPb.Name = a.id.String()
+	// Use the name from the actual object to avoid diffs due to project ID vs project number
+	desiredPb.Name = a.actual.GetName()
 
-	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	// Ignore output-only fields in the comparison
+	diffFunc := func(fieldName protoreflect.Name, a, b proto.Message) (bool, error) {
+		if fieldName == "create_time" || fieldName == "lifecycle_state" || fieldName == "bigquery_dataset" {
+			return false, nil
+		}
+		return common.BasicDiff(fieldName, a, b)
+	}
+
+	paths, err := common.CompareProtoMessage(desiredPb, a.actual, diffFunc)
 	if err != nil {
 		return err
 	}
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
+		status := &krm.LoggingLinkStatus{}
+		status.ObservedState = LoggingLinkObservedState_FromProto(mapCtx, a.actual)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		return updateOp.UpdateStatus(ctx, status, nil)
 	} else {
 		report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 		for path := range paths {
@@ -201,14 +215,9 @@ func (a *LoggingLinkAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		}
 		structuredreporting.ReportDiff(ctx, report)
 
-		log.V(2).Info("update operation not supported for resource", "groupVersionKind", a.desired.GroupVersionKind(), "namespacedName", k8s.GetNamespacedName(a.desired))
+		return fmt.Errorf("update operation not supported for resource %v %v, field(s) changed: %v",
+			a.desired.GroupVersionKind(), k8s.GetNamespacedName(a.desired), paths)
 	}
-	status := &krm.LoggingLinkStatus{}
-	status.ObservedState = LoggingLinkObservedState_FromProto(mapCtx, a.actual)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *LoggingLinkAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
