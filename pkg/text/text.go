@@ -81,8 +81,8 @@ func snakeCaseToUpperCamelCase(s string) string {
 	return b.String()
 }
 
-func SnakeCaseToLowerCase(s string) string {
-	return strings.ReplaceAll(s, "_", "")
+func SnakeCaseToFlatCase(s string) string {
+	return strings.ToLower(strings.ReplaceAll(s, "_", ""))
 }
 
 // AsSnakeCase returns the given string converted to lowercase snake_case. If the input is already snake_case, no

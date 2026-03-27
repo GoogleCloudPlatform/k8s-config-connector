@@ -205,7 +205,7 @@ func convertTFSamplesToKRMTestdata(tfToGVK map[string]schema.GroupVersionKind, s
 			continue
 		}
 
-		sampleName := text.SnakeCaseToLowerCase(sampleNameInfo[2])
+		sampleName := text.SnakeCaseToFlatCase(sampleNameInfo[2])
 		// Focus on basic samples for now.
 		if !strings.HasSuffix(sampleName, "basic") {
 			klog.Infof("Skipping the parse of sample %v. This is not a basic sample.", sf)

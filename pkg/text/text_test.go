@@ -44,7 +44,7 @@ func TestAsSnakeCase(t *testing.T) {
 	}
 }
 
-func TestSnakeCaseToLowerCase(t *testing.T) {
+func TestSnakeCaseToFlatCase(t *testing.T) {
 	tests := []struct {
 		input    string
 		expected string
@@ -54,13 +54,17 @@ func TestSnakeCaseToLowerCase(t *testing.T) {
 			expected: "snakecaseinput",
 		},
 		{
+			input:    "Snake_Case_Input",
+			expected: "snakecaseinput",
+		},
+		{
 			input:    "input",
 			expected: "input",
 		},
 	}
 	for _, tc := range tests {
 		t.Run(tc.input, func(t *testing.T) {
-			output := SnakeCaseToLowerCase(tc.input)
+			output := SnakeCaseToFlatCase(tc.input)
 			if tc.expected != output {
 				t.Errorf("error parsing snake case to lower case: got %v, want %v", output, tc.expected)
 			}
