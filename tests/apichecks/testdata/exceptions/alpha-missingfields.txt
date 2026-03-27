@@ -2535,6 +2535,40 @@
 [missing_field] crd=vertexaiindexendpoints.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.region" is not set in unstructured objects
 [missing_field] crd=vertexaitensorboards.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyName" is not set in unstructured objects
 [missing_field] crd=vertexaitensorboards.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.disableProxyAccess" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.acceleratorConfigs[].coreCount" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.acceleratorConfigs[].type" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.bootDisk.diskEncryption" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.bootDisk.diskSizeGB" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.bootDisk.diskType" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.bootDisk.kmsKey" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.containerImage.repository" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.containerImage.tag" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.dataDisks[].diskEncryption" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.dataDisks[].diskSizeGB" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.dataDisks[].diskType" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.dataDisks[].kmsKey" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.disablePublicIP" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.enableIPForwarding" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.gpuDriverConfig.customGpuDriverPath" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.gpuDriverConfig.enableGpuDriver" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.machineType" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.metadata" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.networkInterfaces[].network" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.networkInterfaces[].nicType" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.networkInterfaces[].subnet" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.serviceAccounts[].email" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.shieldedInstanceConfig.enableIntegrityMonitoring" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.shieldedInstanceConfig.enableSecureBoot" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.shieldedInstanceConfig.enableVTPM" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.tags[]" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.vmImage.family" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.vmImage.name" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.gceSetup.vmImage.project" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.instanceOwners[]" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=vertexaiworkbenchinstances.notebooks.cnrm.cloud.google.com version=v1alpha2: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vmwareengineexternalaccessrules.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationIPRanges[].ipAddress" is not set in unstructured objects
 [missing_field] crd=vmwareengineexternalaccessrules.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationIPRanges[].ipAddressRange" is not set in unstructured objects
 [missing_field] crd=vmwareengineexternalaccessrules.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceIPRanges[].externalAddressRef" is not set; neither 'external' nor 'name' are set

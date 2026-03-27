@@ -23,6 +23,7 @@ import (
 
 var scoreForVersion = map[string]int{
 	"v1alpha1": 111,
+	"v1alpha2": 112,
 	"v1beta1":  121,
 	"v1":       131,
 }
