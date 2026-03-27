@@ -118,11 +118,11 @@ Currently, `DataCatalogPolicyTag` is managed by the Terraform controller (marked
     Run `apis/datacatalog/v1beta1/generate.sh`. This should create `apis/datacatalog/v1beta1/policytag_types.go`.
 
 4.  **Iterate on Types**:
-    Compare the generated CRD with the existing one using `dev/tasks/diff-crds`.
-    Modify `apis/datacatalog/v1beta1/policytag_types.go` until the CRD matches the existing one at `config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_datacatalogpolicytags.datacatalog.cnrm.cloud.google.com.yaml`.
+    Validate the generated CRD by running `./dev/tasks/diff-crds --base master`. This tool prints any differences between the current branch and the master branch for the generated CRD.
+    Modify `apis/datacatalog/v1beta1/policytag_types.go` until the CRD matches the existing one. You should aim to minimize or eliminate any diffs detected by the tool. If diffs are found, you may need to add back missing fields or remove incorrectly added fields.
 
     **Acceptance Criteria:**
-    - Running `dev/tasks/diff-crds` should not show differences (or minimal acceptable ones like descriptions).
+    - Running `./dev/tasks/diff-crds --base master` should not show differences (or minimal acceptable ones like descriptions).
     - Ensure that running the check_crd_equivalence MCP on the CRD should return EQUIVALENT.
     - Changes to the schema (fields added/removed) are NOT acceptable.
 
