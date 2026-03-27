@@ -17,6 +17,7 @@ package storage
 import (
 	"fmt"
 
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -42,6 +43,31 @@ func StorageBucketSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketS
 	if in.Encryption != nil {
 		out.Encryption = &gcp.BucketEncryption{
 			DefaultKmsKeyName: in.Encryption.KmsKeyRef.External,
+		}
+	}
+	if in.IPFilter != nil {
+		out.IpFilter = &gcp.BucketIpFilter{
+			Mode:                       direct.ValueOf(in.IPFilter.Mode),
+			AllowCrossOrgVpcs:          direct.ValueOf(in.IPFilter.AllowCrossOrgVPCs),
+			AllowAllServiceAgentAccess: direct.ValueOf(in.IPFilter.AllowAllServiceAgentAccess),
+		}
+		if in.IPFilter.AllowCrossOrgVPCs != nil {
+			out.IpFilter.ForceSendFields = append(out.IpFilter.ForceSendFields, "AllowCrossOrgVpcs")
+		}
+		if in.IPFilter.AllowAllServiceAgentAccess != nil {
+			out.IpFilter.ForceSendFields = append(out.IpFilter.ForceSendFields, "AllowAllServiceAgentAccess")
+		}
+		if in.IPFilter.PublicNetworkSource != nil {
+			out.IpFilter.PublicNetworkSource = &gcp.BucketIpFilterPublicNetworkSource{
+				AllowedIpCidrRanges: in.IPFilter.PublicNetworkSource.AllowedIPRanges,
+			}
+		}
+		for _, vpc := range in.IPFilter.VpcNetworkSources {
+			gcpVpc := &gcp.BucketIpFilterVpcNetworkSources{
+				AllowedIpCidrRanges: vpc.AllowedIPRanges,
+				Network:             vpc.NetworkRef.External,
+			}
+			out.IpFilter.VpcNetworkSources = append(out.IpFilter.VpcNetworkSources, gcpVpc)
 		}
 	}
 	if in.Autoclass != nil {
@@ -172,6 +198,25 @@ func StorageBucketSpec_FromProto(mapCtx *direct.MapContext, in *gcp.Bucket) *krm
 	if in.Encryption != nil {
 		out.Encryption = &krm.BucketEncryption{
 			KmsKeyRef: refsv1beta1.KMSCryptoKeyRef{External: in.Encryption.DefaultKmsKeyName},
+		}
+	}
+	if in.IpFilter != nil {
+		out.IPFilter = &krm.BucketIPFilter{
+			Mode:                       direct.LazyPtr(in.IpFilter.Mode),
+			AllowCrossOrgVPCs:          direct.LazyPtr(in.IpFilter.AllowCrossOrgVpcs),
+			AllowAllServiceAgentAccess: direct.LazyPtr(in.IpFilter.AllowAllServiceAgentAccess),
+		}
+		if in.IpFilter.PublicNetworkSource != nil {
+			out.IPFilter.PublicNetworkSource = &krm.BucketIPFilterPublicNetworkSource{
+				AllowedIPRanges: in.IpFilter.PublicNetworkSource.AllowedIpCidrRanges,
+			}
+		}
+		for _, vpc := range in.IpFilter.VpcNetworkSources {
+			krmVpc := krm.BucketIPFilterVpcNetworkSource{
+				AllowedIPRanges: vpc.AllowedIpCidrRanges,
+				NetworkRef:      computev1beta1.ComputeNetworkRef{External: vpc.Network},
+			}
+			out.IPFilter.VpcNetworkSources = append(out.IPFilter.VpcNetworkSources, krmVpc)
 		}
 	}
 	if in.Autoclass != nil {

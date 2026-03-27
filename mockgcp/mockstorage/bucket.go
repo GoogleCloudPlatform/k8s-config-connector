@@ -310,6 +310,10 @@ func (s *buckets) PatchBucket(ctx context.Context, req *pb.PatchBucketRequest) (
 				}
 			}
 		}
+
+		if patch.IpFilter != nil {
+			obj.IpFilter = patch.IpFilter
+		}
 	}
 
 	// Remove empty lifecycle (no rules)

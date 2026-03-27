@@ -183,6 +183,74 @@ spec:
                     - enabled
                     type: object
                 type: object
+              ipFilter:
+                description: The bucket's IP filter configuration.
+                properties:
+                  allowAllServiceAgentAccess:
+                    description: Whether or not to allow all P4SA access to the bucket.
+                    type: boolean
+                  allowCrossOrgVPCs:
+                    description: Whether or not to allow VPCs from orgs different
+                      than the bucket's parent org to access the bucket.
+                    type: boolean
+                  mode:
+                    description: 'The mode of the IP filter. Possible values: ENABLED,
+                      DISABLED.'
+                    type: string
+                  publicNetworkSource:
+                    description: The public network source IPs to allow access from.
+                    properties:
+                      allowedIPRanges:
+                        description: The list of public network source IPs to allow
+                          access from.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  vpcNetworkSources:
+                    description: The VPC network sources IPs to allow access from.
+                    items:
+                      properties:
+                        allowedIPRanges:
+                          description: The list of VPC network source IPs to allow
+                            access from.
+                          items:
+                            type: string
+                          type: array
+                        networkRef:
+                          description: The network to allow access from.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: The value of an externally managed ComputeNetwork
+                                resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}"
+                                or "projects/{{projectId}}/global/networks/{{networkId}}"
+                              type: string
+                            name:
+                              description: The name of a ComputeNetwork resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a ComputeNetwork resource.
+                              type: string
+                          type: object
+                      required:
+                      - networkRef
+                      type: object
+                    type: array
+                type: object
               lifecycleRule:
                 description: The bucket's Lifecycle Rules configuration.
                 items:
