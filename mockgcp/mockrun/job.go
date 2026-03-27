@@ -155,6 +155,24 @@ func (s *RunV2) UpdateJob(ctx context.Context, req *pb.UpdateJobRequest) (*longr
 
 	// Update logic from request
 	updatedJob := req.GetJob()
+	// Update additional fields
+	if updatedJob.Labels != nil {
+		obj.Labels = updatedJob.Labels
+	}
+	if updatedJob.Annotations != nil {
+		obj.Annotations = updatedJob.Annotations
+	}
+	if updatedJob.Client != "" {
+		obj.Client = updatedJob.Client
+	}
+	if updatedJob.ClientVersion != "" {
+		obj.ClientVersion = updatedJob.ClientVersion
+	}
+	if updatedJob.LaunchStage != 0 {
+		obj.LaunchStage = updatedJob.LaunchStage
+	}
+	obj.Generation++
+	obj.Etag = fmt.Sprintf("\"%d\"", obj.Generation)
 	obj.Template = updatedJob.GetTemplate()
 
 	// Defaulting logic from CreateJob
