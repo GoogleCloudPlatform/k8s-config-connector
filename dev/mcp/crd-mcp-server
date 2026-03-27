@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+SOURCE_DIR="${REPO_ROOT}/dev/tools/crd-mcp-server"
+BINDIR="${REPO_ROOT}/.build/mcp/bin/crd-mcp-server"
+mkdir -p "${BINDIR}"
+
+MCP_SERVER_PATH="${BINDIR}/crd-mcp-server"
+
+# Rebuild if the binary is missing or any source file is newer than the binary.
+NEEDS_BUILD=false
+if [[ ! -f "${MCP_SERVER_PATH}" ]]; then
+    NEEDS_BUILD=true
+elif find "${SOURCE_DIR}" -name "*.go" -newer "${MCP_SERVER_PATH}" | grep -q .; then
+    NEEDS_BUILD=true
+fi
+
+if [[ "${NEEDS_BUILD}" == "true" ]]; then
+    echo "Building crd-mcp-server..." >&2
+    GOWORK=off go build -C "${SOURCE_DIR}" -o "${MCP_SERVER_PATH}" .
+fi
+
+exec "${MCP_SERVER_PATH}" "$@"

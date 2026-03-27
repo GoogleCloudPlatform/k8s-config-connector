@@ -31,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/metastore/apiv1"
 	pb "cloud.google.com/go/metastore/apiv1/metastorepb"
@@ -209,6 +210,8 @@ func (a *MetastoreServiceAdapter) Update(ctx context.Context, updateOp *directba
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
 		paths = append(paths, "labels")
@@ -242,6 +245,10 @@ func (a *MetastoreServiceAdapter) Update(ctx context.Context, updateOp *directba
 		log.V(2).Info("no field needs update", "name", a.id)
 		updated = a.actual
 	} else {
+		for _, path := range paths {
+			report.AddField(path, nil, nil)
+		}
+		structuredreporting.ReportDiff(ctx, report)
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		req := &pb.UpdateServiceRequest{
 			Service:    resource,

@@ -39,6 +39,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -186,11 +187,15 @@ func (a *contactAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	}
 	resource.Name = a.id.String() // Set name for update request
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 	if !reflect.DeepEqual(resource.NotificationCategorySubscriptions, a.actual.NotificationCategorySubscriptions) {
+		report.AddField("notification_category_subscriptions", a.actual.NotificationCategorySubscriptions, resource.NotificationCategorySubscriptions)
 		paths = append(paths, "notification_category_subscriptions")
 	}
 	if !reflect.DeepEqual(resource.LanguageTag, a.actual.LanguageTag) {
+		report.AddField("language_tag", a.actual.LanguageTag, resource.LanguageTag)
 		paths = append(paths, "language_tag")
 	}
 
@@ -199,6 +204,7 @@ func (a *contactAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		log.V(2).Info("no field needs update", "name", a.id)
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		req := &pb.UpdateContactRequest{
 			Contact:    resource,
 			UpdateMask: &fieldmaskpb.FieldMask{Paths: paths},

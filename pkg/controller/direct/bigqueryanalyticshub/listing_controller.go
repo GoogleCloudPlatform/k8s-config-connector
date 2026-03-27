@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/bigquery/analyticshub/apiv1"
 	bigqueryanalyticshubpb "cloud.google.com/go/bigquery/analyticshub/apiv1/analyticshubpb"
@@ -194,23 +195,31 @@ func (a *ListingAdapter) Update(ctx context.Context, updateOp *directbase.Update
 
 	resource.Name = a.id.String()
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	updateMask := &fieldmaskpb.FieldMask{}
 	if a.desired.Spec.DisplayName != nil && !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
+		report.AddField("display_name", a.actual.DisplayName, a.desired.Spec.DisplayName)
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
 	if a.desired.Spec.Description != nil && !reflect.DeepEqual(a.desired.Spec.Description, a.actual.Description) {
+		report.AddField("description", a.actual.Description, a.desired.Spec.Description)
 		updateMask.Paths = append(updateMask.Paths, "description")
 	}
 	if a.desired.Spec.PrimaryContact != nil && !reflect.DeepEqual(a.desired.Spec.PrimaryContact, a.actual.PrimaryContact) {
+		report.AddField("primary_contact", a.actual.PrimaryContact, a.desired.Spec.PrimaryContact)
 		updateMask.Paths = append(updateMask.Paths, "primary_contact")
 	}
 	if a.desired.Spec.Documentation != nil && !reflect.DeepEqual(a.desired.Spec.Documentation, a.actual.Documentation) {
+		report.AddField("documentation", a.actual.Documentation, a.desired.Spec.Documentation)
 		updateMask.Paths = append(updateMask.Paths, "documentation")
 	}
 	if a.desired.Spec.DiscoveryType != nil && !reflect.DeepEqual(a.desired.Spec.DiscoveryType, a.actual.DiscoveryType.String()) {
+		report.AddField("discovery_type", a.actual.DiscoveryType.String(), a.desired.Spec.DiscoveryType)
 		updateMask.Paths = append(updateMask.Paths, "discovery_type")
 	}
 	if a.desired.Spec.RequestAccess != nil && reflect.DeepEqual(a.desired.Spec.RequestAccess, a.actual.RequestAccess) {
+		report.AddField("request_access", a.actual.RequestAccess, a.desired.Spec.RequestAccess)
 		updateMask.Paths = append(updateMask.Paths, "request_access")
 	}
 
@@ -226,6 +235,7 @@ func (a *ListingAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		}
 
 		if !reflect.DeepEqual(toProto, a.actual.DataProvider) {
+			report.AddField("data_provider", a.actual.DataProvider, toProto)
 			updateMask.Paths = append(updateMask.Paths, "data_provider")
 		}
 	}
@@ -238,6 +248,7 @@ func (a *ListingAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		}
 
 		if !reflect.DeepEqual(toProto, a.actual.Publisher) {
+			report.AddField("publisher", a.actual.Publisher, toProto)
 			updateMask.Paths = append(updateMask.Paths, "publisher")
 		}
 	}
@@ -249,6 +260,7 @@ func (a *ListingAdapter) Update(ctx context.Context, updateOp *directbase.Update
 			return fmt.Errorf("converting categories: %w", mapCtx.Err())
 		}
 		if !reflect.DeepEqual(toProto, a.actual.Categories) {
+			report.AddField("categories", a.actual.Categories, toProto)
 			updateMask.Paths = append(updateMask.Paths, "categories")
 		}
 	}
@@ -257,6 +269,8 @@ func (a *ListingAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		log.V(2).Info("no field needs update", "name", a.id.String())
 		return nil
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
 
 	req := &bigqueryanalyticshubpb.UpdateListingRequest{
 		UpdateMask: updateMask,

@@ -31,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/backupdr/apiv1"
 	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
@@ -176,18 +177,24 @@ func (a *BackupPlanAssociationAdapter) Update(ctx context.Context, updateOp *dir
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 	if desired.Spec.ResourceType != nil && !reflect.DeepEqual(resource.ResourceType, a.actual.ResourceType) {
+		report.AddField("resource_type", a.actual.ResourceType, resource.ResourceType)
 		paths = append(paths, "resource_type")
 	}
 	if desired.Spec.Resource != nil && !reflect.DeepEqual(resource.Resource, a.actual.Resource) {
+		report.AddField("resource", a.actual.Resource, resource.Resource)
 		paths = append(paths, "resource")
 	}
 	if desired.Spec.BackupPlanRef != nil && !reflect.DeepEqual(resource.BackupPlan, a.actual.BackupPlan) {
+		report.AddField("backup_plan", a.actual.BackupPlan, resource.BackupPlan)
 		paths = append(paths, "backup_plan")
 	}
 
 	if len(paths) != 0 {
+		structuredreporting.ReportDiff(ctx, report)
 		return fmt.Errorf("updating BackupPlan is not supported, fields: %v", paths)
 	}
 

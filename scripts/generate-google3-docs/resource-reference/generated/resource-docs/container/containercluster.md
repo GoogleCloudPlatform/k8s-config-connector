@@ -161,6 +161,8 @@ clusterAutoscaling:
       maxUnavailable: integer
       strategy: string
   autoscalingProfile: string
+  defaultComputeClassConfig:
+    enabled: boolean
   enabled: boolean
   resourceLimits:
   - maximum: integer
@@ -174,6 +176,7 @@ confidentialNodes:
 controlPlaneEndpointsConfig:
   dnsEndpointConfig:
     allowExternalTraffic: boolean
+    enableK8sTokensViaDns: boolean
   ipEndpointsConfig:
     enabled: boolean
 costManagementConfig:
@@ -799,7 +802,7 @@ workloadIdentityConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The Customer Managed Encryption Key used to encrypt the
+            <p>{% verbatim %}The Customer Managed Encryption Key used to encrypt the
 boot disk attached to each node in the node pool.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1139,6 +1142,26 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>clusterAutoscaling.defaultComputeClassConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Default compute class is a configuration for default compute class.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.defaultComputeClassConfig.enabled</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Enables default compute class.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>clusterAutoscaling.enabled</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1275,6 +1298,16 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Controls whether user traffic is allowed over this endpoint. Note that GCP-managed services may still use the endpoint even if this is false.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>controlPlaneEndpointsConfig.dnsEndpointConfig.enableK8sTokensViaDns</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Controls whether the k8s token auth is allowed via DNS.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -41,6 +41,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -192,6 +193,8 @@ func (a *entryAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 		return fmt.Errorf("comparing desired and actual proto: %w", err)
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	updateMask := &fieldmaskpb.FieldMask{}
 
 	// These fields are specified as mutable in the API documentation or by convention
@@ -220,6 +223,7 @@ func (a *entryAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 
 	for _, field := range updatableFields {
 		if diffs.Has(field) {
+			report.AddField(field, nil, nil)
 			updateMask.Paths = append(updateMask.Paths, field)
 		}
 	}
@@ -227,6 +231,7 @@ func (a *entryAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	// Handle oneof fields explicitly if needed, though changing type/system is usually disallowed.
 	// For example, if GcsFilesetSpec needs update, ensure the path is added.
 	if diffs.Has("gcs_fileset_spec") && !slices.Contains(updateMask.Paths, "gcs_fileset_spec") {
+		report.AddField("gcs_fileset_spec", nil, nil)
 		updateMask.Paths = append(updateMask.Paths, "gcs_fileset_spec")
 	}
 	// Add similar checks for other oneof fields if they are mutable
@@ -237,6 +242,7 @@ func (a *entryAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 		// Even though there is no update, we still want to update KRM status
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		log.V(2).Info("updating fields", "name", a.id, "fields", updateMask.Paths)
 		req := &pb.UpdateEntryRequest{
 			Entry:      desired,

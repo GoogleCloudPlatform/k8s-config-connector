@@ -36,7 +36,17 @@ import (
 )
 
 func (s *TagBindingsServer) normalizeParent(parent string) (string, error) {
-	tokens := strings.Split(parent, "/")
+	service := ""
+	path := parent
+	if strings.HasPrefix(parent, "//") {
+		parts := strings.SplitN(parent[2:], "/", 2)
+		if len(parts) == 2 {
+			service = parts[0]
+			path = parts[1]
+		}
+	}
+
+	tokens := strings.Split(path, "/")
 	for i, token := range tokens {
 		if token == "projects" && i+1 < len(tokens) {
 			projectIDOrNumber := tokens[i+1]
@@ -55,7 +65,11 @@ func (s *TagBindingsServer) normalizeParent(parent string) (string, error) {
 			tokens[i+1] = fmt.Sprintf("%d", project.Number)
 		}
 	}
-	return strings.Join(tokens, "/"), nil
+
+	if service == "" {
+		service = "cloudresourcemanager.googleapis.com"
+	}
+	return "//" + service + "/" + strings.Join(tokens, "/"), nil
 }
 
 func (s *TagBindingsServer) CreateTagBinding(ctx context.Context, req *pb.CreateTagBindingRequest) (*lropb.Operation, error) {

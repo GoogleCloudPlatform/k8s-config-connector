@@ -108,7 +108,7 @@ serviceAccountRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The output format of the private key. TYPE_GOOGLE_CREDENTIALS_FILE is the default output format.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -128,7 +128,7 @@ serviceAccountRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The output format for the public key. TYPE_NONE is the default for public key output.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -138,7 +138,7 @@ serviceAccountRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The Service Account to create a key for.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -148,7 +148,7 @@ serviceAccountRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -204,7 +204,7 @@ validBefore: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

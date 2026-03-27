@@ -65,6 +65,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "queryPlansPerMinute": 5
     },
     "ipConfiguration": {
+      "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": true,
       "requireSsl": true,
       "sslMode": "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
@@ -227,6 +228,7 @@ X-Xss-Protection: 0
     },
     "ipConfiguration": {
       "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": true,
       "requireSsl": true,
       "sslMode": "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
@@ -377,6 +379,7 @@ X-Xss-Protection: 0
     },
     "ipConfiguration": {
       "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": true,
       "requireSsl": true,
       "sslMode": "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"

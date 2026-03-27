@@ -40,6 +40,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -172,35 +173,47 @@ func (a *networkPeeringAdapter) Update(ctx context.Context, updateOp *directbase
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	var paths []string
 	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
+		report.AddField("description", a.actual.Description, resource.Description)
 		paths = append(paths, "description")
 	}
 	if desired.Spec.PeerNetwork != nil && !reflect.DeepEqual(resource.PeerNetwork, a.actual.PeerNetwork) {
+		report.AddField("peer_network", a.actual.PeerNetwork, resource.PeerNetwork)
 		paths = append(paths, "peer_network")
 	}
 	if desired.Spec.PeerNetworkType != nil && !reflect.DeepEqual(resource.PeerNetworkType, a.actual.PeerNetworkType) {
+		report.AddField("peer_network_type", a.actual.PeerNetworkType, resource.PeerNetworkType)
 		paths = append(paths, "peer_network_type")
 	}
 	if desired.Spec.ExportCustomRoutes != nil && !reflect.DeepEqual(resource.ExportCustomRoutes, a.actual.ExportCustomRoutes) {
+		report.AddField("export_custom_routes", a.actual.ExportCustomRoutes, resource.ExportCustomRoutes)
 		paths = append(paths, "export_custom_routes")
 	}
 	if desired.Spec.ImportCustomRoutes != nil && !reflect.DeepEqual(resource.ImportCustomRoutes, a.actual.ImportCustomRoutes) {
+		report.AddField("import_custom_routes", a.actual.ImportCustomRoutes, resource.ImportCustomRoutes)
 		paths = append(paths, "import_custom_routes")
 	}
 	if desired.Spec.ExchangeSubnetRoutes != nil && !reflect.DeepEqual(resource.ExchangeSubnetRoutes, a.actual.ExchangeSubnetRoutes) {
+		report.AddField("exchange_subnet_routes", a.actual.ExchangeSubnetRoutes, resource.ExchangeSubnetRoutes)
 		paths = append(paths, "exchange_subnet_routes")
 	}
 	if desired.Spec.ExportCustomRoutesWithPublicIP != nil && !reflect.DeepEqual(resource.ExportCustomRoutesWithPublicIp, a.actual.ExportCustomRoutesWithPublicIp) {
+		report.AddField("export_custom_routes_with_public_ip", a.actual.ExportCustomRoutesWithPublicIp, resource.ExportCustomRoutesWithPublicIp)
 		paths = append(paths, "export_custom_routes_with_public_ip")
 	}
 	if desired.Spec.ImportCustomRoutesWithPublicIP != nil && !reflect.DeepEqual(resource.ImportCustomRoutesWithPublicIp, a.actual.ImportCustomRoutesWithPublicIp) {
+		report.AddField("import_custom_routes_with_public_ip", a.actual.ImportCustomRoutesWithPublicIp, resource.ImportCustomRoutesWithPublicIp)
 		paths = append(paths, "import_custom_routes_with_public_ip")
 	}
 	if desired.Spec.PeerMTU != nil && !reflect.DeepEqual(resource.PeerMtu, a.actual.PeerMtu) {
+		report.AddField("peer_mtu", a.actual.PeerMtu, resource.PeerMtu)
 		paths = append(paths, "peer_mtu")
 	}
 	if desired.Spec.VMwareEngineNetworkRef != nil && !reflect.DeepEqual(resource.VmwareEngineNetwork, a.actual.VmwareEngineNetwork) {
+		report.AddField("vmware_engine_network", a.actual.VmwareEngineNetwork, resource.VmwareEngineNetwork)
 		paths = append(paths, "vmware_engine_network")
 	}
 
@@ -209,6 +222,7 @@ func (a *networkPeeringAdapter) Update(ctx context.Context, updateOp *directbase
 		log.V(2).Info("no field needs update", "name", a.id)
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		req := &pb.UpdateNetworkPeeringRequest{
 			NetworkPeering: resource,

@@ -30,6 +30,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -258,9 +259,12 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 	forwardingRule.Name = direct.LazyPtr(a.id.ResourceID)
 	forwardingRule.Labels = sanitizedLabels
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	op := &gcp.Operation{}
 	updated := &computepb.ForwardingRule{}
 	if !reflect.DeepEqual(forwardingRule.AllowGlobalAccess, a.actual.AllowGlobalAccess) {
+		report.AddField("allow_global_access", a.actual.AllowGlobalAccess, forwardingRule.AllowGlobalAccess)
 		// To match the request body in TF-controller log
 		// https://github.com/hashicorp/terraform-provider-google/blob/main/google/services/compute/resource_compute_forwarding_rule.go#L1151
 		reqBody := &computepb.ForwardingRule{AllowGlobalAccess: forwardingRule.AllowGlobalAccess}
@@ -290,6 +294,7 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 
 	// Use setTarget and setLabels to update target and labels fields.
 	if !reflect.DeepEqual(forwardingRule.Labels, a.actual.Labels) {
+		report.AddField("labels", a.actual.Labels, forwardingRule.Labels)
 		op, err := a.setLabels(ctx, a.actual.LabelFingerprint, forwardingRule.Labels)
 		if err != nil {
 			return fmt.Errorf("updating ComputeForwardingRule labels %s: %w", a.id, err)
@@ -308,6 +313,7 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 	// their dependencies being managed by different controllers.
 	// This can be removed once all Compute resources are migrated to direct controller.
 	if !IsSelfLinkEqual(forwardingRule.Target, a.actual.Target) {
+		report.AddField("target", a.actual.Target, forwardingRule.Target)
 		if a.id.ParentID.Location == "global" {
 			setTargetReq := &computepb.SetTargetGlobalForwardingRuleRequest{
 				ForwardingRule:          a.id.ResourceID,
@@ -335,6 +341,9 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 		}
 		log.V(2).Info("successfully updated ComputeForwardingRule target", "name", a.id)
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
+
 	// Get the updated resource
 	updated, err = a.get(ctx)
 	if err != nil {

@@ -39,6 +39,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -167,8 +168,11 @@ func (a *phraseSetAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 	if !reflect.DeepEqual(resource.Phrases, a.actual.Phrases) {
+		report.AddField("phrases", a.actual.Phrases, resource.Phrases)
 		paths = append(paths, "phrases")
 	}
 	/* NOTYET
@@ -177,9 +181,11 @@ func (a *phraseSetAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	}
 	*/
 	if !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
+		report.AddField("display_name", a.actual.DisplayName, resource.DisplayName)
 		paths = append(paths, "display_name")
 	}
 	if !reflect.DeepEqual(resource.Annotations, a.actual.Annotations) {
+		report.AddField("annotations", a.actual.Annotations, resource.Annotations)
 		paths = append(paths, "annotations")
 	}
 
@@ -188,6 +194,7 @@ func (a *phraseSetAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 		log.V(2).Info("no field needs update", "name", a.id)
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		req := &pb.UpdatePhraseSetRequest{
 			PhraseSet:  resource,

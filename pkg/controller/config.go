@@ -33,4 +33,7 @@ type Deps struct {
 	Defaulters        []k8s.Defaulter
 	JitterGen         jitter.Generator
 	DependencyTracker *gcpwatch.DependencyTracker
+	// SkipNameValidation maps to the SkipNameValidation field in controller-runtime's controller.Options.
+	// It bypasses the global controller name registry in controller-runtime which causes conflicts when running multiple managers in the same process.
+	SkipNameValidation bool
 }

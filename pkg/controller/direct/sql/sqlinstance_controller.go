@@ -324,6 +324,151 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
+	"spec.replicaConfiguration": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			out.ReplicaConfiguration = actual.ReplicaConfiguration
+		},
+	},
+	"spec.replicaConfiguration.caCertificate": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.ReplicaConfiguration != nil && actual.ReplicaConfiguration.MysqlReplicaConfiguration != nil {
+				if out.ReplicaConfiguration == nil {
+					out.ReplicaConfiguration = &api.ReplicaConfiguration{}
+				}
+				if out.ReplicaConfiguration.MysqlReplicaConfiguration == nil {
+					out.ReplicaConfiguration.MysqlReplicaConfiguration = &api.MySqlReplicaConfiguration{}
+				}
+				out.ReplicaConfiguration.MysqlReplicaConfiguration.CaCertificate = actual.ReplicaConfiguration.MysqlReplicaConfiguration.CaCertificate
+			}
+		},
+	},
+	"spec.replicaConfiguration.clientCertificate": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.ReplicaConfiguration != nil && actual.ReplicaConfiguration.MysqlReplicaConfiguration != nil {
+				if out.ReplicaConfiguration == nil {
+					out.ReplicaConfiguration = &api.ReplicaConfiguration{}
+				}
+				if out.ReplicaConfiguration.MysqlReplicaConfiguration == nil {
+					out.ReplicaConfiguration.MysqlReplicaConfiguration = &api.MySqlReplicaConfiguration{}
+				}
+				out.ReplicaConfiguration.MysqlReplicaConfiguration.ClientCertificate = actual.ReplicaConfiguration.MysqlReplicaConfiguration.ClientCertificate
+			}
+		},
+	},
+	"spec.replicaConfiguration.clientKey": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.ReplicaConfiguration != nil && actual.ReplicaConfiguration.MysqlReplicaConfiguration != nil {
+				if out.ReplicaConfiguration == nil {
+					out.ReplicaConfiguration = &api.ReplicaConfiguration{}
+				}
+				if out.ReplicaConfiguration.MysqlReplicaConfiguration == nil {
+					out.ReplicaConfiguration.MysqlReplicaConfiguration = &api.MySqlReplicaConfiguration{}
+				}
+				out.ReplicaConfiguration.MysqlReplicaConfiguration.ClientKey = actual.ReplicaConfiguration.MysqlReplicaConfiguration.ClientKey
+			}
+		},
+	},
+	"spec.replicaConfiguration.connectRetryInterval": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.ReplicaConfiguration != nil && actual.ReplicaConfiguration.MysqlReplicaConfiguration != nil {
+				if out.ReplicaConfiguration == nil {
+					out.ReplicaConfiguration = &api.ReplicaConfiguration{}
+				}
+				if out.ReplicaConfiguration.MysqlReplicaConfiguration == nil {
+					out.ReplicaConfiguration.MysqlReplicaConfiguration = &api.MySqlReplicaConfiguration{}
+				}
+				out.ReplicaConfiguration.MysqlReplicaConfiguration.ConnectRetryInterval = actual.ReplicaConfiguration.MysqlReplicaConfiguration.ConnectRetryInterval
+			}
+		},
+	},
+	"spec.replicaConfiguration.dumpFilePath": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.ReplicaConfiguration != nil && actual.ReplicaConfiguration.MysqlReplicaConfiguration != nil {
+				if out.ReplicaConfiguration == nil {
+					out.ReplicaConfiguration = &api.ReplicaConfiguration{}
+				}
+				if out.ReplicaConfiguration.MysqlReplicaConfiguration == nil {
+					out.ReplicaConfiguration.MysqlReplicaConfiguration = &api.MySqlReplicaConfiguration{}
+				}
+				out.ReplicaConfiguration.MysqlReplicaConfiguration.DumpFilePath = actual.ReplicaConfiguration.MysqlReplicaConfiguration.DumpFilePath
+			}
+		},
+	},
+	"spec.replicaConfiguration.failoverTarget": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.ReplicaConfiguration != nil {
+				if out.ReplicaConfiguration == nil {
+					out.ReplicaConfiguration = &api.ReplicaConfiguration{}
+				}
+				out.ReplicaConfiguration.FailoverTarget = actual.ReplicaConfiguration.FailoverTarget
+			}
+		},
+	},
+	"spec.replicaConfiguration.masterHeartbeatPeriod": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.ReplicaConfiguration != nil && actual.ReplicaConfiguration.MysqlReplicaConfiguration != nil {
+				if out.ReplicaConfiguration == nil {
+					out.ReplicaConfiguration = &api.ReplicaConfiguration{}
+				}
+				if out.ReplicaConfiguration.MysqlReplicaConfiguration == nil {
+					out.ReplicaConfiguration.MysqlReplicaConfiguration = &api.MySqlReplicaConfiguration{}
+				}
+				out.ReplicaConfiguration.MysqlReplicaConfiguration.MasterHeartbeatPeriod = actual.ReplicaConfiguration.MysqlReplicaConfiguration.MasterHeartbeatPeriod
+			}
+		},
+	},
+	"spec.replicaConfiguration.password": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.ReplicaConfiguration != nil && actual.ReplicaConfiguration.MysqlReplicaConfiguration != nil {
+				if out.ReplicaConfiguration == nil {
+					out.ReplicaConfiguration = &api.ReplicaConfiguration{}
+				}
+				if out.ReplicaConfiguration.MysqlReplicaConfiguration == nil {
+					out.ReplicaConfiguration.MysqlReplicaConfiguration = &api.MySqlReplicaConfiguration{}
+				}
+				out.ReplicaConfiguration.MysqlReplicaConfiguration.Password = actual.ReplicaConfiguration.MysqlReplicaConfiguration.Password
+			}
+		},
+	},
+	"spec.replicaConfiguration.sslCipher": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.ReplicaConfiguration != nil && actual.ReplicaConfiguration.MysqlReplicaConfiguration != nil {
+				if out.ReplicaConfiguration == nil {
+					out.ReplicaConfiguration = &api.ReplicaConfiguration{}
+				}
+				if out.ReplicaConfiguration.MysqlReplicaConfiguration == nil {
+					out.ReplicaConfiguration.MysqlReplicaConfiguration = &api.MySqlReplicaConfiguration{}
+				}
+				out.ReplicaConfiguration.MysqlReplicaConfiguration.SslCipher = actual.ReplicaConfiguration.MysqlReplicaConfiguration.SslCipher
+			}
+		},
+	},
+	"spec.replicaConfiguration.username": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.ReplicaConfiguration != nil && actual.ReplicaConfiguration.MysqlReplicaConfiguration != nil {
+				if out.ReplicaConfiguration == nil {
+					out.ReplicaConfiguration = &api.ReplicaConfiguration{}
+				}
+				if out.ReplicaConfiguration.MysqlReplicaConfiguration == nil {
+					out.ReplicaConfiguration.MysqlReplicaConfiguration = &api.MySqlReplicaConfiguration{}
+				}
+				out.ReplicaConfiguration.MysqlReplicaConfiguration.Username = actual.ReplicaConfiguration.MysqlReplicaConfiguration.Username
+			}
+		},
+	},
+	"spec.replicaConfiguration.verifyServerCertificate": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.ReplicaConfiguration != nil && actual.ReplicaConfiguration.MysqlReplicaConfiguration != nil {
+				if out.ReplicaConfiguration == nil {
+					out.ReplicaConfiguration = &api.ReplicaConfiguration{}
+				}
+				if out.ReplicaConfiguration.MysqlReplicaConfiguration == nil {
+					out.ReplicaConfiguration.MysqlReplicaConfiguration = &api.MySqlReplicaConfiguration{}
+				}
+				out.ReplicaConfiguration.MysqlReplicaConfiguration.VerifyServerCertificate = actual.ReplicaConfiguration.MysqlReplicaConfiguration.VerifyServerCertificate
+			}
+		},
+	},
 	"spec.replicationCluster": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			out.ReplicationCluster = actual.ReplicationCluster
@@ -404,6 +549,13 @@ func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, op *directbase.
 
 	if err := ResolveSQLInstanceRefs(ctx, kube, obj); err != nil {
 		return nil, err
+	}
+
+	if obj.Spec.Settings.Edition != nil {
+		edition := *obj.Spec.Settings.Edition
+		if edition != "ENTERPRISE" && edition != "ENTERPRISE_PLUS" {
+			return nil, fmt.Errorf("unrecognized edition %q; supported values are ENTERPRISE and ENTERPRISE_PLUS", edition)
+		}
 	}
 
 	adapter := &sqlInstanceAdapter{

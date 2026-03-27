@@ -17,8 +17,8 @@ kind: BigQueryAnalyticsHubDataExchange
 metadata:
   name: bigqueryanalyticshubdataexchange${uniqueId}
 spec:
-  displayName: my_data_exchange
-  description: example data exchange
+  displayName: updated_my_data_exchange
+  description: updated example data exchange
   primaryContact: another@contact.com
   documentation: an updated documentation
   discoveryType: DISCOVERY_TYPE_PUBLIC

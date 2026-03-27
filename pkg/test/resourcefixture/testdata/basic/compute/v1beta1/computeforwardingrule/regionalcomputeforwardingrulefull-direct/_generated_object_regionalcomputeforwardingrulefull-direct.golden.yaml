@@ -18,7 +18,7 @@ spec:
   allPorts: true
   allowGlobalAccess: false
   backendServiceRef:
-    name: computebackendservice-${uniqueId}
+    name: ${backendServiceID}
   description: A regional forwarding rule
   ipAddress:
     ip: 10.128.8.8

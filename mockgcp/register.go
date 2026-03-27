@@ -25,6 +25,8 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigtable"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbilling"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbillingbudgets"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcertificatemanager"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockclouddeploy"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockclouddms"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudids"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcompute"

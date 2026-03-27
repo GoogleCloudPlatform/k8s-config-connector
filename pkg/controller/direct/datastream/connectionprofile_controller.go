@@ -32,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/datastream/apiv1"
 	pb "cloud.google.com/go/datastream/apiv1/datastreampb"
@@ -178,11 +179,15 @@ func (a *ConnectionProfileAdapter) Update(ctx context.Context, updateOp *directb
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 	if desired.Spec.DisplayName != nil && !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
+		report.AddField("display_name", a.actual.DisplayName, resource.DisplayName)
 		paths = append(paths, "display_name")
 	}
 	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
+		report.AddField("labels", a.actual.Labels, resource.Labels)
 		paths = append(paths, "labels")
 	}
 	// TODO: handle other fields
@@ -192,6 +197,7 @@ func (a *ConnectionProfileAdapter) Update(ctx context.Context, updateOp *directb
 		log.V(2).Info("no field needs update", "name", a.id)
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		req := &pb.UpdateConnectionProfileRequest{
 			ConnectionProfile: resource,

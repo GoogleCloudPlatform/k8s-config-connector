@@ -20,6 +20,7 @@ set -o pipefail
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 REPO_ROOT="${SCRIPT_DIR}/../../.."
+source "${REPO_ROOT}/dev/tools/goimports.sh"
 
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
@@ -28,11 +29,12 @@ go run . generate-types \
   --api-version alloydb.cnrm.cloud.google.com/v1beta1 \
   --resource AlloyDBCluster:Cluster \
   --resource AlloyDBInstance:Instance \
-  --resource AlloyDBBackup:Backup
+  --resource AlloyDBBackup:Backup \
+  --resource AlloyDBUser:User
 
 go run . generate-mapper --service google.cloud.alloydb.v1beta --api-version alloydb.cnrm.cloud.google.com/v1beta1
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/alloydb/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/alloydb/

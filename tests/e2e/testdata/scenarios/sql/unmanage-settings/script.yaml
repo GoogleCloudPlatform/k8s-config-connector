@@ -54,7 +54,6 @@ spec:
     diskAutoresizeLimit: -100
     diskSize: -100
     diskType: "INVALID_TYPE"
-    edition: "INVALID_EDITION"
     ipConfiguration:
       ipv4Enabled: false
       requireSsl: true

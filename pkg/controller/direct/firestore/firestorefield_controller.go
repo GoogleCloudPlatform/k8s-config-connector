@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -192,6 +193,12 @@ func (a *firestoreFieldAdapter) Update(ctx context.Context, updateOp *directbase
 
 	latest := a.desired
 	if len(req.UpdateMask.Paths) != 0 {
+		report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+		for _, path := range req.UpdateMask.Paths {
+			report.AddField(path, nil, nil)
+		}
+		structuredreporting.ReportDiff(ctx, report)
+
 		log.V(0).Info("updating FirestoreField", "name", fqn)
 
 		op, err := a.firestoreAdminClient.UpdateField(ctx, req)

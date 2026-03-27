@@ -572,7 +572,6 @@ func ResourceContainerCluster() *schema.Resource {
 									"boot_disk_kms_key": {
 										Type:        schema.TypeString,
 										Optional:    true,
-										ForceNew:    true,
 										Description: `The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool.`,
 									},
 									"shielded_instance_config": {
@@ -1608,6 +1607,11 @@ func ResourceContainerCluster() *schema.Resource {
 										Type:        schema.TypeBool,
 										Optional:    true,
 										Description: `Controls whether user traffic is allowed over this endpoint. Note that GCP-managed services may still use the endpoint even if this is false.`,
+									},
+									"enable_k8s_tokens_via_dns": {
+										Type:        schema.TypeBool,
+										Optional:    true,
+										Description: `Controls whether the k8s token auth is allowed via DNS.`,
 									},
 								},
 							},
@@ -5010,6 +5014,10 @@ func expandControlPlaneEndpointsConfig(d *schema.ResourceData) *container.Contro
 		dns.AllowExternalTraffic = v.(bool)
 		dns.ForceSendFields = []string{"AllowExternalTraffic"}
 	}
+	if v := d.Get("control_plane_endpoints_config.0.dns_endpoint_config.0.enable_k8s_tokens_via_dns"); v != nil {
+		dns.EnableK8sTokensViaDns = v.(bool)
+		dns.ForceSendFields = append(dns.ForceSendFields, "EnableK8sTokensViaDns")
+	}
 
 	ip := &container.IPEndpointsConfig{
 		// There isn't yet a config field to disable IP endpoints, so this is hardcoded to be enabled for the time being.
@@ -5606,8 +5614,9 @@ func flattenDnsEndpointConfig(dns *container.DNSEndpointConfig) []map[string]int
 	}
 	return []map[string]interface{}{
 		{
-			"endpoint":               dns.Endpoint,
-			"allow_external_traffic": dns.AllowExternalTraffic,
+			"endpoint":                  dns.Endpoint,
+			"allow_external_traffic":    dns.AllowExternalTraffic,
+			"enable_k8s_tokens_via_dns": dns.EnableK8sTokensViaDns,
 		},
 	}
 }

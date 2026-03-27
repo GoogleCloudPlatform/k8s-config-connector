@@ -49,3 +49,25 @@ The project uses a "golden file" testing approach. This involves:
 3.  Running the tests against the mock implementation and comparing the actual output to the golden files.
 
 This ensures that the mock implementation accurately reflects the behavior of the real GCP APIs.
+
+### Normalization and Scoping
+
+Mock services often need to normalize responses to ensure stable golden logs (e.g., replacing timestamps or IDs with placeholders). This is typically implemented in `normalize.go` using the `Previsit` and `ConfigureVisitor` methods.
+
+**Critical Rule: Previsit Scoping**
+
+The `Previsit` method is **globally executed** for every event across all registered services. To prevent one service's normalization rules from affecting another service's tests, you MUST explicitly scope the `Previsit` logic to the relevant service URL.
+
+Example of correct scoping:
+
+```go
+func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+    // Only apply normalization if the request is for this service
+    if !strings.Contains(event.URL(), "myservice.googleapis.com") {
+        return
+    }
+    // ... normalization logic ...
+}
+```
+
+Failure to scope `Previsit` can lead to unintended log changes in unrelated services, causing "log corruption" and massive diffs in unrelated test data.

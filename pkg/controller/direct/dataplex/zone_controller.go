@@ -38,6 +38,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -178,14 +179,19 @@ func (a *zoneAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 	zone := a.desired
 	zone.Name = a.id.String()
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(zone.DisplayName, a.actual.DisplayName) {
+		report.AddField("display_name", a.actual.DisplayName, zone.DisplayName)
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
 	if !reflect.DeepEqual(zone.Description, a.actual.Description) {
+		report.AddField("description", a.actual.Description, zone.Description)
 		updateMask.Paths = append(updateMask.Paths, "description")
 	}
 	if !reflect.DeepEqual(zone.Labels, a.actual.Labels) {
+		report.AddField("labels", a.actual.Labels, zone.Labels)
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
 
@@ -202,10 +208,12 @@ func (a *zoneAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 	}
 	if zone.DiscoverySpec != nil {
 		if !cmp.Equal(zone.DiscoverySpec, a.actual.DiscoverySpec, cmpopts.IgnoreUnexported(pb.Zone_DiscoverySpec{}, pb.Zone_DiscoverySpec_CsvOptions{}, pb.Zone_DiscoverySpec_JsonOptions{})) {
+			report.AddField("discovery_spec", a.actual.DiscoverySpec, zone.DiscoverySpec)
 			updateMask.Paths = append(updateMask.Paths, "discovery_spec")
 		}
 	} else {
 		if !cmp.Equal(emptyDiscoverySpec, a.actual.DiscoverySpec, cmpopts.IgnoreUnexported(pb.Zone_DiscoverySpec{}, pb.Zone_DiscoverySpec_CsvOptions{}, pb.Zone_DiscoverySpec_JsonOptions{})) {
+			report.AddField("discovery_spec", a.actual.DiscoverySpec, emptyDiscoverySpec)
 			updateMask.Paths = append(updateMask.Paths, "discovery_spec")
 		}
 	}
@@ -219,6 +227,7 @@ func (a *zoneAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 		// even though there is no update, we still want to update KRM status
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		log.V(2).Info("updating fields", "name", a.id, "paths", updateMask.Paths)
 		req := &pb.UpdateZoneRequest{
 			UpdateMask: updateMask,

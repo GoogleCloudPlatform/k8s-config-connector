@@ -63,7 +63,7 @@ spec:
             description: CertificateManagerCertificateIssuanceConfigSpec defines the
               desired state of CertificateManagerCertificateIssuanceConfig
             properties:
-              certificateAuthorityConfigRef:
+              certificateAuthorityConfig:
                 description: Required. The CA that issues the workload certificate.
                   It includes the CA address, type, authentication to CA service,
                   etc.
@@ -114,6 +114,7 @@ spec:
                 description: Required. Workload certificate lifetime requested.
                 type: string
               location:
+                description: The location that this resource belongs to.
                 type: string
                 x-kubernetes-validations:
                 - message: Location is immutable.

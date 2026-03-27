@@ -109,7 +109,7 @@ spec:
         - tfField: cluster_autoscaling.auto_provisioning_defaults.boot_disk_kms_key
           key: bootDiskKMSKeyRef
           description: |-
-            Immutable. The Customer Managed Encryption Key used to encrypt the
+            The Customer Managed Encryption Key used to encrypt the
             boot disk attached to each node in the node pool.
           gvk:
             kind: KMSCryptoKey
@@ -204,7 +204,7 @@ spec:
             InvalidArgument error is returned.
           key: policyNameRef
           gvk:
-            Kind: ComputeResourcePolicy
+            kind: ComputeResourcePolicy
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link

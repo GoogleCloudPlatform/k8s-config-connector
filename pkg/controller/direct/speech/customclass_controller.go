@@ -39,6 +39,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -167,14 +168,19 @@ func (a *customClassAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 	if a.desired.Spec.DisplayName != nil && !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
+		report.AddField("display_name", a.actual.DisplayName, resource.DisplayName)
 		paths = append(paths, "display_name")
 	}
 	if !reflect.DeepEqual(resource.Items, a.actual.Items) {
+		report.AddField("items", a.actual.Items, resource.Items)
 		paths = append(paths, "items")
 	}
 	if !reflect.DeepEqual(resource.Annotations, a.actual.Annotations) {
+		report.AddField("annotations", a.actual.Annotations, resource.Annotations)
 		paths = append(paths, "annotations")
 	}
 
@@ -183,6 +189,7 @@ func (a *customClassAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		log.V(2).Info("no field needs update", "name", a.id)
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		req := &pb.UpdateCustomClassRequest{
 			CustomClass: resource,

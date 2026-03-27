@@ -35,6 +35,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -197,11 +198,15 @@ func (a *NetworkEdgeSecurityServiceAdapter) Update(ctx context.Context, updateOp
 	// An up-to-date fingerprint must be provided in order to patch
 	resource.Fingerprint = a.actual.Fingerprint
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	var paths []string
 	if !reflect.DeepEqual(resource.SecurityPolicy, a.actual.SecurityPolicy) {
+		report.AddField("security_policy", a.actual.SecurityPolicy, resource.SecurityPolicy)
 		paths = append(paths, "security_policy")
 	}
 	if !reflect.DeepEqual(resource.Description, a.actual.Description) {
+		report.AddField("description", a.actual.Description, resource.Description)
 		paths = append(paths, "description")
 	}
 
@@ -214,6 +219,8 @@ func (a *NetworkEdgeSecurityServiceAdapter) Update(ctx context.Context, updateOp
 		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
 
 	// updateMask is a comma-separated list of fully qualified names of fields.
 	sort.Strings(paths)

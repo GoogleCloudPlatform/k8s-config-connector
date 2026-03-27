@@ -38,6 +38,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 const (
@@ -340,6 +341,10 @@ func (a *dataprocJobAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 	// If only labels changed, proceed with label update
 	if !MapsEqual(a.desired.Labels, a.actual.Labels) {
+		report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+		report.AddField("labels", a.actual.Labels, a.desired.Labels)
+		structuredreporting.ReportDiff(ctx, report)
+
 		klog.V(2).Infof("updating labels for dataproc job %q", a.id)
 		req := &pb.UpdateJobRequest{
 			ProjectId: a.id.Parent().ProjectID,

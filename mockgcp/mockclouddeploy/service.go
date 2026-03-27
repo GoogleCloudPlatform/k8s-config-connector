@@ -12,24 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +tool:mockgcp-service
-// http.host: clouddeploy.googleapis.com
-// proto.service: google.cloud.deploy.v1.CloudDeploy
-
 package mockclouddeploy
 
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/deploy/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
+
+func init() {
+	mockgcpregistry.Register(New)
+}
 
 // MockService represents a mocked clouddeploy service.
 type MockService struct {
@@ -38,13 +43,13 @@ type MockService struct {
 	operations *operations.Operations
 }
 
-type cloudDeployV1 struct {
+type cloudDeploy struct {
 	*MockService
 	pb.UnimplementedCloudDeployServer
 }
 
 // New creates a MockService.
-func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
@@ -71,4 +76,39 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	return mux, nil
+}
+
+type locationName struct {
+	Project  *projects.ProjectData
+	Location string
+}
+
+func (n *locationName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location
+}
+
+func (s *MockService) parseLocationName(name string) (*locationName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "locations" {
+		for i := 1; i < len(tokens); i += 2 {
+			if tokens[i] == "" {
+				return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+			}
+		}
+
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &locationName{
+			Project:  project,
+			Location: tokens[3],
+		}
+
+		return name, nil
+	}
+
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }

@@ -36,6 +36,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -175,26 +176,35 @@ func (a *entryTypeAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 
 	a.desired.Name = a.id.String()
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	updateMask := &fieldmaskpb.FieldMask{}
 	if a.desired.Description != a.actual.Description {
+		report.AddField("description", a.actual.Description, a.desired.Description)
 		updateMask.Paths = append(updateMask.Paths, "description")
 	}
 	if a.desired.DisplayName != "" && a.desired.DisplayName != a.actual.DisplayName {
+		report.AddField("display_name", a.actual.DisplayName, a.desired.DisplayName)
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
 	if a.desired.Labels != nil && !reflect.DeepEqual(a.desired.Labels, a.actual.Labels) {
+		report.AddField("labels", a.actual.Labels, a.desired.Labels)
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
 	if a.desired.TypeAliases != nil && !reflect.DeepEqual(a.desired.TypeAliases, a.actual.TypeAliases) {
+		report.AddField("type_aliases", a.actual.TypeAliases, a.desired.TypeAliases)
 		updateMask.Paths = append(updateMask.Paths, "type_aliases")
 	}
 	if a.desired.Platform != "" && !reflect.DeepEqual(a.desired.Platform, a.actual.Platform) {
+		report.AddField("platform", a.actual.Platform, a.desired.Platform)
 		updateMask.Paths = append(updateMask.Paths, "platform")
 	}
 	if a.desired.System != "" && !reflect.DeepEqual(a.desired.System, a.actual.System) {
+		report.AddField("system", a.actual.System, a.desired.System)
 		updateMask.Paths = append(updateMask.Paths, "system")
 	}
 	if a.desired.RequiredAspects != nil && !reflect.DeepEqual(a.desired.RequiredAspects, a.actual.RequiredAspects) {
+		report.AddField("required_aspects", a.actual.RequiredAspects, a.desired.RequiredAspects)
 		updateMask.Paths = append(updateMask.Paths, "required_aspects")
 	}
 	// Authorization is immutable
@@ -205,6 +215,7 @@ func (a *entryTypeAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 		// even though there is no update, we still want to update KRM status
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		req := &pb.UpdateEntryTypeRequest{
 			UpdateMask: updateMask,
 			EntryType:  a.desired,

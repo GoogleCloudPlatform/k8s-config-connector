@@ -40,6 +40,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -197,9 +198,12 @@ func (a *dataStoreAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	desired := direct.ProtoClone(a.desired)
 	desired.Name = a.id.String()
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	// TODO(user): Update the field if applicable.
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(a.desired.DisplayName, a.actual.DisplayName) {
+		report.AddField("display_name", a.actual.DisplayName, a.desired.DisplayName)
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
 
@@ -207,6 +211,9 @@ func (a *dataStoreAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
+
 	req := &pb.UpdateDataStoreRequest{
 		UpdateMask: updateMask,
 		DataStore:  desired,

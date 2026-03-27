@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/workstations/apiv1"
 	pb "cloud.google.com/go/workstations/apiv1/workstationspb"
@@ -251,17 +252,23 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	resource.Name = a.id.FullyQualifiedName()
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(resource.Annotations, a.actual.Annotations) {
+		report.AddField("annotations", a.actual.Annotations, resource.Annotations)
 		updateMask.Paths = append(updateMask.Paths, "annotations")
 	}
 	if !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
+		report.AddField("labels", a.actual.Labels, resource.Labels)
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
 
 	if len(updateMask.Paths) == 0 {
 		return nil
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
 
 	req := &pb.UpdateWorkstationClusterRequest{
 		UpdateMask:         updateMask,

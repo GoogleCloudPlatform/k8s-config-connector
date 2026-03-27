@@ -41,6 +41,10 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
     "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 7,
+        "retentionUnit": "COUNT"
+      },
       "binaryLogEnabled": true,
       "enabled": true,
       "kind": "sql#backupConfiguration"

@@ -41,6 +41,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -211,8 +212,11 @@ func (a *peeredDNSDomainAdapter) Update(ctx context.Context, updateOp *directbas
 	desired := ReflectClone(a.desired)
 	desired.Name = a.id.Name
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(desired.DnsSuffix, a.actual.DnsSuffix) {
+		report.AddField("dns_suffix", a.actual.DnsSuffix, desired.DnsSuffix)
 		updateMask.Paths = append(updateMask.Paths, "dns_suffix")
 	}
 
@@ -220,6 +224,8 @@ func (a *peeredDNSDomainAdapter) Update(ctx context.Context, updateOp *directbas
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
 
 	return fmt.Errorf("cannot update peeredDnsDomain object (values are immutable)")
 	// op, err := a.gcpClient.Services.Projects.Global.Networks.PeeredDnsDomains.Create(parent, desired).Context(ctx).Do()

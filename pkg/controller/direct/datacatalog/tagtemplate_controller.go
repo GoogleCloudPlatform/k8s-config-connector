@@ -40,6 +40,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -181,14 +182,18 @@ func (a *tagTemplateAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 	desired.Name = a.id.String()
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	// The UpdateTagTemplate RPC can only update certain top-level fields.
 	// Template fields (the 'fields' map) are managed via separate RPCs (Create/Update/DeleteTagTemplateField).
 	// Therefore, we only compare and update the mutable top-level fields.
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(desired.DisplayName, a.actual.DisplayName) {
+		report.AddField("display_name", a.actual.DisplayName, desired.DisplayName)
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
 	if !reflect.DeepEqual(desired.IsPubliclyReadable, a.actual.IsPubliclyReadable) {
+		report.AddField("is_publicly_readable", a.actual.IsPubliclyReadable, desired.IsPubliclyReadable)
 		updateMask.Paths = append(updateMask.Paths, "is_publicly_readable")
 	}
 	// Note: 'fields' map is intentionally not included in the updateMask as it's managed separately.
@@ -204,6 +209,7 @@ func (a *tagTemplateAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		// For now, just return the current actual state.
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		req := &pb.UpdateTagTemplateRequest{
 			TagTemplate: desired,
 			UpdateMask:  updateMask,

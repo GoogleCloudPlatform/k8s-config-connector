@@ -31,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -212,6 +213,12 @@ func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *direct
 		// even though there is no update, we still want to update KRM status
 		updated = a.actual
 	} else {
+		report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+		for path := range paths {
+			report.AddField(path, nil, nil)
+		}
+		structuredreporting.ReportDiff(ctx, report)
+
 		tokens := strings.Split(a.id.String(), "/")
 		priority, err := strconv.ParseInt(tokens[5], 10, 32)
 		// Should not hit this error because we have verified priority in parseComputeFirewallPolicyRuleExternal`

@@ -35,6 +35,7 @@ func TestGoldenConfigConnector(t *testing.T) {
 			unstructured.SetNestedField(u.Object, "(removed)", "spec")                    //nolint:errcheck
 			unstructured.SetNestedField(u.Object, "(removed)", "metadata", "annotations") //nolint:errcheck
 			unstructured.SetNestedField(u.Object, "(removed)", "metadata", "labels")      //nolint:errcheck
+			unstructured.RemoveNestedField(u.Object, "status")
 			// Note: the operator is setting the status on the CRDs, but it probably should not be doing so
 		}
 

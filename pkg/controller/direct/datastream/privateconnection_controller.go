@@ -31,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/datastream/apiv1"
 	pb "cloud.google.com/go/datastream/apiv1/datastreampb"
@@ -176,18 +177,24 @@ func (a *PrivateConnectionAdapter) Update(ctx context.Context, updateOp *directb
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 	if desired.Spec.DisplayName != nil && !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
+		report.AddField("display_name", a.actual.DisplayName, resource.DisplayName)
 		paths = append(paths, "display_name")
 	}
 	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
+		report.AddField("labels", a.actual.Labels, resource.Labels)
 		paths = append(paths, "labels")
 	}
 	if desired.Spec.VPCPeeringConfig != nil && !reflect.DeepEqual(resource.VpcPeeringConfig, a.actual.VpcPeeringConfig) {
+		report.AddField("vpc_peering_config", a.actual.VpcPeeringConfig, resource.VpcPeeringConfig)
 		paths = append(paths, "vpc_peering_config")
 	}
 
 	if len(paths) != 0 {
+		structuredreporting.ReportDiff(ctx, report)
 		return fmt.Errorf("updating PrivateConnection is not supported, fields: %v", paths)
 	}
 

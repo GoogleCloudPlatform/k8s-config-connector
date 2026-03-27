@@ -64,7 +64,15 @@ func (s *GlobalHealthCheckV1) Insert(ctx context.Context, req *pb.InsertHealthCh
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 // Updates a HealthCheck resource in the specified project using the data included in the request.
@@ -88,7 +96,15 @@ func (s *GlobalHealthCheckV1) Patch(ctx context.Context, req *pb.PatchHealthChec
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("patch"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 // Updates a HealthCheck resource in the specified project using the data included in the request.
@@ -111,7 +127,15 @@ func (s *GlobalHealthCheckV1) Update(ctx context.Context, req *pb.UpdateHealthCh
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("update"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *GlobalHealthCheckV1) Delete(ctx context.Context, req *pb.DeleteHealthCheckRequest) (*pb.Operation, error) {
@@ -127,7 +151,15 @@ func (s *GlobalHealthCheckV1) Delete(ctx context.Context, req *pb.DeleteHealthCh
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 type globalHealthCheckName struct {

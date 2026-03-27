@@ -41,6 +41,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/golang/protobuf/proto"
 )
 
@@ -184,6 +185,12 @@ func (a *jobAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 		return err
 	}
 	if len(paths) != 0 {
+		report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+		for path := range paths {
+			report.AddField(path, nil, nil)
+		}
+		structuredreporting.ReportDiff(ctx, report)
+
 		log.V(2).Info("This resource does not support update", "name", a.id.String())
 		return nil
 	}

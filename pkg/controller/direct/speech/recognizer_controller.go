@@ -40,6 +40,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -204,14 +205,19 @@ func (a *recognizerAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 	if desired.Spec.DisplayName != nil && !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
+		report.AddField("display_name", a.actual.DisplayName, resource.DisplayName)
 		paths = append(paths, "display_name")
 	}
 	if desired.Spec.Annotations != nil && !reflect.DeepEqual(resource.Annotations, a.actual.Annotations) {
+		report.AddField("annotations", a.actual.Annotations, resource.Annotations)
 		paths = append(paths, "annotations")
 	}
 	if desired.Spec.DefaultRecognitionConfig != nil && !recognizerConfigsEqual(resource.DefaultRecognitionConfig, a.actual.DefaultRecognitionConfig) {
+		report.AddField("default_recognition_config", a.actual.DefaultRecognitionConfig, resource.DefaultRecognitionConfig)
 		paths = append(paths, "default_recognition_config")
 	}
 
@@ -221,6 +227,7 @@ func (a *recognizerAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 		// even though there is no update, we still want to update KRM status
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		req := &pb.UpdateRecognizerRequest{
 			Recognizer: resource,

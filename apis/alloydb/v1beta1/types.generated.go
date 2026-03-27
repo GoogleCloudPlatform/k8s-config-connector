@@ -20,6 +20,7 @@
 // resource: AlloyDBCluster:Cluster
 // resource: AlloyDBInstance:Instance
 // resource: AlloyDBBackup:Backup
+// resource: AlloyDBUser:User
 
 package v1beta1
 

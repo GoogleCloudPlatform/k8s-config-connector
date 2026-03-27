@@ -28,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -168,15 +169,20 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 
 	if !reflect.DeepEqual(desiredPb.SlotCapacity, a.actual.SlotCapacity) {
+		report.AddField("slot_capacity", a.actual.SlotCapacity, desiredPb.SlotCapacity)
 		paths = append(paths, "slot_capacity")
 	}
 	if !reflect.DeepEqual(desiredPb.IgnoreIdleSlots, a.actual.IgnoreIdleSlots) {
+		report.AddField("ignore_idle_slots", a.actual.IgnoreIdleSlots, desiredPb.IgnoreIdleSlots)
 		paths = append(paths, "ignore_idle_slots")
 	}
 	if !reflect.DeepEqual(desiredPb.Concurrency, a.actual.Concurrency) {
+		report.AddField("concurrency", a.actual.Concurrency, desiredPb.Concurrency)
 		paths = append(paths, "concurrency")
 	}
 
@@ -198,12 +204,15 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		if desiredPb.Edition != pb.Edition_ENTERPRISE_PLUS {
 			return fmt.Errorf("updating Reservation %s: %s", a.id.String(), "secondaryLocation is only available for ENTERPRISE_PLUS")
 		}
+		report.AddField("secondary_location", a.actual.SecondaryLocation, desiredPb.SecondaryLocation)
 		paths = append(paths, "secondary_location")
 	}
 
 	if desiredPb.Autoscale != nil && a.actual.Autoscale != nil && desiredPb.Autoscale.MaxSlots != a.actual.Autoscale.MaxSlots {
+		report.AddField("autoscale", a.actual.Autoscale, desiredPb.Autoscale)
 		paths = append(paths, "autoscale")
 	} else if desiredPb.Autoscale != nil && a.actual.Autoscale == nil {
+		report.AddField("autoscale", a.actual.Autoscale, desiredPb.Autoscale)
 		paths = append(paths, "autoscale")
 	}
 
@@ -218,6 +227,9 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
+
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: paths,
 	}

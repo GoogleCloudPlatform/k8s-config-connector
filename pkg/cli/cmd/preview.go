@@ -16,7 +16,6 @@ package cmd
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/preview"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/preview/options"
 	"github.com/spf13/cobra"
 )
 
@@ -28,7 +27,7 @@ const (
 )
 
 func NewPreviewCmd() *cobra.Command {
-	opts := options.NewOptions()
+	opts := preview.NewOptions()
 	cmd := &cobra.Command{
 		Use:     "preview",
 		Short:   "preview Config Connector resources",

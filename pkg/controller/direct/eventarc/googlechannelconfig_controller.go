@@ -38,6 +38,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -141,8 +142,11 @@ func (a *googleChannelConfigAdapter) Update(ctx context.Context, updateOp *direc
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 	if resource.CryptoKeyName != a.actual.CryptoKeyName {
+		report.AddField("crypto_key_name", a.actual.CryptoKeyName, resource.CryptoKeyName)
 		paths = append(paths, "crypto_key_name")
 	}
 
@@ -152,6 +156,7 @@ func (a *googleChannelConfigAdapter) Update(ctx context.Context, updateOp *direc
 		// even though there is no update, we still want to update KRM status
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		req := &pb.UpdateGoogleChannelConfigRequest{
 			GoogleChannelConfig: resource,

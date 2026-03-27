@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/bigquery/datatransfer/apiv1"
 	bigquerydatatransferpb "cloud.google.com/go/bigquery/datatransfer/apiv1/datatransferpb"
@@ -297,41 +298,51 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 
 	// Find diff
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(desired.DataRefreshWindowDays, actual.DataRefreshWindowDays) {
+		report.AddField("data_refresh_window_days", actual.DataRefreshWindowDays, desired.DataRefreshWindowDays)
 		resource.DataRefreshWindowDays = desired.DataRefreshWindowDays
 		updateMask.Paths = append(updateMask.Paths, "data_refresh_window_days")
 	}
 	if !reflect.DeepEqual(desired.Disabled, actual.Disabled) {
+		report.AddField("disabled", actual.Disabled, desired.Disabled)
 		resource.Disabled = desired.Disabled
 		updateMask.Paths = append(updateMask.Paths, "disabled")
 	}
 	if !reflect.DeepEqual(desired.DisplayName, actual.DisplayName) {
+		report.AddField("display_name", actual.DisplayName, desired.DisplayName)
 		resource.DisplayName = desired.DisplayName
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
 	if desired.EmailPreferences != nil && !reflect.DeepEqual(desired.EmailPreferences, actual.EmailPreferences) {
+		report.AddField("email_preferences", actual.EmailPreferences, desired.EmailPreferences)
 		resource.EmailPreferences = desired.EmailPreferences
 		updateMask.Paths = append(updateMask.Paths, "email_preferences")
 	}
 	if desired.EncryptionConfiguration != nil && !reflect.DeepEqual(desired.EncryptionConfiguration, actual.EncryptionConfiguration) {
+		report.AddField("encryption_configuration", actual.EncryptionConfiguration, desired.EncryptionConfiguration)
 		resource.EncryptionConfiguration = desired.EncryptionConfiguration
 		updateMask.Paths = append(updateMask.Paths, "encryption_configuration")
 	}
 	if !reflect.DeepEqual(desired.NotificationPubsubTopic, actual.NotificationPubsubTopic) {
+		report.AddField("notification_pubsub_topic", actual.NotificationPubsubTopic, desired.NotificationPubsubTopic)
 		resource.NotificationPubsubTopic = desired.NotificationPubsubTopic
 		updateMask.Paths = append(updateMask.Paths, "notification_pubsub_topic")
 	}
 	if desired.Params != nil && !reflect.DeepEqual(desired.Params, actual.Params) {
 		// TODO: sensitive fields maybe masked by the service, leading to constant diff.
+		report.AddField("params", actual.Params, desired.Params)
 		resource.Params = desired.Params
 		updateMask.Paths = append(updateMask.Paths, "params")
 	}
 	if !reflect.DeepEqual(desired.Schedule, actual.Schedule) {
+		report.AddField("schedule", actual.Schedule, desired.Schedule)
 		resource.Schedule = desired.Schedule
 		updateMask.Paths = append(updateMask.Paths, "schedule")
 	}
 	if desired.ScheduleOptions != nil && !reflect.DeepEqual(desired.ScheduleOptions, actual.ScheduleOptions) {
+		report.AddField("schedule_options", actual.ScheduleOptions, desired.ScheduleOptions)
 		resource.ScheduleOptions = desired.ScheduleOptions
 		updateMask.Paths = append(updateMask.Paths, "schedule_options")
 	}
@@ -339,6 +350,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if len(updateMask.Paths) == 0 {
 		return nil
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
 
 	resource.Name = a.id.FullyQualifiedName() // need to pass service generated ID to GCP API to identify the GCP resource
 	req := &bigquerydatatransferpb.UpdateTransferConfigRequest{

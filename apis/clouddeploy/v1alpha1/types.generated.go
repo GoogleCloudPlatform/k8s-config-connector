@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,10 +17,30 @@
 // krm.group: clouddeploy.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.deploy.v1
-// resource: DeployCustomTargetType:CustomTargetType
+// resource: CloudDeployCustomTargetType:CustomTargetType
 // resource: CloudDeployDeployPolicy:DeployPolicy
+// resource: CloudDeployTarget:Target
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.deploy.v1.AssociatedEntities
+type AssociatedEntities struct {
+	// Optional. Information specifying GKE clusters as associated entities.
+	// +kcc:proto:field=google.cloud.deploy.v1.AssociatedEntities.gke_clusters
+	GKEClusters []GKECluster `json:"gkeClusters,omitempty"`
+
+	// Optional. Information specifying Anthos clusters as associated entities.
+	// +kcc:proto:field=google.cloud.deploy.v1.AssociatedEntities.anthos_clusters
+	AnthosClusters []AnthosCluster `json:"anthosClusters,omitempty"`
+}
+
+// +kcc:proto=google.cloud.deploy.v1.CloudRunLocation
+type CloudRunLocation struct {
+	// Required. The location for the Cloud Run Service. Format must be
+	//  `projects/{project}/locations/{location}`.
+	// +kcc:proto:field=google.cloud.deploy.v1.CloudRunLocation.location
+	Location *string `json:"location,omitempty"`
+}
 
 // +kcc:proto=google.cloud.deploy.v1.CustomTargetSkaffoldActions
 type CustomTargetSkaffoldActions struct {

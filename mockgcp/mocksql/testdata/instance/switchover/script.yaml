@@ -1,0 +1,51 @@
+- exec: |
+    gcloud sql instances create west-${uniqueId} \
+      --region=us-west1 \
+      --database-version=MYSQL_8_4 \
+      --tier=db-c4a-highmem-2 \
+      --availability-type=REGIONAL \
+      --edition="ENTERPRISE_PLUS"
+
+# Create a replica to satisfy DR replica requirements
+- exec: |
+    gcloud sql instances create east-${uniqueId} \
+      --master-instance-name=west-${uniqueId} \
+      --region=us-east1 \
+      --database-version=MYSQL_8_4 \
+      --tier=db-c4a-highmem-2 \
+      --availability-type=REGIONAL \
+      --edition="ENTERPRISE_PLUS"
+
+# See state of instances: west is primary; east is replica
+- exec: gcloud sql instances describe west-${uniqueId}
+- exec: gcloud sql instances describe east-${uniqueId}
+
+# Designate the DR replica for the primary instance
+- exec: |
+    gcloud sql instances patch west-${uniqueId} \
+      --failover-dr-replica-name=east-${uniqueId}
+
+# See state of instances: west is primary; east is (failover) replica
+- exec: gcloud sql instances describe west-${uniqueId}
+- exec: gcloud sql instances describe east-${uniqueId}
+
+# Switchover so that east becomes the primary instance and west becomes the replica
+- exec: gcloud sql instances switchover east-${uniqueId} --quiet
+- exec: sleep 60 # Wait for switchover to complete before describing instances
+
+# See state of instances: west is replica; east is now primary
+- exec: gcloud sql instances describe west-${uniqueId}
+- exec: gcloud sql instances describe east-${uniqueId}
+
+# Perform switchover back to the original primary instance
+- exec: gcloud sql instances switchover west-${uniqueId} --quiet
+- exec: sleep 60 # Wait for switchover to complete before describing instances
+
+# See state of instances: west is primary; east is replica
+- exec: gcloud sql instances describe west-${uniqueId}
+- exec: gcloud sql instances describe east-${uniqueId}
+
+# Clean up - note that we must delete the replica before the primary instance
+- exec: sleep 60 # Wait for replication to resume after switchover before deleting replica
+- exec: gcloud sql instances delete east-${uniqueId} --quiet
+- exec: gcloud sql instances delete west-${uniqueId} --quiet

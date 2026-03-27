@@ -608,7 +608,8 @@ X-Xss-Protection: 0
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-02/regions/us-west2",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-02/regions/us-west2/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY"
+  "stackType": "IPV4_ONLY",
+  "state": "READY"
 }
 
 ---
@@ -835,7 +836,8 @@ X-Xss-Protection: 0
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-02/regions/us-west2",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-02/regions/us-west2/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY"
+  "stackType": "IPV4_ONLY",
+  "state": "READY"
 }
 
 ---

@@ -125,7 +125,6 @@ X-Xss-Protection: 0
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "",
-  "enableCDN": false,
   "fingerprint": "abcdef0123A=",
   "iap": {
     "enabled": false,
@@ -138,7 +137,8 @@ X-Xss-Protection: 0
   "name": "${backendServiceID}",
   "protocol": "GRPC",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
-  "sessionAffinity": "NONE"
+  "sessionAffinity": "NONE",
+  "timeoutSec": 30
 }
 
 ---
@@ -493,7 +493,6 @@ X-Xss-Protection: 0
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "",
-  "enableCDN": false,
   "fingerprint": "abcdef0123A=",
   "iap": {
     "enabled": false,
@@ -506,7 +505,8 @@ X-Xss-Protection: 0
   "name": "${backendServiceID}",
   "protocol": "GRPC",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
-  "sessionAffinity": "NONE"
+  "sessionAffinity": "NONE",
+  "timeoutSec": 30
 }
 
 ---

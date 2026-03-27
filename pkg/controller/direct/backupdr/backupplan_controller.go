@@ -31,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/backupdr/apiv1"
 	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
@@ -170,21 +171,28 @@ func (a *BackupPlanAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating BackupPlan", "name", a.id)
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 	if !reflect.DeepEqual(a.desired.Description, a.actual.Description) {
+		report.AddField("description", a.actual.Description, a.desired.Description)
 		paths = append(paths, "description")
 	}
 	if !reflect.DeepEqual(a.desired.BackupRules, a.actual.BackupRules) {
+		report.AddField("backup_rules", a.actual.BackupRules, a.desired.BackupRules)
 		paths = append(paths, "backup_rules")
 	}
 	if !reflect.DeepEqual(a.desired.ResourceType, a.actual.ResourceType) {
+		report.AddField("resource_type", a.actual.ResourceType, a.desired.ResourceType)
 		paths = append(paths, "resource_type")
 	}
 	if !reflect.DeepEqual(a.desired.Labels, a.actual.Labels) {
+		report.AddField("labels", a.actual.Labels, a.desired.Labels)
 		paths = append(paths, "labels")
 	}
 
 	if len(paths) != 0 {
+		structuredreporting.ReportDiff(ctx, report)
 		return fmt.Errorf("updating BackupPlan is not supported, fields: %v", paths)
 	}
 
