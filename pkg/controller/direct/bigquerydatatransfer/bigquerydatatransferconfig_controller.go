@@ -227,8 +227,6 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	u := createOp.GetUnstructured()
-
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating BigQueryDataTransferConfig", "name", a.id.FullyQualifiedName())
 	mapCtx := &direct.MapContext{}
@@ -270,7 +268,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	a.id.transferConfigID = serviceGeneratedID
 	status.ExternalRef = a.id.AsExternalRef()
 
-	return setStatus(u, status)
+	return createOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
@@ -372,7 +370,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	return setStatus(u, status)
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
@@ -414,22 +412,4 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log.V(2).Info("successfully deleted BigQueryDataTransferConfig", "name", a.id.FullyQualifiedName())
 
 	return true, nil
-}
-
-func setStatus(u *unstructured.Unstructured, typedStatus any) error {
-	status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
-	if err != nil {
-		return fmt.Errorf("error converting status to unstructured: %w", err)
-	}
-
-	old, _, _ := unstructured.NestedMap(u.Object, "status")
-	if old != nil {
-		status["conditions"] = old["conditions"]
-		status["observedGeneration"] = old["observedGeneration"]
-		status["externalRef"] = old["externalRef"]
-	}
-
-	u.Object["status"] = status
-
-	return nil
 }
