@@ -105,6 +105,9 @@ func NetworkManagementConnectivityTestFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].deliver.google_service_type")
 	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].deliver.google_service_type")
 
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].hybrid_subnet.uri")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].hybrid_subnet.uri")
+
 	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].vpn_gateway.vpn_tunnel_uri")
 	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].vpn_gateway.vpn_tunnel_uri")
 

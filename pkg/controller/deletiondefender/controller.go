@@ -49,7 +49,11 @@ type Reconciler struct {
 	logger    logr.Logger
 }
 
-func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) error {
+func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, opt controller.Options) error {
+	if opt.MaxConcurrentReconciles == 0 {
+		opt.MaxConcurrentReconciles = k8s.ControllerMaxConcurrentReconciles
+	}
+
 	kind := crd.Spec.Names.Kind
 	apiVersion := k8s.GetAPIVersionFromCRD(crd)
 	controllerName := fmt.Sprintf("%v-deletion-defender-controller", strings.ToLower(kind))
@@ -66,7 +70,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) error
 	_, err = builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
-		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles}).
+		WithOptions(opt).
 		For(obj, builder.OnlyMetadata).
 		Build(r)
 	if err != nil {

@@ -89,7 +89,8 @@ func TestApplyMultiClusterLeaderElection(t *testing.T) {
 					foundStatefulSet = true
 
 					// Check args
-					foundArg := false
+					foundLeaderElectionArg := false
+					foundSyncerArg := false
 					err := item.MutateContainers(func(container map[string]interface{}) error {
 						name, _, _ := unstructured.NestedString(container, "name")
 						if name != "manager" {
@@ -98,7 +99,10 @@ func TestApplyMultiClusterLeaderElection(t *testing.T) {
 						args, _, _ := unstructured.NestedStringSlice(container, "args")
 						for _, arg := range args {
 							if arg == "--leader-election-type=multicluster" {
-								foundArg = true
+								foundLeaderElectionArg = true
+							}
+							if arg == "--syncing-mode=pull" {
+								foundSyncerArg = true
 							}
 						}
 						return nil
@@ -107,11 +111,21 @@ func TestApplyMultiClusterLeaderElection(t *testing.T) {
 						t.Fatalf("MutateContainers failed: %v", err)
 					}
 
-					if tc.expectEnabled && !foundArg {
-						t.Errorf("expected --leader-election-type=multicluster arg, but not found")
+					if tc.expectEnabled {
+						if !foundLeaderElectionArg {
+							t.Errorf("expected --leader-election-type=multicluster arg, but not found")
+						}
+						if !foundSyncerArg {
+							t.Errorf("expected --syncing-mode=pull arg, but not found")
+						}
 					}
-					if !tc.expectEnabled && foundArg {
-						t.Errorf("did not expect --leader-election-type=multicluster arg, but found")
+					if !tc.expectEnabled {
+						if foundLeaderElectionArg {
+							t.Errorf("did not expect --leader-election-type=multicluster arg, but found")
+						}
+						if foundSyncerArg {
+							t.Errorf("did not expect --syncing-mode=pull arg, but found")
+						}
 					}
 
 					// Check annotation

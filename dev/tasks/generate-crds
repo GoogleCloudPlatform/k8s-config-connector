@@ -91,4 +91,5 @@ go run ./scripts/generate-gvks/main.go -output-dir=pkg/gvks/supportedgvks
 go run ./scripts/generate-cnrm-cluster-roles/main.go
 
 # controller-gen sometimes leaves empty imports in the api files.
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w apis
+source "${REPO_ROOT}/dev/tools/goimports.sh"
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w apis

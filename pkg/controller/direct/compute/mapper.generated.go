@@ -27,6 +27,116 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AcceleratorConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AcceleratorConfig) *krm.AcceleratorConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AcceleratorConfig{}
+	out.AcceleratorCount = in.AcceleratorCount
+	out.AcceleratorType = in.AcceleratorType
+	return out
+}
+func AcceleratorConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AcceleratorConfig) *pb.AcceleratorConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AcceleratorConfig{}
+	out.AcceleratorCount = in.AcceleratorCount
+	out.AcceleratorType = in.AcceleratorType
+	return out
+}
+func ComputeNodeTemplateSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeTemplate) *krm.ComputeNodeTemplateSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeNodeTemplateSpec{}
+	// MISSING: Accelerators
+	out.CPUOvercommitType = in.CpuOvercommitType
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: Disks
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: NodeAffinityLabels
+	out.NodeType = in.NodeType
+	out.NodeTypeFlexibility = NodeTemplateNodeTypeFlexibility_v1beta1_FromProto(mapCtx, in.GetNodeTypeFlexibility())
+	out.Region = in.Region
+	// MISSING: SelfLink
+	out.ServerBinding = NodeTemplateServerBinding_v1beta1_FromProto(mapCtx, in.GetServerBinding())
+	// MISSING: Status
+	// MISSING: StatusMessage
+	return out
+}
+func ComputeNodeTemplateSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNodeTemplateSpec) *pb.NodeTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodeTemplate{}
+	// MISSING: Accelerators
+	out.CpuOvercommitType = in.CPUOvercommitType
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: Disks
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: NodeAffinityLabels
+	out.NodeType = in.NodeType
+	out.NodeTypeFlexibility = NodeTemplateNodeTypeFlexibility_v1beta1_ToProto(mapCtx, in.NodeTypeFlexibility)
+	out.Region = in.Region
+	// MISSING: SelfLink
+	out.ServerBinding = NodeTemplateServerBinding_v1beta1_ToProto(mapCtx, in.ServerBinding)
+	// MISSING: Status
+	// MISSING: StatusMessage
+	return out
+}
+func ComputeNodeTemplateStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeTemplate) *krm.ComputeNodeTemplateStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeNodeTemplateStatus{}
+	// MISSING: Accelerators
+	// MISSING: CPUOvercommitType
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: Disks
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: NodeAffinityLabels
+	// MISSING: NodeType
+	// MISSING: NodeTypeFlexibility
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: ServerBinding
+	// MISSING: Status
+	// MISSING: StatusMessage
+	return out
+}
+func ComputeNodeTemplateStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNodeTemplateStatus) *pb.NodeTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodeTemplate{}
+	// MISSING: Accelerators
+	// MISSING: CPUOvercommitType
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: Disks
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: NodeAffinityLabels
+	// MISSING: NodeType
+	// MISSING: NodeTypeFlexibility
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: ServerBinding
+	// MISSING: Status
+	// MISSING: StatusMessage
+	return out
+}
 func ComputeSecurityPolicyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicy) *krm.ComputeSecurityPolicyObservedState {
 	if in == nil {
 		return nil
@@ -453,6 +563,26 @@ func InterconnectOutageNotification_v1alpha1_ToProto(mapCtx *direct.MapContext, 
 	out.State = in.State
 	return out
 }
+func LocalDisk_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.LocalDisk) *krm.LocalDisk {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LocalDisk{}
+	out.DiskCount = in.DiskCount
+	out.DiskSizeGB = in.DiskSizeGb
+	out.DiskType = in.DiskType
+	return out
+}
+func LocalDisk_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.LocalDisk) *pb.LocalDisk {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LocalDisk{}
+	out.DiskCount = in.DiskCount
+	out.DiskSizeGb = in.DiskSizeGB
+	out.DiskType = in.DiskType
+	return out
+}
 func MetadataFilter_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFilter) *krm.MetadataFilter {
 	if in == nil {
 		return nil
@@ -515,6 +645,116 @@ func NetworkAttachmentConnectedEndpoint_v1alpha1_ToProto(mapCtx *direct.MapConte
 	out.Status = in.Status
 	out.Subnetwork = in.Subnetwork
 	out.SubnetworkCidrRange = in.SubnetworkCIDRRange
+	return out
+}
+func NodeTemplateNodeTypeFlexibility_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeTemplateNodeTypeFlexibility) *krm.NodeTemplateNodeTypeFlexibility {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodeTemplateNodeTypeFlexibility{}
+	out.Cpus = in.Cpus
+	out.LocalSsd = in.LocalSsd
+	out.Memory = in.Memory
+	return out
+}
+func NodeTemplateNodeTypeFlexibility_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NodeTemplateNodeTypeFlexibility) *pb.NodeTemplateNodeTypeFlexibility {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodeTemplateNodeTypeFlexibility{}
+	out.Cpus = in.Cpus
+	out.LocalSsd = in.LocalSsd
+	out.Memory = in.Memory
+	return out
+}
+func NodeTemplateServerBinding_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ServerBinding) *krm.NodeTemplateServerBinding {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodeTemplateServerBinding{}
+	out.Type = in.Type
+	return out
+}
+func NodeTemplateServerBinding_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NodeTemplateServerBinding) *pb.ServerBinding {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServerBinding{}
+	out.Type = in.Type
+	return out
+}
+func ResourcePolicyResourceStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ResourcePolicyResourceStatus) *krm.ResourcePolicyResourceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourcePolicyResourceStatus{}
+	out.InstanceSchedulePolicy = ResourcePolicyResourceStatusInstanceSchedulePolicyStatus_v1beta1_FromProto(mapCtx, in.GetInstanceSchedulePolicy())
+	return out
+}
+func ResourcePolicyResourceStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ResourcePolicyResourceStatus) *pb.ResourcePolicyResourceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcePolicyResourceStatus{}
+	out.InstanceSchedulePolicy = ResourcePolicyResourceStatusInstanceSchedulePolicyStatus_v1beta1_ToProto(mapCtx, in.InstanceSchedulePolicy)
+	return out
+}
+func ResourcePolicyResourceStatusInstanceSchedulePolicyStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus) *krm.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus{}
+	out.LastRunStartTime = in.LastRunStartTime
+	out.NextRunStartTime = in.NextRunStartTime
+	return out
+}
+func ResourcePolicyResourceStatusInstanceSchedulePolicyStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus) *pb.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus{}
+	out.LastRunStartTime = in.LastRunStartTime
+	out.NextRunStartTime = in.NextRunStartTime
+	return out
+}
+func ResourcePolicySnapshotSchedulePolicyScheduleWeeklyScheduleDayOfWeek_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ResourcePolicyWeeklyCycleDayOfWeek) *krm.ResourcePolicySnapshotSchedulePolicyScheduleWeeklyScheduleDayOfWeek {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourcePolicySnapshotSchedulePolicyScheduleWeeklyScheduleDayOfWeek{}
+	out.Day = in.Day
+	// MISSING: Duration
+	out.StartTime = in.StartTime
+	return out
+}
+func ResourcePolicySnapshotSchedulePolicyScheduleWeeklyScheduleDayOfWeek_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ResourcePolicySnapshotSchedulePolicyScheduleWeeklyScheduleDayOfWeek) *pb.ResourcePolicyWeeklyCycleDayOfWeek {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcePolicyWeeklyCycleDayOfWeek{}
+	out.Day = in.Day
+	// MISSING: Duration
+	out.StartTime = in.StartTime
+	return out
+}
+func ResourcePolicyWorkloadPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ResourcePolicyWorkloadPolicy) *krm.ResourcePolicyWorkloadPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourcePolicyWorkloadPolicy{}
+	out.AcceleratorTopology = in.AcceleratorTopology
+	out.MaxTopologyDistance = in.MaxTopologyDistance
+	out.Type = in.Type
+	return out
+}
+func ResourcePolicyWorkloadPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ResourcePolicyWorkloadPolicy) *pb.ResourcePolicyWorkloadPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcePolicyWorkloadPolicy{}
+	out.AcceleratorTopology = in.AcceleratorTopology
+	out.MaxTopologyDistance = in.MaxTopologyDistance
+	out.Type = in.Type
 	return out
 }
 func SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig) *krm.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig {

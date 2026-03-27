@@ -31,8 +31,9 @@ import (
 
 type ClouddeployV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	CloudDeployCustomTargetTypesGetter
 	CloudDeployDeployPoliciesGetter
-	DeployCustomTargetTypesGetter
+	CloudDeployTargetsGetter
 }
 
 // ClouddeployV1alpha1Client is used to interact with features provided by the clouddeploy.cnrm.cloud.google.com group.
@@ -40,12 +41,16 @@ type ClouddeployV1alpha1Client struct {
 	restClient rest.Interface
 }
 
+func (c *ClouddeployV1alpha1Client) CloudDeployCustomTargetTypes(namespace string) CloudDeployCustomTargetTypeInterface {
+	return newCloudDeployCustomTargetTypes(c, namespace)
+}
+
 func (c *ClouddeployV1alpha1Client) CloudDeployDeployPolicies(namespace string) CloudDeployDeployPolicyInterface {
 	return newCloudDeployDeployPolicies(c, namespace)
 }
 
-func (c *ClouddeployV1alpha1Client) DeployCustomTargetTypes(namespace string) DeployCustomTargetTypeInterface {
-	return newDeployCustomTargetTypes(c, namespace)
+func (c *ClouddeployV1alpha1Client) CloudDeployTargets(namespace string) CloudDeployTargetInterface {
+	return newCloudDeployTargets(c, namespace)
 }
 
 // NewForConfig creates a new ClouddeployV1alpha1Client for the given config.

@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/privilegedaccessmanager/apiv1"
 	privilegedaccessmanagerpb "cloud.google.com/go/privilegedaccessmanager/apiv1/privilegedaccessmanagerpb"
@@ -310,6 +311,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	updateMask := &fieldmaskpb.FieldMask{}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	parsedActual := PrivilegedAccessManagerEntitlementSpec_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return fmt.Errorf("error generating update mask: %w", mapCtx.Err())
@@ -319,6 +322,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	sortPrincipalsInSpec(&parsedDesired.Spec)
 
 	if !reflect.DeepEqual(parsedActual.AdditionalNotificationTargets, parsedDesired.Spec.AdditionalNotificationTargets) {
+		report.AddField("additional_notification_targets", parsedActual.AdditionalNotificationTargets, parsedDesired.Spec.AdditionalNotificationTargets)
 		log.V(2).Info("'spec.additionalNotificationTargets' field is updated (-old +new)", cmp.Diff(parsedActual.AdditionalNotificationTargets, parsedDesired.Spec.AdditionalNotificationTargets))
 		updateMask.Paths = append(updateMask.Paths, "additional_notification_targets")
 	}
@@ -330,23 +334,28 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if !(isApprovalWorkflowManualApprovalsRequireApproverJustificationUnset(&parsedDesired.Spec) &&
 		isApprovalWorkflowManualApprovalsRequireApproverJustificationSetToFalse(parsedActual)) {
 		if !reflect.DeepEqual(parsedActual.ApprovalWorkflow, parsedDesired.Spec.ApprovalWorkflow) {
+			report.AddField("approval_workflow", parsedActual.ApprovalWorkflow, parsedDesired.Spec.ApprovalWorkflow)
 			log.V(2).Info("'spec.approvalWorkflow' field is updated (-old +new)", cmp.Diff(parsedActual.ApprovalWorkflow, parsedDesired.Spec.ApprovalWorkflow))
 			updateMask.Paths = append(updateMask.Paths, "approval_workflow")
 		}
 	}
 	if !reflect.DeepEqual(parsedActual.EligibleUsers, parsedDesired.Spec.EligibleUsers) {
+		report.AddField("eligible_users", parsedActual.EligibleUsers, parsedDesired.Spec.EligibleUsers)
 		log.V(2).Info("'spec.eligibleUsers' field is updated (-old +new)", cmp.Diff(parsedActual.EligibleUsers, parsedDesired.Spec.EligibleUsers))
 		updateMask.Paths = append(updateMask.Paths, "eligible_users")
 	}
 	if !reflect.DeepEqual(a.actual.MaxRequestDuration.AsDuration(), direct.StringDuration_ToProto(mapCtx, parsedDesired.Spec.MaxRequestDuration).AsDuration()) {
+		report.AddField("max_request_duration.as_duration", a.actual.MaxRequestDuration.AsDuration(), direct.StringDuration_ToProto(mapCtx, parsedDesired.Spec.MaxRequestDuration).AsDuration())
 		log.V(2).Info("'spec.maxRequestDuration' field is updated (-old +new)", cmp.Diff(a.actual.MaxRequestDuration.AsDuration(), direct.StringDuration_ToProto(mapCtx, parsedDesired.Spec.MaxRequestDuration).AsDuration()))
 		updateMask.Paths = append(updateMask.Paths, "max_request_duration")
 	}
 	if !reflect.DeepEqual(parsedActual.PrivilegedAccess, parsedDesired.Spec.PrivilegedAccess) {
+		report.AddField("privileged_access", parsedActual.PrivilegedAccess, parsedDesired.Spec.PrivilegedAccess)
 		log.V(2).Info("'spec.privilegedAccess' field is updated (-old +new)", cmp.Diff(parsedActual.PrivilegedAccess, parsedDesired.Spec.PrivilegedAccess))
 		updateMask.Paths = append(updateMask.Paths, "privileged_access")
 	}
 	if !reflect.DeepEqual(parsedActual.RequesterJustificationConfig, parsedDesired.Spec.RequesterJustificationConfig) {
+		report.AddField("requester_justification_config", parsedActual.RequesterJustificationConfig, parsedDesired.Spec.RequesterJustificationConfig)
 		log.V(2).Info("'spec.requesterJustificationConfig' field is updated (-old +new)", cmp.Diff(parsedActual.RequesterJustificationConfig, parsedDesired.Spec.RequesterJustificationConfig))
 		updateMask.Paths = append(updateMask.Paths, "requester_justification_config")
 	}
@@ -362,6 +371,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		status.ExternalRef = a.id.AsExternalRef()
 		return setStatus(u, status)
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
 
 	desired := a.desired.DeepCopy()
 	resourceType, resource, err := getResourceTypeAndResourceFromContainer(a.id.Parent.Container)

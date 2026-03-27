@@ -1,4 +1,5 @@
 GOOGLEAPI_VERSION?=$(shell grep https://github.com/googleapis/googleapis ../../apis/git.versions | awk '{print $$2}' )
+GOLANG_X_TOOLS_VERSION?=$(shell grep -E '^\s*golang.org/x/tools\s+' ../../go.mod | awk '{print $$2}')
 
 .PHONY: generate-grpc-for-google-protos
 generate-grpc-for-google-protos: tools
@@ -24,7 +25,7 @@ generate-grpc-for-google-protos: tools
 		--go-grpc_opt paths=source_relative \
 		./.build/googleapis/google/cloud/sql/v1beta4/*.proto
 
-	go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w generated
+	go run -mod=readonly golang.org/x/tools/cmd/goimports@$(GOLANG_X_TOOLS_VERSION) -w generated
 
 .PHONY: tools
 tools:

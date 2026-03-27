@@ -21,12 +21,6 @@ metadata:
   labels: (removed)
   name: accesscontextmanagerserviceperimeterresources.accesscontextmanager.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -35,12 +29,6 @@ metadata:
   labels: (removed)
   name: accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -73,12 +61,6 @@ metadata:
   labels: (removed)
   name: alloydbusers.alloydb.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -271,12 +253,6 @@ metadata:
   labels: (removed)
   name: bigqueryjobs.bigquery.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -301,12 +277,6 @@ metadata:
   labels: (removed)
   name: bigqueryroutines.bigquery.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -331,12 +301,6 @@ metadata:
   labels: (removed)
   name: bigtablegcpolicies.bigtable.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -361,12 +325,6 @@ metadata:
   labels: (removed)
   name: billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -375,12 +333,6 @@ metadata:
   labels: (removed)
   name: binaryauthorizationattestors.binaryauthorization.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -389,12 +341,6 @@ metadata:
   labels: (removed)
   name: binaryauthorizationpolicies.binaryauthorization.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -403,12 +349,6 @@ metadata:
   labels: (removed)
   name: certificatemanagercertificatemapentries.certificatemanager.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -417,12 +357,6 @@ metadata:
   labels: (removed)
   name: certificatemanagercertificatemaps.certificatemanager.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -431,12 +365,6 @@ metadata:
   labels: (removed)
   name: certificatemanagercertificates.certificatemanager.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -453,12 +381,6 @@ metadata:
   labels: (removed)
   name: cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -483,12 +405,6 @@ metadata:
   labels: (removed)
   name: cloudfunctionsfunctions.cloudfunctions.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -513,12 +429,6 @@ metadata:
   labels: (removed)
   name: cloudidsendpoints.cloudids.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -527,12 +437,6 @@ metadata:
   labels: (removed)
   name: cloudschedulerjobs.cloudscheduler.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -549,12 +453,6 @@ metadata:
   labels: (removed)
   name: computeaddresses.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -563,12 +461,6 @@ metadata:
   labels: (removed)
   name: computebackendbuckets.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -577,12 +469,6 @@ metadata:
   labels: (removed)
   name: computebackendservices.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -591,12 +477,6 @@ metadata:
   labels: (removed)
   name: computedisks.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -605,12 +485,6 @@ metadata:
   labels: (removed)
   name: computeexternalvpngateways.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -619,12 +493,6 @@ metadata:
   labels: (removed)
   name: computefirewallpolicies.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -633,12 +501,6 @@ metadata:
   labels: (removed)
   name: computefirewallpolicyassociations.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -655,12 +517,6 @@ metadata:
   labels: (removed)
   name: computefirewalls.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -677,12 +533,6 @@ metadata:
   labels: (removed)
   name: computehealthchecks.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -691,12 +541,6 @@ metadata:
   labels: (removed)
   name: computehttphealthchecks.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -705,12 +549,6 @@ metadata:
   labels: (removed)
   name: computehttpshealthchecks.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -719,12 +557,6 @@ metadata:
   labels: (removed)
   name: computeimages.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -733,12 +565,6 @@ metadata:
   labels: (removed)
   name: computeinstancegroupmanagers.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -747,12 +573,6 @@ metadata:
   labels: (removed)
   name: computeinstancegroups.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -761,12 +581,6 @@ metadata:
   labels: (removed)
   name: computeinstances.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -775,12 +589,6 @@ metadata:
   labels: (removed)
   name: computeinstancetemplates.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -789,12 +597,6 @@ metadata:
   labels: (removed)
   name: computeinterconnectattachments.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -803,12 +605,6 @@ metadata:
   labels: (removed)
   name: computemanagedsslcertificates.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -817,12 +613,6 @@ metadata:
   labels: (removed)
   name: computenetworkendpointgroups.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -831,12 +621,6 @@ metadata:
   labels: (removed)
   name: computenetworkfirewallpolicies.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -845,12 +629,6 @@ metadata:
   labels: (removed)
   name: computenetworkfirewallpolicyassociations.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -859,12 +637,6 @@ metadata:
   labels: (removed)
   name: computenetworkpeerings.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -873,12 +645,6 @@ metadata:
   labels: (removed)
   name: computenetworks.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -887,12 +653,6 @@ metadata:
   labels: (removed)
   name: computenodegroups.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -901,12 +661,6 @@ metadata:
   labels: (removed)
   name: computenodetemplates.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -915,12 +669,6 @@ metadata:
   labels: (removed)
   name: computepacketmirrorings.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -929,12 +677,6 @@ metadata:
   labels: (removed)
   name: computeprojectmetadatas.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -943,12 +685,6 @@ metadata:
   labels: (removed)
   name: computeregionnetworkendpointgroups.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -957,12 +693,6 @@ metadata:
   labels: (removed)
   name: computereservations.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -971,12 +701,6 @@ metadata:
   labels: (removed)
   name: computeresourcepolicies.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -985,12 +709,6 @@ metadata:
   labels: (removed)
   name: computerouterinterfaces.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -999,12 +717,6 @@ metadata:
   labels: (removed)
   name: computerouternats.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1013,12 +725,6 @@ metadata:
   labels: (removed)
   name: computerouterpeers.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1027,12 +733,6 @@ metadata:
   labels: (removed)
   name: computerouters.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1041,12 +741,6 @@ metadata:
   labels: (removed)
   name: computeroutes.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1063,12 +757,6 @@ metadata:
   labels: (removed)
   name: computeserviceattachments.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1077,12 +765,6 @@ metadata:
   labels: (removed)
   name: computesharedvpchostprojects.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1091,12 +773,6 @@ metadata:
   labels: (removed)
   name: computesharedvpcserviceprojects.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1105,12 +781,6 @@ metadata:
   labels: (removed)
   name: computesnapshots.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1119,12 +789,6 @@ metadata:
   labels: (removed)
   name: computesslcertificates.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1133,12 +797,6 @@ metadata:
   labels: (removed)
   name: computesslpolicies.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1155,12 +813,6 @@ metadata:
   labels: (removed)
   name: computetargetgrpcproxies.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1169,12 +821,6 @@ metadata:
   labels: (removed)
   name: computetargethttpproxies.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1183,12 +829,6 @@ metadata:
   labels: (removed)
   name: computetargethttpsproxies.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1197,12 +837,6 @@ metadata:
   labels: (removed)
   name: computetargetinstances.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1211,12 +845,6 @@ metadata:
   labels: (removed)
   name: computetargetpools.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1225,12 +853,6 @@ metadata:
   labels: (removed)
   name: computetargetsslproxies.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1247,12 +869,6 @@ metadata:
   labels: (removed)
   name: computetargetvpngateways.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1261,12 +877,6 @@ metadata:
   labels: (removed)
   name: computeurlmaps.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1275,12 +885,6 @@ metadata:
   labels: (removed)
   name: computevpngateways.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1289,12 +893,6 @@ metadata:
   labels: (removed)
   name: computevpntunnels.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1303,12 +901,6 @@ metadata:
   labels: (removed)
   name: configcontrollerinstances.configcontroller.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1317,12 +909,6 @@ metadata:
   labels: (removed)
   name: containeranalysisnotes.containeranalysis.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1339,12 +925,6 @@ metadata:
   labels: (removed)
   name: containerclusters.container.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1353,12 +933,6 @@ metadata:
   labels: (removed)
   name: containernodepools.container.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1391,12 +965,6 @@ metadata:
   labels: (removed)
   name: dataflowjobs.dataflow.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1413,12 +981,6 @@ metadata:
   labels: (removed)
   name: datafusioninstances.datafusion.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1427,12 +989,6 @@ metadata:
   labels: (removed)
   name: dataprocautoscalingpolicies.dataproc.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1441,12 +997,6 @@ metadata:
   labels: (removed)
   name: dataprocclusters.dataproc.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1455,12 +1005,6 @@ metadata:
   labels: (removed)
   name: dataprocworkflowtemplates.dataproc.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1469,12 +1013,6 @@ metadata:
   labels: (removed)
   name: dlpdeidentifytemplates.dlp.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1483,12 +1021,6 @@ metadata:
   labels: (removed)
   name: dlpinspecttemplates.dlp.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1497,12 +1029,6 @@ metadata:
   labels: (removed)
   name: dlpjobtriggers.dlp.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1511,12 +1037,6 @@ metadata:
   labels: (removed)
   name: dlpstoredinfotypes.dlp.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1525,12 +1045,6 @@ metadata:
   labels: (removed)
   name: dnsmanagedzones.dns.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1539,12 +1053,6 @@ metadata:
   labels: (removed)
   name: dnspolicies.dns.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1553,12 +1061,6 @@ metadata:
   labels: (removed)
   name: dnsrecordsets.dns.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1575,12 +1077,6 @@ metadata:
   labels: (removed)
   name: edgecontainerclusters.edgecontainer.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1589,12 +1085,6 @@ metadata:
   labels: (removed)
   name: edgecontainernodepools.edgecontainer.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1603,12 +1093,6 @@ metadata:
   labels: (removed)
   name: edgecontainervpnconnections.edgecontainer.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1617,12 +1101,6 @@ metadata:
   labels: (removed)
   name: edgenetworknetworks.edgenetwork.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1631,12 +1109,6 @@ metadata:
   labels: (removed)
   name: edgenetworksubnets.edgenetwork.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1653,12 +1125,6 @@ metadata:
   labels: (removed)
   name: eventarctriggers.eventarc.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1667,12 +1133,6 @@ metadata:
   labels: (removed)
   name: filestorebackups.filestore.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1681,12 +1141,6 @@ metadata:
   labels: (removed)
   name: filestoreinstances.filestore.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1711,12 +1165,6 @@ metadata:
   labels: (removed)
   name: folders.resourcemanager.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1733,12 +1181,6 @@ metadata:
   labels: (removed)
   name: gkehubfeatures.gkehub.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1747,12 +1189,6 @@ metadata:
   labels: (removed)
   name: gkehubmemberships.gkehub.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1761,12 +1197,6 @@ metadata:
   labels: (removed)
   name: iamaccessboundarypolicies.iam.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1783,12 +1213,6 @@ metadata:
   labels: (removed)
   name: iamcustomroles.iam.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1829,12 +1253,6 @@ metadata:
   labels: (removed)
   name: iamserviceaccounts.iam.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1843,12 +1261,6 @@ metadata:
   labels: (removed)
   name: iamworkforcepoolproviders.iam.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1857,12 +1269,6 @@ metadata:
   labels: (removed)
   name: iamworkforcepools.iam.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1871,12 +1277,6 @@ metadata:
   labels: (removed)
   name: iamworkloadidentitypoolproviders.iam.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1885,12 +1285,6 @@ metadata:
   labels: (removed)
   name: iamworkloadidentitypools.iam.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1899,12 +1293,6 @@ metadata:
   labels: (removed)
   name: iapbrands.iap.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1913,12 +1301,6 @@ metadata:
   labels: (removed)
   name: iapidentityawareproxyclients.iap.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1935,12 +1317,6 @@ metadata:
   labels: (removed)
   name: identityplatformconfigs.identityplatform.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1949,12 +1325,6 @@ metadata:
   labels: (removed)
   name: identityplatformoauthidpconfigs.identityplatform.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1963,12 +1333,6 @@ metadata:
   labels: (removed)
   name: identityplatformtenantoauthidpconfigs.identityplatform.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1977,12 +1341,6 @@ metadata:
   labels: (removed)
   name: identityplatformtenants.identityplatform.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1999,12 +1357,6 @@ metadata:
   labels: (removed)
   name: kmscryptokeys.kms.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2045,12 +1397,6 @@ metadata:
   labels: (removed)
   name: logginglogbuckets.logging.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2059,12 +1405,6 @@ metadata:
   labels: (removed)
   name: logginglogexclusions.logging.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2081,12 +1421,6 @@ metadata:
   labels: (removed)
   name: logginglogsinks.logging.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2095,12 +1429,6 @@ metadata:
   labels: (removed)
   name: logginglogviews.logging.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2125,12 +1453,6 @@ metadata:
   labels: (removed)
   name: memcacheinstances.memcache.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2155,12 +1477,6 @@ metadata:
   labels: (removed)
   name: monitoringalertpolicies.monitoring.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2177,12 +1493,6 @@ metadata:
   labels: (removed)
   name: monitoringgroups.monitoring.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2191,12 +1501,6 @@ metadata:
   labels: (removed)
   name: monitoringmetricdescriptors.monitoring.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2205,12 +1509,6 @@ metadata:
   labels: (removed)
   name: monitoringmonitoredprojects.monitoring.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2227,12 +1525,6 @@ metadata:
   labels: (removed)
   name: monitoringservicelevelobjectives.monitoring.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2241,12 +1533,6 @@ metadata:
   labels: (removed)
   name: monitoringservices.monitoring.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2255,12 +1541,6 @@ metadata:
   labels: (removed)
   name: monitoringuptimecheckconfigs.monitoring.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2269,12 +1549,6 @@ metadata:
   labels: (removed)
   name: networkconnectivityhubs.networkconnectivity.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2283,12 +1557,6 @@ metadata:
   labels: (removed)
   name: networkconnectivityspokes.networkconnectivity.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2305,12 +1573,6 @@ metadata:
   labels: (removed)
   name: networksecurityclienttlspolicies.networksecurity.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2319,12 +1581,6 @@ metadata:
   labels: (removed)
   name: networksecurityservertlspolicies.networksecurity.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2333,12 +1589,6 @@ metadata:
   labels: (removed)
   name: networkservicesendpointpolicies.networkservices.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2347,12 +1597,6 @@ metadata:
   labels: (removed)
   name: networkservicesgateways.networkservices.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2361,12 +1605,6 @@ metadata:
   labels: (removed)
   name: networkservicesgrpcroutes.networkservices.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2375,12 +1613,6 @@ metadata:
   labels: (removed)
   name: networkserviceshttproutes.networkservices.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2389,12 +1621,6 @@ metadata:
   labels: (removed)
   name: networkservicesmeshes.networkservices.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2403,12 +1629,6 @@ metadata:
   labels: (removed)
   name: networkservicestcproutes.networkservices.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2417,12 +1637,6 @@ metadata:
   labels: (removed)
   name: networkservicestlsroutes.networkservices.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2447,12 +1661,6 @@ metadata:
   labels: (removed)
   name: osconfigguestpolicies.osconfig.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2461,12 +1669,6 @@ metadata:
   labels: (removed)
   name: osconfigospolicyassignments.osconfig.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2483,12 +1685,6 @@ metadata:
   labels: (removed)
   name: privatecacertificateauthorities.privateca.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2497,12 +1693,6 @@ metadata:
   labels: (removed)
   name: privatecacertificates.privateca.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2511,12 +1701,6 @@ metadata:
   labels: (removed)
   name: privatecacertificatetemplates.privateca.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2533,12 +1717,6 @@ metadata:
   labels: (removed)
   name: projects.resourcemanager.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2547,12 +1725,6 @@ metadata:
   labels: (removed)
   name: pubsublitereservations.pubsublite.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2561,12 +1733,6 @@ metadata:
   labels: (removed)
   name: pubsubschemas.pubsub.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2583,12 +1749,6 @@ metadata:
   labels: (removed)
   name: pubsubsubscriptions.pubsub.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2597,12 +1757,6 @@ metadata:
   labels: (removed)
   name: pubsubtopics.pubsub.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2611,12 +1765,6 @@ metadata:
   labels: (removed)
   name: recaptchaenterprisekeys.recaptchaenterprise.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2633,12 +1781,6 @@ metadata:
   labels: (removed)
   name: redisinstances.redis.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2647,12 +1789,6 @@ metadata:
   labels: (removed)
   name: resourcemanagerliens.resourcemanager.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2661,12 +1797,6 @@ metadata:
   labels: (removed)
   name: resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2683,12 +1813,6 @@ metadata:
   labels: (removed)
   name: runservices.run.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2729,12 +1853,6 @@ metadata:
   labels: (removed)
   name: servicedirectoryendpoints.servicedirectory.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2743,12 +1861,6 @@ metadata:
   labels: (removed)
   name: servicedirectorynamespaces.servicedirectory.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2757,12 +1869,6 @@ metadata:
   labels: (removed)
   name: servicedirectoryservices.servicedirectory.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2779,12 +1885,6 @@ metadata:
   labels: (removed)
   name: servicenetworkingconnections.servicenetworking.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2793,12 +1893,6 @@ metadata:
   labels: (removed)
   name: services.serviceusage.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2807,12 +1901,6 @@ metadata:
   labels: (removed)
   name: sourcereporepositories.sourcerepo.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2829,12 +1917,6 @@ metadata:
   labels: (removed)
   name: spannerdatabases.spanner.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2875,12 +1957,6 @@ metadata:
   labels: (removed)
   name: sqldatabases.sql.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2897,12 +1973,6 @@ metadata:
   labels: (removed)
   name: sqlsslcerts.sql.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2911,12 +1981,6 @@ metadata:
   labels: (removed)
   name: sqlusers.sql.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2933,12 +1997,6 @@ metadata:
   labels: (removed)
   name: storagebucketaccesscontrols.storage.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2947,12 +2005,6 @@ metadata:
   labels: (removed)
   name: storagebuckets.storage.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2961,12 +2013,6 @@ metadata:
   labels: (removed)
   name: storagedefaultobjectaccesscontrols.storage.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2975,12 +2021,6 @@ metadata:
   labels: (removed)
   name: storagenotifications.storage.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2989,12 +2029,6 @@ metadata:
   labels: (removed)
   name: storagetransferjobs.storagetransfer.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -3035,12 +2069,6 @@ metadata:
   labels: (removed)
   name: vertexaidatasets.vertexai.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -3049,12 +2077,6 @@ metadata:
   labels: (removed)
   name: vertexaiendpoints.vertexai.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -3063,12 +2085,6 @@ metadata:
   labels: (removed)
   name: vertexaiindexes.vertexai.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -3093,12 +2109,6 @@ metadata:
   labels: (removed)
   name: vpcaccessconnectors.vpcaccess.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
