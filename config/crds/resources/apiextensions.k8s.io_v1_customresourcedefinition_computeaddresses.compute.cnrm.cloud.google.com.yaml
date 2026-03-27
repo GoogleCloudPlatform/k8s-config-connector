@@ -71,9 +71,37 @@ spec:
               description:
                 description: Immutable. An optional description of this resource.
                 type: string
-              ipCollection:
-                description: Immutable. The IP range of the IPv6 address.
-                type: string
+              ipCollectionRef:
+                description: |-
+                  The URL of the PublicDelegatedPrefix resource to which the IP
+                  addresses in this collection belong. Note: this field can only be
+                  used with EXTERNAL type with IPV4_PD purpose.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'Allowed value: The `name` field of a `ComputePublicDelegatedPrefix`
+                      resource.'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
               ipVersion:
                 description: 'Immutable. The IP Version that will be used by this
                   address. The default value is ''IPV4''. Possible values: ["IPV4",
@@ -153,8 +181,9 @@ spec:
                   configure Private Service Connect. Only global internal addresses can use
                   this purpose.
 
+                  * IPV4_PD for a public IPv4 prefix collection.
 
-                  This should only be set when using an Internal address.
+                  This should only be set when using an Internal address, except for IPV4_PD which is used with EXTERNAL addresses.
                 type: string
               resourceID:
                 description: Immutable. Optional. The name of the resource. Used for
