@@ -23,9 +23,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 )
-
 
 type objects struct {
 	*MockService
@@ -77,6 +78,9 @@ func (s *objects) GetObject(ctx context.Context, req *pb.GetObjectRequest) (*pb.
 
 	obj := &pb.Object{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "No such object: %s/%s", req.GetBucket(), req.GetName())
+		}
 		return nil, err
 	}
 
