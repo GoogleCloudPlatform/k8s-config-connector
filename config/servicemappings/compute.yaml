@@ -2100,8 +2100,6 @@ spec:
       containers:
         - type: project
           tfField: project
-        - type: project
-          tfField: project
     - name: google_compute_router_peer
       kind: ComputeRouterPeer
       metadataMapping:
