@@ -51,7 +51,7 @@ require (
 	cloud.google.com/go/memorystore v0.4.0
 	cloud.google.com/go/metastore v1.14.8
 	cloud.google.com/go/monitoring v1.24.3
-	cloud.google.com/go/netapp v1.11.0
+	cloud.google.com/go/netapp v1.12.0
 	cloud.google.com/go/networkmanagement v1.21.0
 	cloud.google.com/go/networksecurity v0.11.0
 	cloud.google.com/go/networkservices v0.6.0
