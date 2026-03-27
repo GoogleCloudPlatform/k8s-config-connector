@@ -31,6 +31,7 @@ var (
 	}
 )
 
+// +kubebuilder:validation:XValidation:rule="!(has(self.value) && has(self.valueFrom))",message="cannot specify both value and valueFrom"
 type SQLUserPassword struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	// +optional

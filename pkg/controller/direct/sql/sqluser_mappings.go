@@ -97,15 +97,9 @@ func SQLUserPasswordPolicyGCPToKRM(in *api.UserPasswordValidationPolicy) *krm.SQ
 
 	out := &krm.SQLUserPasswordPolicy{}
 
-	if in.AllowedFailedAttempts != 0 {
-		out.AllowedFailedAttempts = direct.PtrTo(in.AllowedFailedAttempts)
-	}
-	if in.EnableFailedAttemptsCheck {
-		out.EnableFailedAttemptsCheck = direct.PtrTo(in.EnableFailedAttemptsCheck)
-	}
-	if in.EnablePasswordVerification {
-		out.EnablePasswordVerification = direct.PtrTo(in.EnablePasswordVerification)
-	}
+	out.AllowedFailedAttempts = direct.PtrTo(in.AllowedFailedAttempts)
+	out.EnableFailedAttemptsCheck = direct.PtrTo(in.EnableFailedAttemptsCheck)
+	out.EnablePasswordVerification = direct.PtrTo(in.EnablePasswordVerification)
 	if in.PasswordExpirationDuration != "" {
 		out.PasswordExpirationDuration = direct.PtrTo(in.PasswordExpirationDuration)
 	}

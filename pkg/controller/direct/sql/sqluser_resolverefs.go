@@ -17,12 +17,56 @@ package sql
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	corev1 "k8s.io/api/core/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+// resolveSQLUserPasswordRef resolves the password secret reference, if any.
+func resolveSQLUserPasswordRef(ctx context.Context, kube client.Reader, obj *krm.SQLUser) error {
+	if obj.Spec.Password == nil {
+		return nil
+	}
+
+	if obj.Spec.Password.Value != nil && obj.Spec.Password.ValueFrom != nil {
+		return fmt.Errorf("cannot specify both spec.password.value and spec.password.valueFrom")
+	}
+
+	if obj.Spec.Password.Value != nil {
+		return nil
+	}
+
+	if obj.Spec.Password.ValueFrom != nil {
+		if obj.Spec.Password.ValueFrom.SecretKeyRef == nil {
+			return fmt.Errorf("spec.password.valueFrom.secretKeyRef must be set when valueFrom is specified")
+		}
+
+		key := types.NamespacedName{
+			Namespace: obj.Namespace,
+			Name:      obj.Spec.Password.ValueFrom.SecretKeyRef.Name,
+		}
+
+		secret := &corev1.Secret{}
+		if err := kube.Get(ctx, key, secret); err != nil {
+			if apierrors.IsNotFound(err) {
+				return k8s.NewSecretNotFoundError(key)
+			}
+			return fmt.Errorf("error reading referenced Secret %v: %w", key, err)
+		}
+
+		password := string(secret.Data[obj.Spec.Password.ValueFrom.SecretKeyRef.Key])
+		obj.Spec.Password.Value = direct.PtrTo(password)
+	}
+
+	return nil
+}
 
 // ResolveSQLUserInstanceRef resolves the instanceRef to get the Cloud SQL instance name.
 func ResolveSQLUserInstanceRef(ctx context.Context, kube client.Reader, obj *krm.SQLUser) (string, error) {
@@ -33,6 +77,10 @@ func ResolveSQLUserInstanceRef(ctx context.Context, kube client.Reader, obj *krm
 	}
 
 	if instanceRef.External != "" {
+		// Handle full URI format: projects/{project}/instances/{instance}
+		if parts := strings.Split(instanceRef.External, "/"); len(parts) == 4 && parts[0] == "projects" && parts[2] == "instances" {
+			return parts[3], nil
+		}
 		return instanceRef.External, nil
 	}
 

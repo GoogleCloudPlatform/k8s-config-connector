@@ -91,6 +91,11 @@ func (m *sqlUserModel) AdapterForObject(ctx context.Context, op *directbase.Adap
 		return nil, err
 	}
 
+	// Resolve password secret reference, if any.
+	if err := resolveSQLUserPasswordRef(ctx, kube, obj); err != nil {
+		return nil, err
+	}
+
 	gcpClient, err := newGCPClient(ctx, m.config)
 	if err != nil {
 		return nil, fmt.Errorf("building gcp client: %w", err)
@@ -112,6 +117,15 @@ func (m *sqlUserModel) AdapterForURL(ctx context.Context, url string) (directbas
 	return nil, nil
 }
 
+// hostMatches returns true if the GCP user's host matches the desired host.
+// When spec.host is empty, it matches both "%" (MySQL default) and "" (Postgres).
+func (a *sqlUserAdapter) hostMatches(gcpHost string) bool {
+	if a.host == "" {
+		return gcpHost == "%" || gcpHost == ""
+	}
+	return gcpHost == a.host
+}
+
 func (a *sqlUserAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(sqlUserCtrlName)
 
@@ -130,8 +144,7 @@ func (a *sqlUserAdapter) Find(ctx context.Context) (bool, error) {
 
 	for _, user := range users.Items {
 		if user.Name == a.resourceID {
-			// For MySQL, match on host too. For Postgres, host is empty.
-			if a.host == "" || user.Host == a.host {
+			if a.hostMatches(user.Host) {
 				log.V(2).Info("found SQLUser", "name", user.Name, "host", user.Host)
 				a.actual = user
 				return true, nil
@@ -188,7 +201,7 @@ func (a *sqlUserAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	desired.Project = a.projectID
 
 	op, err := a.sqlUsersClient.Update(a.projectID, a.instanceID, desired).
-		Host(a.host).
+		Host(a.actual.Host).
 		Name(a.resourceID).
 		Context(ctx).Do()
 	if err != nil {
@@ -218,7 +231,7 @@ func (a *sqlUserAdapter) Delete(ctx context.Context, deleteOp *directbase.Delete
 	log.V(2).Info("deleting SQLUser", "name", a.resourceID)
 
 	op, err := a.sqlUsersClient.Delete(a.projectID, a.instanceID).
-		Host(a.host).
+		Host(a.actual.Host).
 		Name(a.resourceID).
 		Context(ctx).Do()
 	if err != nil {
@@ -243,6 +256,10 @@ func (a *sqlUserAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 
 	spec := SQLUserGCPToKRM(a.actual)
 
+	spec.InstanceRef = refs.SQLInstanceRef{
+		External: a.instanceID,
+	}
+
 	sqlUser := &krm.SQLUser{
 		Spec: *spec,
 	}
@@ -264,7 +281,7 @@ func (a *sqlUserAdapter) findUser(ctx context.Context) (*api.User, error) {
 	}
 	for _, user := range users.Items {
 		if user.Name == a.resourceID {
-			if a.host == "" || user.Host == a.host {
+			if a.hostMatches(user.Host) {
 				return user, nil
 			}
 		}
@@ -284,13 +301,16 @@ func (a *sqlUserAdapter) pollForLROCompletion(ctx context.Context, op *api.Opera
 		log.V(2).Info("polling", "op", op)
 
 		if op.Status == "DONE" {
+			if op.Error != nil {
+				return fmt.Errorf("SQLUser %s %s operation failed: %v", a.resourceID, verb, op.Error.Errors)
+			}
 			break
 		}
 		if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
 			return fmt.Errorf("waiting for SQLUser %s %s failed: %w", a.resourceID, verb, err)
 		}
 		var err error
-		op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Do()
+		op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("getting SQLUser %s %s operation %s failed: %w", a.resourceID, verb, op.Name, err)
 		}
