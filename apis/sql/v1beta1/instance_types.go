@@ -446,6 +446,12 @@ type CloneSource struct {
 	SQLInstanceRef refsv1beta1.SQLInstanceRef `json:"sqlInstanceRef,omitempty"`
 }
 
+type InstanceDiskEncryptionConfiguration struct {
+	/* KMS key reference. */
+	// +optional
+	KmsKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+}
+
 type SQLInstanceSpec struct {
 	/* Create this database as a clone of a source instance. Immutable. */
 	// +optional
@@ -454,6 +460,9 @@ type SQLInstanceSpec struct {
 	/* The MySQL, PostgreSQL or SQL Server (beta) version to use. Supported values include MYSQL_5_6, MYSQL_5_7, MYSQL_8_0, POSTGRES_9_6, POSTGRES_10, POSTGRES_11, POSTGRES_12, POSTGRES_13, POSTGRES_14, POSTGRES_15, SQLSERVER_2017_STANDARD, SQLSERVER_2017_ENTERPRISE, SQLSERVER_2017_EXPRESS, SQLSERVER_2017_WEB. Database Version Policies includes an up-to-date reference of supported versions. */
 	// +optional
 	DatabaseVersion *string `json:"databaseVersion,omitempty"`
+
+	// +optional
+	DiskEncryptionConfiguration *InstanceDiskEncryptionConfiguration `json:"diskEncryptionConfiguration,omitempty"`
 
 	// +optional
 	EncryptionKMSCryptoKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"encryptionKMSCryptoKeyRef,omitempty"`

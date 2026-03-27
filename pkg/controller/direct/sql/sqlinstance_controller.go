@@ -53,6 +53,31 @@ type FieldMetadata struct {
 }
 
 var supportedUnmanageableFields = map[string]*FieldMetadata{
+	"spec.diskEncryptionConfiguration": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			out.DiskEncryptionConfiguration = actual.DiskEncryptionConfiguration
+		},
+	},
+	"spec.diskEncryptionConfiguration.kmsKeyRef": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.DiskEncryptionConfiguration != nil {
+				if out.DiskEncryptionConfiguration == nil {
+					out.DiskEncryptionConfiguration = &api.DiskEncryptionConfiguration{}
+				}
+				out.DiskEncryptionConfiguration.KmsKeyName = actual.DiskEncryptionConfiguration.KmsKeyName
+			}
+		},
+	},
+	"spec.encryptionKMSCryptoKeyRef": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.DiskEncryptionConfiguration != nil {
+				if out.DiskEncryptionConfiguration == nil {
+					out.DiskEncryptionConfiguration = &api.DiskEncryptionConfiguration{}
+				}
+				out.DiskEncryptionConfiguration.KmsKeyName = actual.DiskEncryptionConfiguration.KmsKeyName
+			}
+		},
+	},
 	"spec.instanceType": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			out.InstanceType = actual.InstanceType

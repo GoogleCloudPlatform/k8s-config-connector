@@ -126,6 +126,37 @@ spec:
                   SQLSERVER_2017_EXPRESS, SQLSERVER_2017_WEB. Database Version Policies
                   includes an up-to-date reference of supported versions.
                 type: string
+              diskEncryptionConfiguration:
+                properties:
+                  kmsKeyRef:
+                    description: KMS key reference.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed KMSCryptoKey.
+                          Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                        type: string
+                      name:
+                        description: The `name` of a `KMSCryptoKey` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` of a `KMSCryptoKey` resource.
+                        type: string
+                    type: object
+                type: object
               encryptionKMSCryptoKeyRef:
                 oneOf:
                 - not:
