@@ -28,18 +28,21 @@ type MemorystoreInstanceBackupSpec struct {
 	// Optional. The MemorystoreInstanceBackup name. Config Connector will always use
 	//  metadata.name if ResourceID is unspecified, overriding the GCP default.
 	// Immutable.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID is immutable"
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Required. The Memorystore instance reference of the backup.
 	// Immutable.
 	// +kcc:proto:field=google.cloud.memorystore.v1.BackupInstanceRequest.name
 	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="InstanceRef is immutable"
 	InstanceRef *refsv1beta1.MemorystoreInstanceRef `json:"instanceRef"`
 
 	// Optional. TTL for the backup to expire. Value range is 1 day to 100 years.
 	//  If not specified, the default value is 100 years (or "876600h").
 	// Immutable.
 	// +kcc:proto:field=google.cloud.memorystore.v1.BackupInstanceRequest.ttl
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Ttl is immutable"
 	Ttl *string `json:"ttl,omitempty"`
 }
 
@@ -82,7 +85,7 @@ type MemorystoreInstanceBackupObservedState struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.Backup.expire_time
 	ExpireTime *string `json:"expireTime,omitempty"`
 
-	// Output only. valkey-7.5/valkey-8.0, etc.
+	// Output only. The engine version of the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Backup.engine_version
 	EngineVersion *string `json:"engineVersion,omitempty"`
 

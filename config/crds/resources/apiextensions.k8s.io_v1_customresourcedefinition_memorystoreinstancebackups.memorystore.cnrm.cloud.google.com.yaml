@@ -92,16 +92,25 @@ spec:
                     description: The namespace of a MemorystoreInstance resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: InstanceRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: Optional. The MemorystoreInstanceBackup name. Config
                   Connector will always use metadata.name if ResourceID is unspecified,
                   overriding the GCP default. Immutable.
                 type: string
+                x-kubernetes-validations:
+                - message: ResourceID is immutable
+                  rule: self == oldSelf
               ttl:
                 description: Optional. TTL for the backup to expire. Value range is
                   1 day to 100 years. If not specified, the default value is 100 years
                   (or "876600h"). Immutable.
                 type: string
+                x-kubernetes-validations:
+                - message: Ttl is immutable
+                  rule: self == oldSelf
             required:
             - instanceRef
             type: object
@@ -176,7 +185,7 @@ spec:
                     description: Output only. The time when the backup was created.
                     type: string
                   engineVersion:
-                    description: Output only. valkey-7.5/valkey-8.0, etc.
+                    description: Output only. The engine version of the instance.
                     type: string
                   expireTime:
                     description: Output only. The time when the backup will expire.

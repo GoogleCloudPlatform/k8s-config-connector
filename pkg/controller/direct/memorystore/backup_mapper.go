@@ -59,7 +59,7 @@ func MemorystoreInstanceBackupObservedState_FromProto(mapCtx *direct.MapContext,
 	out.EngineVersion = direct.LazyPtr(in.GetEngineVersion())
 	out.BackupFiles = direct.Slice_FromProto(mapCtx, in.BackupFiles, BackupFileObservedState_FromProto)
 	out.NodeType = direct.Enum_FromProto(mapCtx, in.GetNodeType())
-	out.ReplicaCount = direct.LazyPtr(in.GetReplicaCount())
+	out.ReplicaCount = &in.ReplicaCount
 	out.ShardCount = direct.LazyPtr(in.GetShardCount())
 	out.BackupType = direct.Enum_FromProto(mapCtx, in.GetBackupType())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())

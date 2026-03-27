@@ -72,7 +72,7 @@ func (r *MemorystoreInstanceRef) ValidateExternal(ref string) error {
 	if len(parts) != 6 {
 		return fmt.Errorf("invalid external reference format: %s", ref)
 	}
-	if parts[0] != "projects" || parts[2] != "locations" || parts[4] != "instances" {
+	if parts[0] != "projects" || parts[1] == "" || parts[2] != "locations" || parts[3] == "" || parts[4] != "instances" || parts[5] == "" {
 		return fmt.Errorf("invalid external reference format (should be projects/.../locations/.../instances/...): %s", ref)
 	}
 	return nil
