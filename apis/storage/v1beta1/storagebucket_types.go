@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -179,6 +180,54 @@ type BucketSoftDeletePolicy struct {
 	RetentionDurationSeconds *int64 `json:"retentionDurationSeconds,omitempty"`
 }
 
+// +kcc:proto=google.storage.v2.Bucket_IpFilter
+type BucketIPFilter struct {
+	/* The mode of the IP filter. Possible values: ENABLED, DISABLED. */
+	// +optional
+	// +kcc:proto:field=google.storage.v2.Bucket_IpFilter.mode
+	Mode *string `json:"mode,omitempty"`
+
+	/* The public network source IPs to allow access from. */
+	// +optional
+	// +kcc:proto:field=google.storage.v2.Bucket_IpFilter.public_network_source
+	PublicNetworkSource *BucketIPFilterPublicNetworkSource `json:"publicNetworkSource,omitempty"`
+
+	/* The VPC network sources IPs to allow access from. */
+	// +optional
+	// +kcc:proto:field=google.storage.v2.Bucket_IpFilter.vpc_network_sources
+	VpcNetworkSources []BucketIPFilterVpcNetworkSource `json:"vpcNetworkSources,omitempty"`
+
+	/* Whether or not to allow VPCs from orgs different than the bucket's parent org to access the bucket. */
+	// +optional
+	// +kcc:proto:field=google.storage.v2.Bucket_IpFilter.allow_cross_org_vpcs
+	AllowCrossOrgVPCs *bool `json:"allowCrossOrgVPCs,omitempty"`
+
+	/* Whether or not to allow all P4SA access to the bucket. */
+	// +optional
+	// +kcc:proto:field=google.storage.v2.Bucket_IpFilter.allow_all_service_agent_access
+	AllowAllServiceAgentAccess *bool `json:"allowAllServiceAgentAccess,omitempty"`
+}
+
+// +kcc:proto=google.storage.v2.Bucket_IpFilter_VpcNetworkSource
+type BucketIPFilterVpcNetworkSource struct {
+	/* The network to allow access from. */
+	// +kcc:proto:field=google.storage.v2.Bucket_IpFilter_VpcNetworkSource.network
+	NetworkRef computev1beta1.ComputeNetworkRef `json:"networkRef"`
+
+	/* The list of VPC network source IPs to allow access from. */
+	// +optional
+	// +kcc:proto:field=google.storage.v2.Bucket_IpFilter_VpcNetworkSource.allowed_ip_cidr_ranges
+	AllowedIPRanges []string `json:"allowedIPRanges,omitempty"`
+}
+
+// +kcc:proto=google.storage.v2.Bucket_IpFilter_PublicNetworkSource
+type BucketIPFilterPublicNetworkSource struct {
+	/* The list of public network source IPs to allow access from. */
+	// +optional
+	// +kcc:proto:field=google.storage.v2.Bucket_IpFilter_PublicNetworkSource.allowed_ip_cidr_ranges
+	AllowedIPRanges []string `json:"allowedIPRanges,omitempty"`
+}
+
 // +kcc:proto=google.storage.v2.BucketVersioning
 type BucketVersioning struct {
 	/* While set to true, versioning is fully enabled for this bucket. */
@@ -303,6 +352,11 @@ type StorageBucketSpec struct {
 	// +optional
 	// +kcc:proto:field=google.storage.v2.Bucket.soft_delete_policy
 	SoftDeletePolicy *BucketSoftDeletePolicy `json:"softDeletePolicy,omitempty"`
+
+	/* The bucket's IP filter configuration. */
+	// +optional
+	// +kcc:proto:field=google.storage.v2.Bucket.ip_filter
+	IPFilter *BucketIPFilter `json:"ipFilter,omitempty"`
 
 	/* The Storage Class of the new bucket. Supported values include: STANDARD, MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE. */
 	// +optional
