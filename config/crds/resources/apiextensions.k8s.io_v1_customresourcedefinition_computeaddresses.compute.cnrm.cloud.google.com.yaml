@@ -315,6 +315,12 @@ spec:
               observedState:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
+                properties:
+                  address:
+                    description: The static external IP address represented by this
+                      resource. The IP address must be inside the specified subnetwork,
+                      if any. Set by the API if undefined.
+                    type: string
                 type: object
               selfLink:
                 type: string

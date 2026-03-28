@@ -149,6 +149,11 @@ type ComputeAddressStatus struct {
 // ComputeAddressObservedState is the state of the ComputeAddress resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.compute.v1.Address
 type ComputeAddressObservedState struct {
+	/* The static external IP address represented by this resource.
+	   The IP address must be inside the specified subnetwork,
+	   if any. Set by the API if undefined. */
+	// +kcc:proto:field=google.cloud.compute.v1.Address.address
+	Address *string `json:"address,omitempty"`
 }
 
 // +genclient

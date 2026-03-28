@@ -174,6 +174,7 @@ func ComputeAddressObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in
 		return nil
 	}
 	out := &krm.ComputeAddressObservedState{}
+	out.Address = in.Address
 	// MISSING: CreationTimestamp
 	// MISSING: ID
 	// MISSING: Kind
@@ -191,6 +192,7 @@ func ComputeAddressObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &pb.Address{}
+	out.Address = in.Address
 	// MISSING: CreationTimestamp
 	// MISSING: ID
 	// MISSING: Kind

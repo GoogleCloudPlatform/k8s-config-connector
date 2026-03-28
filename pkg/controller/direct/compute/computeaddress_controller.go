@@ -211,6 +211,9 @@ func (a *addressAdapter) Create(ctx context.Context, createOp *directbase.Create
 		CreationTimestamp: created.CreationTimestamp,
 		SelfLink:          created.SelfLink,
 		Users:             created.Users,
+		ObservedState: &krm.ComputeAddressObservedState{
+			Address: created.Address,
+		},
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return setStatus(u, status)
@@ -289,6 +292,9 @@ func (a *addressAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		CreationTimestamp: updated.CreationTimestamp,
 		SelfLink:          updated.SelfLink,
 		Users:             updated.Users,
+		ObservedState: &krm.ComputeAddressObservedState{
+			Address: updated.Address,
+		},
 	}
 	return setStatus(u, status)
 }

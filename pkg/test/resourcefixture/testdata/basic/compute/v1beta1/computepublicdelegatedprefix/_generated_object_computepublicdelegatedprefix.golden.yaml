@@ -20,4 +20,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  externalRef: projects/${projectId}/regions/us-central1/publicDelegatedPrefixes/${publicDelegatedPrefixeID}
   observedGeneration: 2

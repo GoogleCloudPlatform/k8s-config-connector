@@ -6,6 +6,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
+  generation: 1
   labels:
     cnrm-test: "true"
   name: ${addressID}
@@ -25,7 +26,9 @@ status:
     status: "True"
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
-  externalRef: null
+  externalRef: projects/${projectId}/regions/us-central1/addresses/${addressID}
   labelFingerprint: abcdef0123A=
-  observedGeneration: 0
+  observedGeneration: 1
+  observedState:
+    address: 8.8.8.8
   selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}
