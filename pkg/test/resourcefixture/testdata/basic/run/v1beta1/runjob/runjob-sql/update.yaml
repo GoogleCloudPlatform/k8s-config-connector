@@ -28,7 +28,7 @@ spec:
       volumes:
         - name: "cloudsql"
           cloudSqlInstance:
-            instanceRefs:
+            instances:
               - name: sqlinstance-1-${uniqueId}
               - name: sqlinstance-2-${uniqueId}
       containers:

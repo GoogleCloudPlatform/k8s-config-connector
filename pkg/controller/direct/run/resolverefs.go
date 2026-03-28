@@ -108,15 +108,35 @@ func ResolveRunServiceRefs(ctx context.Context, kube client.Reader, desired *krm
 		return nil
 	}
 	template := desired.Spec.Template
-	if template != nil {
-		if template.EncryptionKey != nil {
-			// RevisionTemplate.EncryptionKey is a string in KCC v1beta1?
-			// Wait, in my runservice_types.go I used RevisionTemplate which has EncryptionKey *string.
-			// Actually, it should probably be a KMSCryptoKeyRef if we want consistency with RunJob.
+	var err error
+	if template.EncryptionKeyRef != nil {
+		template.EncryptionKeyRef, err = refs.ResolveKMSCryptoKeyRef(ctx, kube, desired, template.EncryptionKeyRef)
+		if err != nil {
+			return err
 		}
-		// ... (more ref resolution if needed)
 	}
-	// For now, let's keep it simple and just implement what's needed for basic functionality.
-	// We can reuse the logic from ResolveRunJobRefs if we refactor it.
+	if template.ServiceAccountRef != nil {
+		err = template.ServiceAccountRef.Resolve(ctx, kube, desired)
+		if err != nil {
+			return err
+		}
+	}
+	if template.VPCAccess != nil && template.VPCAccess.ConnectorRef != nil {
+		template.VPCAccess.ConnectorRef.External, err = template.VPCAccess.ConnectorRef.NormalizedExternal(ctx, kube, desired.GetNamespace())
+		if err != nil {
+			return err
+		}
+	}
+	for _, v := range template.Volumes {
+		if v.CloudSQLInstance != nil {
+			for _, sqlInstance := range v.CloudSQLInstance.InstanceRefs {
+				instanceRef, err := refs.ResolveSQLInstanceRef(ctx, kube, desired, sqlInstance)
+				if err != nil {
+					return err
+				}
+				sqlInstance.External = instanceRef.ConnectionName()
+			}
+		}
+	}
 	return nil
 }

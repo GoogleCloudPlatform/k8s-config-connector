@@ -3236,6 +3236,8 @@
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.maxRetries" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.nodeSelector.accelerator" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.timeout" is not set in unstructured objects
+[missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.volumes[].cloudSqlInstance.instances[].external" is not set in unstructured objects
+[missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.volumes[].cloudSqlInstance.instances[].namespace" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.volumes[].emptyDir.medium" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.volumes[].emptyDir.sizeLimit" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.volumes[].secret.defaultMode" is not set in unstructured objects
@@ -3288,7 +3290,6 @@
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.containers[].startupProbe.httpGet.path" is not set in unstructured objects
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.containers[].startupProbe.httpGet.port" is not set in unstructured objects
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.containers[].workingDir" is not set in unstructured objects
-[missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.encryptionKey" is not set in unstructured objects
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.encryptionKeyRevocationAction" is not set in unstructured objects
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.encryptionKeyShutdownDuration" is not set in unstructured objects
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.executionEnvironment" is not set in unstructured objects
@@ -3299,11 +3300,11 @@
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.nodeSelector.accelerator" is not set in unstructured objects
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.revision" is not set in unstructured objects
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.scaling.minInstanceCount" is not set in unstructured objects
-[missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.serviceAccount" is not set in unstructured objects
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.serviceMesh.mesh" is not set in unstructured objects
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.sessionAffinity" is not set in unstructured objects
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.timeout" is not set in unstructured objects
-[missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.volumes[].cloudSqlInstance.instanceRefs[]" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.volumes[].cloudSqlInstance.instances[].external" is not set in unstructured objects
+[missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.volumes[].cloudSqlInstance.instances[].namespace" is not set in unstructured objects
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.volumes[].gcs.bucketRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.volumes[].gcs.mountOptions[]" is not set in unstructured objects
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.volumes[].gcs.readOnly" is not set in unstructured objects

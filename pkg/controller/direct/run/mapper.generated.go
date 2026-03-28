@@ -655,11 +655,15 @@ func RevisionTemplate_FromProto(mapCtx *direct.MapContext, in *pb.RevisionTempla
 	out.Scaling = RevisionScaling_FromProto(mapCtx, in.GetScaling())
 	out.VPCAccess = VPCAccess_FromProto(mapCtx, in.GetVpcAccess())
 	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
 	out.Containers = direct.Slice_FromProto(mapCtx, in.Containers, Container_FromProto)
 	out.Volumes = direct.Slice_FromProto(mapCtx, in.Volumes, Volume_FromProto)
 	out.ExecutionEnvironment = direct.Enum_FromProto(mapCtx, in.GetExecutionEnvironment())
-	out.EncryptionKey = direct.LazyPtr(in.GetEncryptionKey())
+	if in.GetEncryptionKey() != "" {
+		out.EncryptionKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetEncryptionKey()}
+	}
 	out.MaxInstanceRequestConcurrency = direct.LazyPtr(in.GetMaxInstanceRequestConcurrency())
 	out.ServiceMesh = ServiceMesh_FromProto(mapCtx, in.GetServiceMesh())
 	out.EncryptionKeyRevocationAction = direct.Enum_FromProto(mapCtx, in.GetEncryptionKeyRevocationAction())
@@ -681,11 +685,15 @@ func RevisionTemplate_ToProto(mapCtx *direct.MapContext, in *krm.RevisionTemplat
 	out.Scaling = RevisionScaling_ToProto(mapCtx, in.Scaling)
 	out.VpcAccess = VPCAccess_ToProto(mapCtx, in.VPCAccess)
 	out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
 	out.Containers = direct.Slice_ToProto(mapCtx, in.Containers, Container_ToProto)
 	out.Volumes = direct.Slice_ToProto(mapCtx, in.Volumes, Volume_ToProto)
 	out.ExecutionEnvironment = direct.Enum_ToProto[pb.ExecutionEnvironment](mapCtx, in.ExecutionEnvironment)
-	out.EncryptionKey = direct.ValueOf(in.EncryptionKey)
+	if in.EncryptionKeyRef != nil {
+		out.EncryptionKey = in.EncryptionKeyRef.External
+	}
 	out.MaxInstanceRequestConcurrency = direct.ValueOf(in.MaxInstanceRequestConcurrency)
 	out.ServiceMesh = ServiceMesh_ToProto(mapCtx, in.ServiceMesh)
 	out.EncryptionKeyRevocationAction = direct.Enum_ToProto[pb.EncryptionKeyRevocationAction](mapCtx, in.EncryptionKeyRevocationAction)
@@ -694,58 +702,6 @@ func RevisionTemplate_ToProto(mapCtx *direct.MapContext, in *krm.RevisionTemplat
 	out.HealthCheckDisabled = direct.ValueOf(in.HealthCheckDisabled)
 	out.NodeSelector = NodeSelector_ToProto(mapCtx, in.NodeSelector)
 	out.GpuZonalRedundancyDisabled = in.GpuZonalRedundancyDisabled
-	return out
-}
-func RevisionTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RevisionTemplate) *krm.RevisionTemplateObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RevisionTemplateObservedState{}
-	// MISSING: Revision
-	// MISSING: Labels
-	// MISSING: Annotations
-	// MISSING: Scaling
-	// MISSING: VPCAccess
-	// MISSING: Timeout
-	// MISSING: ServiceAccount
-	out.Containers = direct.Slice_FromProto(mapCtx, in.Containers, ContainerObservedState_FromProto)
-	// MISSING: Volumes
-	// MISSING: ExecutionEnvironment
-	// MISSING: EncryptionKey
-	// MISSING: MaxInstanceRequestConcurrency
-	// MISSING: ServiceMesh
-	// MISSING: EncryptionKeyRevocationAction
-	// MISSING: EncryptionKeyShutdownDuration
-	// MISSING: SessionAffinity
-	// MISSING: HealthCheckDisabled
-	// MISSING: NodeSelector
-	// MISSING: GpuZonalRedundancyDisabled
-	return out
-}
-func RevisionTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RevisionTemplateObservedState) *pb.RevisionTemplate {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RevisionTemplate{}
-	// MISSING: Revision
-	// MISSING: Labels
-	// MISSING: Annotations
-	// MISSING: Scaling
-	// MISSING: VPCAccess
-	// MISSING: Timeout
-	// MISSING: ServiceAccount
-	out.Containers = direct.Slice_ToProto(mapCtx, in.Containers, ContainerObservedState_ToProto)
-	// MISSING: Volumes
-	// MISSING: ExecutionEnvironment
-	// MISSING: EncryptionKey
-	// MISSING: MaxInstanceRequestConcurrency
-	// MISSING: ServiceMesh
-	// MISSING: EncryptionKeyRevocationAction
-	// MISSING: EncryptionKeyShutdownDuration
-	// MISSING: SessionAffinity
-	// MISSING: HealthCheckDisabled
-	// MISSING: NodeSelector
-	// MISSING: GpuZonalRedundancyDisabled
 	return out
 }
 func RunJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.RunJobObservedState {

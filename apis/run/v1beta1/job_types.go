@@ -215,7 +215,7 @@ type CloudSQLInstance struct {
 	//  how to connect Cloud SQL and Cloud Run. Format:
 	//  {project}:{location}:{instance}
 	// +kcc:proto:field=google.cloud.run.v2.CloudSqlInstance.instances
-	InstanceRefs []*refs.SQLInstanceRef `json:"instanceRefs,omitempty"`
+	InstanceRefs []*refs.SQLInstanceRef `json:"instances,omitempty"`
 }
 
 // +kcc:proto=google.cloud.run.v2.Container

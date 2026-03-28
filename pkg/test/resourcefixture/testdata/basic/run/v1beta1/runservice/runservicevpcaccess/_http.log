@@ -568,6 +568,7 @@ X-Goog-Request-Params: location=us-central1
       }
     ],
     "vpcAccess": {
+      "connector": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}",
       "egress": 1
     }
   }
@@ -615,6 +616,7 @@ X-Xss-Protection: 0
       "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
       "timeout": "300s",
       "vpcAccess": {
+        "connector": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}",
         "egress": 1
       }
     },
@@ -678,6 +680,7 @@ X-Xss-Protection: 0
       "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
       "timeout": "300s",
       "vpcAccess": {
+        "connector": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}",
         "egress": "ALL_TRAFFIC"
       }
     },
@@ -720,6 +723,7 @@ X-Xss-Protection: 0
       "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
       "timeout": "300s",
       "vpcAccess": {
+        "connector": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}",
         "egress": "ALL_TRAFFIC"
       }
     },
@@ -780,6 +784,7 @@ X-Xss-Protection: 0
     "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
     "timeout": "300s",
     "vpcAccess": {
+      "connector": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}",
       "egress": 1
     }
   },
@@ -814,6 +819,7 @@ X-Goog-Request-Params: location=us-central1
       }
     ],
     "vpcAccess": {
+      "connector": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}",
       "egress": 2
     }
   }
@@ -851,6 +857,7 @@ X-Xss-Protection: 0
         }
       ],
       "vpcAccess": {
+        "connector": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}",
         "egress": 2
       }
     },
@@ -904,6 +911,7 @@ X-Xss-Protection: 0
         }
       ],
       "vpcAccess": {
+        "connector": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}",
         "egress": "PRIVATE_RANGES_ONLY"
       }
     },
@@ -936,6 +944,7 @@ X-Xss-Protection: 0
         }
       ],
       "vpcAccess": {
+        "connector": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}",
         "egress": "PRIVATE_RANGES_ONLY"
       }
     },
@@ -986,6 +995,7 @@ X-Xss-Protection: 0
       }
     ],
     "vpcAccess": {
+      "connector": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}",
       "egress": 2
     }
   },
@@ -1037,6 +1047,7 @@ X-Xss-Protection: 0
         }
       ],
       "vpcAccess": {
+        "connector": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}",
         "egress": 2
       }
     },
@@ -1090,6 +1101,7 @@ X-Xss-Protection: 0
         }
       ],
       "vpcAccess": {
+        "connector": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}",
         "egress": "PRIVATE_RANGES_ONLY"
       }
     },
@@ -1122,6 +1134,7 @@ X-Xss-Protection: 0
         }
       ],
       "vpcAccess": {
+        "connector": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}",
         "egress": "PRIVATE_RANGES_ONLY"
       }
     },

@@ -27,7 +27,7 @@ spec:
       timeout: 10m0s
       volumes:
       - cloudSqlInstance:
-          instanceRefs:
+          instances:
           - external: ${projectId}:us-central1:sqlinstance-1-${uniqueId}
           - external: ${projectId}:us-central1:sqlinstance-2-${uniqueId}
         name: cloudsql
