@@ -19,6 +19,7 @@ metadata:
   name: backup-bucket-${uniqueId}
 spec:
   location: us-central1
+  forceDestroy: true
 ---
 # Step 1: Create a dummy resource to backup
 apiVersion: compute.cnrm.cloud.google.com/v1beta1

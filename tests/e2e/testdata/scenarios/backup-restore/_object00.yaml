@@ -13,6 +13,7 @@ metadata:
   namespace: ${projectId}
 spec:
   location: us-central1
+  forceDestroy: true
   resourceID: backup-bucket-${uniqueId}
 status:
   conditions:

@@ -94,7 +94,7 @@ func buildDiscoveryClient(ctx context.Context, restConfig *rest.Config) (discove
 
 	config := *restConfig
 
-	// config.Burst = 300
+	config.Burst = 300
 	config.QPS = 50.0
 	// config.QPS = f.discoveryQPS
 

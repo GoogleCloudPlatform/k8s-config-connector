@@ -181,7 +181,7 @@ Vary: X-Origin
 {
   "kind": "storage#objects",
   "prefixes": [
-    "testmanagedfolder/"
+    "testmanagedfolder"
   ]
 }
 

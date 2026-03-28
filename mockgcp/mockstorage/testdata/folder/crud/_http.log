@@ -158,7 +158,7 @@ Vary: X-Origin
 {
   "kind": "storage#objects",
   "prefixes": [
-    "${folderID}/"
+    "${folderID}"
   ]
 }
 

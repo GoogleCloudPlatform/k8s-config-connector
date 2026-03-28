@@ -68,7 +68,7 @@ func (s *objects) ListObjects(ctx context.Context, req *pb.ListObjectsRequest) (
 	folderPrefix := fmt.Sprintf("buckets/%s/folders/", req.GetBucket())
 	_ = s.storage.List(ctx, folderKind, storage.ListOptions{Prefix: folderPrefix}, func(obj proto.Message) error {
 		folder := obj.(*pb.Folder)
-		name := folder.GetName()
+		name := strings.TrimSuffix(folder.GetName(), "/")
 		if req.GetPrefix() != "" && !strings.HasPrefix(name, req.GetPrefix()) {
 			return nil
 		}
@@ -89,7 +89,7 @@ func (s *objects) ListObjects(ctx context.Context, req *pb.ListObjectsRequest) (
 	mfPrefix := fmt.Sprintf("buckets/%s/managedFolders/", req.GetBucket())
 	_ = s.storage.List(ctx, mfKind, storage.ListOptions{Prefix: mfPrefix}, func(obj proto.Message) error {
 		mf := obj.(*pb.ManagedFolder)
-		name := mf.GetName()
+		name := strings.TrimSuffix(mf.GetName(), "/")
 		if req.GetPrefix() != "" && !strings.HasPrefix(name, req.GetPrefix()) {
 			return nil
 		}
