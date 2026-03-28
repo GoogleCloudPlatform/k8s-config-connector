@@ -1049,8 +1049,8 @@ func TestCRDObjectTypes(t *testing.T) {
 	// This allows us to detect new regressions.
 	knownInvalidCRDs := map[string]bool{
 		"accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com":   true, // status.observedState is an empty object
-		"computeaddresses.compute.cnrm.cloud.google.com":                              true, // status.observedState is an empty object
-		"computepublicdelegatedprefixes.compute.cnrm.cloud.google.com":                true, // status.observedState is an empty object
+		"computeaddresses.compute.cnrm.cloud.google.com":                                true, // status.observedState is an empty object
+		"computepublicdelegatedprefixes.compute.cnrm.cloud.google.com":                  true, // status.observedState is an empty object
 		"aiplatformmodels.aiplatform.cnrm.cloud.google.com":                             true, // status.observedState.supportedExportFormats[] is an empty object
 		"apigeeenvironments.apigee.cnrm.cloud.google.com":                               true, // status.observedState is an empty object
 		"apigeeorganizations.apigee.cnrm.cloud.google.com":                              true, // status.observedState is an empty object
