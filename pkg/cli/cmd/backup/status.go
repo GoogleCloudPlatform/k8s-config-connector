@@ -19,6 +19,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"sort"
 	"strings"
 	"time"
 
@@ -148,10 +149,22 @@ func runStatus(cmd *cobra.Command, options *statusOptions) error {
 					var stats map[string]int
 					if err := json.NewDecoder(rc).Decode(&stats); err == nil {
 						total := 0
-						for _, count := range stats {
+						var kinds []string
+						for kind, count := range stats {
 							total += count
+							kinds = append(kinds, kind)
 						}
-						fmt.Fprintf(cmd.OutOrStdout(), " (%d resources)", total)
+						sort.Strings(kinds)
+
+						breakdown := ""
+						for _, kind := range kinds {
+							if breakdown != "" {
+								breakdown += ", "
+							}
+							breakdown += fmt.Sprintf("%s: %d", kind, stats[kind])
+						}
+
+						fmt.Fprintf(cmd.OutOrStdout(), " (%d resources) [%s]", total, breakdown)
 					}
 					rc.Close()
 				}
