@@ -1,0 +1,2 @@
+compute.cnrm.cloud.google.com/v1beta1, Kind=ComputePublicAdvertisedPrefix
+compute.cnrm.cloud.google.com/v1beta1, Kind=ComputePublicDelegatedPrefix

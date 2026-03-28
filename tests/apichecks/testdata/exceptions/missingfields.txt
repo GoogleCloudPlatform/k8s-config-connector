@@ -419,8 +419,10 @@
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.worker.storageGB" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.storageConfig.bucketRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeaddresses.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.address" is not set in unstructured objects
+[missing_field] crd=computeaddresses.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.ipCollection" is not set in unstructured objects
 [missing_field] crd=computeaddresses.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.ipv6EndpointType" is not set in unstructured objects
 [missing_field] crd=computeaddresses.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.networkTier" is not set in unstructured objects
+[missing_field] crd=computeaddresses.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computebackendbuckets.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.cdnPolicy.bypassCacheOnRequestHeaders[].headerName" is not set in unstructured objects
 [missing_field] crd=computebackendbuckets.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.cdnPolicy.cacheKeyPolicy.includeHttpHeaders[]" is not set in unstructured objects
 [missing_field] crd=computebackendbuckets.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.cdnPolicy.cacheKeyPolicy.queryStringWhitelist[]" is not set in unstructured objects
@@ -831,6 +833,10 @@
 [missing_field] crd=computenodetemplates.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.serverBinding.type" is not set in unstructured objects
 [missing_field] crd=computepacketmirrorings.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.mirroredResources.instances[].canonicalUrl" is not set in unstructured objects
 [missing_field] crd=computepacketmirrorings.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.mirroredResources.subnetworks[].canonicalUrl" is not set in unstructured objects
+[missing_field] crd=computepublicadvertisedprefixes.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pdpScope" is not set in unstructured objects
+[missing_field] crd=computepublicdelegatedprefixes.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.allocatablePrefixes[]" is not set in unstructured objects
+[missing_field] crd=computepublicdelegatedprefixes.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.parentPrefixRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=computepublicdelegatedprefixes.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeregionnetworkendpointgroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudFunction.urlMask" is not set in unstructured objects
 [missing_field] crd=computeregionnetworkendpointgroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudRun.tag" is not set in unstructured objects
 [missing_field] crd=computeregionnetworkendpointgroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudRun.urlMask" is not set in unstructured objects
