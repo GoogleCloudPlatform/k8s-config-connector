@@ -1,5 +1,5 @@
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-1-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -26,7 +26,7 @@ Vary: X-Origin
 
 POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "iamConfiguration": {
@@ -34,16 +34,8 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
       "enabled": true
     }
   },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycle": {
-    "rule": []
-  },
   "location": "us-central1",
-  "name": "storagebucket-1-${uniqueId}",
-  "storageClass": "STANDARD"
+  "name": "storagebucket-1-${uniqueId}"
 }
 
 200 OK
@@ -69,57 +61,6 @@ Vary: X-Origin
   },
   "id": "000000000000000000000",
   "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US-CENTRAL1",
-  "locationType": "region",
-  "metageneration": "1",
-  "name": "storagebucket-1-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "satisfiesPZI": true,
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-1-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
-  },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-1-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "etag": "abcdef0123A=",
-  "generation": "12345678901234",
-  "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    },
-    "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    }
-  },
-  "id": "000000000000000000000",
-  "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
   "location": "US-CENTRAL1",
   "locationType": "region",
   "metageneration": "1",
@@ -139,7 +80,7 @@ Vary: X-Origin
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-2-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -166,7 +107,7 @@ Vary: X-Origin
 
 POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "iamConfiguration": {
@@ -174,16 +115,8 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
       "enabled": true
     }
   },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycle": {
-    "rule": []
-  },
   "location": "us-central1",
-  "name": "storagebucket-2-${uniqueId}",
-  "storageClass": "STANDARD"
+  "name": "storagebucket-2-${uniqueId}"
 }
 
 200 OK
@@ -209,57 +142,6 @@ Vary: X-Origin
   },
   "id": "000000000000000000000",
   "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US-CENTRAL1",
-  "locationType": "region",
-  "metageneration": "1",
-  "name": "storagebucket-2-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "satisfiesPZI": true,
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-2-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
-  },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-2-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "etag": "abcdef0123A=",
-  "generation": "12345678901234",
-  "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    },
-    "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    }
-  },
-  "id": "000000000000000000000",
-  "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
   "location": "US-CENTRAL1",
   "locationType": "region",
   "metageneration": "1",
@@ -1184,7 +1066,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-2-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1208,10 +1090,6 @@ Vary: X-Origin
   },
   "id": "000000000000000000000",
   "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
   "location": "US-CENTRAL1",
   "locationType": "region",
   "metageneration": "1",
@@ -1230,27 +1108,8 @@ Vary: X-Origin
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-2-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "kind": "storage#objects",
-  "prefixes": [
-    "testfolder",
-    "testmanagedfolder"
-  ]
-}
-
----
-
 DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-2-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
 Content-Type: application/json
@@ -1263,7 +1122,7 @@ Vary: X-Origin
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-1-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1287,10 +1146,6 @@ Vary: X-Origin
   },
   "id": "000000000000000000000",
   "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
   "location": "US-CENTRAL1",
   "locationType": "region",
   "metageneration": "1",
@@ -1309,27 +1164,8 @@ Vary: X-Origin
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-1-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "kind": "storage#objects",
-  "prefixes": [
-    "testfolder",
-    "testmanagedfolder"
-  ]
-}
-
----
-
 DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-1-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
 Content-Type: application/json
