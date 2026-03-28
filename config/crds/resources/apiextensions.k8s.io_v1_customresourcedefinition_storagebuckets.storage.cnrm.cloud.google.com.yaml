@@ -157,6 +157,53 @@ spec:
                 required:
                 - kmsKeyRef
                 type: object
+              ipFilter:
+                description: The bucket's IP filter configuration. Specifies the network
+                  sources that are allowed to access the operations on the bucket,
+                  as well as its underlying objects. Only enforced when the mode is
+                  set to 'Enabled'.
+                properties:
+                  allowAllServiceAgentAccess:
+                    description: Whether to allow all service agents to access the
+                      bucket regardless of the IP filter configuration.
+                    type: boolean
+                  allowCrossOrgVpcs:
+                    description: Whether to allow cross-org VPCs in the bucket's IP
+                      filter configuration.
+                    type: boolean
+                  mode:
+                    description: The mode of the IP filter. Valid values are 'Enabled'
+                      and 'Disabled'.
+                    type: string
+                  publicNetworkSource:
+                    description: The public network source of the bucket's IP filter.
+                    properties:
+                      allowedIpCidrRanges:
+                        description: The list of public IPv4, IPv6 cidr ranges that
+                          are allowed to access the bucket.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  vpcNetworkSources:
+                    description: The list of VPC network sources of the bucket's IP
+                      filter.
+                    items:
+                      properties:
+                        allowedIpCidrRanges:
+                          description: The list of IPv4, IPv6 cidr ranges subnetworks
+                            that are allowed to access the bucket.
+                          items:
+                            type: string
+                          type: array
+                        network:
+                          description: Name of the network.
+                          type: string
+                      required:
+                      - network
+                      type: object
+                    type: array
+                type: object
               lifecycleRule:
                 description: The bucket's Lifecycle Rules configuration.
                 items:

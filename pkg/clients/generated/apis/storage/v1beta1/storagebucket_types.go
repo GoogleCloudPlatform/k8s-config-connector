@@ -126,6 +126,28 @@ type BucketEncryption struct {
 	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
 }
 
+type BucketIpFilter struct {
+	/* Whether to allow all service agents to access the bucket regardless of the IP filter configuration. */
+	// +optional
+	AllowAllServiceAgentAccess *bool `json:"allowAllServiceAgentAccess,omitempty"`
+
+	/* Whether to allow cross-org VPCs in the bucket's IP filter configuration. */
+	// +optional
+	AllowCrossOrgVpcs *bool `json:"allowCrossOrgVpcs,omitempty"`
+
+	/* The mode of the IP filter. Valid values are 'Enabled' and 'Disabled'. */
+	// +optional
+	Mode *string `json:"mode,omitempty"`
+
+	/* The public network source of the bucket's IP filter. */
+	// +optional
+	PublicNetworkSource *BucketPublicNetworkSource `json:"publicNetworkSource,omitempty"`
+
+	/* The list of VPC network sources of the bucket's IP filter. */
+	// +optional
+	VpcNetworkSources []BucketVpcNetworkSources `json:"vpcNetworkSources,omitempty"`
+}
+
 type BucketLifecycleRule struct {
 	/* The Lifecycle Rule's action configuration. A single block of this type is supported. */
 	Action BucketAction `json:"action"`
@@ -141,6 +163,12 @@ type BucketLogging struct {
 	/* The object prefix for log objects. If it's not provided, by default Google Cloud Storage sets this to this bucket's name. */
 	// +optional
 	LogObjectPrefix *string `json:"logObjectPrefix,omitempty"`
+}
+
+type BucketPublicNetworkSource struct {
+	/* The list of public IPv4, IPv6 cidr ranges that are allowed to access the bucket. */
+	// +optional
+	AllowedIpCidrRanges []string `json:"allowedIpCidrRanges,omitempty"`
 }
 
 type BucketRetentionPolicy struct {
@@ -161,6 +189,15 @@ type BucketSoftDeletePolicy struct {
 type BucketVersioning struct {
 	/* While set to true, versioning is fully enabled for this bucket. */
 	Enabled bool `json:"enabled"`
+}
+
+type BucketVpcNetworkSources struct {
+	/* The list of IPv4, IPv6 cidr ranges subnetworks that are allowed to access the bucket. */
+	// +optional
+	AllowedIpCidrRanges []string `json:"allowedIpCidrRanges,omitempty"`
+
+	/* Name of the network. */
+	Network string `json:"network"`
 }
 
 type BucketWebsite struct {
@@ -198,6 +235,10 @@ type StorageBucketSpec struct {
 	/* The bucket's encryption configuration. */
 	// +optional
 	Encryption *BucketEncryption `json:"encryption,omitempty"`
+
+	/* The bucket's IP filter configuration. Specifies the network sources that are allowed to access the operations on the bucket, as well as its underlying objects. Only enforced when the mode is set to 'Enabled'. */
+	// +optional
+	IpFilter *BucketIpFilter `json:"ipFilter,omitempty"`
 
 	/* The bucket's Lifecycle Rules configuration. */
 	// +optional
