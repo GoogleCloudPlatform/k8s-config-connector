@@ -90,6 +90,18 @@ func (m *gcpClient) newNetworkAttachmentsClient(ctx context.Context) (*compute.N
 	return client, err
 }
 
+func (m *gcpClient) newRoutersClient(ctx context.Context) (*compute.RoutersClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewRoutersRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute Routers client: %w", err)
+	}
+	return client, err
+}
+
 func (m *gcpClient) newTargetTcpProxiesClient(ctx context.Context) (*compute.TargetTcpProxiesClient, error) {
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {

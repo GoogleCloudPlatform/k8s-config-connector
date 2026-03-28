@@ -923,14 +923,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
-		Kind:    "ComputeRouterNAT",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
-		Group:   "compute.cnrm.cloud.google.com",
-		Version: "v1beta1",
 		Kind:    "ComputeRouterPeer",
 	}: {
 		Terraform: true,
