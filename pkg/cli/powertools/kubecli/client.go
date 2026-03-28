@@ -49,12 +49,16 @@ func NewClient(ctx context.Context, options ClusterOptions) (*Client, error) {
 			return nil, fmt.Errorf("loading kubernetes configuration from %q: %w", options.Kubeconfig, err)
 		}
 		restConfig = rc
+		restConfig.QPS = 50.0
+		restConfig.Burst = 300
 	} else {
 		rc, err := config.GetConfig()
 		if err != nil {
 			return nil, fmt.Errorf("getting kubernetes configuration: %w", err)
 		}
 		restConfig = rc
+		restConfig.QPS = 50.0
+		restConfig.Burst = 300
 	}
 
 	if options.Impersonate != nil {
@@ -90,7 +94,8 @@ func buildDiscoveryClient(ctx context.Context, restConfig *rest.Config) (discove
 
 	config := *restConfig
 
-	// config.Burst = f.discoveryBurst
+	// config.Burst = 300
+	config.QPS = 50.0
 	// config.QPS = f.discoveryQPS
 
 	cacheDir := getDefaultCacheDir()

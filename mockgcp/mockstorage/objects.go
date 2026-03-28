@@ -64,6 +64,48 @@ func (s *objects) ListObjects(ctx context.Context, req *pb.ListObjectsRequest) (
 		return nil, err
 	}
 
+	folderKind := (&pb.Folder{}).ProtoReflect().Descriptor()
+	folderPrefix := fmt.Sprintf("buckets/%s/folders/", req.GetBucket())
+	_ = s.storage.List(ctx, folderKind, storage.ListOptions{Prefix: folderPrefix}, func(obj proto.Message) error {
+		folder := obj.(*pb.Folder)
+		name := folder.GetName()
+		if req.GetPrefix() != "" && !strings.HasPrefix(name, req.GetPrefix()) {
+			return nil
+		}
+		if req.GetDelimiter() != "" {
+			relativeName := strings.TrimPrefix(name, req.GetPrefix())
+			if idx := strings.Index(relativeName, req.GetDelimiter()); idx != -1 {
+				prefix := req.GetPrefix() + relativeName[:idx+1]
+				prefixes[prefix] = true
+				return nil
+			} else {
+				prefixes[name] = true
+			}
+		}
+		return nil
+	})
+
+	mfKind := (&pb.ManagedFolder{}).ProtoReflect().Descriptor()
+	mfPrefix := fmt.Sprintf("buckets/%s/managedFolders/", req.GetBucket())
+	_ = s.storage.List(ctx, mfKind, storage.ListOptions{Prefix: mfPrefix}, func(obj proto.Message) error {
+		mf := obj.(*pb.ManagedFolder)
+		name := mf.GetName()
+		if req.GetPrefix() != "" && !strings.HasPrefix(name, req.GetPrefix()) {
+			return nil
+		}
+		if req.GetDelimiter() != "" {
+			relativeName := strings.TrimPrefix(name, req.GetPrefix())
+			if idx := strings.Index(relativeName, req.GetDelimiter()); idx != -1 {
+				prefix := req.GetPrefix() + relativeName[:idx+1]
+				prefixes[prefix] = true
+				return nil
+			} else {
+				prefixes[name] = true
+			}
+		}
+		return nil
+	})
+
 	ret := &pb.Objects{}
 	ret.Kind = PtrTo("storage#objects")
 	ret.Items = items
