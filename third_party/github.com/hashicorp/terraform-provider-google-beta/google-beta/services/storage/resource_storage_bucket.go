@@ -129,7 +129,71 @@ func ResourceStorageBucket() *schema.Resource {
 				Description: `The Storage Class of the new bucket. Supported values include: STANDARD, MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE.`,
 			},
 
-			"lifecycle_rule": {
+			"ip_filter": {
+				Type:     schema.TypeList,
+				Optional: true,
+				MaxItems: 1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"mode": {
+							Type:     schema.TypeString,
+							Optional: true,
+							Description: `The mode of the IP filter. Valid values are 'Enabled' and 'Disabled'.`,
+						},
+						"public_network_source": {
+							Type:     schema.TypeList,
+							Optional: true,
+							MaxItems: 1,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"allowed_ip_cidr_ranges": {
+										Type:     schema.TypeList,
+										Optional: true,
+										Elem: &schema.Schema{
+											Type: schema.TypeString,
+										},
+										Description: `The list of public IPv4, IPv6 cidr ranges that are allowed to access the bucket.`,
+									},
+								},
+							},
+							Description: `The public network source of the bucket's IP filter.`,
+						},
+						"vpc_network_sources": {
+							Type:     schema.TypeList,
+							Optional: true,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"network": {
+										Type:     schema.TypeString,
+										Required: true,
+										Description: `Name of the network.`,
+									},
+									"allowed_ip_cidr_ranges": {
+										Type:     schema.TypeList,
+										Optional: true,
+										Elem: &schema.Schema{
+											Type: schema.TypeString,
+										},
+										Description: `The list of IPv4, IPv6 cidr ranges subnetworks that are allowed to access the bucket.`,
+									},
+								},
+							},
+							Description: `The list of VPC network sources of the bucket's IP filter.`,
+						},
+						"allow_cross_org_vpcs": {
+							Type:     schema.TypeBool,
+							Optional: true,
+							Description: `Whether to allow cross-org VPCs in the bucket's IP filter configuration.`,
+						},
+						"allow_all_service_agent_access": {
+							Type:     schema.TypeBool,
+							Optional: true,
+							Description: `Whether to allow all service agents to access the bucket regardless of the IP filter configuration.`,
+						},
+					},
+				},
+				Description: `The bucket's IP filter configuration. Specifies the network sources that are allowed to access the operations on the bucket, as well as its underlying objects. Only enforced when the mode is set to 'Enabled'.`,
+			},			"lifecycle_rule": {
 				Type:     schema.TypeList,
 				Optional: true,
 				MaxItems: 100,
@@ -530,6 +594,9 @@ func resourceStorageBucketCreate(d *schema.ResourceData, meta interface{}) error
 	}
 	sb.Lifecycle = lifecycle
 
+	if v, ok := d.GetOk("ip_filter"); ok {
+		sb.IpFilter = expandBucketIpFilter(v)
+	}
 	if v, ok := d.GetOk("versioning"); ok {
 		sb.Versioning = expandBucketVersioning(v)
 	}
@@ -656,6 +723,9 @@ func resourceStorageBucketUpdate(d *schema.ResourceData, meta interface{}) error
 			return err
 		}
 		sb.Lifecycle = lifecycle
+	}
+	if d.HasChange("ip_filter") {
+		sb.IpFilter = expandBucketIpFilter(d.Get("ip_filter"))
 	}
 
 	if d.HasChange("requester_pays") {
@@ -1649,6 +1719,9 @@ func setStorageBucket(d *schema.ResourceData, config *transport_tpg.Config, res 
 		return fmt.Errorf("Error setting autoclass: %s", err)
 	}
 	if err := d.Set("lifecycle_rule", flattenBucketLifecycle(res.Lifecycle)); err != nil {
+	if err := d.Set("ip_filter", flattenBucketIpFilter(res.IpFilter)); err != nil {
+		return fmt.Errorf("Error setting ip_filter: %s", err)
+	}
 		return fmt.Errorf("Error setting lifecycle_rule: %s", err)
 	}
 	if err := d.Set("labels", res.Labels); err != nil {
@@ -1695,4 +1768,104 @@ func setStorageBucket(d *schema.ResourceData, config *transport_tpg.Config, res 
 
 	d.SetId(res.Id)
 	return nil
+}
+
+func flattenBucketIpFilter(ipFilter *storage.BucketIpFilter) []map[string]interface{} {
+	ipFilterList := make([]map[string]interface{}, 0, 1)
+	if ipFilter == nil {
+		return ipFilterList
+	}
+	filterItem := map[string]interface{}{
+		"mode":                           ipFilter.Mode,
+		"allow_cross_org_vpcs":           ipFilter.AllowCrossOrgVpcs,
+		"allow_all_service_agent_access": ipFilter.AllowAllServiceAgentAccess,
+	}
+	if publicSrc := flattenBucketIpFilterPublicNetworkSource(ipFilter.PublicNetworkSource); publicSrc != nil {
+		filterItem["public_network_source"] = publicSrc
+	}
+	if vpcSrc := flattenBucketIpFilterVpcNetworkSources(ipFilter.VpcNetworkSources); vpcSrc != nil {
+		filterItem["vpc_network_sources"] = vpcSrc
+	}
+	return append(ipFilterList, filterItem)
+}
+
+func flattenBucketIpFilterPublicNetworkSource(publicNetworkSource *storage.BucketIpFilterPublicNetworkSource) []map[string]interface{} {
+	if publicNetworkSource == nil {
+		return nil
+	}
+	return []map[string]interface{}{{
+		"allowed_ip_cidr_ranges": publicNetworkSource.AllowedIpCidrRanges,
+	}}
+}
+
+func flattenBucketIpFilterVpcNetworkSources(vpnNetworkSource []*storage.BucketIpFilterVpcNetworkSources) []map[string]interface{} {
+	if len(vpnNetworkSource) == 0 {
+		return nil
+	}
+	vpnNetworkSourceList := make([]map[string]interface{}, 0, len(vpnNetworkSource))
+	for _, v := range vpnNetworkSource {
+		vpnNetworkSourceList = append(vpnNetworkSourceList, map[string]interface{}{
+			"network":                v.Network,
+			"allowed_ip_cidr_ranges": v.AllowedIpCidrRanges,
+		})
+	}
+	return vpnNetworkSourceList
+}
+
+func expandBucketIpFilter(v interface{}) *storage.BucketIpFilter {
+	if v == nil {
+		return nil
+	}
+	ipFilterList := v.([]interface{})
+	if len(ipFilterList) == 0 || ipFilterList[0] == nil {
+		return nil
+	}
+	ipFilter := ipFilterList[0].(map[string]interface{})
+	return &storage.BucketIpFilter{
+		Mode:                       ipFilter["mode"].(string),
+		PublicNetworkSource:        expandBucketIpFilterPublicNetworkSource(ipFilter["public_network_source"]),
+		VpcNetworkSources:          expandBucketIpFilterVpcNetworkSources(ipFilter["vpc_network_sources"]),
+		AllowCrossOrgVpcs:          ipFilter["allow_cross_org_vpcs"].(bool),
+		AllowAllServiceAgentAccess: ipFilter["allow_all_service_agent_access"].(bool),
+	}
+}
+
+func expandBucketIpFilterPublicNetworkSource(v interface{}) *storage.BucketIpFilterPublicNetworkSource {
+	if v == nil {
+		return nil
+	}
+	publicNetworkSourceList := v.([]interface{})
+	if len(publicNetworkSourceList) == 0 || publicNetworkSourceList[0] == nil {
+		return nil
+	}
+	publicNetworkSource := publicNetworkSourceList[0].(map[string]interface{})
+	e := &storage.BucketIpFilterPublicNetworkSource{
+		AllowedIpCidrRanges: tpgresource.ConvertStringArr(publicNetworkSource["allowed_ip_cidr_ranges"].([]interface{})),
+	}
+	if len(e.AllowedIpCidrRanges) == 0 {
+		e.ForceSendFields = []string{"AllowedIpCidrRanges"}
+	}
+	return e
+}
+
+func expandBucketIpFilterVpcNetworkSources(v interface{}) []*storage.BucketIpFilterVpcNetworkSources {
+	if v == nil {
+		return nil
+	}
+	vpcNetworkSources := v.([]interface{})
+	if len(vpcNetworkSources) == 0 {
+		return nil
+	}
+	transformedvpcNetworkSources := make([]*storage.BucketIpFilterVpcNetworkSources, 0, len(vpcNetworkSources))
+	for _, v := range vpcNetworkSources {
+		if v == nil {
+			continue
+		}
+		vpcNetworkSource := v.(map[string]interface{})
+		transformedvpcNetworkSources = append(transformedvpcNetworkSources, &storage.BucketIpFilterVpcNetworkSources{
+			Network:             vpcNetworkSource["network"].(string),
+			AllowedIpCidrRanges: tpgresource.ConvertStringArr(vpcNetworkSource["allowed_ip_cidr_ranges"].([]interface{})),
+		})
+	}
+	return transformedvpcNetworkSources
 }
