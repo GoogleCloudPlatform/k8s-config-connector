@@ -79,7 +79,6 @@
 [refs] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.migration.target" should be a reference
 [refs] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceFilter.instances" should be a reference
 [refs] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.buildConfig.serviceAccount" should be a reference
-[refs] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.buildConfig.serviceAccount" should be a reference
 [refs] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.buildConfig.workerPool" should be a reference
 [refs] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.serviceAccount" should be a reference
 [refs] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.serviceMesh.mesh" should be a reference
