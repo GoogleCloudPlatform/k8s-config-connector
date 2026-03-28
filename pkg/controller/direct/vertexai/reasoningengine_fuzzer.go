@@ -36,13 +36,30 @@ func vertexAIReasoningEngineFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".display_name")
 	f.SpecFields.Insert(".description")
 	f.SpecFields.Insert(".spec")
-	f.SpecFields.Insert(".etag")
 	f.SpecFields.Insert(".context_spec")
 	f.SpecFields.Insert(".encryption_spec")
 
 	f.StatusFields.Insert(".name")
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
+
+	f.Unimplemented_NotYetTriaged(".context_spec.memory_bank_config.ttl_config.granular_ttl_config.create_ttl")
+	f.Unimplemented_NotYetTriaged(".context_spec.memory_bank_config.ttl_config.granular_ttl_config.create_ttl.seconds")
+	f.Unimplemented_NotYetTriaged(".context_spec.memory_bank_config.ttl_config.granular_ttl_config.generate_updated_ttl")
+	f.Unimplemented_NotYetTriaged(".context_spec.memory_bank_config.ttl_config.granular_ttl_config.generate_updated_ttl.seconds")
+	f.Unimplemented_NotYetTriaged(".labels")
+	f.Unimplemented_NotYetTriaged(".name")
+	f.Unimplemented_NotYetTriaged(".spec.source_code_spec")
+	f.Unimplemented_NotYetTriaged(".spec.source_code_spec.developer_connect_source")
+	f.Unimplemented_NotYetTriaged(".spec.source_code_spec.developer_connect_source.config")
+	f.Unimplemented_NotYetTriaged(".spec.source_code_spec.developer_connect_source.config.git_repository_link")
+	f.Unimplemented_NotYetTriaged(".spec.source_code_spec.developer_connect_source.config.revision")
+	f.Unimplemented_NotYetTriaged(".spec.source_code_spec.inline_source")
+	f.Unimplemented_NotYetTriaged(".spec.source_code_spec.inline_source.source_archive")
+	f.Unimplemented_NotYetTriaged(".spec.source_code_spec.python_spec")
+	f.Unimplemented_NotYetTriaged(".spec.source_code_spec.python_spec.entrypoint_module")
+	f.Unimplemented_NotYetTriaged(".spec.source_code_spec.python_spec.entrypoint_object")
+	f.Unimplemented_NotYetTriaged(".spec.source_code_spec.python_spec.requirements_file")
 
 	return f
 }
