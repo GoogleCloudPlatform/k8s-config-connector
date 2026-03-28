@@ -20,6 +20,7 @@
 // resource: ComputeAddress:Address
 // resource: ComputeFirewallPolicyRule:FirewallPolicyRule
 // resource: ComputePublicDelegatedPrefix:PublicDelegatedPrefix
+// resource: ComputePublicAdvertisedPrefix:PublicAdvertisedPrefix
 // resource: ComputeForwardingRule:ForwardingRule
 // resource: ComputeResourcePolicy:ResourcePolicy
 // resource: ComputeSecurityPolicy:SecurityPolicy
@@ -1078,6 +1079,96 @@ type NodeTemplateNodeTypeFlexibility struct {
 
 	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplateNodeTypeFlexibility.memory
 	Memory *string `json:"memory,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.PublicAdvertisedPrefix", skipping
+
+// +kcc:proto=google.cloud.compute.v1.PublicAdvertisedPrefix
+type PublicAdvertisedPrefix struct {
+	// [Output Only] The version of BYOIP API.
+	//  Check the ByoipApiVersion enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicAdvertisedPrefix.byoip_api_version
+	ByoipAPIVersion *string `json:"byoipAPIVersion,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicAdvertisedPrefix.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicAdvertisedPrefix.description
+	Description *string `json:"description,omitempty"`
+
+	// The address to be used for reverse DNS verification.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicAdvertisedPrefix.dns_verification_ip
+	DNSVerificationIP *string `json:"dnsVerificationIP,omitempty"`
+
+	// Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking. This field will be ignored when inserting a new PublicAdvertisedPrefix. An up-to-date fingerprint must be provided in order to update the PublicAdvertisedPrefix, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve a PublicAdvertisedPrefix.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicAdvertisedPrefix.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// [Output Only] The unique identifier for the resource type. The server generates this identifier.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicAdvertisedPrefix.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// The address range, in CIDR format, represented by this public advertised prefix.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicAdvertisedPrefix.ip_cidr_range
+	IPCIDRRange *string `json:"ipCIDRRange,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#publicAdvertisedPrefix for public advertised prefixes.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicAdvertisedPrefix.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicAdvertisedPrefix.name
+	Name *string `json:"name,omitempty"`
+
+	// Specifies how child public delegated prefix will be scoped. It could be one of following values: - `REGIONAL`: The public delegated prefix is regional only. The provisioning will take a few minutes. - `GLOBAL`: The public delegated prefix is global only. The provisioning will take ~4 weeks. - `GLOBAL_AND_REGIONAL` [output only]: The public delegated prefixes is BYOIP V1 legacy prefix. This is output only value and no longer supported in BYOIP V2.
+	//  Check the PdpScope enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicAdvertisedPrefix.pdp_scope
+	PdpScope *string `json:"pdpScope,omitempty"`
+
+	// [Output Only] The list of public delegated prefixes that exist for this public advertised prefix.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicAdvertisedPrefix.public_delegated_prefixs
+	PublicDelegatedPrefixs []PublicAdvertisedPrefixPublicDelegatedPrefix `json:"publicDelegatedPrefixs,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicAdvertisedPrefix.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// [Output Only] The shared secret to be used for reverse DNS verification.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicAdvertisedPrefix.shared_secret
+	SharedSecret *string `json:"sharedSecret,omitempty"`
+
+	// The status of the public advertised prefix. Possible values include: - `INITIAL`: RPKI validation is complete. - `PTR_CONFIGURED`: User has configured the PTR. - `VALIDATED`: Reverse DNS lookup is successful. - `REVERSE_DNS_LOOKUP_FAILED`: Reverse DNS lookup failed. - `PREFIX_CONFIGURATION_IN_PROGRESS`: The prefix is being configured. - `PREFIX_CONFIGURATION_COMPLETE`: The prefix is fully configured. - `PREFIX_REMOVAL_IN_PROGRESS`: The prefix is being removed.
+	//  Check the Status enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicAdvertisedPrefix.status
+	Status *string `json:"status,omitempty"`
+}
+*/
+
+/* unreachable type PublicAdvertisedPrefixPublicDelegatedPrefix
+// +kcc:proto=google.cloud.compute.v1.PublicAdvertisedPrefixPublicDelegatedPrefix
+type PublicAdvertisedPrefixPublicDelegatedPrefix struct {
+	// The IP address range of the public delegated prefix
+	// +kcc:proto:field=google.cloud.compute.v1.PublicAdvertisedPrefixPublicDelegatedPrefix.ip_range
+	IPRange *string `json:"ipRange,omitempty"`
+
+	// The name of the public delegated prefix
+	// +kcc:proto:field=google.cloud.compute.v1.PublicAdvertisedPrefixPublicDelegatedPrefix.name
+	Name *string `json:"name,omitempty"`
+
+	// The project number of the public delegated prefix
+	// +kcc:proto:field=google.cloud.compute.v1.PublicAdvertisedPrefixPublicDelegatedPrefix.project
+	Project *string `json:"project,omitempty"`
+
+	// The region of the public delegated prefix if it is regional. If absent, the prefix is global.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicAdvertisedPrefixPublicDelegatedPrefix.region
+	Region *string `json:"region,omitempty"`
+
+	// The status of the public delegated prefix. Possible values are: INITIALIZING: The public delegated prefix is being initialized and addresses cannot be created yet. ANNOUNCED: The public delegated prefix is active.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicAdvertisedPrefixPublicDelegatedPrefix.status
+	Status *string `json:"status,omitempty"`
 }
 */
 

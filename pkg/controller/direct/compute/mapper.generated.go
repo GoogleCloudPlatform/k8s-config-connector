@@ -1021,7 +1021,6 @@ func ComputePublicAdvertisedPrefixObservedState_v1beta1_FromProto(mapCtx *direct
 	// MISSING: IPCIDRRange
 	// MISSING: Kind
 	// MISSING: Name
-	// MISSING: PdpScope
 	// MISSING: PublicDelegatedPrefixs
 	out.SelfLink = in.SelfLink
 	out.SharedSecret = in.SharedSecret
@@ -1040,7 +1039,6 @@ func ComputePublicAdvertisedPrefixObservedState_v1beta1_ToProto(mapCtx *direct.M
 	// MISSING: IPCIDRRange
 	// MISSING: Kind
 	// MISSING: Name
-	// MISSING: PdpScope
 	// MISSING: PublicDelegatedPrefixs
 	out.SelfLink = in.SelfLink
 	out.SharedSecret = in.SharedSecret
@@ -1061,7 +1059,7 @@ func ComputePublicAdvertisedPrefixSpec_v1beta1_FromProto(mapCtx *direct.MapConte
 	// (near miss): "IPCIDRRange" vs "IPCidrRange"
 	// MISSING: Kind
 	// MISSING: Name
-	// MISSING: PdpScope
+	out.PdpScope = in.PdpScope
 	// MISSING: PublicDelegatedPrefixs
 	return out
 }
@@ -1079,7 +1077,7 @@ func ComputePublicAdvertisedPrefixSpec_v1beta1_ToProto(mapCtx *direct.MapContext
 	// (near miss): "IPCIDRRange" vs "IPCidrRange"
 	// MISSING: Kind
 	// MISSING: Name
-	// MISSING: PdpScope
+	out.PdpScope = in.PdpScope
 	// MISSING: PublicDelegatedPrefixs
 	return out
 }
@@ -1142,7 +1140,9 @@ func ComputePublicDelegatedPrefixSpec_v1beta1_FromProto(mapCtx *direct.MapContex
 	// MISSING: Kind
 	// MISSING: Mode
 	// MISSING: Name
-	// MISSING: ParentPrefix
+	if in.GetParentPrefix() != "" {
+		out.ParentPrefixRef = &krm.ComputePublicDelegatedPrefixParentPrefixRef{External: in.GetParentPrefix()}
+	}
 	// MISSING: PublicDelegatedSubPrefixs
 	// MISSING: Region
 	// MISSING: SelfLink
@@ -1166,7 +1166,9 @@ func ComputePublicDelegatedPrefixSpec_v1beta1_ToProto(mapCtx *direct.MapContext,
 	// MISSING: Kind
 	// MISSING: Mode
 	// MISSING: Name
-	// MISSING: ParentPrefix
+	if in.ParentPrefixRef != nil {
+		out.ParentPrefix = &in.ParentPrefixRef.External
+	}
 	// MISSING: PublicDelegatedSubPrefixs
 	// MISSING: Region
 	// MISSING: SelfLink

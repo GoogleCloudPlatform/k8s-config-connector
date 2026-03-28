@@ -104,7 +104,8 @@ spec:
                       or `ComputePublicDelegatedPrefix` resource.
                     type: string
                   kind:
-                    description: "Kind of the referent. Allowed values: ComputePublicAdvertisedPrefix (default), ComputePublicDelegatedPrefix"
+                    description: 'Kind of the referent. Allowed values: ComputePublicAdvertisedPrefix
+                      (default), ComputePublicDelegatedPrefix'
                     type: string
                   name:
                     description: Name of the referent.

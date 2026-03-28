@@ -28,13 +28,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 )
 
 func init() {
@@ -277,14 +277,14 @@ func (a *publicDelegatedPrefixAdapter) Export(ctx context.Context) (*unstructure
 
 	mc := &direct.MapContext{}
 	spec := ComputePublicDelegatedPrefixSpec_v1beta1_FromProto(mc, a.actual)
-	
+
 	// Map returned string parent prefix back to ParentPrefixRef
 	if a.actual.ParentPrefix != nil {
 		spec.ParentPrefixRef = &krm.ComputePublicDelegatedPrefixParentPrefixRef{
 			External: *a.actual.ParentPrefix,
 		}
 	}
-	
+
 	specObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(spec)
 	if err != nil {
 		return nil, fmt.Errorf("error converting publicDelegatedPrefix spec to unstructured: %w", err)

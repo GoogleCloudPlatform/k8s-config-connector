@@ -115,7 +115,7 @@
 | colab.cnrm.cloud.google.com                   | ColabRuntime                                    | True         | False       | False  | Direct     | True        |
 | colab.cnrm.cloud.google.com                   | ColabRuntimeTemplate                            | True         | False       | False  | Direct     | True        |
 | composer.cnrm.cloud.google.com                | ComposerEnvironment                             | True         | True        | False  | Direct     | True        |
-| compute.cnrm.cloud.google.com                 | ComputeAddress                                  | False        | True        | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeAddress                                  | False        | True        | False  | Direct     | True        |
 | compute.cnrm.cloud.google.com                 | ComputeAutoscaler                               | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeBackendBucket                            | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeBackendBucketSignedURLKey                | True         | False       | False  | Terraform  | False       |
@@ -163,6 +163,8 @@
 | compute.cnrm.cloud.google.com                 | ComputePacketMirroring                          | False        | True        | False  | DCL        | False       |
 | compute.cnrm.cloud.google.com                 | ComputePerInstanceConfig                        | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeProjectMetadata                          | False        | True        | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputePublicAdvertisedPrefix                   | False        | True        | False  | Direct     | True        |
+| compute.cnrm.cloud.google.com                 | ComputePublicDelegatedPrefix                    | False        | True        | False  | Direct     | True        |
 | compute.cnrm.cloud.google.com                 | ComputeRegionAutoscaler                         | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeRegionDiskResourcePolicyAttachment       | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeRegionNetworkEndpointGroup               | False        | True        | False  | Terraform  | False       |
