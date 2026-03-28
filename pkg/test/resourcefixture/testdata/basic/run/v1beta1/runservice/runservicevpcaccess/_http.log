@@ -524,9 +524,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: location=us-central1
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -548,17 +549,18 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services?alt=json&serviceId=runservice-${uniqueId}
+POST https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services?%24alt=json%3Benum-encoding%3Dint&serviceId=runservice-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: location=us-central1
 
 {
-  "ingress": "INGRESS_TRAFFIC_ALL",
+  "ingress": 1,
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "launchStage": "GA",
+  "launchStage": 4,
   "template": {
     "containers": [
       {
@@ -566,8 +568,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       }
     ],
     "vpcAccess": {
-      "connector": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}",
-      "egress": "ALL_TRAFFIC"
+      "egress": 1
     }
   }
 }
@@ -589,13 +590,13 @@ X-Xss-Protection: 0
     "creator": "test@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
-    "ingress": "INGRESS_TRAFFIC_ALL",
+    "ingress": 1,
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
     "lastModifier": "test@google.com",
-    "launchStage": "GA",
+    "launchStage": 4,
     "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
     "template": {
       "containers": [
@@ -609,18 +610,17 @@ X-Xss-Protection: 0
           }
         }
       ],
-      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "executionEnvironment": 2,
       "maxInstanceRequestConcurrency": 80,
       "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
       "timeout": "300s",
       "vpcAccess": {
-        "connector": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}",
-        "egress": "ALL_TRAFFIC"
+        "egress": 1
       }
     },
     "terminalCondition": {
       "lastTransitionTime": "2025-01-01T00:00:00Z",
-      "state": "CONDITION_SUCCEEDED",
+      "state": 4,
       "type": "Ready"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -630,9 +630,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -677,7 +678,6 @@ X-Xss-Protection: 0
       "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
       "timeout": "300s",
       "vpcAccess": {
-        "connector": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}",
         "egress": "ALL_TRAFFIC"
       }
     },
@@ -720,7 +720,6 @@ X-Xss-Protection: 0
       "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
       "timeout": "300s",
       "vpcAccess": {
-        "connector": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}",
         "egress": "ALL_TRAFFIC"
       }
     },
@@ -736,9 +735,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: location=us-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -755,13 +755,13 @@ X-Xss-Protection: 0
   "creator": "${creatorID}",
   "etag": "abcdef0123A=",
   "generation": "12345678901234",
-  "ingress": "INGRESS_TRAFFIC_ALL",
+  "ingress": 1,
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "lastModifier": "test@google.com",
-  "launchStage": "GA",
+  "launchStage": 4,
   "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
   "template": {
     "containers": [
@@ -775,18 +775,17 @@ X-Xss-Protection: 0
         }
       }
     ],
-    "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+    "executionEnvironment": 2,
     "maxInstanceRequestConcurrency": 80,
     "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
     "timeout": "300s",
     "vpcAccess": {
-      "connector": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}",
-      "egress": "ALL_TRAFFIC"
+      "egress": 1
     }
   },
   "terminalCondition": {
     "lastTransitionTime": "2025-01-01T00:00:00Z",
-    "state": "CONDITION_SUCCEEDED",
+    "state": 4,
     "type": "Ready"
   },
   "uid": "111111111111111111111",
@@ -795,36 +794,27 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
+PATCH https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: location=us-central1
 
 {
-  "ingress": "INGRESS_TRAFFIC_ALL",
+  "ingress": 1,
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "launchStage": "GA",
+  "launchStage": 4,
+  "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
   "template": {
     "containers": [
       {
-        "image": "gcr.io/cloudrun/hello",
-        "resources": {
-          "limits": {
-            "cpu": "1000m",
-            "memory": "512Mi"
-          }
-        }
+        "image": "gcr.io/cloudrun/hello"
       }
     ],
-    "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
-    "maxInstanceRequestConcurrency": 80,
-    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
-    "timeout": "300s",
     "vpcAccess": {
-      "connector": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}",
-      "egress": "PRIVATE_RANGES_ONLY"
+      "egress": 2
     }
   }
 }
@@ -846,38 +836,27 @@ X-Xss-Protection: 0
     "creator": "test@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
-    "ingress": "INGRESS_TRAFFIC_ALL",
+    "ingress": 1,
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
     "lastModifier": "test@google.com",
-    "launchStage": "GA",
+    "launchStage": 4,
     "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
     "template": {
       "containers": [
         {
-          "image": "gcr.io/cloudrun/hello",
-          "resources": {
-            "limits": {
-              "cpu": "1000m",
-              "memory": "512Mi"
-            }
-          }
+          "image": "gcr.io/cloudrun/hello"
         }
       ],
-      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
-      "maxInstanceRequestConcurrency": 80,
-      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
-      "timeout": "300s",
       "vpcAccess": {
-        "connector": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}",
-        "egress": "PRIVATE_RANGES_ONLY"
+        "egress": 2
       }
     },
     "terminalCondition": {
       "lastTransitionTime": "2025-01-01T00:00:00Z",
-      "state": "CONDITION_SUCCEEDED",
+      "state": 4,
       "type": "Ready"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -887,9 +866,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -920,21 +900,10 @@ X-Xss-Protection: 0
     "template": {
       "containers": [
         {
-          "image": "gcr.io/cloudrun/hello",
-          "resources": {
-            "limits": {
-              "cpu": "1000m",
-              "memory": "512Mi"
-            }
-          }
+          "image": "gcr.io/cloudrun/hello"
         }
       ],
-      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
-      "maxInstanceRequestConcurrency": 80,
-      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
-      "timeout": "300s",
       "vpcAccess": {
-        "connector": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}",
         "egress": "PRIVATE_RANGES_ONLY"
       }
     },
@@ -963,21 +932,10 @@ X-Xss-Protection: 0
     "template": {
       "containers": [
         {
-          "image": "gcr.io/cloudrun/hello",
-          "resources": {
-            "limits": {
-              "cpu": "1000m",
-              "memory": "512Mi"
-            }
-          }
+          "image": "gcr.io/cloudrun/hello"
         }
       ],
-      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
-      "maxInstanceRequestConcurrency": 80,
-      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
-      "timeout": "300s",
       "vpcAccess": {
-        "connector": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}",
         "egress": "PRIVATE_RANGES_ONLY"
       }
     },
@@ -993,9 +951,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: location=us-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1012,38 +971,27 @@ X-Xss-Protection: 0
   "creator": "${creatorID}",
   "etag": "abcdef0123A=",
   "generation": "12345678901234",
-  "ingress": "INGRESS_TRAFFIC_ALL",
+  "ingress": 1,
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "lastModifier": "test@google.com",
-  "launchStage": "GA",
+  "launchStage": 4,
   "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
   "template": {
     "containers": [
       {
-        "image": "gcr.io/cloudrun/hello",
-        "resources": {
-          "limits": {
-            "cpu": "1000m",
-            "memory": "512Mi"
-          }
-        }
+        "image": "gcr.io/cloudrun/hello"
       }
     ],
-    "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
-    "maxInstanceRequestConcurrency": 80,
-    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
-    "timeout": "300s",
     "vpcAccess": {
-      "connector": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}",
-      "egress": "PRIVATE_RANGES_ONLY"
+      "egress": 2
     }
   },
   "terminalCondition": {
     "lastTransitionTime": "2025-01-01T00:00:00Z",
-    "state": "CONDITION_SUCCEEDED",
+    "state": 4,
     "type": "Ready"
   },
   "uid": "111111111111111111111",
@@ -1052,9 +1000,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
+DELETE https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: location=us-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1073,38 +1022,27 @@ X-Xss-Protection: 0
     "creator": "test@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
-    "ingress": "INGRESS_TRAFFIC_ALL",
+    "ingress": 1,
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
     "lastModifier": "test@google.com",
-    "launchStage": "GA",
+    "launchStage": 4,
     "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
     "template": {
       "containers": [
         {
-          "image": "gcr.io/cloudrun/hello",
-          "resources": {
-            "limits": {
-              "cpu": "1000m",
-              "memory": "512Mi"
-            }
-          }
+          "image": "gcr.io/cloudrun/hello"
         }
       ],
-      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
-      "maxInstanceRequestConcurrency": 80,
-      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
-      "timeout": "300s",
       "vpcAccess": {
-        "connector": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}",
-        "egress": "PRIVATE_RANGES_ONLY"
+        "egress": 2
       }
     },
     "terminalCondition": {
       "lastTransitionTime": "2025-01-01T00:00:00Z",
-      "state": "CONDITION_SUCCEEDED",
+      "state": 4,
       "type": "Ready"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -1114,9 +1052,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1147,21 +1086,10 @@ X-Xss-Protection: 0
     "template": {
       "containers": [
         {
-          "image": "gcr.io/cloudrun/hello",
-          "resources": {
-            "limits": {
-              "cpu": "1000m",
-              "memory": "512Mi"
-            }
-          }
+          "image": "gcr.io/cloudrun/hello"
         }
       ],
-      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
-      "maxInstanceRequestConcurrency": 80,
-      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
-      "timeout": "300s",
       "vpcAccess": {
-        "connector": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}",
         "egress": "PRIVATE_RANGES_ONLY"
       }
     },
@@ -1190,21 +1118,10 @@ X-Xss-Protection: 0
     "template": {
       "containers": [
         {
-          "image": "gcr.io/cloudrun/hello",
-          "resources": {
-            "limits": {
-              "cpu": "1000m",
-              "memory": "512Mi"
-            }
-          }
+          "image": "gcr.io/cloudrun/hello"
         }
       ],
-      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
-      "maxInstanceRequestConcurrency": 80,
-      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
-      "timeout": "300s",
       "vpcAccess": {
-        "connector": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}",
         "egress": "PRIVATE_RANGES_ONLY"
       }
     },
