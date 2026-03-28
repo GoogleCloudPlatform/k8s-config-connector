@@ -1,0 +1,596 @@
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-ipfilter-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "ipFilter": {
+    "allowAllServiceAgentAccess": true,
+    "mode": "Enabled",
+    "publicNetworkSource": {
+      "allowedIpCidrRanges": [
+        "192.168.0.0/16",
+        "10.0.0.0/8"
+      ]
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": []
+  },
+  "location": "US",
+  "name": "storagebucket-ipfilter-${uniqueId}",
+  "storageClass": "STANDARD"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "ipFilter": {
+    "allowAllServiceAgentAccess": true,
+    "mode": "Enabled",
+    "publicNetworkSource": {
+      "allowedIpCidrRanges": [
+        "192.168.0.0/16",
+        "10.0.0.0/8"
+      ]
+    }
+  },
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "1",
+  "name": "storagebucket-ipfilter-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-ipfilter-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-ipfilter-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "ipFilter": {
+    "allowAllServiceAgentAccess": true,
+    "mode": "Enabled",
+    "publicNetworkSource": {
+      "allowedIpCidrRanges": [
+        "192.168.0.0/16",
+        "10.0.0.0/8"
+      ]
+    }
+  },
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "1",
+  "name": "storagebucket-ipfilter-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-ipfilter-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://storage.googleapis.com/storage/v1/b/storagebucket-ipfilter-${uniqueId}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "ipFilter": {
+    "allowAllServiceAgentAccess": true,
+    "mode": "Enabled",
+    "publicNetworkSource": {
+      "allowedIpCidrRanges": [
+        "192.168.0.0/16",
+        "10.0.0.0/8"
+      ]
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "acl": [
+    {
+      "bucket": "storagebucket-ipfilter-${uniqueId}",
+      "entity": "project-owners-${projectNumber}",
+      "etag": "abcdef0123A",
+      "id": "storagebucket-ipfilter-${uniqueId}/project-owners-${projectNumber}",
+      "kind": "storage#bucketAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "owners"
+      },
+      "role": "OWNER",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-ipfilter-${uniqueId}/acl/project-owners-${projectNumber}"
+    },
+    {
+      "bucket": "storagebucket-ipfilter-${uniqueId}",
+      "entity": "project-editors-${projectNumber}",
+      "etag": "abcdef0123A",
+      "id": "storagebucket-ipfilter-${uniqueId}/project-editors-${projectNumber}",
+      "kind": "storage#bucketAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "editors"
+      },
+      "role": "OWNER",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-ipfilter-${uniqueId}/acl/project-editors-${projectNumber}"
+    },
+    {
+      "bucket": "storagebucket-ipfilter-${uniqueId}",
+      "entity": "project-viewers-${projectNumber}",
+      "etag": "abcdef0123A",
+      "id": "storagebucket-ipfilter-${uniqueId}/project-viewers-${projectNumber}",
+      "kind": "storage#bucketAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "viewers"
+      },
+      "role": "READER",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-ipfilter-${uniqueId}/acl/project-viewers-${projectNumber}"
+    }
+  ],
+  "defaultObjectAcl": [
+    {
+      "entity": "project-owners-${projectNumber}",
+      "etag": "abcdef0123A=",
+      "kind": "storage#objectAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "owners"
+      },
+      "role": "OWNER"
+    },
+    {
+      "entity": "project-editors-${projectNumber}",
+      "etag": "abcdef0123A=",
+      "kind": "storage#objectAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "editors"
+      },
+      "role": "OWNER"
+    },
+    {
+      "entity": "project-viewers-${projectNumber}",
+      "etag": "abcdef0123A=",
+      "kind": "storage#objectAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "viewers"
+      },
+      "role": "READER"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "ipFilter": {
+    "allowAllServiceAgentAccess": true,
+    "mode": "Enabled",
+    "publicNetworkSource": {
+      "allowedIpCidrRanges": [
+        "192.168.0.0/16",
+        "10.0.0.0/8"
+      ]
+    }
+  },
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "2",
+  "name": "storagebucket-ipfilter-${uniqueId}",
+  "owner": {
+    "entity": "project-owners-${projectNumber}"
+  },
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-ipfilter-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-ipfilter-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "ipFilter": {
+    "allowAllServiceAgentAccess": true,
+    "mode": "Enabled",
+    "publicNetworkSource": {
+      "allowedIpCidrRanges": [
+        "192.168.0.0/16",
+        "10.0.0.0/8"
+      ]
+    }
+  },
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "2",
+  "name": "storagebucket-ipfilter-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-ipfilter-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://storage.googleapis.com/storage/v1/b/storagebucket-ipfilter-${uniqueId}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "ipFilter": {
+    "mode": "Enabled",
+    "publicNetworkSource": {
+      "allowedIpCidrRanges": [
+        "192.168.0.0/16",
+        "10.0.0.0/8",
+        "172.16.0.0/12"
+      ]
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "acl": [
+    {
+      "bucket": "storagebucket-ipfilter-${uniqueId}",
+      "entity": "project-owners-${projectNumber}",
+      "etag": "abcdef0123A",
+      "id": "storagebucket-ipfilter-${uniqueId}/project-owners-${projectNumber}",
+      "kind": "storage#bucketAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "owners"
+      },
+      "role": "OWNER",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-ipfilter-${uniqueId}/acl/project-owners-${projectNumber}"
+    },
+    {
+      "bucket": "storagebucket-ipfilter-${uniqueId}",
+      "entity": "project-editors-${projectNumber}",
+      "etag": "abcdef0123A",
+      "id": "storagebucket-ipfilter-${uniqueId}/project-editors-${projectNumber}",
+      "kind": "storage#bucketAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "editors"
+      },
+      "role": "OWNER",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-ipfilter-${uniqueId}/acl/project-editors-${projectNumber}"
+    },
+    {
+      "bucket": "storagebucket-ipfilter-${uniqueId}",
+      "entity": "project-viewers-${projectNumber}",
+      "etag": "abcdef0123A",
+      "id": "storagebucket-ipfilter-${uniqueId}/project-viewers-${projectNumber}",
+      "kind": "storage#bucketAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "viewers"
+      },
+      "role": "READER",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-ipfilter-${uniqueId}/acl/project-viewers-${projectNumber}"
+    }
+  ],
+  "defaultObjectAcl": [
+    {
+      "entity": "project-owners-${projectNumber}",
+      "etag": "abcdef0123A=",
+      "kind": "storage#objectAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "owners"
+      },
+      "role": "OWNER"
+    },
+    {
+      "entity": "project-editors-${projectNumber}",
+      "etag": "abcdef0123A=",
+      "kind": "storage#objectAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "editors"
+      },
+      "role": "OWNER"
+    },
+    {
+      "entity": "project-viewers-${projectNumber}",
+      "etag": "abcdef0123A=",
+      "kind": "storage#objectAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "viewers"
+      },
+      "role": "READER"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "ipFilter": {
+    "allowAllServiceAgentAccess": true,
+    "mode": "Enabled",
+    "publicNetworkSource": {
+      "allowedIpCidrRanges": [
+        "192.168.0.0/16",
+        "10.0.0.0/8"
+      ]
+    }
+  },
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "3",
+  "name": "storagebucket-ipfilter-${uniqueId}",
+  "owner": {
+    "entity": "project-owners-${projectNumber}"
+  },
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-ipfilter-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-ipfilter-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "ipFilter": {
+    "allowAllServiceAgentAccess": true,
+    "mode": "Enabled",
+    "publicNetworkSource": {
+      "allowedIpCidrRanges": [
+        "192.168.0.0/16",
+        "10.0.0.0/8"
+      ]
+    }
+  },
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "3",
+  "name": "storagebucket-ipfilter-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-ipfilter-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-ipfilter-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "kind": "storage#objects",
+  "prefixes": [
+    "testfolder",
+    "testmanagedfolder"
+  ]
+}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-ipfilter-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+204 No Content
+Content-Type: application/json
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin

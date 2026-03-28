@@ -1,0 +1,41 @@
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: storagebucket-ipfilter-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  ipFilter:
+    allowAllServiceAgentAccess: false
+    allowCrossOrgVpcs: false
+    mode: Enabled
+    publicNetworkSource:
+      allowedIpCidrRanges:
+      - 192.168.0.0/16
+      - 10.0.0.0/8
+      - 172.16.0.0/12
+  location: US
+  resourceID: storagebucket-ipfilter-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 3
+  observedState:
+    softDeletePolicy:
+      effectiveTime: "1970-01-01T00:00:00Z"
+      retentionDurationSeconds: 604800
+  selfLink: https://www.googleapis.com/storage/v1/b/storagebucket-ipfilter-${uniqueId}
+  url: gs://storagebucket-ipfilter-${uniqueId}
