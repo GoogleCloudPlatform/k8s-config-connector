@@ -14,6 +14,7 @@
 
 PROJECT_ID ?= $(shell gcloud config get-value project)
 SHORT_SHA := $(shell git rev-parse --short=7 HEAD)
+GO_VERSION := $(shell grep "^go" go.mod | sed -e 's/^go[[:space:]]\+//')
 BUILDER_IMG ?= gcr.io/${PROJECT_ID}/builder:${SHORT_SHA}
 CONTROLLER_IMG ?= gcr.io/${PROJECT_ID}/cnrm/controller:${SHORT_SHA}
 RECORDER_IMG ?= gcr.io/${PROJECT_ID}/cnrm/recorder:${SHORT_SHA}
@@ -48,14 +49,9 @@ endif
 .PHONY: all
 all: test manager operator config-connector
 
-# Setup test environment with kubebuilder binaries
-.PHONY: setup-test-env
-setup-test-env:
-	go run sigs.k8s.io/controller-runtime/tools/setup-envtest@release-0.22 use 1.25.0 -p path
-
 # Run tests
 .PHONY: test
-test: generate fmt vet manifests setup-test-env
+test: generate fmt vet manifests
 	./scripts/unit-test.sh
 
 # Build config-connector binary
@@ -274,7 +270,7 @@ run: generate fmt vet
 # Ensures dependencies are up-to-date
 .PHONY: ensure
 ensure:
-	go mod tidy
+	go mod tidy -compat=${GO_VERSION}
 
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr
