@@ -19,7 +19,7 @@
 package compute
 
 import (
-	pb "cloud.google.com/go/compute/apiv1beta/computepb"
+	computepb "cloud.google.com/go/compute/apiv1beta/computepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 	"google.golang.org/protobuf/proto"
 )
@@ -29,7 +29,7 @@ func init() {
 }
 
 func computeFutureReservationFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedFuzzer(&pb.FutureReservation{},
+	f := fuzztesting.NewKRMTypedFuzzer(&computepb.FutureReservation{},
 		ComputeFutureReservationSpec_computepb_v1beta1_FromProto, ComputeFutureReservationSpec_computepb_v1beta1_ToProto,
 		ComputeFutureReservationObservedState_computepb_v1beta1_FromProto, ComputeFutureReservationObservedState_computepb_v1beta1_ToProto,
 	)
@@ -63,48 +63,48 @@ func computeFutureReservationFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".specific_sku_properties")
 	f.StatusFields.Insert(".zone")
 
-	f.FilterSpec = func(in *pb.FutureReservation) {
+	f.FilterSpec = func(in *computepb.FutureReservation) {
 		// Clear empty messages to avoid round-trip failures
 		if in.AggregateReservation != nil {
 			in.AggregateReservation.HostCount = nil
 			in.AggregateReservation.InUseHostCount = nil
 			in.AggregateReservation.InUseInstanceCount = nil
-			if proto.Equal(in.AggregateReservation, &pb.AllocationAggregateReservation{}) {
+			if proto.Equal(in.AggregateReservation, &computepb.AllocationAggregateReservation{}) {
 				in.AggregateReservation = nil
 			}
 		}
-		if in.AutoCreatedReservationsDuration != nil && proto.Equal(in.AutoCreatedReservationsDuration, &pb.Duration{}) {
+		if in.AutoCreatedReservationsDuration != nil && proto.Equal(in.AutoCreatedReservationsDuration, &computepb.Duration{}) {
 			in.AutoCreatedReservationsDuration = nil
 		}
-		if in.CommitmentInfo != nil && proto.Equal(in.CommitmentInfo, &pb.FutureReservationCommitmentInfo{}) {
+		if in.CommitmentInfo != nil && proto.Equal(in.CommitmentInfo, &computepb.FutureReservationCommitmentInfo{}) {
 			in.CommitmentInfo = nil
 		}
-		if in.ShareSettings != nil && proto.Equal(in.ShareSettings, &pb.ShareSettings{}) {
+		if in.ShareSettings != nil && proto.Equal(in.ShareSettings, &computepb.ShareSettings{}) {
 			in.ShareSettings = nil
 		}
-		if in.SpecificSkuProperties != nil && proto.Equal(in.SpecificSkuProperties, &pb.FutureReservationSpecificSKUProperties{}) {
+		if in.SpecificSkuProperties != nil && proto.Equal(in.SpecificSkuProperties, &computepb.FutureReservationSpecificSKUProperties{}) {
 			in.SpecificSkuProperties = nil
 		}
-		if in.TimeWindow != nil && proto.Equal(in.TimeWindow, &pb.FutureReservationTimeWindow{}) {
+		if in.TimeWindow != nil && proto.Equal(in.TimeWindow, &computepb.FutureReservationTimeWindow{}) {
 			in.TimeWindow = nil
 		}
 
 		in.ProtectionTier = nil
 	}
 
-	f.FilterStatus = func(in *pb.FutureReservation) {
+	f.FilterStatus = func(in *computepb.FutureReservation) {
 		// Clear empty messages to avoid round-trip failures
 		if in.Status != nil {
-			if in.Status.ExistingMatchingUsageInfo != nil && proto.Equal(in.Status.ExistingMatchingUsageInfo, &pb.FutureReservationStatusExistingMatchingUsageInfo{}) {
+			if in.Status.ExistingMatchingUsageInfo != nil && proto.Equal(in.Status.ExistingMatchingUsageInfo, &computepb.FutureReservationStatusExistingMatchingUsageInfo{}) {
 				in.Status.ExistingMatchingUsageInfo = nil
 			}
-			if in.Status.LastKnownGoodState != nil && proto.Equal(in.Status.LastKnownGoodState, &pb.FutureReservationStatusLastKnownGoodState{}) {
+			if in.Status.LastKnownGoodState != nil && proto.Equal(in.Status.LastKnownGoodState, &computepb.FutureReservationStatusLastKnownGoodState{}) {
 				in.Status.LastKnownGoodState = nil
 			}
-			if in.Status.SpecificSkuProperties != nil && proto.Equal(in.Status.SpecificSkuProperties, &pb.FutureReservationStatusSpecificSKUProperties{}) {
+			if in.Status.SpecificSkuProperties != nil && proto.Equal(in.Status.SpecificSkuProperties, &computepb.FutureReservationStatusSpecificSKUProperties{}) {
 				in.Status.SpecificSkuProperties = nil
 			}
-			if proto.Equal(in.Status, &pb.FutureReservationStatus{}) {
+			if proto.Equal(in.Status, &computepb.FutureReservationStatus{}) {
 				in.Status = nil
 			}
 		}
@@ -113,7 +113,7 @@ func computeFutureReservationFuzzer() fuzztesting.KRMFuzzer {
 			in.AggregateReservation.HostCount = nil
 			in.AggregateReservation.InUseHostCount = nil
 			in.AggregateReservation.InUseInstanceCount = nil
-			if proto.Equal(in.AggregateReservation, &pb.AllocationAggregateReservation{}) {
+			if proto.Equal(in.AggregateReservation, &computepb.AllocationAggregateReservation{}) {
 				in.AggregateReservation = nil
 			}
 		}

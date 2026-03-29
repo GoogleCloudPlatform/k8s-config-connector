@@ -28,7 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	computev1beta "cloud.google.com/go/compute/apiv1beta"
-	computepbv1beta "cloud.google.com/go/compute/apiv1beta/computepb"
+	computepb "cloud.google.com/go/compute/apiv1beta/computepb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -89,7 +89,7 @@ type FutureReservationAdapter struct {
 	id        *krm.FutureReservationIdentity
 	gcpClient *computev1beta.FutureReservationsClient
 	desired   *krm.ComputeFutureReservation
-	actual    *computepbv1beta.FutureReservation
+	actual    *computepb.FutureReservation
 }
 
 var _ directbase.Adapter = &FutureReservationAdapter{}
@@ -102,7 +102,7 @@ func (a *FutureReservationAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting FutureReservation", "name", a.id)
 
-	req := &computepbv1beta.GetFutureReservationRequest{
+	req := &computepb.GetFutureReservationRequest{
 		Project:           a.id.Parent().ProjectID,
 		Zone:              a.id.Parent().Zone,
 		FutureReservation: a.id.ID(),
@@ -132,7 +132,7 @@ func (a *FutureReservationAdapter) Create(ctx context.Context, createOp *directb
 	}
 	resource.Name = direct.LazyPtr(a.id.ID())
 
-	req := &computepbv1beta.InsertFutureReservationRequest{
+	req := &computepb.InsertFutureReservationRequest{
 		Project:                   a.id.Parent().ProjectID,
 		Zone:                      a.id.Parent().Zone,
 		FutureReservationResource: resource,
@@ -202,7 +202,7 @@ func (a *FutureReservationAdapter) Update(ctx context.Context, updateOp *directb
 	} else {
 		log.V(2).Info("fields need update", "name", a.id, "paths", paths)
 
-		req := &computepbv1beta.UpdateFutureReservationRequest{
+		req := &computepb.UpdateFutureReservationRequest{
 			Project:                   a.id.Parent().ProjectID,
 			Zone:                      a.id.Parent().Zone,
 			UpdateMask:                direct.LazyPtr(strings.Join(paths, ",")),
@@ -264,7 +264,7 @@ func (a *FutureReservationAdapter) Delete(ctx context.Context, deleteOp *directb
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting FutureReservation", "name", a.id)
 
-	req := &computepbv1beta.DeleteFutureReservationRequest{
+	req := &computepb.DeleteFutureReservationRequest{
 		Project:           a.id.Parent().ProjectID,
 		Zone:              a.id.Parent().Zone,
 		FutureReservation: a.id.ID(),
@@ -282,8 +282,8 @@ func (a *FutureReservationAdapter) Delete(ctx context.Context, deleteOp *directb
 	return true, nil
 }
 
-func (a *FutureReservationAdapter) get(ctx context.Context) (*computepbv1beta.FutureReservation, error) {
-	getReq := &computepbv1beta.GetFutureReservationRequest{
+func (a *FutureReservationAdapter) get(ctx context.Context) (*computepb.FutureReservation, error) {
+	getReq := &computepb.GetFutureReservationRequest{
 		Project:           a.id.Parent().ProjectID,
 		Zone:              a.id.Parent().Zone,
 		FutureReservation: a.id.ID(),
