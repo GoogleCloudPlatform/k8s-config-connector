@@ -65,7 +65,7 @@ func TestConfigConnectorE2E(t *testing.T) {
 	}
 
 	// TODO: Replace with a poll for status/observedGeneration
-	time.Sleep(15 * time.Second)
+	time.Sleep(45 * time.Second)
 
 	newCC := &corev1beta1.ConfigConnector{}
 	if err := c.Get(ctx, nn, newCC); err != nil {
@@ -73,7 +73,7 @@ func TestConfigConnectorE2E(t *testing.T) {
 	}
 	status := newCC.GetCommonStatus()
 	if got, want := status.Healthy, true; got != want {
-		t.Errorf("unexpected value for status.healthy: got '%v', want '%v'", got, want)
+		t.Errorf("unexpected value for status.healthy: got '%v', want '%v', errors: %v", got, want, status.Errors)
 	}
 	if len(status.Errors) != 0 {
 		t.Errorf("unexpected number of errors in status.errors: got %v, want 0. Got errors: %v", len(status.Errors), status.Errors)
