@@ -20,7 +20,7 @@ cd "${REPO_ROOT}"
 make -C operator test
 # Env var VALIDATE_URLS needs to be unset to avoid calling URLs in TestReferenceDocConsistency under scripts/generate-google3-docs/.
 unset VALIDATE_URLS
-UNIT_TEST_PACKAGES=$(go list ./pkg/... ./cmd/... ./config/tests/...  ./scripts/resource-autogen/... ./scripts/generate-google3-docs/... ./tests/... ./experiments/conductor/cmd/runner/... | grep -v tests/e2e)
+UNIT_TEST_PACKAGES=$(go list ./pkg/... ./cmd/... ./config/tests/...  ./scripts/resource-autogen/... ./scripts/generate-google3-docs/... ./tests/... | grep -v tests/e2e)
 if [ -z ${GITHUB_ACTION+x} ]; then
     go run gotest.tools/gotestsum@latest --format testname -- ${UNIT_TEST_PACKAGES} -coverprofile cover.out -count=1
 else

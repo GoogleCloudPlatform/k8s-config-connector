@@ -17,7 +17,7 @@ set -e
 
 echo "--- Checking for new version to tag from version/VERSION ---"
 
-# 1. Read the version from the VERSION file at HEAD.
+# 1. Read the version from the VERSION file.
 VERSION_FILE="version/VERSION"
 if [ ! -f "$VERSION_FILE" ]; then
     echo "ERROR: Version file not found at ${VERSION_FILE}"
@@ -37,59 +37,44 @@ if [ "$(git tag -l "v${VERSION}")" ]; then
 fi
 echo "Tag v$VERSION does not exist. Proceeding."
 
-# 3. Use the current commit (HEAD) as the tag target.
-# We tag the end of the release PR (which includes 3 commits), not just the first commit that bumped the version.
-# We assume this script runs on the tip of the release branch/PR.
-COMMIT_HASH=$(git rev-parse HEAD)
+# 3. Use the provided commit hash or default to HEAD.
+COMMIT_HASH=${1:-$(git rev-parse HEAD)}
 if [ -z "${COMMIT_HASH}" ]; then
   echo "ERROR: Could not determine commit hash."
   exit 1
 fi
-echo "Using HEAD as commit to tag: ${COMMIT_HASH}"
+echo "Using commit to tag: ${COMMIT_HASH}"
 
-# 4. Verify the commit messages match the release pattern.
-# We expect the sequence (oldest to newest):
-# 1. Release <VERSION>
-# 2. (Optional) Update golden files for operator controllers
+# 4. Verify the commit message matches the release pattern.
+# We expect the commit message (optionally from the merged branch tip) to be:
+# Release <VERSION>
 
-# We start checking from HEAD and work backwards.
-CURRENT_REF="HEAD"
-
+# We start checking from the target commit and work backwards if it's a merge commit.
+CURRENT_REF="${COMMIT_HASH}"
 MSG=$(git log --format=%s -n 1 "${CURRENT_REF}")
 
-# Check for Optional commit 0: Merge commit
-# This effectively checks if CURRENT_REF is a merge commit (which will have at least two parents).
-# ${CURRENT_REF}^2 refers to the second parent, which is the tip of the branch being merged.
-# This allows us to inspect the actual commit message from the source branch (the PR).
+# Check if the commit is a merge commit.
 if git rev-parse --verify "${CURRENT_REF}^2" >/dev/null 2>&1; then
-  echo "Found merge commit at ${CURRENT_REF} (has 2 parents). Verifying content from the merged branch (HEAD^2)."
+  echo "Found merge commit at ${CURRENT_REF}. Verifying content from the merged branch (${CURRENT_REF}^2)."
   CURRENT_REF="${CURRENT_REF}^2"
   MSG=$(git log --format=%s -n 1 "${CURRENT_REF}")
 fi
 
-# Check for Optional commit 2: Golden files
-EXPECTED_GOLDEN="Update golden files for operator controllers"
-if [ "${MSG}" = "${EXPECTED_GOLDEN}" ]; then
-  echo "Found golden files update commit at ${CURRENT_REF}."
-  CURRENT_REF="${CURRENT_REF}~1"
-  MSG=$(git log --format=%s -n 1 "${CURRENT_REF}")
-fi
-
-# Check for Required commit 1: Release version
+# Finally verify the version bump commit message.
 EXPECTED_RELEASE="Release ${VERSION}"
 if [ "${MSG}" != "${EXPECTED_RELEASE}" ]; then
-  echo "ERROR: Expected commit message '${EXPECTED_RELEASE}' at ${CURRENT_REF} (derived from HEAD), but found '${MSG}'"
-  echo "The release PR must typically start with a 'Release ${VERSION}' commit, optionally followed by CRD updates and/or golden file updates."
+  echo "ERROR: Expected commit message '${EXPECTED_RELEASE}' at ${CURRENT_REF} (derived from target commit), but found '${MSG}'"
+  echo "The release PR must have a 'Release ${VERSION}' commit as its tip (excluding the merge commit)."
   exit 1
 fi
 
 echo "Verified commit messages match release pattern."
 
-# 4. Verify the version in the file at the target commit matches the version from HEAD.
+# 4. Verify the version in the file at the target commit matches the version from the current workspace.
 # This ensures we're tagging the right commit.
 VERSION_AT_COMMIT=$(git show "${COMMIT_HASH}:${VERSION_FILE}" | tr -d '[:space:]')
 if [ "$VERSION_AT_COMMIT" != "$VERSION" ]; then
-    echo "ERROR: Version at HEAD ('$VERSION') does not match version at commit ${COMMIT_HASH} ('${VERSION_AT_COMMIT}')."
+    echo "ERROR: Workspace version ('$VERSION') does not match version at target commit ${COMMIT_HASH} ('${VERSION_AT_COMMIT}')."
     echo "This can happen if ${VERSION_FILE} was modified after the version bump commit."
     exit 1
 fi

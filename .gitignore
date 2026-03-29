@@ -160,10 +160,6 @@ e2e.log
 testlogs/
 log
 
-# experiments/conductor
-experiments/conductor/logs
-experiments/conductor/branches.yaml
-
 # failing fuzz output
 pkg/fuzztesting/fuzztests/testdata/fuzz/FuzzAllMappers
 
@@ -188,3 +184,14 @@ run-*.log
 stdout.*
 stderr.*
 test_mcp*.py
+# Ignore all channel packages by default, but unignore per-namespace-components.yaml
+# The bang (!) prefix is used to unignore the given files.
+operator/channels/packages/configconnector/**
+!operator/channels/packages/configconnector/*/
+!operator/channels/packages/configconnector/*/namespaced/
+!operator/channels/packages/configconnector/*/namespaced/per-namespace-components.yaml
+operator/autopilot-channels/packages/configconnector/**
+!operator/autopilot-channels/packages/configconnector/*/
+!operator/autopilot-channels/packages/configconnector/*/namespaced/
+!operator/autopilot-channels/packages/configconnector/*/namespaced/per-namespace-components.yaml
+
