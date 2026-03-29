@@ -15,6 +15,8 @@
 package mockcertificatemanager
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
@@ -23,6 +25,9 @@ var _ mockgcpregistry.SupportsNormalization = &MockService{}
 const NormalizedTimestamp = "2024-04-01T12:34:56.123456Z"
 
 func (s *MockService) ConfigureVisitor(url string, visitor mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "certificatemanager.googleapis.com") {
+		return
+	}
 	visitor.ReplacePath(".createTime", NormalizedTimestamp)
 	visitor.ReplacePath(".updateTime", NormalizedTimestamp)
 	visitor.ReplacePath(".response.createTime", NormalizedTimestamp)

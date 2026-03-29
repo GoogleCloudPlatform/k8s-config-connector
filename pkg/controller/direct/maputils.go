@@ -287,6 +287,17 @@ func IsBadRequest(err error) bool {
 	return HasHTTPCode(err, 400)
 }
 
+// IsAlreadyExists returns true if the given error is an HTTP 409 or gRPC AlreadyExists.
+func IsAlreadyExists(err error) bool {
+	if err == nil {
+		return false
+	}
+
+	apiError := &apierror.APIError{}
+	return errors.As(err, &apiError) && apiError.HTTPCode() == 409 ||
+		grpcStatus.Code(err) == grpcCode.AlreadyExists
+}
+
 // HasHTTPCode returns true if the given error is an HTTP response with the given code.
 func HasHTTPCode(err error, code int) bool {
 

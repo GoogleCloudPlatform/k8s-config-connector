@@ -17,7 +17,7 @@
 // krm.group: clouddeploy.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.deploy.v1
-// resource: DeployCustomTargetType:CustomTargetType
+// resource: CloudDeployCustomTargetType:CustomTargetType
 // resource: CloudDeployDeployPolicy:DeployPolicy
 // resource: CloudDeployTarget:Target
 

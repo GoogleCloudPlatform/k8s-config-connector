@@ -370,6 +370,30 @@ func AlloyDBInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.All
 	// MISSING: GcaConfig
 	return out
 }
+func AlloyDBUserStatus_FromProto(mapCtx *direct.MapContext, in *pb.User) *krm.AlloyDBUserStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlloyDBUserStatus{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: Password
+	// MISSING: DatabaseRoles
+	// MISSING: UserType
+	// MISSING: KeepExtraRoles
+	return out
+}
+func AlloyDBUserStatus_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBUserStatus) *pb.User {
+	if in == nil {
+		return nil
+	}
+	out := &pb.User{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: Password
+	// MISSING: DatabaseRoles
+	// MISSING: UserType
+	// MISSING: KeepExtraRoles
+	return out
+}
 func AutomatedBackupPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AutomatedBackupPolicy) *krm.AutomatedBackupPolicy {
 	if in == nil {
 		return nil

@@ -43,10 +43,48 @@ spec:
   resourceID: privatecacertificateauthority-${uniqueId}
   type: SELF_SIGNED
 status:
+  caCertificateDescriptions:
+  - authorityKeyId:
+      keyId: 58ff0120decc0d87caa30eb45fef39e38133e733
+    certFingerprint:
+      sha256Hash: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789privatecacertificateauthority-${uniqueId}
+    publicKey:
+      format: PEM
+      key: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUFyeGt3dVBoREZTNlc1eEgvMW1MVApTYXhzMTNONnpGYlRXSUY4aG4vTlk1cXlJYmFpd0FYdEVOeU53NkhSSmd4R2c0WElkRXlMVGpCK1VNVVVLYU9OCnd0WFJTUW9CeGR2VitKeWRlL05jTUUzM3QyT3d1UDBRVzY2UnRLak52b2R5dzRLTHphVmp6T1hPY0YwV0NNYy8KRjV4cU5uUHpOalVncUlBanozSHkrejROWmNnT0lnM3dVdEJRRlNTUm16TmtzdjMwejhLQjdXUXJkaElWb3JuOQpuWVFPeW11eTZPT0dLM3FIUXRZYk1MYU9oREY1VnJ3amozblUxeStQMzdRR1kwdG5KS3VYbGNwR3hJN0tkWTI5CjRJM1F6K0JHemI0Wll0WE1uTzNOZFZVaTRteG14VTBMbVE3VlJkdHpkTGN6cTJDUEoyV2JjTTZkUldmVERoNisKYzdDQys3K1ZBdzlxeW1OSnFXN0wxb2JNSkNuTHpwcHBPVWg0RjNXU1V0SXVLcUZ2alo1eFMzUXBFSGJsRFoybgpUaTY1Tm4yR2JzeVYrc2FxTkpOdUdmVEpvUzRJOGFoakljY2hDaXUzRDMxNm5MczlENmMwckRLNmxsbUpHdFRLCmZsSVEyQkZmY2FtV2VlSXlNU1dIK3Uza2lKTTY2YWF1NVJrNlFXWWlKMTRhaWswNmsvK1pMRnNMazUvbVV3eVEKTWFUMXNPUGQ1Z3FSeUsrdGgyVXNkb1p1dE5PZFZYMWdRNjk4cXdVZk1oTmpkSzNLZUkzNWQvY2xuR2F1UGVPSgo2ZlgySy9WN1hTblQrcGRjRTExZjNFU0FZVEIybnJJSXgzK3NjYXdZalREd0Qrd2JQZ0p4ZG4wc1ppOTNtV2FKCkFPdTV4QjBOSStsYXhZT2tPZHhrYklVQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=
+    subjectDescription:
+      hexSerialNumber: 0123456789abcdef
+      lifetime: 86400s
+      notAfterTime: "2024-04-01T12:34:56.123456Z"
+      notBeforeTime: "2024-04-01T12:34:56.123456Z"
+      subject:
+        commonName: my-certificate-authority
+        organization: Example
+      subjectAltName:
+        dnsNames:
+        - example.com
+    subjectKeyId:
+      keyId: 58ff0120decc0d87caa30eb45fef39e38133e733
+    x509Description:
+      caOptions:
+        isCa: true
+      keyUsage:
+        baseKeyUsage:
+          certSign: true
+          crlSign: true
+        extendedKeyUsage:
+          serverAuth: true
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
     message: The resource is up to date
     reason: UpToDate
     status: "True"
     type: Ready
+  createTime: "1970-01-01T00:00:00Z"
   observedGeneration: 2
+  pemCaCertificates:
+  - |
+    -----BEGIN CERTIFICATE-----
+    -----END CERTIFICATE-----
+  state: STAGED
+  tier: ENTERPRISE
+  updateTime: "1970-01-01T00:00:00Z"

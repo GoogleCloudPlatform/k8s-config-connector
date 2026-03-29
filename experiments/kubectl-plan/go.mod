@@ -1,13 +1,13 @@
 module github.com/GoogleCloudPlatform/k8s-config-connector/experiments/kubectl-plan
 
-go 1.24.0
+go 1.26
 
-toolchain go1.24.6
+toolchain go1.26.1
 
 require (
 	github.com/google/go-cmp v0.7.0
 	github.com/spf13/cobra v1.8.1
-	k8s.io/apimachinery v0.33.0
+	k8s.io/apimachinery v0.33.9
 	k8s.io/client-go v0.33.0
 	k8s.io/klog/v2 v2.130.1
 	sigs.k8s.io/controller-runtime v0.20.4
@@ -44,7 +44,7 @@ require (
 	github.com/stretchr/testify v1.11.1 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	golang.org/x/net v0.48.0 // indirect
-	golang.org/x/oauth2 v0.34.0 // indirect
+	golang.org/x/oauth2 v0.36.0 // indirect
 	golang.org/x/sys v0.39.0 // indirect
 	golang.org/x/term v0.38.0 // indirect
 	golang.org/x/text v0.32.0 // indirect

@@ -7,12 +7,12 @@
 | accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerAccessPolicy                | False        | True        | False  | Terraform  | True        |
 | accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerGCPUserAccessBinding        | True         | False       | False  | Terraform  | False       |
 | accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerServicePerimeterResource    | True         | True        | False  | Terraform  | False       |
-| accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerServicePerimeter            | False        | True        | False  | Terraform  | False       |
+| accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerServicePerimeter            | False        | True        | False  | Terraform  | True        |
 | aiplatform.cnrm.cloud.google.com              | AIPlatformModel                                 | True         | False       | False  | Direct     | True        |
 | alloydb.cnrm.cloud.google.com                 | AlloyDBBackup                                   | True         | True        | False  | Terraform  | True        |
 | alloydb.cnrm.cloud.google.com                 | AlloyDBCluster                                  | True         | True        | False  | Terraform  | True        |
 | alloydb.cnrm.cloud.google.com                 | AlloyDBInstance                                 | True         | True        | False  | Direct     | True        |
-| alloydb.cnrm.cloud.google.com                 | AlloyDBUser                                     | False        | True        | False  | Terraform  | False       |
+| alloydb.cnrm.cloud.google.com                 | AlloyDBUser                                     | False        | True        | False  | Terraform  | True        |
 | analytics.cnrm.cloud.google.com               | AnalyticsAccount                                | True         | False       | False  | Direct     | True        |
 | apigateway.cnrm.cloud.google.com              | APIGatewayAPIConfig                             | True         | False       | False  | Terraform  | False       |
 | apigateway.cnrm.cloud.google.com              | APIGatewayAPI                                   | True         | True        | False  | Direct     | True        |
@@ -91,6 +91,7 @@
 | cloudasset.cnrm.cloud.google.com              | CloudAssetProjectFeed                           | True         | False       | False  | Terraform  | False       |
 | cloudbuild.cnrm.cloud.google.com              | CloudBuildTrigger                               | False        | True        | False  | Terraform  | True        |
 | cloudbuild.cnrm.cloud.google.com              | CloudBuildWorkerPool                            | True         | True        | False  | Direct     | True        |
+| clouddeploy.cnrm.cloud.google.com             | CloudDeployCustomTargetType                     | True         | False       | False  | Direct     | True        |
 | clouddeploy.cnrm.cloud.google.com             | CloudDeployDeliveryPipeline                     | True         | True        | False  | Direct     | True        |
 | clouddeploy.cnrm.cloud.google.com             | CloudDeployDeployPolicy                         | True         | False       | False  | Direct     | True        |
 | clouddeploy.cnrm.cloud.google.com             | CloudDeployTarget                               | True         | False       | False  | Direct     | True        |
@@ -148,7 +149,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeNetworkPeering                           | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeNetwork                                  | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeNodeGroup                                | False        | True        | False  | Terraform  | False       |
-| compute.cnrm.cloud.google.com                 | ComputeNodeTemplate                             | False        | True        | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeNodeTemplate                             | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeOrganizationSecurityPolicy               | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeOrganizationSecurityPolicyAssociation    | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeOrganizationSecurityPolicyRule           | True         | False       | False  | Terraform  | False       |
@@ -161,7 +162,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeRegionPerInstanceConfig                  | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeRegionSSLPolicy                          | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeReservation                              | False        | True        | False  | Terraform  | False       |
-| compute.cnrm.cloud.google.com                 | ComputeResourcePolicy                           | False        | True        | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeResourcePolicy                           | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeRouterInterface                          | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeRouterNAT                                | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeRouterPeer                               | False        | True        | False  | Terraform  | False       |
@@ -177,7 +178,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeSubnetwork                               | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeTargetGRPCProxy                          | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeTargetHTTPProxy                          | False        | True        | False  | Terraform  | False       |
-| compute.cnrm.cloud.google.com                 | ComputeTargetHTTPSProxy                         | False        | True        | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeTargetHTTPSProxy                         | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeTargetInstance                           | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeTargetPool                               | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeTargetSSLProxy                           | False        | True        | False  | Terraform  | False       |
@@ -208,7 +209,7 @@
 | dataplex.cnrm.cloud.google.com                | DataplexLake                                    | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                | DataplexTask                                    | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                | DataplexZone                                    | True         | False       | False  | Direct     | True        |
-| dataproc.cnrm.cloud.google.com                | DataprocAutoscalingPolicy                       | False        | True        | False  | DCL        | False       |
+| dataproc.cnrm.cloud.google.com                | DataprocAutoscalingPolicy                       | False        | True        | False  | DCL        | True        |
 | dataproc.cnrm.cloud.google.com                | DataprocBatch                                   | True         | False       | False  | Direct     | True        |
 | dataproc.cnrm.cloud.google.com                | DataprocCluster                                 | False        | True        | False  | DCL        | False       |
 | dataproc.cnrm.cloud.google.com                | DataprocJob                                     | True         | False       | False  | Direct     | True        |
@@ -219,7 +220,6 @@
 | datastream.cnrm.cloud.google.com              | DatastreamPrivateConnection                     | True         | False       | False  | Direct     | True        |
 | datastream.cnrm.cloud.google.com              | DatastreamRoute                                 | True         | False       | False  | Direct     | True        |
 | datastream.cnrm.cloud.google.com              | DatastreamStream                                | True         | False       | False  | Terraform  | False       |
-| clouddeploy.cnrm.cloud.google.com             | DeployCustomTargetType                          | True         | False       | False  | Direct     | True        |
 | deploymentmanager.cnrm.cloud.google.com       | DeploymentManagerDeployment                     | True         | False       | False  | Terraform  | False       |
 | dialogflow.cnrm.cloud.google.com              | DialogflowAgent                                 | True         | False       | False  | Terraform  | False       |
 | dialogflowcx.cnrm.cloud.google.com            | DialogflowCXAgent                               | True         | False       | False  | Terraform  | False       |
@@ -372,6 +372,7 @@
 | osconfig.cnrm.cloud.google.com                | OSConfigPatchDeployment                         | True         | False       | False  | Terraform  | False       |
 | oslogin.cnrm.cloud.google.com                 | OSLoginSSHPublicKey                             | True         | False       | False  | Terraform  | False       |
 | parametermanager.cnrm.cloud.google.com        | ParameterManagerParameter                       | True         | False       | False  | Direct     | True        |
+| parametermanager.cnrm.cloud.google.com        | ParameterManagerParameterVersion                | True         | False       | False  | Direct     | True        |
 | privateca.cnrm.cloud.google.com               | PrivateCACAPool                                 | False        | True        | False  | DCL        | True        |
 | privateca.cnrm.cloud.google.com               | PrivateCACertificateAuthority                   | False        | True        | False  | DCL        | False       |
 | privateca.cnrm.cloud.google.com               | PrivateCACertificate                            | False        | True        | False  | DCL        | False       |

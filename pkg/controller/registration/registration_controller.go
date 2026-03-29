@@ -49,6 +49,7 @@ import (
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	crcontroller "sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/event"
@@ -86,7 +87,7 @@ func AddDeletionDefender(mgr manager.Manager, rd *controller.Deps) error {
 		ControllerName: "deletion-defender-registration-controller",
 	}
 
-	if err := add(mgr, &controller.Deps{}, registerDeletionDefenderController, opt); err != nil {
+	if err := add(mgr, rd, registerDeletionDefenderController, opt); err != nil {
 		return fmt.Errorf("error adding deletion-defender registration controller: %w", err)
 	}
 	return nil
@@ -105,13 +106,16 @@ func AddUnmanagedDetector(mgr manager.Manager, rd *controller.Deps) error {
 		if _, ok := k8s.IgnoredKindList[gvk.Kind]; ok {
 			return nil, nil
 		}
-		if err := unmanageddetector.Add(ctx, r.mgr, gvk); err != nil {
+		opt := crcontroller.Options{
+			SkipNameValidation: ptr.To(r.SkipNameValidation),
+		}
+		if err := unmanageddetector.Add(ctx, r.mgr, gvk, opt); err != nil {
 			return nil, fmt.Errorf("error registering unmanaged detector controller for '%v': %w", gvk.Kind, err)
 		}
 		return nil, nil
 	}
 
-	if err := add(mgr, &controller.Deps{}, registerUnmanagedDetectorController, opt); err != nil {
+	if err := add(mgr, rd, registerUnmanagedDetectorController, opt); err != nil {
 		return fmt.Errorf("error adding unmanaged-detector registration controller: %w", err)
 	}
 	return nil
@@ -143,11 +147,13 @@ func add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc, opt
 		reconcilers:                make(map[schema.GroupVersionKind]*parent.Reconcilers),
 		immediateReconcileRequests: make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize),
 		resourceWatcherRoutines:    semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines),
+		SkipNameValidation:         rd.SkipNameValidation,
 	}
 	c, err := crcontroller.New(opts.ControllerName, mgr,
 		crcontroller.Options{
 			Reconciler:              r,
 			MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles,
+			SkipNameValidation:      ptr.To(r.SkipNameValidation),
 		})
 	if err != nil {
 		return err
@@ -179,6 +185,8 @@ type ReconcileRegistration struct {
 	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
 
 	mu sync.Mutex
+
+	SkipNameValidation bool
 }
 
 type controllerContext struct {
@@ -265,6 +273,7 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 		JitterGen:    r.jitterGenerator,
 		Defaulters:   r.defaulters,
 		//DependencyTracker: r.dependencyTracker,
+		SkipNameValidation: r.SkipNameValidation,
 	}
 
 	// todo acpana house in KCC mgr flag
@@ -294,7 +303,7 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 		// register the controller to automatically create secrets for GSA keys
 		if isServiceAccountKeyCRD(crd) {
 			logger.Info("registering the GSA-Key-to-Secret generation controller")
-			if err := gsakeysecretgenerator.Add(r.mgr, crd, &controller.Deps{JitterGen: r.jitterGenerator}); err != nil {
+			if err := gsakeysecretgenerator.Add(r.mgr, crd, &controller.Deps{JitterGen: r.jitterGenerator, SkipNameValidation: r.SkipNameValidation}); err != nil {
 				return nil, fmt.Errorf("error adding the gsa-to-secret generator for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
 		}
@@ -338,12 +347,14 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 						IAMAdapterDeps: &directbase.IAMAdapterDeps{
 							KubeClient: r.Client,
 							ControllerDeps: &controller.Deps{
-								TFProvider:   r.provider,
-								TFLoader:     r.smLoader,
-								DCLConfig:    r.dclConfig,
-								DCLConverter: r.dclConverter,
+								TFProvider:         r.provider,
+								TFLoader:           r.smLoader,
+								DCLConfig:          r.dclConfig,
+								DCLConverter:       r.dclConverter,
+								SkipNameValidation: r.SkipNameValidation,
 							},
 						},
+						SkipNameValidation: r.SkipNameValidation,
 					}
 					reconcilers.Direct, err = directbase.NewReconciler(r.mgr, nil, nil, gvk, model, deps)
 					if err != nil {
@@ -352,7 +363,10 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 				}
 			}
 			r.reconcilers[gvk] = reconcilers
-			if err := parent.Add(r.mgr, gvk, reconcilers); err != nil {
+			opt := crcontroller.Options{
+				SkipNameValidation: ptr.To(r.SkipNameValidation),
+			}
+			if err := parent.Add(r.mgr, gvk, reconcilers, opt); err != nil {
 				return nil, fmt.Errorf("error adding parent controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
 		}
@@ -364,7 +378,10 @@ func registerDeletionDefenderController(r *ReconcileRegistration, crd *apiextens
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
 	}
-	if err := deletiondefender.Add(r.mgr, crd); err != nil {
+	opt := crcontroller.Options{
+		SkipNameValidation: ptr.To(r.SkipNameValidation),
+	}
+	if err := deletiondefender.Add(r.mgr, crd, opt); err != nil {
 		return nil, fmt.Errorf("error registering deletion defender controller for '%v': %w", crd.GetName(), err)
 	}
 	return nil, nil

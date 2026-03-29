@@ -76,6 +76,7 @@ func (r *Reconciler) applyMultiClusterLeaderElection(ctx context.Context, lease 
 			// Add --leader-election-type=multicluster flag
 			args, _, _ := unstructured.NestedStringSlice(container, "args")
 			args = append(args, "--leader-election-type=multicluster")
+			args = append(args, "--syncing-mode=pull")
 			if err := unstructured.SetNestedStringSlice(container, args, "args"); err != nil {
 				return fmt.Errorf("failed to set args: %w", err)
 			}
