@@ -1625,7 +1625,16 @@ func TestApplyRateLimitCustomizations(t *testing.T) {
 			manifests:              testcontroller.ClusterModeComponents,
 			controllerReconcilerCR: testcontroller.ControllerReconcilerCRForUnsupportedController,
 			expectedManifests:      testcontroller.ClusterModeComponents, // same as the input manifests
-			expectCELFailure:       "failed rule: self.metadata.name == 'cnrm-controller-manager'",
+			expectedCRStatus: customizev1beta1.ControllerReconcilerStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy: false,
+					Errors: []string{
+						"failed to apply rate limit customization cnrm-webhook-manager: rate limit customization for cnrm-webhook-manager is not supported. Supported controllers: cnrm-controller-manager",
+					},
+					ObservedGeneration: 0,
+				},
+			},
+			expectCELFailure: "failed rule: self.metadata.name == 'cnrm-controller-manager'",
 		},
 		{
 			name:                             "namespaced rate limit CR has no effect in cluster mode",

@@ -1,3 +1,457 @@
+POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools?alt=json&caPoolId=test-pool-${uniqueId}&requestId=123456
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "publishingOptions": {
+    "encodingFormat": "PEM",
+    "publishCaCert": true,
+    "publishCrl": false
+  },
+  "tier": "DEVOPS"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CaPool",
+    "name": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}",
+    "publishingOptions": {
+      "encodingFormat": "PEM",
+      "publishCaCert": true
+    },
+    "tier": "DEVOPS"
+  }
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Not Found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}",
+  "publishingOptions": {
+    "encodingFormat": "PEM",
+    "publishCaCert": true
+  },
+  "tier": "DEVOPS"
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:testIamPermissions?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "permissions": [
+    "privateca.certificateAuthorities.create"
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "permissions": [
+    "privateca.certificateAuthorities.create"
+  ]
+}
+
+---
+
+POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities?alt=json&certificateAuthorityId=test-ca-${uniqueId}&requestId=123456
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "config": {
+    "subjectConfig": {
+      "subject": {
+        "commonName": "test-ca-${uniqueId}"
+      },
+      "subjectAltName": {}
+    },
+    "x509Config": {
+      "caOptions": {
+        "isCa": true
+      },
+      "keyUsage": {
+        "baseKeyUsage": {
+          "certSign": true,
+          "crlSign": true
+        },
+        "extendedKeyUsage": {}
+      }
+    }
+  },
+  "keySpec": {
+    "algorithm": "RSA_PKCS1_4096_SHA256"
+  },
+  "lifetime": "315569261s",
+  "type": "SELF_SIGNED"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CertificateAuthority",
+    "caCertificateDescriptions": [
+      {
+        "authorityKeyId": {
+          "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
+        },
+        "certFingerprint": {
+          "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
+        },
+        "publicKey": {
+          "format": "PEM",
+          "key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUFyeGt3dVBoREZTNlc1eEgvMW1MVApTYXhzMTNONnpGYlRXSUY4aG4vTlk1cXlJYmFpd0FYdEVOeU53NkhSSmd4R2c0WElkRXlMVGpCK1VNVVVLYU9OCnd0WFJTUW9CeGR2VitKeWRlL05jTUUzM3QyT3d1UDBRVzY2UnRLak52b2R5dzRLTHphVmp6T1hPY0YwV0NNYy8KRjV4cU5uUHpOalVncUlBanozSHkrejROWmNnT0lnM3dVdEJRRlNTUm16TmtzdjMwejhLQjdXUXJkaElWb3JuOQpuWVFPeW11eTZPT0dLM3FIUXRZYk1MYU9oREY1VnJ3amozblUxeStQMzdRR1kwdG5KS3VYbGNwR3hJN0tkWTI5CjRJM1F6K0JHemI0Wll0WE1uTzNOZFZVaTRteG14VTBMbVE3VlJkdHpkTGN6cTJDUEoyV2JjTTZkUldmVERoNisKYzdDQys3K1ZBdzlxeW1OSnFXN0wxb2JNSkNuTHpwcHBPVWg0RjNXU1V0SXVLcUZ2alo1eFMzUXBFSGJsRFoybgpUaTY1Tm4yR2JzeVYrc2FxTkpOdUdmVEpvUzRJOGFoakljY2hDaXUzRDMxNm5MczlENmMwckRLNmxsbUpHdFRLCmZsSVEyQkZmY2FtV2VlSXlNU1dIK3Uza2lKTTY2YWF1NVJrNlFXWWlKMTRhaWswNmsvK1pMRnNMazUvbVV3eVEKTWFUMXNPUGQ1Z3FSeUsrdGgyVXNkb1p1dE5PZFZYMWdRNjk4cXdVZk1oTmpkSzNLZUkzNWQvY2xuR2F1UGVPSgo2ZlgySy9WN1hTblQrcGRjRTExZjNFU0FZVEIybnJJSXgzK3NjYXdZalREd0Qrd2JQZ0p4ZG4wc1ppOTNtV2FKCkFPdTV4QjBOSStsYXhZT2tPZHhrYklVQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo="
+        },
+        "subjectDescription": {
+          "hexSerialNumber": "0123456789abcdef",
+          "lifetime": "315569261s",
+          "notAfterTime": "2024-04-01T12:34:56.123456Z",
+          "notBeforeTime": "2024-04-01T12:34:56.123456Z",
+          "subject": {
+            "commonName": "test-ca-${uniqueId}"
+          },
+          "subjectAltName": {}
+        },
+        "subjectKeyId": {
+          "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
+        },
+        "x509Description": {
+          "caOptions": {
+            "isCa": true
+          },
+          "keyUsage": {
+            "baseKeyUsage": {
+              "certSign": true,
+              "crlSign": true
+            }
+          }
+        }
+      }
+    ],
+    "config": {
+      "subjectConfig": {
+        "subject": {
+          "commonName": "test-ca-${uniqueId}"
+        },
+        "subjectAltName": {}
+      },
+      "x509Config": {
+        "caOptions": {
+          "isCa": true
+        },
+        "keyUsage": {
+          "baseKeyUsage": {
+            "certSign": true,
+            "crlSign": true
+          }
+        }
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "keySpec": {
+      "algorithm": "RSA_PKCS1_4096_SHA256"
+    },
+    "lifetime": "315569261s",
+    "name": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}",
+    "pemCaCertificates": [
+      "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
+    ],
+    "state": "STAGED",
+    "tier": "DEVOPS",
+    "type": "SELF_SIGNED",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}:enable?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "requestId": "1234"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}",
+    "verb": "enable"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}",
+    "verb": "enable"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CertificateAuthority",
+    "caCertificateDescriptions": [
+      {
+        "authorityKeyId": {
+          "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
+        },
+        "certFingerprint": {
+          "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
+        },
+        "publicKey": {
+          "format": "PEM",
+          "key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUFyeGt3dVBoREZTNlc1eEgvMW1MVApTYXhzMTNONnpGYlRXSUY4aG4vTlk1cXlJYmFpd0FYdEVOeU53NkhSSmd4R2c0WElkRXlMVGpCK1VNVVVLYU9OCnd0WFJTUW9CeGR2VitKeWRlL05jTUUzM3QyT3d1UDBRVzY2UnRLak52b2R5dzRLTHphVmp6T1hPY0YwV0NNYy8KRjV4cU5uUHpOalVncUlBanozSHkrejROWmNnT0lnM3dVdEJRRlNTUm16TmtzdjMwejhLQjdXUXJkaElWb3JuOQpuWVFPeW11eTZPT0dLM3FIUXRZYk1MYU9oREY1VnJ3amozblUxeStQMzdRR1kwdG5KS3VYbGNwR3hJN0tkWTI5CjRJM1F6K0JHemI0Wll0WE1uTzNOZFZVaTRteG14VTBMbVE3VlJkdHpkTGN6cTJDUEoyV2JjTTZkUldmVERoNisKYzdDQys3K1ZBdzlxeW1OSnFXN0wxb2JNSkNuTHpwcHBPVWg0RjNXU1V0SXVLcUZ2alo1eFMzUXBFSGJsRFoybgpUaTY1Tm4yR2JzeVYrc2FxTkpOdUdmVEpvUzRJOGFoakljY2hDaXUzRDMxNm5MczlENmMwckRLNmxsbUpHdFRLCmZsSVEyQkZmY2FtV2VlSXlNU1dIK3Uza2lKTTY2YWF1NVJrNlFXWWlKMTRhaWswNmsvK1pMRnNMazUvbVV3eVEKTWFUMXNPUGQ1Z3FSeUsrdGgyVXNkb1p1dE5PZFZYMWdRNjk4cXdVZk1oTmpkSzNLZUkzNWQvY2xuR2F1UGVPSgo2ZlgySy9WN1hTblQrcGRjRTExZjNFU0FZVEIybnJJSXgzK3NjYXdZalREd0Qrd2JQZ0p4ZG4wc1ppOTNtV2FKCkFPdTV4QjBOSStsYXhZT2tPZHhrYklVQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo="
+        },
+        "subjectDescription": {
+          "hexSerialNumber": "0123456789abcdef",
+          "lifetime": "315569261s",
+          "notAfterTime": "2024-04-01T12:34:56.123456Z",
+          "notBeforeTime": "2024-04-01T12:34:56.123456Z",
+          "subject": {
+            "commonName": "test-ca-${uniqueId}"
+          },
+          "subjectAltName": {}
+        },
+        "subjectKeyId": {
+          "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
+        },
+        "x509Description": {
+          "caOptions": {
+            "isCa": true
+          },
+          "keyUsage": {
+            "baseKeyUsage": {
+              "certSign": true,
+              "crlSign": true
+            }
+          }
+        }
+      }
+    ],
+    "config": {
+      "subjectConfig": {
+        "subject": {
+          "commonName": "test-ca-${uniqueId}"
+        },
+        "subjectAltName": {}
+      },
+      "x509Config": {
+        "caOptions": {
+          "isCa": true
+        },
+        "keyUsage": {
+          "baseKeyUsage": {
+            "certSign": true,
+            "crlSign": true
+          }
+        }
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "keySpec": {
+      "algorithm": "RSA_PKCS1_4096_SHA256"
+    },
+    "lifetime": "315569261s",
+    "name": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}",
+    "pemCaCertificates": [
+      "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
+    ],
+    "state": "ENABLED",
+    "tier": "DEVOPS",
+    "type": "SELF_SIGNED",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
 POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateIssuanceConfigs?alt=json&certificateIssuanceConfigId=test-${uniqueId}
 Accept: application/json
 Authorization: (removed)
@@ -71,7 +525,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.CertificateIssuanceConfig",
     "certificateAuthorityConfig": {
       "certificateAuthorityServiceConfig": {
-        "caPool": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}"
+        "caPool": "projects/${projectNumber}/locations/us-central1/caPools/test-pool-${uniqueId}"
       }
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
@@ -107,7 +561,7 @@ X-Xss-Protection: 0
 {
   "certificateAuthorityConfig": {
     "certificateAuthorityServiceConfig": {
-      "caPool": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}"
+      "caPool": "projects/${projectNumber}/locations/us-central1/caPools/test-pool-${uniqueId}"
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -144,7 +598,7 @@ X-Xss-Protection: 0
     {
       "certificateAuthorityConfig": {
         "certificateAuthorityServiceConfig": {
-          "caPool": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}"
+          "caPool": "projects/${projectNumber}/locations/us-central1/caPools/test-pool-${uniqueId}"
         }
       },
       "createTime": "2024-04-01T12:34:56.123456Z",
@@ -213,6 +667,517 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/certificateIssuanceConfigs/test-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "caCertificateDescriptions": [
+    {
+      "authorityKeyId": {
+        "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
+      },
+      "certFingerprint": {
+        "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
+      },
+      "publicKey": {
+        "format": "PEM",
+        "key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUFyeGt3dVBoREZTNlc1eEgvMW1MVApTYXhzMTNONnpGYlRXSUY4aG4vTlk1cXlJYmFpd0FYdEVOeU53NkhSSmd4R2c0WElkRXlMVGpCK1VNVVVLYU9OCnd0WFJTUW9CeGR2VitKeWRlL05jTUUzM3QyT3d1UDBRVzY2UnRLak52b2R5dzRLTHphVmp6T1hPY0YwV0NNYy8KRjV4cU5uUHpOalVncUlBanozSHkrejROWmNnT0lnM3dVdEJRRlNTUm16TmtzdjMwejhLQjdXUXJkaElWb3JuOQpuWVFPeW11eTZPT0dLM3FIUXRZYk1MYU9oREY1VnJ3amozblUxeStQMzdRR1kwdG5KS3VYbGNwR3hJN0tkWTI5CjRJM1F6K0JHemI0Wll0WE1uTzNOZFZVaTRteG14VTBMbVE3VlJkdHpkTGN6cTJDUEoyV2JjTTZkUldmVERoNisKYzdDQys3K1ZBdzlxeW1OSnFXN0wxb2JNSkNuTHpwcHBPVWg0RjNXU1V0SXVLcUZ2alo1eFMzUXBFSGJsRFoybgpUaTY1Tm4yR2JzeVYrc2FxTkpOdUdmVEpvUzRJOGFoakljY2hDaXUzRDMxNm5MczlENmMwckRLNmxsbUpHdFRLCmZsSVEyQkZmY2FtV2VlSXlNU1dIK3Uza2lKTTY2YWF1NVJrNlFXWWlKMTRhaWswNmsvK1pMRnNMazUvbVV3eVEKTWFUMXNPUGQ1Z3FSeUsrdGgyVXNkb1p1dE5PZFZYMWdRNjk4cXdVZk1oTmpkSzNLZUkzNWQvY2xuR2F1UGVPSgo2ZlgySy9WN1hTblQrcGRjRTExZjNFU0FZVEIybnJJSXgzK3NjYXdZalREd0Qrd2JQZ0p4ZG4wc1ppOTNtV2FKCkFPdTV4QjBOSStsYXhZT2tPZHhrYklVQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo="
+      },
+      "subjectDescription": {
+        "hexSerialNumber": "0123456789abcdef",
+        "lifetime": "315569261s",
+        "notAfterTime": "2024-04-01T12:34:56.123456Z",
+        "notBeforeTime": "2024-04-01T12:34:56.123456Z",
+        "subject": {
+          "commonName": "test-ca-${uniqueId}"
+        },
+        "subjectAltName": {}
+      },
+      "subjectKeyId": {
+        "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
+      },
+      "x509Description": {
+        "caOptions": {
+          "isCa": true
+        },
+        "keyUsage": {
+          "baseKeyUsage": {
+            "certSign": true,
+            "crlSign": true
+          }
+        }
+      }
+    }
+  ],
+  "config": {
+    "subjectConfig": {
+      "subject": {
+        "commonName": "test-ca-${uniqueId}"
+      },
+      "subjectAltName": {}
+    },
+    "x509Config": {
+      "caOptions": {
+        "isCa": true
+      },
+      "keyUsage": {
+        "baseKeyUsage": {
+          "certSign": true,
+          "crlSign": true
+        }
+      }
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "keySpec": {
+    "algorithm": "RSA_PKCS1_4096_SHA256"
+  },
+  "lifetime": "315569261s",
+  "name": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}",
+  "pemCaCertificates": [
+    "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
+  ],
+  "state": "ENABLED",
+  "tier": "DEVOPS",
+  "type": "SELF_SIGNED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}:disable?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "ignoreDependentResources": false,
+  "requestId": "1234"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}",
+    "verb": "disable"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}",
+    "verb": "disable"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CertificateAuthority",
+    "caCertificateDescriptions": [
+      {
+        "authorityKeyId": {
+          "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
+        },
+        "certFingerprint": {
+          "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
+        },
+        "publicKey": {
+          "format": "PEM",
+          "key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUFyeGt3dVBoREZTNlc1eEgvMW1MVApTYXhzMTNONnpGYlRXSUY4aG4vTlk1cXlJYmFpd0FYdEVOeU53NkhSSmd4R2c0WElkRXlMVGpCK1VNVVVLYU9OCnd0WFJTUW9CeGR2VitKeWRlL05jTUUzM3QyT3d1UDBRVzY2UnRLak52b2R5dzRLTHphVmp6T1hPY0YwV0NNYy8KRjV4cU5uUHpOalVncUlBanozSHkrejROWmNnT0lnM3dVdEJRRlNTUm16TmtzdjMwejhLQjdXUXJkaElWb3JuOQpuWVFPeW11eTZPT0dLM3FIUXRZYk1MYU9oREY1VnJ3amozblUxeStQMzdRR1kwdG5KS3VYbGNwR3hJN0tkWTI5CjRJM1F6K0JHemI0Wll0WE1uTzNOZFZVaTRteG14VTBMbVE3VlJkdHpkTGN6cTJDUEoyV2JjTTZkUldmVERoNisKYzdDQys3K1ZBdzlxeW1OSnFXN0wxb2JNSkNuTHpwcHBPVWg0RjNXU1V0SXVLcUZ2alo1eFMzUXBFSGJsRFoybgpUaTY1Tm4yR2JzeVYrc2FxTkpOdUdmVEpvUzRJOGFoakljY2hDaXUzRDMxNm5MczlENmMwckRLNmxsbUpHdFRLCmZsSVEyQkZmY2FtV2VlSXlNU1dIK3Uza2lKTTY2YWF1NVJrNlFXWWlKMTRhaWswNmsvK1pMRnNMazUvbVV3eVEKTWFUMXNPUGQ1Z3FSeUsrdGgyVXNkb1p1dE5PZFZYMWdRNjk4cXdVZk1oTmpkSzNLZUkzNWQvY2xuR2F1UGVPSgo2ZlgySy9WN1hTblQrcGRjRTExZjNFU0FZVEIybnJJSXgzK3NjYXdZalREd0Qrd2JQZ0p4ZG4wc1ppOTNtV2FKCkFPdTV4QjBOSStsYXhZT2tPZHhrYklVQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo="
+        },
+        "subjectDescription": {
+          "hexSerialNumber": "0123456789abcdef",
+          "lifetime": "315569261s",
+          "notAfterTime": "2024-04-01T12:34:56.123456Z",
+          "notBeforeTime": "2024-04-01T12:34:56.123456Z",
+          "subject": {
+            "commonName": "test-ca-${uniqueId}"
+          },
+          "subjectAltName": {}
+        },
+        "subjectKeyId": {
+          "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
+        },
+        "x509Description": {
+          "caOptions": {
+            "isCa": true
+          },
+          "keyUsage": {
+            "baseKeyUsage": {
+              "certSign": true,
+              "crlSign": true
+            }
+          }
+        }
+      }
+    ],
+    "config": {
+      "subjectConfig": {
+        "subject": {
+          "commonName": "test-ca-${uniqueId}"
+        },
+        "subjectAltName": {}
+      },
+      "x509Config": {
+        "caOptions": {
+          "isCa": true
+        },
+        "keyUsage": {
+          "baseKeyUsage": {
+            "certSign": true,
+            "crlSign": true
+          }
+        }
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "keySpec": {
+      "algorithm": "RSA_PKCS1_4096_SHA256"
+    },
+    "lifetime": "315569261s",
+    "name": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}",
+    "pemCaCertificates": [
+      "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
+    ],
+    "state": "DISABLED",
+    "tier": "DEVOPS",
+    "type": "SELF_SIGNED",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "caCertificateDescriptions": [
+    {
+      "authorityKeyId": {
+        "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
+      },
+      "certFingerprint": {
+        "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
+      },
+      "publicKey": {
+        "format": "PEM",
+        "key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUFyeGt3dVBoREZTNlc1eEgvMW1MVApTYXhzMTNONnpGYlRXSUY4aG4vTlk1cXlJYmFpd0FYdEVOeU53NkhSSmd4R2c0WElkRXlMVGpCK1VNVVVLYU9OCnd0WFJTUW9CeGR2VitKeWRlL05jTUUzM3QyT3d1UDBRVzY2UnRLak52b2R5dzRLTHphVmp6T1hPY0YwV0NNYy8KRjV4cU5uUHpOalVncUlBanozSHkrejROWmNnT0lnM3dVdEJRRlNTUm16TmtzdjMwejhLQjdXUXJkaElWb3JuOQpuWVFPeW11eTZPT0dLM3FIUXRZYk1MYU9oREY1VnJ3amozblUxeStQMzdRR1kwdG5KS3VYbGNwR3hJN0tkWTI5CjRJM1F6K0JHemI0Wll0WE1uTzNOZFZVaTRteG14VTBMbVE3VlJkdHpkTGN6cTJDUEoyV2JjTTZkUldmVERoNisKYzdDQys3K1ZBdzlxeW1OSnFXN0wxb2JNSkNuTHpwcHBPVWg0RjNXU1V0SXVLcUZ2alo1eFMzUXBFSGJsRFoybgpUaTY1Tm4yR2JzeVYrc2FxTkpOdUdmVEpvUzRJOGFoakljY2hDaXUzRDMxNm5MczlENmMwckRLNmxsbUpHdFRLCmZsSVEyQkZmY2FtV2VlSXlNU1dIK3Uza2lKTTY2YWF1NVJrNlFXWWlKMTRhaWswNmsvK1pMRnNMazUvbVV3eVEKTWFUMXNPUGQ1Z3FSeUsrdGgyVXNkb1p1dE5PZFZYMWdRNjk4cXdVZk1oTmpkSzNLZUkzNWQvY2xuR2F1UGVPSgo2ZlgySy9WN1hTblQrcGRjRTExZjNFU0FZVEIybnJJSXgzK3NjYXdZalREd0Qrd2JQZ0p4ZG4wc1ppOTNtV2FKCkFPdTV4QjBOSStsYXhZT2tPZHhrYklVQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo="
+      },
+      "subjectDescription": {
+        "hexSerialNumber": "0123456789abcdef",
+        "lifetime": "315569261s",
+        "notAfterTime": "2024-04-01T12:34:56.123456Z",
+        "notBeforeTime": "2024-04-01T12:34:56.123456Z",
+        "subject": {
+          "commonName": "test-ca-${uniqueId}"
+        },
+        "subjectAltName": {}
+      },
+      "subjectKeyId": {
+        "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
+      },
+      "x509Description": {
+        "caOptions": {
+          "isCa": true
+        },
+        "keyUsage": {
+          "baseKeyUsage": {
+            "certSign": true,
+            "crlSign": true
+          }
+        }
+      }
+    }
+  ],
+  "config": {
+    "subjectConfig": {
+      "subject": {
+        "commonName": "test-ca-${uniqueId}"
+      },
+      "subjectAltName": {}
+    },
+    "x509Config": {
+      "caOptions": {
+        "isCa": true
+      },
+      "keyUsage": {
+        "baseKeyUsage": {
+          "certSign": true,
+          "crlSign": true
+        }
+      }
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "keySpec": {
+    "algorithm": "RSA_PKCS1_4096_SHA256"
+  },
+  "lifetime": "315569261s",
+  "name": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}",
+  "pemCaCertificates": [
+    "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
+  ],
+  "state": "DISABLED",
+  "tier": "DEVOPS",
+  "type": "SELF_SIGNED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}?alt=json&ignoreActiveCertificates=True&ignoreDependentResources=False&requestId=123456&skipGracePeriod=True
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CertificateAuthority",
+    "caCertificateDescriptions": [
+      {
+        "authorityKeyId": {
+          "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
+        },
+        "certFingerprint": {
+          "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
+        },
+        "publicKey": {
+          "format": "PEM",
+          "key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUFyeGt3dVBoREZTNlc1eEgvMW1MVApTYXhzMTNONnpGYlRXSUY4aG4vTlk1cXlJYmFpd0FYdEVOeU53NkhSSmd4R2c0WElkRXlMVGpCK1VNVVVLYU9OCnd0WFJTUW9CeGR2VitKeWRlL05jTUUzM3QyT3d1UDBRVzY2UnRLak52b2R5dzRLTHphVmp6T1hPY0YwV0NNYy8KRjV4cU5uUHpOalVncUlBanozSHkrejROWmNnT0lnM3dVdEJRRlNTUm16TmtzdjMwejhLQjdXUXJkaElWb3JuOQpuWVFPeW11eTZPT0dLM3FIUXRZYk1MYU9oREY1VnJ3amozblUxeStQMzdRR1kwdG5KS3VYbGNwR3hJN0tkWTI5CjRJM1F6K0JHemI0Wll0WE1uTzNOZFZVaTRteG14VTBMbVE3VlJkdHpkTGN6cTJDUEoyV2JjTTZkUldmVERoNisKYzdDQys3K1ZBdzlxeW1OSnFXN0wxb2JNSkNuTHpwcHBPVWg0RjNXU1V0SXVLcUZ2alo1eFMzUXBFSGJsRFoybgpUaTY1Tm4yR2JzeVYrc2FxTkpOdUdmVEpvUzRJOGFoakljY2hDaXUzRDMxNm5MczlENmMwckRLNmxsbUpHdFRLCmZsSVEyQkZmY2FtV2VlSXlNU1dIK3Uza2lKTTY2YWF1NVJrNlFXWWlKMTRhaWswNmsvK1pMRnNMazUvbVV3eVEKTWFUMXNPUGQ1Z3FSeUsrdGgyVXNkb1p1dE5PZFZYMWdRNjk4cXdVZk1oTmpkSzNLZUkzNWQvY2xuR2F1UGVPSgo2ZlgySy9WN1hTblQrcGRjRTExZjNFU0FZVEIybnJJSXgzK3NjYXdZalREd0Qrd2JQZ0p4ZG4wc1ppOTNtV2FKCkFPdTV4QjBOSStsYXhZT2tPZHhrYklVQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo="
+        },
+        "subjectDescription": {
+          "hexSerialNumber": "0123456789abcdef",
+          "lifetime": "315569261s",
+          "notAfterTime": "2024-04-01T12:34:56.123456Z",
+          "notBeforeTime": "2024-04-01T12:34:56.123456Z",
+          "subject": {
+            "commonName": "test-ca-${uniqueId}"
+          },
+          "subjectAltName": {}
+        },
+        "subjectKeyId": {
+          "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
+        },
+        "x509Description": {
+          "caOptions": {
+            "isCa": true
+          },
+          "keyUsage": {
+            "baseKeyUsage": {
+              "certSign": true,
+              "crlSign": true
+            }
+          }
+        }
+      }
+    ],
+    "config": {
+      "subjectConfig": {
+        "subject": {
+          "commonName": "test-ca-${uniqueId}"
+        },
+        "subjectAltName": {}
+      },
+      "x509Config": {
+        "caOptions": {
+          "isCa": true
+        },
+        "keyUsage": {
+          "baseKeyUsage": {
+            "certSign": true,
+            "crlSign": true
+          }
+        }
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deleteTime": "2024-04-01T12:34:56.123456Z",
+    "expireTime": "2024-04-01T12:34:56.123456Z",
+    "keySpec": {
+      "algorithm": "RSA_PKCS1_4096_SHA256"
+    },
+    "lifetime": "315569261s",
+    "name": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}",
+    "pemCaCertificates": [
+      "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
+    ],
+    "state": "DELETED",
+    "tier": "DEVOPS",
+    "type": "SELF_SIGNED",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+DELETE https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}?alt=json&ignoreDependentResources=False&requestId=123456
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",

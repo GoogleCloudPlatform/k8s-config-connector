@@ -50,12 +50,14 @@ func main() {
 	var enablePprof bool
 	var pprofPort int
 	var managerNamespaceIsolation string
+	var skipNameValidation bool
 
 	profiler.AddFlag(flag.CommandLine)
 	flag.CommandLine.AddGoFlagSet(goflag.CommandLine)
 	flag.BoolVar(&enablePprof, "enable-pprof", false, "Enable the pprof server.")
 	flag.IntVar(&pprofPort, "pprof-port", 6060, "The port that the pprof server binds to if enabled.")
 	flag.StringVar(&managerNamespaceIsolation, k8s.ManagerNamespaceIsolationFlag, k8s.ManagerNamespaceIsolationShared, fmt.Sprintf("'%s' if all controller managers run in shared 'cnrm-system' namespace, '%s' if controller managers run in dedicated namespace. Default is '%s'", k8s.ManagerNamespaceIsolationShared, k8s.ManagerNamespaceIsolationDedicated, k8s.ManagerNamespaceIsolationShared))
+	flag.BoolVar(&skipNameValidation, "skip-name-validation", false, "option to bypass the duplicate controller name check during registration; false by default")
 	flag.Parse()
 
 	switch managerNamespaceIsolation {
@@ -113,7 +115,7 @@ func main() {
 
 	// Register the registration controller, which will dynamically create
 	// controllers for all our resources.
-	if err := registration.AddUnmanagedDetector(mgr, &controller.Deps{}); err != nil {
+	if err := registration.AddUnmanagedDetector(mgr, &controller.Deps{SkipNameValidation: skipNameValidation}); err != nil {
 		logging.Fatal(err, "error adding registration controller")
 	}
 

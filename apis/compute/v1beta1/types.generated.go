@@ -19,11 +19,25 @@
 // proto.service: google.cloud.compute.v1
 // resource: ComputeFirewallPolicyRule:FirewallPolicyRule
 // resource: ComputeForwardingRule:ForwardingRule
+// resource: ComputeResourcePolicy:ResourcePolicy
 // resource: ComputeSecurityPolicy:SecurityPolicy
 // resource: ComputeSubnetwork:Subnetwork
 // resource: ComputeTargetTcpProxy:TargetTcpProxy
+// resource: ComputeTargetHTTPSProxy:TargetHttpsProxy
+// resource: ComputeNodeTemplate:NodeTemplate
 
 package v1beta1
+
+// +kcc:proto=google.cloud.compute.v1.AcceleratorConfig
+type AcceleratorConfig struct {
+	// The number of the guest accelerator cards exposed to this instance.
+	// +kcc:proto:field=google.cloud.compute.v1.AcceleratorConfig.accelerator_count
+	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
+
+	// Full or partial URL of the accelerator type resource to attach to this instance. For example: projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100 If you are creating an instance template, specify only the accelerator name. See GPUs on Compute Engine for a full list of accelerator types.
+	// +kcc:proto:field=google.cloud.compute.v1.AcceleratorConfig.accelerator_type
+	AcceleratorType *string `json:"acceleratorType,omitempty"`
+}
 
 // +kcc:proto=google.cloud.compute.v1.Expr
 type Expr struct {
@@ -54,6 +68,56 @@ type FirewallPolicyRuleSecureTag struct {
 	//  Check the State enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleSecureTag.state
 	State *string `json:"state,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.LocalDisk
+type LocalDisk struct {
+	// Specifies the number of such disks.
+	// +kcc:proto:field=google.cloud.compute.v1.LocalDisk.disk_count
+	DiskCount *int32 `json:"diskCount,omitempty"`
+
+	// Specifies the size of the disk in base-2 GB.
+	// +kcc:proto:field=google.cloud.compute.v1.LocalDisk.disk_size_gb
+	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+
+	// Specifies the desired disk type on the node. This disk type must be a local storage type (e.g.: local-ssd). Note that for nodeTemplates, this should be the name of the disk type and not its URL.
+	// +kcc:proto:field=google.cloud.compute.v1.LocalDisk.disk_type
+	DiskType *string `json:"diskType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicyResourceStatus
+type ResourcePolicyResourceStatus struct {
+	// [Output Only] Specifies a set of output values reffering to the instance_schedule_policy system status. This field should have the same name as corresponding policy field.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyResourceStatus.instance_schedule_policy
+	InstanceSchedulePolicy *ResourcePolicyResourceStatusInstanceSchedulePolicyStatus `json:"instanceSchedulePolicy,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus
+type ResourcePolicyResourceStatusInstanceSchedulePolicyStatus struct {
+	// [Output Only] The last time the schedule successfully ran. The timestamp is an RFC3339 string.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus.last_run_start_time
+	LastRunStartTime *string `json:"lastRunStartTime,omitempty"`
+
+	// [Output Only] The next time the schedule is planned to run. The actual time might be slightly different. The timestamp is an RFC3339 string.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus.next_run_start_time
+	NextRunStartTime *string `json:"nextRunStartTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.ResourcePolicyWorkloadPolicy
+type ResourcePolicyWorkloadPolicy struct {
+	// Specifies the topology required to create a partition for VMs that have interconnected GPUs.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyWorkloadPolicy.accelerator_topology
+	AcceleratorTopology *string `json:"acceleratorTopology,omitempty"`
+
+	// Specifies the maximum distance between instances.
+	//  Check the MaxTopologyDistance enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyWorkloadPolicy.max_topology_distance
+	MaxTopologyDistance *string `json:"maxTopologyDistance,omitempty"`
+
+	// Specifies the intent of the instance placement in the MIG.
+	//  Check the Type enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyWorkloadPolicy.type
+	Type *string `json:"type,omitempty"`
 }
 
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig

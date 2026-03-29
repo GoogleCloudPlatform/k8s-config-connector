@@ -50,15 +50,15 @@ X-Xss-Protection: 0
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
 
 ---
 
-GET https://memorystore.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/operations/${operationID}
+GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -80,10 +80,13 @@ X-Xss-Protection: 0
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "AUTH_DISABLED",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "DISABLED"
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
     "engineVersion": "VALKEY_7_2",
@@ -96,11 +99,21 @@ X-Xss-Protection: 0
     "persistenceConfig": {
       "mode": "DISABLED"
     },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}"
+      },
+      {
+        "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}-2"
+      }
+    ],
     "replicaCount": 0,
     "shardCount": 3,
     "state": "ACTIVE",
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_DISABLED",
     "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
     "zoneDistributionConfig": {
       "mode": "MULTI_ZONE"
     }
@@ -126,6 +139,9 @@ X-Xss-Protection: 0
 
 {
   "authorizationMode": 1,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 1
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
   "engineVersion": "VALKEY_7_2",
@@ -138,11 +154,21 @@ X-Xss-Protection: 0
   "persistenceConfig": {
     "mode": 1
   },
+  "pscAttachmentDetails": [
+    {
+      "connectionType": 1,
+      "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}"
+    },
+    {
+      "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}-2"
+    }
+  ],
   "replicaCount": 0,
   "shardCount": 3,
-  "state": 1,
+  "state": 2,
   "transitEncryptionMode": 1,
   "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
   "zoneDistributionConfig": {
     "mode": 1
   }
@@ -212,6 +238,9 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "AUTH_DISABLED",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "DISABLED"
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
     "engineVersion": "VALKEY_7_2",
@@ -224,6 +253,15 @@ X-Xss-Protection: 0
     "persistenceConfig": {
       "mode": "DISABLED"
     },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}"
+      },
+      {
+        "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}-2"
+      }
+    ],
     "replicaCount": 0,
     "shardCount": 10,
     "state": "ACTIVE",
@@ -255,6 +293,9 @@ X-Xss-Protection: 0
 
 {
   "authorizationMode": 1,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 1
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
   "engineVersion": "VALKEY_7_2",
@@ -267,11 +308,21 @@ X-Xss-Protection: 0
   "persistenceConfig": {
     "mode": 1
   },
+  "pscAttachmentDetails": [
+    {
+      "connectionType": 1,
+      "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}"
+    },
+    {
+      "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}-2"
+    }
+  ],
   "replicaCount": 0,
   "shardCount": 10,
-  "state": 3,
+  "state": 2,
   "transitEncryptionMode": 1,
   "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
   "zoneDistributionConfig": {
     "mode": 1
   }

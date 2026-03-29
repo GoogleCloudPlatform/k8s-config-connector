@@ -19,6 +19,7 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
@@ -48,5 +49,5 @@ sed -i '/ZeroMaxIssuerPathLength/d' pkg/controller/direct/privateca/mapper.gener
 dev/tasks/generate-crds
 
 # Format files
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/privateca/
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  apis/privateca/v1beta1/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/privateca/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  apis/privateca/v1beta1/

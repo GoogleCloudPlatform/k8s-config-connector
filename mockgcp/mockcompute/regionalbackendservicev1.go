@@ -63,12 +63,25 @@ func (s *RegionalBackendServicesV1) Insert(ctx context.Context, req *pb.InsertRe
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#backendService")
+	obj.Region = PtrTo(buildComputeSelfLink(ctx, "projects/"+name.Project.ID+"/regions/"+name.Region))
+
+	s.populateBackendServiceDefaults(obj)
+
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *RegionalBackendServicesV1) Update(ctx context.Context, req *pb.UpdateRegionBackendServiceRequest) (*pb.Operation, error) {
@@ -87,11 +100,21 @@ func (s *RegionalBackendServicesV1) Update(ctx context.Context, req *pb.UpdateRe
 	// TODO: Implement helper to implement the full rules here
 	proto.Merge(obj, req.GetBackendServiceResource())
 
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("update"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *RegionalBackendServicesV1) Delete(ctx context.Context, req *pb.DeleteRegionBackendServiceRequest) (*pb.Operation, error) {
@@ -108,7 +131,15 @@ func (s *RegionalBackendServicesV1) Delete(ctx context.Context, req *pb.DeleteRe
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 type regionalBackendServiceName struct {

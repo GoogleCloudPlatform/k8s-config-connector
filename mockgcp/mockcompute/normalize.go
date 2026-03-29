@@ -42,6 +42,8 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 
 	replacements.ReplacePath(".address", "8.8.8.8")
 	replacements.ReplacePath(".items[].address", "8.8.8.8")
+	replacements.ReplacePath(".IPAddress", "8.8.8.8")
+	replacements.ReplacePath(".items[].IPAddress", "8.8.8.8")
 
 	replacements.SortSlice(".subnetworks")
 

@@ -14,7 +14,7 @@ metadata:
   namespace: ${uniqueId}
 spec:
   backendServiceRef:
-    name: computebackendservice-${uniqueId}
+    name: ${backendServiceID}
   description: test target tcp proxy
   location: europe-west4
   proxyBind: false

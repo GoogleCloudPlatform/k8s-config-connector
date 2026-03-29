@@ -2389,12 +2389,12 @@
   },
   {
     "name": "golang.org/x/oauth2",
-    "sum": "h1:hqK/t4AKgbqWkdkcAeI8XLmbK+4m4G5YeQRrmiotGlw=",
-    "version": "v0.34.0",
+    "sum": "h1:peZ/1z27fi9hUOFCAZaHyrpWG5lwe0RJEEEeH0ThlIs=",
+    "version": "v0.36.0",
     "licenseInfo": {
       "license": "BSD-3-Clause",
       "licenseURLs": [
-        "https://pkg.go.dev/golang.org/x/oauth2@v0.34.0?tab=licenses"
+        "https://pkg.go.dev/golang.org/x/oauth2@v0.36.0?tab=licenses"
       ],
       "mustShipCode": false
     }

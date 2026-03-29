@@ -59,6 +59,15 @@ func (s *CertificateManagerV1) CreateCertificateIssuanceConfig(ctx context.Conte
 	obj := proto.Clone(req.CertificateIssuanceConfig).(*pb.CertificateIssuanceConfig)
 	obj.Name = fqn
 
+	// Normalize CAPool name to use project number
+	if caConfig := obj.GetCertificateAuthorityConfig().GetCertificateAuthorityServiceConfig(); caConfig != nil {
+		normalized, err := s.normalizeCAPoolName(ctx, caConfig.CaPool)
+		if err != nil {
+			return nil, err
+		}
+		caConfig.CaPool = normalized
+	}
+
 	now := timestamppb.Now()
 	obj.CreateTime = now
 	obj.UpdateTime = now
@@ -167,4 +176,17 @@ func (s *CertificateManagerV1) DeleteCertificateIssuanceConfig(ctx context.Conte
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		return &emptypb.Empty{}, nil
 	})
+}
+
+func (s *CertificateManagerV1) normalizeCAPoolName(ctx context.Context, name string) (string, error) {
+	tokens := strings.Split(name, "/")
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "caPools" {
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
+		if err != nil {
+			return "", err
+		}
+		tokens[1] = strconv.FormatInt(project.Number, 10)
+		return strings.Join(tokens, "/"), nil
+	}
+	return name, nil
 }

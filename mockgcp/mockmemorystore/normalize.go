@@ -15,14 +15,27 @@
 package mockmemorystore
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
-	replacements.ReplacePath(".pscAttachmentDetails[].serviceAttachment", "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment")
-	replacements.ReplacePath(".response.pscAttachmentDetails[].serviceAttachment", "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment")
+	if !strings.HasPrefix(url, "https://memorystore.googleapis.com") {
+		return
+	}
+	replacements.ReplacePath(".backupFiles[].createTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".crossInstanceReplicationConfig.updateTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".expireTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".maintenancePolicy.createTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".maintenancePolicy.updateTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".response.backupFiles[].createTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".response.crossInstanceReplicationConfig.updateTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".response.expireTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".response.maintenancePolicy.createTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".response.maintenancePolicy.updateTime", "2024-04-01T12:34:56.123456Z")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

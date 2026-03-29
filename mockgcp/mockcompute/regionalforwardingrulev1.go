@@ -67,6 +67,13 @@ func (s *RegionalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertFo
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#forwardingRule")
+	obj.SelfLinkWithId = obj.SelfLink
+	if obj.IPAddress == nil {
+		obj.IPAddress = PtrTo("1.2.3.4")
+	}
+	if obj.Description == nil {
+		obj.Description = PtrTo("")
+	}
 	// labels will be added separately with setLabels
 	obj.Labels = nil
 	// If below values are not provided by user, it appears to default by GCP
@@ -100,7 +107,7 @@ func (s *RegionalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertFo
 	}
 
 	if obj.Network != nil {
-		networkName, err := s.parseNetworkName(obj.GetNetwork())
+		networkName, err := s.parseNetworkSelfLink(obj.GetNetwork())
 		if err != nil {
 			return nil, status.Errorf(codes.InvalidArgument, "network %q is not valid", obj.GetNetwork())
 		}
@@ -108,7 +115,7 @@ func (s *RegionalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertFo
 	}
 
 	if obj.Subnetwork != nil {
-		subnetworkName, err := s.parseSubnetName(obj.GetSubnetwork())
+		subnetworkName, err := s.parseSubnetSelfLink(obj.GetSubnetwork())
 		if err != nil {
 			return nil, status.Errorf(codes.InvalidArgument, "subnetwork %q is not valid", obj.GetSubnetwork())
 		}

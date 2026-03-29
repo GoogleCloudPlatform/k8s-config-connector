@@ -1,0 +1,15 @@
+- exec: |
+    cat <<EOF > target.yaml
+    apiVersion: deploy.cloud.google.com/v1
+    kind: Target
+    metadata:
+      name: test-${uniqueId}
+    description: test target
+    run:
+      location: projects/${projectId}/locations/us-central1
+    EOF
+- exec: gcloud deploy apply --file=target.yaml --region=us-central1 --project=${projectId}
+- exec: gcloud deploy targets describe test-${uniqueId} --region=us-central1 --project=${projectId}
+- exec: gcloud deploy targets list --region=us-central1 --project=${projectId}
+- exec: gcloud deploy targets delete test-${uniqueId} --region=us-central1 --project=${projectId} --quiet
+- exec: rm target.yaml

@@ -33,7 +33,7 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "IPAddress": "10.0.1.2",
+  "IPAddress": "8.8.8.8",
   "IPProtocol": "TCP",
   "allowGlobalAccess": true,
   "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
@@ -126,11 +126,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "IPAddress": "10.0.1.2",
+  "IPAddress": "8.8.8.8",
   "IPProtocol": "TCP",
   "allowGlobalAccess": true,
   "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -144,6 +145,7 @@ X-Xss-Protection: 0
   ],
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnetwork-${uniqueId}"
 }
 
@@ -204,11 +206,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "IPAddress": "10.0.1.2",
+  "IPAddress": "8.8.8.8",
   "IPProtocol": "TCP",
   "allowGlobalAccess": true,
   "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -225,5 +228,6 @@ X-Xss-Protection: 0
   ],
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnetwork-${uniqueId}"
 }

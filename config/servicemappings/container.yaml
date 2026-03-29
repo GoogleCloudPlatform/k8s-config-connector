@@ -38,6 +38,7 @@ spec:
         targetField: name
       directives:
         - remove_default_node_pool
+        - strip_default_node_pool_config_on_update
       mutableButUnreadableFields:
         - min_master_version
       ignoredOutputOnlySpecFields:
@@ -204,7 +205,7 @@ spec:
             InvalidArgument error is returned.
           key: policyNameRef
           gvk:
-            Kind: ComputeResourcePolicy
+            kind: ComputeResourcePolicy
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link

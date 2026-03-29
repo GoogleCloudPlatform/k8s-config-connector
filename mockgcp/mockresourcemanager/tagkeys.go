@@ -62,12 +62,14 @@ func (s *TagKeys) ListTagKeys(ctx context.Context, req *pb.ListTagKeysRequest) (
 	findParent := ""
 	tokens := strings.Split(req.GetParent(), "/")
 	if len(tokens) == 2 && tokens[0] == "projects" {
-		project, err := s.Projects.GetProjectByIDOrNumber(req.Parent)
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
 		if err != nil {
 			return nil, err
 		}
 
 		findParent = fmt.Sprintf("projects/%d", project.Number)
+	} else if len(tokens) == 2 && tokens[0] == "organizations" {
+		findParent = req.GetParent()
 	} else {
 		return nil, fmt.Errorf("parent %q is not valid for mock", req.GetParent())
 	}
@@ -139,6 +141,19 @@ func (s *TagKeys) CreateTagKey(ctx context.Context, req *pb.CreateTagKeyRequest)
 
 	if req.ValidateOnly {
 		return nil, fmt.Errorf("ValidateOnly not yet implemented")
+	}
+
+	// Check for duplicate shortName under the same parent (real GCP enforces this).
+	normalizedParent := req.GetTagKey().GetParent()
+	tagKeyKind := (&pb.TagKey{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, tagKeyKind, storage.ListOptions{}, func(obj proto.Message) error {
+		existing := obj.(*pb.TagKey)
+		if existing.GetParent() == normalizedParent && existing.GetShortName() == req.GetTagKey().GetShortName() {
+			return status.Errorf(codes.AlreadyExists, "A TagKey with short name '%s' already exists under parent '%s'", req.GetTagKey().GetShortName(), normalizedParent)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
 	}
 
 	name := &tagKeyName{

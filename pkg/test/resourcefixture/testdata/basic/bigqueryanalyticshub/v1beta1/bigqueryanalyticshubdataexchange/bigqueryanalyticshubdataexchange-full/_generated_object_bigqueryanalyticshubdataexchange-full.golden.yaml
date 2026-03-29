@@ -10,9 +10,9 @@ metadata:
   name: bigqueryanalyticshubdataexchange${uniqueId}
   namespace: ${uniqueId}
 spec:
-  description: example data exchange
+  description: updated example data exchange
   discoveryType: DISCOVERY_TYPE_PUBLIC
-  displayName: my_data_exchange
+  displayName: updated_my_data_exchange
   documentation: an updated documentation
   location: US
   primaryContact: another@contact.com

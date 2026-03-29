@@ -65,7 +65,7 @@ func (s *GlobalBackendServicesV1) Insert(ctx context.Context, req *pb.InsertBack
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#backendService")
 
-	s.populateDefaults(obj)
+	s.populateBackendServiceDefaults(obj)
 
 	obj.Fingerprint = PtrTo(computeFingerprint(obj))
 
@@ -82,44 +82,6 @@ func (s *GlobalBackendServicesV1) Insert(ctx context.Context, req *pb.InsertBack
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
 		return obj, nil
 	})
-}
-
-func (s *GlobalBackendServicesV1) populateDefaults(obj *pb.BackendService) {
-
-	if obj.AffinityCookieTtlSec == nil {
-		obj.AffinityCookieTtlSec = PtrTo(int32(0))
-	}
-
-	if obj.ConnectionDraining == nil {
-		obj.ConnectionDraining = &pb.ConnectionDraining{}
-	}
-
-	if obj.ConnectionDraining.DrainingTimeoutSec == nil {
-		obj.ConnectionDraining.DrainingTimeoutSec = PtrTo(int32(0))
-	}
-
-	if obj.Description == nil {
-		obj.Description = PtrTo("")
-	}
-
-	if obj.EnableCDN == nil {
-		obj.EnableCDN = PtrTo(false)
-	}
-
-	if obj.LoadBalancingScheme == nil {
-		obj.LoadBalancingScheme = PtrTo("EXTERNAL")
-	}
-
-	switch obj.GetProtocol() {
-	case "HTTP":
-		if obj.Port == nil {
-			obj.Port = PtrTo[int32](80)
-		}
-	}
-
-	if obj.SessionAffinity == nil {
-		obj.SessionAffinity = PtrTo("NONE")
-	}
 }
 
 func (s *GlobalBackendServicesV1) Update(ctx context.Context, req *pb.UpdateBackendServiceRequest) (*pb.Operation, error) {
