@@ -30,7 +30,7 @@ func init() {
 func firestoreDatabaseFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Database{},
 		FirestoreDatabaseSpec_v1beta1_FromProto, FirestoreDatabaseSpec_v1beta1_ToProto,
-		FirestoreDatabaseObservedState_FromProto, FirestoreDatabaseObservedState_ToProto,
+		FirestoreDatabaseObservedState_v1beta1_FromProto, FirestoreDatabaseObservedState_v1beta1_ToProto,
 	)
 
 	f.Unimplemented_Identity(".name")

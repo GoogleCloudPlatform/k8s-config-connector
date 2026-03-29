@@ -313,7 +313,7 @@ func (a *Adapter) setStatus(ctx context.Context, op directbase.Operation, latest
 	status.ExternalRef = direct.PtrTo(a.id.String())
 
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = FirestoreDatabaseObservedState_FromProto(mapCtx, latest)
+	status.ObservedState = FirestoreDatabaseObservedState_v1beta1_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

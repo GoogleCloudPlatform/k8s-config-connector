@@ -20,7 +20,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func FirestoreDatabaseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Database) *krm.FirestoreDatabaseObservedState {
+func FirestoreDatabaseObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Database) *krm.FirestoreDatabaseObservedState {
 	if in == nil {
 		return nil
 	}
@@ -35,7 +35,7 @@ func FirestoreDatabaseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	return out
 }
 
-func FirestoreDatabaseObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreDatabaseObservedState) *pb.Database {
+func FirestoreDatabaseObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreDatabaseObservedState) *pb.Database {
 	if in == nil {
 		return nil
 	}
