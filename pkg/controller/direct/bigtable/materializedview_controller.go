@@ -107,7 +107,6 @@ var _ directbase.Adapter = &MaterializedViewAdapter{}
 // Return a non-nil error requeues the requests.
 func (a *MaterializedViewAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	defer a.gcpClient.Close()
 	log.V(2).Info("getting BigtableMaterializedView", "name", a.id)
 
 	materializedViewInfo, err := a.gcpClient.MaterializedViewInfo(ctx, a.id.ParentInstanceIdString(), a.id.ID())
@@ -131,7 +130,6 @@ func (a *MaterializedViewAdapter) Find(ctx context.Context) (bool, error) {
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *MaterializedViewAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	defer a.gcpClient.Close()
 	log.V(2).Info("creating MaterializedView", "name", a.id)
 
 	desired := a.desired.DeepCopy()
@@ -157,7 +155,6 @@ func (a *MaterializedViewAdapter) Create(ctx context.Context, createOp *directba
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *MaterializedViewAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	defer a.gcpClient.Close()
 	log.V(2).Info("updating MaterializedView", "name", a.id)
 
 	spec := a.desired.Spec
@@ -208,7 +205,6 @@ func (a *MaterializedViewAdapter) Update(ctx context.Context, updateOp *directba
 
 // Export maps the GCP object to a Config Connector resource `spec`.
 func (a *MaterializedViewAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
-	defer a.gcpClient.Close()
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
@@ -238,7 +234,6 @@ func (a *MaterializedViewAdapter) Export(ctx context.Context) (*unstructured.Uns
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
 func (a *MaterializedViewAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	defer a.gcpClient.Close()
 	log.V(2).Info("deleting MaterializedView", "name", a.id)
 
 	err := a.gcpClient.DeleteMaterializedView(ctx, a.id.ParentInstanceIdString(), a.id.ID())

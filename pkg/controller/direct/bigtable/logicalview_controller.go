@@ -125,7 +125,6 @@ var _ directbase.Adapter = &LogicalViewAdapter{}
 // Return a non-nil error requeues the requests.
 func (a *LogicalViewAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	defer a.gcpClient.Close()
 	log.V(2).Info("getting BigtableLogicalView", "name", a.id)
 
 	logicalViewInfo, err := a.gcpClient.LogicalViewInfo(ctx, a.id.ParentInstanceIdString(), a.id.ID())
@@ -167,7 +166,6 @@ func convertLogicalViewToLogicalViewInfo(in *bigtablepb.LogicalView) *gcp.Logica
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *LogicalViewAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	defer a.gcpClient.Close()
 	log.V(2).Info("creating LogicalView", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
@@ -205,7 +203,6 @@ func (a *LogicalViewAdapter) Create(ctx context.Context, createOp *directbase.Cr
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	defer a.gcpClient.Close()
 	log.V(2).Info("updating LogicalView", "name", a.id)
 
 	spec := a.desired.Spec
@@ -261,7 +258,6 @@ func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 // Export maps the GCP object to a Config Connector resource `spec`.
 func (a *LogicalViewAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
-	defer a.gcpClient.Close()
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
@@ -291,7 +287,6 @@ func (a *LogicalViewAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
 func (a *LogicalViewAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	defer a.gcpClient.Close()
 	log.V(2).Info("deleting LogicalView", "name", a.id)
 
 	err := a.gcpClient.DeleteLogicalView(ctx, a.id.ParentInstanceIdString(), a.id.ID())
