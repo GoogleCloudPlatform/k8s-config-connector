@@ -120,6 +120,9 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to BigQuery
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
 
+	// Specific to ComputeReservation
+	visitor.sortSlices.Insert(".spec.shareSettings.projectMap")
+
 	// Specific to Dataflow
 	visitor.sortAndDeduplicateSlices.Insert(".spec.additionalExperiments")
 
@@ -1183,6 +1186,11 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	{
 		visitor.SortSlice(".access")
 		visitor.ReplacePath(".access[].userByEmail", "user@google.com")
+	}
+
+	// Specific to ComputeReservation
+	{
+		visitor.SortSlice(".shareSettings.projectMap")
 	}
 
 	// BigQueryConnection

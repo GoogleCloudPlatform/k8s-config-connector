@@ -22,7 +22,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/regions"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
-	"k8s.io/klog/v2"
 )
 
 const PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
@@ -106,8 +105,6 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 				// We _should_ differentiate between ID and number.
 				// But this causes too many diffs right now.
 
-				klog.Infof("targetLink=%q, targetId=%q, placeholder=%q", targetLink, targetId, placeholder)
-
 				replacements.ReplaceStringValue(targetId, placeholder)
 
 				if v := tokens[n-1]; v == "default" {
@@ -164,11 +161,7 @@ func isGetOperation(event mockgcpregistry.Event) bool {
 func isComputeAPI(event mockgcpregistry.Event) bool {
 	u, err := url.Parse(event.URL())
 	if err != nil {
-		klog.Fatalf("cannot parse URL %q", event.URL())
+		return false
 	}
-	switch u.Host {
-	case "compute.googleapis.com":
-		return true
-	}
-	return false
+	return u.Host == "compute.googleapis.com" || u.Host == "www.googleapis.com"
 }

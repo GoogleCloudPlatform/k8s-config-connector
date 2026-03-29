@@ -1637,11 +1637,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "serviceAttachment \"projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}\" not found",
+        "message": "serviceAttachment \"projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "serviceAttachment \"projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}\" not found"
+    "message": "serviceAttachment \"projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}\" not found"
   }
 }
 
@@ -1664,7 +1664,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   ],
   "description": "A sample service attachment",
   "enableProxyProtocol": false,
-  "name": "computeserviceattachment-${uniqueId}",
+  "name": "${serviceAttachmentID}",
   "natSubnets": [
     "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}"
   ],
@@ -1693,7 +1693,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${serviceAttachmentID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}",
   "user": "user@example.com"
 }
 
@@ -1726,7 +1726,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${serviceAttachmentID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}",
   "user": "user@example.com"
 }
 
@@ -1763,11 +1763,11 @@ X-Xss-Protection: 0
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#serviceAttachment",
-  "name": "computeserviceattachment-${uniqueId}",
+  "name": "${serviceAttachmentID}",
   "natSubnets": [
     "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}"
   ],
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}",
   "targetService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/${forwardingRuleID}"
 }
 
@@ -1790,7 +1790,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   ],
   "description": "A sample service attachment",
   "fingerprint": "abcdef0123A=",
-  "name": "computeserviceattachment-${uniqueId}",
+  "name": "${serviceAttachmentID}",
   "natSubnets": [
     "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}"
   ]
@@ -1818,7 +1818,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${serviceAttachmentID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}",
   "user": "user@example.com"
 }
 
@@ -1851,7 +1851,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${serviceAttachmentID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}",
   "user": "user@example.com"
 }
 
@@ -1888,11 +1888,11 @@ X-Xss-Protection: 0
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#serviceAttachment",
-  "name": "computeserviceattachment-${uniqueId}",
+  "name": "${serviceAttachmentID}",
   "natSubnets": [
     "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}"
   ],
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}",
   "targetService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/${forwardingRuleID}"
 }
 
@@ -1924,7 +1924,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${serviceAttachmentID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}",
   "user": "user@example.com"
 }
 
@@ -1957,7 +1957,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${serviceAttachmentID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}",
   "user": "user@example.com"
 }
 
@@ -1983,11 +1983,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "serviceAttachment \"projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}\" not found",
+        "message": "serviceAttachment \"projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "serviceAttachment \"projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}\" not found"
+    "message": "serviceAttachment \"projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}\" not found"
   }
 }
 

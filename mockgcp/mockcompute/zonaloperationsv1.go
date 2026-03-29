@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,15 +21,16 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 )
 
-type GlobalOperationsV1 struct {
+type ZonalOperationsV1 struct {
 	*MockService
-	pb.UnimplementedGlobalOperationsServer
+	pb.UnimplementedZoneOperationsServer
 }
 
-func (s *GlobalOperationsV1) Get(ctx context.Context, req *pb.GetGlobalOperationRequest) (*pb.Operation, error) {
+func (s *ZonalOperationsV1) Get(ctx context.Context, req *pb.GetZoneOperationRequest) (*pb.Operation, error) {
 	projectID := lastComponent(req.GetProject())
+	zone := lastComponent(req.GetZone())
 	operation := lastComponent(req.GetOperation())
-	fqn := s.globalOperationFQN(projectID, operation)
+	fqn := s.zonalOperationFQN(projectID, zone, operation)
 	lro, err := s.getOperation(ctx, fqn)
 	if err != nil {
 		return nil, err
@@ -38,10 +39,11 @@ func (s *GlobalOperationsV1) Get(ctx context.Context, req *pb.GetGlobalOperation
 	return lro, nil
 }
 
-func (s *GlobalOperationsV1) Wait(ctx context.Context, req *pb.WaitGlobalOperationRequest) (*pb.Operation, error) {
+func (s *ZonalOperationsV1) Wait(ctx context.Context, req *pb.WaitZoneOperationRequest) (*pb.Operation, error) {
 	projectID := lastComponent(req.GetProject())
+	zone := lastComponent(req.GetZone())
 	operation := lastComponent(req.GetOperation())
-	fqn := s.globalOperationFQN(projectID, operation)
+	fqn := s.zonalOperationFQN(projectID, zone, operation)
 
 	deadline := 2 * time.Minute
 	timeoutAt := time.Now().Add(deadline)
@@ -61,14 +63,4 @@ func (s *GlobalOperationsV1) Wait(ctx context.Context, req *pb.WaitGlobalOperati
 
 		time.Sleep(2 * time.Second)
 	}
-}
-
-func (s *GlobalOperationsV1) List(ctx context.Context, req *pb.ListGlobalOperationsRequest) (*pb.OperationList, error) {
-	// TODO: Implement List
-	return &pb.OperationList{}, nil
-}
-
-func (s *GlobalOperationsV1) AggregatedList(ctx context.Context, req *pb.AggregatedListGlobalOperationsRequest) (*pb.OperationAggregatedList, error) {
-	// TODO: Implement AggregatedList
-	return &pb.OperationAggregatedList{}, nil
 }
