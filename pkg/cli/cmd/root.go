@@ -106,8 +106,16 @@ type TestInvocationOptions struct {
 	Args   []string
 }
 
+func clearContexts(cmd *cobra.Command) {
+	cmd.SetContext(nil)
+	for _, c := range cmd.Commands() {
+		clearContexts(c)
+	}
+}
+
 // ExecuteFromTest allows for invocation of the CLI from a test
 func ExecuteFromTest(ctx context.Context, options *TestInvocationOptions) error {
+	clearContexts(rootCmd)
 	rootCmd.SetIn(&options.Stdin)
 	rootCmd.SetOut(&options.Stdout)
 	rootCmd.SetErr(&options.Stderr)

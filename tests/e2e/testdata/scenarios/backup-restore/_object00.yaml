@@ -2,6 +2,7 @@ apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucket
 metadata:
   annotations:
+    cnrm.cloud.google.com/force-destroy: "true"
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
     cnrm.cloud.google.com/state-into-spec: absent
@@ -13,7 +14,6 @@ metadata:
   namespace: ${projectId}
 spec:
   location: us-central1
-  forceDestroy: true
   resourceID: backup-bucket-${uniqueId}
 status:
   conditions:
