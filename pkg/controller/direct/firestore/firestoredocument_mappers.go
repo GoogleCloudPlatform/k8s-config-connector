@@ -27,7 +27,7 @@ import (
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
-func FirestoreDocumentSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Document) *krm.FirestoreDocumentSpec {
+func FirestoreDocumentSpec_firestorepb_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Document) *krm.FirestoreDocumentSpec {
 	if in == nil {
 		return nil
 	}
@@ -204,7 +204,7 @@ func Field_FromProto(mapCtx *direct.MapContext, in *pb.Value) any {
 	}
 }
 
-func FirestoreDocumentSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreDocumentSpec) *pb.Document {
+func FirestoreDocumentSpec_firestorepb_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreDocumentSpec) *pb.Document {
 	if in == nil {
 		return nil
 	}
@@ -265,12 +265,12 @@ func Field_ToProto(mapCtx *direct.MapContext, in any) *pb.Value {
 	}
 }
 
-func Value_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Value) *krm.Value {
+func Value_firestorepb_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Value) *krm.Value {
 	mapCtx.NotImplemented()
 	return nil
 }
 
-func Value_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Value) *pb.Value {
+func Value_firestorepb_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Value) *pb.Value {
 	mapCtx.NotImplemented()
 	return nil
 }

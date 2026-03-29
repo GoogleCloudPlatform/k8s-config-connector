@@ -94,7 +94,7 @@ func TestSpecialRoundTripDocumentValues(t *testing.T) {
 
 			// Proto -> KRM
 			mapCtx := &direct.MapContext{}
-			inputKRM := FirestoreDocumentSpec_v1alpha1_FromProto(mapCtx, inputProto)
+			inputKRM := FirestoreDocumentSpec_firestorepb_v1alpha1_FromProto(mapCtx, inputProto)
 			if mapCtx.Err() != nil {
 				t.Fatalf("unexpected error mapping from proto: %v", mapCtx.Err())
 			}
@@ -121,7 +121,7 @@ func TestSpecialRoundTripDocumentValues(t *testing.T) {
 
 			// KRM -> Proto
 			mapCtx = &direct.MapContext{}
-			outputProto := FirestoreDocumentSpec_v1alpha1_ToProto(mapCtx, inputKRM)
+			outputProto := FirestoreDocumentSpec_firestorepb_v1alpha1_ToProto(mapCtx, inputKRM)
 			if mapCtx.Err() != nil {
 				t.Fatalf("unexpected error mapping to proto: %v", mapCtx.Err())
 			}

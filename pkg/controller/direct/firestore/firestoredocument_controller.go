@@ -68,7 +68,7 @@ func (m *firestoreDocumentModel) AdapterForObject(ctx context.Context, op *direc
 	}
 
 	mapCtx := &direct.MapContext{}
-	desired := FirestoreDocumentSpec_v1alpha1_ToProto(mapCtx, &obj.Spec)
+	desired := FirestoreDocumentSpec_firestorepb_v1alpha1_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -160,7 +160,7 @@ func (a *firestoreDocumentAdapter) Create(ctx context.Context, createOp *directb
 	status := &krm.FirestoreDocumentStatus{}
 	status.ExternalRef = direct.PtrTo(a.id.String())
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = FirestoreDocumentObservedState_v1alpha1_FromProto(mapCtx, created)
+	status.ObservedState = FirestoreDocumentObservedState_firestorepb_v1alpha1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -197,7 +197,7 @@ func (a *firestoreDocumentAdapter) Update(ctx context.Context, updateOp *directb
 	status := &krm.FirestoreDocumentStatus{}
 	status.ExternalRef = direct.PtrTo(a.id.String())
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = FirestoreDocumentObservedState_v1alpha1_FromProto(mapCtx, latest)
+	status.ObservedState = FirestoreDocumentObservedState_firestorepb_v1alpha1_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -211,7 +211,7 @@ func (a *firestoreDocumentAdapter) Export(ctx context.Context) (*unstructured.Un
 	}
 
 	mapCtx := &direct.MapContext{}
-	objSpec := FirestoreDocumentSpec_v1alpha1_FromProto(mapCtx, a.actual)
+	objSpec := FirestoreDocumentSpec_firestorepb_v1alpha1_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

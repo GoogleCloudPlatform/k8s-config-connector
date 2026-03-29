@@ -30,8 +30,8 @@ func init() {
 
 func firestoreDocumentFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Document{},
-		FirestoreDocumentSpec_v1alpha1_FromProto, FirestoreDocumentSpec_v1alpha1_ToProto,
-		FirestoreDocumentObservedState_v1alpha1_FromProto, FirestoreDocumentObservedState_v1alpha1_ToProto,
+		FirestoreDocumentSpec_firestorepb_v1alpha1_FromProto, FirestoreDocumentSpec_firestorepb_v1alpha1_ToProto,
+		FirestoreDocumentObservedState_firestorepb_v1alpha1_FromProto, FirestoreDocumentObservedState_firestorepb_v1alpha1_ToProto,
 	)
 	f.FilterSpec = func(in *pb.Document) {
 		for _, field := range in.GetFields() {

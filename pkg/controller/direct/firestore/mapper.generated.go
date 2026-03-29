@@ -31,20 +31,20 @@ import (
 	structpb "google.golang.org/protobuf/types/known/structpb"
 )
 
-func ArrayValue_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.ArrayValue) *krmfirestorev1alpha1.ArrayValue {
+func ArrayValue_firestorepb_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.ArrayValue) *krmfirestorev1alpha1.ArrayValue {
 	if in == nil {
 		return nil
 	}
 	out := &krmfirestorev1alpha1.ArrayValue{}
-	out.Values = direct.Slice_FromProto(mapCtx, in.Values, Value_v1alpha1_FromProto)
+	out.Values = direct.Slice_FromProto(mapCtx, in.Values, Value_firestorepb_v1alpha1_FromProto)
 	return out
 }
-func ArrayValue_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.ArrayValue) *firestorepb.ArrayValue {
+func ArrayValue_firestorepb_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.ArrayValue) *firestorepb.ArrayValue {
 	if in == nil {
 		return nil
 	}
 	out := &firestorepb.ArrayValue{}
-	out.Values = direct.Slice_ToProto(mapCtx, in.Values, Value_v1alpha1_ToProto)
+	out.Values = direct.Slice_ToProto(mapCtx, in.Values, Value_firestorepb_v1alpha1_ToProto)
 	return out
 }
 func DailyRecurrence_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DailyRecurrence) *krmfirestorev1alpha1.DailyRecurrence {
@@ -343,7 +343,7 @@ func FirestoreDatabaseSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Fi
 	// MISSING: DatabaseEdition
 	return out
 }
-func FirestoreDocumentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.Document) *krmfirestorev1alpha1.FirestoreDocumentObservedState {
+func FirestoreDocumentObservedState_firestorepb_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.Document) *krmfirestorev1alpha1.FirestoreDocumentObservedState {
 	if in == nil {
 		return nil
 	}
@@ -353,7 +353,7 @@ func FirestoreDocumentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
-func FirestoreDocumentObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.FirestoreDocumentObservedState) *firestorepb.Document {
+func FirestoreDocumentObservedState_firestorepb_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.FirestoreDocumentObservedState) *firestorepb.Document {
 	if in == nil {
 		return nil
 	}
@@ -657,7 +657,7 @@ func Index_ObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfire
 	// MISSING: ShardCount
 	return out
 }
-func MapValue_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.MapValue) *krmfirestorev1alpha1.MapValue {
+func MapValue_firestorepb_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.MapValue) *krmfirestorev1alpha1.MapValue {
 	if in == nil {
 		return nil
 	}
@@ -665,7 +665,7 @@ func MapValue_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.MapV
 	// MISSING: Fields
 	return out
 }
-func MapValue_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.MapValue) *firestorepb.MapValue {
+func MapValue_firestorepb_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.MapValue) *firestorepb.MapValue {
 	if in == nil {
 		return nil
 	}
