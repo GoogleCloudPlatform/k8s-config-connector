@@ -395,6 +395,9 @@ func LinkedInterconnectAttachments_v1alpha1_FromProto(mapCtx *direct.MapContext,
 		return nil
 	}
 	out := &krmnetworkconnectivityv1alpha1.LinkedInterconnectAttachments{}
+	// MISSING: ExcludeExportRanges
+	// MISSING: ExcludeImportRanges
+	// MISSING: IncludeExportRanges
 	out.IncludeImportRanges = in.IncludeImportRanges
 	out.SiteToSiteDataTransfer = direct.LazyPtr(in.GetSiteToSiteDataTransfer())
 	out.Uris = in.Uris
@@ -407,6 +410,9 @@ func LinkedInterconnectAttachments_v1alpha1_ToProto(mapCtx *direct.MapContext, i
 		return nil
 	}
 	out := &pb.LinkedInterconnectAttachments{}
+	// MISSING: ExcludeExportRanges
+	// MISSING: ExcludeImportRanges
+	// MISSING: IncludeExportRanges
 	out.IncludeImportRanges = in.IncludeImportRanges
 	out.SiteToSiteDataTransfer = direct.ValueOf(in.SiteToSiteDataTransfer)
 	out.Uris = in.Uris
@@ -419,6 +425,9 @@ func LinkedRouterApplianceInstances_v1alpha1_FromProto(mapCtx *direct.MapContext
 		return nil
 	}
 	out := &krmnetworkconnectivityv1alpha1.LinkedRouterApplianceInstances{}
+	// MISSING: ExcludeExportRanges
+	// MISSING: ExcludeImportRanges
+	// MISSING: IncludeExportRanges
 	out.IncludeImportRanges = in.IncludeImportRanges
 	out.Instances = direct.Slice_FromProto(mapCtx, in.Instances, RouterApplianceInstance_v1alpha1_FromProto)
 	out.SiteToSiteDataTransfer = direct.LazyPtr(in.GetSiteToSiteDataTransfer())
@@ -431,6 +440,9 @@ func LinkedRouterApplianceInstances_v1alpha1_ToProto(mapCtx *direct.MapContext, 
 		return nil
 	}
 	out := &pb.LinkedRouterApplianceInstances{}
+	// MISSING: ExcludeExportRanges
+	// MISSING: ExcludeImportRanges
+	// MISSING: IncludeExportRanges
 	out.IncludeImportRanges = in.IncludeImportRanges
 	out.Instances = direct.Slice_ToProto(mapCtx, in.Instances, RouterApplianceInstance_v1alpha1_ToProto)
 	out.SiteToSiteDataTransfer = direct.ValueOf(in.SiteToSiteDataTransfer)
@@ -471,6 +483,9 @@ func LinkedVpnTunnels_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Linke
 		return nil
 	}
 	out := &krmnetworkconnectivityv1alpha1.LinkedVpnTunnels{}
+	// MISSING: ExcludeExportRanges
+	// MISSING: ExcludeImportRanges
+	// MISSING: IncludeExportRanges
 	out.IncludeImportRanges = in.IncludeImportRanges
 	out.SiteToSiteDataTransfer = direct.LazyPtr(in.GetSiteToSiteDataTransfer())
 	out.Uris = in.Uris
@@ -483,6 +498,9 @@ func LinkedVpnTunnels_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetwork
 		return nil
 	}
 	out := &pb.LinkedVpnTunnels{}
+	// MISSING: ExcludeExportRanges
+	// MISSING: ExcludeImportRanges
+	// MISSING: IncludeExportRanges
 	out.IncludeImportRanges = in.IncludeImportRanges
 	out.SiteToSiteDataTransfer = direct.ValueOf(in.SiteToSiteDataTransfer)
 	out.Uris = in.Uris
