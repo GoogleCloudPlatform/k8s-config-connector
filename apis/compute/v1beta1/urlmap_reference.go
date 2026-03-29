@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -67,21 +68,25 @@ func (r *ComputeURLMapRef) SetExternal(ref string) {
 }
 
 func (r *ComputeURLMapRef) ValidateExternal(ref string) error {
+	if !strings.HasPrefix(ref, "projects/") && !strings.HasPrefix(ref, "https://www.googleapis.com/") {
+		return fmt.Errorf("external reference format %q is not known; expected projects/<project>/global/urlMaps/<name> or https://www.googleapis.com/compute/v1/projects/<project>/global/urlMaps/<name>", ref)
+	}
 	return nil
 }
 
 func (r *ComputeURLMapRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on ComputeURLMap reference")
+	if err := refsv1beta1.ValidateNameAndExternal(r.Name, r.External); err != nil {
+		return "", fmt.Errorf("in ComputeURLMap reference: %w", err)
 	}
 	if r.External != "" {
 		return r.External, nil
 	}
 
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
+	namespace := r.Namespace
+	if namespace == "" {
+		namespace = otherNamespace
 	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+	key := types.NamespacedName{Name: r.Name, Namespace: namespace}
 	u := &unstructured.Unstructured{}
 	u.SetGroupVersionKind(ComputeURLMapGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
@@ -91,8 +96,11 @@ func (r *ComputeURLMapRef) NormalizedExternal(ctx context.Context, reader client
 		return "", fmt.Errorf("reading referenced ComputeURLMap %s: %w", key, err)
 	}
 
-	selfLink, _, err := unstructured.NestedString(u.Object, "status", "selfLink")
-	if err != nil || selfLink == "" {
+	selfLink, found, err := unstructured.NestedString(u.Object, "status", "selfLink")
+	if err != nil {
+		return "", fmt.Errorf("reading status.selfLink for referenced ComputeURLMap %v: %w", key, err)
+	}
+	if !found || selfLink == "" {
 		return "", fmt.Errorf("cannot get selfLink for referenced ComputeURLMap %v (status.selfLink is empty)", key)
 	}
 	return selfLink, nil

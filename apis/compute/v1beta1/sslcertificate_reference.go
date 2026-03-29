@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -67,21 +68,25 @@ func (r *ComputeSSLCertificateRef) SetExternal(ref string) {
 }
 
 func (r *ComputeSSLCertificateRef) ValidateExternal(ref string) error {
+	if !strings.HasPrefix(ref, "projects/") && !strings.HasPrefix(ref, "https://www.googleapis.com/") {
+		return fmt.Errorf("external reference format %q is not known; expected projects/<project>/global/sslCertificates/<name> or https://www.googleapis.com/compute/v1/projects/<project>/global/sslCertificates/<name>", ref)
+	}
 	return nil
 }
 
 func (r *ComputeSSLCertificateRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on ComputeSSLCertificate reference")
+	if err := refsv1beta1.ValidateNameAndExternal(r.Name, r.External); err != nil {
+		return "", fmt.Errorf("in ComputeSSLCertificate reference: %w", err)
 	}
 	if r.External != "" {
 		return r.External, nil
 	}
 
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
+	namespace := r.Namespace
+	if namespace == "" {
+		namespace = otherNamespace
 	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+	key := types.NamespacedName{Name: r.Name, Namespace: namespace}
 	u := &unstructured.Unstructured{}
 	u.SetGroupVersionKind(ComputeSSLCertificateGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
@@ -91,8 +96,11 @@ func (r *ComputeSSLCertificateRef) NormalizedExternal(ctx context.Context, reade
 		return "", fmt.Errorf("reading referenced ComputeSSLCertificate %s: %w", key, err)
 	}
 
-	selfLink, _, err := unstructured.NestedString(u.Object, "status", "selfLink")
-	if err != nil || selfLink == "" {
+	selfLink, found, err := unstructured.NestedString(u.Object, "status", "selfLink")
+	if err != nil {
+		return "", fmt.Errorf("reading status.selfLink for referenced ComputeSSLCertificate %v: %w", key, err)
+	}
+	if !found || selfLink == "" {
 		return "", fmt.Errorf("cannot get selfLink for referenced ComputeSSLCertificate %v (status.selfLink is empty)", key)
 	}
 	return selfLink, nil

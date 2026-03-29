@@ -86,8 +86,7 @@ spec:
                     - external
                   properties:
                     external:
-                      description: 'Allowed value: The `externalRef` field of a `CertificateManagerCertificate`
-                        resource.'
+                      description: 'Allowed value: The format `//certificatemanager.googleapis.com/projects/{{project}}/locations/{{location}}/certificates/{{name}}`.'
                       type: string
                     name:
                       description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'

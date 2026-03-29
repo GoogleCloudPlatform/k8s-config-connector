@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -67,14 +68,26 @@ func (r *NetworkSecurityServerTLSPolicyRef) SetExternal(ref string) {
 }
 
 func (r *NetworkSecurityServerTLSPolicyRef) ValidateExternal(ref string) error {
+	if !strings.HasPrefix(ref, "projects/") {
+		return fmt.Errorf("external reference format %q is not known; expected projects/<project>/locations/<location>/serverTlsPolicies/<name>", ref)
+	}
 	return nil
 }
 
 func (r *NetworkSecurityServerTLSPolicyRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, func(u *unstructured.Unstructured) string {
-		resourceID, _ := refsv1beta1.GetResourceID(u)
-		projectID, _ := refsv1beta1.ResolveProjectID(ctx, reader, u)
-		location, _ := refsv1beta1.GetLocation(u)
+		resourceID, err := refsv1beta1.GetResourceID(u)
+		if err != nil {
+			return ""
+		}
+		projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
+		if err != nil {
+			return ""
+		}
+		location, err := refsv1beta1.GetLocation(u)
+		if err != nil {
+			return ""
+		}
 
 		if resourceID != "" && projectID != "" && location != "" {
 			return fmt.Sprintf("projects/%s/locations/%s/serverTlsPolicies/%s", projectID, location, resourceID)
@@ -84,17 +97,18 @@ func (r *NetworkSecurityServerTLSPolicyRef) Normalize(ctx context.Context, reade
 }
 
 func (r *NetworkSecurityServerTLSPolicyRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on NetworkSecurityServerTLSPolicy reference")
+	if err := refsv1beta1.ValidateNameAndExternal(r.Name, r.External); err != nil {
+		return "", fmt.Errorf("in NetworkSecurityServerTLSPolicy reference: %w", err)
 	}
 	if r.External != "" {
 		return r.External, nil
 	}
 
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
+	namespace := r.Namespace
+	if namespace == "" {
+		namespace = otherNamespace
 	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+	key := types.NamespacedName{Name: r.Name, Namespace: namespace}
 	u := &unstructured.Unstructured{}
 	u.SetGroupVersionKind(NetworkSecurityServerTLSPolicyGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
@@ -108,17 +122,17 @@ func (r *NetworkSecurityServerTLSPolicyRef) NormalizedExternal(ctx context.Conte
 	// We must manually construct the external reference.
 	resourceID, err := refsv1beta1.GetResourceID(u)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("getting resourceID for %s: %w", key, err)
 	}
 
 	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("resolving projectID for %s: %w", key, err)
 	}
 
 	location, err := refsv1beta1.GetLocation(u)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("getting location for %s: %w", key, err)
 	}
 
 	return fmt.Sprintf("projects/%s/locations/%s/serverTlsPolicies/%s", projectID, location, resourceID), nil

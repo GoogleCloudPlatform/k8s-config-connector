@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -67,21 +68,25 @@ func (r *CertificateManagerCertificateMapRef) SetExternal(ref string) {
 }
 
 func (r *CertificateManagerCertificateMapRef) ValidateExternal(ref string) error {
+	if !strings.HasPrefix(ref, "//certificatemanager.googleapis.com/projects/") {
+		return fmt.Errorf("external reference format %q is not known; expected //certificatemanager.googleapis.com/projects/<project>/locations/global/certificateMaps/<name>", ref)
+	}
 	return nil
 }
 
 func (r *CertificateManagerCertificateMapRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on CertificateManagerCertificateMap reference")
+	if err := refsv1beta1.ValidateNameAndExternal(r.Name, r.External); err != nil {
+		return "", fmt.Errorf("in CertificateManagerCertificateMap reference: %w", err)
 	}
 	if r.External != "" {
 		return r.External, nil
 	}
 
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
+	namespace := r.Namespace
+	if namespace == "" {
+		namespace = otherNamespace
 	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+	key := types.NamespacedName{Name: r.Name, Namespace: namespace}
 	u := &unstructured.Unstructured{}
 	u.SetGroupVersionKind(CertificateManagerCertificateMapGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
@@ -95,21 +100,28 @@ func (r *CertificateManagerCertificateMapRef) NormalizedExternal(ctx context.Con
 	// We must manually construct the external reference.
 	resourceID, err := refsv1beta1.GetResourceID(u)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("getting resourceID for %s: %w", key, err)
 	}
 
 	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("resolving projectID for %s: %w", key, err)
 	}
 
+	// Certificate Maps are currently global.
 	return fmt.Sprintf("//certificatemanager.googleapis.com/projects/%s/locations/global/certificateMaps/%s", projectID, resourceID), nil
 }
 
 func (r *CertificateManagerCertificateMapRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, func(u *unstructured.Unstructured) string {
-		resourceID, _ := refsv1beta1.GetResourceID(u)
-		projectID, _ := refsv1beta1.ResolveProjectID(ctx, reader, u)
+		resourceID, err := refsv1beta1.GetResourceID(u)
+		if err != nil {
+			return ""
+		}
+		projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
+		if err != nil {
+			return ""
+		}
 
 		if resourceID != "" && projectID != "" {
 			return fmt.Sprintf("//certificatemanager.googleapis.com/projects/%s/locations/global/certificateMaps/%s", projectID, resourceID)
