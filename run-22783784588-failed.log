@@ -1,0 +1,325 @@
+smoketest-with-kind	UNKNOWN STEP	﻿2026-03-06T22:02:40.7063183Z Current runner version: '2.332.0'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7088318Z ##[group]Runner Image Provisioner
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7089263Z Hosted Compute Agent
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7089804Z Version: 20260213.493
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7090425Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7091692Z Build Date: 2026-02-13T00:28:41Z
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7092375Z Worker ID: {8c5892dc-aabd-49ad-bd86-095bc1a1b1f2}
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7093115Z Azure Region: westus
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7093669Z ##[endgroup]
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7095182Z ##[group]Operating System
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7095766Z Ubuntu
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7096317Z 24.04.3
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7096774Z LTS
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7097284Z ##[endgroup]
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7097875Z ##[group]Runner Image
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7098435Z Image: ubuntu-24.04
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7099030Z Version: 20260302.42.1
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7100249Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260302.42/images/ubuntu/Ubuntu2404-Readme.md
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7102061Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260302.42
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7103033Z ##[endgroup]
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7104166Z ##[group]GITHUB_TOKEN Permissions
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7105962Z Contents: read
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7106640Z Metadata: read
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7107202Z Packages: read
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7107678Z ##[endgroup]
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7109867Z Secret source: None
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7110542Z Prepare workflow directory
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7444450Z Prepare all required actions
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:40.7504508Z Getting action download info
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:41.2296947Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:41.3969070Z Download action repository 'actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c' (SHA:4dc6199c7b1a012772edbd06daecab0f50c9053c)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:42.7812325Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.0182213Z Complete job name: smoketest-with-kind
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.1017260Z ##[group]Run actions/checkout@v4
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.1018504Z with:
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.1019383Z   repository: GoogleCloudPlatform/k8s-config-connector
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.1020785Z   token: ***
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.1021644Z   ssh-strict: true
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.1022374Z   ssh-user: git
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.1023125Z   persist-credentials: true
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.1023979Z   clean: true
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.1024740Z   sparse-checkout-cone-mode: true
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.1025660Z   fetch-depth: 1
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.1026381Z   fetch-tags: false
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.1027126Z   show-progress: true
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.1027882Z   lfs: false
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.1028585Z   submodules: false
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.1029354Z   set-safe-directory: true
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.1030440Z ##[endgroup]
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2138009Z Syncing repository: GoogleCloudPlatform/k8s-config-connector
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2140740Z ##[group]Getting Git version info
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2142546Z Working directory is '/home/runner/work/k8s-config-connector/k8s-config-connector'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2144659Z [command]/usr/bin/git version
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2219700Z git version 2.53.0
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2246713Z ##[endgroup]
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2261497Z Temporarily overriding HOME='/home/runner/work/_temp/85c506d3-6499-4331-ac2e-74953c3603a6' before making global git config changes
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2264232Z Adding repository directory to the temporary git global config as a safe directory
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2267410Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/k8s-config-connector/k8s-config-connector
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2307436Z Deleting the contents of '/home/runner/work/k8s-config-connector/k8s-config-connector'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2310600Z ##[group]Initializing the repository
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2315212Z [command]/usr/bin/git init /home/runner/work/k8s-config-connector/k8s-config-connector
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2443365Z hint: Using 'master' as the name for the initial branch. This default branch name
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2445346Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2448281Z hint: to use in all of your new repositories, which will suppress this warning,
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2450011Z hint: call:
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2450700Z hint:
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2451893Z hint: 	git config --global init.defaultBranch <name>
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2453284Z hint:
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2454336Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2456098Z hint: 'development'. The just-created branch can be renamed via this command:
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2457498Z hint:
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2458325Z hint: 	git branch -m <name>
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2459480Z hint:
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2460640Z hint: Disable this message with "git config set advice.defaultBranchName false"
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2463147Z Initialized empty Git repository in /home/runner/work/k8s-config-connector/k8s-config-connector/.git/
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2466908Z [command]/usr/bin/git remote add origin https://github.com/GoogleCloudPlatform/k8s-config-connector
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2496941Z ##[endgroup]
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2498239Z ##[group]Disabling automatic garbage collection
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2500648Z [command]/usr/bin/git config --local gc.auto 0
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2530396Z ##[endgroup]
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2531911Z ##[group]Setting up auth
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2537741Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2568804Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2923089Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.2956081Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.3191907Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.3227478Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.3463125Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.3497954Z ##[endgroup]
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.3500383Z ##[group]Fetching the repository
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:43.3509891Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +7eb2b3dee9c206e3b14c62d8c296e59b37d49c58:refs/remotes/pull/6938/merge
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:56.8563587Z From https://github.com/GoogleCloudPlatform/k8s-config-connector
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:56.8564423Z  * [new ref]           7eb2b3dee9c206e3b14c62d8c296e59b37d49c58 -> pull/6938/merge
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:56.8602289Z ##[endgroup]
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:56.8603000Z ##[group]Determining the checkout info
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:56.8605703Z ##[endgroup]
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:56.8613291Z [command]/usr/bin/git sparse-checkout disable
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:56.8658836Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:56.8686587Z ##[group]Checking out the ref
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:56.8691947Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/6938/merge
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:57.9056338Z Updating files:  35% (10996/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:57.9366720Z Updating files:  36% (11049/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:57.9565396Z Updating files:  37% (11356/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:57.9747322Z Updating files:  38% (11663/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:57.9936799Z Updating files:  39% (11970/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.0202427Z Updating files:  40% (12277/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.0407024Z Updating files:  41% (12584/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.0595954Z Updating files:  42% (12891/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.0779842Z Updating files:  43% (13198/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.0953947Z Updating files:  44% (13505/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.1123202Z Updating files:  45% (13811/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.1292465Z Updating files:  46% (14118/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.1443449Z Updating files:  47% (14425/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.1740235Z Updating files:  48% (14732/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.1932959Z Updating files:  49% (15039/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.2146775Z Updating files:  50% (15346/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.2385019Z Updating files:  51% (15653/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.2624172Z Updating files:  52% (15960/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.2830242Z Updating files:  53% (16267/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.2966734Z Updating files:  54% (16574/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.3121085Z Updating files:  55% (16881/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.3320093Z Updating files:  56% (17187/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.3639809Z Updating files:  57% (17494/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.3858401Z Updating files:  58% (17801/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.4070891Z Updating files:  59% (18108/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.4363219Z Updating files:  60% (18415/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.4595378Z Updating files:  61% (18722/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.4825371Z Updating files:  62% (19029/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.5113338Z Updating files:  63% (19336/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.5401830Z Updating files:  64% (19643/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.5683299Z Updating files:  65% (19950/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.5893789Z Updating files:  66% (20257/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.6144343Z Updating files:  67% (20563/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.6696671Z Updating files:  68% (20870/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.6865693Z Updating files:  69% (21177/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.7066877Z Updating files:  70% (21484/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.7427401Z Updating files:  71% (21791/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.7612288Z Updating files:  72% (22098/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.7874866Z Updating files:  73% (22405/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.8099707Z Updating files:  74% (22712/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.8374035Z Updating files:  75% (23019/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.8514759Z Updating files:  76% (23326/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.8663315Z Updating files:  77% (23633/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.8820499Z Updating files:  78% (23939/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.8964045Z Updating files:  79% (24246/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.9021512Z Updating files:  80% (24553/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.9117009Z Updating files:  80% (24667/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.9275863Z Updating files:  81% (24860/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.9425339Z Updating files:  82% (25167/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.9570547Z Updating files:  83% (25474/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.9717623Z Updating files:  84% (25781/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:58.9870101Z Updating files:  85% (26088/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.0025231Z Updating files:  86% (26395/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.0185275Z Updating files:  87% (26702/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.0340031Z Updating files:  88% (27009/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.0579934Z Updating files:  89% (27315/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.0828410Z Updating files:  90% (27622/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.1071454Z Updating files:  91% (27929/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.1333954Z Updating files:  92% (28236/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.1554618Z Updating files:  93% (28543/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.1752545Z Updating files:  94% (28850/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.1936123Z Updating files:  95% (29157/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.2118983Z Updating files:  96% (29464/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.2276771Z Updating files:  97% (29771/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.2507523Z Updating files:  98% (30078/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.2705810Z Updating files:  99% (30385/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.2706240Z Updating files: 100% (30691/30691)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.2706633Z Updating files: 100% (30691/30691), done.
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3118894Z Note: switching to 'refs/remotes/pull/6938/merge'.
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3119240Z 
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3119462Z You are in 'detached HEAD' state. You can look around, make experimental
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3120214Z changes and commit them, and you can discard any commits you make in this
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3120716Z state without impacting any branches by switching back to a branch.
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3121249Z 
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3121441Z If you want to create a new branch to retain commits you create, you may
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3121903Z do so (now or later) by using -c with the switch command. Example:
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3122172Z 
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3122268Z   git switch -c <new-branch-name>
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3122447Z 
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3122538Z Or undo this operation with:
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3122699Z 
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3122776Z   git switch -
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3122892Z 
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3123110Z Turn off this advice by setting config variable advice.detachedHead to false
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3123431Z 
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3123805Z HEAD is now at 7eb2b3de Merge 7c495f855f792dceed3cf49399b520777a718dd3 into 30a075db31a9f9b3075a5b6fdcbca3cd7de73bda
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3184131Z ##[endgroup]
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3225459Z [command]/usr/bin/git log -1 --format=%H
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3252535Z 7eb2b3dee9c206e3b14c62d8c296e59b37d49c58
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3477620Z ##[group]Run actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3477989Z with:
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3478172Z   go-version-file: go.mod
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3478386Z   check-latest: false
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3478710Z   token: ***
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3478876Z   cache: true
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.3479054Z ##[endgroup]
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.5186663Z Setup go version spec 1.24.6
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:02:59.5199758Z Attempting to download 1.24.6...
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:00.0929983Z matching 1.24.6...
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:00.0985703Z Acquiring 1.24.6 from https://github.com/actions/go-versions/releases/download/1.24.6-16792114823/go-1.24.6-linux-x64.tar.gz
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:00.7323952Z Extracting Go...
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:00.7428358Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/05489f54-3342-4c23-a6aa-799e1a223fdf -f /home/runner/work/_temp/91cec439-3dff-4415-908b-e7bebd36b1c5
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:02.5361881Z Successfully extracted go to /home/runner/work/_temp/05489f54-3342-4c23-a6aa-799e1a223fdf
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:02.5362356Z Adding to the cache ...
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:07.7690364Z Successfully cached go to /opt/hostedtoolcache/go/1.24.6/x64
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:07.7697632Z Added go to the path
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:07.7698045Z Successfully set up Go version 1.24.6
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:07.7914795Z [command]/opt/hostedtoolcache/go/1.24.6/x64/bin/go env GOMODCACHE
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:07.7949094Z [command]/opt/hostedtoolcache/go/1.24.6/x64/bin/go env GOCACHE
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:07.7984984Z /home/runner/go/pkg/mod
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:07.7997246Z /home/runner/.cache/go-build
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:08.0719956Z Cache hit for: setup-go-Linux-x64-ubuntu24-go-1.24.6-38aeb6058b2b948351c58b83d9d3468daa88777ea1b24224536b1c7536b16a8c
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:09.3545709Z Received 12582912 of 312132445 (4.0%), 12.0 MBs/sec
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:10.3549553Z Received 134217728 of 312132445 (43.0%), 64.0 MBs/sec
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:11.3563875Z Received 268435456 of 312132445 (86.0%), 85.2 MBs/sec
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:11.6319049Z Received 312132445 of 312132445 (100.0%), 90.8 MBs/sec
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:11.6320372Z Cache Size: ~298 MB (312132445 B)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:11.6390133Z [command]/usr/bin/tar -xf /home/runner/work/_temp/c7fefc30-6fd2-4afd-a506-67fcb00ffaac/cache.tzst -P -C /home/runner/work/k8s-config-connector/k8s-config-connector --use-compress-program unzstd
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:15.1785938Z Cache restored successfully
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:15.2404128Z Cache restored from key: setup-go-Linux-x64-ubuntu24-go-1.24.6-38aeb6058b2b948351c58b83d9d3468daa88777ea1b24224536b1c7536b16a8c
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:15.2425100Z go version go1.24.6 linux/amd64
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:15.2425296Z 
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:15.2425572Z ##[group]go env
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2553585Z AR='ar'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2553934Z CC='gcc'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2554287Z CGO_CFLAGS='-O2 -g'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2554653Z CGO_CPPFLAGS=''
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2555310Z CGO_CXXFLAGS='-O2 -g'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2555689Z CGO_ENABLED='1'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2556030Z CGO_FFLAGS='-O2 -g'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2556398Z CGO_LDFLAGS='-O2 -g'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2556737Z CXX='g++'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2557042Z GCCGO='gccgo'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2557346Z GO111MODULE=''
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2557654Z GOAMD64='v1'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2557957Z GOARCH='amd64'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2558253Z GOAUTH='netrc'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2558549Z GOBIN=''
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2558892Z GOCACHE='/home/runner/.cache/go-build'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2559339Z GOCACHEPROG=''
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2559657Z GODEBUG=''
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2559989Z GOENV='/home/runner/.config/go/env'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2560386Z GOEXE=''
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2560692Z GOEXPERIMENT=''
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2561236Z GOFIPS140='off'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2561542Z GOFLAGS=''
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2562704Z GOGCCFLAGS='-fPIC -m64 -pthread -Wl,--no-gc-sections -fmessage-length=0 -ffile-prefix-map=/tmp/go-build2215579114=/tmp/go-build -gno-record-gcc-switches'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2563826Z GOHOSTARCH='amd64'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2564174Z GOHOSTOS='linux'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2564738Z GOINSECURE=''
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2565266Z GOMOD='/home/runner/work/k8s-config-connector/k8s-config-connector/go.mod'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2565881Z GOMODCACHE='/home/runner/go/pkg/mod'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2566267Z GONOPROXY=''
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2566554Z GONOSUMDB=''
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2566825Z GOOS='linux'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2567140Z GOPATH='/home/runner/go'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2567490Z GOPRIVATE=''
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2567890Z GOPROXY='https://proxy.golang.org,direct'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2568423Z GOROOT='/opt/hostedtoolcache/go/1.24.6/x64'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2568986Z GOSUMDB='sum.golang.org'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2569381Z GOTELEMETRY='local'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2569832Z GOTELEMETRYDIR='/home/runner/.config/go/telemetry'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2570318Z GOTMPDIR=''
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2570702Z GOTOOLCHAIN='local'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2571470Z GOTOOLDIR='/opt/hostedtoolcache/go/1.24.6/x64/pkg/tool/linux_amd64'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2572093Z GOVCS=''
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2572418Z GOVERSION='go1.24.6'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2573031Z GOWORK='/home/runner/work/k8s-config-connector/k8s-config-connector/go.work'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2573771Z PKG_CONFIG='pkg-config'
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2574029Z 
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2574504Z ##[endgroup]
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2739381Z ##[group]Run ./dev/ci/presubmits/smoketest-with-kind
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2739817Z [36;1m./dev/ci/presubmits/smoketest-with-kind[0m
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2793353Z shell: /usr/bin/bash -e {0}
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2793611Z env:
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2793787Z   GOTOOLCHAIN: local
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2794006Z   ARTIFACTS: /tmp/artifacts
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.2794228Z ##[endgroup]
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.7682227Z === RUN   TestSmoketest
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:16.7701296Z     smoketest_test.go:52: Creating kind cluster "kcc-smoketest-20260306-220316"
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:03:41.6439142Z     smoketest_test.go:60: Building images with tag "dev-20260306T220341"
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:15:11.7416100Z     smoketest_test.go:71: Loading operator image into kind
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:15:18.5919121Z     smoketest_test.go:77: Deploying operator to kind
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:15:21.3216331Z     smoketest_test.go:99: Waiting for operator to be ready
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:15:22.5855900Z     smoketest_test.go:104: Creating cnrm-system namespace
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:15:22.7355136Z     smoketest_test.go:109: Creating fake google service account secret
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:15:22.8424458Z     smoketest_test.go:138: Configuring ConfigConnector in cluster mode
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:15:22.9032480Z     smoketest_test.go:156: Waiting for StorageBucket CRD
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:15:46.1695162Z     smoketest_test.go:164: Creating namespace and StorageBucket
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:15:48.4809503Z     smoketest_test.go:196: Waiting for StorageBucket reconciliation (expected to fail with permission error)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:48.5529617Z     smoketest_test.go:200: StorageBucket failed to reconcile: command kubectl [wait storagebucket -n config-control kcc-test-config-control --for=jsonpath={.status.conditions[].type}=Ready --timeout=5m] failed: exit status 1
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:48.5532527Z         Output: error: timed out waiting for the condition on storagebuckets/kcc-test-config-control
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:48.5533704Z     smoketest_test.go:45: Deleting kind cluster "kcc-smoketest-20260306-220316"
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.4185881Z --- FAIL: TestSmoketest (1052.65s)
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.4187157Z FAIL
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.4192080Z FAIL	github.com/GoogleCloudPlatform/k8s-config-connector/tests/e2e/smoketest	1052.652s
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.4199959Z FAIL
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.5770770Z ##[error]Process completed with exit code 1.
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.5857155Z ##[group]Run actions/upload-artifact@v4
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.5857443Z with:
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.5857636Z   name: artifacts-smoketest-with-kind
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.5857901Z   path: /tmp/artifacts/
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.5858120Z   if-no-files-found: warn
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.5858336Z   compression-level: 6
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.5858536Z   overwrite: false
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.5858750Z   include-hidden-files: false
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.5858959Z env:
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.5859127Z   GOTOOLCHAIN: local
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.5859316Z ##[endgroup]
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.8077535Z ##[warning]No files were found with the provided path: /tmp/artifacts/. No artifacts will be uploaded.
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.8269289Z Post job cleanup.
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.9261957Z [command]/usr/bin/git version
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.9310765Z git version 2.53.0
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.9354874Z Temporarily overriding HOME='/home/runner/work/_temp/53f89fbe-6807-4493-bede-950fc724c9f9' before making global git config changes
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.9356161Z Adding repository directory to the temporary git global config as a safe directory
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.9361557Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/k8s-config-connector/k8s-config-connector
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.9398533Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.9433822Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:49.9963386Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:50.0009231Z http.https://github.com/.extraheader
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:50.0018006Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:50.0064880Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:50.0380221Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:50.0417082Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+smoketest-with-kind	UNKNOWN STEP	2026-03-06T22:20:50.0871809Z Cleaning up orphan processes
