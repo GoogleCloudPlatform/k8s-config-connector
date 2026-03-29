@@ -74,6 +74,9 @@ func StorageBucketSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketS
 		out.Autoclass = &gcp.BucketAutoclass{
 			Enabled: in.Autoclass.Enabled,
 		}
+		if in.Autoclass.TerminalStorageClass != nil {
+			out.Autoclass.TerminalStorageClass = *in.Autoclass.TerminalStorageClass
+		}
 		out.Autoclass.ForceSendFields = append(out.Autoclass.ForceSendFields, "Enabled")
 	}
 	if in.Versioning != nil {
@@ -223,6 +226,9 @@ func StorageBucketSpec_FromProto(mapCtx *direct.MapContext, in *gcp.Bucket) *krm
 		out.Autoclass = &krm.BucketAutoclass{
 			Enabled: in.Autoclass.Enabled,
 		}
+		if in.Autoclass.TerminalStorageClass != "" {
+			out.Autoclass.TerminalStorageClass = &in.Autoclass.TerminalStorageClass
+		}
 	}
 	if in.Versioning != nil {
 		out.Versioning = &krm.BucketVersioning{
@@ -324,6 +330,12 @@ func StorageBucketObservedState_FromProto(mapCtx *direct.MapContext, in *gcp.Buc
 		out.SoftDeletePolicy = &krm.BucketSoftDeletePolicyStatus{
 			EffectiveTime:            direct.LazyPtr(in.SoftDeletePolicy.EffectiveTime),
 			RetentionDurationSeconds: direct.LazyPtr(in.SoftDeletePolicy.RetentionDurationSeconds),
+		}
+	}
+	if in.Autoclass != nil {
+		out.Autoclass = &krm.BucketAutoclassStatus{
+			TerminalStorageClassUpdateTime: direct.LazyPtr(in.Autoclass.TerminalStorageClassUpdateTime),
+			ToggleTime:                     direct.LazyPtr(in.Autoclass.ToggleTime),
 		}
 	}
 	return out
