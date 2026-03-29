@@ -34,6 +34,11 @@ args: [ "powertools", "force-set-field", "--namespace=${projectId}", "--kind=Sto
 
 ---
 
+kind: SystemRun
+duration: 2
+
+---
+
 TEST: READ-OBJECT
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucket
