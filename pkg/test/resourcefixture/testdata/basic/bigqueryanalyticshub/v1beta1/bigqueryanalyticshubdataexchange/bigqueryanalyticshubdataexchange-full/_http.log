@@ -94,9 +94,9 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: data_exchange.name=projects%2F${projectNumber}%2Flocations%2Fus%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
 
 {
-  "description": "example data exchange",
+  "description": "updated example data exchange",
   "discoveryType": 2,
-  "displayName": "my_data_exchange",
+  "displayName": "updated_my_data_exchange",
   "documentation": "an updated documentation",
   "name": "projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
   "primaryContact": "another@contact.com"
@@ -112,9 +112,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "description": "example data exchange",
+  "description": "updated example data exchange",
   "discoveryType": "DISCOVERY_TYPE_PUBLIC",
-  "displayName": "my_data_exchange",
+  "displayName": "updated_my_data_exchange",
   "documentation": "an updated documentation",
   "logLinkedDatasetQueryUserEmail": false,
   "name": "projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
@@ -141,9 +141,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "description": "example data exchange",
+  "description": "updated example data exchange",
   "discoveryType": "DISCOVERY_TYPE_PUBLIC",
-  "displayName": "my_data_exchange",
+  "displayName": "updated_my_data_exchange",
   "documentation": "an updated documentation",
   "logLinkedDatasetQueryUserEmail": false,
   "name": "projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",

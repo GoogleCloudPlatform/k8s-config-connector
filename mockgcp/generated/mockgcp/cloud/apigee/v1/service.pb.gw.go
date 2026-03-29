@@ -20229,6 +20229,10 @@ func local_request_OrganizationsSecurityMonitoringConditionsServer_CreateOrganiz
 
 }
 
+var (
+	filter_OrganizationsSecurityMonitoringConditionsServer_DeleteOrganizationsSecurityMonitoringCondition_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+)
+
 func request_OrganizationsSecurityMonitoringConditionsServer_DeleteOrganizationsSecurityMonitoringCondition_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsSecurityMonitoringConditionsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DeleteOrganizationsSecurityMonitoringConditionRequest
 	var metadata runtime.ServerMetadata
@@ -20248,6 +20252,13 @@ func request_OrganizationsSecurityMonitoringConditionsServer_DeleteOrganizations
 	protoReq.Name, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrganizationsSecurityMonitoringConditionsServer_DeleteOrganizationsSecurityMonitoringCondition_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := client.DeleteOrganizationsSecurityMonitoringCondition(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -20276,10 +20287,21 @@ func local_request_OrganizationsSecurityMonitoringConditionsServer_DeleteOrganiz
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrganizationsSecurityMonitoringConditionsServer_DeleteOrganizationsSecurityMonitoringCondition_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
 	msg, err := server.DeleteOrganizationsSecurityMonitoringCondition(ctx, &protoReq)
 	return msg, metadata, err
 
 }
+
+var (
+	filter_OrganizationsSecurityMonitoringConditionsServer_GetOrganizationsSecurityMonitoringCondition_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+)
 
 func request_OrganizationsSecurityMonitoringConditionsServer_GetOrganizationsSecurityMonitoringCondition_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsSecurityMonitoringConditionsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetOrganizationsSecurityMonitoringConditionRequest
@@ -20300,6 +20322,13 @@ func request_OrganizationsSecurityMonitoringConditionsServer_GetOrganizationsSec
 	protoReq.Name, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrganizationsSecurityMonitoringConditionsServer_GetOrganizationsSecurityMonitoringCondition_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := client.GetOrganizationsSecurityMonitoringCondition(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -20326,6 +20355,13 @@ func local_request_OrganizationsSecurityMonitoringConditionsServer_GetOrganizati
 	protoReq.Name, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrganizationsSecurityMonitoringConditionsServer_GetOrganizationsSecurityMonitoringCondition_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := server.GetOrganizationsSecurityMonitoringCondition(ctx, &protoReq)

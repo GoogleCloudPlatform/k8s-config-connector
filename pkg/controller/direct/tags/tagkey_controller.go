@@ -16,6 +16,7 @@ package tags
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -26,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+	"google.golang.org/api/iterator"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -178,23 +180,71 @@ func (a *TagsTagKeyAdapter) Create(ctx context.Context, createOp *directbase.Cre
 
 	op, err := a.tagKeysClient.CreateTagKey(ctx, req)
 	if err != nil {
+		if direct.IsAlreadyExists(err) {
+			log.V(0).Info("TagsTagKey already exists, attempting to acquire", "parent", a.desired.GetParent(), "shortName", a.desired.GetShortName())
+			return a.acquireExistingTagKey(ctx, createOp)
+		}
 		return fmt.Errorf("creating TagsTagKey: %w", err)
 	}
 
 	created, err := op.Wait(ctx)
 	if err != nil {
+		if direct.IsAlreadyExists(err) {
+			log.V(0).Info("TagsTagKey already exists, attempting to acquire", "parent", a.desired.GetParent(), "shortName", a.desired.GetShortName())
+			return a.acquireExistingTagKey(ctx, createOp)
+		}
 		return fmt.Errorf("waiting for creation of TagsTagKey: %w", err)
 	}
 	log.V(0).Info("created TagsTagKey", "name", created.GetName())
 
-	// For compatibility, we set spec.resourceID after creation because this is a server-generated-id resource that we are migrating from terraform/DCL.
-	// More info in docs/ai/server-generated-id.md
-	resourceID := strings.TrimPrefix(created.GetName(), "tagKeys/")
+	return a.setResourceIDAndStatus(ctx, createOp, created)
+}
+
+// acquireExistingTagKey looks up an existing TagKey by parent and shortName after an ALREADY_EXISTS error,
+// then sets the resourceID and status to adopt the resource.
+func (a *TagsTagKeyAdapter) acquireExistingTagKey(ctx context.Context, createOp *directbase.CreateOperation) error {
+	log := klog.FromContext(ctx)
+
+	existing, err := a.findTagKeyByShortName(ctx)
+	if err != nil {
+		return err
+	}
+	if existing == nil {
+		return fmt.Errorf("TagsTagKey with shortName %q not found under %q despite ALREADY_EXISTS error", a.desired.GetShortName(), a.desired.GetParent())
+	}
+	log.V(0).Info("acquired existing TagsTagKey", "name", existing.GetName())
+
+	return a.setResourceIDAndStatus(ctx, createOp, existing)
+}
+
+// setResourceIDAndStatus sets spec.resourceID and updates status from the given TagKey.
+// For compatibility, we set spec.resourceID after creation because this is a server-generated-id resource that we are migrating from terraform/DCL.
+// More info in docs/ai/server-generated-id.md
+func (a *TagsTagKeyAdapter) setResourceIDAndStatus(ctx context.Context, createOp *directbase.CreateOperation, tagKey *pb.TagKey) error {
+	resourceID := strings.TrimPrefix(tagKey.GetName(), "tagKeys/")
 	if err := createOp.SetSpecResourceID(ctx, resourceID); err != nil {
 		return err
 	}
+	return a.updateStatus(ctx, createOp, tagKey)
+}
 
-	return a.updateStatus(ctx, createOp, created)
+// findTagKeyByShortName lists TagKeys under the parent and returns the one matching the desired shortName.
+func (a *TagsTagKeyAdapter) findTagKeyByShortName(ctx context.Context) (*pb.TagKey, error) {
+	listReq := &pb.ListTagKeysRequest{Parent: a.desired.GetParent()}
+	it := a.tagKeysClient.ListTagKeys(ctx, listReq)
+	for {
+		tagKey, err := it.Next()
+		if err != nil {
+			if errors.Is(err, iterator.Done) {
+				break
+			}
+			return nil, fmt.Errorf("listing TagsTagKeys under %q: %w", a.desired.GetParent(), err)
+		}
+		if tagKey.GetShortName() == a.desired.GetShortName() {
+			return tagKey, nil
+		}
+	}
+	return nil, nil
 }
 
 func (a *TagsTagKeyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
@@ -252,8 +302,8 @@ func (a *TagsTagKeyAdapter) updateStatus(ctx context.Context, op directbase.Oper
 	// Legacy status fields
 	status.Name = direct.PtrTo(strings.TrimPrefix(latest.GetName(), "tagKeys/"))
 	status.NamespacedName = direct.PtrTo(latest.GetNamespacedName())
-	status.CreateTime = direct.PtrTo(latest.GetCreateTime().AsTime().Format("2006-01-02T15:04:05Z07:00"))
-	status.UpdateTime = direct.PtrTo(latest.GetUpdateTime().AsTime().Format("2006-01-02T15:04:05Z07:00"))
+	status.CreateTime = direct.StringTimestamp_FromProto(nil, latest.GetCreateTime())
+	status.UpdateTime = direct.StringTimestamp_FromProto(nil, latest.GetUpdateTime())
 
 	return op.UpdateStatus(ctx, status, nil)
 }

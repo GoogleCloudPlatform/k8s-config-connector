@@ -14,6 +14,7 @@
 
 PROJECT_ID ?= $(shell gcloud config get-value project)
 SHORT_SHA := $(shell git rev-parse --short=7 HEAD)
+GO_VERSION := $(shell grep "^go" go.mod | sed -e 's/^go[[:space:]]\+//')
 BUILDER_IMG ?= gcr.io/${PROJECT_ID}/builder:${SHORT_SHA}
 CONTROLLER_IMG ?= gcr.io/${PROJECT_ID}/cnrm/controller:${SHORT_SHA}
 RECORDER_IMG ?= gcr.io/${PROJECT_ID}/cnrm/recorder:${SHORT_SHA}
@@ -25,7 +26,7 @@ CONFIG_CONNECTOR_IMG ?= gcr.io/${PROJECT_ID}/cnrm/config-connector-cli:${SHORT_S
 GOLANGCI_LINT_CACHE := /tmp/golangci-lint
 # When updating this, make sure to update the corresponding action in
 # ./github/workflows/lint.yaml
-GOLANGCI_LINT_VERSION := v2.7.1
+GOLANGCI_LINT_VERSION := v2.9.0
 
 # Use Docker BuildKit when building images to allow usage of 'setcap' in
 # multi-stage builds (https://github.com/moby/moby/issues/38132)
@@ -128,7 +129,7 @@ lint:
 	docker run --rm -v $(shell pwd):/app \
 		-v ${GOLANGCI_LINT_CACHE}:/root/.cache/golangci-lint \
 		-w /app golangci/golangci-lint:${GOLANGCI_LINT_VERSION}-alpine \
-		golangci-lint run -v --timeout=10m
+		golangci-lint run -v --timeout=10m && echo "✅ Linting passed successfully!" || (echo "❌ Linting failed! Please fix the errors above."; exit 1)
 
 .PHONY: lint-custom
 lint-custom:
@@ -269,7 +270,7 @@ run: generate fmt vet
 # Ensures dependencies are up-to-date
 .PHONY: ensure
 ensure:
-	go mod tidy -compat=1.23
+	go mod tidy -compat=${GO_VERSION}
 
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr

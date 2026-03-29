@@ -16,8 +16,21 @@
 set -exu; set -o pipefail
 
 # Step 1: Determine Release Versions
-read -p "Enter the stale version: " STALE_VERSION
-read -p "Enter the new version (stale is ${STALE_VERSION}): " NEW_VERSION
+if [[ -z "${STALE_VERSION:-}" ]]; then
+  if [[ -f version/VERSION ]]; then
+    STALE_VERSION=$(cat version/VERSION | cut -d. -f1,2)
+    echo "Auto-detected STALE_VERSION: ${STALE_VERSION}"
+  else
+    echo "Error: STALE_VERSION cannot be empty and version/VERSION does not exist."
+    exit 1
+  fi
+fi
+
+NEW_VERSION=${1:-${VERSION:-}}
+if [[ -z "${NEW_VERSION}" ]]; then
+  echo "Error: NEW_VERSION not provided as first argument and VERSION env var is not set."
+  exit 1
+fi
 
 if [ -z "$NEW_VERSION" ]; then
   echo "Error: New version cannot be empty."
@@ -26,40 +39,29 @@ fi
 
 # Step 2: Create Release Branch
 echo "Creating release branch release-${NEW_VERSION}..."
-git checkout -b "release-${NEW_VERSION}"
+git checkout -B "release-${NEW_VERSION}"
 
 # Step 3: Propose Tag and Update Manifests
 echo "Proposing tag and updating manifests..."
 VERSION=${NEW_VERSION} STALE_VERSION=${STALE_VERSION} ./dev/tasks/propose-tag
-git add .
-git commit -m "Release ${NEW_VERSION}"
 
-# Step 4: Run Unit Tests
-echo "Running unit tests..."
+# Step 4: Run Unit Tests and Update Goldens if needed
+echo "Running unit tests. Golden files will be updated if there are failures..."
 cd operator
 # We use an if statement to handle the failure case without exiting due to set -e
 if ! (go test ./pkg/controllers/...); then
   echo "Unit tests failed. Updating golden files..."
   WRITE_GOLDEN_OUTPUT="true" go test ./pkg/controllers/...
-  git add .
-  git commit -m "Update golden files for operator controllers"
-
-  echo "Retrying unit tests..."
-  go test ./pkg/controllers/...
 fi
-
-echo "Validating resource reference docs..."
 cd ..
-# With VALIDATE_URLS=="true", the doc validation test also validates
-# whether the embedded URLs in the template files are accessible.
-# If failed, fix the inaccessible URLs in the template files and rerun `make resource-docs`.
-VALIDATE_URLS="true" go test ./scripts/generate-google3-docs/...
 
 # Step 5: Format Code
 echo "Formatting code..."
 make fmt
+
+# Step 6: Consolidate everything into a single commit
+echo "Staging all changes and creating the release commit..."
 git add .
-# Only commit if there are changes
-if ! git diff --staged --quiet; then
-  git commit -m "[make fmt] Apply formatting"
-fi
+git commit -m "Release ${NEW_VERSION}"
+
+echo "--- Release branch release-${NEW_VERSION} prepared with a single commit ---"

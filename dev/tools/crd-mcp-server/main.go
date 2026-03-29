@@ -30,13 +30,13 @@ const (
 	EQUIVALENCE_DESCRIPTION = `Check whether a CRD file change is equivalent to its previous git-committed version.
 
 Equivalent means:
-  - No fields are added or deleted (new fields MAY be added under 'status')
+  - No fields are added or deleted (only status.externalRef, status.observedState, and status.observedState's sub-fields, may be added under 'status')
   - Field names and types do not change
   - Adding spec.names.listKind is fine
   - Descriptions may change freely
 
 The file is compared against the version stored at the given git ref (default: HEAD).`
-    BACKWARD_COMPAT_DESCRIPTION = `Check whether a CRD file change is backward compatible with its previous git-committed version.
+	BACKWARD_COMPAT_DESCRIPTION = `Check whether a CRD file change is backward compatible with its previous git-committed version.
 
 Backward compatible means:
   - No fields are removed or renamed
@@ -69,7 +69,6 @@ type CompatibleOptions struct {
 	File string
 	Ref  string
 }
-
 
 func main() {
 	rootCmd := &cobra.Command{
@@ -114,7 +113,7 @@ func BuildEquivalentCmd() *cobra.Command {
 		Args: cobra.ExactArgs(0),
 	}
 	cmd.Flags().StringVarP(&opts.File, "file", "", opts.File, "Path to the CRD YAML file to check.")
-	cmd.MarkFlagRequired("file") 
+	cmd.MarkFlagRequired("file")
 	cmd.Flags().StringVarP(&opts.Ref, "ref", "", "HEAD", "Git ref for the old version (default: HEAD).")
 
 	return cmd
@@ -132,7 +131,7 @@ func BuildCompatibleCmd() *cobra.Command {
 		Args: cobra.ExactArgs(0),
 	}
 	cmd.Flags().StringVarP(&opts.File, "file", "", opts.File, "Path to the CRD YAML file to check.")
-	cmd.MarkFlagRequired("file") 
+	cmd.MarkFlagRequired("file")
 	cmd.Flags().StringVarP(&opts.Ref, "ref", "", "HEAD", "Git ref for the old version (default: HEAD).")
 
 	return cmd

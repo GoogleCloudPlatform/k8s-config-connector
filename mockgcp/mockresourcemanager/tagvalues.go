@@ -48,7 +48,7 @@ func (s *TagValues) GetTagValue(ctx context.Context, req *pb.GetTagValueRequest)
 
 	obj := &pb.TagValue{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
+		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "tagValue %q not found", name)
 		} else {
 			return nil, status.Errorf(codes.Internal, "error reading tagValue: %v", err)
@@ -84,6 +84,27 @@ func (s *TagValues) GetNamespacedTagValue(ctx context.Context, req *pb.GetNamesp
 	return tagValues[0], nil
 }
 
+func (s *TagValues) ListTagValues(ctx context.Context, req *pb.ListTagValuesRequest) (*pb.ListTagValuesResponse, error) {
+	parentFQN := req.GetParent()
+
+	var tagValues []*pb.TagValue
+
+	tagValueKind := (&pb.TagValue{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, tagValueKind, storage.ListOptions{}, func(obj proto.Message) error {
+		tagValue := obj.(*pb.TagValue)
+		if tagValue.GetParent() == parentFQN {
+			tagValues = append(tagValues, tagValue)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return &pb.ListTagValuesResponse{
+		TagValues: tagValues,
+	}, nil
+}
+
 func (s *TagValues) CreateTagValue(ctx context.Context, req *pb.CreateTagValueRequest) (*longrunningpb.Operation, error) {
 	parentName, err := s.parseTagKeyName(req.GetTagValue().GetParent())
 	if err != nil {
@@ -92,7 +113,7 @@ func (s *TagValues) CreateTagValue(ctx context.Context, req *pb.CreateTagValueRe
 
 	parentTagKey := &pb.TagKey{}
 	if err := s.storage.Get(ctx, parentName.String(), parentTagKey); err != nil {
-		if apierrors.IsNotFound(err) {
+		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "tagKey %q not found", req.GetTagValue().GetParent())
 		} else {
 			return nil, status.Errorf(codes.Internal, "error reading tagKey: %v", err)
@@ -122,6 +143,19 @@ func (s *TagValues) CreateTagValue(ctx context.Context, req *pb.CreateTagValueRe
 
 	if req.ValidateOnly {
 		return nil, fmt.Errorf("ValidateOnly not yet implemented")
+	}
+
+	// Check for duplicate shortName under the same parent TagKey (real GCP enforces this).
+	parentFQN := parentTagKey.GetName()
+	tagValueKind := (&pb.TagValue{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, tagValueKind, storage.ListOptions{}, func(obj proto.Message) error {
+		existing := obj.(*pb.TagValue)
+		if existing.GetParent() == parentFQN && existing.GetShortName() == req.GetTagValue().GetShortName() {
+			return status.Errorf(codes.AlreadyExists, "A TagValue with short name '%s' already exists under parent '%s'", req.GetTagValue().GetShortName(), parentFQN)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
 	}
 
 	name := &tagValueName{

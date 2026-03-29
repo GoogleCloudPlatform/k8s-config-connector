@@ -176,9 +176,15 @@ func walkDepth(s *apiextensionsv1.JSONSchemaProps, depth int) any {
 }
 
 // flatten converts a nested schema structure to a flat path -> type map.
+// Note: More complex OpenAPI features (like tuples, anyOf, or allOf) are currently flattened
+// into simplified structural representations. Their specific validation logic might require
+// future enhancements if strict structural equivalence checking of those complex types is needed.
 func flatten(path string, schema any, out map[string]string) {
 	switch v := schema.(type) {
 	case map[string]any:
+		if path != "" {
+			out[path] = "object"
+		}
 		for k, child := range v {
 			childPath := k
 			if path != "" {
@@ -187,6 +193,9 @@ func flatten(path string, schema any, out map[string]string) {
 			flatten(childPath, child, out)
 		}
 	case []any:
+		if path != "" {
+			out[path] = "array"
+		}
 		for _, item := range v {
 			flatten(path+"[]", item, out)
 		}
@@ -228,7 +237,8 @@ type CompareResult struct {
 // compareEquivalence checks whether the change from oldCRD to newCRD is equivalent.
 //
 // Equivalent means:
-//   - No fields are added or deleted (fields may be added under 'status')
+//   - No fields are added or deleted (only status.externalRef, status.observedState,
+//     and status.observedState's sub-fields, may be added under 'status')
 //   - Field names and types do not change (descriptions may change freely)
 //   - Adding spec.names.listKind is fine
 func compareEquivalence(oldCRD, newCRD *apiextensionsv1.CustomResourceDefinition) CompareResult {
@@ -278,28 +288,79 @@ func schemaEquivalenceDiff(version string, oldPaths, newPaths map[string]string)
 		prefix = fmt.Sprintf("[%s] ", version)
 	}
 
+	lastRemovedPrefix := ""
 	for _, path := range slices.Sorted(maps.Keys(oldPaths)) {
 		oldType := oldPaths[path]
 		newType, ok := newPaths[path]
 		if !ok {
+			if lastRemovedPrefix != "" && (strings.HasPrefix(path, lastRemovedPrefix+".") || strings.HasPrefix(path, lastRemovedPrefix+"[")) {
+				continue
+			}
 			diffs = append(diffs, fmt.Sprintf("%sfield removed: %s (was %s)", prefix, path, oldType))
-		} else if oldType != newType {
-			diffs = append(diffs, fmt.Sprintf("%sfield type changed: %s (%s -> %s)", prefix, path, oldType, newType))
+			lastRemovedPrefix = path
+			continue
+		}
+		lastRemovedPrefix = ""
+		if oldType != newType {
+			if isAllowedTypeChange(path, oldType, newType) {
+				notes = append(notes, fmt.Sprintf("%sfield type changed: %s (%s -> %s) (allowed)", prefix, path, oldType, newType))
+			} else {
+				diffs = append(diffs, fmt.Sprintf("%sfield type changed: %s (%s -> %s)", prefix, path, oldType, newType))
+			}
 		}
 	}
 
+	lastDiffPrefix := ""
 	for _, path := range slices.Sorted(maps.Keys(newPaths)) {
 		if _, ok := oldPaths[path]; ok {
 			continue
 		}
+		if lastDiffPrefix != "" && (strings.HasPrefix(path, lastDiffPrefix+".") || strings.HasPrefix(path, lastDiffPrefix+"[")) {
+			continue
+		}
 		if isUnderStatus(path) {
-			notes = append(notes, fmt.Sprintf("%sfield added under status: %s (type: %s, allowed)", prefix, path, newPaths[path]))
+			if isAllowedNewStatusField(path) {
+				if path == "status" {
+					notes = append(notes, fmt.Sprintf("%sstatus block added (allowed)", prefix))
+				} else {
+					notes = append(notes, fmt.Sprintf("%sfield added under status: %s (type: %s, allowed)", prefix, path, newPaths[path]))
+				}
+			} else {
+				diffs = append(diffs, fmt.Sprintf("%sfield added under status: %s (type: %s)", prefix, path, newPaths[path]))
+				lastDiffPrefix = path
+			}
 		} else {
 			diffs = append(diffs, fmt.Sprintf("%sfield added: %s (type: %s)", prefix, path, newPaths[path]))
+			lastDiffPrefix = path
 		}
 	}
 
 	return diffs, notes
+}
+
+func isAllowedNewStatusField(path string) bool {
+	switch {
+	case path == "status":
+		return true
+	case path == "status.externalRef":
+		return true
+	case path == "status.observedState" || strings.HasPrefix(path, "status.observedState."):
+		return true
+	default:
+		return false
+	}
+}
+
+func isAllowedTypeChange(path, oldType, newType string) bool {
+	// If it is changed from integer to int32, then it should always be allowed.
+	if oldType == "integer" && newType == "int32" {
+		return true
+	}
+	// If it is changed from integer to int64, it should be an allowed change if this happens to a status field.
+	if oldType == "integer" && newType == "int64" && isUnderStatus(path) {
+		return true
+	}
+	return false
 }
 
 // compareBackwardCompatibility checks whether the change from oldCRD to newCRD is backward compatible.
@@ -345,13 +406,25 @@ func schemaBackwardCompatDiff(version string, oldPaths, newPaths map[string]stri
 		prefix = fmt.Sprintf("[%s] ", version)
 	}
 
+	lastRemovedPrefix := ""
 	for _, path := range slices.Sorted(maps.Keys(oldPaths)) {
 		oldType := oldPaths[path]
 		newType, ok := newPaths[path]
 		if !ok {
+			if lastRemovedPrefix != "" && (strings.HasPrefix(path, lastRemovedPrefix+".") || strings.HasPrefix(path, lastRemovedPrefix+"[")) {
+				continue
+			}
 			diffs = append(diffs, fmt.Sprintf("%sfield removed: %s (was %s)", prefix, path, oldType))
-		} else if oldType != newType {
-			diffs = append(diffs, fmt.Sprintf("%sfield type changed: %s (%s -> %s)", prefix, path, oldType, newType))
+			lastRemovedPrefix = path
+			continue
+		}
+		lastRemovedPrefix = ""
+		if oldType != newType {
+			if isAllowedTypeChange(path, oldType, newType) {
+				notes = append(notes, fmt.Sprintf("%sfield type changed: %s (%s -> %s) (allowed)", prefix, path, oldType, newType))
+			} else {
+				diffs = append(diffs, fmt.Sprintf("%sfield type changed: %s (%s -> %s)", prefix, path, oldType, newType))
+			}
 		}
 	}
 

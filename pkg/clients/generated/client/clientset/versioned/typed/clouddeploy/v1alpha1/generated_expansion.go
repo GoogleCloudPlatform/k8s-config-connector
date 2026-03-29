@@ -21,6 +21,8 @@
 
 package v1alpha1
 
+type CloudDeployCustomTargetTypeExpansion interface{}
+
 type CloudDeployDeployPolicyExpansion interface{}
 
-type DeployCustomTargetTypeExpansion interface{}
+type CloudDeployTargetExpansion interface{}
