@@ -51,7 +51,7 @@ all: test manager operator config-connector
 # Setup test environment with kubebuilder binaries
 .PHONY: setup-test-env
 setup-test-env:
-	go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use 1.25.0 -p path
+	go run sigs.k8s.io/controller-runtime/tools/setup-envtest@release-0.22 use 1.25.0 -p path
 
 # Run tests
 .PHONY: test
