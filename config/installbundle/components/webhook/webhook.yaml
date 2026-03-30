@@ -41,7 +41,7 @@ spec:
         imagePullPolicy: Always
         env:
           - name: GOMEMLIMIT
-            value: 110MiB
+            value: 230MiB
           - name: NAMESPACE
             valueFrom:
               fieldRef:
@@ -57,9 +57,9 @@ spec:
             # result in a backwards-incompatible change that breaks
             # add-on updates by not allowing new versions to schedule themselves.
             cpu: 250m
-            memory: 128Mi
+            memory: 256Mi
           limits:
-            memory: 128Mi
+            memory: 256Mi
         securityContext:
           privileged: false
           runAsUser: 1000

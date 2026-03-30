@@ -317,10 +317,10 @@ func customizeContainerResourcesFn(cMap map[string]customizev1beta1.ResourceRequ
 	}
 }
 
-// calculateGoMemLimit returns 85% of the input requested memory with the correct format.
+// calculateGoMemLimit returns ~90% of the input requested memory with the correct format.
 func calculateGoMemLimit(requestedMemory int64) string {
-	goMemLimit := resource.NewQuantity(requestedMemory*17/20, resource.BinarySI) // setting GOMEMLIMIT as 85% of the requested memory.
-	goMemLimitFormatted := goMemLimit.String() + "B"                             // adding suffix "B" to accommodate the format supported by GOMEMLIMIT.
+	goMemLimit := resource.NewQuantity(requestedMemory*115/128, resource.BinarySI) // setting GOMEMLIMIT as 115/128 (~90%) of the requested memory.
+	goMemLimitFormatted := goMemLimit.String() + "B"                               // adding suffix "B" to accommodate the format supported by GOMEMLIMIT.
 	return goMemLimitFormatted
 }
 

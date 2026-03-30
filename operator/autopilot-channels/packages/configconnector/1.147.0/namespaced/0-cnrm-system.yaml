@@ -3132,7 +3132,7 @@ spec:
         - /configconnector/webhook
         env:
         - name: GOMEMLIMIT
-          value: 110MiB
+          value: 230MiB
         - name: NAMESPACE
           valueFrom:
             fieldRef:
@@ -3150,10 +3150,10 @@ spec:
           periodSeconds: 3
         resources:
           limits:
-            memory: 128Mi
+            memory: 256Mi
           requests:
             cpu: 250m
-            memory: 128Mi
+            memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           privileged: false
@@ -3279,7 +3279,6 @@ apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   annotations:
-    autoscaling.alpha.kubernetes.io/metrics: '[{"type":"Resource","resource":{"name":"memory","targetAverageUtilization":70}}]'
     cnrm.cloud.google.com/version: 1.147.0
   labels:
     cnrm.cloud.google.com/system: "true"
