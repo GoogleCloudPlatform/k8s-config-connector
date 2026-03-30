@@ -1,6 +1,6 @@
 
 
-    StorageBucket ${projectID}/storagebucket-${uniqueId}:
+    StorageBucket ${projectId}/storagebucket-${uniqueId}:
       spec:
         location: US -> EU
 

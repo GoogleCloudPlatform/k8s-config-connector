@@ -5,10 +5,10 @@ metadata:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
     cnrm.cloud.google.com/state-into-spec: absent
-    cnrm.cloud.google.com/supports-ssa: "true"
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
+  generation: 2
   name: backup-test-network-${uniqueId}
   namespace: ${projectId}
 spec:
@@ -21,5 +21,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 0
+  observedGeneration: 2
   selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/backup-test-network-${uniqueId}

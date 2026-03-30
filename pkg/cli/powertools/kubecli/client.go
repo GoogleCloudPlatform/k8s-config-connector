@@ -49,12 +49,16 @@ func NewClient(ctx context.Context, options ClusterOptions) (*Client, error) {
 			return nil, fmt.Errorf("loading kubernetes configuration from %q: %w", options.Kubeconfig, err)
 		}
 		restConfig = rc
+			restConfig.QPS = 100
+			restConfig.Burst = 200
 	} else {
 		rc, err := config.GetConfig()
 		if err != nil {
 			return nil, fmt.Errorf("getting kubernetes configuration: %w", err)
 		}
 		restConfig = rc
+			restConfig.QPS = 100
+			restConfig.Burst = 200
 	}
 
 	if options.Impersonate != nil {

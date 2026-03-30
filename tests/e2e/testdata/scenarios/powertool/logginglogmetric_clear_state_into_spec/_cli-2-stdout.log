@@ -1,6 +1,6 @@
 
 
-    LoggingLogMetric ${projectID}/logginglogmetric-${uniqueId}:
+    LoggingLogMetric ${projectId}/logginglogmetric-${uniqueId}:
       metadata:
         annotations:
           cnrm.cloud.google.com/state-into-spec: merge -> absent
