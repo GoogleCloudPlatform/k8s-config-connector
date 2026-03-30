@@ -29,23 +29,25 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// resolveSQLUserPasswordRef resolves the password secret reference, if any.
-func resolveSQLUserPasswordRef(ctx context.Context, kube client.Reader, obj *krm.SQLUser) error {
+// resolveSQLUserPasswordRef resolves the password from spec.password.value or
+// spec.password.valueFrom.secretKeyRef, returning the resolved password string.
+// It does NOT modify the input obj.
+func resolveSQLUserPasswordRef(ctx context.Context, kube client.Reader, obj *krm.SQLUser) (string, error) {
 	if obj.Spec.Password == nil {
-		return nil
+		return "", nil
 	}
 
 	if obj.Spec.Password.Value != nil && obj.Spec.Password.ValueFrom != nil {
-		return fmt.Errorf("cannot specify both spec.password.value and spec.password.valueFrom")
+		return "", fmt.Errorf("cannot specify both spec.password.value and spec.password.valueFrom")
 	}
 
 	if obj.Spec.Password.Value != nil {
-		return nil
+		return direct.ValueOf(obj.Spec.Password.Value), nil
 	}
 
 	if obj.Spec.Password.ValueFrom != nil {
 		if obj.Spec.Password.ValueFrom.SecretKeyRef == nil {
-			return fmt.Errorf("spec.password.valueFrom.secretKeyRef must be set when valueFrom is specified")
+			return "", fmt.Errorf("spec.password.valueFrom.secretKeyRef must be set when valueFrom is specified")
 		}
 
 		key := types.NamespacedName{
@@ -56,36 +58,38 @@ func resolveSQLUserPasswordRef(ctx context.Context, kube client.Reader, obj *krm
 		secret := &corev1.Secret{}
 		if err := kube.Get(ctx, key, secret); err != nil {
 			if apierrors.IsNotFound(err) {
-				return k8s.NewSecretNotFoundError(key)
+				return "", k8s.NewSecretNotFoundError(key)
 			}
-			return fmt.Errorf("error reading referenced Secret %v: %w", key, err)
+			return "", fmt.Errorf("error reading referenced Secret %v: %w", key, err)
 		}
 
-		password := string(secret.Data[obj.Spec.Password.ValueFrom.SecretKeyRef.Key])
-		obj.Spec.Password.Value = direct.PtrTo(password)
+		passwordBytes, ok := secret.Data[obj.Spec.Password.ValueFrom.SecretKeyRef.Key]
+		if !ok {
+			return "", fmt.Errorf("key %q not found in Secret %v", obj.Spec.Password.ValueFrom.SecretKeyRef.Key, key)
+		}
+		return string(passwordBytes), nil
 	}
 
-	return nil
+	return "", nil
 }
 
-// ResolveSQLUserInstanceRef resolves the instanceRef to get the Cloud SQL instance name.
-func ResolveSQLUserInstanceRef(ctx context.Context, kube client.Reader, obj *krm.SQLUser) (string, error) {
+// ResolveSQLUserInstanceRef resolves the instanceRef to get the Cloud SQL instance name
+// and optionally the project ID (for cross-project references).
+// Returns (instanceID, projectID, error). projectID may be empty if not determinable.
+func ResolveSQLUserInstanceRef(ctx context.Context, kube client.Reader, obj *krm.SQLUser) (string, string, error) {
 	instanceRef := &obj.Spec.InstanceRef
 
 	if instanceRef.External != "" && instanceRef.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external for instanceRef")
+		return "", "", fmt.Errorf("cannot specify both name and external for instanceRef")
 	}
 
 	if instanceRef.External != "" {
-		// Handle full URI format: projects/{project}/instances/{instance}
-		if parts := strings.Split(instanceRef.External, "/"); len(parts) == 4 && parts[0] == "projects" && parts[2] == "instances" {
-			return parts[3], nil
-		}
-		return instanceRef.External, nil
+		instanceID, projectID := parseInstanceExternal(instanceRef.External)
+		return instanceID, projectID, nil
 	}
 
 	if instanceRef.Name == "" {
-		return "", fmt.Errorf("instanceRef.name or instanceRef.external must be specified")
+		return "", "", fmt.Errorf("instanceRef.name or instanceRef.external must be specified")
 	}
 
 	nn := types.NamespacedName{
@@ -99,7 +103,7 @@ func ResolveSQLUserInstanceRef(ctx context.Context, kube client.Reader, obj *krm
 	resource := &unstructured.Unstructured{}
 	resource.SetGroupVersionKind(krm.SQLInstanceGVK)
 	if err := kube.Get(ctx, nn, resource); err != nil {
-		return "", fmt.Errorf("resolving instanceRef %s/%s: %w", nn.Namespace, nn.Name, err)
+		return "", "", fmt.Errorf("resolving instanceRef %s/%s: %w", nn.Namespace, nn.Name, err)
 	}
 
 	// Use spec.resourceID if set, otherwise fall back to metadata.name.
@@ -109,5 +113,32 @@ func ResolveSQLUserInstanceRef(ctx context.Context, kube client.Reader, obj *krm
 		instanceName = specResourceID
 	}
 
-	return instanceName, nil
+	// Read the instance's project annotation for cross-project support.
+	instanceProjectID, _ := resource.GetAnnotations()[k8s.ProjectIDAnnotation]
+
+	return instanceName, instanceProjectID, nil
+}
+
+// parseInstanceExternal parses an instance external reference, which can be:
+// - A plain instance name: "my-instance"
+// - A relative path: "projects/{project}/instances/{instance}"
+// - A full selfLink URL: "https://sqladmin.googleapis.com/.../projects/{project}/instances/{instance}"
+// Returns (instanceID, projectID). projectID is empty if not present in the reference.
+func parseInstanceExternal(external string) (string, string) {
+	parts := strings.Split(external, "/")
+	// Walk backwards looking for "instances" to handle any prefix length.
+	for i := len(parts) - 2; i >= 0; i-- {
+		if parts[i] == "instances" {
+			instanceID := parts[i+1]
+			// Look for "projects" before "instances".
+			for j := i - 1; j >= 0; j-- {
+				if parts[j] == "projects" && j+1 < i {
+					return instanceID, parts[j+1]
+				}
+			}
+			return instanceID, ""
+		}
+	}
+	// Plain instance name.
+	return external, ""
 }

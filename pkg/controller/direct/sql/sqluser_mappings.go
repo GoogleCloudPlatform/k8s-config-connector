@@ -22,7 +22,7 @@ import (
 	api "google.golang.org/api/sqladmin/v1beta4"
 )
 
-func SQLUserKRMToGCP(in *krm.SQLUser) (*api.User, error) {
+func SQLUserKRMToGCP(in *krm.SQLUser, password string, actual *api.User) (*api.User, error) {
 	if in == nil {
 		return nil, fmt.Errorf("cannot convert nil KRM SQLUser to GCP User")
 	}
@@ -32,11 +32,22 @@ func SQLUserKRMToGCP(in *krm.SQLUser) (*api.User, error) {
 		Host:     direct.ValueOf(in.Spec.Host),
 		Kind:     "sql#user",
 		Type:     direct.ValueOf(in.Spec.Type),
-		Password: SQLUserPasswordKRMToGCP(in.Spec.Password),
+		Password: password,
 	}
 
+	if password != "" {
+		out.ForceSendFields = append(out.ForceSendFields, "Password")
+	}
+
+	var actualPolicy *api.UserPasswordValidationPolicy
+	if actual != nil {
+		actualPolicy = actual.PasswordPolicy
+	}
 	if in.Spec.PasswordPolicy != nil {
-		out.PasswordPolicy = SQLUserPasswordPolicyKRMToGCP(in.Spec.PasswordPolicy)
+		out.PasswordPolicy = SQLUserPasswordPolicyKRMToGCP(in.Spec.PasswordPolicy, actualPolicy)
+	} else if actualPolicy != nil {
+		// User removed PasswordPolicy — explicitly null it to clear on GCP.
+		out.NullFields = append(out.NullFields, "PasswordPolicy")
 	}
 
 	/*NOTYET
@@ -46,14 +57,7 @@ func SQLUserKRMToGCP(in *krm.SQLUser) (*api.User, error) {
 	return out, nil
 }
 
-func SQLUserPasswordKRMToGCP(in *krm.SQLUserPassword) string {
-	if in == nil {
-		return ""
-	}
-	return direct.ValueOf(in.Value)
-}
-
-func SQLUserPasswordPolicyKRMToGCP(in *krm.SQLUserPasswordPolicy) *api.UserPasswordValidationPolicy {
+func SQLUserPasswordPolicyKRMToGCP(in *krm.SQLUserPasswordPolicy, actual *api.UserPasswordValidationPolicy) *api.UserPasswordValidationPolicy {
 	if in == nil {
 		return nil
 	}
@@ -63,6 +67,23 @@ func SQLUserPasswordPolicyKRMToGCP(in *krm.SQLUserPasswordPolicy) *api.UserPassw
 		EnablePasswordVerification: direct.ValueOf(in.EnablePasswordVerification),
 		PasswordExpirationDuration: direct.ValueOf(in.PasswordExpirationDuration),
 	}
+
+	// ForceSendFields ensures zero-values (false, 0) are sent to GCP.
+	if in.AllowedFailedAttempts != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "AllowedFailedAttempts")
+	}
+	if in.EnableFailedAttemptsCheck != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "EnableFailedAttemptsCheck")
+	}
+	if in.EnablePasswordVerification != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "EnablePasswordVerification")
+	}
+
+	// NullFields to explicitly clear fields on GCP.
+	if in.PasswordExpirationDuration == nil && actual != nil && actual.PasswordExpirationDuration != "" {
+		out.NullFields = append(out.NullFields, "PasswordExpirationDuration")
+	}
+
 	return out
 }
 

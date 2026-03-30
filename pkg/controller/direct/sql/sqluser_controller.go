@@ -17,6 +17,8 @@ package sql
 import (
 	"context"
 	"fmt"
+	"reflect"
+	"strings"
 	"time"
 
 	api "google.golang.org/api/sqladmin/v1beta4"
@@ -56,8 +58,9 @@ type sqlUserAdapter struct {
 	resourceID string
 	host       string
 
-	desired *krm.SQLUser
-	actual  *api.User
+	desired          *krm.SQLUser
+	actual           *api.User
+	resolvedPassword string
 
 	sqlOperationsClient *api.OperationsService
 	sqlUsersClient      *api.UsersService
@@ -85,14 +88,18 @@ func (m *sqlUserModel) AdapterForObject(ctx context.Context, op *directbase.Adap
 		projectID = u.GetNamespace()
 	}
 
-	// Resolve instanceRef to get the instance name.
-	instanceID, err := ResolveSQLUserInstanceRef(ctx, kube, obj)
+	// Resolve instanceRef to get the instance name and optionally the project.
+	instanceID, instanceProjectID, err := ResolveSQLUserInstanceRef(ctx, kube, obj)
 	if err != nil {
 		return nil, err
 	}
+	if instanceProjectID != "" {
+		projectID = instanceProjectID
+	}
 
 	// Resolve password secret reference, if any.
-	if err := resolveSQLUserPasswordRef(ctx, kube, obj); err != nil {
+	resolvedPassword, err := resolveSQLUserPasswordRef(ctx, kube, obj)
+	if err != nil {
 		return nil, err
 	}
 
@@ -108,6 +115,7 @@ func (m *sqlUserModel) AdapterForObject(ctx context.Context, op *directbase.Adap
 		resourceID:          resourceID,
 		host:                direct.ValueOf(obj.Spec.Host),
 		desired:             desiredCopy,
+		resolvedPassword:    resolvedPassword,
 		sqlOperationsClient: gcpClient.sqlOperationsClient(),
 		sqlUsersClient:      gcpClient.sqlUsersClient(),
 	}, nil
@@ -117,15 +125,6 @@ func (m *sqlUserModel) AdapterForURL(ctx context.Context, url string) (directbas
 	return nil, nil
 }
 
-// hostMatches returns true if the GCP user's host matches the desired host.
-// When spec.host is empty, it matches both "%" (MySQL default) and "" (Postgres).
-func (a *sqlUserAdapter) hostMatches(gcpHost string) bool {
-	if a.host == "" {
-		return gcpHost == "%" || gcpHost == ""
-	}
-	return gcpHost == a.host
-}
-
 func (a *sqlUserAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(sqlUserCtrlName)
 
@@ -133,33 +132,28 @@ func (a *sqlUserAdapter) Find(ctx context.Context) (bool, error) {
 		return false, nil
 	}
 
-	// The Users API doesn't have a Get method, so we use List and filter.
-	users, err := a.sqlUsersClient.List(a.projectID, a.instanceID).Context(ctx).Do()
+	call := a.sqlUsersClient.Get(a.projectID, a.instanceID, a.resourceID).Context(ctx)
+	if a.host != "" {
+		call = call.Host(a.host)
+	}
+	user, err := call.Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("listing SQLUsers for instance %s failed: %w", a.instanceID, err)
+		return false, fmt.Errorf("getting SQLUser %s failed: %w", a.resourceID, err)
 	}
 
-	for _, user := range users.Items {
-		if user.Name == a.resourceID {
-			if a.hostMatches(user.Host) {
-				log.V(2).Info("found SQLUser", "name", user.Name, "host", user.Host)
-				a.actual = user
-				return true, nil
-			}
-		}
-	}
-
-	return false, nil
+	log.V(2).Info("found SQLUser", "name", user.Name, "host", user.Host)
+	a.actual = user
+	return true, nil
 }
 
 func (a *sqlUserAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx).WithName(sqlUserCtrlName)
 	log.V(2).Info("creating SQLUser", "name", a.resourceID)
 
-	desired, err := SQLUserKRMToGCP(a.desired)
+	desired, err := SQLUserKRMToGCP(a.desired, a.resolvedPassword, nil)
 	if err != nil {
 		return err
 	}
@@ -193,12 +187,22 @@ func (a *sqlUserAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	log := klog.FromContext(ctx).WithName(sqlUserCtrlName)
 	log.V(2).Info("updating SQLUser", "name", a.resourceID)
 
-	desired, err := SQLUserKRMToGCP(a.desired)
+	desired, err := SQLUserKRMToGCP(a.desired, a.resolvedPassword, a.actual)
 	if err != nil {
 		return err
 	}
 	desired.Instance = a.instanceID
 	desired.Project = a.projectID
+	desired.Host = a.actual.Host
+
+	if !a.userHasDiff(desired) {
+		log.V(2).Info("SQLUser is up to date, skipping update", "name", a.resourceID)
+		status := &krm.SQLUserStatusFields{}
+		if details := SQLUserStatusGCPToKRM(a.actual); details != nil {
+			status.SqlServerUserDetails = []krm.SQLUserSqlServerUserDetailsStatus{*details}
+		}
+		return setStatus(updateOp.GetUnstructured(), status)
+	}
 
 	op, err := a.sqlUsersClient.Update(a.projectID, a.instanceID, desired).
 		Host(a.actual.Host).
@@ -256,8 +260,15 @@ func (a *sqlUserAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 
 	spec := SQLUserGCPToKRM(a.actual)
 
-	spec.InstanceRef = refs.SQLInstanceRef{
-		External: a.instanceID,
+	// Preserve the user's original InstanceRef (Name vs External).
+	spec.InstanceRef = a.desired.Spec.InstanceRef
+
+	// GCP doesn't return passwords. Preserve the desired password reference.
+	spec.Password = a.desired.Spec.Password
+
+	// If user didn't specify a host, don't export the GCP default.
+	if a.desired.Spec.Host == nil {
+		spec.Host = nil
 	}
 
 	sqlUser := &krm.SQLUser{
@@ -274,19 +285,68 @@ func (a *sqlUserAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 	return &unstructured.Unstructured{Object: sqlUserObj}, nil
 }
 
-func (a *sqlUserAdapter) findUser(ctx context.Context) (*api.User, error) {
-	users, err := a.sqlUsersClient.List(a.projectID, a.instanceID).Context(ctx).Do()
-	if err != nil {
-		return nil, err
+// userHasDiff returns true if the desired GCP User differs from the actual.
+func (a *sqlUserAdapter) userHasDiff(desired *api.User) bool {
+	if desired.Password != "" {
+		// Password is write-only (GCP never returns it), so we must
+		// always update when a password is set since we can't diff it.
+		return true
 	}
-	for _, user := range users.Items {
-		if user.Name == a.resourceID {
-			if a.hostMatches(user.Host) {
-				return user, nil
+	if desired.Type != a.actual.Type {
+		return true
+	}
+	// Compare PasswordPolicy ignoring output-only Status field.
+	desiredPolicy := desired.PasswordPolicy
+	actualPolicy := a.actual.PasswordPolicy
+	if desiredPolicy != nil {
+		// Strip ForceSendFields/NullFields for comparison.
+		desiredCmp := &api.UserPasswordValidationPolicy{
+			AllowedFailedAttempts:      desiredPolicy.AllowedFailedAttempts,
+			EnableFailedAttemptsCheck:  desiredPolicy.EnableFailedAttemptsCheck,
+			EnablePasswordVerification: desiredPolicy.EnablePasswordVerification,
+			PasswordExpirationDuration: desiredPolicy.PasswordExpirationDuration,
+		}
+		actualCmp := &api.UserPasswordValidationPolicy{}
+		if actualPolicy != nil {
+			actualCmp = &api.UserPasswordValidationPolicy{
+				AllowedFailedAttempts:      actualPolicy.AllowedFailedAttempts,
+				EnableFailedAttemptsCheck:  actualPolicy.EnableFailedAttemptsCheck,
+				EnablePasswordVerification: actualPolicy.EnablePasswordVerification,
+				PasswordExpirationDuration: actualPolicy.PasswordExpirationDuration,
 			}
 		}
+		if !reflect.DeepEqual(desiredCmp, actualCmp) {
+			return true
+		}
+	} else if actualPolicy != nil {
+		// User wants to clear the policy.
+		return true
 	}
-	return nil, fmt.Errorf("user %s not found in instance %s", a.resourceID, a.instanceID)
+	// Check NullFields — if we're trying to clear something, that's a diff.
+	if len(desired.NullFields) > 0 {
+		return true
+	}
+	/*NOTYET
+	if !reflect.DeepEqual(desired.DatabaseRoles, a.actual.DatabaseRoles) {
+		return true
+	}
+	*/
+	return false
+}
+
+func (a *sqlUserAdapter) findUser(ctx context.Context) (*api.User, error) {
+	call := a.sqlUsersClient.Get(a.projectID, a.instanceID, a.resourceID).Context(ctx)
+	if a.actual != nil {
+		// Use the actual host from GCP for precise lookup.
+		call = call.Host(a.actual.Host)
+	} else if a.host != "" {
+		call = call.Host(a.host)
+	}
+	user, err := call.Do()
+	if err != nil {
+		return nil, fmt.Errorf("getting SQLUser %s in instance %s failed: %w", a.resourceID, a.instanceID, err)
+	}
+	return user, nil
 }
 
 func (a *sqlUserAdapter) pollForLROCompletion(ctx context.Context, op *api.Operation, verb string) error {
@@ -302,7 +362,11 @@ func (a *sqlUserAdapter) pollForLROCompletion(ctx context.Context, op *api.Opera
 
 		if op.Status == "DONE" {
 			if op.Error != nil {
-				return fmt.Errorf("SQLUser %s %s operation failed: %v", a.resourceID, verb, op.Error.Errors)
+				var msgs []string
+				for _, e := range op.Error.Errors {
+					msgs = append(msgs, fmt.Sprintf("%s: %s", e.Code, e.Message))
+				}
+				return fmt.Errorf("SQLUser %s %s operation failed: %s", a.resourceID, verb, strings.Join(msgs, "; "))
 			}
 			break
 		}
