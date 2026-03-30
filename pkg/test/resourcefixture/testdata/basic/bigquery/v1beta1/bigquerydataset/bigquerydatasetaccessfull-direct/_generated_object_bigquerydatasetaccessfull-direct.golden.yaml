@@ -53,4 +53,5 @@ status:
   observedGeneration: 3
   observedState:
     location: us-central1
+  primaryLocation: us-central1
   selfLink: https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetaccessfull${uniqueId}

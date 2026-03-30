@@ -49,4 +49,5 @@ status:
   observedGeneration: 3
   observedState:
     location: US
+  primaryLocation: US
   selfLink: https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}
