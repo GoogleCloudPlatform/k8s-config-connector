@@ -28,7 +28,6 @@ func VertexAIReasoningEngineSpec_FromProto(mapCtx *direct.MapContext, in *pb.Rea
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Spec = VertexAIReasoningEngineSpec_ReasoningEngineSpec_FromProto(mapCtx, in.GetSpec())
-	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.ContextSpec = ReasoningEngineContextSpec_FromProto(mapCtx, in.GetContextSpec())
 	out.EncryptionSpec = EncryptionSpecV1alpha1_FromProto(mapCtx, in.GetEncryptionSpec())
 	return out
@@ -42,7 +41,6 @@ func VertexAIReasoningEngineSpec_ToProto(mapCtx *direct.MapContext, in *krm.Vert
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
 	out.Spec = VertexAIReasoningEngineSpec_ReasoningEngineSpec_ToProto(mapCtx, in.Spec)
-	out.Etag = direct.ValueOf(in.Etag)
 	out.ContextSpec = ReasoningEngineContextSpec_ToProto(mapCtx, in.ContextSpec)
 	out.EncryptionSpec = EncryptionSpecV1alpha1_ToProto(mapCtx, in.EncryptionSpec)
 	return out
