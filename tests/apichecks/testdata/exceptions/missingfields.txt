@@ -572,6 +572,8 @@
 [missing_field] crd=computeforwardingrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceDirectoryRegistrations[].service" is not set in unstructured objects
 [missing_field] crd=computeforwardingrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceIpRanges[]" is not set in unstructured objects
 [missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.aggregateReservation.hostCount" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.aggregateReservation.inUseHostCount" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.aggregateReservation.inUseInstanceCount" is not set in unstructured objects
 [missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.aggregateReservation.inUseResources[].accelerator.acceleratorCount" is not set in unstructured objects
 [missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.aggregateReservation.inUseResources[].accelerator.acceleratorType" is not set in unstructured objects
 [missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.aggregateReservation.reservedResources[].accelerator.acceleratorCount" is not set in unstructured objects
@@ -590,6 +592,7 @@
 [missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.name" is not set in unstructured objects
 [missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.namePrefix" is not set in unstructured objects
 [missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.planningStatus" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.protectionTier" is not set in unstructured objects
 [missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.reservationMode" is not set in unstructured objects
 [missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.reservationName" is not set in unstructured objects
 [missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.schedulingType" is not set in unstructured objects
