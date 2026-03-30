@@ -114,7 +114,7 @@ func (in *BigQueryDataPolicySpec) DeepCopyInto(out *BigQueryDataPolicySpec) {
 	}
 	if in.PolicyTagRef != nil {
 		in, out := &in.PolicyTagRef, &out.PolicyTagRef
-		*out = new(datacatalogv1beta1.PolicyTagRef)
+		*out = new(datacatalogv1beta1.DataCatalogPolicyTagRef)
 		**out = **in
 	}
 	if in.DataMaskingPolicy != nil {

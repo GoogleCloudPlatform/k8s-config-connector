@@ -41,6 +41,7 @@ type DataCatalogPolicyTagRef struct {
 }
 
 // PolicyTagRef is an alias for DataCatalogPolicyTagRef for backward compatibility.
+// +k8s:deepcopy-gen=false
 type PolicyTagRef = DataCatalogPolicyTagRef
 
 func init() {
