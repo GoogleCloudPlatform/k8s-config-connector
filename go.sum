@@ -105,8 +105,8 @@ cloud.google.com/go/metastore v1.14.8 h1:nfyUDD9AeKIs6btY5buQ1No0OVco20WpX9wIruL
 cloud.google.com/go/metastore v1.14.8/go.mod h1:h1XI2LpD4ohJhQYn9TwXqKb5sVt6KSo47ft96SiFF1s=
 cloud.google.com/go/monitoring v1.24.3 h1:dde+gMNc0UhPZD1Azu6at2e79bfdztVDS5lvhOdsgaE=
 cloud.google.com/go/monitoring v1.24.3/go.mod h1:nYP6W0tm3N9H/bOw8am7t62YTzZY+zUeQ+Bi6+2eonI=
-cloud.google.com/go/netapp v1.11.0 h1:RbcNwQLDTzQet/qaQY1h0VI43+ryqKxyDhv8mwLsLnY=
-cloud.google.com/go/netapp v1.11.0/go.mod h1:EW3GS7OsHiZBPPAWAzKszuS7AQNfA+evQSSopiJPa+U=
+cloud.google.com/go/netapp v1.12.0 h1:xzzDJuCZvP2FKXIzsM70ghTT+VcCg+nN/PgfRQKvT9M=
+cloud.google.com/go/netapp v1.12.0/go.mod h1:EW3GS7OsHiZBPPAWAzKszuS7AQNfA+evQSSopiJPa+U=
 cloud.google.com/go/networkmanagement v1.21.0 h1:041d0RqmwP/H7AWkF/AoAwFvuCkz8shUMA4EoQt0lOA=
 cloud.google.com/go/networkmanagement v1.21.0/go.mod h1:clG/5Yt0wQ57qSH6Yh7oehQYlobHw3F6nb3Pn4ig5hU=
 cloud.google.com/go/networksecurity v0.11.0 h1:+ahtCqEqwHw3a3UIeG21vT817xt9kkDDAO6k9+LCc18=

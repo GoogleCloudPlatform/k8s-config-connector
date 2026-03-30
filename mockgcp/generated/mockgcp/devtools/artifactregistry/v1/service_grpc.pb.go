@@ -140,6 +140,8 @@ type ArtifactRegistryClient interface {
 	// finish once the attachments has been deleted. It will not have any
 	// Operation metadata and will return a `google.protobuf.Empty` response.
 	DeleteAttachment(ctx context.Context, in *DeleteAttachmentRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Exports an artifact to a Cloud Storage bucket.
+	ExportArtifact(ctx context.Context, in *ExportArtifactRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
 type artifactRegistryClient struct {
@@ -591,6 +593,15 @@ func (c *artifactRegistryClient) DeleteAttachment(ctx context.Context, in *Delet
 	return out, nil
 }
 
+func (c *artifactRegistryClient) ExportArtifact(ctx context.Context, in *ExportArtifactRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/ExportArtifact", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ArtifactRegistryServer is the server API for ArtifactRegistry service.
 // All implementations must embed UnimplementedArtifactRegistryServer
 // for forward compatibility
@@ -710,6 +721,8 @@ type ArtifactRegistryServer interface {
 	// finish once the attachments has been deleted. It will not have any
 	// Operation metadata and will return a `google.protobuf.Empty` response.
 	DeleteAttachment(context.Context, *DeleteAttachmentRequest) (*longrunningpb.Operation, error)
+	// Exports an artifact to a Cloud Storage bucket.
+	ExportArtifact(context.Context, *ExportArtifactRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedArtifactRegistryServer()
 }
 
@@ -863,6 +876,9 @@ func (UnimplementedArtifactRegistryServer) CreateAttachment(context.Context, *Cr
 }
 func (UnimplementedArtifactRegistryServer) DeleteAttachment(context.Context, *DeleteAttachmentRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteAttachment not implemented")
+}
+func (UnimplementedArtifactRegistryServer) ExportArtifact(context.Context, *ExportArtifactRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExportArtifact not implemented")
 }
 func (UnimplementedArtifactRegistryServer) mustEmbedUnimplementedArtifactRegistryServer() {}
 
@@ -1759,6 +1775,24 @@ func _ArtifactRegistry_DeleteAttachment_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ArtifactRegistry_ExportArtifact_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExportArtifactRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ArtifactRegistryServer).ExportArtifact(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.devtools.artifactregistry.v1.ArtifactRegistry/ExportArtifact",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ArtifactRegistryServer).ExportArtifact(ctx, req.(*ExportArtifactRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ArtifactRegistry_ServiceDesc is the grpc.ServiceDesc for ArtifactRegistry service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1961,6 +1995,10 @@ var ArtifactRegistry_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteAttachment",
 			Handler:    _ArtifactRegistry_DeleteAttachment_Handler,
+		},
+		{
+			MethodName: "ExportArtifact",
+			Handler:    _ArtifactRegistry_ExportArtifact_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
