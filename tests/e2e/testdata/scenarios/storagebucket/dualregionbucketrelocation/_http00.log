@@ -3,7 +3,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
 Server: UploadServer
 Vary: Origin
@@ -30,6 +29,12 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
+  "customPlacementConfig": {
+    "dataLocations": [
+      "US-EAST1",
+      "US-WEST1"
+    ]
+  },
   "lifecycle": {
     "rule": [
       {
@@ -51,13 +56,18 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
 
 {
+  "customPlacementConfig": {
+    "dataLocations": [
+      "US-EAST1",
+      "US-WEST1"
+    ]
+  },
   "etag": "abcdef0123A=",
   "generation": "12345678901234",
   "iamConfiguration": {

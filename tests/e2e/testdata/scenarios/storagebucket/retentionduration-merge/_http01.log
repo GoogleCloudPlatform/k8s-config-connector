@@ -3,7 +3,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
