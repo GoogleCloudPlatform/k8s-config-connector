@@ -179,11 +179,9 @@ experiments/**/__pycache__/
 # Ignore all channel packages by default, but unignore per-namespace-components.yaml
 # The bang (!) prefix is used to unignore the given files.
 operator/channels/packages/configconnector/**
-!operator/channels/packages/configconnector/*/
-!operator/channels/packages/configconnector/*/namespaced/
+!operator/channels/packages/configconnector/**/
 !operator/channels/packages/configconnector/*/namespaced/per-namespace-components.yaml
 operator/autopilot-channels/packages/configconnector/**
-!operator/autopilot-channels/packages/configconnector/*/
-!operator/autopilot-channels/packages/configconnector/*/namespaced/
+!operator/autopilot-channels/packages/configconnector/**/
 !operator/autopilot-channels/packages/configconnector/*/namespaced/per-namespace-components.yaml
 
