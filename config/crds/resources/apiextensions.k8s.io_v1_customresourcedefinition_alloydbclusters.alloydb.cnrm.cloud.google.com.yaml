@@ -261,6 +261,13 @@ spec:
                   If a database version is not supplied at cluster creation time,
                   then a default database version will be used.
                 type: string
+              dataplexConfig:
+                description: Optional. Configuration for Dataplex integration.
+                properties:
+                  enabled:
+                    description: Optional. Whether Dataplex integration is enabled.
+                    type: boolean
+                type: object
               deletionPolicy:
                 description: Policy to determine if the cluster should be deleted
                   forcefully. Deleting a cluster forcefully, deletes the cluster and
@@ -1033,6 +1040,13 @@ spec:
                   If a database version is not supplied at cluster creation time,
                   then a default database version will be used.
                 type: string
+              dataplexConfig:
+                description: Optional. Configuration for Dataplex integration.
+                properties:
+                  enabled:
+                    description: Optional. Whether Dataplex integration is enabled.
+                    type: boolean
+                type: object
               deletionPolicy:
                 description: Policy to determine if the cluster should be deleted
                   forcefully. Deleting a cluster forcefully, deletes the cluster and

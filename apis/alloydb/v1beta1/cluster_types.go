@@ -72,6 +72,10 @@ type AlloyDBClusterSpec struct {
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.database_version
 	DatabaseVersion *string `json:"databaseVersion,omitempty"`
 
+	// Optional. Configuration for Dataplex integration.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.dataplex_config
+	DataplexConfig *Cluster_DataplexConfig `json:"dataplexConfig,omitempty"`
+
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.network_config
 	NetworkConfig *Cluster_NetworkConfig `json:"networkConfig,omitempty"`
 
@@ -268,6 +272,13 @@ type Cluster_NetworkConfig struct {
 	//  Field name is intended to be consistent with Cloud SQL.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.NetworkConfig.allocated_ip_range
 	AllocatedIPRange *string `json:"allocatedIpRange,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1beta.Cluster.DataplexConfig
+type Cluster_DataplexConfig struct {
+	// Optional. Whether Dataplex integration is enabled.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.DataplexConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.BackupSource
