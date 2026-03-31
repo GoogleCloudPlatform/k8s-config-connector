@@ -269,6 +269,20 @@ func (p *ProtoWriter) renderService(msg protoreflect.ServiceDescriptor) {
 }
 
 func (p *ProtoWriter) WriteFile(file protoreflect.FileDescriptor) {
+	p.printf("// Copyright 2026 Google LLC\n")
+	p.printf("//\n")
+	p.printf("// Licensed under the Apache License, Version 2.0 (the \"License\");\n")
+	p.printf("// you may not use this file except in compliance with the License.\n")
+	p.printf("// You may obtain a copy of the License at\n")
+	p.printf("//\n")
+	p.printf("//      http://www.apache.org/licenses/LICENSE-2.0\n")
+	p.printf("//\n")
+	p.printf("// Unless required by applicable law or agreed to in writing, software\n")
+	p.printf("// distributed under the License is distributed on an \"AS IS\" BASIS,\n")
+	p.printf("// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n")
+	p.printf("// See the License for the specific language governing permissions and\n")
+	p.printf("// limitations under the License.\n")
+	p.printf("\n")
 	klog.Infof("file %v", file.Name())
 	p.printf("syntax = \"proto%d\";\n", p.protoVersion)
 	p.printf("package %s;\n", file.Package())
