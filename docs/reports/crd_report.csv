@@ -419,7 +419,7 @@ sql.cnrm.cloud.google.com,SQLSSLCert,False,True,False,Terraform,False
 sql.cnrm.cloud.google.com,SQLUser,False,True,False,Terraform,False
 storage.cnrm.cloud.google.com,StorageAnywhereCache,True,True,False,Direct,True
 storage.cnrm.cloud.google.com,StorageBucketAccessControl,False,True,False,Terraform,False
-storage.cnrm.cloud.google.com,StorageBucket,False,True,False,Terraform,False
+storage.cnrm.cloud.google.com,StorageBucket,False,True,False,Direct,True
 storage.cnrm.cloud.google.com,StorageDefaultObjectAccessControl,False,True,False,Terraform,False
 storage.cnrm.cloud.google.com,StorageFolder,True,False,False,Direct,True
 storage.cnrm.cloud.google.com,StorageHMACKey,True,False,False,Terraform,False
