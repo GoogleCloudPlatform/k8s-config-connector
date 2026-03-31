@@ -10,7 +10,8 @@ tools:
 	GOBIN=`pwd`/bin/ go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28
 	GOBIN=`pwd`/bin/ go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
 	wget -N -O bin/protoc.zip https://github.com/protocolbuffers/protobuf/releases/download/v3.12.4/protoc-3.12.4-linux-x86_64.zip
-	cd bin; rm -rf protoc; mkdir protoc; cd protoc; unzip ../protoc.zip
+	cd bin; rm -rf protoc; mkdir protoc; cd protoc; python3 -m zipfile -e ../protoc.zip .
+	chmod +x bin/protoc/bin/protoc
 
 GOOGLEAPI_VERSION?=$(shell grep https://github.com/googleapis/googleapis git.versions | awk '{print $$2}' )
 .PHONY: sync-repo

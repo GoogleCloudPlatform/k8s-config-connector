@@ -1,0 +1,380 @@
+# No dependencies
+Resources in this list can be created in any order:
+
+- AccessContextManagerAccessLevelCondition
+- AccessContextManagerGCPUserAccessBinding
+- AccessContextManagerServicePerimeterResource (missing _reference.go only)
+- AlloyDBInstance (missing _reference.go only)
+- AlloyDBUser (missing _reference.go only)
+- ApigeeAddonsConfig
+- ApigeeNATAddress
+- ApigeeSyncAuthorization
+- AppEngineDomainMapping
+- AppEngineFirewallRule
+- AppEngineServiceSplitTraffic
+- AssuredWorkloadsWorkload (missing _reference.go only)
+- BigtableGCPolicy
+- CloudAssetOrganizationFeed
+- CloudIOTDevice
+- CloudIOTDeviceRegistry
+- ComputeExternalVPNGateway
+- ComputeHTTPHealthCheck
+- ComputeHTTPSHealthCheck
+- ComputeHealthCheck
+- ComputeNetwork
+- ComputeNodeTemplate (missing _reference.go only)
+- ComputeOrganizationSecurityPolicy
+- ComputeOrganizationSecurityPolicyAssociation
+- ComputeOrganizationSecurityPolicyRule
+- ComputeProjectMetadata
+- ComputeReservation
+- ComputeResourcePolicy (missing _reference.go only)
+- ComputeSSLCertificate
+- ComputeSSLPolicy
+- ComputeSharedVPCHostProject
+- ContainerAnalysisNote
+- DialogflowAgent
+- DialogflowCXEntityType
+- DialogflowCXFlow
+- DialogflowCXIntent
+- DialogflowCXPage
+- DialogflowCXWebhook
+- DocumentAIProcessorDefaultVersion
+- FirebaseHostingChannel
+- FirebaseWebApp
+- Folder
+- GKEHubMembership
+- HealthcareConsentStore
+- HealthcareDICOMStore
+- HealthcareFHIRStore
+- HealthcareHL7V2Store
+- IAMAuditConfig (missing _reference.go only)
+- IAMCustomRole
+- IAMPolicy (missing _reference.go only)
+- IAMServiceAccount
+- IAMWorkforcePool
+- IAPBrand
+- IdentityPlatformOAuthIDPConfig
+- IdentityPlatformTenant
+- KMSCryptoKey
+- KMSCryptoKeyVersion
+- KMSKeyRingImportJob
+- KMSSecretCiphertext
+- MonitoringAlertPolicy
+- MonitoringMonitoredProject
+- OSLoginSSHPublicKey
+- ParameterManagerParameterVersion (missing _reference.go only)
+- SecurityCenterNotificationConfig
+- SecurityCenterSource
+- SpannerInstance (missing _reference.go only)
+- TagsLocationTagBinding (missing _reference.go only)
+- VertexAIFeaturestoreEntityType
+- VertexAIFeaturestoreEntityTypeFeature
+
+
+# Topologically sorted - Ordered
+Resources in this list must be created in the order the list is in:
+
+- AccessContextManagerAccessLevelCondition
+- AccessContextManagerGCPUserAccessBinding
+- AccessContextManagerServicePerimeterResource (missing _reference.go only)
+- AlloyDBInstance (missing _reference.go only)
+- AlloyDBUser (missing _reference.go only)
+- ApigeeAddonsConfig
+- ApigeeNATAddress
+- ApigeeSyncAuthorization
+- AppEngineDomainMapping
+- AppEngineFirewallRule
+- AppEngineServiceSplitTraffic
+- AssuredWorkloadsWorkload (missing _reference.go only)
+- BigtableGCPolicy
+- CloudAssetOrganizationFeed
+- CloudIOTDevice
+- CloudIOTDeviceRegistry
+- ComputeExternalVPNGateway
+- ComputeHTTPHealthCheck
+- ComputeHTTPSHealthCheck
+- ComputeHealthCheck
+- ComputeNetwork
+- ComputeFirewall
+- ComputeInstanceGroup
+- ComputeNetworkPeering
+- ComputeNodeTemplate (missing _reference.go only)
+- ComputeOrganizationSecurityPolicy
+- ComputeOrganizationSecurityPolicyAssociation
+- ComputeOrganizationSecurityPolicyRule
+- ComputeProjectMetadata
+- ComputeReservation
+- ComputeResourcePolicy (missing _reference.go only)
+- ComputeRoute
+- ComputeRouter
+- ComputeInterconnectAttachment
+- ComputeSSLCertificate
+- ComputeSSLPolicy
+- ComputeSharedVPCHostProject
+- ComputeSubnetwork (missing _reference.go only)
+- ComputeAddress
+- ComputeNetworkEndpointGroup
+- ComputeBackendService
+- ComputeRouterNAT
+- ComputeTargetPool
+- ComputeTargetSSLProxy
+- ComputeTargetVPNGateway
+- ComputeVPNGateway
+- ComputeVPNTunnel
+- ComputeRouterInterface
+- ComputeRouterPeer
+- ContainerAnalysisNote
+- DNSManagedZone
+- DNSPolicy
+- DialogflowAgent
+- DialogflowCXEntityType
+- DialogflowCXFlow
+- DialogflowCXIntent
+- DialogflowCXPage
+- DialogflowCXWebhook
+- DocumentAIProcessorDefaultVersion
+- FirebaseHostingChannel
+- FirebaseWebApp
+- Folder
+- CloudAssetFolderFeed
+- ComputeFirewallPolicy
+- ComputeFirewallPolicyAssociation
+- GKEHubMembership
+- HealthcareConsentStore
+- HealthcareDICOMStore
+- HealthcareFHIRStore
+- HealthcareHL7V2Store
+- IAMAuditConfig (missing _reference.go only)
+- IAMCustomRole
+- IAMPolicy (missing _reference.go only)
+- IAMServiceAccount
+- CloudSchedulerJob
+- DataFusionInstance
+- IAMWorkforcePool
+- IAMWorkforcePoolProvider
+- IAPBrand
+- IAPIdentityAwareProxyClient
+- IdentityPlatformOAuthIDPConfig
+- IdentityPlatformTenant
+- IdentityPlatformTenantOAuthIDPConfig
+- KMSCryptoKey
+- ArtifactRegistryRepository (missing _reference.go only)
+- BigQueryTable (missing _reference.go only)
+- BigQueryJob
+- ComputeInstanceTemplate
+- ComputeInstance
+- ComputeSnapshot
+- ComputeTargetInstance
+- ContainerCluster
+- ContainerNodePool
+- DataflowFlexTemplateJob (missing _reference.go only)
+- DataflowJob
+- KMSCryptoKeyVersion
+- KMSKeyRingImportJob
+- KMSSecretCiphertext
+- MemcacheInstance
+- MonitoringAlertPolicy
+- MonitoringMonitoredProject
+- OSLoginSSHPublicKey
+- ParameterManagerParameterVersion (missing _reference.go only)
+- Project
+- APIGatewayAPIConfig
+- APIGatewayGateway
+- APIKeysKey
+- AccessContextManagerServicePerimeter (missing _reference.go only)
+- BeyondCorpAppConnection
+- BeyondCorpAppConnector
+- BeyondCorpAppGateway
+- BigQueryDataPolicyDataPolicy
+- BigQueryDatasetAccess
+- BigQueryReservationCapacityCommitment
+- BigQueryRoutine
+- BinaryAuthorizationAttestor
+- BinaryAuthorizationPolicy
+- CertificateManagerCertificate
+- CertificateManagerCertificateIssuanceConfig (missing _reference.go only)
+- CertificateManagerCertificateMap
+- CertificateManagerCertificateMapEntry
+- CertificateManagerDNSAuthorization (missing _reference.go only)
+- CloudAssetProjectFeed
+- CloudDMSMigrationJob (missing _reference.go only)
+- CloudFunctions2Function
+- CloudFunctionsFunction
+- CloudIDSEndpoint
+- ComputeAutoscaler
+- ComputeBackendServiceSignedURLKey
+- ComputeGlobalNetworkEndpoint
+- ComputeGlobalNetworkEndpointGroup
+- ComputeInstanceGroupManager
+- ComputeInstanceGroupNamedPort
+- ComputeMachineImage
+- ComputeManagedSSLCertificate
+- ComputeNetworkEndpoint
+- ComputeNetworkFirewallPolicy
+- ComputeNetworkFirewallPolicyAssociation
+- ComputeNetworkFirewallPolicyRule
+- ComputeNetworkPeeringRoutesConfig
+- ComputeNodeGroup
+- ComputePacketMirroring
+- ComputePerInstanceConfig
+- ComputeRegionAutoscaler
+- ComputeRegionPerInstanceConfig
+- ComputeRegionSSLPolicy
+- ComputeServiceAttachment
+- ComputeSharedVPCServiceProject
+- ConfigControllerInstance
+- ConfigDeliveryResourceBundle (missing _reference.go only)
+- ContainerAnalysisOccurrence
+- ContainerAttachedCluster (missing _reference.go only)
+- DLPDeidentifyTemplate
+- DLPInspectTemplate
+- DLPStoredInfoType
+- DNSRecordSet
+- DNSResponsePolicy
+- DNSResponsePolicyRule
+- DataformRepository (missing _reference.go only)
+- DataprocAutoscalingPolicy (missing _reference.go only)
+- DatastoreIndex
+- DatastreamStream
+- DeploymentManagerDeployment
+- DialogflowCXAgent
+- DialogflowEntityType
+- DialogflowFulfillment
+- DialogflowIntent
+- EdgeContainerCluster
+- EdgeContainerNodePool
+- EdgeContainerVpnConnection
+- EdgeNetworkNetwork
+- EdgeNetworkSubnet
+- FilestoreBackup
+- FilestoreInstance
+- FilestoreSnapshot
+- FirebaseAndroidApp
+- FirebaseDatabaseInstance
+- FirebaseHostingSite
+- FirebaseProject
+- FirebaseStorageBucket
+- GKEHubFeature
+- GKEHubFeatureMembership (missing _reference.go only)
+- HealthcareDataset
+- IAMAccessBoundaryPolicy
+- IAMWorkloadIdentityPool
+- IAMWorkloadIdentityPoolProvider
+- IdentityPlatformConfig
+- IdentityPlatformDefaultSupportedIDPConfig
+- IdentityPlatformInboundSAMLConfig
+- IdentityPlatformProjectDefaultConfig
+- IdentityPlatformTenantDefaultSupportedIDPConfig
+- IdentityPlatformTenantInboundSAMLConfig
+- LoggingLogBucket
+- LoggingLogExclusion
+- LoggingLogMetric (missing _reference.go only)
+- MLEngineModel
+- MonitoringDashboard (missing _reference.go only)
+- MonitoringGroup
+- MonitoringMetricDescriptor
+- MonitoringService
+- MonitoringServiceLevelObjective
+- MonitoringUptimeCheckConfig
+- NetworkConnectivityHub
+- NetworkConnectivityServiceConnectionPolicy (missing _reference.go only)
+- NetworkConnectivitySpoke
+- NetworkSecurityClientTLSPolicy
+- NetworkSecurityServerTLSPolicy
+- NetworkServicesEdgeCacheKeyset
+- NetworkServicesEdgeCacheOrigin
+- NetworkServicesEdgeCacheService
+- NetworkServicesEndpointPolicy
+- NetworkServicesGateway
+- NetworkServicesLBRouteExtension (missing _reference.go only)
+- NetworkServicesMesh
+- OSConfigOSPolicyAssignment
+- OSConfigPatchDeployment
+- PrivateCACAPool (missing _reference.go only)
+- PrivateCACertificateTemplate
+- PrivilegedAccessManagerEntitlement (missing _reference.go only)
+- PubSubLiteReservation
+- PubSubLiteSubscription
+- PubSubLiteTopic
+- PubSubSchema
+- PubSubTopic
+- BillingBudgetsBudget
+- RecaptchaEnterpriseKey
+- RedisCluster (missing _reference.go only)
+- RedisInstance
+- ResourceManagerLien
+- ResourceManagerPolicy
+- RunService
+- SecurityCenterNotificationConfig
+- SecurityCenterSource
+- Service
+- AppEngineFlexibleAppVersion
+- AppEngineStandardAppVersion
+- ComputeRegionNetworkEndpointGroup
+- EventarcTrigger
+- NetworkServicesGRPCRoute
+- NetworkServicesHTTPRoute
+- NetworkServicesTCPRoute
+- NetworkServicesTLSRoute
+- ServiceDirectoryNamespace
+- ServiceDirectoryService
+- ServiceDirectoryEndpoint
+- ServiceNetworkingConnection
+- ServiceUsageConsumerQuotaOverride
+- SourceRepoRepository
+- SpannerInstance (missing _reference.go only)
+- SpannerDatabase
+- StorageBucket
+- CloudBuildTrigger (missing _reference.go only)
+- ComputeBackendBucket
+- ComputeBackendBucketSignedURLKey
+- ComputeURLMap
+- ComputeTargetGRPCProxy
+- ComputeTargetHTTPProxy
+- DLPJobTrigger
+- DataprocCluster
+- DataprocWorkflowTemplate
+- LoggingLogSink
+- LoggingLogView
+- OSConfigGuestPolicy
+- PrivateCACertificateAuthority
+- PrivateCACertificate
+- PubSubSubscription
+- BigQueryDataTransferConfig (missing _reference.go only)
+- SQLInstance (missing _reference.go only)
+- IAMPartialPolicy (missing _reference.go only)
+- IAMPolicyMember (missing _reference.go only)
+- SQLDatabase
+- SQLSSLCert
+- SQLUser
+- StorageBucketAccessControl
+- StorageDefaultObjectAccessControl
+- StorageHMACKey
+- StorageNotification
+- StorageTransferAgentPool
+- StorageTransferJob
+- TPUNode
+- TagsLocationTagBinding (missing _reference.go only)
+- VPCAccessConnector
+- VertexAIDataset
+- VertexAIEndpoint
+- VertexAIFeaturestoreEntityType
+- VertexAIFeaturestoreEntityTypeFeature
+- VertexAIIndex
+- VertexAIIndexEndpoint
+- VertexAITensorboard
+- WorkflowsExecution (missing _reference.go only)
+- ComputeDisk
+- ComputeDiskResourcePolicyAttachment
+- ComputeImage
+- ComputeRegionDiskResourcePolicyAttachment
+
+# Dependency Cycle Detected
+
+The following resources are involved in a cycle or depend on one:
+
+- ComputeDisk depends on: ComputeImage
+- ComputeDiskResourcePolicyAttachment depends on: ComputeDisk
+- ComputeImage depends on: ComputeDisk
+- ComputeRegionDiskResourcePolicyAttachment depends on: ComputeDisk

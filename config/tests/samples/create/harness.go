@@ -152,6 +152,10 @@ func WithKubeTarget(kubeTarget string) HarnessOption {
 	}
 }
 
+// envtestWebhookMutex prevents port collision races when running envtest in parallel.
+// It locks the window between envtest allocating a free port and the manager binding it.
+var envtestWebhookMutex sync.Mutex
+
 type GCPTargetMode string
 
 const (
@@ -221,12 +225,23 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	}
 
 	var webhooks []cnrmwebhook.Config
+	var envtestLocked bool
 
 	loadCRDs := true
 	if h.KubeTarget == "" {
 		h.KubeTarget = os.Getenv("E2E_KUBE_TARGET")
 	}
 	if h.KubeTarget == "envtest" {
+		// Lock the mutex to prevent parallel tests from stealing the port envtest is about to pick
+		envtestWebhookMutex.Lock()
+		envtestLocked = true
+		defer func() {
+			// Ensure we always unlock if something panics or t.Fatalf is called early
+			if envtestLocked {
+				envtestWebhookMutex.Unlock()
+				envtestLocked = false
+			}
+		}()
 		whCfgs, err := testwebhook.GetTestCommonWebhookConfigs()
 		if err != nil {
 			h.Fatalf("error getting common wehbook configs: %v", err)
@@ -716,6 +731,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	})
 	kccConfig.ManagerOptions.Logger = filterLogs(log)
 	kccConfig.ManagerOptions.Controller.SkipNameValidation = ptr.To(true)
+	kccConfig.SkipNameValidation = true
 
 	krmtotf.SetUserAgentForTerraformProvider()
 
@@ -732,7 +748,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	}
 
 	// Register the deletion defender controller.
-	if err := registration.AddDeletionDefender(mgr, &controller.Deps{}); err != nil {
+	if err := registration.AddDeletionDefender(mgr, &controller.Deps{SkipNameValidation: kccConfig.SkipNameValidation}); err != nil {
 		t.Fatalf("error adding registration controller for deletion defender controllers: %v", err)
 	}
 	// Start the manager, Start(...) is a blocking operation so it needs to be done asynchronously.
@@ -761,6 +777,13 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		}
 		t.Logf("waiting for webhook to start (%v)", err)
 		time.Sleep(100 * time.Millisecond)
+	}
+
+	// The port is now successfully bound by the manager. We can safely release
+	// the lock so other parallel tests can provision their own environments.
+	if envtestLocked {
+		envtestWebhookMutex.Unlock()
+		envtestLocked = false
 	}
 
 	return h
@@ -1056,6 +1079,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "notebooks.cnrm.cloud.google.com", Kind: "NotebookInstance"}:
 
 			case schema.GroupKind{Group: "parametermanager.cnrm.cloud.google.com", Kind: "ParameterManagerParameter"}:
+			case schema.GroupKind{Group: "parametermanager.cnrm.cloud.google.com", Kind: "ParameterManagerParameterVersion"}:
 
 			case schema.GroupKind{Group: "privateca.cnrm.cloud.google.com", Kind: "PrivateCACAPool"}:
 			case schema.GroupKind{Group: "privateca.cnrm.cloud.google.com", Kind: "PrivateCACertificateAuthority"}:
