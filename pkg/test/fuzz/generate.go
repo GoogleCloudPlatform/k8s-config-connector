@@ -32,7 +32,7 @@ func FillWithRandom(t *testing.T, randStream *rand.Rand, msg proto.Message) {
 }
 
 func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Message, depth int) {
-	if depth > 5 {
+	if depth > 10 {
 		return
 	}
 	descriptor := msg.Descriptor()
