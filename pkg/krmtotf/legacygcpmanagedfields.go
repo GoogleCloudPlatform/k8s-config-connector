@@ -107,6 +107,12 @@ func resolveSQLInstanceDiskSize(r *Resource, config map[string]interface{}) erro
 }
 
 func resolveContainerClusterNodeVersion(r *Resource, config map[string]interface{}) error {
+	stripNodeConfigOnUpdateDirective := "strip-default-node-pool-config-on-update"
+	stripOnUpdateKey := k8s.FormatAnnotation(stripNodeConfigOnUpdateDirective)
+	if val, ok := k8s.GetAnnotation(stripOnUpdateKey, r); ok && val == "true" {
+		unstructured.RemoveNestedField(config, "nodeVersion")
+		return nil
+	}
 	if err := removeFromConfigIfNotApplied(r, config, "nodeVersion"); err != nil {
 		return fmt.Errorf("error resolving node version in config: %w", err)
 	}

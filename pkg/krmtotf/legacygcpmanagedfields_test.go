@@ -574,6 +574,27 @@ func TestResolveGCPManagedFields(t *testing.T) {
 			},
 		},
 		{
+			name: "ContainerCluster strips nodeVersion when strip-default-node-pool-config-on-update is true during update, even if applied",
+			kind: "ContainerCluster",
+			lastAppliedConfig: map[string]interface{}{
+				"spec": map[string]interface{}{
+					"location":    "us-central1-a",
+					"nodeVersion": "1.27",
+				},
+			},
+			resourceExists: true,
+			inputConfig: map[string]interface{}{
+				"location":    "us-central1-a",
+				"nodeVersion": "1.27",
+			},
+			annotations: map[string]string{
+				"cnrm.cloud.google.com/strip-default-node-pool-config-on-update": "true",
+			},
+			expectedConfig: map[string]interface{}{
+				"location": "us-central1-a",
+			},
+		},
+		{
 			name: "ContainerCluster strips nodeVersion if not applied",
 			kind: "ContainerCluster",
 			lastAppliedConfig: map[string]interface{}{
