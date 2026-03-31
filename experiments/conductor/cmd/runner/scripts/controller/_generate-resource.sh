@@ -43,7 +43,7 @@ Workflow is now to iterate:
 
 source dev/tools/goimports.sh
 apis/dataproc/v1beta1/generate.sh  && dev/tasks/generate-crds 
-go run golang.org/x/tools/cmd/goimports@v0.29.0 -w  pkg/controller/direct/dataproc/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/dataproc/
 go test -v ./pkg/fuzztesting/fuzztests/ -fuzz=FuzzAllMappers -fuzztime 600s
 <Make changes so fuzzer passes>
 

@@ -52,7 +52,7 @@ cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
 # Format the generated Go code
-go run golang.org/x/tools/cmd/goimports@v0.29.0 -w pkg/controller/direct/mynewservice/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/mynewservice/
 ```
 
 **If `generate.sh` already exists**, do not overwrite it. Instead, add a new `--resource` flag to the `go run . generate-types` command for the resource you are adding. For example:

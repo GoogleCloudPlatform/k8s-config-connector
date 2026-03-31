@@ -38,5 +38,5 @@ go run . generate-mapper \
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run golang.org/x/tools/cmd/goimports@v0.29.0 -w  pkg/controller/direct/sql/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/sql/
 
