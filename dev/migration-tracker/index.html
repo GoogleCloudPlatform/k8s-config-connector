@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KCC Migration Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>KCC Direct Migration Tracker</h1>
+            <p>Tracking the migration of KCC resources from Terraform/DCL to Direct Controllers.</p>
+        </div>
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Total Resources</h3>
+                <p id="stat-total">-</p>
+            </div>
+            <div class="stat-card">
+                <h3>Completed</h3>
+                <p id="stat-completed">-</p>
+            </div>
+            <div class="stat-card">
+                <h3>In Progress</h3>
+                <p id="stat-inprogress">-</p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="controls">
+            <input type="text" id="search" placeholder="Search by Kind, Group, or Dependency..." />
+            <select id="filter-state">
+                <option value="All">All States</option>
+                <option value="Not Started">Not Started</option>
+                <option value="In Progress">In Progress</option>
+                <option value="PR Sent">PR Sent</option>
+                <option value="Completed">Completed</option>
+            </select>
+        </div>
+
+        <div class="table-container">
+            <table id="migration-table">
+                <thead>
+                    <tr>
+                        <th data-sort="kind">Kind <span class="sort-icon"></span></th>
+                        <th data-sort="group">Group <span class="sort-icon"></span></th>
+                        <th data-sort="version">Version <span class="sort-icon"></span></th>
+                        <th data-sort="controllerType">Controller <span class="sort-icon"></span></th>
+                        <th data-sort="state">State <span class="sort-icon"></span></th>
+                        <th>Migration Steps</th>
+                        <th>Dependencies</th>
+                        <th data-sort="mocksLastRefreshed">Mocks Refreshed <span class="sort-icon"></span></th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <!-- Rows will be injected here by JS -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
