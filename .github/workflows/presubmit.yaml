@@ -21,11 +21,20 @@ name: Presubmit
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+    paths:
+      - '**'
+      - '!experiments/**'
   push:
     branches: ["master", "release-*"]
+    paths:
+      - '**'
+      - '!experiments/**'
   merge_group:
     types: [checks_requested]
     branches: ["master", "release-*"]
+    paths:
+      - '**'
+      - '!experiments/**'
 
 
 jobs:
