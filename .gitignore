@@ -180,8 +180,9 @@ experiments/**/__pycache__/
 # The bang (!) prefix is used to unignore the given files.
 operator/channels/packages/configconnector/**
 !operator/channels/packages/configconnector/**/
+operator/channels/packages/configconnector/**/cluster/
 !operator/channels/packages/configconnector/*/namespaced/per-namespace-components.yaml
 operator/autopilot-channels/packages/configconnector/**
 !operator/autopilot-channels/packages/configconnector/**/
+operator/autopilot-channels/packages/configconnector/**/cluster/
 !operator/autopilot-channels/packages/configconnector/*/namespaced/per-namespace-components.yaml
-
