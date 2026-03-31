@@ -132,21 +132,40 @@ func (a *sqlUserAdapter) Find(ctx context.Context) (bool, error) {
 		return false, nil
 	}
 
-	call := a.sqlUsersClient.Get(a.projectID, a.instanceID, a.resourceID).Context(ctx)
 	if a.host != "" {
-		call = call.Host(a.host)
+		// Host is known — use Get with explicit host.
+		user, err := a.sqlUsersClient.Get(a.projectID, a.instanceID, a.resourceID).
+			Host(a.host).Context(ctx).Do()
+		if err != nil {
+			if direct.IsNotFound(err) {
+				return false, nil
+			}
+			return false, fmt.Errorf("getting SQLUser %s failed: %w", a.resourceID, err)
+		}
+		log.V(2).Info("found SQLUser", "name", user.Name, "host", user.Host)
+		a.actual = user
+		return true, nil
 	}
-	user, err := call.Do()
+
+	// Host is not specified — use List and filter to discover the user.
+	// The Get API returns 404 for MySQL users when host is omitted,
+	// so we must List and match on the default host ("%" for MySQL, "" for Postgres).
+	users, err := a.sqlUsersClient.List(a.projectID, a.instanceID).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting SQLUser %s failed: %w", a.resourceID, err)
+		return false, fmt.Errorf("listing SQLUsers for instance %s failed: %w", a.instanceID, err)
+	}
+	for _, user := range users.Items {
+		if user.Name == a.resourceID && (user.Host == "%" || user.Host == "") {
+			log.V(2).Info("found SQLUser", "name", user.Name, "host", user.Host)
+			a.actual = user
+			return true, nil
+		}
 	}
 
-	log.V(2).Info("found SQLUser", "name", user.Name, "host", user.Host)
-	a.actual = user
-	return true, nil
+	return false, nil
 }
 
 func (a *sqlUserAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
@@ -335,18 +354,34 @@ func (a *sqlUserAdapter) userHasDiff(desired *api.User) bool {
 }
 
 func (a *sqlUserAdapter) findUser(ctx context.Context) (*api.User, error) {
-	call := a.sqlUsersClient.Get(a.projectID, a.instanceID, a.resourceID).Context(ctx)
+	// Determine the host to use for lookup.
+	host := a.host
 	if a.actual != nil {
-		// Use the actual host from GCP for precise lookup.
-		call = call.Host(a.actual.Host)
-	} else if a.host != "" {
-		call = call.Host(a.host)
+		host = a.actual.Host
 	}
-	user, err := call.Do()
+
+	if host != "" {
+		// Host is known — use Get with explicit host.
+		user, err := a.sqlUsersClient.Get(a.projectID, a.instanceID, a.resourceID).
+			Host(host).Context(ctx).Do()
+		if err != nil {
+			return nil, fmt.Errorf("getting SQLUser %s in instance %s failed: %w", a.resourceID, a.instanceID, err)
+		}
+		return user, nil
+	}
+
+	// Host is unknown (e.g., after Create for MySQL user without explicit host).
+	// The Get API returns 404 without a host param on MySQL, so use List+filter.
+	users, err := a.sqlUsersClient.List(a.projectID, a.instanceID).Context(ctx).Do()
 	if err != nil {
-		return nil, fmt.Errorf("getting SQLUser %s in instance %s failed: %w", a.resourceID, a.instanceID, err)
+		return nil, fmt.Errorf("listing SQLUsers for instance %s failed: %w", a.instanceID, err)
 	}
-	return user, nil
+	for _, user := range users.Items {
+		if user.Name == a.resourceID && (user.Host == "%" || user.Host == "") {
+			return user, nil
+		}
+	}
+	return nil, fmt.Errorf("user %s not found in instance %s", a.resourceID, a.instanceID)
 }
 
 func (a *sqlUserAdapter) pollForLROCompletion(ctx context.Context, op *api.Operation, verb string) error {
@@ -373,10 +408,11 @@ func (a *sqlUserAdapter) pollForLROCompletion(ctx context.Context, op *api.Opera
 		if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
 			return fmt.Errorf("waiting for SQLUser %s %s failed: %w", a.resourceID, verb, err)
 		}
+		opName := op.Name
 		var err error
-		op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Context(ctx).Do()
+		op, err = a.sqlOperationsClient.Get(a.projectID, opName).Context(ctx).Do()
 		if err != nil {
-			return fmt.Errorf("getting SQLUser %s %s operation %s failed: %w", a.resourceID, verb, op.Name, err)
+			return fmt.Errorf("getting SQLUser %s %s operation %s failed: %w", a.resourceID, verb, opName, err)
 		}
 	}
 
