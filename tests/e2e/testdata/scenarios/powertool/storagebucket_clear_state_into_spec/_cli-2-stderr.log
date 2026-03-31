@@ -1,0 +1,2 @@
+skipping field removal of array field ".spec.lifecycleRule" (may be an indication of undetermined ownership)
+skipping field removal of map field ".spec.softDeletePolicy" (may be an indication of undetermined ownership)

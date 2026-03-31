@@ -2,7 +2,7 @@
 
     StorageBucket ${projectID}/storagebucket-${uniqueId}:
       spec:
-        location: <nil> -> EU
+        location: US -> EU
 
 
 applying changes
