@@ -20,6 +20,7 @@ import (
 	"google.golang.org/genproto/googleapis/type/timeofday"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
+	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -288,5 +289,116 @@ func ContinuousBackupSource_ToProto(mapCtx *direct.MapContext, in *krm.RestoreCo
 		out.Cluster = in.ClusterRef.External
 	}
 	out.PointInTime = direct.StringTimestamp_ToProto(mapCtx, in.PointInTime)
+	return out
+}
+
+func Cluster_DataplexConfig_FromProto(mapCtx *direct.MapContext, in *pb.Cluster_DataplexConfig) *krm.Cluster_DataplexConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Cluster_DataplexConfig{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	return out
+}
+func Cluster_DataplexConfig_ToProto(mapCtx *direct.MapContext, in *krm.Cluster_DataplexConfig) *pb.Cluster_DataplexConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Cluster_DataplexConfig{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	return out
+}
+
+func AlloyDBClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.AlloyDBClusterSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlloyDBClusterSpec{}
+	// MISSING: BackupSource
+	// MISSING: MigrationSource
+	// MISSING: CloudsqlBackupRunSource
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: Uid
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: Labels
+	// MISSING: State
+	out.ClusterType = direct.Enum_FromProto(mapCtx, in.GetClusterType())
+	out.DatabaseVersion = direct.Enum_FromProto(mapCtx, in.GetDatabaseVersion())
+	out.NetworkConfig = Cluster_NetworkConfig_FromProto(mapCtx, in.GetNetworkConfig())
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	// MISSING: Etag
+	// MISSING: Annotations
+	// MISSING: Reconciling
+	out.InitialUser = UserPassword_FromProto(mapCtx, in.GetInitialUser())
+	out.AutomatedBackupPolicy = AutomatedBackupPolicy_FromProto(mapCtx, in.GetAutomatedBackupPolicy())
+	// MISSING: SSLConfig
+	out.EncryptionConfig = EncryptionConfig_FromProto(mapCtx, in.GetEncryptionConfig())
+	// MISSING: EncryptionInfo
+	out.ContinuousBackupConfig = ContinuousBackupConfig_FromProto(mapCtx, in.GetContinuousBackupConfig())
+	// MISSING: ContinuousBackupInfo
+	out.SecondaryConfig = Cluster_SecondaryConfig_FromProto(mapCtx, in.GetSecondaryConfig())
+	// MISSING: PrimaryConfig
+	// MISSING: SatisfiesPzs
+	// MISSING: PSCConfig
+	out.MaintenanceUpdatePolicy = MaintenanceUpdatePolicy_FromProto(mapCtx, in.GetMaintenanceUpdatePolicy())
+	// MISSING: MaintenanceSchedule
+	// MISSING: GeminiConfig
+	// MISSING: SubscriptionType
+	// MISSING: TrialMetadata
+	// MISSING: Tags
+	// MISSING: ServiceAccountEmail
+	out.DataplexConfig = Cluster_DataplexConfig_FromProto(mapCtx, in.GetDataplexConfig())
+	return out
+}
+
+func AlloyDBClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBClusterSpec) *pb.Cluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Cluster{}
+	// MISSING: BackupSource
+	// MISSING: MigrationSource
+	// MISSING: CloudsqlBackupRunSource
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: Uid
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: Labels
+	// MISSING: State
+	out.ClusterType = direct.Enum_ToProto[pb.Cluster_ClusterType](mapCtx, in.ClusterType)
+	out.DatabaseVersion = direct.Enum_ToProto[pb.DatabaseVersion](mapCtx, in.DatabaseVersion)
+	out.NetworkConfig = Cluster_NetworkConfig_ToProto(mapCtx, in.NetworkConfig)
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	// MISSING: Etag
+	// MISSING: Annotations
+	// MISSING: Reconciling
+	out.InitialUser = UserPassword_ToProto(mapCtx, in.InitialUser)
+	out.AutomatedBackupPolicy = AutomatedBackupPolicy_ToProto(mapCtx, in.AutomatedBackupPolicy)
+	// MISSING: SSLConfig
+	out.EncryptionConfig = EncryptionConfig_ToProto(mapCtx, in.EncryptionConfig)
+	// MISSING: EncryptionInfo
+	out.ContinuousBackupConfig = ContinuousBackupConfig_ToProto(mapCtx, in.ContinuousBackupConfig)
+	// MISSING: ContinuousBackupInfo
+	out.SecondaryConfig = Cluster_SecondaryConfig_ToProto(mapCtx, in.SecondaryConfig)
+	// MISSING: PrimaryConfig
+	// MISSING: SatisfiesPzs
+	// MISSING: PSCConfig
+	out.MaintenanceUpdatePolicy = MaintenanceUpdatePolicy_ToProto(mapCtx, in.MaintenanceUpdatePolicy)
+	// MISSING: MaintenanceSchedule
+	// MISSING: GeminiConfig
+	// MISSING: SubscriptionType
+	// MISSING: TrialMetadata
+	// MISSING: Tags
+	// MISSING: ServiceAccountEmail
+	out.DataplexConfig = Cluster_DataplexConfig_ToProto(mapCtx, in.DataplexConfig)
 	return out
 }
