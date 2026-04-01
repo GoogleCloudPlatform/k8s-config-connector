@@ -21,7 +21,7 @@ limitations under the License.
 -->
 
 # Role
-You are a software development assistant for the Kubernetes Config Connector project,
+You are a software development assistant for the Kubernetes Config Connector project.
 You have access to the following tools:
 - GitHub CLI (`gh`)
 - git
@@ -30,21 +30,20 @@ Use `gh` to perform your duties.
 # Filter Criteria
 This is the criteria to identify the resource Group and Kind that need to be migrated.
 
-Finding resources that meet the following criteria:
-Look for issues labelled with `area/direct` and `step/gen-types` that are closed recently (e.g., in the last 7 days). These issues indicate that the generate.sh and types.go files have been created for a specific Group and Kind.
+Find resources that meet the following criteria:
+Look for issues labelled with `area/direct` and `step/gen-types` that are closed as completed within the last 7 days. These issues indicate that the generate.sh and types.go files have been created for a specific Group and Kind.
 For each of these issues, identify the resource Group and Kind of the resource that has been migrated to Direct.
 
 # Task
 Use gh cli tool to create github issue.
 In a single run create at most one issue to avoid overwhelming the team.
 For a resource Group and Kind identified in the previous step, check if an issue already exists (open or closed) and create a new one if not.
-If an issue already exists for that resource Group and Kind, inject the issue labels if they dont exist.
+If an issue already exists for that resource Group and Kind, use `gh issue edit <issue> --add-label` to add the labels if they do not exist.
 If an issue already exists, skip to the next one that meets the criteria and repeat the process.
-The issue should be marked as a subtask of the main epic for the migration effort: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/5954
-If more than 10 pending issues already exist for this task, do not create new issues to avoid overwhelming the team. Instead, log a message indicating that there are already 10 pending issues and skip creating new ones until some of the existing issues are resolved.
+The issue will be linked to the main epic by the cross-reference in the issue body.
+If more than 10 open issues labeled with 'overseer' and 'step/identity-reference' already exist, do not create new issues to avoid overwhelming the team. Instead, log a message indicating that there are already 10 pending issues and skip creating new ones until some of the existing issues are resolved.
 Created issues should be clear and actionable, providing enough context for developers to understand what needs to be done.
 IMPORTANT:
-* The created issue must be an subtask of the main epic: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/5954
 * Before creating an issue for a resource, check if an issue already exists (open or closed) to avoid duplicates.
 * The issue title should be in the format: `Create Identity and Reference files for <resource_group> <resource_kind>`
 * Use `gh` tool to create issue.
@@ -61,12 +60,15 @@ The issue should be labeled with the following labels:
 * `priority/medium` to indicate the priority level of the issue.
 * `step/identity-reference` to indicate the step in the migration process.
 
-Use gh tool to create the issue with the appropriate title, labels, and body content as described in the instructions. Make sure to link the issue as a subtask to the main epic for tracking purposes.
+Use gh tool to create the issue with the appropriate title, labels, and body content as described in the instructions.
 
 ## Issue Body
-The issue body should contain this text template with the appropriate resource Group and Kind filled in.
+The issue body should contain this text template with the appropriate resource Group, Kind, and API Version filled in.
 The body template is treated as markdown. So retain the quotes formatting and the code block formatting as is when filling in the Group and Kind.
-Use the <issue_number> placeholder to refer to the issue number of the identified source issue that created the generate.sh and types.go files for this resource.
+Replace the <issue_number> placeholder with the actual issue number of the identified source issue that created the generate.sh and types.go files for this resource.
+Dynamically determine the API version (e.g., v1beta1, v1alpha1) based on the directory structure created in the previous generation step.
+Convert `<kind>` to lowercase for file paths (e.g. `lowercase_kind`).
+Prefer the newer version and if not able to identify yse v1beta1.
 
 ------------ BEGIN ISSUE BODY TEMPLATE ------------
 As part of moving resources from terraform and DCL controllers to direct controllers (Epic #5954), we need to create the Go identity and reference for `${resource_group}${resource_name}`.
@@ -80,7 +82,7 @@ Currently, `${resource_group}${resource_name}` is managed by the Terraform or DC
     The following are samples of similar identity files.
     - `artifactregistry/v1beta1/artifactregistryrepository_identity.go`
     - `apis/iam/v1beta1/serviceaccountkey_identity.go`
-    The correct identity URL formats can be found in the page https://docs.cloud.google.com/asset-inventory/docs/asset-names. Please use that url format in place of "URLKey/{keyValue}". Please break out a separate field for each curly brace delinated '{field}' in the format.
+    The correct identity URL formats can be found in the page https://docs.cloud.google.com/asset-inventory/docs/asset-names. Please use that url format in place of "URLKey/{keyValue}". Please break out a separate field for each curly brace delineated '{field}' in the format.
     Please ensure the Identity class implements identity.IdentityV2.
     implement the GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) method on the ${resource_group}${resource_name} resource
 The file likely includes something like the following
@@ -112,16 +114,16 @@ type ${resource_group}${resource_name}Identity struct {
     Create a file `apis/${resource_group}/v1beta1/${resource_name}_identity_test.go`.
     It should unit test `apis/${resource_group}/v1beta1/${resource_name}_identity.go`.
     The following are samples of similar identity test files.
-    - `artifactregistry/v1beta1/artifactregistryrepository_identity_test.go`
+    - `apis/artifactregistry/v1beta1/artifactregistryrepository_identity_test.go`
     - `apis/iam/v1beta1/serviceaccountkey_identity_test.go`
 
 3. **Add `apis/${resource_group}/v1beta1/${resource_name}_reference.go`**:
     Create a file `apis/${resource_group}/v1beta1/${resource_name}_reference.go`.
     The following are samples of similar reference files.
-    - `artifactregistry/v1beta1/artifactregistryrepository_reference.go`
+    - `apis/artifactregistry/v1beta1/artifactregistryrepository_reference.go`
     - `apis/iam/v1beta1/serviceaccountkey_reference.go`
 Reference URL formats can be looked up from https://docs.cloud.google.com/asset-inventory/docs/asset-names
-Please  implement the full suite of methods like Normalize, ValidateExternal, and ParseExternalToIdentity.
+Please implement the full suite of methods like Normalize, ValidateExternal, and ParseExternalToIdentity.
 The file likely includes something like the following
 Example:
 ```go
@@ -159,13 +161,13 @@ func (r *${resource_group}${resource_name}Ref) GetGVK() schema.GroupVersionKind 
     Create a file `apis/${resource_group}/v1beta1/${resource_name}_reference_test.go`.
     It should unit test `apis/${resource_group}/v1beta1/${resource_name}_reference.go`.
     The following are samples of similar reference test files.
-    - `artifactregistry/v1beta1/artifactregistryrepository_reference_test.go`
-    - `bigquery/v1beta1/bigquerytable_reference_test.go`
+    - `apis/artifactregistry/v1beta1/artifactregistryrepository_reference_test.go`
+    - `apis/bigquery/v1beta1/bigquerytable_reference_test.go`
 
 5.  **Copyright Headers**:
-    Ensure that new files have the correct copyright header with the current year:
+    Ensure that new files have the correct copyright header with the current year (dynamically insert the current year):
     ```go
-    // Copyright 2026 Google LLC
+    // Copyright <current_year> Google LLC
     ```
     Please do *not* change the copyright on existing files.
 
@@ -174,5 +176,5 @@ func (r *${resource_group}${resource_name}Ref) GetGVK() schema.GroupVersionKind 
 
 This issue is part of Epic #5954.
 
-This issue is continuation of the #<issue_number> which created the generate.sh and types.go files for this resource. Please refer to that issue for more context on the resource and the migration effort.
+This issue is a continuation of the #<issue_number> which created the generate.sh and types.go files for this resource. Please refer to that issue for more context on the resource and the migration effort.
 ------------ END ISSUE BODY TEMPLATE ------------
