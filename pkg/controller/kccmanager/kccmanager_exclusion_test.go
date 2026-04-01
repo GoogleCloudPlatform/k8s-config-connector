@@ -33,7 +33,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/wait"
-	"k8s.io/utils/pointer"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/config"
@@ -58,7 +57,7 @@ func TestResourceExclusion(t *testing.T) {
 			Spec: operatorv1beta1.ConfigConnectorSpec{
 				Experiments: &operatorv1beta1.CCExperiments{
 					ResourceSettings: &operatorv1beta1.ResourceSettings{
-						Enabled: pointer.Bool(false),
+						Mode: operatorv1beta1.ResourceSettingsModeExclude,
 						Resources: []operatorv1beta1.ResourceFilter{
 							{
 								Group: "pubsub.cnrm.cloud.google.com",
@@ -167,7 +166,7 @@ func TestResourceExclusion(t *testing.T) {
 			Spec: operatorv1beta1.ConfigConnectorContextSpec{
 				Experiments: &operatorv1beta1.Experiments{
 					ResourceSettings: &operatorv1beta1.ResourceSettings{
-						Enabled: pointer.Bool(false),
+						Mode: operatorv1beta1.ResourceSettingsModeExclude,
 						Resources: []operatorv1beta1.ResourceFilter{
 							{
 								Group: "pubsub.cnrm.cloud.google.com",
@@ -268,7 +267,7 @@ func TestResourceExclusion(t *testing.T) {
 				Mode: "namespaced",
 				Experiments: &operatorv1beta1.CCExperiments{
 					ResourceSettings: &operatorv1beta1.ResourceSettings{
-						Enabled: pointer.Bool(false),
+						Mode: operatorv1beta1.ResourceSettingsModeExclude,
 						Resources: []operatorv1beta1.ResourceFilter{
 							{
 								Group: "pubsub.cnrm.cloud.google.com",
@@ -307,7 +306,7 @@ func TestResourceExclusion(t *testing.T) {
 			Spec: operatorv1beta1.ConfigConnectorContextSpec{
 				Experiments: &operatorv1beta1.Experiments{
 					ResourceSettings: &operatorv1beta1.ResourceSettings{
-						Enabled: pointer.Bool(false),
+						Mode: operatorv1beta1.ResourceSettingsModeExclude,
 						Resources: []operatorv1beta1.ResourceFilter{
 							{
 								Group: "storage.cnrm.cloud.google.com",
@@ -449,7 +448,7 @@ func TestResourceExclusion(t *testing.T) {
 			Spec: operatorv1beta1.ConfigConnectorContextSpec{
 				Experiments: &operatorv1beta1.Experiments{
 					ResourceSettings: &operatorv1beta1.ResourceSettings{
-						Enabled: pointer.Bool(true),
+						Mode: operatorv1beta1.ResourceSettingsModeInclude,
 						Resources: []operatorv1beta1.ResourceFilter{
 							{
 								Group: "pubsub.cnrm.cloud.google.com",
@@ -589,7 +588,7 @@ func TestResourceExclusion(t *testing.T) {
 			Spec: operatorv1beta1.ConfigConnectorSpec{
 				Experiments: &operatorv1beta1.CCExperiments{
 					ResourceSettings: &operatorv1beta1.ResourceSettings{
-						Enabled: pointer.Bool(false),
+						Mode: operatorv1beta1.ResourceSettingsModeExclude,
 					},
 				},
 			},
@@ -608,7 +607,7 @@ func TestResourceExclusion(t *testing.T) {
 			Spec: operatorv1beta1.ConfigConnectorContextSpec{
 				Experiments: &operatorv1beta1.Experiments{
 					ResourceSettings: &operatorv1beta1.ResourceSettings{
-						Enabled: pointer.Bool(true),
+						Mode: operatorv1beta1.ResourceSettingsModeInclude,
 					},
 				},
 			},

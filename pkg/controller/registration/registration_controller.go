@@ -110,15 +110,15 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 		ccSettings = cc.Spec.Experiments.ResourceSettings
 	}
 
-	if (ccSettings == nil || ccSettings.Enabled == nil) && (cccSettings != nil && cccSettings.Enabled != nil && *cccSettings.Enabled) {
+	if (ccSettings == nil || ccSettings.Mode != operatorv1beta1.ResourceSettingsModeInclude) && (cccSettings != nil && cccSettings.Mode == operatorv1beta1.ResourceSettingsModeInclude) {
 		log.FromContext(ctx).Info("Warning: Inclusive mode enabled via ConfigConnectorContext, but ConfigConnector has no explicit ResourceSettings. Please update ConfigConnector to Inclusive mode for consistency.")
-	} else if (cccSettings == nil || cccSettings.Enabled == nil) && (ccSettings != nil && ccSettings.Enabled != nil && *ccSettings.Enabled) {
+	} else if (cccSettings == nil || cccSettings.Mode != operatorv1beta1.ResourceSettingsModeInclude) && (ccSettings != nil && ccSettings.Mode == operatorv1beta1.ResourceSettingsModeInclude) {
 		log.FromContext(ctx).Info("Warning: Inclusive mode enabled via ConfigConnector, but ConfigConnectorContext has no explicit ResourceSettings for this namespace. Please update ConfigConnectorContext to Inclusive mode for consistency.")
-	} else if ccSettings != nil && ccSettings.Enabled != nil && cccSettings != nil && cccSettings.Enabled != nil {
-		ccInclusive := *ccSettings.Enabled
-		cccInclusive := *cccSettings.Enabled
+	} else if ccSettings != nil && cccSettings != nil {
+		ccInclusive := ccSettings.Mode == operatorv1beta1.ResourceSettingsModeInclude
+		cccInclusive := cccSettings.Mode == operatorv1beta1.ResourceSettingsModeInclude
 		if ccInclusive != cccInclusive {
-			return fmt.Errorf("conflict: ConfigConnector and ConfigConnectorContext cannot mix inclusive (enabled: true) and exclusive (enabled: false) modes")
+			return fmt.Errorf("conflict: ConfigConnector and ConfigConnectorContext cannot mix inclusive (mode: include) and exclusive (mode: exclude) modes")
 		}
 	}
 
@@ -463,10 +463,10 @@ func isResourceDisabled(ctx context.Context, gvk schema.GroupVersionKind, scoped
 }
 
 func isInclusiveMode(ccSettings *operatorv1beta1.ResourceSettings, cccSettings *operatorv1beta1.ResourceSettings) bool {
-	if ccSettings != nil && ccSettings.Enabled != nil && *ccSettings.Enabled {
+	if ccSettings != nil && ccSettings.Mode == operatorv1beta1.ResourceSettingsModeInclude {
 		return true
 	}
-	if cccSettings != nil && cccSettings.Enabled != nil && *cccSettings.Enabled {
+	if cccSettings != nil && cccSettings.Mode == operatorv1beta1.ResourceSettingsModeInclude {
 		return true
 	}
 	return false

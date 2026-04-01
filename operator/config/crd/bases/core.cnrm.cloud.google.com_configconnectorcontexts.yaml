@@ -81,11 +81,11 @@ spec:
                       ResourceSettings allows specifying which resources to enable or disable in this namespace.
                       Validation likely enforces uniqueness, but if duplicates exist, behavior is undefined.
                     properties:
-                      enabled:
+                      mode:
                         description: |-
-                          Enabled controls whether the resources are included or excluded.
-                          Defaults to false (Exclusion mode).
-                        type: boolean
+                          Mode controls whether the resources are included or excluded.
+                          Defaults to "exclude" (Exclusion mode).
+                        type: string
                       resources:
                         description: Resources is the list of resources to include
                           or exclude.

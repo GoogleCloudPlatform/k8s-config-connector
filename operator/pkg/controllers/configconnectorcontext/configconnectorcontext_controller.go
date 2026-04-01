@@ -827,12 +827,12 @@ func (r *Reconciler) checkResourceSettingsMode() declarative.ObjectTransform {
 		}
 
 		// (Omitted, Inclusive)
-		if (ccSettings == nil || ccSettings.Enabled == nil) && (cccSettings != nil && cccSettings.Enabled != nil && *cccSettings.Enabled) {
+		if (ccSettings == nil || ccSettings.Mode != corev1beta1.ResourceSettingsModeInclude) && (cccSettings != nil && cccSettings.Mode == corev1beta1.ResourceSettingsModeInclude) {
 			r.recorder.Event(ccc, corev1.EventTypeWarning, "InconsistentResourceSettings", "Inclusive mode enabled via ConfigConnectorContext, but ConfigConnector has no explicit ResourceSettings. Please update ConfigConnector to Inclusive mode for consistency.")
 		}
 
 		// (Inclusive, Omitted)
-		if (cccSettings == nil || cccSettings.Enabled == nil) && (ccSettings != nil && ccSettings.Enabled != nil && *ccSettings.Enabled) {
+		if (cccSettings == nil || cccSettings.Mode != corev1beta1.ResourceSettingsModeInclude) && (ccSettings != nil && ccSettings.Mode == corev1beta1.ResourceSettingsModeInclude) {
 			r.recorder.Event(ccc, corev1.EventTypeWarning, "InconsistentResourceSettings", "Inclusive mode enabled via ConfigConnector, but ConfigConnectorContext has no explicit ResourceSettings for this namespace. Please update ConfigConnectorContext to Inclusive mode for consistency.")
 		}
 		return nil

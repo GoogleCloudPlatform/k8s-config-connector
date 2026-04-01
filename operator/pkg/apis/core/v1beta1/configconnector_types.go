@@ -81,11 +81,18 @@ type CCExperiments struct {
 	ResourceSettings *ResourceSettings `json:"resourceSettings,omitempty"`
 }
 
+type ResourceSettingsMode string
+
+const (
+	ResourceSettingsModeInclude ResourceSettingsMode = "include"
+	ResourceSettingsModeExclude ResourceSettingsMode = "exclude"
+)
+
 type ResourceSettings struct {
-	// Enabled controls whether the resources are included or excluded.
-	// Defaults to false (Exclusion mode).
+	// Mode controls whether the resources are included or excluded.
+	// Defaults to "exclude" (Exclusion mode).
 	// +optional
-	Enabled *bool `json:"enabled,omitempty"`
+	Mode ResourceSettingsMode `json:"mode,omitempty"`
 
 	// Resources is the list of resources to include or exclude.
 	// +optional

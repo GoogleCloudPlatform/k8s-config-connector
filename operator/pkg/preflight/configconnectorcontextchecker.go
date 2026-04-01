@@ -82,22 +82,22 @@ func (c *ConfigConnectorContextChecker) Preflight(ctx context.Context, o declara
 }
 
 func validateResourceSettingsMode(cc *corev1beta1.ConfigConnector, ccc *corev1beta1.ConfigConnectorContext) error {
-	var ccEnabled, cccEnabled *bool
+	var ccMode, cccMode corev1beta1.ResourceSettingsMode
 	if cc != nil && cc.Spec.Experiments != nil && cc.Spec.Experiments.ResourceSettings != nil {
-		ccEnabled = cc.Spec.Experiments.ResourceSettings.Enabled
+		ccMode = cc.Spec.Experiments.ResourceSettings.Mode
 	}
 	if ccc != nil && ccc.Spec.Experiments != nil && ccc.Spec.Experiments.ResourceSettings != nil {
-		cccEnabled = ccc.Spec.Experiments.ResourceSettings.Enabled
+		cccMode = ccc.Spec.Experiments.ResourceSettings.Mode
 	}
 
 	// If one is omitted, we allow it for transition (lenient mode)
-	if ccEnabled == nil || cccEnabled == nil {
+	if ccMode == "" || cccMode == "" {
 		return nil
 	}
 
 	// Direct Conflict (Reject)
-	if *ccEnabled != *cccEnabled {
-		return fmt.Errorf("conflict: ConfigConnector and ConfigConnectorContext cannot mix inclusive (enabled: true) and exclusive (enabled: false) modes")
+	if ccMode != cccMode {
+		return fmt.Errorf("conflict: ConfigConnector and ConfigConnectorContext cannot mix inclusive (mode: include) and exclusive (mode: exclude) modes")
 	}
 	return nil
 }

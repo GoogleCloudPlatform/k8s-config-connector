@@ -172,7 +172,6 @@ func TestConfigConnectorContextChecker(t *testing.T) {
 
 func TestValidateResourceSettingsMode(t *testing.T) {
 	t.Parallel()
-	boolPtr := func(b bool) *bool { return &b }
 	tests := []struct {
 		name string
 		cc   *corev1beta1.ConfigConnector
@@ -192,7 +191,7 @@ func TestValidateResourceSettingsMode(t *testing.T) {
 				Spec: corev1beta1.ConfigConnectorContextSpec{
 					Experiments: &corev1beta1.Experiments{
 						ResourceSettings: &corev1beta1.ResourceSettings{
-							Enabled: boolPtr(true),
+							Mode: corev1beta1.ResourceSettingsModeInclude,
 						},
 					},
 				},
@@ -205,7 +204,7 @@ func TestValidateResourceSettingsMode(t *testing.T) {
 				Spec: corev1beta1.ConfigConnectorSpec{
 					Experiments: &corev1beta1.CCExperiments{
 						ResourceSettings: &corev1beta1.ResourceSettings{
-							Enabled: boolPtr(true),
+							Mode: corev1beta1.ResourceSettingsModeInclude,
 						},
 					},
 				},
@@ -219,7 +218,7 @@ func TestValidateResourceSettingsMode(t *testing.T) {
 				Spec: corev1beta1.ConfigConnectorSpec{
 					Experiments: &corev1beta1.CCExperiments{
 						ResourceSettings: &corev1beta1.ResourceSettings{
-							Enabled: boolPtr(false),
+							Mode: corev1beta1.ResourceSettingsModeExclude,
 						},
 					},
 				},
@@ -228,7 +227,7 @@ func TestValidateResourceSettingsMode(t *testing.T) {
 				Spec: corev1beta1.ConfigConnectorContextSpec{
 					Experiments: &corev1beta1.Experiments{
 						ResourceSettings: &corev1beta1.ResourceSettings{
-							Enabled: boolPtr(true),
+							Mode: corev1beta1.ResourceSettingsModeInclude,
 						},
 					},
 				},
@@ -241,7 +240,7 @@ func TestValidateResourceSettingsMode(t *testing.T) {
 				Spec: corev1beta1.ConfigConnectorSpec{
 					Experiments: &corev1beta1.CCExperiments{
 						ResourceSettings: &corev1beta1.ResourceSettings{
-							Enabled: boolPtr(true),
+							Mode: corev1beta1.ResourceSettingsModeInclude,
 						},
 					},
 				},
@@ -250,7 +249,7 @@ func TestValidateResourceSettingsMode(t *testing.T) {
 				Spec: corev1beta1.ConfigConnectorContextSpec{
 					Experiments: &corev1beta1.Experiments{
 						ResourceSettings: &corev1beta1.ResourceSettings{
-							Enabled: boolPtr(true),
+							Mode: corev1beta1.ResourceSettingsModeInclude,
 						},
 					},
 				},
