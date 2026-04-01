@@ -253,6 +253,8 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.Unimplemented_NotYetTriaged(".Settings.PerformanceCaptureConfig")
 	f.Unimplemented_NotYetTriaged(".Settings.ReadPoolAutoScaleConfig")
 	f.Unimplemented_NotYetTriaged(".Settings.ReplicationLagMaxSeconds")
+	f.Unimplemented_NotYetTriaged(".Settings.AcceleratedReplicaMode")
+	f.Unimplemented_NotYetTriaged(".Settings.InsightsConfig.EnhancedQueryInsightsEnabled")
 	f.Unimplemented_NotYetTriaged(".Settings.ServerCaMode")
 	f.Unimplemented_NotYetTriaged(".Settings.ServerCaPool")
 	f.Unimplemented_NotYetTriaged(".Settings.ServerCertificateRotationMode")
