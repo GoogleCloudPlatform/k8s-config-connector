@@ -112,7 +112,7 @@ require (
 	github.com/tmccombs/hcl2json v0.6.8
 	github.com/zclconf/go-cty v1.16.4
 	go.opencensus.io v0.24.0
-	go.uber.org/mock v0.5.2
+	go.uber.org/mock v0.6.0
 	go.uber.org/zap v1.27.0
 	golang.org/x/oauth2 v0.36.0
 	golang.org/x/sync v0.20.0
@@ -258,7 +258,7 @@ require (
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/mattn/go-runewidth v0.0.15 // indirect
+	github.com/mattn/go-runewidth v0.0.16 // indirect
 	github.com/mitchellh/copystructure v1.2.0 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/go-testing-interface v1.14.1 // indirect
