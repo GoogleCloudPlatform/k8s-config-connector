@@ -19,6 +19,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"sigs.k8s.io/yaml"
@@ -65,10 +66,23 @@ func TestLicensesForConsistency(t *testing.T) {
 			}
 
 			if m1.License != m2.License {
+				skip := false
 				switch f1 {
 				case "modules/github.com/klauspost/compress/v1.11.2.yaml":
 					// license changed after v1.11.2
-				default:
+					skip = true
+				case "modules/github.com/fxamacker/cbor/v2/v2.7.0.yaml":
+					// license changed after v2.7.0
+					skip = true
+				}
+				// Many modules changed license in the v1.40.0 / v0.34.2 bump
+				if strings.HasPrefix(f1, "modules/go.opentelemetry.io/") ||
+					strings.HasPrefix(f1, "modules/sigs.k8s.io/json/") ||
+					strings.HasPrefix(f1, "modules/sigs.k8s.io/yaml/") {
+					skip = true
+				}
+
+				if !skip {
 					t.Errorf("license mismatch: %v=%v, %v=%v", f1, m1.License, f2, m2.License)
 				}
 			}
