@@ -8,7 +8,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -30,7 +32,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -52,7 +56,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -75,7 +81,9 @@
       "Direct",
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -97,7 +105,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -119,7 +129,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Folder",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -141,7 +154,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "AccessContextManagerAccessPolicy",
+      "IAMServiceAccount"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -163,7 +179,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "AccessContextManagerAccessLevel"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -229,7 +247,12 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "AccessContextManagerAccessLevel",
+      "AccessContextManagerAccessPolicy",
+      "IAMServiceAccount",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -273,7 +296,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -296,7 +321,11 @@
       "Direct",
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "KMSCryptoKey",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -318,7 +347,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "AlloyDBCluster"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -340,7 +371,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "AlloyDBCluster"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -384,7 +417,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ApigeeOrganization"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -406,7 +441,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ApigeeOrganization"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -428,7 +465,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ApigeeEnvgroup",
+      "ApigeeEnvironment"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -450,7 +490,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ApigeeOrganization"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -472,7 +514,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ApigeeOrganization",
+      "KMSCryptoKey"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -494,7 +539,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ApigeeEnvironment",
+      "ApigeeInstance"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -538,7 +586,10 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -626,7 +677,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Service"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -670,7 +723,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Service"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -692,7 +747,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -714,7 +771,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "KMSCryptoKey"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -736,7 +795,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Folder",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -758,7 +820,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Folder",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -780,7 +845,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "BackupDRBackupVault",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -802,7 +870,11 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "BackupDRBackupPlan",
+      "ComputeInstance",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -824,7 +896,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -846,7 +920,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -868,7 +945,13 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "IAMServiceAccount",
+      "KMSCryptoKey",
+      "Project",
+      "PubSubTopic"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -890,7 +973,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -912,7 +997,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -934,7 +1021,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -978,7 +1067,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -1000,7 +1091,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "BigQueryAnalyticsHubDataExchange",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -1022,7 +1116,11 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "DataprocCluster",
+      "MetastoreService",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -1044,7 +1142,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1066,7 +1166,13 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "IAMServiceAccount",
+      "KMSCryptoKey",
+      "Project",
+      "PubSubSubscription",
+      "PubSubTopic"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -1089,7 +1195,10 @@
       "Direct",
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "KMSCryptoKey",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -1111,7 +1220,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1133,7 +1244,11 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "BigQueryDataset",
+      "BigQueryTable",
+      "KMSCryptoKey"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1155,7 +1270,11 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "BigQueryReservationReservation",
+      "Folder",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -1177,7 +1296,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1199,7 +1320,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -1221,7 +1344,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "BigQueryDataset",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1244,7 +1370,10 @@
       "Direct",
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "BigQueryDataset",
+      "KMSCryptoKey"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -1267,7 +1396,9 @@
       "Direct",
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "BigtableInstance"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -1289,7 +1420,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "BigtableInstance",
+      "BigtableTable"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1311,7 +1445,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "KMSCryptoKey"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1333,7 +1469,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "BigtableInstance"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -1355,7 +1493,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "BigtableInstance"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -1377,7 +1517,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "BigtableInstance"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1399,7 +1541,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "PubSubTopic"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1421,7 +1565,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1443,7 +1589,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1465,7 +1613,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1487,7 +1637,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1509,7 +1661,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1531,7 +1685,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -1553,7 +1709,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Folder"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1597,7 +1755,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1619,7 +1779,11 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "IAMServiceAccount",
+      "KMSCryptoKey",
+      "StorageBucket"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1641,7 +1805,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -1663,7 +1830,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -1685,7 +1854,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1707,7 +1878,10 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "IAMServiceAccount",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1729,7 +1903,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1817,7 +1994,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "CloudIdentityGroup"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -1839,7 +2018,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "IAMServiceAccount"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1861,7 +2042,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ColabRuntimeTemplate",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -1883,7 +2067,12 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "IAMServiceAccount",
+      "KMSCryptoKey",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -1905,7 +2094,13 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "IAMServiceAccount",
+      "KMSCryptoKey",
+      "Project",
+      "StorageBucket"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -1927,7 +2122,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "ComputeSubnetwork"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1949,7 +2147,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1971,7 +2171,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "StorageBucket"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -1993,7 +2195,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeBackendBucket",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2015,7 +2220,14 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeHTTPHealthCheck",
+      "ComputeHealthCheck",
+      "ComputeInstanceGroup",
+      "ComputeNetwork",
+      "ComputeNetworkEndpointGroup",
+      "ComputeSecurityPolicy"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2037,7 +2249,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeBackendService",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2060,7 +2275,10 @@
       "Terraform"
     ],
     "dependencies": [
-      "ComputeImage"
+      "ComputeImage",
+      "ComputeSnapshot",
+      "KMSCryptoKey",
+      "Project"
     ],
     "state": "Not Started",
     "steps": {
@@ -2084,7 +2302,8 @@
       "Terraform"
     ],
     "dependencies": [
-      "ComputeDisk"
+      "ComputeDisk",
+      "Project"
     ],
     "state": "Not Started",
     "steps": {
@@ -2129,7 +2348,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2151,7 +2372,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Folder"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2173,7 +2396,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeFirewallPolicy"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2195,7 +2420,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeFirewallPolicy"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -2218,7 +2445,19 @@
       "Direct",
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeAddress",
+      "ComputeBackendService",
+      "ComputeNetwork",
+      "ComputeServiceAttachment",
+      "ComputeSubnetwork",
+      "ComputeTargetGRPCProxy",
+      "ComputeTargetHTTPProxy",
+      "ComputeTargetHTTPSProxy",
+      "ComputeTargetSSLProxy",
+      "ComputeTargetTCPProxy",
+      "ComputeTargetVPNGateway"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -2240,7 +2479,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2262,7 +2503,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2351,7 +2594,8 @@
       "Terraform"
     ],
     "dependencies": [
-      "ComputeDisk"
+      "ComputeDisk",
+      "KMSCryptoKey"
     ],
     "state": "Not Started",
     "steps": {
@@ -2374,7 +2618,13 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeInstanceTemplate",
+      "ComputeNetwork",
+      "ComputeSubnetwork",
+      "IAMServiceAccount",
+      "KMSCryptoKey"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2396,7 +2646,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2418,7 +2670,12 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeHealthCheck",
+      "ComputeInstanceTemplate",
+      "IAMServiceAccount",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2440,7 +2697,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2462,7 +2721,12 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "ComputeSubnetwork",
+      "IAMServiceAccount",
+      "KMSCryptoKey"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2484,7 +2748,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeRouter"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2506,7 +2772,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2528,7 +2796,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2572,7 +2842,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -2594,7 +2866,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeSecurityPolicy",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -2616,7 +2891,11 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeInstance",
+      "ComputeNetworkEndpointGroup",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2638,7 +2917,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "ComputeSubnetwork"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2660,7 +2942,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2682,7 +2966,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeFirewallPolicy",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2704,7 +2991,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeFirewallPolicy",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2726,7 +3016,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2748,7 +3040,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2770,7 +3065,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNodeTemplate",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2880,7 +3178,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2902,7 +3202,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeInstanceGroupManager",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2946,7 +3249,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -2969,7 +3274,8 @@
       "Terraform"
     ],
     "dependencies": [
-      "ComputeDisk"
+      "ComputeDisk",
+      "Project"
     ],
     "state": "Not Started",
     "steps": {
@@ -2992,7 +3298,11 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "ComputeSubnetwork",
+      "Service"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3014,7 +3324,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3036,7 +3348,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3102,7 +3416,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3124,7 +3440,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3146,7 +3464,12 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeInterconnectAttachment",
+      "ComputeRouter",
+      "ComputeSubnetwork",
+      "ComputeVPNTunnel"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3168,7 +3491,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeRouter",
+      "ComputeSubnetwork"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3190,7 +3516,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeRouter",
+      "ComputeRouterInterface"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3278,7 +3607,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3322,7 +3653,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3344,7 +3677,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "KMSCryptoKey"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3366,7 +3701,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3388,7 +3725,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeURLMap"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3410,7 +3749,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeURLMap"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3432,7 +3773,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeSSLPolicy",
+      "ComputeURLMap"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3454,7 +3798,11 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeInstance",
+      "ComputeNetwork",
+      "ComputeSecurityPolicy"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3476,7 +3824,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeHTTPHealthCheck",
+      "ComputeSecurityPolicy"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3498,7 +3849,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeBackendService",
+      "ComputeSSLPolicy"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3521,7 +3875,9 @@
       "Direct",
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeBackendService"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -3543,7 +3899,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3565,7 +3923,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeBackendBucket",
+      "ComputeBackendService"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3587,7 +3948,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeInterconnectAttachment",
+      "ComputeNetwork"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3609,7 +3973,11 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeRouter",
+      "ComputeTargetVPNGateway",
+      "ComputeVPNGateway"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3631,7 +3999,10 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3675,7 +4046,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3697,7 +4070,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3719,7 +4094,11 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "IAMServiceAccount",
+      "KMSCryptoKey"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3741,7 +4120,12 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "ContainerCluster",
+      "IAMServiceAccount",
+      "KMSCryptoKey"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3763,7 +4147,10 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "KMSCryptoKey",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3785,7 +4172,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3807,7 +4196,11 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "DLPInspectTemplate",
+      "Project",
+      "StorageBucket"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3829,7 +4222,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3851,7 +4246,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3873,7 +4270,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3895,7 +4294,11 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "DNSManagedZone",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3917,7 +4320,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3939,7 +4344,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -3961,7 +4368,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "DataCatalogEntryGroup"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -3983,7 +4392,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -4005,7 +4416,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "DataCatalogTaxonomy"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -4027,7 +4440,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "DataCatalogEntry"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -4049,7 +4464,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -4071,7 +4488,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -4093,7 +4512,10 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "IAMServiceAccount"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -4116,7 +4538,11 @@
       "Direct",
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "IAMServiceAccount",
+      "KMSCryptoKey"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -4138,7 +4564,11 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "IAMServiceAccount",
+      "KMSCryptoKey"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -4160,7 +4590,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "IAMServiceAccount",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -4182,7 +4615,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -4204,7 +4639,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -4226,7 +4663,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project",
+      "Service"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -4248,7 +4688,12 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "DataplexLake",
+      "IAMServiceAccount",
+      "KMSCryptoKey",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -4270,7 +4715,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "DataplexLake"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -4292,7 +4739,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -4314,7 +4763,13 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "DataprocCluster",
+      "IAMServiceAccount",
+      "KMSCryptoKey",
+      "Project",
+      "StorageBucket"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -4336,7 +4791,13 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "IAMServiceAccount",
+      "KMSCryptoKey",
+      "Project",
+      "StorageBucket"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -4358,7 +4819,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -4380,7 +4843,13 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "IAMServiceAccount",
+      "KMSCryptoKey",
+      "Project",
+      "StorageBucket"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -4402,7 +4871,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -4424,7 +4895,11 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "DatastreamPrivateConnection",
+      "Project",
+      "SecretManagerSecret"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -4446,7 +4921,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -4468,7 +4946,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "DatastreamPrivateConnection"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -4490,7 +4970,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -4512,7 +4994,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -4556,7 +5040,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -4688,7 +5174,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -4710,7 +5198,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -4732,7 +5222,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -4754,7 +5246,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -4776,7 +5270,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "KMSCryptoKey",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -4820,7 +5317,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "DocumentAIProcessor",
+      "KMSCryptoKey"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -4842,7 +5342,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "KMSCryptoKey",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -4864,7 +5367,11 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "EdgeContainerCluster",
+      "KMSCryptoKey",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -4886,7 +5393,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "EdgeContainerCluster",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -4908,7 +5418,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -4930,7 +5442,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "EdgeNetworkNetwork",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -4952,7 +5467,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Folder",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -4974,7 +5492,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "KMSCryptoKey",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -4996,7 +5517,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "KMSCryptoKey",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -5018,7 +5542,13 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "EventarcChannel",
+      "IAMServiceAccount",
+      "Project",
+      "Service"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -5040,7 +5570,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -5062,7 +5594,10 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -5084,7 +5619,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -5106,7 +5643,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "FirebaseProject"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -5128,7 +5667,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -5172,7 +5713,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -5216,7 +5759,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -5260,7 +5805,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -5282,7 +5829,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "FirestoreDatabase"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -5304,7 +5853,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "FirestoreDatabase"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -5370,7 +5921,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "GKEBackupBackupPlan"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -5392,7 +5945,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "KMSCryptoKey",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -5414,7 +5970,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "GKEBackupBackup",
+      "GKEBackupRestorePlan"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -5436,7 +5995,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "GKEBackupBackupPlan",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -5458,7 +6020,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -5480,7 +6044,12 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "GKEHubFeature",
+      "GKEHubMembership",
+      "IAMServiceAccount",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -5568,7 +6137,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -5634,7 +6205,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -5701,7 +6274,12 @@
       "Direct",
       "IAMPartialPolicy"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "BigQueryConnectionConnection",
+      "IAMServiceAccount",
+      "SQLInstance",
+      "ServiceIdentity"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -5745,7 +6323,12 @@
     "supportedControllers": [
       "IAMPolicyMember"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "BigQueryConnectionConnection",
+      "IAMServiceAccount",
+      "SQLInstance",
+      "ServiceIdentity"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -5789,7 +6372,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "IAMServiceAccount"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -5833,7 +6418,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "IAMWorkforcePool"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -5855,7 +6442,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -5877,7 +6466,10 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "IAMWorkloadIdentityPool",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -5921,7 +6513,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "IAPBrand"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -5943,7 +6537,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Folder",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -5965,7 +6562,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -5987,7 +6586,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -6009,7 +6610,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -6053,7 +6656,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -6097,7 +6702,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -6119,7 +6726,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -6141,7 +6750,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "IdentityPlatformTenant"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -6163,7 +6774,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Folder"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -6185,7 +6798,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "KMSKeyRing"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -6229,7 +6844,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "KMSKeyRing"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -6251,7 +6868,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -6339,7 +6958,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "LoggingLogBucket"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -6361,7 +6982,10 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Folder",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -6383,7 +7007,10 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Folder",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -6405,7 +7032,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "LoggingLogBucket",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -6427,7 +7057,14 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "BigQueryDataset",
+      "Folder",
+      "LoggingLogBucket",
+      "Project",
+      "PubSubTopic",
+      "StorageBucket"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -6449,7 +7086,11 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Folder",
+      "Project",
+      "StorageBucket"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -6471,7 +7112,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -6493,7 +7136,11 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "KMSCryptoKey",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -6515,7 +7162,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ManagedKafkaCluster",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -6537,7 +7187,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -6559,7 +7211,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -6581,7 +7236,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "MetastoreService"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -6603,7 +7260,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -6625,7 +7284,11 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "KMSCryptoKey",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -6669,7 +7332,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "MonitoringAlertPolicy",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -6691,7 +7357,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -6713,7 +7381,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -6779,7 +7449,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -6801,7 +7473,10 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "MonitoringService",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -6823,7 +7498,10 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "MonitoringGroup",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -6845,7 +7523,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -6867,7 +7547,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -6889,7 +7571,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -6911,7 +7596,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -6933,7 +7621,10 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "NetworkConnectivityHub",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -6955,7 +7646,13 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeForwardingRule",
+      "ComputeInstance",
+      "ComputeNetwork",
+      "ContainerCluster",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -6977,7 +7674,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -6999,7 +7698,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7021,7 +7722,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7043,7 +7746,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7065,7 +7770,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7087,7 +7794,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7109,7 +7818,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7131,7 +7842,10 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project",
+      "Service"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7153,7 +7867,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7175,7 +7891,10 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project",
+      "Service"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7197,7 +7916,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7219,7 +7940,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project",
+      "Service"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -7241,7 +7965,10 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project",
+      "Service"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7263,7 +7990,10 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project",
+      "Service"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7285,7 +8015,12 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "IAMServiceAccount",
+      "KMSCryptoKey",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -7307,7 +8042,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -7329,7 +8066,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "StorageBucket"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7351,7 +8090,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7373,7 +8114,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7439,7 +8182,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Folder",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -7461,7 +8207,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "KMSCryptoKey",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -7484,7 +8233,9 @@
       "DCL",
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -7506,7 +8257,12 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "PrivateCACAPool",
+      "PrivateCACertificateAuthority",
+      "PrivateCACertificateTemplate",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7528,7 +8284,12 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "KMSCryptoKey",
+      "PrivateCACAPool",
+      "Project",
+      "StorageBucket"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7550,7 +8311,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7572,7 +8335,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Folder",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -7594,7 +8360,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Folder"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7616,7 +8384,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7638,7 +8408,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7660,7 +8432,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7682,7 +8456,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7704,7 +8480,11 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project",
+      "PubSubSubscription",
+      "PubSubTopic"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -7726,7 +8506,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "PubSubTopic",
+      "StorageBucket"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7748,7 +8531,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "KMSCryptoKey",
+      "PubSubSchema"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7770,7 +8556,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -7792,7 +8580,9 @@
     "supportedControllers": [
       "DCL"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7814,7 +8604,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -7836,7 +8629,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7858,7 +8653,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7880,7 +8677,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Folder",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7903,7 +8703,12 @@
       "Direct",
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "IAMServiceAccount",
+      "Project",
+      "StorageBucket"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -7925,7 +8730,11 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "IAMServiceAccount",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7947,7 +8756,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SQLInstance"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -7969,7 +8780,11 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "KMSCryptoKey",
+      "StorageBucket"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -7991,7 +8806,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SQLInstance"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -8013,7 +8830,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SQLInstance"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -8036,7 +8855,9 @@
       "Direct",
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "KMSCryptoKey"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -8059,7 +8880,9 @@
       "Direct",
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecretManagerSecret"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -8081,7 +8904,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "KMSCryptoKey",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -8103,7 +8929,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project",
+      "SecureSourceManagerInstance"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -8169,7 +8998,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -8191,7 +9022,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "Service"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -8213,7 +9047,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -8235,7 +9071,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ServiceDirectoryNamespace"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -8257,7 +9095,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -8279,7 +9119,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -8301,7 +9143,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -8323,7 +9167,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -8345,7 +9191,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "IAMServiceAccount"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -8367,7 +9215,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "KMSCryptoKey",
+      "SpannerDatabase"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -8389,7 +9240,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "KMSCryptoKey",
+      "SpannerInstance"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -8434,7 +9288,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -8456,7 +9312,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -8478,7 +9336,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -8500,7 +9360,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -8522,7 +9384,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "StorageBucket"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -8544,7 +9408,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "KMSCryptoKey"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -8566,7 +9432,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "StorageBucket"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -8588,7 +9456,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "StorageBucket"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -8610,7 +9480,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project",
+      "StorageBucket"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -8632,7 +9505,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -8654,7 +9529,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "StorageBucket"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -8676,7 +9553,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -8698,7 +9577,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "StorageBucket"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -8720,7 +9601,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -8743,7 +9626,9 @@
       "Direct",
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "TagsTagValue"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -8766,7 +9651,9 @@
       "Direct",
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "TagsTagValue"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -8834,7 +9721,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -8856,7 +9745,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "VMwareEngineExternalAddress",
+      "VMwareEngineNetworkPolicy"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -8878,7 +9770,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "VMwareEnginePrivateCloud"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -8900,7 +9794,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -8922,7 +9818,11 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "Project",
+      "VMwareEngineNetwork"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -8944,7 +9844,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project",
+      "VMwareEngineNetwork"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -8966,7 +9869,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project",
+      "VMwareEngineNetwork"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -8988,7 +9894,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -9010,7 +9919,10 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "KMSCryptoKey",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -9032,7 +9944,11 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "KMSCryptoKey",
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -9054,7 +9970,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "KMSCryptoKey",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -9120,7 +10039,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -9142,7 +10063,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -9164,7 +10087,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "KMSCryptoKey",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -9186,7 +10112,9 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -9208,7 +10136,9 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -9230,7 +10160,11 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "IAMServiceAccount",
+      "KMSCryptoKey",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -9274,7 +10208,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ComputeNetwork",
+      "Project"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -9296,7 +10233,10 @@
     "supportedControllers": [
       "Direct"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "IAMServiceAccount",
+      "KMSCryptoKey"
+    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
