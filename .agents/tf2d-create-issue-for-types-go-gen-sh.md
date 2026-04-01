@@ -32,14 +32,14 @@ Use `gh` to perform your duties.
 This is the criteria to identify the resource Group and Kind that need to be migrated.
 
 Finding resources that meet the following criteria:
-1. Consult `hack/resource-dependencies.md` to identify the sequence of resources. Prioritize resources in the "Topologically sorted - Ordered" list, followed by the "No dependencies" list.
+1. Run `./dev/migration-tracker/list_top_unmigrated.py -n 20` to get a topologically sorted list of up to 20 unmigrated resources (output is in `<Group>/<Kind>` format).
 2. The resource CRD must be present in `config/crds/resources` directory.
 3. Candidate resources can be identified by the presence of the label `cnrm.cloud.google.com/dcl2crd: "true"` OR `cnrm.cloud.google.com/tf2crd: "true"` in their metadata.
 4. The resource to be migrated should be in `beta` (`spec.versions[].name` is `v1beta1`).
 5. The resource should NOT have a `types.go` file generated yet in `apis/<GROUP>/v1beta1/`.
 
 **Dependency Verification:**
-Before picking a resource from the "Topologically sorted - Ordered" list, you must ensure that all its dependencies (resources appearing before it in the list) already have their `types.go` files generated. If a dependency is missing its `types.go` file, you should skip the current resource and consider the dependency for migration instead.
+The output of `./dev/migration-tracker/list_top_unmigrated.py` is already topologically sorted. Before picking a resource from the list, you must ensure that all its dependencies (resources appearing before it in the list) already have their `types.go` files generated. If a dependency is missing its `types.go` file, you should skip the current resource and consider the dependency for migration instead.
 
 Identify the Group and Kind of the resource that meets the above criteria.
 
@@ -47,9 +47,9 @@ Identify the Group and Kind of the resource that meets the above criteria.
 Use gh cli tool to create github issue.
 In a single run create at most one issue to avoid overwhelming the team.
 
-1. Read `hack/resource-dependencies.md` to get the prioritized list of resource Kinds.
-2. Iterate through the "Topologically sorted - Ordered" list.
-3. For each Kind:
+1. Run `./dev/migration-tracker/list_top_unmigrated.py -n 20` to get the prioritized list of resource Groups and Kinds.
+2. Iterate through the output list.
+3. For each Group and Kind:
     - Find the corresponding CRD file in `config/crds/resources`.
     - Check if it is a migration candidate (DCL or TF, Beta version).
     - If it is a candidate:
@@ -58,10 +58,9 @@ In a single run create at most one issue to avoid overwhelming the team.
             - This is a potential candidate. Verify that all resources preceding it in the list that are KCC resources have their `types.go` files.
             - If dependencies are satisfied, pick this resource.
             - If dependencies are NOT satisfied, skip this resource (you will eventually find the unsatisfied dependency as you continue or restart the search).
-4. If no candidate is found in the ordered list, repeat the process for the "No dependencies" list.
-5. For the identified Group and Kind, check if an issue already exists (open or closed) and create a new one if not.
-6. If an issue already exists for that Group and Kind, inject the issue labels if they dont exist.
-7. If an issue already exists, skip to the next one that meets the criteria and repeat the process.
+4. For the identified Group and Kind, check if an issue already exists (open or closed) and create a new one if not.
+5. If an issue already exists for that Group and Kind, inject the issue labels if they dont exist.
+6. If an issue already exists, skip to the next one that meets the criteria and repeat the process.
 The issue should be marked as a subtask of the main epic for the migration effort: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/5954
 If more than 10 pending issues already exist for this task, do not create new issues to avoid overwhelming the team. Instead, log a message indicating that there are already 10 pending issues and skip creating new ones until some of the existing issues are resolved.
 Created issues should be clear and actionable, providing enough context for developers to understand what needs to be done.
@@ -149,6 +148,10 @@ Currently, `DataCatalogPolicyTag` is managed by the Terraform controller (marked
 8. **Generate Mappers**:
    - Running `dev/tasks/generate-types-and-mappers` will generate the mapper code once the `apis/datacatalog/v1beta1/policytag_types.go` file is generating an equivalent CRD.
    - Run `make all-binary` to ensure the generated mapper code compiles. Please fix any issue discovered by this compilation.
+
+9. **Update Migration Tracker**:
+   - When creating a PR for this issue, please update the metadata for `DataCatalogPolicyTag` in `dev/migration-tracker/data.json`.
+   - Change its `"state"` to `"In Progress"` and update the `"steps"` as they are completed.
 
 This issue is part of Epic #5954.
 ------------ END ISSUE BODY TEMPLATE ------------
