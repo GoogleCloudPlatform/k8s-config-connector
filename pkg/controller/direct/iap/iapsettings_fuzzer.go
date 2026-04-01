@@ -39,6 +39,9 @@ func iapsettingsFuzzer() fuzztesting.KRMFuzzer {
 
 	f.Unimplemented_NotYetTriaged(".access_settings.identity_sources")
 	f.Unimplemented_NotYetTriaged(".access_settings.workforce_identity_settings")
+	f.Unimplemented_NotYetTriaged(".access_settings.oauth_settings.client_id")
+	f.Unimplemented_NotYetTriaged(".access_settings.oauth_settings.client_secret_sha256")
+	f.Unimplemented_NotYetTriaged(".access_settings.oauth_settings.client_secret")
 
 	return f
 }

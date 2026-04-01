@@ -83,5 +83,7 @@ func runJobFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".terminal_condition.reason")
 	f.Unimplemented_NotYetTriaged(".terminal_condition.revision_reason")
 
+	f.Unimplemented_NotYetTriaged(".template.template.containers[].readiness_probe")
+
 	return f
 }
