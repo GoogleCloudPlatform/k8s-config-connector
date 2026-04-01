@@ -157,7 +157,58 @@ def parse_data(config_file_path, apis_dir, crds_dir):
     dependencies, known_kinds = build_dependency_graph(crds_dir)
     implemented_types = get_implemented_types(apis_dir)
 
+    # Calculate topological sort order and downstream count
+    nodes = set(known_kinds.keys())
+    local_graph = {node: set() for node in nodes}
+    for node in nodes:
+        if node in dependencies:
+            local_graph[node] = {dep for dep in dependencies[node] if dep in nodes}
+
+    in_degree = {node: len(local_graph[node]) for node in nodes}
+    rev_graph = {node: set() for node in nodes}
+    for node in nodes:
+        for dep in local_graph[node]:
+            rev_graph[dep].add(node)
+
+    def get_all_downstream(n):
+        visited = set()
+        queue = [n]
+        while queue:
+            curr = queue.pop(0)
+            for d in rev_graph[curr]:
+                if d not in visited:
+                    visited.add(d)
+                    queue.append(d)
+        return len(visited)
+
+    downstream_counts = {node: get_all_downstream(node) for node in nodes}
+
+    queue = [node for node in nodes if in_degree[node] == 0]
+    queue.sort(key=lambda x: (-downstream_counts.get(x, 0), x))
+    
+    order_index = 1
+    topo_order = {}
+
+    while queue:
+        current = queue.pop(0)
+        topo_order[current] = order_index
+        order_index += 1
+        
+        for dependent in sorted(list(rev_graph[current])):
+            in_degree[dependent] -= 1
+            if in_degree[dependent] == 0:
+                queue.append(dependent)
+        queue.sort(key=lambda x: (-downstream_counts.get(x, 0), x))
+
+    for node in nodes:
+        if node not in topo_order:
+            topo_order[node] = order_index
+            order_index += 1
+
     for kind, res in resources.items():
+        res['sortOrder'] = topo_order.get(kind, 9999)
+        res['downstreamCount'] = downstream_counts.get(kind, 0)
+        
         if kind in dependencies:
             valid_deps = [dep for dep in dependencies[kind] if dep in resources]
             res['dependencies'] = sorted(valid_deps)

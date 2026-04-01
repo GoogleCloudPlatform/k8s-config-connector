@@ -21,7 +21,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 113,
+    "downstreamCount": 0
   },
   {
     "group": "apigateway",
@@ -45,7 +47,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 114,
+    "downstreamCount": 0
   },
   {
     "group": "apigateway",
@@ -69,7 +73,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 115,
+    "downstreamCount": 0
   },
   {
     "group": "apikeys",
@@ -94,7 +100,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 116,
+    "downstreamCount": 0
   },
   {
     "group": "cloudquota",
@@ -118,7 +126,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 117,
+    "downstreamCount": 0
   },
   {
     "group": "cloudquota",
@@ -143,7 +153,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 118,
+    "downstreamCount": 0
   },
   {
     "group": "accesscontextmanager",
@@ -168,7 +180,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 42,
+    "downstreamCount": 2
   },
   {
     "group": "accesscontextmanager",
@@ -192,7 +206,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 119,
+    "downstreamCount": 0
   },
   {
     "group": "accesscontextmanager",
@@ -214,7 +230,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 37,
+    "downstreamCount": 3
   },
   {
     "group": "accesscontextmanager",
@@ -236,7 +254,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 120,
+    "downstreamCount": 0
   },
   {
     "group": "accesscontextmanager",
@@ -263,7 +283,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 121,
+    "downstreamCount": 0
   },
   {
     "group": "accesscontextmanager",
@@ -285,7 +307,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 122,
+    "downstreamCount": 0
   },
   {
     "group": "alloydb",
@@ -309,7 +333,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 123,
+    "downstreamCount": 0
   },
   {
     "group": "alloydb",
@@ -336,7 +362,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 43,
+    "downstreamCount": 2
   },
   {
     "group": "alloydb",
@@ -360,7 +388,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 124,
+    "downstreamCount": 0
   },
   {
     "group": "alloydb",
@@ -384,7 +414,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 125,
+    "downstreamCount": 0
   },
   {
     "group": "apigee",
@@ -406,7 +438,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 127,
+    "downstreamCount": 0
   },
   {
     "group": "apigee",
@@ -430,7 +464,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 128,
+    "downstreamCount": 0
   },
   {
     "group": "apigee",
@@ -454,7 +490,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 69,
+    "downstreamCount": 1
   },
   {
     "group": "apigee",
@@ -479,7 +517,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 129,
+    "downstreamCount": 0
   },
   {
     "group": "apigee",
@@ -503,7 +543,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 44,
+    "downstreamCount": 2
   },
   {
     "group": "apigee",
@@ -528,7 +570,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 70,
+    "downstreamCount": 1
   },
   {
     "group": "apigee",
@@ -553,7 +597,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 130,
+    "downstreamCount": 0
   },
   {
     "group": "apigee",
@@ -575,7 +621,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 131,
+    "downstreamCount": 0
   },
   {
     "group": "apigee",
@@ -600,7 +648,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 21,
+    "downstreamCount": 6
   },
   {
     "group": "apigee",
@@ -622,7 +672,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 132,
+    "downstreamCount": 0
   },
   {
     "group": "appengine",
@@ -644,7 +696,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 133,
+    "downstreamCount": 0
   },
   {
     "group": "appengine",
@@ -666,7 +720,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 134,
+    "downstreamCount": 0
   },
   {
     "group": "appengine",
@@ -690,7 +746,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 135,
+    "downstreamCount": 0
   },
   {
     "group": "appengine",
@@ -712,7 +770,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 136,
+    "downstreamCount": 0
   },
   {
     "group": "appengine",
@@ -736,7 +796,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 137,
+    "downstreamCount": 0
   },
   {
     "group": "apphub",
@@ -760,7 +822,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 138,
+    "downstreamCount": 0
   },
   {
     "group": "artifactregistry",
@@ -784,7 +848,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 141,
+    "downstreamCount": 0
   },
   {
     "group": "asset",
@@ -809,7 +875,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 142,
+    "downstreamCount": 0
   },
   {
     "group": "asset",
@@ -834,7 +902,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 143,
+    "downstreamCount": 0
   },
   {
     "group": "backupdr",
@@ -859,7 +929,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 71,
+    "downstreamCount": 1
   },
   {
     "group": "backupdr",
@@ -885,7 +957,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 145,
+    "downstreamCount": 0
   },
   {
     "group": "backupdr",
@@ -909,7 +983,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 45,
+    "downstreamCount": 2
   },
   {
     "group": "backupdr",
@@ -934,7 +1010,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 146,
+    "downstreamCount": 0
   },
   {
     "group": "batch",
@@ -962,7 +1040,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 147,
+    "downstreamCount": 0
   },
   {
     "group": "beyondcorp",
@@ -986,7 +1066,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 149,
+    "downstreamCount": 0
   },
   {
     "group": "beyondcorp",
@@ -1010,7 +1092,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 150,
+    "downstreamCount": 0
   },
   {
     "group": "beyondcorp",
@@ -1034,7 +1118,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 151,
+    "downstreamCount": 0
   },
   {
     "group": "bigquerybiglake",
@@ -1056,7 +1142,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 154,
+    "downstreamCount": 0
   },
   {
     "group": "bigqueryanalyticshub",
@@ -1080,7 +1168,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 72,
+    "downstreamCount": 1
   },
   {
     "group": "bigqueryanalyticshub",
@@ -1105,7 +1195,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 155,
+    "downstreamCount": 0
   },
   {
     "group": "bigqueryconnection",
@@ -1131,7 +1223,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 46,
+    "downstreamCount": 2
   },
   {
     "group": "bigquerydatapolicy",
@@ -1155,7 +1249,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 157,
+    "downstreamCount": 0
   },
   {
     "group": "bigquerydatatransfer",
@@ -1183,7 +1279,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 158,
+    "downstreamCount": 0
   },
   {
     "group": "bigquery",
@@ -1209,7 +1307,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 29,
+    "downstreamCount": 4
   },
   {
     "group": "bigquery",
@@ -1233,7 +1333,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 159,
+    "downstreamCount": 0
   },
   {
     "group": "bigquery",
@@ -1259,7 +1361,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 160,
+    "downstreamCount": 0
   },
   {
     "group": "bigqueryreservation",
@@ -1285,7 +1389,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 161,
+    "downstreamCount": 0
   },
   {
     "group": "bigqueryreservation",
@@ -1309,7 +1415,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 162,
+    "downstreamCount": 0
   },
   {
     "group": "bigqueryreservation",
@@ -1333,7 +1441,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 73,
+    "downstreamCount": 1
   },
   {
     "group": "bigquery",
@@ -1358,7 +1468,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 163,
+    "downstreamCount": 0
   },
   {
     "group": "bigquery",
@@ -1384,7 +1496,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 74,
+    "downstreamCount": 1
   },
   {
     "group": "bigtable",
@@ -1409,7 +1523,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 164,
+    "downstreamCount": 0
   },
   {
     "group": "bigtable",
@@ -1434,7 +1550,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 167,
+    "downstreamCount": 0
   },
   {
     "group": "bigtable",
@@ -1458,7 +1576,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 17,
+    "downstreamCount": 8
   },
   {
     "group": "bigtable",
@@ -1482,7 +1602,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 168,
+    "downstreamCount": 0
   },
   {
     "group": "bigtable",
@@ -1506,7 +1628,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 169,
+    "downstreamCount": 0
   },
   {
     "group": "bigtable",
@@ -1530,7 +1654,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 47,
+    "downstreamCount": 2
   },
   {
     "group": "billingbudgets",
@@ -1554,7 +1680,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 170,
+    "downstreamCount": 0
   },
   {
     "group": "binaryauthorization",
@@ -1578,7 +1706,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 171,
+    "downstreamCount": 0
   },
   {
     "group": "binaryauthorization",
@@ -1602,7 +1732,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 172,
+    "downstreamCount": 0
   },
   {
     "group": "certificatemanager",
@@ -1626,7 +1758,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 173,
+    "downstreamCount": 0
   },
   {
     "group": "certificatemanager",
@@ -1650,7 +1784,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 175,
+    "downstreamCount": 0
   },
   {
     "group": "certificatemanager",
@@ -1674,7 +1810,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 176,
+    "downstreamCount": 0
   },
   {
     "group": "certificatemanager",
@@ -1698,7 +1836,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 177,
+    "downstreamCount": 0
   },
   {
     "group": "cloudasset",
@@ -1722,7 +1862,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 178,
+    "downstreamCount": 0
   },
   {
     "group": "cloudasset",
@@ -1744,7 +1886,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 179,
+    "downstreamCount": 0
   },
   {
     "group": "cloudasset",
@@ -1768,7 +1912,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 180,
+    "downstreamCount": 0
   },
   {
     "group": "cloudbuild",
@@ -1794,7 +1940,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 181,
+    "downstreamCount": 0
   },
   {
     "group": "cloudbuild",
@@ -1819,7 +1967,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 182,
+    "downstreamCount": 0
   },
   {
     "group": "clouddeploy",
@@ -1843,7 +1993,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 186,
+    "downstreamCount": 0
   },
   {
     "group": "cloudfunctions2",
@@ -1867,7 +2019,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 189,
+    "downstreamCount": 0
   },
   {
     "group": "cloudfunctions",
@@ -1892,7 +2046,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 190,
+    "downstreamCount": 0
   },
   {
     "group": "cloudids",
@@ -1917,7 +2073,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 191,
+    "downstreamCount": 0
   },
   {
     "group": "cloudiot",
@@ -1939,7 +2097,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 192,
+    "downstreamCount": 0
   },
   {
     "group": "cloudiot",
@@ -1961,7 +2121,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 193,
+    "downstreamCount": 0
   },
   {
     "group": "cloudidentity",
@@ -1983,7 +2145,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 77,
+    "downstreamCount": 1
   },
   {
     "group": "cloudidentity",
@@ -2007,7 +2171,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 194,
+    "downstreamCount": 0
   },
   {
     "group": "cloudscheduler",
@@ -2031,7 +2197,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 195,
+    "downstreamCount": 0
   },
   {
     "group": "colab",
@@ -2056,7 +2224,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 196,
+    "downstreamCount": 0
   },
   {
     "group": "colab",
@@ -2083,7 +2253,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 78,
+    "downstreamCount": 1
   },
   {
     "group": "composer",
@@ -2111,7 +2283,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 197,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -2136,7 +2310,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 48,
+    "downstreamCount": 2
   },
   {
     "group": "compute",
@@ -2160,7 +2336,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 198,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -2184,7 +2362,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 18,
+    "downstreamCount": 7
   },
   {
     "group": "compute",
@@ -2209,7 +2389,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 199,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -2238,7 +2420,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 16,
+    "downstreamCount": 9
   },
   {
     "group": "compute",
@@ -2263,7 +2447,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 200,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -2290,7 +2476,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 456,
+    "downstreamCount": 4
   },
   {
     "group": "compute",
@@ -2315,7 +2503,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 453,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -2337,7 +2527,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 201,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -2361,7 +2553,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 202,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -2385,7 +2579,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 30,
+    "downstreamCount": 4
   },
   {
     "group": "compute",
@@ -2409,7 +2605,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 203,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -2433,7 +2631,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 204,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -2468,7 +2668,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 79,
+    "downstreamCount": 1
   },
   {
     "group": "compute",
@@ -2492,7 +2694,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 205,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -2516,7 +2720,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 206,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -2538,7 +2744,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 13,
+    "downstreamCount": 11
   },
   {
     "group": "compute",
@@ -2560,7 +2768,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 207,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -2582,7 +2792,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 12,
+    "downstreamCount": 12
   },
   {
     "group": "compute",
@@ -2607,7 +2819,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 454,
+    "downstreamCount": 4
   },
   {
     "group": "compute",
@@ -2635,7 +2849,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 31,
+    "downstreamCount": 4
   },
   {
     "group": "compute",
@@ -2659,7 +2875,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 15,
+    "downstreamCount": 10
   },
   {
     "group": "compute",
@@ -2686,7 +2904,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 80,
+    "downstreamCount": 1
   },
   {
     "group": "compute",
@@ -2710,7 +2930,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 208,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -2737,7 +2959,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 19,
+    "downstreamCount": 7
   },
   {
     "group": "compute",
@@ -2761,7 +2985,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 32,
+    "downstreamCount": 4
   },
   {
     "group": "compute",
@@ -2785,7 +3011,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 210,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -2809,7 +3037,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 211,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -2831,7 +3061,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 6,
+    "downstreamCount": 97
   },
   {
     "group": "compute",
@@ -2855,7 +3087,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 212,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -2880,7 +3114,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 213,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -2906,7 +3142,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 214,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -2931,7 +3169,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 14,
+    "downstreamCount": 11
   },
   {
     "group": "compute",
@@ -2955,7 +3195,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 215,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -2980,7 +3222,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 216,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3005,7 +3249,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 217,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3029,7 +3275,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 218,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3054,7 +3302,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 219,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3079,7 +3329,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 220,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3101,7 +3353,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 81,
+    "downstreamCount": 1
   },
   {
     "group": "compute",
@@ -3123,7 +3377,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 221,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3145,7 +3401,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 222,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3167,7 +3425,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 223,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3191,7 +3451,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 224,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3216,7 +3478,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 225,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3238,7 +3502,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 226,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3262,7 +3528,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 227,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3287,7 +3555,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 455,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3313,7 +3583,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 228,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3337,7 +3609,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 229,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3361,7 +3635,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 230,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3383,7 +3659,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 231,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3405,7 +3683,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 232,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3429,7 +3709,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 233,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3453,7 +3735,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 22,
+    "downstreamCount": 6
   },
   {
     "group": "compute",
@@ -3480,7 +3764,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 82,
+    "downstreamCount": 1
   },
   {
     "group": "compute",
@@ -3505,7 +3791,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 234,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3530,7 +3818,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 235,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3552,7 +3842,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 236,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3574,7 +3866,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 33,
+    "downstreamCount": 4
   },
   {
     "group": "compute",
@@ -3596,7 +3890,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 10,
+    "downstreamCount": 13
   },
   {
     "group": "compute",
@@ -3620,7 +3916,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 49,
+    "downstreamCount": 2
   },
   {
     "group": "compute",
@@ -3642,7 +3940,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 237,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3666,7 +3966,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 238,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3690,7 +3992,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 34,
+    "downstreamCount": 4
   },
   {
     "group": "compute",
@@ -3714,7 +4018,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 9,
+    "downstreamCount": 23
   },
   {
     "group": "compute",
@@ -3738,7 +4044,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 50,
+    "downstreamCount": 2
   },
   {
     "group": "compute",
@@ -3762,7 +4070,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 51,
+    "downstreamCount": 2
   },
   {
     "group": "compute",
@@ -3787,7 +4097,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 52,
+    "downstreamCount": 2
   },
   {
     "group": "compute",
@@ -3813,7 +4125,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 239,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3838,7 +4152,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 240,
+    "downstreamCount": 0
   },
   {
     "group": "compute",
@@ -3863,7 +4179,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 53,
+    "downstreamCount": 2
   },
   {
     "group": "compute",
@@ -3888,7 +4206,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 54,
+    "downstreamCount": 2
   },
   {
     "group": "compute",
@@ -3912,7 +4232,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 25,
+    "downstreamCount": 5
   },
   {
     "group": "compute",
@@ -3937,7 +4259,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 26,
+    "downstreamCount": 5
   },
   {
     "group": "compute",
@@ -3962,7 +4286,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 38,
+    "downstreamCount": 3
   },
   {
     "group": "compute",
@@ -3988,7 +4314,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 55,
+    "downstreamCount": 2
   },
   {
     "group": "configcontroller",
@@ -4013,7 +4341,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 241,
+    "downstreamCount": 0
   },
   {
     "group": "containeranalysis",
@@ -4035,7 +4365,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 243,
+    "downstreamCount": 0
   },
   {
     "group": "containeranalysis",
@@ -4059,7 +4391,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 244,
+    "downstreamCount": 0
   },
   {
     "group": "containerattached",
@@ -4083,7 +4417,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 245,
+    "downstreamCount": 0
   },
   {
     "group": "container",
@@ -4109,7 +4445,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 56,
+    "downstreamCount": 2
   },
   {
     "group": "container",
@@ -4136,7 +4474,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 246,
+    "downstreamCount": 0
   },
   {
     "group": "dlp",
@@ -4161,7 +4501,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 247,
+    "downstreamCount": 0
   },
   {
     "group": "dlp",
@@ -4185,7 +4527,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 83,
+    "downstreamCount": 1
   },
   {
     "group": "dlp",
@@ -4211,7 +4555,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 248,
+    "downstreamCount": 0
   },
   {
     "group": "dlp",
@@ -4235,7 +4581,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 249,
+    "downstreamCount": 0
   },
   {
     "group": "dns",
@@ -4259,7 +4607,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 84,
+    "downstreamCount": 1
   },
   {
     "group": "dns",
@@ -4283,7 +4633,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 250,
+    "downstreamCount": 0
   },
   {
     "group": "dns",
@@ -4309,7 +4661,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 251,
+    "downstreamCount": 0
   },
   {
     "group": "dns",
@@ -4333,7 +4687,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 252,
+    "downstreamCount": 0
   },
   {
     "group": "dns",
@@ -4357,7 +4713,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 253,
+    "downstreamCount": 0
   },
   {
     "group": "datacatalog",
@@ -4381,7 +4739,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 85,
+    "downstreamCount": 1
   },
   {
     "group": "datacatalog",
@@ -4405,7 +4765,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 57,
+    "downstreamCount": 2
   },
   {
     "group": "datacatalog",
@@ -4429,7 +4791,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 254,
+    "downstreamCount": 0
   },
   {
     "group": "datacatalog",
@@ -4453,7 +4817,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 255,
+    "downstreamCount": 0
   },
   {
     "group": "datacatalog",
@@ -4477,7 +4843,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 256,
+    "downstreamCount": 0
   },
   {
     "group": "datacatalog",
@@ -4501,7 +4869,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 86,
+    "downstreamCount": 1
   },
   {
     "group": "datafusion",
@@ -4526,7 +4896,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 257,
+    "downstreamCount": 0
   },
   {
     "group": "dataflow",
@@ -4553,7 +4925,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 258,
+    "downstreamCount": 0
   },
   {
     "group": "dataflow",
@@ -4579,7 +4953,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 259,
+    "downstreamCount": 0
   },
   {
     "group": "dataform",
@@ -4604,7 +4980,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 260,
+    "downstreamCount": 0
   },
   {
     "group": "dataplex",
@@ -4628,7 +5006,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 261,
+    "downstreamCount": 0
   },
   {
     "group": "dataplex",
@@ -4652,7 +5032,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 262,
+    "downstreamCount": 0
   },
   {
     "group": "dataplex",
@@ -4677,7 +5059,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 58,
+    "downstreamCount": 2
   },
   {
     "group": "dataplex",
@@ -4704,7 +5088,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 263,
+    "downstreamCount": 0
   },
   {
     "group": "dataplex",
@@ -4728,7 +5114,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 264,
+    "downstreamCount": 0
   },
   {
     "group": "dataproc",
@@ -4752,7 +5140,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 265,
+    "downstreamCount": 0
   },
   {
     "group": "dataproc",
@@ -4780,7 +5170,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 266,
+    "downstreamCount": 0
   },
   {
     "group": "dataproc",
@@ -4808,7 +5200,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 35,
+    "downstreamCount": 4
   },
   {
     "group": "dataproc",
@@ -4832,7 +5226,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 267,
+    "downstreamCount": 0
   },
   {
     "group": "dataproc",
@@ -4860,7 +5256,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 268,
+    "downstreamCount": 0
   },
   {
     "group": "datastore",
@@ -4884,7 +5282,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 269,
+    "downstreamCount": 0
   },
   {
     "group": "datastream",
@@ -4910,7 +5310,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 270,
+    "downstreamCount": 0
   },
   {
     "group": "datastream",
@@ -4935,7 +5337,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 59,
+    "downstreamCount": 2
   },
   {
     "group": "datastream",
@@ -4959,7 +5363,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 271,
+    "downstreamCount": 0
   },
   {
     "group": "datastream",
@@ -4983,7 +5389,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 272,
+    "downstreamCount": 0
   },
   {
     "group": "deploymentmanager",
@@ -5007,7 +5415,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 273,
+    "downstreamCount": 0
   },
   {
     "group": "dialogflow",
@@ -5029,7 +5439,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 274,
+    "downstreamCount": 0
   },
   {
     "group": "dialogflowcx",
@@ -5053,7 +5465,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 275,
+    "downstreamCount": 0
   },
   {
     "group": "dialogflowcx",
@@ -5075,7 +5489,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 276,
+    "downstreamCount": 0
   },
   {
     "group": "dialogflowcx",
@@ -5097,7 +5513,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 277,
+    "downstreamCount": 0
   },
   {
     "group": "dialogflowcx",
@@ -5119,7 +5537,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 278,
+    "downstreamCount": 0
   },
   {
     "group": "dialogflowcx",
@@ -5141,7 +5561,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 279,
+    "downstreamCount": 0
   },
   {
     "group": "dialogflowcx",
@@ -5163,7 +5585,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 280,
+    "downstreamCount": 0
   },
   {
     "group": "dialogflow",
@@ -5187,7 +5611,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 281,
+    "downstreamCount": 0
   },
   {
     "group": "dialogflow",
@@ -5211,7 +5637,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 282,
+    "downstreamCount": 0
   },
   {
     "group": "dialogflow",
@@ -5235,7 +5663,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 283,
+    "downstreamCount": 0
   },
   {
     "group": "discoveryengine",
@@ -5259,7 +5689,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 87,
+    "downstreamCount": 1
   },
   {
     "group": "documentai",
@@ -5284,7 +5716,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 88,
+    "downstreamCount": 1
   },
   {
     "group": "documentai",
@@ -5306,7 +5740,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 286,
+    "downstreamCount": 0
   },
   {
     "group": "documentai",
@@ -5331,7 +5767,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 287,
+    "downstreamCount": 0
   },
   {
     "group": "edgecontainer",
@@ -5356,7 +5794,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 60,
+    "downstreamCount": 2
   },
   {
     "group": "edgecontainer",
@@ -5382,7 +5822,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 289,
+    "downstreamCount": 0
   },
   {
     "group": "edgecontainer",
@@ -5407,7 +5849,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 290,
+    "downstreamCount": 0
   },
   {
     "group": "edgenetwork",
@@ -5431,7 +5875,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 89,
+    "downstreamCount": 1
   },
   {
     "group": "edgenetwork",
@@ -5456,7 +5902,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 291,
+    "downstreamCount": 0
   },
   {
     "group": "essentialcontacts",
@@ -5481,7 +5929,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 292,
+    "downstreamCount": 0
   },
   {
     "group": "eventarc",
@@ -5506,7 +5956,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 90,
+    "downstreamCount": 1
   },
   {
     "group": "eventarc",
@@ -5531,7 +5983,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 293,
+    "downstreamCount": 0
   },
   {
     "group": "eventarc",
@@ -5559,7 +6013,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 294,
+    "downstreamCount": 0
   },
   {
     "group": "filestore",
@@ -5583,7 +6039,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 295,
+    "downstreamCount": 0
   },
   {
     "group": "filestore",
@@ -5608,7 +6066,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 296,
+    "downstreamCount": 0
   },
   {
     "group": "filestore",
@@ -5632,7 +6092,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 297,
+    "downstreamCount": 0
   },
   {
     "group": "firebase",
@@ -5656,7 +6118,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 298,
+    "downstreamCount": 0
   },
   {
     "group": "firebasedatabase",
@@ -5680,7 +6144,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 299,
+    "downstreamCount": 0
   },
   {
     "group": "firebasehosting",
@@ -5702,7 +6168,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 300,
+    "downstreamCount": 0
   },
   {
     "group": "firebasehosting",
@@ -5726,7 +6194,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 301,
+    "downstreamCount": 0
   },
   {
     "group": "firebase",
@@ -5748,7 +6218,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 91,
+    "downstreamCount": 1
   },
   {
     "group": "firebasestorage",
@@ -5772,7 +6244,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 302,
+    "downstreamCount": 0
   },
   {
     "group": "firebase",
@@ -5794,7 +6268,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 303,
+    "downstreamCount": 0
   },
   {
     "group": "firestore",
@@ -5818,7 +6294,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 39,
+    "downstreamCount": 3
   },
   {
     "group": "firestore",
@@ -5842,7 +6320,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 305,
+    "downstreamCount": 0
   },
   {
     "group": "firestore",
@@ -5866,7 +6346,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 306,
+    "downstreamCount": 0
   },
   {
     "group": "firestore",
@@ -5888,7 +6370,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 307,
+    "downstreamCount": 0
   },
   {
     "group": "resourcemanager",
@@ -5910,7 +6394,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 1,
+    "downstreamCount": 298
   },
   {
     "group": "gkebackup",
@@ -5934,7 +6420,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 92,
+    "downstreamCount": 1
   },
   {
     "group": "gkebackup",
@@ -5959,7 +6447,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 40,
+    "downstreamCount": 3
   },
   {
     "group": "gkebackup",
@@ -5984,7 +6474,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 308,
+    "downstreamCount": 0
   },
   {
     "group": "gkebackup",
@@ -6009,7 +6501,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 93,
+    "downstreamCount": 1
   },
   {
     "group": "gkehub",
@@ -6033,7 +6527,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 94,
+    "downstreamCount": 1
   },
   {
     "group": "gkehub",
@@ -6060,7 +6556,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 309,
+    "downstreamCount": 0
   },
   {
     "group": "gkehub",
@@ -6082,7 +6580,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 95,
+    "downstreamCount": 1
   },
   {
     "group": "healthcare",
@@ -6104,7 +6604,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 310,
+    "downstreamCount": 0
   },
   {
     "group": "healthcare",
@@ -6126,7 +6628,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 311,
+    "downstreamCount": 0
   },
   {
     "group": "healthcare",
@@ -6150,7 +6654,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 312,
+    "downstreamCount": 0
   },
   {
     "group": "healthcare",
@@ -6172,7 +6678,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 313,
+    "downstreamCount": 0
   },
   {
     "group": "healthcare",
@@ -6194,7 +6702,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 314,
+    "downstreamCount": 0
   },
   {
     "group": "iam",
@@ -6218,7 +6728,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 315,
+    "downstreamCount": 0
   },
   {
     "group": "iam",
@@ -6240,7 +6752,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 316,
+    "downstreamCount": 0
   },
   {
     "group": "iam",
@@ -6262,7 +6776,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 317,
+    "downstreamCount": 0
   },
   {
     "group": "iam",
@@ -6290,7 +6806,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 319,
+    "downstreamCount": 0
   },
   {
     "group": "iam",
@@ -6312,7 +6830,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 320,
+    "downstreamCount": 0
   },
   {
     "group": "iam",
@@ -6339,7 +6859,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 321,
+    "downstreamCount": 0
   },
   {
     "group": "iam",
@@ -6361,7 +6883,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 7,
+    "downstreamCount": 43
   },
   {
     "group": "iam",
@@ -6385,7 +6909,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 322,
+    "downstreamCount": 0
   },
   {
     "group": "iam",
@@ -6407,7 +6933,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 96,
+    "downstreamCount": 1
   },
   {
     "group": "iam",
@@ -6431,7 +6959,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 323,
+    "downstreamCount": 0
   },
   {
     "group": "iam",
@@ -6455,7 +6985,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 97,
+    "downstreamCount": 1
   },
   {
     "group": "iam",
@@ -6480,7 +7012,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 324,
+    "downstreamCount": 0
   },
   {
     "group": "iap",
@@ -6502,7 +7036,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 98,
+    "downstreamCount": 1
   },
   {
     "group": "iap",
@@ -6526,7 +7062,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 325,
+    "downstreamCount": 0
   },
   {
     "group": "iap",
@@ -6551,7 +7089,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 326,
+    "downstreamCount": 0
   },
   {
     "group": "identityplatform",
@@ -6575,7 +7115,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 327,
+    "downstreamCount": 0
   },
   {
     "group": "identityplatform",
@@ -6599,7 +7141,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 328,
+    "downstreamCount": 0
   },
   {
     "group": "identityplatform",
@@ -6623,7 +7167,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 329,
+    "downstreamCount": 0
   },
   {
     "group": "identityplatform",
@@ -6645,7 +7191,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 330,
+    "downstreamCount": 0
   },
   {
     "group": "identityplatform",
@@ -6669,7 +7217,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 331,
+    "downstreamCount": 0
   },
   {
     "group": "identityplatform",
@@ -6691,7 +7241,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 99,
+    "downstreamCount": 1
   },
   {
     "group": "identityplatform",
@@ -6715,7 +7267,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 332,
+    "downstreamCount": 0
   },
   {
     "group": "identityplatform",
@@ -6739,7 +7293,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 333,
+    "downstreamCount": 0
   },
   {
     "group": "identityplatform",
@@ -6763,7 +7319,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 334,
+    "downstreamCount": 0
   },
   {
     "group": "kms",
@@ -6787,7 +7345,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 335,
+    "downstreamCount": 0
   },
   {
     "group": "kms",
@@ -6811,7 +7371,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 5,
+    "downstreamCount": 113
   },
   {
     "group": "kms",
@@ -6833,7 +7395,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 336,
+    "downstreamCount": 0
   },
   {
     "group": "kms",
@@ -6857,7 +7421,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 337,
+    "downstreamCount": 0
   },
   {
     "group": "kms",
@@ -6881,7 +7447,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 338,
+    "downstreamCount": 0
   },
   {
     "group": "kms",
@@ -6903,7 +7471,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 4,
+    "downstreamCount": 115
   },
   {
     "group": "kms",
@@ -6925,7 +7495,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 339,
+    "downstreamCount": 0
   },
   {
     "group": "kms",
@@ -6947,7 +7519,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 340,
+    "downstreamCount": 0
   },
   {
     "group": "logging",
@@ -6971,7 +7545,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 341,
+    "downstreamCount": 0
   },
   {
     "group": "logging",
@@ -6996,7 +7572,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 41,
+    "downstreamCount": 3
   },
   {
     "group": "logging",
@@ -7021,7 +7599,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 342,
+    "downstreamCount": 0
   },
   {
     "group": "logging",
@@ -7046,7 +7626,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 343,
+    "downstreamCount": 0
   },
   {
     "group": "logging",
@@ -7075,7 +7657,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 344,
+    "downstreamCount": 0
   },
   {
     "group": "logging",
@@ -7101,7 +7685,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 345,
+    "downstreamCount": 0
   },
   {
     "group": "mlengine",
@@ -7125,7 +7711,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 346,
+    "downstreamCount": 0
   },
   {
     "group": "managedkafka",
@@ -7151,7 +7739,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 61,
+    "downstreamCount": 2
   },
   {
     "group": "managedkafka",
@@ -7176,7 +7766,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 348,
+    "downstreamCount": 0
   },
   {
     "group": "memcache",
@@ -7200,7 +7792,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 349,
+    "downstreamCount": 0
   },
   {
     "group": "memorystore",
@@ -7225,7 +7819,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 350,
+    "downstreamCount": 0
   },
   {
     "group": "metastore",
@@ -7249,7 +7845,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 351,
+    "downstreamCount": 0
   },
   {
     "group": "metastore",
@@ -7273,7 +7871,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 352,
+    "downstreamCount": 0
   },
   {
     "group": "metastore",
@@ -7299,7 +7899,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 36,
+    "downstreamCount": 4
   },
   {
     "group": "monitoring",
@@ -7321,7 +7923,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 100,
+    "downstreamCount": 1
   },
   {
     "group": "monitoring",
@@ -7346,7 +7950,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 353,
+    "downstreamCount": 0
   },
   {
     "group": "monitoring",
@@ -7370,7 +7976,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 101,
+    "downstreamCount": 1
   },
   {
     "group": "monitoring",
@@ -7394,7 +8002,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 354,
+    "downstreamCount": 0
   },
   {
     "group": "monitoring",
@@ -7416,7 +8026,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 355,
+    "downstreamCount": 0
   },
   {
     "group": "monitoring",
@@ -7438,7 +8050,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 356,
+    "downstreamCount": 0
   },
   {
     "group": "monitoring",
@@ -7462,7 +8076,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 102,
+    "downstreamCount": 1
   },
   {
     "group": "monitoring",
@@ -7487,7 +8103,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 357,
+    "downstreamCount": 0
   },
   {
     "group": "monitoring",
@@ -7512,7 +8130,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 358,
+    "downstreamCount": 0
   },
   {
     "group": "netapp",
@@ -7536,7 +8156,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 359,
+    "downstreamCount": 0
   },
   {
     "group": "networkconnectivity",
@@ -7560,7 +8182,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 103,
+    "downstreamCount": 1
   },
   {
     "group": "networkconnectivity",
@@ -7585,7 +8209,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 361,
+    "downstreamCount": 0
   },
   {
     "group": "networkconnectivity",
@@ -7610,7 +8236,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 362,
+    "downstreamCount": 0
   },
   {
     "group": "networkconnectivity",
@@ -7635,7 +8263,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 363,
+    "downstreamCount": 0
   },
   {
     "group": "networkmanagement",
@@ -7663,7 +8293,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 364,
+    "downstreamCount": 0
   },
   {
     "group": "networksecurity",
@@ -7687,7 +8319,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 365,
+    "downstreamCount": 0
   },
   {
     "group": "networksecurity",
@@ -7711,7 +8345,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 366,
+    "downstreamCount": 0
   },
   {
     "group": "networksecurity",
@@ -7735,7 +8371,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 367,
+    "downstreamCount": 0
   },
   {
     "group": "networkservices",
@@ -7759,7 +8397,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 368,
+    "downstreamCount": 0
   },
   {
     "group": "networkservices",
@@ -7783,7 +8423,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 369,
+    "downstreamCount": 0
   },
   {
     "group": "networkservices",
@@ -7807,7 +8449,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 370,
+    "downstreamCount": 0
   },
   {
     "group": "networkservices",
@@ -7831,7 +8475,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 371,
+    "downstreamCount": 0
   },
   {
     "group": "networkservices",
@@ -7856,7 +8502,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 372,
+    "downstreamCount": 0
   },
   {
     "group": "networkservices",
@@ -7880,7 +8528,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 373,
+    "downstreamCount": 0
   },
   {
     "group": "networkservices",
@@ -7905,7 +8555,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 374,
+    "downstreamCount": 0
   },
   {
     "group": "networkservices",
@@ -7929,7 +8581,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 376,
+    "downstreamCount": 0
   },
   {
     "group": "networkservices",
@@ -7954,7 +8608,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 377,
+    "downstreamCount": 0
   },
   {
     "group": "networkservices",
@@ -7979,7 +8635,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 378,
+    "downstreamCount": 0
   },
   {
     "group": "networkservices",
@@ -8004,7 +8662,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 379,
+    "downstreamCount": 0
   },
   {
     "group": "notebooks",
@@ -8031,7 +8691,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 380,
+    "downstreamCount": 0
   },
   {
     "group": "notebooks",
@@ -8055,7 +8717,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 381,
+    "downstreamCount": 0
   },
   {
     "group": "osconfig",
@@ -8079,7 +8743,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 382,
+    "downstreamCount": 0
   },
   {
     "group": "osconfig",
@@ -8103,7 +8769,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 383,
+    "downstreamCount": 0
   },
   {
     "group": "osconfig",
@@ -8127,7 +8795,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 384,
+    "downstreamCount": 0
   },
   {
     "group": "oslogin",
@@ -8149,7 +8819,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 385,
+    "downstreamCount": 0
   },
   {
     "group": "orgpolicy",
@@ -8171,7 +8843,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 386,
+    "downstreamCount": 0
   },
   {
     "group": "orgpolicy",
@@ -8196,7 +8870,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 387,
+    "downstreamCount": 0
   },
   {
     "group": "parametermanager",
@@ -8221,7 +8897,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 104,
+    "downstreamCount": 1
   },
   {
     "group": "privateca",
@@ -8246,7 +8924,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 62,
+    "downstreamCount": 2
   },
   {
     "group": "privateca",
@@ -8273,7 +8953,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 389,
+    "downstreamCount": 0
   },
   {
     "group": "privateca",
@@ -8300,7 +8982,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 105,
+    "downstreamCount": 1
   },
   {
     "group": "privateca",
@@ -8324,7 +9008,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 106,
+    "downstreamCount": 1
   },
   {
     "group": "privilegedaccessmanager",
@@ -8349,7 +9035,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 390,
+    "downstreamCount": 0
   },
   {
     "group": "resourcemanager",
@@ -8373,7 +9061,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 3,
+    "downstreamCount": 292
   },
   {
     "group": "pubsublite",
@@ -8397,7 +9087,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 391,
+    "downstreamCount": 0
   },
   {
     "group": "pubsublite",
@@ -8421,7 +9113,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 392,
+    "downstreamCount": 0
   },
   {
     "group": "pubsublite",
@@ -8445,7 +9139,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 393,
+    "downstreamCount": 0
   },
   {
     "group": "pubsub",
@@ -8469,7 +9165,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 20,
+    "downstreamCount": 7
   },
   {
     "group": "pubsub",
@@ -8495,7 +9193,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 394,
+    "downstreamCount": 0
   },
   {
     "group": "pubsub",
@@ -8520,7 +9220,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 63,
+    "downstreamCount": 2
   },
   {
     "group": "pubsub",
@@ -8545,7 +9247,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 24,
+    "downstreamCount": 6
   },
   {
     "group": "recaptchaenterprise",
@@ -8569,7 +9273,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 395,
+    "downstreamCount": 0
   },
   {
     "group": "recaptchaenterprise",
@@ -8593,7 +9299,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 396,
+    "downstreamCount": 0
   },
   {
     "group": "redis",
@@ -8618,7 +9326,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 397,
+    "downstreamCount": 0
   },
   {
     "group": "redis",
@@ -8642,7 +9352,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 398,
+    "downstreamCount": 0
   },
   {
     "group": "resourcemanager",
@@ -8666,7 +9378,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 399,
+    "downstreamCount": 0
   },
   {
     "group": "resourcemanager",
@@ -8691,7 +9405,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 400,
+    "downstreamCount": 0
   },
   {
     "group": "run",
@@ -8719,7 +9435,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 401,
+    "downstreamCount": 0
   },
   {
     "group": "run",
@@ -8745,7 +9463,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 402,
+    "downstreamCount": 0
   },
   {
     "group": "sql",
@@ -8769,7 +9489,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 403,
+    "downstreamCount": 0
   },
   {
     "group": "sql",
@@ -8795,7 +9517,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 27,
+    "downstreamCount": 5
   },
   {
     "group": "sql",
@@ -8819,7 +9543,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 404,
+    "downstreamCount": 0
   },
   {
     "group": "sql",
@@ -8843,7 +9569,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 405,
+    "downstreamCount": 0
   },
   {
     "group": "secretmanager",
@@ -8868,7 +9596,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 64,
+    "downstreamCount": 2
   },
   {
     "group": "secretmanager",
@@ -8893,7 +9623,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 406,
+    "downstreamCount": 0
   },
   {
     "group": "securesourcemanager",
@@ -8918,7 +9650,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 107,
+    "downstreamCount": 1
   },
   {
     "group": "securesourcemanager",
@@ -8943,7 +9677,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 407,
+    "downstreamCount": 0
   },
   {
     "group": "securitycenter",
@@ -8965,7 +9701,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 408,
+    "downstreamCount": 0
   },
   {
     "group": "securitycenter",
@@ -8987,7 +9725,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 409,
+    "downstreamCount": 0
   },
   {
     "group": "serviceusage",
@@ -9011,7 +9751,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 11,
+    "downstreamCount": 13
   },
   {
     "group": "servicedirectory",
@@ -9036,7 +9778,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 410,
+    "downstreamCount": 0
   },
   {
     "group": "servicedirectory",
@@ -9060,7 +9804,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 108,
+    "downstreamCount": 1
   },
   {
     "group": "servicedirectory",
@@ -9084,7 +9830,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 411,
+    "downstreamCount": 0
   },
   {
     "group": "serviceusage",
@@ -9108,7 +9856,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 65,
+    "downstreamCount": 2
   },
   {
     "group": "servicenetworking",
@@ -9132,7 +9882,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 412,
+    "downstreamCount": 0
   },
   {
     "group": "servicenetworking",
@@ -9156,7 +9908,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 413,
+    "downstreamCount": 0
   },
   {
     "group": "serviceusage",
@@ -9180,7 +9934,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 414,
+    "downstreamCount": 0
   },
   {
     "group": "sourcerepo",
@@ -9204,7 +9960,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 415,
+    "downstreamCount": 0
   },
   {
     "group": "spanner",
@@ -9229,7 +9987,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 416,
+    "downstreamCount": 0
   },
   {
     "group": "spanner",
@@ -9254,7 +10014,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 109,
+    "downstreamCount": 1
   },
   {
     "group": "spanner",
@@ -9277,7 +10039,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 66,
+    "downstreamCount": 2
   },
   {
     "group": "spanner",
@@ -9301,7 +10065,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 417,
+    "downstreamCount": 0
   },
   {
     "group": "speech",
@@ -9325,7 +10091,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 418,
+    "downstreamCount": 0
   },
   {
     "group": "speech",
@@ -9349,7 +10117,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 419,
+    "downstreamCount": 0
   },
   {
     "group": "speech",
@@ -9373,7 +10143,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 420,
+    "downstreamCount": 0
   },
   {
     "group": "storage",
@@ -9397,7 +10169,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 421,
+    "downstreamCount": 0
   },
   {
     "group": "storage",
@@ -9421,7 +10195,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 8,
+    "downstreamCount": 37
   },
   {
     "group": "storage",
@@ -9445,7 +10221,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 422,
+    "downstreamCount": 0
   },
   {
     "group": "storage",
@@ -9469,7 +10247,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 423,
+    "downstreamCount": 0
   },
   {
     "group": "storage",
@@ -9494,7 +10274,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 424,
+    "downstreamCount": 0
   },
   {
     "group": "storage",
@@ -9518,7 +10300,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 425,
+    "downstreamCount": 0
   },
   {
     "group": "storage",
@@ -9542,7 +10326,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 427,
+    "downstreamCount": 0
   },
   {
     "group": "storagetransfer",
@@ -9566,7 +10352,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 428,
+    "downstreamCount": 0
   },
   {
     "group": "storagetransfer",
@@ -9590,7 +10378,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 429,
+    "downstreamCount": 0
   },
   {
     "group": "tpu",
@@ -9614,7 +10404,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 430,
+    "downstreamCount": 0
   },
   {
     "group": "tags",
@@ -9639,7 +10431,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 432,
+    "downstreamCount": 0
   },
   {
     "group": "tags",
@@ -9664,7 +10458,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 433,
+    "downstreamCount": 0
   },
   {
     "group": "tags",
@@ -9687,7 +10483,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 434,
+    "downstreamCount": 0
   },
   {
     "group": "tags",
@@ -9710,7 +10508,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 67,
+    "downstreamCount": 2
   },
   {
     "group": "cloudtasks",
@@ -9734,7 +10534,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 435,
+    "downstreamCount": 0
   },
   {
     "group": "vmwareengine",
@@ -9759,7 +10561,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 436,
+    "downstreamCount": 0
   },
   {
     "group": "vmwareengine",
@@ -9783,7 +10587,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 110,
+    "downstreamCount": 1
   },
   {
     "group": "vmwareengine",
@@ -9807,7 +10613,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 28,
+    "downstreamCount": 5
   },
   {
     "group": "vmwareengine",
@@ -9833,7 +10641,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 437,
+    "downstreamCount": 0
   },
   {
     "group": "vmwareengine",
@@ -9858,7 +10668,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 111,
+    "downstreamCount": 1
   },
   {
     "group": "vmwareengine",
@@ -9883,7 +10695,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 68,
+    "downstreamCount": 2
   },
   {
     "group": "vpcaccess",
@@ -9908,7 +10722,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 438,
+    "downstreamCount": 0
   },
   {
     "group": "vertexai",
@@ -9933,7 +10749,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 439,
+    "downstreamCount": 0
   },
   {
     "group": "vertexai",
@@ -9959,7 +10777,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 440,
+    "downstreamCount": 0
   },
   {
     "group": "vertexai",
@@ -9984,7 +10804,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 441,
+    "downstreamCount": 0
   },
   {
     "group": "vertexai",
@@ -10006,7 +10828,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 442,
+    "downstreamCount": 0
   },
   {
     "group": "vertexai",
@@ -10028,7 +10852,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 443,
+    "downstreamCount": 0
   },
   {
     "group": "vertexai",
@@ -10052,7 +10878,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 444,
+    "downstreamCount": 0
   },
   {
     "group": "vertexai",
@@ -10076,7 +10904,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 445,
+    "downstreamCount": 0
   },
   {
     "group": "vertexai",
@@ -10101,7 +10931,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 446,
+    "downstreamCount": 0
   },
   {
     "group": "vertexai",
@@ -10125,7 +10957,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 447,
+    "downstreamCount": 0
   },
   {
     "group": "workflowexecutions",
@@ -10149,7 +10983,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go"
+    "notes": "Missing _reference.go",
+    "sortOrder": 448,
+    "downstreamCount": 0
   },
   {
     "group": "workflows",
@@ -10175,7 +11011,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 449,
+    "downstreamCount": 0
   },
   {
     "group": "workstations",
@@ -10197,7 +11035,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 450,
+    "downstreamCount": 0
   },
   {
     "group": "workstations",
@@ -10222,7 +11062,9 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 451,
+    "downstreamCount": 0
   },
   {
     "group": "workstations",
@@ -10247,6 +11089,8 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": ""
+    "notes": "",
+    "sortOrder": 452,
+    "downstreamCount": 0
   }
 ]

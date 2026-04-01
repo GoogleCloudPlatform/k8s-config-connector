@@ -15,7 +15,7 @@
  */
 
 let resourceData = [];
-let currentSort = { column: 'kind', direction: 'asc' };
+let currentSort = { column: 'sortOrder', direction: 'asc' };
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchData();
@@ -47,7 +47,7 @@ async function fetchData() {
         renderTable();
     } catch (error) {
         console.error('Error fetching data:', error);
-        document.getElementById('table-body').innerHTML = `<tr><td colspan="9" style="text-align: center; color: red;">Error loading data.json</td></tr>`;
+        document.getElementById('table-body').innerHTML = `<tr><td colspan="11" style="text-align: center; color: red;">Error loading data.json</td></tr>`;
     }
 }
 
@@ -120,6 +120,8 @@ function renderTable() {
             <td><strong>${row.kind}</strong></td>
             <td>${row.group}</td>
             <td>${row.version}</td>
+            <td>${row.sortOrder === 9999 ? '-' : row.sortOrder}</td>
+            <td>${row.downstreamCount}</td>
             <td>
                 <div style="font-weight: 600;">${row.defaultController}</div>
                 <div style="font-size: 11px; color: #5f6368;">Supported: ${row.supportedControllers.join(', ')}</div>
