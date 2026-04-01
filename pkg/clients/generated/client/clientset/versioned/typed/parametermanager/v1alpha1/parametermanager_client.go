@@ -32,6 +32,7 @@ import (
 type ParametermanagerV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	ParameterManagerParametersGetter
+	ParameterManagerParameterVersionsGetter
 }
 
 // ParametermanagerV1alpha1Client is used to interact with features provided by the parametermanager.cnrm.cloud.google.com group.
@@ -41,6 +42,10 @@ type ParametermanagerV1alpha1Client struct {
 
 func (c *ParametermanagerV1alpha1Client) ParameterManagerParameters(namespace string) ParameterManagerParameterInterface {
 	return newParameterManagerParameters(c, namespace)
+}
+
+func (c *ParametermanagerV1alpha1Client) ParameterManagerParameterVersions(namespace string) ParameterManagerParameterVersionInterface {
+	return newParameterManagerParameterVersions(c, namespace)
 }
 
 // NewForConfig creates a new ParametermanagerV1alpha1Client for the given config.

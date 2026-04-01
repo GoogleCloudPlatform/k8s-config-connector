@@ -38,33 +38,47 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
-type BigLakeCatalogSpec struct {
-	/* The location that this resource belongs to. */
-	Location string `json:"location"`
+type ParameterversionPayload struct {
+	/* Required. bytes data for storing payload. */
+	// +optional
+	Data *string `json:"data,omitempty"`
+}
 
-	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+type ParameterManagerParameterVersionSpec struct {
+	/* Optional. Disabled boolean to determine if a ParameterVersion acts as a metadata only resource (payload is never returned if disabled is true). If true any calls will always default to BASIC view even if the user explicitly passes FULL view as part of the request. A render call on a disabled resource fails with an error. Default value is False. */
+	// +optional
+	Disabled *bool `json:"disabled,omitempty"`
 
-	/* The BigLakeCatalog name. If not given, the metadata.name will be used. */
+	/* The resource name of the [Parameter][google.cloud.parametermanager.v1.Parameter] to create a [ParameterVersion][google.cloud.parametermanager.v1.ParameterVersion] for. */
+	ParameterRef v1alpha1.ResourceRef `json:"parameterRef"`
+
+	/* Required. Immutable. Payload content of a ParameterVersion resource.  This is only returned when the request provides the View value of FULL (default for GET request). */
+	Payload ParameterversionPayload `json:"payload"`
+
+	/* The ParameterManagerParameterVersion name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type BiglakecatalogObservedStateStatus struct {
-	/* Output only. The creation time of the catalog. */
+type ParameterversionObservedStateStatus struct {
+	/* Output only. [Output only] Create time stamp */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. The last modification time of the catalog. */
+	/* Optional. Output only. [Output only] The resource name of the KMS key version used to encrypt the ParameterVersion payload. This field is populated only if the Parameter resource has customer managed encryption key (CMEK) configured. */
+	// +optional
+	KmsKeyVersion *string `json:"kmsKeyVersion,omitempty"`
+
+	/* Output only. [Output only] Update time stamp */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-type BigLakeCatalogStatus struct {
+type ParameterManagerParameterVersionStatus struct {
 	/* Conditions represent the latest available observations of the
-	   BigLakeCatalog's current state. */
+	   ParameterManagerParameterVersion's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the BigLakeCatalog resource in GCP. */
+	/* A unique specifier for the ParameterManagerParameterVersion resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -74,12 +88,12 @@ type BigLakeCatalogStatus struct {
 
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	ObservedState *BiglakecatalogObservedStateStatus `json:"observedState,omitempty"`
+	ObservedState *ParameterversionObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpbiglakecatalog;gcpbiglakecatalogs
+// +kubebuilder:resource:categories=gcp,shortName=gcpparametermanagerparameterversion;gcpparametermanagerparameterversions
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
@@ -88,25 +102,25 @@ type BigLakeCatalogStatus struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// BigLakeCatalog is the Schema for the bigquerybiglake API
+// ParameterManagerParameterVersion is the Schema for the parametermanager API
 // +k8s:openapi-gen=true
-type BigLakeCatalog struct {
+type ParameterManagerParameterVersion struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   BigLakeCatalogSpec   `json:"spec,omitempty"`
-	Status BigLakeCatalogStatus `json:"status,omitempty"`
+	Spec   ParameterManagerParameterVersionSpec   `json:"spec,omitempty"`
+	Status ParameterManagerParameterVersionStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// BigLakeCatalogList contains a list of BigLakeCatalog
-type BigLakeCatalogList struct {
+// ParameterManagerParameterVersionList contains a list of ParameterManagerParameterVersion
+type ParameterManagerParameterVersionList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []BigLakeCatalog `json:"items"`
+	Items           []ParameterManagerParameterVersion `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&BigLakeCatalog{}, &BigLakeCatalogList{})
+	SchemeBuilder.Register(&ParameterManagerParameterVersion{}, &ParameterManagerParameterVersionList{})
 }
