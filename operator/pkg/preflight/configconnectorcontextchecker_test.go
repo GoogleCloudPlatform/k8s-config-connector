@@ -232,7 +232,7 @@ func TestValidateResourceSettingsMode(t *testing.T) {
 					},
 				},
 			},
-			err: fmt.Errorf("conflict: ConfigConnector and ConfigConnectorContext cannot mix inclusive (enabled: true) and exclusive (enabled: false) modes"),
+			err: fmt.Errorf("conflict: ConfigConnector and ConfigConnectorContext cannot mix inclusive (mode: include) and exclusive (mode: exclude) modes"),
 		},
 		{
 			name: "Explicit Match (CC: Inclusive, CCC: Inclusive)",
