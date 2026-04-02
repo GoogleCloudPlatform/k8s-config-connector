@@ -22,6 +22,7 @@ import (
 	. "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 
+	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
@@ -32,8 +33,10 @@ func TestResolveGCPManagedFields(t *testing.T) {
 	tests := []struct {
 		name              string
 		kind              string
+		annotations       map[string]string
 		lastAppliedConfig map[string]interface{}
 		resourceExists    bool
+		liveStateAttrs    map[string]string
 		inputConfig       map[string]interface{}
 		expectedConfig    map[string]interface{}
 	}{
@@ -530,18 +533,79 @@ func TestResolveGCPManagedFields(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "ContainerCluster removes nodeConfig if remove-default-node-pool is true and nodeConfig not in live state",
+			kind: "ContainerCluster",
+			annotations: map[string]string{
+				"cnrm.cloud.google.com/remove-default-node-pool": "true",
+			},
+			resourceExists: true,
+			liveStateAttrs: map[string]string{}, // empty node_config
+			inputConfig: map[string]interface{}{
+				"nodeConfig": map[string]interface{}{
+					"machineType": "n1-standard-1",
+				},
+				"otherField": "otherValue",
+			},
+			expectedConfig: map[string]interface{}{
+				"otherField": "otherValue",
+			},
+		},
+		{
+			name: "ContainerCluster preserves nodeConfig if remove-default-node-pool is true and nodeConfig is in live state",
+			kind: "ContainerCluster",
+			annotations: map[string]string{
+				"cnrm.cloud.google.com/remove-default-node-pool": "true",
+			},
+			resourceExists: true,
+			liveStateAttrs: map[string]string{
+				"node_config.#":               "1",
+				"node_config.0.machine_type": "n1-standard-1",
+			},
+			inputConfig: map[string]interface{}{
+				"nodeConfig": map[string]interface{}{
+					"machineType": "n1-standard-1",
+				},
+				"otherField": "otherValue",
+			},
+			expectedConfig: map[string]interface{}{
+				"nodeConfig": map[string]interface{}{
+					"machineType": "n1-standard-1",
+				},
+				"otherField": "otherValue",
+			},
+		},
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			r := resourceSkeleton()
 			r.SetGroupVersionKind(schema.GroupVersionKind{Kind: tc.kind})
+			if tc.kind == "ContainerCluster" {
+				r.TFResource.Schema["node_config"] = &tfschema.Schema{
+					Type:     tfschema.TypeList,
+					Optional: true,
+					MaxItems: 1,
+					Elem: &tfschema.Resource{
+						Schema: map[string]*tfschema.Schema{
+							"machine_type": {
+								Type:     tfschema.TypeString,
+								Optional: true,
+							},
+						},
+					},
+				}
+			}
 			lastAppliedConfigJSON, err := json.Marshal(tc.lastAppliedConfig)
 			if err != nil {
 				t.Fatalf("error marshaling last applied config: %v", err)
 			}
-			r.SetAnnotations(map[string]string{
+			annotations := map[string]string{
 				k8s.LastAppliedConfigurationAnnotation: string(lastAppliedConfigJSON),
-			})
+			}
+			for k, v := range tc.annotations {
+				annotations[k] = v
+			}
+			r.SetAnnotations(annotations)
 			var liveState *terraform.InstanceState
 			if tc.resourceExists {
 				// The content of the instance state does not matter here,
@@ -549,7 +613,8 @@ func TestResolveGCPManagedFields(t *testing.T) {
 				// need to supply *something* to mark this resource
 				// as already existing.
 				liveState = &terraform.InstanceState{
-					ID: "foo",
+					ID:    "foo",
+					Attributes: tc.liveStateAttrs,
 				}
 			}
 			config := tc.inputConfig
