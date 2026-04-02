@@ -174,7 +174,7 @@ func resolveContainerClusterNodeConfig(r *Resource, liveState *terraform.Instanc
 
 func topLevelObjectFieldExistsInStateMap(state map[string]interface{}, field string) (bool, error) {
 	value, ok := state[field]
-	if !ok {
+	if !ok || value == nil {
 		return false, nil
 	}
 	listVal, ok := value.([]interface{})
