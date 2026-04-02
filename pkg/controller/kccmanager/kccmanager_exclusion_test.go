@@ -60,8 +60,8 @@ func TestResourceExclusion(t *testing.T) {
 						Mode: operatorv1beta1.ResourceSettingsModeExclude,
 						Resources: []operatorv1beta1.ResourceFilter{
 							{
-								Group: "pubsub.cnrm.cloud.google.com",
-								Kind:  "PubSubTopic",
+								Group: stringPtr("pubsub.cnrm.cloud.google.com"),
+								Kind:  stringPtr("PubSubTopic"),
 							},
 						},
 					},
@@ -169,8 +169,8 @@ func TestResourceExclusion(t *testing.T) {
 						Mode: operatorv1beta1.ResourceSettingsModeExclude,
 						Resources: []operatorv1beta1.ResourceFilter{
 							{
-								Group: "pubsub.cnrm.cloud.google.com",
-								Kind:  "PubSubTopic",
+								Group: stringPtr("pubsub.cnrm.cloud.google.com"),
+								Kind:  stringPtr("PubSubTopic"),
 							},
 						},
 					},
@@ -270,8 +270,8 @@ func TestResourceExclusion(t *testing.T) {
 						Mode: operatorv1beta1.ResourceSettingsModeExclude,
 						Resources: []operatorv1beta1.ResourceFilter{
 							{
-								Group: "pubsub.cnrm.cloud.google.com",
-								Kind:  "PubSubTopic",
+								Group: stringPtr("pubsub.cnrm.cloud.google.com"),
+								Kind:  stringPtr("PubSubTopic"),
 							},
 						},
 					},
@@ -309,8 +309,8 @@ func TestResourceExclusion(t *testing.T) {
 						Mode: operatorv1beta1.ResourceSettingsModeExclude,
 						Resources: []operatorv1beta1.ResourceFilter{
 							{
-								Group: "storage.cnrm.cloud.google.com",
-								Kind:  "StorageBucket",
+								Group: stringPtr("storage.cnrm.cloud.google.com"),
+								Kind:  stringPtr("StorageBucket"),
 							},
 						},
 					},
@@ -451,8 +451,8 @@ func TestResourceExclusion(t *testing.T) {
 						Mode: operatorv1beta1.ResourceSettingsModeInclude,
 						Resources: []operatorv1beta1.ResourceFilter{
 							{
-								Group: "pubsub.cnrm.cloud.google.com",
-								Kind:  "PubSubTopic",
+								Group: stringPtr("pubsub.cnrm.cloud.google.com"),
+								Kind:  stringPtr("PubSubTopic"),
 							},
 						},
 					},
@@ -644,4 +644,8 @@ func ensureNamespace(ctx context.Context, t *testing.T, c client.Client, name st
 func randomString() string {
 	rand.Seed(time.Now().UnixNano())
 	return fmt.Sprintf("%d", rand.Intn(100000))
+}
+
+func stringPtr(s string) *string {
+	return &s
 }

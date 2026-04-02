@@ -477,8 +477,8 @@ func checkFound(settings *operatorv1beta1.ResourceSettings, gvk schema.GroupVers
 		return false
 	}
 	for _, s := range settings.Resources {
-		if s.Group == gvk.Group {
-			if s.Kind == "" || s.Kind == gvk.Kind {
+		if s.Group != nil && *s.Group == gvk.Group {
+			if s.Kind == nil || *s.Kind == "" || *s.Kind == gvk.Kind {
 				return true
 			}
 		}

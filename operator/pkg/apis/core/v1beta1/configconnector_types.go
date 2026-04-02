@@ -102,11 +102,11 @@ type ResourceSettings struct {
 type ResourceFilter struct {
 	// Group is the API group of the resource.
 	// +required
-	Group string `json:"group"`
+	Group *string `json:"group"`
 
 	// Kind is the Kind of the resource.
 	// +optional
-	Kind string `json:"kind,omitempty"`
+	Kind *string `json:"kind,omitempty"`
 }
 
 // MultiClusterLeaseSpec defines the configuration for a multi-cluster lease.
