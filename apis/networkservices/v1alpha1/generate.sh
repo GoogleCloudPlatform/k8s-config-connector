@@ -27,8 +27,7 @@ go run . generate-types \
     --service google.cloud.networkservices.v1 \
     --api-version "networkservices.cnrm.cloud.google.com/v1alpha1" \
     --resource NetworkServicesServiceBinding:ServiceBinding \
-    --resource NetworkServicesLBRouteExtension:LbRouteExtension \
-    --resource NetworkServicesEdgeCacheService:EdgeCacheService
+    --resource NetworkServicesLBRouteExtension:LbRouteExtension
 
 
 go run . generate-mapper \

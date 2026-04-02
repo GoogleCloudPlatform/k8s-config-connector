@@ -15,7 +15,7 @@
 package v1alpha1
 
 import (
-	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -731,8 +731,8 @@ type EdgeCacheServiceUrlRewrite struct {
 
 // +kcc:spec:proto=google.cloud.networkservices.v1.EdgeCacheService
 type NetworkServicesEdgeCacheServiceSpec struct {
-	// Required. Defines the parent path of the resource.
-	*parent.ProjectRef `json:",inline"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1beta1.ProjectRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -824,6 +824,7 @@ type NetworkServicesEdgeCacheServiceStatus struct {
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

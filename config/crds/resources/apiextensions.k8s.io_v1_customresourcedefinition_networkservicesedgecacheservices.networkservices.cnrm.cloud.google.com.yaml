@@ -10,6 +10,7 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
   name: networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com
 spec:
   group: networkservices.cnrm.cloud.google.com
@@ -88,10 +89,6 @@ spec:
                 items:
                   type: string
                 type: array
-              external:
-                description: The `projectID` field of a project, when not managed
-                  by Config Connector.
-                type: string
               logConfig:
                 description: Specifies the logging options for the traffic served
                   by this service. If logging is enabled, logs will be exported to
@@ -108,12 +105,38 @@ spec:
                       This field can only be specified if logging is enabled for this service.
                     type: number
                 type: object
-              name:
-                description: The `name` field of a `Project` resource.
-                type: string
-              namespace:
-                description: The `namespace` field of a `Project` resource.
-                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
               requireTls:
                 description: |-
                   Require TLS (HTTPS) for all clients connecting to this service.
@@ -834,6 +857,7 @@ spec:
                   If not set, the EdgeCacheService has no SSL policy configured, and will default to the "COMPATIBLE" policy.
                 type: string
             required:
+            - projectRef
             - routing
             type: object
           status:
