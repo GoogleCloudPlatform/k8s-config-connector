@@ -249,7 +249,7 @@ type EdgeCacheServiceCdnPolicy struct {
 	/* The EdgeCacheKeyset containing the set of public keys used to validate signed requests at the edge. */
 	// +optional
 	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheService.CdnPolicy.signed_request_keyset
-	SignedRequestKeyset *string `json:"signedRequestKeyset,omitempty"`
+	SignedRequestKeysetRef *NetworkServicesEdgeCacheKeysetRef `json:"signedRequestKeysetRef,omitempty"`
 
 	/* Limit how far into the future the expiration time of a signed request may be.
 
@@ -595,7 +595,7 @@ type EdgeCacheServiceRouteRule struct {
 	Only one of origin or urlRedirect can be set. */
 	// +optional
 	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheService.RouteRule.origin
-	Origin *string `json:"origin,omitempty"`
+	OriginRef *NetworkServicesEdgeCacheOriginRef `json:"originRef,omitempty"`
 
 	/* The priority of this route rule, where 1 is the highest priority.
 

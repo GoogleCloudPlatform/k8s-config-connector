@@ -403,12 +403,41 @@ spec:
                                       type: array
                                   type: object
                                 type: array
-                              origin:
+                              originRef:
                                 description: |-
                                   The Origin resource that requests to this route should fetch from when a matching response is not in cache. Origins can be defined as short names ("my-origin") or fully-qualified resource URLs - e.g. "networkservices.googleapis.com/projects/my-project/global/edgecacheorigins/my-origin"
 
                                   Only one of origin or urlRedirect can be set.
-                                type: string
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: 'The name of the edgecacheorigin.
+                                      Allowed value: The Google Cloud resource name
+                                      of a `NetworkServicesEdgeCacheOrigin` resource
+                                      (format: `projects/{{project}}/locations/global/edgeCacheOrigins/{{name}}`).'
+                                    type: string
+                                  name:
+                                    description: 'Name of the referent. More info:
+                                      https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                    type: string
+                                  namespace:
+                                    description: 'Namespace of the referent. More
+                                      info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                    type: string
+                                type: object
                               priority:
                                 description: |-
                                   The priority of this route rule, where 1 is the highest priority.
@@ -648,11 +677,40 @@ spec:
 
                                           Note that when specifying an explicit negativeCachingPolicy, you should take care to specify a cache TTL for all response codes that you wish to cache. The CDNPolicy will not apply any default negative caching when a policy exists.
                                         type: object
-                                      signedRequestKeyset:
+                                      signedRequestKeysetRef:
                                         description: The EdgeCacheKeyset containing
                                           the set of public keys used to validate
                                           signed requests at the edge.
-                                        type: string
+                                        oneOf:
+                                        - not:
+                                            required:
+                                            - external
+                                          required:
+                                          - name
+                                        - not:
+                                            anyOf:
+                                            - required:
+                                              - name
+                                            - required:
+                                              - namespace
+                                          required:
+                                          - external
+                                        properties:
+                                          external:
+                                            description: 'The name of the edgecachekeyset.
+                                              Allowed value: The Google Cloud resource
+                                              name of a `NetworkServicesEdgeCacheKeyset`
+                                              resource (format: `projects/{{project}}/locations/global/edgeCacheKeysets/{{name}}`).'
+                                            type: string
+                                          name:
+                                            description: 'Name of the referent. More
+                                              info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                            type: string
+                                          namespace:
+                                            description: 'Namespace of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                            type: string
+                                        type: object
                                       signedRequestMaximumExpirationTtl:
                                         description: |-
                                           Limit how far into the future the expiration time of a signed request may be.
