@@ -168,9 +168,7 @@ func resolveContainerClusterNodeConfig(r *Resource, liveState *terraform.Instanc
 		return nil
 	}
 
-	if err := removeFromConfigIfNotApplied(r, config, nodeConfigFieldInKRMConfig); err != nil {
-		return fmt.Errorf("error removing field '%v' in config: %w", nodeConfigFieldInKRMConfig, err)
-	}
+	unstructured.RemoveNestedField(config, nodeConfigFieldInKRMConfig)
 	return nil
 }
 
