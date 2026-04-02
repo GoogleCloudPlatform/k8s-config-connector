@@ -559,7 +559,7 @@ func TestResolveGCPManagedFields(t *testing.T) {
 			},
 			resourceExists: true,
 			liveStateAttrs: map[string]string{
-				"node_config.#":               "1",
+				"node_config.#":              "1",
 				"node_config.0.machine_type": "n1-standard-1",
 			},
 			inputConfig: map[string]interface{}{
@@ -613,7 +613,7 @@ func TestResolveGCPManagedFields(t *testing.T) {
 				// need to supply *something* to mark this resource
 				// as already existing.
 				liveState = &terraform.InstanceState{
-					ID:    "foo",
+					ID:         "foo",
 					Attributes: tc.liveStateAttrs,
 				}
 			}
