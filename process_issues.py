@@ -35,7 +35,8 @@ def get_all_issues():
     try:
         with open('all_issues.json', encoding='utf-8') as f:
             return json.load(f)
-    except FileNotFoundError:
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        print(f'Error reading all_issues.json: {e}')
         return []
 
 all_issues = get_all_issues()
@@ -64,14 +65,26 @@ for filepath in candidate_files:
                 if not isinstance(doc, dict):
                     continue
                 if doc.get('kind') == 'CustomResourceDefinition':
-                    labels = doc.get('metadata', {}).get('labels', {})
+                    metadata = doc.get('metadata')
+                    if not isinstance(metadata, dict):
+                        metadata = {}
+                    labels = metadata.get('labels')
+                    if not isinstance(labels, dict):
+                        labels = {}
+
                     # Ensure we are looking at a terraform-managed CRD
                     if str(labels.get('cnrm.cloud.google.com/tf2crd', '')).lower() != 'true':
                         continue
 
-                    spec = doc.get('spec', {})
+                    spec = doc.get('spec')
+                    if not isinstance(spec, dict):
+                        continue
+
                     group = spec.get('group')
-                    names = spec.get('names', {})
+                    names = spec.get('names')
+                    if not isinstance(names, dict):
+                        names = {}
+
                     kind = names.get('kind')
                     plural = names.get('plural')
                     versions = spec.get('versions', [])
@@ -79,7 +92,10 @@ for filepath in candidate_files:
                     if not (group and kind and plural and versions):
                         continue
                     
-                    is_beta = any(v.get('name') == 'v1beta1' for v in versions)
+                    if not isinstance(versions, list):
+                        continue
+                    
+                    is_beta = any(isinstance(v, dict) and v.get('name') == 'v1beta1' for v in versions)
                     if not is_beta:
                         continue
                     
@@ -88,9 +104,19 @@ for filepath in candidate_files:
                     types_exists = False
                     dir_path = os.path.join(SCRIPT_DIR, 'apis', group_prefix, 'v1beta1')
                     if os.path.isdir(dir_path):
+                        kind_lower = kind.lower()
+                        prefix_lower = group_prefix.lower()
+                        kind_without_prefix = kind_lower[len(prefix_lower):] if kind_lower.startswith(prefix_lower) else kind_lower
+                        
+                        expected_names = {
+                            f'{kind_lower}_types.go',
+                            f'{kind_lower}types.go',
+                            f'{kind_without_prefix}_types.go',
+                            f'{kind_without_prefix}types.go'
+                        }
+                        
                         for fname in os.listdir(dir_path):
-                            fname_lower = fname.lower()
-                            if fname_lower == f'{kind.lower()}_types.go' or fname_lower == f'{kind.lower()}types.go':
+                            if fname.lower() in expected_names:
                                 types_exists = True
                                 break
                             
@@ -201,7 +227,7 @@ This issue is part of Epic #5954.
                 print(f'Creating issue: {title}')
                 try:
                     subprocess.run(
-                        ['gh', 'issue', 'create', '--title', title, '--label', 'overseer,area/direct,priority/medium,auto-generated'],
+                        ['gh', 'issue', 'create', '--title', title, '--label', 'overseer,area/direct,priority/medium,auto-generated', '--body-file', '-'],
                         input=body.encode('utf-8'),
                         check=True
                     )
