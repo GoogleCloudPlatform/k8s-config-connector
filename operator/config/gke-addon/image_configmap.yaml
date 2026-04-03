@@ -10,7 +10,6 @@ kind: ConfigMap
 metadata:
   annotations:
     components.gke.io/image-map: Images deployed by operator
-  creationTimestamp: null
   labels:
     addonmanager.kubernetes.io/mode: Reconcile
     cnrm.cloud.google.com/operator-system: "true"
