@@ -496,7 +496,7 @@ spec:
                                             items:
                                               type: string
                                             type: array
-                                          keyset:
+                                          keysetRef:
                                             description: |-
                                               The keyset to use for signature generation.
 
@@ -506,7 +506,36 @@ spec:
                                               * 'yourKeyset'
 
                                               This must be specified when the GENERATE_COOKIE or GENERATE_TOKEN_HLS_COOKIELESS actions are specified.  This field may not be specified otherwise.
-                                            type: string
+                                            oneOf:
+                                            - not:
+                                                required:
+                                                - external
+                                              required:
+                                              - name
+                                            - not:
+                                                anyOf:
+                                                - required:
+                                                  - name
+                                                - required:
+                                                  - namespace
+                                              required:
+                                              - external
+                                            properties:
+                                              external:
+                                                description: 'The name of the edgecachekeyset.
+                                                  Allowed value: The Google Cloud
+                                                  resource name of a `NetworkServicesEdgeCacheKeyset`
+                                                  resource (format: `projects/{{project}}/locations/global/edgeCacheKeysets/{{name}}`).'
+                                                type: string
+                                              name:
+                                                description: 'Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                                type: string
+                                              namespace:
+                                                description: 'Namespace of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                                type: string
+                                            type: object
                                           tokenQueryParameter:
                                             description: |-
                                               The query parameter in which to put the generated token.

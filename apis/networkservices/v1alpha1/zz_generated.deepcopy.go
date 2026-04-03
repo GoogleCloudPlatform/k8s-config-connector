@@ -41,9 +41,9 @@ func (in *EdgeCacheServiceAddSignatures) DeepCopyInto(out *EdgeCacheServiceAddSi
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.Keyset != nil {
-		in, out := &in.Keyset, &out.Keyset
-		*out = new(string)
+	if in.KeysetRef != nil {
+		in, out := &in.KeysetRef, &out.KeysetRef
+		*out = new(NetworkServicesEdgeCacheKeysetRef)
 		**out = **in
 	}
 	if in.TokenQueryParameter != nil {

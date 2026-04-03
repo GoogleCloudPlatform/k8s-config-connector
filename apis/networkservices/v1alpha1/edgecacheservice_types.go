@@ -59,7 +59,7 @@ type EdgeCacheServiceAddSignatures struct {
 	This must be specified when the GENERATE_COOKIE or GENERATE_TOKEN_HLS_COOKIELESS actions are specified.  This field may not be specified otherwise. */
 	// +optional
 	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheService.AddSignatures.keyset
-	Keyset *string `json:"keyset,omitempty"`
+	KeysetRef *NetworkServicesEdgeCacheKeysetRef `json:"keysetRef,omitempty"`
 
 	/* The query parameter in which to put the generated token.
 
