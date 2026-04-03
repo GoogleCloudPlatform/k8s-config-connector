@@ -2307,12 +2307,13 @@
 [missing_field] crd=vertexaiindexendpoints.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaiindexendpoints.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.publicEndpointEnabled" is not set in unstructured objects
 [missing_field] crd=vertexaiindexendpoints.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.region" is not set in unstructured objects
+[missing_field] crd=vertexaireasoningengines.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.contextSpec.memoryBankConfig.generationConfig.model" is not set in unstructured objects
 [missing_field] crd=vertexaireasoningengines.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.contextSpec.memoryBankConfig.similaritySearchConfig.embeddingModel" is not set in unstructured objects
 [missing_field] crd=vertexaireasoningengines.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.contextSpec.memoryBankConfig.ttlConfig.defaultTTL" is not set in unstructured objects
-[missing_field] crd=vertexaireasoningengines.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.contextSpec.memoryBankConfig.ttlConfig.granularTTLConfig" is not set in unstructured objects
+[missing_field] crd=vertexaireasoningengines.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.contextSpec.memoryBankConfig.ttlConfig.granularTTLConfig.createTTL" is not set in unstructured objects
+[missing_field] crd=vertexaireasoningengines.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.contextSpec.memoryBankConfig.ttlConfig.granularTTLConfig.generateUpdatedTTL" is not set in unstructured objects
 [missing_field] crd=vertexaireasoningengines.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=vertexaireasoningengines.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=vertexaireasoningengines.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
 [missing_field] crd=vertexaireasoningengines.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.agentFramework" is not set in unstructured objects
 [missing_field] crd=vertexaireasoningengines.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.classMethods[]" is not set in unstructured objects
 [missing_field] crd=vertexaireasoningengines.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.deploymentSpec.containerConcurrency" is not set in unstructured objects
@@ -2357,4 +2358,4 @@
 [missing_field] crd=vmwareengineprivateclouds.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.type" is not set in unstructured objects
 [missing_field] crd=workflowsexecutions.workflowexecutions.cnrm.cloud.google.com version=v1alpha1: field ".spec.callLogLevel" is not set in unstructured objects
 [missing_field] crd=workflowsexecutions.workflowexecutions.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=workflowsworkflows.workflows.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set[missing_field] crd=vertexaireasoningengines.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.contextSpec.memoryBankConfig.generationConfig.model" is not set in unstructured objects
+[missing_field] crd=workflowsworkflows.workflows.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set

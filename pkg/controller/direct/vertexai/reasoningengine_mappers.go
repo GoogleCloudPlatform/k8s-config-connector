@@ -321,8 +321,10 @@ func ReasoningEngineContextSpec_MemoryBankConfig_TtlConfig_ToProto(mapCtx *direc
 		return nil
 	}
 	out := &pb.ReasoningEngineContextSpec_MemoryBankConfig_TtlConfig{}
-	out.Ttl = &pb.ReasoningEngineContextSpec_MemoryBankConfig_TtlConfig_DefaultTtl{
-		DefaultTtl: direct.Duration_ToProto(mapCtx, in.DefaultTTL),
+	if in.DefaultTTL != nil {
+		out.Ttl = &pb.ReasoningEngineContextSpec_MemoryBankConfig_TtlConfig_DefaultTtl{
+			DefaultTtl: direct.Duration_ToProto(mapCtx, in.DefaultTTL),
+		}
 	}
 	if in.GranularTTLConfig != nil {
 		out.Ttl = &pb.ReasoningEngineContextSpec_MemoryBankConfig_TtlConfig_GranularTtlConfig_{
@@ -331,7 +333,6 @@ func ReasoningEngineContextSpec_MemoryBankConfig_TtlConfig_ToProto(mapCtx *direc
 	}
 	return out
 }
-
 func ReasoningEngineContextSpec_MemoryBankConfig_TtlConfig_GranularTtlConfig_FromProto(mapCtx *direct.MapContext, in *pb.ReasoningEngineContextSpec_MemoryBankConfig_TtlConfig_GranularTtlConfig) *krm.ReasoningEngineContextSpec_MemoryBankConfig_TtlConfig_GranularTtlConfig {
 	if in == nil {
 		return nil
