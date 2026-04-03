@@ -29,7 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func APIGatewayAPIObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.APIGatewayAPIObservedState {
+func APIGatewayAPIObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.APIGatewayAPIObservedState {
 	if in == nil {
 		return nil
 	}
@@ -40,7 +40,7 @@ func APIGatewayAPIObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Api)
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
 }
-func APIGatewayAPIObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APIGatewayAPIObservedState) *pb.Api {
+func APIGatewayAPIObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.APIGatewayAPIObservedState) *pb.Api {
 	if in == nil {
 		return nil
 	}
@@ -51,7 +51,7 @@ func APIGatewayAPIObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APIGa
 	out.State = direct.Enum_ToProto[pb.Api_State](mapCtx, in.State)
 	return out
 }
-func APIGatewayAPISpec_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.APIGatewayAPISpec {
+func APIGatewayAPISpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.APIGatewayAPISpec {
 	if in == nil {
 		return nil
 	}
@@ -61,7 +61,7 @@ func APIGatewayAPISpec_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.API
 	out.ManagedService = direct.LazyPtr(in.GetManagedService())
 	return out
 }
-func APIGatewayAPISpec_ToProto(mapCtx *direct.MapContext, in *krm.APIGatewayAPISpec) *pb.Api {
+func APIGatewayAPISpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.APIGatewayAPISpec) *pb.Api {
 	if in == nil {
 		return nil
 	}
