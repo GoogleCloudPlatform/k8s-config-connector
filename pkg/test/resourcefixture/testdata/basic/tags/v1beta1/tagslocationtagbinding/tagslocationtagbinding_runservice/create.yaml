@@ -20,6 +20,6 @@ spec:
   location: us-central1
   parentRef:
     kind: RunService
-    external: "//run.googleapis.com/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}"
+    external: "//run.googleapis.com/projects/${projectNumber}/locations/us-central1/services/runservice-${uniqueId}"
   tagValueRef:
     name: tagstagvalue-${uniqueId}

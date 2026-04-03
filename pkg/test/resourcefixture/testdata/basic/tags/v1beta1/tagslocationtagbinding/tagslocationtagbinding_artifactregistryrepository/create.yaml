@@ -20,6 +20,6 @@ spec:
   location: us-east1
   parentRef:
     kind: ArtifactRegistryRepository
-    external: "//artifactregistry.googleapis.com/projects/${projectId}/locations/us-east1/repositories/arrepository-${uniqueId}"
+    external: "//artifactregistry.googleapis.com/projects/${projectNumber}/locations/us-east1/repositories/arrepository-${uniqueId}"
   tagValueRef:
     name: tagstagvalue-${uniqueId}

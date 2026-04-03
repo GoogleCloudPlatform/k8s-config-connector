@@ -3,6 +3,7 @@ kind: TagsLocationTagBinding
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -14,7 +15,7 @@ metadata:
 spec:
   location: us-central1
   parentRef:
-    external: //run.googleapis.com/projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}
+    external: //run.googleapis.com/projects/${projectNumber}/locations/us-central1/jobs/runjob-${uniqueId}
     kind: RunJob
   resourceID: tagBindings/%2F%2Frun.googleapis.com%2Fprojects%2F${projectNumber}%2Flocations%2Fus-central1%2Fjobs%2Frunjob-${uniqueId}/tagValues/${tagValueID}
   tagValueRef:
@@ -26,6 +27,4 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: tagBindings/%2F%2Frun.googleapis.com%2Fprojects%2F${projectNumber}%2Flocations%2Fus-central1%2Fjobs%2Frunjob-${uniqueId}/tagValues/${tagValueID}
-  name: tagBindings/%2F%2Frun.googleapis.com%2Fprojects%2F${projectNumber}%2Flocations%2Fus-central1%2Fjobs%2Frunjob-${uniqueId}/tagValues/${tagValueID}
   observedGeneration: 2

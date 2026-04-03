@@ -20,6 +20,6 @@ spec:
   location: us-east4
   parentRef:
     kind: BigQueryDataset
-    external: "//bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}"
+    external: "//bigquery.googleapis.com/projects/${projectNumber}/datasets/bigquerydatasetsample${uniqueId}"
   tagValueRef:
     name: tagstagvalue-${uniqueId}
