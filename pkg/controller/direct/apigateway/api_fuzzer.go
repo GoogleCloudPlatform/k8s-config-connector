@@ -26,8 +26,8 @@ func init() {
 
 func fuzzWorkflowsWorkflow() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Api{},
-		APIGatewayAPISpec_FromProto, APIGatewayAPISpec_ToProto,
-		APIGatewayAPIObservedState_FromProto, APIGatewayAPIObservedState_ToProto,
+		APIGatewayAPISpec_v1beta1_FromProto, APIGatewayAPISpec_v1beta1_ToProto,
+		APIGatewayAPIObservedState_v1beta1_FromProto, APIGatewayAPIObservedState_v1beta1_ToProto,
 	)
 	f.UnimplementedFields.Insert(".name")
 

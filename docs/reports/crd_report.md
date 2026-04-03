@@ -15,7 +15,7 @@
 | alloydb.cnrm.cloud.google.com                 | AlloyDBInstance                                 | True         | True        | False  | Direct     | True        |
 | alloydb.cnrm.cloud.google.com                 | AlloyDBUser                                     | False        | True        | False  | Terraform  | True        |
 | analytics.cnrm.cloud.google.com               | AnalyticsAccount                                | True         | False       | False  | Direct     | True        |
-| apigateway.cnrm.cloud.google.com              | APIGatewayAPIConfig                             | True         | False       | False  | Terraform  | False       |
+| apigateway.cnrm.cloud.google.com              | APIGatewayAPIConfig                             | True         | False       | False  | Terraform  | True        |
 | apigateway.cnrm.cloud.google.com              | APIGatewayAPI                                   | True         | True        | False  | Direct     | True        |
 | apigateway.cnrm.cloud.google.com              | APIGatewayGateway                               | True         | False       | False  | Terraform  | False       |
 | apigee.cnrm.cloud.google.com                  | ApigeeAddonsConfig                              | True         | False       | False  | Terraform  | False       |
