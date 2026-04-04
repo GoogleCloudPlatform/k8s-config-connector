@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -26,6 +27,15 @@ var IAMDenyPolicyGVK = GroupVersion.WithKind("IAMDenyPolicy")
 type IAMDenyPolicySpec struct {
 	// The IAMDenyPolicy name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// The project that this resource belongs to.
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
+
+	// The folder that this resource belongs to.
+	FolderRef *refsv1beta1.FolderRef `json:"folderRef,omitempty"`
+
+	// The organization that this resource belongs to.
+	OrganizationRef *refsv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
 
 	// // Immutable. The resource name of the `Policy`, which must be unique. Format:
 	// //  `policies/{attachment_point}/denypolicies/{policy_id}`
@@ -84,21 +94,14 @@ type IAMDenyPolicyStatus struct {
 // IAMDenyPolicyObservedState is the state of the IAMDenyPolicy resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.iam.v2.Policy
 type IAMDenyPolicyObservedState struct {
-	// NOTYET: no clear use case?
-	// // Immutable. The globally unique ID of the `Policy`. Assigned automatically when the
-	// //  `Policy` is created.
-	// // +kcc:proto:field=google.iam.v2.Policy.uid
-	// Uid *string `json:"uid,omitempty"`
-
-	// NOTYET: no clear use case?
-	// 	// An opaque tag that identifies the current version of the `Policy`. IAM uses
-	// //  this value to help manage concurrent updates, so they do not cause one
-	// //  update to be overwritten by another.
-	// //
-	// //  If this field is present in a [CreatePolicy][] request, the value is
-	// //  ignored.
-	// // +kcc:proto:field=google.iam.v2.Policy.etag
-	// Etag *string `json:"etag,omitempty"`
+	// An opaque tag that identifies the current version of the `Policy`. IAM uses
+	//  this value to help manage concurrent updates, so they do not cause one
+	//  update to be overwritten by another.
+	//
+	//  If this field is present in a [CreatePolicy][] request, the value is
+	//  ignored.
+	// +kcc:proto:field=google.iam.v2.Policy.etag
+	Etag *string `json:"etag,omitempty"`
 }
 
 // +genclient

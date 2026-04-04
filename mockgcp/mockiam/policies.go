@@ -47,11 +47,20 @@ type IAMV2PoliciesServer struct {
 }
 
 type attachmentPointName struct {
-	Project *projects.ProjectData
+	Project      *projects.ProjectData
+	FolderID     string
+	Organization string
 }
 
 func (n *attachmentPointName) String() string {
-	s := fmt.Sprintf("cloudresourcemanager.googleapis.com/projects/%d", n.Project.Number)
+	var s string
+	if n.Project != nil {
+		s = fmt.Sprintf("cloudresourcemanager.googleapis.com/projects/%d", n.Project.Number)
+	} else if n.FolderID != "" {
+		s = fmt.Sprintf("cloudresourcemanager.googleapis.com/folders/%s", n.FolderID)
+	} else if n.Organization != "" {
+		s = fmt.Sprintf("cloudresourcemanager.googleapis.com/organizations/%s", n.Organization)
+	}
 	return url.PathEscape(s)
 }
 
@@ -68,7 +77,8 @@ func (n *policyName) String() string {
 }
 
 // parseAttachmentPointName parses a string into an attachmentPointName.
-// The expected form is the url-encoding of `cloudresourcemanager/projects/<project-id-or-number>`.
+// The expected form is the url-encoding of `cloudresourcemanager/projects/<project-id-or-number>`,
+// `cloudresourcemanager/folders/<folder-id>`, or `cloudresourcemanager/organizations/<org-id>`.
 func (s *MockService) parseAttachmentPointName(escapedName string) (*attachmentPointName, error) {
 	name, err := url.PathUnescape(escapedName)
 	if err != nil {
@@ -76,15 +86,27 @@ func (s *MockService) parseAttachmentPointName(escapedName string) (*attachmentP
 	}
 
 	tokens := strings.Split(name, "/")
-	if len(tokens) == 3 && tokens[0] == "cloudresourcemanager.googleapis.com" && tokens[1] == "projects" {
-		project, err := s.Projects.GetProjectByIDOrNumber(tokens[2])
-		if err != nil {
-			return nil, err
-		}
+	if len(tokens) == 3 && tokens[0] == "cloudresourcemanager.googleapis.com" {
+		if tokens[1] == "projects" {
+			project, err := s.Projects.GetProjectByIDOrNumber(tokens[2])
+			if err != nil {
+				return nil, err
+			}
 
-		return &attachmentPointName{
-			Project: project,
-		}, nil
+			return &attachmentPointName{
+				Project: project,
+			}, nil
+		}
+		if tokens[1] == "folders" {
+			return &attachmentPointName{
+				FolderID: tokens[2],
+			}, nil
+		}
+		if tokens[1] == "organizations" {
+			return &attachmentPointName{
+				Organization: tokens[2],
+			}, nil
+		}
 	}
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not a valid IAM V2 attachment point", name)
 }
