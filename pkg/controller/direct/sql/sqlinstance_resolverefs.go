@@ -65,21 +65,29 @@ func ResolveSQLInstanceRefs(ctx context.Context, kube client.Reader, obj *krm.SQ
 }
 
 func resolveCryptoKeyRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
-	if obj.Spec.EncryptionKMSCryptoKeyRef == nil {
-		return nil
+	if obj.Spec.EncryptionKMSCryptoKeyRef != nil {
+		if err := resolveKMSCryptoKeyRef(ctx, kube, obj.Namespace, obj.Spec.EncryptionKMSCryptoKeyRef); err != nil {
+			return err
+		}
 	}
+	if obj.Spec.DiskEncryptionConfiguration != nil && obj.Spec.DiskEncryptionConfiguration.KmsKeyRef != nil {
+		if err := resolveKMSCryptoKeyRef(ctx, kube, obj.Namespace, obj.Spec.DiskEncryptionConfiguration.KmsKeyRef); err != nil {
+			return err
+		}
+	}
+	return nil
+}
 
-	keyRef := obj.Spec.EncryptionKMSCryptoKeyRef
-
+func resolveKMSCryptoKeyRef(ctx context.Context, kube client.Reader, namespace string, keyRef *refs.KMSCryptoKeyRef) error {
 	if keyRef.External != "" && keyRef.Name != "" {
-		return fmt.Errorf("cannot specify both spec.encryptionKMSCryptoKeyRef.external and spec.encryptionKMSCryptoKeyRef.name")
+		return fmt.Errorf("cannot specify both external and name")
 	}
 
 	if keyRef.External != "" {
 		return nil
 	} else if keyRef.Name != "" {
 		if keyRef.Namespace == "" {
-			keyRef.Namespace = obj.Namespace
+			keyRef.Namespace = namespace
 		}
 
 		key := types.NamespacedName{
@@ -93,7 +101,7 @@ func resolveCryptoKeyRef(ctx context.Context, kube client.Reader, obj *krm.SQLIn
 			if apierrors.IsNotFound(err) {
 				return k8s.NewReferenceNotFoundError(kmsv1beta1.KMSCryptoKeyGVK, key)
 			}
-			return fmt.Errorf("error reading referenced KMSCryptoKey %v: %w", cryptoKey, err)
+			return fmt.Errorf("error reading referenced KMSCryptoKey %v: %w", key, err)
 		}
 
 		keyLink, _, err := unstructured.NestedString(cryptoKey.Object, "status", "selfLink")
@@ -101,11 +109,11 @@ func resolveCryptoKeyRef(ctx context.Context, kube client.Reader, obj *krm.SQLIn
 			return fmt.Errorf("reading status.selfLink from %v %v/%v: %w", cryptoKey.GroupVersionKind().Kind, cryptoKey.GetNamespace(), cryptoKey.GetName(), err)
 		}
 
-		obj.Spec.EncryptionKMSCryptoKeyRef.External = keyLink
+		keyRef.External = keyLink
 
 		return nil
 	} else {
-		return fmt.Errorf("must specify either spec.encryptionKMSCryptoKeyRef.external or spec.encryptionKMSCryptoKeyRef.name")
+		return fmt.Errorf("must specify either external or name")
 	}
 }
 

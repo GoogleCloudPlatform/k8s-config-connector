@@ -40,7 +40,7 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, actual *api.DatabaseInstance, fiel
 
 	out := &api.DatabaseInstance{
 		DatabaseVersion:             direct.ValueOf(in.Spec.DatabaseVersion),
-		DiskEncryptionConfiguration: InstanceEncryptionKMSCryptoKeyRefKRMToGCP(in.Spec.EncryptionKMSCryptoKeyRef),
+		DiskEncryptionConfiguration: SQLInstanceDiskEncryptionConfigurationKRMToGCP(in.Spec.DiskEncryptionConfiguration, in.Spec.EncryptionKMSCryptoKeyRef),
 		InstanceType:                direct.ValueOf(in.Spec.InstanceType),
 		Kind:                        "sql#instance",
 		MaintenanceVersion:          direct.ValueOf(in.Spec.MaintenanceVersion),
@@ -63,14 +63,33 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, actual *api.DatabaseInstance, fiel
 	return out, nil
 }
 
-func InstanceEncryptionKMSCryptoKeyRefKRMToGCP(in *refs.KMSCryptoKeyRef) *api.DiskEncryptionConfiguration {
-	if in == nil {
+func SQLInstanceDiskEncryptionConfigurationKRMToGCP(in *krm.InstanceDiskEncryptionConfiguration, legacy *refs.KMSCryptoKeyRef) *api.DiskEncryptionConfiguration {
+	if in == nil && legacy == nil {
 		return nil
 	}
 
 	out := &api.DiskEncryptionConfiguration{
-		Kind:       "sql#diskEncryptionConfiguration",
-		KmsKeyName: in.External,
+		Kind: "sql#diskEncryptionConfiguration",
+	}
+
+	if in != nil && in.KmsKeyRef != nil {
+		out.KmsKeyName = in.KmsKeyRef.External
+	} else if legacy != nil {
+		out.KmsKeyName = legacy.External
+	}
+
+	return out
+}
+
+func SQLInstanceDiskEncryptionConfigurationGCPToKRM(in *api.DiskEncryptionConfiguration) *krm.InstanceDiskEncryptionConfiguration {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstanceDiskEncryptionConfiguration{
+		KmsKeyRef: &refs.KMSCryptoKeyRef{
+			External: in.KmsKeyName,
+		},
 	}
 
 	return out
@@ -650,11 +669,12 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 			Labels: in.Settings.UserLabels,
 		},
 		Spec: krm.SQLInstanceSpec{
-			DatabaseVersion:           direct.LazyPtr(in.DatabaseVersion),
-			EncryptionKMSCryptoKeyRef: InstanceEncryptionKMSCryptoKeyRefGCPToKRM(in.DiskEncryptionConfiguration),
-			InstanceType:              direct.LazyPtr(in.InstanceType),
-			MaintenanceVersion:        direct.LazyPtr(in.MaintenanceVersion),
-			MasterInstanceRef:         InstanceMasterInstanceRefGCPToKRM(in.MasterInstanceName),
+			DatabaseVersion:             direct.LazyPtr(in.DatabaseVersion),
+			DiskEncryptionConfiguration: SQLInstanceDiskEncryptionConfigurationGCPToKRM(in.DiskEncryptionConfiguration),
+			EncryptionKMSCryptoKeyRef:   InstanceEncryptionKMSCryptoKeyRefGCPToKRM(in.DiskEncryptionConfiguration),
+			InstanceType:                direct.LazyPtr(in.InstanceType),
+			MaintenanceVersion:          direct.LazyPtr(in.MaintenanceVersion),
+			MasterInstanceRef:           InstanceMasterInstanceRefGCPToKRM(in.MasterInstanceName),
 			// MaxDiskSize is not supported in KRM API.
 			ResourceID: direct.LazyPtr(in.Name),
 			// OnPremisesConfiguration is not supported in KRM API.
