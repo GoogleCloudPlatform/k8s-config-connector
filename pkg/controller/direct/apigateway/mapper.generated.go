@@ -35,12 +35,12 @@ func APIGatewayAPIConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapConte
 	}
 	out := &krmapigatewayv1alpha1.APIGatewayAPIConfigObservedState{}
 	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: Labels
 	// MISSING: GatewayServiceAccount
 	// MISSING: ServiceConfigID
-	// MISSING: State
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
 }
 func APIGatewayAPIConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmapigatewayv1alpha1.APIGatewayAPIConfigObservedState) *pb.ApiConfig {
@@ -49,12 +49,12 @@ func APIGatewayAPIConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext
 	}
 	out := &pb.ApiConfig{}
 	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: Labels
 	// MISSING: GatewayServiceAccount
 	// MISSING: ServiceConfigID
-	// MISSING: State
+	out.State = direct.Enum_ToProto[pb.ApiConfig_State](mapCtx, in.State)
 	return out
 }
 func APIGatewayAPIConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ApiConfig) *krmapigatewayv1alpha1.APIGatewayAPIConfigSpec {
@@ -63,13 +63,10 @@ func APIGatewayAPIConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *p
 	}
 	out := &krmapigatewayv1alpha1.APIGatewayAPIConfigSpec{}
 	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	// MISSING: Labels
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	// MISSING: GatewayServiceAccount
 	// MISSING: ServiceConfigID
-	// MISSING: State
 	out.OpenapiDocuments = direct.Slice_FromProto(mapCtx, in.OpenapiDocuments, APIGatewayAPIConfig_OpenApiDocument_v1alpha1_FromProto)
 	out.GrpcServices = direct.Slice_FromProto(mapCtx, in.GrpcServices, APIGatewayAPIConfig_GrpcServiceDefinition_v1alpha1_FromProto)
 	out.ManagedServiceConfigs = direct.Slice_FromProto(mapCtx, in.ManagedServiceConfigs, APIGatewayAPIConfig_File_v1alpha1_FromProto)
@@ -81,13 +78,10 @@ func APIGatewayAPIConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	}
 	out := &pb.ApiConfig{}
 	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	// MISSING: Labels
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	// MISSING: GatewayServiceAccount
 	// MISSING: ServiceConfigID
-	// MISSING: State
 	out.OpenapiDocuments = direct.Slice_ToProto(mapCtx, in.OpenapiDocuments, APIGatewayAPIConfig_OpenApiDocument_v1alpha1_ToProto)
 	out.GrpcServices = direct.Slice_ToProto(mapCtx, in.GrpcServices, APIGatewayAPIConfig_GrpcServiceDefinition_v1alpha1_ToProto)
 	out.ManagedServiceConfigs = direct.Slice_ToProto(mapCtx, in.ManagedServiceConfigs, APIGatewayAPIConfig_File_v1alpha1_ToProto)

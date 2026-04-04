@@ -132,6 +132,14 @@ type APIGatewayAPIConfigStatus struct {
 // APIGatewayAPIConfigObservedState is the state of the APIGatewayAPIConfig resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.apigateway.v1.ApiConfig
 type APIGatewayAPIConfigObservedState struct {
+	// Output only. Created time.
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Updated time.
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. State of the API Config.
+	State *string `json:"state,omitempty"`
 }
 
 // +genclient

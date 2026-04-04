@@ -252,6 +252,16 @@ spec:
               observedState:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Created time.
+                    type: string
+                  state:
+                    description: Output only. State of the API Config.
+                    type: string
+                  updateTime:
+                    description: Output only. Updated time.
+                    type: string
                 type: object
               serviceConfigId:
                 description: The ID of the associated Service Config.
