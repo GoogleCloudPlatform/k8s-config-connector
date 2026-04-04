@@ -17,30 +17,49 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+var BackupVaultIdentityFormat = gcpurls.Template[BackupVaultIdentity]("netapp.googleapis.com", "projects/{project}/locations/{location}/backupVaults/{backupVault}")
 
 // BackupVaultIdentity defines the resource reference to NetAppBackupVault, which "External" field
 // holds the GCP identifier for the KRM object.
 type BackupVaultIdentity struct {
-	parent *BackupVaultParent
-	id     string
+	Project     string
+	Location    string
+	BackupVault string
 }
 
 func (i *BackupVaultIdentity) String() string {
-	return i.parent.String() + "/backupvaults/" + i.id
+	return BackupVaultIdentityFormat.ToString(*i)
 }
 
 func (i *BackupVaultIdentity) ID() string {
-	return i.id
+	return i.BackupVault
 }
 
 func (i *BackupVaultIdentity) Parent() *BackupVaultParent {
-	return i.parent
+	return &BackupVaultParent{
+		ProjectID: i.Project,
+		Location:  i.Location,
+	}
+}
+
+func (i *BackupVaultIdentity) FromExternal(ref string) error {
+	parsed, match, err := BackupVaultIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of BackupVault external=%q was not known (use %s): %w", ref, BackupVaultIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of BackupVault external=%q was not known (use %s)", ref, BackupVaultIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
 }
 
 type BackupVaultParent struct {
@@ -79,39 +98,32 @@ func NewBackupVaultIdentity(ctx context.Context, reader client.Reader, obj *NetA
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseBackupVaultExternal(externalRef)
-		if err != nil {
+		actual := &BackupVaultIdentity{}
+		if err := actual.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		if actual.Project != projectID {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actual.Project, projectID)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actual.Location != location {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actual.Location, location)
 		}
-		if actualResourceID != resourceID {
+		if actual.BackupVault != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+				resourceID, actual.BackupVault)
 		}
 	}
 	return &BackupVaultIdentity{
-		parent: &BackupVaultParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
+		Project:     projectID,
+		Location:    location,
+		BackupVault: resourceID,
 	}, nil
 }
 
 func ParseBackupVaultExternal(external string) (parent *BackupVaultParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "backupvaults" {
-		return nil, "", fmt.Errorf("format of NetAppBackupVault external=%q was not known (use projects/{{projectID}}/locations/{{location}}/backupvaults/{{backupvaultID}})", external)
+	var i BackupVaultIdentity
+	if err := i.FromExternal(external); err != nil {
+		return nil, "", err
 	}
-	parent = &BackupVaultParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	return i.Parent(), i.ID(), nil
 }
