@@ -44,30 +44,6 @@ func AlternatePolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.AlternatePol
 	out.Spec = PolicySpec_ToProto(mapCtx, in.Spec)
 	return out
 }
-func PolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.PolicySpec) *krm.PolicySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PolicySpec{}
-	// MISSING: Etag
-	// MISSING: UpdateTime
-	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, PolicySpec_PolicyRule_FromProto)
-	out.InheritFromParent = direct.LazyPtr(in.GetInheritFromParent())
-	out.Reset = direct.LazyPtr(in.GetReset_())
-	return out
-}
-func PolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.PolicySpec) *pb.PolicySpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PolicySpec{}
-	// MISSING: Etag
-	// MISSING: UpdateTime
-	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, PolicySpec_PolicyRule_ToProto)
-	out.InheritFromParent = direct.ValueOf(in.InheritFromParent)
-	out.Reset_ = direct.ValueOf(in.Reset)
-	return out
-}
 func PolicySpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PolicySpec) *krm.PolicySpecObservedState {
 	if in == nil {
 		return nil
