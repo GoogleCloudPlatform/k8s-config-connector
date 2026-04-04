@@ -1,0 +1,15 @@
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: ResourceManagerPolicy
+metadata:
+  name: projectmultiplerules-${uniqueId}
+spec:
+  projectRef:
+    name: orgpolicy-${uniqueId}
+  constraint: constraints/compute.disableSerialPortAccess
+  rules:
+  - enforce: true
+    condition:
+      description: "Test condition"
+      expression: "resource.matchTag('123456789/environment', 'prod')"
+      title: "Prod Only"
+  - enforce: false

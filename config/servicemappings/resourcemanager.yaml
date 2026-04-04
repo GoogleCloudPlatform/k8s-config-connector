@@ -71,48 +71,6 @@ spec:
           key: folderRef
         - type: organization
           key: organizationRef
-    - name: google_org_policy
-      kind: ResourceManagerPolicy
-      # Due to this being a custom KCC-only resource, the ID template is
-      # in a non-standard format to more easily allow for TF resource
-      # multiplexing.
-      idTemplate: "{{project?}}#{{folder?}}#{{org_id?}}#{{constraint}}"
-      #  This TF resource has a custom crafted import ID that has an arbitrary format that is not able to be mapped
-      # cleanly to a URI, due to being a combination of multiple underlying resources.
-      idTemplateCanBeUsedToMatchResourceName: false
-      resourceAvailableInAssetInventory: false
-      resourceReferences:
-        - tfField: project
-          key: projectRef
-          description: |-
-            The project on which to configure the constraint. Only one of
-            projectRef, folderRef, or organizationRef may be specified.
-          gvk:
-            group: resourcemanager.cnrm.cloud.google.com
-            version: v1beta1
-            kind: Project
-          parent: true
-        - tfField: folder
-          key: folderRef
-          description: |-
-            The folder on which to configure the constraint. Only one of
-            projectRef, folderRef, or organizationRef may be specified.
-          gvk:
-            group: resourcemanager.cnrm.cloud.google.com
-            version: v1beta1
-            kind: Folder
-          targetField: name
-          parent: true
-        - tfField: org_id
-          key: organizationRef
-          description: |-
-            The organization on which to configure the constraint. Only one of
-            projectRef, folderRef, or organizationRef may be specified.
-          gvk:
-            group: resourcemanager.cnrm.cloud.google.com
-            version: v1beta1
-            kind: Organization
-          parent: true
     - name: google_project
       kind: Project
       serverGeneratedIDField: number
