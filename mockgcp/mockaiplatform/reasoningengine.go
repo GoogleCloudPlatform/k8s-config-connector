@@ -171,7 +171,7 @@ type ReasoningEngineName struct {
 }
 
 func (n *ReasoningEngineName) String() string {
-	return fmt.Sprintf("projects/%s/locations/%s/reasoningEngines/%s", n.Project.ID, n.Location, n.ReasoningEngineID)
+	return fmt.Sprintf("projects/%d/locations/%s/reasoningEngines/%s", n.Project.Number, n.Location, n.ReasoningEngineID)
 }
 
 // parseReasoningEngineName parses a string into a ReasoningEngineName.

@@ -516,6 +516,11 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 			if n >= 2 {
 				typeName := tokens[len(tokens)-2]
 				switch typeName {
+				case "reasoningEngines":
+					reasoningEngineId := tokens[len(tokens)-1]
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, reasoningEngineId, "${reasoningEngineId}")
+					})
 				case "contacts":
 					// "projects/${projectNumber}/contacts/${contactId}"
 					needle := "contacts/" + tokens[len(tokens)-1]
