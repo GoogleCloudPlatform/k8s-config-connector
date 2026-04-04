@@ -15,6 +15,7 @@
 package resourcemanager
 
 import (
+	pb "cloud.google.com/go/orgpolicy/apiv2/orgpolicypb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/genproto/googleapis/type/expr"
@@ -41,5 +42,27 @@ func Expr_ToProto(mapCtx *direct.MapContext, in *krm.Expr) *expr.Expr {
 	out.Title = direct.ValueOf(in.Title)
 	out.Description = direct.ValueOf(in.Description)
 	out.Location = direct.ValueOf(in.Location)
+	return out
+}
+
+func PolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.PolicySpec) *krm.PolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PolicySpec{}
+	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, PolicySpec_PolicyRule_FromProto)
+	out.InheritFromParent = direct.LazyPtr(in.GetInheritFromParent())
+	out.Reset = direct.LazyPtr(in.GetReset_())
+	return out
+}
+
+func PolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.PolicySpec) *pb.PolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PolicySpec{}
+	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, PolicySpec_PolicyRule_ToProto)
+	out.InheritFromParent = direct.ValueOf(in.InheritFromParent)
+	out.Reset_ = direct.ValueOf(in.Reset)
 	return out
 }
