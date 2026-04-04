@@ -32,14 +32,6 @@ Use `gh` to perform your duties.
 This is the criteria to identify the resource Group and Kind that need to be migrated.
 
 Finding resources that meet the following criteria:
-1. Run `./dev/migration-tracker/list_top_unmigrated.py -n 20` to get a topologically sorted list of up to 20 unmigrated resources (output is in `<Group>/<Kind>` format).
-2. The resource CRD must be present in `config/crds/resources` directory.
-3. Candidate resources can be identified by the presence of the label `cnrm.cloud.google.com/dcl2crd: "true"` OR `cnrm.cloud.google.com/tf2crd: "true"` in their metadata.
-4. The resource to be migrated should be in `beta` (`spec.versions[].name` is `v1beta1`).
-5. The resource should NOT have a `types.go` file generated yet in `apis/<GROUP>/v1beta1/`.
-
-**Dependency Verification:**
-The output of `./dev/migration-tracker/list_top_unmigrated.py` is already topologically sorted. Before picking a resource from the list, you must ensure that all its dependencies (resources appearing before it in the list) already have their `types.go` files generated. If a dependency is missing its `types.go` file, you should skip the current resource and consider the dependency for migration instead.
 
 Identify the Group and Kind of the resource that meets the above criteria.
 
@@ -47,23 +39,25 @@ Identify the Group and Kind of the resource that meets the above criteria.
 Use gh cli tool to create github issue.
 In a single run create at most one issue to avoid overwhelming the team.
 
-1. Run `./dev/migration-tracker/list_top_unmigrated.py -n 20` to get the prioritized list of resource Groups and Kinds.
+1. Run `./dev/migration-tracker/list_top_unmigrated.py -n 20` to get a topologically sorted list of up to 20 unmigrated resources (output is in `<Group>/<Kind>` format).
 2. Iterate through the output list.
 3. For each Group and Kind:
-    - Find the corresponding CRD file in `config/crds/resources`.
-    - Check if it is a migration candidate (DCL or TF, Beta version).
+    - Find the corresponding CRD file in `config/crds/resources`. (if not present skip this resource)
+    - Check the following to identidy if it is a migration candidate
+       - presence of the label `cnrm.cloud.google.com/dcl2crd: "true"` OR `cnrm.cloud.google.com/tf2crd: "true"` in the CRD metadata.
+       - The CRD for the resource to be migrated should have `beta` version (`spec.versions[].name` has `v1beta1`).
+       - The resource should NOT have a `types.go` file generated yet in `apis/<GROUP>/v1beta1/`.
     - If it is a candidate:
-        - Check if `apis/<GROUP>/v1beta1/*_types.go` exists.
-        - If it does NOT exist:
-            - This is a potential candidate. Verify that all resources preceding it in the list that are KCC resources have their `types.go` files.
-            - If dependencies are satisfied, pick this resource.
-            - If dependencies are NOT satisfied, skip this resource (you will eventually find the unsatisfied dependency as you continue or restart the search).
+        - This is a potential candidate. Verify that all resources preceding it in the list that are KCC resources have their `types.go` files.
+        - If dependencies are satisfied, pick this resource.
+        - If dependencies are NOT satisfied, skip this resource (you will eventually find the unsatisfied dependency as you continue or restart the search).
 4. For the identified Group and Kind, check if an issue already exists (open or closed) and create a new one if not.
 5. If an issue already exists for that Group and Kind, inject the issue labels if they dont exist.
 6. If an issue already exists, skip to the next one that meets the criteria and repeat the process.
 The issue should be marked as a subtask of the main epic for the migration effort: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/5954
 If more than 10 pending issues already exist for this task, do not create new issues to avoid overwhelming the team. Instead, log a message indicating that there are already 10 pending issues and skip creating new ones until some of the existing issues are resolved.
 Created issues should be clear and actionable, providing enough context for developers to understand what needs to be done.
+
 IMPORTANT:
 * The created issue must be an subtask of the main epic: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/5954
 * Before creating an issue for a resource, check if an issue already exists (open or closed) to avoid duplicates.
@@ -94,8 +88,8 @@ Currently, `DataCatalogPolicyTag` is managed by the Terraform controller (marked
 
 ### Instructions
 
-1.  **Create a generate.sh**:
-    Create `apis/datacatalog/v1beta1/generate.sh` which includes `DataCatalogPolicyTag`.
+- [ ] 1.  **Create a generate.sh**:
+    Create or append to `apis/datacatalog/v1beta1/generate.sh` which includes `DataCatalogPolicyTag`.
     It likely maps to something like `google.cloud.datacatalog.v1`.
     Example:
     ```bash
@@ -111,28 +105,27 @@ Currently, `DataCatalogPolicyTag` is managed by the Terraform controller (marked
       --include-skipped-output
     ```
 
-2.  Set the write permission on the new `apis/datacatalog/v1beta1/generate.sh` file. You should do this by running both `chmod +x apis/datacatalog/v1beta1/generate.sh` and `git add --chmod=+x apis/datacatalog/v1beta1/generate.sh`.
+ - [ ] 2.  Set the write permission on the new `apis/datacatalog/v1beta1/generate.sh` file. You should do this by running both `chmod +x apis/datacatalog/v1beta1/generate.sh` and `git add --chmod=+x apis/datacatalog/v1beta1/generate.sh`.
 
-3.  **Generate Scaffolding**:
+ - [ ] 3.  **Generate Scaffolding**:
     Run `apis/datacatalog/v1beta1/generate.sh`. This should create `apis/datacatalog/v1beta1/policytag_types.go`.
 
-4.  **Iterate on Types**:
+- [ ] 4. **Iterate on Types**:
     Validate the generated CRD by running `./dev/tasks/diff-crds --base master`. This tool prints any differences between the current branch and the master branch for the generated CRD.
     Modify `apis/datacatalog/v1beta1/policytag_types.go` until the CRD matches the existing one. You should aim to minimize or eliminate any diffs detected by the tool. If diffs are found, you may need to add back missing fields or remove incorrectly added fields.
 
-    **Acceptance Criteria:**
+    **Critical Acceptance Criteria:**
     - Running `./dev/tasks/diff-crds --base master` should not show differences (or minimal acceptable ones like descriptions).
-    - Ensure that running the check_crd_equivalence MCP on the CRD should return EQUIVALENT.
     - Changes to the schema (fields added/removed) are NOT acceptable.
 
-5.  **Copyright Headers**:
+- [ ] 5. **Copyright Headers**:
     Ensure that new files have the correct copyright header:
     ```go
     // Copyright 2026 Google LLC
     ```
     Please do not change the copyright on existing files.
 
-6.  **Labels**:
+- [ ] 6. **Labels**:
     Ensure the controller-runtime annotations match the existing CRD labels, including:
     ```go
     // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
@@ -142,10 +135,10 @@ Currently, `DataCatalogPolicyTag` is managed by the Terraform controller (marked
     ```
     The goal is to maintain these annotations, not add an annotation if it is missing.
 
-7.  **Status**:
-    `status.observedGeneration` should be an `*int64`.
+- [ ] 7. **Status**:
+    `status.observedGeneration` should be an `int64`.
 
-8. **Generate Mappers**:
+- [ ] 8. **Generate Mappers**:
    - Running `dev/tasks/generate-types-and-mappers` will generate the mapper code once the `apis/datacatalog/v1beta1/policytag_types.go` file is generating an equivalent CRD.
    - Run `make all-binary` to ensure the generated mapper code compiles. Please fix any issue discovered by this compilation.
 
