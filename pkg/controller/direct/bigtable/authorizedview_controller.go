@@ -26,6 +26,7 @@ import (
 
 	adminpb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	"google.golang.org/api/option"
+	gtransport "google.golang.org/api/transport/grpc"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -52,7 +53,8 @@ func (m *modelAuthorizedView) client(ctx context.Context) (adminpb.BigtableTable
 	if err != nil {
 		return nil, fmt.Errorf("building BigtableAuthorizedView client options: %w", err)
 	}
-	conn, err := m.config.GRPCConnection(ctx, "bigtableadmin.googleapis.com", opts...)
+	opts = append(opts, option.WithEndpoint("bigtableadmin.googleapis.com:443"))
+	conn, err := gtransport.Dial(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building BigtableAuthorizedView connection: %w", err)
 	}
@@ -131,17 +133,23 @@ func (a *AuthorizedViewAdapter) Create(ctx context.Context, createOp *directbase
 		AuthorizedViewId: a.id.ID(),
 		AuthorizedView:   proto,
 	}
-	created, err := a.gcpClient.CreateAuthorizedView(ctx, req)
+	_, err := a.gcpClient.CreateAuthorizedView(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating BigtableAuthorizedView %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created BigtableAuthorizedView", "name", a.id)
 
 	status := &krm.BigtableAuthorizedViewStatus{}
-	status.ExternalRef = direct.LazyPtr(created.GetName())
-	status.ObservedState = BigtableAuthorizedViewObservedState_v1beta1_FromProto(mapCtx, created)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+
+	reqGet := &adminpb.GetAuthorizedViewRequest{
+		Name: a.id.String(),
+	}
+	if created, err := a.gcpClient.GetAuthorizedView(ctx, reqGet); err == nil {
+		status.ObservedState = BigtableAuthorizedViewObservedState_v1beta1_FromProto(mapCtx, created)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
 	}
 	if err := createOp.UpdateStatus(ctx, status, nil); err != nil {
 		return err
@@ -162,10 +170,10 @@ func (a *AuthorizedViewAdapter) Update(ctx context.Context, updateOp *directbase
 
 	updateMask := &fieldmaskpb.FieldMask{}
 
-	if !direct.IsNil(a.desired.Spec.SubsetView) {
+	if a.desired.Spec.SubsetView != nil {
 		updateMask.Paths = append(updateMask.Paths, "subset_view")
 	}
-	if !direct.IsNil(a.desired.Spec.DeletionProtection) {
+	if a.desired.Spec.DeletionProtection != nil {
 		updateMask.Paths = append(updateMask.Paths, "deletion_protection")
 	}
 
@@ -179,17 +187,23 @@ func (a *AuthorizedViewAdapter) Update(ctx context.Context, updateOp *directbase
 		AuthorizedView: desired,
 		UpdateMask:     updateMask,
 	}
-	updated, err := a.gcpClient.UpdateAuthorizedView(ctx, req)
+	_, err := a.gcpClient.UpdateAuthorizedView(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating BigtableAuthorizedView %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully updated BigtableAuthorizedView", "name", a.id)
 
 	status := &krm.BigtableAuthorizedViewStatus{}
-	status.ExternalRef = direct.LazyPtr(updated.GetName())
-	status.ObservedState = BigtableAuthorizedViewObservedState_v1beta1_FromProto(mapCtx, updated)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+
+	reqGet := &adminpb.GetAuthorizedViewRequest{
+		Name: a.id.String(),
+	}
+	if updated, err := a.gcpClient.GetAuthorizedView(ctx, reqGet); err == nil {
+		status.ObservedState = BigtableAuthorizedViewObservedState_v1beta1_FromProto(mapCtx, updated)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
 	}
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
@@ -205,7 +219,7 @@ func (a *AuthorizedViewAdapter) Export(ctx context.Context) (*unstructured.Unstr
 	}
 
 	// Parent references
-	spec.InstanceRef = krm.InstanceRef{External: a.id.Parent().Parent().Id}
+	spec.InstanceRef = krm.InstanceRef{External: a.id.Parent().Parent.Id}
 	spec.TableRef = krm.TableRef{External: a.id.Parent().String()}
 
 	obj := &krm.BigtableAuthorizedView{}
@@ -228,7 +242,7 @@ func (a *AuthorizedViewAdapter) Delete(ctx context.Context, deleteOp *directbase
 	req := &adminpb.DeleteAuthorizedViewRequest{
 		Name: a.id.String(),
 	}
-	err := a.gcpClient.DeleteAuthorizedView(ctx, req)
+	_, err := a.gcpClient.DeleteAuthorizedView(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return true, nil

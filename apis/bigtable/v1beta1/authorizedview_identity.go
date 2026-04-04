@@ -35,6 +35,10 @@ func (i *AuthorizedViewIdentity) String() string {
 	return i.parent.String() + "/authorizedViews/" + i.id
 }
 
+func (i *AuthorizedViewIdentity) Parent() *TableIdentity {
+	return i.parent
+}
+
 func (i *AuthorizedViewIdentity) ID() string {
 	return i.id
 }
