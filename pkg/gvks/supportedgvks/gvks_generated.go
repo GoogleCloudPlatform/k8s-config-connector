@@ -2169,14 +2169,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 		DCL:       false,
 	},
 	{
-		Group:   "resourcemanager.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ResourceManagerPolicy",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
 		Group:   "run.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "RunJob",
