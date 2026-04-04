@@ -203,6 +203,8 @@
 | dataflow.cnrm.cloud.google.com                | DataflowFlexTemplateJob                         | False        | True        | False  | Terraform  | True        |
 | dataflow.cnrm.cloud.google.com                | DataflowJob                                     | False        | True        | False  | Terraform  | False       |
 | dataform.cnrm.cloud.google.com                | DataformRepository                              | True         | True        | False  | Direct     | True        |
+| dataform.cnrm.cloud.google.com                | DataformRepositoryReleaseConfig                 | False        | True        | False  | Direct     | True        |
+| dataform.cnrm.cloud.google.com                | DataformRepositoryWorkflowConfig                | False        | True        | False  | Direct     | True        |
 | datafusion.cnrm.cloud.google.com              | DataFusionInstance                              | False        | True        | False  | DCL        | False       |
 | dataplex.cnrm.cloud.google.com                | DataplexEntryGroup                              | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                | DataplexEntryType                               | True         | False       | False  | Direct     | True        |

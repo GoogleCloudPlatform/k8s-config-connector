@@ -1,0 +1,14 @@
+apiVersion: dataform.cnrm.cloud.google.com/v1beta1
+kind: DataformRepositoryReleaseConfig
+metadata:
+  name: dataformrepositoryreleaseconfig-sample
+spec:
+  repositoryRef:
+    name: dataformrepository-sample
+  gitCommitish: main
+  cronSchedule: "0 0 * * *"
+  timeZone: "UTC"
+  codeCompilationConfig:
+    defaultDatabase: ${PROJECT_ID?}
+    defaultSchema: dataform
+    defaultLocation: us-central1
