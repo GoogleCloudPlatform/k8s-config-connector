@@ -404,6 +404,11 @@ func (in *AlertpolicyDocumentation) DeepCopyInto(out *AlertpolicyDocumentation) 
 		*out = new(string)
 		**out = **in
 	}
+	if in.Subject != nil {
+		in, out := &in.Subject, &out.Subject
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 

@@ -574,6 +574,10 @@ type AlertpolicyDocumentation struct {
 	"text/markdown" is supported. */
 	// +optional
 	MimeType *string `json:"mimeType,omitempty"`
+
+	/* The subject line of the notification. The subject line may not exceed 255 Unicode characters and may not exceed 512 bytes when encoded in UTF-8 format, whichever is smaller. */
+	// +optional
+	Subject *string `json:"subject,omitempty"`
 }
 
 type AlertpolicyForecastOptions struct {
