@@ -112,6 +112,9 @@ func KRMResourceToTFResourceConfigFull(r *Resource, c client.Client, smLoader *s
 			if val == "" {
 				return nil, nil, fmt.Errorf("the value for directive '%v' must not be empty", key)
 			}
+			if _, ok := r.TFResource.Schema[d]; !ok {
+				continue
+			}
 			if err := setValue(config, d, val); err != nil {
 				return nil, nil, fmt.Errorf("error mapping directive '%v': %w", d, err)
 			}
