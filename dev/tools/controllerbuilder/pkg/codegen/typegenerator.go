@@ -279,14 +279,32 @@ func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool)
 	if field.IsMap() {
 		entryMsg := field.Message()
 		keyKind := entryMsg.Fields().ByName("key").Kind()
-		valueKind := entryMsg.Fields().ByName("value").Kind()
-		if keyKind == protoreflect.StringKind && valueKind == protoreflect.StringKind {
-			return "map[string]string", nil
-		} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
-			return "map[string]int64", nil
-		} else {
-			return "", fmt.Errorf("unsupported map type with key %v and value %v", keyKind, valueKind)
+		valueField := entryMsg.Fields().ByName("value")
+		valueKind := valueField.Kind()
+		if keyKind == protoreflect.StringKind {
+			var valueGoType string
+			switch valueKind {
+			case protoreflect.MessageKind:
+				valueMsg := valueField.Message()
+				if isTransitiveOutput {
+					valueGoType = goNameForOutputProtoMessage(valueMsg)
+				} else {
+					valueGoType = GoNameForProtoMessage(valueMsg)
+				}
+				// If it's a real message (not a special mapped one), add '*'
+				if _, ok := protoMessagesNotMappedToGoStruct[string(valueMsg.FullName())]; !ok {
+					valueGoType = "*" + valueGoType
+				}
+			case protoreflect.EnumKind:
+				valueGoType = "string"
+			default:
+				valueGoType = goTypeForProtoKind(valueKind)
+			}
+			if valueGoType != "" {
+				return "map[string]" + valueGoType, nil
+			}
 		}
+		return "", fmt.Errorf("unsupported map type with key kind %v and value kind %v", keyKind, valueKind)
 	}
 
 	var goType string
