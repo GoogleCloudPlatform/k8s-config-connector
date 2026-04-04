@@ -912,22 +912,25 @@ limited capacity might not show this documentation.`,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"content": {
-							Type:     schema.TypeString,
-							Optional: true,
-							Description: `The text of the documentation, interpreted according to mimeType.
+											Type:     schema.TypeString,
+											Optional: true,
+											Description: `The text of the documentation, interpreted according to mimeType.
 The content may not exceed 8,192 Unicode characters and may not
 exceed more than 10,240 bytes when encoded in UTF-8 format,
 whichever is smaller.`,
-							AtLeastOneOf: []string{"documentation.0.content", "documentation.0.mime_type"},
-						},
-						"mime_type": {
-							Type:     schema.TypeString,
-							Optional: true,
-							Description: `The format of the content field. Presently, only the value
+										},
+										"mime_type": {
+											Type:     schema.TypeString,
+											Optional: true,
+											Description: `The format of the content field. Presently, only the value
 "text/markdown" is supported.`,
-							Default:      "text/markdown",
-							AtLeastOneOf: []string{"documentation.0.content", "documentation.0.mime_type"},
-						},
+											Default:      "text/markdown",
+										},
+										"subject": {
+											Type:     schema.TypeString,
+											Optional: true,
+											Description: `The subject line of the notification. The subject line may not exceed 255 Unicode characters and may not exceed 512 bytes when encoded in UTF-8 format, whichever is smaller.`,
+										},
 					},
 				},
 			},
@@ -2019,6 +2022,8 @@ func flattenMonitoringAlertPolicyDocumentation(v interface{}, d *schema.Resource
 		flattenMonitoringAlertPolicyDocumentationContent(original["content"], d, config)
 	transformed["mime_type"] =
 		flattenMonitoringAlertPolicyDocumentationMimeType(original["mimeType"], d, config)
+	transformed["subject"] =
+		flattenMonitoringAlertPolicyDocumentationSubject(original["subject"], d, config)
 	return []interface{}{transformed}
 }
 func flattenMonitoringAlertPolicyDocumentationContent(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
@@ -2026,6 +2031,10 @@ func flattenMonitoringAlertPolicyDocumentationContent(v interface{}, d *schema.R
 }
 
 func flattenMonitoringAlertPolicyDocumentationMimeType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenMonitoringAlertPolicyDocumentationSubject(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
@@ -2886,6 +2895,13 @@ func expandMonitoringAlertPolicyDocumentation(v interface{}, d tpgresource.Terra
 		transformed["mimeType"] = transformedMimeType
 	}
 
+	transformedSubject, err := expandMonitoringAlertPolicyDocumentationSubject(original["subject"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedSubject); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["subject"] = transformedSubject
+	}
+
 	return transformed, nil
 }
 
@@ -2894,6 +2910,10 @@ func expandMonitoringAlertPolicyDocumentationContent(v interface{}, d tpgresourc
 }
 
 func expandMonitoringAlertPolicyDocumentationMimeType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandMonitoringAlertPolicyDocumentationSubject(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
