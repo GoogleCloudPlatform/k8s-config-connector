@@ -157,7 +157,14 @@ func (a *ReasoningEngineAdapter) Create(ctx context.Context, createOp *directbas
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = direct.LazyPtr(created.Name)
+
+	_, actualResourceID, err := krm.ParseReasoningEngineExternal(created.Name)
+	if err != nil {
+		return fmt.Errorf("parsing created ReasoningEngine name: %w", err)
+	}
+	externalRef := fmt.Sprintf("%s/reasoningEngines/%s", a.id.Parent().String(), actualResourceID)
+	status.ExternalRef = direct.LazyPtr(externalRef)
+
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
