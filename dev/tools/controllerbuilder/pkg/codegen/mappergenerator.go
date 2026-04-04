@@ -442,6 +442,12 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					keyKind := entryMsg.Fields().ByName("key").Kind()
 					valueField := entryMsg.Fields().ByName("value")
 					valueKind := valueField.Kind()
+
+					if !strings.HasPrefix(krmField.Type, "map[") {
+						fmt.Fprintf(out, "\t// TODO: map type %v %v for field %v\n", keyKind, valueKind, krmFieldName)
+						continue
+					}
+
 					if keyKind == protoreflect.StringKind {
 						switch valueKind {
 						case protoreflect.MessageKind:
@@ -760,6 +766,12 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					keyKind := entryMsg.Fields().ByName("key").Kind()
 					valueField := entryMsg.Fields().ByName("value")
 					valueKind := valueField.Kind()
+
+					if !strings.HasPrefix(krmField.Type, "map[") {
+						fmt.Fprintf(out, "\t// TODO: map type %v %v for field %v\n", keyKind, valueKind, krmFieldName)
+						continue
+					}
+
 					if keyKind == protoreflect.StringKind {
 						switch valueKind {
 						case protoreflect.MessageKind:

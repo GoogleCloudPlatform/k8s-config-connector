@@ -192,7 +192,7 @@ func ArtifactRegistryRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: UpdateTime
 	// MISSING: KMSKeyName
 	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
-	out.CleanupPolicies = direct.Map_FromProto(mapCtx, in.CleanupPolicies, CleanupPolicy_FromProto)
+	// TODO: map type string message for field CleanupPolicies
 	// MISSING: SizeBytes
 	// MISSING: SatisfiesPzs
 	out.CleanupPolicyDryRun = direct.LazyPtr(in.GetCleanupPolicyDryRun())
@@ -227,7 +227,7 @@ func ArtifactRegistryRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krm.A
 	// MISSING: UpdateTime
 	// MISSING: KMSKeyName
 	out.Mode = direct.Enum_ToProto[pb.Repository_Mode](mapCtx, in.Mode)
-	out.CleanupPolicies = direct.Map_ToProto(mapCtx, in.CleanupPolicies, CleanupPolicy_ToProto)
+	// TODO: map type string message for field CleanupPolicies
 	// MISSING: SizeBytes
 	// MISSING: SatisfiesPzs
 	out.CleanupPolicyDryRun = direct.ValueOf(in.CleanupPolicyDryRun)
