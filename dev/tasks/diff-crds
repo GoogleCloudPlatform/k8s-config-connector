@@ -23,10 +23,21 @@ def main():
     parser = argparse.ArgumentParser(description="Diff CRDs against a base revision.")
     parser.add_argument(
         "--base",
-        default="upstream/master",
-        help="The base revision to compare against (default: upstream/master)",
+        default="",
+        help="The base revision to compare against",
     )
     args = parser.parse_args()
+
+    base = args.base
+    if not base:
+        # Try upstream/master, then origin/master, then master, then HEAD~1
+        for candidate in ["upstream/master", "origin/master", "master", "HEAD~1"]:
+            if subprocess.call(["git", "rev-parse", "--verify", candidate], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) == 0:
+                base = candidate
+                break
+        if not base:
+            print("Error: Could not determine base revision to compare against.", file=sys.stderr)
+            sys.exit(1)
 
     # Get repo root
     try:
@@ -42,7 +53,7 @@ def main():
     # Get changed files safely handling spaces using -z
     try:
         diff_output = subprocess.check_output(
-            ["git", "diff", "-z", "--name-only", args.base, "--", "config/crds"],
+            ["git", "diff", "-z", "--name-only", base, "--", "config/crds"],
             text=True,
         )
     except subprocess.CalledProcessError as e:
@@ -59,7 +70,7 @@ def main():
         # Check if file exists in base
         if (
             subprocess.call(
-                ["git", "cat-file", "-e", f"{args.base}:{crd_file}"],
+                ["git", "cat-file", "-e", f"{base}:{crd_file}"],
                 stderr=subprocess.DEVNULL,
             )
             != 0
@@ -68,9 +79,15 @@ def main():
             print(f"Added {crd_file}")
             continue
 
+        # Check if file was deleted
+        if not os.path.exists(crd_file):
+            print("***")
+            print(f"Deleted {crd_file}")
+            continue
+
         # Pipeline: git show base:${CRD_FILE} | go run ./dev/tools/crd-to-simple-schema ...
 
-        git_show_cmd = ["git", "show", f"{args.base}:{crd_file}"]
+        git_show_cmd = ["git", "show", f"{base}:{crd_file}"]
 
         go_run_cmd = [
             "go",
@@ -107,8 +124,11 @@ def main():
 
             if stdout_data:
                 print("***")
-                print(f"Diffs for CRD: {crd_file}")
+                print(f"schema-diffs for CRD: {crd_file}")
                 print(stdout_data, end="")
+            else:
+                print("***")
+                print(f"No schema-diffs for CRD: {crd_file}")
 
         except Exception as e:
             print(f"Error running comparison for {crd_file}: {e}", file=sys.stderr)

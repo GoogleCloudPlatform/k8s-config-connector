@@ -138,6 +138,13 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: actions/checkout@v4
 EOF
 
+    if [[ "${name}" == "diff-crds" ]]; then
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+        with:
+          fetch-depth: 0
+EOF
+    fi
+
     if [[ "${name}" == "unit-tests" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - name: Free up disk space
