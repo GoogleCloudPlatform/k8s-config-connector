@@ -29,6 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/gsakeysecretgenerator"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iapclientsecretgenerator"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policy"
@@ -64,6 +65,9 @@ import (
 
 const serviceAccountKeyAPIGroup = "iam.cnrm.cloud.google.com"
 const serviceAccountKeyKind = "IAMServiceAccountKey"
+
+const iapClientAPIGroup = "iap.cnrm.cloud.google.com"
+const iapClientKind = "IAPIdentityAwareProxyClient"
 
 type RegistrationControllerOptions struct {
 	ControllerName string
@@ -303,6 +307,10 @@ func isServiceAccountKeyCRD(crd *apiextensions.CustomResourceDefinition) bool {
 	return crd.Spec.Group == serviceAccountKeyAPIGroup && crd.Spec.Names.Kind == serviceAccountKeyKind
 }
 
+func isIAPIdentityAwareProxyClientCRD(crd *apiextensions.CustomResourceDefinition) bool {
+	return crd.Spec.Group == iapClientAPIGroup && crd.Spec.Names.Kind == iapClientKind
+}
+
 func registerDefaultControllers(ctx context.Context, config *config.ControllerConfig, scopedNamespace string, cccSettings *operatorv1beta1.ResourceSettings, ccSettings *operatorv1beta1.ResourceSettings) registrationFunc { //nolint:revive
 	return func(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
 		return registerDefaultController(ctx, r, config, crd, gvk, scopedNamespace, cccSettings, ccSettings)
@@ -361,6 +369,14 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 			logger.Info("registering the GSA-Key-to-Secret generation controller")
 			if err := gsakeysecretgenerator.Add(r.mgr, crd, &controller.Deps{JitterGen: r.jitterGenerator, SkipNameValidation: r.SkipNameValidation}); err != nil {
 				return nil, fmt.Errorf("error adding the gsa-to-secret generator for %v to a manager: %w", crd.Spec.Names.Kind, err)
+			}
+		}
+
+		// register the controller to automatically create secrets for IAP clients
+		if isIAPIdentityAwareProxyClientCRD(crd) {
+			logger.Info("registering the IAP-Client-to-Secret generation controller")
+			if err := iapclientsecretgenerator.Add(r.mgr, crd, &controller.Deps{JitterGen: r.jitterGenerator, SkipNameValidation: r.SkipNameValidation}); err != nil {
+				return nil, fmt.Errorf("error adding the iap-client-to-secret generator for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
 		}
 
