@@ -33,7 +33,7 @@ func TestIAMDenyPolicySpec_ToProto(t *testing.T) {
 			{
 				Description: direct.LazyPtr("Deny all for storage"),
 				DenyRule: &krm.DenyRule{
-					DeniedPrincipals: []string{"principalSet://goog/public:all"},
+					DeniedPrincipals:  []string{"principalSet://goog/public:all"},
 					DeniedPermissions: []string{"storage.googleapis.com/buckets.list"},
 				},
 			},
@@ -52,7 +52,7 @@ func TestIAMDenyPolicySpec_ToProto(t *testing.T) {
 				Description: "Deny all for storage",
 				Kind: &pb.PolicyRule_DenyRule{
 					DenyRule: &pb.DenyRule{
-						DeniedPrincipals: []string{"principalSet://goog/public:all"},
+						DeniedPrincipals:  []string{"principalSet://goog/public:all"},
 						DeniedPermissions: []string{"storage.googleapis.com/buckets.list"},
 					},
 				},
