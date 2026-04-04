@@ -106,13 +106,20 @@ func (obj *MemorystoreInstance) GetIdentity(ctx context.Context, reader client.R
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		statusIdentity := &refs.MemorystoreInstanceIdentity{}
-		if err := statusIdentity.FromExternal(externalRef); err != nil {
+		actual := &refs.MemorystoreInstanceIdentity{}
+		if err := actual.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change MemorystoreInstance identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		if actual.Project != specIdentity.Project {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actual.Project, specIdentity.Project)
+		}
+		if actual.Location != specIdentity.Location {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actual.Location, specIdentity.Location)
+		}
+		if actual.Instance != specIdentity.Instance {
+			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
+				specIdentity.Instance, actual.Instance)
 		}
 	}
 

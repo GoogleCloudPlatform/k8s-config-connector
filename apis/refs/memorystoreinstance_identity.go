@@ -31,6 +31,8 @@ var (
 
 var MemorystoreInstanceIdentityFormat = gcpurls.Template[MemorystoreInstanceIdentity]("memorystore.googleapis.com", "projects/{project}/locations/{location}/instances/{instance}")
 
+// MemorystoreInstanceIdentity defines the resource reference to MemorystoreInstance, which "External" field
+// holds the GCP identifier for the KRM object.
 // +k8s:deepcopy-gen=false
 type MemorystoreInstanceIdentity struct {
 	Project  string
@@ -57,6 +59,34 @@ func (i *MemorystoreInstanceIdentity) FromExternal(ref string) error {
 
 func (i *MemorystoreInstanceIdentity) Host() string {
 	return MemorystoreInstanceIdentityFormat.Host()
+}
+
+func (i *MemorystoreInstanceIdentity) ID() string {
+	return i.Instance
+}
+
+func (i *MemorystoreInstanceIdentity) Parent() *MemorystoreInstanceParent {
+	return &MemorystoreInstanceParent{
+		ProjectID: i.Project,
+		Location:  i.Location,
+	}
+}
+
+type MemorystoreInstanceParent struct {
+	ProjectID string
+	Location  string
+}
+
+func (p *MemorystoreInstanceParent) String() string {
+	return "projects/" + p.ProjectID + "/locations/" + p.Location
+}
+
+func ParseInstanceExternal(external string) (parent *MemorystoreInstanceParent, resourceID string, err error) {
+	id := &MemorystoreInstanceIdentity{}
+	if err := id.FromExternal(external); err != nil {
+		return nil, "", err
+	}
+	return id.Parent(), id.ID(), nil
 }
 
 // MemorystoreInstance_IdentityFromSpec gets the identity of a MemorystoreInstance from its spec.
