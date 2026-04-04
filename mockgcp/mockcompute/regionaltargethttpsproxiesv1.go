@@ -159,6 +159,59 @@ func (s *RegionalTargetHTTPSProxiesV1) SetUrlMap(ctx context.Context, req *pb.Se
 	})
 }
 
+func (s *RegionalTargetHTTPSProxiesV1) SetSslCertificates(ctx context.Context, req *pb.SetSslCertificatesRegionTargetHttpsProxyRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/regions/" + req.GetRegion() + "/targetHttpsProxies/" + req.GetTargetHttpsProxy()
+	name, err := s.parseRegionalTargetHttpsProxyName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.TargetHttpsProxy{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	obj.SslCertificates = req.GetRegionTargetHttpsProxiesSetSslCertificatesRequestResource().SslCertificates
+
+	if obj.SslCertificates != nil {
+		var certs []string
+		for _, cert := range obj.GetSslCertificates() {
+			if strings.Contains(cert, "certificates") {
+				cert := strings.TrimPrefix(cert, "https://certificatemanager.googleapis.com/v1/")
+				tokens := strings.Split(cert, "/")
+				if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "certificates" {
+				} else {
+					return nil, status.Errorf(codes.InvalidArgument, "certificateManagerCertificate %q is not valid", cert)
+				}
+				certs = append(certs, fmt.Sprintf("//certificatemanager.googleapis.com/projects/%s/locations/%s/certificates/%s", tokens[1], tokens[3], tokens[5]))
+
+			} else {
+				sslCertName, err := s.parseRegionalSslCertificateName(cert)
+				if err != nil {
+					return nil, status.Errorf(codes.InvalidArgument, "sslCertName %q is not valid", sslCertName)
+				}
+				certs = append(certs, buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/sslCertificates/%s", sslCertName.Project.ID, sslCertName.Region, sslCertName.Name)))
+			}
+			obj.SslCertificates = certs
+		}
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("SetSslCertificates"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
 func (s *RegionalTargetHTTPSProxiesV1) Delete(ctx context.Context, req *pb.DeleteRegionTargetHttpsProxyRequest) (*pb.Operation, error) {
 	reqName := "projects/" + req.GetProject() + "/regions/" + req.GetRegion() + "/targetHttpsProxies/" + req.GetTargetHttpsProxy()
 	name, err := s.parseRegionalTargetHttpsProxyName(reqName)
