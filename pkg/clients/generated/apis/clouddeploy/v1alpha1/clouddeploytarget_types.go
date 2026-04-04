@@ -165,7 +165,7 @@ type TargetGkeClusters struct {
 type TargetMultiTarget struct {
 	/* Required. The target_ids of this multiTarget. */
 	// +optional
-	TargetIDs []string `json:"targetIDs,omitempty"`
+	TargetRefs []v1alpha1.ResourceRef `json:"targetRefs,omitempty"`
 }
 
 type TargetPrivatePool struct {

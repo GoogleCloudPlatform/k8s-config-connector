@@ -71,5 +71,11 @@ var (
 		Kind:    reflect.TypeOf(ResourceManagerLien{}).Name(),
 	}
 
+	ResourceManagerPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ResourceManagerPolicy{}).Name(),
+	}
+
 	resourcemanagerAPIVersion = SchemeGroupVersion.String()
 )
