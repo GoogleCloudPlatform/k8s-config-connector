@@ -1,0 +1,122 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeHealthCheck
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computehealthcheck-${uniqueId}
+spec:
+  checkIntervalSec: 10
+  httpHealthCheck:
+    port: 80
+  location: us-central1
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computebackendservice-${uniqueId}
+spec:
+  protocol: HTTPS
+  loadBalancingScheme: EXTERNAL
+  healthChecks:
+    - healthCheckRef:
+        name: computehealthcheck-${uniqueId}
+  location: us-central1
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeURLMap
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computeurlmap-${uniqueId}
+spec:
+  defaultService:
+    backendServiceRef:
+      name: computebackendservice-${uniqueId}
+  location: us-central1
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: secret-${uniqueId}
+stringData:
+  privateKey: |
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEpQIBAAKCAQEA1i7zmSGopddoujVyKjrKVXKK5LktTZdGsq5dFbihwr4Xrp/7
+    O5Sy4BH4n80bnmJUlLXRoOGrViMBCrGyBPgBfblE85Kv7esx8RQAFoFWev4Vuveo
+    6nGV98lPiwrhzy0jdK7qg+mcoJ2A1XIg5mMMXutNcTXzjmEZZunRkcerk8Rg2bX7
+    vM7GjSNFMU7oE6dseXCgeukm4HZSCb3Nh2+eGu6jrG/QiH/q6ytsVHSVI+LnlBCD
+    MY52Nrvw3O9UoHwVHSVI+LnlBCDMY52Nrvw3O9UoHwVZ/shXzfTBzXXE1j1xFApR
+    BcXfzAd3Rp+4VWr18r8tzU+LVoQYGAaYXxFLnQxXo+TJlaueiThENlLWkPiJrHLn
+    QIDAQABAoIBAQDMo/WZlQBG3Cay64fV83AI7jTozkkLvoMNC+3iaBMeN3P3I+HuD
+    mhOEL2lKVq/HKJFp+bPuW50EWPYbOlzN+Zs0kygEMJJJxQDjCF9XzxarVPj3Ocmg
+    TpRkqWOaupPgYhD3zAws080YuiKh84Jcg+KzXWjunGn0vxrSPI0QDueJR2i03tED
+    BAtMZ0pvAsJ0gmXRdzGOc2uRzDmfbS3y/JIufClO28OzjJ5AJkbc9XgRDeCDOFY2
+    D375bCg2boPYmP7Iw0HVU3RQhcrt+US27VQBRJF4cQ2CCyr0ZbdaPn41v+/A/qx
+    F6ZPguyy+KoyQjCqK8iFArRQ48hJcR2pFx4hAoGBAP2uXIJAdAemrOunv2CWlUHI
+    2iHj/kJ1AXRMpiT+eF0US9E6tipEmL63HkUhiAs2nJnPi3RDxP+kAO2Z3anqjm1K
+    CeGj+IYYZMavnkC8EVybv9lDwORye2O1bfRc/tGa341KmvXLbp8oVMIYIvKz2cZm
+    HGJ4V4DTq8dTvmqoE4/VAoGBANgkKWY5MJToZJJ5bV0mc2stmGt/IAZZPlKjVmKO
+    jDyzqHRLAhsmbMyUhhgZtyj0dzSWILEeaEJknYRrOB48D6IqkB8VnFJyHUG8l+Za
+    41adqRQNid0S5n50/+eYbjZpYCrASGmC2dhPZvRD6tOyEEJF5PZMvqxDcNRilc62
+    7HipAoGBAKzqrSQbyvtsIXKAZXLxMcwlnIp9XlLubo9Xr+iHjIPl0chMvN8S4wsx
+    wVYVeNO1nABiI03pJCcugU7XFz2BR952EJ2AnFlL0w/aR+3Eh6OC7eM927Amlrc0
+    JZAzXESoE8vC3F/uWfDlgK3cRr+fPM/pxl37i1iGzVDYAhTiQIBAoGAPW25nmXum
+    sOZoc+E945wCywAP7z3mxZOEip96LDexnnBDJws0w6OqW4k1kCov6kLIBTy4aPk
+    ucniwrm+T0l+n/Y807jOntfz3LT+7ucx6XIRlbNrVTuD6rjR6j52RFyaikvvyJz5
+    0PJwLkgHO3dGC6/VrPKO1mKsdJA4R3HRr1ECgYEAobNQbQSLrSWZ1cozJbmNgRqq
+    vxDNSEDi8LpXukOAw4pz1km7o3obhCy1ksfFzsp5glYqwZd/Bahk64u3mII+rKoY
+    wYLrH2l2aFDmMbdTfQUycpQZyi3+VtGS1PFoKx9fSFDNHhR5ZhfasQcuKHYfeFfO
+    2/DoOxQkNCI1y4I2huo=
+    -----END RSA PRIVATE KEY-----
+---
+apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+kind: CertificateManagerCertificate
+metadata:
+  name: certificatemanagercertificate-${uniqueId}
+spec:
+  location: us-central1
+  description: regional self-managed certificate
+  selfManaged:
+    pemCertificate: |-
+      -----BEGIN CERTIFICATE-----
+      MIIDDzCCAfegAwIBAgIUDOiCLH9QNMMYnjPZVf4VwO9blsEwDQYJKoZIhvcNAQEL
+      BQAwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wIBcNMjIwODI0MDg0MDUxWhgPMzAy
+      MTEyMjUwODQwNTFaMBYxFDASBgNVBAMMC2V4YW1wbGUuY29tMIIBIjANBgkqhkiG
+      9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvOT925GG4lKV9HvAHsbecMhGPAqjhVRC26iZ
+      UJC8oSWOu95lWJSX5ZhbiF6Nz192wDGV/VAh3Lxj8RYtcn75eDxQKTcKouDld+To
+      CGIStPFWbR6rbysLuZqFVEXVOTvp2QIegInfrvnGC4j7Qpic7zrFB9HzJx+0HpeE
+      yO4gkdzJfEK/gMmolUgJrKX59o+0+Rj+Jq3EtcQxL1fVBVJSx0NvpoR1eYpnHMr/
+      rJKZkUUZ2xE86hrtpiP6OEYQTi00rmf4GnZF5QfGGD0xuoQXtR7Tu+XhKibXIhxc
+      D4RzPLX1QS040PXvmMPLDb4YlUQ6V3Rs42JDvkkDwIMXZvn8awIDAQABo1MwUTAd
+      BgNVHQ4EFgQURuo1CCZZAUv7xi02f2nC5tRbf18wHwYDVR0jBBgwFoAURuo1CCZZ
+      AUv7xi02f2nC5tRbf18wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOC
+      AQEAqx3tDxurnYr9EUPhF5/LlDPYM+VI7EgrKdRnuIqUlZI0tm3vOGME0te6dBTC
+      YLNaHLW3m/4Tm4M2eg0Kpz6CxJfn3109G31dCi0xwzSDHf5TPUWvqIVhq5WRgMIf
+      n8KYBlQSmqdJBRztUIQH/UPFnSbxymlS4s5qwDgTH5ag9EEBcnWsQ2LZjKi0eqve
+      MaqAvvB+j8RGZzYY4re94bSJI42zIZ6nMWPtXwRuDc30xl/u+E0jWIgWbPwSd6Km
+      3wnJnGiU2ezPGq3zEU+Rc39VVIFKQpciNeYuF3neHPJvYOf58qW2Z8s0VH0MR1x3
+      3DoO/e30FIr9j+PRD+s5BPKF2A==
+      -----END CERTIFICATE-----
+    pemPrivateKey:
+      valueFrom:
+        secretKeyRef:
+          name: secret-${uniqueId}
+          key: privateKey
