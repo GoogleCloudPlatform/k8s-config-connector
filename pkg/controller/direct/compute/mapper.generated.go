@@ -2645,7 +2645,7 @@ func ShareSettings_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSet
 		return nil
 	}
 	out := &krmcomputev1alpha1.ShareSettings{}
-	// TODO: map type string message for field ProjectMap
+	out.ProjectMap = direct.Map_FromProto(mapCtx, in.ProjectMap, ShareSettingsProjectConfig_v1alpha1_FromProto)
 	out.ShareType = in.ShareType
 	return out
 }
@@ -2657,7 +2657,7 @@ func ShareSettings_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1a
 		return nil
 	}
 	out := &pb.ShareSettings{}
-	// TODO: map type string message for field ProjectMap
+	out.ProjectMap = direct.Map_ToProto(mapCtx, in.ProjectMap, ShareSettingsProjectConfig_v1alpha1_ToProto)
 	out.ShareType = in.ShareType
 	return out
 }
@@ -2669,7 +2669,7 @@ func ShareSettingsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 		return nil
 	}
 	out := &krmcomputev1alpha1.ShareSettingsObservedState{}
-	// TODO: map type string message for field ProjectMap
+	out.ProjectMap = direct.Map_FromProto(mapCtx, in.ProjectMap, ShareSettingsProjectConfig_v1alpha1_FromProto)
 	out.ShareType = in.ShareType
 	return out
 }
@@ -2681,7 +2681,7 @@ func ShareSettingsObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &pb.ShareSettings{}
-	// TODO: map type string message for field ProjectMap
+	out.ProjectMap = direct.Map_ToProto(mapCtx, in.ProjectMap, ShareSettingsProjectConfig_v1alpha1_ToProto)
 	out.ShareType = in.ShareType
 	return out
 }

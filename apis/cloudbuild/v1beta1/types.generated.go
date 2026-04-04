@@ -1019,8 +1019,14 @@ type InlineSecret struct {
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.InlineSecret.kms_key_name
 	KMSKeyName *string `json:"kmsKeyName,omitempty"`
 
-	// TODO: unsupported map type with key string and value bytes
-
+	// Map of environment variable name to its encrypted value.
+	//
+	//  Secret environment variables must be unique across all of a build's
+	//  secrets, and must be used by at least one build step. Values can be at most
+	//  64 KB in size. There can be at most 100 secret values across all of a
+	//  build's secrets.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.InlineSecret.env_map
+	EnvMap map[string][]byte `json:"envMap,omitempty"`
 }
 */
 
@@ -1224,8 +1230,14 @@ type Secret struct {
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Secret.kms_key_name
 	KMSKeyName *string `json:"kmsKeyName,omitempty"`
 
-	// TODO: unsupported map type with key string and value bytes
-
+	// Map of environment variable name to its encrypted value.
+	//
+	//  Secret environment variables must be unique across all of a build's
+	//  secrets, and must be used by at least one build step. Values can be at most
+	//  64 KB in size. There can be at most 100 secret values across all of a
+	//  build's secrets.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Secret.secret_env
+	SecretEnv map[string][]byte `json:"secretEnv,omitempty"`
 }
 */
 
@@ -1559,7 +1571,19 @@ type BuildObservedState struct {
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.log_url
 	LogURL *string `json:"logURL,omitempty"`
 
-	// TODO: unsupported map type with key string and value message
+	// Output only. Stores timing information for phases of the build. Valid keys
+	//  are:
+	//
+	//  * BUILD: time to execute all build steps.
+	//  * PUSH: time to push all artifacts including docker images and non docker
+	//  artifacts.
+	//  * FETCHSOURCE: time to fetch source.
+	//  * SETUPBUILD: time to set up build.
+	//
+	//  If the build does not specify source or images,
+	//  these keys will not be included.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.timing
+	Timing map[string]*TimeSpan `json:"timing,omitempty"`
 
 	// Output only. Describes this build's approval configuration, status,
 	//  and result.
@@ -1704,9 +1728,18 @@ type ResultsObservedState struct {
 /* unreachable type SourceProvenanceObservedState
 // +kcc:observedstate:proto=google.devtools.cloudbuild.v1.SourceProvenance
 type SourceProvenanceObservedState struct {
-
-	// TODO: unsupported map type with key string and value message
-
+	// Output only. Hash(es) of the build source, which can be used to verify that
+	//  the original source integrity was maintained in the build. Note that
+	//  `FileHashes` will only be populated if `BuildOptions` has requested a
+	//  `SourceProvenanceHash`.
+	//
+	//  The keys to this map are file paths used as build source and the values
+	//  contain the hash values for those files.
+	//
+	//  If the build source came in a single package such as a gzipped tarfile
+	//  (`.tar.gz`), the `FileHash` will be for the single path to that file.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.SourceProvenance.file_hashes
+	FileHashes map[string]*FileHashes `json:"fileHashes,omitempty"`
 }
 */
 

@@ -445,7 +445,7 @@ func JobStatus_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus) *krm.JobSt
 	out := &krm.JobStatus{}
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.StatusEvents = direct.Slice_FromProto(mapCtx, in.StatusEvents, StatusEvent_FromProto)
-	// MISSING: TaskGroups
+	out.TaskGroups = direct.Map_FromProto(mapCtx, in.TaskGroups, JobStatus_TaskGroupStatus_FromProto)
 	out.RunDuration = direct.StringDuration_FromProto(mapCtx, in.GetRunDuration())
 	return out
 }
@@ -456,8 +456,48 @@ func JobStatus_ToProto(mapCtx *direct.MapContext, in *krm.JobStatus) *pb.JobStat
 	out := &pb.JobStatus{}
 	out.State = direct.Enum_ToProto[pb.JobStatus_State](mapCtx, in.State)
 	out.StatusEvents = direct.Slice_ToProto(mapCtx, in.StatusEvents, StatusEvent_ToProto)
-	// MISSING: TaskGroups
+	out.TaskGroups = direct.Map_ToProto(mapCtx, in.TaskGroups, JobStatus_TaskGroupStatus_ToProto)
 	out.RunDuration = direct.StringDuration_ToProto(mapCtx, in.RunDuration)
+	return out
+}
+func JobStatus_InstanceStatus_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus_InstanceStatus) *krm.JobStatus_InstanceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.JobStatus_InstanceStatus{}
+	out.MachineType = direct.LazyPtr(in.GetMachineType())
+	out.ProvisioningModel = direct.Enum_FromProto(mapCtx, in.GetProvisioningModel())
+	out.TaskPack = direct.LazyPtr(in.GetTaskPack())
+	out.BootDisk = AllocationPolicy_Disk_FromProto(mapCtx, in.GetBootDisk())
+	return out
+}
+func JobStatus_InstanceStatus_ToProto(mapCtx *direct.MapContext, in *krm.JobStatus_InstanceStatus) *pb.JobStatus_InstanceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.JobStatus_InstanceStatus{}
+	out.MachineType = direct.ValueOf(in.MachineType)
+	out.ProvisioningModel = direct.Enum_ToProto[pb.AllocationPolicy_ProvisioningModel](mapCtx, in.ProvisioningModel)
+	out.TaskPack = direct.ValueOf(in.TaskPack)
+	out.BootDisk = AllocationPolicy_Disk_ToProto(mapCtx, in.BootDisk)
+	return out
+}
+func JobStatus_TaskGroupStatus_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus_TaskGroupStatus) *krm.JobStatus_TaskGroupStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.JobStatus_TaskGroupStatus{}
+	out.Counts = in.Counts
+	out.Instances = direct.Slice_FromProto(mapCtx, in.Instances, JobStatus_InstanceStatus_FromProto)
+	return out
+}
+func JobStatus_TaskGroupStatus_ToProto(mapCtx *direct.MapContext, in *krm.JobStatus_TaskGroupStatus) *pb.JobStatus_TaskGroupStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.JobStatus_TaskGroupStatus{}
+	out.Counts = in.Counts
+	out.Instances = direct.Slice_ToProto(mapCtx, in.Instances, JobStatus_InstanceStatus_ToProto)
 	return out
 }
 func LifecyclePolicy_FromProto(mapCtx *direct.MapContext, in *pb.LifecyclePolicy) *krm.LifecyclePolicy {

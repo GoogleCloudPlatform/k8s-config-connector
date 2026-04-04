@@ -440,11 +440,32 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				if protoField.IsMap() {
 					entryMsg := protoField.Message()
 					keyKind := entryMsg.Fields().ByName("key").Kind()
-					valueKind := entryMsg.Fields().ByName("value").Kind()
-					if keyKind == protoreflect.StringKind && valueKind == protoreflect.StringKind {
-						useSliceFromProtoFunction = ""
-					} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
-						useSliceFromProtoFunction = ""
+					valueField := entryMsg.Fields().ByName("value")
+					valueKind := valueField.Kind()
+					if keyKind == protoreflect.StringKind {
+						switch valueKind {
+						case protoreflect.MessageKind:
+							valueMsg := valueField.Message()
+							valueKRMTypeName := GoNameForProtoMessage(valueMsg)
+							functionName := valueKRMTypeName + versionSpecifier + "_FromProto"
+							fmt.Fprintf(out, "\tout.%s = direct.Map_FromProto(mapCtx, in.%s, %s)\n",
+								krmFieldName,
+								protoFieldName,
+								functionName,
+							)
+							continue
+						case protoreflect.EnumKind:
+							fmt.Fprintf(out, "\tout.%s = direct.EnumMap_FromProto(mapCtx, in.%s)\n",
+								krmFieldName,
+								protoFieldName,
+							)
+							continue
+						case protoreflect.StringKind, protoreflect.Int64Kind, protoreflect.BytesKind, protoreflect.BoolKind, protoreflect.DoubleKind, protoreflect.FloatKind, protoreflect.Int32Kind, protoreflect.Uint32Kind, protoreflect.Uint64Kind, protoreflect.Fixed64Kind:
+							useSliceFromProtoFunction = ""
+						default:
+							fmt.Fprintf(out, "\t// TODO: map type %v %v for field %v\n", keyKind, valueKind, krmFieldName)
+							continue
+						}
 					} else {
 						fmt.Fprintf(out, "\t// TODO: map type %v %v for field %v\n", keyKind, valueKind, krmFieldName)
 						continue
@@ -737,11 +758,34 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				if protoField.IsMap() {
 					entryMsg := protoField.Message()
 					keyKind := entryMsg.Fields().ByName("key").Kind()
-					valueKind := entryMsg.Fields().ByName("value").Kind()
-					if keyKind == protoreflect.StringKind && valueKind == protoreflect.StringKind {
-						useSliceToProtoFunction = ""
-					} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
-						useSliceToProtoFunction = ""
+					valueField := entryMsg.Fields().ByName("value")
+					valueKind := valueField.Kind()
+					if keyKind == protoreflect.StringKind {
+						switch valueKind {
+						case protoreflect.MessageKind:
+							valueMsg := valueField.Message()
+							valueKRMTypeName := GoNameForProtoMessage(valueMsg)
+							functionName := valueKRMTypeName + versionSpecifier + "_ToProto"
+							fmt.Fprintf(out, "\tout.%s = direct.Map_ToProto(mapCtx, in.%s, %s)\n",
+								protoFieldName,
+								krmFieldName,
+								functionName,
+							)
+							continue
+						case protoreflect.EnumKind:
+							protoTypeName := v.goPackageForProto(valueField.Enum().ParentFile()) + "." + protoNameForEnum(valueField.Enum())
+							fmt.Fprintf(out, "\tout.%s = direct.EnumMap_ToProto[%s](mapCtx, in.%s)\n",
+								protoFieldName,
+								protoTypeName,
+								krmFieldName,
+							)
+							continue
+						case protoreflect.StringKind, protoreflect.Int64Kind, protoreflect.BytesKind, protoreflect.BoolKind, protoreflect.DoubleKind, protoreflect.FloatKind, protoreflect.Int32Kind, protoreflect.Uint32Kind, protoreflect.Uint64Kind, protoreflect.Fixed64Kind:
+							useSliceToProtoFunction = ""
+						default:
+							fmt.Fprintf(out, "\t// TODO: map type %v %v for field %v\n", keyKind, valueKind, krmFieldName)
+							continue
+						}
 					} else {
 						fmt.Fprintf(out, "\t// TODO: map type %v %v for field %v\n", keyKind, valueKind, krmFieldName)
 						continue

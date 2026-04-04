@@ -606,3 +606,53 @@ func Struct_ToProto(mapCtx *MapContext, in *apiextensionsv1.JSON) *structpb.Stru
 	}
 	return s
 }
+
+func Map_ToProto[K comparable, T, U any](mapCtx *MapContext, in map[K]*T, mapper func(mapCtx *MapContext, in *T) *U) map[K]*U {
+	if in == nil {
+		return nil
+	}
+	out := make(map[K]*U, len(in))
+	for k, v := range in {
+		out[k] = mapper(mapCtx, v)
+	}
+	return out
+}
+
+func Map_FromProto[K comparable, T, U any](mapCtx *MapContext, in map[K]*T, mapper func(mapCtx *MapContext, in *T) *U) map[K]*U {
+	if in == nil {
+		return nil
+	}
+	out := make(map[K]*U, len(in))
+	for k, v := range in {
+		out[k] = mapper(mapCtx, v)
+	}
+	return out
+}
+
+func EnumMap_ToProto[K comparable, U ProtoEnum](mapCtx *MapContext, in map[K]string) map[K]U {
+	if in == nil {
+		return nil
+	}
+	out := make(map[K]U, len(in))
+	for k, v := range in {
+		out[k] = Enum_ToProto[U](mapCtx, &v)
+	}
+	return out
+}
+
+func EnumMap_FromProto[K comparable, U ProtoEnum](mapCtx *MapContext, in map[K]U) map[K]string {
+	if in == nil {
+		return nil
+	}
+	out := make(map[K]string, len(in))
+	for k, u := range in {
+		descriptor := u.Descriptor()
+		val := descriptor.Values().ByNumber(protoreflect.EnumNumber(u))
+		if val == nil {
+			mapCtx.Errorf("unknown enum value %d", u)
+			continue
+		}
+		out[k] = string(val.Name())
+	}
+	return out
+}

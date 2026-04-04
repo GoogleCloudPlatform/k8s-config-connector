@@ -619,6 +619,19 @@ spec:
               usageSignal:
                 description: Resource usage statistics.
                 properties:
+                  commonUsageWithinTimeRange:
+                    additionalProperties:
+                      properties:
+                        viewCount:
+                          description: View count in source system.
+                          format: int64
+                          type: integer
+                      type: object
+                    description: |-
+                      Common usage statistics over each of the predefined time ranges.
+
+                       Supported time ranges are `{"24H", "7D", "30D", "Lifetime"}`.
+                    type: object
                   favoriteCount:
                     description: Favorite count in the source system.
                     format: int64
@@ -972,6 +985,33 @@ spec:
                     type: object
                   usageSignal:
                     description: Resource usage statistics.
+                    properties:
+                      usageWithinTimeRange:
+                        additionalProperties:
+                          properties:
+                            totalCancellations:
+                              description: The number of cancelled attempts to use
+                                the underlying entry.
+                              type: number
+                            totalCompletions:
+                              description: The number of successful uses of the underlying
+                                entry.
+                              type: number
+                            totalExecutionTimeForCompletionsMillis:
+                              description: Total time spent only on successful uses,
+                                in milliseconds.
+                              type: number
+                            totalFailures:
+                              description: The number of failed attempts to use the
+                                underlying entry.
+                              type: number
+                          type: object
+                        description: |-
+                          Output only. BigQuery usage statistics over each of the predefined time
+                           ranges.
+
+                           Supported time ranges are `{"24H", "7D", "30D"}`.
+                        type: object
                     type: object
                 type: object
             type: object

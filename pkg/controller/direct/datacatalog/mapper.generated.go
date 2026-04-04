@@ -276,6 +276,22 @@ func ColumnSchema_LookerColumnSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, i
 	out.Type = direct.Enum_ToProto[pb.ColumnSchema_LookerColumnSpec_LookerColumnType](mapCtx, in.Type)
 	return out
 }
+func CommonUsageStats_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CommonUsageStats) *krmdatacatalogv1alpha1.CommonUsageStats {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatacatalogv1alpha1.CommonUsageStats{}
+	out.ViewCount = in.ViewCount
+	return out
+}
+func CommonUsageStats_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatacatalogv1alpha1.CommonUsageStats) *pb.CommonUsageStats {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CommonUsageStats{}
+	out.ViewCount = in.ViewCount
+	return out
+}
 func Contacts_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Contacts) *krmdatacatalogv1alpha1.Contacts {
 	if in == nil {
 		return nil
@@ -592,7 +608,7 @@ func DataCatalogTagSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Tag
 		out.TemplateRef = &krmdatacatalogv1alpha1.TagTemplateRef{External: in.GetTemplate()}
 	}
 	out.Column = direct.LazyPtr(in.GetColumn())
-	// TODO: map type string message for field Fields
+	out.Fields = direct.Map_FromProto(mapCtx, in.Fields, TagField_v1alpha1_FromProto)
 	return out
 }
 func DataCatalogTagSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatacatalogv1alpha1.DataCatalogTagSpec) *pb.Tag {
@@ -607,7 +623,7 @@ func DataCatalogTagSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatac
 	if oneof := DataCatalogTagSpec_Column_ToProto(mapCtx, in.Column); oneof != nil {
 		out.Scope = oneof
 	}
-	// TODO: map type string message for field Fields
+	out.Fields = direct.Map_ToProto(mapCtx, in.Fields, TagField_v1alpha1_ToProto)
 	return out
 }
 func DataCatalogTagSpec_Column_ToProto(mapCtx *direct.MapContext, in *string) *pb.Tag_Column {
@@ -624,7 +640,7 @@ func DataCatalogTagTemplateSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.IsPubliclyReadable = direct.LazyPtr(in.GetIsPubliclyReadable())
-	// TODO: map type string message for field Fields
+	out.Fields = direct.Map_FromProto(mapCtx, in.Fields, TagTemplateField_v1alpha1_FromProto)
 	// MISSING: DataplexTransferStatus
 	return out
 }
@@ -636,7 +652,7 @@ func DataCatalogTagTemplateSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.IsPubliclyReadable = direct.ValueOf(in.IsPubliclyReadable)
-	// TODO: map type string message for field Fields
+	out.Fields = direct.Map_ToProto(mapCtx, in.Fields, TagTemplateField_v1alpha1_ToProto)
 	// MISSING: DataplexTransferStatus
 	return out
 }
@@ -1566,7 +1582,7 @@ func UsageSignal_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.UsageSigna
 	out := &krmdatacatalogv1alpha1.UsageSignal{}
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: UsageWithinTimeRange
-	// MISSING: CommonUsageWithinTimeRange
+	out.CommonUsageWithinTimeRange = direct.Map_FromProto(mapCtx, in.CommonUsageWithinTimeRange, CommonUsageStats_v1alpha1_FromProto)
 	out.FavoriteCount = in.FavoriteCount
 	return out
 }
@@ -1577,7 +1593,7 @@ func UsageSignal_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatacatalogv
 	out := &pb.UsageSignal{}
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: UsageWithinTimeRange
-	// MISSING: CommonUsageWithinTimeRange
+	out.CommonUsageWithinTimeRange = direct.Map_ToProto(mapCtx, in.CommonUsageWithinTimeRange, CommonUsageStats_v1alpha1_ToProto)
 	out.FavoriteCount = in.FavoriteCount
 	return out
 }
@@ -1587,7 +1603,7 @@ func UsageSignalObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *
 	}
 	out := &krmdatacatalogv1alpha1.UsageSignalObservedState{}
 	// MISSING: UpdateTime
-	// MISSING: UsageWithinTimeRange
+	out.UsageWithinTimeRange = direct.Map_FromProto(mapCtx, in.UsageWithinTimeRange, UsageStats_v1alpha1_FromProto)
 	// MISSING: CommonUsageWithinTimeRange
 	// MISSING: FavoriteCount
 	return out
@@ -1598,9 +1614,31 @@ func UsageSignalObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *kr
 	}
 	out := &pb.UsageSignal{}
 	// MISSING: UpdateTime
-	// MISSING: UsageWithinTimeRange
+	out.UsageWithinTimeRange = direct.Map_ToProto(mapCtx, in.UsageWithinTimeRange, UsageStats_v1alpha1_ToProto)
 	// MISSING: CommonUsageWithinTimeRange
 	// MISSING: FavoriteCount
+	return out
+}
+func UsageStats_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.UsageStats) *krmdatacatalogv1alpha1.UsageStats {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatacatalogv1alpha1.UsageStats{}
+	out.TotalCompletions = direct.LazyPtr(in.GetTotalCompletions())
+	out.TotalFailures = direct.LazyPtr(in.GetTotalFailures())
+	out.TotalCancellations = direct.LazyPtr(in.GetTotalCancellations())
+	out.TotalExecutionTimeForCompletionsMillis = direct.LazyPtr(in.GetTotalExecutionTimeForCompletionsMillis())
+	return out
+}
+func UsageStats_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatacatalogv1alpha1.UsageStats) *pb.UsageStats {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UsageStats{}
+	out.TotalCompletions = direct.ValueOf(in.TotalCompletions)
+	out.TotalFailures = direct.ValueOf(in.TotalFailures)
+	out.TotalCancellations = direct.ValueOf(in.TotalCancellations)
+	out.TotalExecutionTimeForCompletionsMillis = direct.ValueOf(in.TotalExecutionTimeForCompletionsMillis)
 	return out
 }
 func VertexDatasetSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VertexDatasetSpec) *krmdatacatalogv1alpha1.VertexDatasetSpec {
