@@ -48,6 +48,8 @@ func AdapterForReference(ctx context.Context, reader client.Reader, sourceNamesp
 			switch gk.Group {
 			case "privateca.cnrm.google.com":
 				uri = "//privateca.googleapis.com/" + resourceRef.External
+			case "dataform.cnrm.cloud.google.com":
+				uri = "//dataform.googleapis.com/" + resourceRef.External
 			default:
 				return nil, fmt.Errorf("unknown format for external reference for %v: %q", gk, resourceRef.External)
 			}
