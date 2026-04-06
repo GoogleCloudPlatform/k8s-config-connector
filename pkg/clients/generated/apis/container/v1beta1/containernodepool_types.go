@@ -241,6 +241,10 @@ type NodepoolNetworkConfig struct {
 	/* Immutable. The ID of the secondary range for pod IPs. If create_pod_range is true, this ID is used for the new range. If create_pod_range is false, uses an existing secondary range with this ID. */
 	// +optional
 	PodRange *string `json:"podRange,omitempty"`
+
+	/* The subnetwork path for the node pool. Format: projects/{project}/regions/{region}/subnetworks/{subnetwork} . If the cluster is associated with multiple subnetworks, the subnetwork for the node pool is picked based on the IP utilization during node pool creation and is immutable. */
+	// +optional
+	Subnetwork *string `json:"subnetwork,omitempty"`
 }
 
 type NodepoolNodeAffinity struct {

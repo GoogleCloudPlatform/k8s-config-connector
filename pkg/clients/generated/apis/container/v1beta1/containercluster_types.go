@@ -38,6 +38,15 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
+type ClusterAdditionalIpRangesConfig struct {
+	/* List of secondary ranges names within this subnetwork that can be used for pod IPs. */
+	// +optional
+	PodIpv4RangeNames []string `json:"podIpv4RangeNames,omitempty"`
+
+	/* Name of the subnetwork. This can be the full path of the subnetwork or just the name. */
+	Subnetwork string `json:"subnetwork"`
+}
+
 type ClusterAdditionalPodRangesConfig struct {
 	/* Name for pod secondary ipv4 range which has the actual range defined ahead. */
 	PodRangeNames []string `json:"podRangeNames"`
@@ -118,7 +127,7 @@ type ClusterAuthenticatorGroupsConfig struct {
 }
 
 type ClusterAutoProvisioningDefaults struct {
-	/* Immutable. The Customer Managed Encryption Key used to encrypt the
+	/* The Customer Managed Encryption Key used to encrypt the
 	boot disk attached to each node in the node pool. */
 	// +optional
 	BootDiskKMSKeyRef *v1alpha1.ResourceRef `json:"bootDiskKMSKeyRef,omitempty"`
@@ -422,6 +431,10 @@ type ClusterIdentityServiceConfig struct {
 }
 
 type ClusterIpAllocationPolicy struct {
+	/* AdditionalIPRangesConfig is the configuration for individual additional subnetworks attached to the cluster. */
+	// +optional
+	AdditionalIpRangesConfig []ClusterAdditionalIpRangesConfig `json:"additionalIpRangesConfig,omitempty"`
+
 	/* AdditionalPodRangesConfig is the configuration for additional pod secondary ranges supporting the ClusterUpdate message. */
 	// +optional
 	AdditionalPodRangesConfig *ClusterAdditionalPodRangesConfig `json:"additionalPodRangesConfig,omitempty"`

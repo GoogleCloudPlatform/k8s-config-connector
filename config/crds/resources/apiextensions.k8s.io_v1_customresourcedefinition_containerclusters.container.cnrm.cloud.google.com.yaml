@@ -660,6 +660,25 @@ spec:
                   VPC-native clusters. Adding this block enables IP aliasing, making
                   the cluster VPC-native instead of routes-based.
                 properties:
+                  additionalIpRangesConfig:
+                    description: AdditionalIPRangesConfig is the configuration for
+                      individual additional subnetworks attached to the cluster.
+                    items:
+                      properties:
+                        podIpv4RangeNames:
+                          description: List of secondary ranges names within this
+                            subnetwork that can be used for pod IPs.
+                          items:
+                            type: string
+                          type: array
+                        subnetwork:
+                          description: Name of the subnetwork. This can be the full
+                            path of the subnetwork or just the name.
+                          type: string
+                      required:
+                      - subnetwork
+                      type: object
+                    type: array
                   additionalPodRangesConfig:
                     description: AdditionalPodRangesConfig is the configuration for
                       additional pod secondary ranges supporting the ClusterUpdate
