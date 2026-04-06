@@ -58,6 +58,28 @@ jobs:
           path: /tmp/artifacts/
 
 
+  crd-equivalence-check:
+    runs-on: ubuntu-latest
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'step/gen-types') }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/crd-equivalence-check"
+        run: |
+          ./dev/ci/presubmits/crd-equivalence-check
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-crd-equivalence-check
+          path: /tmp/artifacts/
+
+
   fuzz-roundtrippers:
     runs-on: ubuntu-latest
     timeout-minutes: 60
