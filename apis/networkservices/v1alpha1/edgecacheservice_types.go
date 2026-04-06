@@ -323,8 +323,9 @@ type EdgeCacheServiceCorsPolicy struct {
 	- This translates to the Access-Control-Max-Age header.
 
 	A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s". */
+	// +optional
 	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheService.CorsPolicy.max_age
-	MaxAge string `json:"maxAge"`
+	MaxAge *string `json:"maxAge,omitempty"`
 }
 
 // +kcc:proto=google.cloud.networkservices.v1.EdgeCacheService.HeaderAction
@@ -360,8 +361,9 @@ type EdgeCacheServiceHeaderMatch struct {
 	ExactMatch *string `json:"exactMatch,omitempty"`
 
 	/* The header name to match on. */
+	// +optional
 	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheService.HeaderMatch.header_name
-	HeaderName string `json:"headerName"`
+	HeaderName *string `json:"headerName,omitempty"`
 
 	/* If set to false (default), the headerMatch is considered a match if the match criteria above are met.
 	If set to true, the headerMatch is considered a match if the match criteria above are NOT met. */
@@ -414,8 +416,9 @@ type EdgeCacheServiceHostRule struct {
 	Hosts []string `json:"hosts"`
 
 	/* The name of the pathMatcher associated with this hostRule. */
+	// +optional
 	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheService.HostRule.path_matcher
-	PathMatcher string `json:"pathMatcher"`
+	PathMatcher *string `json:"pathMatcher,omitempty"`
 }
 
 // +kcc:proto=google.cloud.networkservices.v1.EdgeCacheService.LogConfig
@@ -482,8 +485,9 @@ type EdgeCacheServicePathMatcher struct {
 	Description *string `json:"description,omitempty"`
 
 	/* The name to which this PathMatcher is referred by the HostRule. */
+	// +optional
 	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheService.PathMatcher.name
-	Name string `json:"name"`
+	Name *string `json:"name,omitempty"`
 
 	/* The routeRules to match against. routeRules support advanced routing behaviour, and can match on paths, headers and query parameters, as well as status codes and HTTP methods. */
 	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheService.PathMatcher.route_rules
@@ -498,8 +502,9 @@ type EdgeCacheServiceQueryParameterMatch struct {
 	ExactMatch *string `json:"exactMatch,omitempty"`
 
 	/* The name of the query parameter to match. The query parameter must exist in the request, in the absence of which the request match fails. */
+	// +optional
 	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheService.QueryParameterMatch.name
-	Name string `json:"name"`
+	Name *string `json:"name,omitempty"`
 
 	/* Specifies that the queryParameterMatch matches if the request contains the query parameter, irrespective of whether the parameter has a value or not. */
 	// +optional
@@ -510,12 +515,14 @@ type EdgeCacheServiceQueryParameterMatch struct {
 // +kcc:proto=google.cloud.networkservices.v1.EdgeCacheService.RequestHeaderToAdd
 type EdgeCacheServiceRequestHeaderToAdd struct {
 	/* The name of the header to add. */
+	// +optional
 	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheService.RequestHeaderToAdd.header_name
-	HeaderName string `json:"headerName"`
+	HeaderName *string `json:"headerName,omitempty"`
 
 	/* The value of the header to add. */
+	// +optional
 	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheService.RequestHeaderToAdd.header_value
-	HeaderValue string `json:"headerValue"`
+	HeaderValue *string `json:"headerValue,omitempty"`
 
 	/* Whether to replace all existing headers with the same name. */
 	// +optional
@@ -526,19 +533,22 @@ type EdgeCacheServiceRequestHeaderToAdd struct {
 // +kcc:proto=google.cloud.networkservices.v1.EdgeCacheService.RequestHeaderToRemove
 type EdgeCacheServiceRequestHeaderToRemove struct {
 	/* The name of the header to remove. */
+	// +optional
 	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheService.RequestHeaderToRemove.header_name
-	HeaderName string `json:"headerName"`
+	HeaderName *string `json:"headerName,omitempty"`
 }
 
 // +kcc:proto=google.cloud.networkservices.v1.EdgeCacheService.ResponseHeaderToAdd
 type EdgeCacheServiceResponseHeaderToAdd struct {
 	/* The name of the header to add. */
+	// +optional
 	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheService.ResponseHeaderToAdd.header_name
-	HeaderName string `json:"headerName"`
+	HeaderName *string `json:"headerName,omitempty"`
 
 	/* The value of the header to add. */
+	// +optional
 	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheService.ResponseHeaderToAdd.header_value
-	HeaderValue string `json:"headerValue"`
+	HeaderValue *string `json:"headerValue,omitempty"`
 
 	/* Whether to replace all existing headers with the same name. */
 	// +optional
@@ -551,8 +561,9 @@ type EdgeCacheServiceResponseHeaderToRemove struct {
 	/* Headers to remove from the response prior to sending it back to the client.
 
 	Response headers are only sent to the client, and do not have an effect on the cache serving the response. */
+	// +optional
 	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheService.ResponseHeaderToRemove.header_name
-	HeaderName string `json:"headerName"`
+	HeaderName *string `json:"headerName,omitempty"`
 }
 
 // +kcc:proto=google.cloud.networkservices.v1.EdgeCacheService.RouteAction
@@ -603,8 +614,9 @@ type EdgeCacheServiceRouteRule struct {
 
 	Priority numbers can have gaps, which enable you to add or remove rules in the future without affecting the rest of the rules. For example, 1, 2, 3, 4, 5, 9, 12, 16 is a valid series of priority numbers
 	to which you could add rules numbered from 6 to 8, 10 to 11, and 13 to 15 in the future without any impact on existing rules. */
+	// +optional
 	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheService.RouteRule.priority
-	Priority string `json:"priority"`
+	Priority *string `json:"priority,omitempty"`
 
 	/* In response to a matching path, the routeAction performs advanced routing actions like URL rewrites, header transformations, etc. prior to forwarding the request to the selected origin. */
 	// +optional

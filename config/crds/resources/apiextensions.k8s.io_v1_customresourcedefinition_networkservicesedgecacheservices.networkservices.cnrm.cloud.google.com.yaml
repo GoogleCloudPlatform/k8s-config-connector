@@ -191,7 +191,6 @@ spec:
                           type: string
                       required:
                       - hosts
-                      - pathMatcher
                       type: object
                     type: array
                   pathMatcher:
@@ -237,9 +236,6 @@ spec:
                                           description: Whether to replace all existing
                                             headers with the same name.
                                           type: boolean
-                                      required:
-                                      - headerName
-                                      - headerValue
                                       type: object
                                     type: array
                                   requestHeaderToRemove:
@@ -251,8 +247,6 @@ spec:
                                         headerName:
                                           description: The name of the header to remove.
                                           type: string
-                                      required:
-                                      - headerName
                                       type: object
                                     type: array
                                   responseHeaderToAdd:
@@ -273,9 +267,6 @@ spec:
                                           description: Whether to replace all existing
                                             headers with the same name.
                                           type: boolean
-                                      required:
-                                      - headerName
-                                      - headerValue
                                       type: object
                                     type: array
                                   responseHeaderToRemove:
@@ -290,8 +281,6 @@ spec:
 
                                             Response headers are only sent to the client, and do not have an effect on the cache serving the response.
                                           type: string
-                                      required:
-                                      - headerName
                                       type: object
                                     type: array
                                 type: object
@@ -348,8 +337,6 @@ spec:
                                             description: The value of the header must
                                               end with the contents of suffixMatch.
                                             type: string
-                                        required:
-                                        - headerName
                                         type: object
                                       type: array
                                     ignoreCase:
@@ -397,8 +384,6 @@ spec:
                                               query parameter, irrespective of whether
                                               the parameter has a value or not.
                                             type: boolean
-                                        required:
-                                        - name
                                         type: object
                                       type: array
                                   type: object
@@ -838,8 +823,6 @@ spec:
 
                                           A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".
                                         type: string
-                                    required:
-                                    - maxAge
                                     type: object
                                   urlRewrite:
                                     description: The URL rewrite configuration for
@@ -925,11 +908,9 @@ spec:
                                 type: object
                             required:
                             - matchRule
-                            - priority
                             type: object
                           type: array
                       required:
-                      - name
                       - routeRule
                       type: object
                     type: array
