@@ -27,6 +27,10 @@ var AlloyDBClusterGVK = GroupVersion.WithKind("AlloyDBCluster")
 // AlloyDBClusterSpec defines the desired state of AlloyDBCluster
 // +kcc:spec:proto=google.cloud.alloydb.v1beta.Cluster
 type AlloyDBClusterSpec struct {
+
+	// A test field that breaks CRD equivalence check.
+	Test *string `json:"test,omitempty"`
+
 	// The AlloyDBCluster name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
