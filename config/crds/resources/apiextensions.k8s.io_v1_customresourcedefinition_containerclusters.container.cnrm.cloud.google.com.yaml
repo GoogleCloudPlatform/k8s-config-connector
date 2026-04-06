@@ -671,12 +671,36 @@ spec:
                           items:
                             type: string
                           type: array
-                        subnetwork:
-                          description: Name of the subnetwork. This can be the full
-                            path of the subnetwork or just the name.
-                          type: string
+                        subnetworkRef:
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: 'Allowed value: The `selfLink` field of
+                                a `ComputeSubnetwork` resource.'
+                              type: string
+                            name:
+                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                              type: string
+                            namespace:
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              type: string
+                          type: object
                       required:
-                      - subnetwork
+                      - subnetworkRef
                       type: object
                     type: array
                   additionalPodRangesConfig:
