@@ -785,6 +785,10 @@ spec:
                       field and it's populated at the Cluster creation time. This
                       field cannot be changed after cluster creation.
                     type: string
+                  test:
+                    description: Test field to validate the CRD-equivalence presubmit
+                      check Should be triggered and pass
+                    type: string
                 type: object
               uid:
                 description: Output only. The system-generated UID of the resource.
@@ -1556,6 +1560,10 @@ spec:
                     description: The database engine major version. This is an output-only
                       field and it's populated at the Cluster creation time. This
                       field cannot be changed after cluster creation.
+                    type: string
+                  test:
+                    description: Test field to validate the CRD-equivalence presubmit
+                      check Should be triggered and pass
                     type: string
                 type: object
               uid:

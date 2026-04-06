@@ -425,6 +425,10 @@ type AlloyDBClusterObservedState struct {
 	// cannot be changed after cluster creation.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.database_version
 	DatabaseVersion *string `json:"databaseVersion,omitempty"`
+
+	// Test field to validate the CRD-equivalence presubmit check
+	// Should be triggered and pass
+	Test *string `json:"test,omitempty"`
 }
 
 /*
