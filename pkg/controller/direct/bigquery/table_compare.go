@@ -39,8 +39,11 @@ func policyTagsEqual(a, b *bigquery.TableFieldSchemaPolicyTags) bool {
 	if a == nil && b == nil {
 		return true
 	}
-	if a == nil || b == nil {
-		return false
+	if a == nil {
+		return len(b.Names) == 0
+	}
+	if b == nil {
+		return len(a.Names) == 0
 	}
 	if a.Names == nil && b.Names == nil {
 		return true
