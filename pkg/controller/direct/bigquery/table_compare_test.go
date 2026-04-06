@@ -15,6 +15,7 @@
 package bigquery
 
 import (
+	"reflect"
 	"testing"
 
 	bigquery "google.golang.org/api/bigquery/v2"
@@ -95,5 +96,24 @@ func TestPolicyTagsEqual(t *testing.T) {
 				t.Errorf("policyTagsEqual() = %v, want %v", got, tt.wantEqual)
 			}
 		})
+	}
+}
+
+func TestPolicyTagsEqualNoInPlaceSort(t *testing.T) {
+	a := &bigquery.TableFieldSchemaPolicyTags{Names: []string{"b", "a"}}
+	b := &bigquery.TableFieldSchemaPolicyTags{Names: []string{"a", "b"}}
+
+	aOrig := []string{"b", "a"}
+	bOrig := []string{"a", "b"}
+
+	if !policyTagsEqual(a, b) {
+		t.Errorf("policyTagsEqual() = false, want true")
+	}
+
+	if !reflect.DeepEqual(a.Names, aOrig) {
+		t.Errorf("policyTagsEqual modified input a: got %v, want %v", a.Names, aOrig)
+	}
+	if !reflect.DeepEqual(b.Names, bOrig) {
+		t.Errorf("policyTagsEqual modified input b: got %v, want %v", b.Names, bOrig)
 	}
 }

@@ -36,39 +36,31 @@ func checkFieldValid(fields []*bigquery.TableFieldSchema) error {
 }
 
 func policyTagsEqual(a, b *bigquery.TableFieldSchemaPolicyTags) bool {
-	if a == nil && b == nil {
+	// Treat nil and empty policy tags as equivalent to avoid unnecessary diffs
+	// when GCP returns null for no policy tags.
+	if (a == nil || len(a.Names) == 0) && (b == nil || len(b.Names) == 0) {
 		return true
 	}
-	if a == nil {
-		return len(b.Names) == 0
-	}
-	if b == nil {
-		return len(a.Names) == 0
-	}
-	if a.Names == nil && b.Names == nil {
-		return true
-	}
-	// If one of a.Names or b.Names is nil.
-	if a.Names == nil || b.Names == nil {
-		// Suppress nil string and emptry string different.
-		if len(a.Names) == len(b.Names) {
-			return true
-		}
+	if a == nil || b == nil {
 		return false
 	}
 	if len(a.Names) != len(b.Names) {
 		return false
 	}
-	sort.Strings(a.Names)
-	sort.Strings(b.Names)
-	for i := range a.Names {
-		if a.Names[i] != b.Names[i] {
+
+	// Copy and sort to avoid modifying the input slices.
+	aNames := append([]string(nil), a.Names...)
+	bNames := append([]string(nil), b.Names...)
+	sort.Strings(aNames)
+	sort.Strings(bNames)
+
+	for i := range aNames {
+		if aNames[i] != bNames[i] {
 			return false
 		}
 	}
 	return true
 }
-
 // Sort the fields in place by name.
 func sortSchemaFields(fields []*bigquery.TableFieldSchema) {
 	sort.Slice(fields, func(i, j int) bool {
