@@ -61,6 +61,7 @@ func policyTagsEqual(a, b *bigquery.TableFieldSchemaPolicyTags) bool {
 	}
 	return true
 }
+
 // Sort the fields in place by name.
 func sortSchemaFields(fields []*bigquery.TableFieldSchema) {
 	sort.Slice(fields, func(i, j int) bool {
