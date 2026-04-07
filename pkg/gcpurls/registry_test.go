@@ -80,6 +80,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/deploymentResourcePools/{}":         true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}":                   true,
 		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/regionalEndpoints/{}":      true,
+                "//netapp.googleapis.com/projects/{}/locations/{}/backupvaults/{}":                  true,
 	}
 
 	for _, tmpl := range templates {
