@@ -30,11 +30,11 @@ go run . generate-types \
   --include-skipped-output \
   --resource APIGatewayAPI:Api
 
-go run . generate-mapper \
-  --service google.cloud.apigateway.v1 \
-  --api-version apigateway.cnrm.cloud.google.com/v1beta1 \
-  --include-skipped-output \
-  --multiversion
+# go run . generate-mapper \
+#   --service google.cloud.apigateway.v1 \
+#   --api-version apigateway.cnrm.cloud.google.com/v1beta1 \
+#   --include-skipped-output \
+#   --multiversion
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
