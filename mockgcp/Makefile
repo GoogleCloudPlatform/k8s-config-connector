@@ -214,7 +214,24 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/apigateway/v1/apigateway_service.proto \
 		./third_party/googleapis/google/cloud/networksecurity/v1beta1/*.proto \
 		./third_party/googleapis/google/cloud/networkservices/v1/*.proto \
-		./third_party/googleapis/google/cloud/dataplex/v1/*.proto \
+		./third_party/googleapis/google/cloud/dataplex/v1/analyze.proto \
+		./third_party/googleapis/google/cloud/dataplex/v1/business_glossary.proto \
+		./third_party/googleapis/google/cloud/dataplex/v1/cmek.proto \
+		./third_party/googleapis/google/cloud/dataplex/v1/content.proto \
+		./third_party/googleapis/google/cloud/dataplex/v1/data_discovery.proto \
+		./third_party/googleapis/google/cloud/dataplex/v1/data_documentation.proto \
+		./third_party/googleapis/google/cloud/dataplex/v1/data_profile.proto \
+		./third_party/googleapis/google/cloud/dataplex/v1/data_quality.proto \
+		./third_party/googleapis/google/cloud/dataplex/v1/data_taxonomy.proto \
+		./third_party/googleapis/google/cloud/dataplex/v1/datascans.proto \
+		./third_party/googleapis/google/cloud/dataplex/v1/datascans_common.proto \
+		./third_party/googleapis/google/cloud/dataplex/v1/logs.proto \
+		./third_party/googleapis/google/cloud/dataplex/v1/metadata.proto \
+		./third_party/googleapis/google/cloud/dataplex/v1/processing.proto \
+		./third_party/googleapis/google/cloud/dataplex/v1/resources.proto \
+		./third_party/googleapis/google/cloud/dataplex/v1/security.proto \
+		./third_party/googleapis/google/cloud/dataplex/v1/service.proto \
+		./third_party/googleapis/google/cloud/dataplex/v1/tasks.proto \
 		./third_party/googleapis/google/cloud/clouddms/v1/*.proto \
 		./third_party/googleapis/google/cloud/notebooks/v1/*.proto \
 		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto \

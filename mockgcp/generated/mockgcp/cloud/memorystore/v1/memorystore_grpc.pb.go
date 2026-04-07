@@ -35,6 +35,9 @@ type MemorystoreClient interface {
 	DeleteInstance(ctx context.Context, in *DeleteInstanceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Gets details about the certificate authority for an Instance.
 	GetCertificateAuthority(ctx context.Context, in *GetCertificateAuthorityRequest, opts ...grpc.CallOption) (*CertificateAuthority, error)
+	// Gets the details of shared regional certificate authority information for
+	// Memorystore instance.
+	GetSharedRegionalCertificateAuthority(ctx context.Context, in *GetSharedRegionalCertificateAuthorityRequest, opts ...grpc.CallOption) (*SharedRegionalCertificateAuthority, error)
 	// Reschedules upcoming maintenance event.
 	RescheduleMaintenance(ctx context.Context, in *RescheduleMaintenanceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Lists all backup collections owned by a consumer project in either the
@@ -130,6 +133,15 @@ func (c *memorystoreClient) GetCertificateAuthority(ctx context.Context, in *Get
 	return out, nil
 }
 
+func (c *memorystoreClient) GetSharedRegionalCertificateAuthority(ctx context.Context, in *GetSharedRegionalCertificateAuthorityRequest, opts ...grpc.CallOption) (*SharedRegionalCertificateAuthority, error) {
+	out := new(SharedRegionalCertificateAuthority)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.memorystore.v1.Memorystore/GetSharedRegionalCertificateAuthority", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *memorystoreClient) RescheduleMaintenance(ctx context.Context, in *RescheduleMaintenanceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.memorystore.v1.Memorystore/RescheduleMaintenance", in, out, opts...)
@@ -218,6 +230,9 @@ type MemorystoreServer interface {
 	DeleteInstance(context.Context, *DeleteInstanceRequest) (*longrunningpb.Operation, error)
 	// Gets details about the certificate authority for an Instance.
 	GetCertificateAuthority(context.Context, *GetCertificateAuthorityRequest) (*CertificateAuthority, error)
+	// Gets the details of shared regional certificate authority information for
+	// Memorystore instance.
+	GetSharedRegionalCertificateAuthority(context.Context, *GetSharedRegionalCertificateAuthorityRequest) (*SharedRegionalCertificateAuthority, error)
 	// Reschedules upcoming maintenance event.
 	RescheduleMaintenance(context.Context, *RescheduleMaintenanceRequest) (*longrunningpb.Operation, error)
 	// Lists all backup collections owned by a consumer project in either the
@@ -273,6 +288,9 @@ func (UnimplementedMemorystoreServer) DeleteInstance(context.Context, *DeleteIns
 }
 func (UnimplementedMemorystoreServer) GetCertificateAuthority(context.Context, *GetCertificateAuthorityRequest) (*CertificateAuthority, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCertificateAuthority not implemented")
+}
+func (UnimplementedMemorystoreServer) GetSharedRegionalCertificateAuthority(context.Context, *GetSharedRegionalCertificateAuthorityRequest) (*SharedRegionalCertificateAuthority, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSharedRegionalCertificateAuthority not implemented")
 }
 func (UnimplementedMemorystoreServer) RescheduleMaintenance(context.Context, *RescheduleMaintenanceRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RescheduleMaintenance not implemented")
@@ -415,6 +433,24 @@ func _Memorystore_GetCertificateAuthority_Handler(srv interface{}, ctx context.C
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MemorystoreServer).GetCertificateAuthority(ctx, req.(*GetCertificateAuthorityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Memorystore_GetSharedRegionalCertificateAuthority_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSharedRegionalCertificateAuthorityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MemorystoreServer).GetSharedRegionalCertificateAuthority(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.memorystore.v1.Memorystore/GetSharedRegionalCertificateAuthority",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MemorystoreServer).GetSharedRegionalCertificateAuthority(ctx, req.(*GetSharedRegionalCertificateAuthorityRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -593,6 +629,10 @@ var Memorystore_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetCertificateAuthority",
 			Handler:    _Memorystore_GetCertificateAuthority_Handler,
+		},
+		{
+			MethodName: "GetSharedRegionalCertificateAuthority",
+			Handler:    _Memorystore_GetSharedRegionalCertificateAuthority_Handler,
 		},
 		{
 			MethodName: "RescheduleMaintenance",

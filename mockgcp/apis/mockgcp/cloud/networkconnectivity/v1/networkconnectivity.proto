@@ -41,7 +41,7 @@ service ProjectsLocationsServer {
     };
   };
 
-  // Lists information about the supported locations for this service. This method can be called in two ways: * **List all public locations:** Use the path `GET /v1/locations`. * **List project-visible locations:** Use the path `GET /v1/projects/{project_id}/locations`. This may include public locations as well as private or other locations specifically visible to the project.
+  // Lists information about the supported locations for this service. This method lists locations based on the resource scope provided in the [ListLocationsRequest.name] field: * **Global locations**: If `name` is empty, the method lists the public locations available to all projects. * **Project-specific locations**: If `name` follows the format `projects/{project}`, the method lists locations visible to that specific project. This includes public, private, or other project-specific locations enabled for the project. For gRPC and client library implementations, the resource name is passed as the `name` field. For direct service calls, the resource name is incorporated into the request path based on the specific service implementation and version.
   rpc ListProjectsLocations(ListProjectsLocationsRequest) returns (ListLocationsResponse) {
     option (google.api.http) = {
       get: "/v1/{name=projects/*}/locations"
@@ -430,6 +430,23 @@ service ProjectsLocationsRegionalEndpointsServer {
   };
 }
 
+service ProjectsLocationsRemoteTransportProfilesServer {
+
+  // Gets details of a single RemoteTransportProfile.
+  rpc GetProjectsLocationsRemoteTransportProfile(GetProjectsLocationsRemoteTransportProfileRequest) returns (RemoteTransportProfile) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/remoteTransportProfiles/*}"
+    };
+  };
+
+  // Lists RemoteTransportProfiles in a given project and location.
+  rpc ListProjectsLocationsRemoteTransportProfiles(ListProjectsLocationsRemoteTransportProfilesRequest) returns (ListRemoteTransportProfilesResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*}/remoteTransportProfiles"
+    };
+  };
+}
+
 service ProjectsLocationsServiceClassesServer {
 
   // Deletes a single ServiceClass.
@@ -610,6 +627,46 @@ service ProjectsLocationsSpokesServer {
     option (google.api.http) = {
       patch: "/v1/{name=projects/*/locations/*/spokes/*}"
       body: "projects_locations_spoke"
+    };
+  };
+}
+
+service ProjectsLocationsTransportsServer {
+
+  // Creates a new Transport in a given project and location.
+  rpc CreateProjectsLocationsTransport(CreateProjectsLocationsTransportRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*}/transports"
+      body: "projects_locations_transport"
+    };
+  };
+
+  // Deletes a single Transport.
+  rpc DeleteProjectsLocationsTransport(DeleteProjectsLocationsTransportRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/transports/*}"
+    };
+  };
+
+  // Gets details of a single Transport.
+  rpc GetProjectsLocationsTransport(GetProjectsLocationsTransportRequest) returns (Transport) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/transports/*}"
+    };
+  };
+
+  // Lists Transports in a given project and location.
+  rpc ListProjectsLocationsTransports(ListProjectsLocationsTransportsRequest) returns (ListTransportsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*}/transports"
+    };
+  };
+
+  // Updates the parameters of a single Transport.
+  rpc PatchProjectsLocationsTransport(PatchProjectsLocationsTransportRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1/{name=projects/*/locations/*/transports/*}"
+      body: "projects_locations_transport"
     };
   };
 }
@@ -1235,6 +1292,16 @@ message ListRegionalEndpointsResponse {
   repeated string unreachable = 3 [json_name="unreachable"];
 }
 
+// Message for response to listing RemoteTransportProfiles
+message ListRemoteTransportProfilesResponse {
+  // A token identifying a page of results the server should return.
+  string next_page_token = 1 [json_name="nextPageToken"];
+  // The list of RemoteTransportProfiles.
+  repeated RemoteTransportProfile remote_transport_profiles = 2 [json_name="remoteTransportProfiles"];
+  // Unordered list. Locations that could not be reached.
+  repeated string unreachable = 3 [json_name="unreachable"];
+}
+
 // Response for HubService.ListRouteTables method.
 message ListRouteTablesResponse {
   // The token for the next page of the response. To see more results, use this value as the page_token for your next request. If this value is empty, there are no more results.
@@ -1302,6 +1369,16 @@ message ListSpokesResponse {
   // The requested spokes.
   repeated Spoke spokes = 2 [json_name="spokes"];
   // Locations that could not be reached.
+  repeated string unreachable = 3 [json_name="unreachable"];
+}
+
+// Message for response to listing Transports.
+message ListTransportsResponse {
+  // A token identifying a page of results the server should return.
+  string next_page_token = 1 [json_name="nextPageToken"];
+  // The list of Transport.
+  repeated Transport transports = 2 [json_name="transports"];
+  // Unordered list. Locations that could not be reached.
   repeated string unreachable = 3 [json_name="unreachable"];
 }
 
@@ -1606,6 +1683,30 @@ message RejectSpokeUpdateRequest {
   string spoke_uri = 4 [json_name="spokeUri"];
 }
 
+// Message describing RemoteTransportProfile object.
+message RemoteTransportProfile {
+  // Output only. Description of the profile.
+  string description = 1 [json_name="description"];
+  // Output only. Human readable name of this profile, used to identify this profile in the UI.
+  string display_name = 2 [json_name="displayName"];
+  // Output only. Type of provisioning flows supported by this profile.
+  string flow = 3 [json_name="flow"];
+  // Output only. Labels as key value pairs.
+  map<string, string> labels = 4 [json_name="labels"];
+  // Identifier. Name of the resource in the format of $provider-$site.
+  string name = 5 [json_name="name"];
+  // Output only. Order state for this profile.
+  string order_state = 6 [json_name="orderState"];
+  // Output only. Name of the provider on the other end of this profile. E.g. “Amazon Web Services” or “Microsoft Azure”.
+  string provider = 7 [json_name="provider"];
+  // Output only. If the profile is a Cloud Service Provider with compute resources, this is populated with the region where connectivity is being established. If the profile provides facility-level selection, this is an identity of the facility any connections on this profile are going through.
+  string provider_site = 8 [json_name="providerSite"];
+  // Output only. Availability class that will be configured for this particular RemoteTransportProfile.
+  string sla = 9 [json_name="sla"];
+  // Output only. List of bandwidth enum values that are supported by this profile.
+  repeated string supported_bandwidths = 10 [json_name="supportedBandwidths"];
+}
+
 // A route defines a path from VM instances within a spoke to a specific destination resource. Only VPC spokes have routes.
 message Route {
   // Output only. The time the route was created.
@@ -1899,6 +2000,42 @@ message TestIamPermissionsRequest {
 message TestIamPermissionsResponse {
   // A subset of `TestPermissionsRequest.permissions` that the caller is allowed.
   repeated string permissions = 1 [json_name="permissions"];
+}
+
+// Message describing Transport object.
+message Transport {
+  // Optional. List of IP Prefixes that will be advertised to the remote provider. Both IPv4 and IPv6 addresses are supported.
+  repeated string advertised_routes = 1 [json_name="advertisedRoutes"];
+  // Optional. Bandwidth of the Transport. This must be one of the supported bandwidths for the remote profile, and must be set when no activation key is being provided.
+  string bandwidth = 2 [json_name="bandwidth"];
+  // Output only. Create time stamp.
+  .google.protobuf.Timestamp create_time = 3 [json_name="createTime"];
+  // Optional. Description of the Transport.
+  string description = 4 [json_name="description"];
+  // Output only. Google-generated activation key. This is only output if the selected profile supports an OUTPUT key flow. Inputting this to the provider is only valid while the resource is in a PENDING_KEY state. Once the provider has accepted the key, the resource will move to the CONFIGURING state.
+  string generated_activation_key = 5 [json_name="generatedActivationKey"];
+  // Optional. Labels as key value pairs.
+  map<string, string> labels = 6 [json_name="labels"];
+  // Output only. The maximum transmission unit (MTU) of a packet that can be sent over this transport.
+  int32 mtu_limit = 7 [json_name="mtuLimit"];
+  // Identifier. Name of the resource.
+  string name = 8 [json_name="name"];
+  // Optional. Immutable. Resource URI of the Network that will be peered with this Transport. This field must be provided during resource creation and cannot be changed.
+  string network = 9 [json_name="network"];
+  // Output only. VPC Network URI that was created for the VPC Peering connection to the provided `network`. If VPC Peering is disconnected, this can be used to re-establish.
+  string peering_network = 10 [json_name="peeringNetwork"];
+  // Optional. Immutable. Key used for establishing a connection with the remote transport. This key can only be provided if the profile supports an INPUT key flow and the resource is in the PENDING_KEY state.
+  string provided_activation_key = 11 [json_name="providedActivationKey"];
+  // Optional. Immutable. The user supplied account id for the CSP associated with the remote profile.
+  string remote_account_id = 12 [json_name="remoteAccountId"];
+  // Optional. Immutable. Name of the remoteTransportProfile that this Transport is connecting to.
+  string remote_profile = 13 [json_name="remoteProfile"];
+  // Optional. IP version stack for the established connectivity.
+  string stack_type = 14 [json_name="stackType"];
+  // Output only. State of the underlying connectivity.
+  string state = 15 [json_name="state"];
+  // Output only. Update time stamp.
+  .google.protobuf.Timestamp update_time = 16 [json_name="updateTime"];
 }
 
 // VM instances that this policy-based route applies to.
@@ -2229,6 +2366,18 @@ message ListProjectsLocationsRegionalEndpointsRequest {
   string parent = 5;
 }
 
+message GetProjectsLocationsRemoteTransportProfileRequest {
+  string name = 1;
+}
+
+message ListProjectsLocationsRemoteTransportProfilesRequest {
+  string filter = 1;
+  string order_by = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+  string parent = 5;
+}
+
 message DeleteProjectsLocationsServiceClasseRequest {
   string etag = 1;
   string name = 2;
@@ -2376,4 +2525,35 @@ message PatchProjectsLocationsSpokeRequest {
   string request_id = 2;
   string update_mask = 3;
   Spoke projects_locations_spoke = 4;
+}
+
+message CreateProjectsLocationsTransportRequest {
+  string parent = 1;
+  string request_id = 2;
+  string transport_id = 3;
+  Transport projects_locations_transport = 4;
+}
+
+message DeleteProjectsLocationsTransportRequest {
+  string name = 1;
+  string request_id = 2;
+}
+
+message GetProjectsLocationsTransportRequest {
+  string name = 1;
+}
+
+message ListProjectsLocationsTransportsRequest {
+  string filter = 1;
+  string order_by = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+  string parent = 5;
+}
+
+message PatchProjectsLocationsTransportRequest {
+  string name = 1;
+  string request_id = 2;
+  string update_mask = 3;
+  Transport projects_locations_transport = 4;
 }

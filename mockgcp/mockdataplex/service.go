@@ -69,13 +69,13 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDataplexServiceServer(grpcServer, s.dataplexService)
-	pb.RegisterCatalogServiceServer(grpcServer, s.catalogService)
+	// pb.RegisterCatalogServiceServer(grpcServer, s.catalogService)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		grpcpb.RegisterDataplexServiceHandler,
-		grpcpb.RegisterCatalogServiceHandler,
+		// grpcpb.RegisterCatalogServiceHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err

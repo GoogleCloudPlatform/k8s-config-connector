@@ -7,6 +7,7 @@
 package kmspb
 
 import (
+	longrunningpb "cloud.google.com/go/longrunning/autogen/longrunningpb"
 	context "context"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
@@ -30,6 +31,10 @@ type KeyManagementServiceClient interface {
 	ListCryptoKeyVersions(ctx context.Context, in *ListCryptoKeyVersionsRequest, opts ...grpc.CallOption) (*ListCryptoKeyVersionsResponse, error)
 	// Lists [ImportJobs][mockgcp.cloud.kms.v1.ImportJob].
 	ListImportJobs(ctx context.Context, in *ListImportJobsRequest, opts ...grpc.CallOption) (*ListImportJobsResponse, error)
+	// Lists the [RetiredResources][mockgcp.cloud.kms.v1.RetiredResource] which are
+	// the records of deleted [CryptoKeys][mockgcp.cloud.kms.v1.CryptoKey].
+	// RetiredResources prevent the reuse of these resource names after deletion.
+	ListRetiredResources(ctx context.Context, in *ListRetiredResourcesRequest, opts ...grpc.CallOption) (*ListRetiredResourcesResponse, error)
 	// Returns metadata for a given [KeyRing][mockgcp.cloud.kms.v1.KeyRing].
 	GetKeyRing(ctx context.Context, in *GetKeyRingRequest, opts ...grpc.CallOption) (*KeyRing, error)
 	// Returns metadata for a given [CryptoKey][mockgcp.cloud.kms.v1.CryptoKey], as
@@ -48,6 +53,10 @@ type KeyManagementServiceClient interface {
 	GetPublicKey(ctx context.Context, in *GetPublicKeyRequest, opts ...grpc.CallOption) (*PublicKey, error)
 	// Returns metadata for a given [ImportJob][mockgcp.cloud.kms.v1.ImportJob].
 	GetImportJob(ctx context.Context, in *GetImportJobRequest, opts ...grpc.CallOption) (*ImportJob, error)
+	// Retrieves a specific [RetiredResource][mockgcp.cloud.kms.v1.RetiredResource]
+	// resource, which represents the record of a deleted
+	// [CryptoKey][mockgcp.cloud.kms.v1.CryptoKey].
+	GetRetiredResource(ctx context.Context, in *GetRetiredResourceRequest, opts ...grpc.CallOption) (*RetiredResource, error)
 	// Create a new [KeyRing][mockgcp.cloud.kms.v1.KeyRing] in a given Project and
 	// Location.
 	CreateKeyRing(ctx context.Context, in *CreateKeyRingRequest, opts ...grpc.CallOption) (*KeyRing, error)
@@ -65,6 +74,25 @@ type KeyManagementServiceClient interface {
 	// [state][mockgcp.cloud.kms.v1.CryptoKeyVersion.state] will be set to
 	// [ENABLED][mockgcp.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED].
 	CreateCryptoKeyVersion(ctx context.Context, in *CreateCryptoKeyVersionRequest, opts ...grpc.CallOption) (*CryptoKeyVersion, error)
+	// Permanently deletes the given [CryptoKey][mockgcp.cloud.kms.v1.CryptoKey].
+	// All child [CryptoKeyVersions][mockgcp.cloud.kms.v1.CryptoKeyVersion] must
+	// have been previously deleted using
+	// [KeyManagementService.DeleteCryptoKeyVersion][mockgcp.cloud.kms.v1.KeyManagementService.DeleteCryptoKeyVersion].
+	// The specified crypto key will be immediately and permanently deleted upon
+	// calling this method. This action cannot be undone.
+	DeleteCryptoKey(ctx context.Context, in *DeleteCryptoKeyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Permanently deletes the given
+	// [CryptoKeyVersion][mockgcp.cloud.kms.v1.CryptoKeyVersion]. Only possible if
+	// the version has not been previously imported and if its
+	// [state][mockgcp.cloud.kms.v1.CryptoKeyVersion.state] is one of
+	// [DESTROYED][CryptoKeyVersionState.DESTROYED],
+	// [IMPORT_FAILED][CryptoKeyVersionState.IMPORT_FAILED], or
+	// [GENERATION_FAILED][CryptoKeyVersionState.GENERATION_FAILED].
+	// Successfully imported
+	// [CryptoKeyVersions][mockgcp.cloud.kms.v1.CryptoKeyVersion] cannot be deleted
+	// at this time. The specified version will be immediately and permanently
+	// deleted upon calling this method. This action cannot be undone.
+	DeleteCryptoKeyVersion(ctx context.Context, in *DeleteCryptoKeyVersionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Import wrapped key material into a
 	// [CryptoKeyVersion][mockgcp.cloud.kms.v1.CryptoKeyVersion].
 	//
@@ -177,6 +205,12 @@ type KeyManagementServiceClient interface {
 	// [CryptoKey.purpose][mockgcp.cloud.kms.v1.CryptoKey.purpose] MAC, and returns
 	// a response that indicates whether or not the verification was successful.
 	MacVerify(ctx context.Context, in *MacVerifyRequest, opts ...grpc.CallOption) (*MacVerifyResponse, error)
+	// Decapsulates data that was encapsulated with a public key retrieved from
+	// [GetPublicKey][mockgcp.cloud.kms.v1.KeyManagementService.GetPublicKey]
+	// corresponding to a [CryptoKeyVersion][mockgcp.cloud.kms.v1.CryptoKeyVersion]
+	// with [CryptoKey.purpose][mockgcp.cloud.kms.v1.CryptoKey.purpose]
+	// KEY_ENCAPSULATION.
+	Decapsulate(ctx context.Context, in *DecapsulateRequest, opts ...grpc.CallOption) (*DecapsulateResponse, error)
 	// Generate random bytes using the Cloud KMS randomness source in the provided
 	// location.
 	GenerateRandomBytes(ctx context.Context, in *GenerateRandomBytesRequest, opts ...grpc.CallOption) (*GenerateRandomBytesResponse, error)
@@ -220,6 +254,15 @@ func (c *keyManagementServiceClient) ListCryptoKeyVersions(ctx context.Context, 
 func (c *keyManagementServiceClient) ListImportJobs(ctx context.Context, in *ListImportJobsRequest, opts ...grpc.CallOption) (*ListImportJobsResponse, error) {
 	out := new(ListImportJobsResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.kms.v1.KeyManagementService/ListImportJobs", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *keyManagementServiceClient) ListRetiredResources(ctx context.Context, in *ListRetiredResourcesRequest, opts ...grpc.CallOption) (*ListRetiredResourcesResponse, error) {
+	out := new(ListRetiredResourcesResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.kms.v1.KeyManagementService/ListRetiredResources", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -271,6 +314,15 @@ func (c *keyManagementServiceClient) GetImportJob(ctx context.Context, in *GetIm
 	return out, nil
 }
 
+func (c *keyManagementServiceClient) GetRetiredResource(ctx context.Context, in *GetRetiredResourceRequest, opts ...grpc.CallOption) (*RetiredResource, error) {
+	out := new(RetiredResource)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.kms.v1.KeyManagementService/GetRetiredResource", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *keyManagementServiceClient) CreateKeyRing(ctx context.Context, in *CreateKeyRingRequest, opts ...grpc.CallOption) (*KeyRing, error) {
 	out := new(KeyRing)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.kms.v1.KeyManagementService/CreateKeyRing", in, out, opts...)
@@ -292,6 +344,24 @@ func (c *keyManagementServiceClient) CreateCryptoKey(ctx context.Context, in *Cr
 func (c *keyManagementServiceClient) CreateCryptoKeyVersion(ctx context.Context, in *CreateCryptoKeyVersionRequest, opts ...grpc.CallOption) (*CryptoKeyVersion, error) {
 	out := new(CryptoKeyVersion)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.kms.v1.KeyManagementService/CreateCryptoKeyVersion", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *keyManagementServiceClient) DeleteCryptoKey(ctx context.Context, in *DeleteCryptoKeyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.kms.v1.KeyManagementService/DeleteCryptoKey", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *keyManagementServiceClient) DeleteCryptoKeyVersion(ctx context.Context, in *DeleteCryptoKeyVersionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.kms.v1.KeyManagementService/DeleteCryptoKeyVersion", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -433,6 +503,15 @@ func (c *keyManagementServiceClient) MacVerify(ctx context.Context, in *MacVerif
 	return out, nil
 }
 
+func (c *keyManagementServiceClient) Decapsulate(ctx context.Context, in *DecapsulateRequest, opts ...grpc.CallOption) (*DecapsulateResponse, error) {
+	out := new(DecapsulateResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.kms.v1.KeyManagementService/Decapsulate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *keyManagementServiceClient) GenerateRandomBytes(ctx context.Context, in *GenerateRandomBytesRequest, opts ...grpc.CallOption) (*GenerateRandomBytesResponse, error) {
 	out := new(GenerateRandomBytesResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.kms.v1.KeyManagementService/GenerateRandomBytes", in, out, opts...)
@@ -454,6 +533,10 @@ type KeyManagementServiceServer interface {
 	ListCryptoKeyVersions(context.Context, *ListCryptoKeyVersionsRequest) (*ListCryptoKeyVersionsResponse, error)
 	// Lists [ImportJobs][mockgcp.cloud.kms.v1.ImportJob].
 	ListImportJobs(context.Context, *ListImportJobsRequest) (*ListImportJobsResponse, error)
+	// Lists the [RetiredResources][mockgcp.cloud.kms.v1.RetiredResource] which are
+	// the records of deleted [CryptoKeys][mockgcp.cloud.kms.v1.CryptoKey].
+	// RetiredResources prevent the reuse of these resource names after deletion.
+	ListRetiredResources(context.Context, *ListRetiredResourcesRequest) (*ListRetiredResourcesResponse, error)
 	// Returns metadata for a given [KeyRing][mockgcp.cloud.kms.v1.KeyRing].
 	GetKeyRing(context.Context, *GetKeyRingRequest) (*KeyRing, error)
 	// Returns metadata for a given [CryptoKey][mockgcp.cloud.kms.v1.CryptoKey], as
@@ -472,6 +555,10 @@ type KeyManagementServiceServer interface {
 	GetPublicKey(context.Context, *GetPublicKeyRequest) (*PublicKey, error)
 	// Returns metadata for a given [ImportJob][mockgcp.cloud.kms.v1.ImportJob].
 	GetImportJob(context.Context, *GetImportJobRequest) (*ImportJob, error)
+	// Retrieves a specific [RetiredResource][mockgcp.cloud.kms.v1.RetiredResource]
+	// resource, which represents the record of a deleted
+	// [CryptoKey][mockgcp.cloud.kms.v1.CryptoKey].
+	GetRetiredResource(context.Context, *GetRetiredResourceRequest) (*RetiredResource, error)
 	// Create a new [KeyRing][mockgcp.cloud.kms.v1.KeyRing] in a given Project and
 	// Location.
 	CreateKeyRing(context.Context, *CreateKeyRingRequest) (*KeyRing, error)
@@ -489,6 +576,25 @@ type KeyManagementServiceServer interface {
 	// [state][mockgcp.cloud.kms.v1.CryptoKeyVersion.state] will be set to
 	// [ENABLED][mockgcp.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED].
 	CreateCryptoKeyVersion(context.Context, *CreateCryptoKeyVersionRequest) (*CryptoKeyVersion, error)
+	// Permanently deletes the given [CryptoKey][mockgcp.cloud.kms.v1.CryptoKey].
+	// All child [CryptoKeyVersions][mockgcp.cloud.kms.v1.CryptoKeyVersion] must
+	// have been previously deleted using
+	// [KeyManagementService.DeleteCryptoKeyVersion][mockgcp.cloud.kms.v1.KeyManagementService.DeleteCryptoKeyVersion].
+	// The specified crypto key will be immediately and permanently deleted upon
+	// calling this method. This action cannot be undone.
+	DeleteCryptoKey(context.Context, *DeleteCryptoKeyRequest) (*longrunningpb.Operation, error)
+	// Permanently deletes the given
+	// [CryptoKeyVersion][mockgcp.cloud.kms.v1.CryptoKeyVersion]. Only possible if
+	// the version has not been previously imported and if its
+	// [state][mockgcp.cloud.kms.v1.CryptoKeyVersion.state] is one of
+	// [DESTROYED][CryptoKeyVersionState.DESTROYED],
+	// [IMPORT_FAILED][CryptoKeyVersionState.IMPORT_FAILED], or
+	// [GENERATION_FAILED][CryptoKeyVersionState.GENERATION_FAILED].
+	// Successfully imported
+	// [CryptoKeyVersions][mockgcp.cloud.kms.v1.CryptoKeyVersion] cannot be deleted
+	// at this time. The specified version will be immediately and permanently
+	// deleted upon calling this method. This action cannot be undone.
+	DeleteCryptoKeyVersion(context.Context, *DeleteCryptoKeyVersionRequest) (*longrunningpb.Operation, error)
 	// Import wrapped key material into a
 	// [CryptoKeyVersion][mockgcp.cloud.kms.v1.CryptoKeyVersion].
 	//
@@ -601,6 +707,12 @@ type KeyManagementServiceServer interface {
 	// [CryptoKey.purpose][mockgcp.cloud.kms.v1.CryptoKey.purpose] MAC, and returns
 	// a response that indicates whether or not the verification was successful.
 	MacVerify(context.Context, *MacVerifyRequest) (*MacVerifyResponse, error)
+	// Decapsulates data that was encapsulated with a public key retrieved from
+	// [GetPublicKey][mockgcp.cloud.kms.v1.KeyManagementService.GetPublicKey]
+	// corresponding to a [CryptoKeyVersion][mockgcp.cloud.kms.v1.CryptoKeyVersion]
+	// with [CryptoKey.purpose][mockgcp.cloud.kms.v1.CryptoKey.purpose]
+	// KEY_ENCAPSULATION.
+	Decapsulate(context.Context, *DecapsulateRequest) (*DecapsulateResponse, error)
 	// Generate random bytes using the Cloud KMS randomness source in the provided
 	// location.
 	GenerateRandomBytes(context.Context, *GenerateRandomBytesRequest) (*GenerateRandomBytesResponse, error)
@@ -623,6 +735,9 @@ func (UnimplementedKeyManagementServiceServer) ListCryptoKeyVersions(context.Con
 func (UnimplementedKeyManagementServiceServer) ListImportJobs(context.Context, *ListImportJobsRequest) (*ListImportJobsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListImportJobs not implemented")
 }
+func (UnimplementedKeyManagementServiceServer) ListRetiredResources(context.Context, *ListRetiredResourcesRequest) (*ListRetiredResourcesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListRetiredResources not implemented")
+}
 func (UnimplementedKeyManagementServiceServer) GetKeyRing(context.Context, *GetKeyRingRequest) (*KeyRing, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetKeyRing not implemented")
 }
@@ -638,6 +753,9 @@ func (UnimplementedKeyManagementServiceServer) GetPublicKey(context.Context, *Ge
 func (UnimplementedKeyManagementServiceServer) GetImportJob(context.Context, *GetImportJobRequest) (*ImportJob, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetImportJob not implemented")
 }
+func (UnimplementedKeyManagementServiceServer) GetRetiredResource(context.Context, *GetRetiredResourceRequest) (*RetiredResource, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRetiredResource not implemented")
+}
 func (UnimplementedKeyManagementServiceServer) CreateKeyRing(context.Context, *CreateKeyRingRequest) (*KeyRing, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateKeyRing not implemented")
 }
@@ -646,6 +764,12 @@ func (UnimplementedKeyManagementServiceServer) CreateCryptoKey(context.Context, 
 }
 func (UnimplementedKeyManagementServiceServer) CreateCryptoKeyVersion(context.Context, *CreateCryptoKeyVersionRequest) (*CryptoKeyVersion, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateCryptoKeyVersion not implemented")
+}
+func (UnimplementedKeyManagementServiceServer) DeleteCryptoKey(context.Context, *DeleteCryptoKeyRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteCryptoKey not implemented")
+}
+func (UnimplementedKeyManagementServiceServer) DeleteCryptoKeyVersion(context.Context, *DeleteCryptoKeyVersionRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteCryptoKeyVersion not implemented")
 }
 func (UnimplementedKeyManagementServiceServer) ImportCryptoKeyVersion(context.Context, *ImportCryptoKeyVersionRequest) (*CryptoKeyVersion, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ImportCryptoKeyVersion not implemented")
@@ -691,6 +815,9 @@ func (UnimplementedKeyManagementServiceServer) MacSign(context.Context, *MacSign
 }
 func (UnimplementedKeyManagementServiceServer) MacVerify(context.Context, *MacVerifyRequest) (*MacVerifyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MacVerify not implemented")
+}
+func (UnimplementedKeyManagementServiceServer) Decapsulate(context.Context, *DecapsulateRequest) (*DecapsulateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Decapsulate not implemented")
 }
 func (UnimplementedKeyManagementServiceServer) GenerateRandomBytes(context.Context, *GenerateRandomBytesRequest) (*GenerateRandomBytesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GenerateRandomBytes not implemented")
@@ -776,6 +903,24 @@ func _KeyManagementService_ListImportJobs_Handler(srv interface{}, ctx context.C
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(KeyManagementServiceServer).ListImportJobs(ctx, req.(*ListImportJobsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _KeyManagementService_ListRetiredResources_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRetiredResourcesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KeyManagementServiceServer).ListRetiredResources(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.kms.v1.KeyManagementService/ListRetiredResources",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KeyManagementServiceServer).ListRetiredResources(ctx, req.(*ListRetiredResourcesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -870,6 +1015,24 @@ func _KeyManagementService_GetImportJob_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _KeyManagementService_GetRetiredResource_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRetiredResourceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KeyManagementServiceServer).GetRetiredResource(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.kms.v1.KeyManagementService/GetRetiredResource",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KeyManagementServiceServer).GetRetiredResource(ctx, req.(*GetRetiredResourceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _KeyManagementService_CreateKeyRing_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateKeyRingRequest)
 	if err := dec(in); err != nil {
@@ -920,6 +1083,42 @@ func _KeyManagementService_CreateCryptoKeyVersion_Handler(srv interface{}, ctx c
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(KeyManagementServiceServer).CreateCryptoKeyVersion(ctx, req.(*CreateCryptoKeyVersionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _KeyManagementService_DeleteCryptoKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteCryptoKeyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KeyManagementServiceServer).DeleteCryptoKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.kms.v1.KeyManagementService/DeleteCryptoKey",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KeyManagementServiceServer).DeleteCryptoKey(ctx, req.(*DeleteCryptoKeyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _KeyManagementService_DeleteCryptoKeyVersion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteCryptoKeyVersionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KeyManagementServiceServer).DeleteCryptoKeyVersion(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.kms.v1.KeyManagementService/DeleteCryptoKeyVersion",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KeyManagementServiceServer).DeleteCryptoKeyVersion(ctx, req.(*DeleteCryptoKeyVersionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1194,6 +1393,24 @@ func _KeyManagementService_MacVerify_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _KeyManagementService_Decapsulate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DecapsulateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KeyManagementServiceServer).Decapsulate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.kms.v1.KeyManagementService/Decapsulate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KeyManagementServiceServer).Decapsulate(ctx, req.(*DecapsulateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _KeyManagementService_GenerateRandomBytes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GenerateRandomBytesRequest)
 	if err := dec(in); err != nil {
@@ -1236,6 +1453,10 @@ var KeyManagementService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _KeyManagementService_ListImportJobs_Handler,
 		},
 		{
+			MethodName: "ListRetiredResources",
+			Handler:    _KeyManagementService_ListRetiredResources_Handler,
+		},
+		{
 			MethodName: "GetKeyRing",
 			Handler:    _KeyManagementService_GetKeyRing_Handler,
 		},
@@ -1256,6 +1477,10 @@ var KeyManagementService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _KeyManagementService_GetImportJob_Handler,
 		},
 		{
+			MethodName: "GetRetiredResource",
+			Handler:    _KeyManagementService_GetRetiredResource_Handler,
+		},
+		{
 			MethodName: "CreateKeyRing",
 			Handler:    _KeyManagementService_CreateKeyRing_Handler,
 		},
@@ -1266,6 +1491,14 @@ var KeyManagementService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateCryptoKeyVersion",
 			Handler:    _KeyManagementService_CreateCryptoKeyVersion_Handler,
+		},
+		{
+			MethodName: "DeleteCryptoKey",
+			Handler:    _KeyManagementService_DeleteCryptoKey_Handler,
+		},
+		{
+			MethodName: "DeleteCryptoKeyVersion",
+			Handler:    _KeyManagementService_DeleteCryptoKeyVersion_Handler,
 		},
 		{
 			MethodName: "ImportCryptoKeyVersion",
@@ -1326,6 +1559,10 @@ var KeyManagementService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "MacVerify",
 			Handler:    _KeyManagementService_MacVerify_Handler,
+		},
+		{
+			MethodName: "Decapsulate",
+			Handler:    _KeyManagementService_Decapsulate_Handler,
 		},
 		{
 			MethodName: "GenerateRandomBytes",

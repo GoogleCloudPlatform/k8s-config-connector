@@ -150,7 +150,7 @@ service ProjectsLocationsServer {
     };
   };
 
-  // Lists information about the supported locations for this service. This method can be called in two ways: * **List all public locations:** Use the path `GET /v1/locations`. * **List project-visible locations:** Use the path `GET /v1/projects/{project_id}/locations`. This may include public locations as well as private or other locations specifically visible to the project.
+  // Lists information about the supported locations for this service. This method lists locations based on the resource scope provided in the [ListLocationsRequest.name] field: * **Global locations**: If `name` is empty, the method lists the public locations available to all projects. * **Project-specific locations**: If `name` follows the format `projects/{project}`, the method lists locations visible to that specific project. This includes public, private, or other project-specific locations enabled for the project. For gRPC and client library implementations, the resource name is passed as the `name` field. For direct service calls, the resource name is incorporated into the request path based on the specific service implementation and version.
   rpc ListProjectsLocations(ListProjectsLocationsRequest) returns (ListLocationsResponse) {
     option (google.api.http) = {
       get: "/v1/{name=projects/*}/locations"
@@ -737,7 +737,7 @@ message CryptoKey {
   optional .google.protobuf.Duration destroy_scheduled_duration = 3 [json_name="destroyScheduledDuration"];
   // Immutable. Whether this key may contain imported versions only.
   optional bool import_only = 4 [json_name="importOnly"];
-  // Optional. The policy used for Key Access Justifications Policy Enforcement. If this field is present and this key is enrolled in Key Access Justifications Policy Enforcement, the policy will be evaluated in encrypt, decrypt, and sign operations, and the operation will fail if rejected by the policy. The policy is defined by specifying zero or more allowed justification codes. https://cloud.google.com/assured-workloads/key-access-justifications/docs/justification-codes By default, this field is absent, and all justification codes are allowed.
+  // Optional. The policy used for Key Access Justifications Policy Enforcement. If this field is present and this key is enrolled in Key Access Justifications Policy Enforcement, the policy will be evaluated in encrypt, decrypt, and sign operations, and the operation will fail if rejected by the policy. The policy is defined by specifying zero or more allowed justification codes. https://cloud.google.com/assured-workloads/key-access-justifications/docs/justification-codes By default, this field is absent, and all justification codes are allowed. If the `key_access_justifications_policy.allowed_access_reasons` is empty (zero allowed justification code), all encrypt, decrypt, and sign operations will fail.
   optional KeyAccessJustificationsPolicy key_access_justifications_policy = 5 [json_name="keyAccessJustificationsPolicy"];
   // Labels with user-defined metadata. For more information, see [Labeling Keys](https://cloud.google.com/kms/docs/labeling-keys).
   map<string, string> labels = 6 [json_name="labels"];
@@ -1009,26 +1009,28 @@ message ImportJob {
   optional string state = 11 [json_name="state"];
 }
 
-// The configuration of a protection level for a project's Key Access Justifications enrollment.
+// Represents the configuration of a protection level for a project's Key Access Justifications enrollment.
 message KeyAccessJustificationsEnrollmentConfig {
-  // Whether the project has KAJ logging enabled.
+  // Indicates whether the project has KAJ logging enabled.
   optional bool audit_logging = 1 [json_name="auditLogging"];
-  // Whether the project is enrolled in KAJ policy enforcement.
+  // Indicates whether the project is enrolled in KAJ policy enforcement.
   optional bool policy_enforcement = 2 [json_name="policyEnforcement"];
 }
 
-// A KeyAccessJustificationsPolicy specifies zero or more allowed AccessReason values for encrypt, decrypt, and sign operations on a CryptoKey.
+// A KeyAccessJustificationsPolicy specifies zero or more allowed AccessReason values for encrypt, decrypt, and sign operations on a CryptoKey or KeyAccessJustificationsPolicyConfig (the default Key Access Justifications policy).
 message KeyAccessJustificationsPolicy {
-  // The list of allowed reasons for access to a CryptoKey. Zero allowed access reasons means all encrypt, decrypt, and sign operations for the CryptoKey associated with this policy will fail.
+  // The list of allowed reasons for access to a CryptoKey. Note that empty allowed_access_reasons has a different meaning depending on where this message appears. If this is under KeyAccessJustificationsPolicyConfig, it means allow-all. If this is under CryptoKey, it means deny-all.
   repeated string allowed_access_reasons = 1 [json_name="allowedAccessReasons"];
 }
 
-// A singleton configuration for Key Access Justifications policies.
+// Represents a singleton configuration for Key Access Justifications policies.
 message KeyAccessJustificationsPolicyConfig {
-  // Optional. The default key access justification policy used when a CryptoKey is created in this folder. This is only used when a Key Access Justifications policy is not provided in the CreateCryptoKeyRequest. This overrides any default policies in its ancestry.
+  // Optional. Specifies the default key access justifications (KAJ) policy used when a CryptoKey is created in this folder. This is only used when a Key Access Justifications policy is not provided in the CreateCryptoKeyRequest. This overrides any default policies in its ancestry. If this field is unset, or is set but contains an empty allowed_access_reasons list, no default Key Access Justifications (KAJ) policy configuration is active. In this scenario, all newly created keys will default to an "allow-all" policy.
   optional KeyAccessJustificationsPolicy default_key_access_justification_policy = 1 [json_name="defaultKeyAccessJustificationPolicy"];
-  // Identifier. The resource name for this KeyAccessJustificationsPolicyConfig in the format of "{organizations|folders|projects}/*/kajPolicyConfig".
-  optional string name = 2 [json_name="name"];
+  // Output only. Indicates whether this parent resource is available to default policy feature. Please consult [the prerequisite of default policy feature](https://cloud.google.com/assured-workloads/key-access-justifications/docs/set-default-policy#before) for more details.
+  optional bool default_policy_available = 2 [json_name="defaultPolicyAvailable"];
+  // Identifier. Represents the resource name for this KeyAccessJustificationsPolicyConfig in the format of "{organizations|folders|projects}/*/kajPolicyConfig".
+  optional string name = 3 [json_name="name"];
 }
 
 // Resource-oriented representation of a request to Cloud KMS Autokey and the resulting provisioning of a CryptoKey.
@@ -1439,19 +1441,19 @@ message ShowEffectiveAutokeyConfigResponse {
   optional string key_project = 1 [json_name="keyProject"];
 }
 
-// Response message for KeyAccessJustificationsConfig.ShowEffectiveKeyAccessJustificationsEnrollmentConfig
+// Represents a response message for KeyAccessJustificationsConfig.ShowEffectiveKeyAccessJustificationsEnrollmentConfig
 message ShowEffectiveKeyAccessJustificationsEnrollmentConfigResponse {
-  // The effective KeyAccessJustificationsEnrollmentConfig for external keys.
+  // Contains the effective KeyAccessJustificationsEnrollmentConfig for external keys.
   optional KeyAccessJustificationsEnrollmentConfig external_config = 1 [json_name="externalConfig"];
-  // The effective KeyAccessJustificationsEnrollmentConfig for hardware keys.
+  // Contains the effective KeyAccessJustificationsEnrollmentConfig for hardware keys.
   optional KeyAccessJustificationsEnrollmentConfig hardware_config = 2 [json_name="hardwareConfig"];
-  // The effective KeyAccessJustificationsEnrollmentConfig for software keys.
+  // Contains the effective KeyAccessJustificationsEnrollmentConfig for software keys.
   optional KeyAccessJustificationsEnrollmentConfig software_config = 3 [json_name="softwareConfig"];
 }
 
-// Response message for KeyAccessJustificationsConfig.ShowEffectiveKeyAccessJustificationsPolicyConfig.
+// Represents a response message for KeyAccessJustificationsConfig.ShowEffectiveKeyAccessJustificationsPolicyConfig.
 message ShowEffectiveKeyAccessJustificationsPolicyConfigResponse {
-  // The effective KeyAccessJustificationsPolicyConfig.
+  // Contains the effective KeyAccessJustificationsPolicyConfig.
   optional KeyAccessJustificationsPolicyConfig effective_kaj_policy = 1 [json_name="effectiveKajPolicy"];
 }
 

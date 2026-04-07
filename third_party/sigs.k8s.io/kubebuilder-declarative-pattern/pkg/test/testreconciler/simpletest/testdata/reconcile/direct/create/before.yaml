@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ns1
+---
+apiVersion: addons.example.org/v1alpha1
+kind: SimpleTest
+metadata:
+  name: simple1
+  namespace: ns1
+spec:
+  channel: stable
