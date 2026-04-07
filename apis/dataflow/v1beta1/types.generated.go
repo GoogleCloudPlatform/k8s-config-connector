@@ -255,12 +255,12 @@ type Environment struct {
 
 	// A description of the process that generated the request.
 	// +kcc:proto:field=google.dataflow.v1beta3.Environment.user_agent
-	UserAgent apiextensionsv1.JSON `json:"userAgent,omitempty"`
+	UserAgent *apiextensionsv1.JSON `json:"userAgent,omitempty"`
 
 	// A structure describing which components and their versions of the service
 	//  are required in order to run the job.
 	// +kcc:proto:field=google.dataflow.v1beta3.Environment.version
-	Version apiextensionsv1.JSON `json:"version,omitempty"`
+	Version *apiextensionsv1.JSON `json:"version,omitempty"`
 
 	// Optional. The dataset for the current project where various workflow
 	//  related tables are stored.
@@ -277,7 +277,7 @@ type Environment struct {
 	//  SDK pipeline options on the worker in a language agnostic and platform
 	//  independent way.
 	// +kcc:proto:field=google.dataflow.v1beta3.Environment.sdk_pipeline_options
-	SdkPipelineOptions apiextensionsv1.JSON `json:"sdkPipelineOptions,omitempty"`
+	SdkPipelineOptions *apiextensionsv1.JSON `json:"sdkPipelineOptions,omitempty"`
 
 	// Experimental settings.
 	// +kcc:proto:field=google.dataflow.v1beta3.Environment.internal_experiments
@@ -629,7 +629,7 @@ type Step struct {
 	//  predefined step has its own required set of properties.
 	//  Must be provided on Create.  Only retrieved with JOB_VIEW_ALL.
 	// +kcc:proto:field=google.dataflow.v1beta3.Step.properties
-	Properties apiextensionsv1.JSON `json:"properties,omitempty"`
+	Properties *apiextensionsv1.JSON `json:"properties,omitempty"`
 }
 
 // +kcc:proto=google.dataflow.v1beta3.TaskRunnerSettings

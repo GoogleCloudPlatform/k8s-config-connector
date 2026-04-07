@@ -14,5 +14,28 @@
 
 package dataflow
 
-// Custom map functions for Dataflow API types.
-// (None needed at this time.)
+import (
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataflow/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"google.golang.org/protobuf/types/known/anypb"
+)
+
+func Any_FromProto(mapCtx *direct.MapContext, in *anypb.Any) *krm.Any {
+	if in == nil {
+		return nil
+	}
+	return &krm.Any{
+		TypeURL: direct.LazyPtr(in.TypeUrl),
+		Value:   in.Value,
+	}
+}
+
+func Any_ToProto(mapCtx *direct.MapContext, in *krm.Any) *anypb.Any {
+	if in == nil {
+		return nil
+	}
+	return &anypb.Any{
+		TypeUrl: direct.ValueOf(in.TypeURL),
+		Value:   in.Value,
+	}
+}

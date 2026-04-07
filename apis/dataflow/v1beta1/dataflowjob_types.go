@@ -73,8 +73,7 @@ type DataflowJobSpec struct {
 	TemplateGcsPath string `json:"templateGcsPath"`
 
 	// Only applicable when updating a pipeline. Map of transform name prefixes of the job to be replaced with the corresponding name prefixes of the new job.
-	// +kubebuilder:validation:Type=object
-	TransformNameMapping *apiextensionsv1.JSON `json:"transformNameMapping,omitempty"`
+	TransformNameMapping map[string]string `json:"transformNameMapping,omitempty"`
 
 	// Immutable. The zone in which the created job should run. If it is not provided, the provider zone is used.
 	Zone *string `json:"zone,omitempty"`

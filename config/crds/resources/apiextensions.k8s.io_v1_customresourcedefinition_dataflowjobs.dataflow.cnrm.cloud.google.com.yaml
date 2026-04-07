@@ -218,11 +218,12 @@ spec:
                 description: The Google Cloud Storage path to the Dataflow job template.
                 type: string
               transformNameMapping:
+                additionalProperties:
+                  type: string
                 description: Only applicable when updating a pipeline. Map of transform
                   name prefixes of the job to be replaced with the corresponding name
                   prefixes of the new job.
                 type: object
-                x-kubernetes-preserve-unknown-fields: true
               zone:
                 description: Immutable. The zone in which the created job should run.
                   If it is not provided, the provider zone is used.

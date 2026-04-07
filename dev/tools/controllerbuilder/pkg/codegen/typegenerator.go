@@ -313,10 +313,6 @@ func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool)
 	if goType == "*[]byte" {
 		goType = "[]byte"
 	}
-	// Special case for proto "google.protobuf.Struct" type
-	if goType == "*apiextensionsv1.JSON" {
-		goType = "apiextensionsv1.JSON"
-	}
 
 	return goType, nil
 }
