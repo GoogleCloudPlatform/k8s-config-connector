@@ -20,11 +20,11 @@ import (
 
 func TestAccessPolicyIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
-		name         string
-		ref          string
-		wantID       string
-		wantString   string
-		wantErr      bool
+		name       string
+		ref        string
+		wantID     string
+		wantString string
+		wantErr    bool
 	}{
 		{
 			name:       "simple ID",
@@ -48,9 +48,9 @@ func TestAccessPolicyIdentity_FromExternal(t *testing.T) {
 			wantErr:    false,
 		},
 		{
-			name:       "invalid format",
-			ref:        "organizations/123",
-			wantErr:    true,
+			name:    "invalid format",
+			ref:     "organizations/123",
+			wantErr: true,
 		},
 	}
 
