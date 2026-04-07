@@ -1044,6 +1044,8 @@ func TestCRDObjectTypes(t *testing.T) {
 		"datacatalogentries.datacatalog.cnrm.cloud.google.com":                          true, // spec.featureOnlineStoreSpec and status.observedState.databaseTableSpec.dataplexTable.dataplexSpec.dataFormat.csv are empty objects
 		"datacatalogpolicytags.datacatalog.cnrm.cloud.google.com":                       true, // status.observedState is an empty object
 		"dataformrepositories.dataform.cnrm.cloud.google.com":                           true, // status.observedState is an empty object
+		"dataformrepositoryreleaseconfigs.dataform.cnrm.cloud.google.com":               true, // status.observedState is an empty object
+		"dataformrepositoryworkflowconfigs.dataform.cnrm.cloud.google.com":              true, // status.observedState is an empty object
 		"dataprocjobs.dataproc.cnrm.cloud.google.com":                                   true, // spec.pysparkJob.loggingConfig is an empty object
 		"dataprocnodegroups.dataproc.cnrm.cloud.google.com":                             true, // status.observedState.nodeGroupConfig.managedGroupConfig is an empty object
 		"datastreamconnectionprofiles.datastream.cnrm.cloud.google.com":                 true, // spec.staticServiceIPConnectivity is an empty object

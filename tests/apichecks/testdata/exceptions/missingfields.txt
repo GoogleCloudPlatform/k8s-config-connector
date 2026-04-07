@@ -1483,6 +1483,33 @@
 [missing_field] crd=dataflowjobs.dataflow.cnrm.cloud.google.com version=v1beta1: field ".spec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataflowjobs.dataflow.cnrm.cloud.google.com version=v1beta1: field ".spec.region" is not set in unstructured objects
 [missing_field] crd=dataflowjobs.dataflow.cnrm.cloud.google.com version=v1beta1: field ".spec.transformNameMapping" is not set in unstructured objects
+[missing_field] crd=dataformrepositoryreleaseconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.codeCompilationConfig.assertionSchema" is not set in unstructured objects
+[missing_field] crd=dataformrepositoryreleaseconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.codeCompilationConfig.builtinAssertionNamePrefix" is not set in unstructured objects
+[missing_field] crd=dataformrepositoryreleaseconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.codeCompilationConfig.databaseSuffix" is not set in unstructured objects
+[missing_field] crd=dataformrepositoryreleaseconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.codeCompilationConfig.defaultDatabase" is not set in unstructured objects
+[missing_field] crd=dataformrepositoryreleaseconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.codeCompilationConfig.defaultLocation" is not set in unstructured objects
+[missing_field] crd=dataformrepositoryreleaseconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.codeCompilationConfig.defaultSchema" is not set in unstructured objects
+[missing_field] crd=dataformrepositoryreleaseconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.codeCompilationConfig.schemaSuffix" is not set in unstructured objects
+[missing_field] crd=dataformrepositoryreleaseconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.codeCompilationConfig.tablePrefix" is not set in unstructured objects
+[missing_field] crd=dataformrepositoryreleaseconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.codeCompilationConfig.vars" is not set in unstructured objects
+[missing_field] crd=dataformrepositoryreleaseconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.cronSchedule" is not set in unstructured objects
+[missing_field] crd=dataformrepositoryreleaseconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.disabled" is not set in unstructured objects
+[missing_field] crd=dataformrepositoryreleaseconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.gitCommitish" is not set in unstructured objects
+[missing_field] crd=dataformrepositoryreleaseconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.repositoryRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataformrepositoryreleaseconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.timeZone" is not set in unstructured objects
+[missing_field] crd=dataformrepositoryworkflowconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.cronSchedule" is not set in unstructured objects
+[missing_field] crd=dataformrepositoryworkflowconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.disabled" is not set in unstructured objects
+[missing_field] crd=dataformrepositoryworkflowconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.invocationConfig.fullyRefreshIncrementalTablesEnabled" is not set in unstructured objects
+[missing_field] crd=dataformrepositoryworkflowconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.invocationConfig.includedTags[]" is not set in unstructured objects
+[missing_field] crd=dataformrepositoryworkflowconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.invocationConfig.includedTargets[].database" is not set in unstructured objects
+[missing_field] crd=dataformrepositoryworkflowconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.invocationConfig.includedTargets[].name" is not set in unstructured objects
+[missing_field] crd=dataformrepositoryworkflowconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.invocationConfig.includedTargets[].schema" is not set in unstructured objects
+[missing_field] crd=dataformrepositoryworkflowconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.invocationConfig.serviceAccountRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataformrepositoryworkflowconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.invocationConfig.transitiveDependenciesIncluded" is not set in unstructured objects
+[missing_field] crd=dataformrepositoryworkflowconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.invocationConfig.transitiveDependentsIncluded" is not set in unstructured objects
+[missing_field] crd=dataformrepositoryworkflowconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.releaseConfigRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataformrepositoryworkflowconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.repositoryRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataformrepositoryworkflowconfigs.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.timeZone" is not set in unstructured objects
 [missing_field] crd=datafusioninstances.datafusion.cnrm.cloud.google.com version=v1beta1: field ".spec.options" is not set in unstructured objects
 [missing_field] crd=datafusioninstances.datafusion.cnrm.cloud.google.com version=v1beta1: field ".spec.version" is not set in unstructured objects
 [missing_field] crd=datafusioninstances.datafusion.cnrm.cloud.google.com version=v1beta1: field ".spec.zone" is not set in unstructured objects
