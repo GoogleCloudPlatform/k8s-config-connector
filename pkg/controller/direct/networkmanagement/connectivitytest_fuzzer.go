@@ -178,4 +178,15 @@ func NetworkManagementConnectivityTestFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].ip_masquerading_skipped")
 	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].ip_masquerading_skipped")
 
-	return f}
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].gke_pod")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].gke_pod")
+
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].redis_cluster")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].redis_cluster")
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].storage_bucket")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].storage_bucket")
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].serverless_neg")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].serverless_neg")
+
+	return f
+}
