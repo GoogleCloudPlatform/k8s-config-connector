@@ -671,6 +671,22 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
+  "config": {
+    "gceClusterConfig": {
+      "internalIpOnly": false
+    },
+    "masterConfig": {
+      "diskConfig": {
+        "bootDiskType": "pd-standard"
+      },
+      "machineTypeUri": "n2-standard-2",
+      "numInstances": 1
+    },
+    "workerConfig": {
+      "machineTypeUri": "n2-standard-4",
+      "numInstances": 2
+    }
+  },
   "labels": {
     "cnrm-test": "true",
     "label-one": "new-value",
