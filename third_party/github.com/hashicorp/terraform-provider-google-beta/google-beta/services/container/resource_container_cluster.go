@@ -4519,7 +4519,7 @@ func expandIPAllocationPolicy(configured interface{}, d *schema.ResourceData, ne
 		}
 		return &container.IPAllocationPolicy{
 			UseIpAliases:    false,
-			UseRoutes:       true,
+			UseRoutes:       networkingMode == "ROUTES",
 			StackType:       "IPV4",
 			ForceSendFields: []string{"UseIpAliases"},
 		}, nil, nil
