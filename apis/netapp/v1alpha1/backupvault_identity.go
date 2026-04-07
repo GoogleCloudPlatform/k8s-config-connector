@@ -24,7 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var BackupVaultIdentityFormat = gcpurls.Template[BackupVaultIdentity]("netapp.googleapis.com", "projects/{project}/locations/{location}/backupvaults/{backupVault}")
+var BackupVaultIdentityFormat = gcpurls.Template[BackupVaultIdentity]("netapp.googleapis.com", "projects/{project}/locations/{location}/backupVaults/{backupVault}")
 
 // BackupVaultIdentity defines the resource reference to NetAppBackupVault, which "External" field
 // holds the GCP identifier for the KRM object.
