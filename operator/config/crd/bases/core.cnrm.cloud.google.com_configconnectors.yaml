@@ -105,6 +105,31 @@ spec:
                     - leaseName
                     - namespace
                     type: object
+                  resourceSettings:
+                    description: ResourceSettings allows specifying which resources
+                      to enable or disable.
+                    properties:
+                      mode:
+                        description: |-
+                          Mode controls whether the resources are included or excluded.
+                          Defaults to "exclude" (Exclusion mode).
+                        type: string
+                      resources:
+                        description: Resources is the list of resources to include
+                          or exclude.
+                        items:
+                          properties:
+                            group:
+                              description: Group is the API group of the resource.
+                              type: string
+                            kind:
+                              description: Kind is the Kind of the resource.
+                              type: string
+                          required:
+                          - group
+                          type: object
+                        type: array
+                    type: object
                 type: object
               googleServiceAccount:
                 description: |-

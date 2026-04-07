@@ -159,12 +159,110 @@ func TestConfigConnectorContextChecker(t *testing.T) {
 		},
 	}
 
-	checker := NewConfigConnectorContextChecker()
+	checker := NewConfigConnectorContextChecker(nil)
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			err := checker.Preflight(context.TODO(), tc.ccc)
+			asserts.AssertErrorIsExpected(t, err, tc.err)
+		})
+	}
+}
+
+func TestValidateResourceSettingsMode(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name string
+		cc   *corev1beta1.ConfigConnector
+		ccc  *corev1beta1.ConfigConnectorContext
+		err  error
+	}{
+		{
+			name: "Both nil",
+			cc:   &corev1beta1.ConfigConnector{},
+			ccc:  &corev1beta1.ConfigConnectorContext{},
+			err:  nil,
+		},
+		{
+			name: "CC omitted, CCC inclusive",
+			cc:   &corev1beta1.ConfigConnector{},
+			ccc: &corev1beta1.ConfigConnectorContext{
+				Spec: corev1beta1.ConfigConnectorContextSpec{
+					Experiments: &corev1beta1.Experiments{
+						ResourceSettings: &corev1beta1.ResourceSettings{
+							Mode: corev1beta1.ResourceSettingsModeInclude,
+						},
+					},
+				},
+			},
+			err: nil,
+		},
+		{
+			name: "CC inclusive, CCC omitted",
+			cc: &corev1beta1.ConfigConnector{
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Experiments: &corev1beta1.CCExperiments{
+						ResourceSettings: &corev1beta1.ResourceSettings{
+							Mode: corev1beta1.ResourceSettingsModeInclude,
+						},
+					},
+				},
+			},
+			ccc: &corev1beta1.ConfigConnectorContext{},
+			err: nil,
+		},
+		{
+			name: "Explicit Conflict (CC: Exclusive, CCC: Inclusive)",
+			cc: &corev1beta1.ConfigConnector{
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Experiments: &corev1beta1.CCExperiments{
+						ResourceSettings: &corev1beta1.ResourceSettings{
+							Mode: corev1beta1.ResourceSettingsModeExclude,
+						},
+					},
+				},
+			},
+			ccc: &corev1beta1.ConfigConnectorContext{
+				Spec: corev1beta1.ConfigConnectorContextSpec{
+					Experiments: &corev1beta1.Experiments{
+						ResourceSettings: &corev1beta1.ResourceSettings{
+							Mode: corev1beta1.ResourceSettingsModeInclude,
+						},
+					},
+				},
+			},
+			err: fmt.Errorf("conflict: ConfigConnector and ConfigConnectorContext cannot mix inclusive (mode: include) and exclusive (mode: exclude) modes"),
+		},
+		{
+			name: "Explicit Match (CC: Inclusive, CCC: Inclusive)",
+			cc: &corev1beta1.ConfigConnector{
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Experiments: &corev1beta1.CCExperiments{
+						ResourceSettings: &corev1beta1.ResourceSettings{
+							Mode: corev1beta1.ResourceSettingsModeInclude,
+						},
+					},
+				},
+			},
+			ccc: &corev1beta1.ConfigConnectorContext{
+				Spec: corev1beta1.ConfigConnectorContextSpec{
+					Experiments: &corev1beta1.Experiments{
+						ResourceSettings: &corev1beta1.ResourceSettings{
+							Mode: corev1beta1.ResourceSettingsModeInclude,
+						},
+					},
+				},
+			},
+			err: nil,
+		},
+	}
+
+	for _, tc := range tests {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			err := validateResourceSettingsMode(tc.cc, tc.ccc)
 			asserts.AssertErrorIsExpected(t, err, tc.err)
 		})
 	}
