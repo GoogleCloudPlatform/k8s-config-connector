@@ -27,7 +27,7 @@ status:
     status: "True"
     type: Ready
   etag: abcdef123456
-  externalRef: folders/1775326061755228097/policies/gcp.resourceLocations
+  externalRef: folders/${folderId}/policies/gcp.resourceLocations
   observedGeneration: 2
   observedState:
     spec:

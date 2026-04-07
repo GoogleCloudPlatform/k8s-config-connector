@@ -524,6 +524,18 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 						return strings.ReplaceAll(s, needle, "contacts/${contactId}")
 					})
+				case "policies":
+					if n >= 4 && tokens[len(tokens)-4] == "folders" {
+						folderId := tokens[len(tokens)-3]
+						visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+							return strings.ReplaceAll(s, folderId, "${folderId}")
+						})
+					} else if n >= 4 && tokens[len(tokens)-4] == "organizations" {
+						orgId := tokens[len(tokens)-3]
+						visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+							return strings.ReplaceAll(s, orgId, "${organizationID}")
+						})
+					}
 				case "rules":
 					// Get firewall policy id from firewall policy rule's externalRef and replace it
 					// e.g. "locations/global/firewallPolicies/${firewallPolicyID}/rules/9000"
