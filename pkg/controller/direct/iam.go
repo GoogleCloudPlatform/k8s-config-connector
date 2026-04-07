@@ -187,3 +187,120 @@ func DeleteIAMPolicyMember(ctx context.Context, reader client.Reader, want *v1be
 	log.Info("updated iam policy to remove member", "updatedPolicy", newPolicy, "member", removeMember)
 	return nil
 }
+
+// GetIAMPolicy returns the actual IAMPolicy for the referenced resource.
+func GetIAMPolicy(ctx context.Context, reader client.Reader, want *v1beta1.IAMPolicy) (*v1beta1.IAMPolicy, error) {
+	adapter, err := registry.AdapterForReference(ctx, reader, want.GetNamespace(), want.Spec.ResourceReference)
+	if err != nil {
+		return nil, fmt.Errorf("building adapter: %w", err)
+	}
+	iamAdapter, ok := adapter.(IAMAdapter)
+	if !ok {
+		return nil, fmt.Errorf("adapter does not implement IAMAdapter")
+	}
+
+	policy, err := iamAdapter.GetIAMPolicy(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("getting IAM policy: %w", err)
+	}
+
+	actual := &v1beta1.IAMPolicy{}
+	actual.ObjectMeta = want.ObjectMeta
+	actual.Spec = v1beta1.IAMPolicySpec{
+		ResourceReference: want.Spec.ResourceReference,
+	}
+
+	for _, binding := range policy.Bindings {
+		actualBinding := v1beta1.IAMPolicyBinding{
+			Role: binding.Role,
+		}
+		for _, member := range binding.Members {
+			actualBinding.Members = append(actualBinding.Members, v1beta1.Member(member))
+		}
+		actual.Spec.Bindings = append(actual.Spec.Bindings, actualBinding)
+	}
+	// TODO: AuditConfig?
+	return actual, nil
+}
+
+// SetIAMPolicy will update the IAM policy for the referenced resource.
+func SetIAMPolicy(ctx context.Context, reader client.Reader, want *v1beta1.IAMPolicy) (*v1beta1.IAMPolicy, error) {
+	adapter, err := registry.AdapterForReference(ctx, reader, want.GetNamespace(), want.Spec.ResourceReference)
+	if err != nil {
+		return nil, fmt.Errorf("building adapter: %w", err)
+	}
+	iamAdapter, ok := adapter.(IAMAdapter)
+	if !ok {
+		return nil, fmt.Errorf("adapter does not implement IAMAdapter")
+	}
+
+	// We start with the existing policy to preserve anything we don't manage (like AuditConfig if we don't support it yet)
+	// But actually IAMPolicy is supposed to be authoritative.
+	// However, we need the etag.
+	policy, err := iamAdapter.GetIAMPolicy(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("getting IAM policy: %w", err)
+	}
+
+	policy.Bindings = nil
+	for _, binding := range want.Spec.Bindings {
+		actualBinding := &iampb.Binding{
+			Role: binding.Role,
+		}
+		for _, member := range binding.Members {
+			actualBinding.Members = append(actualBinding.Members, string(member))
+		}
+		policy.Bindings = append(policy.Bindings, actualBinding)
+	}
+
+	newPolicy, err := iamAdapter.SetIAMPolicy(ctx, policy)
+	if err != nil {
+		return nil, fmt.Errorf("setting IAM policy: %w", err)
+	}
+
+	actual := &v1beta1.IAMPolicy{}
+	actual.ObjectMeta = want.ObjectMeta
+	actual.Spec = v1beta1.IAMPolicySpec{
+		ResourceReference: want.Spec.ResourceReference,
+	}
+
+	for _, binding := range newPolicy.Bindings {
+		actualBinding := v1beta1.IAMPolicyBinding{
+			Role: binding.Role,
+		}
+		for _, member := range binding.Members {
+			actualBinding.Members = append(actualBinding.Members, v1beta1.Member(member))
+		}
+		actual.Spec.Bindings = append(actual.Spec.Bindings, actualBinding)
+	}
+
+	return actual, nil
+}
+
+// DeleteIAMPolicy will remove all managed bindings for the IAM policy for a resource
+func DeleteIAMPolicy(ctx context.Context, reader client.Reader, want *v1beta1.IAMPolicy) error {
+	adapter, err := registry.AdapterForReference(ctx, reader, want.GetNamespace(), want.Spec.ResourceReference)
+	if err != nil {
+		return fmt.Errorf("building adapter: %w", err)
+	}
+	iamAdapter, ok := adapter.(IAMAdapter)
+	if !ok {
+		return fmt.Errorf("adapter does not implement IAMAdapter")
+	}
+
+	policy, err := iamAdapter.GetIAMPolicy(ctx)
+	if err != nil {
+		return fmt.Errorf("getting IAM policy: %w", err)
+	}
+
+	// For Delete, we just set an empty list of bindings?
+	// Actually, Config Connector's IAMPolicy delete behavior is to remove the bindings it was managing.
+	// If it's the whole policy, it means removing all bindings.
+	policy.Bindings = nil
+	_, err = iamAdapter.SetIAMPolicy(ctx, policy)
+	if err != nil {
+		return fmt.Errorf("setting IAM policy: %w", err)
+	}
+
+	return nil
+}
