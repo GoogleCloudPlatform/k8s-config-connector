@@ -121,6 +121,9 @@ func NetworkManagementConnectivityTestFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].nat.cloud_nat_gateway_type")
 	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].nat.cloud_nat_gateway_type")
 
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].gke_pod")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].gke_pod")
+
 	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].ip_masquerading_skipped")
 	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].ip_masquerading_skipped")
 
