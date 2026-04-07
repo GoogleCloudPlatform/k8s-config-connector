@@ -26,6 +26,7 @@ import (
 
 func init() {
 	fuzztesting.RegisterKRMFuzzer(NetworkManagementConnectivityTestFuzzer())
+}
 
 func NetworkManagementConnectivityTestFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.ConnectivityTest{},
@@ -175,8 +176,6 @@ func NetworkManagementConnectivityTestFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].gke_network_policy_skipped.reason")
 	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].nat.cloud_nat_gateway_type")
 	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].nat.cloud_nat_gateway_type")
-        f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].ip_masquerading_skipped")
-        f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].ip_masquerading_skipped")
 
 	return f
 }
