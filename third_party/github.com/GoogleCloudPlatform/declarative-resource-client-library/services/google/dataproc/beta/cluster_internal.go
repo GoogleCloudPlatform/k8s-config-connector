@@ -507,16 +507,20 @@ type clusterApiOperation interface {
 // Cluster resource's UpdateCluster update type by filling in the update
 // fields based on the intended state of the resource.
 func newUpdateClusterUpdateClusterRequest(ctx context.Context, f *Cluster, c *Client) (map[string]interface{}, error) {
-	req := map[string]interface{}{}
-	res := f
-	_ = res
+        req := map[string]interface{}{}
+        res := f
+        _ = res
 
-	if v := f.Labels; !dcl.IsEmptyValueIndirect(v) {
-		req["labels"] = v
-	}
-	return req, nil
+        if v, err := expandClusterConfig(c, f.Config, res); err != nil {
+                return nil, fmt.Errorf("error expanding Config into config: %w", err)
+        } else if !dcl.IsEmptyValueIndirect(v) {
+                req["config"] = v
+        }
+        if v := f.Labels; !dcl.IsEmptyValueIndirect(v) {
+                req["labels"] = v
+        }
+        return req, nil
 }
-
 // marshalUpdateClusterUpdateClusterRequest converts the update into
 // the final JSON request body.
 func marshalUpdateClusterUpdateClusterRequest(c *Client, m map[string]interface{}) ([]byte, error) {

@@ -170,10 +170,10 @@ func (s *clusterControllerServer) CreateCluster(ctx context.Context, req *pb.Cre
 			obj.Config.GceClusterConfig.ShieldedInstanceConfig.EnableVtpm = PtrTo(true)
 
 			if obj.Config.GceClusterConfig.ZoneUri == "" {
-		obj.Config.GceClusterConfig.ZoneUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/zones/" + zone
-	} else if !strings.HasPrefix(obj.Config.GceClusterConfig.ZoneUri, "https://") {
-		obj.Config.GceClusterConfig.ZoneUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/zones/" + obj.Config.GceClusterConfig.ZoneUri
-	}
+				obj.Config.GceClusterConfig.ZoneUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/zones/" + zone
+			} else if !strings.HasPrefix(obj.Config.GceClusterConfig.ZoneUri, "https://") {
+				obj.Config.GceClusterConfig.ZoneUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/zones/" + obj.Config.GceClusterConfig.ZoneUri
+			}
 
 			s.populateLabels(obj, name)
 			return nil
