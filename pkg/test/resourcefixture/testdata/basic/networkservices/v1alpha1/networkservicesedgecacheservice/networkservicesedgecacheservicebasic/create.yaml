@@ -19,26 +19,55 @@ metadata:
 spec:
   projectRef:
     external: ${projectId}
+  description: "A sample EdgeCacheService"
+  disableHttp2: false
+  disableQuic: false
+  requireTls: false
+  logConfig:
+    enable: true
+    sampleRate: 1.0
   routing:
     hostRule:
-    - hosts:
+    - description: "Host rule description"
+      hosts:
       - "foo.bar.com"
       pathMatcher: "path-matcher"
     pathMatcher:
     - name: "path-matcher"
+      description: "Path matcher description"
       routeRule:
-      - priority: "1"
+      - description: "Route rule description with prefix match"
+        priority: "1"
         matchRule:
         - prefixMatch: "/"
+          ignoreCase: true
           queryParameterMatch:
           - name: "param-name"
             exactMatch: "param-value"
+          headerMatch:
+          - headerName: "x-header"
+            exactMatch: "value"
+            invertMatch: false
         headerAction:
           requestHeaderToAdd:
           - headerName: "x-request-header-to-add"
             headerValue: "foo"
+            replace: true
           requestHeaderToRemove:
           - headerName: "x-request-header-to-remove"
           responseHeaderToAdd:
           - headerName: "x-response-header-to-add"
             headerValue: "bar"
+            replace: true
+          responseHeaderToRemove:
+          - headerName: "x-response-header-to-remove"
+      - description: "Route rule description with full path match and redirect"
+        priority: "2"
+        matchRule:
+        - fullPathMatch: "/full-path"
+        urlRedirect:
+          hostRedirect: "redirect.foo.bar.com"
+          pathRedirect: "/new-path"
+          redirectResponseCode: "FOUND"
+          stripQuery: true
+          httpsRedirect: false
