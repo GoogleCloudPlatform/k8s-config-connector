@@ -3198,6 +3198,7 @@
 [missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.secondaryIpRange" is not set in unstructured objects
 [missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.transitEncryptionMode" is not set in unstructured objects
 [missing_field] crd=resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.booleanPolicy.enforced" is not set in unstructured objects
+[missing_field] crd=resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.inheritFromParent" is not set in unstructured objects
 [missing_field] crd=resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.reset" is not set in unstructured objects
 [missing_field] crd=resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].allowAll" is not set in unstructured objects
 [missing_field] crd=resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].condition.description" is not set in unstructured objects
@@ -3215,7 +3216,14 @@
 [missing_field] crd=resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.listPolicy.inheritFromParent" is not set in unstructured objects
 [missing_field] crd=resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.listPolicy.suggestedValue" is not set in unstructured objects
 [missing_field] crd=resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.reset" is not set in unstructured objects
 [missing_field] crd=resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.restorePolicy.default" is not set in unstructured objects
+[missing_field] crd=resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.rules[].allowAll" is not set in unstructured objects
+[missing_field] crd=resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.rules[].condition.location" is not set in unstructured objects
+[missing_field] crd=resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.rules[].denyAll" is not set in unstructured objects
+[missing_field] crd=resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.rules[].parameters" is not set in unstructured objects
+[missing_field] crd=resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.rules[].values.allowedValues[]" is not set in unstructured objects
+[missing_field] crd=resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.rules[].values.deniedValues[]" is not set in unstructured objects
 [missing_field] crd=resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.version" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.annotations" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.binaryAuthorization.breakglassJustification" is not set in unstructured objects
@@ -3429,4 +3437,4 @@
 [missing_field] crd=workstationconfigs.workstations.cnrm.cloud.google.com version=v1beta1: field ".spec.container.env[].value" is not set in unstructured objects
 [missing_field] crd=workstationconfigs.workstations.cnrm.cloud.google.com version=v1beta1: field ".spec.container.runAsUser" is not set in unstructured objects
 [missing_field] crd=workstationconfigs.workstations.cnrm.cloud.google.com version=v1beta1: field ".spec.container.workingDir" is not set in unstructured objects
-[missing_field] crd=workstationconfigs.workstations.cnrm.cloud.google.com version=v1beta1: field ".spec.persistentDirectories[].gcePD.sourceSnapshot" is not set in unstructured objects[missing_field] crd=resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.inheritFromParent" is not set in unstructured objects
+[missing_field] crd=workstationconfigs.workstations.cnrm.cloud.google.com version=v1beta1: field ".spec.persistentDirectories[].gcePD.sourceSnapshot" is not set in unstructured objects
