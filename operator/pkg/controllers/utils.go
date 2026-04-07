@@ -407,7 +407,8 @@ func AddWIFVolumes(obj *manifest.Object, wif *corev1beta1.WorkloadIdentityFedera
 		volumes = []interface{}{}
 	}
 
-	// 1a. Filter out legacy gcp-service-account volume from gcp-identity base.
+	// 1a. Filter out legacy gcp-service-account volume and any pre-existing WIF volumes
+	// to ensure idempotency (no DuplicateVolumeName errors on re-reconcile).
 	filteredVolumes := make([]interface{}, 0, len(volumes))
 	for _, v := range volumes {
 		vol, ok := v.(map[string]interface{})
@@ -416,7 +417,7 @@ func AddWIFVolumes(obj *manifest.Object, wif *corev1beta1.WorkloadIdentityFedera
 			continue
 		}
 		name, _, _ := unstructured.NestedString(vol, "name")
-		if name == "gcp-service-account" {
+		if name == "gcp-service-account" || name == k8s.WIFProjectedTokenVolumeName || name == k8s.WIFCredentialVolumeName {
 			continue
 		}
 		filteredVolumes = append(filteredVolumes, v)
@@ -427,6 +428,7 @@ func AddWIFVolumes(obj *manifest.Object, wif *corev1beta1.WorkloadIdentityFedera
 	projectedVolume := map[string]interface{}{
 		"name": k8s.WIFProjectedTokenVolumeName,
 		"projected": map[string]interface{}{
+			"defaultMode": int64(420),
 			"sources": []interface{}{
 				map[string]interface{}{
 					"serviceAccountToken": map[string]interface{}{
@@ -471,7 +473,7 @@ func AddWIFVolumes(obj *manifest.Object, wif *corev1beta1.WorkloadIdentityFedera
 		}
 		managerFound = true
 
-		// 6. Filter out legacy gcp-service-account volumeMount, then append WIF mounts.
+		// 6. Filter out legacy gcp-service-account volumeMount and pre-existing WIF mounts, then append WIF mounts.
 		volumeMounts, _, _ := unstructured.NestedSlice(container, "volumeMounts")
 		if volumeMounts == nil {
 			volumeMounts = []interface{}{}
@@ -484,7 +486,7 @@ func AddWIFVolumes(obj *manifest.Object, wif *corev1beta1.WorkloadIdentityFedera
 				continue
 			}
 			name, _, _ := unstructured.NestedString(mount, "name")
-			if name == "gcp-service-account" {
+			if name == "gcp-service-account" || name == k8s.WIFProjectedTokenVolumeName || name == k8s.WIFCredentialVolumeName {
 				continue
 			}
 			filteredMounts = append(filteredMounts, vm)

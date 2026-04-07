@@ -412,56 +412,6 @@ spec:
     image: test-image
 `
 
-// ClusterModeOnlyWIFComponents is the base manifest for WIF mode.
-// It does NOT include the gcp-service-account secret volume because WIF
-// volumes are injected programmatically via AddWIFVolumes.
-var ClusterModeOnlyWIFComponents = []string{`
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: cnrm-controller-manager
-  namespace: cnrm-system
-`, `
-apiVersion: v1
-kind: Service
-metadata:
-  name: cnrm-manager
-  namespace: cnrm-system
-spec:
-  ports:
-  - name: controller-manager
-    port: 443
-  - name: metrics
-    port: 8888
-  selector:
-    cnrm.cloud.google.com/component: cnrm-controller-manager
-    cnrm.cloud.google.com/system: "true"
-`, `
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  labels:
-    cnrm.cloud.google.com/component: cnrm-controller-manager
-    cnrm.cloud.google.com/system: "true"
-  name: cnrm-controller-manager
-  namespace: cnrm-system
-spec:
-  selector:
-    matchLabels:
-      cnrm.cloud.google.com/component: cnrm-controller-manager
-      cnrm.cloud.google.com/system: "true"
-  serviceName: cnrm-manager
-  template:
-    metadata:
-      labels:
-        cnrm.cloud.google.com/component: cnrm-controller-manager
-        cnrm.cloud.google.com/system: "true"
-    spec:
-      containers:
-      - name: manager
-        image: controller:latest
-`}
-
 var NamespacedControllerManagerPod = `apiVersion: v1
 kind: Pod
 metadata:
@@ -529,13 +479,6 @@ func GetClusterModeWorkloadIdentityManifest() []string {
 	res := make([]string, 0)
 	res = append(res, GetSharedComponentsManifest()...)
 	res = append(res, ClusterModeOnlyWorkloadIdentityComponents...)
-	return res
-}
-
-func GetClusterModeWIFManifest() []string {
-	res := make([]string, 0)
-	res = append(res, GetSharedComponentsManifest()...)
-	res = append(res, ClusterModeOnlyWIFComponents...)
 	return res
 }
 

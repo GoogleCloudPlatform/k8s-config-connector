@@ -354,14 +354,22 @@ func (r *Reconciler) objectTransformForGCPIdentity(cc *corev1beta1.ConfigConnect
 
 func (r *Reconciler) objectTransformForWIF(cc *corev1beta1.ConfigConnector, m *manifest.Objects) error {
 	for i, obj := range m.Items {
-		if !controllers.IsControllerManagerStatefulSet(obj) {
-			continue
+		if controllers.IsControllerManagerStatefulSet(obj) {
+			processed, err := controllers.AddWIFVolumes(obj, cc.Spec.WorkloadIdentityFederation)
+			if err != nil {
+				return fmt.Errorf("error adding WIF volumes to StatefulSet %v: %w", obj.GetName(), err)
+			}
+			m.Items[i] = processed
 		}
-		processed, err := controllers.AddWIFVolumes(obj, cc.Spec.WorkloadIdentityFederation)
-		if err != nil {
-			return fmt.Errorf("error adding WIF volumes to StatefulSet %v: %w", obj.GetName(), err)
+		// Strip the workload identity annotation from ServiceAccounts in WIF mode
+		// to prevent the ${SERVICE_ACCOUNT?} placeholder from leaking.
+		if obj.Kind == rbacv1.ServiceAccountKind && strings.HasPrefix(obj.GetName(), k8s.ServiceAccountNamePrefix) {
+			processed, err := controllers.AnnotateServiceAccountObject(obj, "")
+			if err != nil {
+				return fmt.Errorf("error clearing WI annotation on ServiceAccount %v: %w", obj.GetName(), err)
+			}
+			m.Items[i] = processed
 		}
-		m.Items[i] = processed
 	}
 	return nil
 }

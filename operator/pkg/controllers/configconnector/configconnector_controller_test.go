@@ -248,13 +248,13 @@ func TestHandleConfigConnectorCreate(t *testing.T) {
 					Mode: "cluster",
 				},
 			},
-			loadedManifest: testcontroller.GetClusterModeWIFManifest(),
+			loadedManifest: testcontroller.GetClusterModeGCPManifest(),
 			resultsFunc: func(t *testing.T, c client.Client) []string {
 				wif := &corev1beta1.WorkloadIdentityFederationSpec{
 					CredentialSecretName: "wif-creds",
 					Audience:             "//iam.googleapis.com/projects/12345/locations/global/workloadIdentityPools/pool/providers/provider",
 				}
-				return testcontroller.ManuallyAddWIFVolumes(t, testcontroller.GetClusterModeWIFManifest(), wif)
+				return testcontroller.ManuallyAddWIFVolumes(t, testcontroller.GetClusterModeGCPManifest(), wif)
 			},
 		},
 		{
