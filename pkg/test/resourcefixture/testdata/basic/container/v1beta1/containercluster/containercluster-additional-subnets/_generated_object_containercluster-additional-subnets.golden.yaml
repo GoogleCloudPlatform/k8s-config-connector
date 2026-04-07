@@ -22,7 +22,8 @@ spec:
     additionalIpRangesConfig:
     - podIpv4RangeNames:
       - secondary-range-1
-      subnetwork: ${subnetworkID}
+      subnetworkRef:
+        name: ${subnetworkID}
     clusterIpv4CidrBlock: /20
     servicesIpv4CidrBlock: /20
   location: us-central1-a
