@@ -101,78 +101,108 @@ func walkDepth(s *apiextensionsv1.JSONSchemaProps, depth int) any {
 		return "unknown (depth limit exceeded)"
 	}
 
+	var res any
 	if s.XPreserveUnknownFields != nil && *s.XPreserveUnknownFields {
-		return "json"
-	}
-
-	if len(s.Properties) > 0 {
+		res = "json"
+	} else if len(s.Properties) > 0 {
 		m := make(map[string]any)
 		for k, v := range s.Properties {
 			val := v
 			m[k] = walkDepth(&val, depth+1)
 		}
-		return m
-	}
-
-	if s.Type == "array" {
+		res = m
+	} else if s.Type == "array" {
 		if s.Items != nil && s.Items.Schema != nil {
-			return []any{walkDepth(s.Items.Schema, depth+1)}
+			res = []any{walkDepth(s.Items.Schema, depth+1)}
+		} else {
+			// TODO: s.Items can also be a slice of schemas (tuple validation); not handled here.
+			res = []any{"any"}
 		}
-		// TODO: s.Items can also be a slice of schemas (tuple validation); not handled here.
-		return []any{"any"}
-	}
-
-	if s.AdditionalProperties != nil {
+	} else if s.AdditionalProperties != nil {
 		if s.AdditionalProperties.Schema != nil {
 			val := walkDepth(s.AdditionalProperties.Schema, depth+1)
 			if str, ok := val.(string); ok {
-				return fmt.Sprintf("map[string]%s", str)
+				res = fmt.Sprintf("map[string]%s", str)
+			} else {
+				res = map[string]any{"KEY": val}
 			}
-			return map[string]any{"KEY": val}
+		} else if !s.AdditionalProperties.Allows {
+			// Boolean form: Allows=false means no additional properties are permitted.
+			res = "map[string]none"
+		} else {
+			res = "map[string]any"
 		}
-		// Boolean form: Allows=false means no additional properties are permitted.
-		if !s.AdditionalProperties.Allows {
-			return "map[string]none"
+	} else {
+		t := s.Type
+		if t == "" {
+			// Walk into anyOf/allOf/oneOf so that changes within those schemas are detected.
+			if len(s.AnyOf) > 0 {
+				items := make([]any, len(s.AnyOf))
+				for i := range s.AnyOf {
+					items[i] = walkDepth(&s.AnyOf[i], depth+1)
+				}
+				res = map[string]any{"anyOf": items}
+			} else if len(s.AllOf) > 0 {
+				items := make([]any, len(s.AllOf))
+				for i := range s.AllOf {
+					items[i] = walkDepth(&s.AllOf[i], depth+1)
+				}
+				res = map[string]any{"allOf": items}
+			} else if len(s.OneOf) > 0 {
+				items := make([]any, len(s.OneOf))
+				for i := range s.OneOf {
+					items[i] = walkDepth(&s.OneOf[i], depth+1)
+				}
+				res = map[string]any{"oneOf": items}
+			} else {
+				res = "any"
+			}
+		} else if s.Format != "" {
+			switch s.Format {
+			case "int32", "int64":
+				res = s.Format
+			default:
+				res = fmt.Sprintf("%s (%s)", t, s.Format)
+			}
+		} else {
+			res = t
 		}
-		return "map[string]any"
 	}
 
-	t := s.Type
-	if t == "" {
-		// Walk into anyOf/allOf/oneOf so that changes within those schemas are detected.
-		if len(s.AnyOf) > 0 {
-			items := make([]any, len(s.AnyOf))
-			for i := range s.AnyOf {
-				items[i] = walkDepth(&s.AnyOf[i], depth+1)
+	if len(s.XValidations) > 0 {
+		m := make(map[string]any)
+		if mExisting, ok := res.(map[string]any); ok {
+			for k, v := range mExisting {
+				m[k] = v
 			}
-			return map[string]any{"anyOf": items}
+		} else {
+			m[":type"] = res
 		}
-		if len(s.AllOf) > 0 {
-			items := make([]any, len(s.AllOf))
-			for i := range s.AllOf {
-				items[i] = walkDepth(&s.AllOf[i], depth+1)
+		for i, v := range s.XValidations {
+			val := map[string]any{
+				"rule": v.Rule,
 			}
-			return map[string]any{"allOf": items}
-		}
-		if len(s.OneOf) > 0 {
-			items := make([]any, len(s.OneOf))
-			for i := range s.OneOf {
-				items[i] = walkDepth(&s.OneOf[i], depth+1)
+			if v.Message != "" {
+				val["message"] = v.Message
 			}
-			return map[string]any{"oneOf": items}
+			if v.MessageExpression != "" {
+				val["messageExpression"] = v.MessageExpression
+			}
+			if v.Reason != nil {
+				val["reason"] = string(*v.Reason)
+			}
+			if v.FieldPath != "" {
+				val["fieldPath"] = v.FieldPath
+			}
+			if v.OptionalOldSelf != nil {
+				val["optionalOldSelf"] = *v.OptionalOldSelf
+			}
+			m[fmt.Sprintf(":validation[%d]", i)] = val
 		}
-		return "any"
+		return m
 	}
 
-	if s.Format != "" {
-		switch s.Format {
-		case "int32", "int64":
-			return s.Format
-		default:
-			return fmt.Sprintf("%s (%s)", t, s.Format)
-		}
-	}
-	return t
+	return res
 }
 
 // flatten converts a nested schema structure to a flat path -> type map.
@@ -186,6 +216,10 @@ func flatten(path string, schema any, out map[string]string) {
 			out[path] = "object"
 		}
 		for k, child := range v {
+			if k == ":type" {
+				flatten(path, child, out)
+				continue
+			}
 			childPath := k
 			if path != "" {
 				childPath = path + "." + k
@@ -224,6 +258,11 @@ func isUnderStatus(path string) bool {
 	return path == "status" ||
 		strings.HasPrefix(path, "status.") ||
 		strings.HasPrefix(path, "status[")
+}
+
+// isValidationPath returns true if the path is within a validation rule.
+func isValidationPath(path string) bool {
+	return strings.Contains(path, ":validation[")
 }
 
 // CompareResult holds the outcome of a CRD comparison.
@@ -408,6 +447,11 @@ func schemaBackwardCompatDiff(version string, oldPaths, newPaths map[string]stri
 
 	lastRemovedPrefix := ""
 	for _, path := range slices.Sorted(maps.Keys(oldPaths)) {
+		// x-kubernetes-validations are not checked for backward compatibility for now.
+		// These are determined on a case-by-case basis.
+		if isValidationPath(path) {
+			continue
+		}
 		oldType := oldPaths[path]
 		newType, ok := newPaths[path]
 		if !ok {
@@ -429,6 +473,11 @@ func schemaBackwardCompatDiff(version string, oldPaths, newPaths map[string]stri
 	}
 
 	for _, path := range slices.Sorted(maps.Keys(newPaths)) {
+		// x-kubernetes-validations are not checked for backward compatibility for now.
+		// These are determined on a case-by-case basis.
+		if isValidationPath(path) {
+			continue
+		}
 		if _, ok := oldPaths[path]; !ok {
 			notes = append(notes, fmt.Sprintf("%sfield added: %s (type: %s, allowed)", prefix, path, newPaths[path]))
 		}

@@ -379,6 +379,10 @@ spec:
                     description: Immutable. Parameters for the ephemeral storage filesystem.
                       If unspecified, ephemeral storage is backed by the boot disk.
                     properties:
+                      dataCacheCount:
+                        description: Immutable. Number of local SSDs to be utilized
+                          for GKE Data Cache. Uses NVMe interfaces.
+                        type: integer
                       localSsdCount:
                         description: Immutable. Number of local SSDs to use to back
                           ephemeral storage. Uses NVMe interfaces. Each local SSD

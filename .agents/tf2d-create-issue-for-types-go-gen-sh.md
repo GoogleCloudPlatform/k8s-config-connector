@@ -28,13 +28,6 @@ You have access to the following tools:
 - git
 Use `gh` to perform your duties.
 
-# Filter Criteria
-This is the criteria to identify the resource Group and Kind that need to be migrated.
-
-Finding resources that meet the following criteria:
-
-Identify the Group and Kind of the resource that meets the above criteria.
-
 # Task
 Use gh cli tool to create github issue.
 In a single run create at most one issue to avoid overwhelming the team.

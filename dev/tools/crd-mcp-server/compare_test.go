@@ -1305,3 +1305,281 @@ func TestGitShow_InvalidRef(t *testing.T) {
 		t.Fatal("an invalid git ref should return an error, not 'file is new'")
 	}
 }
+
+func TestEquivalence_AddValidation(t *testing.T) {
+	modified := `
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: foos.example.com
+spec:
+  group: example.com
+  names:
+    kind: Foo
+    plural: foos
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              projectRef:
+                type: object
+                properties:
+                  name:
+                    type: string
+              region:
+                type: string
+                x-kubernetes-validations:
+                - rule: 'self == "us-central1"'
+                  message: "only us-central1 is allowed"
+          status:
+            type: object
+            properties:
+              observedGeneration:
+                type: integer
+                format: int64
+              conditions:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                    status:
+                      type: string
+`
+	old, err := parseCRD([]byte(baseCRD))
+	if err != nil {
+		t.Fatal(err)
+	}
+	new, err := parseCRD([]byte(modified))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	result := compareEquivalence(old, new)
+	if len(result.Diffs) == 0 {
+		t.Error("expected diffs for x-kubernetes-validations addition, but got none")
+	}
+}
+
+func TestEquivalence_ChangeValidation(t *testing.T) {
+	oldYaml := `
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: foos.example.com
+spec:
+  group: example.com
+  names:
+    kind: Foo
+    plural: foos
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              region:
+                type: string
+                x-kubernetes-validations:
+                - rule: 'self == "us-central1"'
+`
+	newYaml := `
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: foos.example.com
+spec:
+  group: example.com
+  names:
+    kind: Foo
+    plural: foos
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              region:
+                type: string
+                x-kubernetes-validations:
+                - rule: 'self == "us-west1"'
+`
+	old, err := parseCRD([]byte(oldYaml))
+	if err != nil {
+		t.Fatal(err)
+	}
+	new, err := parseCRD([]byte(newYaml))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	result := compareEquivalence(old, new)
+	if len(result.Diffs) == 0 {
+		t.Error("expected diffs for validation rule change")
+	}
+}
+
+func TestEquivalence_ChangeValidationMessage(t *testing.T) {
+	oldYaml := `
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: foos.example.com
+spec:
+  group: example.com
+  names:
+    kind: Foo
+    plural: foos
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              region:
+                type: string
+                x-kubernetes-validations:
+                - rule: 'self == "us-central1"'
+                  message: "old message"
+`
+	newYaml := `
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: foos.example.com
+spec:
+  group: example.com
+  names:
+    kind: Foo
+    plural: foos
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              region:
+                type: string
+                x-kubernetes-validations:
+                - rule: 'self == "us-central1"'
+                  message: "new message"
+`
+	old, err := parseCRD([]byte(oldYaml))
+	if err != nil {
+		t.Fatal(err)
+	}
+	new, err := parseCRD([]byte(newYaml))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	result := compareEquivalence(old, new)
+	if len(result.Diffs) == 0 {
+		t.Error("expected diffs for validation message change")
+	}
+}
+
+func TestBackwardCompat_ValidationSkipped(t *testing.T) {
+	// Note: we skip validations in the backward compatibility check for now,
+	// as changes to validations may be determined on a case-by-case basis.
+	oldYaml := `
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: foos.example.com
+spec:
+  group: example.com
+  names:
+    kind: Foo
+    plural: foos
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              region:
+                type: string
+                x-kubernetes-validations:
+                - rule: 'self == "us-central1"'
+`
+	newYaml := `
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: foos.example.com
+spec:
+  group: example.com
+  names:
+    kind: Foo
+    plural: foos
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              region:
+                type: string
+                x-kubernetes-validations:
+                - rule: 'self == "us-west1"'
+`
+	old, err := parseCRD([]byte(oldYaml))
+	if err != nil {
+		t.Fatal(err)
+	}
+	new, err := parseCRD([]byte(newYaml))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	result := compareBackwardCompatibility(old, new)
+	if len(result.Diffs) != 0 {
+		t.Errorf("expected no diffs for validation rule change as they are skipped for backward compatibility, got: %v", result.Diffs)
+	}
+}

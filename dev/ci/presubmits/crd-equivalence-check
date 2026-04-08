@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
+
+# Determine the base branch for comparison
+# In GitHub Actions, GITHUB_BASE_REF is set for PRs.
+BASE_BRANCH="${GITHUB_BASE_REF:-master}"
+
+# Allow overriding the comparison reference for local testing
+COMPARISON_REF="${COMPARISON_REF:-origin/${BASE_BRANCH}}"
+
+# Extract the remote name from the COMPARISON_REF (e.g., 'origin' from 'origin/master')
+REMOTE_NAME=$(echo "${COMPARISON_REF}" | cut -d'/' -f1)
+REMOTE_BRANCH=$(echo "${COMPARISON_REF}" | cut -d'/' -f2-)
+
+# Fetch the base branch to ensure it is available for comparison
+git fetch "${REMOTE_NAME}" "${REMOTE_BRANCH}" --quiet
+
+echo "COMPARISON_REF: ${COMPARISON_REF}"
+echo "BASE_BRANCH: ${BASE_BRANCH}"
+
+# Identify changed CRD files
+CHANGED_CRDS=$(git diff --name-only ${COMPARISON_REF}...HEAD | grep "config/crds/resources/" || true)
+
+if [[ -z "${CHANGED_CRDS}" ]]; then
+  echo "No changed CRD files found."
+  exit 0
+fi
+
+FAILED=0
+
+for file in ${CHANGED_CRDS}; do
+  if [[ ! -f "${file}" ]]; then
+    echo "File ${file} was deleted. Skipping check."
+    continue
+  fi
+
+  echo "Checking CRD: ${file}"
+
+  # Perform equivalence check
+  # In step/gen-types PRs, we expect the KRM API to remain identical (equivalent).
+  echo "Running equivalence check..."
+  CMD="go run ./dev/tools/crd-mcp-server equivalent --file ${file} --ref ${COMPARISON_REF}"
+  echo "Running: ${CMD}"
+  
+  # We capture output to check for "NOT EQUIVALENT" because the tool currently exits 0 even on mismatch.
+  # We use '|| true' to prevent errexit from stopping the script on tool errors (we want to log them).
+  OUTPUT=$(${CMD} 2>&1) || {
+    echo "ERROR: CRD check tool failed to execute for ${file}"
+    echo "${OUTPUT}"
+    FAILED=1
+    continue
+  }
+  
+  echo "${OUTPUT}"
+  
+  if echo "${OUTPUT}" | grep -q "NOT EQUIVALENT"; then
+    echo "ERROR: CRD ${file} is not equivalent to ${COMPARISON_REF}!"
+    FAILED=1
+  fi
+  
+  echo "-------------------------------------------"
+done
+
+if [[ ${FAILED} -ne 0 ]]; then
+  echo "CRD equivalence checks failed. Please review the output above."
+  exit 1
+fi
+
+echo "All CRD equivalence checks passed!"

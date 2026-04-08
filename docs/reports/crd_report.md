@@ -59,7 +59,7 @@
 | bigqueryconnection.cnrm.cloud.google.com      | BigQueryConnectionConnection                    | True         | True        | False  | Direct     | True        |
 | bigquerydatapolicy.cnrm.cloud.google.com      | BigQueryDataPolicy                              | True         | False       | False  | Direct     | True        |
 | bigquerydatapolicy.cnrm.cloud.google.com      | BigQueryDataPolicyDataPolicy                    | True         | False       | False  | Terraform  | False       |
-| bigquery.cnrm.cloud.google.com                | BigQueryDatasetAccess                           | True         | False       | False  | Terraform  | False       |
+| bigquery.cnrm.cloud.google.com                | BigQueryDatasetAccess                           | True         | False       | False  | Terraform  | True        |
 | bigquery.cnrm.cloud.google.com                | BigQueryDataset                                 | False        | True        | False  | Terraform  | True        |
 | bigquerydatatransfer.cnrm.cloud.google.com    | BigQueryDataTransferConfig                      | True         | True        | False  | Direct     | True        |
 | bigquery.cnrm.cloud.google.com                | BigQueryJob                                     | False        | True        | False  | Terraform  | False       |
