@@ -45,12 +45,30 @@ type PolicyAllow struct {
 
 	/* The policy can define specific values that are allowed or denied. */
 	// +optional
-	Values []string `json:"values,omitempty"`
+	Values []PolicyValues `json:"values,omitempty"`
 }
 
 type PolicyBooleanPolicy struct {
 	/* If true, then the Policy is enforced. If false, then any configuration is acceptable. */
 	Enforced bool `json:"enforced"`
+}
+
+type PolicyCondition struct {
+	/* Optional. Description of the expression. This is a longer text which describes the expression, e.g. when hovered over it in a UI. */
+	// +optional
+	Description *string `json:"description,omitempty"`
+
+	/* Textual representation of an expression in Common Expression Language syntax. */
+	// +optional
+	Expression *string `json:"expression,omitempty"`
+
+	/* Optional. String indicating the location of the expression for error reporting, e.g. a file name and a position in the file. */
+	// +optional
+	Location *string `json:"location,omitempty"`
+
+	/* Optional. Title for the expression, i.e. a short string describing its purpose. This can be used e.g. in UIs which allow to enter the expression. */
+	// +optional
+	Title *string `json:"title,omitempty"`
 }
 
 type PolicyDeny struct {
@@ -60,7 +78,33 @@ type PolicyDeny struct {
 
 	/* The policy can define specific values that are allowed or denied. */
 	// +optional
-	Values []string `json:"values,omitempty"`
+	Values []PolicyValues `json:"values,omitempty"`
+}
+
+type PolicyDryRunSpec struct {
+	/* Determines the inheritance behavior for this policy.
+
+	If `inherit_from_parent` is true, policy rules set higher up in the
+	hierarchy (up to the closest root) are inherited and present in the
+	effective policy. If it is false, then no rules are inherited, and this
+	policy becomes the new root for evaluation.
+	This field can be set only for policies which configure list constraints. */
+	// +optional
+	InheritFromParent *bool `json:"inheritFromParent,omitempty"`
+
+	/* Ignores policies set above this resource and restores the `constraint_default` enforcement behavior of the specific constraint at this resource. This field can be set in policies for either list or boolean constraints. If set, `rules` must be empty and `inherit_from_parent` must be set to false. */
+	// +optional
+	Reset *bool `json:"reset,omitempty"`
+
+	/* In policies for boolean constraints, the following requirements apply:
+
+	- There must be one and only one policy rule where condition is unset.
+	- Boolean policy rules with conditions must set `enforced` to the
+	opposite of the policy rule without a condition.
+	- During policy evaluation, policy rules with conditions that are
+	true for a target resource take precedence. */
+	// +optional
+	Rules []PolicyRules `json:"rules,omitempty"`
 }
 
 type PolicyListPolicy struct {
@@ -86,6 +130,42 @@ type PolicyRestorePolicy struct {
 	Default bool `json:"default"`
 }
 
+type PolicyRules struct {
+	/* Setting this to true means that all values are allowed. This field can be set only in policies for list constraints. */
+	// +optional
+	AllowAll *bool `json:"allowAll,omitempty"`
+
+	/* A condition which determines whether this rule is used in the evaluation of the policy. When set, the `expression` field in the `Expr' must include from 1 to 10 subexpressions, joined by the "||" or "&&" operators. Each subexpression must be of the form "resource.matchTag('<ORG_ID>/tag_key_short_name, 'tag_value_short_name')". or "resource.matchTagId('tagKeys/key_id', 'tagValues/value_id')". where key_name and value_name are the resource names for Label Keys and Values. These names are available from the Tag Manager Service. An example expression is: "resource.matchTag('123456789/environment, 'prod')". or "resource.matchTagId('tagKeys/123', 'tagValues/456')". */
+	// +optional
+	Condition *PolicyCondition `json:"condition,omitempty"`
+
+	/* Setting this to true means that all values are denied. This field can be set only in policies for list constraints. */
+	// +optional
+	DenyAll *bool `json:"denyAll,omitempty"`
+
+	/* If `true`, then the policy is enforced. If `false`, then any configuration is acceptable. This field can be set only in policies for boolean constraints. */
+	// +optional
+	Enforce *bool `json:"enforce,omitempty"`
+
+	/* Optional. Required for managed constraints if parameters are defined. Passes parameter values when policy enforcement is enabled. Ensure that parameter value types match those defined in the constraint definition. For example: { "allowedLocations" : ["us-east1", "us-west1"], "allowAll" : true } */
+	// +optional
+	Parameters apiextensionsv1.JSON `json:"parameters,omitempty"`
+
+	/* List of values to be used for this policy rule. This field can be set only in policies for list constraints. */
+	// +optional
+	Values *PolicyValues `json:"values,omitempty"`
+}
+
+type PolicyValues struct {
+	/* List of values allowed at this resource. */
+	// +optional
+	AllowedValues []string `json:"allowedValues,omitempty"`
+
+	/* List of values denied at this resource. */
+	// +optional
+	DeniedValues []string `json:"deniedValues,omitempty"`
+}
+
 type ResourceManagerPolicySpec struct {
 	/* A boolean policy is a constraint that is either enforced or not. */
 	// +optional
@@ -94,32 +174,67 @@ type ResourceManagerPolicySpec struct {
 	/* Immutable. The name of the Constraint the Policy is configuring, for example, serviceuser.services. */
 	Constraint string `json:"constraint"`
 
-	/* The folder on which to configure the constraint. Only one of
-	projectRef, folderRef, or organizationRef may be specified. */
+	/* Dry-run policy. Audit-only policy, can be used to monitor how the policy would have impacted the existing and future resources if it's enforced. */
+	// +optional
+	DryRunSpec *PolicyDryRunSpec `json:"dryRunSpec,omitempty"`
+
+	/* The folder on which to configure the constraint. Only one of projectRef, folderRef, or organizationRef may be specified. */
 	// +optional
 	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+
+	/* Determines the inheritance behavior for this policy. If `inherit_from_parent` is true, policy rules set higher up in the hierarchy (up to the closest root) are inherited and present in the effective policy. If it is false, then no rules are inherited, and this policy becomes the new root for evaluation. This field can be set only for policies which configure list constraints. */
+	// +optional
+	InheritFromParent *bool `json:"inheritFromParent,omitempty"`
 
 	/* A policy that can define specific values that are allowed or denied for the given constraint. It can also be used to allow or deny all values. . */
 	// +optional
 	ListPolicy *PolicyListPolicy `json:"listPolicy,omitempty"`
 
-	/* The organization on which to configure the constraint. Only one of
-	projectRef, folderRef, or organizationRef may be specified. */
+	/* The organization on which to configure the constraint. Only one of projectRef, folderRef, or organizationRef may be specified. */
 	// +optional
 	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
-	/* The project on which to configure the constraint. Only one of
-	projectRef, folderRef, or organizationRef may be specified. */
+	/* The project on which to configure the constraint. Only one of projectRef, folderRef, or organizationRef may be specified. */
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+
+	/* Ignores policies set above this resource and restores the `constraint_default` enforcement behavior of the specific constraint at this resource. This field can be set in policies for either list or boolean constraints. If set, `rules` must be empty and `inherit_from_parent` must be set to false. */
+	// +optional
+	Reset *bool `json:"reset,omitempty"`
 
 	/* A restore policy is a constraint to restore the default policy. */
 	// +optional
 	RestorePolicy *PolicyRestorePolicy `json:"restorePolicy,omitempty"`
 
+	/* In policies for boolean constraints, the following requirements apply: - There must be one and only one policy rule where condition is unset. - Boolean policy rules with conditions must set `enforced` to the opposite of the policy rule without a condition. - During policy evaluation, policy rules with conditions that are true for a target resource take precedence. */
+	// +optional
+	Rules []PolicyRules `json:"rules,omitempty"`
+
 	/* Version of the Policy. Default version is 0. */
 	// +optional
 	Version *int64 `json:"version,omitempty"`
+}
+
+type PolicyDryRunSpecStatus struct {
+	/* Output only. The time stamp this was previously updated. This represents the last time a call to `CreatePolicy` or `UpdatePolicy` was made for that policy. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type PolicyObservedStateStatus struct {
+	/* Dry-run policy. Audit-only policy, can be used to monitor how the policy would have impacted the existing and future resources if it's enforced. */
+	// +optional
+	DryRunSpec *PolicyDryRunSpecStatus `json:"dryRunSpec,omitempty"`
+
+	/* Basic information about the Organization Policy. */
+	// +optional
+	Spec *PolicySpecStatus `json:"spec,omitempty"`
+}
+
+type PolicySpecStatus struct {
+	/* Output only. The time stamp this was previously updated. This represents the last time a call to `CreatePolicy` or `UpdatePolicy` was made for that policy. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type ResourceManagerPolicyStatus struct {
@@ -130,9 +245,17 @@ type ResourceManagerPolicyStatus struct {
 	// +optional
 	Etag *string `json:"etag,omitempty"`
 
+	/* ExternalRef is a unique specifier for the ResourceManagerPolicy resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *PolicyObservedStateStatus `json:"observedState,omitempty"`
 
 	/* The timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds, representing when the variable was last updated. Example: "2016-10-09T12:33:37.578138407Z". */
 	// +optional
@@ -146,7 +269,6 @@ type ResourceManagerPolicyStatus struct {
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

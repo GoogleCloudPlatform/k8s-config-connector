@@ -118,7 +118,7 @@ type ClusterAuthenticatorGroupsConfig struct {
 }
 
 type ClusterAutoProvisioningDefaults struct {
-	/* Immutable. The Customer Managed Encryption Key used to encrypt the
+	/* The Customer Managed Encryption Key used to encrypt the
 	boot disk attached to each node in the node pool. */
 	// +optional
 	BootDiskKMSKeyRef *v1alpha1.ResourceRef `json:"bootDiskKMSKeyRef,omitempty"`

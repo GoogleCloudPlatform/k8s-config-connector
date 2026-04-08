@@ -39,7 +39,10 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type AutoscalingpolicyBasicAlgorithm struct {
-	/* Optional. Duration between scaling events. A scaling period starts after the update operation from the previous event has completed. Bounds: . Default: 2m. */
+	/* Optional. Duration between scaling events. A scaling period starts after
+	the update operation from the previous event has completed.
+
+	Bounds: [2m, 1d]. Default: 2m. */
 	// +optional
 	CooldownPeriod *string `json:"cooldownPeriod,omitempty"`
 
@@ -48,52 +51,138 @@ type AutoscalingpolicyBasicAlgorithm struct {
 }
 
 type AutoscalingpolicySecondaryWorkerConfig struct {
-	/* Optional. Maximum number of instances for this group. Note that by default, clusters will not use secondary workers. Required for secondary workers if the minimum secondary instances is set. Primary workers - Bounds: [min_instances, ). Secondary workers - Bounds: [min_instances, ). Default: 0. */
+	/* Required. Maximum number of instances for this group. Required for primary
+	workers. Note that by default, clusters will not use secondary workers.
+	Required for secondary workers if the minimum secondary instances is set.
+
+	Primary workers - Bounds: [min_instances, ).
+	Secondary workers - Bounds: [min_instances, ). Default: 0. */
 	// +optional
 	MaxInstances *int64 `json:"maxInstances,omitempty"`
 
-	/* Optional. Minimum number of instances for this group. Primary workers - Bounds: . Default: 0. */
+	/* Optional. Minimum number of instances for this group.
+
+	Primary workers - Bounds: [2, max_instances]. Default: 2.
+	Secondary workers - Bounds: [0, max_instances]. Default: 0. */
 	// +optional
 	MinInstances *int64 `json:"minInstances,omitempty"`
 
-	/* Optional. Weight for the instance group, which is used to determine the fraction of total workers in the cluster from this instance group. For example, if primary workers have weight 2, and secondary workers have weight 1, the cluster will have approximately 2 primary workers for each secondary worker. The cluster may not reach the specified balance if constrained by min/max bounds or other autoscaling settings. For example, if `max_instances` for secondary workers is 0, then only primary workers will be added. The cluster can also be out of balance when created. If weight is not set on any instance group, the cluster will default to equal weight for all groups: the cluster will attempt to maintain an equal number of workers in each group within the configured size bounds for each group. If weight is set for one group only, the cluster will default to zero weight on the unset group. For example if weight is set only on primary workers, the cluster will use primary workers only and no secondary workers. */
+	/* Optional. Weight for the instance group, which is used to determine the
+	fraction of total workers in the cluster from this instance group.
+	For example, if primary workers have weight 2, and secondary workers have
+	weight 1, the cluster will have approximately 2 primary workers for each
+	secondary worker.
+
+	The cluster may not reach the specified balance if constrained
+	by min/max bounds or other autoscaling settings. For example, if
+	`max_instances` for secondary workers is 0, then only primary workers will
+	be added. The cluster can also be out of balance when created.
+
+	If weight is not set on any instance group, the cluster will default to
+	equal weight for all groups: the cluster will attempt to maintain an equal
+	number of workers in each group within the configured size bounds for each
+	group. If weight is set for one group only, the cluster will default to
+	zero weight on the unset group. For example if weight is set only on
+	primary workers, the cluster will use primary workers only and no
+	secondary workers. */
 	// +optional
 	Weight *int64 `json:"weight,omitempty"`
 }
 
 type AutoscalingpolicyWorkerConfig struct {
-	/* Required. Maximum number of instances for this group. Required for primary workers. Note that by default, clusters will not use secondary workers. Required for secondary workers if the minimum secondary instances is set. Primary workers - Bounds: [min_instances, ). Secondary workers - Bounds: [min_instances, ). Default: 0. */
+	/* Required. Maximum number of instances for this group. Required for primary
+	workers. Note that by default, clusters will not use secondary workers.
+	Required for secondary workers if the minimum secondary instances is set.
+
+	Primary workers - Bounds: [min_instances, ).
+	Secondary workers - Bounds: [min_instances, ). Default: 0. */
 	MaxInstances int64 `json:"maxInstances"`
 
-	/* Optional. Minimum number of instances for this group. Primary workers - Bounds: . Default: 0. */
+	/* Optional. Minimum number of instances for this group.
+
+	Primary workers - Bounds: [2, max_instances]. Default: 2.
+	Secondary workers - Bounds: [0, max_instances]. Default: 0. */
 	// +optional
 	MinInstances *int64 `json:"minInstances,omitempty"`
 
-	/* Optional. Weight for the instance group, which is used to determine the fraction of total workers in the cluster from this instance group. For example, if primary workers have weight 2, and secondary workers have weight 1, the cluster will have approximately 2 primary workers for each secondary worker. The cluster may not reach the specified balance if constrained by min/max bounds or other autoscaling settings. For example, if `max_instances` for secondary workers is 0, then only primary workers will be added. The cluster can also be out of balance when created. If weight is not set on any instance group, the cluster will default to equal weight for all groups: the cluster will attempt to maintain an equal number of workers in each group within the configured size bounds for each group. If weight is set for one group only, the cluster will default to zero weight on the unset group. For example if weight is set only on primary workers, the cluster will use primary workers only and no secondary workers. */
+	/* Optional. Weight for the instance group, which is used to determine the
+	fraction of total workers in the cluster from this instance group.
+	For example, if primary workers have weight 2, and secondary workers have
+	weight 1, the cluster will have approximately 2 primary workers for each
+	secondary worker.
+
+	The cluster may not reach the specified balance if constrained
+	by min/max bounds or other autoscaling settings. For example, if
+	`max_instances` for secondary workers is 0, then only primary workers will
+	be added. The cluster can also be out of balance when created.
+
+	If weight is not set on any instance group, the cluster will default to
+	equal weight for all groups: the cluster will attempt to maintain an equal
+	number of workers in each group within the configured size bounds for each
+	group. If weight is set for one group only, the cluster will default to
+	zero weight on the unset group. For example if weight is set only on
+	primary workers, the cluster will use primary workers only and no
+	secondary workers. */
 	// +optional
 	Weight *int64 `json:"weight,omitempty"`
 }
 
 type AutoscalingpolicyYarnConfig struct {
-	/* Required. Timeout for YARN graceful decommissioning of Node Managers. Specifies the duration to wait for jobs to complete before forcefully removing workers (and potentially interrupting jobs). Only applicable to downscaling operations. */
+	/* Required. Timeout for YARN graceful decommissioning of Node Managers.
+	Specifies the duration to wait for jobs to complete before forcefully
+	removing workers (and potentially interrupting jobs). Only applicable to
+	downscaling operations.
+
+	Bounds: [0s, 1d]. */
 	GracefulDecommissionTimeout string `json:"gracefulDecommissionTimeout"`
 
-	/* Required. Fraction of average YARN pending memory in the last cooldown period for which to remove workers. A scale-down factor of 1 will result in scaling down so that there is no available memory remaining after the update (more aggressive scaling). A scale-down factor of 0 disables removing workers, which can be beneficial for autoscaling a single job. See . */
+	/* Required. Fraction of average YARN pending memory in the last cooldown
+	period for which to remove workers. A scale-down factor of 1 will result in
+	scaling down so that there is no available memory remaining after the
+	update (more aggressive scaling). A scale-down factor of 0 disables
+	removing workers, which can be beneficial for autoscaling a single job.
+	See [How autoscaling
+	works](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/autoscaling#how_autoscaling_works)
+	for more information.
+
+	Bounds: [0.0, 1.0]. */
 	ScaleDownFactor float64 `json:"scaleDownFactor"`
 
-	/* Optional. Minimum scale-down threshold as a fraction of total cluster size before scaling occurs. For example, in a 20-worker cluster, a threshold of 0.1 means the autoscaler must recommend at least a 2 worker scale-down for the cluster to scale. A threshold of 0 means the autoscaler will scale down on any recommended change. Bounds: . Default: 0.0. */
+	/* Optional. Minimum scale-down threshold as a fraction of total cluster size
+	before scaling occurs. For example, in a 20-worker cluster, a threshold of
+	0.1 means the autoscaler must recommend at least a 2 worker scale-down for
+	the cluster to scale. A threshold of 0 means the autoscaler will scale down
+	on any recommended change.
+
+	Bounds: [0.0, 1.0]. Default: 0.0. */
 	// +optional
 	ScaleDownMinWorkerFraction *float64 `json:"scaleDownMinWorkerFraction,omitempty"`
 
-	/* Required. Fraction of average YARN pending memory in the last cooldown period for which to add workers. A scale-up factor of 1.0 will result in scaling up so that there is no pending memory remaining after the update (more aggressive scaling). A scale-up factor closer to 0 will result in a smaller magnitude of scaling up (less aggressive scaling). See . */
+	/* Required. Fraction of average YARN pending memory in the last cooldown
+	period for which to add workers. A scale-up factor of 1.0 will result in
+	scaling up so that there is no pending memory remaining after the update
+	(more aggressive scaling). A scale-up factor closer to 0 will result in a
+	smaller magnitude of scaling up (less aggressive scaling). See [How
+	autoscaling
+	works](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/autoscaling#how_autoscaling_works)
+	for more information.
+
+	Bounds: [0.0, 1.0]. */
 	ScaleUpFactor float64 `json:"scaleUpFactor"`
 
-	/* Optional. Minimum scale-up threshold as a fraction of total cluster size before scaling occurs. For example, in a 20-worker cluster, a threshold of 0.1 means the autoscaler must recommend at least a 2-worker scale-up for the cluster to scale. A threshold of 0 means the autoscaler will scale up on any recommended change. Bounds: . Default: 0.0. */
+	/* Optional. Minimum scale-up threshold as a fraction of total cluster size
+	before scaling occurs. For example, in a 20-worker cluster, a threshold of
+	0.1 means the autoscaler must recommend at least a 2-worker scale-up for
+	the cluster to scale. A threshold of 0 means the autoscaler will scale up
+	on any recommended change.
+
+	Bounds: [0.0, 1.0]. Default: 0.0. */
 	// +optional
 	ScaleUpMinWorkerFraction *float64 `json:"scaleUpMinWorkerFraction,omitempty"`
 }
 
 type DataprocAutoscalingPolicySpec struct {
+	/* Immutable. Required. YARN autoscaling configuration. */
 	BasicAlgorithm AutoscalingpolicyBasicAlgorithm `json:"basicAlgorithm"`
 
 	/* Immutable. The location for the resource */
@@ -107,11 +196,11 @@ type DataprocAutoscalingPolicySpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Optional. Describes how the autoscaler will operate for secondary workers. */
+	/* Immutable. Optional. Describes how the autoscaler will operate for secondary workers. */
 	// +optional
 	SecondaryWorkerConfig *AutoscalingpolicySecondaryWorkerConfig `json:"secondaryWorkerConfig,omitempty"`
 
-	/* Required. Describes how the autoscaler will operate for primary workers. */
+	/* Immutable. Required. Describes how the autoscaler will operate for primary workers. */
 	WorkerConfig AutoscalingpolicyWorkerConfig `json:"workerConfig"`
 }
 
@@ -119,6 +208,10 @@ type DataprocAutoscalingPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataprocAutoscalingPolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the DataprocAutoscalingPolicy resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

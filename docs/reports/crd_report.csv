@@ -388,7 +388,7 @@ recaptchaenterprise.cnrm.cloud.google.com,RecaptchaEnterpriseKey,False,True,Fals
 redis.cnrm.cloud.google.com,RedisCluster,True,True,False,Direct,True
 redis.cnrm.cloud.google.com,RedisInstance,False,True,False,Terraform,False
 resourcemanager.cnrm.cloud.google.com,ResourceManagerLien,False,True,False,Terraform,False
-resourcemanager.cnrm.cloud.google.com,ResourceManagerPolicy,False,True,False,Terraform,False
+resourcemanager.cnrm.cloud.google.com,ResourceManagerPolicy,False,True,False,Direct,True
 run.cnrm.cloud.google.com,RunJob,False,True,False,Terraform,True
 run.cnrm.cloud.google.com,RunService,False,True,False,Terraform,False
 secretmanager.cnrm.cloud.google.com,SecretManagerSecret,False,True,False,Terraform,True
