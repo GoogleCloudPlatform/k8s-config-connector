@@ -841,16 +841,17 @@ type NetworkServicesEdgeCacheServiceStatus struct {
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
-
-// NetworkServicesEdgeCacheService is the Schema for the networkservices API
+// NetworkServicesEdgeCacheService is the Schema for the NetworkServicesEdgeCacheService API
 // +k8s:openapi-gen=true
 type NetworkServicesEdgeCacheService struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
+	// +required
 	Spec   NetworkServicesEdgeCacheServiceSpec   `json:"spec,omitempty"`
 	Status NetworkServicesEdgeCacheServiceStatus `json:"status,omitempty"`
 }
+
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
