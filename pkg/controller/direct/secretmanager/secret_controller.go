@@ -20,6 +20,7 @@ import (
 	"reflect"
 	"regexp"
 
+	"cloud.google.com/go/iam/apiv1/iampb"
 	gcp "cloud.google.com/go/secretmanager/apiv1"
 	secretmanagerpb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -120,6 +121,7 @@ type Adapter struct {
 }
 
 var _ directbase.Adapter = &Adapter{}
+var _ direct.IAMAdapter = &Adapter{}
 
 func normalizeExternal(ctx context.Context, reader client.Reader, src client.Object, secret *krm.SecretManagerSecret) error {
 	if secret.Spec.Replication != nil {
@@ -353,4 +355,37 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	}
 	log.V(2).Info("successfully deleted Secret", "name", a.id)
 	return true, nil
+}
+
+func (a *Adapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot get iam policy for missing resource")
+	}
+
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.gcpClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return policy, nil
+}
+
+func (a *Adapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot set iam policy for missing resource")
+	}
+
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.gcpClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return newPolicy, nil
 }
