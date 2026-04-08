@@ -347,8 +347,7 @@ func (s *clusterControllerServer) UpdateCluster(ctx context.Context, req *pb.Upd
 		case "config.worker_config.num_instances":
 			description = "Add 1 workers."
 			updated.Config.WorkerConfig.NumInstances = req.GetCluster().GetConfig().GetWorkerConfig().GetNumInstances()
-		case "config.security_config.identity_config.user_service_account_mapping":
-			if updated.Config.SecurityConfig == nil {
+		case "config.security_config.identity_config.user_service_account_mapping", "config.securityConfig.identityConfig.userServiceAccountMapping":			if updated.Config.SecurityConfig == nil {
 				updated.Config.SecurityConfig = &pb.SecurityConfig{}
 			}
 			if updated.Config.SecurityConfig.IdentityConfig == nil {
