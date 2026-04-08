@@ -314,7 +314,7 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 	// This can be removed once all Compute resources are migrated to direct controller.
 	targetMatchSpec := IsSelfLinkEqual(forwardingRule.Target, a.actual.Target)
 	targetMatchStatus := IsSelfLinkEqual(forwardingRule.Target, a.desired.Status.Target)
-	if !targetMatchSpec && (a.desired.Status.Target == nil || !targetMatchStatus) {
+	if !targetMatchSpec || (a.desired.Status.Target != nil && !targetMatchStatus) {
 		report.AddField("target", a.actual.Target, nil)
 		if a.id.ParentID.Location == "global" {
 			setTargetReq := &computepb.SetTargetGlobalForwardingRuleRequest{
