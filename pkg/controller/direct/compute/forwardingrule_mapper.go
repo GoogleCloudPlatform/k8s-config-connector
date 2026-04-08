@@ -120,6 +120,7 @@ func ComputeForwardingRuleStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	out.PscConnectionStatus = in.PscConnectionStatus
 	out.SelfLink = in.SelfLink
 	out.ServiceName = in.ServiceName
+	out.Target = in.Target
 	return out
 }
 func ComputeForwardingRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeForwardingRuleStatus) *pb.ForwardingRule {
@@ -134,6 +135,7 @@ func ComputeForwardingRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	out.PscConnectionStatus = in.PscConnectionStatus
 	out.SelfLink = in.SelfLink
 	out.ServiceName = in.ServiceName
+	out.Target = in.Target
 	return out
 }
 

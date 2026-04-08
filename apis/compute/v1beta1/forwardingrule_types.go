@@ -390,6 +390,10 @@ type ComputeForwardingRuleStatus struct {
 	This field is only used for INTERNAL load balancing. */
 	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.service_name
 	ServiceName *string `json:"serviceName,omitempty"`
+
+	// The target resource to receive the matched traffic.
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.target
+	Target *string `json:"target,omitempty"`
 }
 
 // +genclient

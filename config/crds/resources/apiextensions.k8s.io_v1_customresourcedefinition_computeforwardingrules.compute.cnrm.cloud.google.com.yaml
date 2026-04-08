@@ -761,6 +761,9 @@ spec:
                 description: The internal fully qualified service name for this Forwarding
                   Rule. This field is only used for INTERNAL load balancing.
                 type: string
+              target:
+                description: The target resource to receive the matched traffic.
+                type: string
             type: object
         type: object
     served: true
