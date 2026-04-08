@@ -19,7 +19,7 @@ metadata:
 spec:
   memberFrom:
     serviceAccountRef:
-      name: clouddeploy-dep-${uniqueId}
+      name: cdeploy-dep-${uniqueId}
   role: roles/clouddeploy.admin
   resourceRef:
     apiVersion: clouddeploy.cnrm.cloud.google.com/v1beta1
