@@ -315,7 +315,7 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 	targetMatchSpec := IsSelfLinkEqual(forwardingRule.Target, a.actual.Target)
 	targetMatchStatus := IsSelfLinkEqual(forwardingRule.Target, a.desired.Status.Target)
 	if !targetMatchSpec || (a.desired.Status.Target != nil && !targetMatchStatus) {
-		report.AddField("target", a.actual.Target, nil)
+		report.AddField("target", a.actual.Target, forwardingRule.Target)
 		if a.id.ParentID.Location == "global" {
 			setTargetReq := &computepb.SetTargetGlobalForwardingRuleRequest{
 				ForwardingRule:          a.id.ResourceID,
