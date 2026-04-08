@@ -31,6 +31,8 @@ import (
 
 	gcp "cloud.google.com/go/alloydb/apiv1beta"
 	alloydbpb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"
+	iam "cloud.google.com/go/iam/apiv1"
+	"cloud.google.com/go/iam/apiv1/iampb"
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -63,6 +65,20 @@ func (m *instanceModel) client(ctx context.Context) (*gcp.AlloyDBAdminClient, er
 	gcpClient, err := gcp.NewAlloyDBAdminRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("error building AlloyDB client for Instance: %w", err)
+	}
+	return gcpClient, err
+}
+
+func (m *instanceModel) newIAMClient(ctx context.Context) (*iam.IamPolicyClient, error) {
+	var opts []option.ClientOption
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	opts = append(opts, option.WithEndpoint("alloydb.googleapis.com:443"))
+	gcpClient, err := iam.NewIamPolicyRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("error building IAM client for AlloyDB Instance: %w", err)
 	}
 	return gcpClient, err
 }
@@ -133,9 +149,14 @@ func (m *instanceModel) AdapterForObject(ctx context.Context, op *directbase.Ada
 	if err != nil {
 		return nil, err
 	}
+	iamClient, err := m.newIAMClient(ctx)
+	if err != nil {
+		return nil, err
+	}
 	return &instanceAdapter{
 		id:        id,
 		gcpClient: gcpClient,
+		iamClient: iamClient,
 		reader:    reader,
 		desired:   obj,
 	}, nil
@@ -149,12 +170,39 @@ func (m *instanceModel) AdapterForURL(ctx context.Context, url string) (directba
 type instanceAdapter struct {
 	id        *krm.AlloyDBInstanceIdentity
 	gcpClient *gcp.AlloyDBAdminClient
+	iamClient *iam.IamPolicyClient
 	reader    client.Reader
 	desired   *krm.AlloyDBInstance
 	actual    *alloydbpb.Instance
 }
 
 var _ directbase.Adapter = &instanceAdapter{}
+var _ direct.IAMAdapter = &instanceAdapter{}
+
+func (a *instanceAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.iamClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return policy, nil
+}
+
+func (a *instanceAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.iamClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return newPolicy, nil
+}
 
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter `Update` call.
