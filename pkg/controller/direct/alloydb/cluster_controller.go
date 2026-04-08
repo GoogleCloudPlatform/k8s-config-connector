@@ -31,6 +31,8 @@ import (
 
 	gcp "cloud.google.com/go/alloydb/apiv1beta"
 	alloydbpb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"
+	iam "cloud.google.com/go/iam/apiv1"
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	"github.com/golang/protobuf/ptypes/duration"
 	"google.golang.org/api/option"
 	"google.golang.org/genproto/googleapis/type/dayofweek"
@@ -121,9 +123,21 @@ func (m *modelCluster) AdapterForObject(ctx context.Context, op *directbase.Adap
 	if err != nil {
 		return nil, err
 	}
+
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	opts = append(opts, option.WithEndpoint("alloydb.googleapis.com"))
+	iamClient, err := iam.NewIamPolicyRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building iam client: %w", err)
+	}
+
 	return &ClusterAdapter{
 		id:        id,
 		gcpClient: gcpClient,
+		iamClient: iamClient,
 		desired:   obj,
 		reader:    reader,
 	}, nil
@@ -137,6 +151,7 @@ func (m *modelCluster) AdapterForURL(ctx context.Context, url string) (directbas
 type ClusterAdapter struct {
 	id        *krm.ClusterIdentity
 	gcpClient *gcp.AlloyDBAdminClient
+	iamClient *iam.IamPolicyClient
 	desired   *krm.AlloyDBCluster
 	actual    *alloydbpb.Cluster
 	reader    client.Reader
@@ -693,4 +708,27 @@ func (a *ClusterAdapter) Delete(ctx context.Context, deleteOp *directbase.Delete
 		return false, fmt.Errorf("waiting delete Cluster %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func (a *ClusterAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.iamClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id, err)
+	}
+	return policy, nil
+}
+
+func (a *ClusterAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.iamClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id, err)
+	}
+	return newPolicy, nil
 }
