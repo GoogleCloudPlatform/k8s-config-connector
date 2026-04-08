@@ -1,3 +1,16 @@
+[missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.devicePolicy.allowedDeviceManagementLevels[]" is not set in unstructured objects
+[missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.devicePolicy.allowedEncryptionStatuses[]" is not set in unstructured objects
+[missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.devicePolicy.osConstraints[].minimumVersion" is not set in unstructured objects
+[missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.devicePolicy.osConstraints[].osType" is not set in unstructured objects
+[missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.devicePolicy.osConstraints[].requireVerifiedChromeOs" is not set in unstructured objects
+[missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.devicePolicy.requireAdminApproval" is not set in unstructured objects
+[missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.devicePolicy.requireCorpOwned" is not set in unstructured objects
+[missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.devicePolicy.requireScreenLock" is not set in unstructured objects
+[missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.members[].serviceAccountRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.members[].user" is not set in unstructured objects
+[missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.requiredAccessLevels[].external" is not set in unstructured objects
+[missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.requiredAccessLevels[].name" is not set in unstructured objects
+[missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.requiredAccessLevels[].namespace" is not set in unstructured objects
 [missing_field] crd=accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.basic.combiningFunction" is not set in unstructured objects
 [missing_field] crd=accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.basic.conditions[].devicePolicy.allowedDeviceManagementLevels[]" is not set in unstructured objects
 [missing_field] crd=accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.basic.conditions[].devicePolicy.allowedEncryptionStatuses[]" is not set in unstructured objects
