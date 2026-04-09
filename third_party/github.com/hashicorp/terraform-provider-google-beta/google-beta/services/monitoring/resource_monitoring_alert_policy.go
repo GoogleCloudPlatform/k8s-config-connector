@@ -822,6 +822,118 @@ condition to be triggered.`,
 								},
 							},
 						},
+						"condition_sql": {
+							Type:        schema.TypeList,
+							Optional:    true,
+							Description: `A condition that checks for SQL queries matching given constraints.`,
+							MaxItems:    1,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"query": {
+										Type:     schema.TypeString,
+										Required: true,
+									},
+									"minutes": {
+										Type:     schema.TypeList,
+										Optional: true,
+										MaxItems: 1,
+										Elem: &schema.Resource{
+											Schema: map[string]*schema.Schema{
+												"periodicity": {
+													Type:     schema.TypeInt,
+													Required: true,
+												},
+											},
+										},
+									},
+									"hourly": {
+										Type:     schema.TypeList,
+										Optional: true,
+										MaxItems: 1,
+										Elem: &schema.Resource{
+											Schema: map[string]*schema.Schema{
+												"periodicity": {
+													Type:     schema.TypeInt,
+													Required: true,
+												},
+												"minute_offset": {
+													Type:     schema.TypeInt,
+													Required: true,
+												},
+											},
+										},
+									},
+									"daily": {
+										Type:     schema.TypeList,
+										Optional: true,
+										MaxItems: 1,
+										Elem: &schema.Resource{
+											Schema: map[string]*schema.Schema{
+												"periodicity": {
+													Type:     schema.TypeInt,
+													Required: true,
+												},
+												"execution_time": {
+													Type:     schema.TypeList,
+													Optional: true,
+													MaxItems: 1,
+													Elem: &schema.Resource{
+														Schema: map[string]*schema.Schema{
+															"hours": {
+																Type:     schema.TypeInt,
+																Optional: true,
+															},
+															"minutes": {
+																Type:     schema.TypeInt,
+																Optional: true,
+															},
+															"seconds": {
+																Type:     schema.TypeInt,
+																Optional: true,
+															},
+															"nanos": {
+																Type:     schema.TypeInt,
+																Optional: true,
+															},
+														},
+													},
+												},
+											},
+										},
+									},
+									"row_count_test": {
+										Type:     schema.TypeList,
+										Optional: true,
+										MaxItems: 1,
+										Elem: &schema.Resource{
+											Schema: map[string]*schema.Schema{
+												"comparison": {
+													Type:     schema.TypeString,
+													Required: true,
+												},
+												"threshold": {
+													Type:     schema.TypeInt,
+													Required: true,
+												},
+											},
+										},
+									},
+									"boolean_test": {
+										Type:     schema.TypeList,
+										Optional: true,
+										MaxItems: 1,
+										Elem: &schema.Resource{
+											Schema: map[string]*schema.Schema{
+												"column": {
+													Type:     schema.TypeString,
+													Required: true,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
 						"name": {
 							Type:     schema.TypeString,
 							Computed: true,
@@ -1502,6 +1614,7 @@ func flattenMonitoringAlertPolicyConditions(v interface{}, d *schema.ResourceDat
 			"display_name":                        flattenMonitoringAlertPolicyConditionsDisplayName(original["displayName"], d, config),
 			"condition_matched_log":               flattenMonitoringAlertPolicyConditionsConditionMatchedLog(original["conditionMatchedLog"], d, config),
 			"condition_prometheus_query_language": flattenMonitoringAlertPolicyConditionsConditionPrometheusQueryLanguage(original["conditionPrometheusQueryLanguage"], d, config),
+			"condition_sql":                       flattenMonitoringAlertPolicyConditionsConditionSql(original["conditionSql"], d, config),
 		})
 	}
 	return transformed
@@ -2102,6 +2215,13 @@ func expandMonitoringAlertPolicyConditions(v interface{}, d tpgresource.Terrafor
 			return nil, err
 		} else if val := reflect.ValueOf(transformedConditionPrometheusQueryLanguage); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["conditionPrometheusQueryLanguage"] = transformedConditionPrometheusQueryLanguage
+		}
+
+		transformedConditionSql, err := expandMonitoringAlertPolicyConditionsConditionSql(original["condition_sql"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedConditionSql); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+			transformed["conditionSql"] = transformedConditionSql
 		}
 
 		req = append(req, transformed)
@@ -2899,4 +3019,412 @@ func expandMonitoringAlertPolicyDocumentationMimeType(v interface{}, d tpgresour
 
 func expandMonitoringAlertPolicySeverity(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
+}
+
+func expandMonitoringAlertPolicyConditionsConditionSql(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedQuery, err := expandMonitoringAlertPolicyConditionsConditionSqlQuery(original["query"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedQuery); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["query"] = transformedQuery
+	}
+
+	transformedMinutes, err := expandMonitoringAlertPolicyConditionsConditionSqlMinutes(original["minutes"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedMinutes); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["minutes"] = transformedMinutes
+	}
+
+	transformedHourly, err := expandMonitoringAlertPolicyConditionsConditionSqlHourly(original["hourly"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedHourly); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["hourly"] = transformedHourly
+	}
+
+	transformedDaily, err := expandMonitoringAlertPolicyConditionsConditionSqlDaily(original["daily"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedDaily); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["daily"] = transformedDaily
+	}
+
+	transformedRowCountTest, err := expandMonitoringAlertPolicyConditionsConditionSqlRowCountTest(original["row_count_test"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedRowCountTest); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["rowCountTest"] = transformedRowCountTest
+	}
+
+	transformedBooleanTest, err := expandMonitoringAlertPolicyConditionsConditionSqlBooleanTest(original["boolean_test"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedBooleanTest); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["booleanTest"] = transformedBooleanTest
+	}
+
+	return transformed, nil
+}
+
+func expandMonitoringAlertPolicyConditionsConditionSqlQuery(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandMonitoringAlertPolicyConditionsConditionSqlMinutes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedPeriodicity, err := expandMonitoringAlertPolicyConditionsConditionSqlMinutesPeriodicity(original["periodicity"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedPeriodicity); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["periodicity"] = transformedPeriodicity
+	}
+
+	return transformed, nil
+}
+
+func expandMonitoringAlertPolicyConditionsConditionSqlMinutesPeriodicity(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandMonitoringAlertPolicyConditionsConditionSqlHourly(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedPeriodicity, err := expandMonitoringAlertPolicyConditionsConditionSqlHourlyPeriodicity(original["periodicity"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedPeriodicity); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["periodicity"] = transformedPeriodicity
+	}
+
+	transformedMinuteOffset, err := expandMonitoringAlertPolicyConditionsConditionSqlHourlyMinuteOffset(original["minute_offset"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedMinuteOffset); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["minuteOffset"] = transformedMinuteOffset
+	}
+
+	return transformed, nil
+}
+
+func expandMonitoringAlertPolicyConditionsConditionSqlHourlyPeriodicity(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandMonitoringAlertPolicyConditionsConditionSqlHourlyMinuteOffset(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandMonitoringAlertPolicyConditionsConditionSqlDaily(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedPeriodicity, err := expandMonitoringAlertPolicyConditionsConditionSqlDailyPeriodicity(original["periodicity"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedPeriodicity); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["periodicity"] = transformedPeriodicity
+	}
+
+	transformedExecutionTime, err := expandMonitoringAlertPolicyConditionsConditionSqlDailyExecutionTime(original["execution_time"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedExecutionTime); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["executionTime"] = transformedExecutionTime
+	}
+
+	return transformed, nil
+}
+
+func expandMonitoringAlertPolicyConditionsConditionSqlDailyPeriodicity(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandMonitoringAlertPolicyConditionsConditionSqlDailyExecutionTime(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedHours, err := expandMonitoringAlertPolicyConditionsConditionSqlDailyExecutionTimeHours(original["hours"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedHours); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["hours"] = transformedHours
+	}
+
+	transformedMinutes, err := expandMonitoringAlertPolicyConditionsConditionSqlDailyExecutionTimeMinutes(original["minutes"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedMinutes); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["minutes"] = transformedMinutes
+	}
+
+	transformedSeconds, err := expandMonitoringAlertPolicyConditionsConditionSqlDailyExecutionTimeSeconds(original["seconds"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedSeconds); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["seconds"] = transformedSeconds
+	}
+
+	transformedNanos, err := expandMonitoringAlertPolicyConditionsConditionSqlDailyExecutionTimeNanos(original["nanos"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedNanos); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["nanos"] = transformedNanos
+	}
+
+	return transformed, nil
+}
+
+func expandMonitoringAlertPolicyConditionsConditionSqlDailyExecutionTimeHours(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandMonitoringAlertPolicyConditionsConditionSqlDailyExecutionTimeMinutes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandMonitoringAlertPolicyConditionsConditionSqlDailyExecutionTimeSeconds(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandMonitoringAlertPolicyConditionsConditionSqlDailyExecutionTimeNanos(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandMonitoringAlertPolicyConditionsConditionSqlRowCountTest(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedComparison, err := expandMonitoringAlertPolicyConditionsConditionSqlRowCountTestComparison(original["comparison"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedComparison); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["comparison"] = transformedComparison
+	}
+
+	transformedThreshold, err := expandMonitoringAlertPolicyConditionsConditionSqlRowCountTestThreshold(original["threshold"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedThreshold); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["threshold"] = transformedThreshold
+	}
+
+	return transformed, nil
+}
+
+func expandMonitoringAlertPolicyConditionsConditionSqlRowCountTestComparison(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandMonitoringAlertPolicyConditionsConditionSqlRowCountTestThreshold(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandMonitoringAlertPolicyConditionsConditionSqlBooleanTest(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedColumn, err := expandMonitoringAlertPolicyConditionsConditionSqlBooleanTestColumn(original["column"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedColumn); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["column"] = transformedColumn
+	}
+
+	return transformed, nil
+}
+
+func expandMonitoringAlertPolicyConditionsConditionSqlBooleanTestColumn(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func flattenMonitoringAlertPolicyConditionsConditionSql(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["query"] = flattenMonitoringAlertPolicyConditionsConditionSqlQuery(original["query"], d, config)
+	transformed["minutes"] = flattenMonitoringAlertPolicyConditionsConditionSqlMinutes(original["minutes"], d, config)
+	transformed["hourly"] = flattenMonitoringAlertPolicyConditionsConditionSqlHourly(original["hourly"], d, config)
+	transformed["daily"] = flattenMonitoringAlertPolicyConditionsConditionSqlDaily(original["daily"], d, config)
+	transformed["row_count_test"] = flattenMonitoringAlertPolicyConditionsConditionSqlRowCountTest(original["rowCountTest"], d, config)
+	transformed["boolean_test"] = flattenMonitoringAlertPolicyConditionsConditionSqlBooleanTest(original["booleanTest"], d, config)
+	return []interface{}{transformed}
+}
+
+func flattenMonitoringAlertPolicyConditionsConditionSqlQuery(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenMonitoringAlertPolicyConditionsConditionSqlMinutes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["periodicity"] = flattenMonitoringAlertPolicyConditionsConditionSqlMinutesPeriodicity(original["periodicity"], d, config)
+	return []interface{}{transformed}
+}
+
+func flattenMonitoringAlertPolicyConditionsConditionSqlMinutesPeriodicity(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenMonitoringAlertPolicyConditionsConditionSqlHourly(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["periodicity"] = flattenMonitoringAlertPolicyConditionsConditionSqlHourlyPeriodicity(original["periodicity"], d, config)
+	transformed["minute_offset"] = flattenMonitoringAlertPolicyConditionsConditionSqlHourlyMinuteOffset(original["minuteOffset"], d, config)
+	return []interface{}{transformed}
+}
+
+func flattenMonitoringAlertPolicyConditionsConditionSqlHourlyPeriodicity(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenMonitoringAlertPolicyConditionsConditionSqlHourlyMinuteOffset(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenMonitoringAlertPolicyConditionsConditionSqlDaily(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["periodicity"] = flattenMonitoringAlertPolicyConditionsConditionSqlDailyPeriodicity(original["periodicity"], d, config)
+	transformed["execution_time"] = flattenMonitoringAlertPolicyConditionsConditionSqlDailyExecutionTime(original["executionTime"], d, config)
+	return []interface{}{transformed}
+}
+
+func flattenMonitoringAlertPolicyConditionsConditionSqlDailyPeriodicity(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenMonitoringAlertPolicyConditionsConditionSqlDailyExecutionTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["hours"] = flattenMonitoringAlertPolicyConditionsConditionSqlDailyExecutionTimeHours(original["hours"], d, config)
+	transformed["minutes"] = flattenMonitoringAlertPolicyConditionsConditionSqlDailyExecutionTimeMinutes(original["minutes"], d, config)
+	transformed["seconds"] = flattenMonitoringAlertPolicyConditionsConditionSqlDailyExecutionTimeSeconds(original["seconds"], d, config)
+	transformed["nanos"] = flattenMonitoringAlertPolicyConditionsConditionSqlDailyExecutionTimeNanos(original["nanos"], d, config)
+	return []interface{}{transformed}
+}
+
+func flattenMonitoringAlertPolicyConditionsConditionSqlDailyExecutionTimeHours(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenMonitoringAlertPolicyConditionsConditionSqlDailyExecutionTimeMinutes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenMonitoringAlertPolicyConditionsConditionSqlDailyExecutionTimeSeconds(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenMonitoringAlertPolicyConditionsConditionSqlDailyExecutionTimeNanos(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenMonitoringAlertPolicyConditionsConditionSqlRowCountTest(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["comparison"] = flattenMonitoringAlertPolicyConditionsConditionSqlRowCountTestComparison(original["comparison"], d, config)
+	transformed["threshold"] = flattenMonitoringAlertPolicyConditionsConditionSqlRowCountTestThreshold(original["threshold"], d, config)
+	return []interface{}{transformed}
+}
+
+func flattenMonitoringAlertPolicyConditionsConditionSqlRowCountTestComparison(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenMonitoringAlertPolicyConditionsConditionSqlRowCountTestThreshold(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenMonitoringAlertPolicyConditionsConditionSqlBooleanTest(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["column"] = flattenMonitoringAlertPolicyConditionsConditionSqlBooleanTestColumn(original["column"], d, config)
+	return []interface{}{transformed}
+}
+
+func flattenMonitoringAlertPolicyConditionsConditionSqlBooleanTestColumn(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
 }
