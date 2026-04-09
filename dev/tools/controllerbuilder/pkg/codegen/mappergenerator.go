@@ -326,6 +326,10 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 
 			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]")
 			isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
+			if krmField.Type == "[]byte" && protoField.Kind() == protoreflect.BytesKind {
+				isKRMFieldSlice = false
+				isProtoFieldSlice = false
+			}
 
 			if isProtoFieldSlice && !isKRMFieldSlice && !protoField.IsMap() { // proto slice -> krm single
 				var fromProtoElemFunc string
@@ -525,10 +529,17 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 						protoFieldName,
 					)
 				} else {
+					if protoField.Kind() == protoreflect.BytesKind {
+						fmt.Fprintf(out, "\tout.%s = in.%s\n",
+							krmFieldName,
+							protoAccessor,
+						)
+					} else {
 					fmt.Fprintf(out, "\tout.%s = direct.LazyPtr(in.%s)\n",
 						krmFieldName,
 						protoAccessor,
 					)
+					}
 				}
 
 			default:
@@ -609,6 +620,10 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 
 			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]")
 			isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
+			if krmField.Type == "[]byte" && protoField.Kind() == protoreflect.BytesKind {
+				isKRMFieldSlice = false
+				isProtoFieldSlice = false
+			}
 
 			if !isProtoFieldSlice && isKRMFieldSlice { // proto single <- krm slice
 				krmElemType := strings.TrimPrefix(krmField.Type, "[]")

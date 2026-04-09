@@ -237,7 +237,7 @@ func Hash_FromProto(mapCtx *direct.MapContext, in *pb.Hash) *krm.Hash {
 	}
 	out := &krm.Hash{}
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	out.Value = []krm.byte{direct.LazyPtr(in.GetValue())}
+	out.Value = in.GetValue()
 	return out
 }
 */
@@ -249,9 +249,7 @@ func Hash_ToProto(mapCtx *direct.MapContext, in *krm.Hash) *pb.Hash {
 	}
 	out := &pb.Hash{}
 	out.Type = direct.Enum_ToProto[pb.Hash_HashType](mapCtx, in.Type)
-	if len(in.Value) > 0 && in.Value[0] != nil {
-		out.Value = direct.ValueOf(in.Value[0])
-	}
+	out.Value = in.Value
 	return out
 }
 */
