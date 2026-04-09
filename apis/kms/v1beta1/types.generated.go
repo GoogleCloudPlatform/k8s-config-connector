@@ -17,12 +17,39 @@
 // krm.version: v1beta1
 // proto.service: google.cloud.kms.v1
 // resource: KMSAutokeyConfig:AutokeyConfig
+// resource: KMSCryptoKey:CryptoKey
 // resource: KMSImportJob:ImportJob
 // resource: KMSKeyHandle:KeyHandle
 
 package v1beta1
 
 import refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+
+// +kcc:proto=google.cloud.kms.v1.ExternalProtectionLevelOptions
+type ExternalProtectionLevelOptions struct {
+	// The URI for an external resource that this
+	//  [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] represents.
+	// +kcc:proto:field=google.cloud.kms.v1.ExternalProtectionLevelOptions.external_key_uri
+	ExternalKeyURI *string `json:"externalKeyURI,omitempty"`
+
+	// The path to the external key material on the EKM when using
+	//  [EkmConnection][google.cloud.kms.v1.EkmConnection] e.g., "v0/my/key". Set
+	//  this field instead of external_key_uri when using an
+	//  [EkmConnection][google.cloud.kms.v1.EkmConnection].
+	// +kcc:proto:field=google.cloud.kms.v1.ExternalProtectionLevelOptions.ekm_connection_key_path
+	EkmConnectionKeyPath *string `json:"ekmConnectionKeyPath,omitempty"`
+}
+
+// +kcc:proto=google.cloud.kms.v1.KeyAccessJustificationsPolicy
+type KeyAccessJustificationsPolicy struct {
+	// The list of allowed reasons for access to a
+	//  [CryptoKey][google.cloud.kms.v1.CryptoKey]. Zero allowed access reasons
+	//  means all encrypt, decrypt, and sign operations for the
+	//  [CryptoKey][google.cloud.kms.v1.CryptoKey] associated with this policy will
+	//  fail.
+	// +kcc:proto:field=google.cloud.kms.v1.KeyAccessJustificationsPolicy.allowed_access_reasons
+	AllowedAccessReasons []string `json:"allowedAccessReasons,omitempty"`
+}
 
 // +kcc:proto=google.cloud.kms.v1.KeyOperationAttestation
 type KeyOperationAttestation struct {
