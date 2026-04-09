@@ -77,3 +77,39 @@ func NetworkServicesServiceBindingSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Labels = in.Labels
 	return out
 }
+func WasmPlugin_LogConfig_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin_LogConfig) *krm.WasmPlugin_LogConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WasmPlugin_LogConfig{}
+	out.Enable = direct.LazyPtr(in.GetEnable())
+	out.SampleRate = direct.LazyPtr(in.GetSampleRate())
+	out.MinLogLevel = direct.Enum_FromProto(mapCtx, in.GetMinLogLevel())
+	return out
+}
+func WasmPlugin_LogConfig_ToProto(mapCtx *direct.MapContext, in *krm.WasmPlugin_LogConfig) *pb.WasmPlugin_LogConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WasmPlugin_LogConfig{}
+	out.Enable = direct.ValueOf(in.Enable)
+	out.SampleRate = direct.ValueOf(in.SampleRate)
+	out.MinLogLevel = direct.Enum_ToProto[pb.WasmPlugin_LogConfig_LogLevel](mapCtx, in.MinLogLevel)
+	return out
+}
+func WasmPlugin_UsedByObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin_UsedBy) *krm.WasmPlugin_UsedByObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WasmPlugin_UsedByObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	return out
+}
+func WasmPlugin_UsedByObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WasmPlugin_UsedByObservedState) *pb.WasmPlugin_UsedBy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WasmPlugin_UsedBy{}
+	out.Name = direct.ValueOf(in.Name)
+	return out
+}
