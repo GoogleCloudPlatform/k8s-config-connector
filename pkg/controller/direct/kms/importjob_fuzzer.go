@@ -29,7 +29,7 @@ func init() {
 
 func KMSImportJobFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.ImportJob{},
-		KMSImportJobSpec_v1beta1_FromProto, KMSImportJobSpec_v1beta1_ToProto,
+		KMSImportJobSpec_FromProto, KMSImportJobSpec_ToProto,
 		KMSImportJobObservedState_v1beta1_FromProto, KMSImportJobObservedState_v1beta1_ToProto,
 	)
 
