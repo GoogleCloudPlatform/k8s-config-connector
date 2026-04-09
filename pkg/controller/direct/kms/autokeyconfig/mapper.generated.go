@@ -22,34 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AutokeyConfig_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyConfig) *krm.AutokeyConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AutokeyConfig{}
-	out.Name = direct.LazyPtr(in.GetName())
-	if in.KeyProject != "" {
-		out.KeyProject = &refs.ProjectRef{
-			External: in.KeyProject,
-		}
-	}
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	return out
-}
-
-func AutokeyConfig_ToProto(mapCtx *direct.MapContext, in *krm.AutokeyConfig) *pb.AutokeyConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AutokeyConfig{}
-	out.Name = direct.ValueOf(in.Name)
-	if in.KeyProject != nil {
-		out.KeyProject = in.KeyProject.External
-	}
-	out.State = direct.Enum_ToProto[pb.AutokeyConfig_State](mapCtx, in.State)
-	return out
-}
-
 func KMSAutokeyConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyConfig) *krm.KMSAutokeyConfigObservedState {
 	if in == nil {
 		return nil

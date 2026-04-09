@@ -28,7 +28,9 @@ go run . generate-types \
 
 go run . generate-mapper \
     --service google.cloud.kms.v1 \
-    --api-version kms.cnrm.cloud.google.com/v1beta1
+    --api-version kms.cnrm.cloud.google.com/v1beta1 \
+    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1 \
+    --api-dir ${REPO_ROOT}/apis/kms/v1beta1
 
 
 cd ${REPO_ROOT}

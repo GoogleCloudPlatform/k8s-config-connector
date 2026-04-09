@@ -22,7 +22,6 @@ package kms
 
 import (
 	pb "cloud.google.com/go/kms/apiv1/kmspb"
-	krmkmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -62,26 +61,6 @@ func ImportJob_WrappingPublicKeyObservedState_ToProto(mapCtx *direct.MapContext,
 	out.Pem = direct.ValueOf(in.Pem)
 	return out
 }
-func KMSAutokeyConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyConfig) *krmkmsv1alpha1.KMSAutokeyConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmkmsv1alpha1.KMSAutokeyConfigObservedState{}
-	// MISSING: Name
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	// MISSING: Etag
-	return out
-}
-func KMSAutokeyConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmkmsv1alpha1.KMSAutokeyConfigObservedState) *pb.AutokeyConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AutokeyConfig{}
-	// MISSING: Name
-	out.State = direct.Enum_ToProto[pb.AutokeyConfig_State](mapCtx, in.State)
-	// MISSING: Etag
-	return out
-}
 func KMSAutokeyConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyConfig) *krm.KMSAutokeyConfigObservedState {
 	if in == nil {
 		return nil
@@ -99,30 +78,6 @@ func KMSAutokeyConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.KM
 	out := &pb.AutokeyConfig{}
 	// MISSING: Name
 	out.State = direct.Enum_ToProto[pb.AutokeyConfig_State](mapCtx, in.State)
-	// MISSING: Etag
-	return out
-}
-func KMSAutokeyConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyConfig) *krmkmsv1alpha1.KMSAutokeyConfigSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmkmsv1alpha1.KMSAutokeyConfigSpec{}
-	// MISSING: Name
-	if in.GetKeyProject() != "" {
-		out.KeyProjectRef = &refsv1beta1.ProjectRef{External: in.GetKeyProject()}
-	}
-	// MISSING: Etag
-	return out
-}
-func KMSAutokeyConfigSpec_ToProto(mapCtx *direct.MapContext, in *krmkmsv1alpha1.KMSAutokeyConfigSpec) *pb.AutokeyConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AutokeyConfig{}
-	// MISSING: Name
-	if in.KeyProjectRef != nil {
-		out.KeyProject = in.KeyProjectRef.External
-	}
 	// MISSING: Etag
 	return out
 }
@@ -178,26 +133,6 @@ func KMSImportJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.KMSImp
 	out.State = direct.Enum_ToProto[pb.ImportJob_ImportJobState](mapCtx, in.State)
 	out.PublicKey = ImportJob_WrappingPublicKeyObservedState_ToProto(mapCtx, in.PublicKey)
 	out.Attestation = KeyOperationAttestationObservedState_ToProto(mapCtx, in.Attestation)
-	return out
-}
-func KMSKeyHandleSpec_FromProto(mapCtx *direct.MapContext, in *pb.KeyHandle) *krmkmsv1alpha1.KMSKeyHandleSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmkmsv1alpha1.KMSKeyHandleSpec{}
-	// MISSING: Name
-	// MISSING: KMSKey
-	out.ResourceTypeSelector = direct.LazyPtr(in.GetResourceTypeSelector())
-	return out
-}
-func KMSKeyHandleSpec_ToProto(mapCtx *direct.MapContext, in *krmkmsv1alpha1.KMSKeyHandleSpec) *pb.KeyHandle {
-	if in == nil {
-		return nil
-	}
-	out := &pb.KeyHandle{}
-	// MISSING: Name
-	// MISSING: KMSKey
-	out.ResourceTypeSelector = direct.ValueOf(in.ResourceTypeSelector)
 	return out
 }
 func KMSKeyHandleSpec_FromProto(mapCtx *direct.MapContext, in *pb.KeyHandle) *krm.KMSKeyHandleSpec {
@@ -272,26 +207,6 @@ func KeyAccessJustificationsPolicy_ToProto(mapCtx *direct.MapContext, in *krm.Ke
 	out.AllowedAccessReasons = direct.EnumSlice_ToProto[pb.AccessReason](mapCtx, in.AllowedAccessReasons)
 	return out
 }
-func KeyOperationAttestation_FromProto(mapCtx *direct.MapContext, in *pb.KeyOperationAttestation) *krmkmsv1alpha1.KeyOperationAttestation {
-	if in == nil {
-		return nil
-	}
-	out := &krmkmsv1alpha1.KeyOperationAttestation{}
-	// MISSING: Format
-	// MISSING: Content
-	// MISSING: CertChains
-	return out
-}
-func KeyOperationAttestation_ToProto(mapCtx *direct.MapContext, in *krmkmsv1alpha1.KeyOperationAttestation) *pb.KeyOperationAttestation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.KeyOperationAttestation{}
-	// MISSING: Format
-	// MISSING: Content
-	// MISSING: CertChains
-	return out
-}
 func KeyOperationAttestation_FromProto(mapCtx *direct.MapContext, in *pb.KeyOperationAttestation) *krm.KeyOperationAttestation {
 	if in == nil {
 		return nil
@@ -312,35 +227,13 @@ func KeyOperationAttestation_ToProto(mapCtx *direct.MapContext, in *krm.KeyOpera
 	// MISSING: CertChains
 	return out
 }
-func KeyOperationAttestationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.KeyOperationAttestation) *krmkmsv1alpha1.KeyOperationAttestationObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmkmsv1alpha1.KeyOperationAttestationObservedState{}
-	out.Format = direct.Enum_FromProto(mapCtx, in.GetFormat())
-	out.Content = []krmkmsv1alpha1.byte{direct.LazyPtr(in.GetContent())}
-	out.CertChains = KeyOperationAttestation_CertificateChains_FromProto(mapCtx, in.GetCertChains())
-	return out
-}
-func KeyOperationAttestationObservedState_ToProto(mapCtx *direct.MapContext, in *krmkmsv1alpha1.KeyOperationAttestationObservedState) *pb.KeyOperationAttestation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.KeyOperationAttestation{}
-	out.Format = direct.Enum_ToProto[pb.KeyOperationAttestation_AttestationFormat](mapCtx, in.Format)
-	if len(in.Content) > 0 && in.Content[0] != nil {
-		out.Content = direct.ValueOf(in.Content[0])
-	}
-	out.CertChains = KeyOperationAttestation_CertificateChains_ToProto(mapCtx, in.CertChains)
-	return out
-}
 func KeyOperationAttestationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.KeyOperationAttestation) *krm.KeyOperationAttestationObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.KeyOperationAttestationObservedState{}
 	out.Format = direct.Enum_FromProto(mapCtx, in.GetFormat())
-	out.Content = []krm.byte{direct.LazyPtr(in.GetContent())}
+	out.Content = in.GetContent()
 	out.CertChains = KeyOperationAttestation_CertificateChains_FromProto(mapCtx, in.GetCertChains())
 	return out
 }
@@ -350,30 +243,8 @@ func KeyOperationAttestationObservedState_ToProto(mapCtx *direct.MapContext, in 
 	}
 	out := &pb.KeyOperationAttestation{}
 	out.Format = direct.Enum_ToProto[pb.KeyOperationAttestation_AttestationFormat](mapCtx, in.Format)
-	if len(in.Content) > 0 && in.Content[0] != nil {
-		out.Content = direct.ValueOf(in.Content[0])
-	}
+	out.Content = in.Content
 	out.CertChains = KeyOperationAttestation_CertificateChains_ToProto(mapCtx, in.CertChains)
-	return out
-}
-func KeyOperationAttestation_CertificateChains_FromProto(mapCtx *direct.MapContext, in *pb.KeyOperationAttestation_CertificateChains) *krmkmsv1alpha1.KeyOperationAttestation_CertificateChains {
-	if in == nil {
-		return nil
-	}
-	out := &krmkmsv1alpha1.KeyOperationAttestation_CertificateChains{}
-	out.CaviumCerts = in.CaviumCerts
-	out.GoogleCardCerts = in.GoogleCardCerts
-	out.GooglePartitionCerts = in.GooglePartitionCerts
-	return out
-}
-func KeyOperationAttestation_CertificateChains_ToProto(mapCtx *direct.MapContext, in *krmkmsv1alpha1.KeyOperationAttestation_CertificateChains) *pb.KeyOperationAttestation_CertificateChains {
-	if in == nil {
-		return nil
-	}
-	out := &pb.KeyOperationAttestation_CertificateChains{}
-	out.CaviumCerts = in.CaviumCerts
-	out.GoogleCardCerts = in.GoogleCardCerts
-	out.GooglePartitionCerts = in.GooglePartitionCerts
 	return out
 }
 func KeyOperationAttestation_CertificateChains_FromProto(mapCtx *direct.MapContext, in *pb.KeyOperationAttestation_CertificateChains) *krm.KeyOperationAttestation_CertificateChains {
