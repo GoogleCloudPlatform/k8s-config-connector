@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	"context"
+	"fmt"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -55,10 +56,42 @@ func (r *NetworkServicesWasmPluginRef) SetExternal(ref string) {
 }
 
 func (r *NetworkServicesWasmPluginRef) ValidateExternal(ref string) error {
-	return (&NetworkServicesWasmPluginIdentity{}).FromExternal(ref)
+	return (&WasmPluginIdentity{}).FromExternal(ref)
 }
 
 func (r *NetworkServicesWasmPluginRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r.External != "" && r.Name != "" {
+		return fmt.Errorf("cannot specify both name and external on NetworkServicesWasmPluginRef")
+	}
+	if r.External != "" {
+		if err := r.ValidateExternal(r.External); err != nil {
+			return err
+		}
+		return nil
+	}
+
+	key := types.NamespacedName{
+		Namespace: r.Namespace,
+		Name:      r.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = defaultNamespace
+	}
+
+	obj := &NetworkServicesWasmPlugin{}
+	if err := reader.Get(ctx, key, obj); err != nil {
+		return err
+	}
+
+	id, err := obj.GetIdentity(ctx, reader)
+	if err != nil {
+		return err
+	}
+	r.External = id.String()
+	return nil
+}
+
+func (r *NetworkServicesWasmPluginRef) NormalizeWithFallback(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, func(u *unstructured.Unstructured) string {
 		// Fallback if status.externalRef is missing.
 		// Attempt to construct the external ID from spec fields.
@@ -88,11 +121,11 @@ func (r *NetworkServicesWasmPluginRef) Normalize(ctx context.Context, reader cli
 		}
 
 		// The project ID might be in the format "projects/my-project".
-		// We need to strip the "projects/" prefix because NetworkServicesWasmPluginIdentity expects the raw project ID.
+		// We need to strip the "projects/" prefix because WasmPluginIdentity expects the raw project ID.
 		if len(project) > 9 && project[:9] == "projects/" {
 			project = project[9:]
 		}
 
-		return NewNetworkServicesWasmPluginIdentity(project, location, resourceID).String()
+		return fmt.Sprintf("projects/%s/locations/%s/wasmPlugins/%s", project, location, resourceID)
 	})
 }
