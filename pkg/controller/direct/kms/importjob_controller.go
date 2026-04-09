@@ -142,7 +142,7 @@ func (a *importJobAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	log.V(2).Info("creating kms importjob", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desired := KMSImportJobSpec_ToProto(mapCtx, &a.desired.Spec)
+	desired := KMSImportJobSpec_v1beta1_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -159,7 +159,7 @@ func (a *importJobAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	log.V(2).Info("successfully created kms importjob in gcp", "name", a.id)
 
 	status := &krm.KMSImportJobStatus{}
-	status.ObservedState = KMSImportJobObservedState_FromProto(mapCtx, created)
+	status.ObservedState = KMSImportJobObservedState_v1beta1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -174,7 +174,7 @@ func (a *importJobAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	log.V(2).Info("updating KMSImportJob", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desiredPb := KMSImportJobSpec_ToProto(mapCtx, &a.desired.Spec)
+	desiredPb := KMSImportJobSpec_v1beta1_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -209,7 +209,7 @@ func (a *importJobAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 
 	obj := &krm.KMSImportJob{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(KMSImportJobSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(KMSImportJobSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

@@ -64,6 +64,13 @@ type KMSAutokeyConfigObservedState struct {
 	State *string `json:"state,omitempty"`
 }
 
+// +kcc:proto=google.cloud.kms.v1.AutokeyConfig
+type AutokeyConfig struct {
+	Name       *string `json:"name,omitempty"`
+	KeyProject *string `json:"keyProject,omitempty"`
+	State      *string `json:"state,omitempty"`
+}
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpkmsautokeyconfig;gcpkmsautokeyconfigs

@@ -29,9 +29,7 @@ func AutokeyConfig_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyConfig) *k
 	out := &krm.AutokeyConfig{}
 	out.Name = direct.LazyPtr(in.GetName())
 	if in.KeyProject != "" {
-		out.KeyProject = &refs.ProjectRef{
-			External: in.KeyProject,
-		}
+		out.KeyProject = direct.LazyPtr(in.KeyProject)
 	}
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
@@ -44,7 +42,7 @@ func AutokeyConfig_ToProto(mapCtx *direct.MapContext, in *krm.AutokeyConfig) *pb
 	out := &pb.AutokeyConfig{}
 	out.Name = direct.ValueOf(in.Name)
 	if in.KeyProject != nil {
-		out.KeyProject = in.KeyProject.External
+		out.KeyProject = *in.KeyProject
 	}
 	out.State = direct.Enum_ToProto[pb.AutokeyConfig_State](mapCtx, in.State)
 	return out
