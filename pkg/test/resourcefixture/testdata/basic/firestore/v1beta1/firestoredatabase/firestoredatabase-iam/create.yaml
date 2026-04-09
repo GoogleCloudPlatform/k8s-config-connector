@@ -1,0 +1,11 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: firestoredatabase-iam-${uniqueId}
+spec:
+  member: serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com
+  role: roles/datastore.viewer
+  resourceReference:
+    apiVersion: firestore.cnrm.cloud.google.com/v1beta1
+    kind: FirestoreDatabase
+    name: firestoredatabase-${uniqueId}
