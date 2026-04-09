@@ -30,6 +30,7 @@ import (
 
 	kmspb "cloud.google.com/go/kms/apiv1/kmspb"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -229,9 +230,8 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 		return false, err
 	}
 	mapCtx := &direct.MapContext{}
-	// make a copy of the a.actual i.e. from krm.AutokeyConfig to kmspb.AutokeyConfig
-	tempKrmAutokeyResource := AutokeyConfig_FromProto(mapCtx, a.actual)
-	resource := AutokeyConfig_ToProto(mapCtx, tempKrmAutokeyResource)
+	resource := proto.Clone(a.actual).(*kmspb.AutokeyConfig)
+	resource.KeyProject = "" // Reset key project as requested
 	updated, err := a.updateAutokeyConfig(ctx, resource)
 	if err != nil {
 		return false, fmt.Errorf("updating AutokeyConfig %s: %w", a.id, err)
