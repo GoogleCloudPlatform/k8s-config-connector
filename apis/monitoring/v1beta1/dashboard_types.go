@@ -478,6 +478,20 @@ type TimeSeriesFilterRatio_RatioPart struct {
 	Aggregation *Aggregation `json:"aggregation,omitempty"`
 }
 
+// +kcc:proto=google.monitoring.dashboard.v1.OpsAnalyticsQuery
+type OpsAnalyticsQuery struct {
+	// A log analytics SQL query, which will be executed to fetch data for the
+	//  chart.
+	Sql *string `json:"sql,omitempty"`
+
+	// The unit of data contained in fetched time series. If non-empty, this
+	//  unit will override any unit that accompanies fetched data. The format is
+	//  the same as the
+	//  [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
+	//  field in `MetricDescriptor`.
+	UnitOverride *string `json:"unitOverride,omitempty"`
+}
+
 // +kcc:proto=google.monitoring.dashboard.v1.TimeSeriesQuery
 type TimeSeriesQuery struct {
 	// Filter parameters to fetch time series.
@@ -491,6 +505,9 @@ type TimeSeriesQuery struct {
 
 	// A query used to fetch time series with PromQL.
 	PrometheusQuery *string `json:"prometheusQuery,omitempty"`
+
+	// A query used to fetch time series with Log Analytics.
+	OpsAnalyticsQuery *OpsAnalyticsQuery `json:"opsAnalyticsQuery,omitempty"`
 
 	// The unit of data contained in fetched time series. If non-empty, this
 	//  unit will override any unit that accompanies fetched data. The format is

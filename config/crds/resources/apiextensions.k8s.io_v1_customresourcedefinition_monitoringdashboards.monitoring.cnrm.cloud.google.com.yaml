@@ -329,6 +329,25 @@ spec:
                                           description: Required. The query for the
                                             PieChart. See, `google.monitoring.dashboard.v1.TimeSeriesQuery`.
                                           properties:
+                                            opsAnalyticsQuery:
+                                              description: A query used to fetch time
+                                                series with Log Analytics.
+                                              properties:
+                                                sql:
+                                                  description: A log analytics SQL
+                                                    query, which will be executed
+                                                    to fetch data for the chart.
+                                                  type: string
+                                                unitOverride:
+                                                  description: The unit of data contained
+                                                    in fetched time series. If non-empty,
+                                                    this unit will override any unit
+                                                    that accompanies fetched data.
+                                                    The format is the same as the
+                                                    [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
+                                                    field in `MetricDescriptor`.
+                                                  type: string
+                                              type: object
                                             outputFullDuration:
                                               description: Optional. If set, Cloud
                                                 Monitoring will treat the full query
@@ -785,6 +804,24 @@ spec:
                                     description: Required. Fields for querying time
                                       series data from the Stackdriver metrics API.
                                     properties:
+                                      opsAnalyticsQuery:
+                                        description: A query used to fetch time series
+                                          with Log Analytics.
+                                        properties:
+                                          sql:
+                                            description: A log analytics SQL query,
+                                              which will be executed to fetch data
+                                              for the chart.
+                                            type: string
+                                          unitOverride:
+                                            description: The unit of data contained
+                                              in fetched time series. If non-empty,
+                                              this unit will override any unit that
+                                              accompanies fetched data. The format
+                                              is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
+                                              field in `MetricDescriptor`.
+                                            type: string
+                                        type: object
                                       outputFullDuration:
                                         description: Optional. If set, Cloud Monitoring
                                           will treat the full query duration as the
@@ -1229,6 +1266,25 @@ spec:
                                             time series data from the Stackdriver
                                             metrics API.
                                           properties:
+                                            opsAnalyticsQuery:
+                                              description: A query used to fetch time
+                                                series with Log Analytics.
+                                              properties:
+                                                sql:
+                                                  description: A log analytics SQL
+                                                    query, which will be executed
+                                                    to fetch data for the chart.
+                                                  type: string
+                                                unitOverride:
+                                                  description: The unit of data contained
+                                                    in fetched time series. If non-empty,
+                                                    this unit will override any unit
+                                                    that accompanies fetched data.
+                                                    The format is the same as the
+                                                    [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
+                                                    field in `MetricDescriptor`.
+                                                  type: string
+                                              type: object
                                             outputFullDuration:
                                               description: Optional. If set, Cloud
                                                 Monitoring will treat the full query
@@ -1642,6 +1698,25 @@ spec:
                                           description: Fields for querying time series
                                             data from the Stackdriver metrics API.
                                           properties:
+                                            opsAnalyticsQuery:
+                                              description: A query used to fetch time
+                                                series with Log Analytics.
+                                              properties:
+                                                sql:
+                                                  description: A log analytics SQL
+                                                    query, which will be executed
+                                                    to fetch data for the chart.
+                                                  type: string
+                                                unitOverride:
+                                                  description: The unit of data contained
+                                                    in fetched time series. If non-empty,
+                                                    this unit will override any unit
+                                                    that accompanies fetched data.
+                                                    The format is the same as the
+                                                    [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
+                                                    field in `MetricDescriptor`.
+                                                  type: string
+                                              type: object
                                             outputFullDuration:
                                               description: Optional. If set, Cloud
                                                 Monitoring will treat the full query
@@ -2374,6 +2449,24 @@ spec:
                                     description: Required. The query for the PieChart.
                                       See, `google.monitoring.dashboard.v1.TimeSeriesQuery`.
                                     properties:
+                                      opsAnalyticsQuery:
+                                        description: A query used to fetch time series
+                                          with Log Analytics.
+                                        properties:
+                                          sql:
+                                            description: A log analytics SQL query,
+                                              which will be executed to fetch data
+                                              for the chart.
+                                            type: string
+                                          unitOverride:
+                                            description: The unit of data contained
+                                              in fetched time series. If non-empty,
+                                              this unit will override any unit that
+                                              accompanies fetched data. The format
+                                              is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
+                                              field in `MetricDescriptor`.
+                                            type: string
+                                        type: object
                                       outputFullDuration:
                                         description: Optional. If set, Cloud Monitoring
                                           will treat the full query duration as the
@@ -2790,6 +2883,22 @@ spec:
                               description: Required. Fields for querying time series
                                 data from the Stackdriver metrics API.
                               properties:
+                                opsAnalyticsQuery:
+                                  description: A query used to fetch time series with
+                                    Log Analytics.
+                                  properties:
+                                    sql:
+                                      description: A log analytics SQL query, which
+                                        will be executed to fetch data for the chart.
+                                      type: string
+                                    unitOverride:
+                                      description: The unit of data contained in fetched
+                                        time series. If non-empty, this unit will
+                                        override any unit that accompanies fetched
+                                        data. The format is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
+                                        field in `MetricDescriptor`.
+                                      type: string
+                                  type: object
                                 outputFullDuration:
                                   description: Optional. If set, Cloud Monitoring
                                     will treat the full query duration as the alignment
@@ -3191,6 +3300,24 @@ spec:
                                     description: Required. Fields for querying time
                                       series data from the Stackdriver metrics API.
                                     properties:
+                                      opsAnalyticsQuery:
+                                        description: A query used to fetch time series
+                                          with Log Analytics.
+                                        properties:
+                                          sql:
+                                            description: A log analytics SQL query,
+                                              which will be executed to fetch data
+                                              for the chart.
+                                            type: string
+                                          unitOverride:
+                                            description: The unit of data contained
+                                              in fetched time series. If non-empty,
+                                              this unit will override any unit that
+                                              accompanies fetched data. The format
+                                              is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
+                                              field in `MetricDescriptor`.
+                                            type: string
+                                        type: object
                                       outputFullDuration:
                                         description: Optional. If set, Cloud Monitoring
                                           will treat the full query duration as the
@@ -3566,6 +3693,24 @@ spec:
                                     description: Fields for querying time series data
                                       from the Stackdriver metrics API.
                                     properties:
+                                      opsAnalyticsQuery:
+                                        description: A query used to fetch time series
+                                          with Log Analytics.
+                                        properties:
+                                          sql:
+                                            description: A log analytics SQL query,
+                                              which will be executed to fetch data
+                                              for the chart.
+                                            type: string
+                                          unitOverride:
+                                            description: The unit of data contained
+                                              in fetched time series. If non-empty,
+                                              this unit will override any unit that
+                                              accompanies fetched data. The format
+                                              is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
+                                              field in `MetricDescriptor`.
+                                            type: string
+                                        type: object
                                       outputFullDuration:
                                         description: Optional. If set, Cloud Monitoring
                                           will treat the full query duration as the
@@ -4242,6 +4387,24 @@ spec:
                                         description: Required. The query for the PieChart.
                                           See, `google.monitoring.dashboard.v1.TimeSeriesQuery`.
                                         properties:
+                                          opsAnalyticsQuery:
+                                            description: A query used to fetch time
+                                              series with Log Analytics.
+                                            properties:
+                                              sql:
+                                                description: A log analytics SQL query,
+                                                  which will be executed to fetch
+                                                  data for the chart.
+                                                type: string
+                                              unitOverride:
+                                                description: The unit of data contained
+                                                  in fetched time series. If non-empty,
+                                                  this unit will override any unit
+                                                  that accompanies fetched data. The
+                                                  format is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
+                                                  field in `MetricDescriptor`.
+                                                type: string
+                                            type: object
                                           outputFullDuration:
                                             description: Optional. If set, Cloud Monitoring
                                               will treat the full query duration as
@@ -4682,6 +4845,24 @@ spec:
                                   description: Required. Fields for querying time
                                     series data from the Stackdriver metrics API.
                                   properties:
+                                    opsAnalyticsQuery:
+                                      description: A query used to fetch time series
+                                        with Log Analytics.
+                                      properties:
+                                        sql:
+                                          description: A log analytics SQL query,
+                                            which will be executed to fetch data for
+                                            the chart.
+                                          type: string
+                                        unitOverride:
+                                          description: The unit of data contained
+                                            in fetched time series. If non-empty,
+                                            this unit will override any unit that
+                                            accompanies fetched data. The format is
+                                            the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
+                                            field in `MetricDescriptor`.
+                                          type: string
+                                      type: object
                                     outputFullDuration:
                                       description: Optional. If set, Cloud Monitoring
                                         will treat the full query duration as the
@@ -5106,6 +5287,24 @@ spec:
                                           time series data from the Stackdriver metrics
                                           API.
                                         properties:
+                                          opsAnalyticsQuery:
+                                            description: A query used to fetch time
+                                              series with Log Analytics.
+                                            properties:
+                                              sql:
+                                                description: A log analytics SQL query,
+                                                  which will be executed to fetch
+                                                  data for the chart.
+                                                type: string
+                                              unitOverride:
+                                                description: The unit of data contained
+                                                  in fetched time series. If non-empty,
+                                                  this unit will override any unit
+                                                  that accompanies fetched data. The
+                                                  format is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
+                                                  field in `MetricDescriptor`.
+                                                type: string
+                                            type: object
                                           outputFullDuration:
                                             description: Optional. If set, Cloud Monitoring
                                               will treat the full query duration as
@@ -5503,6 +5702,24 @@ spec:
                                         description: Fields for querying time series
                                           data from the Stackdriver metrics API.
                                         properties:
+                                          opsAnalyticsQuery:
+                                            description: A query used to fetch time
+                                              series with Log Analytics.
+                                            properties:
+                                              sql:
+                                                description: A log analytics SQL query,
+                                                  which will be executed to fetch
+                                                  data for the chart.
+                                                type: string
+                                              unitOverride:
+                                                description: The unit of data contained
+                                                  in fetched time series. If non-empty,
+                                                  this unit will override any unit
+                                                  that accompanies fetched data. The
+                                                  format is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
+                                                  field in `MetricDescriptor`.
+                                                type: string
+                                            type: object
                                           outputFullDuration:
                                             description: Optional. If set, Cloud Monitoring
                                               will treat the full query duration as
@@ -6254,6 +6471,25 @@ spec:
                                           description: Required. The query for the
                                             PieChart. See, `google.monitoring.dashboard.v1.TimeSeriesQuery`.
                                           properties:
+                                            opsAnalyticsQuery:
+                                              description: A query used to fetch time
+                                                series with Log Analytics.
+                                              properties:
+                                                sql:
+                                                  description: A log analytics SQL
+                                                    query, which will be executed
+                                                    to fetch data for the chart.
+                                                  type: string
+                                                unitOverride:
+                                                  description: The unit of data contained
+                                                    in fetched time series. If non-empty,
+                                                    this unit will override any unit
+                                                    that accompanies fetched data.
+                                                    The format is the same as the
+                                                    [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
+                                                    field in `MetricDescriptor`.
+                                                  type: string
+                                              type: object
                                             outputFullDuration:
                                               description: Optional. If set, Cloud
                                                 Monitoring will treat the full query
@@ -6710,6 +6946,24 @@ spec:
                                     description: Required. Fields for querying time
                                       series data from the Stackdriver metrics API.
                                     properties:
+                                      opsAnalyticsQuery:
+                                        description: A query used to fetch time series
+                                          with Log Analytics.
+                                        properties:
+                                          sql:
+                                            description: A log analytics SQL query,
+                                              which will be executed to fetch data
+                                              for the chart.
+                                            type: string
+                                          unitOverride:
+                                            description: The unit of data contained
+                                              in fetched time series. If non-empty,
+                                              this unit will override any unit that
+                                              accompanies fetched data. The format
+                                              is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
+                                              field in `MetricDescriptor`.
+                                            type: string
+                                        type: object
                                       outputFullDuration:
                                         description: Optional. If set, Cloud Monitoring
                                           will treat the full query duration as the
@@ -7154,6 +7408,25 @@ spec:
                                             time series data from the Stackdriver
                                             metrics API.
                                           properties:
+                                            opsAnalyticsQuery:
+                                              description: A query used to fetch time
+                                                series with Log Analytics.
+                                              properties:
+                                                sql:
+                                                  description: A log analytics SQL
+                                                    query, which will be executed
+                                                    to fetch data for the chart.
+                                                  type: string
+                                                unitOverride:
+                                                  description: The unit of data contained
+                                                    in fetched time series. If non-empty,
+                                                    this unit will override any unit
+                                                    that accompanies fetched data.
+                                                    The format is the same as the
+                                                    [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
+                                                    field in `MetricDescriptor`.
+                                                  type: string
+                                              type: object
                                             outputFullDuration:
                                               description: Optional. If set, Cloud
                                                 Monitoring will treat the full query
@@ -7567,6 +7840,25 @@ spec:
                                           description: Fields for querying time series
                                             data from the Stackdriver metrics API.
                                           properties:
+                                            opsAnalyticsQuery:
+                                              description: A query used to fetch time
+                                                series with Log Analytics.
+                                              properties:
+                                                sql:
+                                                  description: A log analytics SQL
+                                                    query, which will be executed
+                                                    to fetch data for the chart.
+                                                  type: string
+                                                unitOverride:
+                                                  description: The unit of data contained
+                                                    in fetched time series. If non-empty,
+                                                    this unit will override any unit
+                                                    that accompanies fetched data.
+                                                    The format is the same as the
+                                                    [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
+                                                    field in `MetricDescriptor`.
+                                                  type: string
+                                              type: object
                                             outputFullDuration:
                                               description: Optional. If set, Cloud
                                                 Monitoring will treat the full query
