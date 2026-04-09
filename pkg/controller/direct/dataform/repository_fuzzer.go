@@ -38,5 +38,12 @@ func repositoryFuzzer() fuzztesting.KRMFuzzer {
 	fuzzer.UnimplementedFields.Insert(".kms_key_name")
 	fuzzer.UnimplementedFields.Insert(".internal_metadata")
 
+	fuzzer.SpecField(".display_name")
+	fuzzer.SpecField(".git_remote_settings")
+	fuzzer.SpecField(".npmrc_environment_variables_secret_version")
+	fuzzer.SpecField(".workspace_compilation_overrides")
+	fuzzer.SpecField(".set_authenticated_user_admin")
+	fuzzer.SpecField(".service_account")
+
 	return fuzzer
 }

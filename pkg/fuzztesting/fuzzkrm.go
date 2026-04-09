@@ -18,6 +18,8 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"strings"
+	"sync"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -66,6 +68,8 @@ type KRMTypedFuzzer[ProtoT proto.Message, SpecType any, StatusType any] struct {
 
 	FilterSpec   func(in ProtoT)
 	FilterStatus func(in ProtoT)
+
+	checkOnce sync.Once
 }
 
 // SpecField marks the specified fieldPath as round-tripping to/from the Spec
@@ -113,6 +117,80 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) IdentityField(fieldPath s
 	f.UnimplementedFields.Insert(fieldPath)
 }
 
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) checkCoverage(t *testing.T) {
+	f.checkOnce.Do(func() {
+		allFields := f.SpecFields.Union(f.StatusFields).Union(f.UnimplementedFields)
+
+		md := f.ProtoType.ProtoReflect().Descriptor()
+
+		missingFields := []string{}
+
+		isCovered := func(path string) bool {
+			for p := path; p != ""; {
+				if allFields.Has(p) {
+					return true
+				}
+				if strings.HasSuffix(p, "[]") {
+					p = strings.TrimSuffix(p, "[]")
+				} else {
+					lastDot := strings.LastIndex(p, ".")
+					if lastDot == -1 {
+						break
+					}
+					p = p[:lastDot]
+				}
+			}
+			return false
+		}
+
+		var check func(md protoreflect.MessageDescriptor, parentPath string, depth int)
+		check = func(md protoreflect.MessageDescriptor, parentPath string, depth int) {
+			if depth > 10 {
+				return
+			}
+			fields := md.Fields()
+			for i := 0; i < fields.Len(); i++ {
+				fd := fields.Get(i)
+				path := parentPath + "." + string(fd.Name())
+
+				if isCovered(path) {
+					continue
+				}
+
+				if fd.IsList() {
+					if fd.Kind() == protoreflect.MessageKind {
+						check(fd.Message(), path+"[]", depth+1)
+					} else {
+						missingFields = append(missingFields, path)
+					}
+					continue
+				}
+
+				if fd.IsMap() {
+					if fd.MapValue().Kind() == protoreflect.MessageKind {
+						check(fd.MapValue().Message(), path+"[]", depth+1)
+					} else {
+						missingFields = append(missingFields, path)
+					}
+					continue
+				}
+
+				if fd.Kind() == protoreflect.MessageKind {
+					check(fd.Message(), path, depth+1)
+				} else {
+					missingFields = append(missingFields, path)
+				}
+			}
+		}
+
+		check(md, "", 0)
+
+		if len(missingFields) > 0 {
+			t.Errorf("Field(s) %v are present in proto %q but not registered in the fuzzer. Please add them to SpecFields, StatusFields, or Unimplemented_NotYetTriaged.", missingFields, md.FullName())
+		}
+	})
+}
+
 type KRMFuzzer interface {
 	FuzzSpec(t *testing.T, seed int64)
 	FuzzStatus(t *testing.T, seed int64)
@@ -136,6 +214,7 @@ func NewKRMTypedFuzzer[ProtoT proto.Message, SpecType any, StatusType any](
 }
 
 func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) FuzzSpec(t *testing.T, seed int64) {
+	f.checkCoverage(t)
 	fuzzer := NewFuzzTest(f.ProtoType, f.SpecFromProto, f.SpecToProto)
 	fuzzer.IgnoreFields = f.StatusFields
 	fuzzer.UnimplementedFields = f.UnimplementedFields
@@ -144,6 +223,7 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) FuzzSpec(t *testing.T, se
 }
 
 func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) FuzzStatus(t *testing.T, seed int64) {
+	f.checkCoverage(t)
 	fuzzer := NewFuzzTest(f.ProtoType, f.StatusFromProto, f.StatusToProto)
 	fuzzer.IgnoreFields = f.SpecFields
 	fuzzer.UnimplementedFields = f.UnimplementedFields

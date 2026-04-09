@@ -16,6 +16,8 @@ package fuzztesting
 
 import (
 	"math/rand"
+	"os"
+	"strconv"
 	"testing"
 	"time"
 
@@ -25,6 +27,7 @@ import (
 
 func FuzzAllMappers(f *testing.F) {
 	f.Fuzz(func(t *testing.T, seed int64) {
+		t.Logf("using seed %d", seed)
 		randStream := rand.New(rand.NewSource(seed))
 
 		fuzzer := fuzztesting.ChooseFuzzer(randStream.Int63())
@@ -35,9 +38,22 @@ func FuzzAllMappers(f *testing.F) {
 
 func TestSomeMappers(t *testing.T) {
 	seed := time.Now().UnixNano()
+	if envSeed := os.Getenv("KCC_FUZZER_SEED"); envSeed != "" {
+		var err error
+		seed, err = strconv.ParseInt(envSeed, 10, 64)
+		if err != nil {
+			t.Fatalf("error parsing KCC_FUZZER_SEED %q: %v", envSeed, err)
+		}
+	}
+	t.Logf("using seed %d", seed)
 	randStream := rand.New(rand.NewSource(seed))
 
-	for i := 0; i < 100000; i++ {
+	iterations := 100000
+	if os.Getenv("CI") != "" {
+		iterations = 1000000
+	}
+
+	for i := 0; i < iterations; i++ {
 		fuzzer := fuzztesting.ChooseFuzzer(randStream.Int63())
 		nextSeed := randStream.Int63()
 		fuzzer(t, nextSeed)
