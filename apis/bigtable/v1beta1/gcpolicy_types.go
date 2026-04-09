@@ -35,7 +35,6 @@ type GcpolicyMaxVersion struct {
 }
 
 // BigtableGCPolicySpec defines the desired state of BigtableGCPolicy
-// +kcc:spec:proto=google.bigtable.admin.v2.GcRule
 type BigtableGCPolicySpec struct {
 	/* Immutable. The name of the column family. */
 	ColumnFamily string `json:"columnFamily"`

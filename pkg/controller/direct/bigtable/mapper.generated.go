@@ -402,32 +402,6 @@ func BigtableClusterSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigt
 	out.EncryptionConfig = Cluster_EncryptionConfig_v1alpha1_ToProto(mapCtx, in.EncryptionConfig)
 	return out
 }
-func BigtableGCPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GcRule) *krm.BigtableGCPolicySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BigtableGCPolicySpec{}
-	// MISSING: MaxNumVersions
-	if v := in.GetMaxAge(); v != nil {
-		out.MaxAge = []krm.GcpolicyMaxAge{direct.StringDuration_FromProto(mapCtx, v)}
-	}
-	// MISSING: Intersection
-	// MISSING: Union
-	return out
-}
-func BigtableGCPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BigtableGCPolicySpec) *pb.GcRule {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GcRule{}
-	// MISSING: MaxNumVersions
-	if len(in.MaxAge) > 0 && in.MaxAge[0] != nil {
-		out.MaxAge = direct.StringDuration_ToProto(mapCtx, in.MaxAge[0])
-	}
-	// MISSING: Intersection
-	// MISSING: Union
-	return out
-}
 func BigtableInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.BigtableInstanceSpec {
 	if in == nil {
 		return nil
