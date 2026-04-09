@@ -68,6 +68,13 @@ func dashboardFuzzer() fuzztesting.KRMFuzzer {
 	fuzzer.UnimplementedFields.Insert(".name")
 	fuzzer.UnimplementedFields.Insert(".labels")
 
+	fuzzer.SpecField(".display_name")
+	fuzzer.SpecField(".grid_layout")
+	fuzzer.SpecField(".mosaic_layout")
+	fuzzer.SpecField(".row_layout")
+	fuzzer.SpecField(".column_layout")
+	fuzzer.SpecField(".dashboard_filters")
+
 	widgetPaths := []string{
 		".grid_layout.widgets[]",
 		".mosaic_layout.tiles[].widget",
