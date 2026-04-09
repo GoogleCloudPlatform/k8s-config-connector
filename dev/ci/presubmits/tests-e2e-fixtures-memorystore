@@ -20,7 +20,7 @@ set -o nounset
 set -o pipefail
 
 function on_error() {
-  echo "<hint_for_agent>Run 'dev/ci/presubmits/$(basename "$0")' to fix.</hint_for_agent>"
+  echo "<hint_for_agent>Run 'dev/ci/presubmits/$(basename "$0")' to regenerate the golden test output</hint_for_agent>"
 }
 trap on_error ERR
 

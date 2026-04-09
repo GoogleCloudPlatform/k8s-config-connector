@@ -18,7 +18,7 @@ set -o nounset
 set -o pipefail
 
 function on_error() {
-  echo "<hint_for_agent>Run 'dev/ci/presubmits/fuzz-roundtrippers' to fix.</hint_for_agent>"
+  echo "<hint_for_agent>Run 'dev/ci/presubmits/fuzz-roundtrippers' to run fuzz tests.</hint_for_agent>"
 }
 trap on_error ERR
 
