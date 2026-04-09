@@ -22,10 +22,41 @@ package tags
 
 import (
 	pb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
+	krmresourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tags/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func FolderSpec_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krmresourcemanagerv1beta1.FolderSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmresourcemanagerv1beta1.FolderSpec{}
+	// MISSING: Name
+	// MISSING: Parent
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: State
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: Etag
+	return out
+}
+func FolderSpec_ToProto(mapCtx *direct.MapContext, in *krmresourcemanagerv1beta1.FolderSpec) *pb.Folder {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Folder{}
+	// MISSING: Name
+	// MISSING: Parent
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: State
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: Etag
+	return out
+}
 func TagsLocationTagBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TagBinding) *krm.TagsLocationTagBindingObservedState {
 	if in == nil {
 		return nil

@@ -268,7 +268,7 @@ firestore.cnrm.cloud.google.com,FirestoreDatabase,True,True,False,Direct,True
 firestore.cnrm.cloud.google.com,FirestoreDocument,True,False,False,Direct,True
 firestore.cnrm.cloud.google.com,FirestoreField,True,False,False,Direct,True
 firestore.cnrm.cloud.google.com,FirestoreIndex,False,True,False,Terraform,True
-resourcemanager.cnrm.cloud.google.com,Folder,False,True,False,Terraform,False
+resourcemanager.cnrm.cloud.google.com,Folder,False,True,False,Terraform,True
 gkebackup.cnrm.cloud.google.com,GKEBackupBackupPlan,True,False,False,Direct,True
 gkebackup.cnrm.cloud.google.com,GKEBackupBackup,True,False,False,Direct,True
 gkebackup.cnrm.cloud.google.com,GKEBackupRestorePlan,True,False,False,Direct,True
