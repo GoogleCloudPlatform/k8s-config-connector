@@ -46,7 +46,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: NetworkServicesEdgeCacheService is the Schema for the networkservices
+        description: NetworkServicesEdgeCacheService is the Schema for the NetworkServicesEdgeCacheService
           API
         properties:
           apiVersion:
@@ -981,6 +981,8 @@ spec:
                 format: int64
                 type: integer
             type: object
+        required:
+        - spec
         type: object
     served: true
     storage: true

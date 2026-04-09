@@ -852,7 +852,6 @@ type NetworkServicesEdgeCacheService struct {
 	Status NetworkServicesEdgeCacheServiceStatus `json:"status,omitempty"`
 }
 
-
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // NetworkServicesEdgeCacheServiceList contains a list of NetworkServicesEdgeCacheService
