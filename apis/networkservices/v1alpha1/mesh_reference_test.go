@@ -81,7 +81,7 @@ func TestNetworkServicesMeshIdentity_FromExternal(t *testing.T) {
 func TestNetworkServicesMeshRef_Normalize(t *testing.T) {
 	scheme := runtime.NewScheme()
 	// No need to register actual types if we use Unstructured
-	
+
 	tests := []struct {
 		name             string
 		ref              *NetworkServicesMeshRef
