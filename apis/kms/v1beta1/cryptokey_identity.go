@@ -15,10 +15,13 @@
 package v1beta1
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 type KMSCryptoKeyIdentity struct {
@@ -28,6 +31,57 @@ type KMSCryptoKeyIdentity struct {
 
 func (i *KMSCryptoKeyIdentity) String() string {
 	return i.parent.String() + "/cryptoKeys/" + i.id
+}
+
+func (i *KMSCryptoKeyIdentity) ID() string {
+	return i.id
+}
+
+func (i *KMSCryptoKeyIdentity) Parent() *KMSKeyRingIdentity {
+	return i.parent
+}
+
+// New builds a KMSCryptoKeyIdentity from the Config Connector KMSCryptoKey object.
+func NewKMSCryptoKeyIdentity(ctx context.Context, reader client.Reader, obj *KMSCryptoKey) (*KMSCryptoKeyIdentity, error) {
+	// Get Parent
+	kmsKeyRingExternal, err := obj.Spec.KeyRingRef.NormalizedExternal(ctx, reader, obj.Namespace)
+	if err != nil {
+		return nil, err
+	}
+	kmsKeyRing, err := ParseKMSKeyRingExternal(kmsKeyRingExternal)
+	if err != nil {
+		return nil, err
+	}
+
+	// Get desired ID
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
+	// Use approved External
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		// Validate desired with actual
+		actualIdentity, err := ParseKMSCryptoKeyExternal(externalRef)
+		if err != nil {
+			return nil, err
+		}
+		if actualIdentity.Parent().String() != kmsKeyRing.String() {
+			return nil, fmt.Errorf("spec.keyRingRef changed, expect %s, got %s", actualIdentity.Parent().String(), kmsKeyRing.String())
+		}
+		if actualIdentity.ID() != resourceID {
+			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
+				resourceID, actualIdentity.ID())
+		}
+	}
+	return &KMSCryptoKeyIdentity{
+		parent: kmsKeyRing,
+		id:     resourceID,
+	}, nil
 }
 
 func ParseKMSCryptoKeyExternal(external string) (*KMSCryptoKeyIdentity, error) {
@@ -42,5 +96,4 @@ func ParseKMSCryptoKeyExternal(external string) (*KMSCryptoKeyIdentity, error) {
 		}, id: tokens[7]}, nil
 	}
 	return nil, fmt.Errorf("format of KMSCryptoKey external=%q was not known (use projects/{{projectId}}/locations/{{location}}/keyRings/{{keyRingId}}/cryptoKeys/{{keyId}})", external)
-
 }
