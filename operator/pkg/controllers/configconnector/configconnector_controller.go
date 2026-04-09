@@ -657,7 +657,7 @@ func getKindFromCRD(object *manifest.Object) (string, error) {
 	u := object.UnstructuredObject()
 	kind, ok, err := unstructured.NestedString(u.Object, "spec", "names", "kind")
 	if err != nil || !ok {
-		return "", fmt.Errorf("could not find spec.names.kind in CRD %v: %v", u.GetName(), err)
+		return "", fmt.Errorf("could not find spec.names.kind in CRD %v: %w", u.GetName(), err)
 	}
 	return kind, nil
 }
