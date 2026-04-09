@@ -5,7 +5,7 @@ metadata:
 spec:
   member: serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com
   role: roles/datastore.viewer
-  resourceReference:
+  resourceRef:
     apiVersion: firestore.cnrm.cloud.google.com/v1beta1
     kind: FirestoreDatabase
     name: firestoredatabase-${uniqueId}
