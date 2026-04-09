@@ -428,6 +428,83 @@ type AlertpolicyConditionThreshold struct {
 	Trigger *AlertpolicyTrigger `json:"trigger,omitempty"`
 }
 
+type AlertpolicyConditionSql struct {
+	/* A condition that checks for SQL queries matching given constraints. */
+	// +optional
+	BooleanTest *AlertpolicyBooleanTest `json:"booleanTest,omitempty"`
+
+	/* A condition that checks for SQL queries matching given constraints. */
+	// +optional
+	Daily *AlertpolicyDaily `json:"daily,omitempty"`
+
+	/* A condition that checks for SQL queries matching given constraints. */
+	// +optional
+	Hourly *AlertpolicyHourly `json:"hourly,omitempty"`
+
+	/* A condition that checks for SQL queries matching given constraints. */
+	// +optional
+	Minutes *AlertpolicyMinutes `json:"minutes,omitempty"`
+
+	/* The SQL query that outputs the data to be monitored. */
+	Query string `json:"query"`
+
+	/* A condition that checks for SQL queries matching given constraints. */
+	// +optional
+	RowCountTest *AlertpolicyRowCountTest `json:"rowCountTest,omitempty"`
+}
+
+type AlertpolicyBooleanTest struct {
+	/* The column in the SQL query result that contains the boolean value to be monitored. */
+	Column string `json:"column"`
+}
+
+type AlertpolicyDaily struct {
+	/* The time of day (in UTC) at which the query should be run. */
+	ExecutionTime AlertpolicyExecutionTime `json:"executionTime"`
+
+	/* The number of days between executions of the query. */
+	Periodicity int32 `json:"periodicity"`
+}
+
+type AlertpolicyExecutionTime struct {
+	/* The hour of day to run the query (0-23). */
+	// +optional
+	Hours *int32 `json:"hours,omitempty"`
+
+	/* The minute of hour to run the query (0-59). */
+	// +optional
+	Minutes *int32 `json:"minutes,omitempty"`
+
+	/* The second of minute to run the query (0-59). */
+	// +optional
+	Seconds *int32 `json:"seconds,omitempty"`
+
+	/* The nano of second to run the query (0-999,999,999). */
+	// +optional
+	Nanos *int32 `json:"nanos,omitempty"`
+}
+
+type AlertpolicyHourly struct {
+	/* The number of minutes after the hour at which the query should be run. */
+	MinuteOffset int32 `json:"minuteOffset"`
+
+	/* The number of hours between executions of the query. */
+	Periodicity int32 `json:"periodicity"`
+}
+
+type AlertpolicyMinutes struct {
+	/* The number of minutes between executions of the query. */
+	Periodicity int32 `json:"periodicity"`
+}
+
+type AlertpolicyRowCountTest struct {
+	/* The comparison to apply between the number of rows returned by the query and the threshold. */
+	Comparison string `json:"comparison"`
+
+	/* The threshold against which the number of rows returned by the query is compared. */
+	Threshold int64 `json:"threshold"`
+}
+
 type AlertpolicyConditions struct {
 	/* A condition that checks that a time series
 	continues to receive new data points. */
@@ -457,6 +534,10 @@ type AlertpolicyConditions struct {
 	threshold. */
 	// +optional
 	ConditionThreshold *AlertpolicyConditionThreshold `json:"conditionThreshold,omitempty"`
+
+	/* A condition that checks for SQL queries matching given constraints. */
+	// +optional
+	ConditionSql *AlertpolicyConditionSql `json:"conditionSql,omitempty"`
 
 	/* A short name or phrase used to identify the
 	condition in dashboards, notifications, and

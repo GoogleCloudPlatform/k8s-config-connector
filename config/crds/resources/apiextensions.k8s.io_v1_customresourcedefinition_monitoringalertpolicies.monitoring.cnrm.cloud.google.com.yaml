@@ -764,6 +764,68 @@ spec:
                       - comparison
                       - duration
                       type: object
+                    conditionSql:
+                      description: A condition that checks for SQL queries matching
+                        given constraints.
+                      properties:
+                        booleanTest:
+                          properties:
+                            column:
+                              type: string
+                          required:
+                          - column
+                          type: object
+                        daily:
+                          properties:
+                            executionTime:
+                              properties:
+                                hours:
+                                  type: integer
+                                minutes:
+                                  type: integer
+                                nanos:
+                                  type: integer
+                                seconds:
+                                  type: integer
+                              type: object
+                            periodicity:
+                              type: integer
+                          required:
+                          - executionTime
+                          - periodicity
+                          type: object
+                        hourly:
+                          properties:
+                            minuteOffset:
+                              type: integer
+                            periodicity:
+                              type: integer
+                          required:
+                          - minuteOffset
+                          - periodicity
+                          type: object
+                        minutes:
+                          properties:
+                            periodicity:
+                              type: integer
+                          required:
+                          - periodicity
+                          type: object
+                        query:
+                          type: string
+                        rowCountTest:
+                          properties:
+                            comparison:
+                              type: string
+                            threshold:
+                              type: integer
+                          required:
+                          - comparison
+                          - threshold
+                          type: object
+                      required:
+                      - query
+                      type: object
                     displayName:
                       description: |-
                         A short name or phrase used to identify the
