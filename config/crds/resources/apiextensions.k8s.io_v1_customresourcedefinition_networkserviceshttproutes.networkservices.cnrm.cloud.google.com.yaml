@@ -243,12 +243,15 @@ spec:
                                     - external
                                   required:
                                   - name
+                                  - kind
                                 - not:
                                     anyOf:
                                     - required:
                                       - name
                                     - required:
                                       - namespace
+                                    - required:
+                                      - kind
                                   required:
                                   - external
                                 properties:
@@ -256,7 +259,13 @@ spec:
                                     description: |-
                                       The URL of a BackendService to route traffic to.
 
-                                      Allowed value: The Google Cloud resource name of a `ComputeBackendService` resource (format: `projects/{{project}}/global/backendServices/{{name}}`).
+                                      Allowed values:
+                                      * The Google Cloud resource name of a `ComputeBackendService` resource (format: `projects/{{project}}/global/backendServices/{{name}}`).
+                                      * The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`).
+                                    type: string
+                                  kind:
+                                    description: 'Kind of the referent. Allowed values:
+                                      ComputeBackendService,StorageBucket'
                                     type: string
                                   name:
                                     description: 'Name of the referent. More info:
@@ -421,12 +430,15 @@ spec:
                                       - external
                                     required:
                                     - name
+                                    - kind
                                   - not:
                                       anyOf:
                                       - required:
                                         - name
                                       - required:
                                         - namespace
+                                      - required:
+                                        - kind
                                     required:
                                     - external
                                   properties:
@@ -434,7 +446,13 @@ spec:
                                       description: |-
                                         The URL of a BackendService to route traffic to.
 
-                                        Allowed value: The Google Cloud resource name of a `ComputeBackendService` resource (format: `projects/{{project}}/global/backendServices/{{name}}`).
+                                        Allowed values:
+                                        * The Google Cloud resource name of a `ComputeBackendService` resource (format: `projects/{{project}}/global/backendServices/{{name}}`).
+                                        * The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`).
+                                      type: string
+                                    kind:
+                                      description: 'Kind of the referent. Allowed
+                                        values: ComputeBackendService,StorageBucket'
                                       type: string
                                     name:
                                       description: 'Name of the referent. More info:

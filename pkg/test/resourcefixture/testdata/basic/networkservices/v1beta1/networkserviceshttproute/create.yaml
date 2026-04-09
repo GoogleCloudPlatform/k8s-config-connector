@@ -66,9 +66,11 @@ spec:
       destinations:
       - serviceRef:
           name: "computebackendservice-1-${uniqueId}"
+          kind: ComputeBackendService
         weight: 1
       - serviceRef:
           name: "computebackendservice-1-${uniqueId}"
+          kind: ComputeBackendService
         weight: 1
       urlRewrite:
         pathPrefixRewrite: "foo"
@@ -113,6 +115,7 @@ spec:
         destination:
           serviceRef:
             name: "computebackendservice-1-${uniqueId}"
+            kind: ComputeBackendService
       responseHeaderModifier:
         add:
           foo1: "bar1"

@@ -67,14 +67,17 @@ spec:
       destinations:
       - serviceRef:
           name: "computebackendservice-2-${uniqueId}"
+          kind: ComputeBackendService
         weight: 2
       - serviceRef:
           name: "computebackendservice-2-${uniqueId}"
+          kind: ComputeBackendService
         weight: 2
       requestMirrorPolicy:
         destination:
           serviceRef:
             name: "computebackendservice-2-${uniqueId}"
+            kind: ComputeBackendService
       urlRewrite:
         pathPrefixRewrite: "bar"
         hostRewrite: "bar"

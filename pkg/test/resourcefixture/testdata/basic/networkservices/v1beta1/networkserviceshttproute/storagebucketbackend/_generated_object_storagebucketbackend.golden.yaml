@@ -1,5 +1,5 @@
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
-kind: NetworkServicesMesh
+kind: NetworkServicesHTTPRoute
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
@@ -10,17 +10,27 @@ metadata:
   generation: 3
   labels:
     cnrm-test: "true"
-    foo: bar
-    foo1: bar1
-  name: networkservicesmesh-${uniqueId}
+  name: httproute-storage-${uniqueId}
   namespace: ${uniqueId}
 spec:
   description: Updated description
-  interceptionPort: 81
+  hostnames:
+  - storage.example.com
+  - www.storage.example.com
   location: global
+  meshes:
+  - name: networkservicesmesh-${uniqueId}
   projectRef:
     external: projects/${projectId}
-  resourceID: networkservicesmesh-${uniqueId}
+  resourceID: httproute-storage-${uniqueId}
+  rules:
+  - action:
+      destinations:
+      - serviceRef:
+          kind: StorageBucket
+          name: storagebucket-${uniqueId}
+    matches:
+    - prefixMatch: /
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -29,4 +39,3 @@ status:
     status: "True"
     type: Ready
   observedGeneration: 3
-  selfLink: https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}

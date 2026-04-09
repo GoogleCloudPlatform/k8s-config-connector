@@ -1,0 +1,159 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+kind: NetworkServicesHTTPRoute
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+    foo: bar
+    foo2: bar2
+  name: networkserviceshttproute-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: An updated test HttpRoute
+  gateways:
+  - name: networkservicesgateway-2-${uniqueId}
+  hostnames:
+  - test1
+  - test2
+  - newhost
+  location: global
+  meshes:
+  - name: networkservicesmesh-2-${uniqueId}
+  projectRef:
+    external: projects/${projectId}
+  resourceID: networkserviceshttproute-${uniqueId}
+  rules:
+  - action:
+      corsPolicy:
+        allowCredentials: false
+        allowHeaders:
+        - foo2
+        - bar2
+        allowMethods:
+        - PUT
+        - PATCH
+        allowOriginRegexes:
+        - .*.foo2.com
+        - .*.bar2.com
+        allowOrigins:
+        - foo2.com
+        - bar2.com
+        disabled: true
+        exposeHeaders:
+        - foo2
+        - bar2
+        maxAge: "36"
+      destinations:
+      - serviceRef:
+          kind: ComputeBackendService
+          name: ${backendServiceID}
+        weight: 2
+      - serviceRef:
+          kind: ComputeBackendService
+          name: ${backendServiceID}
+        weight: 2
+      faultInjectionPolicy:
+        abort:
+          httpStatus: 500
+          percentage: 2
+        delay:
+          fixedDelay: 11s
+          percentage: 3
+      requestHeaderModifier:
+        add:
+          baz2: qux2
+          foo2: bar2
+        remove:
+        - foo4
+        - bar4
+        set:
+          baz3: qux3
+          foo3: bar3
+      requestMirrorPolicy:
+        destination:
+          serviceRef:
+            kind: ComputeBackendService
+            name: ${backendServiceID}
+      responseHeaderModifier:
+        add:
+          baz2: qux2
+          foo2: bar2
+        remove:
+        - foo4
+        - bar4
+        set:
+          baz3: qux3
+          foo3: bar3
+      retryPolicy:
+        numRetries: 4
+        perTryTimeout: 6s
+        retryConditions:
+        - refused-stream
+      timeout: 31s
+      urlRewrite:
+        hostRewrite: bar
+        pathPrefixRewrite: bar
+    matches:
+    - fullPathMatch: /bar/foo
+      headers:
+      - header: foo-header2
+        prefixMatch: bar-value2
+    - ignoreCase: false
+      prefixMatch: /foo2/
+    - regexMatch: /foo2/.*/bar/.*
+    - headers:
+      - exactMatch: bar2
+        header: foo2
+      - header: foo2
+        regexMatch: b.*ar2
+      - header: foo2
+        prefixMatch: 2ba
+      - header: foo2
+        presentMatch: false
+      - header: foo2
+        suffixMatch: ar2
+      - header: foo2
+        invertMatch: false
+        rangeMatch:
+          end: 6
+          start: 1
+      prefixMatch: /
+    - prefixMatch: /
+      queryParameters:
+      - exactMatch: bar2
+        queryParameter: foo2
+      - queryParameter: foo2
+        regexMatch: .*bar2.*
+      - presentMatch: false
+        queryParameter: foo2
+  - action:
+      redirect:
+        hostRedirect: foo2
+        httpsRedirect: false
+        portRedirect: 24601
+        responseCode: FOUND
+        stripQuery: false
+  - action:
+      redirect:
+        hostRedirect: test
+        prefixRewrite: foo2
+        responseCode: SEE_OTHER
+  - action:
+      redirect:
+        hostRedirect: test
+        pathRedirect: /foo2
+        responseCode: SEE_OTHER
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 3
