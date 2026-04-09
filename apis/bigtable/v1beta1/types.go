@@ -30,3 +30,32 @@ type EncryptionInfo struct {
 	//  cluster that is in use for the data underlying this table.
 	KmsKeyVersion *string `json:"kmsKeyVersion,omitempty"`
 }
+
+// +kcc:proto=google.bigtable.admin.v2.GcRule
+type GcRule struct {
+	// Delete all cells in a column except the most recent N.
+	MaxNumVersions *int32 `json:"maxNumVersions,omitempty"`
+
+	// Delete cells in a column older than the given age.
+	//  Values must be at least one millisecond, and will be truncated to
+	//  microsecond granularity.
+	MaxAge *string `json:"maxAge,omitempty"`
+
+	// Delete cells that would be deleted by every nested rule.
+	Intersection *GcRule_Intersection `json:"intersection,omitempty"`
+
+	// Delete cells that would be deleted by any nested rule.
+	Union *GcRule_Union `json:"union,omitempty"`
+}
+
+// +kcc:proto=google.bigtable.admin.v2.GcRule.Intersection
+type GcRule_Intersection struct {
+	// Only delete cells which would be deleted by every element of `rules`.
+	Rules []GcRule `json:"rules,omitempty"`
+}
+
+// +kcc:proto=google.bigtable.admin.v2.GcRule.Union
+type GcRule_Union struct {
+	// Delete cells which would be deleted by any element of `rules`.
+	Rules []GcRule `json:"rules,omitempty"`
+}
