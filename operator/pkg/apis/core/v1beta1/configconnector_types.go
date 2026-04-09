@@ -69,6 +69,22 @@ type ConfigConnectorSpec struct {
 
 	// ConfigConnector specific experiments
 	Experiments *CCExperiments `json:"experiments,omitempty"`
+
+	// ResourceKinds allows specifying which resource kinds to enable or disable.
+	// +optional
+	ResourceKinds *ResourceKinds `json:"resourceKinds,omitempty"`
+}
+
+type ResourceKinds struct {
+	// Allowlist is the list of resource kinds to allow.
+	// If Allowlist is non-empty, only the resource kinds in the list will be allowed.
+	// +optional
+	Allowlist []string `json:"allowlist,omitempty"`
+
+	// Denylist is the list of resource kinds to deny.
+	// If a resource kind is in Denylist, it will be denied even if it is in Allowlist.
+	// +optional
+	Denylist []string `json:"denylist,omitempty"`
 }
 
 type CCExperiments struct {

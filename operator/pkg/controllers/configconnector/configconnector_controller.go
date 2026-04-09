@@ -136,6 +136,7 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 		declarative.WithObjectTransform(r.transformForClusterMode()),
 		declarative.WithObjectTransform(r.handleConfigConnectorLifecycle()),
 		declarative.WithObjectTransform(r.installV1Beta1CRDsOnly()),
+		declarative.WithObjectTransform(r.applyResourceKindsFilter()),
 		declarative.WithObjectTransform(r.applyCustomizations()),
 		declarative.WithObjectTransform(r.transformForExperiments()),
 		declarative.WithStatus(&declarative.StatusBuilder{
@@ -608,6 +609,57 @@ func (r *Reconciler) selectCRDsByVersion(m *manifest.Objects, version string) er
 	}
 	m.Items = transformed
 	return nil
+}
+
+func (r *Reconciler) applyResourceKindsFilter() declarative.ObjectTransform {
+	return func(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
+		cc := o.(*corev1beta1.ConfigConnector)
+		if cc.Spec.ResourceKinds == nil {
+			return nil
+		}
+
+		rk := cc.Spec.ResourceKinds
+		allowlist := make(map[string]bool)
+		for _, k := range rk.Allowlist {
+			allowlist[k] = true
+		}
+		denylist := make(map[string]bool)
+		for _, k := range rk.Denylist {
+			denylist[k] = true
+		}
+
+		transformed := make([]*manifest.Object, 0, len(m.Items))
+		for _, obj := range m.Items {
+			if obj.Kind == "CustomResourceDefinition" {
+				kind, err := getKindFromCRD(obj)
+				if err != nil {
+					return err
+				}
+
+				if len(denylist) > 0 && denylist[kind] {
+					r.log.Info("excluding CRD due to denylist", "kind", kind)
+					continue
+				}
+
+				if len(allowlist) > 0 && !allowlist[kind] {
+					r.log.Info("excluding CRD due to allowlist", "kind", kind)
+					continue
+				}
+			}
+			transformed = append(transformed, obj)
+		}
+		m.Items = transformed
+		return nil
+	}
+}
+
+func getKindFromCRD(object *manifest.Object) (string, error) {
+	u := object.UnstructuredObject()
+	kind, ok, err := unstructured.NestedString(u.Object, "spec", "names", "kind")
+	if err != nil || !ok {
+		return "", fmt.Errorf("could not find spec.names.kind in CRD %v: %v", u.GetName(), err)
+	}
+	return kind, nil
 }
 
 // applyCustomizations fetches and applies all cluster-scoped customization CRDs.
