@@ -36,11 +36,6 @@ func (in *BinaryAuthorization) DeepCopyInto(out *BinaryAuthorization) {
 		*out = new(bool)
 		**out = **in
 	}
-	if in.Policy != nil {
-		in, out := &in.Policy, &out.Policy
-		*out = new(string)
-		**out = **in
-	}
 	if in.BreakglassJustification != nil {
 		in, out := &in.BreakglassJustification, &out.BreakglassJustification
 		*out = new(string)

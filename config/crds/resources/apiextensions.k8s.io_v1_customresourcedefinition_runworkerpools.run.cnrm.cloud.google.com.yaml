@@ -76,10 +76,6 @@ spec:
                       using this justification. If use_default is False, then it must
                       be empty. For more information on breakglass, see https://cloud.google.com/binary-authorization/docs/using-breakglass
                     type: string
-                  policy:
-                    description: 'Optional. The path to a binary authorization policy.
-                      Format: `projects/{project}/platforms/cloudRun/{policy-name}`'
-                    type: string
                   useDefault:
                     description: Optional. If True, indicates to use the default project's
                       binary authorization policy. If False, binary authorization

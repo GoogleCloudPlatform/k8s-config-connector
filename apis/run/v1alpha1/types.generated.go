@@ -21,26 +21,6 @@
 
 package v1alpha1
 
-// +kcc:proto=google.cloud.run.v2.BinaryAuthorization
-type BinaryAuthorization struct {
-	// Optional. If True, indicates to use the default project's binary
-	//  authorization policy. If False, binary authorization will be disabled.
-	// +kcc:proto:field=google.cloud.run.v2.BinaryAuthorization.use_default
-	UseDefault *bool `json:"useDefault,omitempty"`
-
-	// Optional. The path to a binary authorization policy.
-	//  Format: `projects/{project}/platforms/cloudRun/{policy-name}`
-	// +kcc:proto:field=google.cloud.run.v2.BinaryAuthorization.policy
-	Policy *string `json:"policy,omitempty"`
-
-	// Optional. If present, indicates to use Breakglass using this justification.
-	//  If use_default is False, then it must be empty.
-	//  For more information on breakglass, see
-	//  https://cloud.google.com/binary-authorization/docs/using-breakglass
-	// +kcc:proto:field=google.cloud.run.v2.BinaryAuthorization.breakglass_justification
-	BreakglassJustification *string `json:"breakglassJustification,omitempty"`
-}
-
 // +kcc:proto=google.cloud.run.v2.Condition
 type Condition struct {
 	// type is used to communicate the status of the reconciliation process.

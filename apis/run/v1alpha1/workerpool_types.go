@@ -410,3 +410,22 @@ type BuildInfoObservedState struct {
 	// Output only. Source code location of the image.
 	SourceLocation *string `json:"sourceLocation,omitempty"`
 }
+
+// +kcc:proto=google.cloud.run.v2.BinaryAuthorization
+type BinaryAuthorization struct {
+	// Optional. If True, indicates to use the default project's binary
+	//  authorization policy. If False, binary authorization will be disabled.
+	UseDefault *bool `json:"useDefault,omitempty"`
+
+	// Optional. The path to a binary authorization policy.
+	//  Format: `projects/{project}/platforms/cloudRun/{policy-name}`
+	//  Commented out because this field refers to Binary Authorization Platform Policies,
+	//  which are not yet supported as a KRM resource in KCC.
+	// Policy *string `json:"policy,omitempty"`
+
+	// Optional. If present, indicates to use Breakglass using this justification.
+	//  If use_default is False, then it must be empty.
+	//  For more information on breakglass, see
+	//  https://cloud.google.com/binary-authorization/docs/using-breakglass
+	BreakglassJustification *string `json:"breakglassJustification,omitempty"`
+}

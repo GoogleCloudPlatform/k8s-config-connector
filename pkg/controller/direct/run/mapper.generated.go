@@ -42,7 +42,7 @@ func BinaryAuthorization_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Bi
 	}
 	out := &krmrunv1alpha1.BinaryAuthorization{}
 	out.UseDefault = direct.LazyPtr(in.GetUseDefault())
-	out.Policy = direct.LazyPtr(in.GetPolicy())
+	// MISSING: Policy
 	out.BreakglassJustification = direct.LazyPtr(in.GetBreakglassJustification())
 	return out
 }
@@ -54,17 +54,9 @@ func BinaryAuthorization_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv
 	if oneof := BinaryAuthorization_UseDefault_ToProto(mapCtx, in.UseDefault); oneof != nil {
 		out.BinauthzMethod = oneof
 	}
-	if oneof := BinaryAuthorization_Policy_ToProto(mapCtx, in.Policy); oneof != nil {
-		out.BinauthzMethod = oneof
-	}
+	// MISSING: Policy
 	out.BreakglassJustification = direct.ValueOf(in.BreakglassJustification)
 	return out
-}
-func BinaryAuthorization_Policy_ToProto(mapCtx *direct.MapContext, in *string) *pb.BinaryAuthorization_Policy {
-	if in == nil {
-		return nil
-	}
-	return &pb.BinaryAuthorization_Policy{Policy: *in}
 }
 func BinaryAuthorization_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BinaryAuthorization) *krm.BinaryAuthorization {
 	if in == nil {
@@ -1146,25 +1138,6 @@ func RunWorkerPoolSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Work
 	out.Template = WorkerPoolRevisionTemplate_v1alpha1_FromProto(mapCtx, in.GetTemplate())
 	out.InstanceSplits = direct.Slice_FromProto(mapCtx, in.InstanceSplits, InstanceSplit_v1alpha1_FromProto)
 	out.Scaling = WorkerPoolScaling_v1alpha1_FromProto(mapCtx, in.GetScaling())
-	out.CustomAudiences = in.CustomAudiences
-	return out
-}
-func RunWorkerPoolSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.RunWorkerPoolSpec) *pb.WorkerPool {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WorkerPool{}
-	// MISSING: Name
-	out.Description = direct.ValueOf(in.Description)
-	// MISSING: Labels
-	out.Annotations = in.Annotations
-	out.Client = direct.ValueOf(in.Client)
-	out.ClientVersion = direct.ValueOf(in.ClientVersion)
-	out.LaunchStage = direct.Enum_ToProto[apipb.LaunchStage](mapCtx, in.LaunchStage)
-	out.BinaryAuthorization = BinaryAuthorization_v1alpha1_ToProto(mapCtx, in.BinaryAuthorization)
-	out.Template = WorkerPoolRevisionTemplate_v1alpha1_ToProto(mapCtx, in.Template)
-	out.InstanceSplits = direct.Slice_ToProto(mapCtx, in.InstanceSplits, InstanceSplit_v1alpha1_ToProto)
-	out.Scaling = WorkerPoolScaling_v1alpha1_ToProto(mapCtx, in.Scaling)
 	out.CustomAudiences = in.CustomAudiences
 	return out
 }

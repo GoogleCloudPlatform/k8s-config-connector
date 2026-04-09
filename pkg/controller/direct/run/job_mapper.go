@@ -57,17 +57,3 @@ func Volume_ToProto(mapCtx *direct.MapContext, in *krm.Volume) *pb.Volume {
 	}
 	return out
 }
-
-func BinaryAuthorization_UseDefault_ToProto(mapCtx *direct.MapContext, in *bool) *pb.BinaryAuthorization_UseDefault {
-	if in == nil {
-		return nil
-	}
-	return &pb.BinaryAuthorization_UseDefault{UseDefault: *in}
-}
-
-func EnvVar_Value_ToProto(mapCtx *direct.MapContext, in *string) *pb.EnvVar_Value {
-	if in == nil {
-		return nil
-	}
-	return &pb.EnvVar_Value{Value: *in}
-}
