@@ -79,7 +79,7 @@
 | bigtable.cnrm.cloud.google.com                | BigtableAuthorizedView                          | True         | False       | False  | Direct     | True        |
 | bigtable.cnrm.cloud.google.com                | BigtableBackup                                  | True         | False       | False  | Direct     | True        |
 | bigtable.cnrm.cloud.google.com                | BigtableCluster                                 | True         | False       | False  | Direct     | True        |
-| bigtable.cnrm.cloud.google.com                | BigtableGCPolicy                                | False        | True        | False  | Terraform  | False       |
+| bigtable.cnrm.cloud.google.com                | BigtableGCPolicy                                | False        | True        | False  | Terraform  | True        |
 | bigtable.cnrm.cloud.google.com                | BigtableInstance                                | False        | True        | False  | Terraform  | True        |
 | bigtable.cnrm.cloud.google.com                | BigtableLogicalView                             | True         | False       | False  | Direct     | True        |
 | bigtable.cnrm.cloud.google.com                | BigtableMaterializedView                        | True         | False       | False  | Direct     | True        |
