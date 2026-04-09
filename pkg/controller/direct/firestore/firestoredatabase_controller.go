@@ -113,8 +113,7 @@ func (m *firestoreDatabaseModel) AdapterForURL(ctx context.Context, url string) 
 		firestoreAdminClient: firestoreAdminClient,
 		iamClient:            iamClient,
 	}, nil
-	}
-
+}
 
 type Adapter struct {
 	id                   *krm.FirestoreDatabaseIdentity
