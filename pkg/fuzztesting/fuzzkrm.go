@@ -48,6 +48,10 @@ func RegisterFuzzer(fuzzer FuzzFn) {
 	fuzzers = append(fuzzers, fuzzer)
 }
 
+func GetFuzzerCount() int {
+	return len(fuzzers)
+}
+
 func ChooseFuzzer(n int64) FuzzFn {
 	return fuzzers[n%int64(len(fuzzers))]
 }
@@ -270,6 +274,7 @@ func (f *FuzzTest[ProtoT, KRMType]) Fuzz(t *testing.T, seed int64) {
 		t.Logf("p1 = %v", prototext.Format(p1))
 		t.Logf("p2 = %v", prototext.Format(p2))
 		t.Errorf("roundtrip failed for KRM %T; seed=%d; diff:\n%s", krm, seed, diff)
+		t.Errorf("To reproduce this failure, you can set the master seed (if logged) or use the iteration seed by adding a temporary test case calling this fuzzer with seed %d", seed)
 		diffPaths := diffFieldPaths(p1, p2)
 		for _, diffPath := range diffPaths {
 			hint := fmt.Sprintf("Add `f.Unimplemented_NotYetTriaged(%q)` to the fuzzer for the proto type %v to mark this field as not yet triaged.", diffPath, f.ProtoType.ProtoReflect().Descriptor().FullName())
