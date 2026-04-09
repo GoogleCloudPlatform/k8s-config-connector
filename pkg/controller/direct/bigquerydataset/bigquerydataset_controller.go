@@ -29,6 +29,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	bigquery "cloud.google.com/go/bigquery"
+	"cloud.google.com/go/iam/apiv1/iampb"
+	raw "google.golang.org/api/bigquery/v2"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -70,6 +72,19 @@ func (m *model) service(ctx context.Context, projectID string) (*bigquery.Client
 	return gcpService, err
 }
 
+func (m *model) rawService(ctx context.Context) (*raw.Service, error) {
+	var opts []option.ClientOption
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	gcpService, err := raw.NewService(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building raw BigQuery client: %w", err)
+	}
+	return gcpService, err
+}
+
 func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
 	reader := op.Reader
@@ -94,9 +109,14 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	if err != nil {
 		return nil, err
 	}
+	rawService, err := m.rawService(ctx)
+	if err != nil {
+		return nil, err
+	}
 	return &Adapter{
 		id:         id,
 		gcpService: gcpService,
+		rawService: rawService,
 		desired:    obj,
 		reader:     reader,
 	}, nil
@@ -110,6 +130,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 type Adapter struct {
 	id         *krm.DatasetIdentity
 	gcpService *bigquery.Client
+	rawService *raw.Service
 	desired    *krm.BigQueryDataset
 	actual     *bigquery.DatasetMetadata
 	reader     client.Reader
@@ -349,4 +370,38 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log.V(2).Info("successfully deleted Dataset", "name", a.id.Dataset)
 
 	return true, nil
+}
+
+func (a *Adapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	policy, err := a.rawService.Tables.GetIamPolicy(a.id.String(), &raw.GetIamPolicyRequest{}).Context(ctx).Do()
+	if err != nil {
+		return nil, fmt.Errorf("getting IAM policy for %q: %w", a.id.String(), err)
+	}
+
+	protoPolicy := &iampb.Policy{}
+	if err := convertAPIToProto(policy, &protoPolicy); err != nil {
+		return nil, err
+	}
+	return protoPolicy, nil
+}
+
+func (a *Adapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	rawPolicy := &raw.Policy{}
+	if err := convertProtoToAPI(policy, rawPolicy); err != nil {
+		return nil, err
+	}
+
+	req := &raw.SetIamPolicyRequest{
+		Policy: rawPolicy,
+	}
+	newPolicy, err := a.rawService.Tables.SetIamPolicy(a.id.String(), req).Context(ctx).Do()
+	if err != nil {
+		return nil, fmt.Errorf("setting IAM policy for %q: %w", a.id.String(), err)
+	}
+
+	protoPolicy := &iampb.Policy{}
+	if err := convertAPIToProto(newPolicy, &protoPolicy); err != nil {
+		return nil, err
+	}
+	return protoPolicy, nil
 }
