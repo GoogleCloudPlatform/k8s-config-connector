@@ -15,6 +15,7 @@
 syntax = "proto2";
 package google.cloud.dns.v1;
 import "google/api/annotations.proto";
+import "google/protobuf/any.proto";
 import "google/protobuf/empty.proto";
 option go_package = "cloud.google.com/go/dns/apiv1/dnspb;dnspb";
 
@@ -479,6 +480,20 @@ message GoogleIamV1TestIamPermissionsRequest {
 message GoogleIamV1TestIamPermissionsResponse {
   // A subset of `TestPermissionsRequest.permissions` that the caller is allowed.
   repeated string permissions = 1 [json_name="permissions"];
+}
+
+// This resource represents a long-running operation that is the result of a network API call.
+message GoogleLongrunningOperation {
+  // If the value is `false`, it means the operation is still in progress. If `true`, the operation is completed, and either `error` or `response` is available.
+  optional bool done = 1 [json_name="done"];
+  // The error result of the operation in case of failure or cancellation.
+  optional Status error = 2 [json_name="error"];
+  // Service-specific metadata associated with the operation. It typically contains progress information and common metadata such as create time. Some services might not provide such metadata. Any method that returns a long-running operation should document the metadata type, if any.
+  map<string, .google.protobuf.Any> metadata = 3 [json_name="metadata"];
+  // The server-assigned name, which is only unique within the same service that originally returns it. If you use the default HTTP mapping, the `name` should be a resource name ending with `operations/{unique_id}`.
+  optional string name = 4 [json_name="name"];
+  // The normal, successful response of the operation. If the original method returns no data on success, such as `Delete`, the response is `google.protobuf.Empty`. If the original method is standard `Get`/`Create`/`Update`, the response should be the resource. For other methods, the response should have the type `XxxResponse`, where `Xxx` is the original method name. For example, if the original method name is `TakeSnapshot()`, the inferred response type is `TakeSnapshotResponse`.
+  map<string, .google.protobuf.Any> response = 5 [json_name="response"];
 }
 
 // A zone is a subtree of the DNS namespace under one administrative responsibility. A ManagedZone is a resource that represents a DNS zone hosted by the Cloud DNS service.
@@ -985,6 +1000,16 @@ message ResponsePolicyRulesPatchResponse {
 
 message ResponsePolicyRulesUpdateResponse {
   optional ResponsePolicyRule response_policy_rule = 1 [json_name="responsePolicyRule"];
+}
+
+// The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).
+message Status {
+  // The status code, which should be an enum value of google.rpc.Code.
+  optional int32 code = 1 [json_name="code"];
+  // A list of messages that carry the error details. There is a common set of message types for APIs to use.
+  repeated .google.protobuf.Any details = 2 [json_name="details"];
+  // A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client.
+  optional string message = 3 [json_name="message"];
 }
 
 message CreateChangeRequest {
