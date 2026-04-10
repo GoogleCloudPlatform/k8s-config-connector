@@ -45,6 +45,114 @@ func AcceleratorConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Accele
 	out.AcceleratorType = in.AcceleratorType
 	return out
 }
+func ComputeHTTPHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HealthCheck) *krm.ComputeHTTPHealthCheckSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeHTTPHealthCheckSpec{}
+	out.CheckIntervalSec = in.CheckIntervalSec
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: GrpcHealthCheck
+	out.HealthyThreshold = in.HealthyThreshold
+	// MISSING: Http2HealthCheck
+	// MISSING: HTTPHealthCheck
+	// MISSING: HTTPSHealthCheck
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LogConfig
+	// MISSING: Name
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: SourceRegions
+	// MISSING: SSLHealthCheck
+	// MISSING: TCPHealthCheck
+	out.TimeoutSec = in.TimeoutSec
+	// MISSING: Type
+	out.UnhealthyThreshold = in.UnhealthyThreshold
+	return out
+}
+func ComputeHTTPHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeHTTPHealthCheckSpec) *pb.HealthCheck {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HealthCheck{}
+	out.CheckIntervalSec = in.CheckIntervalSec
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: GrpcHealthCheck
+	out.HealthyThreshold = in.HealthyThreshold
+	// MISSING: Http2HealthCheck
+	// MISSING: HTTPHealthCheck
+	// MISSING: HTTPSHealthCheck
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LogConfig
+	// MISSING: Name
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: SourceRegions
+	// MISSING: SSLHealthCheck
+	// MISSING: TCPHealthCheck
+	out.TimeoutSec = in.TimeoutSec
+	// MISSING: Type
+	out.UnhealthyThreshold = in.UnhealthyThreshold
+	return out
+}
+func ComputeHTTPHealthCheckStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HealthCheck) *krm.ComputeHTTPHealthCheckStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeHTTPHealthCheckStatus{}
+	// MISSING: CheckIntervalSec
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: GrpcHealthCheck
+	// MISSING: HealthyThreshold
+	// MISSING: Http2HealthCheck
+	// MISSING: HTTPHealthCheck
+	// MISSING: HTTPSHealthCheck
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LogConfig
+	// MISSING: Name
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: SourceRegions
+	// MISSING: SSLHealthCheck
+	// MISSING: TCPHealthCheck
+	// MISSING: TimeoutSec
+	// MISSING: Type
+	// MISSING: UnhealthyThreshold
+	return out
+}
+func ComputeHTTPHealthCheckStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeHTTPHealthCheckStatus) *pb.HealthCheck {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HealthCheck{}
+	// MISSING: CheckIntervalSec
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: GrpcHealthCheck
+	// MISSING: HealthyThreshold
+	// MISSING: Http2HealthCheck
+	// MISSING: HTTPHealthCheck
+	// MISSING: HTTPSHealthCheck
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LogConfig
+	// MISSING: Name
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: SourceRegions
+	// MISSING: SSLHealthCheck
+	// MISSING: TCPHealthCheck
+	// MISSING: TimeoutSec
+	// MISSING: Type
+	// MISSING: UnhealthyThreshold
+	return out
+}
 func ComputeNodeTemplateSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeTemplate) *krm.ComputeNodeTemplateSpec {
 	if in == nil {
 		return nil
@@ -475,6 +583,34 @@ func ForwardingruleServiceDirectoryRegistrations_v1beta1_ToProto(mapCtx *direct.
 	out.Namespace = in.Namespace
 	out.Service = in.Service
 	// MISSING: ServiceDirectoryRegion
+	return out
+}
+func HTTPHealthCheck_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HTTPHealthCheck) *krm.HTTPHealthCheck {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HTTPHealthCheck{}
+	out.Host = in.Host
+	out.Port = in.Port
+	out.PortName = in.PortName
+	out.PortSpecification = in.PortSpecification
+	out.ProxyHeader = in.ProxyHeader
+	out.RequestPath = in.RequestPath
+	out.Response = in.Response
+	return out
+}
+func HTTPHealthCheck_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HTTPHealthCheck) *pb.HTTPHealthCheck {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HTTPHealthCheck{}
+	out.Host = in.Host
+	out.Port = in.Port
+	out.PortName = in.PortName
+	out.PortSpecification = in.PortSpecification
+	out.ProxyHeader = in.ProxyHeader
+	out.RequestPath = in.RequestPath
+	out.Response = in.Response
 	return out
 }
 func InterconnectCircuitInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectCircuitInfo) *krmcomputev1alpha1.InterconnectCircuitInfo {
