@@ -193,9 +193,20 @@ func ComputeFutureReservationObservedState_FromProto(mapCtx *direct.MapContext, 
 	out.Kind = in.Kind
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithID = in.SelfLinkWithId
-	out.SpecificSkuProperties = FutureReservationStatusSpecificSkuProperties_FromProto(mapCtx, in.GetStatus().GetSpecificSkuProperties())
-	// MISSING: Status
 	out.Zone = in.Zone
+
+	status := in.GetStatus()
+	if status != nil {
+		out.AmendmentStatus = status.AmendmentStatus
+		out.AutoCreatedReservations = status.AutoCreatedReservations
+		out.ExistingMatchingUsageInfo = FutureReservationStatusExistingMatchingUsageInfo_FromProto(mapCtx, status.GetExistingMatchingUsageInfo())
+		out.FulfilledCount = status.FulfilledCount
+		out.LastKnownGoodState = FutureReservationStatusLastKnownGoodState_FromProto(mapCtx, status.GetLastKnownGoodState())
+		out.LockTime = status.LockTime
+		out.ProcurementStatus = status.ProcurementStatus
+		out.SpecificSkuProperties = FutureReservationStatusSpecificSkuProperties_FromProto(mapCtx, status.GetSpecificSkuProperties())
+	}
+
 	return out
 }
 func ComputeFutureReservationObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.ComputeFutureReservationObservedState) *pb.FutureReservation {
@@ -208,11 +219,18 @@ func ComputeFutureReservationObservedState_ToProto(mapCtx *direct.MapContext, in
 	out.Kind = in.Kind
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithId = in.SelfLinkWithID
-	if oneof := FutureReservationStatusSpecificSkuProperties_ToProto(mapCtx, in.SpecificSkuProperties); oneof != nil {
-		out.SpecificSkuProperties = &pb.FutureReservationSpecificSKUProperties{SourceInstanceTemplate: oneof.SourceInstanceTemplateId}
-	}
-	// MISSING: Status
 	out.Zone = in.Zone
+
+	out.Status = &pb.FutureReservationStatus{}
+	out.Status.AmendmentStatus = in.AmendmentStatus
+	out.Status.AutoCreatedReservations = in.AutoCreatedReservations
+	out.Status.ExistingMatchingUsageInfo = FutureReservationStatusExistingMatchingUsageInfo_ToProto(mapCtx, in.ExistingMatchingUsageInfo)
+	out.Status.FulfilledCount = in.FulfilledCount
+	out.Status.LastKnownGoodState = FutureReservationStatusLastKnownGoodState_ToProto(mapCtx, in.LastKnownGoodState)
+	out.Status.LockTime = in.LockTime
+	out.Status.ProcurementStatus = in.ProcurementStatus
+	out.Status.SpecificSkuProperties = FutureReservationStatusSpecificSkuProperties_ToProto(mapCtx, in.SpecificSkuProperties)
+
 	return out
 }
 func ComputeFutureReservationSpec_FromProto(mapCtx *direct.MapContext, in *pb.FutureReservation) *krmv1beta1.ComputeFutureReservationSpec {
@@ -472,7 +490,14 @@ func ShareSettings_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettings) *k
 		return nil
 	}
 	out := &krmv1beta1.ShareSettings{}
-	// MISSING: ProjectMap
+	if in.ProjectMap != nil {
+		out.ProjectMap = make(map[string]krmv1beta1.ShareSettingsProjectConfig)
+		for k, v := range in.ProjectMap {
+			if v != nil {
+				out.ProjectMap[k] = *ShareSettingsProjectConfig_FromProto(mapCtx, v)
+			}
+		}
+	}
 	out.Projects = in.Projects
 	out.ShareType = in.ShareType
 	return out
@@ -482,7 +507,12 @@ func ShareSettings_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.ShareSettin
 		return nil
 	}
 	out := &pb.ShareSettings{}
-	// MISSING: ProjectMap
+	if in.ProjectMap != nil {
+		out.ProjectMap = make(map[string]*pb.ShareSettingsProjectConfig)
+		for k, v := range in.ProjectMap {
+			out.ProjectMap[k] = ShareSettingsProjectConfig_ToProto(mapCtx, &v)
+		}
+	}
 	out.Projects = in.Projects
 	out.ShareType = in.ShareType
 	return out
