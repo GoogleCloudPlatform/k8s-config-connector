@@ -15,8 +15,8 @@
 package mockresourcemanager
 
 import (
-	"io"
 	"context"
+	"io"
 	"net/http"
 	"strings"
 
