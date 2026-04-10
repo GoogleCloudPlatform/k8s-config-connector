@@ -25,11 +25,15 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.iam.admin.v1 \
     --api-version iam.cnrm.cloud.google.com/v1beta1 \
-    --resource IAMServiceAccountKey:ServiceAccountKey
+    --resource IAMServiceAccountKey:ServiceAccountKey \
+    --resource IAMServiceAccount:ServiceAccount \
+    --skip-scaffold-files \
+    --include-skipped-output
 
 go run . generate-mapper \
     --service google.iam.admin.v1 \
-    --api-version iam.cnrm.cloud.google.com/v1beta1
+    --api-version iam.cnrm.cloud.google.com/v1beta1 \
+    --include-skipped-output
 
 
 cd ${REPO_ROOT}
