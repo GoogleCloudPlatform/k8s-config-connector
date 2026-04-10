@@ -609,9 +609,17 @@ spec:
                               items:
                                 type: string
                               type: array
+                            pscAutoDnsEnabled:
+                              description: Whether PSC auto DNS is enabled for this
+                                instance.
+                              type: boolean
                             pscEnabled:
                               description: Whether PSC connectivity is enabled for
                                 this instance.
+                              type: boolean
+                            pscWriteEndpointDnsEnabled:
+                              description: Whether PSC write endpoint DNS is enabled
+                                for this instance.
                               type: boolean
                           type: object
                         type: array

@@ -30,7 +30,6 @@ func DataformRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.Reposito
 	out.GitRemoteSettings = RepositoryGitRemoteSettings_FromProto(mapCtx, in.GetGitRemoteSettings())
 	out.WorkspaceCompilationOverrides = RepositoryWorkspaceCompilationOverrides_FromProto(mapCtx, in.GetWorkspaceCompilationOverrides())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.GitRemoteSettings = RepositoryGitRemoteSettings_FromProto(mapCtx, in.GetGitRemoteSettings())
 
 	if in.GetNpmrcEnvironmentVariablesSecretVersion() != "" {
 		out.NpmrcEnvironmentVariablesSecretVersionRef = &refs.SecretManagerSecretVersionRef{
@@ -38,9 +37,9 @@ func DataformRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.Reposito
 		}
 	}
 
-	out.WorkspaceCompilationOverrides = RepositoryWorkspaceCompilationOverrides_FromProto(mapCtx, in.GetWorkspaceCompilationOverrides())
-	out.WorkspaceCompilationOverrides = RepositoryWorkspaceCompilationOverrides_FromProto(mapCtx, in.GetWorkspaceCompilationOverrides())
 	out.SetAuthenticatedUserAdmin = in.GetSetAuthenticatedUserAdmin()
+	out.ContainingFolder = direct.LazyPtr(in.GetContainingFolder())
+	out.TeamFolderName = direct.LazyPtr(in.GetTeamFolderName())
 
 	if in.GetServiceAccount() != "" {
 		out.ServiceAccountRef = &refs.IAMServiceAccountRef{
@@ -68,6 +67,8 @@ func DataformRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataformR
 		out.ServiceAccount = in.ServiceAccountRef.External
 	}
 	out.SetAuthenticatedUserAdmin = in.SetAuthenticatedUserAdmin
+	out.ContainingFolder = in.ContainingFolder
+	out.TeamFolderName = in.TeamFolderName
 
 	return out
 }

@@ -469,12 +469,20 @@ func InstancePscConfigKRMToGCP(in []krm.InstancePscConfig) *api.PscConfig {
 	inFixed := in[0]
 
 	out := &api.PscConfig{
-		AllowedConsumerProjects: inFixed.AllowedConsumerProjects,
-		PscEnabled:              direct.ValueOf(inFixed.PscEnabled),
+		AllowedConsumerProjects:    inFixed.AllowedConsumerProjects,
+		PscEnabled:                 direct.ValueOf(inFixed.PscEnabled),
+		PscAutoDnsEnabled:          direct.ValueOf(inFixed.PscAutoDnsEnabled),
+		PscWriteEndpointDnsEnabled: direct.ValueOf(inFixed.PscWriteEndpointDnsEnabled),
 	}
 
 	if inFixed.PscEnabled != nil {
 		out.ForceSendFields = append(out.ForceSendFields, "PscEnabled")
+	}
+	if inFixed.PscAutoDnsEnabled != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "PscAutoDnsEnabled")
+	}
+	if inFixed.PscWriteEndpointDnsEnabled != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "PscWriteEndpointDnsEnabled")
 	}
 
 	return out
@@ -997,8 +1005,10 @@ func InstancePscConfigGCPToKRM(in *api.PscConfig) []krm.InstancePscConfig {
 
 	out := []krm.InstancePscConfig{
 		{
-			AllowedConsumerProjects: in.AllowedConsumerProjects,
-			PscEnabled:              direct.PtrTo(in.PscEnabled),
+			AllowedConsumerProjects:    in.AllowedConsumerProjects,
+			PscEnabled:                 direct.PtrTo(in.PscEnabled),
+			PscAutoDnsEnabled:          direct.PtrTo(in.PscAutoDnsEnabled),
+			PscWriteEndpointDnsEnabled: direct.PtrTo(in.PscWriteEndpointDnsEnabled),
 		},
 	}
 

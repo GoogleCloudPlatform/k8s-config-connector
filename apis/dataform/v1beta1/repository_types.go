@@ -103,6 +103,14 @@ type DataformRepositorySpec struct {
 	// +optional
 	SetAuthenticatedUserAdmin bool `json:"setAuthenticatedUserAdmin,omitempty"`
 
+	// Optional. The name of the folder where this repository is located.
+	// +optional
+	ContainingFolder *string `json:"containingFolder,omitempty"`
+
+	// Optional. The name of the team folder where this repository is located.
+	// +optional
+	TeamFolderName *string `json:"teamFolderName,omitempty"`
+
 	/* Optional. If set, fields of workspaceCompilationOverrides override the default compilation settings that are specified in dataform.json when creating workspace-scoped compilation results. */
 	// +optional
 	WorkspaceCompilationOverrides *RepositoryWorkspaceCompilationOverrides `json:"workspaceCompilationOverrides,omitempty"`

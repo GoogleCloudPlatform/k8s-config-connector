@@ -37,8 +37,6 @@ func repositoryFuzzer() fuzztesting.KRMFuzzer {
 	fuzzer.UnimplementedFields.Insert(".data_encryption_state")
 	fuzzer.UnimplementedFields.Insert(".kms_key_name")
 	fuzzer.UnimplementedFields.Insert(".internal_metadata")
-	fuzzer.UnimplementedFields.Insert(".containing_folder")
-	fuzzer.UnimplementedFields.Insert(".team_folder_name")
 
 	return fuzzer
 }

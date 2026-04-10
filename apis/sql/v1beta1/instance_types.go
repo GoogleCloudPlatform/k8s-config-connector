@@ -234,6 +234,14 @@ type InstancePscConfig struct {
 	/* Whether PSC connectivity is enabled for this instance. */
 	// +optional
 	PscEnabled *bool `json:"pscEnabled,omitempty"`
+
+	/* Whether PSC auto DNS is enabled for this instance. */
+	// +optional
+	PscAutoDnsEnabled *bool `json:"pscAutoDnsEnabled,omitempty"`
+
+	/* Whether PSC write endpoint DNS is enabled for this instance. */
+	// +optional
+	PscWriteEndpointDnsEnabled *bool `json:"pscWriteEndpointDnsEnabled,omitempty"`
 }
 
 type InstanceReplicaConfiguration struct {

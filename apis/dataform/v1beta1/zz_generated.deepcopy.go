@@ -126,6 +126,16 @@ func (in *DataformRepositorySpec) DeepCopyInto(out *DataformRepositorySpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ContainingFolder != nil {
+		in, out := &in.ContainingFolder, &out.ContainingFolder
+		*out = new(string)
+		**out = **in
+	}
+	if in.TeamFolderName != nil {
+		in, out := &in.TeamFolderName, &out.TeamFolderName
+		*out = new(string)
+		**out = **in
+	}
 	if in.WorkspaceCompilationOverrides != nil {
 		in, out := &in.WorkspaceCompilationOverrides, &out.WorkspaceCompilationOverrides
 		*out = new(RepositoryWorkspaceCompilationOverrides)
