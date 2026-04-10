@@ -20,6 +20,7 @@ import (
 	"time"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
+	pbv1beta "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1beta"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"k8s.io/apimachinery/pkg/util/uuid"
@@ -50,10 +51,12 @@ func (s *computeOperations) regionalOperationFQN(projectID string, region string
 	return "projects/" + projectID + "/regions/" + region + "/operations/" + name
 }
 
+func (s *computeOperations) zonalOperationFQN(projectID string, zone string, name string) string {
+	return "projects/" + projectID + "/zones/" + zone + "/operations/" + name
+}
+
 // Deprecated: use startGlobalLRO
 func (s *computeOperations) newLRO(ctx context.Context, projectID string) (*pb.Operation, error) {
-	log := klog.FromContext(ctx)
-
 	now := time.Now()
 	millis := now.UnixMilli()
 	id := string(uuid.NewUUID())
@@ -76,7 +79,6 @@ func (s *computeOperations) newLRO(ctx context.Context, projectID string) (*pb.O
 
 	op.Status = PtrTo(pb.Operation_DONE)
 
-	log.Info("storing operation", "fqn", fqn)
 	if err := s.storage.Create(ctx, fqn, op); err != nil {
 		return nil, err
 	}
@@ -84,8 +86,6 @@ func (s *computeOperations) newLRO(ctx context.Context, projectID string) (*pb.O
 }
 
 func (s *computeOperations) startLRO0(ctx context.Context, op *pb.Operation, fqn string, callback func() (proto.Message, error)) (*pb.Operation, error) {
-	log := klog.FromContext(ctx)
-
 	now := time.Now()
 	nanos := now.UnixNano()
 
@@ -118,13 +118,13 @@ func (s *computeOperations) startLRO0(ctx context.Context, op *pb.Operation, fqn
 	op.Kind = PtrTo("compute#operation")
 	op.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
 
-	log.Info("storing operation", "fqn", fqn)
 	if err := s.storage.Create(ctx, fqn, op); err != nil {
 		return nil, err
 	}
 
 	go func() {
 		result, err := callback()
+		_ = result // result is not used
 		finished := &pb.Operation{}
 		if err2 := s.storage.Get(ctx, fqn, finished); err2 != nil {
 			klog.Warningf("error getting LRO: %v", err2)
@@ -155,9 +155,6 @@ func (s *computeOperations) startLRO0(ctx context.Context, op *pb.Operation, fqn
 				},
 			}
 			klog.Warningf("TODO: more fully handle LRO error %v", err)
-		} else {
-			// The LRO result does not appear to be returned in the operation
-			klog.V(4).Infof("LRO result: %+v", result)
 		}
 		if err := s.storage.Update(ctx, fqn, finished); err != nil {
 			klog.Warningf("error updating LRO: %v", err)
@@ -213,6 +210,136 @@ func (s *computeOperations) getOperation(ctx context.Context, fqn string) (*pb.O
 	if err := s.storage.Get(ctx, fqn, op); err != nil {
 		return nil, err
 	}
+
+	return op, nil
+}
+
+func (s *computeOperations) getOperationV1beta(ctx context.Context, fqn string) (*pbv1beta.Operation, error) {
+	op := &pbv1beta.Operation{}
+	if err := s.storage.Get(ctx, fqn, op); err != nil {
+		return nil, err
+	}
+
+	return op, nil
+}
+
+type RegionalOperationsV1beta struct {
+	*MockService
+	pbv1beta.UnimplementedRegionOperationsServer
+}
+
+func (s *RegionalOperationsV1beta) Get(ctx context.Context, req *pbv1beta.GetRegionOperationRequest) (*pbv1beta.Operation, error) {
+	fqn := s.regionalOperationFQN(req.Project, req.Region, req.Operation)
+	lro, err := s.getOperationV1beta(ctx, fqn)
+	if err != nil {
+		return nil, err
+	}
+
+	return lro, nil
+}
+
+type GlobalOperationsV1beta struct {
+	*MockService
+	pbv1beta.UnimplementedGlobalOperationsServer
+}
+
+func (s *GlobalOperationsV1beta) Get(ctx context.Context, req *pbv1beta.GetGlobalOperationRequest) (*pbv1beta.Operation, error) {
+	fqn := s.globalOperationFQN(req.Project, req.Operation)
+	lro, err := s.getOperationV1beta(ctx, fqn)
+	if err != nil {
+		return nil, err
+	}
+
+	return lro, nil
+}
+
+type ZonalOperationsV1beta struct {
+	*MockService
+	pbv1beta.UnimplementedZoneOperationsServer
+}
+
+func (s *ZonalOperationsV1beta) Get(ctx context.Context, req *pbv1beta.GetZoneOperationRequest) (*pbv1beta.Operation, error) {
+	fqn := s.zonalOperationFQN(req.Project, req.Zone, req.Operation)
+	lro, err := s.getOperationV1beta(ctx, fqn)
+	if err != nil {
+		return nil, err
+	}
+
+	return lro, nil
+}
+
+func (s *computeOperations) startZonalLRO(ctx context.Context, projectID string, zone string, op *pbv1beta.Operation, callback func() (proto.Message, error)) (*pbv1beta.Operation, error) {
+	now := time.Now()
+	millis := now.UnixMilli()
+	id := uuid.NewUUID()
+
+	name := fmt.Sprintf("operation-%d-%s", millis, id)
+	fqn := s.zonalOperationFQN(projectID, zone, name)
+
+	op.Name = PtrTo(name)
+	op.Zone = PtrTo(buildComputeSelfLink(ctx, "projects/"+projectID+"/zones/"+zone))
+	return s.startZonalLRO0(ctx, op, fqn, callback)
+}
+
+func (s *computeOperations) startZonalLRO0(ctx context.Context, op *pbv1beta.Operation, fqn string, callback func() (proto.Message, error)) (*pbv1beta.Operation, error) {
+	now := time.Now()
+	nanos := now.UnixNano()
+
+	if op == nil {
+		op = &pbv1beta.Operation{}
+	}
+
+	op.StartTime = PtrTo(formatTime(now))
+	op.InsertTime = PtrTo(formatTime(now))
+	op.Id = PtrTo(uint64(nanos))
+
+	if op.Progress == nil {
+		op.Progress = PtrTo(int32(0))
+	}
+
+	if op.Status == nil {
+		op.Status = PtrTo(pbv1beta.Operation_RUNNING)
+	}
+
+	op.Kind = PtrTo("compute#operation")
+	op.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+
+	if err := s.storage.Create(ctx, fqn, op); err != nil {
+		return nil, err
+	}
+
+	go func() {
+		result, err := callback()
+		_ = result // result is not used
+		finished := &pbv1beta.Operation{}
+		if err2 := s.storage.Get(ctx, fqn, finished); err2 != nil {
+			klog.Warningf("error getting LRO: %v", err2)
+			return
+		}
+
+		finished.Progress = PtrTo(int32(100))
+		finished.Status = PtrTo(pbv1beta.Operation_DONE)
+		finished.EndTime = PtrTo(formatTime(time.Now()))
+
+		if err != nil {
+			code := status.Code(err)
+			message := err.Error()
+
+			finished.Error = &pbv1beta.Error{
+				Errors: []*pbv1beta.Errors{
+					{
+						Code:    PtrTo(code.String()),
+						Message: PtrTo(message),
+					},
+				},
+			}
+			klog.Warningf("TODO: more fully handle LRO error %v", err)
+		}
+		if err := s.storage.Update(ctx, fqn, finished); err != nil {
+			klog.Warningf("error updating LRO: %v", err)
+			return
+		}
+	}()
 
 	return op, nil
 }

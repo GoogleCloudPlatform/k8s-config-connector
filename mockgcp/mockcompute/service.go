@@ -27,6 +27,7 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
+	pbv1beta "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1beta"
 )
 
 func init() {
@@ -89,8 +90,13 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterRegionDisksServer(grpcServer, &RegionalDisksV1{MockService: s})
 
 	pb.RegisterRegionOperationsServer(grpcServer, &RegionalOperationsV1{MockService: s})
+	pb.RegisterZoneOperationsServer(grpcServer, &ZonalOperationsV1{MockService: s})
 	pb.RegisterGlobalOperationsServer(grpcServer, &GlobalOperationsV1{MockService: s})
 	pb.RegisterGlobalOrganizationOperationsServer(grpcServer, &GlobalOrganizationOperationsV1{MockService: s})
+
+	pbv1beta.RegisterRegionOperationsServer(grpcServer, &RegionalOperationsV1beta{MockService: s})
+	pbv1beta.RegisterZoneOperationsServer(grpcServer, &ZonalOperationsV1beta{MockService: s})
+	pbv1beta.RegisterGlobalOperationsServer(grpcServer, &GlobalOperationsV1beta{MockService: s})
 
 	pb.RegisterNodeGroupsServer(grpcServer, &NodeGroupsV1{MockService: s})
 	pb.RegisterNodeTemplatesServer(grpcServer, &NodeTemplatesV1{MockService: s})
@@ -116,6 +122,8 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterForwardingRulesServer(grpcServer, &RegionalForwardingRulesV1{MockService: s})
 
 	pb.RegisterImagesServer(grpcServer, &ImagesV1{MockService: s})
+
+	pbv1beta.RegisterFutureReservationsServer(grpcServer, &FutureReservationsV1beta{MockService: s})
 
 	pb.RegisterInstancesServer(grpcServer, &InstancesV1{MockService: s})
 	pb.RegisterInstanceTemplatesServer(grpcServer, &InstanceTemplatesV1{MockService: s})
@@ -233,7 +241,20 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	if err := pb.RegisterRegionOperationsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
+	if err := pb.RegisterZoneOperationsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pbv1beta.RegisterRegionOperationsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pbv1beta.RegisterZoneOperationsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pbv1beta.RegisterGlobalOperationsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
 	if err := pb.RegisterGlobalOperationsHandler(ctx, mux.ServeMux, conn); err != nil {
+
 		return nil, err
 	}
 	if err := pb.RegisterGlobalOrganizationOperationsHandler(ctx, mux.ServeMux, conn); err != nil {
@@ -270,6 +291,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
+	if err := pbv1beta.RegisterFutureReservationsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
 	if err := pb.RegisterImagesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
@@ -294,14 +319,14 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		response.Header().Del("Cache-Control")
 	}
 
-	// Terraform uses the /beta/ endpoints, but we have protos only for v1.
+	// Terraform uses the /beta/ endpoints, but we have protos mostly only for v1.
 	// Also, we probably want to be implementing the newer versions
 	// as that makes it easier to move KCC to newer API versions.
 	// So far, it seems that all of beta is a direct mapping to v1 - though
 	// I'm sure eventually we'll find something that needs special handling.
 	rewriteBetaToV1 := func(w http.ResponseWriter, r *http.Request) {
 		u := r.URL
-		if strings.HasPrefix(u.Path, "/compute/beta/") {
+		if strings.HasPrefix(u.Path, "/compute/beta/") && !strings.Contains(u.Path, "/futureReservations") && !strings.Contains(u.Path, "/operations") {
 			u2 := *u
 			u2.Path = "/compute/v1/" + strings.TrimPrefix(u.Path, "/compute/beta/")
 			r = httpmux.RewriteRequest(r, &u2)
