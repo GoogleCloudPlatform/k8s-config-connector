@@ -61,6 +61,10 @@ spec:
             type: object
           spec:
             properties:
+              containingFolder:
+                description: Optional. The name of the folder where this repository
+                  is located.
+                type: string
               displayName:
                 description: Optional. The repository's user-friendly name.
                 type: string
@@ -255,6 +259,10 @@ spec:
                   user will be granted the roles/dataform.admin role on the created
                   repository.
                 type: boolean
+              teamFolderName:
+                description: Optional. The name of the team folder where this repository
+                  is located.
+                type: string
               workspaceCompilationOverrides:
                 description: Optional. If set, fields of workspaceCompilationOverrides
                   override the default compilation settings that are specified in

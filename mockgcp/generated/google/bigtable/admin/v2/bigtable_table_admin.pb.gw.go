@@ -13,8 +13,8 @@ import (
 	"io"
 	"net/http"
 
-	extAdminpb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
-	extIampb "cloud.google.com/go/iam/apiv1/iampb"
+	adminpb_0 "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
+	iampb_0 "cloud.google.com/go/iam/apiv1/iampb"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
 	"google.golang.org/grpc"
@@ -33,8 +33,8 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
-func request_BigtableTableAdmin_CreateTable_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateTableRequest
+func request_BigtableTableAdmin_CreateTable_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.CreateTableRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -67,8 +67,8 @@ func request_BigtableTableAdmin_CreateTable_0(ctx context.Context, marshaler run
 
 }
 
-func local_request_BigtableTableAdmin_CreateTable_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateTableRequest
+func local_request_BigtableTableAdmin_CreateTable_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.CreateTableRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -101,8 +101,8 @@ func local_request_BigtableTableAdmin_CreateTable_0(ctx context.Context, marshal
 
 }
 
-func request_BigtableTableAdmin_CreateTableFromSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateTableFromSnapshotRequest
+func request_BigtableTableAdmin_CreateTableFromSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.CreateTableFromSnapshotRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -135,8 +135,8 @@ func request_BigtableTableAdmin_CreateTableFromSnapshot_0(ctx context.Context, m
 
 }
 
-func local_request_BigtableTableAdmin_CreateTableFromSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateTableFromSnapshotRequest
+func local_request_BigtableTableAdmin_CreateTableFromSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.CreateTableFromSnapshotRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -173,8 +173,8 @@ var (
 	filter_BigtableTableAdmin_ListTables_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_BigtableTableAdmin_ListTables_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListTablesRequest
+func request_BigtableTableAdmin_ListTables_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.ListTablesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -206,8 +206,8 @@ func request_BigtableTableAdmin_ListTables_0(ctx context.Context, marshaler runt
 
 }
 
-func local_request_BigtableTableAdmin_ListTables_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListTablesRequest
+func local_request_BigtableTableAdmin_ListTables_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.ListTablesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -243,8 +243,8 @@ var (
 	filter_BigtableTableAdmin_GetTable_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_BigtableTableAdmin_GetTable_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetTableRequest
+func request_BigtableTableAdmin_GetTable_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.GetTableRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -276,8 +276,8 @@ func request_BigtableTableAdmin_GetTable_0(ctx context.Context, marshaler runtim
 
 }
 
-func local_request_BigtableTableAdmin_GetTable_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetTableRequest
+func local_request_BigtableTableAdmin_GetTable_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.GetTableRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -313,8 +313,8 @@ var (
 	filter_BigtableTableAdmin_UpdateTable_0 = &utilities.DoubleArray{Encoding: map[string]int{"table": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_BigtableTableAdmin_UpdateTable_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateTableRequest
+func request_BigtableTableAdmin_UpdateTable_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.UpdateTableRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -361,8 +361,8 @@ func request_BigtableTableAdmin_UpdateTable_0(ctx context.Context, marshaler run
 
 }
 
-func local_request_BigtableTableAdmin_UpdateTable_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateTableRequest
+func local_request_BigtableTableAdmin_UpdateTable_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.UpdateTableRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -409,8 +409,8 @@ func local_request_BigtableTableAdmin_UpdateTable_0(ctx context.Context, marshal
 
 }
 
-func request_BigtableTableAdmin_DeleteTable_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteTableRequest
+func request_BigtableTableAdmin_DeleteTable_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.DeleteTableRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -435,8 +435,8 @@ func request_BigtableTableAdmin_DeleteTable_0(ctx context.Context, marshaler run
 
 }
 
-func local_request_BigtableTableAdmin_DeleteTable_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteTableRequest
+func local_request_BigtableTableAdmin_DeleteTable_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.DeleteTableRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -461,8 +461,8 @@ func local_request_BigtableTableAdmin_DeleteTable_0(ctx context.Context, marshal
 
 }
 
-func request_BigtableTableAdmin_UndeleteTable_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UndeleteTableRequest
+func request_BigtableTableAdmin_UndeleteTable_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.UndeleteTableRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -495,8 +495,8 @@ func request_BigtableTableAdmin_UndeleteTable_0(ctx context.Context, marshaler r
 
 }
 
-func local_request_BigtableTableAdmin_UndeleteTable_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UndeleteTableRequest
+func local_request_BigtableTableAdmin_UndeleteTable_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.UndeleteTableRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -533,8 +533,8 @@ var (
 	filter_BigtableTableAdmin_CreateAuthorizedView_0 = &utilities.DoubleArray{Encoding: map[string]int{"authorized_view": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_BigtableTableAdmin_CreateAuthorizedView_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateAuthorizedViewRequest
+func request_BigtableTableAdmin_CreateAuthorizedView_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.CreateAuthorizedViewRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -574,8 +574,8 @@ func request_BigtableTableAdmin_CreateAuthorizedView_0(ctx context.Context, mars
 
 }
 
-func local_request_BigtableTableAdmin_CreateAuthorizedView_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateAuthorizedViewRequest
+func local_request_BigtableTableAdmin_CreateAuthorizedView_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.CreateAuthorizedViewRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -619,8 +619,8 @@ var (
 	filter_BigtableTableAdmin_ListAuthorizedViews_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_BigtableTableAdmin_ListAuthorizedViews_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListAuthorizedViewsRequest
+func request_BigtableTableAdmin_ListAuthorizedViews_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.ListAuthorizedViewsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -652,8 +652,8 @@ func request_BigtableTableAdmin_ListAuthorizedViews_0(ctx context.Context, marsh
 
 }
 
-func local_request_BigtableTableAdmin_ListAuthorizedViews_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListAuthorizedViewsRequest
+func local_request_BigtableTableAdmin_ListAuthorizedViews_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.ListAuthorizedViewsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -689,8 +689,8 @@ var (
 	filter_BigtableTableAdmin_GetAuthorizedView_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_BigtableTableAdmin_GetAuthorizedView_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetAuthorizedViewRequest
+func request_BigtableTableAdmin_GetAuthorizedView_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.GetAuthorizedViewRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -722,8 +722,8 @@ func request_BigtableTableAdmin_GetAuthorizedView_0(ctx context.Context, marshal
 
 }
 
-func local_request_BigtableTableAdmin_GetAuthorizedView_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetAuthorizedViewRequest
+func local_request_BigtableTableAdmin_GetAuthorizedView_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.GetAuthorizedViewRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -759,8 +759,8 @@ var (
 	filter_BigtableTableAdmin_UpdateAuthorizedView_0 = &utilities.DoubleArray{Encoding: map[string]int{"authorized_view": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_BigtableTableAdmin_UpdateAuthorizedView_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateAuthorizedViewRequest
+func request_BigtableTableAdmin_UpdateAuthorizedView_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.UpdateAuthorizedViewRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -807,8 +807,8 @@ func request_BigtableTableAdmin_UpdateAuthorizedView_0(ctx context.Context, mars
 
 }
 
-func local_request_BigtableTableAdmin_UpdateAuthorizedView_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateAuthorizedViewRequest
+func local_request_BigtableTableAdmin_UpdateAuthorizedView_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.UpdateAuthorizedViewRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -859,8 +859,8 @@ var (
 	filter_BigtableTableAdmin_DeleteAuthorizedView_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_BigtableTableAdmin_DeleteAuthorizedView_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteAuthorizedViewRequest
+func request_BigtableTableAdmin_DeleteAuthorizedView_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.DeleteAuthorizedViewRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -892,8 +892,8 @@ func request_BigtableTableAdmin_DeleteAuthorizedView_0(ctx context.Context, mars
 
 }
 
-func local_request_BigtableTableAdmin_DeleteAuthorizedView_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteAuthorizedViewRequest
+func local_request_BigtableTableAdmin_DeleteAuthorizedView_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.DeleteAuthorizedViewRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -925,8 +925,8 @@ func local_request_BigtableTableAdmin_DeleteAuthorizedView_0(ctx context.Context
 
 }
 
-func request_BigtableTableAdmin_ModifyColumnFamilies_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ModifyColumnFamiliesRequest
+func request_BigtableTableAdmin_ModifyColumnFamilies_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.ModifyColumnFamiliesRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -959,8 +959,8 @@ func request_BigtableTableAdmin_ModifyColumnFamilies_0(ctx context.Context, mars
 
 }
 
-func local_request_BigtableTableAdmin_ModifyColumnFamilies_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ModifyColumnFamiliesRequest
+func local_request_BigtableTableAdmin_ModifyColumnFamilies_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.ModifyColumnFamiliesRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -993,8 +993,8 @@ func local_request_BigtableTableAdmin_ModifyColumnFamilies_0(ctx context.Context
 
 }
 
-func request_BigtableTableAdmin_DropRowRange_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DropRowRangeRequest
+func request_BigtableTableAdmin_DropRowRange_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.DropRowRangeRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1027,8 +1027,8 @@ func request_BigtableTableAdmin_DropRowRange_0(ctx context.Context, marshaler ru
 
 }
 
-func local_request_BigtableTableAdmin_DropRowRange_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DropRowRangeRequest
+func local_request_BigtableTableAdmin_DropRowRange_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.DropRowRangeRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1061,8 +1061,8 @@ func local_request_BigtableTableAdmin_DropRowRange_0(ctx context.Context, marsha
 
 }
 
-func request_BigtableTableAdmin_GenerateConsistencyToken_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GenerateConsistencyTokenRequest
+func request_BigtableTableAdmin_GenerateConsistencyToken_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.GenerateConsistencyTokenRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1095,8 +1095,8 @@ func request_BigtableTableAdmin_GenerateConsistencyToken_0(ctx context.Context, 
 
 }
 
-func local_request_BigtableTableAdmin_GenerateConsistencyToken_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GenerateConsistencyTokenRequest
+func local_request_BigtableTableAdmin_GenerateConsistencyToken_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.GenerateConsistencyTokenRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1129,8 +1129,8 @@ func local_request_BigtableTableAdmin_GenerateConsistencyToken_0(ctx context.Con
 
 }
 
-func request_BigtableTableAdmin_CheckConsistency_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CheckConsistencyRequest
+func request_BigtableTableAdmin_CheckConsistency_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.CheckConsistencyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1163,8 +1163,8 @@ func request_BigtableTableAdmin_CheckConsistency_0(ctx context.Context, marshale
 
 }
 
-func local_request_BigtableTableAdmin_CheckConsistency_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CheckConsistencyRequest
+func local_request_BigtableTableAdmin_CheckConsistency_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.CheckConsistencyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1197,8 +1197,8 @@ func local_request_BigtableTableAdmin_CheckConsistency_0(ctx context.Context, ma
 
 }
 
-func request_BigtableTableAdmin_SnapshotTable_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.SnapshotTableRequest
+func request_BigtableTableAdmin_SnapshotTable_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.SnapshotTableRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1231,8 +1231,8 @@ func request_BigtableTableAdmin_SnapshotTable_0(ctx context.Context, marshaler r
 
 }
 
-func local_request_BigtableTableAdmin_SnapshotTable_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.SnapshotTableRequest
+func local_request_BigtableTableAdmin_SnapshotTable_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.SnapshotTableRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1265,8 +1265,8 @@ func local_request_BigtableTableAdmin_SnapshotTable_0(ctx context.Context, marsh
 
 }
 
-func request_BigtableTableAdmin_GetSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetSnapshotRequest
+func request_BigtableTableAdmin_GetSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.GetSnapshotRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1291,8 +1291,8 @@ func request_BigtableTableAdmin_GetSnapshot_0(ctx context.Context, marshaler run
 
 }
 
-func local_request_BigtableTableAdmin_GetSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetSnapshotRequest
+func local_request_BigtableTableAdmin_GetSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.GetSnapshotRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1321,8 +1321,8 @@ var (
 	filter_BigtableTableAdmin_ListSnapshots_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_BigtableTableAdmin_ListSnapshots_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListSnapshotsRequest
+func request_BigtableTableAdmin_ListSnapshots_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.ListSnapshotsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1354,8 +1354,8 @@ func request_BigtableTableAdmin_ListSnapshots_0(ctx context.Context, marshaler r
 
 }
 
-func local_request_BigtableTableAdmin_ListSnapshots_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListSnapshotsRequest
+func local_request_BigtableTableAdmin_ListSnapshots_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.ListSnapshotsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1387,8 +1387,8 @@ func local_request_BigtableTableAdmin_ListSnapshots_0(ctx context.Context, marsh
 
 }
 
-func request_BigtableTableAdmin_DeleteSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteSnapshotRequest
+func request_BigtableTableAdmin_DeleteSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.DeleteSnapshotRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1413,8 +1413,8 @@ func request_BigtableTableAdmin_DeleteSnapshot_0(ctx context.Context, marshaler 
 
 }
 
-func local_request_BigtableTableAdmin_DeleteSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteSnapshotRequest
+func local_request_BigtableTableAdmin_DeleteSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.DeleteSnapshotRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1443,8 +1443,8 @@ var (
 	filter_BigtableTableAdmin_CreateBackup_0 = &utilities.DoubleArray{Encoding: map[string]int{"backup": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_BigtableTableAdmin_CreateBackup_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateBackupRequest
+func request_BigtableTableAdmin_CreateBackup_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.CreateBackupRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1484,8 +1484,8 @@ func request_BigtableTableAdmin_CreateBackup_0(ctx context.Context, marshaler ru
 
 }
 
-func local_request_BigtableTableAdmin_CreateBackup_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateBackupRequest
+func local_request_BigtableTableAdmin_CreateBackup_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.CreateBackupRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1525,8 +1525,8 @@ func local_request_BigtableTableAdmin_CreateBackup_0(ctx context.Context, marsha
 
 }
 
-func request_BigtableTableAdmin_GetBackup_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetBackupRequest
+func request_BigtableTableAdmin_GetBackup_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.GetBackupRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1551,8 +1551,8 @@ func request_BigtableTableAdmin_GetBackup_0(ctx context.Context, marshaler runti
 
 }
 
-func local_request_BigtableTableAdmin_GetBackup_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetBackupRequest
+func local_request_BigtableTableAdmin_GetBackup_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.GetBackupRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1581,8 +1581,8 @@ var (
 	filter_BigtableTableAdmin_UpdateBackup_0 = &utilities.DoubleArray{Encoding: map[string]int{"backup": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_BigtableTableAdmin_UpdateBackup_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateBackupRequest
+func request_BigtableTableAdmin_UpdateBackup_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.UpdateBackupRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1629,8 +1629,8 @@ func request_BigtableTableAdmin_UpdateBackup_0(ctx context.Context, marshaler ru
 
 }
 
-func local_request_BigtableTableAdmin_UpdateBackup_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateBackupRequest
+func local_request_BigtableTableAdmin_UpdateBackup_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.UpdateBackupRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1677,8 +1677,8 @@ func local_request_BigtableTableAdmin_UpdateBackup_0(ctx context.Context, marsha
 
 }
 
-func request_BigtableTableAdmin_DeleteBackup_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteBackupRequest
+func request_BigtableTableAdmin_DeleteBackup_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.DeleteBackupRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1703,8 +1703,8 @@ func request_BigtableTableAdmin_DeleteBackup_0(ctx context.Context, marshaler ru
 
 }
 
-func local_request_BigtableTableAdmin_DeleteBackup_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteBackupRequest
+func local_request_BigtableTableAdmin_DeleteBackup_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.DeleteBackupRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1733,8 +1733,8 @@ var (
 	filter_BigtableTableAdmin_ListBackups_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_BigtableTableAdmin_ListBackups_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListBackupsRequest
+func request_BigtableTableAdmin_ListBackups_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.ListBackupsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1766,8 +1766,8 @@ func request_BigtableTableAdmin_ListBackups_0(ctx context.Context, marshaler run
 
 }
 
-func local_request_BigtableTableAdmin_ListBackups_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListBackupsRequest
+func local_request_BigtableTableAdmin_ListBackups_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.ListBackupsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1799,8 +1799,8 @@ func local_request_BigtableTableAdmin_ListBackups_0(ctx context.Context, marshal
 
 }
 
-func request_BigtableTableAdmin_RestoreTable_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.RestoreTableRequest
+func request_BigtableTableAdmin_RestoreTable_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.RestoreTableRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1833,8 +1833,8 @@ func request_BigtableTableAdmin_RestoreTable_0(ctx context.Context, marshaler ru
 
 }
 
-func local_request_BigtableTableAdmin_RestoreTable_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.RestoreTableRequest
+func local_request_BigtableTableAdmin_RestoreTable_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.RestoreTableRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1867,8 +1867,8 @@ func local_request_BigtableTableAdmin_RestoreTable_0(ctx context.Context, marsha
 
 }
 
-func request_BigtableTableAdmin_CopyBackup_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CopyBackupRequest
+func request_BigtableTableAdmin_CopyBackup_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.CopyBackupRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1901,8 +1901,8 @@ func request_BigtableTableAdmin_CopyBackup_0(ctx context.Context, marshaler runt
 
 }
 
-func local_request_BigtableTableAdmin_CopyBackup_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CopyBackupRequest
+func local_request_BigtableTableAdmin_CopyBackup_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.CopyBackupRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1935,8 +1935,8 @@ func local_request_BigtableTableAdmin_CopyBackup_0(ctx context.Context, marshale
 
 }
 
-func request_BigtableTableAdmin_GetIamPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.GetIamPolicyRequest
+func request_BigtableTableAdmin_GetIamPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.GetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1969,8 +1969,8 @@ func request_BigtableTableAdmin_GetIamPolicy_0(ctx context.Context, marshaler ru
 
 }
 
-func local_request_BigtableTableAdmin_GetIamPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.GetIamPolicyRequest
+func local_request_BigtableTableAdmin_GetIamPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.GetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2003,8 +2003,8 @@ func local_request_BigtableTableAdmin_GetIamPolicy_0(ctx context.Context, marsha
 
 }
 
-func request_BigtableTableAdmin_GetIamPolicy_1(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.GetIamPolicyRequest
+func request_BigtableTableAdmin_GetIamPolicy_1(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.GetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2037,8 +2037,8 @@ func request_BigtableTableAdmin_GetIamPolicy_1(ctx context.Context, marshaler ru
 
 }
 
-func local_request_BigtableTableAdmin_GetIamPolicy_1(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.GetIamPolicyRequest
+func local_request_BigtableTableAdmin_GetIamPolicy_1(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.GetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2071,8 +2071,8 @@ func local_request_BigtableTableAdmin_GetIamPolicy_1(ctx context.Context, marsha
 
 }
 
-func request_BigtableTableAdmin_GetIamPolicy_2(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.GetIamPolicyRequest
+func request_BigtableTableAdmin_GetIamPolicy_2(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.GetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2105,8 +2105,8 @@ func request_BigtableTableAdmin_GetIamPolicy_2(ctx context.Context, marshaler ru
 
 }
 
-func local_request_BigtableTableAdmin_GetIamPolicy_2(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.GetIamPolicyRequest
+func local_request_BigtableTableAdmin_GetIamPolicy_2(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.GetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2139,8 +2139,8 @@ func local_request_BigtableTableAdmin_GetIamPolicy_2(ctx context.Context, marsha
 
 }
 
-func request_BigtableTableAdmin_GetIamPolicy_3(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.GetIamPolicyRequest
+func request_BigtableTableAdmin_GetIamPolicy_3(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.GetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2173,8 +2173,8 @@ func request_BigtableTableAdmin_GetIamPolicy_3(ctx context.Context, marshaler ru
 
 }
 
-func local_request_BigtableTableAdmin_GetIamPolicy_3(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.GetIamPolicyRequest
+func local_request_BigtableTableAdmin_GetIamPolicy_3(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.GetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2207,8 +2207,8 @@ func local_request_BigtableTableAdmin_GetIamPolicy_3(ctx context.Context, marsha
 
 }
 
-func request_BigtableTableAdmin_SetIamPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.SetIamPolicyRequest
+func request_BigtableTableAdmin_SetIamPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.SetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2241,8 +2241,8 @@ func request_BigtableTableAdmin_SetIamPolicy_0(ctx context.Context, marshaler ru
 
 }
 
-func local_request_BigtableTableAdmin_SetIamPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.SetIamPolicyRequest
+func local_request_BigtableTableAdmin_SetIamPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.SetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2275,8 +2275,8 @@ func local_request_BigtableTableAdmin_SetIamPolicy_0(ctx context.Context, marsha
 
 }
 
-func request_BigtableTableAdmin_SetIamPolicy_1(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.SetIamPolicyRequest
+func request_BigtableTableAdmin_SetIamPolicy_1(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.SetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2309,8 +2309,8 @@ func request_BigtableTableAdmin_SetIamPolicy_1(ctx context.Context, marshaler ru
 
 }
 
-func local_request_BigtableTableAdmin_SetIamPolicy_1(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.SetIamPolicyRequest
+func local_request_BigtableTableAdmin_SetIamPolicy_1(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.SetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2343,8 +2343,8 @@ func local_request_BigtableTableAdmin_SetIamPolicy_1(ctx context.Context, marsha
 
 }
 
-func request_BigtableTableAdmin_SetIamPolicy_2(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.SetIamPolicyRequest
+func request_BigtableTableAdmin_SetIamPolicy_2(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.SetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2377,8 +2377,8 @@ func request_BigtableTableAdmin_SetIamPolicy_2(ctx context.Context, marshaler ru
 
 }
 
-func local_request_BigtableTableAdmin_SetIamPolicy_2(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.SetIamPolicyRequest
+func local_request_BigtableTableAdmin_SetIamPolicy_2(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.SetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2411,8 +2411,8 @@ func local_request_BigtableTableAdmin_SetIamPolicy_2(ctx context.Context, marsha
 
 }
 
-func request_BigtableTableAdmin_SetIamPolicy_3(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.SetIamPolicyRequest
+func request_BigtableTableAdmin_SetIamPolicy_3(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.SetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2445,8 +2445,8 @@ func request_BigtableTableAdmin_SetIamPolicy_3(ctx context.Context, marshaler ru
 
 }
 
-func local_request_BigtableTableAdmin_SetIamPolicy_3(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.SetIamPolicyRequest
+func local_request_BigtableTableAdmin_SetIamPolicy_3(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.SetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2479,8 +2479,8 @@ func local_request_BigtableTableAdmin_SetIamPolicy_3(ctx context.Context, marsha
 
 }
 
-func request_BigtableTableAdmin_TestIamPermissions_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.TestIamPermissionsRequest
+func request_BigtableTableAdmin_TestIamPermissions_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.TestIamPermissionsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2513,8 +2513,8 @@ func request_BigtableTableAdmin_TestIamPermissions_0(ctx context.Context, marsha
 
 }
 
-func local_request_BigtableTableAdmin_TestIamPermissions_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.TestIamPermissionsRequest
+func local_request_BigtableTableAdmin_TestIamPermissions_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.TestIamPermissionsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2547,8 +2547,8 @@ func local_request_BigtableTableAdmin_TestIamPermissions_0(ctx context.Context, 
 
 }
 
-func request_BigtableTableAdmin_TestIamPermissions_1(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.TestIamPermissionsRequest
+func request_BigtableTableAdmin_TestIamPermissions_1(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.TestIamPermissionsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2581,8 +2581,8 @@ func request_BigtableTableAdmin_TestIamPermissions_1(ctx context.Context, marsha
 
 }
 
-func local_request_BigtableTableAdmin_TestIamPermissions_1(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.TestIamPermissionsRequest
+func local_request_BigtableTableAdmin_TestIamPermissions_1(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.TestIamPermissionsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2615,8 +2615,8 @@ func local_request_BigtableTableAdmin_TestIamPermissions_1(ctx context.Context, 
 
 }
 
-func request_BigtableTableAdmin_TestIamPermissions_2(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.TestIamPermissionsRequest
+func request_BigtableTableAdmin_TestIamPermissions_2(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.TestIamPermissionsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2649,8 +2649,8 @@ func request_BigtableTableAdmin_TestIamPermissions_2(ctx context.Context, marsha
 
 }
 
-func local_request_BigtableTableAdmin_TestIamPermissions_2(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.TestIamPermissionsRequest
+func local_request_BigtableTableAdmin_TestIamPermissions_2(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.TestIamPermissionsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2683,8 +2683,8 @@ func local_request_BigtableTableAdmin_TestIamPermissions_2(ctx context.Context, 
 
 }
 
-func request_BigtableTableAdmin_TestIamPermissions_3(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.TestIamPermissionsRequest
+func request_BigtableTableAdmin_TestIamPermissions_3(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.TestIamPermissionsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2717,8 +2717,8 @@ func request_BigtableTableAdmin_TestIamPermissions_3(ctx context.Context, marsha
 
 }
 
-func local_request_BigtableTableAdmin_TestIamPermissions_3(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.TestIamPermissionsRequest
+func local_request_BigtableTableAdmin_TestIamPermissions_3(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq iampb_0.TestIamPermissionsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2755,8 +2755,8 @@ var (
 	filter_BigtableTableAdmin_CreateSchemaBundle_0 = &utilities.DoubleArray{Encoding: map[string]int{"schema_bundle": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_BigtableTableAdmin_CreateSchemaBundle_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateSchemaBundleRequest
+func request_BigtableTableAdmin_CreateSchemaBundle_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.CreateSchemaBundleRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2796,8 +2796,8 @@ func request_BigtableTableAdmin_CreateSchemaBundle_0(ctx context.Context, marsha
 
 }
 
-func local_request_BigtableTableAdmin_CreateSchemaBundle_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateSchemaBundleRequest
+func local_request_BigtableTableAdmin_CreateSchemaBundle_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.CreateSchemaBundleRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2841,8 +2841,8 @@ var (
 	filter_BigtableTableAdmin_UpdateSchemaBundle_0 = &utilities.DoubleArray{Encoding: map[string]int{"schema_bundle": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_BigtableTableAdmin_UpdateSchemaBundle_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateSchemaBundleRequest
+func request_BigtableTableAdmin_UpdateSchemaBundle_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.UpdateSchemaBundleRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2889,8 +2889,8 @@ func request_BigtableTableAdmin_UpdateSchemaBundle_0(ctx context.Context, marsha
 
 }
 
-func local_request_BigtableTableAdmin_UpdateSchemaBundle_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateSchemaBundleRequest
+func local_request_BigtableTableAdmin_UpdateSchemaBundle_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.UpdateSchemaBundleRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2937,8 +2937,8 @@ func local_request_BigtableTableAdmin_UpdateSchemaBundle_0(ctx context.Context, 
 
 }
 
-func request_BigtableTableAdmin_GetSchemaBundle_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetSchemaBundleRequest
+func request_BigtableTableAdmin_GetSchemaBundle_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.GetSchemaBundleRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2963,8 +2963,8 @@ func request_BigtableTableAdmin_GetSchemaBundle_0(ctx context.Context, marshaler
 
 }
 
-func local_request_BigtableTableAdmin_GetSchemaBundle_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetSchemaBundleRequest
+func local_request_BigtableTableAdmin_GetSchemaBundle_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.GetSchemaBundleRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2993,8 +2993,8 @@ var (
 	filter_BigtableTableAdmin_ListSchemaBundles_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_BigtableTableAdmin_ListSchemaBundles_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListSchemaBundlesRequest
+func request_BigtableTableAdmin_ListSchemaBundles_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.ListSchemaBundlesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -3026,8 +3026,8 @@ func request_BigtableTableAdmin_ListSchemaBundles_0(ctx context.Context, marshal
 
 }
 
-func local_request_BigtableTableAdmin_ListSchemaBundles_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListSchemaBundlesRequest
+func local_request_BigtableTableAdmin_ListSchemaBundles_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.ListSchemaBundlesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -3063,8 +3063,8 @@ var (
 	filter_BigtableTableAdmin_DeleteSchemaBundle_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_BigtableTableAdmin_DeleteSchemaBundle_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteSchemaBundleRequest
+func request_BigtableTableAdmin_DeleteSchemaBundle_0(ctx context.Context, marshaler runtime.Marshaler, client adminpb_0.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.DeleteSchemaBundleRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -3096,8 +3096,8 @@ func request_BigtableTableAdmin_DeleteSchemaBundle_0(ctx context.Context, marsha
 
 }
 
-func local_request_BigtableTableAdmin_DeleteSchemaBundle_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteSchemaBundleRequest
+func local_request_BigtableTableAdmin_DeleteSchemaBundle_0(ctx context.Context, marshaler runtime.Marshaler, server adminpb_0.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq adminpb_0.DeleteSchemaBundleRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -3133,7 +3133,7 @@ func local_request_BigtableTableAdmin_DeleteSchemaBundle_0(ctx context.Context, 
 // UnaryRPC     :call BigtableTableAdminServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterBigtableTableAdminHandlerFromEndpoint instead.
-func RegisterBigtableTableAdminHandlerServer(ctx context.Context, mux *runtime.ServeMux, server extAdminpb.BigtableTableAdminServer) error {
+func RegisterBigtableTableAdminHandlerServer(ctx context.Context, mux *runtime.ServeMux, server adminpb_0.BigtableTableAdminServer) error {
 
 	mux.Handle("POST", pattern_BigtableTableAdmin_CreateTable_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -4266,15 +4266,15 @@ func RegisterBigtableTableAdminHandlerFromEndpoint(ctx context.Context, mux *run
 // RegisterBigtableTableAdminHandler registers the http handlers for service BigtableTableAdmin to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
 func RegisterBigtableTableAdminHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterBigtableTableAdminHandlerClient(ctx, mux, extAdminpb.NewBigtableTableAdminClient(conn))
+	return RegisterBigtableTableAdminHandlerClient(ctx, mux, adminpb_0.NewBigtableTableAdminClient(conn))
 }
 
 // RegisterBigtableTableAdminHandlerClient registers the http handlers for service BigtableTableAdmin
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "extAdminpb.BigtableTableAdminClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "extAdminpb.BigtableTableAdminClient"
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "adminpb_0.BigtableTableAdminClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "adminpb_0.BigtableTableAdminClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "extAdminpb.BigtableTableAdminClient" to call the correct interceptors.
-func RegisterBigtableTableAdminHandlerClient(ctx context.Context, mux *runtime.ServeMux, client extAdminpb.BigtableTableAdminClient) error {
+// "adminpb_0.BigtableTableAdminClient" to call the correct interceptors.
+func RegisterBigtableTableAdminHandlerClient(ctx context.Context, mux *runtime.ServeMux, client adminpb_0.BigtableTableAdminClient) error {
 
 	mux.Handle("POST", pattern_BigtableTableAdmin_CreateTable_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
