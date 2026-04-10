@@ -87,7 +87,6 @@ type IAMServiceAccount struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	// +required
 	Spec   IAMServiceAccountSpec   `json:"spec,omitempty"`
 	Status IAMServiceAccountStatus `json:"status,omitempty"`
 }
