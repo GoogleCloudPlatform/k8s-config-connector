@@ -19,68 +19,68 @@
 package mockdataplex
 
 import (
-        "context"
-        "fmt"
-        "net/http"
+	"context"
+	"fmt"
+	"net/http"
 
-        "google.golang.org/grpc"
+	"google.golang.org/grpc"
 
-        "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-        "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
-        "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-        "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 
-        // Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
-        pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
+	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
+	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 )
 
 // MockService represents a mocked dataplex service.
 type MockService struct {
-        *common.MockEnvironment
-        storage storage.Storage
+	*common.MockEnvironment
+	storage storage.Storage
 
-        operations *operations.Operations
+	operations *operations.Operations
 
-        // Store the underlying GRPC servers
-        dataplexService *DataplexService
-        catalogService  *CatalogService
+	// Store the underlying GRPC servers
+	dataplexService *DataplexService
+	catalogService  *CatalogService
 }
 
 type DataplexService struct {
-        *MockService
-        pb.UnimplementedDataplexServiceServer
+	*MockService
+	pb.UnimplementedDataplexServiceServer
 }
 
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
-        s := &MockService{
-                MockEnvironment: env,
-                storage:         storage,
-                operations:      operations.NewOperationsService(storage),
-        }
-        s.dataplexService = &DataplexService{MockService: s}
-        s.catalogService = &CatalogService{MockService: s}
-        return s
+	s := &MockService{
+		MockEnvironment: env,
+		storage:         storage,
+		operations:      operations.NewOperationsService(storage),
+	}
+	s.dataplexService = &DataplexService{MockService: s}
+	s.catalogService = &CatalogService{MockService: s}
+	return s
 }
 
 func (s *MockService) ExpectedHosts() []string {
-        return []string{"dataplex.googleapis.com"}
+	return []string{"dataplex.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-        pb.RegisterDataplexServiceServer(grpcServer, s.dataplexService)
-        pb.RegisterCatalogServiceServer(grpcServer, s.catalogService)
+	pb.RegisterDataplexServiceServer(grpcServer, s.dataplexService)
+	pb.RegisterCatalogServiceServer(grpcServer, s.catalogService)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-        mux, err := httptogrpc.NewGRPCMux(conn)
-        if err != nil {
-                return nil, fmt.Errorf("error building grpc service: %w", err)
-        }
+	mux, err := httptogrpc.NewGRPCMux(conn)
+	if err != nil {
+		return nil, fmt.Errorf("error building grpc service: %w", err)
+	}
 
-        mux.AddService(pb.NewDataplexServiceClient(conn))
-        mux.AddService(pb.NewCatalogServiceClient(conn))
-        mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
+	mux.AddService(pb.NewDataplexServiceClient(conn))
+	mux.AddService(pb.NewCatalogServiceClient(conn))
+	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
-        return mux, nil
+	return mux, nil
 }
