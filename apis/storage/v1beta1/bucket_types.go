@@ -62,7 +62,7 @@ type StorageBucketSpec struct {
 	Logging *StorageBucketLogging `json:"logging,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
 
 	/* Prevents public access to a bucket. */
 	// +kcc:proto:field=google.storage.v1.Bucket.iam_configuration.public_access_prevention
@@ -278,7 +278,6 @@ type StorageBucket struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	// +required
 	Spec   StorageBucketSpec   `json:"spec,omitempty"`
 	Status StorageBucketStatus `json:"status,omitempty"`
 }
