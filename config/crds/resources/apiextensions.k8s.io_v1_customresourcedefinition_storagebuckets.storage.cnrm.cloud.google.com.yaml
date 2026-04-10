@@ -374,8 +374,6 @@ spec:
                       is not found.
                     type: string
                 type: object
-            required:
-            - projectRef
             type: object
           status:
             description: StorageBucketStatus defines the config connector machine
@@ -449,8 +447,6 @@ spec:
                 description: The base URL of the bucket, in the format gs://<bucket-name>.
                 type: string
             type: object
-        required:
-        - spec
         type: object
     served: true
     storage: true
