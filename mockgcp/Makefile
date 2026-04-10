@@ -36,8 +36,8 @@ gen-proto: tools sync-repo
 .PHONY: gen-proto-no-fixup
 gen-proto-no-fixup:
 	PATH=bin/:${PATH} bin/protoc/bin/protoc \
-		-I ./third_party/googleapis \
 		-I ./apis \
+		-I ./third_party/googleapis \
 		--go_out ./generated \
 		--go_opt paths=source_relative \
 		--go-grpc_out ./generated \
@@ -140,7 +140,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/redis/cluster/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/redis/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/resourcemanager/v3/*.proto \
-		./third_party/googleapis/mockgcp/cloud/secretmanager/v1/*.proto \
+		./apis/mockgcp/cloud/secretmanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/securesourcemanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/security/privateca/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/servicedirectory/v1beta1/*.proto \
@@ -195,8 +195,8 @@ generate-grpc-for-google-protos:
 	mkdir -p ./generated
 
 	PATH=bin/:${PATH} bin/protoc/bin/protoc \
-		-I ./third_party/googleapis \
 		-I ./apis \
+		-I ./third_party/googleapis \
 		--experimental_allow_proto3_optional \
 		--grpc-gateway_out ./generated \
 		--grpc-gateway_opt logtostderr=true \

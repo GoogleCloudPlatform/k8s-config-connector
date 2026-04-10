@@ -157,6 +157,10 @@ func (s *SecretsV1) UpdateSecret(ctx context.Context, req *pb.UpdateSecretReques
 			updated.Labels = req.Secret.GetLabels()
 		case "versionAliases":
 			updated.VersionAliases = req.Secret.GetVersionAliases()
+		case "versionDestroyTtl":
+			updated.VersionDestroyTtl = req.Secret.GetVersionDestroyTtl()
+		case "tags":
+			updated.Tags = req.Secret.GetTags()
 		case "expireTime":
 			updated.Expiration = &pb.Secret_ExpireTime{
 				ExpireTime: req.Secret.GetExpireTime(),
