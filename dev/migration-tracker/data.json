@@ -3051,11 +3051,11 @@
       "Terraform"
     ],
     "dependencies": [],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
       "mocks": false,
       "controller": false,
       "tests": false

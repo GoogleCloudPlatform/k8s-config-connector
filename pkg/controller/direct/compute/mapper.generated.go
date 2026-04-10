@@ -45,6 +45,60 @@ func AcceleratorConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Accele
 	out.AcceleratorType = in.AcceleratorType
 	return out
 }
+func ComputeNetworkSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Network) *krm.ComputeNetworkSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeNetworkSpec{}
+	// MISSING: IPv4Range
+	out.AutoCreateSubnetworks = in.AutoCreateSubnetworks
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.EnableUlaInternalIPV6 = in.EnableUlaInternalIpv6
+	// MISSING: FirewallPolicy
+	// MISSING: GatewayIPv4
+	// MISSING: ID
+	out.InternalIPV6Range = in.InternalIpv6Range
+	// MISSING: Kind
+	out.Mtu = in.Mtu
+	// MISSING: Name
+	out.NetworkFirewallPolicyEnforcementOrder = in.NetworkFirewallPolicyEnforcementOrder
+	// MISSING: NetworkProfile
+	// MISSING: Params
+	// MISSING: Peerings
+	// MISSING: RoutingConfig
+	// MISSING: SelfLink
+	// MISSING: SelfLinkWithID
+	// MISSING: Subnetworks
+	return out
+}
+func ComputeNetworkSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNetworkSpec) *pb.Network {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Network{}
+	// MISSING: IPv4Range
+	out.AutoCreateSubnetworks = in.AutoCreateSubnetworks
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.EnableUlaInternalIpv6 = in.EnableUlaInternalIPV6
+	// MISSING: FirewallPolicy
+	// MISSING: GatewayIPv4
+	// MISSING: ID
+	out.InternalIpv6Range = in.InternalIPV6Range
+	// MISSING: Kind
+	out.Mtu = in.Mtu
+	// MISSING: Name
+	out.NetworkFirewallPolicyEnforcementOrder = in.NetworkFirewallPolicyEnforcementOrder
+	// MISSING: NetworkProfile
+	// MISSING: Params
+	// MISSING: Peerings
+	// MISSING: RoutingConfig
+	// MISSING: SelfLink
+	// MISSING: SelfLinkWithID
+	// MISSING: Subnetworks
+	return out
+}
 func ComputeNodeTemplateSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeTemplate) *krm.ComputeNodeTemplateSpec {
 	if in == nil {
 		return nil

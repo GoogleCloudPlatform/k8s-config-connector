@@ -34,7 +34,8 @@ go run . generate-types \
   --resource ComputeSubnetwork:Subnetwork \
   --resource ComputeTargetTcpProxy:TargetTcpProxy \
   --resource ComputeTargetHTTPSProxy:TargetHttpsProxy \
-  --resource ComputeNodeTemplate:NodeTemplate
+  --resource ComputeNodeTemplate:NodeTemplate \
+  --include-skipped-output
 
 go run . generate-mapper \
     --multiversion \
