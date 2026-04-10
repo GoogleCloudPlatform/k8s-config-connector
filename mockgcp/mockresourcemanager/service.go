@@ -155,6 +155,7 @@ func (h *stripTrailingSlashHandler) ServeHTTP(w http.ResponseWriter, r *http.Req
                         w.Write(bodyBytes)
                         return
                 }
-        }	r.URL.Path = strings.TrimSuffix(r.URL.Path, "/")
-	h.handler.ServeHTTP(w, r)
-}
+        }
+        r.URL.Path = strings.TrimSuffix(r.URL.Path, "/")
+        h.handler.ServeHTTP(w, r)
+        }
