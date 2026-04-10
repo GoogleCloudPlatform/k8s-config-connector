@@ -292,7 +292,7 @@
 | iam.cnrm.cloud.google.com                     | IAMPolicy                                       | False        | True        | False  | Direct     | True        |
 | iam.cnrm.cloud.google.com                     | IAMPolicyMember                                 | False        | True        | False  | Direct     | True        |
 | iam.cnrm.cloud.google.com                     | IAMServiceAccountKey                            | False        | True        | False  | Terraform  | True        |
-| iam.cnrm.cloud.google.com                     | IAMServiceAccount                               | False        | True        | False  | Terraform  | False       |
+| iam.cnrm.cloud.google.com                     | IAMServiceAccount                               | False        | True        | False  | Terraform  | True        |
 | iam.cnrm.cloud.google.com                     | IAMWorkforcePoolProvider                        | False        | True        | False  | DCL        | False       |
 | iam.cnrm.cloud.google.com                     | IAMWorkforcePool                                | False        | True        | False  | DCL        | False       |
 | iam.cnrm.cloud.google.com                     | IAMWorkloadIdentityPoolProvider                 | False        | True        | False  | DCL        | False       |
