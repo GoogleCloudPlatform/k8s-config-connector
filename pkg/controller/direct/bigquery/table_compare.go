@@ -56,10 +56,14 @@ func policyTagsEqual(a, b *bigquery.TableFieldSchemaPolicyTags) bool {
 	if len(a.Names) != len(b.Names) {
 		return false
 	}
-	sort.Strings(a.Names)
-	sort.Strings(b.Names)
-	for i := range a.Names {
-		if a.Names[i] != b.Names[i] {
+	aNames := make([]string, len(a.Names))
+	copy(aNames, a.Names)
+	bNames := make([]string, len(b.Names))
+	copy(bNames, b.Names)
+	sort.Strings(aNames)
+	sort.Strings(bNames)
+	for i := range aNames {
+		if aNames[i] != bNames[i] {
 			return false
 		}
 	}
@@ -88,78 +92,265 @@ func tableFieldsSchemaEqual(desired, actual []*bigquery.TableFieldSchema, prefix
 		diff.AddField(prefix, desired, actual)
 		return false, nil
 	}
+
+	desiredCopy := make([]*bigquery.TableFieldSchema, len(desired))
+	copy(desiredCopy, desired)
+	desired = desiredCopy
+
+	actualCopy := make([]*bigquery.TableFieldSchema, len(actual))
+	copy(actualCopy, actual)
+	actual = actualCopy
+
 	// The fields from API can be in a different order.
 	// Sort by name before comparing.
 	sortSchemaFields(desired)
 	sortSchemaFields(actual)
+	equal := true
 	for i := range desired {
 		fieldName := desired[i].Name
 		fieldPrefix := fmt.Sprintf("%s[%s]", prefix, fieldName)
 		if !reflect.DeepEqual(desired[i].Categories, actual[i].Categories) {
 			diff.AddField(fieldPrefix+".categories", desired[i].Categories, actual[i].Categories)
-			return false, nil
+			equal = false
 		}
 		if !reflect.DeepEqual(desired[i].Collation, actual[i].Collation) {
 			diff.AddField(fieldPrefix+".collation", desired[i].Collation, actual[i].Collation)
-			return false, nil
+			equal = false
 		}
 		if !reflect.DeepEqual(desired[i].DefaultValueExpression, actual[i].DefaultValueExpression) {
 			diff.AddField(fieldPrefix+".default_value_expression", desired[i].DefaultValueExpression, actual[i].DefaultValueExpression)
-			return false, nil
+			equal = false
 		}
 		if !reflect.DeepEqual(desired[i].Description, actual[i].Description) {
 			diff.AddField(fieldPrefix+".description", desired[i].Description, actual[i].Description)
-			return false, nil
+			equal = false
 		}
 		if !reflect.DeepEqual(desired[i].ForeignTypeDefinition, actual[i].ForeignTypeDefinition) {
 			diff.AddField(fieldPrefix+".foreign_type_definition", desired[i].ForeignTypeDefinition, actual[i].ForeignTypeDefinition)
-			return false, nil
+			equal = false
 		}
 		if !reflect.DeepEqual(desired[i].MaxLength, actual[i].MaxLength) {
 			diff.AddField(fieldPrefix+".max_length", desired[i].MaxLength, actual[i].MaxLength)
-			return false, nil
+			equal = false
 		}
 		if !reflect.DeepEqual(desired[i].Mode, actual[i].Mode) {
 			diff.AddField(fieldPrefix+".mode", desired[i].Mode, actual[i].Mode)
-			return false, nil
+			equal = false
 		}
 		if !reflect.DeepEqual(desired[i].Name, actual[i].Name) {
 			diff.AddField(fieldPrefix+".name", desired[i].Name, actual[i].Name)
-			return false, nil
+			equal = false
 		}
 		if !policyTagsEqual(desired[i].PolicyTags, actual[i].PolicyTags) {
 			diff.AddField(fieldPrefix+".policy_tags", desired[i].PolicyTags, actual[i].PolicyTags)
-			return false, nil
+			equal = false
 		}
 		if !reflect.DeepEqual(desired[i].Precision, actual[i].Precision) {
 			diff.AddField(fieldPrefix+".precision", desired[i].Precision, actual[i].Precision)
-			return false, nil
+			equal = false
 		}
 		if !reflect.DeepEqual(desired[i].RangeElementType, actual[i].RangeElementType) {
 			diff.AddField(fieldPrefix+".range_element_type", desired[i].RangeElementType, actual[i].RangeElementType)
-			return false, nil
+			equal = false
 		}
 		if !reflect.DeepEqual(desired[i].RoundingMode, actual[i].RoundingMode) {
 			diff.AddField(fieldPrefix+".rounding_mode", desired[i].RoundingMode, actual[i].RoundingMode)
-			return false, nil
+			equal = false
 		}
 		if !reflect.DeepEqual(desired[i].Scale, actual[i].Scale) {
 			diff.AddField(fieldPrefix+".scale", desired[i].Scale, actual[i].Scale)
-			return false, nil
+			equal = false
 		}
 		if !reflect.DeepEqual(desired[i].Type, actual[i].Type) {
 			diff.AddField(fieldPrefix+".type", desired[i].Type, actual[i].Type)
-			return false, nil
+			equal = false
 		}
-		eq, err := tableFieldsSchemaEqual(desired[i].Fields, actual[i].Fields, fieldPrefix+".fields", diff)
+		fieldsEqual, err := tableFieldsSchemaEqual(desired[i].Fields, actual[i].Fields, fieldPrefix+".fields", diff)
 		if err != nil {
 			return false, err
 		}
-		if !eq {
-			return false, nil
+		if !fieldsEqual {
+			equal = false
 		}
 	}
-	return true, nil
+	return equal, nil
+}
+
+func avroOptionsEq(a, b *bigquery.AvroOptions) bool {
+	if a == nil && b == nil {
+		return true
+	}
+	if a == nil || b == nil {
+		return false
+	}
+	return a.UseAvroLogicalTypes == b.UseAvroLogicalTypes
+}
+
+func clusteringEq(a, b *bigquery.Clustering) bool {
+	if a == nil && b == nil {
+		return true
+	}
+	if a == nil || b == nil {
+		return false
+	}
+	return reflect.DeepEqual(a.Fields, b.Fields)
+}
+
+func csvOptionsEq(a, b *bigquery.CsvOptions) bool {
+	if a == nil && b == nil {
+		return true
+	}
+	// Defaults from mapper
+	aFieldDelimiter := ","
+	if a != nil && a.FieldDelimiter != "" {
+		aFieldDelimiter = a.FieldDelimiter
+	}
+	bFieldDelimiter := ","
+	if b != nil && b.FieldDelimiter != "" {
+		bFieldDelimiter = b.FieldDelimiter
+	}
+	if aFieldDelimiter != bFieldDelimiter {
+		return false
+	}
+
+	aSkipLeadingRows := int64(0)
+	if a != nil {
+		aSkipLeadingRows = a.SkipLeadingRows
+	}
+	bSkipLeadingRows := int64(0)
+	if b != nil {
+		bSkipLeadingRows = b.SkipLeadingRows
+	}
+	if aSkipLeadingRows != bSkipLeadingRows {
+		return false
+	}
+
+	aQuote := ""
+	if a != nil && a.Quote != nil {
+		aQuote = *a.Quote
+	}
+	bQuote := ""
+	if b != nil && b.Quote != nil {
+		bQuote = *b.Quote
+	}
+	if aQuote != bQuote {
+		return false
+	}
+
+	aAllowQuotedNewlines := false
+	if a != nil {
+		aAllowQuotedNewlines = a.AllowQuotedNewlines
+	}
+	bAllowQuotedNewlines := false
+	if b != nil {
+		bAllowQuotedNewlines = b.AllowQuotedNewlines
+	}
+	if aAllowQuotedNewlines != bAllowQuotedNewlines {
+		return false
+	}
+
+	aAllowJaggedRows := false
+	if a != nil {
+		aAllowJaggedRows = a.AllowJaggedRows
+	}
+	bAllowJaggedRows := false
+	if b != nil {
+		bAllowJaggedRows = b.AllowJaggedRows
+	}
+	if aAllowJaggedRows != bAllowJaggedRows {
+		return false
+	}
+
+	aEncoding := "UTF8"
+	if a != nil && a.Encoding != "" {
+		aEncoding = a.Encoding
+	}
+	bEncoding := "UTF8"
+	if b != nil && b.Encoding != "" {
+		bEncoding = b.Encoding
+	}
+	if aEncoding != bEncoding {
+		return false
+	}
+
+	return true
+}
+
+func encryptionConfigurationEq(a, b *bigquery.EncryptionConfiguration) bool {
+	if a == nil && b == nil {
+		return true
+	}
+	if a == nil {
+		return b.KmsKeyName == ""
+	}
+	if b == nil {
+		return a.KmsKeyName == ""
+	}
+	return a.KmsKeyName == b.KmsKeyName
+}
+
+func googleSheetsOptionsEq(a, b *bigquery.GoogleSheetsOptions) bool {
+	if a == nil && b == nil {
+		return true
+	}
+	if a == nil || b == nil {
+		return false
+	}
+	return a.Range == b.Range && a.SkipLeadingRows == b.SkipLeadingRows
+}
+
+func hivePartitioningOptionsEq(a, b *bigquery.HivePartitioningOptions) bool {
+	if a == nil && b == nil {
+		return true
+	}
+	if a == nil || b == nil {
+		return false
+	}
+	return a.Mode == b.Mode && a.RequirePartitionFilter == b.RequirePartitionFilter
+}
+
+func jsonOptionsEq(a, b *bigquery.JsonOptions) bool {
+	if a == nil && b == nil {
+		return true
+	}
+	aEncoding := "UTF8"
+	if a != nil && a.Encoding != "" {
+		aEncoding = a.Encoding
+	}
+	bEncoding := "UTF8"
+	if b != nil && b.Encoding != "" {
+		bEncoding = b.Encoding
+	}
+	return aEncoding == bEncoding
+}
+
+func parquetOptionsEq(a, b *bigquery.ParquetOptions) bool {
+	if a == nil && b == nil {
+		return true
+	}
+	if a == nil || b == nil {
+		return false
+	}
+	return a.EnumAsString == b.EnumAsString && a.EnableListInference == b.EnableListInference
+}
+
+func rangePartitioningEq(a, b *bigquery.RangePartitioning) bool {
+	if a == nil && b == nil {
+		return true
+	}
+	if a == nil || b == nil {
+		return false
+	}
+	if a.Field != b.Field {
+		return false
+	}
+	if a.Range == nil && b.Range == nil {
+		return true
+	}
+	if a.Range == nil || b.Range == nil {
+		return false
+	}
+	return a.Range.End == b.Range.End && a.Range.Interval == b.Range.Interval && a.Range.Start == b.Range.Start
 }
 
 func externalDataConfigurationEqual(a, b *bigquery.ExternalDataConfiguration, prefix string, diff *structuredreporting.Diff) (bool, error) {
@@ -170,66 +361,81 @@ func externalDataConfigurationEqual(a, b *bigquery.ExternalDataConfiguration, pr
 		diff.AddField(prefix, a, b)
 		return false, nil
 	}
-	if !reflect.DeepEqual(a.Autodetect, b.Autodetect) {
+
+	equal := true
+	if a.Autodetect != b.Autodetect {
 		diff.AddField(prefix+".autodetect", a.Autodetect, b.Autodetect)
-		return false, nil
+		equal = false
 	}
-	if !reflect.DeepEqual(a.AvroOptions, b.AvroOptions) {
+	if !avroOptionsEq(a.AvroOptions, b.AvroOptions) {
 		diff.AddField(prefix+".avro_options", a.AvroOptions, b.AvroOptions)
-		return false, nil
+		equal = false
 	}
-	if !reflect.DeepEqual(a.Compression, b.Compression) {
+
+	aCompression := "NONE"
+	if a.Compression != "" {
+		aCompression = a.Compression
+	}
+	bCompression := "NONE"
+	if b.Compression != "" {
+		bCompression = b.Compression
+	}
+	if aCompression != bCompression {
 		diff.AddField(prefix+".compression", a.Compression, b.Compression)
-		return false, nil
+		equal = false
 	}
-	if !reflect.DeepEqual(a.ConnectionId, b.ConnectionId) {
+
+	if a.ConnectionId != b.ConnectionId {
 		diff.AddField(prefix+".connection_id", a.ConnectionId, b.ConnectionId)
-		return false, nil
+		equal = false
 	}
-	if !reflect.DeepEqual(a.CsvOptions, b.CsvOptions) {
+	if !csvOptionsEq(a.CsvOptions, b.CsvOptions) {
 		diff.AddField(prefix+".csv_options", a.CsvOptions, b.CsvOptions)
-		return false, nil
+		equal = false
 	}
-	if !reflect.DeepEqual(a.GoogleSheetsOptions, b.GoogleSheetsOptions) {
+	if !googleSheetsOptionsEq(a.GoogleSheetsOptions, b.GoogleSheetsOptions) {
 		diff.AddField(prefix+".google_sheets_options", a.GoogleSheetsOptions, b.GoogleSheetsOptions)
-		return false, nil
+		equal = false
 	}
-	if !reflect.DeepEqual(a.HivePartitioningOptions, b.HivePartitioningOptions) {
+	if !hivePartitioningOptionsEq(a.HivePartitioningOptions, b.HivePartitioningOptions) {
 		diff.AddField(prefix+".hive_partitioning_options", a.HivePartitioningOptions, b.HivePartitioningOptions)
-		return false, nil
+		equal = false
 	}
-	if !reflect.DeepEqual(a.IgnoreUnknownValues, b.IgnoreUnknownValues) {
+	if a.IgnoreUnknownValues != b.IgnoreUnknownValues {
 		diff.AddField(prefix+".ignore_unknown_values", a.IgnoreUnknownValues, b.IgnoreUnknownValues)
-		return false, nil
+		equal = false
 	}
-	if !reflect.DeepEqual(a.JsonOptions, b.JsonOptions) {
+	if !jsonOptionsEq(a.JsonOptions, b.JsonOptions) {
 		diff.AddField(prefix+".json_options", a.JsonOptions, b.JsonOptions)
-		return false, nil
+		equal = false
 	}
-	if !reflect.DeepEqual(a.MaxBadRecords, b.MaxBadRecords) {
+	if a.MaxBadRecords != b.MaxBadRecords {
 		diff.AddField(prefix+".max_bad_records", a.MaxBadRecords, b.MaxBadRecords)
-		return false, nil
+		equal = false
 	}
-	if !reflect.DeepEqual(a.MetadataCacheMode, b.MetadataCacheMode) {
+	if a.MetadataCacheMode != b.MetadataCacheMode {
 		diff.AddField(prefix+".metadata_cache_mode", a.MetadataCacheMode, b.MetadataCacheMode)
-		return false, nil
+		equal = false
 	}
-	if !reflect.DeepEqual(a.ParquetOptions, b.ParquetOptions) {
+	if !parquetOptionsEq(a.ParquetOptions, b.ParquetOptions) {
 		diff.AddField(prefix+".parquet_options", a.ParquetOptions, b.ParquetOptions)
-		return false, nil
+		equal = false
 	}
-	if !reflect.DeepEqual(a.SourceFormat, b.SourceFormat) {
+	if a.SourceFormat != b.SourceFormat {
 		diff.AddField(prefix+".source_format", a.SourceFormat, b.SourceFormat)
-		return false, nil
+		equal = false
 	}
 	if !reflect.DeepEqual(a.SourceUris, b.SourceUris) {
 		diff.AddField(prefix+".source_uris", a.SourceUris, b.SourceUris)
-		return false, nil
+		equal = false
 	}
 
-	equal, err := tableSchemaEq(a.Schema, b.Schema, prefix+".schema", diff)
+	schemaEqual, err := tableSchemaEq(a.Schema, b.Schema, prefix+".schema", diff)
 	if err != nil {
 		return false, err
+	}
+	if !schemaEqual {
+		equal = false
 	}
 	return equal, nil
 }
@@ -242,27 +448,38 @@ func materializedViewEq(a, b *bigquery.MaterializedViewDefinition, prefix string
 		diff.AddField(prefix, a, b)
 		return false
 	}
-	if !reflect.DeepEqual(a.AllowNonIncrementalDefinition, b.AllowNonIncrementalDefinition) {
+	equal := true
+	if a.AllowNonIncrementalDefinition != b.AllowNonIncrementalDefinition {
 		diff.AddField(prefix+".allow_non_incremental_definition", a.AllowNonIncrementalDefinition, b.AllowNonIncrementalDefinition)
-		return false
+		equal = false
 	}
-	if !reflect.DeepEqual(a.EnableRefresh, b.EnableRefresh) {
+
+	if a.EnableRefresh != b.EnableRefresh {
 		diff.AddField(prefix+".enable_refresh", a.EnableRefresh, b.EnableRefresh)
-		return false
+		equal = false
 	}
-	if !reflect.DeepEqual(a.Query, b.Query) {
+	if a.Query != b.Query {
 		diff.AddField(prefix+".query", a.Query, b.Query)
-		return false
+		equal = false
 	}
-	if !reflect.DeepEqual(a.MaxStaleness, b.MaxStaleness) {
+	if a.MaxStaleness != b.MaxStaleness {
 		diff.AddField(prefix+".max_staleness", a.MaxStaleness, b.MaxStaleness)
-		return false
+		equal = false
 	}
-	if !reflect.DeepEqual(a.RefreshIntervalMs, b.RefreshIntervalMs) {
+
+	aRefreshIntervalMs := int64(1800000)
+	if a.RefreshIntervalMs != 0 {
+		aRefreshIntervalMs = a.RefreshIntervalMs
+	}
+	bRefreshIntervalMs := int64(1800000)
+	if b.RefreshIntervalMs != 0 {
+		bRefreshIntervalMs = b.RefreshIntervalMs
+	}
+	if aRefreshIntervalMs != bRefreshIntervalMs {
 		diff.AddField(prefix+".refresh_interval_ms", a.RefreshIntervalMs, b.RefreshIntervalMs)
-		return false
+		equal = false
 	}
-	return true
+	return equal
 }
 
 func tableSchemaEq(a, b *bigquery.TableSchema, prefix string, diff *structuredreporting.Diff) (bool, error) {
@@ -284,74 +501,172 @@ func viewEq(a, b *bigquery.ViewDefinition, prefix string, diff *structuredreport
 		diff.AddField(prefix, a, b)
 		return false
 	}
-	if !reflect.DeepEqual(a.Query, b.Query) {
+	equal := true
+	if a.Query != b.Query {
 		diff.AddField(prefix+".query", a.Query, b.Query)
+		equal = false
+	}
+	if a.UseLegacySql != b.UseLegacySql {
+		diff.AddField(prefix+".use_legacy_sql", a.UseLegacySql, b.UseLegacySql)
+		equal = false
+	}
+	return equal
+}
+
+func labelsEqual(a, b map[string]string) bool {
+	if len(a) != len(b) {
 		return false
 	}
-	if !reflect.DeepEqual(a.UseLegacySql, b.UseLegacySql) {
-		diff.AddField(prefix+".use_legacy_sql", a.UseLegacySql, b.UseLegacySql)
-		return false
+	for k, v := range a {
+		if bv, ok := b[k]; !ok || v != bv {
+			return false
+		}
 	}
 	return true
+}
+
+func tableConstraintsEq(a, b *bigquery.TableConstraints, prefix string, diff *structuredreporting.Diff) bool {
+	if a == nil && b == nil {
+		return true
+	}
+	if a == nil || b == nil {
+		diff.AddField(prefix, a, b)
+		return false
+	}
+	equal := true
+	if !reflect.DeepEqual(a.PrimaryKey, b.PrimaryKey) {
+		diff.AddField(prefix+".primary_key", a.PrimaryKey, b.PrimaryKey)
+		equal = false
+	}
+
+	if len(a.ForeignKeys) != len(b.ForeignKeys) {
+		diff.AddField(prefix+".foreign_keys", a.ForeignKeys, b.ForeignKeys)
+		return false
+	}
+
+	aForeignKeys := make([]*bigquery.TableConstraintsForeignKeys, len(a.ForeignKeys))
+	copy(aForeignKeys, a.ForeignKeys)
+	sort.Slice(aForeignKeys, func(i, j int) bool {
+		return aForeignKeys[i].Name < aForeignKeys[j].Name
+	})
+
+	bForeignKeys := make([]*bigquery.TableConstraintsForeignKeys, len(b.ForeignKeys))
+	copy(bForeignKeys, b.ForeignKeys)
+	sort.Slice(bForeignKeys, func(i, j int) bool {
+		return bForeignKeys[i].Name < bForeignKeys[j].Name
+	})
+
+	for i := range aForeignKeys {
+		if !reflect.DeepEqual(aForeignKeys[i], bForeignKeys[i]) {
+			diff.AddField(fmt.Sprintf("%s.foreign_keys[%d]", prefix, i), aForeignKeys[i], bForeignKeys[i])
+			equal = false
+		}
+	}
+
+	return equal
+}
+
+func timePartitioningEq(a, b *bigquery.TimePartitioning, prefix string, diff *structuredreporting.Diff) bool {
+	if a == nil && b == nil {
+		return true
+	}
+	if a == nil || b == nil {
+		diff.AddField(prefix, a, b)
+		return false
+	}
+	equal := true
+	if a.ExpirationMs != b.ExpirationMs {
+		diff.AddField(prefix+".expiration_ms", a.ExpirationMs, b.ExpirationMs)
+		equal = false
+	}
+	if a.Field != b.Field {
+		diff.AddField(prefix+".field", a.Field, b.Field)
+		equal = false
+	}
+	if a.RequirePartitionFilter != b.RequirePartitionFilter {
+		diff.AddField(prefix+".require_partition_filter", a.RequirePartitionFilter, b.RequirePartitionFilter)
+		equal = false
+	}
+	if a.Type != b.Type {
+		diff.AddField(prefix+".type", a.Type, b.Type)
+		equal = false
+	}
+	return equal
 }
 
 func TableEq(a, b *bigquery.Table, diff *structuredreporting.Diff) (bool, error) {
 	if a == nil && b == nil {
 		return true, nil
 	}
-	if !reflect.DeepEqual(a.Clustering, b.Clustering) {
-		diff.AddField("clustering", a.Clustering, b.Clustering)
-		return false, nil
-	}
-	if !reflect.DeepEqual(a.Description, b.Description) {
-		diff.AddField("description", a.Description, b.Description)
-		return false, nil
-	}
-	if !reflect.DeepEqual(a.EncryptionConfiguration, b.EncryptionConfiguration) {
-		diff.AddField("encryption_configuration", a.EncryptionConfiguration, b.EncryptionConfiguration)
-		return false, nil
-	}
-	if !reflect.DeepEqual(a.ExpirationTime, b.ExpirationTime) {
-		diff.AddField("expiration_time", a.ExpirationTime, b.ExpirationTime)
-		return false, nil
-	}
-	if !reflect.DeepEqual(a.FriendlyName, b.FriendlyName) {
-		diff.AddField("friendly_name", a.FriendlyName, b.FriendlyName)
-		return false, nil
-	}
-	if !materializedViewEq(a.MaterializedView, b.MaterializedView, "materialized_view", diff) {
-		return false, nil
-	}
-	if !reflect.DeepEqual(a.MaxStaleness, b.MaxStaleness) {
-		diff.AddField("max_staleness", a.MaxStaleness, b.MaxStaleness)
-		return false, nil
-	}
-	if !reflect.DeepEqual(a.RangePartitioning, b.RangePartitioning) {
-		diff.AddField("range_partitioning", a.RangePartitioning, b.RangePartitioning)
-		return false, nil
-	}
-	if !reflect.DeepEqual(a.RequirePartitionFilter, b.RequirePartitionFilter) {
-		diff.AddField("require_partition_filter", a.RequirePartitionFilter, b.RequirePartitionFilter)
-		return false, nil
-	}
-	if !reflect.DeepEqual(a.TableConstraints, b.TableConstraints) {
-		diff.AddField("table_constraints", a.TableConstraints, b.TableConstraints)
+	if a == nil || b == nil {
+		diff.AddField("table", a, b)
 		return false, nil
 	}
 
+	equal := true
+	if !clusteringEq(a.Clustering, b.Clustering) {
+		diff.AddField("clustering", a.Clustering, b.Clustering)
+		equal = false
+	}
+	if a.Description != b.Description {
+		diff.AddField("description", a.Description, b.Description)
+		equal = false
+	}
+	if !encryptionConfigurationEq(a.EncryptionConfiguration, b.EncryptionConfiguration) {
+		diff.AddField("encryption_configuration", a.EncryptionConfiguration, b.EncryptionConfiguration)
+		equal = false
+	}
+	if a.ExpirationTime != b.ExpirationTime {
+		diff.AddField("expiration_time", a.ExpirationTime, b.ExpirationTime)
+		equal = false
+	}
+	if a.FriendlyName != b.FriendlyName {
+		diff.AddField("friendly_name", a.FriendlyName, b.FriendlyName)
+		equal = false
+	}
+	if !materializedViewEq(a.MaterializedView, b.MaterializedView, "materialized_view", diff) {
+		equal = false
+	}
+	if a.MaxStaleness != b.MaxStaleness {
+		diff.AddField("max_staleness", a.MaxStaleness, b.MaxStaleness)
+		equal = false
+	}
+	if !rangePartitioningEq(a.RangePartitioning, b.RangePartitioning) {
+		diff.AddField("range_partitioning", a.RangePartitioning, b.RangePartitioning)
+		equal = false
+	}
+	if a.RequirePartitionFilter != b.RequirePartitionFilter {
+		diff.AddField("require_partition_filter", a.RequirePartitionFilter, b.RequirePartitionFilter)
+		equal = false
+	}
+	if !tableConstraintsEq(a.TableConstraints, b.TableConstraints, "table_constraints", diff) {
+		equal = false
+	}
+	if !timePartitioningEq(a.TimePartitioning, b.TimePartitioning, "time_partitioning", diff) {
+		equal = false
+	}
+
 	if !viewEq(a.View, b.View, "view", diff) {
-		return false, nil
+		equal = false
 	}
-	if !reflect.DeepEqual(a.Labels, b.Labels) {
+	if !labelsEqual(a.Labels, b.Labels) {
 		diff.AddField("labels", a.Labels, b.Labels)
-		return false, nil
+		equal = false
 	}
-	equal, err := tableSchemaEq(a.Schema, b.Schema, "schema", diff)
+	schemaEqual, err := tableSchemaEq(a.Schema, b.Schema, "schema", diff)
 	if err != nil {
 		return false, err
 	}
-	if !equal {
-		return false, nil
+	if !schemaEqual {
+		equal = false
 	}
-	return externalDataConfigurationEqual(a.ExternalDataConfiguration, b.ExternalDataConfiguration, "external_data_configuration", diff)
+	externalDataEqual, err := externalDataConfigurationEqual(a.ExternalDataConfiguration, b.ExternalDataConfiguration, "external_data_configuration", diff)
+	if err != nil {
+		return false, err
+	}
+	if !externalDataEqual {
+		equal = false
+	}
+	return equal, nil
 }
+
