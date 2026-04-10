@@ -122,6 +122,8 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 		return "${exclusionID}"
 	case "forwardingRules":
 		return "${forwardingRuleID}"
+	case "futureReservations":
+		return "${futureReservationID}"
 	case "groups":
 		return "${groupID}"
 	case "jobs":
