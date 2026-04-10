@@ -723,6 +723,8 @@
 [acronyms] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.configId" should be ".spec.configID"
 [acronyms] crd=spannerinstances.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.autoscalingConfig.autoscalingTargets.highPriorityCpuUtilizationPercent" should be ".spec.autoscalingConfig.autoscalingTargets.highPriorityCPUUtilizationPercent"
 [acronyms] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.ipConfiguration.allocatedIpRange" should be ".spec.settings.ipConfiguration.allocatedIPRange"
+[acronyms] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.ipConfiguration.pscConfig[].pscAutoDnsEnabled" should be ".spec.settings.ipConfiguration.pscConfig[].pscAutoDNSEnabled"
+[acronyms] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.ipConfiguration.pscConfig[].pscWriteEndpointDnsEnabled" should be ".spec.settings.ipConfiguration.pscConfig[].pscWriteEndpointDNSEnabled"
 [acronyms] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.ipConfiguration.requireSsl" should be ".spec.settings.ipConfiguration.requireSSL"
 [acronyms] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".status.firstIpAddress" should be ".status.firstIPAddress"
 [acronyms] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".status.privateIpAddress" should be ".status.privateIPAddress"

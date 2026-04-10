@@ -1480,6 +1480,8 @@
 [missing_field] crd=dataflowjobs.dataflow.cnrm.cloud.google.com version=v1beta1: field ".spec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataflowjobs.dataflow.cnrm.cloud.google.com version=v1beta1: field ".spec.region" is not set in unstructured objects
 [missing_field] crd=dataflowjobs.dataflow.cnrm.cloud.google.com version=v1beta1: field ".spec.transformNameMapping" is not set in unstructured objects
+[missing_field] crd=dataformrepositories.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.containingFolder" is not set in unstructured objects
+[missing_field] crd=dataformrepositories.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.teamFolderName" is not set in unstructured objects
 [missing_field] crd=datafusioninstances.datafusion.cnrm.cloud.google.com version=v1beta1: field ".spec.options" is not set in unstructured objects
 [missing_field] crd=datafusioninstances.datafusion.cnrm.cloud.google.com version=v1beta1: field ".spec.version" is not set in unstructured objects
 [missing_field] crd=datafusioninstances.datafusion.cnrm.cloud.google.com version=v1beta1: field ".spec.zone" is not set in unstructured objects
@@ -3323,7 +3325,9 @@
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.authorizedGaeApplications[]" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.crashSafeReplication" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.ipConfiguration.pscConfig[].allowedConsumerProjects[]" is not set in unstructured objects
+[missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.ipConfiguration.pscConfig[].pscAutoDnsEnabled" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.ipConfiguration.pscConfig[].pscEnabled" is not set in unstructured objects
+[missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.ipConfiguration.pscConfig[].pscWriteEndpointDnsEnabled" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.locationPreference.followGaeApplication" is not set in unstructured objects
 [missing_field] crd=sqlusers.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.password.value" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.autoclass.enabled" is not set in unstructured objects
