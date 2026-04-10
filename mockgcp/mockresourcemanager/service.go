@@ -15,6 +15,7 @@
 package mockresourcemanager
 
 import (
+	"io"
 	"context"
 	"net/http"
 	"strings"
@@ -139,6 +140,15 @@ type stripTrailingSlashHandler struct {
 }
 
 func (h *stripTrailingSlashHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" && strings.HasSuffix(r.URL.Path, ":testIamPermissions") {
+		bodyBytes, err := io.ReadAll(r.Body)
+		if err == nil {
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusOK)
+			w.Write(bodyBytes)
+			return
+		}
+	}
 	r.URL.Path = strings.TrimSuffix(r.URL.Path, "/")
 	h.handler.ServeHTTP(w, r)
 }
