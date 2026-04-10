@@ -120,6 +120,54 @@ func (s *vpcAccessService) DeleteConnector(ctx context.Context, req *pb.DeleteCo
 	})
 }
 
+func (s *vpcAccessService) ListConnectors(ctx context.Context, req *pb.ListConnectorsRequest) (*pb.ListConnectorsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListConnectors not implemented")
+}
+
+func (s *vpcAccessService) UpdateConnector(ctx context.Context, req *pb.UpdateConnectorRequest) (*longrunning.Operation, error) {
+	reqObj := req.GetConnector()
+	name, err := s.parseConnectorName(reqObj.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	now := time.Now()
+
+	obj := &pb.Connector{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	// Update fields
+	// Note: In a real implementation we would use update_mask
+	// For mock we can just overwrite the fields that are allowed to be updated.
+	if reqObj.MachineType != "" {
+		obj.MachineType = reqObj.MachineType
+	}
+	if reqObj.MinInstances != 0 {
+		obj.MinInstances = reqObj.MinInstances
+	}
+	if reqObj.MaxInstances != 0 {
+		obj.MaxInstances = reqObj.MaxInstances
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Region)
+	metadata := &pb.OperationMetadata{
+		Method:     "google.cloud.vpcaccess.v1beta1.VpcAccessService.UpdateConnector",
+		CreateTime: timestamppb.New(now),
+		Target:     name.String(),
+	}
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.Now()
+		return obj, nil
+	})
+}
+
 type connectorName struct {
 	Project *projects.ProjectData
 	Region  string
