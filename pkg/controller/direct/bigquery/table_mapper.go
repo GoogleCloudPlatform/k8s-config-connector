@@ -105,6 +105,7 @@ func TimePartitioning_FromProto(mapCtx *direct.MapContext, in *pb.TimePartitioni
 	out.Type = in.Type
 	out.ExpirationMs = direct.LazyPtr(in.ExpirationMs)
 	out.Field = direct.LazyPtr(in.Field)
+	out.RequirePartitionFilter = direct.LazyPtr(in.RequirePartitionFilter)
 	return out
 }
 
@@ -116,6 +117,7 @@ func TimePartitioning_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.TimePart
 	out.Type = in.Type
 	out.ExpirationMs = direct.ValueOf(in.ExpirationMs)
 	out.Field = direct.ValueOf(in.Field)
+	out.RequirePartitionFilter = direct.ValueOf(in.RequirePartitionFilter)
 	return out
 }
 

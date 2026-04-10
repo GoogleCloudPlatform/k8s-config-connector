@@ -220,4 +220,29 @@ func TestTableEq(t *testing.T) {
 			t.Errorf("expected TableEq to return true for default csv options, got false. Diffs: %+v", diff.Fields)
 		}
 	})
+
+	t.Run("require_partition_filter_redundancy", func(t *testing.T) {
+		a := &bigquery.Table{
+			RequirePartitionFilter: true,
+			TimePartitioning: &bigquery.TimePartitioning{
+				RequirePartitionFilter: true,
+			},
+		}
+		b := &bigquery.Table{
+			RequirePartitionFilter: true,
+			TimePartitioning: &bigquery.TimePartitioning{
+				RequirePartitionFilter: false, // mapper sets it to false if not in spec
+			},
+		}
+
+		diff := &structuredreporting.Diff{}
+		eq, err := TableEq(a, b, diff)
+		if err != nil {
+			t.Fatalf("TableEq failed: %v", err)
+		}
+
+		if !eq {
+			t.Errorf("expected TableEq to return true for redundant require_partition_filter, got false. Diffs: %+v", diff.Fields)
+		}
+	})
 }

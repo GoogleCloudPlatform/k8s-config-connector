@@ -583,10 +583,6 @@ func timePartitioningEq(a, b *bigquery.TimePartitioning, prefix string, diff *st
 		diff.AddField(prefix+".field", a.Field, b.Field)
 		equal = false
 	}
-	if a.RequirePartitionFilter != b.RequirePartitionFilter {
-		diff.AddField(prefix+".require_partition_filter", a.RequirePartitionFilter, b.RequirePartitionFilter)
-		equal = false
-	}
 	if a.Type != b.Type {
 		diff.AddField(prefix+".type", a.Type, b.Type)
 		equal = false
@@ -669,4 +665,3 @@ func TableEq(a, b *bigquery.Table, diff *structuredreporting.Diff) (bool, error)
 	}
 	return equal, nil
 }
-
