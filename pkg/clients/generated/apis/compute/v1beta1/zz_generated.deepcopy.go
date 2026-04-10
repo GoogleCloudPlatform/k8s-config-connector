@@ -2966,7 +2966,7 @@ func (in *ComputeHTTPHealthCheckSpec) DeepCopyInto(out *ComputeHTTPHealthCheckSp
 	*out = *in
 	if in.CheckIntervalSec != nil {
 		in, out := &in.CheckIntervalSec, &out.CheckIntervalSec
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Description != nil {
@@ -2976,7 +2976,7 @@ func (in *ComputeHTTPHealthCheckSpec) DeepCopyInto(out *ComputeHTTPHealthCheckSp
 	}
 	if in.HealthyThreshold != nil {
 		in, out := &in.HealthyThreshold, &out.HealthyThreshold
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Host != nil {
@@ -2986,7 +2986,7 @@ func (in *ComputeHTTPHealthCheckSpec) DeepCopyInto(out *ComputeHTTPHealthCheckSp
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.RequestPath != nil {
@@ -3001,12 +3001,12 @@ func (in *ComputeHTTPHealthCheckSpec) DeepCopyInto(out *ComputeHTTPHealthCheckSp
 	}
 	if in.TimeoutSec != nil {
 		in, out := &in.TimeoutSec, &out.TimeoutSec
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.UnhealthyThreshold != nil {
 		in, out := &in.UnhealthyThreshold, &out.UnhealthyThreshold
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	return
