@@ -55,7 +55,7 @@ type ComputeFutureReservationSpec struct {
 	// Setting for enabling or disabling automatic deletion for auto-created reservation. If set to true, auto-created reservations will be deleted at Future Reservation's end time (default) or at user's defined timestamp if any of the [auto_created_reservations_delete_time, auto_created_reservations_duration] values is specified. For keeping auto-created reservation indefinitely, this value should be set to false.
 	// GCP resets this to false in DRAFTING state.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.auto_delete_auto_created_reservations
-	AutoDeleteAutoCreatedReservations *bool `json:"autoDeleteAutoCreatedReservations"`
+	AutoDeleteAutoCreatedReservations *bool `json:"autoDeleteAutoCreatedReservations,omitempty"`
 
 	// If not present, then FR will not deliver a new commitment or update an existing commitment.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.commitment_info
@@ -429,8 +429,9 @@ type FutureReservationTimeWindow struct {
 
 // +kcc:proto=google.cloud.compute.v1beta.ShareSettings
 type ShareSettings struct {
-
-	// TODO: unsupported map type with key string and value message
+	// A map of project id and project config. This is only valid when share_type's value is SPECIFIC_PROJECTS.
+	// +kcc:proto:field=google.cloud.compute.v1beta.ShareSettings.project_map
+	ProjectMap map[string]ShareSettingsProjectConfig `json:"projectMap,omitempty"`
 
 	// A List of Project names to specify consumer projects for this shared-reservation. This is only valid when share_type's value is SPECIFIC_PROJECTS.
 	// +kcc:proto:field=google.cloud.compute.v1beta.ShareSettings.projects

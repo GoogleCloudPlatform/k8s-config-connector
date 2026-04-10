@@ -262,6 +262,17 @@ spec:
               shareSettings:
                 description: List of Projects/Folders to share with.
                 properties:
+                  projectMap:
+                    additionalProperties:
+                      properties:
+                        projectID:
+                          description: The project ID, should be same as the key of
+                            this project config in the parent map.
+                          type: string
+                      type: object
+                    description: A map of project id and project config. This is only
+                      valid when share_type's value is SPECIFIC_PROJECTS.
+                    type: object
                   projects:
                     description: A List of Project names to specify consumer projects
                       for this shared-reservation. This is only valid when share_type's
@@ -391,7 +402,6 @@ spec:
               zone:
                 type: string
             required:
-            - autoDeleteAutoCreatedReservations
             - projectRef
             - zone
             type: object
@@ -512,6 +522,18 @@ spec:
                             description: '[Output Only] The previous share settings
                               of the Future Reservation.'
                             properties:
+                              projectMap:
+                                additionalProperties:
+                                  properties:
+                                    projectID:
+                                      description: The project ID, should be same
+                                        as the key of this project config in the parent
+                                        map.
+                                      type: string
+                                  type: object
+                                description: A map of project id and project config.
+                                  This is only valid when share_type's value is SPECIFIC_PROJECTS.
+                                type: object
                               projects:
                                 description: A List of Project names to specify consumer
                                   projects for this shared-reservation. This is only
