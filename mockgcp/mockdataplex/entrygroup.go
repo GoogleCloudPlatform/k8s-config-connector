@@ -37,7 +37,7 @@ import (
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 
 	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataplex/v1"
+	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 )
 
 // CatalogService implements the CatalogService GRPC service.
