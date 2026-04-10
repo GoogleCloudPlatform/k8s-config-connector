@@ -36,8 +36,8 @@ gen-proto: tools sync-repo
 .PHONY: gen-proto-no-fixup
 gen-proto-no-fixup:
 	PATH=bin/:${PATH} bin/protoc/bin/protoc \
-		-I ./third_party/googleapis \
 		-I ./apis \
+		-I ./third_party/googleapis \
 		--go_out ./generated \
 		--go_opt paths=source_relative \
 		--go-grpc_out ./generated \
@@ -119,12 +119,12 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/documentai/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/filestore/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/functions/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta/*.proto \
-		./third_party/googleapis/mockgcp/cloud/gkehub/policycontroller/v1beta/*.proto \
-		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta/configmanagement/*.proto \
-		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta/metering/*.proto \
-		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta/multiclusteringress/*.proto \
-		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta1/membership.proto \
+		./apis/mockgcp/cloud/gkehub/v1beta/*.proto \
+		./apis/mockgcp/cloud/gkehub/policycontroller/v1beta/*.proto \
+		./apis/mockgcp/cloud/gkehub/v1beta/configmanagement/*.proto \
+		./apis/mockgcp/cloud/gkehub/v1beta/metering/*.proto \
+		./apis/mockgcp/cloud/gkehub/v1beta/multiclusteringress/*.proto \
+		./apis/mockgcp/cloud/gkehub/v1beta1/membership.proto \
 		./third_party/googleapis/mockgcp/cloud/gkemulticloud/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/parametermanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/privilegedaccessmanager/v1/*.proto \
@@ -169,8 +169,8 @@ generate-grpc-for-google-protos:
 	mkdir -p ./generated
 
 	PATH=bin/:${PATH} bin/protoc/bin/protoc \
-		-I ./third_party/googleapis \
 		-I ./apis \
+		-I ./third_party/googleapis \
 		--experimental_allow_proto3_optional \
 		--grpc-gateway_out ./generated \
 		--grpc-gateway_opt logtostderr=true \
