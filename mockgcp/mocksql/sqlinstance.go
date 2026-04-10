@@ -841,32 +841,30 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 		}
 
 		if settings.BackupConfiguration.BackupTier == nil {
-			settings.BackupConfiguration.BackupTier = PtrTo("STANDARD")
-		}
-		// 	if settings.BackupConfiguration.BackupLogEnabled == nil {
+		        settings.BackupConfiguration.BackupTier = PtrTo(pb.BackupConfiguration_STANDARD)
+		}		// 	if settings.BackupConfiguration.BackupLogEnabled == nil {
 		// 		settings.BackupConfiguration.BackupLogEnabled = asRef(true)
 		// 	}
 	}
 
 	if isSqlServer(obj) {
-		if settings.BackupConfiguration.BackupTier == nil {
-			settings.BackupConfiguration.BackupTier = PtrTo("STANDARD")
-		}
-		if settings.IpConfiguration.ServerCertificateRotationMode == nil {
-			settings.IpConfiguration.ServerCertificateRotationMode = PtrTo("SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED")
-		}
-		if settings.ReplicationLagMaxSeconds == nil {
-			settings.ReplicationLagMaxSeconds = PtrTo(int32(31536000))
-		}
-		if obj.IncludeReplicasForMajorVersionUpgrade == nil {
-			obj.IncludeReplicasForMajorVersionUpgrade = PtrTo(false)
-		}
+	        if settings.BackupConfiguration.BackupTier == nil {
+	                settings.BackupConfiguration.BackupTier = PtrTo(pb.BackupConfiguration_STANDARD)
+	        }
+	        if settings.IpConfiguration.ServerCertificateRotationMode == nil {
+	                settings.IpConfiguration.ServerCertificateRotationMode = PtrTo(pb.IpConfiguration_SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED)
+	        }
+	        if settings.ReplicationLagMaxSeconds == nil {
+	                settings.ReplicationLagMaxSeconds = wrapperspb.Int32(31536000)
+	        }
+	        if obj.IncludeReplicasForMajorVersionUpgrade == nil {
+	                obj.IncludeReplicasForMajorVersionUpgrade = wrapperspb.Bool(false)
+	        }
 	}
 
 	if obj.SatisfiesPzi == nil {
-		obj.SatisfiesPzi = PtrTo(true)
-	}
-}
+	        obj.SatisfiesPzi = wrapperspb.Bool(true)
+	}}
 
 func isMysql(obj *pb.DatabaseInstance) bool {
 	return strings.HasPrefix(obj.GetDatabaseVersion().String(), "MYSQL_")

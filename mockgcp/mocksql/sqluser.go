@@ -226,6 +226,5 @@ func populateUserDefaults(obj *pb.User) {
 	}
 
 	if obj.IamStatus == nil {
-		obj.IamStatus = PtrTo("IAM_STATUS_UNSPECIFIED")
-	}
-}
+	        obj.IamStatus = PtrTo(pb.User_IAM_STATUS_UNSPECIFIED)
+	}}
