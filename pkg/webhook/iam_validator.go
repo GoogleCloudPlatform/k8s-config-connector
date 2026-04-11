@@ -92,18 +92,19 @@ func (a *iamValidatorHandler) Handle(_ context.Context, req admission.Request) a
 		isDCLResource := metadata.IsDCLBasedResourceKind(refResourceGVK, a.serviceMetadataLoader)
 		return a.validateIAMPolicyMember(policyMember, isDCLResource)
 	case isIAMAuditConfig(obj):
-	        auditConfig, err := toIAMAuditConfig(obj)
-	        if err != nil {
-	                return admission.Errored(http.StatusInternalServerError, err)
-	        }
-	        refResourceGVK := auditConfig.Spec.ResourceReference.GroupVersionKind()
-	        klog.Infof("Validating IAMAuditConfig for GVK: %v, GroupKind: %v, IsIAMDirect: %v", refResourceGVK, refResourceGVK.GroupKind(), registry.IsIAMDirect(refResourceGVK.GroupKind()))
-	        if refResourceGVK.Kind == "CloudDeployDeliveryPipeline" && refResourceGVK.Group == "clouddeploy.cnrm.cloud.google.com" {
-	                klog.Infof("Bypassing validation for CloudDeployDeliveryPipeline IAMAuditConfig")
-	                return allowedResponse
-	        }
-	        isDCLResource := metadata.IsDCLBasedResourceKind(refResourceGVK, a.serviceMetadataLoader)
-	        if isDCLResource {			return admission.Errored(http.StatusForbidden,
+		auditConfig, err := toIAMAuditConfig(obj)
+		if err != nil {
+			return admission.Errored(http.StatusInternalServerError, err)
+		}
+		refResourceGVK := auditConfig.Spec.ResourceReference.GroupVersionKind()
+		klog.Infof("Validating IAMAuditConfig for GVK: %v, GroupKind: %v, IsIAMDirect: %v", refResourceGVK, refResourceGVK.GroupKind(), registry.IsIAMDirect(refResourceGVK.GroupKind()))
+		if refResourceGVK.Kind == "CloudDeployDeliveryPipeline" && refResourceGVK.Group == "clouddeploy.cnrm.cloud.google.com" {
+			klog.Infof("Bypassing validation for CloudDeployDeliveryPipeline IAMAuditConfig")
+			return allowedResponse
+		}
+		isDCLResource := metadata.IsDCLBasedResourceKind(refResourceGVK, a.serviceMetadataLoader)
+		if isDCLResource {
+			return admission.Errored(http.StatusForbidden,
 				fmt.Errorf("object of GroupVersionKind %v does not have IAM Audit Config support", obj.GroupVersionKind()))
 		}
 		rcs, err := getResourceConfigs(a.smLoader, refResourceGVK)
@@ -185,19 +186,20 @@ func getResourceConfigs(smLoader *servicemappingloader.ServiceMappingLoader, gvk
 }
 
 func (a *iamValidatorHandler) validateIAMPolicy(policy *v1beta1.IAMPolicy, isDCLResource bool) admission.Response {
-        resourceRef := policy.Spec.ResourceReference
-        klog.Infof("Validating IAMPolicy for GVK: %v, GroupKind: %v, IsIAMDirect: %v", resourceRef.GroupVersionKind(), resourceRef.GroupVersionKind().GroupKind(), registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()))
-        if resourceRef.Kind == "CloudDeployDeliveryPipeline" && resourceRef.APIVersion == "clouddeploy.cnrm.cloud.google.com/v1beta1" {
-                klog.Infof("Bypassing validation for CloudDeployDeliveryPipeline IAMPolicy")
-                return allowedResponse
-        }
-        if registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()) {
-                // TODO: Direct IAM resources do not currently support IAMAuditConfigs?
-                if len(policy.Spec.AuditConfigs) > 0 {
-                        return admission.Errored(http.StatusForbidden, fmt.Errorf("GroupVersionKind %v does not support IAM Audit Configs", resourceRef.GroupVersionKind()))
-                }
-                return allowedResponse
-        }	if isDCLResource {
+	resourceRef := policy.Spec.ResourceReference
+	klog.Infof("Validating IAMPolicy for GVK: %v, GroupKind: %v, IsIAMDirect: %v", resourceRef.GroupVersionKind(), resourceRef.GroupVersionKind().GroupKind(), registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()))
+	if resourceRef.Kind == "CloudDeployDeliveryPipeline" && resourceRef.APIVersion == "clouddeploy.cnrm.cloud.google.com/v1beta1" {
+		klog.Infof("Bypassing validation for CloudDeployDeliveryPipeline IAMPolicy")
+		return allowedResponse
+	}
+	if registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()) {
+		// TODO: Direct IAM resources do not currently support IAMAuditConfigs?
+		if len(policy.Spec.AuditConfigs) > 0 {
+			return admission.Errored(http.StatusForbidden, fmt.Errorf("GroupVersionKind %v does not support IAM Audit Configs", resourceRef.GroupVersionKind()))
+		}
+		return allowedResponse
+	}
+	if isDCLResource {
 		return a.dclValidateIAMPolicy(policy)
 	}
 
@@ -210,15 +212,16 @@ func (a *iamValidatorHandler) validateIAMPolicy(policy *v1beta1.IAMPolicy, isDCL
 }
 
 func (a *iamValidatorHandler) validateIAMPartialPolicy(partialPolicy *v1beta1.IAMPartialPolicy, isDCLResource bool) admission.Response {
-        resourceRef := partialPolicy.Spec.ResourceReference
-        klog.Infof("Validating IAMPartialPolicy for GVK: %v, GroupKind: %v, IsIAMDirect: %v", resourceRef.GroupVersionKind(), resourceRef.GroupVersionKind().GroupKind(), registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()))
-        if resourceRef.Kind == "CloudDeployDeliveryPipeline" && resourceRef.APIVersion == "clouddeploy.cnrm.cloud.google.com/v1beta1" {
-                klog.Infof("Bypassing validation for CloudDeployDeliveryPipeline IAMPartialPolicy")
-                return allowedResponse
-        }
-        if registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()) {
-                return allowedResponse
-        }	if isDCLResource {
+	resourceRef := partialPolicy.Spec.ResourceReference
+	klog.Infof("Validating IAMPartialPolicy for GVK: %v, GroupKind: %v, IsIAMDirect: %v", resourceRef.GroupVersionKind(), resourceRef.GroupVersionKind().GroupKind(), registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()))
+	if resourceRef.Kind == "CloudDeployDeliveryPipeline" && resourceRef.APIVersion == "clouddeploy.cnrm.cloud.google.com/v1beta1" {
+		klog.Infof("Bypassing validation for CloudDeployDeliveryPipeline IAMPartialPolicy")
+		return allowedResponse
+	}
+	if registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()) {
+		return allowedResponse
+	}
+	if isDCLResource {
 		return a.dclValidateIAMPartialPolicy(partialPolicy)
 	}
 	// TF-based resource.
@@ -230,20 +233,21 @@ func (a *iamValidatorHandler) validateIAMPartialPolicy(partialPolicy *v1beta1.IA
 }
 
 func (a *iamValidatorHandler) validateIAMPolicyMember(policyMember *v1beta1.IAMPolicyMember, isDCLResource bool) admission.Response {
-        resourceRef := policyMember.Spec.ResourceReference
-        klog.Infof("Validating IAMPolicyMember for GVK: %v, GroupKind: %v, IsIAMDirect: %v", resourceRef.GroupVersionKind(), resourceRef.GroupVersionKind().GroupKind(), registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()))
-        if resourceRef.Kind == "CloudDeployDeliveryPipeline" && resourceRef.APIVersion == "clouddeploy.cnrm.cloud.google.com/v1beta1" {
-                klog.Infof("Bypassing validation for CloudDeployDeliveryPipeline")
-                return allowedResponse
-        }
-        if registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()) {
-                // TODO (b/228226694): IAMPolicyMember does not currently support conditions.
-                if doesIAMPolicyMemberHaveCondition(policyMember) {
-                        return admission.Errored(http.StatusForbidden,
-                                fmt.Errorf("GroupVersionKind %v does not support IAM Conditions in IAM Policy Member", resourceRef.GroupVersionKind()))
-                }
-                return allowedResponse
-        }	if isDCLResource {
+	resourceRef := policyMember.Spec.ResourceReference
+	klog.Infof("Validating IAMPolicyMember for GVK: %v, GroupKind: %v, IsIAMDirect: %v", resourceRef.GroupVersionKind(), resourceRef.GroupVersionKind().GroupKind(), registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()))
+	if resourceRef.Kind == "CloudDeployDeliveryPipeline" && resourceRef.APIVersion == "clouddeploy.cnrm.cloud.google.com/v1beta1" {
+		klog.Infof("Bypassing validation for CloudDeployDeliveryPipeline")
+		return allowedResponse
+	}
+	if registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()) {
+		// TODO (b/228226694): IAMPolicyMember does not currently support conditions.
+		if doesIAMPolicyMemberHaveCondition(policyMember) {
+			return admission.Errored(http.StatusForbidden,
+				fmt.Errorf("GroupVersionKind %v does not support IAM Conditions in IAM Policy Member", resourceRef.GroupVersionKind()))
+		}
+		return allowedResponse
+	}
+	if isDCLResource {
 		return a.dclValidateIAMPolicyMember(policyMember)
 	}
 	// TF-based resource.
