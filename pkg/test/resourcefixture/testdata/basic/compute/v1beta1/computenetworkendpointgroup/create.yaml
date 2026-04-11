@@ -17,6 +17,8 @@ kind: ComputeNetworkEndpointGroup
 metadata:
   name: computenetworkendpointgroup-${uniqueId}
 spec:
+  projectRef:
+    external: "projects/${projectId}"
   networkRef:
     name: default
   subnetworkRef:

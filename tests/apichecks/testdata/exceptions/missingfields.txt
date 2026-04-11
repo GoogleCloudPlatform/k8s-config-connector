@@ -804,7 +804,6 @@
 [missing_field] crd=computemanagedsslcertificates.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.type" is not set in unstructured objects
 [missing_field] crd=computenetworkendpointgroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computenetworkendpointgroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.networkEndpointType" is not set in unstructured objects
-[missing_field] crd=computenetworkendpointgroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computenetworkfirewallpolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computenetworkfirewallpolicyassociations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computenetworkpeerings.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.exportSubnetRoutesWithPublicIp" is not set in unstructured objects
