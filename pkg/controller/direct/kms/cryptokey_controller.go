@@ -183,6 +183,26 @@ func (a *cryptoKeyAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	}
 	desiredPb.Name = a.id.String()
 
+	if a.desired.Spec.Purpose == nil {
+		desiredPb.Purpose = a.actual.Purpose
+	}
+	if a.desired.Spec.ImportOnly == nil {
+		desiredPb.ImportOnly = a.actual.ImportOnly
+	}
+	if a.desired.Spec.DestroyScheduledDuration == nil {
+		desiredPb.DestroyScheduledDuration = a.actual.DestroyScheduledDuration
+	}
+	if a.desired.Spec.VersionTemplate == nil {
+		desiredPb.VersionTemplate = a.actual.VersionTemplate
+	} else {
+		if a.desired.Spec.VersionTemplate.ProtectionLevel == nil && a.actual.VersionTemplate != nil && desiredPb.VersionTemplate != nil {
+			desiredPb.VersionTemplate.ProtectionLevel = a.actual.VersionTemplate.ProtectionLevel
+		}
+		if a.desired.Spec.VersionTemplate.Algorithm == nil && a.actual.VersionTemplate != nil && desiredPb.VersionTemplate != nil {
+			desiredPb.VersionTemplate.Algorithm = a.actual.VersionTemplate.Algorithm
+		}
+	}
+
 	paths := make(sets.Set[string])
 	var err error
 	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
