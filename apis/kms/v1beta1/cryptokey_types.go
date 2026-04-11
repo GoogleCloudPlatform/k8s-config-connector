@@ -34,6 +34,7 @@ type KMSCryptoKeySpec struct {
 	for possible inputs.
 	Default value is "ENCRYPT_DECRYPT". */
 	// +optional
+	// +kubebuilder:default="ENCRYPT_DECRYPT"
 	// +kcc:proto:field=google.cloud.kms.v1.CryptoKey.purpose
 	Purpose *string `json:"purpose,omitempty"`
 
@@ -126,6 +127,8 @@ type CryptoKeyVersionObservedState struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/default-controller=direct"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

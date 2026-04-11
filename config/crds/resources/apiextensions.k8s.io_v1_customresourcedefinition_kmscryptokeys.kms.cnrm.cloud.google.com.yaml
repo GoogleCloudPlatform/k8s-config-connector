@@ -7,8 +7,10 @@ metadata:
     cnrm.cloud.google.com/version: 0.0.0-dev
   creationTimestamp: null
   labels:
+    cnrm.cloud.google.com/default-controller: direct
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
   name: kmscryptokeys.kms.cnrm.cloud.google.com
 spec:
   group: kms.cnrm.cloud.google.com
@@ -99,6 +101,7 @@ spec:
                     type: string
                 type: object
               purpose:
+                default: ENCRYPT_DECRYPT
                 description: Immutable. The immutable purpose of this CryptoKey. See
                   the [purpose reference](https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKeyPurpose)
                   for possible inputs. Default value is "ENCRYPT_DECRYPT".
