@@ -417,7 +417,7 @@
 | serviceusage.cnrm.cloud.google.com            | ServiceIdentity                                 | False        | True        | False  | Terraform  | True        |
 | servicenetworking.cnrm.cloud.google.com       | ServiceNetworkingConnection                     | False        | True        | False  | Terraform  | False       |
 | servicenetworking.cnrm.cloud.google.com       | ServiceNetworkingPeeredDNSDomain                | True         | False       | False  | Direct     | True        |
-| serviceusage.cnrm.cloud.google.com            | Service                                         | False        | True        | False  | Terraform  | False       |
+| serviceusage.cnrm.cloud.google.com            | Service                                         | False        | True        | False  | Terraform  | True        |
 | serviceusage.cnrm.cloud.google.com            | ServiceUsageConsumerQuotaOverride               | True         | False       | False  | Terraform  | False       |
 | sourcerepo.cnrm.cloud.google.com              | SourceRepoRepository                            | False        | True        | False  | Terraform  | False       |
 | spanner.cnrm.cloud.google.com                 | SpannerBackupSchedule                           | True         | True        | False  | Direct     | True        |
