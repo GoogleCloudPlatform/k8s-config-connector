@@ -43,4 +43,5 @@ func repositoryFuzzer() fuzztesting.KRMFuzzer {
 	fuzzer.Unimplemented_NotYetTriaged(".containing_folder")
 	fuzzer.Unimplemented_NotYetTriaged(".team_folder_name")
 
-	return fuzzer}
+	return fuzzer
+}
