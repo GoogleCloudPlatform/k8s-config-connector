@@ -16,7 +16,5 @@
 // +generated:types
 // krm.group: serviceusage.cnrm.cloud.google.com
 // krm.version: v1beta1
-// proto.service: google.api.serviceusage.v1beta1
-// resource: ServiceIdentity:ServiceIdentity
 
 package v1beta1
