@@ -27,8 +27,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
-	gcp "cloud.google.com/go/workstations/apiv1"
 	iampb "cloud.google.com/go/iam/apiv1/iampb"
+	gcp "cloud.google.com/go/workstations/apiv1"
 	pb "cloud.google.com/go/workstations/apiv1/workstationspb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
