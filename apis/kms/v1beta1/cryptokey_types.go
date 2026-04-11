@@ -94,6 +94,9 @@ type KMSCryptoKeyStatus struct {
 	// A unique specifier for the KMSCryptoKey resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
+	// The self link of the created CryptoKey in the format projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{name}.
+	SelfLink *string `json:"selfLink,omitempty"`
+
 	// ObservedState is the state of the resource as most recently observed in GCP.
 	ObservedState *KMSCryptoKeyObservedState `json:"observedState,omitempty"`
 }

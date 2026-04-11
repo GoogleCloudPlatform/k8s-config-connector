@@ -202,6 +202,10 @@ spec:
                         type: string
                     type: object
                 type: object
+              selfLink:
+                description: The self link of the created CryptoKey in the format
+                  projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{name}.
+                type: string
             type: object
         type: object
     served: true

@@ -522,6 +522,11 @@ func (in *KMSCryptoKeyStatus) DeepCopyInto(out *KMSCryptoKeyStatus) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
 	if in.ObservedState != nil {
 		in, out := &in.ObservedState, &out.ObservedState
 		*out = new(KMSCryptoKeyObservedState)

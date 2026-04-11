@@ -64,9 +64,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/eac-keyring-${uniqueId}/cryptoKeys/eac-key-${uniqueId}?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/eac-keyring-${uniqueId}/cryptoKeys/eac-key-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F%24%7BprojectId%7D%2Flocations%2Fus-central1%2FkeyRings%2Feac-keyring-%24%7BuniqueId%7D%2FcryptoKeys%2Feac-key-%24%7BuniqueId%7D
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -88,9 +89,10 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/eac-keyring-${uniqueId}/cryptoKeys?alt=json&cryptoKeyId=eac-key-${uniqueId}&skipInitialVersionCreation=false
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/eac-keyring-${uniqueId}/cryptoKeys?%24alt=json%3Benum-encoding%3Dint&cryptoKeyId=eac-key-${uniqueId}&skipInitialVersionCreation=false
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F%24%7BprojectId%7D%2Flocations%2Fus-central1%2FkeyRings%2Feac-keyring-%24%7BuniqueId%7D%2FcryptoKeys
 
 {
   "labels": {
@@ -139,9 +141,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/eac-keyring-${uniqueId}/cryptoKeys/eac-key-${uniqueId}?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/eac-keyring-${uniqueId}/cryptoKeys/eac-key-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F%24%7BprojectId%7D%2Flocations%2Fus-central1%2FkeyRings%2Feac-keyring-%24%7BuniqueId%7D%2FcryptoKeys%2Feac-key-%24%7BuniqueId%7D
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -632,9 +635,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/eac-keyring-${uniqueId}/cryptoKeys/eac-key-${uniqueId}?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/eac-keyring-${uniqueId}/cryptoKeys/eac-key-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F%24%7BprojectId%7D%2Flocations%2Fus-central1%2FkeyRings%2Feac-keyring-%24%7BuniqueId%7D%2FcryptoKeys%2Feac-key-%24%7BuniqueId%7D
 
 200 OK
 Content-Type: application/json; charset=UTF-8
