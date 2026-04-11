@@ -18,29 +18,61 @@
 
 // +generated:mapper
 // krm.group: apigateway.cnrm.cloud.google.com
-// krm.version: v1beta1
+// krm.version: v1alpha1
 // proto.service: google.cloud.apigateway.v1
 
 package apigateway
 
 import (
 	pb "cloud.google.com/go/apigateway/apiv1/apigatewaypb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigateway/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigateway/v1alpha1"
+	krmapigatewayv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigateway/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func APIGatewayAPIObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.APIGatewayAPIObservedState {
+func APIGatewayAPIObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.APIGatewayAPIObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.APIGatewayAPIObservedState{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: DisplayName
+	// MISSING: ManagedService
+	// MISSING: State
+	return out
+}
+func APIGatewayAPIObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.APIGatewayAPIObservedState) *pb.Api {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Api{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: DisplayName
+	// MISSING: ManagedService
+	// MISSING: State
+	return out
+}
+func APIGatewayAPIObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krmapigatewayv1beta1.APIGatewayAPIObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmapigatewayv1beta1.APIGatewayAPIObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	// MISSING: DisplayName
+	// MISSING: ManagedService
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
 }
-func APIGatewayAPIObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.APIGatewayAPIObservedState) *pb.Api {
+func APIGatewayAPIObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmapigatewayv1beta1.APIGatewayAPIObservedState) *pb.Api {
 	if in == nil {
 		return nil
 	}
@@ -48,26 +80,65 @@ func APIGatewayAPIObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *k
 	out.Name = direct.ValueOf(in.Name)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	// MISSING: DisplayName
+	// MISSING: ManagedService
 	out.State = direct.Enum_ToProto[pb.Api_State](mapCtx, in.State)
 	return out
 }
-func APIGatewayAPISpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.APIGatewayAPISpec {
+func APIGatewayAPISpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.APIGatewayAPISpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.APIGatewayAPISpec{}
-	out.Labels = in.Labels
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.ManagedService = direct.LazyPtr(in.GetManagedService())
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: DisplayName
+	// MISSING: ManagedService
+	// MISSING: State
 	return out
 }
-func APIGatewayAPISpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.APIGatewayAPISpec) *pb.Api {
+func APIGatewayAPISpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.APIGatewayAPISpec) *pb.Api {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Api{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: DisplayName
+	// MISSING: ManagedService
+	// MISSING: State
+	return out
+}
+func APIGatewayAPISpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krmapigatewayv1beta1.APIGatewayAPISpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmapigatewayv1beta1.APIGatewayAPISpec{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.ManagedService = direct.LazyPtr(in.GetManagedService())
+	// MISSING: State
+	return out
+}
+func APIGatewayAPISpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmapigatewayv1beta1.APIGatewayAPISpec) *pb.Api {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Api{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
 	out.Labels = in.Labels
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.ManagedService = direct.ValueOf(in.ManagedService)
+	// MISSING: State
 	return out
 }
