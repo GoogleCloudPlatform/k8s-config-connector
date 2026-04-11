@@ -169,6 +169,7 @@ func (a *cryptoKeyAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	}
 
 	status.ExternalRef = direct.PtrTo(a.id.String())
+	status.SelfLink = direct.PtrTo(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -242,6 +243,7 @@ func (a *cryptoKeyAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	}
 
 	status.ExternalRef = direct.PtrTo(a.id.String())
+	status.SelfLink = direct.PtrTo(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
