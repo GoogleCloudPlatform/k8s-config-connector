@@ -17,6 +17,8 @@ metadata:
   namespace: ${uniqueId}
 spec:
   lifecycleRule: []
+  projectRef:
+    external: ${projectId}
   location: US
   resourceID: storagebucket-sample-${uniqueId}
   softDeletePolicy:

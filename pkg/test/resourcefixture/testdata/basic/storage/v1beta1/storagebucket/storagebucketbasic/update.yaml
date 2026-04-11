@@ -20,6 +20,8 @@ metadata:
     newkey: "newval"
   name: storagebucket-sample-${uniqueId}
 spec:
+  projectRef:
+    external: ${projectId}
   versioning:
     enabled: true
   lifecycleRule: []
