@@ -34,12 +34,18 @@ go run . generate-types \
   --resource ComputeSubnetwork:Subnetwork \
   --resource ComputeTargetTcpProxy:TargetTcpProxy \
   --resource ComputeTargetHTTPSProxy:TargetHttpsProxy \
-  --resource ComputeNodeTemplate:NodeTemplate
+  --resource ComputeNodeTemplate:NodeTemplate \
+  --resource ComputeNetworkEndpointGroup:NetworkEndpointGroup \
+  --include-skipped-output
+
+# networkendpointgroup_types.go is the default name, but we want computenetworkendpointgroup_types.go
+rm -f ${REPO_ROOT}/apis/compute/v1beta1/networkendpointgroup_types.go
 
 go run . generate-mapper \
     --multiversion \
     --service google.cloud.compute.v1 \
-    --api-version compute.cnrm.cloud.google.com/v1beta1
+    --api-version compute.cnrm.cloud.google.com/v1beta1 \
+    --include-skipped-output
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
