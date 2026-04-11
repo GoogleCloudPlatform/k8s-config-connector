@@ -430,7 +430,7 @@
 | storage.cnrm.cloud.google.com                 | StorageNotification                             | False        | True        | False  | Terraform  | False       |
 | storagetransfer.cnrm.cloud.google.com         | StorageTransferAgentPool                        | True         | False       | False  | Terraform  | False       |
 | storagetransfer.cnrm.cloud.google.com         | StorageTransferJob                              | False        | True        | False  | Terraform  | False       |
-| tags.cnrm.cloud.google.com                    | TagsLocationTagBinding                          | True         | True        | False  | Terraform  | True        |
+| tags.cnrm.cloud.google.com                    | TagsLocationTagBinding                          | True         | True        | False  | Direct     | True        |
 | tags.cnrm.cloud.google.com                    | TagsTagBinding                                  | False        | True        | False  | Terraform  | True        |
 | tags.cnrm.cloud.google.com                    | TagsTagKey                                      | False        | True        | False  | Terraform  | True        |
 | tags.cnrm.cloud.google.com                    | TagsTagValue                                    | False        | True        | False  | Terraform  | True        |

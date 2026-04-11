@@ -1754,6 +1754,14 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	},
 	{
 		Group:   "kms.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "KMSCryptoKey",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "kms.cnrm.cloud.google.com",
 		Version: "v1alpha1",
 		Kind:    "KMSCryptoKeyVersion",
 	}: {
