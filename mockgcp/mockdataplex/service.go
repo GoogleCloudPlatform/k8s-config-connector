@@ -66,6 +66,15 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDataplexServiceServer(grpcServer, s.dataplexService)
 	pb.RegisterCatalogServiceServer(grpcServer, s.catalogService)
+
+	// Register under the original service names so that the KCC GRPC client works.
+	dataplexDesc := pb.DataplexService_ServiceDesc
+	dataplexDesc.ServiceName = "google.cloud.dataplex.v1.DataplexService"
+	grpcServer.RegisterService(&dataplexDesc, s.dataplexService)
+
+	catalogDesc := pb.CatalogService_ServiceDesc
+	catalogDesc.ServiceName = "google.cloud.dataplex.v1.CatalogService"
+	grpcServer.RegisterService(&catalogDesc, s.catalogService)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
