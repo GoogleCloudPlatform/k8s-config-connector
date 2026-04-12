@@ -25,12 +25,14 @@ const PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
-	replacements.ReplacePath(".createTime", PlaceholderTimestamp)
-	replacements.ReplacePath(".updateTime", PlaceholderTimestamp)
-	replacements.ReplacePath(".templates[].createTime", PlaceholderTimestamp)
-	replacements.ReplacePath(".templates[].updateTime", PlaceholderTimestamp)
+        if !strings.Contains(url, "modelarmor.googleapis.com") && !strings.Contains(url, "modelarmor.us-central1.rep.googleapis.com") {
+                return
+        }
+        replacements.ReplacePath(".createTime", PlaceholderTimestamp)
+        replacements.ReplacePath(".updateTime", PlaceholderTimestamp)
+        replacements.ReplacePath(".templates[].createTime", PlaceholderTimestamp)
+        replacements.ReplacePath(".templates[].updateTime", PlaceholderTimestamp)
 }
-
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
 	// Only apply normalization if the request is for this service
 	if !strings.Contains(event.URL(), "modelarmor.googleapis.com") && !strings.Contains(event.URL(), "modelarmor.us-central1.rep.googleapis.com") {
