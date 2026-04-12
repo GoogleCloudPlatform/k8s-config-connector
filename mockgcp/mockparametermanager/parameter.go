@@ -131,7 +131,7 @@ func (s *ParameterManagerV1) UpdateParameter(ctx context.Context, req *pb.Update
 	}
 	for _, path := range paths {
 		switch path {
-		case "kms_key":
+		case "kms_key", "kmsKey":
 			if kmsKey := req.Parameter.GetKmsKey(); kmsKey != "" {
 				updated.KmsKey = &kmsKey
 			} else {
