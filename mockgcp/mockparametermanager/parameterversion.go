@@ -18,7 +18,6 @@ import (
 	"context"
 	"strings"
 
-	"cloud.google.com/go/iam/apiv1/iampb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -27,6 +26,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/parametermanager/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 // Lists [ParameterVersions][google.cloud.parametermanager.v1.ParameterVersion] in a given project, location, and parameter.
@@ -37,9 +37,16 @@ func (s *ParameterManagerV1) ListParameterVersions(ctx context.Context, req *pb.
 	}
 
 	res := &pb.ListParameterVersionsResponse{}
-	s.storage.List(ctx, req.Parent, func(obj *pb.ParameterVersion) {
-		res.ParameterVersions = append(res.ParameterVersions, obj)
-	})
+	findPrefix := req.Parent + "/"
+	if err := s.storage.List(ctx, (&pb.ParameterVersion{}).ProtoReflect().Descriptor(), storage.ListOptions{}, func(obj proto.Message) error {
+		paramVersion := obj.(*pb.ParameterVersion)
+		if strings.HasPrefix(paramVersion.Name, findPrefix) {
+			res.ParameterVersions = append(res.ParameterVersions, paramVersion)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
 
 	return res, nil
 }
@@ -65,9 +72,6 @@ func (s *ParameterManagerV1) RenderParameterVersion(ctx context.Context, req *pb
 		ParameterVersion: fqn,
 		Payload:          obj.Payload,
 	}
-
-	res.PolicyMember = &iampb.ResourcePolicyMember{}
-	res.PolicyMember.IamPolicyUidPrincipal = "placeholder value"
 
 	return res, nil
 }

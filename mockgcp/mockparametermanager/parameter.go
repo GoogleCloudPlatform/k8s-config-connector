@@ -27,6 +27,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/parametermanager/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type ParameterManagerV1 struct {
@@ -43,9 +44,16 @@ func (s *ParameterManagerV1) ListParameters(ctx context.Context, req *pb.ListPar
 	}
 
 	res := &pb.ListParametersResponse{}
-	s.storage.List(ctx, req.Parent, func(obj *pb.Parameter) {
-		res.Parameters = append(res.Parameters, obj)
-	})
+	findPrefix := req.Parent + "/"
+	if err := s.storage.List(ctx, (&pb.Parameter{}).ProtoReflect().Descriptor(), storage.ListOptions{}, func(obj proto.Message) error {
+		param := obj.(*pb.Parameter)
+		if strings.HasPrefix(param.Name, findPrefix) {
+			res.Parameters = append(res.Parameters, param)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
 
 	return res, nil
 }
