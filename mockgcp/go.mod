@@ -22,7 +22,6 @@ require (
 	cloud.google.com/go/certificatemanager v1.9.6
 	cloud.google.com/go/clouddms v1.8.8
 	cloud.google.com/go/compute v1.54.0
-	cloud.google.com/go/dataplex v1.28.0
 	cloud.google.com/go/dataproc/v2 v2.19.0
 	cloud.google.com/go/datastream v1.15.1
 	cloud.google.com/go/deploy v1.27.3
