@@ -1,0 +1,240 @@
+POST https://modelarmor.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/templates?alt=json&templateId=test-floor
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "filterConfig": {
+    "maliciousUriFilterSettings": {
+      "filterEnforcement": "ENABLED"
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "filterConfig": {
+    "maliciousUriFilterSettings": {
+      "filterEnforcement": "ENABLED"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/templates/test-floor",
+  "templateMetadata": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://modelarmor.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/templates?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "templates": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "filterConfig": {
+        "maliciousUriFilterSettings": {
+          "filterEnforcement": "ENABLED"
+        }
+      },
+      "name": "projects/${projectId}/locations/us-central1/templates/test-floor",
+      "templateMetadata": {},
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ]
+}
+
+---
+
+GET https://modelarmor.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/floorSetting?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/floorSetting",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://modelarmor.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/floorSetting?alt=json&updateMask=filter_config.malicious_uri_filter_settings
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "filterConfig": {
+    "maliciousUriFilterSettings": {
+      "filterEnforcement": "ENABLED"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/floorSetting",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "filterConfig": {
+    "maliciousUriFilterSettings": {
+      "filterEnforcement": "ENABLED"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/floorSetting",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://modelarmor.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/floorSetting?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "filterConfig": {
+    "maliciousUriFilterSettings": {
+      "filterEnforcement": "ENABLED"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/floorSetting",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+POST https://modelarmor.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/templates/test-floor:sanitizeUserPrompt?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "userPromptData": {
+    "text": "hello"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "sanitizationResult": {
+    "filterMatchState": "NO_MATCH_FOUND",
+    "invocationResult": "SUCCESS"
+  }
+}
+
+---
+
+POST https://modelarmor.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/templates/test-floor:sanitizeModelResponse?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "modelResponseData": {
+    "text": "world"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "sanitizationResult": {
+    "filterMatchState": "NO_MATCH_FOUND",
+    "invocationResult": "SUCCESS"
+  }
+}
+
+---
+
+DELETE https://modelarmor.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/templates/test-floor?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

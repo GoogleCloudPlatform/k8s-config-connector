@@ -29,8 +29,15 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
+
+func init() {
+	mockgcpregistry.Register(func(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
+		return New(env, storage)
+	})
+}
 
 // MockService represents a mocked ModelArmor service.
 type MockService struct {
