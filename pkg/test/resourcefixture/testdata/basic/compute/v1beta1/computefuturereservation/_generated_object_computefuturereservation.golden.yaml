@@ -33,12 +33,13 @@ status:
   observedGeneration: 2
   observedState:
     creationTimestamp: "1970-01-01T00:00:00Z"
-    existingMatchingUsageInfo:
-      count: 0
-      timestamp: "2025-08-04T04:26:32.088Z"
     id: 1111111111111111
     kind: compute#futureReservation
-    procurementStatus: DRAFTING
     selfLink: https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}
     selfLinkWithID: https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}
+    status:
+      existingMatchingUsageInfo:
+        count: 0
+        timestamp: "2025-08-04T04:26:32.088Z"
+      procurementStatus: DRAFTING
     zone: https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a

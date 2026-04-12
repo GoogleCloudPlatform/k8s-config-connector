@@ -717,7 +717,7 @@ spec:
                         type: string
                       specificSkuProperties:
                         properties:
-                          sourceInstanceTemplateId:
+                          sourceInstanceTemplateID:
                             description: ID of the instance template used to populate
                               the Future Reservation properties.
                             type: string

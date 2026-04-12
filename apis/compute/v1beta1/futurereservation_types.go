@@ -418,7 +418,7 @@ type FutureReservationStatusLastKnownGoodStateFutureReservationSpecs struct {
 type FutureReservationStatusSpecificSkuProperties struct {
 	// ID of the instance template used to populate the Future Reservation properties.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatusSpecificSKUProperties.source_instance_template_id
-	SourceInstanceTemplateID *string `json:"sourceInstanceTemplateId,omitempty"`
+	SourceInstanceTemplateID *string `json:"sourceInstanceTemplateID,omitempty"`
 }
 
 // +kcc:proto=google.cloud.compute.v1beta.FutureReservationTimeWindow

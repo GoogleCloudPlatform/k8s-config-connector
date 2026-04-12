@@ -29,3 +29,9 @@ spec:
   timeWindow:
     startTime: 2026-12-01T07:00:00Z
     endTime: 2026-12-31T07:00:00Z
+    duration:
+      seconds: 2592000
+  aggregateReservation:
+    inUseResources:
+    - accelerator:
+        acceleratorCount: 1

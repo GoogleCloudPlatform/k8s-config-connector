@@ -59,11 +59,10 @@ func computeFutureReservationFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".kind")
 	f.StatusFields.Insert(".self_link")
 	f.StatusFields.Insert(".self_link_with_id")
-	f.StatusFields.Insert(".specific_sku_properties")
+	f.StatusFields.Insert(".status")
 	f.StatusFields.Insert(".zone")
 
 	f.UnimplementedFields.Insert(".name")
-	f.UnimplementedFields.Insert(".status")
 	f.UnimplementedFields.Insert(".share_settings.project_map")
 
 	f.Unimplemented_NotYetTriaged(".protection_tier")

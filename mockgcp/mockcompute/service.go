@@ -97,6 +97,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pbv1beta.RegisterRegionOperationsServer(grpcServer, &RegionalOperationsV1beta{MockService: s})
 	pbv1beta.RegisterZoneOperationsServer(grpcServer, &ZonalOperationsV1beta{MockService: s})
 	pbv1beta.RegisterGlobalOperationsServer(grpcServer, &GlobalOperationsV1beta{MockService: s})
+	pbv1beta.RegisterGlobalOrganizationOperationsServer(grpcServer, &GlobalOrganizationOperationsV1beta{MockService: s})
 
 	pb.RegisterNodeGroupsServer(grpcServer, &NodeGroupsV1{MockService: s})
 	pb.RegisterNodeTemplatesServer(grpcServer, &NodeTemplatesV1{MockService: s})
@@ -251,6 +252,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 	if err := pbv1beta.RegisterGlobalOperationsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pbv1beta.RegisterGlobalOrganizationOperationsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 	if err := pb.RegisterGlobalOperationsHandler(ctx, mux.ServeMux, conn); err != nil {

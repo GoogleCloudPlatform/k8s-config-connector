@@ -268,6 +268,21 @@ func (s *ZonalOperationsV1beta) Get(ctx context.Context, req *pbv1beta.GetZoneOp
 	return lro, nil
 }
 
+type GlobalOrganizationOperationsV1beta struct {
+	*MockService
+	pbv1beta.UnimplementedGlobalOrganizationOperationsServer
+}
+
+func (s *GlobalOrganizationOperationsV1beta) Get(ctx context.Context, req *pbv1beta.GetGlobalOrganizationOperationRequest) (*pbv1beta.Operation, error) {
+	fqn := s.globalOrganizationOperationFQN(req.Operation)
+	lro, err := s.getOperationV1beta(ctx, fqn)
+	if err != nil {
+		return nil, err
+	}
+
+	return lro, nil
+}
+
 func (s *computeOperations) startZonalLRO(ctx context.Context, projectID string, zone string, op *pbv1beta.Operation, callback func() (proto.Message, error)) (*pbv1beta.Operation, error) {
 	now := time.Now()
 	millis := now.UnixMilli()
