@@ -73,12 +73,7 @@ func AllocationAggregateReservationReservedResourceInfo_ToProto(mapCtx *direct.M
 		return nil
 	}
 	out := &pb.AllocationAggregateReservationReservedResourceInfo{}
-	if oneof := AllocationAggregateReservationReservedResourceInfoAccelerator_ToProto(mapCtx, in.Accelerator); oneof != nil {
-		out.Accelerator = &pb.AllocationAggregateReservationReservedResourceInfoAccelerator{
-			AcceleratorCount: oneof.AcceleratorCount,
-			AcceleratorType:  oneof.AcceleratorType,
-		}
-	}
+	out.Accelerator = AllocationAggregateReservationReservedResourceInfoAccelerator_ToProto(mapCtx, in.Accelerator)
 	return out
 }
 func AllocationAggregateReservationReservedResourceInfoAccelerator_FromProto(mapCtx *direct.MapContext, in *pb.AllocationAggregateReservationReservedResourceInfoAccelerator) *krmv1beta1.AllocationAggregateReservationReservedResourceInfoAccelerator {
@@ -194,20 +189,7 @@ func ComputeFutureReservationObservedState_FromProto(mapCtx *direct.MapContext, 
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithID = in.SelfLinkWithId
 	out.Zone = in.Zone
-
-	status := in.GetStatus()
-	if status != nil {
-		out.Status = &krmv1beta1.FutureReservationStatusObservedState{}
-		out.Status.AmendmentStatus = status.AmendmentStatus
-		out.Status.AutoCreatedReservations = status.AutoCreatedReservations
-		out.Status.ExistingMatchingUsageInfo = FutureReservationStatusExistingMatchingUsageInfo_FromProto(mapCtx, status.GetExistingMatchingUsageInfo())
-		out.Status.FulfilledCount = status.FulfilledCount
-		out.Status.LastKnownGoodState = FutureReservationStatusLastKnownGoodState_FromProto(mapCtx, status.GetLastKnownGoodState())
-		out.Status.LockTime = status.LockTime
-		out.Status.ProcurementStatus = status.ProcurementStatus
-		out.Status.SpecificSkuProperties = FutureReservationStatusSpecificSkuProperties_FromProto(mapCtx, status.GetSpecificSkuProperties())
-	}
-
+	out.Status = FutureReservationStatusObservedState_FromProto(mapCtx, in.GetStatus())
 	return out
 }
 func ComputeFutureReservationObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.ComputeFutureReservationObservedState) *pb.FutureReservation {
@@ -221,19 +203,7 @@ func ComputeFutureReservationObservedState_ToProto(mapCtx *direct.MapContext, in
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithId = in.SelfLinkWithID
 	out.Zone = in.Zone
-
-	if in.Status != nil {
-		out.Status = &pb.FutureReservationStatus{}
-		out.Status.AmendmentStatus = in.Status.AmendmentStatus
-		out.Status.AutoCreatedReservations = in.Status.AutoCreatedReservations
-		out.Status.ExistingMatchingUsageInfo = FutureReservationStatusExistingMatchingUsageInfo_ToProto(mapCtx, in.Status.ExistingMatchingUsageInfo)
-		out.Status.FulfilledCount = in.Status.FulfilledCount
-		out.Status.LastKnownGoodState = FutureReservationStatusLastKnownGoodState_ToProto(mapCtx, in.Status.LastKnownGoodState)
-		out.Status.LockTime = in.Status.LockTime
-		out.Status.ProcurementStatus = in.Status.ProcurementStatus
-		out.Status.SpecificSkuProperties = FutureReservationStatusSpecificSkuProperties_ToProto(mapCtx, in.Status.SpecificSkuProperties)
-	}
-
+	out.Status = FutureReservationStatusObservedState_ToProto(mapCtx, in.Status)
 	return out
 }
 func ComputeFutureReservationSpec_FromProto(mapCtx *direct.MapContext, in *pb.FutureReservation) *krmv1beta1.ComputeFutureReservationSpec {
@@ -258,7 +228,6 @@ func ComputeFutureReservationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Fu
 	out.ShareSettings = ShareSettings_FromProto(mapCtx, in.GetShareSettings())
 	out.SpecificReservationRequired = in.SpecificReservationRequired
 	out.SpecificSkuProperties = FutureReservationSpecificSkuProperties_FromProto(mapCtx, in.GetSpecificSkuProperties())
-	// MISSING: Status
 	out.TimeWindow = FutureReservationTimeWindow_FromProto(mapCtx, in.GetTimeWindow())
 	return out
 }
@@ -267,29 +236,11 @@ func ComputeFutureReservationSpec_ToProto(mapCtx *direct.MapContext, in *krmv1be
 		return nil
 	}
 	out := &pb.FutureReservation{}
-	if oneof := AllocationAggregateReservation_ToProto(mapCtx, in.AggregateReservation); oneof != nil {
-		out.AggregateReservation = &pb.AllocationAggregateReservation{
-			InUseResources:    oneof.InUseResources,
-			ReservedResources: oneof.ReservedResources,
-			VmFamily:          oneof.VmFamily,
-			WorkloadType:      oneof.WorkloadType,
-		}
-	}
+	out.AggregateReservation = AllocationAggregateReservation_ToProto(mapCtx, in.AggregateReservation)
 	out.AutoCreatedReservationsDeleteTime = in.AutoCreatedReservationsDeleteTime
-	if oneof := Duration_ToProto(mapCtx, in.AutoCreatedReservationsDuration); oneof != nil {
-		out.AutoCreatedReservationsDuration = &pb.Duration{
-			Nanos:   oneof.Nanos,
-			Seconds: oneof.Seconds,
-		}
-	}
+	out.AutoCreatedReservationsDuration = Duration_ToProto(mapCtx, in.AutoCreatedReservationsDuration)
 	out.AutoDeleteAutoCreatedReservations = in.AutoDeleteAutoCreatedReservations
-	if oneof := FutureReservationCommitmentInfo_ToProto(mapCtx, in.CommitmentInfo); oneof != nil {
-		out.CommitmentInfo = &pb.FutureReservationCommitmentInfo{
-			CommitmentName:          oneof.CommitmentName,
-			CommitmentPlan:          oneof.CommitmentPlan,
-			PreviousCommitmentTerms: oneof.PreviousCommitmentTerms,
-		}
-	}
+	out.CommitmentInfo = FutureReservationCommitmentInfo_ToProto(mapCtx, in.CommitmentInfo)
 	out.DeploymentType = in.DeploymentType
 	out.Description = in.Description
 	out.EnableEmergentMaintenance = in.EnableEmergentMaintenance
@@ -299,31 +250,43 @@ func ComputeFutureReservationSpec_ToProto(mapCtx *direct.MapContext, in *krmv1be
 	out.ReservationMode = in.ReservationMode
 	out.ReservationName = in.ReservationName
 	out.SchedulingType = in.SchedulingType
-	if oneof := ShareSettings_ToProto(mapCtx, in.ShareSettings); oneof != nil {
-		out.ShareSettings = &pb.ShareSettings{
-			ProjectMap: oneof.ProjectMap,
-			Projects:   oneof.Projects,
-			ShareType:  oneof.ShareType,
-		}
-	}
+	out.ShareSettings = ShareSettings_ToProto(mapCtx, in.ShareSettings)
 	out.SpecificReservationRequired = in.SpecificReservationRequired
-	if oneof := FutureReservationSpecificSkuProperties_ToProto(mapCtx, in.SpecificSkuProperties); oneof != nil {
-		out.SpecificSkuProperties = &pb.FutureReservationSpecificSKUProperties{
-			InstanceProperties:     oneof.InstanceProperties,
-			SourceInstanceTemplate: oneof.SourceInstanceTemplate,
-			TotalCount:             oneof.TotalCount,
-		}
-	}
-	// MISSING: Status
-	if oneof := FutureReservationTimeWindow_ToProto(mapCtx, in.TimeWindow); oneof != nil {
-		out.TimeWindow = &pb.FutureReservationTimeWindow{
-			Duration:  oneof.Duration,
-			EndTime:   oneof.EndTime,
-			StartTime: oneof.StartTime,
-		}
-	}
+	out.SpecificSkuProperties = FutureReservationSpecificSkuProperties_ToProto(mapCtx, in.SpecificSkuProperties)
+	out.TimeWindow = FutureReservationTimeWindow_ToProto(mapCtx, in.TimeWindow)
 	return out
 }
+func FutureReservationStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FutureReservationStatus) *krmv1beta1.FutureReservationStatusObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.FutureReservationStatusObservedState{}
+	out.AmendmentStatus = in.AmendmentStatus
+	out.AutoCreatedReservations = in.AutoCreatedReservations
+	out.ExistingMatchingUsageInfo = FutureReservationStatusExistingMatchingUsageInfo_FromProto(mapCtx, in.GetExistingMatchingUsageInfo())
+	out.FulfilledCount = in.FulfilledCount
+	out.LastKnownGoodState = FutureReservationStatusLastKnownGoodState_FromProto(mapCtx, in.GetLastKnownGoodState())
+	out.LockTime = in.LockTime
+	out.ProcurementStatus = in.ProcurementStatus
+	out.SpecificSkuProperties = FutureReservationStatusSpecificSkuProperties_FromProto(mapCtx, in.GetSpecificSkuProperties())
+	return out
+}
+func FutureReservationStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.FutureReservationStatusObservedState) *pb.FutureReservationStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FutureReservationStatus{}
+	out.AmendmentStatus = in.AmendmentStatus
+	out.AutoCreatedReservations = in.AutoCreatedReservations
+	out.ExistingMatchingUsageInfo = FutureReservationStatusExistingMatchingUsageInfo_ToProto(mapCtx, in.ExistingMatchingUsageInfo)
+	out.FulfilledCount = in.FulfilledCount
+	out.LastKnownGoodState = FutureReservationStatusLastKnownGoodState_ToProto(mapCtx, in.LastKnownGoodState)
+	out.LockTime = in.LockTime
+	out.ProcurementStatus = in.ProcurementStatus
+	out.SpecificSkuProperties = FutureReservationStatusSpecificSkuProperties_ToProto(mapCtx, in.SpecificSkuProperties)
+	return out
+}
+
 func FutureReservationSpecificSkuProperties_FromProto(mapCtx *direct.MapContext, in *pb.FutureReservationSpecificSKUProperties) *krmv1beta1.FutureReservationSpecificSkuProperties {
 	if in == nil {
 		return nil
@@ -339,17 +302,7 @@ func FutureReservationSpecificSkuProperties_ToProto(mapCtx *direct.MapContext, i
 		return nil
 	}
 	out := &pb.FutureReservationSpecificSKUProperties{}
-	if oneof := AllocationSpecificSkuAllocationReservedInstanceProperties_ToProto(mapCtx, in.InstanceProperties); oneof != nil {
-		out.InstanceProperties = &pb.AllocationSpecificSKUAllocationReservedInstanceProperties{
-			GuestAccelerators:              oneof.GuestAccelerators,
-			LocalSsds:                      oneof.LocalSsds,
-			LocationHint:                   oneof.LocationHint,
-			MachineType:                    oneof.MachineType,
-			MaintenanceFreezeDurationHours: oneof.MaintenanceFreezeDurationHours,
-			MaintenanceInterval:            oneof.MaintenanceInterval,
-			MinCpuPlatform:                 oneof.MinCpuPlatform,
-		}
-	}
+	out.InstanceProperties = AllocationSpecificSkuAllocationReservedInstanceProperties_ToProto(mapCtx, in.InstanceProperties)
 	out.SourceInstanceTemplate = in.SourceInstanceTemplate
 	out.TotalCount = in.TotalCount
 	return out
@@ -391,19 +344,8 @@ func FutureReservationStatusLastKnownGoodState_ToProto(mapCtx *direct.MapContext
 	}
 	out := &pb.FutureReservationStatusLastKnownGoodState{}
 	out.Description = in.Description
-	if oneof := FutureReservationStatusExistingMatchingUsageInfo_ToProto(mapCtx, in.ExistingMatchingUsageInfo); oneof != nil {
-		out.ExistingMatchingUsageInfo = &pb.FutureReservationStatusExistingMatchingUsageInfo{
-			Count:     oneof.Count,
-			Timestamp: oneof.Timestamp,
-		}
-	}
-	if oneof := FutureReservationStatusLastKnownGoodStateFutureReservationSpecs_ToProto(mapCtx, in.FutureReservationSpecs); oneof != nil {
-		out.FutureReservationSpecs = &pb.FutureReservationStatusLastKnownGoodStateFutureReservationSpecs{
-			ShareSettings:         oneof.ShareSettings,
-			SpecificSkuProperties: oneof.SpecificSkuProperties,
-			TimeWindow:            oneof.TimeWindow,
-		}
-	}
+	out.ExistingMatchingUsageInfo = FutureReservationStatusExistingMatchingUsageInfo_ToProto(mapCtx, in.ExistingMatchingUsageInfo)
+	out.FutureReservationSpecs = FutureReservationStatusLastKnownGoodStateFutureReservationSpecs_ToProto(mapCtx, in.FutureReservationSpecs)
 	out.LockTime = in.LockTime
 	out.NamePrefix = in.NamePrefix
 	out.ProcurementStatus = in.ProcurementStatus
@@ -424,27 +366,9 @@ func FutureReservationStatusLastKnownGoodStateFutureReservationSpecs_ToProto(map
 		return nil
 	}
 	out := &pb.FutureReservationStatusLastKnownGoodStateFutureReservationSpecs{}
-	if oneof := ShareSettings_ToProto(mapCtx, in.ShareSettings); oneof != nil {
-		out.ShareSettings = &pb.ShareSettings{
-			ProjectMap: oneof.ProjectMap,
-			Projects:   oneof.Projects,
-			ShareType:  oneof.ShareType,
-		}
-	}
-	if oneof := FutureReservationSpecificSkuProperties_ToProto(mapCtx, in.SpecificSkuProperties); oneof != nil {
-		out.SpecificSkuProperties = &pb.FutureReservationSpecificSKUProperties{
-			InstanceProperties:     oneof.InstanceProperties,
-			SourceInstanceTemplate: oneof.SourceInstanceTemplate,
-			TotalCount:             oneof.TotalCount,
-		}
-	}
-	if oneof := FutureReservationTimeWindow_ToProto(mapCtx, in.TimeWindow); oneof != nil {
-		out.TimeWindow = &pb.FutureReservationTimeWindow{
-			Duration:  oneof.Duration,
-			EndTime:   oneof.EndTime,
-			StartTime: oneof.StartTime,
-		}
-	}
+	out.ShareSettings = ShareSettings_ToProto(mapCtx, in.ShareSettings)
+	out.SpecificSkuProperties = FutureReservationSpecificSkuProperties_ToProto(mapCtx, in.SpecificSkuProperties)
+	out.TimeWindow = FutureReservationTimeWindow_ToProto(mapCtx, in.TimeWindow)
 	return out
 }
 func FutureReservationStatusSpecificSkuProperties_FromProto(mapCtx *direct.MapContext, in *pb.FutureReservationStatusSpecificSKUProperties) *krmv1beta1.FutureReservationStatusSpecificSkuProperties {
@@ -478,12 +402,7 @@ func FutureReservationTimeWindow_ToProto(mapCtx *direct.MapContext, in *krmv1bet
 		return nil
 	}
 	out := &pb.FutureReservationTimeWindow{}
-	if oneof := Duration_ToProto(mapCtx, in.Duration); oneof != nil {
-		out.Duration = &pb.Duration{
-			Nanos:   oneof.Nanos,
-			Seconds: oneof.Seconds,
-		}
-	}
+	out.Duration = Duration_ToProto(mapCtx, in.Duration)
 	out.EndTime = in.EndTime
 	out.StartTime = in.StartTime
 	return out
@@ -513,6 +432,7 @@ func ShareSettings_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.ShareSettin
 	if in.ProjectMap != nil {
 		out.ProjectMap = make(map[string]*pb.ShareSettingsProjectConfig)
 		for k, v := range in.ProjectMap {
+			v := v
 			out.ProjectMap[k] = ShareSettingsProjectConfig_ToProto(mapCtx, &v)
 		}
 	}
