@@ -55,7 +55,7 @@ func TestComputeSSLCertificateRef_ValidateExternal(t *testing.T) {
 	}
 }
 
-func TestComputeSSLCertificateRef_NormalizedExternal(t *testing.T) {
+func TestComputeSSLCertificateRef_Normalize(t *testing.T) {
 	s := runtime.NewScheme()
 	_ = AddToScheme(s)
 
@@ -70,11 +70,11 @@ func TestComputeSSLCertificateRef_NormalizedExternal(t *testing.T) {
 	reader := fake.NewClientBuilder().WithScheme(s).WithObjects(cert).Build()
 
 	tests := []struct {
-		name           string
-		ref            *ComputeSSLCertificateRef
-		otherNamespace string
-		want           string
-		wantErr        bool
+		name             string
+		ref              *ComputeSSLCertificateRef
+		defaultNamespace string
+		want             string
+		wantErr          bool
 	}{
 		{
 			name: "external reference",
@@ -92,23 +92,23 @@ func TestComputeSSLCertificateRef_NormalizedExternal(t *testing.T) {
 			want: "https://www.googleapis.com/compute/v1/projects/my-project/global/sslCertificates/my-cert",
 		},
 		{
-			name: "both name and external",
+			name: "internal reference with default namespace",
 			ref: &ComputeSSLCertificateRef{
-				Name:     "my-cert",
-				External: "projects/my-project/global/sslCertificates/my-cert",
+				Name: "my-cert",
 			},
-			wantErr: true,
+			defaultNamespace: "my-ns",
+			want:             "https://www.googleapis.com/compute/v1/projects/my-project/global/sslCertificates/my-cert",
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.ref.NormalizedExternal(context.Background(), reader, tt.otherNamespace)
+			err := tt.ref.Normalize(context.Background(), reader, tt.defaultNamespace)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("NormalizedExternal() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("Normalize() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if got != tt.want {
-				t.Errorf("NormalizedExternal() got = %v, want %v", got, tt.want)
+			if tt.ref.External != tt.want {
+				t.Errorf("Normalize() got = %v, want %v", tt.ref.External, tt.want)
 			}
 		})
 	}

@@ -74,66 +74,55 @@ func (r *CertificateManagerCertificateRef) ValidateExternal(ref string) error {
 	return nil
 }
 
-func (r *CertificateManagerCertificateRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if err := refsv1beta1.ValidateNameAndExternal(r.Name, r.External); err != nil {
-		return "", fmt.Errorf("in CertificateManagerCertificate reference: %w", err)
+func (r *CertificateManagerCertificateRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r.GetExternal() != "" {
+		return r.ValidateExternal(r.GetExternal())
 	}
-	if r.External != "" {
-		return r.External, nil
+	key := r.GetNamespacedName()
+	if key.Namespace == "" {
+		key.Namespace = defaultNamespace
 	}
-
-	namespace := r.Namespace
-	if namespace == "" {
-		namespace = otherNamespace
-	}
-	key := types.NamespacedName{Name: r.Name, Namespace: namespace}
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(CertificateManagerCertificateGVK)
+	u.SetGroupVersionKind(r.GetGVK())
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+			return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
-		return "", fmt.Errorf("reading referenced CertificateManagerCertificate %s: %w", key, err)
+		return fmt.Errorf("reading referenced %s %s: %w", r.GetGVK(), key, err)
 	}
 
-	// CertificateManagerCertificate is an unmigrated Terraform-based CRD and does not expose status.externalRef.
-	// We must manually construct the external reference.
+	// Get external from status.externalRef. This is the most trustworthy place.
+	externalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
+	if err != nil {
+		return fmt.Errorf("reading status.externalRef: %w", err)
+	}
+	if externalRef == "" {
+		if externalRef, err = certificateLegacyExternalRef(ctx, reader, u); err != nil {
+			return err
+		}
+	}
+	if externalRef == "" {
+		return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+	}
+	r.SetExternal(externalRef)
+	return nil
+}
+
+func certificateLegacyExternalRef(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (string, error) {
 	resourceID, err := refsv1beta1.GetResourceID(u)
 	if err != nil {
-		return "", fmt.Errorf("getting resourceID for %s: %w", key, err)
+		return "", err
 	}
 
 	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
 	if err != nil {
-		return "", fmt.Errorf("resolving projectID for %s: %w", key, err)
+		return "", err
 	}
 
 	location, err := refsv1beta1.GetLocation(u)
 	if err != nil {
-		return "", fmt.Errorf("getting location for %s: %w", key, err)
+		return "", err
 	}
 
 	return fmt.Sprintf("//certificatemanager.googleapis.com/projects/%s/locations/%s/certificates/%s", projectID, location, resourceID), nil
-}
-
-func (r *CertificateManagerCertificateRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, func(u *unstructured.Unstructured) string {
-		resourceID, err := refsv1beta1.GetResourceID(u)
-		if err != nil {
-			return ""
-		}
-		projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
-		if err != nil {
-			return ""
-		}
-		location, err := refsv1beta1.GetLocation(u)
-		if err != nil {
-			return ""
-		}
-
-		if resourceID != "" && projectID != "" && location != "" {
-			return fmt.Sprintf("//certificatemanager.googleapis.com/projects/%s/locations/%s/certificates/%s", projectID, location, resourceID)
-		}
-		return ""
-	})
 }

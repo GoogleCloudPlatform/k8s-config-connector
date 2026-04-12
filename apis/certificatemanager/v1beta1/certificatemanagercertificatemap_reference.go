@@ -74,58 +74,51 @@ func (r *CertificateManagerCertificateMapRef) ValidateExternal(ref string) error
 	return nil
 }
 
-func (r *CertificateManagerCertificateMapRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if err := refsv1beta1.ValidateNameAndExternal(r.Name, r.External); err != nil {
-		return "", fmt.Errorf("in CertificateManagerCertificateMap reference: %w", err)
+func (r *CertificateManagerCertificateMapRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r.GetExternal() != "" {
+		return r.ValidateExternal(r.GetExternal())
 	}
-	if r.External != "" {
-		return r.External, nil
+	key := r.GetNamespacedName()
+	if key.Namespace == "" {
+		key.Namespace = defaultNamespace
 	}
-
-	namespace := r.Namespace
-	if namespace == "" {
-		namespace = otherNamespace
-	}
-	key := types.NamespacedName{Name: r.Name, Namespace: namespace}
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(CertificateManagerCertificateMapGVK)
+	u.SetGroupVersionKind(r.GetGVK())
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+			return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
-		return "", fmt.Errorf("reading referenced CertificateManagerCertificateMap %s: %w", key, err)
+		return fmt.Errorf("reading referenced %s %s: %w", r.GetGVK(), key, err)
 	}
 
-	// CertificateManagerCertificateMap is an unmigrated Terraform-based CRD and does not expose status.externalRef.
-	// We must manually construct the external reference.
+	// Get external from status.externalRef. This is the most trustworthy place.
+	externalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
+	if err != nil {
+		return fmt.Errorf("reading status.externalRef: %w", err)
+	}
+	if externalRef == "" {
+		if externalRef, err = certificateMapLegacyExternalRef(ctx, reader, u); err != nil {
+			return err
+		}
+	}
+	if externalRef == "" {
+		return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+	}
+	r.SetExternal(externalRef)
+	return nil
+}
+
+func certificateMapLegacyExternalRef(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (string, error) {
 	resourceID, err := refsv1beta1.GetResourceID(u)
 	if err != nil {
-		return "", fmt.Errorf("getting resourceID for %s: %w", key, err)
+		return "", err
 	}
 
 	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
 	if err != nil {
-		return "", fmt.Errorf("resolving projectID for %s: %w", key, err)
+		return "", err
 	}
 
 	// Certificate Maps are currently global.
 	return fmt.Sprintf("//certificatemanager.googleapis.com/projects/%s/locations/global/certificateMaps/%s", projectID, resourceID), nil
-}
-
-func (r *CertificateManagerCertificateMapRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, func(u *unstructured.Unstructured) string {
-		resourceID, err := refsv1beta1.GetResourceID(u)
-		if err != nil {
-			return ""
-		}
-		projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
-		if err != nil {
-			return ""
-		}
-
-		if resourceID != "" && projectID != "" {
-			return fmt.Sprintf("//certificatemanager.googleapis.com/projects/%s/locations/global/certificateMaps/%s", projectID, resourceID)
-		}
-		return ""
-	})
 }

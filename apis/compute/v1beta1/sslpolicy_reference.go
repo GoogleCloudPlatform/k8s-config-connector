@@ -70,37 +70,47 @@ func (r *ComputeSSLPolicyRef) ValidateExternal(ref string) error {
 	return nil
 }
 
-func (r *ComputeSSLPolicyRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on ComputeSSLPolicy reference")
+func (r *ComputeSSLPolicyRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r.GetExternal() != "" {
+		return r.ValidateExternal(r.GetExternal())
 	}
-	if r.External != "" {
-		return r.External, nil
+	key := r.GetNamespacedName()
+	if key.Namespace == "" {
+		key.Namespace = defaultNamespace
 	}
-
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
-	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(ComputeSSLPolicyGVK)
+	u.SetGroupVersionKind(r.GetGVK())
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+			return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
-		return "", fmt.Errorf("reading referenced ComputeSSLPolicy %s: %w", key, err)
+		return fmt.Errorf("reading referenced %s %s: %w", r.GetGVK(), key, err)
 	}
 
-	selfLink, _, err := unstructured.NestedString(u.Object, "status", "selfLink")
-	if err != nil || selfLink == "" {
-		return "", fmt.Errorf("cannot get selfLink for referenced ComputeSSLPolicy %v (status.selfLink is empty)", key)
+	// Get external from status.externalRef. This is the most trustworthy place.
+	externalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
+	if err != nil {
+		return fmt.Errorf("reading status.externalRef: %w", err)
 	}
-	return selfLink, nil
+	if externalRef == "" {
+		if externalRef, err = sslPolicyLegacyExternalRef(ctx, reader, u); err != nil {
+			return err
+		}
+	}
+	if externalRef == "" {
+		return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+	}
+	r.SetExternal(externalRef)
+	return nil
 }
 
-func (r *ComputeSSLPolicyRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, func(u *unstructured.Unstructured) string {
-		selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
-		return selfLink
-	})
+func sslPolicyLegacyExternalRef(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (string, error) {
+	selfLink, found, err := unstructured.NestedString(u.Object, "status", "selfLink")
+	if err != nil {
+		return "", fmt.Errorf("reading status.selfLink: %w", err)
+	}
+	if !found || selfLink == "" {
+		return "", nil
+	}
+	return selfLink, nil
 }

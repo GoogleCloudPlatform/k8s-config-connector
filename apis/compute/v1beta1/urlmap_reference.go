@@ -74,41 +74,47 @@ func (r *ComputeURLMapRef) ValidateExternal(ref string) error {
 	return nil
 }
 
-func (r *ComputeURLMapRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if err := refsv1beta1.ValidateNameAndExternal(r.Name, r.External); err != nil {
-		return "", fmt.Errorf("in ComputeURLMap reference: %w", err)
+func (r *ComputeURLMapRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r.GetExternal() != "" {
+		return r.ValidateExternal(r.GetExternal())
 	}
-	if r.External != "" {
-		return r.External, nil
+	key := r.GetNamespacedName()
+	if key.Namespace == "" {
+		key.Namespace = defaultNamespace
 	}
-
-	namespace := r.Namespace
-	if namespace == "" {
-		namespace = otherNamespace
-	}
-	key := types.NamespacedName{Name: r.Name, Namespace: namespace}
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(ComputeURLMapGVK)
+	u.SetGroupVersionKind(r.GetGVK())
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+			return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
-		return "", fmt.Errorf("reading referenced ComputeURLMap %s: %w", key, err)
+		return fmt.Errorf("reading referenced %s %s: %w", r.GetGVK(), key, err)
 	}
 
-	selfLink, found, err := unstructured.NestedString(u.Object, "status", "selfLink")
+	// Get external from status.externalRef. This is the most trustworthy place.
+	externalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
 	if err != nil {
-		return "", fmt.Errorf("reading status.selfLink for referenced ComputeURLMap %v: %w", key, err)
+		return fmt.Errorf("reading status.externalRef: %w", err)
 	}
-	if !found || selfLink == "" {
-		return "", fmt.Errorf("cannot get selfLink for referenced ComputeURLMap %v (status.selfLink is empty)", key)
+	if externalRef == "" {
+		if externalRef, err = urlMapLegacyExternalRef(ctx, reader, u); err != nil {
+			return err
+		}
 	}
-	return selfLink, nil
+	if externalRef == "" {
+		return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+	}
+	r.SetExternal(externalRef)
+	return nil
 }
 
-func (r *ComputeURLMapRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, func(u *unstructured.Unstructured) string {
-		selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
-		return selfLink
-	})
+func urlMapLegacyExternalRef(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (string, error) {
+	selfLink, found, err := unstructured.NestedString(u.Object, "status", "selfLink")
+	if err != nil {
+		return "", fmt.Errorf("reading status.selfLink: %w", err)
+	}
+	if !found || selfLink == "" {
+		return "", nil
+	}
+	return selfLink, nil
 }

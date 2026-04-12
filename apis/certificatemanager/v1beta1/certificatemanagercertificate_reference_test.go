@@ -50,7 +50,7 @@ func TestCertificateManagerCertificateRef_ValidateExternal(t *testing.T) {
 	}
 }
 
-func TestCertificateManagerCertificateRef_NormalizedExternal(t *testing.T) {
+func TestCertificateManagerCertificateRef_Normalize(t *testing.T) {
 	s := runtime.NewScheme()
 	_ = AddToScheme(s)
 
@@ -69,11 +69,11 @@ func TestCertificateManagerCertificateRef_NormalizedExternal(t *testing.T) {
 	reader := fake.NewClientBuilder().WithScheme(s).WithObjects(cert).Build()
 
 	tests := []struct {
-		name           string
-		ref            *CertificateManagerCertificateRef
-		otherNamespace string
-		want           string
-		wantErr        bool
+		name             string
+		ref              *CertificateManagerCertificateRef
+		defaultNamespace string
+		want             string
+		wantErr          bool
 	}{
 		{
 			name: "external reference",
@@ -91,23 +91,23 @@ func TestCertificateManagerCertificateRef_NormalizedExternal(t *testing.T) {
 			want: "//certificatemanager.googleapis.com/projects/my-project/locations/global/certificates/my-cert-id",
 		},
 		{
-			name: "both name and external",
+			name: "internal reference with default namespace",
 			ref: &CertificateManagerCertificateRef{
-				Name:     "my-cert",
-				External: "//certificatemanager.googleapis.com/projects/my-project/locations/global/certificates/my-cert",
+				Name: "my-cert",
 			},
-			wantErr: true,
+			defaultNamespace: "my-ns",
+			want:             "//certificatemanager.googleapis.com/projects/my-project/locations/global/certificates/my-cert-id",
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.ref.NormalizedExternal(context.Background(), reader, tt.otherNamespace)
+			err := tt.ref.Normalize(context.Background(), reader, tt.defaultNamespace)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("NormalizedExternal() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("Normalize() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if got != tt.want {
-				t.Errorf("NormalizedExternal() got = %v, want %v", got, tt.want)
+			if tt.ref.External != tt.want {
+				t.Errorf("Normalize() got = %v, want %v", tt.ref.External, tt.want)
 			}
 		})
 	}
