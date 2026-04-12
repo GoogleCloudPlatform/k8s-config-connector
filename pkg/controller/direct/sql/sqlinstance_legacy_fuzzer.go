@@ -224,6 +224,7 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.Unimplemented_NotYetTriaged(".Etag")
 	f.Unimplemented_NotYetTriaged(".FailoverReplica")
 	f.Unimplemented_NotYetTriaged(".Kind")
+
 	f.Unimplemented_NotYetTriaged(".MaxDiskSize")
 	f.Unimplemented_NotYetTriaged(".NodeCount")
 	f.Unimplemented_NotYetTriaged(".Nodes")
@@ -242,6 +243,7 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.Unimplemented_NotYetTriaged(".Settings.EnableDataplexIntegration")
 	f.Unimplemented_NotYetTriaged(".Settings.EnableGoogleMlIntegration")
 	f.Unimplemented_NotYetTriaged(".Settings.Kind")
+
 	f.Unimplemented_NotYetTriaged(".Settings.SettingsVersion")
 	f.Unimplemented_NotYetTriaged(".Settings.AutoUpgradeEnabled")
 	f.Unimplemented_NotYetTriaged(".Settings.ConnectionPoolConfig")
@@ -263,6 +265,7 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.Unimplemented_NotYetTriaged(".Settings.ActiveDirectoryConfig.AdminCredentialSecretName")
 	f.Unimplemented_NotYetTriaged(".Settings.ActiveDirectoryConfig.DnsServers")
 	f.Unimplemented_NotYetTriaged(".Settings.ActiveDirectoryConfig.Kind")
+
 	f.Unimplemented_NotYetTriaged(".Settings.ActiveDirectoryConfig.Mode")
 	f.Unimplemented_NotYetTriaged(".Settings.ActiveDirectoryConfig.OrganizationalUnit")
 
@@ -279,12 +282,18 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscAutoDnsEnabled")
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscWriteEndpointDnsEnabled")
 
+	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscAutoDnsEnabled")
+	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscWriteEndpointDnsEnabled")
 	f.Unimplemented_NotYetTriaged(".Settings.LocationPreference.Kind")
+
 	f.Unimplemented_NotYetTriaged(".Settings.MaintenanceWindow.Kind")
 	f.Unimplemented_NotYetTriaged(".Settings.SqlServerAuditConfig.Kind")
+
 	f.Unimplemented_NotYetTriaged(".ReplicaConfiguration.Kind")
+
 	f.Unimplemented_NotYetTriaged(".ReplicaConfiguration.CascadableReplica")
 	f.Unimplemented_NotYetTriaged(".ReplicaConfiguration.MysqlReplicaConfiguration.Kind")
+
 	f.Unimplemented_NotYetTriaged(".ReplicaConfiguration.MysqlReplicaConfiguration.Password")
 	f.Unimplemented_NotYetTriaged(".DiskEncryptionConfiguration.Kind")
 
