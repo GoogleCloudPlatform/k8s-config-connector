@@ -137,6 +137,37 @@ type ComputeFutureReservationStatus struct {
 // ComputeFutureReservationObservedState is the state of the ComputeFutureReservation resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.compute.v1beta.FutureReservation
 type ComputeFutureReservationObservedState struct {
+	// [Output Only] The status of the future reservation.
+	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.status
+	Status *FutureReservationStatusObservedState `json:"status,omitempty"`
+
+	// [Output Only] The creation timestamp for this future reservation in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// [Output Only] A unique identifier for this future reservation. The server defines this identifier.
+	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#futureReservation for future reservations.
+	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// [Output Only] Server-defined fully-qualified URL for this resource.
+	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// [Output Only] Server-defined URL for this resource with the resource id.
+	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+
+	// [Output Only] URL of the Zone where this future reservation resides.
+	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.zone
+	Zone *string `json:"zone,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1beta.FutureReservationStatus
+type FutureReservationStatusObservedState struct {
 	// [Output Only] The current status of the requested amendment.
 	//  Check the AmendmentStatus enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatus.amendment_status
@@ -169,30 +200,6 @@ type ComputeFutureReservationObservedState struct {
 
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatus.specific_sku_properties
 	SpecificSkuProperties *FutureReservationStatusSpecificSkuProperties `json:"specificSkuProperties,omitempty"`
-
-	// [Output Only] The creation timestamp for this future reservation in RFC3339 text format.
-	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.creation_timestamp
-	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
-
-	// [Output Only] A unique identifier for this future reservation. The server defines this identifier.
-	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.id
-	ID *uint64 `json:"id,omitempty"`
-
-	// [Output Only] Type of the resource. Always compute#futureReservation for future reservations.
-	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.kind
-	Kind *string `json:"kind,omitempty"`
-
-	// [Output Only] Server-defined fully-qualified URL for this resource.
-	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.self_link
-	SelfLink *string `json:"selfLink,omitempty"`
-
-	// [Output Only] Server-defined URL for this resource with the resource id.
-	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.self_link_with_id
-	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
-
-	// [Output Only] URL of the Zone where this future reservation resides.
-	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.zone
-	Zone *string `json:"zone,omitempty"`
 }
 
 // +genclient

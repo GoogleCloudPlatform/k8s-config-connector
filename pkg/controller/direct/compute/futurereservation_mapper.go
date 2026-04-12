@@ -197,14 +197,15 @@ func ComputeFutureReservationObservedState_FromProto(mapCtx *direct.MapContext, 
 
 	status := in.GetStatus()
 	if status != nil {
-		out.AmendmentStatus = status.AmendmentStatus
-		out.AutoCreatedReservations = status.AutoCreatedReservations
-		out.ExistingMatchingUsageInfo = FutureReservationStatusExistingMatchingUsageInfo_FromProto(mapCtx, status.GetExistingMatchingUsageInfo())
-		out.FulfilledCount = status.FulfilledCount
-		out.LastKnownGoodState = FutureReservationStatusLastKnownGoodState_FromProto(mapCtx, status.GetLastKnownGoodState())
-		out.LockTime = status.LockTime
-		out.ProcurementStatus = status.ProcurementStatus
-		out.SpecificSkuProperties = FutureReservationStatusSpecificSkuProperties_FromProto(mapCtx, status.GetSpecificSkuProperties())
+		out.Status = &krmv1beta1.FutureReservationStatusObservedState{}
+		out.Status.AmendmentStatus = status.AmendmentStatus
+		out.Status.AutoCreatedReservations = status.AutoCreatedReservations
+		out.Status.ExistingMatchingUsageInfo = FutureReservationStatusExistingMatchingUsageInfo_FromProto(mapCtx, status.GetExistingMatchingUsageInfo())
+		out.Status.FulfilledCount = status.FulfilledCount
+		out.Status.LastKnownGoodState = FutureReservationStatusLastKnownGoodState_FromProto(mapCtx, status.GetLastKnownGoodState())
+		out.Status.LockTime = status.LockTime
+		out.Status.ProcurementStatus = status.ProcurementStatus
+		out.Status.SpecificSkuProperties = FutureReservationStatusSpecificSkuProperties_FromProto(mapCtx, status.GetSpecificSkuProperties())
 	}
 
 	return out
@@ -221,15 +222,17 @@ func ComputeFutureReservationObservedState_ToProto(mapCtx *direct.MapContext, in
 	out.SelfLinkWithId = in.SelfLinkWithID
 	out.Zone = in.Zone
 
-	out.Status = &pb.FutureReservationStatus{}
-	out.Status.AmendmentStatus = in.AmendmentStatus
-	out.Status.AutoCreatedReservations = in.AutoCreatedReservations
-	out.Status.ExistingMatchingUsageInfo = FutureReservationStatusExistingMatchingUsageInfo_ToProto(mapCtx, in.ExistingMatchingUsageInfo)
-	out.Status.FulfilledCount = in.FulfilledCount
-	out.Status.LastKnownGoodState = FutureReservationStatusLastKnownGoodState_ToProto(mapCtx, in.LastKnownGoodState)
-	out.Status.LockTime = in.LockTime
-	out.Status.ProcurementStatus = in.ProcurementStatus
-	out.Status.SpecificSkuProperties = FutureReservationStatusSpecificSkuProperties_ToProto(mapCtx, in.SpecificSkuProperties)
+	if in.Status != nil {
+		out.Status = &pb.FutureReservationStatus{}
+		out.Status.AmendmentStatus = in.Status.AmendmentStatus
+		out.Status.AutoCreatedReservations = in.Status.AutoCreatedReservations
+		out.Status.ExistingMatchingUsageInfo = FutureReservationStatusExistingMatchingUsageInfo_ToProto(mapCtx, in.Status.ExistingMatchingUsageInfo)
+		out.Status.FulfilledCount = in.Status.FulfilledCount
+		out.Status.LastKnownGoodState = FutureReservationStatusLastKnownGoodState_ToProto(mapCtx, in.Status.LastKnownGoodState)
+		out.Status.LockTime = in.Status.LockTime
+		out.Status.ProcurementStatus = in.Status.ProcurementStatus
+		out.Status.SpecificSkuProperties = FutureReservationStatusSpecificSkuProperties_ToProto(mapCtx, in.Status.SpecificSkuProperties)
+	}
 
 	return out
 }

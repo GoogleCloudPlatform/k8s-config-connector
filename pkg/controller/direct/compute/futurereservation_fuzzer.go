@@ -66,5 +66,10 @@ func computeFutureReservationFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".status")
 	f.UnimplementedFields.Insert(".share_settings.project_map")
 
+	f.Unimplemented_NotYetTriaged(".protection_tier")
+	f.Unimplemented_NotYetTriaged(".aggregate_reservation.in_use_host_count")
+	f.Unimplemented_NotYetTriaged(".aggregate_reservation.host_count")
+	f.Unimplemented_NotYetTriaged(".aggregate_reservation.in_use_instance_count")
+
 	return f
 }
