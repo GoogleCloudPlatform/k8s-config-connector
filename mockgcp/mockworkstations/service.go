@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	pb "cloud.google.com/go/workstations/apiv1/workstationspb"
 )
 
@@ -49,7 +50,9 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterWorkstationsServer(grpcServer, &WorkstationsService{MockService: s})
+	svc := &WorkstationsService{MockService: s}
+	pb.RegisterWorkstationsServer(grpcServer, svc)
+	iampb.RegisterIAMPolicyServer(grpcServer, svc)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -59,6 +62,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	mux.AddService(pb.NewWorkstationsClient(conn))
+	mux.AddService(iampb.NewIAMPolicyClient(conn))
 	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
 	return mux, nil

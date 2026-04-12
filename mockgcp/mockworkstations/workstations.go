@@ -23,6 +23,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -349,6 +350,45 @@ func (s *WorkstationsService) DeleteWorkstation(ctx context.Context, req *pb.Del
 		return &pb.Workstation{}, nil
 	})
 	return op, err
+}
+
+func (s *WorkstationsService) GetIamPolicy(ctx context.Context, req *iampb.GetIamPolicyRequest) (*iampb.Policy, error) {
+	fqn := req.GetResource()
+
+	policy := &iampb.Policy{}
+	if err := s.storage.Get(ctx, fqn+":iam", policy); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return &iampb.Policy{}, nil
+		}
+		return nil, err
+	}
+
+	return policy, nil
+}
+
+func (s *WorkstationsService) SetIamPolicy(ctx context.Context, req *iampb.SetIamPolicyRequest) (*iampb.Policy, error) {
+	fqn := req.GetResource()
+
+	policy := proto.Clone(req.GetPolicy()).(*iampb.Policy)
+	policy.Etag = []byte(computeEtag(policy))
+
+	if err := s.storage.Update(ctx, fqn+":iam", policy); err != nil {
+		if status.Code(err) == codes.NotFound {
+			if err := s.storage.Create(ctx, fqn+":iam", policy); err != nil {
+				return nil, err
+			}
+		} else {
+			return nil, err
+		}
+	}
+
+	return policy, nil
+}
+
+func (s *WorkstationsService) TestIamPermissions(ctx context.Context, req *iampb.TestIamPermissionsRequest) (*iampb.TestIamPermissionsResponse, error) {
+	return &iampb.TestIamPermissionsResponse{
+		Permissions: req.GetPermissions(),
+	}, nil
 }
 
 func getWorkstationClusterParent(fqn string) (string, error) {
