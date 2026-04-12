@@ -40,5 +40,4 @@ func repositoryFuzzer() fuzztesting.KRMFuzzer {
 	fuzzer.UnimplementedFields.Insert(".team_folder_name")
 	fuzzer.UnimplementedFields.Insert(".containing_folder")
 
-	return fuzzer
-}
+	return fuzzer}
