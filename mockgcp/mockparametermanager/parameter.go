@@ -35,6 +35,21 @@ type ParameterManagerV1 struct {
 	pb.UnimplementedParameterManagerServer
 }
 
+// Lists [Parameters][google.cloud.parametermanager.v1.Parameter] in a given project and location.
+func (s *ParameterManagerV1) ListParameters(ctx context.Context, req *pb.ListParametersRequest) (*pb.ListParametersResponse, error) {
+	tokens := strings.Split(req.Parent, "/")
+	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "locations" {
+		return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid", req.Parent)
+	}
+
+	res := &pb.ListParametersResponse{}
+	s.storage.List(ctx, req.Parent, func(obj *pb.Parameter) {
+		res.Parameters = append(res.Parameters, obj)
+	})
+
+	return res, nil
+}
+
 // Creates a new [Parameter][google.cloud.parametermanager.v1.Parameter].
 func (s *ParameterManagerV1) CreateParameter(ctx context.Context, req *pb.CreateParameterRequest) (*pb.Parameter, error) {
 	parameterID := req.ParameterId
@@ -108,7 +123,7 @@ func (s *ParameterManagerV1) UpdateParameter(ctx context.Context, req *pb.Update
 	}
 	for _, path := range paths {
 		switch path {
-		case "kmsKey":
+		case "kms_key":
 			if kmsKey := req.Parameter.GetKmsKey(); kmsKey != "" {
 				updated.KmsKey = &kmsKey
 			} else {
@@ -116,6 +131,8 @@ func (s *ParameterManagerV1) UpdateParameter(ctx context.Context, req *pb.Update
 			}
 		case "labels":
 			updated.Labels = req.Parameter.GetLabels()
+		case "format":
+			updated.Format = req.Parameter.GetFormat()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
