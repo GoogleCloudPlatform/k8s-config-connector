@@ -67,13 +67,18 @@ func (s *PrivilegedAccessManager) CreateEntitlement(ctx context.Context, req *pb
 	obj.CreateTime = now
 	obj.UpdateTime = now
 	obj.Etag = fields.ComputeWeakEtag(obj)
-	obj.State = pb.Entitlement_AVAILABLE
+	obj.State = pb.Entitlement_CREATING
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	metadata := constructOperationMetadata(fqn, "create")
 	return s.operations.StartLRO(ctx, name.parent(), metadata, func() (proto.Message, error) {
+		obj.State = pb.Entitlement_AVAILABLE
+		if err := s.storage.Update(ctx, fqn, obj); err != nil {
+			return nil, err
+		}
+
 		result := proto.CloneOf(obj)
 		metadata.EndTime = now
 		return result, nil
@@ -92,6 +97,10 @@ func (s *PrivilegedAccessManager) UpdateEntitlement(ctx context.Context, req *pb
 	obj := &pb.Entitlement{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
+	}
+
+	if req.GetEntitlement().GetEtag() != "" && req.GetEntitlement().GetEtag() != obj.Etag {
+		return nil, status.Errorf(codes.Aborted, "etag mismatch")
 	}
 
 	// Required. A list of fields to be updated in this request.
@@ -116,12 +125,21 @@ func (s *PrivilegedAccessManager) UpdateEntitlement(ctx context.Context, req *pb
 		}
 	}
 
+	obj.UpdateTime = timestamppb.New(time.Now())
+	obj.Etag = fields.ComputeWeakEtag(obj)
+	obj.State = pb.Entitlement_UPDATING
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	metadata := constructOperationMetadata(fqn, "update")
 	return s.operations.StartLRO(ctx, name.parent(), metadata, func() (proto.Message, error) {
+		obj.State = pb.Entitlement_AVAILABLE
+		if err := s.storage.Update(ctx, fqn, obj); err != nil {
+			return nil, err
+		}
+
 		result := proto.CloneOf(obj)
 		now := timestamppb.New(time.Now())
 		metadata.EndTime = now
@@ -138,11 +156,21 @@ func (s *PrivilegedAccessManager) DeleteEntitlement(ctx context.Context, req *pb
 	fqn := name.String()
 
 	oldObj := &pb.Entitlement{}
-	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
+	if err := s.storage.Get(ctx, fqn, oldObj); err != nil {
 		return nil, err
 	}
+
+	oldObj.State = pb.Entitlement_DELETING
+	if err := s.storage.Update(ctx, fqn, oldObj); err != nil {
+		return nil, err
+	}
+
 	metadata := constructOperationMetadata(fqn, "delete")
 	return s.operations.StartLRO(ctx, name.parent(), metadata, func() (proto.Message, error) {
+		if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
+			return nil, err
+		}
+
 		result := proto.CloneOf(oldObj)
 		result.State = pb.Entitlement_DELETED
 		now := timestamppb.New(time.Now())
