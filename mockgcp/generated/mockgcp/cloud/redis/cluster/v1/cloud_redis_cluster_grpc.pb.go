@@ -55,6 +55,9 @@ type CloudRedisClusterClient interface {
 	CreateCluster(ctx context.Context, in *CreateClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Gets the details of certificate authority information for Redis cluster.
 	GetClusterCertificateAuthority(ctx context.Context, in *GetClusterCertificateAuthorityRequest, opts ...grpc.CallOption) (*CertificateAuthority, error)
+	// Gets the details of regional certificate authority information for Redis
+	// cluster.
+	GetSharedRegionalCertificateAuthority(ctx context.Context, in *GetSharedRegionalCertificateAuthorityRequest, opts ...grpc.CallOption) (*SharedRegionalCertificateAuthority, error)
 	// Reschedules upcoming maintenance event.
 	RescheduleClusterMaintenance(ctx context.Context, in *RescheduleClusterMaintenanceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Lists all backup collections owned by a consumer project in either the
@@ -144,6 +147,15 @@ func (c *cloudRedisClusterClient) CreateCluster(ctx context.Context, in *CreateC
 func (c *cloudRedisClusterClient) GetClusterCertificateAuthority(ctx context.Context, in *GetClusterCertificateAuthorityRequest, opts ...grpc.CallOption) (*CertificateAuthority, error) {
 	out := new(CertificateAuthority)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.redis.cluster.v1.CloudRedisCluster/GetClusterCertificateAuthority", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cloudRedisClusterClient) GetSharedRegionalCertificateAuthority(ctx context.Context, in *GetSharedRegionalCertificateAuthorityRequest, opts ...grpc.CallOption) (*SharedRegionalCertificateAuthority, error) {
+	out := new(SharedRegionalCertificateAuthority)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.redis.cluster.v1.CloudRedisCluster/GetSharedRegionalCertificateAuthority", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -258,6 +270,9 @@ type CloudRedisClusterServer interface {
 	CreateCluster(context.Context, *CreateClusterRequest) (*longrunningpb.Operation, error)
 	// Gets the details of certificate authority information for Redis cluster.
 	GetClusterCertificateAuthority(context.Context, *GetClusterCertificateAuthorityRequest) (*CertificateAuthority, error)
+	// Gets the details of regional certificate authority information for Redis
+	// cluster.
+	GetSharedRegionalCertificateAuthority(context.Context, *GetSharedRegionalCertificateAuthorityRequest) (*SharedRegionalCertificateAuthority, error)
 	// Reschedules upcoming maintenance event.
 	RescheduleClusterMaintenance(context.Context, *RescheduleClusterMaintenanceRequest) (*longrunningpb.Operation, error)
 	// Lists all backup collections owned by a consumer project in either the
@@ -313,6 +328,9 @@ func (UnimplementedCloudRedisClusterServer) CreateCluster(context.Context, *Crea
 }
 func (UnimplementedCloudRedisClusterServer) GetClusterCertificateAuthority(context.Context, *GetClusterCertificateAuthorityRequest) (*CertificateAuthority, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetClusterCertificateAuthority not implemented")
+}
+func (UnimplementedCloudRedisClusterServer) GetSharedRegionalCertificateAuthority(context.Context, *GetSharedRegionalCertificateAuthorityRequest) (*SharedRegionalCertificateAuthority, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSharedRegionalCertificateAuthority not implemented")
 }
 func (UnimplementedCloudRedisClusterServer) RescheduleClusterMaintenance(context.Context, *RescheduleClusterMaintenanceRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RescheduleClusterMaintenance not implemented")
@@ -455,6 +473,24 @@ func _CloudRedisCluster_GetClusterCertificateAuthority_Handler(srv interface{}, 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CloudRedisClusterServer).GetClusterCertificateAuthority(ctx, req.(*GetClusterCertificateAuthorityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CloudRedisCluster_GetSharedRegionalCertificateAuthority_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSharedRegionalCertificateAuthorityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CloudRedisClusterServer).GetSharedRegionalCertificateAuthority(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.redis.cluster.v1.CloudRedisCluster/GetSharedRegionalCertificateAuthority",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CloudRedisClusterServer).GetSharedRegionalCertificateAuthority(ctx, req.(*GetSharedRegionalCertificateAuthorityRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -633,6 +669,10 @@ var CloudRedisCluster_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetClusterCertificateAuthority",
 			Handler:    _CloudRedisCluster_GetClusterCertificateAuthority_Handler,
+		},
+		{
+			MethodName: "GetSharedRegionalCertificateAuthority",
+			Handler:    _CloudRedisCluster_GetSharedRegionalCertificateAuthority_Handler,
 		},
 		{
 			MethodName: "RescheduleClusterMaintenance",
