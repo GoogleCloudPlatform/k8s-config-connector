@@ -39,7 +39,6 @@ func memorystoreInstanceBackupFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".instance")
 
 	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".instance")
 	f.StatusFields.Insert(".instance_uid")
 	f.StatusFields.Insert(".total_size_bytes")
 	f.StatusFields.Insert(".expire_time")

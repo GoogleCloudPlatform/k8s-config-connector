@@ -84,9 +84,9 @@ func (r *MemorystoreInstanceRef) ValidateExternal(ref string) error {
 // If "External" is already set, the format will be validated.
 //
 // If "External" is not set, the NamespacedName will be used to query the
-// referenced object from the K8s API and fetch it's external reference
+// referenced object from the K8s API and fetch its external reference
 // value. If "Namespace" is not specified in the reference, the
-// `defaultNamespace`“` will be used instead.
+// `defaultNamespace` will be used instead.
 func (r *MemorystoreInstanceRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	return Normalize(ctx, reader, r, defaultNamespace)
 }

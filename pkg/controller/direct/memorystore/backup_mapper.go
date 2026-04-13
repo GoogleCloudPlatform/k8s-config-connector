@@ -52,14 +52,13 @@ func MemorystoreInstanceBackupObservedState_FromProto(mapCtx *direct.MapContext,
 	}
 	out := &krm.MemorystoreInstanceBackupObservedState{}
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.Instance = direct.LazyPtr(in.GetInstance())
 	out.InstanceUid = direct.LazyPtr(in.GetInstanceUid())
 	out.TotalSizeBytes = direct.LazyPtr(in.GetTotalSizeBytes())
 	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
 	out.EngineVersion = direct.LazyPtr(in.GetEngineVersion())
 	out.BackupFiles = direct.Slice_FromProto(mapCtx, in.BackupFiles, BackupFileObservedState_FromProto)
 	out.NodeType = direct.Enum_FromProto(mapCtx, in.GetNodeType())
-	out.ReplicaCount = &in.ReplicaCount
+	out.ReplicaCount = direct.LazyPtr(in.GetReplicaCount())
 	out.ShardCount = direct.LazyPtr(in.GetShardCount())
 	out.BackupType = direct.Enum_FromProto(mapCtx, in.GetBackupType())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
@@ -72,7 +71,6 @@ func MemorystoreInstanceBackupObservedState_ToProto(mapCtx *direct.MapContext, i
 	}
 	out := &pb.Backup{}
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.Instance = direct.ValueOf(in.Instance)
 	out.InstanceUid = direct.ValueOf(in.InstanceUid)
 	out.TotalSizeBytes = direct.ValueOf(in.TotalSizeBytes)
 	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
@@ -102,7 +100,11 @@ func MemorystoreInstanceBackupSpec_ToProto(mapCtx *direct.MapContext, in *krm.Me
 	}
 	out := &pb.Backup{}
 	if in.InstanceRef != nil {
-		out.Instance = in.InstanceRef.External
+		if in.InstanceRef.External != "" {
+			out.Instance = in.InstanceRef.External
+		} else {
+			mapCtx.Errorf("InstanceRef.External is not set")
+		}
 	}
 	return out
 }
@@ -125,7 +127,11 @@ func MemorystoreInstanceBackupSpec_ToRequestProto(mapCtx *direct.MapContext, in 
 	out := &pb.BackupInstanceRequest{}
 	out.BackupId = in.ResourceID
 	if in.InstanceRef != nil {
-		out.Name = in.InstanceRef.External
+		if in.InstanceRef.External != "" {
+			out.Name = in.InstanceRef.External
+		} else {
+			mapCtx.Errorf("InstanceRef.External is not set")
+		}
 	}
 	out.Ttl = direct.StringDuration_ToProto(mapCtx, in.Ttl)
 	return out

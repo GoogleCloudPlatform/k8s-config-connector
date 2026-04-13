@@ -28,14 +28,13 @@ type MemorystoreInstanceBackupSpec struct {
 	// Optional. The MemorystoreInstanceBackup name. Config Connector will always use
 	//  metadata.name if ResourceID is unspecified, overriding the GCP default.
 	// Immutable.
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID is immutable"
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Required. The Memorystore instance reference of the backup.
 	// Immutable.
 	// +kcc:proto:field=google.cloud.memorystore.v1.BackupInstanceRequest.name
 	// +required
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="InstanceRef is immutable"
+	// +kubebuilder:validation:XValidation:rule="oldSelf.name == self.name && oldSelf.namespace == self.namespace && (!has(oldSelf.external) || oldSelf.external == self.external)",message="InstanceRef is immutable"
 	InstanceRef *refsv1beta1.MemorystoreInstanceRef `json:"instanceRef"`
 
 	// Optional. TTL for the backup to expire. Value range is 1 day to 100 years.
@@ -43,6 +42,7 @@ type MemorystoreInstanceBackupSpec struct {
 	// Immutable.
 	// +kcc:proto:field=google.cloud.memorystore.v1.BackupInstanceRequest.ttl
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Ttl is immutable"
+	// +kubebuilder:validation:Pattern="^[0-9]+(s|m|h)$"
 	Ttl *string `json:"ttl,omitempty"`
 }
 
@@ -68,10 +68,6 @@ type MemorystoreInstanceBackupObservedState struct {
 	// Output only. The time when the backup was created.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Backup.create_time
 	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. Instance resource path of this backup.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Backup.instance
-	Instance *string `json:"instance,omitempty"`
 
 	// Output only. Instance uid of this backup.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Backup.instance_uid
@@ -144,6 +140,7 @@ type BackupFileObservedState struct {
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="State",JSONPath=".status.observedState.state",type="string"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
