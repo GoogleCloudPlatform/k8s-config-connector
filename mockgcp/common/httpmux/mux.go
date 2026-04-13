@@ -56,7 +56,7 @@ type ServeMux struct {
 
 // NewServeMux constructs an http server with our error handling etc
 func NewServeMux(ctx context.Context, conn *grpc.ClientConn, opt Options, handlers ...func(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error) (*ServeMux, error) {
-	resolver := &protoResolver{}
+	resolver := &Resolver{}
 	marshaler := &runtime.HTTPBodyMarshaler{
 		Marshaler: &runtime.JSONPb{
 			MarshalOptions: protojson.MarshalOptions{

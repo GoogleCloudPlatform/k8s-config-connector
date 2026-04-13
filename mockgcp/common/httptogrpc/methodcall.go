@@ -18,6 +18,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -111,7 +112,9 @@ func (c *httpMethodCall) SendResponse(response proto.Message, responseOptions Re
 
 	c.parent.addGCPHeaders(ctx, c.w, response)
 
-	marshalOptions := protojson.MarshalOptions{}
+	marshalOptions := protojson.MarshalOptions{
+		Resolver: &httpmux.Resolver{},
+	}
 	responseOptions.populateMarshalOptions(&marshalOptions)
 
 	if c.grpcMethod != nil {
