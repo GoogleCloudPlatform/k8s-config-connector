@@ -16,11 +16,14 @@ package mockdataform
 
 import (
 	"context"
+	"io"
 	"net/http"
+	"strings"
 
 	"cloud.google.com/go/iam/apiv1/iampb"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/encoding/protojson"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
@@ -70,5 +73,41 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
-	return mux, nil
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasSuffix(r.URL.Path, ":getIamPolicy") && r.Method == "GET" {
+			resource := strings.TrimSuffix(strings.TrimPrefix(r.URL.Path, "/v1beta1/"), ":getIamPolicy")
+			req := &iampb.GetIamPolicyRequest{
+				Resource: resource,
+			}
+			policy, err := s.v1beta1.GetIamPolicy(r.Context(), req)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			b, _ := (protojson.MarshalOptions{EmitUnpopulated: true}).Marshal(policy)
+			w.Header().Set("Content-Type", "application/json")
+			w.Write(b)
+			return
+		}
+		if strings.HasSuffix(r.URL.Path, ":setIamPolicy") && r.Method == "POST" {
+			resource := strings.TrimSuffix(strings.TrimPrefix(r.URL.Path, "/v1beta1/"), ":setIamPolicy")
+			req := &iampb.SetIamPolicyRequest{}
+			b, _ := io.ReadAll(r.Body)
+			if err := protojson.Unmarshal(b, req); err != nil {
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+			}
+			req.Resource = resource
+			policy, err := s.v1beta1.SetIamPolicy(r.Context(), req)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			b2, _ := (protojson.MarshalOptions{EmitUnpopulated: true}).Marshal(policy)
+			w.Header().Set("Content-Type", "application/json")
+			w.Write(b2)
+			return
+		}
+		mux.ServeHTTP(w, r)
+	}), nil
 }
