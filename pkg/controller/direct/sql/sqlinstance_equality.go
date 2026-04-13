@@ -592,6 +592,12 @@ func DiffPscConfig(desired *api.PscConfig, actual *api.PscConfig) *structuredrep
 	if desired.PscEnabled != actual.PscEnabled {
 		diff.AddField(".settings.ipConfiguration.pscConfig.pscEnabled", actual.PscEnabled, desired.PscEnabled)
 	}
+	if desired.PscAutoDnsEnabled != actual.PscAutoDnsEnabled {
+		diff.AddField(".settings.ipConfiguration.pscConfig.pscAutoDnsEnabled", actual.PscAutoDnsEnabled, desired.PscAutoDnsEnabled)
+	}
+	if desired.PscWriteEndpointDnsEnabled != actual.PscWriteEndpointDnsEnabled {
+		diff.AddField(".settings.ipConfiguration.pscConfig.pscWriteEndpointDnsEnabled", actual.PscWriteEndpointDnsEnabled, desired.PscWriteEndpointDnsEnabled)
+	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
 	return diff
