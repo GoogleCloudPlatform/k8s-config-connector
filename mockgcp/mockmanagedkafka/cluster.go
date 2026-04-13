@@ -31,7 +31,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "cloud.google.com/go/managedkafka/apiv1/managedkafkapb"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/managedkafka/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
@@ -156,6 +156,19 @@ func (s *managedKafka) UpdateCluster(ctx context.Context, req *pb.UpdateClusterR
 			obj.Name = req.GetCluster().GetName()
 		case "rebalanceConfig.mode":
 			obj.RebalanceConfig.Mode = req.GetCluster().GetRebalanceConfig().GetMode()
+		case "tlsConfig.sslPrincipalMappingRules":
+			if obj.TlsConfig == nil {
+				obj.TlsConfig = &pb.TlsConfig{}
+			}
+			obj.TlsConfig.SslPrincipalMappingRules = req.GetCluster().GetTlsConfig().GetSslPrincipalMappingRules()
+		case "tlsConfig.trustConfig.casConfigs":
+			if obj.TlsConfig == nil {
+				obj.TlsConfig = &pb.TlsConfig{}
+			}
+			if obj.TlsConfig.TrustConfig == nil {
+				obj.TlsConfig.TrustConfig = &pb.TrustConfig{}
+			}
+			obj.TlsConfig.TrustConfig.CasConfigs = req.GetCluster().GetTlsConfig().GetTrustConfig().GetCasConfigs()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled in mock", path)
 		}

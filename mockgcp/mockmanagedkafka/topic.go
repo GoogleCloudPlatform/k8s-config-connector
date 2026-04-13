@@ -28,8 +28,9 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	pb "cloud.google.com/go/managedkafka/apiv1/managedkafkapb"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/managedkafka/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+
 )
 
 func (s *managedKafka) GetTopic(ctx context.Context, req *pb.GetTopicRequest) (*pb.Topic, error) {
