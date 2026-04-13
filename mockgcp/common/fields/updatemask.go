@@ -95,8 +95,21 @@ func walk(original, update proto.Message, path string) error {
 
 func replace(original, update protoreflect.Message, fieldName string) error {
 	originalFd := original.Descriptor().Fields().ByJSONName(fieldName)
+	if originalFd == nil {
+		originalFd = original.Descriptor().Fields().ByName(protoreflect.Name(fieldName))
+	}
+	if originalFd == nil {
+		return fmt.Errorf("field %q not found", fieldName)
+	}
 	originalVal := original.Get(originalFd)
+
 	updateFd := update.Descriptor().Fields().ByJSONName(fieldName)
+	if updateFd == nil {
+		updateFd = update.Descriptor().Fields().ByName(protoreflect.Name(fieldName))
+	}
+	if updateFd == nil {
+		return fmt.Errorf("field %q not found", fieldName)
+	}
 	updateVal := update.Get(updateFd)
 
 	// Update Map
@@ -136,10 +149,16 @@ func replace(original, update protoreflect.Message, fieldName string) error {
 // originalChildMessage get the orignal Message's mutable reference to the `fieldName“ composite.
 func originalChildMessage(m protoreflect.Message, fieldName string) proto.Message {
 	fd := m.Descriptor().Fields().ByJSONName(fieldName)
+	if fd == nil {
+		fd = m.Descriptor().Fields().ByName(protoreflect.Name(fieldName))
+	}
 	return m.Mutable(fd).Message().Interface()
 }
 
 func updateChildMessage(m protoreflect.Message, fieldName string) proto.Message {
 	fd := m.Descriptor().Fields().ByJSONName(fieldName)
+	if fd == nil {
+		fd = m.Descriptor().Fields().ByName(protoreflect.Name(fieldName))
+	}
 	return m.Get(fd).Message().Interface()
 }

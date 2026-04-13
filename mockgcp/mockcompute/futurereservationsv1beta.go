@@ -24,6 +24,7 @@ import (
 	"strings"
 
 	pbv1beta "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1beta"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -112,37 +113,8 @@ func (s *FutureReservationsV1beta) Update(ctx context.Context, req *pbv1beta.Upd
 	updateMask := req.GetUpdateMask()
 	if updateMask != "" {
 		paths := strings.Split(updateMask, ",")
-		for _, path := range paths {
-			switch path {
-			case "aggregate_reservation.in_use_resources":
-				if obj.AggregateReservation == nil {
-					obj.AggregateReservation = &pbv1beta.AllocationAggregateReservation{}
-				}
-				obj.AggregateReservation.InUseResources = resource.GetAggregateReservation().GetInUseResources()
-			case "specific_sku_properties.total_count":
-				if obj.SpecificSkuProperties == nil {
-					obj.SpecificSkuProperties = &pbv1beta.FutureReservationSpecificSKUProperties{}
-				}
-				obj.SpecificSkuProperties.TotalCount = nil
-				if props := resource.GetSpecificSkuProperties(); props != nil {
-					obj.SpecificSkuProperties.TotalCount = props.TotalCount
-				}
-			case "time_window.duration.seconds":
-				if obj.TimeWindow == nil {
-					obj.TimeWindow = &pbv1beta.FutureReservationTimeWindow{}
-				}
-				if obj.TimeWindow.Duration == nil {
-					obj.TimeWindow.Duration = &pbv1beta.Duration{}
-				}
-				obj.TimeWindow.Duration.Seconds = nil
-				if duration := resource.GetTimeWindow().GetDuration(); duration != nil {
-					obj.TimeWindow.Duration.Seconds = duration.Seconds
-				}
-			default:
-				// Fallback to proto.Merge for unknown fields in mask
-				// This is not perfect but better than nothing
-				proto.Merge(obj, resource)
-			}
+		if err := fields.UpdateByFieldMask(obj, resource, paths); err != nil {
+			return nil, status.Errorf(codes.Internal, "error updating by field mask: %v", err)
 		}
 	} else {
 		proto.Merge(obj, resource)
