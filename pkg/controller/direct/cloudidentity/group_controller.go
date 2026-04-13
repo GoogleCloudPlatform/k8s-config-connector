@@ -18,6 +18,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"reflect"
 	"sort"
 	"strings"
@@ -28,10 +29,15 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	api "google.golang.org/api/cloudidentity/v1beta1"
+	"google.golang.org/api/googleapi"
+	"google.golang.org/api/transport/http"
+	"google.golang.org/protobuf/encoding/protojson"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
+	"net/http"
 )
 
 func init() {
@@ -75,10 +81,17 @@ func (m *modelGroup) AdapterForObject(ctx context.Context, op *directbase.Adapte
 	if err != nil {
 		return nil, err
 	}
+
+	httpClient, _, err := http.NewClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("error creating http client: %w", err)
+	}
+
 	return &GroupAdapter{
-		id:        id,
-		gcpClient: gcpClient,
-		desired:   obj,
+		id:         id,
+		gcpClient:  gcpClient,
+		httpClient: httpClient,
+		desired:    obj,
 	}, nil
 }
 
@@ -88,13 +101,99 @@ func (m *modelGroup) AdapterForURL(ctx context.Context, url string) (directbase.
 }
 
 type GroupAdapter struct {
-	id        *krm.GroupIdentity
-	gcpClient *api.Service
-	desired   *krm.CloudIdentityGroup
-	actual    *api.Group
+	id         *krm.GroupIdentity
+	gcpClient  *api.Service
+	httpClient *http.Client
+	desired    *krm.CloudIdentityGroup
+	actual     *api.Group
 }
 
 var _ directbase.Adapter = &GroupAdapter{}
+var _ directbase.IAMAdapter = &GroupAdapter{}
+
+func (a *GroupAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	if a.id.ID() == "" {
+		return nil, fmt.Errorf("cannot get IAM policy for group with no ID")
+	}
+
+	url := fmt.Sprintf("https://cloudidentity.googleapis.com/v1beta1/%s:getIamPolicy", a.id.String())
+	req, err := http.NewRequestWithContext(ctx, "POST", url, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+
+	resp, err := a.httpClient.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("error executing request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if err := googleapi.CheckResponse(resp); err != nil {
+		return nil, fmt.Errorf("error from GCP: %w", err)
+	}
+
+	bodyBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+
+	policy := &iampb.Policy{}
+	if err := protojson.Unmarshal(bodyBytes, policy); err != nil {
+		return nil, fmt.Errorf("error unmarshalling response: %w", err)
+	}
+
+	return policy, nil
+}
+
+func (a *GroupAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	if a.id.ID() == "" {
+		return nil, fmt.Errorf("cannot set IAM policy for group with no ID")
+	}
+
+	url := fmt.Sprintf("https://cloudidentity.googleapis.com/v1beta1/%s:setIamPolicy", a.id.String())
+
+	policyJSON, err := protojson.Marshal(policy)
+	if err != nil {
+		return nil, fmt.Errorf("error marshalling policy: %w", err)
+	}
+
+	type SetIamPolicyRequest struct {
+		Policy json.RawMessage `json:"policy"`
+	}
+	requestBody := SetIamPolicyRequest{Policy: json.RawMessage(policyJSON)}
+	requestJSON, err := json.Marshal(requestBody)
+	if err != nil {
+		return nil, fmt.Errorf("error marshalling request body: %w", err)
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "POST", url, strings.NewReader(string(requestJSON)))
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := a.httpClient.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("error executing request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if err := googleapi.CheckResponse(resp); err != nil {
+		return nil, fmt.Errorf("error from GCP: %w", err)
+	}
+
+	responseBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+
+	newPolicy := &iampb.Policy{}
+	if err := protojson.Unmarshal(responseBytes, newPolicy); err != nil {
+		return nil, fmt.Errorf("error unmarshalling response: %w", err)
+	}
+
+	return newPolicy, nil
+}
 
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter `Update` call.
