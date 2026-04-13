@@ -36,7 +36,7 @@ import (
 	longrunning "google.golang.org/genproto/googleapis/longrunning"
 
 	// Note: we use the generated mockgcp proto.
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataplex/v1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/dataplex/v1"
 )
 
 func (s *DataplexService) GetZone(ctx context.Context, req *pb.GetZoneRequest) (*pb.Zone, error) {
