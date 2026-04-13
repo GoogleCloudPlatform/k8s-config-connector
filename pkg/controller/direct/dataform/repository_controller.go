@@ -281,6 +281,16 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
 
+	if direct.ValueOf(a.desired.Spec.ContainingFolder) != a.actual.ContainingFolder {
+		report.AddField("containing_folder", a.actual.ContainingFolder, direct.ValueOf(a.desired.Spec.ContainingFolder))
+		updateMask.Paths = append(updateMask.Paths, "containing_folder")
+	}
+
+	if direct.ValueOf(a.desired.Spec.TeamFolderName) != a.actual.TeamFolderName {
+		report.AddField("team_folder_name", a.actual.TeamFolderName, direct.ValueOf(a.desired.Spec.TeamFolderName))
+		updateMask.Paths = append(updateMask.Paths, "team_folder_name")
+	}
+
 	if a.desired.Spec.ServiceAccountRef != nil {
 		if !reflect.DeepEqual(a.desired.Spec.ServiceAccountRef.External, a.actual.ServiceAccount) {
 			report.AddField("service_account", a.actual.ServiceAccount, a.desired.Spec.ServiceAccountRef.External)
