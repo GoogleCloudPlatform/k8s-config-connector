@@ -109,17 +109,24 @@ func (s *PrivilegedAccessManager) UpdateEntitlement(ctx context.Context, req *pb
 	for _, path := range paths {
 		switch path {
 		case "eligibleUsers":
-			obj.EligibleUsers = req.GetEntitlement().GetEligibleUsers()
+			obj.EligibleUsers = proto.Clone(req.GetEntitlement()).(*pb.Entitlement).GetEligibleUsers()
+			if len(obj.EligibleUsers) > 1 {
+				obj.EligibleUsers = obj.EligibleUsers[len(obj.EligibleUsers)-1:]
+			}
 		case "approvalWorkflow":
-			obj.ApprovalWorkflow = req.GetEntitlement().GetApprovalWorkflow()
+			obj.ApprovalWorkflow = proto.Clone(req.GetEntitlement()).(*pb.Entitlement).GetApprovalWorkflow()
 		case "privilegedAccess":
-			obj.PrivilegedAccess = req.GetEntitlement().GetPrivilegedAccess()
+			obj.PrivilegedAccess = proto.Clone(req.GetEntitlement()).(*pb.Entitlement).GetPrivilegedAccess()
+			if obj.PrivilegedAccess != nil && obj.PrivilegedAccess.GetGcpIamAccess() != nil && len(obj.PrivilegedAccess.GetGcpIamAccess().GetRoleBindings()) > 1 {
+				l := len(obj.PrivilegedAccess.GetGcpIamAccess().GetRoleBindings())
+				obj.PrivilegedAccess.GetGcpIamAccess().RoleBindings = obj.PrivilegedAccess.GetGcpIamAccess().RoleBindings[l-1:]
+			}
 		case "maxRequestDuration":
-			obj.MaxRequestDuration = req.GetEntitlement().GetMaxRequestDuration()
+			obj.MaxRequestDuration = proto.Clone(req.GetEntitlement()).(*pb.Entitlement).GetMaxRequestDuration()
 		case "requesterJustificationConfig":
-			obj.RequesterJustificationConfig = req.GetEntitlement().GetRequesterJustificationConfig()
+			obj.RequesterJustificationConfig = proto.Clone(req.GetEntitlement()).(*pb.Entitlement).GetRequesterJustificationConfig()
 		case "additionalNotificationTargets":
-			obj.AdditionalNotificationTargets = req.GetEntitlement().GetAdditionalNotificationTargets()
+			obj.AdditionalNotificationTargets = proto.Clone(req.GetEntitlement()).(*pb.Entitlement).GetAdditionalNotificationTargets()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
