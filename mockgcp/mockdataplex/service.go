@@ -30,8 +30,8 @@ import (
 	grpcpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataplex/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 
-	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
-	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
+	// Note: we use the generated mockgcp proto.
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataplex/v1"
 )
 
 // MockService represents a mocked dataplex service.
