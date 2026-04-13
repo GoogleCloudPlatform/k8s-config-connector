@@ -298,8 +298,8 @@ cloud.google.com/go/billing v1.17.3/go.mod h1:z83AkoZ7mZwBGT3yTnt6rSGI1OOsHSIi6a
 cloud.google.com/go/billing v1.17.4/go.mod h1:5DOYQStCxquGprqfuid/7haD7th74kyMBHkjO/OvDtk=
 cloud.google.com/go/billing v1.18.0/go.mod h1:5DOYQStCxquGprqfuid/7haD7th74kyMBHkjO/OvDtk=
 cloud.google.com/go/billing v1.18.2/go.mod h1:PPIwVsOOQ7xzbADCwNe8nvK776QpfrOAUkvKjCUcpSE=
-cloud.google.com/go/billing v1.21.0 h1:nbQjTXkpgB/E4XnYZQwcZnR63QFsbFwJ9DGsNg61Ghg=
-cloud.google.com/go/billing v1.21.0/go.mod h1:ZGairB3EVnb3i09E2SxFxo50p5unPaMTuo1jh6jW9js=
+cloud.google.com/go/billing v1.23.0 h1:V7n01HI3BBo9Ceg0liX3WWh/pDfuTnF49zLG7QVoQZI=
+cloud.google.com/go/billing v1.23.0/go.mod h1:axqDO1uHegh7u5qngkTfqN1djAeLGsWAFAblERgmgEk=
 cloud.google.com/go/binaryauthorization v1.1.0/go.mod h1:xwnoWu3Y84jbuHa0zd526MJYmtnVXn0syOjaJgy4+dM=
 cloud.google.com/go/binaryauthorization v1.2.0/go.mod h1:86WKkJHtRcv5ViNABtYMhhNWRrD1Vpi//uKEy7aYEfI=
 cloud.google.com/go/binaryauthorization v1.3.0/go.mod h1:lRZbKgjDIIQvzYQS1p99A7/U1JqvqeZg0wiI5tp6tg0=
