@@ -6,9 +6,7 @@ spec:
   bindings:
     - role: roles/bigquery.admin
       members:
-        - memberFrom:
-            serviceAccountRef:
-              name: bqres-dep-${uniqueId}
+        - serviceAccount:bqres-dep-${uniqueId}@${projectId}.iam.gserviceaccount.com
   resourceRef:
     apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1beta1
     kind: BigQueryReservationReservation
