@@ -108,7 +108,45 @@ func (s *FutureReservationsV1beta) Update(ctx context.Context, req *pbv1beta.Upd
 		return nil, err
 	}
 
-	proto.Merge(obj, req.GetFutureReservationResource())
+	resource := req.GetFutureReservationResource()
+	updateMask := req.GetUpdateMask()
+	if updateMask != "" {
+		paths := strings.Split(updateMask, ",")
+		for _, path := range paths {
+			switch path {
+			case "aggregate_reservation.in_use_resources":
+				if obj.AggregateReservation == nil {
+					obj.AggregateReservation = &pbv1beta.AllocationAggregateReservation{}
+				}
+				obj.AggregateReservation.InUseResources = resource.GetAggregateReservation().GetInUseResources()
+			case "specific_sku_properties.total_count":
+				if obj.SpecificSkuProperties == nil {
+					obj.SpecificSkuProperties = &pbv1beta.FutureReservationSpecificSKUProperties{}
+				}
+				obj.SpecificSkuProperties.TotalCount = nil
+				if props := resource.GetSpecificSkuProperties(); props != nil {
+					obj.SpecificSkuProperties.TotalCount = props.TotalCount
+				}
+			case "time_window.duration.seconds":
+				if obj.TimeWindow == nil {
+					obj.TimeWindow = &pbv1beta.FutureReservationTimeWindow{}
+				}
+				if obj.TimeWindow.Duration == nil {
+					obj.TimeWindow.Duration = &pbv1beta.Duration{}
+				}
+				obj.TimeWindow.Duration.Seconds = nil
+				if duration := resource.GetTimeWindow().GetDuration(); duration != nil {
+					obj.TimeWindow.Duration.Seconds = duration.Seconds
+				}
+			default:
+				// Fallback to proto.Merge for unknown fields in mask
+				// This is not perfect but better than nothing
+				proto.Merge(obj, resource)
+			}
+		}
+	} else {
+		proto.Merge(obj, resource)
+	}
 
 	// Set fields during updates as expected by golden file
 	obj.AutoDeleteAutoCreatedReservations = nil

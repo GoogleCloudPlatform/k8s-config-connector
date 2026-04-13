@@ -35,6 +35,15 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: project=${projectId}&zone=us-central1-a
 
 {
+  "aggregateReservation": {
+    "inUseResources": [
+      {
+        "accelerator": {
+          "acceleratorCount": 1
+        }
+      }
+    ]
+  },
   "autoDeleteAutoCreatedReservations": true,
   "name": "${futureReservationID}",
   "specificSkuProperties": {
@@ -45,6 +54,9 @@ X-Goog-Request-Params: project=${projectId}&zone=us-central1-a
     "totalCount": "1"
   },
   "timeWindow": {
+    "duration": {
+      "seconds": "2592000"
+    },
     "endTime": "2026-12-31T07:00:00Z",
     "startTime": "2026-12-01T07:00:00Z"
   }
@@ -128,6 +140,15 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "aggregateReservation": {
+    "inUseResources": [
+      {
+        "accelerator": {
+          "acceleratorCount": 1
+        }
+      }
+    ]
+  },
   "autoCreatedReservationsDeleteTime": "2025-12-31T07:00:00Z",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
@@ -148,6 +169,9 @@ X-Xss-Protection: 0
     "procurementStatus": "DRAFTING"
   },
   "timeWindow": {
+    "duration": {
+      "seconds": "2592000"
+    },
     "endTime": "2026-12-31T07:00:00Z",
     "startTime": "2026-12-01T07:00:00Z"
   },
@@ -156,7 +180,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}?updateMask=specific_sku_properties.total_count
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}?updateMask=aggregate_reservation.in_use_resources%2Cspecific_sku_properties.total_count%2Ctime_window.duration.seconds
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&future_reservation=${futureReservationID}
@@ -264,6 +288,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "aggregateReservation": {},
   "autoCreatedReservationsDeleteTime": "2025-12-31T07:00:00Z",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "",
@@ -289,6 +314,7 @@ X-Xss-Protection: 0
     "procurementStatus": "DRAFTING"
   },
   "timeWindow": {
+    "duration": {},
     "endTime": "2026-12-31T07:00:00Z",
     "startTime": "2026-12-01T07:00:00Z"
   },
