@@ -204,7 +204,7 @@ func loadFixtureTests() ([]FixtureTest, error) {
 				}
 				gvk := u.GroupVersionKind()
 
-				if gvk.Kind == "IAMPolicyMember" {
+				if gvk.Kind == "IAMPolicyMember" || gvk.Kind == "IAMPolicy" || gvk.Kind == "IAMPartialPolicy" || gvk.Kind == "IAMAuditConfig" {
 					// Ignore path validation, the primary resource is not the test in create.yaml
 					return nil
 				}
