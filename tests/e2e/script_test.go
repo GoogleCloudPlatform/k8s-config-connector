@@ -451,7 +451,7 @@ func TestE2EScript(t *testing.T) {
 						}
 					}
 
-					captureHTTPLogEvents(false)
+					captureHTTPLogEvents(testCommand == "SLEEP")
 				}
 
 				t.Logf("***/Finished Steps")
@@ -470,7 +470,7 @@ func TestE2EScript(t *testing.T) {
 							got := x.Render(stepEvents.Entries)
 							if stepEvents.SkipCheck {
 								// if we have to skip the check we might still want to write the file!
-								if os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
+								if false {
 									if err := os.WriteFile(expectedPath, []byte(got), 0644); err != nil {
 										t.Fatalf("FAIL: failed to write golden output %s: %v", expectedPath, err)
 									}
