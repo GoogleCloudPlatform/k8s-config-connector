@@ -1,0 +1,15 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: iampolicy-${uniqueId}
+spec:
+  bindings:
+    - role: roles/bigquery.admin
+      members:
+        - memberFrom:
+            serviceAccountRef:
+              name: bqres-dep-${uniqueId}
+  resourceRef:
+    apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1beta1
+    kind: BigQueryReservationReservation
+    name: bigqueryreservationreservation-${uniqueId}
