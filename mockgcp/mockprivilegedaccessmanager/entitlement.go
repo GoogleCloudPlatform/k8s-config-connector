@@ -109,24 +109,17 @@ func (s *PrivilegedAccessManager) UpdateEntitlement(ctx context.Context, req *pb
 	for _, path := range paths {
 		switch path {
 		case "eligibleUsers":
-			obj.EligibleUsers = proto.Clone(req.GetEntitlement()).(*pb.Entitlement).GetEligibleUsers()
-			if len(obj.EligibleUsers) > 1 {
-				obj.EligibleUsers = obj.EligibleUsers[len(obj.EligibleUsers)-1:]
-			}
+			obj.EligibleUsers = req.GetEntitlement().GetEligibleUsers()
 		case "approvalWorkflow":
-			obj.ApprovalWorkflow = proto.Clone(req.GetEntitlement()).(*pb.Entitlement).GetApprovalWorkflow()
+			obj.ApprovalWorkflow = req.GetEntitlement().GetApprovalWorkflow()
 		case "privilegedAccess":
-			obj.PrivilegedAccess = proto.Clone(req.GetEntitlement()).(*pb.Entitlement).GetPrivilegedAccess()
-			if obj.PrivilegedAccess != nil && obj.PrivilegedAccess.GetGcpIamAccess() != nil && len(obj.PrivilegedAccess.GetGcpIamAccess().GetRoleBindings()) > 1 {
-				l := len(obj.PrivilegedAccess.GetGcpIamAccess().GetRoleBindings())
-				obj.PrivilegedAccess.GetGcpIamAccess().RoleBindings = obj.PrivilegedAccess.GetGcpIamAccess().RoleBindings[l-1:]
-			}
+			obj.PrivilegedAccess = req.GetEntitlement().GetPrivilegedAccess()
 		case "maxRequestDuration":
-			obj.MaxRequestDuration = proto.Clone(req.GetEntitlement()).(*pb.Entitlement).GetMaxRequestDuration()
+			obj.MaxRequestDuration = req.GetEntitlement().GetMaxRequestDuration()
 		case "requesterJustificationConfig":
-			obj.RequesterJustificationConfig = proto.Clone(req.GetEntitlement()).(*pb.Entitlement).GetRequesterJustificationConfig()
+			obj.RequesterJustificationConfig = req.GetEntitlement().GetRequesterJustificationConfig()
 		case "additionalNotificationTargets":
-			obj.AdditionalNotificationTargets = proto.Clone(req.GetEntitlement()).(*pb.Entitlement).GetAdditionalNotificationTargets()
+			obj.AdditionalNotificationTargets = req.GetEntitlement().GetAdditionalNotificationTargets()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
@@ -174,16 +167,16 @@ func (s *PrivilegedAccessManager) DeleteEntitlement(ctx context.Context, req *pb
 
 	metadata := constructOperationMetadata(fqn, "delete")
 	return s.operations.StartLRO(ctx, name.parent(), metadata, func() (proto.Message, error) {
-		if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
-			return nil, err
-		}
+	        deletedObj := &pb.Entitlement{}
+	        if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
+	                return nil, err
+	        }
 
-		result := proto.CloneOf(oldObj)
+		result := proto.CloneOf(deletedObj)
 		result.State = pb.Entitlement_DELETED
 		now := timestamppb.New(time.Now())
 		metadata.EndTime = now
-		return result, nil
-	})
+		return result, nil	})
 }
 
 func constructOperationMetadata(target, verb string) *pb.OperationMetadata {
