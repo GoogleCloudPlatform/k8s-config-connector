@@ -53,3 +53,83 @@ spec:
   pscConfig:
     subnetworkRefs:
     - name: computesubnetwork-${uniqueId}
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: project-2
+spec:
+  organizationRef:
+    external: ${TEST_ORG_ID}
+  billingAccountRef:
+    external: ${TEST_BILLING_ACCOUNT_ID}
+  name: "Display name for project 2"
+  resourceID: "project-2-${uniqueId}"
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: project-2-compute
+spec:
+  resourceID: compute.googleapis.com
+  projectRef:
+    name: project-2
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: project-2-networkconnectivity
+spec:
+  resourceID: networkconnectivity.googleapis.com
+  projectRef:
+    name: project-2
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+    cnrm.cloud.google.com/project-id: project-2-${uniqueId}
+  name: computenetwork-project-2
+spec:
+  description: Test network for the second project
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+    cnrm.cloud.google.com/project-id: project-2-${uniqueId}
+  name: computesubnetwork-project-2
+spec:
+  ipCidrRange: 10.128.0.0/20
+  region: us-central1
+  networkRef:
+    name: computenetwork-project-2
+---
+apiVersion: networkconnectivity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkConnectivityServiceConnectionPolicy
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: scp-project-2
+spec:
+  projectRef:
+    name: project-2
+  location: us-central1
+  serviceClass: "gcp-memorystore"
+  description: "Service Connection Policy for Memorystore"
+  networkRef:
+    name: computenetwork-project-2
+  pscConfig:
+    subnetworkRefs:
+    - name: computesubnetwork-project-2

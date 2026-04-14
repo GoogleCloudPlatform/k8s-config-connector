@@ -108,6 +108,12 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_NotYetTriag
 	f.UnimplementedFields.Insert(fieldPath)
 }
 
+// Unimplemented_Deprecated marks the specified fieldPath as not round-tripped,
+// because it is deprecated in the GCP API - and we never added it to the KRM API.
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_Deprecated(fieldPath string) {
+	f.UnimplementedFields.Insert(fieldPath)
+}
+
 // IdentityField marks a field as not supported in the mapper, because it is part of the identity (URL) rather than being part of the object itself.
 func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) IdentityField(fieldPath string) {
 	f.UnimplementedFields.Insert(fieldPath)
