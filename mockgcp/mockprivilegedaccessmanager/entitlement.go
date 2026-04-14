@@ -167,16 +167,17 @@ func (s *PrivilegedAccessManager) DeleteEntitlement(ctx context.Context, req *pb
 
 	metadata := constructOperationMetadata(fqn, "delete")
 	return s.operations.StartLRO(ctx, name.parent(), metadata, func() (proto.Message, error) {
-	        deletedObj := &pb.Entitlement{}
-	        if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
-	                return nil, err
-	        }
+		deletedObj := &pb.Entitlement{}
+		if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
+			return nil, err
+		}
 
 		result := proto.CloneOf(deletedObj)
 		result.State = pb.Entitlement_DELETED
 		now := timestamppb.New(time.Now())
 		metadata.EndTime = now
-		return result, nil	})
+		return result, nil
+	})
 }
 
 func constructOperationMetadata(target, verb string) *pb.OperationMetadata {
