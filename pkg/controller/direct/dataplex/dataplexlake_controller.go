@@ -22,6 +22,7 @@ package dataplex
 
 import (
 	"context"
+	"cloud.google.com/go/iam/apiv1/iampb"
 	"fmt"
 	"reflect"
 
@@ -276,4 +277,37 @@ func (a *lakeAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOpe
 		}
 	}
 	return true, nil
+}
+
+func (a *lakeAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("getting iam policy for dataplex lake", "name", a.id)
+
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	client := iampb.NewIAMPolicyClient(a.gcpClient.Connection())
+	policy, err := client.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return policy, nil
+}
+
+func (a *lakeAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("setting iam policy for dataplex lake", "name", a.id)
+
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	client := iampb.NewIAMPolicyClient(a.gcpClient.Connection())
+	newPolicy, err := client.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return newPolicy, nil
 }
