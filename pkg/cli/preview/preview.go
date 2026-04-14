@@ -176,15 +176,15 @@ func (i *PreviewInstance) Start(ctx context.Context) error {
 
 	// turn off caching (otherwise we get partial object metadata)
 	nocache.OnlyCacheCCAndCCC(&kccConfig.ManagerOptions)
-	// Use an empty restConfig as a failsafe against requests "leaking" to real kube-apiserver
-	restConfig := &rest.Config{}
-
 	// Hook GCP
 	kccConfig.GRPCUnaryClientInterceptor = grpcUnaryInterceptor
 	kccConfig.HTTPClient = gcpHTTPClient
 	kccConfig.GCPAccessToken = "dummytoken" // Use a fake token as a failsafe against requests "leaking" to real GCP
 
-	mgr, err := kccmanager.New(ctx, restConfig, kccConfig)
+	// Use upstreamRestConfig for the manager so that apiReader can read from the real cluster.
+	// AddDefaultControllers is called INSIDE kccmanager.New, so we must pass it here.
+	// Writes are still blocked because mgr.GetClient() is hooked to return an intercepting client.
+	mgr, err := kccmanager.New(ctx, i.hookKube.upstreamRestConfig, kccConfig)
 	if err != nil {
 		return fmt.Errorf("creating controllers: %w", err)
 	}
