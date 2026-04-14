@@ -13,6 +13,12 @@ metadata:
   namespace: ${uniqueId}
 spec:
   authorizationMode: IAM_AUTH
+  automatedBackupConfig:
+    fixedFrequencySchedule:
+      startTime:
+        hours: 4
+        minutes: 0
+    retention: 1209600s
   deletionProtectionEnabled: false
   endpoints:
   - connections:
@@ -62,16 +68,16 @@ status:
     - connections:
       - pscAutoConnection:
           connectionType: CONNECTION_TYPE_DISCOVERY
-          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98115
-          ipAddress: 10.128.0.21
+          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-cf1cb098-0eda-45f2-90f8-e8ccd851d671
+          ipAddress: 10.128.0.2
           port: 6379
-          pscConnectionID: "1234567890123456789"
-          serviceAttachment: projects/tp-memorystore-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystore-${uniqueId}
+          pscConnectionID: "46985396206174210"
+          serviceAttachment: projects/436013670274/regions/us-central1/serviceAttachments/gcp-memorystore-auto-nb0e03521c39a35d-psc-sa
       - pscAutoConnection:
-          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98116
-          ipAddress: 10.128.0.22
-          pscConnectionID: "1234567890123456790"
-          serviceAttachment: projects/tp-memorystore-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystore-${uniqueId}-2
+          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-6eb8c4b7-59ea-4c90-a5f4-ba3e5900d033
+          ipAddress: 10.128.0.3
+          pscConnectionID: "46985396206174211"
+          serviceAttachment: projects/436013670274/regions/us-central1/serviceAttachments/gcp-memorystore-auto-nb0e03521c39a35d-psc-sa-2
     nodeConfig:
       sizeGB: 6.5
     state: ACTIVE
