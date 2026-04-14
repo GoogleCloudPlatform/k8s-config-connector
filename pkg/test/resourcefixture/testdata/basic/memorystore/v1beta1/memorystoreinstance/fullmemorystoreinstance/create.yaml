@@ -47,3 +47,12 @@ spec:
   labels:
     key1: val1
     key2: val2
+  automatedBackupConfig:
+    automatedBackupMode: ENABLED
+    fixedFrequencySchedule:
+      startTime:
+        hours: 20
+        minutes: 0
+        seconds: 12
+        nanos: 34
+    retention: 604800s # 7 days

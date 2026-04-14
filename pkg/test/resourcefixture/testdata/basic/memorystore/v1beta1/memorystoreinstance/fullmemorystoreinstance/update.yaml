@@ -48,3 +48,9 @@ spec:
   mode: CLUSTER
   labels:
     keyx: valx
+  automatedBackupConfig:
+    fixedFrequencySchedule:
+      startTime:
+        hours: 4
+        minutes: 0
+    retention: 1209600s # 14 days
