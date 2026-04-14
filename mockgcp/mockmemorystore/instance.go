@@ -266,7 +266,7 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 			for _, secondaryInstance := range crr.SecondaryInstances {
 				secondaryName, err := s.parseInstanceName(secondaryInstance.Instance)
 				if err != nil {
-					return err
+					return fmt.Errorf("parsing crossInstanceReplicationConfig.secondaryInstance[].instance: %w", err)
 				}
 				secondaryInstance.Uid = fmt.Sprintf("instance-%s", secondaryName.Name)
 				crr.Membership.SecondaryInstances = append(crr.Membership.SecondaryInstances, &pb.CrossInstanceReplicationConfig_RemoteInstance{
@@ -280,7 +280,7 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 			}
 			primaryName, err := s.parseInstanceName(crr.PrimaryInstance.Instance)
 			if err != nil {
-				return err
+				return fmt.Errorf("parsing crossInstanceReplicationConfig.primaryInstance.instance: %w", err)
 			}
 			crr.PrimaryInstance.Uid = fmt.Sprintf("instance-%s", primaryName.Name)
 			crr.Membership = &pb.CrossInstanceReplicationConfig_Membership{

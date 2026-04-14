@@ -171,6 +171,7 @@ func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	// out.PscAttachmentDetails = direct.Slice_ToProto(mapCtx, in.PscAttachmentDetails, PscAttachmentDetailObservedState_ToProto)
 	return out
 }
+
 func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmv1beta1.MemorystoreInstanceSpec {
 	if in == nil {
 		return nil
@@ -189,9 +190,11 @@ func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instanc
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_FromProto)
 	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_FromProto(mapCtx, in.GetCrossInstanceReplicationConfig())
 
 	return out
 }
+
 func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MemorystoreInstanceSpec) *pb.Instance {
 	if in == nil {
 		return nil
@@ -210,6 +213,8 @@ func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.M
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_ToProto)
 	out.Mode = direct.Enum_ToProto[pb.Instance_Mode](mapCtx, in.Mode)
+	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_ToProto(mapCtx, in.CrossInstanceReplicationConfig)
+
 	return out
 }
 func NodeConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krmv1beta1.NodeConfigObservedState {

@@ -206,7 +206,6 @@ func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 		out.fileAnnotation = v.generatedFileAnnotation
 
 		{
-			out.addImport("refs", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1")
 			out.addImport("", "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct")
 		}
 
@@ -1179,7 +1178,9 @@ func (o *MapperGenerator) getGoImportAlias(goPackage string) string {
 	importAlias := lastComponent(goPackage)
 
 	// Disambiguate in a way that preserves compatibility with the existing code
-	if strings.Contains(goPackage, "k8s-config-connector/apis/refs/") {
+	if strings.HasSuffix(goPackage, "k8s-config-connector/apis/refs") {
+		importAlias = "apirefs"
+	} else if strings.Contains(goPackage, "k8s-config-connector/apis/refs/") {
 		importAlias = "refs" + importAlias
 	} else if _, suffix, found := strings.Cut(goPackage, "k8s-config-connector/apis/"); found {
 		tokens := strings.Split(suffix, "/")
