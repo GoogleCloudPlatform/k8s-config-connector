@@ -103,6 +103,13 @@ func NewQueueIdentity(ctx context.Context, reader client.Reader, obj *TasksQueue
 	}, nil
 }
 
+func NewQueueIdentityExternal(parent *QueueParent, id string) *QueueIdentity {
+	return &QueueIdentity{
+		parent: parent,
+		id:     id,
+	}
+}
+
 func ParseQueueExternal(external string) (parent *QueueParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "queues" {

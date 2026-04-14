@@ -1,0 +1,8 @@
+apiVersion: cloudtasks.cnrm.cloud.google.com/v1alpha1
+kind: TasksQueue
+metadata:
+  name: tasksqueue-iam-${uniqueId}
+spec:
+  location: us-central1
+  projectRef:
+    external: ${projectId}

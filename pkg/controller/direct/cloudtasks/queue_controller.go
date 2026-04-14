@@ -29,6 +29,7 @@ import (
 
 	gcp "cloud.google.com/go/cloudtasks/apiv2"
 	cloudtaskspb "cloud.google.com/go/cloudtasks/apiv2/cloudtaskspb"
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -91,8 +92,27 @@ func (m *modelQueue) AdapterForObject(ctx context.Context, op *directbase.Adapte
 }
 
 func (m *modelQueue) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	// Format is //cloudtasks.googleapis.com/projects/PROJECT_ID/locations/LOCATION/queues/QUEUE_ID
+
+	if !strings.HasPrefix(url, "//cloudtasks.googleapis.com/") {
+		return nil, nil
+	}
+
+	external := strings.TrimPrefix(url, "//cloudtasks.googleapis.com/")
+	parent, resourceID, err := krm.ParseQueueExternal(external)
+	if err != nil {
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &QueueAdapter{
+		id:        krm.NewQueueIdentityExternal(parent, resourceID),
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type QueueAdapter struct {
@@ -103,6 +123,7 @@ type QueueAdapter struct {
 }
 
 var _ directbase.Adapter = &QueueAdapter{}
+var _ registry.IAMAdapter = &QueueAdapter{}
 
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter `Update` call.
@@ -123,6 +144,29 @@ func (a *QueueAdapter) Find(ctx context.Context) (bool, error) {
 
 	a.actual = queuepb
 	return true, nil
+}
+
+func (a *QueueAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.gcpClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting IAM policy for %q: %w", a.id, err)
+	}
+	return policy, nil
+}
+
+func (a *QueueAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.gcpClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting IAM policy for %q: %w", a.id, err)
+	}
+	return newPolicy, nil
 }
 
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
