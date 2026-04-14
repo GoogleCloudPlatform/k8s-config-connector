@@ -117,6 +117,7 @@ networkConfig:
     disabled: boolean
   podIpv4CidrBlock: string
   podRange: string
+  subnetwork: string
 nodeConfig:
   advancedMachineFeatures:
     enableNestedVirtualization: boolean
@@ -658,6 +659,16 @@ version: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The ID of the secondary range for pod IPs. If create_pod_range is true, this ID is used for the new range. If create_pod_range is false, uses an existing secondary range with this ID.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig.subnetwork</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The subnetwork path for the node pool. Format: projects/{project}/regions/{region}/subnetworks/{subnetwork} . If the cluster is associated with multiple subnetworks, the subnetwork for the node pool is picked based on the IP utilization during node pool creation and is immutable.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

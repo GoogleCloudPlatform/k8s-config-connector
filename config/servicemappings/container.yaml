@@ -73,6 +73,13 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - tfField: ip_allocation_policy.additional_ip_ranges_config.subnetwork
+          key: subnetworkRef
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
         - tfField: node_config.service_account
           key: serviceAccountRef
           gvk:
@@ -191,6 +198,14 @@ spec:
         - tfField: network_config.additional_pod_network_configs.subnetwork
           description: Immutable. Name of the subnetwork where the
             additional pod network belongs.
+          key: subnetworkRef
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: network_config.subnetwork
+          description: Immutable. The subnetwork where the node pool belongs.
           key: subnetworkRef
           gvk:
             kind: ComputeSubnetwork

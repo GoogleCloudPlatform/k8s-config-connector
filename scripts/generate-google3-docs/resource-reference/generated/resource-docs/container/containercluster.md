@@ -213,6 +213,10 @@ identityServiceConfig:
   enabled: boolean
 initialNodeCount: integer
 ipAllocationPolicy:
+  additionalIpRangesConfig:
+  - podIpv4RangeNames:
+    - string
+    subnetwork: string
   additionalPodRangesConfig:
     podRangeNames:
     - string
@@ -1668,6 +1672,56 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Immutable. Configuration of cluster IP allocation for VPC-native clusters. Adding this block enables IP aliasing, making the cluster VPC-native instead of routes-based.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalIpRangesConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}AdditionalIPRangesConfig is the configuration for individual additional subnetworks attached to the cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalIpRangesConfig[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalIpRangesConfig[].podIpv4RangeNames</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}List of secondary ranges names within this subnetwork that can be used for pod IPs.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalIpRangesConfig[].podIpv4RangeNames[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalIpRangesConfig[].subnetwork</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the subnetwork. This can be the full path of the subnetwork or just the name.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

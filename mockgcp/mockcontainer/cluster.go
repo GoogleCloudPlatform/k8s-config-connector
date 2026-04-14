@@ -243,6 +243,14 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		update.DesiredMonitoringService = ""
 	}
 
+	if update.DesiredAdditionalIpRangesConfig != nil {
+		if obj.IpAllocationPolicy == nil {
+			obj.IpAllocationPolicy = &pb.IPAllocationPolicy{}
+		}
+		obj.IpAllocationPolicy.AdditionalIpRangesConfigs = update.DesiredAdditionalIpRangesConfig.AdditionalIpRangesConfigs
+		update.DesiredAdditionalIpRangesConfig = nil
+	}
+
 	if update.DesiredNodePoolAutoscaling != nil {
 		nodePoolID := update.GetDesiredNodePoolId()
 		if nodePoolID == "" {
