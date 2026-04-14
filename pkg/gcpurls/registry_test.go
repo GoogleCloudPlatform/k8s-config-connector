@@ -72,9 +72,6 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}":                       true,
 		"//bigtableadmin.googleapis.com/projects/{}/instances/{}/appProfiles/{}":                  true,
 		"//workflowexecutions.googleapis.com/projects/{}/locations/{}/workflows/{}/executions/{}": true,
-		"//networkservices.googleapis.com/projects/{}/locations/global/edgeCacheKeysets/{}":       true,
-		"//networkservices.googleapis.com/projects/{}/locations/global/edgeCacheOrigins/{}":       true,
-		"//networkservices.googleapis.com/projects/{}/locations/global/edgeCacheServices/{}":      true,
 	}
 
 	for _, tmpl := range templates {
