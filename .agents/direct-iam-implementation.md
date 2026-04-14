@@ -3,6 +3,7 @@ name: Direct IAM Implementation
 description: Identifies direct controllers missing IAMAdapter implementation or fixture tests and creates tasks as GitHub Issues.
 schedule: "@daily"
 skipPR: true
+limitIssue: 10
 ---
 
 <!--
@@ -35,6 +36,7 @@ Identify a direct resource (Group and Kind) that meets the following criteria:
 
 # Task
 Create at most one GitHub issue per run for a resource that needs IAM support implemented or tested.
+Note if there are more than 10 issues opened for this chore already, do nothing.
 
 1.  **Scan**:
     - Iterate through `pkg/controller/direct/` subdirectories.
