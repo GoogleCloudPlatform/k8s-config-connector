@@ -23,8 +23,8 @@ import (
 	"fmt"
 	"strings"
 
-	pbv1beta "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1beta"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
+	pbv1beta "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1beta"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
