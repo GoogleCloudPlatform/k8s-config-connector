@@ -153,12 +153,15 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
+<<<<<<< HEAD
   "crossInstanceReplicationConfig": {
     "instanceRole": 3,
     "primaryInstance": {
       "instance": "projects/${projectId}/locations/us-east1/instances/memorystoreinstance-leader"
     }
   },
+=======
+>>>>>>> dc4b55c9fd (tests: add golden output for memorystore replication test)
   "shardCount": 3
 }
 
@@ -173,10 +176,18 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+<<<<<<< HEAD
+=======
+  "done": false,
+>>>>>>> dc4b55c9fd (tests: add golden output for memorystore replication test)
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+<<<<<<< HEAD
+=======
+    "requestedCancellation": false,
+>>>>>>> dc4b55c9fd (tests: add golden output for memorystore replication test)
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-replica",
     "verb": "create"
   },
@@ -207,6 +218,10 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+<<<<<<< HEAD
+=======
+    "requestedCancellation": false,
+>>>>>>> dc4b55c9fd (tests: add golden output for memorystore replication test)
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-replica",
     "verb": "create"
   },
@@ -218,6 +233,7 @@ X-Xss-Protection: 0
       "automatedBackupMode": "DISABLED"
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
+<<<<<<< HEAD
     "crossInstanceReplicationConfig": {
       "instanceRole": "SECONDARY",
       "membership": {
@@ -238,6 +254,13 @@ X-Xss-Protection: 0
       }
     },
     "deletionProtectionEnabled": false,
+=======
+    "deletionProtectionEnabled": false,
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
+>>>>>>> dc4b55c9fd (tests: add golden output for memorystore replication test)
     "engineVersion": "VALKEY_7_2",
     "mode": "CLUSTER",
     "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-replica",
@@ -251,6 +274,7 @@ X-Xss-Protection: 0
     "pscAttachmentDetails": [
       {
         "connectionType": "CONNECTION_TYPE_DISCOVERY",
+<<<<<<< HEAD
         "serviceAttachment": "projects/tp-memorystoreinstance-replica/regions/us-central1/serviceAttachments/sa-memorystoreinstance-replica"
       },
       {
@@ -258,6 +282,17 @@ X-Xss-Protection: 0
       }
     ],
     "replicaCount": 0,
+=======
+        "serviceAttachment": "projects/12410897597/regions/us-central1/serviceAttachments/gcp-memorystore-auto-lb997a742b61d3d4-psc-sa"
+      },
+      {
+        "serviceAttachment": "projects/12410897597/regions/us-central1/serviceAttachments/gcp-memorystore-auto-lb997a742b61d3d4-psc-sa-2"
+      }
+    ],
+    "replicaCount": 0,
+    "satisfiesPzi": true,
+    "serverCaMode": "SERVER_CA_MODE_UNSPECIFIED",
+>>>>>>> dc4b55c9fd (tests: add golden output for memorystore replication test)
     "shardCount": 3,
     "state": "ACTIVE",
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_DISABLED",
@@ -292,6 +327,7 @@ X-Xss-Protection: 0
     "automatedBackupMode": 1
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
+<<<<<<< HEAD
   "crossInstanceReplicationConfig": {
     "instanceRole": 3,
     "membership": {
@@ -312,6 +348,13 @@ X-Xss-Protection: 0
     }
   },
   "deletionProtectionEnabled": false,
+=======
+  "deletionProtectionEnabled": false,
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
+  "encryptionInfo": {
+    "encryptionType": 1
+  },
+>>>>>>> dc4b55c9fd (tests: add golden output for memorystore replication test)
   "engineVersion": "VALKEY_7_2",
   "mode": 2,
   "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-replica",
@@ -325,6 +368,7 @@ X-Xss-Protection: 0
   "pscAttachmentDetails": [
     {
       "connectionType": 1,
+<<<<<<< HEAD
       "serviceAttachment": "projects/tp-memorystoreinstance-replica/regions/us-central1/serviceAttachments/sa-memorystoreinstance-replica"
     },
     {
@@ -332,6 +376,17 @@ X-Xss-Protection: 0
     }
   ],
   "replicaCount": 0,
+=======
+      "serviceAttachment": "projects/12410897597/regions/us-central1/serviceAttachments/gcp-memorystore-auto-lb997a742b61d3d4-psc-sa"
+    },
+    {
+      "serviceAttachment": "projects/12410897597/regions/us-central1/serviceAttachments/gcp-memorystore-auto-lb997a742b61d3d4-psc-sa-2"
+    }
+  ],
+  "replicaCount": 0,
+  "satisfiesPzi": true,
+  "serverCaMode": 0,
+>>>>>>> dc4b55c9fd (tests: add golden output for memorystore replication test)
   "shardCount": 3,
   "state": 2,
   "transitEncryptionMode": 1,
