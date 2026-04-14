@@ -17,6 +17,7 @@ package cloudtasks
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudtasks/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -123,7 +124,7 @@ type QueueAdapter struct {
 }
 
 var _ directbase.Adapter = &QueueAdapter{}
-var _ registry.IAMAdapter = &QueueAdapter{}
+var _ direct.IAMAdapter = &QueueAdapter{}
 
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter `Update` call.
