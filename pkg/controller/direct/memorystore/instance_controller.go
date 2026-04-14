@@ -83,6 +83,10 @@ func (m *modelInstance) AdapterForObject(ctx context.Context, op *directbase.Ada
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
+	// if err := resolveReferences(ctx, reader, obj); err != nil {
+	// 	return nil, err
+	// }
+
 	// Get memorystore GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
