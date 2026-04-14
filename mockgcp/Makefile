@@ -26,6 +26,8 @@ sync-repo:
 
 .PHONY: gen-proto
 gen-proto: tools sync-repo
+	rm -f third_party/googleapis/google/cloud/dataplex/v1/data_products.proto
+	rm -f third_party/googleapis/google/cloud/dataplex/v1/data_products_common.proto
 	mkdir -p ./generated
 
 	./apply-proto-patches.sh
@@ -193,6 +195,8 @@ generate-grpc-for-google-protos:
 			git clone --depth 1 https://github.com/googleapis/googleapis.git third_party/googleapis; \
 	fi
 	cd third_party/googleapis && (git cat-file -e $(GOOGLEAPI_VERSION)^{commit} 2> /dev/null || git fetch origin $(GOOGLEAPI_VERSION)) && git reset --hard $(GOOGLEAPI_VERSION) && git clean -df . && git status
+	rm -f third_party/googleapis/google/cloud/dataplex/v1/data_products.proto
+	rm -f third_party/googleapis/google/cloud/dataplex/v1/data_products_common.proto
 	mkdir -p ./generated
 
 	PATH=bin/:${PATH} bin/protoc/bin/protoc \
