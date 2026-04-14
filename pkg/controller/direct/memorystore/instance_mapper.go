@@ -201,20 +201,27 @@ func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instanc
 		return nil
 	}
 	out := &krmv1beta1.MemorystoreInstanceSpec{}
+	// MISSING: GCSSource
+	// MISSING: ManagedBackupSource
+	// MISSING: Name
 	out.Labels = in.Labels
 	out.ReplicaCount = in.ReplicaCount
 	out.AuthorizationMode = direct.Enum_FromProto(mapCtx, in.GetAuthorizationMode())
 	out.TransitEncryptionMode = direct.Enum_FromProto(mapCtx, in.GetTransitEncryptionMode())
 	out.ShardCount = direct.LazyPtr(in.GetShardCount())
+	// MISSING: DiscoveryEndpoints
 	out.NodeType = direct.Enum_FromProto(mapCtx, in.GetNodeType())
 	out.PersistenceConfig = PersistenceConfig_FromProto(mapCtx, in.GetPersistenceConfig())
 	out.EngineVersion = direct.LazyPtr(in.GetEngineVersion())
 	out.EngineConfigs = in.EngineConfigs
 	out.ZoneDistributionConfig = ZoneDistributionConfig_FromProto(mapCtx, in.GetZoneDistributionConfig())
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
+	// MISSING: PSCAutoConnections
+	// MISSING: PSCAttachmentDetails
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_FromProto)
 	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
 	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_FromProto(mapCtx, in.GetCrossInstanceReplicationConfig())
+	out.AutomatedBackupConfig = AutomatedBackupConfig_FromProto(mapCtx, in.GetAutomatedBackupConfig())
 
 	return out
 }
@@ -224,21 +231,27 @@ func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.M
 		return nil
 	}
 	out := &pb.Instance{}
+	// MISSING: GCSSource
+	// MISSING: ManagedBackupSource
+	// MISSING: Name
 	out.Labels = in.Labels
 	out.ReplicaCount = in.ReplicaCount
 	out.AuthorizationMode = direct.Enum_ToProto[pb.Instance_AuthorizationMode](mapCtx, in.AuthorizationMode)
 	out.TransitEncryptionMode = direct.Enum_ToProto[pb.Instance_TransitEncryptionMode](mapCtx, in.TransitEncryptionMode)
 	out.ShardCount = direct.ValueOf(in.ShardCount)
+	// MISSING: DiscoveryEndpoints
 	out.NodeType = direct.Enum_ToProto[pb.Instance_NodeType](mapCtx, in.NodeType)
 	out.PersistenceConfig = PersistenceConfig_ToProto(mapCtx, in.PersistenceConfig)
 	out.EngineVersion = direct.ValueOf(in.EngineVersion)
 	out.EngineConfigs = in.EngineConfigs
 	out.ZoneDistributionConfig = ZoneDistributionConfig_ToProto(mapCtx, in.ZoneDistributionConfig)
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
+	// MISSING: PSCAutoConnections
+	// MISSING: PSCAttachmentDetails
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_ToProto)
 	out.Mode = direct.Enum_ToProto[pb.Instance_Mode](mapCtx, in.Mode)
 	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_ToProto(mapCtx, in.CrossInstanceReplicationConfig)
-
+	out.AutomatedBackupConfig = AutomatedBackupConfig_ToProto(mapCtx, in.AutomatedBackupConfig)
 	return out
 }
 
