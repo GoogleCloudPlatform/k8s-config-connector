@@ -47,7 +47,6 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".maintenance_schedule")
 	f.UnimplementedFields.Insert(".gcs_source")
 	f.UnimplementedFields.Insert(".backup_collection")
-	f.UnimplementedFields.Insert(".automated_backup_config")
 	f.UnimplementedFields.Insert(".psc_attachment_details")
 	f.UnimplementedFields.Insert(".maintenance_policy")
 	f.UnimplementedFields.Insert(".managed_backup_source")
@@ -69,6 +68,7 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".endpoints")
 	f.SpecFields.Insert(".mode")
 	f.SpecFields.Insert(".cross_instance_replication_config")
+	f.SpecFields.Insert(".automated_backup_config")
 
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")

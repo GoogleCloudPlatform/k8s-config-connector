@@ -89,6 +89,10 @@ type MemorystoreInstanceSpec struct {
 	// Optional. The config for cross instance replication.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.cross_instance_replication_config
 	CrossInstanceReplicationConfig *CrossInstanceReplicationConfig `json:"crossInstanceReplicationConfig,omitempty"`
+
+	// Optional. The automated backup config for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.automated_backup_config
+	AutomatedBackupConfig *AutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
 }
 
 // +kcc:spec:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig
