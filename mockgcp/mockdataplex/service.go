@@ -31,7 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 
 	// Note: we use the generated mockgcp proto.
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/dataplex/v1"
+	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 )
 
 // MockService represents a mocked dataplex service.
