@@ -79,8 +79,8 @@ func (s *RegionalServiceAttachmentV1) Insert(ctx context.Context, req *pb.Insert
 	op := &pb.Operation{
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
-		OperationType: PtrTo("insert"),
-		User:          PtrTo("user@example.com"),
+		OperationType: new("compute.serviceAttachments.insert"),
+		User:          new("user@example.com"),
 	}
 	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
 		return obj, nil
@@ -141,8 +141,8 @@ func (s *RegionalServiceAttachmentV1) Delete(ctx context.Context, req *pb.Delete
 	op := &pb.Operation{
 		TargetId:      deleted.Id,
 		TargetLink:    deleted.SelfLink,
-		OperationType: PtrTo("delete"),
-		User:          PtrTo("user@example.com"),
+		OperationType: new("compute.serviceAttachments.delete"),
+		User:          new("user@example.com"),
 	}
 
 	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {

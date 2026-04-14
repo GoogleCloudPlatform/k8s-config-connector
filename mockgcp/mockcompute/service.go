@@ -53,7 +53,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 
 func (s *MockService) ExpectedHosts() []string {
 	// service attachment has host "www.googleapis.com"
-	return []string{"compute.googleapis.com", "www.googleapis.com"}
+	return []string{"compute.googleapis.com", "compute.mtls.googleapis.com", "www.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
