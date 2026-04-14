@@ -335,5 +335,3 @@ func (a *ApplicationAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Pol
 
 	return newPolicy, nil
 }
-
-
