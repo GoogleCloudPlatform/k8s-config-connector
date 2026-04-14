@@ -65,6 +65,51 @@ spec:
               authorizationMode:
                 description: Optional. Immutable. Authorization mode of the instance.
                 type: string
+              crossInstanceReplicationConfig:
+                description: Optional. The config for cross instance replication.
+                properties:
+                  instanceRole:
+                    description: Required. The role of the instance in cross instance
+                      replication.
+                    type: string
+                  primaryInstance:
+                    description: |-
+                      Optional. Details of the primary instance that is used as the replication
+                       source for this secondary instance.
+
+                       This field is only set for a secondary instance.
+                    properties:
+                      instanceRef:
+                        description: 'Optional. The full resource path of the remote
+                          instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed MemorystoreInstance
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                            type: string
+                          name:
+                            description: The name of a MemorystoreInstance resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a MemorystoreInstance resource.
+                            type: string
+                        type: object
+                    type: object
+                type: object
               deletionProtectionEnabled:
                 description: Optional. If set to true deletion of the instance will
                   fail.
@@ -460,6 +505,51 @@ spec:
               authorizationMode:
                 description: Optional. Immutable. Authorization mode of the instance.
                 type: string
+              crossInstanceReplicationConfig:
+                description: Optional. The config for cross instance replication.
+                properties:
+                  instanceRole:
+                    description: Required. The role of the instance in cross instance
+                      replication.
+                    type: string
+                  primaryInstance:
+                    description: |-
+                      Optional. Details of the primary instance that is used as the replication
+                       source for this secondary instance.
+
+                       This field is only set for a secondary instance.
+                    properties:
+                      instanceRef:
+                        description: 'Optional. The full resource path of the remote
+                          instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed MemorystoreInstance
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                            type: string
+                          name:
+                            description: The name of a MemorystoreInstance resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a MemorystoreInstance resource.
+                            type: string
+                        type: object
+                    type: object
+                type: object
               deletionProtectionEnabled:
                 description: Optional. If set to true deletion of the instance will
                   fail.

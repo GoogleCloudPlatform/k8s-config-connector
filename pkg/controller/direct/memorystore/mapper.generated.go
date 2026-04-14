@@ -72,7 +72,7 @@ func CrossInstanceReplicationConfig_FromProto(mapCtx *direct.MapContext, in *pb.
 	out := &krm.CrossInstanceReplicationConfig{}
 	out.InstanceRole = direct.Enum_FromProto(mapCtx, in.GetInstanceRole())
 	out.PrimaryInstance = CrossInstanceReplicationConfig_RemoteInstance_FromProto(mapCtx, in.GetPrimaryInstance())
-	out.SecondaryInstances = direct.Slice_FromProto(mapCtx, in.SecondaryInstances, CrossInstanceReplicationConfig_RemoteInstance_FromProto)
+	// MISSING: SecondaryInstances
 	// MISSING: UpdateTime
 	// MISSING: Membership
 	return out
@@ -84,33 +84,9 @@ func CrossInstanceReplicationConfig_ToProto(mapCtx *direct.MapContext, in *krm.C
 	out := &pb.CrossInstanceReplicationConfig{}
 	out.InstanceRole = direct.Enum_ToProto[pb.CrossInstanceReplicationConfig_InstanceRole](mapCtx, in.InstanceRole)
 	out.PrimaryInstance = CrossInstanceReplicationConfig_RemoteInstance_ToProto(mapCtx, in.PrimaryInstance)
-	out.SecondaryInstances = direct.Slice_ToProto(mapCtx, in.SecondaryInstances, CrossInstanceReplicationConfig_RemoteInstance_ToProto)
+	// MISSING: SecondaryInstances
 	// MISSING: UpdateTime
 	// MISSING: Membership
-	return out
-}
-func CrossInstanceReplicationConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig) *krm.CrossInstanceReplicationConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CrossInstanceReplicationConfigObservedState{}
-	// MISSING: InstanceRole
-	out.PrimaryInstance = CrossInstanceReplicationConfig_RemoteInstanceObservedState_FromProto(mapCtx, in.GetPrimaryInstance())
-	// MISSING: SecondaryInstances
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.Membership = CrossInstanceReplicationConfig_Membership_FromProto(mapCtx, in.GetMembership())
-	return out
-}
-func CrossInstanceReplicationConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CrossInstanceReplicationConfigObservedState) *pb.CrossInstanceReplicationConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CrossInstanceReplicationConfig{}
-	// MISSING: InstanceRole
-	out.PrimaryInstance = CrossInstanceReplicationConfig_RemoteInstanceObservedState_ToProto(mapCtx, in.PrimaryInstance)
-	// MISSING: SecondaryInstances
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.Membership = CrossInstanceReplicationConfig_Membership_ToProto(mapCtx, in.Membership)
 	return out
 }
 func CrossInstanceReplicationConfig_Membership_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig_Membership) *krm.CrossInstanceReplicationConfig_Membership {
@@ -154,7 +130,9 @@ func CrossInstanceReplicationConfig_RemoteInstance_FromProto(mapCtx *direct.MapC
 		return nil
 	}
 	out := &krm.CrossInstanceReplicationConfig_RemoteInstance{}
-	out.Instance = direct.LazyPtr(in.GetInstance())
+	if in.GetInstance() != "" {
+		out.InstanceRef = &krm.InstanceRef{External: in.GetInstance()}
+	}
 	// MISSING: Uid
 	return out
 }
@@ -163,26 +141,10 @@ func CrossInstanceReplicationConfig_RemoteInstance_ToProto(mapCtx *direct.MapCon
 		return nil
 	}
 	out := &pb.CrossInstanceReplicationConfig_RemoteInstance{}
-	out.Instance = direct.ValueOf(in.Instance)
+	if in.InstanceRef != nil {
+		out.Instance = in.InstanceRef.External
+	}
 	// MISSING: Uid
-	return out
-}
-func CrossInstanceReplicationConfig_RemoteInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig_RemoteInstance) *krm.CrossInstanceReplicationConfig_RemoteInstanceObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CrossInstanceReplicationConfig_RemoteInstanceObservedState{}
-	// MISSING: Instance
-	out.Uid = direct.LazyPtr(in.GetUid())
-	return out
-}
-func CrossInstanceReplicationConfig_RemoteInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CrossInstanceReplicationConfig_RemoteInstanceObservedState) *pb.CrossInstanceReplicationConfig_RemoteInstance {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CrossInstanceReplicationConfig_RemoteInstance{}
-	// MISSING: Instance
-	out.Uid = direct.ValueOf(in.Uid)
 	return out
 }
 func DiscoveryEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveryEndpoint) *krm.DiscoveryEndpointObservedState {
@@ -540,7 +502,6 @@ func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	// MISSING: OndemandMaintenance
 	// MISSING: MaintenancePolicy
 	// MISSING: MaintenanceSchedule
-	// MISSING: CrossInstanceReplicationConfig
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
 	// MISSING: BackupCollection
 	// MISSING: AutomatedBackupConfig
@@ -570,7 +531,6 @@ func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: OndemandMaintenance
 	// MISSING: MaintenancePolicy
 	// MISSING: MaintenanceSchedule
-	// MISSING: CrossInstanceReplicationConfig
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
 	// MISSING: BackupCollection
 	// MISSING: AutomatedBackupConfig
@@ -606,7 +566,7 @@ func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instanc
 	// MISSING: OndemandMaintenance
 	// MISSING: MaintenancePolicy
 	// MISSING: MaintenanceSchedule
-	// MISSING: CrossInstanceReplicationConfig
+	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_FromProto(mapCtx, in.GetCrossInstanceReplicationConfig())
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
 	// MISSING: BackupCollection
 	// MISSING: AutomatedBackupConfig
@@ -642,7 +602,7 @@ func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Memoryst
 	// MISSING: OndemandMaintenance
 	// MISSING: MaintenancePolicy
 	// MISSING: MaintenanceSchedule
-	// MISSING: CrossInstanceReplicationConfig
+	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_ToProto(mapCtx, in.CrossInstanceReplicationConfig)
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
 	// MISSING: BackupCollection
 	// MISSING: AutomatedBackupConfig

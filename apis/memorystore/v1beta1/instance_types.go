@@ -85,6 +85,41 @@ type MemorystoreInstanceSpec struct {
 	// Optional. The mode config for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.mode
 	Mode *string `json:"mode,omitempty"`
+
+	// Optional. The config for cross instance replication.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.cross_instance_replication_config
+	CrossInstanceReplicationConfig *CrossInstanceReplicationConfig `json:"crossInstanceReplicationConfig,omitempty"`
+}
+
+// +kcc:spec:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig
+type CrossInstanceReplicationConfig struct {
+	// Required. The role of the instance in cross instance replication.
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.instance_role
+	InstanceRole *string `json:"instanceRole,omitempty"`
+
+	// Optional. Details of the primary instance that is used as the replication
+	//  source for this secondary instance.
+	//
+	//  This field is only set for a secondary instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.primary_instance
+	PrimaryInstance *CrossInstanceReplicationConfig_RemoteInstance `json:"primaryInstance,omitempty"`
+
+	/* Treating this as an output field:
+	// Optional. List of secondary instances that are replicating from this
+	//  primary instance.
+	//
+	//  This field is only set for a primary instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.secondary_instances
+	SecondaryInstances []CrossInstanceReplicationConfig_RemoteInstance `json:"secondaryInstances,omitempty"`
+	*/
+}
+
+// +kcc:spec:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance
+type CrossInstanceReplicationConfig_RemoteInstance struct {
+	// Optional. The full resource path of the remote instance in
+	//  the format: projects/<project>/locations/<region>/instances/<instance-id>
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance.instance
+	InstanceRef *InstanceRef `json:"instanceRef,omitempty"`
 }
 
 type Parent struct {

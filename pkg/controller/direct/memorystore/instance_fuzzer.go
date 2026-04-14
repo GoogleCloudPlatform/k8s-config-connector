@@ -53,7 +53,6 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".managed_backup_source")
 	f.UnimplementedFields.Insert(".async_instance_endpoints_deletion_enabled")
 	f.UnimplementedFields.Insert(".ondemand_maintenance")
-	f.UnimplementedFields.Insert(".cross_instance_replication_config")
 	f.UnimplementedFields.Insert(".gcs_source")
 
 	f.SpecFields.Insert(".labels")
@@ -69,6 +68,7 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".deletion_protection_enabled")
 	f.SpecFields.Insert(".endpoints")
 	f.SpecFields.Insert(".mode")
+	f.SpecFields.Insert(".cross_instance_replication_config")
 
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
@@ -85,6 +85,12 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".encryption_info")
 	f.Unimplemented_NotYetTriaged(".simulate_maintenance_event")
 	f.Unimplemented_NotYetTriaged(".kms_key")
+
+	// We don't want to surface output fields from cross_instance_replication_config (yet)
+	f.Unimplemented_NotYetTriaged(".cross_instance_replication_config.membership")
+	f.Unimplemented_NotYetTriaged(".cross_instance_replication_config.primary_instance.uid")
+	f.Unimplemented_NotYetTriaged(".cross_instance_replication_config.secondary_instances")
+	f.Unimplemented_NotYetTriaged(".cross_instance_replication_config.update_time")
 
 	return f
 }

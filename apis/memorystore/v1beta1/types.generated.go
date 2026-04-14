@@ -47,6 +47,8 @@ type AutomatedBackupConfig_FixedFrequencySchedule struct {
 	StartTime *TimeOfDay `json:"startTime,omitempty"`
 }
 
+/* found existing non-generated go type "CrossInstanceReplicationConfig", skipping
+
 // +kcc:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig
 type CrossInstanceReplicationConfig struct {
 	// Required. The role of the instance in cross instance replication.
@@ -67,10 +69,13 @@ type CrossInstanceReplicationConfig struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.secondary_instances
 	SecondaryInstances []CrossInstanceReplicationConfig_RemoteInstance `json:"secondaryInstances,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership
 type CrossInstanceReplicationConfig_Membership struct {
 }
+
+/* found existing non-generated go type "CrossInstanceReplicationConfig_RemoteInstance", skipping
 
 // +kcc:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance
 type CrossInstanceReplicationConfig_RemoteInstance struct {
@@ -79,6 +84,7 @@ type CrossInstanceReplicationConfig_RemoteInstance struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance.instance
 	Instance *string `json:"instance,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.DiscoveryEndpoint", skipping
 
@@ -426,6 +432,8 @@ type TimeOfDay struct {
 	Nanos *int32 `json:"nanos,omitempty"`
 }
 
+/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.CrossInstanceReplicationConfig", skipping
+
 // +kcc:observedstate:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig
 type CrossInstanceReplicationConfigObservedState struct {
 	// Optional. Details of the primary instance that is used as the replication
@@ -453,6 +461,7 @@ type CrossInstanceReplicationConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.membership
 	Membership *CrossInstanceReplicationConfig_Membership `json:"membership,omitempty"`
 }
+*/
 
 // +kcc:observedstate:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership
 type CrossInstanceReplicationConfig_MembershipObservedState struct {
@@ -467,12 +476,15 @@ type CrossInstanceReplicationConfig_MembershipObservedState struct {
 	SecondaryInstances []CrossInstanceReplicationConfig_RemoteInstance `json:"secondaryInstances,omitempty"`
 }
 
+/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance", skipping
+
 // +kcc:observedstate:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance
 type CrossInstanceReplicationConfig_RemoteInstanceObservedState struct {
 	// Output only. The unique identifier of the remote instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance.uid
 	Uid *string `json:"uid,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "DiscoveryEndpointObservedState", skipping
 
