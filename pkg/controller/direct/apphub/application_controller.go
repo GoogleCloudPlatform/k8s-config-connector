@@ -17,6 +17,7 @@ package apphub
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apphub/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -31,6 +32,7 @@ import (
 
 	gcp "cloud.google.com/go/apphub/apiv1"
 	apphubpb "cloud.google.com/go/apphub/apiv1/apphubpb"
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -94,8 +96,25 @@ func (m *modelApplication) AdapterForObject(ctx context.Context, op *directbase.
 }
 
 func (m *modelApplication) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	if !strings.HasPrefix(url, "//apphub.googleapis.com/") {
+		return nil, nil
+	}
+
+	external := strings.TrimPrefix(url, "//apphub.googleapis.com/")
+	id, err := krm.NewApplicationIdentityExternal(external)
+	if err != nil {
+		return nil, nil // Not a recognized URL
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &ApplicationAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type ApplicationAdapter struct {
@@ -283,3 +302,38 @@ func (a *ApplicationAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 	}
 	return true, nil
 }
+
+func (a *ApplicationAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot get iam policy for missing resource")
+	}
+
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.gcpClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return policy, nil
+}
+
+func (a *ApplicationAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot set iam policy for missing resource")
+	}
+
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.gcpClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return newPolicy, nil
+}
+
+
