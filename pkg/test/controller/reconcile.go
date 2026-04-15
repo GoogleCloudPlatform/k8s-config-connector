@@ -245,17 +245,17 @@ func SetupNamespaceForDefaultProject(t *testing.T, c client.Client, name string)
 	SetupNamespaceForProject(t, c, name, projectID)
 }
 
-func SetupNamespaceForProject(t *testing.T, c client.Client, name, projectID string) {
-	EnsureNamespaceExistsT(t, c, name)
-	EnsureNamespaceHasProjectIDAnnotation(t, c, name, projectID)
+func SetupNamespaceForProject(t *testing.T, c client.Client, namespace, projectID string) {
+	EnsureNamespaceExistsT(t, c, namespace)
+	EnsureNamespaceHasProjectIDAnnotation(t, c, namespace, projectID)
 }
 
-func EnsureNamespaceExists(c client.Client, name string) error {
+func EnsureNamespaceExists(c client.Client, namespace string) error {
 	ns := &corev1.Namespace{}
-	ns.SetName(name)
+	ns.SetName(namespace)
 	if err := c.Create(context.Background(), ns); err != nil {
 		if !apierrors.IsAlreadyExists(err) {
-			return fmt.Errorf("error creating namespace %v: %w", name, err)
+			return fmt.Errorf("error creating namespace %v: %w", namespace, err)
 		}
 	}
 	return nil

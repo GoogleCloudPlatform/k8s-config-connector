@@ -75,8 +75,8 @@ func SetupNamespacesAndApplyDefaults(t *Harness, resources []*unstructured.Unstr
 }
 
 func setupNamespaces(t *Harness, namespaces []string, project testgcp.GCPProject) {
-	for _, n := range namespaces {
-		testcontroller.SetupNamespaceForProject(t.T, t.GetClient(), n, project.ProjectID)
+	for _, namespace := range namespaces {
+		testcontroller.SetupNamespaceForProject(t.T, t.GetClient(), namespace, project.ProjectID)
 	}
 }
 
