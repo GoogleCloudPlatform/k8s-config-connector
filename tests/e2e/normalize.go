@@ -28,6 +28,7 @@ import (
 
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
@@ -723,6 +724,30 @@ func (o *objectWalker) ReplaceStringValue(oldValue string, newValue string) {
 	// e.g. subnetwork-a => ${subnet} but network-a => ${network}
 	sort.Slice(o.stringReplacements, func(i, j int) bool {
 		return len(o.stringReplacements[i].Find) > len(o.stringReplacements[j].Find)
+	})
+}
+
+func (o *objectWalker) TransformString(targetPath string, transform func(string) string) {
+	o.stringTransforms = append(o.stringTransforms, func(path string, s string) string {
+		if path == targetPath {
+			return transform(s)
+		}
+		return s
+	})
+}
+
+func (o *objectWalker) ReplaceProjectIDWithProjectNumber(targetPath string) {
+	o.TransformString(targetPath, func(s string) string {
+		return projects.ReplaceProjectIDWithProjectNumber(s)
+	})
+}
+
+func (o *objectWalker) TransformLRO(transform func(map[string]any)) {
+	o.objectTransforms = append(o.objectTransforms, func(path string, m map[string]any) {
+		selfLink, _ := m["selfLink"].(string)
+		if strings.Contains(selfLink, "/operations/") {
+			transform(m)
+		}
 	})
 }
 
