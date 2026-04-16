@@ -1304,7 +1304,6 @@ type ContainerClusterSpec struct {
 	// +optional
 	ResourceLabels map[string]string `json:"resourceLabels,omitempty"`
 
-
 	/* Configuration for the ResourceUsageExportConfig feature. */
 	// +optional
 	ResourceUsageExportConfig *ClusterResourceUsageExportConfig `json:"resourceUsageExportConfig,omitempty"`
