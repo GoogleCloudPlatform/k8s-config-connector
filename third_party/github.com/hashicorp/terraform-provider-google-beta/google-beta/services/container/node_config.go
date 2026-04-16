@@ -382,6 +382,13 @@ func schemaNodeConfig() *schema.Schema {
 					Description: `The list of instance tags applied to all nodes.`,
 				},
 
+				"resource_manager_tags": {
+					Type:        schema.TypeMap,
+					Optional:    true,
+					Elem:        &schema.Schema{Type: schema.TypeString},
+					Description: `A map of resource manager tags. Resource manager tag keys and values have the same definition as resource manager tags. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/456. The field is ignored (both PUT & PATCH) when empty.`,
+				},
+
 				"shielded_instance_config": {
 					Type:        schema.TypeList,
 					Optional:    true,
@@ -878,6 +885,16 @@ func expandNodeConfig(v interface{}) *container.NodeConfig {
 		nc.Tags = tags
 	}
 
+	if v, ok := nodeConfig["resource_manager_tags"]; ok && len(v.(map[string]interface{})) > 0 {
+		m := make(map[string]string)
+		for k, val := range v.(map[string]interface{}) {
+			m[k] = val.(string)
+		}
+		nc.ResourceManagerTags = &container.ResourceManagerTags{
+			Tags: m,
+		}
+	}
+
 	if v, ok := nodeConfig["shielded_instance_config"]; ok && len(v.([]interface{})) > 0 {
 		conf := v.([]interface{})[0].(map[string]interface{})
 		nc.ShieldedInstanceConfig = &container.ShieldedInstanceConfig{
@@ -1165,6 +1182,7 @@ func flattenNodeConfig(c *container.NodeConfig, v interface{}) []map[string]inte
 		"labels":                             c.Labels,
 		"resource_labels":                    c.ResourceLabels,
 		"tags":                               c.Tags,
+		"resource_manager_tags":              flattenResourceManagerTags(c.ResourceManagerTags),
 		"preemptible":                        c.Preemptible,
 		"spot":                               c.Spot,
 		"min_cpu_platform":                   c.MinCpuPlatform,
@@ -1310,6 +1328,13 @@ func flattenGKEReservationAffinity(c *container.ReservationAffinity) []map[strin
 	}
 	return result
 }
+func flattenResourceManagerTags(tags *container.ResourceManagerTags) map[string]string {
+	if tags == nil || len(tags.Tags) == 0 {
+		return nil
+	}
+	return tags.Tags
+}
+
 
 // flattenTaints records the set of taints already present in state.
 func flattenTaints(c []*container.NodeTaint, oldTaints []interface{}) []map[string]interface{} {
