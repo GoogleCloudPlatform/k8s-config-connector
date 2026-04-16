@@ -253,7 +253,7 @@ var healthCheckedTargetSchema *schema.Resource = &schema.Resource{
 	Schema: map[string]*schema.Schema{
 		"internal_load_balancers": {
 			Type:        schema.TypeList,
-			Required:    true,
+			Optional:    true,
 			Description: "The list of internal load balancers to health check.",
 			Elem: &schema.Resource{
 				Schema: map[string]*schema.Schema{
@@ -296,6 +296,14 @@ var healthCheckedTargetSchema *schema.Resource = &schema.Resource{
 						Description: "The region of the load balancer. Only needed for regional load balancers.",
 					},
 				},
+			},
+		},
+		"external_endpoints": {
+			Type:        schema.TypeList,
+			Optional:    true,
+			Description: "The list of external endpoints to health check.",
+			Elem: &schema.Schema{
+				Type: schema.TypeString,
 			},
 		},
 	},
@@ -726,12 +734,21 @@ func expandDnsRecordSetHealthCheckedTargets(configured []interface{}, d tpgresou
 	}
 
 	data := configured[0].(map[string]interface{})
-	internalLoadBalancers, err := expandDnsRecordSetHealthCheckedTargetsInternalLoadBalancers(data["internal_load_balancers"].([]interface{}), d, config)
-	if err != nil {
-		return nil, err
+	var internalLoadBalancers []*dns.RRSetRoutingPolicyLoadBalancerTarget
+	var err error
+	if v, ok := data["internal_load_balancers"]; ok && v != nil && len(v.([]interface{})) > 0 {
+		internalLoadBalancers, err = expandDnsRecordSetHealthCheckedTargetsInternalLoadBalancers(v.([]interface{}), d, config)
+		if err != nil {
+			return nil, err
+		}
+	}
+	var externalEndpoints []string
+	if v, ok := data["external_endpoints"]; ok && v != nil {
+		externalEndpoints = tpgresource.ConvertStringArr(v.([]interface{}))
 	}
 	return &dns.RRSetRoutingPolicyHealthCheckTargets{
 		InternalLoadBalancers: internalLoadBalancers,
+		ExternalEndpoints:     externalEndpoints,
 	}, nil
 }
 
@@ -856,6 +873,7 @@ func flattenDnsRecordSetHealthCheckedTargets(targets *dns.RRSetRoutingPolicyHeal
 
 	data := map[string]interface{}{
 		"internal_load_balancers": flattenDnsRecordSetInternalLoadBalancers(targets.InternalLoadBalancers),
+		"external_endpoints":      targets.ExternalEndpoints,
 	}
 
 	return []map[string]interface{}{data}
