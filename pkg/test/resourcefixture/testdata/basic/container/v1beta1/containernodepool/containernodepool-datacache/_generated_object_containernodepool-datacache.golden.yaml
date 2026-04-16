@@ -31,6 +31,10 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  instanceGroupUrls:
+  - https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-containernodepool-${uniqueId}-grp
+  managedInstanceGroupUrls:
+  - https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-containernodepool-${uniqueId}-grp
   observedGeneration: 2
   observedState:
     version: 1.30.5-gke.1014001
