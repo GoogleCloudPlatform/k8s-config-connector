@@ -22,9 +22,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  createTime: "1970-01-01T00:00:00Z"
   observedGeneration: 2
-  state:
-    code: READY
-  uid: "12345678"
   updateTime: "1970-01-01T00:00:00Z"

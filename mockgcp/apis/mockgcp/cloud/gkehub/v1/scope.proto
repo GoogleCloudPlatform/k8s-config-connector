@@ -1,0 +1,85 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package mockgcp.cloud.gkehub.v1;
+
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1;gkehubpb";
+
+// Scope represents a GKE Hub Scope resource.
+message Scope {
+  option (google.api.resource) = {
+    type: "gkehub.googleapis.com/Scope"
+    pattern: "projects/{project}/locations/{location}/scopes/{scope}"
+  };
+
+  // Output only. The full, unique resource name of this scope
+  string name = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Optional. Labels for this Scope.
+  map<string, string> namespace_labels = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Output only. Google-generated UUID for this resource.
+  string uid = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. Time the Scope was created in Hub.
+  google.protobuf.Timestamp create_time = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. Time the Scope was last updated in Hub.
+  google.protobuf.Timestamp update_time = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. Time the Scope was deleted in Hub.
+  google.protobuf.Timestamp delete_time = 6 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. State of the scope resource.
+  ScopeLifecycleState state = 7 [(google.api.field_behavior) = OUTPUT_ONLY];
+}
+
+// ScopeLifecycleState represents the state of a Scope resource.
+message ScopeLifecycleState {
+  enum Code {
+    CODE_UNSPECIFIED = 0;
+    CREATING = 1;
+    READY = 2;
+    DELETING = 3;
+    UPDATING = 4;
+  }
+  Code code = 1;
+}
+
+message GetScopeRequest {
+  string name = 1;
+}
+
+message CreateScopeRequest {
+  string parent = 1;
+  string scope_id = 2;
+  Scope resource = 3;
+}
+
+message DeleteScopeRequest {
+  string name = 1;
+}
+
+message UpdateScopeRequest {
+  string name = 1;
+  google.protobuf.FieldMask update_mask = 2;
+  Scope resource = 3;
+}

@@ -55,7 +55,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockeventarc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkebackup"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkehub"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkemulticloud"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockkms"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmetastore"
@@ -145,7 +144,6 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mocksecuresourcemanager.New(env, storage))
 	services = append(services, mockcloudfunctions.New(env, storage))
 	services = append(services, mockedgenetwork.New(env, storage))
-	services = append(services, mockgkehub.New(env, storage))
 
 	services = append(services, mockcloudbuild.New(env, storage))
 	services = append(services, mockcontaineranalysis.New(env, storage))

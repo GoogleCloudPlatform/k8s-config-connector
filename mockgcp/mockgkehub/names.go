@@ -64,6 +64,37 @@ func (n *featureName) String() string {
 	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/features/" + n.Features
 }
 
+type scopeName struct {
+	Project  *projects.ProjectData
+	Location string
+	Scopes   string
+}
+
+func (n *scopeName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/scopes/" + n.Scopes
+}
+
+func (s *MockService) parseScopeName(name string) (*scopeName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "scopes" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &scopeName{
+			Project:  project,
+			Location: tokens[3],
+			Scopes:   tokens[5],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
 // parseFeatureName parses a string into a featureName.
 // The expected form is projects/<projectID>/locations/<region>/features/<featureName>
 func (s *MockService) parseFeatureName(name string) (*featureName, error) {
