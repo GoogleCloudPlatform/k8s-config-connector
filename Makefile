@@ -276,9 +276,6 @@ ensure:
 .PHONY: ready-pr
 ready-pr: lint lint-custom manifests resource-docs generate-go-client ensure fmt
 
-.PHONY: pr
-pr: ready-pr
-
 # Should run all needed commands to prepare a release.
 .PHONY: release-check
 release-check: resource-docs
