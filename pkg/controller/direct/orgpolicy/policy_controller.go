@@ -24,7 +24,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/orgpolicy/apiv2"
 
@@ -170,19 +169,17 @@ func (a *PolicyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 		return mapCtx.Err()
 	}
 
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-	if !proto.Equal(a.actual.GetSpec(), desiredPb.GetSpec()) {
-		report.AddField("policy.spec", a.actual.GetSpec(), desiredPb.GetSpec())
-	}
-
-	if !proto.Equal(a.actual.GetDryRunSpec(), desiredPb.GetDryRunSpec()) {
-		report.AddField("policy.dry_run_spec", a.actual.GetDryRunSpec(), desiredPb.GetDryRunSpec())
-	}
-
-	if !report.HasDiff() {
+	if proto.Equal(a.actual.GetSpec(), desiredPb.GetSpec()) && proto.Equal(a.actual.GetDryRunSpec(), desiredPb.GetDryRunSpec()) {
 		log.V(2).Info("Policy is already up to date", "name", a.id)
 		// The resource is already up to date, but we still need to update the status
-		return updateStatus(ctx, updateOp, a)
+		// to reflect the actual state from the backend.
+		status := &krm.OrgPolicyPolicyStatus{}
+		status.ObservedState = OrgPolicyPolicyObservedState_FromProto(mapCtx, a.actual)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		status.ExternalRef = direct.LazyPtr(a.id.String())
+		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
 	req := &orgpolicypb.UpdatePolicyRequest{
@@ -191,23 +188,17 @@ func (a *PolicyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 
 	// Let the backend handle validation
 	req.UpdateMask = &fieldmaskpb.FieldMask{
-		Paths: report.FieldIDs(),
+		Paths: []string{"policy.spec", "policy.dry_run_spec"},
 	}
-	structuredreporting.ReportDiff(ctx, report)
 
 	updated, err := a.gcpClient.UpdatePolicy(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating Policy %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully updated Policy", "name", a.id)
-	a.actual = updated
-	return updateStatus(ctx, updateOp, a)
-}
 
-func updateStatus(ctx context.Context, updateOp *directbase.UpdateOperation, a *PolicyAdapter) error {
-	mapCtx := &direct.MapContext{}
 	status := &krm.OrgPolicyPolicyStatus{}
-	status.ObservedState = OrgPolicyPolicyObservedState_FromProto(mapCtx, a.actual)
+	status.ObservedState = OrgPolicyPolicyObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
