@@ -76,3 +76,23 @@ func ParseProjectIDOrNumber(s string) (*ProjectName, error) {
 
 	return name, nil
 }
+
+// ReplaceProjectIDWithProjectNumber replaces the project identifier (ID or Number)
+// inside a GCP resource link with the literal string "${projectNumber}".
+// For example: "projects/my-project/zones/z" -> "projects/${projectNumber}/zones/z"
+func ReplaceProjectIDWithProjectNumber(s string) string {
+	prefix := "projects/"
+	idx := strings.Index(s, prefix)
+	if idx == -1 {
+		return s
+	}
+
+	start := idx + len(prefix)
+	nextSlash := strings.Index(s[start:], "/")
+
+	if nextSlash == -1 {
+		return s[:start] + "${projectNumber}"
+	}
+
+	return s[:start] + "${projectNumber}" + s[start+nextSlash:]
+}
