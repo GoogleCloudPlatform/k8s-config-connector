@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,101 +17,92 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// InstanceIdentity defines the resource reference to MemorystoreInstance, which "External" field
-// holds the GCP identifier for the KRM object.
-type InstanceIdentity struct {
-	parent *InstanceParent
-	id     string
+var (
+	_ identity.IdentityV2 = &MemorystoreInstanceIdentity{}
+	_ identity.Resource   = &MemorystoreInstance{}
+)
+
+var MemorystoreInstanceIdentityFormat = gcpurls.Template[MemorystoreInstanceIdentity]("memorystore.googleapis.com", "projects/{project}/locations/{location}/instances/{instance}")
+
+// +k8s:deepcopy-gen=false
+type MemorystoreInstanceIdentity struct {
+	Project  string
+	Location string
+	Instance string
 }
 
-func (i *InstanceIdentity) String() string {
-	return i.parent.String() + "/instances/" + i.id
+func (i *MemorystoreInstanceIdentity) String() string {
+	return MemorystoreInstanceIdentityFormat.ToString(*i)
 }
 
-func (i *InstanceIdentity) ID() string {
-	return i.id
-}
-
-func (i *InstanceIdentity) Parent() *InstanceParent {
-	return i.parent
-}
-
-type InstanceParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *InstanceParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-// New builds a InstanceIdentity from the Config Connector Instance object.
-func NewInstanceIdentity(ctx context.Context, reader client.Reader, obj *MemorystoreInstance) (*InstanceIdentity, error) {
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+func (i *MemorystoreInstanceIdentity) FromExternal(ref string) error {
+	parsed, match, err := MemorystoreInstanceIdentityFormat.Parse(ref)
 	if err != nil {
-		return nil, err
+		return fmt.Errorf("format of MemorystoreInstance external=%q was not known (use %s): %w", ref, MemorystoreInstanceIdentityFormat.CanonicalForm(), err)
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+	if !match {
+		return fmt.Errorf("format of MemorystoreInstance external=%q was not known (use %s)", ref, MemorystoreInstanceIdentityFormat.CanonicalForm())
 	}
-	location := obj.Spec.Location
 
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
+	*i = *parsed
+	return nil
+}
+
+func (i *MemorystoreInstanceIdentity) Host() string {
+	return MemorystoreInstanceIdentityFormat.Host()
+}
+
+func getIdentityFromMemorystoreInstanceSpec(ctx context.Context, reader client.Reader, obj client.Object) (*MemorystoreInstanceIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	location, err := refs.GetLocation(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+
+	identity := &MemorystoreInstanceIdentity{
+		Project:  projectID,
+		Location: location,
+		Instance: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *MemorystoreInstance) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromMemorystoreInstanceSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseInstanceExternal(externalRef)
-		if err != nil {
+		statusIdentity := &MemorystoreInstanceIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
-		}
-	}
-	return &InstanceIdentity{
-		parent: &InstanceParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
-	}, nil
-}
 
-func ParseInstanceExternal(external string) (parent *InstanceParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "instances" {
-		return nil, "", fmt.Errorf("format of MemorystoreInstance external=%q was not known (use projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}})", external)
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change MemorystoreInstance identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
 	}
-	parent = &InstanceParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+
+	return specIdentity, nil
 }
