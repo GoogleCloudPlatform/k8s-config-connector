@@ -160,6 +160,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeRegionDiskResourcePolicyAttachment       | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeRegionNetworkEndpointGroup               | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeRegionPerInstanceConfig                  | True         | False       | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeRegionSecurityPolicy                     | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeRegionSSLPolicy                          | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeReservation                              | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeResourcePolicy                           | False        | True        | False  | Terraform  | True        |

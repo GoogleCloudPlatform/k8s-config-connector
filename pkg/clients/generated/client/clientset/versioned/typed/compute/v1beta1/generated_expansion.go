@@ -81,6 +81,10 @@ type ComputeProjectMetadataExpansion interface{}
 
 type ComputeRegionNetworkEndpointGroupExpansion interface{}
 
+type ComputeRegionSecurityPolicyExpansion interface{}
+
+type ComputeRegionSecurityPolicyRuleExpansion interface{}
+
 type ComputeReservationExpansion interface{}
 
 type ComputeResourcePolicyExpansion interface{}

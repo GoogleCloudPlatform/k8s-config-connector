@@ -61,6 +61,8 @@ type ComputeV1beta1Interface interface {
 	ComputePacketMirroringsGetter
 	ComputeProjectMetadatasGetter
 	ComputeRegionNetworkEndpointGroupsGetter
+	ComputeRegionSecurityPoliciesGetter
+	ComputeRegionSecurityPolicyRulesGetter
 	ComputeReservationsGetter
 	ComputeResourcePoliciesGetter
 	ComputeRoutesGetter
@@ -212,6 +214,14 @@ func (c *ComputeV1beta1Client) ComputeProjectMetadatas(namespace string) Compute
 
 func (c *ComputeV1beta1Client) ComputeRegionNetworkEndpointGroups(namespace string) ComputeRegionNetworkEndpointGroupInterface {
 	return newComputeRegionNetworkEndpointGroups(c, namespace)
+}
+
+func (c *ComputeV1beta1Client) ComputeRegionSecurityPolicies(namespace string) ComputeRegionSecurityPolicyInterface {
+	return newComputeRegionSecurityPolicies(c, namespace)
+}
+
+func (c *ComputeV1beta1Client) ComputeRegionSecurityPolicyRules(namespace string) ComputeRegionSecurityPolicyRuleInterface {
+	return newComputeRegionSecurityPolicyRules(c, namespace)
 }
 
 func (c *ComputeV1beta1Client) ComputeReservations(namespace string) ComputeReservationInterface {

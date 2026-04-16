@@ -211,6 +211,8 @@ import (
 	fakefirestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1beta1/fake"
 	gkebackupv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkebackup/v1alpha1"
 	fakegkebackupv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkebackup/v1alpha1/fake"
+	gkehubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1alpha1"
+	fakegkehubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1alpha1/fake"
 	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1beta1"
 	fakegkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1beta1/fake"
 	healthcarev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/healthcare/v1alpha1"
@@ -878,6 +880,11 @@ func (c *Clientset) FirestoreV1beta1() firestorev1beta1.FirestoreV1beta1Interfac
 // GkebackupV1alpha1 retrieves the GkebackupV1alpha1Client
 func (c *Clientset) GkebackupV1alpha1() gkebackupv1alpha1.GkebackupV1alpha1Interface {
 	return &fakegkebackupv1alpha1.FakeGkebackupV1alpha1{Fake: &c.Fake}
+}
+
+// GkehubV1alpha1 retrieves the GkehubV1alpha1Client
+func (c *Clientset) GkehubV1alpha1() gkehubv1alpha1.GkehubV1alpha1Interface {
+	return &fakegkehubv1alpha1.FakeGkehubV1alpha1{Fake: &c.Fake}
 }
 
 // GkehubV1beta1 retrieves the GkehubV1beta1Client

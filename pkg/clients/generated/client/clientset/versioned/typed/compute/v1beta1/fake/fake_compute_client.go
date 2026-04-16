@@ -151,6 +151,14 @@ func (c *FakeComputeV1beta1) ComputeRegionNetworkEndpointGroups(namespace string
 	return &FakeComputeRegionNetworkEndpointGroups{c, namespace}
 }
 
+func (c *FakeComputeV1beta1) ComputeRegionSecurityPolicies(namespace string) v1beta1.ComputeRegionSecurityPolicyInterface {
+	return &FakeComputeRegionSecurityPolicies{c, namespace}
+}
+
+func (c *FakeComputeV1beta1) ComputeRegionSecurityPolicyRules(namespace string) v1beta1.ComputeRegionSecurityPolicyRuleInterface {
+	return &FakeComputeRegionSecurityPolicyRules{c, namespace}
+}
+
 func (c *FakeComputeV1beta1) ComputeReservations(namespace string) v1beta1.ComputeReservationInterface {
 	return &FakeComputeReservations{c, namespace}
 }

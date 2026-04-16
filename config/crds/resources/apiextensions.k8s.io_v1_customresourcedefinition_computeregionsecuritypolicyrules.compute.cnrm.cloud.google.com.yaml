@@ -1,0 +1,268 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
+    cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
+  name: computeregionsecuritypolicyrules.compute.cnrm.cloud.google.com
+spec:
+  group: compute.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ComputeRegionSecurityPolicyRule
+    plural: computeregionsecuritypolicyrules
+    shortNames:
+    - gcpcomputeregionsecuritypolicyrule
+    - gcpcomputeregionsecuritypolicyrules
+    singular: computeregionsecuritypolicyrule
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              action:
+                description: |-
+                  The Action to perform when the rule is matched. The following are the valid actions:
+
+                  * allow: allow access to target.
+
+                  * deny(STATUS): deny access to target, returns the HTTP response code specified. Valid values for STATUS are 403, 404, and 502.
+
+                  * rate_based_ban: limit client traffic to the configured threshold and ban the client if the traffic exceeds the threshold. Configure parameters for this action in RateLimitOptions. Requires rateLimitOptions to be set.
+
+                  * redirect: redirect to a different target. This can either be an internal reCAPTCHA redirect, or an external URL-based redirect via a 302 response. Parameters for this action can be configured via redirectOptions. This action is only supported in Global Security Policies of type CLOUD_ARMOR.
+
+                  * throttle: limit client traffic to the configured threshold. Configure parameters for this action in rateLimitOptions. Requires rateLimitOptions to be set for this.
+                type: string
+              description:
+                description: An optional description of this resource. Provide this
+                  property when you create the resource.
+                type: string
+              match:
+                description: |-
+                  A match condition that incoming traffic is evaluated against.
+                  If it evaluates to true, the corresponding 'action' is enforced.
+                properties:
+                  config:
+                    description: |-
+                      The configuration options available when specifying versionedExpr.
+                      This field must be specified if versionedExpr is specified and cannot be specified if versionedExpr is not specified.
+                    properties:
+                      srcIpRanges:
+                        description: CIDR IP address range. Maximum number of srcIpRanges
+                          allowed is 10.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  versionedExpr:
+                    description: |-
+                      Preconfigured versioned expression. If this field is specified, config must also be specified.
+                      Available preconfigured expressions along with their requirements are: SRC_IPS_V1 - must specify the corresponding srcIpRange field in config. Possible values: ["SRC_IPS_V1"].
+                    type: string
+                type: object
+              networkMatch:
+                description: |-
+                  A match condition that incoming packets are evaluated against for CLOUD_ARMOR_NETWORK security policies. If it matches, the corresponding 'action' is enforced.
+                  The match criteria for a rule consists of built-in match fields (like 'srcIpRanges') and potentially multiple user-defined match fields ('userDefinedFields').
+                  Field values may be extracted directly from the packet or derived from it (e.g. 'srcRegionCodes'). Some fields may not be present in every packet (e.g. 'srcPorts'). A user-defined field is only present if the base header is found in the packet and the entire field is in bounds.
+                  Each match field may specify which values can match it, listing one or more ranges, prefixes, or exact values that are considered a match for the field. A field value must be present in order to match a specified match field. If no match values are specified for a match field, then any field value is considered to match it, and it's not required to be present. For strings specifying '*' is also equivalent to match all.
+                  For a packet to match a rule, all specified match fields must match the corresponding field values derived from the packet.
+                  Example:
+                  networkMatch: srcIpRanges: - "192.0.2.0/24" - "198.51.100.0/24" userDefinedFields: - name: "ipv4_fragment_offset" values: - "1-0x1fff"
+                  The above match condition matches packets with a source IP in 192.0.2.0/24 or 198.51.100.0/24 and a user-defined field named "ipv4_fragment_offset" with a value between 1 and 0x1fff inclusive.
+                properties:
+                  destIpRanges:
+                    description: Destination IPv4/IPv6 addresses or CIDR prefixes,
+                      in standard text format.
+                    items:
+                      type: string
+                    type: array
+                  destPorts:
+                    description: Destination port numbers for TCP/UDP/SCTP. Each element
+                      can be a 16-bit unsigned decimal number (e.g. "80") or range
+                      (e.g. "0-1023").
+                    items:
+                      type: string
+                    type: array
+                  ipProtocols:
+                    description: 'IPv4 protocol / IPv6 next header (after extension
+                      headers). Each element can be an 8-bit unsigned decimal number
+                      (e.g. "6"), range (e.g. "253-254"), or one of the following
+                      protocol names: "tcp", "udp", "icmp", "esp", "ah", "ipip", or
+                      "sctp".'
+                    items:
+                      type: string
+                    type: array
+                  srcAsns:
+                    description: BGP Autonomous System Number associated with the
+                      source IP address.
+                    items:
+                      type: integer
+                    type: array
+                  srcIpRanges:
+                    description: Source IPv4/IPv6 addresses or CIDR prefixes, in standard
+                      text format.
+                    items:
+                      type: string
+                    type: array
+                  srcPorts:
+                    description: Source port numbers for TCP/UDP/SCTP. Each element
+                      can be a 16-bit unsigned decimal number (e.g. "80") or range
+                      (e.g. "0-1023").
+                    items:
+                      type: string
+                    type: array
+                  srcRegionCodes:
+                    description: Two-letter ISO 3166-1 alpha-2 country code associated
+                      with the source IP address.
+                    items:
+                      type: string
+                    type: array
+                  userDefinedFields:
+                    description: User-defined fields. Each element names a defined
+                      field and lists the matching values for that field.
+                    items:
+                      properties:
+                        name:
+                          description: Name of the user-defined field, as given in
+                            the definition.
+                          type: string
+                        values:
+                          description: Matching values of the field. Each element
+                            can be a 32-bit unsigned decimal or hexadecimal (starting
+                            with "0x") number (e.g. "64") or range (e.g. "0x400-0x7ff").
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
+                type: object
+              preview:
+                description: If set to true, the specified action is not enforced.
+                type: boolean
+              priority:
+                description: |-
+                  Immutable. An integer indicating the priority of a rule in the list.
+                  The priority must be a positive value between 0 and 2147483647.
+                  Rules are evaluated from highest to lowest priority where 0 is the highest priority and 2147483647 is the lowest priority.
+                type: integer
+              securityPolicyRef:
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'Allowed value: The `name` field of a `ComputeRegionSecurityPolicy`
+                      resource.'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+            required:
+            - action
+            - priority
+            - securityPolicyRef
+            type: object
+          status:
+            properties:
+              conditions:
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                type: integer
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
