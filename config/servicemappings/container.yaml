@@ -33,7 +33,6 @@ spec:
         - cluster_autoscaling.auto_provisioning_defaults.disk_type
       metadataMapping:
         name: name
-        labels: resource_labels
       resourceID:
         targetField: name
       directives:

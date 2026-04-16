@@ -1708,6 +1708,12 @@ spec:
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
+              resourceLabels:
+                additionalProperties:
+                  type: string
+                description: The GCE resource labels (a map of key/value pairs) to
+                  be applied to the cluster.
+                type: object
               resourceUsageExportConfig:
                 description: Configuration for the ResourceUsageExportConfig feature.
                 properties:
