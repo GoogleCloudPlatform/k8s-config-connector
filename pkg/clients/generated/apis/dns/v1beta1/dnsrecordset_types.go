@@ -63,8 +63,13 @@ type RecordsetGeo struct {
 }
 
 type RecordsetHealthCheckedTargets struct {
+	/* The list of external endpoints to health check. */
+	// +optional
+	ExternalEndpoints []string `json:"externalEndpoints,omitempty"`
+
 	/* The list of internal load balancers to health check. */
-	InternalLoadBalancers []RecordsetInternalLoadBalancers `json:"internalLoadBalancers"`
+	// +optional
+	InternalLoadBalancers []RecordsetInternalLoadBalancers `json:"internalLoadBalancers,omitempty"`
 }
 
 type RecordsetInternalLoadBalancers struct {
@@ -88,8 +93,13 @@ type RecordsetInternalLoadBalancers struct {
 }
 
 type RecordsetPrimary struct {
+	/* The list of external endpoints to health check. */
+	// +optional
+	ExternalEndpoints []string `json:"externalEndpoints,omitempty"`
+
 	/* The list of internal load balancers to health check. */
-	InternalLoadBalancers []RecordsetInternalLoadBalancers `json:"internalLoadBalancers"`
+	// +optional
+	InternalLoadBalancers []RecordsetInternalLoadBalancers `json:"internalLoadBalancers,omitempty"`
 }
 
 type RecordsetPrimaryBackup struct {

@@ -113,6 +113,12 @@ spec:
                             to be health checked. These can be specified along with
                             `rrdatas` within this item.
                           properties:
+                            externalEndpoints:
+                              description: The list of external endpoints to health
+                                check.
+                              items:
+                                type: string
+                              type: array
                             internalLoadBalancers:
                               description: The list of internal load balancers to
                                 health check.
@@ -256,8 +262,6 @@ spec:
                                 - projectRef
                                 type: object
                               type: array
-                          required:
-                          - internalLoadBalancers
                           type: object
                         location:
                           description: The location name defined in Google Cloud.
@@ -319,6 +323,12 @@ spec:
                                 targets to be health checked. These can be specified
                                 along with `rrdatas` within this item.
                               properties:
+                                externalEndpoints:
+                                  description: The list of external endpoints to health
+                                    check.
+                                  items:
+                                    type: string
+                                  type: array
                                 internalLoadBalancers:
                                   description: The list of internal load balancers
                                     to health check.
@@ -463,8 +473,6 @@ spec:
                                     - projectRef
                                     type: object
                                   type: array
-                              required:
-                              - internalLoadBalancers
                               type: object
                             location:
                               description: The location name defined in Google Cloud.
@@ -512,6 +520,12 @@ spec:
                         description: The list of global primary targets to be health
                           checked.
                         properties:
+                          externalEndpoints:
+                            description: The list of external endpoints to health
+                              check.
+                            items:
+                              type: string
+                            type: array
                           internalLoadBalancers:
                             description: The list of internal load balancers to health
                               check.
@@ -655,8 +669,6 @@ spec:
                               - projectRef
                               type: object
                             type: array
-                        required:
-                        - internalLoadBalancers
                         type: object
                       trickleRatio:
                         description: Specifies the percentage of traffic to send to
@@ -676,6 +688,12 @@ spec:
                             that if DNSSEC is enabled for this zone, only one of `rrdatas`
                             or `health_checked_targets` can be set.
                           properties:
+                            externalEndpoints:
+                              description: The list of external endpoints to health
+                                check.
+                              items:
+                                type: string
+                              type: array
                             internalLoadBalancers:
                               description: The list of internal load balancers to
                                 health check.
@@ -819,8 +837,6 @@ spec:
                                 - projectRef
                                 type: object
                               type: array
-                          required:
-                          - internalLoadBalancers
                           type: object
                         rrdatasRefs:
                           items:
