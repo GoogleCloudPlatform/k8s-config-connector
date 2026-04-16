@@ -3170,6 +3170,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		log.Printf("[INFO] GKE cluster %s L4 ILB Subsetting has been updated to %v", d.Id(), enabled)
+	}
 
 	if d.HasChange("disable_l4_lb_firewall_reconciliation") {
 		enabled := d.Get("disable_l4_lb_firewall_reconciliation").(bool)
@@ -3198,7 +3199,6 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
-	}
 	}
 
 	if d.HasChange("enable_cilium_clusterwide_network_policy") {
