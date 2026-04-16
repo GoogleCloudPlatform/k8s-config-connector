@@ -53,7 +53,6 @@ import (
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/sets"
-	"k8s.io/klog/v2"
 )
 
 // convenience struct for converting to the desired human readable output on the docs page from the fielddesc.FieldDescription struct
@@ -159,25 +158,24 @@ func main() {
 		log.Fatal(fmt.Errorf("error creating a DCL schema loader: %w", err))
 	}
 	serviceMetadataLoader := dclmetadata.New()
-	manualResources, err := supportedgvks.ManualResources(smLoader, serviceMetadataLoader)
+	allResources, err := supportedgvks.All(smLoader, serviceMetadataLoader)
 	if err != nil {
-		log.Fatalf("error getting manual resources: %v", err)
+		log.Fatalf("error getting all resources: %v", err)
 	}
 
 	directGVKs := supportedgvks.DirectResources()
+	directGKs := make(map[schema.GroupKind]bool)
+	for gvk := range directGVKs {
+		directGKs[gvk.GroupKind()] = true
+	}
 
 	docGenerator := &DocGenerator{
 		smLoader:              smLoader,
 		serviceMetadataLoader: serviceMetadataLoader,
-		directGVKs:            directGVKs,
+		directGKs:             directGKs,
 	}
-	for _, gvk := range manualResources {
-		// TODO: Identify highest supported version for direct resource.
-		if strings.HasPrefix(gvk.Version, "v1alpha") &&
-			!(gvk.Kind == "BigQueryAnalyticsHubDataExchange" ||
-				gvk.Kind == "BigQueryAnalyticsHubListing" ||
-				gvk.Kind == "RedisCluster") {
-			klog.Infof("skipping alpha resource %v", gvk)
+	for _, gvk := range allResources {
+		if !docGenerator.hasTemplate(gvk) {
 			continue
 		}
 		// TODO: Add resource docs for all the v1beta1 resources and remove exceptions.
@@ -187,10 +185,19 @@ func main() {
 	}
 }
 
+func (d *DocGenerator) hasTemplate(gvk schema.GroupVersionKind) bool {
+	templatesPath := repo.GetG3ResourceReferenceTemplatesPath()
+	templateFileName := templateFileNameForGVK(gvk)
+	if _, err := os.Stat(filepath.Join(templatesPath, templateFileName)); err != nil {
+		return false
+	}
+	return true
+}
+
 type DocGenerator struct {
 	smLoader              *servicemappingloader.ServiceMappingLoader
 	serviceMetadataLoader dclmetadata.ServiceMetadataLoader
-	directGVKs            map[schema.GroupVersionKind]bool
+	directGKs             map[schema.GroupKind]bool
 }
 
 func (d *DocGenerator) generateDocForGVK(gvk schema.GroupVersionKind) error {
@@ -308,10 +315,7 @@ func (d *DocGenerator) constructResourceForGVK(gvk schema.GroupVersionKind) (*re
 		return nil, fmt.Errorf("buildFieldDescriptions: %w", err)
 	}
 	r.DefaultReconcileInterval = uint32(reconciliationinterval.MeanReconcileReenqueuePeriod(gvk, d.smLoader, d.serviceMetadataLoader).Seconds())
-	isDirectGVK := d.directGVKs[gvk]
-	if err != nil {
-		return nil, fmt.Errorf("error checking whether GVK is direct: %w", err)
-	}
+	isDirectGVK := d.directGKs[gvk.GroupKind()]
 	if dclmetadata.IsDCLBasedResourceKind(gvk, d.serviceMetadataLoader) {
 		resourceMetadata, found := d.serviceMetadataLoader.GetResourceWithGVK(gvk)
 		if !found {
