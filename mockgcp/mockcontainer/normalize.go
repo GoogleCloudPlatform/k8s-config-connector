@@ -18,6 +18,7 @@ import (
 	"net"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
@@ -41,6 +42,13 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 		replacements.ReplacePath(".maintenancePolicy.resourceVersion", "abcd1234")
 
 		replacements.SortSlice(".monitoringConfig.componentConfig.enableSystemComponents")
+
+		replacements.TransformLRO(func(m map[string]any) {
+			targetLink, ok := m["targetLink"].(string)
+			if ok && targetLink != "" {
+				m["targetLink"] = projects.ReplaceProjectIDWithProjectNumber(targetLink)
+			}
+		})
 	}
 }
 
