@@ -39,13 +39,13 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, actual *api.DatabaseInstance, fiel
 	}
 
 	out := &api.DatabaseInstance{
-		DatabaseVersion:             direct.ValueOf(in.Spec.DatabaseVersion),
+		DatabaseVersion:                       direct.ValueOf(in.Spec.DatabaseVersion),
 		IncludeReplicasForMajorVersionUpgrade: direct.ValueOf(in.Spec.IncludeReplicasForMajorVersionUpgrade),
-		DiskEncryptionConfiguration: InstanceEncryptionKMSCryptoKeyRefKRMToGCP(in.Spec.EncryptionKMSCryptoKeyRef),
-		InstanceType:                direct.ValueOf(in.Spec.InstanceType),
-		Kind:                        "sql#instance",
-		MaintenanceVersion:          direct.ValueOf(in.Spec.MaintenanceVersion),
-		MasterInstanceName:          InstanceMasterInstanceRefKRMToGCP(in.Spec.MasterInstanceRef),
+		DiskEncryptionConfiguration:           InstanceEncryptionKMSCryptoKeyRefKRMToGCP(in.Spec.EncryptionKMSCryptoKeyRef),
+		InstanceType:                          direct.ValueOf(in.Spec.InstanceType),
+		Kind:                                  "sql#instance",
+		MaintenanceVersion:                    direct.ValueOf(in.Spec.MaintenanceVersion),
+		MasterInstanceName:                    InstanceMasterInstanceRefKRMToGCP(in.Spec.MasterInstanceRef),
 		// MaxDiskSize is not supported in KRM API.
 		Name: direct.ValueOf(in.Spec.ResourceID),
 		// OnPremisesConfiguration is not supported in KRM API.

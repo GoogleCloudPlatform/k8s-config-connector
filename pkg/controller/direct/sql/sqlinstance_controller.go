@@ -771,7 +771,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	// First, handle database version updates
 	if a.desired.Spec.DatabaseVersion != nil && *a.desired.Spec.DatabaseVersion != a.actual.DatabaseVersion {
 		newVersionDb := &api.DatabaseInstance{
-			DatabaseVersion: direct.ValueOf(a.desired.Spec.DatabaseVersion),
+			DatabaseVersion:                       direct.ValueOf(a.desired.Spec.DatabaseVersion),
 			IncludeReplicasForMajorVersionUpgrade: direct.ValueOf(a.desired.Spec.IncludeReplicasForMajorVersionUpgrade),
 		}
 
