@@ -160,12 +160,17 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 
 	for _, nodePool := range obj.NodePools {
 		nodePoolFqn := name.String() + "/nodePools/" + nodePool.GetName()
+		nodePool.SelfLink = buildSelfLink(ctx, nodePoolFqn)
 		if err := s.storage.Create(ctx, nodePoolFqn, nodePool); err != nil {
 			return nil, err
 		}
 		if err := s.createMockIGM(ctx, name.Project, nodePool.InstanceGroupUrls, nodePool.InitialNodeCount); err != nil {
 			klog.Errorf("failed to create mock IGM: %v", err)
 		}
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
 	}
 
 	op := &pb.Operation{
@@ -647,8 +652,9 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 	}
 
 	if obj.InstanceGroupUrls == nil {
+		trimmedClusterName := trimClusterName(obj.Name)
 		obj.InstanceGroupUrls = []string{
-			fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instanceGroupManagers/gke-containercluster-abcdef", project.ID, zone),
+			fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instanceGroupManagers/gke-%s-containernodepool-abcdef-grp", project.ID, zone, trimmedClusterName),
 		}
 	}
 

@@ -105,6 +105,7 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(project *projects.ProjectDat
 		obj.InitialNodeCount = 1
 	}
 
+	trimmedClusterName := trimClusterName(cluster.Name)
 	if obj.InstanceGroupUrls == nil {
 		zone, err := locationToZone(cluster.Location)
 		if err != nil {
@@ -112,7 +113,7 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(project *projects.ProjectDat
 		}
 
 		obj.InstanceGroupUrls = []string{
-			fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instanceGroupManagers/gke-containercluster-abcdef-%s-grp", project.ID, zone, obj.Name),
+			fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instanceGroupManagers/gke-%s-%s-abcdef-grp", project.ID, zone, trimmedClusterName, obj.Name),
 		}
 	}
 
@@ -156,7 +157,7 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(project *projects.ProjectDat
 		obj.NetworkConfig.PodIpv4RangeUtilization = 0.001
 	}
 	if obj.NetworkConfig.PodRange == "" {
-		obj.NetworkConfig.PodRange = obj.Name + "-pods-12345678"
+		obj.NetworkConfig.PodRange = fmt.Sprintf("gke-%s-pods-abcdef", trimmedClusterName)
 	}
 	if obj.NetworkConfig.Subnetwork == "" {
 		obj.NetworkConfig.Subnetwork = cluster.NetworkConfig.Subnetwork
@@ -176,6 +177,17 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(project *projects.ProjectDat
 	}
 
 	return nil
+}
+
+func trimClusterName(name string) string {
+	name = strings.ReplaceAll(name, "${uniqueId}", "")
+	if len(name) > 15 {
+		name = name[:15]
+	}
+	name = strings.TrimRightFunc(name, func(r rune) bool {
+		return !((r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9'))
+	})
+	return name
 }
 
 func (s *ClusterManagerV1) populateNodeConfig(obj *pb.NodeConfig) error {
@@ -388,6 +400,29 @@ func (s *ClusterManagerV1) SetNodePoolSize(ctx context.Context, req *pb.SetNodeP
 		return nil, err
 	}
 
+	// Update the mock IGM target size as well
+	for _, igmUrl := range obj.InstanceGroupUrls {
+		prefix := "https://www.googleapis.com/compute/v1/"
+		if !strings.HasPrefix(igmUrl, prefix) {
+			klog.Warningf("SetNodePoolSize: IGM URL %q does not have expected prefix %q", igmUrl, prefix)
+			continue
+		}
+		igmFqn := strings.TrimPrefix(igmUrl, prefix)
+		igm := &computepb.InstanceGroupManager{}
+		if err := s.storage.Get(ctx, igmFqn, igm); err != nil {
+			klog.Warningf("SetNodePoolSize: failed to get mock IGM %q: %v", igmFqn, err)
+			continue
+		}
+		igm.TargetSize = PtrTo(req.NodeCount)
+		if igm.CurrentActions == nil {
+			igm.CurrentActions = &computepb.InstanceGroupManagerActionsSummary{}
+		}
+		igm.CurrentActions.None = PtrTo(req.NodeCount)
+		if err := s.storage.Update(ctx, igmFqn, igm); err != nil {
+			klog.Warningf("SetNodePoolSize: failed to update mock IGM %q: %v", igmFqn, err)
+		}
+	}
+
 	op := &pb.Operation{
 		Zone:       name.Location,
 		TargetLink: obj.SelfLink,
@@ -473,12 +508,14 @@ func (s *ClusterManagerV1) createMockIGM(ctx context.Context, project *projects.
 		// https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instanceGroupManagers/%s
 		prefix := "https://www.googleapis.com/compute/v1/"
 		if !strings.HasPrefix(igmUrl, prefix) {
+			klog.Warningf("createMockIGM: IGM URL %q does not have expected prefix %q", igmUrl, prefix)
 			continue
 		}
 		fqn := strings.TrimPrefix(igmUrl, prefix)
 
 		tokens := strings.Split(fqn, "/")
 		if len(tokens) < 6 {
+			klog.Warningf("createMockIGM: IGM URL %q does not have enough tokens", igmUrl)
 			continue
 		}
 		igmName := tokens[5]
@@ -530,6 +567,7 @@ func (s *ClusterManagerV1) deleteMockIGM(ctx context.Context, instanceGroupUrls 
 	for _, igmUrl := range instanceGroupUrls {
 		prefix := "https://www.googleapis.com/compute/v1/"
 		if !strings.HasPrefix(igmUrl, prefix) {
+			klog.Warningf("deleteMockIGM: IGM URL %q does not have expected prefix %q", igmUrl, prefix)
 			continue
 		}
 		fqn := strings.TrimPrefix(igmUrl, prefix)

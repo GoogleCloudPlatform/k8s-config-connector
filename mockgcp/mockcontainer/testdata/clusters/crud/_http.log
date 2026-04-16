@@ -223,7 +223,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "initialClusterVersion": "1.30.5-gke.1014001",
   "instanceGroupUrls": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-test-18a6e79651-containernodepool-abcdef-grp"
   ],
   "ipAllocationPolicy": {
     "clusterIpv4Cidr": "10.112.0.0/14",
@@ -377,7 +377,7 @@ X-Xss-Protection: 0
       },
       "initialNodeCount": 3,
       "instanceGroupUrls": [
-        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
+        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-test-18a6e79651-default-pool-abcdef-grp"
       ],
       "management": {
         "autoRepair": true,
@@ -390,7 +390,7 @@ X-Xss-Protection: 0
       "networkConfig": {
         "podIpv4CidrBlock": "10.92.0.0/14",
         "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "podRange": "gke-test-18a6e79651-pods-abcdef",
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
@@ -597,7 +597,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "initialClusterVersion": "1.30.5-gke.1014001",
   "instanceGroupUrls": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-test-18a6e79651-containernodepool-abcdef-grp"
   ],
   "ipAllocationPolicy": {
     "clusterIpv4Cidr": "10.112.0.0/14",
@@ -751,7 +751,7 @@ X-Xss-Protection: 0
       },
       "initialNodeCount": 3,
       "instanceGroupUrls": [
-        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
+        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-test-18a6e79651-default-pool-abcdef-grp"
       ],
       "management": {
         "autoRepair": true,
@@ -764,7 +764,7 @@ X-Xss-Protection: 0
       "networkConfig": {
         "podIpv4CidrBlock": "10.92.0.0/14",
         "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "podRange": "gke-test-18a6e79651-pods-abcdef",
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
