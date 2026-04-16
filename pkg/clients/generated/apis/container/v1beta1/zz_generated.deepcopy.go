@@ -2683,6 +2683,11 @@ func (in *ContainerClusterSpec) DeepCopyInto(out *ContainerClusterSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.DisableL4LbFirewallReconciliation != nil {
+		in, out := &in.DisableL4LbFirewallReconciliation, &out.DisableL4LbFirewallReconciliation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DnsConfig != nil {
 		in, out := &in.DnsConfig, &out.DnsConfig
 		*out = new(ClusterDnsConfig)

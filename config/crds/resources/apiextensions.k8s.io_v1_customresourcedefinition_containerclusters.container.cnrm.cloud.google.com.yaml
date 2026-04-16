@@ -558,6 +558,10 @@ spec:
               description:
                 description: Immutable.  Description of the cluster.
                 type: string
+              disableL4LbFirewallReconciliation:
+                description: Disable L4 load balancer VPC firewalls to enable firewall
+                  policies.
+                type: boolean
               dnsConfig:
                 description: Immutable. Configuration for Cloud DNS for Kubernetes
                   Engine.
