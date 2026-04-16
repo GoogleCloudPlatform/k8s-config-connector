@@ -40,6 +40,7 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, actual *api.DatabaseInstance, fiel
 
 	out := &api.DatabaseInstance{
 		DatabaseVersion:             direct.ValueOf(in.Spec.DatabaseVersion),
+		IncludeReplicasForMajorVersionUpgrade: direct.ValueOf(in.Spec.IncludeReplicasForMajorVersionUpgrade),
 		DiskEncryptionConfiguration: InstanceEncryptionKMSCryptoKeyRefKRMToGCP(in.Spec.EncryptionKMSCryptoKeyRef),
 		InstanceType:                direct.ValueOf(in.Spec.InstanceType),
 		Kind:                        "sql#instance",

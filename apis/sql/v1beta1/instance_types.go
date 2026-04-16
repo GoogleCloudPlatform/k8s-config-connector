@@ -455,6 +455,10 @@ type SQLInstanceSpec struct {
 	// +optional
 	DatabaseVersion *string `json:"databaseVersion,omitempty"`
 
+	/* Specifies if the major version upgrade is applied to the instance and its replicas. */
+	// +optional
+	IncludeReplicasForMajorVersionUpgrade *bool `json:"includeReplicasForMajorVersionUpgrade,omitempty"`
+
 	// +optional
 	EncryptionKMSCryptoKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"encryptionKMSCryptoKeyRef,omitempty"`
 
