@@ -1,0 +1,149 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package mockgcp.cloud.gkehub.v1;
+
+import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/longrunning/operations.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1;gkehubpb";
+
+// MembershipBinding is a subresource of a Membership,
+message MembershipBinding {
+  option (google.api.resource) = {
+    type: "gkehub.googleapis.com/MembershipBinding"
+    pattern: "projects/{project}/locations/{location}/memberships/{membership}/bindings/{membership_binding}"
+  };
+
+  // The resource name for the membershipbinding itself
+  // `projects/{project}/locations/{location}/memberships/{membership}/bindings/{membershipbinding}`
+  string name = 1;
+
+  // A Scope resource name in the format
+  // `projects/*/locations/*/scopes/*`.
+  string scope = 2;
+
+  // Output only. State of the membership binding resource.
+  MembershipBindingLifecycleState state = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. When the membership binding was created.
+  google.protobuf.Timestamp create_time = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. When the membership binding was last updated.
+  google.protobuf.Timestamp update_time = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. When the membership binding was deleted.
+  google.protobuf.Timestamp delete_time = 6 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. Google-generated UUID for this resource.
+  string uid = 7 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Optional. Labels for this MembershipBinding.
+  map<string, string> labels = 8 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// MembershipBindingLifecycleState describes the state of a MembershipBinding resource.
+message MembershipBindingLifecycleState {
+  // Code describes the state of a MembershipBinding resource.
+  enum Code {
+    // The code is not set.
+    CODE_UNSPECIFIED = 0;
+
+    // The resource is being created.
+    CREATING = 1;
+
+    // The resource is ready.
+    READY = 2;
+
+    // The resource is being deleted.
+    DELETING = 3;
+
+    // The resource is being updated.
+    UPDATING = 4;
+  }
+
+  // Output only. The current state of the MembershipBinding resource.
+  Code code = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
+}
+
+message GetMembershipBindingRequest {
+  // Required. The MembershipBinding resource name in the format
+  // `projects/*/locations/*/memberships/*/bindings/*`.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "gkehub.googleapis.com/MembershipBinding"
+    }
+  ];
+}
+
+message CreateMembershipBindingRequest {
+  // Required. The parent (Membership) name in the format
+  // `projects/*/locations/*/memberships/*`.
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "gkehub.googleapis.com/Membership"
+    }
+  ];
+
+  // Required. The ID to use for the membership binding.
+  string membership_binding_id = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // Required. The membership binding resource to create.
+  MembershipBinding resource = 3 [(google.api.field_behavior) = REQUIRED];
+
+  // Optional. A request ID to identify requests.
+  string request_id = 4 [(google.api.field_behavior) = OPTIONAL];
+}
+
+message UpdateMembershipBindingRequest {
+  // Required. The MembershipBinding resource name in the format
+  // `projects/*/locations/*/memberships/*/bindings/*`.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "gkehub.googleapis.com/MembershipBinding"
+    }
+  ];
+
+  // Required. The membership binding resource to update.
+  MembershipBinding resource = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // Required. The list of fields to be updated.
+  google.protobuf.FieldMask update_mask = 3 [(google.api.field_behavior) = REQUIRED];
+
+  // Optional. A request ID to identify requests.
+  string request_id = 4 [(google.api.field_behavior) = OPTIONAL];
+}
+
+message DeleteMembershipBindingRequest {
+  // Required. The MembershipBinding resource name in the format
+  // `projects/*/locations/*/memberships/*/bindings/*`.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "gkehub.googleapis.com/MembershipBinding"
+    }
+  ];
+
+  // Optional. A request ID to identify requests.
+  string request_id = 2 [(google.api.field_behavior) = OPTIONAL];
+}

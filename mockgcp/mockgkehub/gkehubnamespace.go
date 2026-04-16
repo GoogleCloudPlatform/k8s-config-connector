@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,32 +16,27 @@ package mockgkehub
 
 import (
 	"context"
-	"fmt"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1"
 )
 
-type GkeHubV1Beta struct {
-	*MockService
-	pb.UnimplementedGkeHubServer
-}
-
-func (s *GkeHubV1Beta) GetFeature(ctx context.Context, req *pb.GetFeatureRequest) (*pb.Feature, error) {
-	name, err := s.parseFeatureName(req.Name)
+func (s *GkeHubV1) GetNamespace(ctx context.Context, req *pb.GetNamespaceRequest) (*pb.Namespace, error) {
+	name, err := s.parseNamespaceName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := &pb.Feature{}
+	obj := &pb.Namespace{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -49,9 +44,9 @@ func (s *GkeHubV1Beta) GetFeature(ctx context.Context, req *pb.GetFeatureRequest
 	return obj, nil
 }
 
-func (s *GkeHubV1Beta) CreateFeature(ctx context.Context, req *pb.CreateFeatureRequest) (*longrunning.Operation, error) {
-	reqName := req.Parent + "/features/" + req.FeatureId
-	name, err := s.parseFeatureName(reqName)
+func (s *GkeHubV1) CreateNamespace(ctx context.Context, req *pb.CreateNamespaceRequest) (*longrunning.Operation, error) {
+	reqName := req.Parent + "/namespaces/" + req.ScopeNamespaceId
+	name, err := s.parseNamespaceName(reqName)
 	if err != nil {
 		return nil, err
 	}
@@ -59,18 +54,12 @@ func (s *GkeHubV1Beta) CreateFeature(ctx context.Context, req *pb.CreateFeatureR
 	fqn := name.String()
 	now := timestamppb.Now()
 
-	obj := proto.Clone(req.Resource).(*pb.Feature)
+	obj := proto.Clone(req.Resource).(*pb.Namespace)
 	obj.Name = fqn
-
-	// Mimic the GCP API validation logic.
-	for id, spec := range obj.MembershipSpecs {
-		acmSpec := spec.GetConfigmanagement()
-		if acmSpec != nil {
-			if acmSpec.GetConfigSync() == nil && acmSpec.GetHierarchyController() == nil && acmSpec.GetPolicyController() == nil {
-				return nil, fmt.Errorf("none of configsync or hierarchycontroller or policycontroller is specified under configmanagement for memebership %s", id)
-			}
-		}
-	}
+	obj.CreateTime = now
+	obj.UpdateTime = now
+	obj.State = &pb.NamespaceLifecycleState{Code: pb.NamespaceLifecycleState_READY}
+	obj.Uid = "111111111111111111111" // Stable UID for testing
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -81,24 +70,20 @@ func (s *GkeHubV1Beta) CreateFeature(ctx context.Context, req *pb.CreateFeatureR
 		EndTime:    now,
 	}
 	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.Feature)
-		result.CreateTime = now
-		result.UpdateTime = now
-		result.ResourceState = &pb.FeatureResourceState{State: pb.FeatureResourceState_ACTIVE}
-		return result, nil
+		return obj, nil
 	})
 }
 
-func (s *GkeHubV1Beta) UpdateFeature(ctx context.Context, req *pb.UpdateFeatureRequest) (*longrunning.Operation, error) {
+func (s *GkeHubV1) UpdateNamespace(ctx context.Context, req *pb.UpdateNamespaceRequest) (*longrunning.Operation, error) {
 	reqName := req.GetName()
 
-	name, err := s.parseFeatureName(reqName)
+	name, err := s.parseNamespaceName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
-	obj := &pb.Feature{}
+	obj := &pb.Namespace{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -107,16 +92,12 @@ func (s *GkeHubV1Beta) UpdateFeature(ctx context.Context, req *pb.UpdateFeatureR
 	// Required. A list of fields to be updated in this request.
 	paths := req.GetUpdateMask().GetPaths()
 
-	// TODO: Some sort of helper for fieldmask?
 	for _, path := range paths {
 		switch path {
 		case "labels":
 			obj.Labels = req.Resource.GetLabels()
-		// Spec is in the GCP API, not a KRM Spec
-		case "spec":
-			obj.Spec = req.GetResource().Spec
-		case "membershipSpecs":
-			obj.MembershipSpecs = updateMembershipSpecsMap(obj.MembershipSpecs, req.GetResource().GetMembershipSpecs())
+		case "namespaceLabels":
+			obj.NamespaceLabels = req.Resource.GetNamespaceLabels()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
@@ -132,25 +113,12 @@ func (s *GkeHubV1Beta) UpdateFeature(ctx context.Context, req *pb.UpdateFeatureR
 		EndTime:    now,
 	}
 	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.Feature)
-		result.UpdateTime = now
-		result.ResourceState = &pb.FeatureResourceState{State: pb.FeatureResourceState_ACTIVE}
-		return result, nil
+		return obj, nil
 	})
 }
 
-func updateMembershipSpecsMap(membershipSpecs, membershipSpecsPatch map[string]*pb.MembershipFeatureSpec) map[string]*pb.MembershipFeatureSpec {
-	if membershipSpecs == nil {
-		membershipSpecs = make(map[string]*pb.MembershipFeatureSpec)
-	}
-	for k, v := range membershipSpecsPatch {
-		membershipSpecs[k] = v
-	}
-	return membershipSpecs
-}
-
-func (s *GkeHubV1Beta) DeleteFeature(ctx context.Context, req *pb.DeleteFeatureRequest) (*longrunning.Operation, error) {
-	name, err := s.parseFeatureName(req.Name)
+func (s *GkeHubV1) DeleteNamespace(ctx context.Context, req *pb.DeleteNamespaceRequest) (*longrunning.Operation, error) {
+	name, err := s.parseNamespaceName(req.Name)
 	if err != nil {
 		return nil, err
 	}
@@ -158,7 +126,7 @@ func (s *GkeHubV1Beta) DeleteFeature(ctx context.Context, req *pb.DeleteFeatureR
 	fqn := name.String()
 	now := timestamppb.Now()
 
-	oldObj := &pb.Feature{}
+	oldObj := &pb.Namespace{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return s.operations.NewLRO(ctx)
@@ -170,5 +138,5 @@ func (s *GkeHubV1Beta) DeleteFeature(ctx context.Context, req *pb.DeleteFeatureR
 		CreateTime: now,
 		EndTime:    now,
 	}
-	return s.operations.DoneLRO(ctx, name.String(), metadata, &pb.Feature{})
+	return s.operations.DoneLRO(ctx, name.String(), metadata, &emptypb.Empty{})
 }
