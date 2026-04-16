@@ -1300,6 +1300,9 @@ type ContainerClusterSpec struct {
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+	/* The GCE resource labels (a map of key/value pairs) to be applied to the cluster. */
+	// +optional
+	ResourceLabels map[string]string `json:"resourceLabels,omitempty"`
 
 	/* Configuration for the ResourceUsageExportConfig feature. */
 	// +optional
