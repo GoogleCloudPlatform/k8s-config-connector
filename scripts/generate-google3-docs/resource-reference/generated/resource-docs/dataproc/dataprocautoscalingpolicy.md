@@ -101,7 +101,7 @@ workerConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Required. YARN autoscaling configuration.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -111,7 +111,10 @@ workerConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. Duration between scaling events. A scaling period starts after the update operation from the previous event has completed. Bounds: . Default: 2m.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Duration between scaling events. A scaling period starts after
+ the update operation from the previous event has completed.
+
+ Bounds: [2m, 1d]. Default: 2m.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -131,7 +134,12 @@ workerConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. Timeout for YARN graceful decommissioning of Node Managers. Specifies the duration to wait for jobs to complete before forcefully removing workers (and potentially interrupting jobs). Only applicable to downscaling operations.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Timeout for YARN graceful decommissioning of Node Managers.
+ Specifies the duration to wait for jobs to complete before forcefully
+ removing workers (and potentially interrupting jobs). Only applicable to
+ downscaling operations.
+
+ Bounds: [0s, 1d].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -141,7 +149,16 @@ workerConfig:
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}Required. Fraction of average YARN pending memory in the last cooldown period for which to remove workers. A scale-down factor of 1 will result in scaling down so that there is no available memory remaining after the update (more aggressive scaling). A scale-down factor of 0 disables removing workers, which can be beneficial for autoscaling a single job. See .{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Fraction of average YARN pending memory in the last cooldown
+ period for which to remove workers. A scale-down factor of 1 will result in
+ scaling down so that there is no available memory remaining after the
+ update (more aggressive scaling). A scale-down factor of 0 disables
+ removing workers, which can be beneficial for autoscaling a single job.
+ See [How autoscaling
+ works](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/autoscaling#how_autoscaling_works)
+ for more information.
+
+ Bounds: [0.0, 1.0].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -151,7 +168,13 @@ workerConfig:
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}Optional. Minimum scale-down threshold as a fraction of total cluster size before scaling occurs. For example, in a 20-worker cluster, a threshold of 0.1 means the autoscaler must recommend at least a 2 worker scale-down for the cluster to scale. A threshold of 0 means the autoscaler will scale down on any recommended change. Bounds: . Default: 0.0.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Minimum scale-down threshold as a fraction of total cluster size
+ before scaling occurs. For example, in a 20-worker cluster, a threshold of
+ 0.1 means the autoscaler must recommend at least a 2 worker scale-down for
+ the cluster to scale. A threshold of 0 means the autoscaler will scale down
+ on any recommended change.
+
+ Bounds: [0.0, 1.0]. Default: 0.0.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -161,7 +184,16 @@ workerConfig:
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}Required. Fraction of average YARN pending memory in the last cooldown period for which to add workers. A scale-up factor of 1.0 will result in scaling up so that there is no pending memory remaining after the update (more aggressive scaling). A scale-up factor closer to 0 will result in a smaller magnitude of scaling up (less aggressive scaling). See .{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Fraction of average YARN pending memory in the last cooldown
+ period for which to add workers. A scale-up factor of 1.0 will result in
+ scaling up so that there is no pending memory remaining after the update
+ (more aggressive scaling). A scale-up factor closer to 0 will result in a
+ smaller magnitude of scaling up (less aggressive scaling). See [How
+ autoscaling
+ works](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/autoscaling#how_autoscaling_works)
+ for more information.
+
+ Bounds: [0.0, 1.0].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -171,7 +203,13 @@ workerConfig:
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}Optional. Minimum scale-up threshold as a fraction of total cluster size before scaling occurs. For example, in a 20-worker cluster, a threshold of 0.1 means the autoscaler must recommend at least a 2-worker scale-up for the cluster to scale. A threshold of 0 means the autoscaler will scale up on any recommended change. Bounds: . Default: 0.0.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Minimum scale-up threshold as a fraction of total cluster size
+ before scaling occurs. For example, in a 20-worker cluster, a threshold of
+ 0.1 means the autoscaler must recommend at least a 2-worker scale-up for
+ the cluster to scale. A threshold of 0 means the autoscaler will scale up
+ on any recommended change.
+
+ Bounds: [0.0, 1.0]. Default: 0.0.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -201,9 +239,7 @@ workerConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The project for the resource
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}The `projectID` field of a project, when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -213,7 +249,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -223,7 +259,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -243,7 +279,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Optional. Describes how the autoscaler will operate for secondary workers.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Optional. Describes how the autoscaler will operate for secondary workers.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -253,7 +289,12 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Optional. Maximum number of instances for this group. Note that by default, clusters will not use secondary workers. Required for secondary workers if the minimum secondary instances is set. Primary workers - Bounds: [min_instances, ). Secondary workers - Bounds: [min_instances, ). Default: 0.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Maximum number of instances for this group. Required for primary
+ workers. Note that by default, clusters will not use secondary workers.
+ Required for secondary workers if the minimum secondary instances is set.
+
+ Primary workers - Bounds: [min_instances, ).
+ Secondary workers - Bounds: [min_instances, ). Default: 0.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -263,7 +304,10 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Optional. Minimum number of instances for this group. Primary workers - Bounds: . Default: 0.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Minimum number of instances for this group.
+
+ Primary workers - Bounds: [2, max_instances]. Default: 2.
+ Secondary workers - Bounds: [0, max_instances]. Default: 0.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -273,7 +317,24 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Optional. Weight for the instance group, which is used to determine the fraction of total workers in the cluster from this instance group. For example, if primary workers have weight 2, and secondary workers have weight 1, the cluster will have approximately 2 primary workers for each secondary worker. The cluster may not reach the specified balance if constrained by min/max bounds or other autoscaling settings. For example, if `max_instances` for secondary workers is 0, then only primary workers will be added. The cluster can also be out of balance when created. If weight is not set on any instance group, the cluster will default to equal weight for all groups: the cluster will attempt to maintain an equal number of workers in each group within the configured size bounds for each group. If weight is set for one group only, the cluster will default to zero weight on the unset group. For example if weight is set only on primary workers, the cluster will use primary workers only and no secondary workers.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Weight for the instance group, which is used to determine the
+ fraction of total workers in the cluster from this instance group.
+ For example, if primary workers have weight 2, and secondary workers have
+ weight 1, the cluster will have approximately 2 primary workers for each
+ secondary worker.
+
+ The cluster may not reach the specified balance if constrained
+ by min/max bounds or other autoscaling settings. For example, if
+ `max_instances` for secondary workers is 0, then only primary workers will
+ be added. The cluster can also be out of balance when created.
+
+ If weight is not set on any instance group, the cluster will default to
+ equal weight for all groups: the cluster will attempt to maintain an equal
+ number of workers in each group within the configured size bounds for each
+ group. If weight is set for one group only, the cluster will default to
+ zero weight on the unset group. For example if weight is set only on
+ primary workers, the cluster will use primary workers only and no
+ secondary workers.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -283,7 +344,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. Describes how the autoscaler will operate for primary workers.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Required. Describes how the autoscaler will operate for primary workers.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -293,7 +354,12 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Required. Maximum number of instances for this group. Required for primary workers. Note that by default, clusters will not use secondary workers. Required for secondary workers if the minimum secondary instances is set. Primary workers - Bounds: [min_instances, ). Secondary workers - Bounds: [min_instances, ). Default: 0.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Maximum number of instances for this group. Required for primary
+ workers. Note that by default, clusters will not use secondary workers.
+ Required for secondary workers if the minimum secondary instances is set.
+
+ Primary workers - Bounds: [min_instances, ).
+ Secondary workers - Bounds: [min_instances, ). Default: 0.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -303,7 +369,10 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Optional. Minimum number of instances for this group. Primary workers - Bounds: . Default: 0.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Minimum number of instances for this group.
+
+ Primary workers - Bounds: [2, max_instances]. Default: 2.
+ Secondary workers - Bounds: [0, max_instances]. Default: 0.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -313,7 +382,24 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Optional. Weight for the instance group, which is used to determine the fraction of total workers in the cluster from this instance group. For example, if primary workers have weight 2, and secondary workers have weight 1, the cluster will have approximately 2 primary workers for each secondary worker. The cluster may not reach the specified balance if constrained by min/max bounds or other autoscaling settings. For example, if `max_instances` for secondary workers is 0, then only primary workers will be added. The cluster can also be out of balance when created. If weight is not set on any instance group, the cluster will default to equal weight for all groups: the cluster will attempt to maintain an equal number of workers in each group within the configured size bounds for each group. If weight is set for one group only, the cluster will default to zero weight on the unset group. For example if weight is set only on primary workers, the cluster will use primary workers only and no secondary workers.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Weight for the instance group, which is used to determine the
+ fraction of total workers in the cluster from this instance group.
+ For example, if primary workers have weight 2, and secondary workers have
+ weight 1, the cluster will have approximately 2 primary workers for each
+ secondary worker.
+
+ The cluster may not reach the specified balance if constrained
+ by min/max bounds or other autoscaling settings. For example, if
+ `max_instances` for secondary workers is 0, then only primary workers will
+ be added. The cluster can also be out of balance when created.
+
+ If weight is not set on any instance group, the cluster will default to
+ equal weight for all groups: the cluster will attempt to maintain an equal
+ number of workers in each group within the configured size bounds for each
+ group. If weight is set for one group only, the cluster will default to
+ zero weight on the unset group. For example if weight is set only on
+ primary workers, the cluster will use primary workers only and no
+ secondary workers.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -330,6 +416,7 @@ conditions:
   reason: string
   status: string
   type: string
+externalRef: string
 observedGeneration: integer
 ```
 
@@ -344,7 +431,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -387,6 +474,13 @@ observedGeneration: integer
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Type is the type of the condition.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the DataprocAutoscalingPolicy resource in GCP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

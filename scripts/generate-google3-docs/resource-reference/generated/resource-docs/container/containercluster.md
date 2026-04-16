@@ -295,6 +295,7 @@ nodeConfig:
   ephemeralStorageConfig:
     localSsdCount: integer
   ephemeralStorageLocalSsdConfig:
+    dataCacheCount: integer
     localSsdCount: integer
   fastSocket:
     enabled: boolean
@@ -2518,6 +2519,16 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Immutable. Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.ephemeralStorageLocalSsdConfig.dataCacheCount</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. Number of local SSDs to be utilized for GKE Data Cache. Uses NVMe interfaces.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
