@@ -75,7 +75,7 @@ func (m *modelInstance) AdapterForObject(ctx context.Context, op *directbase.Ada
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewInstanceIdentity(ctx, reader, obj)
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +109,7 @@ func (m *modelInstance) AdapterForObject(ctx context.Context, op *directbase.Ada
 	}
 
 	return &InstanceAdapter{
-		id:        id,
+		id:        id.(*refs.MemorystoreInstanceIdentity),
 		gcpClient: gcpClient,
 		desired:   desired,
 	}, nil
@@ -158,9 +158,9 @@ func (a *InstanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	desired := direct.ProtoClone(a.desired)
 
 	req := &memorystorepb.CreateInstanceRequest{
-		Parent:     a.id.Parent().String(),
+		Parent:     fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location),
 		Instance:   desired,
-		InstanceId: a.id.ID(),
+		InstanceId: a.id.Instance,
 	}
 	op, err := a.gcpClient.CreateInstance(ctx, req)
 	if err != nil {
@@ -336,14 +336,14 @@ func (a *InstanceAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refsv1beta1.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.ProjectRef = &refsv1beta1.ProjectRef{External: "projects/" + a.id.Project}
+	obj.Spec.Location = a.id.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.id.ID())
+	u.SetName(a.id.Instance)
 	u.SetGroupVersionKind(krm.MemorystoreInstanceGVK)
 
 	u.Object = uObj
