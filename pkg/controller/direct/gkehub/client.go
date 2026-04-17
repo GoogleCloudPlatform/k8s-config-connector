@@ -19,7 +19,8 @@ import (
 	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
-	featureapi "google.golang.org/api/gkehub/v1beta"
+	gkehubv1 "google.golang.org/api/gkehub/v1"
+	gkehubv1beta "google.golang.org/api/gkehub/v1beta"
 )
 
 type gcpClient struct {
@@ -34,9 +35,10 @@ func newGCPClient(config *config.ControllerConfig) (*gcpClient, error) {
 }
 
 type gkeHubClient struct {
-	featureClient   *featureapi.ProjectsLocationsFeaturesService
-	scopeClient     *featureapi.ProjectsLocationsScopesService
-	operationClient *featureapi.ProjectsLocationsOperationsService
+	featureClient   *gkehubv1beta.ProjectsLocationsFeaturesService
+	scopeClient     *gkehubv1.ProjectsLocationsScopesService
+	operationClient *gkehubv1beta.ProjectsLocationsOperationsService
+	v1OperationClient *gkehubv1.ProjectsLocationsOperationsService
 }
 
 func (m *gcpClient) newGkeHubClient(ctx context.Context) (*gkeHubClient, error) {
@@ -44,13 +46,18 @@ func (m *gcpClient) newGkeHubClient(ctx context.Context) (*gkeHubClient, error) 
 	if err != nil {
 		return nil, err
 	}
-	service, err := featureapi.NewService(ctx, opts...)
+	v1betaService, err := gkehubv1beta.NewService(ctx, opts...)
 	if err != nil {
-		return nil, fmt.Errorf("building service for gkehub: %w", err)
+		return nil, fmt.Errorf("building v1beta service for gkehub: %w", err)
+	}
+	v1Service, err := gkehubv1.NewService(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building v1 service for gkehub: %w", err)
 	}
 	return &gkeHubClient{
-		featureClient:   featureapi.NewProjectsLocationsFeaturesService(service),
-		scopeClient:     featureapi.NewProjectsLocationsScopesService(service),
-		operationClient: featureapi.NewProjectsLocationsOperationsService(service),
+		featureClient:     gkehubv1beta.NewProjectsLocationsFeaturesService(v1betaService),
+		scopeClient:       gkehubv1.NewProjectsLocationsScopesService(v1Service),
+		operationClient:   gkehubv1beta.NewProjectsLocationsOperationsService(v1betaService),
+		v1OperationClient: gkehubv1.NewProjectsLocationsOperationsService(v1Service),
 	}, nil
 }
