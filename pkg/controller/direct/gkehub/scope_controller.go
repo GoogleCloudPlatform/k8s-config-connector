@@ -16,16 +16,19 @@ package gkehub
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"reflect"
 	"time"
 
-	gkehubapi "google.golang.org/api/gkehub/v1beta"
+	gkehubapi "google.golang.org/api/gkehub/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/gkehub/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -47,14 +50,14 @@ type gkeHubScopeModel struct {
 // model implements the Model interface.
 var _ directbase.Model = &gkeHubScopeModel{}
 
-type gkeHubScopeAdapter struct {
+type gkehubScopeAdapter struct {
 	id        *krm.GKEHubScopeIdentity
 	desired   *krm.GKEHubScope
 	actual    *gkehubapi.Scope
 	hubClient *gkeHubClient
 }
 
-var _ directbase.Adapter = &gkeHubScopeAdapter{}
+var _ directbase.Adapter = &gkehubScopeAdapter{}
 
 // AdapterForObject implements the Model interface.
 func (m *gkeHubScopeModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
@@ -78,7 +81,7 @@ func (m *gkeHubScopeModel) AdapterForObject(ctx context.Context, op *directbase.
 		return nil, err
 	}
 
-	return &gkeHubScopeAdapter{
+	return &gkehubScopeAdapter{
 		id:        id.(*krm.GKEHubScopeIdentity),
 		desired:   obj,
 		hubClient: hubClient,
@@ -89,7 +92,7 @@ func (m *gkeHubScopeModel) AdapterForURL(ctx context.Context, url string) (direc
 	return nil, nil
 }
 
-func (a *gkeHubScopeAdapter) Find(ctx context.Context) (bool, error) {
+func (a *gkehubScopeAdapter) Find(ctx context.Context) (bool, error) {
 	if a.id == nil {
 		return false, nil
 	}
@@ -104,7 +107,7 @@ func (a *gkeHubScopeAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-func (a *gkeHubScopeAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+func (a *gkehubScopeAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	op, err := a.hubClient.scopeClient.Delete(a.id.String()).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -118,18 +121,24 @@ func (a *gkeHubScopeAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 	return true, nil
 }
 
-func (a *gkeHubScopeAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+func (a *gkehubScopeAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating GKEHubScope", "id", a.id.String())
 
 	mapCtx := &direct.MapContext{}
-	desired := GKEHubScopeSpecKRMtoAPI(mapCtx, &a.desired.Spec)
+	desired := GKEHubScopeSpec_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
+	// Convert pb.Scope to gkehubapi.Scope
+	apiObj := &gkehubapi.Scope{}
+	if err := Convert_v1_Scope_pb_to_api(desired, apiObj); err != nil {
+		return err
+	}
+
 	parent := a.id.Parent()
-	op, err := a.hubClient.scopeClient.Create(parent, desired).ScopeId(a.id.ID()).Context(ctx).Do()
+	op, err := a.hubClient.scopeClient.Create(parent, apiObj).ScopeId(a.id.ID()).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("creating GKEHubScope %q: %w", a.id.String(), err)
 	}
@@ -144,27 +153,39 @@ func (a *gkeHubScopeAdapter) Create(ctx context.Context, createOp *directbase.Cr
 
 	log.V(2).Info("successfully created GKEHubScope", "id", a.id.String())
 
+	// Convert gkehubapi.Scope to pb.Scope
+	pbObj := &pb.Scope{}
+	if err := Convert_v1_Scope_api_to_pb(a.actual, pbObj); err != nil {
+		return err
+	}
+
 	// Update status
-	status := GKEHubScopeStatusAPIToKRM(mapCtx, a.actual)
+	status := GKEHubScopeObservedState_FromProto(mapCtx, pbObj)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
-func (a *gkeHubScopeAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+func (a *gkehubScopeAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating GKEHubScope", "id", a.id.String())
 
 	mapCtx := &direct.MapContext{}
-	desired := GKEHubScopeSpecKRMtoAPI(mapCtx, &a.desired.Spec)
+	desired := GKEHubScopeSpec_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
 	if !reflect.DeepEqual(a.actual.NamespaceLabels, desired.NamespaceLabels) {
+		// Convert pb.Scope to gkehubapi.Scope
+		apiObj := &gkehubapi.Scope{}
+		if err := Convert_v1_Scope_pb_to_api(desired, apiObj); err != nil {
+			return err
+		}
+
 		updateMask := "namespaceLabels"
-		op, err := a.hubClient.scopeClient.Patch(a.id.String(), desired).UpdateMask(updateMask).Context(ctx).Do()
+		op, err := a.hubClient.scopeClient.Patch(a.id.String(), apiObj).UpdateMask(updateMask).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("patching GKEHubScope %q: %w", a.id.String(), err)
 		}
@@ -180,24 +201,40 @@ func (a *gkeHubScopeAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 	log.V(2).Info("successfully updated GKEHubScope", "id", a.id.String())
 
+	// Convert gkehubapi.Scope to pb.Scope
+	pbObj := &pb.Scope{}
+	if err := Convert_v1_Scope_api_to_pb(a.actual, pbObj); err != nil {
+		return err
+	}
+
 	// Update status
-	status := GKEHubScopeStatusAPIToKRM(mapCtx, a.actual)
+	status := GKEHubScopeObservedState_FromProto(mapCtx, pbObj)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
-func (a *gkeHubScopeAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+func (a *gkehubScopeAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
 
 	mapCtx := &direct.MapContext{}
-	spec := GKEHubScopeSpecAPIToKRM(mapCtx, a.actual, a.id)
+
+	// Convert gkehubapi.Scope to pb.Scope
+	pbObj := &pb.Scope{}
+	if err := Convert_v1_Scope_api_to_pb(a.actual, pbObj); err != nil {
+		return nil, err
+	}
+
+	spec := GKEHubScopeSpec_FromProto(mapCtx, pbObj)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+	spec.ProjectRef = refs.ProjectRef{External: "projects/" + a.id.ProjectID}
+	spec.Location = direct.LazyPtr(a.id.Location)
+	spec.ResourceID = direct.LazyPtr(a.id.ID())
 
 	obj := &krm.GKEHubScope{
 		Spec: *spec,
@@ -209,12 +246,12 @@ func (a *gkeHubScopeAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	return &unstructured.Unstructured{Object: uObj}, nil
 }
 
-func (a *gkeHubScopeAdapter) waitForOp(ctx context.Context, op *gkehubapi.Operation) error {
+func (a *gkehubScopeAdapter) waitForOp(ctx context.Context, op *gkehubapi.Operation) error {
 	retryPeriod := 5 * time.Second
 	timeoutDuration := 20 * time.Minute
 	timeoutAt := time.Now().Add(timeoutDuration)
 	for {
-		current, err := a.hubClient.operationClient.Get(op.Name).Context(ctx).Do()
+		current, err := a.hubClient.v1OperationClient.Get(op.Name).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("getting operation status of %q failed: %w", op.Name, err)
 		}
@@ -233,4 +270,20 @@ func (a *gkeHubScopeAdapter) waitForOp(ctx context.Context, op *gkehubapi.Operat
 			retryPeriod = retryPeriod * 2
 		}
 	}
+}
+
+func Convert_v1_Scope_pb_to_api(in interface{}, out interface{}) error {
+	b, err := json.Marshal(in)
+	if err != nil {
+		return err
+	}
+	return json.Unmarshal(b, out)
+}
+
+func Convert_v1_Scope_api_to_pb(in interface{}, out interface{}) error {
+	b, err := json.Marshal(in)
+	if err != nil {
+		return err
+	}
+	return json.Unmarshal(b, out)
 }

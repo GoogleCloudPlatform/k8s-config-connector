@@ -21,6 +21,25 @@ generate-grpc-for-google-protos: tools
 		--experimental_allow_proto3_optional \
 		--go_out ./generated \
 		--go_opt paths=source_relative \
+		--go_opt Mgoogle/cloud/gkehub/v1/feature.proto=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/gkehub/v1 \
+		--go_opt Mgoogle/cloud/gkehub/v1/fleet.proto=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/gkehub/v1 \
+		--go_opt Mgoogle/cloud/gkehub/v1/membership.proto=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/gkehub/v1 \
+		--go_opt Mgoogle/cloud/gkehub/v1/service.proto=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/gkehub/v1 \
+		--go_opt Mgoogle/cloud/gkehub/v1/configmanagement/configmanagement.proto=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/gkehub/v1/configmanagement \
+		--go_opt Mgoogle/cloud/gkehub/v1/multiclusteringress/multiclusteringress.proto=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/gkehub/v1/multiclusteringress \
+		--go_opt Mgoogle/cloud/gkehub/v1/rbacrolebindingactuation/rbacrolebindingactuation.proto=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/gkehub/v1/rbacrolebindingactuation \
+		--go-grpc_out ./generated \
+		--go-grpc_opt paths=source_relative \
+		./.build/googleapis/google/cloud/gkehub/v1/*.proto \
+		./.build/googleapis/google/cloud/gkehub/v1/configmanagement/*.proto \
+		./.build/googleapis/google/cloud/gkehub/v1/multiclusteringress/*.proto \
+		./.build/googleapis/google/cloud/gkehub/v1/rbacrolebindingactuation/*.proto
+
+	PATH=.build/bin/:${PATH} .build/bin/protoc/bin/protoc \
+		-I ./.build/googleapis \
+		--experimental_allow_proto3_optional \
+		--go_out ./generated \
+		--go_opt paths=source_relative \
 		--go-grpc_out ./generated \
 		--go-grpc_opt paths=source_relative \
 		./.build/googleapis/google/cloud/sql/v1beta4/*.proto
