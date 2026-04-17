@@ -815,8 +815,6 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
   },
   "engineVersion": "VALKEY_7_2",
   "labels": {
-    "key1": "val1",
-    "key2": "val2",
     "keyx": "valx"
   },
   "mode": 2,
@@ -993,8 +991,6 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
   },
   "engineVersion": "VALKEY_7_2",
   "labels": {
-    "key1": "val1",
-    "key2": "val2",
     "keyx": "valx"
   },
   "mode": 2,
@@ -1171,8 +1167,6 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
   },
   "engineVersion": "VALKEY_7_2",
   "labels": {
-    "key1": "val1",
-    "key2": "val2",
     "keyx": "valx"
   },
   "mode": 2,
@@ -1350,8 +1344,6 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
   },
   "engineVersion": "VALKEY_7_2",
   "labels": {
-    "key1": "val1",
-    "key2": "val2",
     "keyx": "valx"
   },
   "mode": 2,
@@ -1464,8 +1456,6 @@ X-Xss-Protection: 0
     },
     "engineVersion": "VALKEY_7_2",
     "labels": {
-      "key1": "val1",
-      "key2": "val2",
       "keyx": "valx"
     },
     "mode": "CLUSTER",
@@ -1530,8 +1520,6 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
   },
   "engineVersion": "VALKEY_7_2",
   "labels": {
-    "key1": "val1",
-    "key2": "val2",
     "keyx": "valx"
   },
   "mode": 2,
@@ -1644,8 +1632,6 @@ X-Xss-Protection: 0
     },
     "engineVersion": "VALKEY_7_2",
     "labels": {
-      "key1": "val1",
-      "key2": "val2",
       "keyx": "valx"
     },
     "mode": "CLUSTER",
@@ -1711,8 +1697,6 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
   },
   "engineVersion": "VALKEY_7_2",
   "labels": {
-    "key1": "val1",
-    "key2": "val2",
     "keyx": "valx"
   },
   "mode": 2,
@@ -1825,8 +1809,6 @@ X-Xss-Protection: 0
     },
     "engineVersion": "VALKEY_7_2",
     "labels": {
-      "key1": "val1",
-      "key2": "val2",
       "keyx": "valx"
     },
     "mode": "CLUSTER",
@@ -1892,8 +1874,6 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
   },
   "engineVersion": "VALKEY_7_2",
   "labels": {
-    "key1": "val1",
-    "key2": "val2",
     "keyx": "valx"
   },
   "mode": 2,
@@ -2006,8 +1986,6 @@ X-Xss-Protection: 0
     },
     "engineVersion": "VALKEY_7_2",
     "labels": {
-      "key1": "val1",
-      "key2": "val2",
       "keyx": "valx"
     },
     "mode": "CLUSTER",
@@ -2103,8 +2081,6 @@ X-Xss-Protection: 0
   },
   "engineVersion": "VALKEY_7_2",
   "labels": {
-    "key1": "val1",
-    "key2": "val2",
     "keyx": "valx"
   },
   "mode": 2,
