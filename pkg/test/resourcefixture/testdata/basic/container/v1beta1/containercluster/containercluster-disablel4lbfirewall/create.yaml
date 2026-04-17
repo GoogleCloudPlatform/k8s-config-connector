@@ -17,6 +17,6 @@ kind: ContainerCluster
 metadata:
   name: containercluster-${uniqueId}
 spec:
-  location: us-west2
+  location: us-west4
   initialNodeCount: 1
   disableL4LbFirewallReconciliation: true

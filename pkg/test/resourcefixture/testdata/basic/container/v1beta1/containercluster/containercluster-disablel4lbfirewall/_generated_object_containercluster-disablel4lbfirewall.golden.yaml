@@ -18,7 +18,7 @@ metadata:
 spec:
   disableL4LbFirewallReconciliation: false
   initialNodeCount: 1
-  location: us-west2
+  location: us-west4
   resourceID: containercluster-${uniqueId}
 status:
   conditions:
@@ -34,11 +34,11 @@ status:
   observedState:
     controlPlaneEndpointsConfig:
       dnsEndpointConfig:
-        endpoint: gke-12345trewq-${projectNumber}.us-west2.gke.goog
+        endpoint: gke-12345trewq-${projectNumber}.us-west4.gke.goog
     masterAuth:
       clusterCaCertificate: 1234567890abcdefghijklmn
     privateClusterConfig:
       privateEndpoint: 10.128.0.2
       publicEndpoint: 8.8.8.8
-  selfLink: https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/clusters/containercluster-${uniqueId}
+  selfLink: https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-west4/clusters/containercluster-${uniqueId}
   servicesIpv4Cidr: 34.118.224.0/20
