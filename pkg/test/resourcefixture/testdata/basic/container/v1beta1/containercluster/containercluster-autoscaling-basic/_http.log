@@ -117,10 +117,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "notificationConfig": {
       "pubsub": {}
     },
-    "resourceLabels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
     "shieldedNodes": {
       "enabled": true
     }
@@ -515,10 +511,6 @@ X-Xss-Protection: 0
   "releaseChannel": {
     "channel": "REGULAR"
   },
-  "resourceLabels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
   "securityPostureConfig": {
     "mode": "BASIC",
     "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
@@ -877,10 +869,6 @@ X-Xss-Protection: 0
   "releaseChannel": {
     "channel": "REGULAR"
   },
-  "resourceLabels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
   "securityPostureConfig": {
     "mode": "BASIC",
     "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
@@ -1238,10 +1226,6 @@ X-Xss-Protection: 0
   },
   "releaseChannel": {
     "channel": "REGULAR"
-  },
-  "resourceLabels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
   },
   "securityPostureConfig": {
     "mode": "BASIC",
@@ -1661,10 +1645,6 @@ X-Xss-Protection: 0
   "releaseChannel": {
     "channel": "REGULAR"
   },
-  "resourceLabels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
   "securityPostureConfig": {
     "mode": "BASIC",
     "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
@@ -2023,10 +2003,6 @@ X-Xss-Protection: 0
   "releaseChannel": {
     "channel": "REGULAR"
   },
-  "resourceLabels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
   "securityPostureConfig": {
     "mode": "BASIC",
     "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
@@ -2384,10 +2360,6 @@ X-Xss-Protection: 0
   },
   "releaseChannel": {
     "channel": "REGULAR"
-  },
-  "resourceLabels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
   },
   "securityPostureConfig": {
     "mode": "BASIC",
@@ -2870,10 +2842,6 @@ X-Xss-Protection: 0
   "releaseChannel": {
     "channel": "REGULAR"
   },
-  "resourceLabels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
   "securityPostureConfig": {
     "mode": "BASIC",
     "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
@@ -3232,10 +3200,6 @@ X-Xss-Protection: 0
   "releaseChannel": {
     "channel": "REGULAR"
   },
-  "resourceLabels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
   "securityPostureConfig": {
     "mode": "BASIC",
     "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
@@ -3593,10 +3557,6 @@ X-Xss-Protection: 0
   },
   "releaseChannel": {
     "channel": "REGULAR"
-  },
-  "resourceLabels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
   },
   "securityPostureConfig": {
     "mode": "BASIC",
