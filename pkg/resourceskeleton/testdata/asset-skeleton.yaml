@@ -1235,3 +1235,7 @@
     spec:
       projectRef:
         external: kcc-test
+# not supported by asset inventory
+- resourceConfigId: ComputeRegionSecurityPolicy
+# not supported by asset inventory
+- resourceConfigId: ComputeRegionSecurityPolicyRule

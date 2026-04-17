@@ -1050,3 +1050,9 @@
 - ExpectedSkeleton: null
   ResourceConfigId: ComputeManagedSSLCertificate
   URI: "https://www.googleapis.com/compute/v1/projects/kcc-test/global/sslCertificates/computemanagedsslcertificate-wj6kvvmztb67xscbzd5a"
+- ExpectedSkeleton: null
+  ResourceConfigId: ComputeRegionSecurityPolicy
+  URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: ComputeRegionSecurityPolicyRule
+  URI: ""
