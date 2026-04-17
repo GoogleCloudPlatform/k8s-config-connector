@@ -1056,6 +1056,7 @@
     metadata:
       annotations:
         cnrm.cloud.google.com/project-id: kcc-test
+        cnrm.cloud.google.com/region: us-central1
       name: my-policy
   ResourceConfigId: ComputeRegionSecurityPolicy
   URI: "https://compute.googleapis.com/compute/v1/projects/kcc-test/regions/us-central1/securityPolicies/my-policy"
