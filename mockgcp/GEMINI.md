@@ -42,13 +42,30 @@ The `README.md` file provides a detailed guide for adding a new mock service. Th
 
 ### Golden File Testing
 
-The project uses a "golden file" testing approach. This involves:
+The project uses a "golden file" testing approach. This involves running tests against real GCP to capture ground truth, and then ensuring the mock implementation produces identical results.
 
-1.  Running tests against the real GCP services to capture the expected HTTP requests and responses.
-2.  Saving this captured data as "golden files" (e.g., `_http.log`).
-3.  Running the tests against the mock implementation and comparing the actual output to the golden files.
+**Expert Workflow: Aligning Mock with Real GCP**
 
-This ensures that the mock implementation accurately reflects the behavior of the real GCP APIs.
+Whenever you add a new field or modify GCP communication, you MUST align the mock logs.
+
+1.  **Establish a Baseline**: 
+    - Identify the `<testname>` (final folder name) and `<fixture-path>` (full relative path).
+    - Run `hack/record-gcp "fixtures/^<testname>$"` to capture real GCP behavior (writes `_http.log` and `_generated_object_*.golden.yaml`).
+    - **CRITICAL**: `git add <fixture-path>` and `git commit -m "Update real GCP golden logs"` to establish a clean git baseline.
+
+2.  **Identify Discrepancies**:
+    - Run `hack/compare-mock "fixtures/^<testname>$"` to record current mock behavior in the working tree.
+    - Run `git diff <fixture-path>` to see the exact discrepancies between Mock and Real GCP.
+
+3.  **Diagnose and Fix (Incremental)**:
+    - **Output-Only Fields/IDs**: If IDs or URLs are wrong, search for `populate<Resource>Defaults` in `mockgcp/mock<service>/<resource>.go`. Extract the exact pattern from real logs (look for prefixes, trimming, or hashing) and implement it precisely.
+    - **Volatile Fields**: If data like timestamps or etags differ but are functionally equivalent, update `mockgcp/mock<service>/normalize.go`.
+    - **Controller Mappings**: If field names differ from the proto, check the controller mapping:
+        - TF-Based: Search `third_party/github.com/hashicorp/terraform-provider-google` for `flatten<FieldName>` functions.
+        - Direct: Check `pkg/controller/direct/<service>/mapper.generated.go`.
+    - **Rule**: Fix only **ONE small point** at a time and verify immediately. Revert (`git reset --hard`) if you get stuck in a loop.
+
+4.  **Verify**: Re-run `hack/compare-mock "fixtures/^<testname>$"` and check `git diff <fixture-path>`. Repeat until aligned.
 
 ### Normalization and Scoping
 
