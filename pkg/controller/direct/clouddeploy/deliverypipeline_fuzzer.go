@@ -29,8 +29,8 @@ func init() {
 
 func cloudDeployDeliveryPipelineFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.DeliveryPipeline{},
-		DeliveryPipelineSpec_FromProto, DeliveryPipelineSpec_ToProto,
-		DeliveryPipelineObservedState_FromProto, DeliveryPipelineObservedState_ToProto,
+		DeliveryPipelineSpec_v1beta1_FromProto, DeliveryPipelineSpec_v1beta1_ToProto,
+		DeliveryPipelineObservedState_v1beta1_FromProto, DeliveryPipelineObservedState_v1beta1_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".labels")

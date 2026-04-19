@@ -20,6 +20,7 @@
 // resource: CloudDeployCustomTargetType:CustomTargetType
 // resource: CloudDeployDeployPolicy:DeployPolicy
 // resource: CloudDeployTarget:Target
+// resource: CloudDeployAutomation:Automation
 
 package v1alpha1
 
@@ -180,21 +181,6 @@ type SkaffoldModules_SkaffoldGitSource struct {
 	// Optional. Git branch or tag to use when cloning the repository.
 	// +kcc:proto:field=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGitSource.ref
 	Ref *string `json:"ref,omitempty"`
-}
-
-// +kcc:proto=google.cloud.deploy.v1.TargetAttribute
-type TargetAttribute struct {
-	// Optional. ID of the `Target`. The value of this field could be one of the
-	//  following:
-	//
-	//  * The last segment of a target name
-	//  * "*", all targets in a location
-	// +kcc:proto:field=google.cloud.deploy.v1.TargetAttribute.id
-	ID *string `json:"id,omitempty"`
-
-	// Target labels.
-	// +kcc:proto:field=google.cloud.deploy.v1.TargetAttribute.labels
-	Labels map[string]string `json:"labels,omitempty"`
 }
 
 // +kcc:proto=google.cloud.deploy.v1.TimeWindows
