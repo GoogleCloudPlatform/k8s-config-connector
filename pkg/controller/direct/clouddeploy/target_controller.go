@@ -175,7 +175,7 @@ func (a *TargetAdapter) resolveReferences(ctx context.Context) error {
 	}
 
 	mapCtx := &direct.MapContext{}
-	a.desiredPb = CloudDeployTargetSpec_ToProto(mapCtx, &obj.Spec)
+	a.desiredPb = CloudDeployTargetSpec_v1alpha1_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -233,7 +233,7 @@ func (a *TargetAdapter) Create(ctx context.Context, createOp *directbase.CreateO
 	log.V(2).Info("successfully created Target", "name", a.id.String())
 
 	status := &krm.CloudDeployTargetStatus{}
-	status.ObservedState = CloudDeployTargetObservedState_FromProto(mapCtx, created)
+	status.ObservedState = CloudDeployTargetObservedState_v1alpha1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		log.Error(mapCtx.Err(), "error mapping Target status")
 	}
@@ -323,7 +323,7 @@ func (a *TargetAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 	}
 
 	status := &krm.CloudDeployTargetStatus{}
-	status.ObservedState = CloudDeployTargetObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = CloudDeployTargetObservedState_v1alpha1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		log.Error(mapCtx.Err(), "error mapping Target status")
 	}
@@ -340,7 +340,7 @@ func (a *TargetAdapter) Export(ctx context.Context) (*unstructured.Unstructured,
 
 	obj := &krm.CloudDeployTarget{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(CloudDeployTargetSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(CloudDeployTargetSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

@@ -358,18 +358,38 @@ spec:
                     target:
                       description: Optional. Contains attributes about a target.
                       properties:
-                        id:
-                          description: |-
-                            Optional. ID of the `Target`. The value of this field could be one of the
-                             following:
-
-                             * The last segment of a target name
-                             * "*", all targets in a location
-                          type: string
                         labels:
                           additionalProperties:
                             type: string
                           description: Target labels.
+                          type: object
+                        targetRef:
+                          description: Optional. The Target to which the rule applies.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed CloudDeployTarget
+                                resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/targets/{{targetID}}".
+                              type: string
+                            name:
+                              description: The name of a CloudDeployTarget resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a CloudDeployTarget resource.
+                              type: string
                           type: object
                       type: object
                   type: object
