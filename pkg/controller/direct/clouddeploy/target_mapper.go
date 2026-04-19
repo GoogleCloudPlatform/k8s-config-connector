@@ -21,7 +21,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func CloudDeployTargetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Target) *krm.CloudDeployTargetSpec {
+func CloudDeployTargetSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Target) *krm.CloudDeployTargetSpec {
 	if in == nil {
 		return nil
 	}
@@ -35,15 +35,15 @@ func CloudDeployTargetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Target) *
 	}
 	//out.Labels = in.Labels
 	out.RequireApproval = direct.LazyPtr(in.GetRequireApproval())
-	out.Gke = GKECluster_FromProto(mapCtx, in.GetGke())
-	out.AnthosCluster = AnthosCluster_FromProto(mapCtx, in.GetAnthosCluster())
-	out.Run = CloudRunLocation_FromProto(mapCtx, in.GetRun())
-	out.MultiTarget = MultiTarget_FromProto(mapCtx, in.GetMultiTarget())
-	out.CustomTarget = CustomTarget_FromProto(mapCtx, in.GetCustomTarget())
+	out.Gke = GKECluster_v1alpha1_FromProto(mapCtx, in.GetGke())
+	out.AnthosCluster = AnthosCluster_v1alpha1_FromProto(mapCtx, in.GetAnthosCluster())
+	out.Run = CloudRunLocation_v1alpha1_FromProto(mapCtx, in.GetRun())
+	out.MultiTarget = MultiTarget_v1alpha1_FromProto(mapCtx, in.GetMultiTarget())
+	out.CustomTarget = CustomTarget_v1alpha1_FromProto(mapCtx, in.GetCustomTarget())
 	if in.AssociatedEntities != nil {
 		out.AssociatedEntities = make(map[string]*krm.AssociatedEntities)
 		for k, v := range in.AssociatedEntities {
-			out.AssociatedEntities[k] = AssociatedEntities_FromProto(mapCtx, v)
+			out.AssociatedEntities[k] = AssociatedEntities_v1alpha1_FromProto(mapCtx, v)
 		}
 	}
 
@@ -54,7 +54,7 @@ func CloudDeployTargetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Target) *
 	if in.ExecutionConfigs != nil {
 		out.ExecutionConfigs = make([]krm.ExecutionConfig, len(in.ExecutionConfigs))
 		for i, v := range in.ExecutionConfigs {
-			if val := ExecutionConfig_FromProto(mapCtx, v); val != nil {
+			if val := ExecutionConfig_v1alpha1_FromProto(mapCtx, v); val != nil {
 				out.ExecutionConfigs[i] = *val
 			}
 		}
@@ -63,7 +63,7 @@ func CloudDeployTargetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Target) *
 	out.DeployParameters = in.DeployParameters
 	return out
 }
-func CloudDeployTargetSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudDeployTargetSpec) *pb.Target {
+func CloudDeployTargetSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.CloudDeployTargetSpec) *pb.Target {
 	if in == nil {
 		return nil
 	}
@@ -77,19 +77,19 @@ func CloudDeployTargetSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudDeplo
 	}
 	//out.Labels = in.Labels
 	out.RequireApproval = direct.ValueOf(in.RequireApproval)
-	if oneof := GKECluster_ToProto(mapCtx, in.Gke); oneof != nil {
+	if oneof := GKECluster_v1alpha1_ToProto(mapCtx, in.Gke); oneof != nil {
 		out.DeploymentTarget = &pb.Target_Gke{Gke: oneof}
 	}
-	if oneof := AnthosCluster_ToProto(mapCtx, in.AnthosCluster); oneof != nil {
+	if oneof := AnthosCluster_v1alpha1_ToProto(mapCtx, in.AnthosCluster); oneof != nil {
 		out.DeploymentTarget = &pb.Target_AnthosCluster{AnthosCluster: oneof}
 	}
-	if oneof := CloudRunLocation_ToProto(mapCtx, in.Run); oneof != nil {
+	if oneof := CloudRunLocation_v1alpha1_ToProto(mapCtx, in.Run); oneof != nil {
 		out.DeploymentTarget = &pb.Target_Run{Run: oneof}
 	}
-	if oneof := MultiTarget_ToProto(mapCtx, in.MultiTarget); oneof != nil {
+	if oneof := MultiTarget_v1alpha1_ToProto(mapCtx, in.MultiTarget); oneof != nil {
 		out.DeploymentTarget = &pb.Target_MultiTarget{MultiTarget: oneof}
 	}
-	if oneof := CustomTarget_ToProto(mapCtx, in.CustomTarget); oneof != nil {
+	if oneof := CustomTarget_v1alpha1_ToProto(mapCtx, in.CustomTarget); oneof != nil {
 		out.DeploymentTarget = &pb.Target_CustomTarget{CustomTarget: oneof}
 	}
 
@@ -97,7 +97,7 @@ func CloudDeployTargetSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudDeplo
 	if in.AssociatedEntities != nil {
 		out.AssociatedEntities = make(map[string]*pb.AssociatedEntities)
 		for k, v := range in.AssociatedEntities {
-			out.AssociatedEntities[k] = AssociatedEntities_ToProto(mapCtx, v)
+			out.AssociatedEntities[k] = AssociatedEntities_v1alpha1_ToProto(mapCtx, v)
 		}
 	}
 
@@ -108,13 +108,13 @@ func CloudDeployTargetSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudDeplo
 	if in.ExecutionConfigs != nil {
 		out.ExecutionConfigs = make([]*pb.ExecutionConfig, len(in.ExecutionConfigs))
 		for i := range in.ExecutionConfigs {
-			out.ExecutionConfigs[i] = ExecutionConfig_ToProto(mapCtx, &in.ExecutionConfigs[i])
+			out.ExecutionConfigs[i] = ExecutionConfig_v1alpha1_ToProto(mapCtx, &in.ExecutionConfigs[i])
 		}
 	}
 	out.DeployParameters = in.DeployParameters
 	return out
 }
-func CloudDeployTargetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Target) *krm.CloudDeployTargetObservedState {
+func CloudDeployTargetObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Target) *krm.CloudDeployTargetObservedState {
 	if in == nil {
 		return nil
 	}
@@ -126,7 +126,7 @@ func CloudDeployTargetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	return out
 }
-func CloudDeployTargetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudDeployTargetObservedState) *pb.Target {
+func CloudDeployTargetObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.CloudDeployTargetObservedState) *pb.Target {
 	if in == nil {
 		return nil
 	}
@@ -138,26 +138,26 @@ func CloudDeployTargetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.C
 	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
-func AssociatedEntities_FromProto(mapCtx *direct.MapContext, in *pb.AssociatedEntities) *krm.AssociatedEntities {
+func AssociatedEntities_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssociatedEntities) *krm.AssociatedEntities {
 	if in == nil {
 		return nil
 	}
 	out := &krm.AssociatedEntities{}
-	out.GKEClusters = direct.Slice_FromProto(mapCtx, in.GkeClusters, GKECluster_FromProto)
-	out.AnthosClusters = direct.Slice_FromProto(mapCtx, in.AnthosClusters, AnthosCluster_FromProto)
+	out.GKEClusters = direct.Slice_FromProto(mapCtx, in.GkeClusters, GKECluster_v1alpha1_FromProto)
+	out.AnthosClusters = direct.Slice_FromProto(mapCtx, in.AnthosClusters, AnthosCluster_v1alpha1_FromProto)
 	return out
 }
-func AssociatedEntities_ToProto(mapCtx *direct.MapContext, in *krm.AssociatedEntities) *pb.AssociatedEntities {
+func AssociatedEntities_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.AssociatedEntities) *pb.AssociatedEntities {
 	if in == nil {
 		return nil
 	}
 	out := &pb.AssociatedEntities{}
-	out.GkeClusters = direct.Slice_ToProto(mapCtx, in.GKEClusters, GKECluster_ToProto)
-	out.AnthosClusters = direct.Slice_ToProto(mapCtx, in.AnthosClusters, AnthosCluster_ToProto)
+	out.GkeClusters = direct.Slice_ToProto(mapCtx, in.GKEClusters, GKECluster_v1alpha1_ToProto)
+	out.AnthosClusters = direct.Slice_ToProto(mapCtx, in.AnthosClusters, AnthosCluster_v1alpha1_ToProto)
 	return out
 }
 
-func GKECluster_FromProto(mapCtx *direct.MapContext, in *pb.GkeCluster) *krm.GKECluster {
+func GKECluster_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GkeCluster) *krm.GKECluster {
 	if in == nil {
 		return nil
 	}
@@ -170,7 +170,7 @@ func GKECluster_FromProto(mapCtx *direct.MapContext, in *pb.GkeCluster) *krm.GKE
 	out.DNSEndpoint = direct.LazyPtr(in.GetDnsEndpoint())
 	return out
 }
-func GKECluster_ToProto(mapCtx *direct.MapContext, in *krm.GKECluster) *pb.GkeCluster {
+func GKECluster_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.GKECluster) *pb.GkeCluster {
 	if in == nil {
 		return nil
 	}
@@ -184,7 +184,7 @@ func GKECluster_ToProto(mapCtx *direct.MapContext, in *krm.GKECluster) *pb.GkeCl
 	return out
 }
 
-func MultiTarget_FromProto(mapCtx *direct.MapContext, in *pb.MultiTarget) *krm.MultiTarget {
+func MultiTarget_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MultiTarget) *krm.MultiTarget {
 	if in == nil {
 		return nil
 	}
@@ -194,7 +194,7 @@ func MultiTarget_FromProto(mapCtx *direct.MapContext, in *pb.MultiTarget) *krm.M
 	}
 	return out
 }
-func MultiTarget_ToProto(mapCtx *direct.MapContext, in *krm.MultiTarget) *pb.MultiTarget {
+func MultiTarget_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.MultiTarget) *pb.MultiTarget {
 	if in == nil {
 		return nil
 	}
