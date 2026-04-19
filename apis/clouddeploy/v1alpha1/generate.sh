@@ -29,11 +29,13 @@ go run . generate-types \
   --api-version clouddeploy.cnrm.cloud.google.com/v1alpha1  \
   --resource CloudDeployCustomTargetType:CustomTargetType \
   --resource CloudDeployDeployPolicy:DeployPolicy \
-  --resource CloudDeployTarget:Target
+  --resource CloudDeployTarget:Target \
+  --resource CloudDeployAutomation:Automation
 
 go run . generate-mapper \
   --service google.cloud.deploy.v1 \
-  --api-version clouddeploy.cnrm.cloud.google.com/v1alpha1
+  --api-version clouddeploy.cnrm.cloud.google.com/v1alpha1 \
+  --multiversion
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
