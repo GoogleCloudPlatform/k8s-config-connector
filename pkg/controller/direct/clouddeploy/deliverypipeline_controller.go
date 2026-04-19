@@ -133,7 +133,7 @@ func (a *DeliveryPipelineAdapter) Create(ctx context.Context, createOp *directba
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := DeliveryPipelineSpec_ToProto(mapCtx, &desired.Spec)
+	resource := DeliveryPipelineSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -154,7 +154,7 @@ func (a *DeliveryPipelineAdapter) Create(ctx context.Context, createOp *directba
 	log.V(2).Info("successfully created DeliveryPipeline", "name", a.id)
 
 	status := &krmv1beta1.DeliveryPipelineStatus{}
-	status.ObservedState = DeliveryPipelineObservedState_FromProto(mapCtx, created)
+	status.ObservedState = DeliveryPipelineObservedState_v1beta1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -168,7 +168,7 @@ func (a *DeliveryPipelineAdapter) Update(ctx context.Context, updateOp *directba
 	log.V(2).Info("updating DeliveryPipeline", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desiredPb := DeliveryPipelineSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	desiredPb := DeliveryPipelineSpec_v1beta1_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -209,7 +209,7 @@ func (a *DeliveryPipelineAdapter) Update(ctx context.Context, updateOp *directba
 	log.V(2).Info("successfully updated DeliveryPipeline", "name", a.id)
 
 	status := &krmv1beta1.DeliveryPipelineStatus{}
-	status.ObservedState = DeliveryPipelineObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = DeliveryPipelineObservedState_v1beta1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -225,7 +225,7 @@ func (a *DeliveryPipelineAdapter) Export(ctx context.Context) (*unstructured.Uns
 
 	obj := &krmv1beta1.CloudDeployDeliveryPipeline{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(DeliveryPipelineSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(DeliveryPipelineSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
