@@ -35,3 +35,13 @@ status:
     status: "True"
     type: Ready
   observedGeneration: 2
+  observedState:
+    managed:
+      authorizationAttemptInfo:
+      - domain: '*.${uniqueId}.com'
+        state: AUTHORIZED
+      - domain: test.${uniqueId}.com
+        state: AUTHORIZED
+      - domain: test2.${uniqueId}.com
+        state: AUTHORIZED
+      state: ACTIVE

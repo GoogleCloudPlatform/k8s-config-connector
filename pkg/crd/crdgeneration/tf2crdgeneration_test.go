@@ -434,3 +434,98 @@ func TestGetDescriptionForExternalRef(t *testing.T) {
 		})
 	}
 }
+
+func TestPopulateObservedField(t *testing.T) {
+	tests := []struct {
+		name                string
+		observedFieldPath   []string
+		sourceSchema        *apiextensions.JSONSchemaProps
+		observedFieldParent *apiextensions.JSONSchemaProps
+		expected            *apiextensions.JSONSchemaProps
+	}{
+		{
+			name:              "primitive field",
+			observedFieldPath: []string{"field_one"},
+			sourceSchema: &apiextensions.JSONSchemaProps{
+				Properties: map[string]apiextensions.JSONSchemaProps{
+					"fieldOne": {Type: "string"},
+				},
+			},
+			observedFieldParent: &apiextensions.JSONSchemaProps{
+				Properties: make(map[string]apiextensions.JSONSchemaProps),
+			},
+			expected: &apiextensions.JSONSchemaProps{
+				Properties: map[string]apiextensions.JSONSchemaProps{
+					"fieldOne": {Type: "string"},
+				},
+			},
+		},
+		{
+			name:              "nested object field",
+			observedFieldPath: []string{"object_field", "inner_field"},
+			sourceSchema: &apiextensions.JSONSchemaProps{
+				Properties: map[string]apiextensions.JSONSchemaProps{
+					"objectField": {
+						Type: "object",
+						Properties: map[string]apiextensions.JSONSchemaProps{
+							"innerField": {Type: "integer"},
+						},
+					},
+				},
+			},
+			observedFieldParent: &apiextensions.JSONSchemaProps{
+				Properties: make(map[string]apiextensions.JSONSchemaProps),
+			},
+			expected: &apiextensions.JSONSchemaProps{
+				Properties: map[string]apiextensions.JSONSchemaProps{
+					"objectField": {
+						Type: "object",
+						Properties: map[string]apiextensions.JSONSchemaProps{
+							"innerField": {Type: "integer"},
+						},
+					},
+				},
+			},
+		},
+		{
+			name:              "array field",
+			observedFieldPath: []string{"array_field"},
+			sourceSchema: &apiextensions.JSONSchemaProps{
+				Properties: map[string]apiextensions.JSONSchemaProps{
+					"arrayField": {
+						Type: "array",
+						Items: &apiextensions.JSONSchemaPropsOrArray{
+							Schema: &apiextensions.JSONSchemaProps{
+								Type: "string",
+							},
+						},
+					},
+				},
+			},
+			observedFieldParent: &apiextensions.JSONSchemaProps{
+				Properties: make(map[string]apiextensions.JSONSchemaProps),
+			},
+			expected: &apiextensions.JSONSchemaProps{
+				Properties: map[string]apiextensions.JSONSchemaProps{
+					"arrayField": {
+						Type: "array",
+						Items: &apiextensions.JSONSchemaPropsOrArray{
+							Schema: &apiextensions.JSONSchemaProps{
+								Type: "string",
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			populateObservedField(tc.observedFieldPath, tc.sourceSchema, tc.observedFieldParent)
+			if !test.Equals(t, tc.expected, tc.observedFieldParent) {
+				t.Errorf("expected %v to be equal to %v", tc.expected, tc.observedFieldParent)
+			}
+		})
+	}
+}
