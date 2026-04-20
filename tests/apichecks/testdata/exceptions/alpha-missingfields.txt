@@ -694,6 +694,44 @@
 [missing_field] crd=computebackendservicesignedurlkeys.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.keyValue.value" is not set in unstructured objects
 [missing_field] crd=computebackendservicesignedurlkeys.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.keyValue.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computebackendservicesignedurlkeys.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.aggregateReservation.inUseResources[].accelerator.acceleratorCount" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.aggregateReservation.inUseResources[].accelerator.acceleratorType" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.aggregateReservation.reservedResources[].accelerator.acceleratorCount" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.aggregateReservation.reservedResources[].accelerator.acceleratorType" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.aggregateReservation.vmFamily" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.aggregateReservation.workloadType" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoCreatedReservationsDeleteTime" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoCreatedReservationsDuration.nanos" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoCreatedReservationsDuration.seconds" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoDeleteAutoCreatedReservations" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.commitmentInfo.commitmentName" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.commitmentInfo.commitmentPlan" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.commitmentInfo.previousCommitmentTerms" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.deploymentType" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.enableEmergentMaintenance" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.namePrefix" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.planningStatus" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.reservationMode" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.reservationName" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.schedulingType" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.shareSettings.shareType" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.specificReservationRequired" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.specificSkuProperties.instanceProperties.guestAccelerators[].acceleratorCount" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.specificSkuProperties.instanceProperties.guestAccelerators[].acceleratorType" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.specificSkuProperties.instanceProperties.localSsds[].diskSizeGB" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.specificSkuProperties.instanceProperties.localSsds[].interface" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.specificSkuProperties.instanceProperties.locationHint" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.specificSkuProperties.instanceProperties.machineType" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.specificSkuProperties.instanceProperties.minCPUPlatform" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.specificSkuProperties.sourceInstanceTemplate" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.specificSkuProperties.totalCount" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeWindow.duration.nanos" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeWindow.duration.seconds" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeWindow.endTime" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeWindow.startTime" is not set in unstructured objects
 [missing_field] crd=computeglobalnetworkendpointgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.defaultPort" is not set in unstructured objects
 [missing_field] crd=computeglobalnetworkendpointgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computeglobalnetworkendpointgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkEndpointType" is not set in unstructured objects
