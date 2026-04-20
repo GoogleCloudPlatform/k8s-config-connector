@@ -123,6 +123,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeFirewallPolicyRule                       | False        | True        | False  | Direct     | True        |
 | compute.cnrm.cloud.google.com                 | ComputeFirewall                                 | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeForwardingRule                           | False        | True        | False  | Terraform  | True        |
+| compute.cnrm.cloud.google.com                 | ComputeFutureReservation                        | True         | False       | False  | Direct     | True        |
 | compute.cnrm.cloud.google.com                 | ComputeGlobalNetworkEndpointGroup               | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeGlobalNetworkEndpoint                    | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeHealthCheck                              | False        | True        | False  | Terraform  | False       |
