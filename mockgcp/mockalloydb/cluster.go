@@ -309,6 +309,8 @@ func (s *AlloyDBAdminV1) UpdateCluster(ctx context.Context, req *pb.UpdateCluste
 			obj.Labels = req.Cluster.GetLabels()
 		case "maintenanceUpdatePolicy":
 			obj.MaintenanceUpdatePolicy = req.Cluster.GetMaintenanceUpdatePolicy()
+		case "dataplexConfig":
+			obj.DataplexConfig = req.Cluster.GetDataplexConfig()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
 		}
