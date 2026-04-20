@@ -27,6 +27,24 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AcceleratorConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AcceleratorConfig) *krmcomputev1alpha1.AcceleratorConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.AcceleratorConfig{}
+	out.AcceleratorCount = in.AcceleratorCount
+	out.AcceleratorType = in.AcceleratorType
+	return out
+}
+func AcceleratorConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.AcceleratorConfig) *pb.AcceleratorConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AcceleratorConfig{}
+	out.AcceleratorCount = in.AcceleratorCount
+	out.AcceleratorType = in.AcceleratorType
+	return out
+}
 func AcceleratorConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AcceleratorConfig) *krm.AcceleratorConfig {
 	if in == nil {
 		return nil
@@ -43,6 +61,104 @@ func AcceleratorConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Accele
 	out := &pb.AcceleratorConfig{}
 	out.AcceleratorCount = in.AcceleratorCount
 	out.AcceleratorType = in.AcceleratorType
+	return out
+}
+func AllocationAggregateReservation_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationAggregateReservation) *krmcomputev1alpha1.AllocationAggregateReservation {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.AllocationAggregateReservation{}
+	out.InUseResources = direct.Slice_FromProto(mapCtx, in.InUseResources, AllocationAggregateReservationReservedResourceInfo_v1alpha1_FromProto)
+	out.ReservedResources = direct.Slice_FromProto(mapCtx, in.ReservedResources, AllocationAggregateReservationReservedResourceInfo_v1alpha1_FromProto)
+	out.VMFamily = in.VmFamily
+	out.WorkloadType = in.WorkloadType
+	return out
+}
+func AllocationAggregateReservation_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.AllocationAggregateReservation) *pb.AllocationAggregateReservation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationAggregateReservation{}
+	out.InUseResources = direct.Slice_ToProto(mapCtx, in.InUseResources, AllocationAggregateReservationReservedResourceInfo_v1alpha1_ToProto)
+	out.ReservedResources = direct.Slice_ToProto(mapCtx, in.ReservedResources, AllocationAggregateReservationReservedResourceInfo_v1alpha1_ToProto)
+	out.VmFamily = in.VMFamily
+	out.WorkloadType = in.WorkloadType
+	return out
+}
+func AllocationAggregateReservationReservedResourceInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationAggregateReservationReservedResourceInfo) *krmcomputev1alpha1.AllocationAggregateReservationReservedResourceInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.AllocationAggregateReservationReservedResourceInfo{}
+	out.Accelerator = AllocationAggregateReservationReservedResourceInfoAccelerator_v1alpha1_FromProto(mapCtx, in.GetAccelerator())
+	return out
+}
+func AllocationAggregateReservationReservedResourceInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.AllocationAggregateReservationReservedResourceInfo) *pb.AllocationAggregateReservationReservedResourceInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationAggregateReservationReservedResourceInfo{}
+	out.Accelerator = AllocationAggregateReservationReservedResourceInfoAccelerator_v1alpha1_ToProto(mapCtx, in.Accelerator)
+	return out
+}
+func AllocationAggregateReservationReservedResourceInfoAccelerator_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationAggregateReservationReservedResourceInfoAccelerator) *krmcomputev1alpha1.AllocationAggregateReservationReservedResourceInfoAccelerator {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.AllocationAggregateReservationReservedResourceInfoAccelerator{}
+	out.AcceleratorCount = in.AcceleratorCount
+	out.AcceleratorType = in.AcceleratorType
+	return out
+}
+func AllocationAggregateReservationReservedResourceInfoAccelerator_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.AllocationAggregateReservationReservedResourceInfoAccelerator) *pb.AllocationAggregateReservationReservedResourceInfoAccelerator {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationAggregateReservationReservedResourceInfoAccelerator{}
+	out.AcceleratorCount = in.AcceleratorCount
+	out.AcceleratorType = in.AcceleratorType
+	return out
+}
+func AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDisk_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk) *krmcomputev1alpha1.AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDisk {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDisk{}
+	out.DiskSizeGB = in.DiskSizeGb
+	out.Interface = in.Interface
+	return out
+}
+func AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDisk_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDisk) *pb.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk{}
+	out.DiskSizeGb = in.DiskSizeGB
+	out.Interface = in.Interface
+	return out
+}
+func AllocationSpecificSkuAllocationReservedInstanceProperties_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationSpecificSKUAllocationReservedInstanceProperties) *krmcomputev1alpha1.AllocationSpecificSkuAllocationReservedInstanceProperties {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.AllocationSpecificSkuAllocationReservedInstanceProperties{}
+	out.GuestAccelerators = direct.Slice_FromProto(mapCtx, in.GuestAccelerators, AcceleratorConfig_v1alpha1_FromProto)
+	out.LocalSsds = direct.Slice_FromProto(mapCtx, in.LocalSsds, AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDisk_v1alpha1_FromProto)
+	out.LocationHint = in.LocationHint
+	out.MachineType = in.MachineType
+	out.MinCPUPlatform = in.MinCpuPlatform
+	return out
+}
+func AllocationSpecificSkuAllocationReservedInstanceProperties_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.AllocationSpecificSkuAllocationReservedInstanceProperties) *pb.AllocationSpecificSKUAllocationReservedInstanceProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationSpecificSKUAllocationReservedInstanceProperties{}
+	out.GuestAccelerators = direct.Slice_ToProto(mapCtx, in.GuestAccelerators, AcceleratorConfig_v1alpha1_ToProto)
+	out.LocalSsds = direct.Slice_ToProto(mapCtx, in.LocalSsds, AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDisk_v1alpha1_ToProto)
+	out.LocationHint = in.LocationHint
+	out.MachineType = in.MachineType
+	out.MinCpuPlatform = in.MinCPUPlatform
 	return out
 }
 func ComputeNodeTemplateSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeTemplate) *krm.ComputeNodeTemplateSpec {
@@ -373,6 +489,24 @@ func ComputeSubnetworkStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.
 	// MISSING: SystemReservedInternalIPV6Ranges
 	return out
 }
+func Duration_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Duration) *krmcomputev1alpha1.Duration {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.Duration{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
+func Duration_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.Duration) *pb.Duration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Duration{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
 func Expr_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Expr) *krm.Expr {
 	if in == nil {
 		return nil
@@ -475,6 +609,76 @@ func ForwardingruleServiceDirectoryRegistrations_v1beta1_ToProto(mapCtx *direct.
 	out.Namespace = in.Namespace
 	out.Service = in.Service
 	// MISSING: ServiceDirectoryRegion
+	return out
+}
+func InterconnectApplicationAwareInterconnect_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectApplicationAwareInterconnect) *krmcomputev1alpha1.InterconnectApplicationAwareInterconnect {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectApplicationAwareInterconnect{}
+	out.BandwidthPercentagePolicy = InterconnectApplicationAwareInterconnectBandwidthPercentagePolicy_v1alpha1_FromProto(mapCtx, in.GetBandwidthPercentagePolicy())
+	out.ProfileDescription = in.ProfileDescription
+	out.ShapeAveragePercentages = direct.Slice_FromProto(mapCtx, in.ShapeAveragePercentages, InterconnectApplicationAwareInterconnectBandwidthPercentage_v1alpha1_FromProto)
+	out.StrictPriorityPolicy = InterconnectApplicationAwareInterconnectStrictPriorityPolicy_v1alpha1_FromProto(mapCtx, in.GetStrictPriorityPolicy())
+	return out
+}
+func InterconnectApplicationAwareInterconnect_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectApplicationAwareInterconnect) *pb.InterconnectApplicationAwareInterconnect {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectApplicationAwareInterconnect{}
+	out.BandwidthPercentagePolicy = InterconnectApplicationAwareInterconnectBandwidthPercentagePolicy_v1alpha1_ToProto(mapCtx, in.BandwidthPercentagePolicy)
+	out.ProfileDescription = in.ProfileDescription
+	out.ShapeAveragePercentages = direct.Slice_ToProto(mapCtx, in.ShapeAveragePercentages, InterconnectApplicationAwareInterconnectBandwidthPercentage_v1alpha1_ToProto)
+	out.StrictPriorityPolicy = InterconnectApplicationAwareInterconnectStrictPriorityPolicy_v1alpha1_ToProto(mapCtx, in.StrictPriorityPolicy)
+	return out
+}
+func InterconnectApplicationAwareInterconnectBandwidthPercentage_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectApplicationAwareInterconnectBandwidthPercentage) *krmcomputev1alpha1.InterconnectApplicationAwareInterconnectBandwidthPercentage {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectApplicationAwareInterconnectBandwidthPercentage{}
+	out.Percentage = in.Percentage
+	out.TrafficClass = in.TrafficClass
+	return out
+}
+func InterconnectApplicationAwareInterconnectBandwidthPercentage_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectApplicationAwareInterconnectBandwidthPercentage) *pb.InterconnectApplicationAwareInterconnectBandwidthPercentage {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectApplicationAwareInterconnectBandwidthPercentage{}
+	out.Percentage = in.Percentage
+	out.TrafficClass = in.TrafficClass
+	return out
+}
+func InterconnectApplicationAwareInterconnectBandwidthPercentagePolicy_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectApplicationAwareInterconnectBandwidthPercentagePolicy) *krmcomputev1alpha1.InterconnectApplicationAwareInterconnectBandwidthPercentagePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectApplicationAwareInterconnectBandwidthPercentagePolicy{}
+	out.BandwidthPercentages = direct.Slice_FromProto(mapCtx, in.BandwidthPercentages, InterconnectApplicationAwareInterconnectBandwidthPercentage_v1alpha1_FromProto)
+	return out
+}
+func InterconnectApplicationAwareInterconnectBandwidthPercentagePolicy_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectApplicationAwareInterconnectBandwidthPercentagePolicy) *pb.InterconnectApplicationAwareInterconnectBandwidthPercentagePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectApplicationAwareInterconnectBandwidthPercentagePolicy{}
+	out.BandwidthPercentages = direct.Slice_ToProto(mapCtx, in.BandwidthPercentages, InterconnectApplicationAwareInterconnectBandwidthPercentage_v1alpha1_ToProto)
+	return out
+}
+func InterconnectApplicationAwareInterconnectStrictPriorityPolicy_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectApplicationAwareInterconnectStrictPriorityPolicy) *krmcomputev1alpha1.InterconnectApplicationAwareInterconnectStrictPriorityPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectApplicationAwareInterconnectStrictPriorityPolicy{}
+	return out
+}
+func InterconnectApplicationAwareInterconnectStrictPriorityPolicy_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectApplicationAwareInterconnectStrictPriorityPolicy) *pb.InterconnectApplicationAwareInterconnectStrictPriorityPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectApplicationAwareInterconnectStrictPriorityPolicy{}
 	return out
 }
 func InterconnectCircuitInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectCircuitInfo) *krmcomputev1alpha1.InterconnectCircuitInfo {
@@ -1161,6 +1365,40 @@ func SecurityPolicyUserDefinedField_v1beta1_ToProto(mapCtx *direct.MapContext, i
 	out.Name = in.Name
 	out.Offset = in.Offset
 	out.Size = in.Size
+	return out
+}
+func ShareSettings_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettings) *krmcomputev1alpha1.ShareSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ShareSettings{}
+	// MISSING: ProjectMap
+	out.ShareType = in.ShareType
+	return out
+}
+func ShareSettings_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ShareSettings) *pb.ShareSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ShareSettings{}
+	// MISSING: ProjectMap
+	out.ShareType = in.ShareType
+	return out
+}
+func ShareSettingsProjectConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettingsProjectConfig) *krmcomputev1alpha1.ShareSettingsProjectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ShareSettingsProjectConfig{}
+	out.ProjectID = in.ProjectId
+	return out
+}
+func ShareSettingsProjectConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ShareSettingsProjectConfig) *pb.ShareSettingsProjectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ShareSettingsProjectConfig{}
+	out.ProjectId = in.ProjectID
 	return out
 }
 func SubnetworkLogConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SubnetworkLogConfig) *krm.SubnetworkLogConfig {

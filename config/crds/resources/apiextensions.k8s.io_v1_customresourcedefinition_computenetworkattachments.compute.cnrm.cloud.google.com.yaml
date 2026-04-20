@@ -304,8 +304,9 @@ spec:
                             producer instance network interface.
                           type: string
                         subnetworkCIDRRange:
-                          description: '[Output Only] The CIDR range of the subnet
-                            from which the IPv4 internal IP was allocated from.'
+                          description: Output only. [Output Only] The CIDR range of
+                            the subnet from which the IPv4 internal IP was allocated
+                            from.
                           type: string
                       type: object
                     type: array
