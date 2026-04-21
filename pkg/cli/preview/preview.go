@@ -50,8 +50,6 @@ type PreviewInstance struct {
 
 	// Namespace is the namespace of the cluster to preview
 	// If empty, all namespaces are previewed
-	// Namespace is the namespace of the cluster to preview
-	// If empty, all namespaces are previewed
 	Namespace string
 
 	ObjectTransformers []ObjectTransformer
@@ -90,6 +88,9 @@ type PreviewInstanceOptions struct {
 // NewPreviewInstance creates a new PreviewInstance.
 func NewPreviewInstance(recorder *Recorder, options PreviewInstanceOptions) (*PreviewInstance, error) {
 	upstreamRESTConfig := options.UpstreamRESTConfig
+	if upstreamRESTConfig == nil {
+		return nil, fmt.Errorf("UpstreamRESTConfig is required")
+	}
 
 	// Create a separate read-only config instead of modifying the shared one
 	readOnlyRESTConfig := rest.CopyConfig(upstreamRESTConfig)
@@ -253,6 +254,8 @@ func (t *readOnlyTransport) RoundTrip(req *http.Request) (*http.Response, error)
 		return &http.Response{
 			StatusCode: http.StatusForbidden,
 			Body:       io.NopCloser(strings.NewReader("Writes are not allowed in preview mode")),
+			Header:     make(http.Header),
+			Request:    req,
 		}, nil
 	}
 	return t.delegate.RoundTrip(req)
