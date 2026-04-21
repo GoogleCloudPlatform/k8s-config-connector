@@ -251,11 +251,17 @@ type readOnlyTransport struct {
 
 func (t *readOnlyTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	if req.Method != "GET" && req.Method != "HEAD" && req.Method != "OPTIONS" {
+		body := "Writes are not allowed in preview mode"
 		return &http.Response{
-			StatusCode: http.StatusForbidden,
-			Body:       io.NopCloser(strings.NewReader("Writes are not allowed in preview mode")),
-			Header:     make(http.Header),
-			Request:    req,
+			Status:        "403 Forbidden",
+			StatusCode:    http.StatusForbidden,
+			Proto:         "HTTP/1.1",
+			ProtoMajor:    1,
+			ProtoMinor:    1,
+			Body:          io.NopCloser(strings.NewReader(body)),
+			ContentLength: int64(len(body)),
+			Header:        make(http.Header),
+			Request:       req,
 		}, nil
 	}
 	return t.delegate.RoundTrip(req)
