@@ -17,8 +17,10 @@ package preview
 import (
 	"context"
 	"fmt"
+	"io"
 	"net/http"
 	"slices"
+	"strings"
 	"time"
 
 	"golang.org/x/oauth2"
@@ -46,8 +48,6 @@ type PreviewInstance struct {
 	hookKube *interceptingKubeClient
 	recorder *Recorder
 
-	// Namespace is the namespace of the cluster to preview
-	// If empty, all namespaces are previewed
 	// Namespace is the namespace of the cluster to preview
 	// If empty, all namespaces are previewed
 	Namespace string
@@ -88,13 +88,29 @@ type PreviewInstanceOptions struct {
 // NewPreviewInstance creates a new PreviewInstance.
 func NewPreviewInstance(recorder *Recorder, options PreviewInstanceOptions) (*PreviewInstance, error) {
 	upstreamRESTConfig := options.UpstreamRESTConfig
+	if upstreamRESTConfig == nil {
+		return nil, fmt.Errorf("UpstreamRESTConfig is required")
+	}
+
+	// Create a separate read-only config instead of modifying the shared one
+	readOnlyRESTConfig := rest.CopyConfig(upstreamRESTConfig)
+
+	// Make readOnlyRESTConfig read-only by wrapping transport
+	originalWrap := readOnlyRESTConfig.WrapTransport
+	readOnlyRESTConfig.WrapTransport = func(rt http.RoundTripper) http.RoundTripper {
+		if originalWrap != nil {
+			rt = originalWrap(rt)
+		}
+		return &readOnlyTransport{delegate: rt}
+	}
+
 	authorization := options.UpstreamGCPAuthorization
 	upstreamGCPHTTPClient := options.UpstreamGCPHTTPClient
 	if upstreamGCPHTTPClient == nil {
 		upstreamGCPHTTPClient = http.DefaultClient
 	}
 
-	hookKube, err := newInterceptingKubeClient(recorder, upstreamRESTConfig, options.ObjectTransformers)
+	hookKube, err := newInterceptingKubeClient(recorder, readOnlyRESTConfig, options.ObjectTransformers)
 	if err != nil {
 		return nil, err
 	}
@@ -176,15 +192,15 @@ func (i *PreviewInstance) Start(ctx context.Context) error {
 
 	// turn off caching (otherwise we get partial object metadata)
 	nocache.OnlyCacheCCAndCCC(&kccConfig.ManagerOptions)
-	// Use an empty restConfig as a failsafe against requests "leaking" to real kube-apiserver
-	restConfig := &rest.Config{}
 
 	// Hook GCP
 	kccConfig.GRPCUnaryClientInterceptor = grpcUnaryInterceptor
 	kccConfig.HTTPClient = gcpHTTPClient
 	kccConfig.GCPAccessToken = "dummytoken" // Use a fake token as a failsafe against requests "leaking" to real GCP
 
-	mgr, err := kccmanager.New(ctx, restConfig, kccConfig)
+	klog.Infof("Using upstream REST config host: %s", i.hookKube.upstreamRestConfig.Host)
+
+	mgr, err := kccmanager.New(ctx, i.hookKube.upstreamRestConfig, kccConfig)
 	if err != nil {
 		return fmt.Errorf("creating controllers: %w", err)
 	}
@@ -227,4 +243,26 @@ func (i *PreviewInstance) Start(ctx context.Context) error {
 	}
 
 	return nil
+}
+
+type readOnlyTransport struct {
+	delegate http.RoundTripper
+}
+
+func (t *readOnlyTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	if req.Method != "GET" && req.Method != "HEAD" && req.Method != "OPTIONS" {
+		body := "Writes are not allowed in preview mode"
+		return &http.Response{
+			Status:        "403 Forbidden",
+			StatusCode:    http.StatusForbidden,
+			Proto:         "HTTP/1.1",
+			ProtoMajor:    1,
+			ProtoMinor:    1,
+			Body:          io.NopCloser(strings.NewReader(body)),
+			ContentLength: int64(len(body)),
+			Header:        make(http.Header),
+			Request:       req,
+		}, nil
+	}
+	return t.delegate.RoundTrip(req)
 }

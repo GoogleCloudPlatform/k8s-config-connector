@@ -83,12 +83,14 @@ func (s *RegistrationServiceV1) UpdateNamespace(ctx context.Context, req *pb.Upd
 		return nil, err
 	}
 
+	// TODO: UpdateMask
+	proto.Merge(obj, req.GetNamespace())
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	return obj, nil
-
 }
 
 func (s *RegistrationServiceV1) DeleteNamespace(ctx context.Context, req *pb.DeleteNamespaceRequest) (*empty.Empty, error) {
