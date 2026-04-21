@@ -77,12 +77,14 @@ func (s *RegistrationServiceV1) UpdateService(ctx context.Context, req *pb.Updat
 		return nil, err
 	}
 
+	// TODO: UpdateMask
+	proto.Merge(obj, req.GetService())
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	return obj, nil
-
 }
 
 func (s *RegistrationServiceV1) DeleteService(ctx context.Context, req *pb.DeleteServiceRequest) (*empty.Empty, error) {
