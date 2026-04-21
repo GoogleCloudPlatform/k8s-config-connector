@@ -113,7 +113,7 @@ func TestE2EScript(t *testing.T) {
 					eventsBefore = h.Events.HTTPEvents
 				}
 
-				// tracks the all applied objects (in order, to avoid deletion dependency-ordering issues)
+				// tracks all applied objects (in order, to avoid deletion dependency-ordering issues)
 				appliedObjects := []*unstructured.Unstructured{}
 
 				for i, obj := range script.Objects {
@@ -148,18 +148,29 @@ func TestE2EScript(t *testing.T) {
 								h.Fatalf("running test command: %v", err)
 							}
 						} else {
-							h.T.Logf("skipping MockGCPBackdoor command, because not running against mockgcp")
+							t.Logf("skipping MockGCPBackdoor command, because not running against mockgcp")
 						}
 
 						captureHTTPLogEvents(false)
 						continue
 					}
 
-					// SystemRun let's KCC run for a while to observe/ gather HTTP logs
+					// SystemRun lets KCC run for a while to observe/gather HTTP logs
 					if obj.GroupVersionKind().Kind == "SystemRun" {
+						var waitTimeout time.Duration
+						if d, ok, _ := unstructured.NestedInt64(obj.Object, "duration"); ok {
+							waitTimeout = time.Duration(d) * time.Second
+						} else if d, ok, _ := unstructured.NestedFloat64(obj.Object, "duration"); ok {
+							waitTimeout = time.Duration(d * float64(time.Second))
+						}
+						if durationString, ok, _ := unstructured.NestedString(obj.Object, "duration"); ok {
+							d, err := time.ParseDuration(durationString)
+							if err != nil {
+								h.Fatalf("failed to parse duration %q: %v", durationString, err)
+							}
+							waitTimeout = d
+						}
 						if h.MockGCP != nil {
-							d, _, _ := unstructured.NestedInt64(obj.Object, "duration")
-							waitTimeout := time.Duration(d) * time.Second
 							timeoutChan := time.After(waitTimeout)
 							ticker := time.NewTicker(30 * time.Second)
 
@@ -167,19 +178,21 @@ func TestE2EScript(t *testing.T) {
 								stopWaiting := false
 								select {
 								case <-timeoutChan:
-									t.Logf("finished waiting for http log collections")
+									t.Logf("finished waiting for http log collection")
 									stopWaiting = true
 									break
 								case <-ticker.C:
-									t.Logf("waiting for http log collections")
+									t.Logf("waiting for http log collection")
 								}
 								if stopWaiting {
 									break
 								}
 							}
+							ticker.Stop()
 
 						} else {
-							h.T.Logf("skipping MockGCPBackdoor command, because not running against mockgcp")
+							t.Logf("sleeping for %v for SystemRun", waitTimeout)
+							time.Sleep(waitTimeout)
 						}
 
 						captureHTTPLogEvents(true)
@@ -599,6 +612,7 @@ func readObject(h *create.Harness, gvk schema.GroupVersionKind, namespace, name 
 // It does this by waiting for the resourceVersion to change twice: once from the user's patch,
 // and a second time from the controller's status update during reconciliation.
 func waitForReconciliationAfterPatch(h *create.Harness, obj *unstructured.Unstructured, prePatchRV string) {
+	t := h.T
 	key := types.NamespacedName{Namespace: obj.GetNamespace(), Name: obj.GetName()}
 
 	// First, wait for the resourceVersion to change, indicating our patch has landed.
@@ -630,7 +644,7 @@ func waitForReconciliationAfterPatch(h *create.Harness, obj *unstructured.Unstru
 		}
 		return current.GetResourceVersion() != rvAfterPatch, nil
 	}); err != nil {
-		h.T.Logf("warning: timed out waiting for controller to reconcile patch; test may be flaky: %v", err)
+		t.Logf("warning: timed out waiting for controller to reconcile patch; test may be flaky: %v", err)
 	}
 }
 

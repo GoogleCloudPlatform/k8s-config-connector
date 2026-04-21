@@ -85,6 +85,10 @@ type Target struct {
 	// +optional
 	GoogleAPIsBundle *string `json:"googleAPIsBundle,omitempty"`
 
+	// The service attachment for a Memorystore for Valkey instance.
+	// +optional
+	MemorystoreInstanceServiceAttachmentRef *refs.MemorystoreInstanceServiceAttachmentRef `json:"memorystoreInstanceServiceAttachmentRef,omitempty"`
+
 	// +optional
 	ServiceAttachmentRef *refs.ComputeServiceAttachmentRef `json:"serviceAttachmentRef,omitempty"`
 

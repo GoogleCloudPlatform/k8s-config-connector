@@ -36,13 +36,10 @@ spec:
   description: "A basic organization firewall policy"
 
 ---
-# pausing the test execution, ensuring the controller's cache has time to sync with the API server before the child
+# Pausing the test execution, ensuring the controller's cache has time to sync with the API server before the child
 # resource is created.
-TEST: SLEEP
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeFirewallPolicyRule
-metadata:
-  name: firewallpolicyrule-${uniqueId}
+kind: SystemRun
+duration: 2
 
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1

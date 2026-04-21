@@ -94,12 +94,27 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.Certificate",
     "description": "sample managed certificate for kcc",
     "managed": {
+      "authorizationAttemptInfo": [
+        {
+          "domain": "*.${uniqueId}.com",
+          "state": "AUTHORIZED"
+        },
+        {
+          "domain": "test.${uniqueId}.com",
+          "state": "AUTHORIZED"
+        },
+        {
+          "domain": "test2.${uniqueId}.com",
+          "state": "AUTHORIZED"
+        }
+      ],
       "domains": [
         "*.${uniqueId}.com",
         "test.${uniqueId}.com",
         "test2.${uniqueId}.com"
       ],
-      "issuanceConfig": "projects/${projectId}/locations/global/certificateIssuanceConfigs/my-test-ic"
+      "issuanceConfig": "projects/${projectId}/locations/global/certificateIssuanceConfigs/my-test-ic",
+      "state": "ACTIVE"
     },
     "name": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}",
     "scope": "ALL_REGIONS"
@@ -129,12 +144,27 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "managed": {
+    "authorizationAttemptInfo": [
+      {
+        "domain": "*.${uniqueId}.com",
+        "state": "AUTHORIZED"
+      },
+      {
+        "domain": "test.${uniqueId}.com",
+        "state": "AUTHORIZED"
+      },
+      {
+        "domain": "test2.${uniqueId}.com",
+        "state": "AUTHORIZED"
+      }
+    ],
     "domains": [
       "*.${uniqueId}.com",
       "test.${uniqueId}.com",
       "test2.${uniqueId}.com"
     ],
-    "issuanceConfig": "projects/${projectId}/locations/global/certificateIssuanceConfigs/my-test-ic"
+    "issuanceConfig": "projects/${projectId}/locations/global/certificateIssuanceConfigs/my-test-ic",
+    "state": "ACTIVE"
   },
   "name": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}",
   "scope": "ALL_REGIONS"

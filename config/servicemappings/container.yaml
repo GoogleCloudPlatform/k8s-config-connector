@@ -170,6 +170,15 @@ spec:
             kind: ComputeNodeGroup
             version: v1beta1
             group: compute.cnrm.cloud.google.com
+        - tfField: network_config.subnetwork
+          description: |-
+            Immutable. The subnetwork path for the node pool. Format: projects/{project}/regions/{region}/subnetworks/{subnetwork}. If not set, the provider/API will choose the subnetwork (e.g. based on IP utilization) and report it here.
+          key: subnetworkRef
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
         - tfField: network_config.additional_node_network_configs.network
           description: Immutable. Name of the VPC where the additional
             interface belongs.

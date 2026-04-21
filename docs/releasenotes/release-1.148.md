@@ -1,43 +1,30 @@
 # Release 1.148.0
 
-*   Special shout-outs to acpana, anhdle-sso, app/dependabot, barney-s, cheftako,
-    codebot-robot, dhavalbhensdadiya-crest, eugenenuke, gemmahou, gurusai-voleti,
-    justinsb, katrielt, maqiuyujoyce, suwandim, and xiaoweim for their
-    contributions to this release.
+*   Special shout-outs to acpana, anhdle-sso, barney-s, cheftako, dhavalbhensdadiya-crest, eugenenuke, gemmahou, gurusai-voleti, justinsb, katrielt, maqiuyujoyce, suwandim, and xiaoweim for their contributions to this release.
 
 ## New Alpha Resources (Direct Reconciler):
 
 *   [`ParameterManagerParameterVersion`](https://cloud.google.com/config-connector/docs/reference/resource-docs/parametermanager/parametermanagerparameterversion)
 
-    *   Manage [parameter versions](https://cloud.google.com/secret-manager/docs/parametermanager/manage-parameters#parameter-versions) which are the immutable versions of a parameter.
-
-## New Fields:
-
-*   [`ComputeTargetHTTPSProxy`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computetargethttpsproxy)
-    *   Added `status.externalRef` field.
-    *   Added `status.observedState.fingerprint` field.
-
-*   [`ComputeNodeTemplate`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computenodetemplate)
-    *   Added `status.externalRef` field.
-
-*   [`DataprocAutoscalingPolicy`](https://cloud.google.com/config-connector/docs/reference/resource-docs/dataproc/dataprocautoscalingpolicy)
-    *   Added `status.externalRef` field.
+    *   Manage [Parameter Manager parameter versions](https://cloud.google.com/secret-manager/docs/parameter-manager) which allows you to manage regional parameters.
 
 ## Bug Fixes:
 
-*   [SQLInstance] Fixed `PointersMatch` issue to ensure correct comparison of pointer fields (#7200)
-*   [SQLInstance] Fixed `DataCacheConfig` diff when `enabled=false` (#7145)
-*   [TagKey/TagValue] Improved handling of `ALREADY_EXISTS` errors in controllers (#6943)
-*   [CloudBuildTrigger] Fixed fuzz test failure (#7082)
-*   [RunService] Fixed typo in samples and test fixtures (#6693)
+*   [SQLInstance](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7145) Fixed an issue where `settings.dataCacheConfig` was incorrectly detected as different when `dataCacheEnabled` was `false`.
+*   [SQLInstance](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7200) Updated matching functions to treat nil values in KRM as equivalent to empty or default objects in GCP, preventing unnecessary re-reconciliation loops.
+*   [TagKey/TagValue](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/6943) Handle `ALREADY_EXISTS` error in TagKey and TagValue controllers by acquiring the existing resource.
+*   [BigQueryAnalyticsHubDataExchange](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/6774) Added structured reporting diff to improve visibility into resource changes and fixed reconciliation logic errors.
+*   [CloudBuildTrigger](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7115) Restored missing descriptions in the CRD.
+*   [RunService](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/6693) Fixed a typo in environment variable values in samples and test fixtures.
 
-## Other Improvements:
+## New features:
 
-*   [Migration] Added static metadata file and viewer for tracking migration to direct reconcilers (#7255).
-*   [Syncer] Added syncer integration for resource synchronization (#6919).
-*   [Documentation] Added documentation for controller configuration (#6673)
-*   [Documentation] Added documentation for `config-connector` CLI and `preview` command (#7131)
-*   [Documentation] Added documentation for enabling VerticalPodAutoscaler in Config Connector (#6671)
-*   [CRD] Restored missing descriptions in `CloudBuildTrigger` CRD (#7115)
-*   [CRD] Improved CRD equivalence checks to allow specific integer type changes (#7012) and restrict added status fields (#7130).
-*   [CLI] Introduced `skip-name-validation` flag and consolidated tests (#7075).
+*   [MultiClusterLeaseSpec](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/6919) now supports integration with a syncer for KRM objects. This will help KCC take ownership of resources with service generated IDs.
+*   [kompanion](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7202) Added a Model Context Protocol (MCP) server to the `kompanion` tool to enable AI IDEs and assistants to interact with KCC resources.
+*   [Config Connector controllers](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7075) Added a `--skip-name-validation` flag to bypass duplicate controller name checks during registration, facilitating integration tests and multi-manager scenarios.
+
+## Documentation:
+
+*   Added a [comprehensive guide](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/docs/features/controller-configuration.md) for controller configuration, detailing Direct, Terraform, and DCL controllers, including precedence rules and overrides.
+*   Added [documentation](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/docs/features/containerresource.md) for enabling VerticalPodAutoscaler (VPA) for Config Connector pods using `ControllerResource` and `NamespacedControllerResource`.
+*   Added [documentation](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/docs/cli/README.md) for the `config-connector` CLI and specifically for the `preview` command.

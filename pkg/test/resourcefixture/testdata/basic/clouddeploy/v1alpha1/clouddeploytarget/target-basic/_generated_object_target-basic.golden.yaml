@@ -1,0 +1,33 @@
+apiVersion: clouddeploy.cnrm.cloud.google.com/v1alpha1
+kind: CloudDeployTarget
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: clouddeploytarget-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Updated Basic Cloud Run Target
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  run:
+    location: projects/${projectId}/locations/us-central1
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/targets/clouddeploytarget-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    etag: abcdef123456
+    targetID: clouddeploytarget-${uniqueId}
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"

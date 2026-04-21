@@ -476,6 +476,24 @@ spec:
                 properties:
                   googleAPIsBundle:
                     type: string
+                  memorystoreInstanceServiceAttachmentRef:
+                    description: The service attachment for a Memorystore for Valkey
+                      instance.
+                    properties:
+                      memorystoreInstanceName:
+                        description: The name of a MemorystoreInstance resource.
+                        type: string
+                      memorystoreInstanceNamespace:
+                        description: The namespace of a MemorystoreInstance resource.
+                        type: string
+                      pscAttachmentDetailsIndex:
+                        description: The index of the PSC attachment details.
+                        type: integer
+                      serviceAttachmentExternal:
+                        description: A reference to a ServiceAttachment managed by
+                          a MemorystoreInstance resource.
+                        type: string
+                    type: object
                   serviceAttachmentRef:
                     oneOf:
                     - not:

@@ -60,18 +60,18 @@ func (s *InstancesV1) Insert(ctx context.Context, req *pb.InsertInstanceRequest)
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetInstanceResource()).(*pb.Instance)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#instance")
-	obj.Zone = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s", name.Project.ID, name.Zone)))
+	obj.Zone = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s", name.Project.ID, name.Zone)))
 	obj.Status = PtrTo("RUNNING")
 	if obj.LabelFingerprint == nil {
 		obj.LabelFingerprint = PtrTo(computeFingerprint(obj))
 	}
 	// if obj.MachineType == nil {
 	// 	machineType := "pd-standard"
-	// 	obj.MachineType = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s/machineTypes/%s", name.Project.ID, name.Zone, machineType)))
+	// 	obj.MachineType = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s/machineTypes/%s", name.Project.ID, name.Zone, machineType)))
 	// }
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

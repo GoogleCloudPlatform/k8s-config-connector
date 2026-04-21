@@ -20,13 +20,21 @@ import (
 	"flag"
 	"fmt"
 	"go/format"
+	"io/fs"
 	"os"
 	"path/filepath"
+	"regexp"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
+
+type IAMResource struct {
+	Service  string
+	Resource string
+}
 
 func main() {
 	outputDir := ""
@@ -44,6 +52,8 @@ func main() {
 		fmt.Fprintf(os.Stderr, "error loading CRDs: %v\n", err)
 		os.Exit(1)
 	}
+
+	iamResources := findIAMResources()
 
 	out := `// Copyright 2025 Google LLC
 //
@@ -66,8 +76,9 @@ package supportedgvks
 import "k8s.io/apimachinery/pkg/runtime/schema"
 
 type legacyGVKData struct {
-	Terraform bool
-	DCL       bool
+	Terraform  bool
+	DCL        bool
+	SupportsIAM bool
 }
 
 var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{`
@@ -87,16 +98,19 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{`
 				continue // Skip direct GVKs
 			}
 
+			supportsIAM := checkIAMSupport(gvk, iamResources)
+
 			gvkEntry := `
 	{
 		Group:   "%s",
 		Version: "%s",
 		Kind:    "%s",
 	}: {
-		Terraform: %v,
-		DCL:       %v,
+		Terraform:  %v,
+		DCL:        %v,
+		SupportsIAM: %v,
 	},`
-			out += fmt.Sprintf(gvkEntry, gvk.Group, gvk.Version, gvk.Kind, terraform, dcl)
+			out += fmt.Sprintf(gvkEntry, gvk.Group, gvk.Version, gvk.Kind, terraform, dcl, supportsIAM)
 		}
 	}
 
@@ -114,4 +128,97 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{`
 		fmt.Fprintf(os.Stderr, "Error writing output file: %s\n", err)
 		os.Exit(1)
 	}
+}
+
+func findIAMResources() []IAMResource {
+	var iamResources []IAMResource
+	baseDir := ".build/third_party/googleapis"
+
+	if _, err := os.Stat(baseDir); os.IsNotExist(err) {
+		fmt.Fprintf(os.Stderr, "Warning: %s does not exist, IAM support detection will be skipped\n", baseDir)
+		return nil
+	}
+
+	pathRegex := regexp.MustCompile(`['"](?P<path>/[^'"]+)[:/](get|set)IamPolicy['"]`)
+
+	if err := filepath.WalkDir(baseDir, func(path string, d fs.DirEntry, err error) error {
+		if err != nil || d.IsDir() || (!strings.HasSuffix(path, ".proto") && !strings.HasSuffix(path, ".yaml")) {
+			return nil
+		}
+
+		content, _ := os.ReadFile(path)
+		matches := pathRegex.FindAllStringSubmatch(string(content), -1)
+		for _, m := range matches {
+			fullPath := m[1]
+			resName := ""
+			if strings.Contains(fullPath, "{resource=") {
+				inner := strings.Split(fullPath, "{resource=")[1]
+				inner = strings.Split(inner, "}")[0]
+				inner = strings.TrimSuffix(inner, "/*")
+				parts := strings.Split(inner, "/")
+				resName = parts[len(parts)-1]
+			} else if strings.Contains(fullPath, "/{resource}") {
+				parts := strings.Split(fullPath, "/{resource}")[0]
+				partsList := strings.Split(parts, "/")
+				resName = partsList[len(partsList)-1]
+			} else {
+				parts := strings.Split(fullPath, "/")
+				for i := len(parts) - 1; i >= 0; i-- {
+					p := parts[i]
+					if p == "" || p == "*" || strings.Contains(p, "{") {
+						continue
+					}
+					resName = p
+					break
+				}
+			}
+
+			if resName != "" {
+				service := ""
+				pathParts := strings.Split(path, string(os.PathSeparator))
+				for i := len(pathParts) - 1; i >= 0; i-- {
+					p := pathParts[i]
+					if p == "google" || p == "cloud" || p == ".build" || p == "third_party" || p == "googleapis" {
+						continue
+					}
+					if strings.HasPrefix(p, "v") && len(p) > 1 && (p[1] >= '0' && p[1] <= '9') {
+						continue
+					}
+					service = p
+					break
+				}
+				iamResources = append(iamResources, IAMResource{
+					Service:  service,
+					Resource: resName,
+				})
+			}
+		}
+		return nil
+	}); err != nil {
+		fmt.Fprintf(os.Stderr, "Warning: error walking %s: %v\n", baseDir, err)
+	}
+	return iamResources
+}
+
+func checkIAMSupport(gvk schema.GroupVersionKind, iamResources []IAMResource) bool {
+	kindLower := strings.ToLower(gvk.Kind)
+	groupNorm := strings.ReplaceAll(strings.ToLower(gvk.Group), "_", "")
+	groupNorm = strings.Split(groupNorm, ".")[0]
+
+	for _, item := range iamResources {
+		resLower := strings.ToLower(item.Resource)
+		resSingular := strings.TrimSuffix(resLower, "s")
+
+		serviceNorm := strings.ReplaceAll(strings.ToLower(item.Service), "_", "")
+		serviceNorm = strings.TrimSuffix(serviceNorm, ".proto")
+		serviceNorm = strings.TrimSuffix(serviceNorm, ".yaml")
+
+		if strings.Contains(serviceNorm, groupNorm) || strings.Contains(groupNorm, serviceNorm) {
+			if kindLower == resLower || kindLower == resSingular ||
+				strings.HasSuffix(kindLower, resLower) || strings.HasSuffix(kindLower, resSingular) {
+				return true
+			}
+		}
+	}
+	return false
 }

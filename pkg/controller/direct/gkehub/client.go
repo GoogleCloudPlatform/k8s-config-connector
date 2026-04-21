@@ -35,6 +35,7 @@ func newGCPClient(config *config.ControllerConfig) (*gcpClient, error) {
 
 type gkeHubClient struct {
 	featureClient   *featureapi.ProjectsLocationsFeaturesService
+	scopeClient     *featureapi.ProjectsLocationsScopesService
 	operationClient *featureapi.ProjectsLocationsOperationsService
 }
 
@@ -49,6 +50,7 @@ func (m *gcpClient) newGkeHubClient(ctx context.Context) (*gkeHubClient, error) 
 	}
 	return &gkeHubClient{
 		featureClient:   featureapi.NewProjectsLocationsFeaturesService(service),
+		scopeClient:     featureapi.NewProjectsLocationsScopesService(service),
 		operationClient: featureapi.NewProjectsLocationsOperationsService(service),
 	}, nil
 }

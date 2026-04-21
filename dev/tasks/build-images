@@ -29,6 +29,8 @@ if [[ -z "${IMAGE_TAG:-}" ]]; then
     IMAGE_TAG="${EXACT_TAG}"
     # If there is a github/ prefix (as there is in our internal mirror), remove it
     IMAGE_TAG=${IMAGE_TAG#github/}
+    # Remove the prefixed "v" if it exists
+    IMAGE_TAG=${IMAGE_TAG#v}
   else
     IMAGE_TAG=$(git rev-parse --short=7 HEAD)
   fi

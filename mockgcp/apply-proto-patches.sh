@@ -98,6 +98,8 @@ EOF
 
 # Container/GKE patches
 
+sed -i '/message NodeNetworkConfig {/,/}/ s/string subnetwork = 19 \[(google.api.field_behavior) = OUTPUT_ONLY\];/string subnetwork = 19;/' ${REPO_ROOT}/mockgcp/third_party/googleapis/google/container/v1beta1/cluster_service.proto
+
 go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/container/v1beta1/cluster_service.proto --message DNSEndpointConfig --mode append <<EOF
 
   // Controls whether the k8s token auth is allowed via DNS.

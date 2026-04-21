@@ -8,7 +8,7 @@ require (
 	github.com/GoogleCloudPlatform/kubectl-ai/gollm v0.0.0-20260325022250-08cf256aa2f5
 	github.com/fatih/color v1.18.0
 	github.com/gdamore/tcell/v2 v2.7.1
-	github.com/go-git/go-git/v5 v5.17.1
+	github.com/go-git/go-git/v5 v5.18.0
 	github.com/google/go-cmp v0.7.0
 	github.com/rivo/tview v0.0.0-20241227133733-17b7edb88c57
 	github.com/spf13/cobra v1.9.1

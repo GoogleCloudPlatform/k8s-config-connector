@@ -2,7 +2,9 @@ approvers:
   - acpana
   - barney-s
   - cheftako
+  - fedebongio
   - justinsb
+  - ldanielmadariaga
   - maqiuyujoyce
   - xiaoweim
 reviewers:
@@ -10,6 +12,7 @@ reviewers:
   - anhdle-sso
   - barney-s
   - cheftako
+  - fedebongio
   - gemmahou
   - justinsb
   - ldanielmadariaga

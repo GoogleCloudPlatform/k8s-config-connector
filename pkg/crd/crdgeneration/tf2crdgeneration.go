@@ -554,16 +554,9 @@ func populateObservedField(observedFieldPath []string, sourceSchema *apiextensio
 	}
 
 	subSchema := sourceSchema.Properties[field]
-	switch subSchema.Type {
-	case "array":
-		// TODO(b/312581569): Support the use case when the observed field is an array.
-		panic(fmt.Errorf("observed fields of an array is not supported"))
-	case "object":
-		// TODO(b/312581569): Support the use case when the observed field is an object.
-		panic(fmt.Errorf("observed fields of an object is not supported"))
-	default:
-		observedFieldParent.Properties[field] = *subSchema.DeepCopy()
-	}
+	// TODO(b/312581569): Support the use case when the observed field is an array or object.
+	// For now, we perform a DeepCopy but this may need refinement for complex types.
+	observedFieldParent.Properties[field] = *subSchema.DeepCopy()
 
 	return *observedFieldParent
 }

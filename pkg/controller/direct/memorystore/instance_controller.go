@@ -17,14 +17,15 @@ package memorystore
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/memorystore/apiv1"
@@ -36,7 +37,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -79,8 +79,8 @@ func (m *modelInstance) AdapterForObject(ctx context.Context, op *directbase.Ada
 		return nil, err
 	}
 
-	if err := resolveReferences(ctx, reader, obj); err != nil {
-		return nil, err
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	// Get memorystore GCP client
@@ -88,43 +88,30 @@ func (m *modelInstance) AdapterForObject(ctx context.Context, op *directbase.Ada
 	if err != nil {
 		return nil, err
 	}
+
+	mapCtx := &direct.MapContext{}
+	desired := MemorystoreInstanceSpec_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	// Mask out some fields in the persistenceConfig, to accommodate KRM "discriminated union" semantics
+	// https://github.com/kubernetes/enhancements/blob/master/keps/sig-api-machinery/1027-api-unions/README.md
+	switch desired.GetPersistenceConfig().GetMode() {
+	case memorystorepb.PersistenceConfig_DISABLED:
+		desired.PersistenceConfig.AofConfig = nil
+		desired.PersistenceConfig.RdbConfig = nil
+	case memorystorepb.PersistenceConfig_RDB:
+		desired.PersistenceConfig.AofConfig = nil
+	case memorystorepb.PersistenceConfig_AOF:
+		desired.PersistenceConfig.RdbConfig = nil
+	}
+
 	return &InstanceAdapter{
 		id:        id,
 		gcpClient: gcpClient,
-		desired:   obj,
+		desired:   desired,
 	}, nil
-}
-
-func resolveReferences(ctx context.Context, reader client.Reader, obj *krm.MemorystoreInstance) error {
-	for _, endpoint := range obj.Spec.Endpoints {
-		for _, connection := range endpoint.Connections {
-			if connection.PscAutoConnection != nil {
-				autoConnection := connection.PscAutoConnection
-				if autoConnection.NetworkRef != nil {
-					if err := autoConnection.NetworkRef.Normalize(ctx, reader, obj.Namespace); err != nil {
-						return err
-					}
-				}
-				if autoConnection.ProjectRef != nil {
-					if err := autoConnection.ProjectRef.Normalize(ctx, reader, obj.Namespace); err != nil {
-						return err
-					}
-				}
-			}
-			// if connection.PscConnection != nil {
-			// 	userConnection := connection.PscConnection
-			// 	if userConnection.NetworkRef != nil {
-			// 		if err := userConnection.NetworkRef.Normalize(ctx, reader, obj.Namespace); err != nil {
-			// 			return err
-			// 		}
-			// 	}
-			// 	if err := refs.ResolveComputeServiceAttachment(ctx, reader, obj.GetNamespace(), userConnection.ServiceAttachmentRef); err != nil {
-			// 		return err
-			// 	}
-			// }
-		}
-	}
-	return nil
 }
 
 func (m *modelInstance) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
@@ -135,7 +122,7 @@ func (m *modelInstance) AdapterForURL(ctx context.Context, url string) (directba
 type InstanceAdapter struct {
 	id        *krm.InstanceIdentity
 	gcpClient *gcp.Client
-	desired   *krm.MemorystoreInstance
+	desired   *memorystorepb.Instance
 	actual    *memorystorepb.Instance
 }
 
@@ -166,17 +153,12 @@ func (a *InstanceAdapter) Find(ctx context.Context) (bool, error) {
 func (a *InstanceAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Instance", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
-	desired := a.desired.DeepCopy()
-	resource := MemorystoreInstanceSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
+	desired := direct.ProtoClone(a.desired)
 
 	req := &memorystorepb.CreateInstanceRequest{
 		Parent:     a.id.Parent().String(),
-		Instance:   resource,
+		Instance:   desired,
 		InstanceId: a.id.ID(),
 	}
 	op, err := a.gcpClient.CreateInstance(ctx, req)
@@ -189,113 +171,155 @@ func (a *InstanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	}
 	log.V(2).Info("successfully created Instance", "name", a.id)
 
+	if err := createOp.SetLastModifiedCookie(ctx, a.desired, created); err != nil {
+		return err
+	}
+
+	return a.updateStatus(ctx, createOp, created)
+}
+
+func (a *InstanceAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *memorystorepb.Instance) error {
+	mapCtx := &direct.MapContext{}
 	status := &krm.MemorystoreInstanceStatus{}
-	status.ObservedState = MemorystoreInstanceObservedState_FromProto(mapCtx, created)
+	status.ObservedState = MemorystoreInstanceObservedState_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
-	return createOp.UpdateStatus(ctx, status, nil)
+	return op.UpdateStatus(ctx, status, nil)
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Instance", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
-	desiredPb := MemorystoreInstanceSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	// Mask out some fields in the persistenceConfig, to accommodate KRM "discriminated union" semantics
-	switch desiredPb.GetPersistenceConfig().GetMode() {
-	case memorystorepb.PersistenceConfig_DISABLED:
-		desiredPb.PersistenceConfig.AofConfig = nil
-		desiredPb.PersistenceConfig.RdbConfig = nil
-	case memorystorepb.PersistenceConfig_RDB:
-		desiredPb.PersistenceConfig.AofConfig = nil
-	case memorystorepb.PersistenceConfig_AOF:
-		desiredPb.PersistenceConfig.RdbConfig = nil
+	if upToDate, err := updateOp.CompareLastModifiedCookie(a.desired, a.actual); err == nil && upToDate {
+		log.Info("resource is up to date (cookie match)", "name", a.id)
+		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-
-	var paths []string
-
-	// If replica count is unset, the field become unmanaged.
-	if a.desired.Spec.ReplicaCount != nil && !reflect.DeepEqual(desiredPb.ReplicaCount, a.actual.ReplicaCount) {
-		report.AddField("replica_count", a.actual.ReplicaCount, desiredPb.ReplicaCount)
-		paths = append(paths, "replica_count")
-	}
-	if a.desired.Spec.ShardCount != nil && !reflect.DeepEqual(desiredPb.ShardCount, a.actual.ShardCount) {
-		report.AddField("shard_count", a.actual.ShardCount, desiredPb.ShardCount)
-		paths = append(paths, "shard_count")
-	}
-	if a.desired.Spec.DeletionProtectionEnabled != nil && !reflect.DeepEqual(desiredPb.DeletionProtectionEnabled, a.actual.DeletionProtectionEnabled) {
-		report.AddField("deletion_protection_enabled", a.actual.DeletionProtectionEnabled, desiredPb.DeletionProtectionEnabled)
-		paths = append(paths, "deletion_protection_enabled")
-	}
-	if a.desired.Spec.PersistenceConfig != nil && !reflect.DeepEqual(desiredPb.PersistenceConfig, a.actual.PersistenceConfig) {
-		report.AddField("persistence_config", a.actual.PersistenceConfig, desiredPb.PersistenceConfig)
-		paths = append(paths, "persistence_config")
-	}
-	if a.desired.Spec.EngineConfigs != nil && !reflect.DeepEqual(desiredPb.EngineConfigs, a.actual.EngineConfigs) {
-		report.AddField("engine_configs", a.actual.EngineConfigs, desiredPb.EngineConfigs)
-		paths = append(paths, "engine_configs")
-	}
-	if a.desired.Spec.Endpoints != nil && !reflect.DeepEqual(desiredPb.Endpoints, a.actual.Endpoints) {
-		report.AddField("endpoints", a.actual.Endpoints, desiredPb.Endpoints)
-		paths = append(paths, "endpoints")
-	}
-	if a.desired.Spec.Labels != nil && !reflect.DeepEqual(desiredPb.Labels, a.actual.Labels) {
-		report.AddField("labels", a.actual.Labels, desiredPb.Labels)
-		paths = append(paths, "labels")
-	}
-	if a.desired.Spec.EngineVersion != nil && !reflect.DeepEqual(desiredPb.EngineVersion, a.actual.EngineVersion) {
-		report.AddField("engine_version", a.actual.EngineVersion, desiredPb.EngineVersion)
-		paths = append(paths, "engine_version")
-	}
-	if a.desired.Spec.NodeType != nil && !reflect.DeepEqual(desiredPb.NodeType, a.actual.NodeType) {
-		report.AddField("node_type", a.actual.NodeType, desiredPb.NodeType)
-		paths = append(paths, "node_type")
+	diffs, err := compareInstance(ctx, a.actual, a.desired)
+	if err != nil {
+		return fmt.Errorf("comparing actual and desired Instance: %w", err)
 	}
 
-	updated := a.actual
-	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id)
-	} else {
-		structuredreporting.ReportDiff(ctx, report)
-		log.V(2).Info("fields need update", "name", a.id, "paths", paths)
-		for _, path := range paths {
+	latest := a.actual
+
+	if diffs.HasDiff() {
+		structuredreporting.ReportDiff(ctx, diffs)
+
+		// The memorystore UpdateInstance API allows exactly one field to be updated per request.
+		for _, field := range diffs.Fields {
+			if field.ProtoFieldDescriptor == nil {
+				return fmt.Errorf("unexpected diff field without proto descriptor: %s", field.ID)
+			}
+
+			path := string(field.ProtoFieldDescriptor.Name())
+
+			desired := direct.ProtoClone(a.desired)
+
+			// Workaround: engine_version cannot be updated to empty string (API gives 400 error).
+			// We don't want to upgrade/downgrade engine versions if the user didn't specify one (how would we choose a version?)
+			if path == "engine_version" && desired.EngineVersion == "" {
+				log.V(2).Info("skipping update for engine_version since desired value is empty", "name", a.id)
+				continue
+			}
+
 			updateMask := &fieldmaskpb.FieldMask{
 				Paths: []string{path},
 			}
 			req := &memorystorepb.UpdateInstanceRequest{
 				UpdateMask: updateMask,
-				Instance:   desiredPb,
+				Instance:   desired,
 			}
 			req.Instance.Name = a.id.String()
+
+			log.Info("updating memorystore instance", "path", path, "name", a.id)
+
 			op, err := a.gcpClient.UpdateInstance(ctx, req)
 			if err != nil {
 				return fmt.Errorf("updating instance %s: %w", a.id, err)
 			}
-			updated, err = op.Wait(ctx)
+			updated, err := op.Wait(ctx)
 			if err != nil {
 				return fmt.Errorf("instance %s waiting update: %w", a.id, err)
 			}
-			log.V(2).Info("successfully updated Instance", "name", a.id, "updateMask", path)
+			latest = updated
 		}
+
 		log.V(2).Info("successfully updated Instance", "name", a.id)
+	} else {
+		log.Info("resource is up to date (no diff)", "name", a.id)
 	}
 
-	status := &krm.MemorystoreInstanceStatus{}
-	status.ObservedState = MemorystoreInstanceObservedState_FromProto(mapCtx, updated)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
+	if err := updateOp.SetLastModifiedCookie(ctx, a.desired, latest); err != nil {
+		return err
 	}
-	return updateOp.UpdateStatus(ctx, status, nil)
+
+	return a.updateStatus(ctx, updateOp, latest)
+}
+
+func compareInstance(ctx context.Context, actual, desired *memorystorepb.Instance) (*structuredreporting.Diff, error) {
+	populateDefaults := func(instance *memorystorepb.Instance) *memorystorepb.Instance {
+		if instance.AuthorizationMode == memorystorepb.Instance_AUTHORIZATION_MODE_UNSPECIFIED {
+			instance.AuthorizationMode = memorystorepb.Instance_AUTH_DISABLED
+		}
+
+		if instance.TransitEncryptionMode == memorystorepb.Instance_TRANSIT_ENCRYPTION_MODE_UNSPECIFIED {
+			instance.TransitEncryptionMode = memorystorepb.Instance_TRANSIT_ENCRYPTION_DISABLED
+		}
+
+		if instance.PersistenceConfig == nil {
+			instance.PersistenceConfig = &memorystorepb.PersistenceConfig{}
+		}
+		if instance.PersistenceConfig.Mode == memorystorepb.PersistenceConfig_PERSISTENCE_MODE_UNSPECIFIED {
+			instance.PersistenceConfig.Mode = memorystorepb.PersistenceConfig_DISABLED
+		}
+
+		// mode is immutable, so we must default this one!
+		if instance.Mode == memorystorepb.Instance_MODE_UNSPECIFIED {
+			instance.Mode = memorystorepb.Instance_CLUSTER
+		}
+
+		// cannot specify nodeType = 0 in an update
+		if instance.NodeType == memorystorepb.Instance_NODE_TYPE_UNSPECIFIED {
+			instance.NodeType = memorystorepb.Instance_HIGHMEM_MEDIUM
+		}
+
+		// zone_distribution_config is immutable, so we must default this one!
+		if instance.ZoneDistributionConfig == nil {
+			instance.ZoneDistributionConfig = &memorystorepb.ZoneDistributionConfig{}
+		}
+		if instance.ZoneDistributionConfig.Mode == memorystorepb.ZoneDistributionConfig_ZONE_DISTRIBUTION_MODE_UNSPECIFIED {
+			instance.ZoneDistributionConfig.Mode = memorystorepb.ZoneDistributionConfig_MULTI_ZONE
+		}
+
+		return instance
+	}
+
+	var maskedActual *memorystorepb.Instance
+	{
+		// A "trick" to only compare spec fields - round trip via the spec
+		mapCtx := &direct.MapContext{}
+		spec := MemorystoreInstanceSpec_FromProto(mapCtx, actual)
+		if mapCtx.Err() != nil {
+			return nil, mapCtx.Err()
+		}
+		maskedActual = MemorystoreInstanceSpec_ToProto(mapCtx, spec)
+		if mapCtx.Err() != nil {
+			return nil, mapCtx.Err()
+		}
+	}
+
+	maskedActual = populateDefaults(maskedActual)
+	desired = populateDefaults(direct.ProtoClone(desired))
+
+	diffs, _, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, err
+	}
+	return diffs, nil
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.

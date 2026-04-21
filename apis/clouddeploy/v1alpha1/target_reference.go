@@ -16,17 +16,17 @@ package v1alpha1
 
 import (
 	"context"
-	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var _ refsv1beta1.ExternalNormalizer = &CloudDeployTargetRef{}
+var _ refsv1beta1.Ref = &CloudDeployTargetRef{}
+var _ refsv1beta1.ExternalRef = &CloudDeployTargetRef{}
 
 // A resource reference to CloudDeployTarget, which "External" field
 // holds the GCP identifier for the KRM object.
@@ -42,42 +42,54 @@ type CloudDeployTargetRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on CloudDeployTarget.
-// If the "External" is given in the other resource's spec.CloudDeployTargetRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual CloudDeployTarget object from the cluster.
-func (r *CloudDeployTargetRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", CloudDeployTargetGVK.Kind)
-	}
-	// From given External
-	if r.External != "" {
-		if _, _, err := ParseCloudDeployTargetExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
-	}
+func (r *CloudDeployTargetRef) GetGVK() schema.GroupVersionKind {
+	return CloudDeployTargetGVK
+}
 
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
+func (r *CloudDeployTargetRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+}
+
+func (r *CloudDeployTargetRef) GetExternal() string {
+	return r.External
+}
+
+func (r *CloudDeployTargetRef) SetExternal(external string) {
+	r.External = external
+}
+
+func (r *CloudDeployTargetRef) ValidateExternal(external string) error {
+	actualIdentity := &CloudDeployTargetIdentity{}
+	return actualIdentity.FromExternal(external)
+}
+
+func (r *CloudDeployTargetRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
+}
+
+// NormalizedExternal provision the "External" value for other resource that depends on CloudDeployTarget.
+func (r *CloudDeployTargetRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+	if err := r.Normalize(ctx, reader, otherNamespace); err != nil {
+		return "", err
 	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(CloudDeployTargetGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", CloudDeployTargetGVK, key, err)
-	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.External = actualExternalRef
 	return r.External, nil
+}
+
+func (r *CloudDeployTargetRef) Build(ctx context.Context, reader client.Reader, otherNamespace string, identity identity.Identity) error {
+	external, err := r.NormalizedExternal(ctx, reader, otherNamespace)
+	if err != nil {
+		return err
+	}
+	return identity.FromExternal(external)
+}
+
+func (r *CloudDeployTargetRef) ParseExternalToIdentity() (identity.Identity, error) {
+	if r.External == "" {
+		return nil, nil
+	}
+	actualIdentity := &CloudDeployTargetIdentity{}
+	if err := actualIdentity.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return actualIdentity, nil
 }

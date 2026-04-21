@@ -34,6 +34,10 @@ for group in $(rgrep --no-filename '^[ ]*group:' config/crds | sort | uniq | awk
 
   short=$(echo ${group} | sed s@.cnrm.cloud.google.com@@g)
 
+  extra_services=""
+  case ${short} in
+    "memorystore") extra_services="memorystore.googleapis.com" ;;
+  esac
 
 cat > ${REPO_ROOT}/dev/ci/periodics/e2e-service-${short} <<EOF
 #!/usr/bin/env bash
@@ -61,6 +65,7 @@ REPO_ROOT="\$(git rev-parse --show-toplevel)"
 cd "\${REPO_ROOT}"
 
 export ONLY_TEST_APIGROUPS=${group}
+export EXTRA_GCP_SERVICES=${extra_services}
 
 dev/ci/periodics/_create_project_and_run_e2e
 EOF

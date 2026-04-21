@@ -59,11 +59,11 @@ func (s *RegionalURLMapsV1) Insert(ctx context.Context, req *pb.InsertRegionUrlM
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetUrlMapResource()).(*pb.UrlMap)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#urlMap")
-	obj.Region = PtrTo(buildComputeSelfLink(ctx, "projects/"+name.Project.ID+"/regions/"+name.Region))
+	obj.Region = PtrTo(BuildComputeSelfLink(ctx, "projects/"+name.Project.ID+"/regions/"+name.Region))
 	obj.Fingerprint = PtrTo(computeFingerprint(obj))
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

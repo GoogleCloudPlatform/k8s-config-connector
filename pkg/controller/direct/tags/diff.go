@@ -17,10 +17,10 @@ package tags
 import (
 	"context"
 	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
-	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/klog/v2"
@@ -32,10 +32,9 @@ type FieldChange struct {
 	DesiredValue protoreflect.Value
 }
 
-func buildDiff(ctx context.Context, desired protoreflect.Message, actual protoreflect.Message) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+func DiffForTopLevelFields(ctx context.Context, desired protoreflect.Message, actual protoreflect.Message) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
 	diff := &structuredreporting.Diff{}
 
-	var paths []string
 	fields := actual.Type().Descriptor().Fields()
 	for i := 0; i < fields.Len(); i++ {
 		path := string(fields.Get(i).Name())
@@ -43,8 +42,16 @@ func buildDiff(ctx context.Context, desired protoreflect.Message, actual protore
 		if fieldDiff == nil {
 			continue
 		}
-		diff.AddField(fieldDiff.FieldPath, fieldDiff.ActualValue, fieldDiff.DesiredValue)
-		paths = append(paths, fieldDiff.FieldPath)
+		diff.AddProtoField(fieldDiff.FieldPath, fields.Get(i), fieldDiff.ActualValue, fieldDiff.DesiredValue)
+	}
+
+	slices.SortFunc(diff.Fields, func(a, b structuredreporting.DiffField) int {
+		return strings.Compare(a.ID, b.ID)
+	})
+
+	var paths []string
+	for _, field := range diff.Fields {
+		paths = append(paths, field.ID)
 	}
 
 	return diff, &fieldmaskpb.FieldMask{Paths: paths}, nil
@@ -108,12 +115,4 @@ func commonGetFieldByPath(msg protoreflect.Message, fieldPath string) (protorefl
 	default:
 		return protoreflect.Value{}, false, fmt.Errorf("field %q in %T is not a message", fieldName, msg)
 	}
-}
-
-func format(v protoreflect.Value) string {
-	o := v.Interface()
-	if msg, ok := o.(protoreflect.Message); ok {
-		return prototext.Format(msg.Interface())
-	}
-	return fmt.Sprintf("[%T]:%v", o, o)
 }

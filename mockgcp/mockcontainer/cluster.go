@@ -108,6 +108,7 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 	if obj.NetworkConfig.ServiceExternalIpsConfig == nil {
 		obj.NetworkConfig.ServiceExternalIpsConfig = &pb.ServiceExternalIPsConfig{}
 	}
+	obj.NetworkConfig.Subnetwork = strings.TrimPrefix(obj.NetworkConfig.Subnetwork, "https://www.googleapis.com/compute/v1/")
 
 	// On output, Network and Subnetwork show the ID instead of the full name
 	obj.Network = lastComponent(obj.Network)
@@ -153,10 +154,17 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 		return nil, err
 	}
 
+	if err := s.createMockIGM(ctx, name.Project, obj.InstanceGroupUrls, obj.CurrentNodeCount); err != nil {
+		klog.Errorf("failed to create mock IGM: %v", err)
+	}
+
 	for _, nodePool := range obj.NodePools {
 		nodePoolFqn := name.String() + "/nodePools/" + nodePool.GetName()
 		if err := s.storage.Create(ctx, nodePoolFqn, nodePool); err != nil {
 			return nil, err
+		}
+		if err := s.createMockIGM(ctx, name.Project, nodePool.InstanceGroupUrls, nodePool.InitialNodeCount); err != nil {
+			klog.Errorf("failed to create mock IGM: %v", err)
 		}
 	}
 
