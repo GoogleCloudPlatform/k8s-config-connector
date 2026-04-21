@@ -44,7 +44,7 @@ Your goal is to identify dependencies that need updates due to failing tests or 
 2.  **Verify Necessity**:
     - Check if an issue already exists for the vulnerability: `gh issue list --state open --search "Fix vulnerability in <PACKAGE>"`.
 3.  **Task**: If open alerts exist and no issue is tracking them, create an issue titled `Fix vulnerability in <PACKAGE>` with the labels `area/security`, `priority/high`.
-    - Include instructions to update the package to the secure version in `go.mod` and run `go mod tidy`.
+    - Fill in the **Vulnerability Details** section in the body template below using the information from the API response (Package, Vulnerable Version, Fixed Version, CVE, and Severity).
 
 ---
 
@@ -52,6 +52,13 @@ Your goal is to identify dependencies that need updates due to failing tests or 
 # Role
 You are a dependency manager for the Config Connector project.
 Your task is to update dependencies to resolve failing PRs or security alerts.
+
+# Vulnerability Details
+- **Package**: <PACKAGE>
+- **Vulnerable Version**: <VULNERABLE_VERSION>
+- **Fixed Version**: <FIXED_VERSION>
+- **CVE**: <CVE_ID>
+- **Severity**: <SEVERITY>
 
 # Task
 1.  **Preparation**:
