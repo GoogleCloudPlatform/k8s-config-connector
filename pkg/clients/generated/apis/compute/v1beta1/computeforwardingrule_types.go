@@ -85,6 +85,10 @@ type ForwardingruleTarget struct {
 	// +optional
 	GoogleAPIsBundle *string `json:"googleAPIsBundle,omitempty"`
 
+	/* The service attachment for a Memorystore for Valkey instance. */
+	// +optional
+	MemorystoreInstanceServiceAttachmentRef *v1alpha1.ResourceRef `json:"memorystoreInstanceServiceAttachmentRef,omitempty"`
+
 	// +optional
 	ServiceAttachmentRef *v1alpha1.ResourceRef `json:"serviceAttachmentRef,omitempty"`
 

@@ -10660,6 +10660,11 @@ func (in *ForwardingruleTarget) DeepCopyInto(out *ForwardingruleTarget) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.MemorystoreInstanceServiceAttachmentRef != nil {
+		in, out := &in.MemorystoreInstanceServiceAttachmentRef, &out.MemorystoreInstanceServiceAttachmentRef
+		*out = new(v1alpha1.ResourceRef)
+		**out = **in
+	}
 	if in.ServiceAttachmentRef != nil {
 		in, out := &in.ServiceAttachmentRef, &out.ServiceAttachmentRef
 		*out = new(v1alpha1.ResourceRef)
