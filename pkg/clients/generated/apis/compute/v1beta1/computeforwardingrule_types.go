@@ -54,6 +54,15 @@ type ForwardingruleIpAddress struct {
 	Ip *string `json:"ip,omitempty"`
 }
 
+type ForwardingruleMemorystoreInstanceServiceAttachment struct {
+	/* The connection type of the serviceAttachment. A memorystore instance has multiple serviceAttachments, each with a different connection type. Use connectionType to control which serviceAttachment to target. The empty value matches a serviceAttachment with an empty connectionType. */
+	// +optional
+	ConnectionType *string `json:"connectionType,omitempty"`
+
+	/* A reference to a MemorystoreInstance resource. */
+	MemorystoreInstanceRef v1alpha1.ResourceRef `json:"memorystoreInstanceRef"`
+}
+
 type ForwardingruleMetadataFilters struct {
 	/* Immutable. The list of label value pairs that must match labels in the
 	provided metadata based on filterMatchCriteria
@@ -85,9 +94,9 @@ type ForwardingruleTarget struct {
 	// +optional
 	GoogleAPIsBundle *string `json:"googleAPIsBundle,omitempty"`
 
-	/* The service attachment for a Memorystore for Valkey instance. */
+	/* Target a serviceAttachment for a Memorystore for Valkey instance. */
 	// +optional
-	MemorystoreInstanceServiceAttachmentRef *v1alpha1.ResourceRef `json:"memorystoreInstanceServiceAttachmentRef,omitempty"`
+	MemorystoreInstanceServiceAttachment *ForwardingruleMemorystoreInstanceServiceAttachment `json:"memorystoreInstanceServiceAttachment,omitempty"`
 
 	// +optional
 	ServiceAttachmentRef *v1alpha1.ResourceRef `json:"serviceAttachmentRef,omitempty"`
