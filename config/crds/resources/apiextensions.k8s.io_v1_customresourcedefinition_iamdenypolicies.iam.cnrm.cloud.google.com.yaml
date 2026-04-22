@@ -65,6 +65,41 @@ spec:
                 description: A user-specified description of the `Policy`. This value
                   can be up to 63 characters.
                 type: string
+              parentRef:
+                description: Immutable. Required. The GCP resource to set the IAM
+                  policy on (e.g. organization, project...)
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: External string for the referent.
+                    type: string
+                  kind:
+                    description: Kind to which we are attaching the policy. Defaults
+                      to Project if not specified.
+                    type: string
+                  name:
+                    description: Name of the referent.
+                    type: string
+                  namespace:
+                    description: Namespace of the referent.
+                    type: string
+                type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The IAMDenyPolicy name. If not given, the metadata.name
                   will be used.
@@ -196,6 +231,8 @@ spec:
                       type: string
                   type: object
                 type: array
+            required:
+            - parentRef
             type: object
           status:
             description: IAMDenyPolicyStatus defines the config connector machine

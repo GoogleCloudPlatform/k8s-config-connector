@@ -24,9 +24,13 @@ var IAMDenyPolicyGVK = GroupVersion.WithKind("IAMDenyPolicy")
 // IAMDenyPolicySpec defines the desired state of IAMDenyPolicy
 // +kcc:spec:proto=google.iam.v2.Policy
 type IAMDenyPolicySpec struct {
+	// Immutable. Required. The GCP resource to set the IAM policy on (e.g.
+	// organization, project...)
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef IAMDenyPolicyParentRef `json:"parentRef"`
+
 	// The IAMDenyPolicy name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-
 	// // Immutable. The resource name of the `Policy`, which must be unique. Format:
 	// //  `policies/{attachment_point}/denypolicies/{policy_id}`
 	// //
