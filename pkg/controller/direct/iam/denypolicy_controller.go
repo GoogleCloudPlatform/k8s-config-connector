@@ -98,7 +98,7 @@ type IAMDenyPolicyAdapter struct {
 var _ directbase.Adapter = &IAMDenyPolicyAdapter{}
 
 func (a *IAMDenyPolicyAdapter) Find(ctx context.Context) (bool, error) {
-	log := klog.FromContext(ctx).WithName("IAMDenyPolicyAdapter.Find")
+	log := klog.FromContext(ctx)
 	log.V(2).Info("finding IAMDenyPolicy", "name", a.desired.Name)
 
 	req := &pb.GetPolicyRequest{
@@ -118,7 +118,7 @@ func (a *IAMDenyPolicyAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *IAMDenyPolicyAdapter) Create(ctx context.Context, op *directbase.CreateOperation) error {
-	log := klog.FromContext(ctx).WithName("IAMDenyPolicyAdapter.Create")
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating IAMDenyPolicy", "name", a.desired.Name)
 
 	mapCtx := &direct.MapContext{}
@@ -154,7 +154,7 @@ func (a *IAMDenyPolicyAdapter) Create(ctx context.Context, op *directbase.Create
 }
 
 func (a *IAMDenyPolicyAdapter) Update(ctx context.Context, op *directbase.UpdateOperation) error {
-	log := klog.FromContext(ctx).WithName("IAMDenyPolicyAdapter.Update")
+	log := klog.FromContext(ctx)
 	log.V(2).Info("updating IAMDenyPolicy", "name", a.desired.Name)
 
 	mapCtx := &direct.MapContext{}
@@ -191,7 +191,7 @@ func (a *IAMDenyPolicyAdapter) Update(ctx context.Context, op *directbase.Update
 }
 
 func (a *IAMDenyPolicyAdapter) Delete(ctx context.Context, op *directbase.DeleteOperation) (bool, error) {
-	log := klog.FromContext(ctx).WithName("IAMDenyPolicyAdapter.Delete")
+	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting IAMDenyPolicy", "name", a.desired.Name)
 
 	req := &pb.DeletePolicyRequest{
