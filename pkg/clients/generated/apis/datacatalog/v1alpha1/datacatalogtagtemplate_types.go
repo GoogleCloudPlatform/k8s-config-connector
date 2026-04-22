@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -138,7 +138,7 @@ type DataCatalogTagTemplateSpec struct {
 	Location string `json:"location"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The DataCatalogTagTemplate name. If not given, the metadata.name will be used. */
 	// +optional
@@ -154,7 +154,7 @@ type TagtemplateObservedStateStatus struct {
 type DataCatalogTagTemplateStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataCatalogTagTemplate's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the DataCatalogTagTemplate resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -51,7 +51,7 @@ type WorkflowtemplateAccelerators struct {
 type WorkflowtemplateAutoscalingConfig struct {
 	/* Immutable. */
 	// +optional
-	PolicyRef *v1alpha1.ResourceRef `json:"policyRef,omitempty"`
+	PolicyRef *k8sv1alpha1.ResourceRef `json:"policyRef,omitempty"`
 }
 
 type WorkflowtemplateClusterSelector struct {
@@ -106,11 +106,11 @@ type WorkflowtemplateConfig struct {
 
 	/* Immutable. */
 	// +optional
-	StagingBucketRef *v1alpha1.ResourceRef `json:"stagingBucketRef,omitempty"`
+	StagingBucketRef *k8sv1alpha1.ResourceRef `json:"stagingBucketRef,omitempty"`
 
 	/* Immutable. */
 	// +optional
-	TempBucketRef *v1alpha1.ResourceRef `json:"tempBucketRef,omitempty"`
+	TempBucketRef *k8sv1alpha1.ResourceRef `json:"tempBucketRef,omitempty"`
 
 	/* Immutable. Optional. The Compute Engine config settings for worker instances in a cluster. */
 	// +optional
@@ -134,7 +134,7 @@ type WorkflowtemplateDiskConfig struct {
 type WorkflowtemplateEncryptionConfig struct {
 	/* Immutable. */
 	// +optional
-	GcePdKmsKeyRef *v1alpha1.ResourceRef `json:"gcePdKmsKeyRef,omitempty"`
+	GcePdKmsKeyRef *k8sv1alpha1.ResourceRef `json:"gcePdKmsKeyRef,omitempty"`
 }
 
 type WorkflowtemplateEndpointConfig struct {
@@ -154,7 +154,7 @@ type WorkflowtemplateGceClusterConfig struct {
 
 	/* Immutable. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Immutable. Optional. Node Group Affinity for sole-tenant clusters. */
 	// +optional
@@ -170,7 +170,7 @@ type WorkflowtemplateGceClusterConfig struct {
 
 	/* Immutable. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Immutable. Optional. The URIs of service account scopes to be included in Compute Engine instances. The following base set of scopes is always included: * https://www.googleapis.com/auth/cloud.useraccounts.readonly * https://www.googleapis.com/auth/devstorage.read_write * https://www.googleapis.com/auth/logging.write If no scopes are specified, the following defaults are also provided: * https://www.googleapis.com/auth/bigquery * https://www.googleapis.com/auth/bigtable.admin.table * https://www.googleapis.com/auth/bigtable.data * https://www.googleapis.com/auth/devstorage.full_control */
 	// +optional
@@ -182,7 +182,7 @@ type WorkflowtemplateGceClusterConfig struct {
 
 	/* Immutable. */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
 	/* Immutable. The Compute Engine tags to add to all instances (see [Tagging instances](https://cloud.google.com/compute/docs/label-or-tag-resources#tags)). */
 	// +optional
@@ -351,7 +351,7 @@ type WorkflowtemplateKerberosConfig struct {
 
 	/* Immutable. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* Immutable. Optional. The name of the on-cluster Kerberos realm. If not specified, the uppercased domain of hostnames will be the realm. */
 	// +optional
@@ -417,7 +417,7 @@ type WorkflowtemplateMasterConfig struct {
 
 	/* Immutable. */
 	// +optional
-	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
+	ImageRef *k8sv1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
 	/* Immutable. Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
 	// +optional
@@ -438,7 +438,7 @@ type WorkflowtemplateMasterConfig struct {
 
 type WorkflowtemplateNodeGroupAffinity struct {
 	/* Immutable. */
-	NodeGroupRef v1alpha1.ResourceRef `json:"nodeGroupRef"`
+	NodeGroupRef k8sv1alpha1.ResourceRef `json:"nodeGroupRef"`
 }
 
 type WorkflowtemplateParameters struct {
@@ -605,7 +605,7 @@ type WorkflowtemplateSecondaryWorkerConfig struct {
 
 	/* Immutable. */
 	// +optional
-	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
+	ImageRef *k8sv1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
 	/* Immutable. Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
 	// +optional
@@ -769,7 +769,7 @@ type WorkflowtemplateWorkerConfig struct {
 
 	/* Immutable. */
 	// +optional
-	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
+	ImageRef *k8sv1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
 	/* Immutable. Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
 	// +optional
@@ -808,7 +808,7 @@ type DataprocWorkflowTemplateSpec struct {
 
 	/* Immutable. The Project that this resource belongs to. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -909,7 +909,7 @@ type WorkflowtemplateWorkerConfigStatus struct {
 type DataprocWorkflowTemplateStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataprocWorkflowTemplate's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The time template was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`

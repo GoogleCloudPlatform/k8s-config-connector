@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -75,7 +75,7 @@ type CertificateManaged struct {
 	AuthorizationAttemptInfo []CertificateAuthorizationAttemptInfo `json:"authorizationAttemptInfo,omitempty"`
 
 	// +optional
-	DnsAuthorizationsRefs []v1alpha1.ResourceRef `json:"dnsAuthorizationsRefs,omitempty"`
+	DnsAuthorizationsRefs []k8sv1alpha1.ResourceRef `json:"dnsAuthorizationsRefs,omitempty"`
 
 	/* Immutable. The domains for which a managed SSL certificate will be generated.
 	Wildcard domains are only supported with DNS challenge resolution. */
@@ -88,7 +88,7 @@ type CertificateManaged struct {
 	If this field is not set, the certificates will instead be publicly signed as documented at https://cloud.google.com/load-balancing/docs/ssl-certificates/google-managed-certs#caa.
 	Either issuanceConfig or dnsAuthorizations should be specified, but not both. */
 	// +optional
-	IssuanceConfigRef *v1alpha1.ResourceRef `json:"issuanceConfigRef,omitempty"`
+	IssuanceConfigRef *k8sv1alpha1.ResourceRef `json:"issuanceConfigRef,omitempty"`
 
 	/* Information about issues with provisioning this Managed Certificate. */
 	// +optional
@@ -156,7 +156,7 @@ type CertificateSelfManaged struct {
 type CertificateValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *k8sv1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type CertificateManagerCertificateSpec struct {
@@ -174,7 +174,7 @@ type CertificateManagerCertificateSpec struct {
 	Managed *CertificateManaged `json:"managed,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -258,7 +258,7 @@ type CertificateProvisioningIssueStatus struct {
 type CertificateManagerCertificateStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CertificateManagerCertificate's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

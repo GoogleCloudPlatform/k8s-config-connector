@@ -511,13 +511,13 @@ func formatType(desc fielddesc.FieldDescription, isRef, isSec, isIAMRef bool) st
 		return "apiextensionsv1.JSON"
 	case "object":
 		if isSec {
-			return "v1alpha1.SecretKeyRef"
+			return "k8sv1alpha1.SecretKeyRef"
 		}
 		if isRef {
 			if isIAMRef {
-				return "v1alpha1.IAMResourceRef"
+				return "k8sv1alpha1.IAMResourceRef"
 			}
-			return "v1alpha1.ResourceRef"
+			return "k8sv1alpha1.ResourceRef"
 		}
 
 		return strings.Title(desc.ShortName)
@@ -529,7 +529,7 @@ func formatType(desc fielddesc.FieldDescription, isRef, isSec, isIAMRef bool) st
 				return fmt.Sprintf("[]%v", formatToGoLiteral(listType))
 			default:
 				if isRef {
-					return fmt.Sprintf("[]v1alpha1.ResourceRef")
+					return fmt.Sprintf("[]k8sv1alpha1.ResourceRef")
 				}
 				return fmt.Sprintf("[]%v", strings.Title(desc.ShortName))
 			}

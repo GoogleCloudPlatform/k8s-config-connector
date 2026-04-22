@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -39,7 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type StorageNotificationSpec struct {
-	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
+	BucketRef k8sv1alpha1.ResourceRef `json:"bucketRef"`
 
 	/* Immutable.  A set of key/value attribute pairs to attach to each Cloud Pub/Sub message published for this notification subscription. */
 	// +optional
@@ -60,13 +60,13 @@ type StorageNotificationSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	TopicRef v1alpha1.ResourceRef `json:"topicRef"`
+	TopicRef k8sv1alpha1.ResourceRef `json:"topicRef"`
 }
 
 type StorageNotificationStatus struct {
 	/* Conditions represent the latest available observations of the
 	   StorageNotification's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* The ID of the created notification. */
 	// +optional
 	NotificationId *string `json:"notificationId,omitempty"`

@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -54,7 +54,7 @@ type ConnectionprofileForwardSSHConnectivity struct {
 	PrivateKey *string `json:"privateKey,omitempty"`
 
 	/* The Kubernetes Secret object that stores the "username" and "password" information for the SSH tunnel. The Secret type has to be `kubernetes.io/basic-auth`. */
-	SecretRef v1alpha1.ResourceRef `json:"secretRef"`
+	SecretRef k8sv1alpha1.ResourceRef `json:"secretRef"`
 }
 
 type ConnectionprofileGcsProfile struct {
@@ -75,7 +75,7 @@ type ConnectionprofileMySQLProfile struct {
 	Port *int32 `json:"port,omitempty"`
 
 	/* The Kubernetes Secret object that stores the "username" and "password" information for the MySQL connection. The Secret type has to be `kubernetes.io/basic-auth`. */
-	SecretRef v1alpha1.ResourceRef `json:"secretRef"`
+	SecretRef k8sv1alpha1.ResourceRef `json:"secretRef"`
 
 	/* SSL configuration for the MySQL connection. */
 	// +optional
@@ -101,7 +101,7 @@ type ConnectionprofileOracleASMConfig struct {
 	Port int32 `json:"port"`
 
 	/* The Kubernetes Secret object that stores the "username" and "password" information for the Oracle ASM connection. The Secret type has to be `kubernetes.io/basic-auth`. */
-	SecretRef v1alpha1.ResourceRef `json:"secretRef"`
+	SecretRef k8sv1alpha1.ResourceRef `json:"secretRef"`
 }
 
 type ConnectionprofileOracleProfile struct {
@@ -129,10 +129,10 @@ type ConnectionprofileOracleProfile struct {
 
 	/* Optional. A reference to a Secret Manager resource name storing the Oracle connection password. Mutually exclusive with the `secretRef` field. */
 	// +optional
-	SecretManagerSecretRef *v1alpha1.ResourceRef `json:"secretManagerSecretRef,omitempty"`
+	SecretManagerSecretRef *k8sv1alpha1.ResourceRef `json:"secretManagerSecretRef,omitempty"`
 
 	/* The Kubernetes Secret object that stores the "username" and "password" information for the Oracle connection. The Secret type has to be `kubernetes.io/basic-auth`. */
-	SecretRef v1alpha1.ResourceRef `json:"secretRef"`
+	SecretRef k8sv1alpha1.ResourceRef `json:"secretRef"`
 }
 
 type ConnectionprofileOracleSSLConfig struct {
@@ -143,7 +143,7 @@ type ConnectionprofileOracleSSLConfig struct {
 
 type ConnectionprofilePrivateConnectivity struct {
 	/* Required. A reference to a private connection resource. */
-	PrivateConnectionRef v1alpha1.ResourceRef `json:"privateConnectionRef"`
+	PrivateConnectionRef k8sv1alpha1.ResourceRef `json:"privateConnectionRef"`
 }
 
 type ConnectionprofileSqlServerProfile struct {
@@ -158,7 +158,7 @@ type ConnectionprofileSqlServerProfile struct {
 	Port *int32 `json:"port,omitempty"`
 
 	/* The Kubernetes Secret object that stores the "username" and "password" information for the SQLServer connection. The Secret type has to be `kubernetes.io/basic-auth`. */
-	SecretRef v1alpha1.ResourceRef `json:"secretRef"`
+	SecretRef k8sv1alpha1.ResourceRef `json:"secretRef"`
 }
 
 type ConnectionprofileSslConfig struct {
@@ -214,7 +214,7 @@ type DatastreamConnectionProfileSpec struct {
 	PrivateConnectivity *ConnectionprofilePrivateConnectivity `json:"privateConnectivity,omitempty"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The DatastreamConnectionProfile name. If not given, the metadata.name will be used. */
 	// +optional
@@ -282,7 +282,7 @@ type ConnectionprofileSslConfigStatus struct {
 type DatastreamConnectionProfileStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DatastreamConnectionProfile's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the DatastreamConnectionProfile resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

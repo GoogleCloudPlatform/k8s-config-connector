@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -44,7 +44,7 @@ type StorageAnywhereCacheSpec struct {
 	AdmissionPolicy *string `json:"admissionPolicy,omitempty"`
 
 	/* Immutable. The reference to bucket where cache needs to be created. */
-	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
+	BucketRef k8sv1alpha1.ResourceRef `json:"bucketRef"`
 
 	/* The desired state of the cache. Possible values include "running", "disabled", and "paused". If not specified, the default value is "running". This field controls the runtime behavior of the cache. Please note that changes to the `desiredState` are prioritized over any other updates. For instance, if both the `desiredState` and `ttl` are updated simultaneously, the state would be updated first, followed by `ttl`. */
 	// +optional
@@ -83,7 +83,7 @@ type AnywherecacheObservedStateStatus struct {
 type StorageAnywhereCacheStatus struct {
 	/* Conditions represent the latest available observations of the
 	   StorageAnywhereCache's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the StorageAnywhereCache resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

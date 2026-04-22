@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -66,11 +66,11 @@ type NodegroupMaintenanceWindow struct {
 
 type NodegroupProjectMap struct {
 	/* The key of this project config in the parent map. */
-	IdRef v1alpha1.ResourceRef `json:"idRef"`
+	IdRef k8sv1alpha1.ResourceRef `json:"idRef"`
 
 	/* The project id/number should be the same as the key of this project
 	config in the project map. */
-	ProjectIdRef v1alpha1.ResourceRef `json:"projectIdRef"`
+	ProjectIdRef k8sv1alpha1.ResourceRef `json:"projectIdRef"`
 }
 
 type NodegroupShareSettings struct {
@@ -105,7 +105,7 @@ type ComputeNodeGroupSpec struct {
 	MaintenanceWindow *NodegroupMaintenanceWindow `json:"maintenanceWindow,omitempty"`
 
 	/* The node template to which this node group belongs. */
-	NodeTemplateRef v1alpha1.ResourceRef `json:"nodeTemplateRef"`
+	NodeTemplateRef k8sv1alpha1.ResourceRef `json:"nodeTemplateRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -126,7 +126,7 @@ type ComputeNodeGroupSpec struct {
 type ComputeNodeGroupStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeNodeGroup's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`

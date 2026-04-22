@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -52,7 +52,7 @@ type InstanceFileShares struct {
 	NfsExportOptions []InstanceNfsExportOptions `json:"nfsExportOptions,omitempty"`
 
 	// +optional
-	SourceBackupRef *v1alpha1.ResourceRef `json:"sourceBackupRef,omitempty"`
+	SourceBackupRef *k8sv1alpha1.ResourceRef `json:"sourceBackupRef,omitempty"`
 }
 
 type InstanceNetworks struct {
@@ -66,7 +66,7 @@ type InstanceNetworks struct {
 
 	/* Immutable. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Immutable. A /29 CIDR block in one of the [internal IP address ranges](https://www.arin.net/reference/research/statistics/address_filters/) that identifies the range of IP addresses reserved for this instance. For example, 10.0.0.0/29 or 192.168.0.0/29. The range you specify can't overlap with either existing subnets or assigned IP address ranges for other Cloud Filestore instances in the selected VPC network. */
 	// +optional
@@ -112,7 +112,7 @@ type FilestoreInstanceSpec struct {
 	Networks []InstanceNetworks `json:"networks,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -126,7 +126,7 @@ type FilestoreInstanceSpec struct {
 type FilestoreInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   FilestoreInstance's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The time when the instance was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`

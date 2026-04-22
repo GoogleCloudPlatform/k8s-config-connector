@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -151,15 +151,15 @@ type OrgPolicyPolicySpec struct {
 
 	/* Immutable. The Folder that this resource belongs to. One and only one of 'projectRef', 'folderRef', or 'organizationRef' must be set. */
 	// +optional
-	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+	FolderRef *k8sv1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
 	/* Immutable. The Organization that this resource belongs to. One and only one of 'projectRef', 'folderRef', or 'organizationRef' must be set. */
 	// +optional
-	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+	OrganizationRef *k8sv1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. One and only one of 'projectRef', 'folderRef', or 'organizationRef' must be set. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* The OrgPolicyPolicy name. If not given, the metadata.name will be used. */
 	// +optional
@@ -195,7 +195,7 @@ type PolicySpecStatus struct {
 type OrgPolicyPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   OrgPolicyPolicy's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the OrgPolicyPolicy resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

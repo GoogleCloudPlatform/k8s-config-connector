@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -40,7 +40,7 @@ var _ = apiextensionsv1.JSON{}
 
 type ListingBigQueryDatasetSource struct {
 	/* Resource name of the dataset source for this listing. e.g. `projects/myproject/datasets/123` */
-	DatasetRef v1alpha1.ResourceRef `json:"datasetRef"`
+	DatasetRef k8sv1alpha1.ResourceRef `json:"datasetRef"`
 
 	/* Optional. If set, restricted export policy will be propagated and enforced on the linked dataset. */
 	// +optional
@@ -88,7 +88,7 @@ type ListingRestrictedExportPolicy struct {
 type ListingSelectedResources struct {
 	/* Optional. A reference to a BigQueryTable. Format: `projects/{projectId}/datasets/{datasetId}/tables/{tableId}` Example:"projects/test_project/datasets/test_dataset/tables/test_table" */
 	// +optional
-	TableRef *v1alpha1.ResourceRef `json:"tableRef,omitempty"`
+	TableRef *k8sv1alpha1.ResourceRef `json:"tableRef,omitempty"`
 }
 
 type ListingSource struct {
@@ -103,7 +103,7 @@ type BigQueryAnalyticsHubListingSpec struct {
 	Categories []string `json:"categories,omitempty"`
 
 	/* BigQueryAnalyticsHubDataExchangeRef defines the resource reference to BigQueryAnalyticsHubDataExchange, which "External" field holds the GCP identifier for the KRM object. */
-	DataExchangeRef v1alpha1.ResourceRef `json:"dataExchangeRef"`
+	DataExchangeRef k8sv1alpha1.ResourceRef `json:"dataExchangeRef"`
 
 	/* Optional. Details of the data provider who owns the source data. */
 	// +optional
@@ -132,7 +132,7 @@ type BigQueryAnalyticsHubListingSpec struct {
 	PrimaryContact *string `json:"primaryContact,omitempty"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Optional. Details of the publisher who owns the listing and who can share the source data. */
 	// +optional
@@ -158,7 +158,7 @@ type ListingObservedStateStatus struct {
 type BigQueryAnalyticsHubListingStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigQueryAnalyticsHubListing's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the BigQueryAnalyticsHubDataExchangeListing resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

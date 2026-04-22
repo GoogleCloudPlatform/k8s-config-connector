@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -80,7 +80,7 @@ type APIQuotaPreferenceSpec struct {
 
 	/* FolderRef represents the Folder that this resource belongs to. */
 	// +optional
-	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+	FolderRef *k8sv1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
 	/* The reason / justification for this quota preference. */
 	// +optional
@@ -88,11 +88,11 @@ type APIQuotaPreferenceSpec struct {
 
 	/* OrganizationRef represents the Organization that this resource belongs to. */
 	// +optional
-	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+	OrganizationRef *k8sv1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
 	/* The Project that this resource belongs to. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* Required. Preferred quota configuration. */
 	QuotaConfig ApiquotapreferenceQuotaConfig `json:"quotaConfig"`
@@ -151,7 +151,7 @@ type ApiquotapreferenceQuotaConfigStatus struct {
 type APIQuotaPreferenceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   APIQuotaPreference's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the APIQuotaPreference resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

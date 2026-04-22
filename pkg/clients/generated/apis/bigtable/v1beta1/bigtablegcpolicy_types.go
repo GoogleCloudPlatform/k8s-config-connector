@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -68,7 +68,7 @@ type BigtableGCPolicySpec struct {
 	GcRules *string `json:"gcRules,omitempty"`
 
 	/* The name of the Bigtable instance. */
-	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
+	InstanceRef k8sv1alpha1.ResourceRef `json:"instanceRef"`
 
 	/* Immutable. NOTE: 'gc_rules' is more flexible, and should be preferred over this field for new resources. This field may be deprecated in the future. GC policy that applies to all cells older than the given age. */
 	// +optional
@@ -83,13 +83,13 @@ type BigtableGCPolicySpec struct {
 	Mode *string `json:"mode,omitempty"`
 
 	/* The name of the table. */
-	TableRef v1alpha1.ResourceRef `json:"tableRef"`
+	TableRef k8sv1alpha1.ResourceRef `json:"tableRef"`
 }
 
 type BigtableGCPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigtableGCPolicy's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

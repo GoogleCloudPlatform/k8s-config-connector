@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -266,15 +266,15 @@ type CertificateX509Config struct {
 
 type PrivateCACertificateSpec struct {
 	/* Immutable. */
-	CaPoolRef v1alpha1.ResourceRef `json:"caPoolRef"`
+	CaPoolRef k8sv1alpha1.ResourceRef `json:"caPoolRef"`
 
 	/* Immutable. */
 	// +optional
-	CertificateAuthorityRef *v1alpha1.ResourceRef `json:"certificateAuthorityRef,omitempty"`
+	CertificateAuthorityRef *k8sv1alpha1.ResourceRef `json:"certificateAuthorityRef,omitempty"`
 
 	/* Immutable. */
 	// +optional
-	CertificateTemplateRef *v1alpha1.ResourceRef `json:"certificateTemplateRef,omitempty"`
+	CertificateTemplateRef *k8sv1alpha1.ResourceRef `json:"certificateTemplateRef,omitempty"`
 
 	/* Immutable. Immutable. A description of the certificate and key that does not require X.509 or ASN.1. */
 	// +optional
@@ -291,7 +291,7 @@ type PrivateCACertificateSpec struct {
 	PemCsr *string `json:"pemCsr,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -615,7 +615,7 @@ type CertificateX509DescriptionStatus struct {
 type PrivateCACertificateStatus struct {
 	/* Conditions represent the latest available observations of the
 	   PrivateCACertificate's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. A structured description of the issued X.509 certificate. */
 	// +optional
 	CertificateDescription *CertificateCertificateDescriptionStatus `json:"certificateDescription,omitempty"`

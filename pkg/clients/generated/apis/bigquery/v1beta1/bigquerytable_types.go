@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -90,7 +90,7 @@ type TableCsvOptions struct {
 
 type TableEncryptionConfiguration struct {
 	/* Describes the Cloud KMS encryption key that will be used to protect destination BigQuery table. The BigQuery Service Account associated with your project requires access to this encryption key. */
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
+	KmsKeyRef k8sv1alpha1.ResourceRef `json:"kmsKeyRef"`
 
 	/* DEPRECATED. // The table will be encrypted with the primary version of Cloud KMS encryption key. // The self link or full name of the kms key version used to encrypt this table. */
 	// +optional
@@ -366,7 +366,7 @@ type BigQueryTableSpec struct {
 	Clustering []string `json:"clustering,omitempty"`
 
 	/* DatasetRef defines the resource reference to BigQueryDataset, which "External" field holds the GCP identifier for the KRM object. */
-	DatasetRef v1alpha1.ResourceRef `json:"datasetRef"`
+	DatasetRef k8sv1alpha1.ResourceRef `json:"datasetRef"`
 
 	/* A user-friendly description of this table. */
 	// +optional
@@ -435,7 +435,7 @@ type TableObservedStateStatus struct {
 type BigQueryTableStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigQueryTable's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The time when this table was created, in milliseconds since the epoch. */
 	// +optional
 	CreationTime *int64 `json:"creationTime,omitempty"`

@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -44,7 +44,7 @@ type BigtableBackupSpec struct {
 	BackupType *string `json:"backupType,omitempty"`
 
 	/* ClusterRef defines the resource reference to BigtableCluster, which "External" field holds the GCP identifier for the KRM object. */
-	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
+	ClusterRef k8sv1alpha1.ResourceRef `json:"clusterRef"`
 
 	/* Required. The expiration time of the backup.
 	When creating a backup or updating its `expire_time`, the value must be
@@ -73,7 +73,7 @@ type BigtableBackupSpec struct {
 
 	/* Required. Immutable. Name of the table from which this backup was created. This needs to be in the same instance as the backup. Values are of the form `projects/{project}/instances/{instance}/tables/{source_table}`. */
 	// +optional
-	SourceTableRef *v1alpha1.ResourceRef `json:"sourceTableRef,omitempty"`
+	SourceTableRef *k8sv1alpha1.ResourceRef `json:"sourceTableRef,omitempty"`
 }
 
 type BackupDetailsStatus struct {
@@ -169,7 +169,7 @@ type BackupObservedStateStatus struct {
 type BigtableBackupStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigtableBackup's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the BigtableBackup resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

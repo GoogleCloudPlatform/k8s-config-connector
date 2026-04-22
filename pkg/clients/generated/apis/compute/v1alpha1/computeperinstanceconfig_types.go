@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -108,7 +108,7 @@ type PerinstanceconfigPreservedState struct {
 }
 
 type ComputePerInstanceConfigSpec struct {
-	InstanceGroupManagerRef v1alpha1.ResourceRef `json:"instanceGroupManagerRef"`
+	InstanceGroupManagerRef k8sv1alpha1.ResourceRef `json:"instanceGroupManagerRef"`
 
 	/* The minimal action to perform on the instance during an update.
 	Default is 'NONE'. Possible values are:
@@ -133,7 +133,7 @@ type ComputePerInstanceConfigSpec struct {
 	PreservedState *PerinstanceconfigPreservedState `json:"preservedState,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* When true, deleting this config will immediately remove any specified state from the underlying instance.
 	When false, deleting this config will *not* immediately remove any state from the underlying instance.
@@ -152,7 +152,7 @@ type ComputePerInstanceConfigSpec struct {
 type ComputePerInstanceConfigStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputePerInstanceConfig's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

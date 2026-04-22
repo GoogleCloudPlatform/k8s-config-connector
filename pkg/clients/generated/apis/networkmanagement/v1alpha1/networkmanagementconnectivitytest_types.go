@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -53,7 +53,7 @@ type ConnectivitytestCloudFunction struct {
 type ConnectivitytestCloudRunRevision struct {
 	/* A [Cloud Run](https://cloud.google.com/run) [revision](https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get) URI. The format is: projects/{project}/locations/{location}/revisions/{revision} */
 	// +optional
-	RunRevisionRef *v1alpha1.ResourceRef `json:"runRevisionRef,omitempty"`
+	RunRevisionRef *k8sv1alpha1.ResourceRef `json:"runRevisionRef,omitempty"`
 }
 
 type ConnectivitytestDestination struct {
@@ -75,15 +75,15 @@ type ConnectivitytestDestination struct {
 
 	/* A Compute Engine instance URI. */
 	// +optional
-	ComputeInstanceRef *v1alpha1.ResourceRef `json:"computeInstanceRef,omitempty"`
+	ComputeInstanceRef *k8sv1alpha1.ResourceRef `json:"computeInstanceRef,omitempty"`
 
 	/* A Compute Engine network URI. */
 	// +optional
-	ComputeNetworkRef *v1alpha1.ResourceRef `json:"computeNetworkRef,omitempty"`
+	ComputeNetworkRef *k8sv1alpha1.ResourceRef `json:"computeNetworkRef,omitempty"`
 
 	/* A cluster URI for [Google Kubernetes Engine cluster control plane](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture). */
 	// +optional
-	ContainerClusterRef *v1alpha1.ResourceRef `json:"containerClusterRef,omitempty"`
+	ContainerClusterRef *k8sv1alpha1.ResourceRef `json:"containerClusterRef,omitempty"`
 
 	/* DNS endpoint of [Google Kubernetes Engine cluster control plane](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture). Requires gke_master_cluster to be set, can't be used simultaneoulsly with ip_address or network. Applicable only to destination endpoint. */
 	// +optional
@@ -103,7 +103,7 @@ type ConnectivitytestDestination struct {
 
 	/* Project ID where the endpoint is located. The Project ID can be derived from the URI if you provide a VM instance or network URI. The following are two cases where you must provide the project ID: 1. Only the IP address is specified, and the IP address is within a Google Cloud project. 2. When you are using Shared VPC and the IP address that you provide is from the service project. In this case, the network that the IP address resides in is defined in the host project. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* A [Redis Cluster](https://cloud.google.com/memorystore/docs/cluster) URI. */
 	// +optional
@@ -115,7 +115,7 @@ type ConnectivitytestDestination struct {
 
 	/* A [Cloud SQL](https://cloud.google.com/sql) instance URI. */
 	// +optional
-	SqlInstance *v1alpha1.ResourceRef `json:"sqlInstance,omitempty"`
+	SqlInstance *k8sv1alpha1.ResourceRef `json:"sqlInstance,omitempty"`
 }
 
 type ConnectivitytestRelatedProjects struct {
@@ -155,15 +155,15 @@ type ConnectivitytestSource struct {
 
 	/* A Compute Engine instance URI. */
 	// +optional
-	ComputeInstanceRef *v1alpha1.ResourceRef `json:"computeInstanceRef,omitempty"`
+	ComputeInstanceRef *k8sv1alpha1.ResourceRef `json:"computeInstanceRef,omitempty"`
 
 	/* A Compute Engine network URI. */
 	// +optional
-	ComputeNetworkRef *v1alpha1.ResourceRef `json:"computeNetworkRef,omitempty"`
+	ComputeNetworkRef *k8sv1alpha1.ResourceRef `json:"computeNetworkRef,omitempty"`
 
 	/* A cluster URI for [Google Kubernetes Engine cluster control plane](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture). */
 	// +optional
-	ContainerClusterRef *v1alpha1.ResourceRef `json:"containerClusterRef,omitempty"`
+	ContainerClusterRef *k8sv1alpha1.ResourceRef `json:"containerClusterRef,omitempty"`
 
 	/* DNS endpoint of [Google Kubernetes Engine cluster control plane](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture). Requires gke_master_cluster to be set, can't be used simultaneoulsly with ip_address or network. Applicable only to destination endpoint. */
 	// +optional
@@ -183,7 +183,7 @@ type ConnectivitytestSource struct {
 
 	/* Project ID where the endpoint is located. The Project ID can be derived from the URI if you provide a VM instance or network URI. The following are two cases where you must provide the project ID: 1. Only the IP address is specified, and the IP address is within a Google Cloud project. 2. When you are using Shared VPC and the IP address that you provide is from the service project. In this case, the network that the IP address resides in is defined in the host project. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* A [Redis Cluster](https://cloud.google.com/memorystore/docs/cluster) URI. */
 	// +optional
@@ -195,7 +195,7 @@ type ConnectivitytestSource struct {
 
 	/* A [Cloud SQL](https://cloud.google.com/sql) instance URI. */
 	// +optional
-	SqlInstance *v1alpha1.ResourceRef `json:"sqlInstance,omitempty"`
+	SqlInstance *k8sv1alpha1.ResourceRef `json:"sqlInstance,omitempty"`
 }
 
 type NetworkManagementConnectivityTestSpec struct {
@@ -235,7 +235,7 @@ type NetworkManagementConnectivityTestSpec struct {
 	Location string `json:"location"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* IP Protocol of the test. When not provided, "TCP" is assumed. */
 	// +optional
@@ -1486,7 +1486,7 @@ type ConnectivitytestVpnTunnelStatus struct {
 type NetworkManagementConnectivityTestStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NetworkManagementConnectivityTest's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the NetworkManagementConnectivityTest resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

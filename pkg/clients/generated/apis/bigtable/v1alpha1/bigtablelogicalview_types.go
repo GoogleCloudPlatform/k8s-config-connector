@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -44,7 +44,7 @@ type BigtableLogicalViewSpec struct {
 	DeletionProtection *bool `json:"deletionProtection,omitempty"`
 
 	/* InstanceRef defines the resource reference to BigtableInstance, which "External" field holds the GCP identifier for the KRM object. */
-	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
+	InstanceRef k8sv1alpha1.ResourceRef `json:"instanceRef"`
 
 	/* The BigtableLogicalView's select query. */
 	// +optional
@@ -61,7 +61,7 @@ type LogicalviewObservedStateStatus struct {
 type BigtableLogicalViewStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigtableLogicalView's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the BigtableLogicalView resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

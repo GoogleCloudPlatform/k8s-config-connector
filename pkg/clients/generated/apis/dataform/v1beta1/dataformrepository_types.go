@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -41,7 +41,7 @@ var _ = apiextensionsv1.JSON{}
 type RepositoryGitRemoteSettings struct {
 	/* The name of the Secret Manager secret version to use as an authentication token for Git operations. Must be in the format projects/* /secrets/* /versions/*. */
 	// +optional
-	AuthenticationTokenSecretVersionRef *v1alpha1.ResourceRef `json:"authenticationTokenSecretVersionRef,omitempty"`
+	AuthenticationTokenSecretVersionRef *k8sv1alpha1.ResourceRef `json:"authenticationTokenSecretVersionRef,omitempty"`
 
 	/* The Git remote's default branch name. */
 	DefaultBranch string `json:"defaultBranch"`
@@ -59,7 +59,7 @@ type RepositorySshAuthenticationConfig struct {
 	HostPublicKey string `json:"hostPublicKey"`
 
 	/* The name of the Secret Manager secret version to use as a ssh private key for Git operations. Must be in the format projects/* /secrets/* /versions/* . */
-	UserPrivateKeySecretVersionRef v1alpha1.ResourceRef `json:"userPrivateKeySecretVersionRef"`
+	UserPrivateKeySecretVersionRef k8sv1alpha1.ResourceRef `json:"userPrivateKeySecretVersionRef"`
 }
 
 type RepositoryWorkspaceCompilationOverrides struct {
@@ -87,10 +87,10 @@ type DataformRepositorySpec struct {
 
 	/* Optional. The name of the Secret Manager secret version to be used to interpolate variables into the .npmrc file for package installation operations. */
 	// +optional
-	NpmrcEnvironmentVariablesSecretVersionRef *v1alpha1.ResourceRef `json:"npmrcEnvironmentVariablesSecretVersionRef,omitempty"`
+	NpmrcEnvironmentVariablesSecretVersionRef *k8sv1alpha1.ResourceRef `json:"npmrcEnvironmentVariablesSecretVersionRef,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. A reference to the region. */
 	Region string `json:"region"`
@@ -101,7 +101,7 @@ type DataformRepositorySpec struct {
 
 	/* Optional. The service account reference to run workflow invocations under. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Optional. Input only. If set to true, the authenticated user will be granted the roles/dataform.admin role on the created repository. */
 	// +optional
@@ -118,7 +118,7 @@ type RepositoryObservedStateStatus struct {
 type DataformRepositoryStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataformRepository's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the DataformReposity resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

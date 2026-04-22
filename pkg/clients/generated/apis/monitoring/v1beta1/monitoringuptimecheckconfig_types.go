@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -115,7 +115,7 @@ type UptimecheckconfigPassword struct {
 type UptimecheckconfigResourceGroup struct {
 	/* Immutable. */
 	// +optional
-	GroupRef *v1alpha1.ResourceRef `json:"groupRef,omitempty"`
+	GroupRef *k8sv1alpha1.ResourceRef `json:"groupRef,omitempty"`
 
 	/* Immutable. The resource type of the group members. Possible values: RESOURCE_TYPE_UNSPECIFIED, INSTANCE, AWS_ELB_LOAD_BALANCER */
 	// +optional
@@ -130,7 +130,7 @@ type UptimecheckconfigTcpCheck struct {
 type UptimecheckconfigValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *k8sv1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type MonitoringUptimeCheckConfigSpec struct {
@@ -154,7 +154,7 @@ type MonitoringUptimeCheckConfigSpec struct {
 	Period *string `json:"period,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. The group resource associated with the configuration. */
 	// +optional
@@ -179,7 +179,7 @@ type MonitoringUptimeCheckConfigSpec struct {
 type MonitoringUptimeCheckConfigStatus struct {
 	/* Conditions represent the latest available observations of the
 	   MonitoringUptimeCheckConfig's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

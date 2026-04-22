@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -66,7 +66,7 @@ type SecretCustomerManagedEncryption struct {
 	replication policy type, Cloud KMS CryptoKeys must reside in `global`.
 
 	The expected format is `projects/* /locations/* /keyRings/* /cryptoKeys/*`. */
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
+	KmsKeyRef k8sv1alpha1.ResourceRef `json:"kmsKeyRef"`
 }
 
 type SecretReplicas struct {
@@ -130,7 +130,7 @@ type SecretRotation struct {
 
 type SecretTopics struct {
 	/* PubSubTopicRef defines the resource reference to PubSubTopic, which "External" field holds the GCP identifier for the KRM object. */
-	TopicRef v1alpha1.ResourceRef `json:"topicRef"`
+	TopicRef k8sv1alpha1.ResourceRef `json:"topicRef"`
 }
 
 type SecretUserManaged struct {
@@ -221,7 +221,7 @@ type SecretObservedStateStatus struct {
 type SecretManagerSecretStatus struct {
 	/* Conditions represent the latest available observations of the
 	   SecretManagerSecret's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the SecretManagerSecret resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

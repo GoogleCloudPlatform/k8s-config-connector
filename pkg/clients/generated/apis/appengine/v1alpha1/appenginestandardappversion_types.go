@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -307,7 +307,7 @@ type AppEngineStandardAppVersionSpec struct {
 	// +optional
 	ServiceAccount *string `json:"serviceAccount,omitempty"`
 
-	ServiceRef v1alpha1.ResourceRef `json:"serviceRef"`
+	ServiceRef k8sv1alpha1.ResourceRef `json:"serviceRef"`
 
 	/* Whether multiple requests can be dispatched to this version at once. */
 	// +optional
@@ -321,7 +321,7 @@ type AppEngineStandardAppVersionSpec struct {
 type AppEngineStandardAppVersionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   AppEngineStandardAppVersion's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Full path to the Version resource in the API. Example, "v1". */
 	// +optional
 	Name *string `json:"name,omitempty"`

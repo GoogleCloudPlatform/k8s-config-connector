@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -79,7 +79,7 @@ type TriggerBitbucketServerTriggerConfig struct {
 	The full resource name of the bitbucket server config. Format:
 	projects/{project}/locations/{location}/bitbucketServerConfigs/{id}. */
 	// +optional
-	BitbucketServerConfigResourceRef *v1alpha1.ResourceRef `json:"bitbucketServerConfigResourceRef,omitempty"`
+	BitbucketServerConfigResourceRef *k8sv1alpha1.ResourceRef `json:"bitbucketServerConfigResourceRef,omitempty"`
 
 	/* Key of the project that the repo is in. For example: The key for https://mybitbucket.server/projects/TEST/repos/test-repo is "TEST". */
 	// +optional
@@ -113,7 +113,7 @@ type TriggerBuild struct {
 
 	/* Google Cloud Storage bucket where logs should be written. Logs file names will be of the format ${logsBucket}/log-${build_id}.txt. */
 	// +optional
-	LogsBucketRef *v1alpha1.ResourceRef `json:"logsBucketRef,omitempty"`
+	LogsBucketRef *k8sv1alpha1.ResourceRef `json:"logsBucketRef,omitempty"`
 
 	/* Special options for this build. */
 	// +optional
@@ -156,14 +156,14 @@ type TriggerGitFileSource struct {
 	The full resource name of the bitbucket server config. Format:
 	projects/{project}/locations/{location}/bitbucketServerConfigs/{id}. */
 	// +optional
-	BitbucketServerConfigRef *v1alpha1.ResourceRef `json:"bitbucketServerConfigRef,omitempty"`
+	BitbucketServerConfigRef *k8sv1alpha1.ResourceRef `json:"bitbucketServerConfigRef,omitempty"`
 
 	/* Only `external` field is supported to configure the reference.
 
 	The full resource name of the github enterprise config. Format:
 	projects/{project}/locations/{location}/githubEnterpriseConfigs/{id}. */
 	// +optional
-	GithubEnterpriseConfigRef *v1alpha1.ResourceRef `json:"githubEnterpriseConfigRef,omitempty"`
+	GithubEnterpriseConfigRef *k8sv1alpha1.ResourceRef `json:"githubEnterpriseConfigRef,omitempty"`
 
 	/* The path of the file, with the repo root as the root of the path. */
 	// +optional
@@ -178,7 +178,7 @@ type TriggerGitFileSource struct {
 	The fully qualified resource name of the Repo API repository. The fully qualified resource name of the Repo API repository.
 	If unspecified, the repo from which the trigger invocation originated is assumed to be the repo from which to read the specified path. */
 	// +optional
-	RepositoryRef *v1alpha1.ResourceRef `json:"repositoryRef,omitempty"`
+	RepositoryRef *k8sv1alpha1.ResourceRef `json:"repositoryRef,omitempty"`
 
 	/* The branch, tag, arbitrary ref, or SHA version of the repo to use when resolving the filename (optional). This field respects the same syntax/resolution as described here: https://git-scm.com/docs/gitrevisions If unspecified, the revision from which the trigger invocation originated is assumed to be the revision from which to read the specified path. */
 	// +optional
@@ -195,7 +195,7 @@ type TriggerGithub struct {
 	The full resource name of the github enterprise config. Format:
 	projects/{project}/locations/{location}/githubEnterpriseConfigs/{id}. */
 	// +optional
-	EnterpriseConfigResourceNameRef *v1alpha1.ResourceRef `json:"enterpriseConfigResourceNameRef,omitempty"`
+	EnterpriseConfigResourceNameRef *k8sv1alpha1.ResourceRef `json:"enterpriseConfigResourceNameRef,omitempty"`
 
 	/* Name of the repository. For example: The name for https://github.com/googlecloudplatform/cloud-builders is "cloud-builders". */
 	// +optional
@@ -302,7 +302,7 @@ type TriggerOptions struct {
 type TriggerPubsubConfig struct {
 	/* Service account that will make the push request. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Potential issues with the underlying Pub/Sub subscription configuration. Only populated on get requests. */
 	// +optional
@@ -314,7 +314,7 @@ type TriggerPubsubConfig struct {
 
 	/* The name of the topic from which this subscription is receiving messages. */
 	// +optional
-	TopicRef *v1alpha1.ResourceRef `json:"topicRef,omitempty"`
+	TopicRef *k8sv1alpha1.ResourceRef `json:"topicRef,omitempty"`
 }
 
 type TriggerPullRequest struct {
@@ -377,7 +377,7 @@ type TriggerRepoSource struct {
 
 	/* The desired Cloud Source Repository. If omitted, "default" is assumed. */
 	// +optional
-	RepoRef *v1alpha1.ResourceRef `json:"repoRef,omitempty"`
+	RepoRef *k8sv1alpha1.ResourceRef `json:"repoRef,omitempty"`
 
 	/* Substitutions to use in a triggered build. Should only be used with triggers.run. */
 	// +optional
@@ -405,7 +405,7 @@ type TriggerRepositoryEventConfig struct {
 type TriggerSecret struct {
 	/* KMS crypto key to use to decrypt these envs. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* Map of environment variable name to its encrypted value. Secret environment variables must be unique across all of a build's secrets, and must be used by at least one build step. Values can be at most 64 KB in size. There can be at most 100 secret values across all of a build's secrets. */
 	// +optional
@@ -418,7 +418,7 @@ type TriggerSecretManager struct {
 	Env *string `json:"env,omitempty"`
 
 	// +optional
-	VersionRef *v1alpha1.ResourceRef `json:"versionRef,omitempty"`
+	VersionRef *k8sv1alpha1.ResourceRef `json:"versionRef,omitempty"`
 }
 
 type TriggerSource struct {
@@ -437,14 +437,14 @@ type TriggerSourceToBuild struct {
 	The full resource name of the bitbucket server config. Format:
 	projects/{project}/locations/{location}/bitbucketServerConfigs/{id}. */
 	// +optional
-	BitbucketServerConfigRef *v1alpha1.ResourceRef `json:"bitbucketServerConfigRef,omitempty"`
+	BitbucketServerConfigRef *k8sv1alpha1.ResourceRef `json:"bitbucketServerConfigRef,omitempty"`
 
 	/* Only `external` field is supported to configure the reference.
 
 	The full resource name of the github enterprise config. Format:
 	projects/{project}/locations/{location}/githubEnterpriseConfigs/{id}. */
 	// +optional
-	GithubEnterpriseConfigRef *v1alpha1.ResourceRef `json:"githubEnterpriseConfigRef,omitempty"`
+	GithubEnterpriseConfigRef *k8sv1alpha1.ResourceRef `json:"githubEnterpriseConfigRef,omitempty"`
 
 	/* The branch or tag to use. Must start with "refs/" (required). */
 	// +optional
@@ -459,7 +459,7 @@ type TriggerSourceToBuild struct {
 	The qualified resource name of the Repo API repository.
 	Either uri or repository can be specified and is required. */
 	// +optional
-	RepositoryRef *v1alpha1.ResourceRef `json:"repositoryRef,omitempty"`
+	RepositoryRef *k8sv1alpha1.ResourceRef `json:"repositoryRef,omitempty"`
 
 	/* The URI of the repo. */
 	// +optional
@@ -581,7 +581,7 @@ type TriggerStep struct {
 type TriggerStorageSource struct {
 	/* Google Cloud Storage bucket containing the source. */
 	// +optional
-	BucketRef *v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
+	BucketRef *k8sv1alpha1.ResourceRef `json:"bucketRef,omitempty"`
 
 	/* Google Cloud Storage generation for the object. If the generation is omitted, the latest generation will be used. */
 	// +optional
@@ -631,7 +631,7 @@ type TriggerTriggerTemplate struct {
 
 	/* The Cloud Source Repository to build. If omitted, the repo with name "default" is assumed. */
 	// +optional
-	RepoRef *v1alpha1.ResourceRef `json:"repoRef,omitempty"`
+	RepoRef *k8sv1alpha1.ResourceRef `json:"repoRef,omitempty"`
 
 	/* Name of the tag to build. Exactly one of a branch name, tag, or commit SHA must be provided. This field is a regular expression. */
 	// +optional
@@ -657,7 +657,7 @@ type TriggerVolumes struct {
 type TriggerWebhookConfig struct {
 	/* The secret required */
 	// +optional
-	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
+	SecretRef *k8sv1alpha1.ResourceRef `json:"secretRef,omitempty"`
 
 	/* Potential issues with the underlying Pub/Sub subscription configuration. Only populated on get requests. */
 	// +optional
@@ -756,7 +756,7 @@ type CloudBuildTriggerSpec struct {
 	When populating via the external field, the following format is supported:
 	projects/{PROJECT_ID}/serviceAccounts/{SERVICE_ACCOUNT_EMAIL} */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* The repo and ref of the repository from which to build.
 	This field is used only for those triggers that do not respond to SCM events.
@@ -806,7 +806,7 @@ type TriggerObservedStateStatus struct {
 type CloudBuildTriggerStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CloudBuildTrigger's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Time when the trigger was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`

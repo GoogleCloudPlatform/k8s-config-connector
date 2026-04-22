@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -51,7 +51,7 @@ type RuntimetemplateDataPersistentDiskSpec struct {
 type RuntimetemplateEncryptionSpec struct {
 	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. Has the form: `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`. The key needs to be in the same region as where the compute resource is created. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
 type RuntimetemplateEucConfig struct {
@@ -111,10 +111,10 @@ type RuntimetemplateNetworkSpec struct {
 
 	/* The full name of the Google Compute Engine [network](https://cloud.google.com//compute/docs/networks-and-firewalls#networks) */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* The name of the subnet that this instance is in. Format: `projects/{project_id_or_number}/regions/{region}/subnetworks/{subnetwork_id}` */
-	SubnetworkRef v1alpha1.ResourceRef `json:"subnetworkRef"`
+	SubnetworkRef k8sv1alpha1.ResourceRef `json:"subnetworkRef"`
 }
 
 type RuntimetemplateReservationAffinity struct {
@@ -199,7 +199,7 @@ type ColabRuntimeTemplateSpec struct {
 	NotebookRuntimeType *string `json:"notebookRuntimeType,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The ColabRuntimeTemplate name. If not given, the metadata.name will be used. */
 	// +optional
@@ -213,7 +213,7 @@ type ColabRuntimeTemplateSpec struct {
 	account](https://cloud.google.com/compute/docs/access/service-accounts#default_service_account)
 	is used. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Optional. Immutable. Runtime Shielded VM spec. */
 	// +optional
@@ -247,7 +247,7 @@ type RuntimetemplateObservedStateStatus struct {
 type ColabRuntimeTemplateStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ColabRuntimeTemplate's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the ColabRuntimeTemplate resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

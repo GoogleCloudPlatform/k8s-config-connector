@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -41,18 +41,18 @@ var _ = apiextensionsv1.JSON{}
 type BackupplanassociationResource struct {
 	/* InstanceRef defines the resource reference to ComputeInstance, which "External" field holds the GCP identifier for the KRM object. */
 	// +optional
-	ComputeInstanceRef *v1alpha1.ResourceRef `json:"computeInstanceRef,omitempty"`
+	ComputeInstanceRef *k8sv1alpha1.ResourceRef `json:"computeInstanceRef,omitempty"`
 }
 
 type BackupDRBackupPlanAssociationSpec struct {
 	/* Required. The backup plan which needs to be applied on workload. */
-	BackupPlanRef v1alpha1.ResourceRef `json:"backupPlanRef"`
+	BackupPlanRef k8sv1alpha1.ResourceRef `json:"backupPlanRef"`
 
 	/* Immutable. */
 	Location string `json:"location"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Required. Immutable. Resource name of workload on which backupplan is applied */
 	Resource BackupplanassociationResource `json:"resource"`
@@ -158,7 +158,7 @@ type BackupplanassociationRulesConfigInfoStatus struct {
 type BackupDRBackupPlanAssociationStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BackupDRBackupPlanAssociation's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the BackupDRBackupPlanAssociation resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

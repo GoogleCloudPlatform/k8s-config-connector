@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -82,7 +82,7 @@ type BigLakeTableSpec struct {
 	HiveOptions *BiglaketableHiveOptions `json:"hiveOptions,omitempty"`
 
 	/* Required. The parent resource where this table will be created. Format: projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id} */
-	ParentDatabaseRef v1alpha1.ResourceRef `json:"parentDatabaseRef"`
+	ParentDatabaseRef k8sv1alpha1.ResourceRef `json:"parentDatabaseRef"`
 
 	/* The BigLake Table ID. If not given, the metadata.name will be used. */
 	// +optional
@@ -114,7 +114,7 @@ type BiglaketableObservedStateStatus struct {
 type BigLakeTableStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigLakeTable's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the BigLakeTable resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

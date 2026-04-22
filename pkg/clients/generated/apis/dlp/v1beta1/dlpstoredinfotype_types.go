@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -104,13 +104,13 @@ type StoredinfotypeRegex struct {
 
 type StoredinfotypeTable struct {
 	// +optional
-	DatasetRef *v1alpha1.ResourceRef `json:"datasetRef,omitempty"`
+	DatasetRef *k8sv1alpha1.ResourceRef `json:"datasetRef,omitempty"`
 
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	// +optional
-	TableRef *v1alpha1.ResourceRef `json:"tableRef,omitempty"`
+	TableRef *k8sv1alpha1.ResourceRef `json:"tableRef,omitempty"`
 }
 
 type StoredinfotypeWordList struct {
@@ -141,11 +141,11 @@ type DLPStoredInfoTypeSpec struct {
 
 	/* Immutable. The Organization that this resource belongs to. Only one of [organizationRef, projectRef] may be specified. */
 	// +optional
-	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+	OrganizationRef *k8sv1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. Only one of [organizationRef, projectRef] may be specified. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* Store regular expression-based StoredInfoType. */
 	// +optional
@@ -159,7 +159,7 @@ type DLPStoredInfoTypeSpec struct {
 type DLPStoredInfoTypeStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DLPStoredInfoType's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -76,7 +76,7 @@ type SecurityCenterNotificationConfigSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	/* The organization that this resource belongs to. */
-	OrganizationRef v1alpha1.ResourceRef `json:"organizationRef"`
+	OrganizationRef k8sv1alpha1.ResourceRef `json:"organizationRef"`
 
 	/* The Pub/Sub topic to send notifications to. Its format is
 	"projects/[project_id]/topics/[topic]". */
@@ -93,7 +93,7 @@ type SecurityCenterNotificationConfigSpec struct {
 type SecurityCenterNotificationConfigStatus struct {
 	/* Conditions represent the latest available observations of the
 	   SecurityCenterNotificationConfig's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* The resource name of this notification config, in the format
 	'organizations/{{organization}}/notificationConfigs/{{config_id}}'. */
 	// +optional

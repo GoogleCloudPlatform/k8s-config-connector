@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -233,7 +233,7 @@ type AssetSavedQuerySpec struct {
 
 	/* FolderRef represents the Folder that this resource belongs to. */
 	// +optional
-	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+	FolderRef *k8sv1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
 	/* Labels applied on the resource. This value should not contain more than 10 entries. The key and value of each entry must be non-empty and fewer than 64 characters. */
 	// +optional
@@ -241,11 +241,11 @@ type AssetSavedQuerySpec struct {
 
 	/* OrganizationRef represents the Organization that this resource belongs to. */
 	// +optional
-	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+	OrganizationRef *k8sv1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
 	/* The Project that this resource belongs to. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* The AssetSavedQuery name. If not given, the metadata.name will be used. */
 	// +optional
@@ -273,7 +273,7 @@ type SavedqueryObservedStateStatus struct {
 type AssetSavedQueryStatus struct {
 	/* Conditions represent the latest available observations of the
 	   AssetSavedQuery's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the AssetSavedQuery resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

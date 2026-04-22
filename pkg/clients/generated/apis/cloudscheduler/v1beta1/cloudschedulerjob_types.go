@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -105,7 +105,7 @@ type JobOauthToken struct {
 	Scope *string `json:"scope,omitempty"`
 
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type JobOidcToken struct {
@@ -114,7 +114,7 @@ type JobOidcToken struct {
 	Audience *string `json:"audience,omitempty"`
 
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type JobPubsubTarget struct {
@@ -126,7 +126,7 @@ type JobPubsubTarget struct {
 	// +optional
 	Data *string `json:"data,omitempty"`
 
-	TopicRef v1alpha1.ResourceRef `json:"topicRef"`
+	TopicRef k8sv1alpha1.ResourceRef `json:"topicRef"`
 }
 
 type JobRetryConfig struct {
@@ -230,7 +230,7 @@ type JobStatusStatus struct {
 type CloudSchedulerJobStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CloudSchedulerJob's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	// +optional
 	AppEngineHttpTarget *JobAppEngineHttpTargetStatus `json:"appEngineHttpTarget,omitempty"`
 

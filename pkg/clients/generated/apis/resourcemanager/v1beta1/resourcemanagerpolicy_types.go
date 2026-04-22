@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -97,7 +97,7 @@ type ResourceManagerPolicySpec struct {
 	/* The folder on which to configure the constraint. Only one of
 	projectRef, folderRef, or organizationRef may be specified. */
 	// +optional
-	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+	FolderRef *k8sv1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
 	/* A policy that can define specific values that are allowed or denied for the given constraint. It can also be used to allow or deny all values. . */
 	// +optional
@@ -106,12 +106,12 @@ type ResourceManagerPolicySpec struct {
 	/* The organization on which to configure the constraint. Only one of
 	projectRef, folderRef, or organizationRef may be specified. */
 	// +optional
-	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+	OrganizationRef *k8sv1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
 	/* The project on which to configure the constraint. Only one of
 	projectRef, folderRef, or organizationRef may be specified. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* A restore policy is a constraint to restore the default policy. */
 	// +optional
@@ -125,7 +125,7 @@ type ResourceManagerPolicySpec struct {
 type ResourceManagerPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ResourceManagerPolicy's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* The etag of the organization policy. etag is used for optimistic concurrency control as a way to help prevent simultaneous updates of a policy from overwriting each other. */
 	// +optional
 	Etag *string `json:"etag,omitempty"`

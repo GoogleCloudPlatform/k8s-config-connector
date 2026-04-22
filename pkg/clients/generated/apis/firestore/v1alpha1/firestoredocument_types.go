@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -44,7 +44,7 @@ type FirestoreDocumentSpec struct {
 	Collection *string `json:"collection,omitempty"`
 
 	/* DatabaseRef references the FirestoreDatabase in which to create the document. */
-	DatabaseRef v1alpha1.ResourceRef `json:"databaseRef"`
+	DatabaseRef k8sv1alpha1.ResourceRef `json:"databaseRef"`
 
 	/* Fields holds the field values; values follow JSON typing conventions. */
 	// +optional
@@ -76,7 +76,7 @@ type DocumentObservedStateStatus struct {
 type FirestoreDocumentStatus struct {
 	/* Conditions represent the latest available observations of the
 	   FirestoreDocument's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the FirestoreDocument resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

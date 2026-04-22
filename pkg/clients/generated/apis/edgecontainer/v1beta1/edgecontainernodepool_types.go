@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -44,7 +44,7 @@ type NodepoolLocalDiskEncryption struct {
 	KmsKeyActiveVersion *string `json:"kmsKeyActiveVersion,omitempty"`
 
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* Availability of the Cloud KMS CryptoKey. If not KEY_AVAILABLE, then nodes may go offline as they cannot access their local data.
 	This can be caused by a lack of permissions to use the key, or if the key is disabled or deleted. */
@@ -59,7 +59,7 @@ type NodepoolNodeConfig struct {
 }
 
 type EdgeContainerNodePoolSpec struct {
-	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
+	ClusterRef k8sv1alpha1.ResourceRef `json:"clusterRef"`
 
 	/* Local disk encryption options. This field is only used when enabling CMEK support. */
 	// +optional
@@ -85,7 +85,7 @@ type EdgeContainerNodePoolSpec struct {
 	NodeLocation string `json:"nodeLocation"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -95,7 +95,7 @@ type EdgeContainerNodePoolSpec struct {
 type EdgeContainerNodePoolStatus struct {
 	/* Conditions represent the latest available observations of the
 	   EdgeContainerNodePool's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* The time when the node pool was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`

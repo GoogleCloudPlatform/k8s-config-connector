@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -40,10 +40,10 @@ var _ = apiextensionsv1.JSON{}
 
 type RouternatAction struct {
 	// +optional
-	SourceNatActiveIpsRefs []v1alpha1.ResourceRef `json:"sourceNatActiveIpsRefs,omitempty"`
+	SourceNatActiveIpsRefs []k8sv1alpha1.ResourceRef `json:"sourceNatActiveIpsRefs,omitempty"`
 
 	// +optional
-	SourceNatDrainIpsRefs []v1alpha1.ResourceRef `json:"sourceNatDrainIpsRefs,omitempty"`
+	SourceNatDrainIpsRefs []k8sv1alpha1.ResourceRef `json:"sourceNatDrainIpsRefs,omitempty"`
 }
 
 type RouternatLogConfig struct {
@@ -97,12 +97,12 @@ type RouternatSubnetwork struct {
 	SourceIpRangesToNat []string `json:"sourceIpRangesToNat"`
 
 	/* The subnetwork to NAT. */
-	SubnetworkRef v1alpha1.ResourceRef `json:"subnetworkRef"`
+	SubnetworkRef k8sv1alpha1.ResourceRef `json:"subnetworkRef"`
 }
 
 type ComputeRouterNATSpec struct {
 	// +optional
-	DrainNatIps []v1alpha1.ResourceRef `json:"drainNatIps,omitempty"`
+	DrainNatIps []k8sv1alpha1.ResourceRef `json:"drainNatIps,omitempty"`
 
 	/* Enable Dynamic Port Allocation.
 	If minPortsPerVm is set, minPortsPerVm must be set to a power of two greater than or equal to 32.
@@ -142,7 +142,7 @@ type ComputeRouterNATSpec struct {
 	NatIpAllocateOption string `json:"natIpAllocateOption"`
 
 	// +optional
-	NatIps []v1alpha1.ResourceRef `json:"natIps,omitempty"`
+	NatIps []k8sv1alpha1.ResourceRef `json:"natIps,omitempty"`
 
 	/* Immutable. Region where the router and NAT reside. */
 	Region string `json:"region"`
@@ -152,7 +152,7 @@ type ComputeRouterNATSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* The Cloud Router in which this NAT will be configured. */
-	RouterRef v1alpha1.ResourceRef `json:"routerRef"`
+	RouterRef k8sv1alpha1.ResourceRef `json:"routerRef"`
 
 	/* A list of rules associated with this NAT. */
 	// +optional
@@ -198,7 +198,7 @@ type ComputeRouterNATSpec struct {
 type ComputeRouterNATStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeRouterNAT's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

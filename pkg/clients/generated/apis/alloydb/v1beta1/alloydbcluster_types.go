@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -97,7 +97,7 @@ type ClusterContinuousBackupConfig struct {
 type ClusterEncryptionConfig struct {
 	/* The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME] */
 	// +optional
-	KmsKeyNameRef *v1alpha1.ResourceRef `json:"kmsKeyNameRef,omitempty"`
+	KmsKeyNameRef *k8sv1alpha1.ResourceRef `json:"kmsKeyNameRef,omitempty"`
 }
 
 type ClusterInitialUser struct {
@@ -130,7 +130,7 @@ type ClusterNetworkConfig struct {
 
 	/* The resource link for the VPC network in which cluster resources are created and from which they are accessible via Private IP. The network must belong to the same project as the cluster. It is specified in the form: `projects/{project_number}/global/networks/{network_id}`. This is required to create a cluster. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 }
 
 type ClusterPassword struct {
@@ -151,12 +151,12 @@ type ClusterQuantityBasedRetention struct {
 
 type ClusterRestoreBackupSource struct {
 	/* Required. The name of the backup resource with the format: * projects/{project}/locations/{region}/backups/{backup_id} */
-	BackupNameRef v1alpha1.ResourceRef `json:"backupNameRef"`
+	BackupNameRef k8sv1alpha1.ResourceRef `json:"backupNameRef"`
 }
 
 type ClusterRestoreContinuousBackupSource struct {
 	/* (Required) The name of the source cluster that this cluster is restored from. */
-	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
+	ClusterRef k8sv1alpha1.ResourceRef `json:"clusterRef"`
 
 	/* Immutable. The point in time that this cluster is restored to, in RFC 3339 format. */
 	PointInTime string `json:"pointInTime"`
@@ -164,7 +164,7 @@ type ClusterRestoreContinuousBackupSource struct {
 
 type ClusterSecondaryConfig struct {
 	/* The name of the primary cluster name with the format: * projects/{project}/locations/{region}/clusters/{cluster_id} */
-	PrimaryClusterNameRef v1alpha1.ResourceRef `json:"primaryClusterNameRef"`
+	PrimaryClusterNameRef k8sv1alpha1.ResourceRef `json:"primaryClusterNameRef"`
 }
 
 type ClusterStartTime struct {
@@ -212,7 +212,7 @@ type ClusterTimeBasedRetention struct {
 type ClusterValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *k8sv1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type ClusterWeeklySchedule struct {
@@ -282,10 +282,10 @@ type AlloyDBClusterSpec struct {
 
 	/* The resource link for the VPC network in which cluster resources are created and from which they are accessible via Private IP. The network must belong to the same project as the cluster. It is specified in the form: `projects/{project}/global/networks/{network_id}`. This is required to create a cluster. Deprecated, use network_config.network instead. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The AlloyDBCluster name. If not given, the metadata.name will be used. */
 	// +optional
@@ -365,7 +365,7 @@ type ClusterObservedStateStatus struct {
 type AlloyDBClusterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   AlloyDBCluster's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. Cluster created from backup. */
 	// +optional
 	BackupSource []ClusterBackupSourceStatus `json:"backupSource,omitempty"`

@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -69,7 +69,7 @@ type VirtualmachineNetworkConfig struct {
 
 	/* The network for the TPU node. It must be a preexisting Google Compute Engine network. If none is provided, "default" will be used. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Optional. Specifies networking queue count for TPU VM instance's network interface. */
 	// +optional
@@ -77,7 +77,7 @@ type VirtualmachineNetworkConfig struct {
 
 	/* The subnetwork for the TPU node. It must be a preexisting Google Compute Engine subnetwork. If none is provided, "default" will be used. */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type VirtualmachineNetworkConfigs struct {
@@ -91,7 +91,7 @@ type VirtualmachineNetworkConfigs struct {
 
 	/* The network for the TPU node. It must be a preexisting Google Compute Engine network. If none is provided, "default" will be used. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Optional. Specifies networking queue count for TPU VM instance's network interface. */
 	// +optional
@@ -99,7 +99,7 @@ type VirtualmachineNetworkConfigs struct {
 
 	/* The subnetwork for the TPU node. It must be a preexisting Google Compute Engine subnetwork. If none is provided, "default" will be used. */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type VirtualmachineSchedulingConfig struct {
@@ -123,7 +123,7 @@ type VirtualmachineServiceAccount struct {
 
 	/* The service account to be used. If empty, the default Compute service account will be used. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type VirtualmachineShieldedInstanceConfig struct {
@@ -169,7 +169,7 @@ type TPUVirtualMachineSpec struct {
 	NetworkConfigs []VirtualmachineNetworkConfigs `json:"networkConfigs,omitempty"`
 
 	/* The project that the TPU virtual machine belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The TPUVirtualMachine name. If not given, the metadata.name will be used. */
 	// +optional
@@ -259,7 +259,7 @@ type VirtualmachineSymptomsStatus struct {
 type TPUVirtualMachineStatus struct {
 	/* Conditions represent the latest available observations of the
 	   TPUVirtualMachine's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the TPUVirtualMachine resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

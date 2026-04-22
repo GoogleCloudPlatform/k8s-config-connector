@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -112,7 +112,7 @@ type ComputeFirewallPolicyRuleSpec struct {
 	EnableLogging *bool `json:"enableLogging,omitempty"`
 
 	/* Immutable. */
-	FirewallPolicyRef v1alpha1.ResourceRef `json:"firewallPolicyRef"`
+	FirewallPolicyRef k8sv1alpha1.ResourceRef `json:"firewallPolicyRef"`
 
 	/* A match condition that incoming traffic is evaluated against. If it evaluates to true, the corresponding 'action' is enforced. */
 	Match FirewallpolicyruleMatch `json:"match"`
@@ -121,16 +121,16 @@ type ComputeFirewallPolicyRuleSpec struct {
 	Priority int64 `json:"priority"`
 
 	// +optional
-	TargetResources []v1alpha1.ResourceRef `json:"targetResources,omitempty"`
+	TargetResources []k8sv1alpha1.ResourceRef `json:"targetResources,omitempty"`
 
 	// +optional
-	TargetServiceAccounts []v1alpha1.ResourceRef `json:"targetServiceAccounts,omitempty"`
+	TargetServiceAccounts []k8sv1alpha1.ResourceRef `json:"targetServiceAccounts,omitempty"`
 }
 
 type ComputeFirewallPolicyRuleStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeFirewallPolicyRule's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique Config Connector specifier for the resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

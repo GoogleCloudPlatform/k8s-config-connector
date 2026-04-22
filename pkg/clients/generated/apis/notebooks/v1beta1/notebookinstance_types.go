@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -202,7 +202,7 @@ type NotebookInstanceSpec struct {
 
 	/* Input only. The KMS key used to encrypt the disks, only applicable if disk_encryption is CMEK. Learn more about [using your own encryption keys](/kms/docs/quickstart). */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* Labels to apply to this instance. These can be later modified by the setLabels method. */
 	// +optional
@@ -218,7 +218,7 @@ type NotebookInstanceSpec struct {
 
 	/* The name of the VPC that this instance is in. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Optional. The type of vNIC to be used on this interface. This may be gVNIC or VirtioNet. */
 	// +optional
@@ -241,7 +241,7 @@ type NotebookInstanceSpec struct {
 	PostStartupScript *string `json:"postStartupScript,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Optional. The optional reservation affinity. Setting this field will apply the specified [Zonal Compute Reservation](https://cloud.google.com/compute/docs/instances/reserving-zonal-resources) to this notebook instance. */
 	// +optional
@@ -260,7 +260,7 @@ type NotebookInstanceSpec struct {
 	account](https://cloud.google.com/compute/docs/access/service-accounts#default_service_account)
 	is used. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Optional. The URIs of service account scopes to be included in
 	Compute Engine instances.
@@ -281,7 +281,7 @@ type NotebookInstanceSpec struct {
 
 	/* The name of the subnet that this instance is in. */
 	// +optional
-	SubnetRef *v1alpha1.ResourceRef `json:"subnetRef,omitempty"`
+	SubnetRef *k8sv1alpha1.ResourceRef `json:"subnetRef,omitempty"`
 
 	/* Optional. The Compute Engine tags to add to runtime (see [Tagging instances](https://cloud.google.com/compute/docs/label-or-tag-resources#tags)). */
 	// +optional
@@ -418,7 +418,7 @@ type NotebookinstanceObservedStateStatus struct {
 type NotebookInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NotebookInstance's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the NotebookInstance resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

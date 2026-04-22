@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -125,7 +125,7 @@ type DiscoveryEngineEngineSpec struct {
 
 	/* The data stores associated with this engine. For SOLUTION_TYPE_SEARCH and SOLUTION_TYPE_RECOMMENDATION type of engines, they can only associate with at most one data store. If solution_type is SOLUTION_TYPE_CHAT, multiple DataStores in the same Collection can be associated here. Note that when used in CreateEngineRequest, one DataStore must be provided as the system will use it for necessary initializations. */
 	// +optional
-	DataStoreRefs []v1alpha1.ResourceRef `json:"dataStoreRefs,omitempty"`
+	DataStoreRefs []k8sv1alpha1.ResourceRef `json:"dataStoreRefs,omitempty"`
 
 	/* Optional. Whether to disable analytics for searches performed on this engine. */
 	// +optional
@@ -142,7 +142,7 @@ type DiscoveryEngineEngineSpec struct {
 	Location string `json:"location"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. The DiscoveryEngineChatEngine name. If not given, the metadata.name will be used. */
 	// +optional
@@ -162,7 +162,7 @@ type EngineObservedStateStatus struct {
 type DiscoveryEngineEngineStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DiscoveryEngineEngine's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the DiscoveryEngineEngine resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

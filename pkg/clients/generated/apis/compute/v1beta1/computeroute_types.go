@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -49,7 +49,7 @@ type ComputeRouteSpec struct {
 	DestRange string `json:"destRange"`
 
 	/* The network that this route applies to. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+	NetworkRef k8sv1alpha1.ResourceRef `json:"networkRef"`
 
 	/* Immutable. URL to a gateway that should handle matching packets.
 	Currently, you can only specify the internet gateway, using a full or
@@ -65,11 +65,11 @@ type ComputeRouteSpec struct {
 	handle matching packets.  Note that this can only be used when the
 	destinationRange is a public (non-RFC 1918) IP CIDR range. */
 	// +optional
-	NextHopILBRef *v1alpha1.ResourceRef `json:"nextHopILBRef,omitempty"`
+	NextHopILBRef *k8sv1alpha1.ResourceRef `json:"nextHopILBRef,omitempty"`
 
 	/* Instance that should handle matching packets. */
 	// +optional
-	NextHopInstanceRef *v1alpha1.ResourceRef `json:"nextHopInstanceRef,omitempty"`
+	NextHopInstanceRef *k8sv1alpha1.ResourceRef `json:"nextHopInstanceRef,omitempty"`
 
 	/* Immutable. Network IP address of an instance that should handle matching packets. */
 	// +optional
@@ -77,7 +77,7 @@ type ComputeRouteSpec struct {
 
 	/* The ComputeVPNTunnel that should handle matching packets */
 	// +optional
-	NextHopVPNTunnelRef *v1alpha1.ResourceRef `json:"nextHopVPNTunnelRef,omitempty"`
+	NextHopVPNTunnelRef *k8sv1alpha1.ResourceRef `json:"nextHopVPNTunnelRef,omitempty"`
 
 	/* Immutable. The priority of this route. Priority is used to break ties in cases
 	where there is more than one matching route of equal prefix length.
@@ -101,7 +101,7 @@ type ComputeRouteSpec struct {
 type ComputeRouteStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeRoute's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* URL to a Network that should handle matching packets. */
 	// +optional
 	NextHopNetwork *string `json:"nextHopNetwork,omitempty"`

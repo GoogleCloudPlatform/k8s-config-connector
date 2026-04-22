@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -575,7 +575,7 @@ type DataCatalogEntrySpec struct {
 	DisplayName *string `json:"displayName,omitempty"`
 
 	/* Reference to the entry group that contains the entry. */
-	EntryGroupRef v1alpha1.ResourceRef `json:"entryGroupRef"`
+	EntryGroupRef k8sv1alpha1.ResourceRef `json:"entryGroupRef"`
 
 	/* FeatureonlineStore spec for Vertex AI Feature Store. */
 	// +optional
@@ -984,7 +984,7 @@ type EntryViewSpecStatus struct {
 type DataCatalogEntryStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataCatalogEntry's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the DataCatalogEntry resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

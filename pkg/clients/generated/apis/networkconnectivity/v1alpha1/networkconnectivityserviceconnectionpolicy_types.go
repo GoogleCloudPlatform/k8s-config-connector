@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -49,7 +49,7 @@ type ServiceconnectionpolicyPscConfig struct {
 
 	/* The resource paths of subnetworks to use for IP address management. Example: projects/{projectNumOrId}/regions/{region}/subnetworks/{resourceId}. */
 	// +optional
-	SubnetworkRefs []v1alpha1.ResourceRef `json:"subnetworkRefs,omitempty"`
+	SubnetworkRefs []k8sv1alpha1.ResourceRef `json:"subnetworkRefs,omitempty"`
 }
 
 type NetworkConnectivityServiceConnectionPolicySpec struct {
@@ -62,10 +62,10 @@ type NetworkConnectivityServiceConnectionPolicySpec struct {
 
 	/* The resource path of the consumer network. Example: - projects/{projectNumOrId}/global/networks/{resourceId}. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Configuration used for Private Service Connect connections. Used when Infrastructure is PSC. */
 	// +optional
@@ -175,7 +175,7 @@ type ServiceconnectionpolicyPscConnectionsStatus struct {
 type NetworkConnectivityServiceConnectionPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NetworkConnectivityServiceConnectionPolicy's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the NetworkConnectivityServiceConnectionPolicy resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

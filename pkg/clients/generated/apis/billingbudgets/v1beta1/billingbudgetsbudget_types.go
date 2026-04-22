@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -44,10 +44,10 @@ type BudgetAllUpdatesRule struct {
 	DisableDefaultIamRecipients *bool `json:"disableDefaultIamRecipients,omitempty"`
 
 	// +optional
-	MonitoringNotificationChannels []v1alpha1.ResourceRef `json:"monitoringNotificationChannels,omitempty"`
+	MonitoringNotificationChannels []k8sv1alpha1.ResourceRef `json:"monitoringNotificationChannels,omitempty"`
 
 	// +optional
-	PubsubTopicRef *v1alpha1.ResourceRef `json:"pubsubTopicRef,omitempty"`
+	PubsubTopicRef *k8sv1alpha1.ResourceRef `json:"pubsubTopicRef,omitempty"`
 
 	/* Optional. Required when NotificationsRule.pubsub_topic is set. The schema version of the notification sent to NotificationsRule.pubsub_topic. Only "1.0" is accepted. It represents the JSON schema as defined in https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format. */
 	// +optional
@@ -86,14 +86,14 @@ type BudgetBudgetFilter struct {
 	Labels map[string]BudgetLabels `json:"labels,omitempty"`
 
 	// +optional
-	Projects []v1alpha1.ResourceRef `json:"projects,omitempty"`
+	Projects []k8sv1alpha1.ResourceRef `json:"projects,omitempty"`
 
 	/* Optional. A set of services of the form `services/{service_id}`, specifying that usage from only this set of services should be included in the budget. If omitted, the report will include usage for all the services. The service names are available through the Catalog API: https://cloud.google.com/billing/v1/how-tos/catalog-api. */
 	// +optional
 	Services []string `json:"services,omitempty"`
 
 	// +optional
-	Subaccounts []v1alpha1.ResourceRef `json:"subaccounts,omitempty"`
+	Subaccounts []k8sv1alpha1.ResourceRef `json:"subaccounts,omitempty"`
 }
 
 type BudgetCustomPeriod struct {
@@ -174,7 +174,7 @@ type BillingBudgetsBudgetSpec struct {
 	Amount BudgetAmount `json:"amount"`
 
 	/* Immutable. */
-	BillingAccountRef v1alpha1.ResourceRef `json:"billingAccountRef"`
+	BillingAccountRef k8sv1alpha1.ResourceRef `json:"billingAccountRef"`
 
 	/* Optional. Filters that define which resources are used to compute the actual spend against the budget amount, such as projects, services, and the budget's time period, as well as other filters. */
 	// +optional
@@ -196,7 +196,7 @@ type BillingBudgetsBudgetSpec struct {
 type BillingBudgetsBudgetStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BillingBudgetsBudget's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Optional. Etag to validate that the object is unchanged for a read-modify-write operation. An empty etag will cause an update to overwrite other changes. */
 	// +optional
 	Etag *string `json:"etag,omitempty"`

@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -104,21 +104,21 @@ type WorkstationClusterSpec struct {
 	Location *string `json:"location,omitempty"`
 
 	/* Immutable. Reference to the Compute Engine network in which instances associated with this workstation cluster will be created. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+	NetworkRef k8sv1alpha1.ResourceRef `json:"networkRef"`
 
 	/* Optional. Configuration for private workstation cluster. */
 	// +optional
 	PrivateClusterConfig *WorkstationclusterPrivateClusterConfig `json:"privateClusterConfig,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The WorkstationCluster name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Immutable. Reference to the Compute Engine subnetwork in which instances associated with this workstation cluster will be created. Must be part of the subnetwork specified for this workstation cluster. */
-	SubnetworkRef v1alpha1.ResourceRef `json:"subnetworkRef"`
+	SubnetworkRef k8sv1alpha1.ResourceRef `json:"subnetworkRef"`
 }
 
 type WorkstationclusterGcpConditionsStatus struct {
@@ -180,7 +180,7 @@ type WorkstationclusterObservedStateStatus struct {
 type WorkstationClusterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   WorkstationCluster's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the WorkstationCluster resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

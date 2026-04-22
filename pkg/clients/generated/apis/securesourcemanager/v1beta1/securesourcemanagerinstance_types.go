@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -41,7 +41,7 @@ var _ = apiextensionsv1.JSON{}
 type InstancePrivateConfig struct {
 	/* Required. Immutable. CA pool resource, resource must in the format of `projects/{project}/locations/{location}/caPools/{ca_pool}`. */
 	// +optional
-	CaPoolRef *v1alpha1.ResourceRef `json:"caPoolRef,omitempty"`
+	CaPoolRef *k8sv1alpha1.ResourceRef `json:"caPoolRef,omitempty"`
 
 	/* Required. Immutable. Indicate if it's private instance. */
 	// +optional
@@ -51,7 +51,7 @@ type InstancePrivateConfig struct {
 type SecureSourceManagerInstanceSpec struct {
 	/* Optional. Immutable. Customer-managed encryption key name. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* Optional. Labels as key value pairs. */
 	// +optional
@@ -65,7 +65,7 @@ type SecureSourceManagerInstanceSpec struct {
 	PrivateConfig *InstancePrivateConfig `json:"privateConfig,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -129,7 +129,7 @@ type InstancePrivateConfigStatus struct {
 type SecureSourceManagerInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   SecureSourceManagerInstance's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the SecureSourceManagerInstance resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

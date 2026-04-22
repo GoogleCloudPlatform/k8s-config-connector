@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -44,10 +44,10 @@ type PubSubSnapshotSpec struct {
 	Labels map[string]string `json:"labels,omitempty"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The subscription whose backlog the snapshot retains. Specifically, the created snapshot is guaranteed to retain: (a) The existing backlog on the subscription. More precisely, this is defined as the messages in the subscription's backlog that are unacknowledged upon the successful completion of the snapshots.create request; as well as: (b) Any messages published to the subscription's topic following the successful completion of the snapshots.create request. Format is projects/{project}/subscriptions/{sub}. */
-	PubSubSubscriptionRef v1alpha1.ResourceRef `json:"pubSubSubscriptionRef"`
+	PubSubSubscriptionRef k8sv1alpha1.ResourceRef `json:"pubSubSubscriptionRef"`
 
 	/* The PubSubSnapshot name. If not given, the metadata.name will be used. */
 	// +optional
@@ -55,7 +55,7 @@ type PubSubSnapshotSpec struct {
 
 	/* Optional. The name of the topic from which this snapshot is retaining messages. */
 	// +optional
-	TopicRef *v1alpha1.ResourceRef `json:"topicRef,omitempty"`
+	TopicRef *k8sv1alpha1.ResourceRef `json:"topicRef,omitempty"`
 }
 
 type SnapshotObservedStateStatus struct {
@@ -67,7 +67,7 @@ type SnapshotObservedStateStatus struct {
 type PubSubSnapshotStatus struct {
 	/* Conditions represent the latest available observations of the
 	   PubSubSnapshot's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the PubSubSnapshot resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

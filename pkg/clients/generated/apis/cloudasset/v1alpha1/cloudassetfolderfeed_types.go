@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -111,7 +111,7 @@ type CloudAssetFolderFeedSpec struct {
 	Folder string `json:"folder"`
 
 	/* The folder that this resource belongs to. */
-	FolderRef v1alpha1.ResourceRef `json:"folderRef"`
+	FolderRef k8sv1alpha1.ResourceRef `json:"folderRef"`
 
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional
@@ -121,7 +121,7 @@ type CloudAssetFolderFeedSpec struct {
 type CloudAssetFolderFeedStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CloudAssetFolderFeed's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* The ID of the folder where this feed has been created. Both [FOLDER_NUMBER]
 	and folders/[FOLDER_NUMBER] are accepted. */
 	// +optional

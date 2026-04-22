@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -257,7 +257,7 @@ type InspecttemplateStoredType struct {
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// +optional
-	NameRef *v1alpha1.ResourceRef `json:"nameRef,omitempty"`
+	NameRef *k8sv1alpha1.ResourceRef `json:"nameRef,omitempty"`
 }
 
 type InspecttemplateSurrogateType struct {
@@ -288,11 +288,11 @@ type DLPInspectTemplateSpec struct {
 
 	/* Immutable. The Organization that this resource belongs to. Only one of [organizationRef, projectRef] may be specified. */
 	// +optional
-	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+	OrganizationRef *k8sv1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. Only one of [organizationRef, projectRef] may be specified. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional
@@ -302,7 +302,7 @@ type DLPInspectTemplateSpec struct {
 type DLPInspectTemplateStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DLPInspectTemplate's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The creation timestamp of an inspectTemplate. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`

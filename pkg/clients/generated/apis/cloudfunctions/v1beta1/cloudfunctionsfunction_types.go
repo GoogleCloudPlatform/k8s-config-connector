@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -60,7 +60,7 @@ type FunctionEventTrigger struct {
 	FailurePolicy *bool `json:"failurePolicy,omitempty"`
 
 	/* Immutable. */
-	ResourceRef v1alpha1.ResourceRef `json:"resourceRef"`
+	ResourceRef k8sv1alpha1.ResourceRef `json:"resourceRef"`
 
 	/* Immutable. The hostname of the service that should be observed.
 
@@ -135,7 +135,7 @@ type CloudFunctionsFunctionSpec struct {
 	MaxInstances *int64 `json:"maxInstances,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. The name of the Cloud Functions region of the function. */
 	Region string `json:"region"`
@@ -153,7 +153,7 @@ type CloudFunctionsFunctionSpec struct {
 
 	/* Immutable. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Immutable. The Google Cloud Storage URL, starting with gs://, pointing to the zip archive which contains the function. */
 	// +optional
@@ -175,7 +175,7 @@ type CloudFunctionsFunctionSpec struct {
 	VpcConnectorEgressSettings *string `json:"vpcConnectorEgressSettings,omitempty"`
 
 	// +optional
-	VpcConnectorRef *v1alpha1.ResourceRef `json:"vpcConnectorRef,omitempty"`
+	VpcConnectorRef *k8sv1alpha1.ResourceRef `json:"vpcConnectorRef,omitempty"`
 }
 
 type FunctionHttpsTriggerStatus struct {
@@ -195,7 +195,7 @@ type FunctionSourceRepositoryStatus struct {
 type CloudFunctionsFunctionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CloudFunctionsFunction's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	// +optional
 	HttpsTrigger *FunctionHttpsTriggerStatus `json:"httpsTrigger,omitempty"`
 

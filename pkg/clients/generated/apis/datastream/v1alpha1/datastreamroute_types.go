@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -56,7 +56,7 @@ type DatastreamRouteSpec struct {
 	Labels map[string]string `json:"labels,omitempty"`
 
 	/* Required. The parent that owns the collection of Routes. */
-	PrivateConnectionRef v1alpha1.ResourceRef `json:"privateConnectionRef"`
+	PrivateConnectionRef k8sv1alpha1.ResourceRef `json:"privateConnectionRef"`
 
 	/* The DatastreamRoute name. If not given, the metadata.name will be used. */
 	// +optional
@@ -76,7 +76,7 @@ type RouteObservedStateStatus struct {
 type DatastreamRouteStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DatastreamRoute's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the DatastreamRoute resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

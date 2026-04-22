@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -70,10 +70,10 @@ type EndpointpolicyTrafficPortSelector struct {
 
 type NetworkServicesEndpointPolicySpec struct {
 	// +optional
-	AuthorizationPolicyRef *v1alpha1.ResourceRef `json:"authorizationPolicyRef,omitempty"`
+	AuthorizationPolicyRef *k8sv1alpha1.ResourceRef `json:"authorizationPolicyRef,omitempty"`
 
 	// +optional
-	ClientTlsPolicyRef *v1alpha1.ResourceRef `json:"clientTlsPolicyRef,omitempty"`
+	ClientTlsPolicyRef *k8sv1alpha1.ResourceRef `json:"clientTlsPolicyRef,omitempty"`
 
 	/* Optional. A free-text description of the resource. Max length 1024 characters. */
 	// +optional
@@ -86,14 +86,14 @@ type NetworkServicesEndpointPolicySpec struct {
 	Location string `json:"location"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// +optional
-	ServerTlsPolicyRef *v1alpha1.ResourceRef `json:"serverTlsPolicyRef,omitempty"`
+	ServerTlsPolicyRef *k8sv1alpha1.ResourceRef `json:"serverTlsPolicyRef,omitempty"`
 
 	/* Optional. Port selector for the (matched) endpoints. If no port selector is provided, the matched config is applied to all ports. */
 	// +optional
@@ -106,7 +106,7 @@ type NetworkServicesEndpointPolicySpec struct {
 type NetworkServicesEndpointPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NetworkServicesEndpointPolicy's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The timestamp when the resource was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`

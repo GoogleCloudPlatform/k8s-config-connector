@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -42,11 +42,11 @@ type ConnectorSubnet struct {
 	/* Immutable. Subnet name (relative, not fully qualified). E.g. if the full subnet selfLink is
 	https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetName} the correct input for this field would be {subnetName}" */
 	// +optional
-	NameRef *v1alpha1.ResourceRef `json:"nameRef,omitempty"`
+	NameRef *k8sv1alpha1.ResourceRef `json:"nameRef,omitempty"`
 
 	/* Immutable. Project in which the subnet exists. If not set, this project is assumed to be the project for which the connector create request was issued. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 }
 
 type VPCAccessConnectorSpec struct {
@@ -79,10 +79,10 @@ type VPCAccessConnectorSpec struct {
 
 	/* Immutable. Name or self_link of the VPC network. Required if 'ip_cidr_range' is set. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Immutable. The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -96,7 +96,7 @@ type VPCAccessConnectorSpec struct {
 type VPCAccessConnectorStatus struct {
 	/* Conditions represent the latest available observations of the
 	   VPCAccessConnector's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* List of projects using the connector. */
 	// +optional
 	ConnectedProjects []string `json:"connectedProjects,omitempty"`

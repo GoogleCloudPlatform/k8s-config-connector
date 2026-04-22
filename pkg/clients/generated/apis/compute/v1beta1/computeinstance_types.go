@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -40,7 +40,7 @@ var _ = apiextensionsv1.JSON{}
 
 type InstanceAccessConfig struct {
 	// +optional
-	NatIpRef *v1alpha1.ResourceRef `json:"natIpRef,omitempty"`
+	NatIpRef *k8sv1alpha1.ResourceRef `json:"natIpRef,omitempty"`
 
 	/* The networking tier used for configuring this instance. One of PREMIUM or STANDARD. */
 	// +optional
@@ -88,13 +88,13 @@ type InstanceAttachedDisk struct {
 	DiskEncryptionKeySha256 *string `json:"diskEncryptionKeySha256,omitempty"`
 
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* Read/write mode for the disk. One of "READ_ONLY" or "READ_WRITE". */
 	// +optional
 	Mode *string `json:"mode,omitempty"`
 
-	SourceDiskRef v1alpha1.ResourceRef `json:"sourceDiskRef"`
+	SourceDiskRef k8sv1alpha1.ResourceRef `json:"sourceDiskRef"`
 }
 
 type InstanceBootDisk struct {
@@ -119,7 +119,7 @@ type InstanceBootDisk struct {
 	InitializeParams *InstanceInitializeParams `json:"initializeParams,omitempty"`
 
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* Immutable. Read/write mode for the disk. One of "READ_ONLY" or "READ_WRITE". */
 	// +optional
@@ -127,7 +127,7 @@ type InstanceBootDisk struct {
 
 	/* Immutable. The source disk used to create this disk. */
 	// +optional
-	SourceDiskRef *v1alpha1.ResourceRef `json:"sourceDiskRef,omitempty"`
+	SourceDiskRef *k8sv1alpha1.ResourceRef `json:"sourceDiskRef,omitempty"`
 }
 
 type InstanceConfidentialInstanceConfig struct {
@@ -168,7 +168,7 @@ type InstanceInitializeParams struct {
 
 	/* Immutable. The image from which to initialize this disk. */
 	// +optional
-	SourceImageRef *v1alpha1.ResourceRef `json:"sourceImageRef,omitempty"`
+	SourceImageRef *k8sv1alpha1.ResourceRef `json:"sourceImageRef,omitempty"`
 
 	/* Immutable. The Google Compute Engine disk type. Such as pd-standard, pd-ssd or pd-balanced. */
 	// +optional
@@ -265,10 +265,10 @@ type InstanceNetworkInterface struct {
 	NetworkIp *string `json:"networkIp,omitempty"`
 
 	// +optional
-	NetworkIpRef *v1alpha1.ResourceRef `json:"networkIpRef,omitempty"`
+	NetworkIpRef *k8sv1alpha1.ResourceRef `json:"networkIpRef,omitempty"`
 
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Immutable. The type of vNIC to be used on this interface. Possible values:GVNIC, VIRTIO_NET. */
 	// +optional
@@ -287,7 +287,7 @@ type InstanceNetworkInterface struct {
 	SubnetworkProject *string `json:"subnetworkProject,omitempty"`
 
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type InstanceNetworkPerformanceConfig struct {
@@ -375,7 +375,7 @@ type InstanceServiceAccount struct {
 	Scopes []string `json:"scopes"`
 
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type InstanceShieldedInstanceConfig struct {
@@ -406,7 +406,7 @@ type InstanceValue struct {
 type InstanceValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *k8sv1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type ComputeInstanceSpec struct {
@@ -455,7 +455,7 @@ type ComputeInstanceSpec struct {
 	Hostname *string `json:"hostname,omitempty"`
 
 	// +optional
-	InstanceTemplateRef *v1alpha1.ResourceRef `json:"instanceTemplateRef,omitempty"`
+	InstanceTemplateRef *k8sv1alpha1.ResourceRef `json:"instanceTemplateRef,omitempty"`
 
 	/* The machine type to create. */
 	// +optional
@@ -493,7 +493,7 @@ type ComputeInstanceSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// +optional
-	ResourcePolicies []v1alpha1.ResourceRef `json:"resourcePolicies,omitempty"`
+	ResourcePolicies []k8sv1alpha1.ResourceRef `json:"resourcePolicies,omitempty"`
 
 	/* The scheduling strategy being used by the instance. */
 	// +optional
@@ -523,7 +523,7 @@ type ComputeInstanceSpec struct {
 type ComputeInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeInstance's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* The CPU platform used by this instance. */
 	// +optional
 	CpuPlatform *string `json:"cpuPlatform,omitempty"`

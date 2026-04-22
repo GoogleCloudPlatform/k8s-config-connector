@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -39,7 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type PacketmirroringCollectorIlb struct {
-	UrlRef v1alpha1.ResourceRef `json:"urlRef"`
+	UrlRef k8sv1alpha1.ResourceRef `json:"urlRef"`
 }
 
 type PacketmirroringFilter struct {
@@ -62,7 +62,7 @@ type PacketmirroringInstances struct {
 	CanonicalUrl *string `json:"canonicalUrl,omitempty"`
 
 	// +optional
-	UrlRef *v1alpha1.ResourceRef `json:"urlRef,omitempty"`
+	UrlRef *k8sv1alpha1.ResourceRef `json:"urlRef,omitempty"`
 }
 
 type PacketmirroringMirroredResources struct {
@@ -81,7 +81,7 @@ type PacketmirroringMirroredResources struct {
 
 type PacketmirroringNetwork struct {
 	/* Immutable. */
-	UrlRef v1alpha1.ResourceRef `json:"urlRef"`
+	UrlRef k8sv1alpha1.ResourceRef `json:"urlRef"`
 }
 
 type PacketmirroringSubnetworks struct {
@@ -91,7 +91,7 @@ type PacketmirroringSubnetworks struct {
 
 	/* Immutable. */
 	// +optional
-	UrlRef *v1alpha1.ResourceRef `json:"urlRef,omitempty"`
+	UrlRef *k8sv1alpha1.ResourceRef `json:"urlRef,omitempty"`
 }
 
 type ComputePacketMirroringSpec struct {
@@ -124,7 +124,7 @@ type ComputePacketMirroringSpec struct {
 	Priority *int64 `json:"priority,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -146,7 +146,7 @@ type PacketmirroringNetworkStatus struct {
 type ComputePacketMirroringStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputePacketMirroring's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	// +optional
 	CollectorIlb *PacketmirroringCollectorIlbStatus `json:"collectorIlb,omitempty"`
 

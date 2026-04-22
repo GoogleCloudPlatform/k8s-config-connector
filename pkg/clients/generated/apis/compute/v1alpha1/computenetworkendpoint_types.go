@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -40,17 +40,17 @@ var _ = apiextensionsv1.JSON{}
 
 type ComputeNetworkEndpointSpec struct {
 	// +optional
-	InstanceRef *v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
+	InstanceRef *k8sv1alpha1.ResourceRef `json:"instanceRef,omitempty"`
 
 	/* Immutable. IPv4 address of network endpoint. The IP address must belong
 	to a VM in GCE (either the primary IP or as part of an aliased IP
 	range). */
 	IpAddress string `json:"ipAddress"`
 
-	NetworkEndpointGroupRef v1alpha1.ResourceRef `json:"networkEndpointGroupRef"`
+	NetworkEndpointGroupRef k8sv1alpha1.ResourceRef `json:"networkEndpointGroupRef"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The port of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -63,7 +63,7 @@ type ComputeNetworkEndpointSpec struct {
 type ComputeNetworkEndpointStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeNetworkEndpoint's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

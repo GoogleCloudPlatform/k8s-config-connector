@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -43,7 +43,7 @@ type KMSImportJobSpec struct {
 	ImportMethod string `json:"importMethod"`
 
 	/* KMSKeyRingRef defines the resource reference to KMSKeyRing, which "External" field holds the GCP identifier for the KRM object. */
-	KmsKeyRingRef v1alpha1.ResourceRef `json:"kmsKeyRingRef"`
+	KmsKeyRingRef k8sv1alpha1.ResourceRef `json:"kmsKeyRingRef"`
 
 	/* Required. Immutable. The protection level of the [ImportJob][google.cloud.kms.v1.ImportJob]. This must match the [protection_level][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level] of the [version_template][google.cloud.kms.v1.CryptoKey.version_template] on the [CryptoKey][google.cloud.kms.v1.CryptoKey] you attempt to import into. */
 	ProtectionLevel string `json:"protectionLevel"`
@@ -120,7 +120,7 @@ type ImportjobPublicKeyStatus struct {
 type KMSImportJobStatus struct {
 	/* Conditions represent the latest available observations of the
 	   KMSImportJob's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the KMSImportJob resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

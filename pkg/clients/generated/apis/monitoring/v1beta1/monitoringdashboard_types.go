@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -58,7 +58,7 @@ type DashboardAggregation struct {
 
 type DashboardAlertChart struct {
 	/* Required. A reference to the MonitoringAlertPolicy. */
-	AlertPolicyRef v1alpha1.ResourceRef `json:"alertPolicyRef"`
+	AlertPolicyRef k8sv1alpha1.ResourceRef `json:"alertPolicyRef"`
 }
 
 type DashboardBlank struct {
@@ -191,7 +191,7 @@ type DashboardIncidentList struct {
 
 	/* Optional. A list of alert policies to filter the incident list by. */
 	// +optional
-	PolicyRefs []v1alpha1.ResourceRef `json:"policyRefs,omitempty"`
+	PolicyRefs []k8sv1alpha1.ResourceRef `json:"policyRefs,omitempty"`
 }
 
 type DashboardLogsPanel struct {
@@ -744,7 +744,7 @@ type MonitoringDashboardSpec struct {
 	MosaicLayout *DashboardMosaicLayout `json:"mosaicLayout,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. */
 	// +optional
@@ -758,7 +758,7 @@ type MonitoringDashboardSpec struct {
 type MonitoringDashboardStatus struct {
 	/* Conditions represent the latest available observations of the
 	   MonitoringDashboard's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* \`etag\` is used for optimistic concurrency control as a way to help prevent simultaneous updates of a policy from overwriting each other. */
 	// +optional
 	Etag *string `json:"etag,omitempty"`

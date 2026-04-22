@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -104,7 +104,7 @@ type DatasetDataset struct {
 type DatasetDefaultEncryptionConfiguration struct {
 	/* Optional. Describes the Cloud KMS encryption key that will be used to protect destination BigQuery table. The BigQuery Service Account associated with your project requires access to this encryption key. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
 type DatasetRoutine struct {
@@ -191,7 +191,7 @@ type BigQueryDatasetSpec struct {
 
 	/* Optional. The project that this resource belongs to. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* The BigQueryDataset name. If not given, the metadata.name will be used. */
 	// +optional
@@ -211,7 +211,7 @@ type DatasetObservedStateStatus struct {
 type BigQueryDatasetStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigQueryDataset's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The time when this dataset was created, in milliseconds since the epoch. */
 	// +optional
 	CreationTime *int64 `json:"creationTime,omitempty"`

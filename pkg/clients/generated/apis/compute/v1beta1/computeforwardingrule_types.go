@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -48,7 +48,7 @@ type ForwardingruleFilterLabels struct {
 
 type ForwardingruleIpAddress struct {
 	// +optional
-	AddressRef *v1alpha1.ResourceRef `json:"addressRef,omitempty"`
+	AddressRef *k8sv1alpha1.ResourceRef `json:"addressRef,omitempty"`
 
 	// +optional
 	Ip *string `json:"ip,omitempty"`
@@ -60,7 +60,7 @@ type ForwardingruleMemorystoreInstanceServiceAttachment struct {
 	ConnectionType *string `json:"connectionType,omitempty"`
 
 	/* A reference to a MemorystoreInstance resource. */
-	MemorystoreInstanceRef v1alpha1.ResourceRef `json:"memorystoreInstanceRef"`
+	MemorystoreInstanceRef k8sv1alpha1.ResourceRef `json:"memorystoreInstanceRef"`
 }
 
 type ForwardingruleMetadataFilters struct {
@@ -99,25 +99,25 @@ type ForwardingruleTarget struct {
 	MemorystoreInstanceServiceAttachment *ForwardingruleMemorystoreInstanceServiceAttachment `json:"memorystoreInstanceServiceAttachment,omitempty"`
 
 	// +optional
-	ServiceAttachmentRef *v1alpha1.ResourceRef `json:"serviceAttachmentRef,omitempty"`
+	ServiceAttachmentRef *k8sv1alpha1.ResourceRef `json:"serviceAttachmentRef,omitempty"`
 
 	// +optional
-	TargetGRPCProxyRef *v1alpha1.ResourceRef `json:"targetGRPCProxyRef,omitempty"`
+	TargetGRPCProxyRef *k8sv1alpha1.ResourceRef `json:"targetGRPCProxyRef,omitempty"`
 
 	// +optional
-	TargetHTTPProxyRef *v1alpha1.ResourceRef `json:"targetHTTPProxyRef,omitempty"`
+	TargetHTTPProxyRef *k8sv1alpha1.ResourceRef `json:"targetHTTPProxyRef,omitempty"`
 
 	// +optional
-	TargetHTTPSProxyRef *v1alpha1.ResourceRef `json:"targetHTTPSProxyRef,omitempty"`
+	TargetHTTPSProxyRef *k8sv1alpha1.ResourceRef `json:"targetHTTPSProxyRef,omitempty"`
 
 	// +optional
-	TargetSSLProxyRef *v1alpha1.ResourceRef `json:"targetSSLProxyRef,omitempty"`
+	TargetSSLProxyRef *k8sv1alpha1.ResourceRef `json:"targetSSLProxyRef,omitempty"`
 
 	// +optional
-	TargetTCPProxyRef *v1alpha1.ResourceRef `json:"targetTCPProxyRef,omitempty"`
+	TargetTCPProxyRef *k8sv1alpha1.ResourceRef `json:"targetTCPProxyRef,omitempty"`
 
 	// +optional
-	TargetVPNGatewayRef *v1alpha1.ResourceRef `json:"targetVPNGatewayRef,omitempty"`
+	TargetVPNGatewayRef *k8sv1alpha1.ResourceRef `json:"targetVPNGatewayRef,omitempty"`
 }
 
 type ComputeForwardingRuleSpec struct {
@@ -157,7 +157,7 @@ type ComputeForwardingRuleSpec struct {
 
 	/* A ComputeBackendService to receive the matched traffic. This is used only for internal load balancing. */
 	// +optional
-	BackendServiceRef *v1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
+	BackendServiceRef *k8sv1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
 
 	/* Immutable. An optional description of this resource. Provide this property when you create the resource. */
 	// +optional
@@ -251,7 +251,7 @@ type ComputeForwardingRuleSpec struct {
 
 	/* This field is not used for external load balancing. For internal load balancing, this field identifies the network that the load balanced IP should belong to for this forwarding rule. If this field is not specified, the default network will be used. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Immutable. This signifies the networking tier used for configuring
 	this load balancer and can only take the following values:
@@ -356,7 +356,7 @@ type ComputeForwardingRuleSpec struct {
 	optional. However, if the network is in custom subnet mode, a
 	subnetwork must be specified. */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
 	/* The target resource to receive the matched traffic. The forwarded traffic must be of a type appropriate to the target object. For INTERNAL_SELF_MANAGED load balancing, only HTTP and HTTPS targets are valid. */
 	// +optional
@@ -366,7 +366,7 @@ type ComputeForwardingRuleSpec struct {
 type ComputeForwardingRuleStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeForwardingRule's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* [Output Only] The URL for the corresponding base Forwarding Rule. By base Forwarding Rule, we mean the Forwarding Rule that has the same IP address, protocol, and port settings with the current Forwarding Rule, but without sourceIPRanges specified. Always empty if the current Forwarding Rule does not have sourceIPRanges specified. */
 	// +optional
 	BaseForwardingRule *string `json:"baseForwardingRule,omitempty"`

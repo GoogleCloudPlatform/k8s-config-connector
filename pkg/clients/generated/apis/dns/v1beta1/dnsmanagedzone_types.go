@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -99,7 +99,7 @@ type ManagedzoneGkeClusters struct {
 	/* The resource name of the cluster to bind this ManagedZone to.
 	This should be specified in the format like
 	'projects/* /locations/* /clusters/*'. */
-	GkeClusterNameRef v1alpha1.ResourceRef `json:"gkeClusterNameRef"`
+	GkeClusterNameRef k8sv1alpha1.ResourceRef `json:"gkeClusterNameRef"`
 }
 
 type ManagedzoneNamespace struct {
@@ -113,7 +113,7 @@ type ManagedzoneNamespace struct {
 
 type ManagedzoneNetworks struct {
 	/* VPC network to bind to. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+	NetworkRef k8sv1alpha1.ResourceRef `json:"networkRef"`
 }
 
 type ManagedzonePeeringConfig struct {
@@ -148,7 +148,7 @@ type ManagedzoneTargetNameServers struct {
 
 type ManagedzoneTargetNetwork struct {
 	/* VPC network to forward queries to. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+	NetworkRef k8sv1alpha1.ResourceRef `json:"networkRef"`
 }
 
 type DNSManagedZoneSpec struct {
@@ -206,7 +206,7 @@ type DNSManagedZoneSpec struct {
 type DNSManagedZoneStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DNSManagedZone's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* The time that this resource was created on the server.
 	This is in RFC3339 text format. */
 	// +optional

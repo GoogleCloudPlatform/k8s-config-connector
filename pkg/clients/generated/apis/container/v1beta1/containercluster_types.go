@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -121,7 +121,7 @@ type ClusterAutoProvisioningDefaults struct {
 	/* The Customer Managed Encryption Key used to encrypt the
 	boot disk attached to each node in the node pool. */
 	// +optional
-	BootDiskKMSKeyRef *v1alpha1.ResourceRef `json:"bootDiskKMSKeyRef,omitempty"`
+	BootDiskKMSKeyRef *k8sv1alpha1.ResourceRef `json:"bootDiskKMSKeyRef,omitempty"`
 
 	/* Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB. */
 	// +optional
@@ -144,7 +144,7 @@ type ClusterAutoProvisioningDefaults struct {
 	OauthScopes []string `json:"oauthScopes,omitempty"`
 
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Shielded Instance options. */
 	// +optional
@@ -652,7 +652,7 @@ type ClusterNodeConfig struct {
 	AdvancedMachineFeatures *ClusterAdvancedMachineFeatures `json:"advancedMachineFeatures,omitempty"`
 
 	// +optional
-	BootDiskKMSCryptoKeyRef *v1alpha1.ResourceRef `json:"bootDiskKMSCryptoKeyRef,omitempty"`
+	BootDiskKMSCryptoKeyRef *k8sv1alpha1.ResourceRef `json:"bootDiskKMSCryptoKeyRef,omitempty"`
 
 	/* Immutable. Configuration for the confidential nodes feature, which makes nodes run on confidential VMs. Warning: This configuration can't be changed (or added/removed) after pool creation without deleting and recreating the entire pool. */
 	// +optional
@@ -738,7 +738,7 @@ type ClusterNodeConfig struct {
 	of this pool to run on the specified node group. This is useful
 	for running workloads on sole tenant nodes. */
 	// +optional
-	NodeGroupRef *v1alpha1.ResourceRef `json:"nodeGroupRef,omitempty"`
+	NodeGroupRef *k8sv1alpha1.ResourceRef `json:"nodeGroupRef,omitempty"`
 
 	/* Immutable. The set of Google API scopes to be made available on all of the node VMs. */
 	// +optional
@@ -761,7 +761,7 @@ type ClusterNodeConfig struct {
 	SandboxConfig *ClusterSandboxConfig `json:"sandboxConfig,omitempty"`
 
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Immutable. Shielded Instance options. */
 	// +optional
@@ -862,7 +862,7 @@ type ClusterPrivateClusterConfig struct {
 	/* Immutable. Subnetwork in cluster's network where master's endpoint
 	will be provisioned. */
 	// +optional
-	PrivateEndpointSubnetworkRef *v1alpha1.ResourceRef `json:"privateEndpointSubnetworkRef,omitempty"`
+	PrivateEndpointSubnetworkRef *k8sv1alpha1.ResourceRef `json:"privateEndpointSubnetworkRef,omitempty"`
 
 	/* The external IP address of this cluster's master endpoint. */
 	// +optional
@@ -889,7 +889,7 @@ type ClusterPubsub struct {
 
 	/* The PubSubTopic to send the notification to. */
 	// +optional
-	TopicRef *v1alpha1.ResourceRef `json:"topicRef,omitempty"`
+	TopicRef *k8sv1alpha1.ResourceRef `json:"topicRef,omitempty"`
 }
 
 type ClusterRecurringWindow struct {
@@ -1041,7 +1041,7 @@ type ClusterUpgradeSettings struct {
 type ClusterValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *k8sv1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type ClusterVerticalPodAutoscaling struct {
@@ -1248,7 +1248,7 @@ type ContainerClusterSpec struct {
 	NetworkPolicy *ClusterNetworkPolicy `json:"networkPolicy,omitempty"`
 
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Immutable. Determines whether alias IPs or routes will be used for pod IPs in the cluster. */
 	// +optional
@@ -1314,7 +1314,7 @@ type ContainerClusterSpec struct {
 	ServiceExternalIpsConfig *ClusterServiceExternalIpsConfig `json:"serviceExternalIpsConfig,omitempty"`
 
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
 	/* Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it. */
 	// +optional
@@ -1374,7 +1374,7 @@ type ClusterPrivateClusterConfigStatus struct {
 type ContainerClusterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ContainerCluster's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* The IP address of this cluster's Kubernetes master. */
 	// +optional
 	Endpoint *string `json:"endpoint,omitempty"`

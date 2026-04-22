@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -40,7 +40,7 @@ var _ = apiextensionsv1.JSON{}
 
 type DiskAsyncPrimaryDisk struct {
 	/* Immutable. Primary disk for asynchronous disk replication. */
-	DiskRef v1alpha1.ResourceRef `json:"diskRef"`
+	DiskRef k8sv1alpha1.ResourceRef `json:"diskRef"`
 }
 
 type DiskDiskEncryptionKey struct {
@@ -51,12 +51,12 @@ type DiskDiskEncryptionKey struct {
 	feature. See
 	https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* The service account used for the encryption request for the given KMS key.
 	If absent, the Compute Engine Service Agent service account is used. */
 	// +optional
-	KmsKeyServiceAccountRef *v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
+	KmsKeyServiceAccountRef *k8sv1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
 
 	/* Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
 	RFC 4648 base64 to either encrypt or decrypt this resource. */
@@ -108,12 +108,12 @@ type DiskSourceImageEncryptionKey struct {
 	feature. See
 	https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* The service account used for the encryption request for the given KMS key.
 	If absent, the Compute Engine Service Agent service account is used. */
 	// +optional
-	KmsKeyServiceAccountRef *v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
+	KmsKeyServiceAccountRef *k8sv1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
 
 	/* Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
 	RFC 4648 base64 to either encrypt or decrypt this resource. */
@@ -134,12 +134,12 @@ type DiskSourceSnapshotEncryptionKey struct {
 	feature. See
 	https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* The service account used for the encryption request for the given KMS key.
 	If absent, the Compute Engine Service Agent service account is used. */
 	// +optional
-	KmsKeyServiceAccountRef *v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
+	KmsKeyServiceAccountRef *k8sv1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
 
 	/* Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
 	RFC 4648 base64 to either encrypt or decrypt this resource. */
@@ -155,7 +155,7 @@ type DiskSourceSnapshotEncryptionKey struct {
 type DiskValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *k8sv1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type ComputeDiskSpec struct {
@@ -195,7 +195,7 @@ type ComputeDiskSpec struct {
 
 	/* The image from which to initialize this disk. */
 	// +optional
-	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
+	ImageRef *k8sv1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
 	/* DEPRECATED. `interface` is deprecated. This field is no longer used and can be safely removed from your configurations; disk interfaces are automatically determined on attachment. Immutable. Specifies the disk interface to use for attaching this disk, which is either SCSI or NVME. The default is SCSI. */
 	// +optional
@@ -222,7 +222,7 @@ type ComputeDiskSpec struct {
 
 	/* The project that this resource belongs to. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* Indicates how many IOPS must be provisioned for the disk.
 	Note: Updating currently is only supported by hyperdisk skus without the need to delete and recreate the disk, hyperdisk
@@ -245,7 +245,7 @@ type ComputeDiskSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// +optional
-	ResourcePolicies []v1alpha1.ResourceRef `json:"resourcePolicies,omitempty"`
+	ResourcePolicies []k8sv1alpha1.ResourceRef `json:"resourcePolicies,omitempty"`
 
 	/* Size of the persistent disk, specified in GB. You can specify this
 	field when creating a persistent disk using the 'image' or
@@ -263,11 +263,11 @@ type ComputeDiskSpec struct {
 
 	/* The source snapshot used to create this disk. */
 	// +optional
-	SnapshotRef *v1alpha1.ResourceRef `json:"snapshotRef,omitempty"`
+	SnapshotRef *k8sv1alpha1.ResourceRef `json:"snapshotRef,omitempty"`
 
 	/* The source disk used to create this disk. */
 	// +optional
-	SourceDiskRef *v1alpha1.ResourceRef `json:"sourceDiskRef,omitempty"`
+	SourceDiskRef *k8sv1alpha1.ResourceRef `json:"sourceDiskRef,omitempty"`
 
 	/* Immutable. The customer-supplied encryption key of the source image. Required if
 	the source image is protected by a customer-supplied encryption key. */
@@ -289,7 +289,7 @@ type ComputeDiskSpec struct {
 type ComputeDiskStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeDisk's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`

@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -85,11 +85,11 @@ type MigrationjobReverseSSHConnectivity struct {
 
 	/* The name of the virtual machine (Compute Engine) used as the bastion server for the SSH tunnel. */
 	// +optional
-	VmRef *v1alpha1.ResourceRef `json:"vmRef,omitempty"`
+	VmRef *k8sv1alpha1.ResourceRef `json:"vmRef,omitempty"`
 
 	/* The name of the VPC to peer with the Cloud SQL private network. */
 	// +optional
-	VpcRef *v1alpha1.ResourceRef `json:"vpcRef,omitempty"`
+	VpcRef *k8sv1alpha1.ResourceRef `json:"vpcRef,omitempty"`
 }
 
 type MigrationjobSourceDatabase struct {
@@ -108,13 +108,13 @@ type MigrationjobStaticIPConnectivity struct {
 type MigrationjobVpcPeeringConnectivity struct {
 	/* The name of the VPC network to peer with the Cloud SQL private network. */
 	// +optional
-	VpcRef *v1alpha1.ResourceRef `json:"vpcRef,omitempty"`
+	VpcRef *k8sv1alpha1.ResourceRef `json:"vpcRef,omitempty"`
 }
 
 type CloudDMSMigrationJobSpec struct {
 	/* The CMEK (customer-managed encryption key) fully qualified key name used for the migration job. This field supports all migration jobs types except for: * Mysql to Mysql (use the cmek field in the cloudsql connection profile instead). * PostrgeSQL to PostgreSQL (use the cmek field in the cloudsql connection profile instead). * PostgreSQL to AlloyDB (use the kms_key_name field in the alloydb connection profile instead). Each Cloud CMEK key has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME] */
 	// +optional
-	CmekKeyNameRef *v1alpha1.ResourceRef `json:"cmekKeyNameRef,omitempty"`
+	CmekKeyNameRef *k8sv1alpha1.ResourceRef `json:"cmekKeyNameRef,omitempty"`
 
 	/* The conversion workspace used by the migration. */
 	// +optional
@@ -126,7 +126,7 @@ type CloudDMSMigrationJobSpec struct {
 
 	/* Required. The Connection Profile of the destination connection profile. */
 	// +optional
-	DestinationRef *v1alpha1.ResourceRef `json:"destinationRef,omitempty"`
+	DestinationRef *k8sv1alpha1.ResourceRef `json:"destinationRef,omitempty"`
 
 	/* The migration job display name. */
 	// +optional
@@ -152,7 +152,7 @@ type CloudDMSMigrationJobSpec struct {
 	PerformanceConfig *MigrationjobPerformanceConfig `json:"performanceConfig,omitempty"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The CloudDMSMigrationJob name. If not given, the metadata.name will be used. */
 	// +optional
@@ -168,7 +168,7 @@ type CloudDMSMigrationJobSpec struct {
 
 	/* Required. The Connection Profile resource of the source connection profile. */
 	// +optional
-	SourceRef *v1alpha1.ResourceRef `json:"sourceRef,omitempty"`
+	SourceRef *k8sv1alpha1.ResourceRef `json:"sourceRef,omitempty"`
 
 	/* static ip connectivity data (default, no additional details needed). */
 	// +optional
@@ -189,7 +189,7 @@ type MigrationjobObservedStateStatus struct {
 type CloudDMSMigrationJobStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CloudDMSMigrationJob's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the CloudDMSMigrationJob resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

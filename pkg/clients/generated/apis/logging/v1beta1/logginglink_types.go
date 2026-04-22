@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -47,7 +47,7 @@ type LoggingLinkSpec struct {
 
 	/* Required. The LoggingLogBucket that this Link is associated with. */
 	// +optional
-	LoggingLogBucketRef *v1alpha1.ResourceRef `json:"loggingLogBucketRef,omitempty"`
+	LoggingLogBucketRef *k8sv1alpha1.ResourceRef `json:"loggingLogBucketRef,omitempty"`
 
 	/* Immutable. The LoggingLink name. If not given, the metadata.name will be used. */
 	// +optional
@@ -83,7 +83,7 @@ type LinkObservedStateStatus struct {
 type LoggingLinkStatus struct {
 	/* Conditions represent the latest available observations of the
 	   LoggingLink's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the LoggingLink resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

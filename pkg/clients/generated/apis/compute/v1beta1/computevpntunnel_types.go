@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -51,7 +51,7 @@ type VpntunnelSharedSecret struct {
 type VpntunnelValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *k8sv1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type ComputeVPNTunnelSpec struct {
@@ -79,13 +79,13 @@ type ComputeVPNTunnelSpec struct {
 	/* The peer side external VPN gateway to which this VPN tunnel
 	is connected. */
 	// +optional
-	PeerExternalGatewayRef *v1alpha1.ResourceRef `json:"peerExternalGatewayRef,omitempty"`
+	PeerExternalGatewayRef *k8sv1alpha1.ResourceRef `json:"peerExternalGatewayRef,omitempty"`
 
 	/* The peer side HA GCP VPN gateway to which this VPN tunnel is
 	connected. If provided, the VPN tunnel will automatically use the
 	same VPN gateway interface ID in the peer GCP VPN gateway. */
 	// +optional
-	PeerGCPGatewayRef *v1alpha1.ResourceRef `json:"peerGCPGatewayRef,omitempty"`
+	PeerGCPGatewayRef *k8sv1alpha1.ResourceRef `json:"peerGCPGatewayRef,omitempty"`
 
 	/* Immutable. IP address of the peer VPN gateway. Only IPv4 is supported. */
 	// +optional
@@ -107,7 +107,7 @@ type ComputeVPNTunnelSpec struct {
 
 	/* The router to be used for dynamic routing. */
 	// +optional
-	RouterRef *v1alpha1.ResourceRef `json:"routerRef,omitempty"`
+	RouterRef *k8sv1alpha1.ResourceRef `json:"routerRef,omitempty"`
 
 	/* Immutable. Shared secret used to set the secure session between the Cloud VPN
 	gateway and the peer VPN gateway. */
@@ -116,7 +116,7 @@ type ComputeVPNTunnelSpec struct {
 	/* The ComputeTargetVPNGateway with which this VPN tunnel is
 	associated. */
 	// +optional
-	TargetVPNGatewayRef *v1alpha1.ResourceRef `json:"targetVPNGatewayRef,omitempty"`
+	TargetVPNGatewayRef *k8sv1alpha1.ResourceRef `json:"targetVPNGatewayRef,omitempty"`
 
 	/* Immutable. The interface ID of the VPN gateway with which this VPN tunnel is associated. */
 	// +optional
@@ -126,13 +126,13 @@ type ComputeVPNTunnelSpec struct {
 	This must be used if a High Availability VPN gateway resource is
 	created. */
 	// +optional
-	VpnGatewayRef *v1alpha1.ResourceRef `json:"vpnGatewayRef,omitempty"`
+	VpnGatewayRef *k8sv1alpha1.ResourceRef `json:"vpnGatewayRef,omitempty"`
 }
 
 type ComputeVPNTunnelStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeVPNTunnel's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`

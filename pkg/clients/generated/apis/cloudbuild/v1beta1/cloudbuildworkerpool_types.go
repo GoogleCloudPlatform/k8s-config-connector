@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -49,7 +49,7 @@ type WorkerpoolNetworkConfig struct {
 
 	/* Immutable. The network definition that the workers are peered to. If this section is left empty, the workers will be peered to `WorkerPool.project_id` on the service producer network. */
 	// +optional
-	PeeredNetworkRef *v1alpha1.ResourceRef `json:"peeredNetworkRef,omitempty"`
+	PeeredNetworkRef *k8sv1alpha1.ResourceRef `json:"peeredNetworkRef,omitempty"`
 }
 
 type WorkerpoolPrivatePoolV1Config struct {
@@ -82,7 +82,7 @@ type CloudBuildWorkerPoolSpec struct {
 	PrivatePoolV1Config WorkerpoolPrivatePoolV1Config `json:"privatePoolV1Config"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The GCP resource identifier. If not given, the metadata.name will be used. */
 	// +optional
@@ -137,7 +137,7 @@ type WorkerpoolWorkerConfigStatus struct {
 type CloudBuildWorkerPoolStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CloudBuildWorkerPool's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique Config Connector specifier for the resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

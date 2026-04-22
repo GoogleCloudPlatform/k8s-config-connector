@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -54,7 +54,7 @@ type NetworkServicesGatewaySpec struct {
 	Ports []int64 `json:"ports"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -64,7 +64,7 @@ type NetworkServicesGatewaySpec struct {
 	Scope string `json:"scope"`
 
 	// +optional
-	ServerTlsPolicyRef *v1alpha1.ResourceRef `json:"serverTlsPolicyRef,omitempty"`
+	ServerTlsPolicyRef *k8sv1alpha1.ResourceRef `json:"serverTlsPolicyRef,omitempty"`
 
 	/* Immutable. Immutable. The type of the customer managed gateway. Possible values: TYPE_UNSPECIFIED, OPEN_MESH, SECURE_WEB_GATEWAY */
 	// +optional
@@ -74,7 +74,7 @@ type NetworkServicesGatewaySpec struct {
 type NetworkServicesGatewayStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NetworkServicesGateway's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The timestamp when the resource was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`

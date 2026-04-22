@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -40,13 +40,13 @@ var _ = apiextensionsv1.JSON{}
 
 type ProjectSpec struct {
 	// +optional
-	BillingAccountRef *v1alpha1.ResourceRef `json:"billingAccountRef,omitempty"`
+	BillingAccountRef *k8sv1alpha1.ResourceRef `json:"billingAccountRef,omitempty"`
 
 	/* The folder that this resource belongs to. Changing this forces the
 	resource to be migrated to the newly specified folder. Only one of
 	folderRef or organizationRef may be specified. */
 	// +optional
-	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+	FolderRef *k8sv1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
 	/* The display name of the project. */
 	Name string `json:"name"`
@@ -56,7 +56,7 @@ type ProjectSpec struct {
 	organization. Only one of folderRef or organizationRef may be
 	specified. */
 	// +optional
-	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+	OrganizationRef *k8sv1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
 	/* Immutable. Optional. The projectId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -66,7 +66,7 @@ type ProjectSpec struct {
 type ProjectStatus struct {
 	/* Conditions represent the latest available observations of the
 	   Project's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* The numeric identifier of the project. */
 	// +optional
 	Number *string `json:"number,omitempty"`

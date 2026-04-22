@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -155,7 +155,7 @@ type CertificateauthorityKeySpec struct {
 
 	/* Immutable. */
 	// +optional
-	CloudKmsKeyVersionRef *v1alpha1.ResourceRef `json:"cloudKmsKeyVersionRef,omitempty"`
+	CloudKmsKeyVersionRef *k8sv1alpha1.ResourceRef `json:"cloudKmsKeyVersionRef,omitempty"`
 }
 
 type CertificateauthorityKeyUsage struct {
@@ -272,14 +272,14 @@ type CertificateauthorityX509Config struct {
 
 type PrivateCACertificateAuthoritySpec struct {
 	/* Immutable. */
-	CaPoolRef v1alpha1.ResourceRef `json:"caPoolRef"`
+	CaPoolRef k8sv1alpha1.ResourceRef `json:"caPoolRef"`
 
 	/* Immutable. Required. Immutable. The config used to create a self-signed X.509 certificate or CSR. */
 	Config CertificateauthorityConfig `json:"config"`
 
 	/* Immutable. */
 	// +optional
-	GcsBucketRef *v1alpha1.ResourceRef `json:"gcsBucketRef,omitempty"`
+	GcsBucketRef *k8sv1alpha1.ResourceRef `json:"gcsBucketRef,omitempty"`
 
 	/* Immutable. Required. Immutable. Used when issuing certificates for this CertificateAuthority. If this CertificateAuthority is a self-signed CertificateAuthority, this key is also used to sign the self-signed CA certificate. Otherwise, it is used to sign a CSR. */
 	KeySpec CertificateauthorityKeySpec `json:"keySpec"`
@@ -291,7 +291,7 @@ type PrivateCACertificateAuthoritySpec struct {
 	Location string `json:"location"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -645,7 +645,7 @@ type CertificateauthorityX509DescriptionStatus struct {
 type PrivateCACertificateAuthorityStatus struct {
 	/* Conditions represent the latest available observations of the
 	   PrivateCACertificateAuthority's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. URLs for accessing content published by this CA, such as the CA certificate and CRLs. */
 	// +optional
 	AccessUrls *CertificateauthorityAccessUrlsStatus `json:"accessUrls,omitempty"`

@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -40,7 +40,7 @@ var _ = apiextensionsv1.JSON{}
 
 type InstancegroupmanagerAutoHealingPolicies struct {
 	// +optional
-	HealthCheckRef *v1alpha1.ResourceRef `json:"healthCheckRef,omitempty"`
+	HealthCheckRef *k8sv1alpha1.ResourceRef `json:"healthCheckRef,omitempty"`
 
 	/* The number of seconds that the managed instance group waits before it applies autohealing policies to new instances or recently recreated instances. This initial delay allows instances to initialize and run their startup scripts before the instance group determines that they are UNHEALTHY. This prevents the managed instance group from recreating its instances prematurely. This value must be from range [0, 3600]. */
 	// +optional
@@ -174,7 +174,7 @@ type InstancegroupmanagerUpdatePolicy struct {
 
 type InstancegroupmanagerVersions struct {
 	// +optional
-	InstanceTemplateRef *v1alpha1.ResourceRef `json:"instanceTemplateRef,omitempty"`
+	InstanceTemplateRef *k8sv1alpha1.ResourceRef `json:"instanceTemplateRef,omitempty"`
 
 	/* Name of the version. Unique among all versions in the scope of this managed instance group. */
 	// +optional
@@ -213,7 +213,7 @@ type ComputeInstanceGroupManagerSpec struct {
 	FailoverAction *string `json:"failoverAction,omitempty"`
 
 	// +optional
-	InstanceTemplateRef *v1alpha1.ResourceRef `json:"instanceTemplateRef,omitempty"`
+	InstanceTemplateRef *k8sv1alpha1.ResourceRef `json:"instanceTemplateRef,omitempty"`
 
 	/* Immutable. The location of this resource. */
 	// +optional
@@ -224,21 +224,21 @@ type ComputeInstanceGroupManagerSpec struct {
 	NamedPorts []InstancegroupmanagerNamedPorts `json:"namedPorts,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Stateful configuration for this Instanced Group Manager */
 	// +optional
 	StatefulPolicy *InstancegroupmanagerStatefulPolicy `json:"statefulPolicy,omitempty"`
 
 	// +optional
-	TargetPools []v1alpha1.ResourceRef `json:"targetPools,omitempty"`
+	TargetPools []k8sv1alpha1.ResourceRef `json:"targetPools,omitempty"`
 
 	/* The target number of running instances for this managed instance group. You can reduce this number by using the instanceGroupManager deleteInstances or abandonInstances methods. Resizing the group also changes this number. */
 	TargetSize InstancegroupmanagerTargetSize `json:"targetSize"`
@@ -357,7 +357,7 @@ type InstancegroupmanagerVersionTargetStatus struct {
 type ComputeInstanceGroupManagerStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeInstanceGroupManager's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* The creation timestamp for this managed instance group in \[RFC3339\](https://www.ietf.org/rfc/rfc3339.txt) text format. */
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`

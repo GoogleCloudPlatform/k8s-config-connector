@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -65,7 +65,7 @@ type ClusterAutoscaling struct {
 type ClusterAutoscalingConfig struct {
 	/* Immutable. */
 	// +optional
-	PolicyRef *v1alpha1.ResourceRef `json:"policyRef,omitempty"`
+	PolicyRef *k8sv1alpha1.ResourceRef `json:"policyRef,omitempty"`
 }
 
 type ClusterAuxiliaryServicesConfig struct {
@@ -144,7 +144,7 @@ type ClusterDiskConfig struct {
 type ClusterEncryptionConfig struct {
 	/* Immutable. */
 	// +optional
-	GcePdKmsKeyRef *v1alpha1.ResourceRef `json:"gcePdKmsKeyRef,omitempty"`
+	GcePdKmsKeyRef *k8sv1alpha1.ResourceRef `json:"gcePdKmsKeyRef,omitempty"`
 }
 
 type ClusterEndpointConfig struct {
@@ -174,7 +174,7 @@ type ClusterGceClusterConfig struct {
 
 	/* Immutable. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Immutable. Optional. Node Group Affinity for sole-tenant clusters. */
 	// +optional
@@ -190,7 +190,7 @@ type ClusterGceClusterConfig struct {
 
 	/* Immutable. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Immutable. Optional. The URIs of service account scopes to be included in Compute Engine instances. The following base set of scopes is always included: * https://www.googleapis.com/auth/cloud.useraccounts.readonly * https://www.googleapis.com/auth/devstorage.read_write * https://www.googleapis.com/auth/logging.write If no scopes are specified, the following defaults are also provided: * https://www.googleapis.com/auth/bigquery * https://www.googleapis.com/auth/bigtable.admin.table * https://www.googleapis.com/auth/bigtable.data * https://www.googleapis.com/auth/devstorage.full_control */
 	// +optional
@@ -202,7 +202,7 @@ type ClusterGceClusterConfig struct {
 
 	/* Immutable. */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
 	/* Immutable. The Compute Engine tags to add to all instances (see [Tagging instances](https://cloud.google.com/compute/docs/label-or-tag-resources#tags)). */
 	// +optional
@@ -216,7 +216,7 @@ type ClusterGceClusterConfig struct {
 type ClusterGkeClusterConfig struct {
 	/* Immutable. */
 	// +optional
-	GkeClusterTargetRef *v1alpha1.ResourceRef `json:"gkeClusterTargetRef,omitempty"`
+	GkeClusterTargetRef *k8sv1alpha1.ResourceRef `json:"gkeClusterTargetRef,omitempty"`
 
 	/* Immutable. Optional. GKE node pools where workloads will be scheduled. At least one node pool must be assigned the `DEFAULT` GkeNodePoolTarget.Role. If a `GkeNodePoolTarget` is not specified, Dataproc constructs a `DEFAULT` `GkeNodePoolTarget`. Each role can be given to only one `GkeNodePoolTarget`. All node pools must have the same location settings. */
 	// +optional
@@ -276,7 +276,7 @@ type ClusterKerberosConfig struct {
 
 	/* Immutable. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* Immutable. Optional. The name of the on-cluster Kerberos realm. If not specified, the uppercased domain of hostnames will be the realm. */
 	// +optional
@@ -347,7 +347,7 @@ type ClusterMasterConfig struct {
 
 	/* Immutable. */
 	// +optional
-	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
+	ImageRef *k8sv1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
 	/* Immutable. Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
 	// +optional
@@ -368,7 +368,7 @@ type ClusterMasterConfig struct {
 
 type ClusterMetastoreConfig struct {
 	/* Immutable. */
-	DataprocMetastoreServiceRef v1alpha1.ResourceRef `json:"dataprocMetastoreServiceRef"`
+	DataprocMetastoreServiceRef k8sv1alpha1.ResourceRef `json:"dataprocMetastoreServiceRef"`
 }
 
 type ClusterMetrics struct {
@@ -382,7 +382,7 @@ type ClusterMetrics struct {
 
 type ClusterNodeGroupAffinity struct {
 	/* Immutable. */
-	NodeGroupRef v1alpha1.ResourceRef `json:"nodeGroupRef"`
+	NodeGroupRef k8sv1alpha1.ResourceRef `json:"nodeGroupRef"`
 }
 
 type ClusterNodePoolConfig struct {
@@ -405,7 +405,7 @@ type ClusterNodePoolTarget struct {
 	NodePoolConfig *ClusterNodePoolConfig `json:"nodePoolConfig,omitempty"`
 
 	/* Immutable. */
-	NodePoolRef v1alpha1.ResourceRef `json:"nodePoolRef"`
+	NodePoolRef k8sv1alpha1.ResourceRef `json:"nodePoolRef"`
 
 	/* Immutable. Required. The roles associated with the GKE node pool. */
 	Roles []string `json:"roles"`
@@ -436,7 +436,7 @@ type ClusterSecondaryWorkerConfig struct {
 
 	/* Immutable. */
 	// +optional
-	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
+	ImageRef *k8sv1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
 	/* Immutable. Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
 	// +optional
@@ -496,7 +496,7 @@ type ClusterSoftwareConfig struct {
 type ClusterSparkHistoryServerConfig struct {
 	/* Immutable. */
 	// +optional
-	DataprocClusterRef *v1alpha1.ResourceRef `json:"dataprocClusterRef,omitempty"`
+	DataprocClusterRef *k8sv1alpha1.ResourceRef `json:"dataprocClusterRef,omitempty"`
 }
 
 type ClusterVirtualClusterConfig struct {
@@ -509,7 +509,7 @@ type ClusterVirtualClusterConfig struct {
 
 	/* Immutable. */
 	// +optional
-	StagingBucketRef *v1alpha1.ResourceRef `json:"stagingBucketRef,omitempty"`
+	StagingBucketRef *k8sv1alpha1.ResourceRef `json:"stagingBucketRef,omitempty"`
 }
 
 type ClusterWorkerConfig struct {
@@ -523,7 +523,7 @@ type ClusterWorkerConfig struct {
 
 	/* Immutable. */
 	// +optional
-	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
+	ImageRef *k8sv1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
 	/* Immutable. Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
 	// +optional
@@ -552,7 +552,7 @@ type DataprocClusterSpec struct {
 
 	/* Immutable. The Project that this resource belongs to. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -723,7 +723,7 @@ type ClusterWorkerConfigStatus struct {
 type DataprocClusterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataprocCluster's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. A cluster UUID (Unique Universal Identifier). Dataproc generates this value when it creates the cluster. */
 	// +optional
 	ClusterUuid *string `json:"clusterUuid,omitempty"`

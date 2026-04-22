@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -63,7 +63,7 @@ type ApigeeInstanceSpec struct {
 
 	/* Customer Managed Encryption Key (CMEK) used for disk and volume encryption. If not specified, a Google-Managed encryption key will be used. */
 	// +optional
-	DiskEncryptionKMSCryptoKeyRef *v1alpha1.ResourceRef `json:"diskEncryptionKMSCryptoKeyRef,omitempty"`
+	DiskEncryptionKMSCryptoKeyRef *k8sv1alpha1.ResourceRef `json:"diskEncryptionKMSCryptoKeyRef,omitempty"`
 
 	/* Optional. Display name for the instance. */
 	// +optional
@@ -77,7 +77,7 @@ type ApigeeInstanceSpec struct {
 	Location string `json:"location"`
 
 	/* Reference to parent Apigee Organization. */
-	OrganizationRef v1alpha1.ResourceRef `json:"organizationRef"`
+	OrganizationRef k8sv1alpha1.ResourceRef `json:"organizationRef"`
 
 	/* Optional. Size of the CIDR block range that will be reserved by the instance. PAID organizations support `SLASH_16` to `SLASH_20` and defaults to `SLASH_16`. Evaluation organizations support only `SLASH_23`. */
 	// +optional
@@ -121,7 +121,7 @@ type InstanceObservedStateStatus struct {
 type ApigeeInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ApigeeInstance's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the ApigeeInstance resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

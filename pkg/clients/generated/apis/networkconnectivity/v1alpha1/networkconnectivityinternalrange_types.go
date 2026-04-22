@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -71,7 +71,7 @@ type NetworkConnectivityInternalRangeSpec struct {
 
 	/* The network in which to reserve the internal range. The network cannot be deleted if there are any reserved internal ranges referring to it. Legacy networks are not supported. For example: https://www.googleapis.com/compute/v1/projects/{project}/locations/global/networks/{network} projects/{project}/locations/global/networks/{network} {network} */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Optional. Types of resources that are allowed to overlap with the current internal range. */
 	// +optional
@@ -87,7 +87,7 @@ type NetworkConnectivityInternalRangeSpec struct {
 
 	/* Required. The host project of the application. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* The NetworkConnectivityInternalRange name. If not given, the metadata.name will be used. */
 	// +optional
@@ -119,7 +119,7 @@ type InternalrangeObservedStateStatus struct {
 type NetworkConnectivityInternalRangeStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NetworkConnectivityInternalRange's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the NetworkConnectivityInternalRange resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

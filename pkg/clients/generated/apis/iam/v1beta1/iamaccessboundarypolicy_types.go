@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -87,7 +87,7 @@ type IAMAccessBoundaryPolicySpec struct {
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -100,7 +100,7 @@ type IAMAccessBoundaryPolicySpec struct {
 type IAMAccessBoundaryPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   IAMAccessBoundaryPolicy's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* The hash of the resource. Used internally during updates. */
 	// +optional
 	Etag *string `json:"etag,omitempty"`

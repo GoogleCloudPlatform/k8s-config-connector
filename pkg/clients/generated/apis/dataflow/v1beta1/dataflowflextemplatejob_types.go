@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -66,7 +66,7 @@ type DataflowFlexTemplateJobSpec struct {
 
 	/* The Cloud KMS key for the job. */
 	// +optional
-	KmsKeyNameRef *v1alpha1.ResourceRef `json:"kmsKeyNameRef,omitempty"`
+	KmsKeyNameRef *k8sv1alpha1.ResourceRef `json:"kmsKeyNameRef,omitempty"`
 
 	/* The machine type to use for launching the job. The default is n1-standard-1. */
 	// +optional
@@ -82,7 +82,7 @@ type DataflowFlexTemplateJobSpec struct {
 
 	/* Network to which VMs will be assigned.  If empty or unspecified, the service will use the network "default". */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* The initial number of Google Compute Engine instances for the job. */
 	// +optional
@@ -102,7 +102,7 @@ type DataflowFlexTemplateJobSpec struct {
 
 	/* The email address of the service account to run the job as. */
 	// +optional
-	ServiceAccountEmailRef *v1alpha1.ResourceRef `json:"serviceAccountEmailRef,omitempty"`
+	ServiceAccountEmailRef *k8sv1alpha1.ResourceRef `json:"serviceAccountEmailRef,omitempty"`
 
 	/* The Cloud Storage path for staging local files. Must be a valid Cloud Storage URL, beginning with `gs://`. */
 	// +optional
@@ -110,7 +110,7 @@ type DataflowFlexTemplateJobSpec struct {
 
 	/* Subnetwork to which VMs will be assigned, if desired. You can specify a subnetwork using either a complete URL or an abbreviated path. Expected to be of the form "https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK" or "regions/REGION/subnetworks/SUBNETWORK". If the subnetwork is located in a Shared VPC network, you must use the complete URL. */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
 	/* The Cloud Storage path to use for temporary files. Must be a valid Cloud Storage URL, beginning with `gs://`. */
 	// +optional
@@ -124,7 +124,7 @@ type DataflowFlexTemplateJobSpec struct {
 type DataflowFlexTemplateJobStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataflowFlexTemplateJob's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	// +optional
 	JobId *string `json:"jobId,omitempty"`
 

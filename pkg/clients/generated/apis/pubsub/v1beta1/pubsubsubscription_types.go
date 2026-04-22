@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -51,7 +51,7 @@ type SubscriptionBigqueryConfig struct {
 	DropUnknownFields *bool `json:"dropUnknownFields,omitempty"`
 
 	/* The name of the table to which to write data. */
-	TableRef v1alpha1.ResourceRef `json:"tableRef"`
+	TableRef k8sv1alpha1.ResourceRef `json:"tableRef"`
 
 	/* When true, use the topic's schema as the columns to write to in BigQuery, if it exists. */
 	// +optional
@@ -69,7 +69,7 @@ type SubscriptionCloudStorageConfig struct {
 	AvroConfig *SubscriptionAvroConfig `json:"avroConfig,omitempty"`
 
 	/* User-provided name for the Cloud Storage bucket. The bucket must be created by the user. The bucket name must be without any prefix like "gs://". */
-	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
+	BucketRef k8sv1alpha1.ResourceRef `json:"bucketRef"`
 
 	/* User-provided prefix for Cloud Storage filename. */
 	// +optional
@@ -97,7 +97,7 @@ type SubscriptionCloudStorageConfig struct {
 
 type SubscriptionDeadLetterPolicy struct {
 	// +optional
-	DeadLetterTopicRef *v1alpha1.ResourceRef `json:"deadLetterTopicRef,omitempty"`
+	DeadLetterTopicRef *k8sv1alpha1.ResourceRef `json:"deadLetterTopicRef,omitempty"`
 
 	/* The maximum number of delivery attempts for any message. The value must be
 	between 5 and 100.
@@ -320,13 +320,13 @@ type PubSubSubscriptionSpec struct {
 	RetryPolicy *SubscriptionRetryPolicy `json:"retryPolicy,omitempty"`
 
 	/* Reference to a PubSubTopic. */
-	TopicRef v1alpha1.ResourceRef `json:"topicRef"`
+	TopicRef k8sv1alpha1.ResourceRef `json:"topicRef"`
 }
 
 type PubSubSubscriptionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   PubSubSubscription's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

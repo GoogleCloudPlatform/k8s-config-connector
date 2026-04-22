@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -49,7 +49,7 @@ type WorkflowsWorkflowSpec struct {
 
 	/* Optional. The resource name of a KMS crypto key used to encrypt or decrypt the data associated with the workflow. If not provided, data associated with the workflow will not be CMEK-encrypted. */
 	// +optional
-	KmsCryptoKeyRef *v1alpha1.ResourceRef `json:"kmsCryptoKeyRef,omitempty"`
+	KmsCryptoKeyRef *k8sv1alpha1.ResourceRef `json:"kmsCryptoKeyRef,omitempty"`
 
 	/* Labels associated with this workflow. Labels can contain at most 64 entries. Keys and values can be no longer than 63 characters and can only contain lowercase letters, numeric characters, underscores, and dashes. Label keys must start with a letter. International characters are allowed. */
 	// +optional
@@ -59,7 +59,7 @@ type WorkflowsWorkflowSpec struct {
 	Location string `json:"location"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The Workflow name. If not given, the metadata.name will be used. */
 	// +optional
@@ -67,7 +67,7 @@ type WorkflowsWorkflowSpec struct {
 
 	/* The service account associated with the latest workflow version. This service account represents the identity of the workflow and determines what permissions the workflow has. If not provided, workflow will use the project's default service account. Modifying this field for an existing workflow results in a new workflow revision. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Required. Workflow code to be executed. The size limit is 128KB. */
 	SourceContents string `json:"sourceContents"`
@@ -116,7 +116,7 @@ type WorkflowStateErrorStatus struct {
 type WorkflowsWorkflowStatus struct {
 	/* Conditions represent the latest available observations of the
 	   WorkflowsWorkflow's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the Workflow resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

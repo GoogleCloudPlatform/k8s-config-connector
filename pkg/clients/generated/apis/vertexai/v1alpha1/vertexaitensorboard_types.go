@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -57,7 +57,7 @@ type VertexAITensorboardSpec struct {
 	EncryptionSpec *TensorboardEncryptionSpec `json:"encryptionSpec,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. The region of the tensorboard. eg us-central1. */
 	Region string `json:"region"`
@@ -70,7 +70,7 @@ type VertexAITensorboardSpec struct {
 type VertexAITensorboardStatus struct {
 	/* Conditions represent the latest available observations of the
 	   VertexAITensorboard's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Consumer project Cloud Storage path prefix used to store blob data, which can either be a bucket or directory. Does not end with a '/'. */
 	// +optional
 	BlobStoragePathPrefix *string `json:"blobStoragePathPrefix,omitempty"`

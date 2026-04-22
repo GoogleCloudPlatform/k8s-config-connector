@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -52,7 +52,7 @@ type InstanceendpointEndpoints struct {
 
 type InstanceendpointPscConnection struct {
 	/* Required. The consumer side forwarding rule. */
-	ForwardingRuleRef v1alpha1.ResourceRef `json:"forwardingRuleRef"`
+	ForwardingRuleRef k8sv1alpha1.ResourceRef `json:"forwardingRuleRef"`
 
 	/* Optional. The port number of the PSC connection. Port will only be set for Primary/Reader or Discovery endpoint. */
 	// +optional
@@ -65,7 +65,7 @@ type MemorystoreInstanceEndpointSpec struct {
 	Endpoints []InstanceendpointEndpoints `json:"endpoints,omitempty"`
 
 	/* Required. The Memorystore instance reference of the endpoint. */
-	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
+	InstanceRef k8sv1alpha1.ResourceRef `json:"instanceRef"`
 
 	/* Optional. The MemorystoreInstanceEndpoint name. If not given, the metadata.name will be used. */
 	// +optional
@@ -107,7 +107,7 @@ type InstanceendpointPscConnectionStatus struct {
 type MemorystoreInstanceEndpointStatus struct {
 	/* Conditions represent the latest available observations of the
 	   MemorystoreInstanceEndpoint's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

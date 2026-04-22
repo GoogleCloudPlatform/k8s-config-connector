@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -41,11 +41,11 @@ var _ = apiextensionsv1.JSON{}
 type NodepoolAdditionalNodeNetworkConfigs struct {
 	/* Immutable. Name of the VPC where the additional interface belongs. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Immutable. Name of the subnetwork where the additional interface belongs. */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type NodepoolAdditionalPodNetworkConfigs struct {
@@ -59,7 +59,7 @@ type NodepoolAdditionalPodNetworkConfigs struct {
 
 	/* Immutable. Name of the subnetwork where the additional pod network belongs. */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type NodepoolAdvancedMachineFeatures struct {
@@ -248,7 +248,7 @@ type NodepoolNetworkConfig struct {
 
 	/* Immutable. The subnetwork path for the node pool. Format: projects/{project}/regions/{region}/subnetworks/{subnetwork}. If not set, the provider/API will choose the subnetwork (e.g. based on IP utilization) and report it here. */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type NodepoolNodeAffinity struct {
@@ -268,7 +268,7 @@ type NodepoolNodeConfig struct {
 	AdvancedMachineFeatures *NodepoolAdvancedMachineFeatures `json:"advancedMachineFeatures,omitempty"`
 
 	// +optional
-	BootDiskKMSCryptoKeyRef *v1alpha1.ResourceRef `json:"bootDiskKMSCryptoKeyRef,omitempty"`
+	BootDiskKMSCryptoKeyRef *k8sv1alpha1.ResourceRef `json:"bootDiskKMSCryptoKeyRef,omitempty"`
 
 	/* Immutable. Configuration for the confidential nodes feature, which makes nodes run on confidential VMs. Warning: This configuration can't be changed (or added/removed) after pool creation without deleting and recreating the entire pool. */
 	// +optional
@@ -354,7 +354,7 @@ type NodepoolNodeConfig struct {
 	of this pool to run on the specified node group. This is useful
 	for running workloads on sole tenant nodes. */
 	// +optional
-	NodeGroupRef *v1alpha1.ResourceRef `json:"nodeGroupRef,omitempty"`
+	NodeGroupRef *k8sv1alpha1.ResourceRef `json:"nodeGroupRef,omitempty"`
 
 	/* Immutable. The set of Google API scopes to be made available on all of the node VMs. */
 	// +optional
@@ -377,7 +377,7 @@ type NodepoolNodeConfig struct {
 	SandboxConfig *NodepoolSandboxConfig `json:"sandboxConfig,omitempty"`
 
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Immutable. Shielded Instance options. */
 	// +optional
@@ -407,7 +407,7 @@ type NodepoolNodeConfig struct {
 type NodepoolPlacementPolicy struct {
 	/* Immutable. If set, refers to the name of a custom resource policy supplied by the user. The resource policy must be in the same project and region as the node pool. If not found, InvalidArgument error is returned. */
 	// +optional
-	PolicyNameRef *v1alpha1.ResourceRef `json:"policyNameRef,omitempty"`
+	PolicyNameRef *k8sv1alpha1.ResourceRef `json:"policyNameRef,omitempty"`
 
 	/* TPU placement topology for pod slice node pool. https://cloud.google.com/tpu/docs/types-topologies#tpu_topologies. */
 	// +optional
@@ -512,7 +512,7 @@ type ContainerNodePoolSpec struct {
 	// +optional
 	Autoscaling *NodepoolAutoscaling `json:"autoscaling,omitempty"`
 
-	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
+	ClusterRef k8sv1alpha1.ResourceRef `json:"clusterRef"`
 
 	/* Immutable. The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource. */
 	// +optional
@@ -573,7 +573,7 @@ type NodepoolObservedStateStatus struct {
 type ContainerNodePoolStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ContainerNodePool's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* The resource URLs of the managed instance groups associated with this node pool. */
 	// +optional
 	InstanceGroupUrls []string `json:"instanceGroupUrls,omitempty"`

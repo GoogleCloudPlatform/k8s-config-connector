@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -41,11 +41,11 @@ var _ = apiextensionsv1.JSON{}
 type NetworkpeeringPeerNetwork struct {
 	/* Reference to a ComputeNetwork. Exactly one of VMwareEngineNetworkRef or ComputeNetworkRef must be specified. */
 	// +optional
-	ComputeNetworkRef *v1alpha1.ResourceRef `json:"computeNetworkRef,omitempty"`
+	ComputeNetworkRef *k8sv1alpha1.ResourceRef `json:"computeNetworkRef,omitempty"`
 
 	/* Reference to a VmwareEngineNetwork. Exactly one of VMwareEngineNetworkRef or ComputeNetworkRef must be specified. */
 	// +optional
-	VmwareEngineNetworkRef *v1alpha1.ResourceRef `json:"vmwareEngineNetworkRef,omitempty"`
+	VmwareEngineNetworkRef *k8sv1alpha1.ResourceRef `json:"vmwareEngineNetworkRef,omitempty"`
 }
 
 type VMwareEngineNetworkPeeringSpec struct {
@@ -87,14 +87,14 @@ type VMwareEngineNetworkPeeringSpec struct {
 	PeerNetworkType string `json:"peerNetworkType"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The VMwareEngineNetworkPeering name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Required. The relative resource name of the VMware Engine network. */
-	VmwareEngineNetworkRef v1alpha1.ResourceRef `json:"vmwareEngineNetworkRef"`
+	VmwareEngineNetworkRef k8sv1alpha1.ResourceRef `json:"vmwareEngineNetworkRef"`
 }
 
 type NetworkpeeringObservedStateStatus struct {
@@ -122,7 +122,7 @@ type NetworkpeeringObservedStateStatus struct {
 type VMwareEngineNetworkPeeringStatus struct {
 	/* Conditions represent the latest available observations of the
 	   VMwareEngineNetworkPeering's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the VMwareEngineNetworkPeering resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

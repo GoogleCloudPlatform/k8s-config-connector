@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -184,7 +184,7 @@ type RedisInstanceSpec struct {
 	/* The network to which the instance is connected. If left
 	unspecified, the default network will be used. */
 	// +optional
-	AuthorizedNetworkRef *v1alpha1.ResourceRef `json:"authorizedNetworkRef,omitempty"`
+	AuthorizedNetworkRef *k8sv1alpha1.ResourceRef `json:"authorizedNetworkRef,omitempty"`
 
 	/* Immutable. The connection mode of the Redis instance. Default value: "DIRECT_PEERING" Possible values: ["DIRECT_PEERING", "PRIVATE_SERVICE_ACCESS"]. */
 	// +optional
@@ -194,7 +194,7 @@ type RedisInstanceSpec struct {
 	encrypt the data at rest for this Redis instance. If this is
 	provided, CMEK is enabled. */
 	// +optional
-	CustomerManagedKeyRef *v1alpha1.ResourceRef `json:"customerManagedKeyRef,omitempty"`
+	CustomerManagedKeyRef *k8sv1alpha1.ResourceRef `json:"customerManagedKeyRef,omitempty"`
 
 	/* An arbitrary and optional user-provided name for the instance. */
 	// +optional
@@ -349,7 +349,7 @@ type InstanceServerCaCertsStatus struct {
 type RedisInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   RedisInstance's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* The time the instance was created in RFC3339 UTC "Zulu" format,
 	accurate to nanoseconds. */
 	// +optional

@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -58,7 +58,7 @@ type AutokeyconfigKeyProject struct {
 
 type KMSAutokeyConfigSpec struct {
 	/* Immutable. The folder that this resource belongs to. */
-	FolderRef v1alpha1.ResourceRef `json:"folderRef"`
+	FolderRef k8sv1alpha1.ResourceRef `json:"folderRef"`
 
 	/* The Project that this resource belongs to. */
 	// +optional
@@ -74,7 +74,7 @@ type AutokeyconfigObservedStateStatus struct {
 type KMSAutokeyConfigStatus struct {
 	/* Conditions represent the latest available observations of the
 	   KMSAutokeyConfig's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the KMSAutokeyConfig resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

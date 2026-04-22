@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -77,7 +77,7 @@ type GrpcrouteDelay struct {
 }
 
 type GrpcrouteDestinations struct {
-	ServiceRef v1alpha1.ResourceRef `json:"serviceRef"`
+	ServiceRef k8sv1alpha1.ResourceRef `json:"serviceRef"`
 
 	/* Optional. Specifies the proportion of requests forwarded to the backend referenced by the serviceName field. This is computed as: weight/Sum(weights in this destination list). For non-zero values, there may be some epsilon from the exact proportion defined here depending on the precision an implementation supports. If only one serviceName is specified and it has a weight greater than 0, 100% of the traffic is forwarded to that backend. If weights are specified for any one service name, they need to be specified for all of them. If weights are unspecified for all services, then, traffic is distributed in equal proportions to all of them. */
 	// +optional
@@ -157,7 +157,7 @@ type NetworkServicesGRPCRouteSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	// +optional
-	Gateways []v1alpha1.ResourceRef `json:"gateways,omitempty"`
+	Gateways []k8sv1alpha1.ResourceRef `json:"gateways,omitempty"`
 
 	/* Required. Service hostnames with an optional port for which this route describes traffic. Format: [:] Hostname is the fully qualified domain name of a network host. This matches the RFC 1123 definition of a hostname with 2 notable exceptions: - IPs are not allowed. - A hostname may be prefixed with a wildcard label (*.). The wildcard label must appear by itself as the first label. Hostname can be “precise” which is a domain name without the terminating dot of a network host (e.g. “foo.example.com”) or “wildcard”, which is a domain name prefixed with a single wildcard label (e.g. *.example.com). Note that as per RFC1035 and RFC1123, a label must consist of lower case alphanumeric characters or ‘-’, and must start and end with an alphanumeric character. No other punctuation is allowed. The routes associated with a Router must have unique hostnames. If you attempt to attach multiple routes with conflicting hostnames, the configuration will be rejected. For example, while it is acceptable for routes for the hostnames "*.foo.bar.com" and "*.bar.com" to be associated with the same route, it is not possible to associate two routes both with "*.bar.com" or both with "bar.com". In the case that multiple routes match the hostname, the most specific match will be selected. For example, "foo.bar.baz.com" will take precedence over "*.bar.baz.com" and "*.bar.baz.com" will take precedence over "*.baz.com". If a port is specified, then gRPC clients must use the channel URI with the port to match this rule (i.e. "xds:///service:123"), otherwise they must supply the URI without a port (i.e. "xds:///service"). */
 	Hostnames []string `json:"hostnames"`
@@ -166,10 +166,10 @@ type NetworkServicesGRPCRouteSpec struct {
 	Location string `json:"location"`
 
 	// +optional
-	Meshes []v1alpha1.ResourceRef `json:"meshes,omitempty"`
+	Meshes []k8sv1alpha1.ResourceRef `json:"meshes,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -182,7 +182,7 @@ type NetworkServicesGRPCRouteSpec struct {
 type NetworkServicesGRPCRouteStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NetworkServicesGRPCRoute's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The timestamp when the resource was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`

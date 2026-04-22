@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -51,12 +51,12 @@ type SnapshotRawKey struct {
 type SnapshotSnapshotEncryptionKey struct {
 	/* The encryption key that is stored in Google Cloud KMS. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* The service account used for the encryption request for the given KMS key.
 	If absent, the Compute Engine Service Agent service account is used. */
 	// +optional
-	KmsKeyServiceAccountRef *v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
+	KmsKeyServiceAccountRef *k8sv1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
 
 	/* Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
 	RFC 4648 base64 to either encrypt or decrypt this resource. */
@@ -73,7 +73,7 @@ type SnapshotSourceDiskEncryptionKey struct {
 	/* The service account used for the encryption request for the given KMS key.
 	If absent, the Compute Engine Service Agent service account is used. */
 	// +optional
-	KmsKeyServiceAccountRef *v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
+	KmsKeyServiceAccountRef *k8sv1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
 
 	/* Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
 	RFC 4648 base64 to either encrypt or decrypt this resource. */
@@ -84,7 +84,7 @@ type SnapshotSourceDiskEncryptionKey struct {
 type SnapshotValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *k8sv1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type ComputeSnapshotSpec struct {
@@ -128,7 +128,7 @@ type ComputeSnapshotSpec struct {
 	SourceDiskEncryptionKey *SnapshotSourceDiskEncryptionKey `json:"sourceDiskEncryptionKey,omitempty"`
 
 	/* A reference to the disk used to create this snapshot. */
-	SourceDiskRef v1alpha1.ResourceRef `json:"sourceDiskRef"`
+	SourceDiskRef k8sv1alpha1.ResourceRef `json:"sourceDiskRef"`
 
 	/* Immutable. Cloud Storage bucket storage location of the snapshot (regional or multi-regional). */
 	// +optional
@@ -142,7 +142,7 @@ type ComputeSnapshotSpec struct {
 type ComputeSnapshotStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeSnapshot's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`

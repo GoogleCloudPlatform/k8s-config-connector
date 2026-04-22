@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -41,13 +41,13 @@ var _ = apiextensionsv1.JSON{}
 type TargetAnthosCluster struct {
 	/* Optional. Membership of the GKE Hub-registered cluster to which to apply the Skaffold configuration. Format is `projects/{project}/locations/{location}/memberships/{membership_name}`. */
 	// +optional
-	MembershipRef *v1alpha1.ResourceRef `json:"membershipRef,omitempty"`
+	MembershipRef *k8sv1alpha1.ResourceRef `json:"membershipRef,omitempty"`
 }
 
 type TargetAnthosClusters struct {
 	/* Optional. Membership of the GKE Hub-registered cluster to which to apply the Skaffold configuration. Format is `projects/{project}/locations/{location}/memberships/{membership_name}`. */
 	// +optional
-	MembershipRef *v1alpha1.ResourceRef `json:"membershipRef,omitempty"`
+	MembershipRef *k8sv1alpha1.ResourceRef `json:"membershipRef,omitempty"`
 }
 
 type TargetAssociatedEntities struct {
@@ -63,7 +63,7 @@ type TargetAssociatedEntities struct {
 type TargetCustomTarget struct {
 	/* Required. The name of the CustomTargetType. */
 	// +optional
-	CustomTargetTypeRef *v1alpha1.ResourceRef `json:"customTargetTypeRef,omitempty"`
+	CustomTargetTypeRef *k8sv1alpha1.ResourceRef `json:"customTargetTypeRef,omitempty"`
 }
 
 type TargetDefaultPool struct {
@@ -73,7 +73,7 @@ type TargetDefaultPool struct {
 
 	/* Optional. Google service account to use for execution. If unspecified, the project execution service account (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com) will be used. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type TargetExecutionConfigs struct {
@@ -95,7 +95,7 @@ type TargetExecutionConfigs struct {
 
 	/* Optional. Google service account to use for execution. If unspecified, the project execution service account (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com) is used. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Required. Usages when this configuration should be applied. */
 	// +optional
@@ -107,13 +107,13 @@ type TargetExecutionConfigs struct {
 
 	/* Optional. The resource name of the `WorkerPool`, with the format `projects/{project}/locations/{location}/workerPools/{worker_pool}`. If this optional field is unspecified, the default Cloud Build pool will be used. */
 	// +optional
-	WorkerPoolRef *v1alpha1.ResourceRef `json:"workerPoolRef,omitempty"`
+	WorkerPoolRef *k8sv1alpha1.ResourceRef `json:"workerPoolRef,omitempty"`
 }
 
 type TargetGke struct {
 	/* Optional. Information specifying a GKE Cluster. Format is `projects/{project_id}/locations/{location_id}/clusters/{cluster_id}`. */
 	// +optional
-	ClusterRef *v1alpha1.ResourceRef `json:"clusterRef,omitempty"`
+	ClusterRef *k8sv1alpha1.ResourceRef `json:"clusterRef,omitempty"`
 
 	/* Optional. If set, the cluster will be accessed using the DNS endpoint. Note that both `dns_endpoint` and `internal_ip` cannot be set to true. */
 	// +optional
@@ -139,7 +139,7 @@ type TargetGke struct {
 type TargetGkeClusters struct {
 	/* Optional. Information specifying a GKE Cluster. Format is `projects/{project_id}/locations/{location_id}/clusters/{cluster_id}`. */
 	// +optional
-	ClusterRef *v1alpha1.ResourceRef `json:"clusterRef,omitempty"`
+	ClusterRef *k8sv1alpha1.ResourceRef `json:"clusterRef,omitempty"`
 
 	/* Optional. If set, the cluster will be accessed using the DNS endpoint. Note that both `dns_endpoint` and `internal_ip` cannot be set to true. */
 	// +optional
@@ -165,7 +165,7 @@ type TargetGkeClusters struct {
 type TargetMultiTarget struct {
 	/* Required. The target_ids of this multiTarget. */
 	// +optional
-	TargetRefs []v1alpha1.ResourceRef `json:"targetRefs,omitempty"`
+	TargetRefs []k8sv1alpha1.ResourceRef `json:"targetRefs,omitempty"`
 }
 
 type TargetPrivatePool struct {
@@ -175,11 +175,11 @@ type TargetPrivatePool struct {
 
 	/* Optional. Google service account to use for execution. If unspecified, the project execution service account (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com) will be used. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Required. Resource name of the Cloud Build worker pool to use. The format is `projects/{project}/locations/{location}/workerPools/{pool}`. */
 	// +optional
-	WorkerPoolRef *v1alpha1.ResourceRef `json:"workerPoolRef,omitempty"`
+	WorkerPoolRef *k8sv1alpha1.ResourceRef `json:"workerPoolRef,omitempty"`
 }
 
 type TargetRun struct {
@@ -229,7 +229,7 @@ type CloudDeployTargetSpec struct {
 	MultiTarget *TargetMultiTarget `json:"multiTarget,omitempty"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Optional. Whether or not the `Target` requires approval. */
 	// +optional
@@ -269,7 +269,7 @@ type TargetObservedStateStatus struct {
 type CloudDeployTargetStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CloudDeployTarget's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the CloudDeployTarget resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -142,10 +142,10 @@ type UrlmapDefaultRouteAction struct {
 
 type UrlmapDefaultService struct {
 	// +optional
-	BackendBucketRef *v1alpha1.ResourceRef `json:"backendBucketRef,omitempty"`
+	BackendBucketRef *k8sv1alpha1.ResourceRef `json:"backendBucketRef,omitempty"`
 
 	// +optional
-	BackendServiceRef *v1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
+	BackendServiceRef *k8sv1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
 }
 
 type UrlmapDefaultUrlRedirect struct {
@@ -582,7 +582,7 @@ type UrlmapRequestHeadersToAdd struct {
 
 type UrlmapRequestMirrorPolicy struct {
 	/* Required. The backend service resource being mirrored to. */
-	BackendServiceRef v1alpha1.ResourceRef `json:"backendServiceRef"`
+	BackendServiceRef k8sv1alpha1.ResourceRef `json:"backendServiceRef"`
 }
 
 type UrlmapResponseHeadersToAdd struct {
@@ -740,10 +740,10 @@ type UrlmapRouteRules struct {
 
 type UrlmapService struct {
 	// +optional
-	BackendBucketRef *v1alpha1.ResourceRef `json:"backendBucketRef,omitempty"`
+	BackendBucketRef *k8sv1alpha1.ResourceRef `json:"backendBucketRef,omitempty"`
 
 	// +optional
-	BackendServiceRef *v1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
+	BackendServiceRef *k8sv1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
 }
 
 type UrlmapTest struct {
@@ -867,7 +867,7 @@ type UrlmapWeightedBackendServices struct {
 	/* Required. The default backend service resource. Before forwarding
 	the request to backendService, the loadbalancer applies any relevant
 	headerActions specified as part of this backendServiceWeight. */
-	BackendServiceRef v1alpha1.ResourceRef `json:"backendServiceRef"`
+	BackendServiceRef k8sv1alpha1.ResourceRef `json:"backendServiceRef"`
 
 	/* Specifies changes to request and response headers that need to take effect for
 	the selected backendService. headerAction specified here take effect before
@@ -950,7 +950,7 @@ type ComputeURLMapSpec struct {
 type ComputeURLMapStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeURLMap's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`

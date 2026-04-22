@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -45,17 +45,17 @@ type LogsinkBigqueryOptions struct {
 
 type LogsinkDestination struct {
 	// +optional
-	BigQueryDatasetRef *v1alpha1.ResourceRef `json:"bigQueryDatasetRef,omitempty"`
+	BigQueryDatasetRef *k8sv1alpha1.ResourceRef `json:"bigQueryDatasetRef,omitempty"`
 
 	/* Only `external` field is supported to configure the reference. */
 	// +optional
-	LoggingLogBucketRef *v1alpha1.ResourceRef `json:"loggingLogBucketRef,omitempty"`
+	LoggingLogBucketRef *k8sv1alpha1.ResourceRef `json:"loggingLogBucketRef,omitempty"`
 
 	// +optional
-	PubSubTopicRef *v1alpha1.ResourceRef `json:"pubSubTopicRef,omitempty"`
+	PubSubTopicRef *k8sv1alpha1.ResourceRef `json:"pubSubTopicRef,omitempty"`
 
 	// +optional
-	StorageBucketRef *v1alpha1.ResourceRef `json:"storageBucketRef,omitempty"`
+	StorageBucketRef *k8sv1alpha1.ResourceRef `json:"storageBucketRef,omitempty"`
 }
 
 type LogsinkExclusions struct {
@@ -100,7 +100,7 @@ type LoggingLogSinkSpec struct {
 	/* The folder in which to create the sink. Only one of projectRef,
 	folderRef, or organizationRef may be specified. */
 	// +optional
-	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+	FolderRef *k8sv1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
 	/* Immutable. Whether or not to include children organizations in the sink export. If true, logs associated with child projects are also exported; otherwise only logs relating to the provided organization are included. */
 	// +optional
@@ -109,12 +109,12 @@ type LoggingLogSinkSpec struct {
 	/* The organization in which to create the sink. Only one of projectRef,
 	folderRef, or organizationRef may be specified. */
 	// +optional
-	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+	OrganizationRef *k8sv1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
 	/* The project in which to create the sink. Only one of projectRef,
 	folderRef, or organizationRef may be specified. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -128,7 +128,7 @@ type LoggingLogSinkSpec struct {
 type LoggingLogSinkStatus struct {
 	/* Conditions represent the latest available observations of the
 	   LoggingLogSink's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

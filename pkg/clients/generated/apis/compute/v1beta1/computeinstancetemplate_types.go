@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -40,7 +40,7 @@ var _ = apiextensionsv1.JSON{}
 
 type InstancetemplateAccessConfig struct {
 	// +optional
-	NatIpRef *v1alpha1.ResourceRef `json:"natIpRef,omitempty"`
+	NatIpRef *k8sv1alpha1.ResourceRef `json:"natIpRef,omitempty"`
 
 	/* Immutable. The networking tier used for configuring this instance template. This field can take the following values: PREMIUM, STANDARD, FIXED_STANDARD. If this field is not specified, it is assumed to be PREMIUM. */
 	// +optional
@@ -125,10 +125,10 @@ type InstancetemplateDisk struct {
 	ProvisionedIops *int64 `json:"provisionedIops,omitempty"`
 
 	// +optional
-	ResourcePolicies []v1alpha1.ResourceRef `json:"resourcePolicies,omitempty"`
+	ResourcePolicies []k8sv1alpha1.ResourceRef `json:"resourcePolicies,omitempty"`
 
 	// +optional
-	SourceDiskRef *v1alpha1.ResourceRef `json:"sourceDiskRef,omitempty"`
+	SourceDiskRef *k8sv1alpha1.ResourceRef `json:"sourceDiskRef,omitempty"`
 
 	/* Immutable. The customer-supplied encryption key of the source
 	image. Required if the source image is protected by a
@@ -142,7 +142,7 @@ type InstancetemplateDisk struct {
 	SourceImageEncryptionKey *InstancetemplateSourceImageEncryptionKey `json:"sourceImageEncryptionKey,omitempty"`
 
 	// +optional
-	SourceImageRef *v1alpha1.ResourceRef `json:"sourceImageRef,omitempty"`
+	SourceImageRef *k8sv1alpha1.ResourceRef `json:"sourceImageRef,omitempty"`
 
 	/* Immutable. The customer-supplied encryption key of the source snapshot. */
 	// +optional
@@ -153,7 +153,7 @@ type InstancetemplateDisk struct {
 	initializeParams.sourceImage, or disks.source is required except for
 	local SSD. */
 	// +optional
-	SourceSnapshotRef *v1alpha1.ResourceRef `json:"sourceSnapshotRef,omitempty"`
+	SourceSnapshotRef *k8sv1alpha1.ResourceRef `json:"sourceSnapshotRef,omitempty"`
 
 	/* Immutable. The type of Google Compute Engine disk, can be either "SCRATCH" or "PERSISTENT". */
 	// +optional
@@ -161,7 +161,7 @@ type InstancetemplateDisk struct {
 }
 
 type InstancetemplateDiskEncryptionKey struct {
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
+	KmsKeyRef k8sv1alpha1.ResourceRef `json:"kmsKeyRef"`
 }
 
 type InstancetemplateGuestAccelerator struct {
@@ -262,7 +262,7 @@ type InstancetemplateNetworkInterface struct {
 	NetworkIp *string `json:"networkIp,omitempty"`
 
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Immutable. The type of vNIC to be used on this interface. Possible values:GVNIC, VIRTIO_NET. */
 	// +optional
@@ -281,7 +281,7 @@ type InstancetemplateNetworkInterface struct {
 	SubnetworkProject *string `json:"subnetworkProject,omitempty"`
 
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type InstancetemplateNetworkPerformanceConfig struct {
@@ -352,7 +352,7 @@ type InstancetemplateServiceAccount struct {
 	Scopes []string `json:"scopes"`
 
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type InstancetemplateShieldedInstanceConfig struct {
@@ -372,25 +372,25 @@ type InstancetemplateShieldedInstanceConfig struct {
 type InstancetemplateSourceImageEncryptionKey struct {
 	/* The self link of the encryption key that is stored in Google Cloud
 	KMS. */
-	KmsKeySelfLinkRef v1alpha1.ResourceRef `json:"kmsKeySelfLinkRef"`
+	KmsKeySelfLinkRef k8sv1alpha1.ResourceRef `json:"kmsKeySelfLinkRef"`
 
 	/* The service account being used for the encryption request for the
 	given KMS key. If absent, the Compute Engine default service account
 	is used. */
 	// +optional
-	KmsKeyServiceAccountRef *v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
+	KmsKeyServiceAccountRef *k8sv1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
 }
 
 type InstancetemplateSourceSnapshotEncryptionKey struct {
 	/* The self link of the encryption key that is stored in Google Cloud
 	KMS. */
-	KmsKeySelfLinkRef v1alpha1.ResourceRef `json:"kmsKeySelfLinkRef"`
+	KmsKeySelfLinkRef k8sv1alpha1.ResourceRef `json:"kmsKeySelfLinkRef"`
 
 	/* The service account being used for the encryption request for the
 	given KMS key. If absent, the Compute Engine default service account
 	is used. */
 	// +optional
-	KmsKeyServiceAccountRef *v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
+	KmsKeyServiceAccountRef *k8sv1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
 }
 
 type InstancetemplateSpecificReservation struct {
@@ -475,7 +475,7 @@ type ComputeInstanceTemplateSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// +optional
-	ResourcePolicies []v1alpha1.ResourceRef `json:"resourcePolicies,omitempty"`
+	ResourcePolicies []k8sv1alpha1.ResourceRef `json:"resourcePolicies,omitempty"`
 
 	/* Immutable. The scheduling strategy to use. */
 	// +optional
@@ -497,7 +497,7 @@ type ComputeInstanceTemplateSpec struct {
 type ComputeInstanceTemplateStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeInstanceTemplate's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* The unique fingerprint of the metadata. */
 	// +optional
 	MetadataFingerprint *string `json:"metadataFingerprint,omitempty"`

@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -59,14 +59,14 @@ type DocumentAIProcessorVersionSpec struct {
 
 	/* The KMS key name used for encryption. */
 	// +optional
-	KmsKeyNameRef *v1alpha1.ResourceRef `json:"kmsKeyNameRef,omitempty"`
+	KmsKeyNameRef *k8sv1alpha1.ResourceRef `json:"kmsKeyNameRef,omitempty"`
 
 	/* The KMS key version with which data is encrypted. */
 	// +optional
-	KmsKeyVersionNameRef *v1alpha1.ResourceRef `json:"kmsKeyVersionNameRef,omitempty"`
+	KmsKeyVersionNameRef *k8sv1alpha1.ResourceRef `json:"kmsKeyVersionNameRef,omitempty"`
 
 	/* ProcessorRef defines the resource reference to DocumentAIProcessor, which "External" field holds the GCP identifier for the KRM object. */
-	ProcessorRef v1alpha1.ResourceRef `json:"processorRef"`
+	ProcessorRef k8sv1alpha1.ResourceRef `json:"processorRef"`
 
 	/* The DocumentAIProcessorVersion name. If not given, the metadata.name will be used. */
 	// +optional
@@ -352,7 +352,7 @@ type ProcessorversionPropertiesStatus struct {
 type DocumentAIProcessorVersionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DocumentAIProcessorVersion's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the DocumentAI resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

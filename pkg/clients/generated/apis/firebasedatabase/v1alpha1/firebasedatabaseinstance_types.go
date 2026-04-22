@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -44,7 +44,7 @@ type FirebaseDatabaseInstanceSpec struct {
 	DesiredState *string `json:"desiredState,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. A reference to the region where the Firebase Realtime database resides.
 	Check all [available regions](https://firebase.google.com/docs/projects/locations#rtdb-locations). */
@@ -65,7 +65,7 @@ type FirebaseDatabaseInstanceSpec struct {
 type FirebaseDatabaseInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   FirebaseDatabaseInstance's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* The database URL in the form of https://{instance-id}.firebaseio.com for us-central1 instances
 	or https://{instance-id}.{region}.firebasedatabase.app in other regions. */
 	// +optional

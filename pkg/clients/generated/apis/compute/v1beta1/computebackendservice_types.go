@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -428,18 +428,18 @@ type BackendserviceFailoverPolicy struct {
 
 type BackendserviceGroup struct {
 	// +optional
-	InstanceGroupRef *v1alpha1.ResourceRef `json:"instanceGroupRef,omitempty"`
+	InstanceGroupRef *k8sv1alpha1.ResourceRef `json:"instanceGroupRef,omitempty"`
 
 	// +optional
-	NetworkEndpointGroupRef *v1alpha1.ResourceRef `json:"networkEndpointGroupRef,omitempty"`
+	NetworkEndpointGroupRef *k8sv1alpha1.ResourceRef `json:"networkEndpointGroupRef,omitempty"`
 }
 
 type BackendserviceHealthChecks struct {
 	// +optional
-	HealthCheckRef *v1alpha1.ResourceRef `json:"healthCheckRef,omitempty"`
+	HealthCheckRef *k8sv1alpha1.ResourceRef `json:"healthCheckRef,omitempty"`
 
 	// +optional
-	HttpHealthCheckRef *v1alpha1.ResourceRef `json:"httpHealthCheckRef,omitempty"`
+	HttpHealthCheckRef *k8sv1alpha1.ResourceRef `json:"httpHealthCheckRef,omitempty"`
 }
 
 type BackendserviceHttpCookie struct {
@@ -463,7 +463,7 @@ type BackendserviceIap struct {
 
 	/* OAuth2 Client ID for IAP. */
 	// +optional
-	Oauth2ClientIdRef *v1alpha1.ResourceRef `json:"oauth2ClientIdRef,omitempty"`
+	Oauth2ClientIdRef *k8sv1alpha1.ResourceRef `json:"oauth2ClientIdRef,omitempty"`
 
 	/* OAuth2 Client Secret for IAP. */
 	// +optional
@@ -648,7 +648,7 @@ type BackendserviceSecuritySettings struct {
 	authenticate connections to backends of a service. This resource itself
 	does not affect configuration unless it is attached to a backend
 	service resource. */
-	ClientTLSPolicyRef v1alpha1.ResourceRef `json:"clientTLSPolicyRef"`
+	ClientTLSPolicyRef k8sv1alpha1.ResourceRef `json:"clientTLSPolicyRef"`
 
 	/* A list of alternate names to verify the subject identity in the certificate.
 	If specified, the client will verify that the server certificate's subject
@@ -677,7 +677,7 @@ type BackendserviceTtl struct {
 type BackendserviceValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *k8sv1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type ComputeBackendServiceSpec struct {
@@ -746,7 +746,7 @@ type ComputeBackendServiceSpec struct {
 	/* The resource URL for the edge security policy associated with this
 	backend service. */
 	// +optional
-	EdgeSecurityPolicyRef *v1alpha1.ResourceRef `json:"edgeSecurityPolicyRef,omitempty"`
+	EdgeSecurityPolicyRef *k8sv1alpha1.ResourceRef `json:"edgeSecurityPolicyRef,omitempty"`
 
 	/* If true, enable Cloud CDN for this BackendService. */
 	// +optional
@@ -852,7 +852,7 @@ type ComputeBackendServiceSpec struct {
 	only be specified when the load balancing scheme is set to
 	INTERNAL. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Settings controlling eviction of unhealthy hosts from the load balancing pool.
 	This field is applicable only when the load_balancing_scheme is set
@@ -884,7 +884,7 @@ type ComputeBackendServiceSpec struct {
 
 	/* The security policy associated with this backend service. */
 	// +optional
-	SecurityPolicyRef *v1alpha1.ResourceRef `json:"securityPolicyRef,omitempty"`
+	SecurityPolicyRef *k8sv1alpha1.ResourceRef `json:"securityPolicyRef,omitempty"`
 
 	/* The security settings that apply to this backend service. This field is applicable to either
 	a regional backend service with the service_protocol set to HTTP, HTTPS, or HTTP2, and
@@ -911,7 +911,7 @@ type ComputeBackendServiceSpec struct {
 type ComputeBackendServiceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeBackendService's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`

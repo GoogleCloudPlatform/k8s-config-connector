@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -55,7 +55,7 @@ type WorkloadResourceSettings struct {
 type AssuredWorkloadsWorkloadSpec struct {
 	/* Optional. The billing account used for the resources which are direct children of workload. This billing account is initially associated with the resources created as part of Workload creation. After the initial creation of these resources, the customer can change the assigned billing account. The resource name has the form `billingAccounts/{billing_account_id}`. For example, `billingAccounts/012345-567890-ABCDEF`. */
 	// +optional
-	BillingAccountRef *v1alpha1.ResourceRef `json:"billingAccountRef,omitempty"`
+	BillingAccountRef *k8sv1alpha1.ResourceRef `json:"billingAccountRef,omitempty"`
 
 	/* Required. Immutable. Compliance Regime associated with this workload. */
 	// +optional
@@ -132,7 +132,7 @@ type WorkloadSaaEnrollmentResponseStatus struct {
 type AssuredWorkloadsWorkloadStatus struct {
 	/* Conditions represent the latest available observations of the
 	   AssuredWorkloadsWorkload's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the AssuredWorkloadsWorkload resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

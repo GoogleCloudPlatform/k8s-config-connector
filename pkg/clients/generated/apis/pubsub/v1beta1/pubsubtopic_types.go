@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -53,7 +53,7 @@ type TopicSchemaSettings struct {
 	// +optional
 	Encoding *string `json:"encoding,omitempty"`
 
-	SchemaRef v1alpha1.ResourceRef `json:"schemaRef"`
+	SchemaRef k8sv1alpha1.ResourceRef `json:"schemaRef"`
 }
 
 type PubSubTopicSpec struct {
@@ -63,7 +63,7 @@ type PubSubTopicSpec struct {
 	must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
 	feature. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* Indicates the minimum duration to retain a message after it is published
 	to the topic. If this field is set, messages published to the topic in
@@ -93,7 +93,7 @@ type PubSubTopicSpec struct {
 type PubSubTopicStatus struct {
 	/* Conditions represent the latest available observations of the
 	   PubSubTopic's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

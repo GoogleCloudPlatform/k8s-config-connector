@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -47,13 +47,13 @@ type ConfigEmailPreferences struct {
 type ConfigEncryptionConfiguration struct {
 	/* The KMS key used for encrypting BigQuery data. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
 type ConfigEventDrivenSchedule struct {
 	/* Pub/Sub subscription used to receive events. Only Google Cloud Storage data source support this option. */
 	// +optional
-	PubSubSubscriptionRef *v1alpha1.ResourceRef `json:"pubSubSubscriptionRef,omitempty"`
+	PubSubSubscriptionRef *k8sv1alpha1.ResourceRef `json:"pubSubSubscriptionRef,omitempty"`
 }
 
 type ConfigManualSchedule struct {
@@ -123,7 +123,7 @@ type BigQueryDataTransferConfigSpec struct {
 
 	/* The BigQuery target dataset id. */
 	// +optional
-	DatasetRef *v1alpha1.ResourceRef `json:"datasetRef,omitempty"`
+	DatasetRef *k8sv1alpha1.ResourceRef `json:"datasetRef,omitempty"`
 
 	/* Is this config disabled. When set to true, no runs will be scheduled for this transfer config. */
 	// +optional
@@ -148,11 +148,11 @@ type BigQueryDataTransferConfigSpec struct {
 	Params map[string]string `json:"params"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Pub/Sub topic where notifications will be sent after transfer runs associated with this transfer config finish. */
 	// +optional
-	PubSubTopicRef *v1alpha1.ResourceRef `json:"pubSubTopicRef,omitempty"`
+	PubSubTopicRef *k8sv1alpha1.ResourceRef `json:"pubSubTopicRef,omitempty"`
 
 	/* The BigQueryDataTransferConfig name. If not given, the metadata.name will be used. */
 	// +optional
@@ -184,7 +184,7 @@ type BigQueryDataTransferConfigSpec struct {
 
 	/* Service account email. If this field is set, the transfer config will be created with this service account's credentials. It requires that the requesting user calling this API has permissions to act as this service account. Note that not all data sources support service account credentials when creating a transfer config. For the latest list of data sources, please refer to https://cloud.google.com/bigquery/docs/use-service-accounts. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type ConfigErrorStatus struct {
@@ -240,7 +240,7 @@ type ConfigOwnerInfoStatus struct {
 type BigQueryDataTransferConfigStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigQueryDataTransferConfig's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the BigQueryDataTransferConfig resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

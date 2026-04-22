@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -43,7 +43,7 @@ type ServiceattachmentConsumerAcceptLists struct {
 	// +optional
 	ConnectionLimit *int64 `json:"connectionLimit,omitempty"`
 
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 }
 
 type ComputeServiceAttachmentSpec struct {
@@ -55,7 +55,7 @@ type ComputeServiceAttachmentSpec struct {
 	ConsumerAcceptLists []ServiceattachmentConsumerAcceptLists `json:"consumerAcceptLists,omitempty"`
 
 	// +optional
-	ConsumerRejectLists []v1alpha1.ResourceRef `json:"consumerRejectLists,omitempty"`
+	ConsumerRejectLists []k8sv1alpha1.ResourceRef `json:"consumerRejectLists,omitempty"`
 
 	/* An optional description of this resource. Provide this property when you create the resource. */
 	// +optional
@@ -68,17 +68,17 @@ type ComputeServiceAttachmentSpec struct {
 	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
-	NatSubnets []v1alpha1.ResourceRef `json:"natSubnets"`
+	NatSubnets []k8sv1alpha1.ResourceRef `json:"natSubnets"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Immutable. */
-	TargetServiceRef v1alpha1.ResourceRef `json:"targetServiceRef"`
+	TargetServiceRef k8sv1alpha1.ResourceRef `json:"targetServiceRef"`
 }
 
 type ServiceattachmentConnectedEndpointsStatus struct {
@@ -106,7 +106,7 @@ type ServiceattachmentPscServiceAttachmentIdStatus struct {
 type ComputeServiceAttachmentStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeServiceAttachment's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* An array of connections for all the consumers connected to this service attachment. */
 	// +optional
 	ConnectedEndpoints []ServiceattachmentConnectedEndpointsStatus `json:"connectedEndpoints,omitempty"`

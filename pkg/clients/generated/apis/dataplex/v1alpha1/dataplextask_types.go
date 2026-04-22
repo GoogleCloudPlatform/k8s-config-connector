@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -73,7 +73,7 @@ type TaskExecutionSpec struct {
 
 	/* Optional. The Cloud KMS key to use for encryption, of the form: `projects/{project_number}/locations/{location_id}/keyRings/{key-ring-name}/cryptoKeys/{key-name}`. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* Optional. The maximum duration after which the job execution is expired. */
 	// +optional
@@ -81,10 +81,10 @@ type TaskExecutionSpec struct {
 
 	/* Optional. The project in which jobs are run. By default, the project containing the Lake is used. If a project is provided, the [ExecutionSpec.service_account][google.cloud.dataplex.v1.Task.ExecutionSpec.service_account] must belong to this project. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* Required. Service account to use to execute a task. If not provided, the default Compute service account for the project is used. */
-	ServiceAccountRef v1alpha1.ResourceRef `json:"serviceAccountRef"`
+	ServiceAccountRef k8sv1alpha1.ResourceRef `json:"serviceAccountRef"`
 }
 
 type TaskInfrastructureSpec struct {
@@ -202,7 +202,7 @@ type DataplexTaskSpec struct {
 
 	/* LakeRef defines the resource reference to DataplexLake, which "External" field holds the GCP identifier for the KRM object. */
 	// +optional
-	LakeRef *v1alpha1.ResourceRef `json:"lakeRef,omitempty"`
+	LakeRef *k8sv1alpha1.ResourceRef `json:"lakeRef,omitempty"`
 
 	/* Config related to running scheduled Notebooks. Exactly one of spark or notebook must be set. */
 	// +optional
@@ -327,7 +327,7 @@ type TaskObservedStateStatus struct {
 type DataplexTaskStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataplexTask's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the DataplexTask resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

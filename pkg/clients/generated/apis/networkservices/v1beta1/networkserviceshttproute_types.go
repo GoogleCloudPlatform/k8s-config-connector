@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -136,7 +136,7 @@ type HttprouteDelay struct {
 
 type HttprouteDestination struct {
 	// +optional
-	ServiceRef *v1alpha1.ResourceRef `json:"serviceRef,omitempty"`
+	ServiceRef *k8sv1alpha1.ResourceRef `json:"serviceRef,omitempty"`
 
 	/* Specifies the proportion of requests forwarded to the backend referenced by the serviceName field. This is computed as: weight/Sum(weights in this destination list). For non-zero values, there may be some epsilon from the exact proportion defined here depending on the precision an implementation supports. If only one serviceName is specified and it has a weight greater than 0, 100% of the traffic is forwarded to that backend. If weights are specified for any one service name, they need to be specified for all of them. If weights are unspecified for all services, then, traffic is distributed in equal proportions to all of them. */
 	// +optional
@@ -145,7 +145,7 @@ type HttprouteDestination struct {
 
 type HttprouteDestinations struct {
 	// +optional
-	ServiceRef *v1alpha1.ResourceRef `json:"serviceRef,omitempty"`
+	ServiceRef *k8sv1alpha1.ResourceRef `json:"serviceRef,omitempty"`
 
 	/* Specifies the proportion of requests forwarded to the backend referenced by the serviceName field. This is computed as: weight/Sum(weights in this destination list). For non-zero values, there may be some epsilon from the exact proportion defined here depending on the precision an implementation supports. If only one serviceName is specified and it has a weight greater than 0, 100% of the traffic is forwarded to that backend. If weights are specified for any one service name, they need to be specified for all of them. If weights are unspecified for all services, then, traffic is distributed in equal proportions to all of them. */
 	// +optional
@@ -354,7 +354,7 @@ type NetworkServicesHTTPRouteSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	// +optional
-	Gateways []v1alpha1.ResourceRef `json:"gateways,omitempty"`
+	Gateways []k8sv1alpha1.ResourceRef `json:"gateways,omitempty"`
 
 	/* Required. Hostnames define a set of hosts that should match against the HTTP host header to select a HttpRoute to process the request. Hostname is the fully qualified domain name of a network host, as defined by RFC 1123 with the exception that ip addresses are not allowed. Wildcard hosts are supported as "*" (no prefix or suffix allowed). */
 	Hostnames []string `json:"hostnames"`
@@ -363,10 +363,10 @@ type NetworkServicesHTTPRouteSpec struct {
 	Location string `json:"location"`
 
 	// +optional
-	Meshes []v1alpha1.ResourceRef `json:"meshes,omitempty"`
+	Meshes []k8sv1alpha1.ResourceRef `json:"meshes,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -379,7 +379,7 @@ type NetworkServicesHTTPRouteSpec struct {
 type NetworkServicesHTTPRouteStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NetworkServicesHTTPRoute's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The timestamp when the resource was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`

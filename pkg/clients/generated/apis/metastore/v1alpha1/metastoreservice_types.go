@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -41,13 +41,13 @@ var _ = apiextensionsv1.JSON{}
 type ServiceConsumers struct {
 	/* Immutable. The subnetwork of the customer project from which an IP address is reserved and used as the Dataproc Metastore service's endpoint. It is accessible to hosts in the subnet and to all hosts in a subnet in the same region and same network. There must be at least one IP address available in the subnet's primary range. */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type ServiceEncryptionConfig struct {
 	/* The fully qualified customer provided Cloud KMS key name to use for customer data encryption */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
 type ServiceHiveMetastoreConfig struct {
@@ -91,7 +91,7 @@ type ServiceKerberosConfig struct {
 type ServiceKeytab struct {
 	/* The relative resource name of a Secret Manager secret version */
 	// +optional
-	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
+	SecretRef *k8sv1alpha1.ResourceRef `json:"secretRef,omitempty"`
 }
 
 type ServiceMaintenanceWindow struct {
@@ -155,7 +155,7 @@ type MetastoreServiceSpec struct {
 
 	/* Immutable. The relative resource name of the VPC network on which the instance can be accessed. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* The TCP port at which the metastore service is reached. Default: 9083. */
 	// +optional
@@ -163,7 +163,7 @@ type MetastoreServiceSpec struct {
 
 	/* The Project that this resource belongs to. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* Immutable. The release channel of the service. If unspecified, defaults to `STABLE`. */
 	// +optional
@@ -304,7 +304,7 @@ type ServiceRestoresStatus struct {
 type MetastoreServiceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   MetastoreService's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the MetastoreService resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -40,18 +40,18 @@ var _ = apiextensionsv1.JSON{}
 
 type ComputeRouterInterfaceSpec struct {
 	// +optional
-	InterconnectAttachmentRef *v1alpha1.ResourceRef `json:"interconnectAttachmentRef,omitempty"`
+	InterconnectAttachmentRef *k8sv1alpha1.ResourceRef `json:"interconnectAttachmentRef,omitempty"`
 
 	/* Immutable. The IP address and range of the interface. The IP range must be in the RFC3927 link-local IP space. Changing this forces a new interface to be created. */
 	// +optional
 	IpRange *string `json:"ipRange,omitempty"`
 
 	// +optional
-	PrivateIpAddressRef *v1alpha1.ResourceRef `json:"privateIpAddressRef,omitempty"`
+	PrivateIpAddressRef *k8sv1alpha1.ResourceRef `json:"privateIpAddressRef,omitempty"`
 
 	/* The interface the BGP peer is associated with. */
 	// +optional
-	RedundantInterfaceRef *v1alpha1.ResourceRef `json:"redundantInterfaceRef,omitempty"`
+	RedundantInterfaceRef *k8sv1alpha1.ResourceRef `json:"redundantInterfaceRef,omitempty"`
 
 	/* Immutable. The region this interface's router sits in. If not specified, the project region will be used. Changing this forces a new interface to be created. */
 	Region string `json:"region"`
@@ -60,19 +60,19 @@ type ComputeRouterInterfaceSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	RouterRef v1alpha1.ResourceRef `json:"routerRef"`
+	RouterRef k8sv1alpha1.ResourceRef `json:"routerRef"`
 
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
 	// +optional
-	VpnTunnelRef *v1alpha1.ResourceRef `json:"vpnTunnelRef,omitempty"`
+	VpnTunnelRef *k8sv1alpha1.ResourceRef `json:"vpnTunnelRef,omitempty"`
 }
 
 type ComputeRouterInterfaceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeRouterInterface's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

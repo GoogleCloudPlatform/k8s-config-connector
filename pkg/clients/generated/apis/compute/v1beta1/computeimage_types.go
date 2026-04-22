@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -47,13 +47,13 @@ type ImageImageEncryptionKey struct {
 	/* The self link of the encryption key that is stored in Google Cloud
 	KMS. */
 	// +optional
-	KmsKeySelfLinkRef *v1alpha1.ResourceRef `json:"kmsKeySelfLinkRef,omitempty"`
+	KmsKeySelfLinkRef *k8sv1alpha1.ResourceRef `json:"kmsKeySelfLinkRef,omitempty"`
 
 	/* The service account being used for the encryption request for the
 	given KMS key. If absent, the Compute Engine default service account
 	is used. */
 	// +optional
-	KmsKeyServiceAccountRef *v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
+	KmsKeyServiceAccountRef *k8sv1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
 }
 
 type ImageRawDisk struct {
@@ -85,7 +85,7 @@ type ComputeImageSpec struct {
 	You must provide either this property or the
 	rawDisk.source property but not both to create an image. */
 	// +optional
-	DiskRef *v1alpha1.ResourceRef `json:"diskRef,omitempty"`
+	DiskRef *k8sv1alpha1.ResourceRef `json:"diskRef,omitempty"`
 
 	/* Immutable. Size of the image when restored onto a persistent disk (in GB). */
 	// +optional
@@ -126,11 +126,11 @@ type ComputeImageSpec struct {
 
 	/* The source image used to create this image. */
 	// +optional
-	SourceImageRef *v1alpha1.ResourceRef `json:"sourceImageRef,omitempty"`
+	SourceImageRef *k8sv1alpha1.ResourceRef `json:"sourceImageRef,omitempty"`
 
 	/* The source snapshot used to create this image. */
 	// +optional
-	SourceSnapshotRef *v1alpha1.ResourceRef `json:"sourceSnapshotRef,omitempty"`
+	SourceSnapshotRef *k8sv1alpha1.ResourceRef `json:"sourceSnapshotRef,omitempty"`
 
 	/* Immutable. Cloud Storage bucket storage location of the image
 	(regional or multi-regional).
@@ -142,7 +142,7 @@ type ComputeImageSpec struct {
 type ComputeImageStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeImage's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Size of the image tar.gz archive stored in Google Cloud Storage (in
 	bytes). */
 	// +optional

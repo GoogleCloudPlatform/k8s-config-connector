@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -115,7 +115,7 @@ type JobAllocationPolicy struct {
 	* scopes: Additional OAuth scopes to grant the service account, beyond the
 	default cloud-platform scope. (list of strings) */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Optional. Tags applied to the VM instances.
 
@@ -145,7 +145,7 @@ type JobBootDisk struct {
 	* Specify the image version:
 	projects/{project}/global/images/{image_version} */
 	// +optional
-	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
+	ImageRef *k8sv1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
 	/* Disk size in GB.
 
@@ -325,7 +325,7 @@ type JobEncryptedVariables struct {
 
 	/* The name of the KMS key that will be used to decrypt the cipher text. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
 type JobEnvironment struct {
@@ -472,7 +472,7 @@ type JobNetworkInterfaces struct {
 	* projects/{project}/global/networks/{network}
 	* global/networks/{network} */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Default is false (with an external IP address). Required if no external public IP address is attached to the VM. If no external public IP address, additional configuration is required to allow the VM to access Google Services. See https://cloud.google.com/vpc/docs/configure-private-google-access and https://cloud.google.com/nat/docs/gce-example#create-nat for more information. */
 	// +optional
@@ -487,7 +487,7 @@ type JobNetworkInterfaces struct {
 	* projects/{project}/regions/{region}/subnetworks/{subnetwork}
 	* regions/{region}/subnetworks/{subnetwork} */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type JobNewDisk struct {
@@ -503,7 +503,7 @@ type JobNewDisk struct {
 	* Specify the image version:
 	projects/{project}/global/images/{image_version} */
 	// +optional
-	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
+	ImageRef *k8sv1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
 	/* Disk size in GB.
 
@@ -565,7 +565,7 @@ type JobNotifications struct {
 	a job, see
 	https://cloud.google.com/batch/docs/enable-notifications. */
 	// +optional
-	PubsubTopicRef *v1alpha1.ResourceRef `json:"pubsubTopicRef,omitempty"`
+	PubsubTopicRef *k8sv1alpha1.ResourceRef `json:"pubsubTopicRef,omitempty"`
 }
 
 type JobPlacement struct {
@@ -849,7 +849,7 @@ type BatchJobSpec struct {
 	Priority *int64 `json:"priority,omitempty"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The BatchJob name. If not given, the metadata.name will be used. */
 	// +optional
@@ -947,7 +947,7 @@ type JobTaskGroupsStatus struct {
 type BatchJobStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BatchJob's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the BatchJob resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

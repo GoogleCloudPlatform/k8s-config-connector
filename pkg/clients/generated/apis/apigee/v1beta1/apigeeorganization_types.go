@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -70,7 +70,7 @@ type ApigeeOrganizationSpec struct {
 
 	/* Compute Engine network used for Service Networking to be peered with Apigee runtime instances. See [Getting started with the Service Networking API](https://cloud.google.com/service-infrastructure/docs/service-networking/getting-started). Valid only when [RuntimeType](#RuntimeType) is set to `CLOUD`. The value must be set before the creation of a runtime instance and can be updated only when there are no runtime instances. For example: `default`. Apigee also supports shared VPC (that is, the host network project is not the same as the one that is peering with Apigee). See [Shared VPC overview](https://cloud.google.com/vpc/docs/shared-vpc). To use a shared VPC network, use the following format: `projects/{host-project-id}/{region}/networks/{network-name}`. For example: `projects/my-sharedvpc-host/global/networks/mynetwork` **Note:** Not supported for Apigee hybrid. */
 	// +optional
-	AuthorizedNetworkRef *v1alpha1.ResourceRef `json:"authorizedNetworkRef,omitempty"`
+	AuthorizedNetworkRef *k8sv1alpha1.ResourceRef `json:"authorizedNetworkRef,omitempty"`
 
 	/* Description of the Apigee organization. */
 	// +optional
@@ -81,7 +81,7 @@ type ApigeeOrganizationSpec struct {
 	DisplayName *string `json:"displayName,omitempty"`
 
 	/* Required. Name of the GCP project in which to associate the Apigee organization. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Properties defined in the Apigee organization profile. */
 	// +optional
@@ -93,7 +93,7 @@ type ApigeeOrganizationSpec struct {
 
 	/* Cloud KMS key name used for encrypting the data that is stored and replicated across runtime instances. Update is not allowed after the organization is created. If not specified or [RuntimeType](#RuntimeType) is `TRIAL`, a Google-Managed encryption key will be used. For example: "projects/foo/locations/us/keyRings/bar/cryptoKeys/baz". **Note:** Not supported for Apigee hybrid. */
 	// +optional
-	RuntimeDatabaseEncryptionKeyRef *v1alpha1.ResourceRef `json:"runtimeDatabaseEncryptionKeyRef,omitempty"`
+	RuntimeDatabaseEncryptionKeyRef *k8sv1alpha1.ResourceRef `json:"runtimeDatabaseEncryptionKeyRef,omitempty"`
 
 	/* Required. Runtime type of the Apigee organization based on the Apigee subscription purchased. */
 	RuntimeType string `json:"runtimeType"`
@@ -105,7 +105,7 @@ type OrganizationObservedStateStatus struct {
 type ApigeeOrganizationStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ApigeeOrganization's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Billing type of the Apigee organization. See [Apigee pricing](https://cloud.google.com/apigee/pricing). */
 	// +optional
 	BillingType *string `json:"billingType,omitempty"`

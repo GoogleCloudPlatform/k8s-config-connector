@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -51,7 +51,7 @@ type JobBinaryAuthorization struct {
 type JobCloudSqlInstance struct {
 	/* The Cloud SQL instance connection names, as can be found in https://console.cloud.google.com/sql/instances. Visit https://cloud.google.com/sql/docs/mysql/connect-run for more information on how to connect Cloud SQL and Cloud Run. Format: {project}:{location}:{instance} */
 	// +optional
-	InstanceRefs []v1alpha1.ResourceRef `json:"instanceRefs,omitempty"`
+	InstanceRefs []k8sv1alpha1.ResourceRef `json:"instanceRefs,omitempty"`
 }
 
 type JobContainers struct {
@@ -136,7 +136,7 @@ type JobEnv struct {
 type JobGcs struct {
 	/* Cloud Storage Bucket name. */
 	// +optional
-	BucketRef *v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
+	BucketRef *k8sv1alpha1.ResourceRef `json:"bucketRef,omitempty"`
 
 	/* A list of additional flags to pass to the gcsfuse CLI. Options should be specified without the leading "--". */
 	// +optional
@@ -195,7 +195,7 @@ type JobItems struct {
 
 	/* The Cloud Secret Manager secret version. Can be 'latest' for the latest value, or an integer or a secret alias for a specific version. */
 	// +optional
-	VersionRef *v1alpha1.ResourceRef `json:"versionRef,omitempty"`
+	VersionRef *k8sv1alpha1.ResourceRef `json:"versionRef,omitempty"`
 }
 
 type JobLivenessProbe struct {
@@ -227,11 +227,11 @@ type JobLivenessProbe struct {
 type JobNetworkInterfaces struct {
 	/* Optional. The VPC network that the Cloud Run resource will be able to send traffic to. At least one of network or subnetwork must be specified. If both network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If network is not specified, it will be looked up from the subnetwork. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Optional. The VPC subnetwork that the Cloud Run resource will get IPs from. At least one of network or subnetwork must be specified. If both network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If subnetwork is not specified, the subnetwork with the same name with the network will be used. */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
 	/* Optional. Network tags applied to this Cloud Run resource. */
 	// +optional
@@ -302,17 +302,17 @@ type JobSecret struct {
 
 	/* Required. The name of the secret in Cloud Secret Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project. */
 	// +optional
-	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
+	SecretRef *k8sv1alpha1.ResourceRef `json:"secretRef,omitempty"`
 }
 
 type JobSecretKeyRef struct {
 	/* Required. The name of the secret in Cloud Secret  Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} */
 	// +optional
-	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
+	SecretRef *k8sv1alpha1.ResourceRef `json:"secretRef,omitempty"`
 
 	/* The Cloud Secret Manager secret version. Can be 'latest' for the latest version, an integer for a specific version, or a version alias. */
 	// +optional
-	VersionRef *v1alpha1.ResourceRef `json:"versionRef,omitempty"`
+	VersionRef *k8sv1alpha1.ResourceRef `json:"versionRef,omitempty"`
 }
 
 type JobStartupProbe struct {
@@ -354,7 +354,7 @@ type JobTemplate struct {
 
 	/* A reference to a customer managed encryption key (CMEK) to use to encrypt this container image. For more information, go to https://cloud.google.com/run/docs/securing/using-cmek */
 	// +optional
-	EncryptionKeyRef *v1alpha1.ResourceRef `json:"encryptionKeyRef,omitempty"`
+	EncryptionKeyRef *k8sv1alpha1.ResourceRef `json:"encryptionKeyRef,omitempty"`
 
 	/* Optional. The execution environment being used to host this Task. */
 	// +optional
@@ -366,7 +366,7 @@ type JobTemplate struct {
 
 	/* Optional. Email address of the IAM service account associated with the Task of a Job. The service account represents the identity of the running task, and determines what permissions the task has. If not provided, the task will use the project's default service account. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Optional. Max allowed time duration the Task may be active before the system will actively try to mark it failed and kill associated containers. This applies per attempt of a task, meaning each retry can run for the full timeout. Defaults to 600 seconds. */
 	// +optional
@@ -426,7 +426,7 @@ type JobVolumes struct {
 type JobVpcAccess struct {
 	/* VPC Access connector name. Format: `projects/{project}/locations/{location}/connectors/{connector}`, where `{project}` can be project id or number. For more information on sending traffic to a VPC network via a connector, visit https://cloud.google.com/run/docs/configuring/vpc-connectors. */
 	// +optional
-	ConnectorRef *v1alpha1.ResourceRef `json:"connectorRef,omitempty"`
+	ConnectorRef *k8sv1alpha1.ResourceRef `json:"connectorRef,omitempty"`
 
 	/* Optional. Traffic VPC egress settings. If not provided, it defaults to PRIVATE_RANGES_ONLY. */
 	// +optional
@@ -464,7 +464,7 @@ type RunJobSpec struct {
 
 	/* The project that this resource belongs to. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* The RunJob name. If not given, the metadata.name will be used. */
 	// +optional
@@ -533,7 +533,7 @@ type JobTerminalConditionStatus struct {
 type RunJobStatus struct {
 	/* Conditions represent the latest available observations of the
 	   RunJob's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The creation time. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`

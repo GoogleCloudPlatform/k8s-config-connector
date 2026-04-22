@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -41,7 +41,7 @@ var _ = apiextensionsv1.JSON{}
 type ManagementserverNetworks struct {
 	/* Optional. The resource name of the Google Compute Engine VPC network to which the ManagementServer instance is connected. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Optional. The network connect mode of the ManagementServer instance. For this version, only PRIVATE_SERVICE_ACCESS is supported. */
 	// +optional
@@ -65,7 +65,7 @@ type BackupDRManagementServerSpec struct {
 	Networks []ManagementserverNetworks `json:"networks,omitempty"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The BackupDRManagementServer name. If not given, the metadata.name will be used. */
 	// +optional
@@ -143,7 +143,7 @@ type ManagementserverWorkforceIdentityBasedOAuth2ClientIDStatus struct {
 type BackupDRManagementServerStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BackupDRManagementServer's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the BackupDRManagementServer resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

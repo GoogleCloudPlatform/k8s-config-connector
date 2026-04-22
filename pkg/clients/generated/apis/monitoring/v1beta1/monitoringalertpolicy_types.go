@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -653,7 +653,7 @@ type MonitoringAlertPolicySpec struct {
 	Enabled *bool `json:"enabled,omitempty"`
 
 	// +optional
-	NotificationChannels []v1alpha1.ResourceRef `json:"notificationChannels,omitempty"`
+	NotificationChannels []k8sv1alpha1.ResourceRef `json:"notificationChannels,omitempty"`
 
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional
@@ -679,7 +679,7 @@ type AlertpolicyCreationRecordStatus struct {
 type MonitoringAlertPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   MonitoringAlertPolicy's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A read-only record of the creation of the alerting policy.
 	If provided in a call to create or update, this field will
 	be ignored. */
