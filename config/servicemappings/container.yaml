@@ -126,6 +126,15 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - tfField: ip_allocation_policy.additional_ip_ranges_configs.subnetwork
+          description: |-
+            The subnetwork path for the additional IP range. Format: projects/{project}/regions/{region}/subnetworks/{subnetwork}.
+          key: subnetworkRef
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
     - name: google_container_node_pool
       kind: ContainerNodePool
       idTemplate: "{{project}}/{{location}}/{{cluster}}/{{name}}"

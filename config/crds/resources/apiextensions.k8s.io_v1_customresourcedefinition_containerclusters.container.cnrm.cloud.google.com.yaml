@@ -660,6 +660,57 @@ spec:
                   VPC-native clusters. Adding this block enables IP aliasing, making
                   the cluster VPC-native instead of routes-based.
                 properties:
+                  additionalIpRangesConfigs:
+                    description: AdditionalIpRangesConfigs is the configuration for
+                      additional pod secondary ranges supporting the ClusterUpdate
+                      message. Each AdditionalIPRangesConfig corresponds to a single
+                      subnetwork.
+                    items:
+                      properties:
+                        podIpv4RangeNames:
+                          description: List of secondary ranges names within this
+                            subnetwork that can be used for pod IPs.
+                          items:
+                            type: string
+                          type: array
+                        status:
+                          description: Status of the subnetwork, If in draining status,
+                            subnet will not be selected for new node pools.
+                          type: string
+                        subnetworkRef:
+                          description: 'The subnetwork path for the additional IP
+                            range. Format: projects/{project}/regions/{region}/subnetworks/{subnetwork}.'
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: 'Allowed value: The `selfLink` field of
+                                a `ComputeSubnetwork` resource.'
+                              type: string
+                            name:
+                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                              type: string
+                            namespace:
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              type: string
+                          type: object
+                      required:
+                      - subnetworkRef
+                      type: object
+                    type: array
                   additionalPodRangesConfig:
                     description: AdditionalPodRangesConfig is the configuration for
                       additional pod secondary ranges supporting the ClusterUpdate
