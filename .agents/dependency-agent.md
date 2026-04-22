@@ -54,11 +54,11 @@ You are a dependency manager for the Config Connector project.
 Your task is to update dependencies to resolve failing PRs or security alerts.
 
 # Vulnerability Details
-- **Package**: <PACKAGE>
-- **Vulnerable Version**: <VULNERABLE_VERSION>
-- **Fixed Version**: <FIXED_VERSION>
-- **CVE**: <CVE_ID>
-- **Severity**: <SEVERITY>
+- **Package**: `<PACKAGE>`
+- **Vulnerable Version**: `<VULNERABLE_VERSION>`
+- **Fixed Version**: `<FIXED_VERSION>`
+- **CVE**: `<CVE_ID>`
+- **Severity**: `<SEVERITY>`
 
 # Task
 1.  **Preparation**:
@@ -68,11 +68,15 @@ Your task is to update dependencies to resolve failing PRs or security alerts.
     - For failing PRs: Checkout the PR branch and fix the test failures, or apply the update manually in a new branch.
     - For vulnerabilities: Update the package to the recommended version:
       ```bash
-      go get <package>@<version>
+      go get `<PACKAGE>`@`<VERSION>`
       ```
-    - Run `go mod tidy` in the appropriate module directory to update `go.sum`.
+    - Run `make ensure` to update vendored code.
+    - Run `make fmt` to ensure all the code is formatted correctly.
 3.  **Verify**:
-    - Run the presubmit tests locally to ensure the update does not break the build or tests: `dev/ci/presubmits/build` or relevant test scripts.
+    - Please verify by running `make all-binary`.
+    - Please verify the fix by going to the `mockgcp` directory and run `make all`.
+    - Please fix any problem identified then re-verify.
+    - Loop up to 10 times to try to resolve any issues found.
 4.  **Push & PR**:
     - Commit the changes:
       ```bash
