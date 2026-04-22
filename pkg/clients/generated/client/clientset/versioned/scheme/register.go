@@ -48,49 +48,53 @@ import (
 	bigquerybiglakev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerybiglake/v1alpha1"
 	bigquerybiglakev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerybiglake/v1beta1"
 	bigqueryconnectionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryconnection/v1beta1"
-	bigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatapolicy/v1alpha1"
+	bigquerydatapolicyv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatapolicy/v1beta1"
 	bigquerydatatransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatatransfer/v1beta1"
-	bigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryreservation/v1alpha1"
 	bigqueryreservationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryreservation/v1beta1"
 	bigtablev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigtable/v1alpha1"
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigtable/v1beta1"
 	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/billing/v1alpha1"
 	billingbudgetsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/billingbudgets/v1beta1"
-	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/binaryauthorization/v1beta1"
 	certificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/certificatemanager/v1alpha1"
 	certificatemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/certificatemanager/v1beta1"
-	cloudassetv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudasset/v1alpha1"
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudbuild/v1beta1"
 	clouddeployv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/clouddeploy/v1alpha1"
 	clouddeployv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/clouddeploy/v1beta1"
 	clouddmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/clouddms/v1alpha1"
+	cloudfunctionsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudfunctions/v1alpha1"
 	cloudfunctionsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudfunctions/v1beta1"
-	cloudfunctions2v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudfunctions2/v1alpha1"
+	cloudidentityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudidentity/v1alpha1"
 	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudidentity/v1beta1"
-	cloudidsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudids/v1beta1"
-	cloudiotv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudiot/v1alpha1"
+	cloudidsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudids/v1alpha1"
 	cloudquotav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudquota/v1beta1"
-	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudscheduler/v1beta1"
 	cloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudtasks/v1alpha1"
+	cloudtasksv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudtasks/v1beta1"
 	colabv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/colab/v1alpha1"
+	composerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/composer/v1alpha1"
 	composerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/composer/v1beta1"
 	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
-	configcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/configcontroller/v1beta1"
 	configdeliveryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/configdelivery/v1alpha1"
+	connectorv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/connector/v1alpha1"
+	containerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/container/v1alpha1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/container/v1beta1"
 	containeranalysisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/containeranalysis/v1alpha1"
 	containeranalysisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/containeranalysis/v1beta1"
+	containerattachedv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/containerattached/v1alpha1"
 	containerattachedv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/containerattached/v1beta1"
 	datacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1alpha1"
 	datacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1beta1"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataflow/v1beta1"
+	dataformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataform/v1alpha1"
 	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataform/v1beta1"
+	datafusionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datafusion/v1alpha1"
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datafusion/v1beta1"
 	dataplexv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataplex/v1alpha1"
+	dataplexv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataplex/v1beta1"
 	dataprocv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataproc/v1alpha1"
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataproc/v1beta1"
-	datastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datastore/v1alpha1"
+	dataprocmetastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataprocmetastore/v1alpha1"
+	dataprocmetastorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataprocmetastore/v1beta1"
 	datastreamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datastream/v1alpha1"
 	deploymentmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/deploymentmanager/v1alpha1"
 	dialogflowv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dialogflow/v1alpha1"
@@ -124,7 +128,6 @@ import (
 	iapv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iap/v1beta1"
 	identityplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/identityplatform/v1alpha1"
 	identityplatformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/identityplatform/v1beta1"
-	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	kmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1alpha1"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1beta1"
 	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/logging/v1beta1"
@@ -200,8 +203,8 @@ var Scheme = runtime.NewScheme()
 var Codecs = serializer.NewCodecFactory(Scheme)
 var ParameterCodec = runtime.NewParameterCodec(Scheme)
 var localSchemeBuilder = runtime.SchemeBuilder{
-	accesscontextmanagerv1beta1.AddToScheme,
 	accesscontextmanagerv1alpha1.AddToScheme,
+	accesscontextmanagerv1beta1.AddToScheme,
 	aiplatformv1alpha1.AddToScheme,
 	alloydbv1beta1.AddToScheme,
 	analyticsv1alpha1.AddToScheme,
@@ -226,49 +229,53 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	bigquerybiglakev1alpha1.AddToScheme,
 	bigquerybiglakev1beta1.AddToScheme,
 	bigqueryconnectionv1beta1.AddToScheme,
-	bigquerydatapolicyv1alpha1.AddToScheme,
+	bigquerydatapolicyv1beta1.AddToScheme,
 	bigquerydatatransferv1beta1.AddToScheme,
-	bigqueryreservationv1alpha1.AddToScheme,
 	bigqueryreservationv1beta1.AddToScheme,
 	bigtablev1alpha1.AddToScheme,
 	bigtablev1beta1.AddToScheme,
 	billingv1alpha1.AddToScheme,
 	billingbudgetsv1beta1.AddToScheme,
-	binaryauthorizationv1beta1.AddToScheme,
 	certificatemanagerv1alpha1.AddToScheme,
 	certificatemanagerv1beta1.AddToScheme,
-	cloudassetv1alpha1.AddToScheme,
 	cloudbuildv1beta1.AddToScheme,
 	clouddeployv1alpha1.AddToScheme,
 	clouddeployv1beta1.AddToScheme,
 	clouddmsv1alpha1.AddToScheme,
+	cloudfunctionsv1alpha1.AddToScheme,
 	cloudfunctionsv1beta1.AddToScheme,
-	cloudfunctions2v1alpha1.AddToScheme,
+	cloudidentityv1alpha1.AddToScheme,
 	cloudidentityv1beta1.AddToScheme,
-	cloudidsv1beta1.AddToScheme,
-	cloudiotv1alpha1.AddToScheme,
+	cloudidsv1alpha1.AddToScheme,
 	cloudquotav1beta1.AddToScheme,
-	cloudschedulerv1beta1.AddToScheme,
 	cloudtasksv1alpha1.AddToScheme,
+	cloudtasksv1beta1.AddToScheme,
 	colabv1alpha1.AddToScheme,
+	composerv1alpha1.AddToScheme,
 	composerv1beta1.AddToScheme,
 	computev1alpha1.AddToScheme,
 	computev1beta1.AddToScheme,
-	configcontrollerv1beta1.AddToScheme,
 	configdeliveryv1alpha1.AddToScheme,
+	connectorv1alpha1.AddToScheme,
+	containerv1alpha1.AddToScheme,
 	containerv1beta1.AddToScheme,
 	containeranalysisv1alpha1.AddToScheme,
 	containeranalysisv1beta1.AddToScheme,
+	containerattachedv1alpha1.AddToScheme,
 	containerattachedv1beta1.AddToScheme,
 	datacatalogv1alpha1.AddToScheme,
 	datacatalogv1beta1.AddToScheme,
 	dataflowv1beta1.AddToScheme,
+	dataformv1alpha1.AddToScheme,
 	dataformv1beta1.AddToScheme,
+	datafusionv1alpha1.AddToScheme,
 	datafusionv1beta1.AddToScheme,
 	dataplexv1alpha1.AddToScheme,
+	dataplexv1beta1.AddToScheme,
 	dataprocv1alpha1.AddToScheme,
 	dataprocv1beta1.AddToScheme,
-	datastorev1alpha1.AddToScheme,
+	dataprocmetastorev1alpha1.AddToScheme,
+	dataprocmetastorev1beta1.AddToScheme,
 	datastreamv1alpha1.AddToScheme,
 	deploymentmanagerv1alpha1.AddToScheme,
 	dialogflowv1alpha1.AddToScheme,
@@ -302,7 +309,6 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	iapv1beta1.AddToScheme,
 	identityplatformv1alpha1.AddToScheme,
 	identityplatformv1beta1.AddToScheme,
-	k8sv1alpha1.AddToScheme,
 	kmsv1alpha1.AddToScheme,
 	kmsv1beta1.AddToScheme,
 	loggingv1beta1.AddToScheme,
