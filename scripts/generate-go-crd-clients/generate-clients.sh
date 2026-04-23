@@ -24,6 +24,9 @@ unset GOPATH
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
 
+# Clear out old clients to prevent issues with deepcopy-gen
+rm -rf "${REPO_ROOT}/pkg/clients/generated/client"
+
 # Generate strong-typed definitions for existing CRDs
 echo "Generating go types"
 go run ./scripts/generate-go-crd-clients
@@ -35,7 +38,6 @@ go generate ./pkg/clients/...
 # Generate the clients
 echo "Generating clients"
 cd "${REPO_ROOT}/pkg/clients/generated/"
-rm -rf client
 
 # Extract API & version names
 API_DIRS=(apis/*/*/)
