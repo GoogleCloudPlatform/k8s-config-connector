@@ -35,13 +35,6 @@ go run ./scripts/generate-go-crd-clients
 echo "Generating deepcopy for go types"
 go generate ./pkg/clients/...
 
-# Fix up deepcopy-gen using the wrong alias for k8sv1alpha1 in v1beta1 packages
-# deepcopy-gen uses 'v1alpha1' by default when there is no shadowing, but our types use 'k8sv1alpha1'
-# We need to handle both the case where deepcopy-gen used the 'v1alpha1' alias and the case where it used no alias.
-find "${REPO_ROOT}/pkg/clients/generated/apis" -name "zz_generated.deepcopy.go" -exec sed -i 's/\bv1alpha1\b "github.com\/GoogleCloudPlatform\/k8s-config-connector\/pkg\/clients\/generated\/apis\/k8s\/v1alpha1"/k8sv1alpha1 "github.com\/GoogleCloudPlatform\/k8s-config-connector\/pkg\/clients\/generated\/apis\/k8s\/v1alpha1"/g' {} +
-find "${REPO_ROOT}/pkg/clients/generated/apis" -name "zz_generated.deepcopy.go" -exec sed -i 's/^[[:space:]]*"github.com\/GoogleCloudPlatform\/k8s-config-connector\/pkg\/clients\/generated\/apis\/k8s\/v1alpha1"/	k8sv1alpha1 "github.com\/GoogleCloudPlatform\/k8s-config-connector\/pkg\/clients\/generated\/apis\/k8s\/v1alpha1"/g' {} +
-find "${REPO_ROOT}/pkg/clients/generated/apis" -name "zz_generated.deepcopy.go" -exec sed -i 's/\bv1alpha1\./k8sv1alpha1\./g' {} +
-
 # Generate the clients
 echo "Generating clients"
 cd "${REPO_ROOT}/pkg/clients/generated/"
@@ -67,6 +60,15 @@ go run k8s.io/code-generator/cmd/client-gen@v0.29.0 \
   --output-package github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset \
   --trim-path-prefix github.com/GoogleCloudPlatform/k8s-config-connector \
   -h ${REPO_ROOT}/hack/boilerplate_client_alpha.go.txt
+
+# Fix up codegen using the wrong alias for k8sv1alpha1 in v1beta1 packages
+# deepcopy-gen and client-gen use 'v1alpha1' by default when there is no shadowing, but our types use 'k8sv1alpha1'
+# We need to handle both the case where it used the 'v1alpha1' alias and the case where it used no alias.
+# 1. We apply the import alias fix to all files in the generated directory.
+find "${REPO_ROOT}/pkg/clients/generated" -name "*.go" -exec sed -E -i 's|^[[:space:]]*([a-zA-Z0-9]*[[:space:]])?"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"|	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"|g' {} +
+# 2. In files that now use the k8sv1alpha1 alias, we replace all v1alpha1. usages with k8sv1alpha1.
+# This handles all codegen tools and avoids accidental replacements in other v1alpha1 packages.
+find "${REPO_ROOT}/pkg/clients/generated" -name "*.go" | xargs grep -l 'k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"' | xargs sed -E -i 's/\bv1alpha1\./k8sv1alpha1\./g'
 
 echo "Applying gofmt"
 cd ${REPO_ROOT}
