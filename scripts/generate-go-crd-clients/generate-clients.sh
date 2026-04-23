@@ -64,11 +64,25 @@ go run k8s.io/code-generator/cmd/client-gen@v0.29.0 \
 # Fix up codegen using the wrong alias for k8sv1alpha1 in v1beta1 packages
 # deepcopy-gen and client-gen use 'v1alpha1' by default when there is no shadowing, but our types use 'k8sv1alpha1'
 # We need to handle both the case where it used the 'v1alpha1' alias and the case where it used no alias.
+
+echo "Fixing up imports"
 # 1. We apply the import alias fix to all files in the generated directory.
-find "${REPO_ROOT}/pkg/clients/generated" -name "*.go" -exec sed -E -i 's|^[[:space:]]*([a-zA-Z0-9]*[[:space:]])?"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"|	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"|g' {} +
+# We use a more robust regex that handles leading whitespace and optional aliases correctly.
+find "${REPO_ROOT}/pkg/clients/generated" -name "*.go" -exec sed -E -i 's|^([[:space:]]*)([a-zA-Z0-9]*[[:space:]]+)?"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"|\1k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"|g' {} +
+
 # 2. In files that now use the k8sv1alpha1 alias, we replace all v1alpha1. usages with k8sv1alpha1.
 # This handles all codegen tools and avoids accidental replacements in other v1alpha1 packages.
-find "${REPO_ROOT}/pkg/clients/generated" -name "*.go" | xargs grep -l 'k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"' | xargs sed -E -i 's/\bv1alpha1\./k8sv1alpha1\./g'
+# We use a while loop to be more robust than xargs grep | xargs sed.
+find "${REPO_ROOT}/pkg/clients/generated" -name "*.go" | while read -r file; do
+  if grep -q 'k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"' "$file"; then
+    sed -E -i 's/\bv1alpha1\./k8sv1alpha1\./g' "$file"
+  fi
+done
+
+# Cleanup any misplaced directories that might have been created by generators
+rm -rf "${REPO_ROOT}/generated"
+rm -rf "${REPO_ROOT}/github.com"
+rm -rf "${REPO_ROOT}/pkg/clients/github.com"
 
 echo "Applying gofmt"
 cd ${REPO_ROOT}
