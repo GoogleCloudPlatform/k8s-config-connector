@@ -60,7 +60,7 @@ type EdgecacheserviceAddSignatures struct {
 	This must be specified when the GENERATE_COOKIE or GENERATE_TOKEN_HLS_COOKIELESS actions are specified.  This field may not be specified otherwise. */
 	// +optional
 	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheRouteAction.CDNPolicy.AddSignatures.keyset
-	Keyset *string `json:"keyset,omitempty"`
+	KeysetRef *EdgeCacheKeysetRef `json:"keysetRef,omitempty"`
 
 	/* The query parameter in which to put the generated token.
 
@@ -248,7 +248,7 @@ type EdgecacheserviceCdnPolicy struct {
 	/* The EdgeCacheKeyset containing the set of public keys used to validate signed requests at the edge. */
 	// +optional
 	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheRouteAction.CDNPolicy.signed_request_keyset
-	SignedRequestKeyset *string `json:"signedRequestKeyset,omitempty"`
+	SignedRequestKeysetRef *EdgeCacheKeysetRef `json:"signedRequestKeysetRef,omitempty"`
 
 	/* Limit how far into the future the expiration time of a signed request may be.
 

@@ -27,9 +27,10 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -71,6 +72,7 @@ func (m *modelEdgeCacheService) AdapterForObject(ctx context.Context, op *direct
 
 	return &EdgeCacheServiceAdapter{
 		id:         id,
+		reader:     reader,
 		httpClient: httpClient,
 		desired:    obj,
 	}, nil
@@ -82,6 +84,7 @@ func (m *modelEdgeCacheService) AdapterForURL(ctx context.Context, url string) (
 
 type EdgeCacheServiceAdapter struct {
 	id         *krm.EdgeCacheServiceIdentity
+	reader     client.Reader
 	httpClient *http.Client
 	desired    *krm.NetworkServicesEdgeCacheService
 	actual     *EdgeCacheService
@@ -128,15 +131,18 @@ func (a *EdgeCacheServiceAdapter) Create(ctx context.Context, createOp *directba
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
+	if err := a.resolveReferences(ctx, a.reader, desired); err != nil {
+		return err
+	}
 	resource := EdgeCacheServiceSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
 	resource.Name = a.id.String()
-	resource.Labels = common.ComputeGCPLabels(a.desired.GetObjectMeta().GetLabels())
+	resource.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
 
-	url := fmt.Sprintf("https://networkservices.googleapis.com/v1/%s/locations/global/edgeCacheServices?edgeCacheServiceId=%s", a.id.Parent().String(), a.id.ID())
+	url := fmt.Sprintf("https://networkservices.googleapis.com/v1/%s/locations/global/edgeCacheServices?edgeCacheServiceId=%s", a.id.Parent(), a.id.ID())
 	body, err := json.Marshal(resource)
 	if err != nil {
 		return fmt.Errorf("marshalling resource: %w", err)
@@ -183,13 +189,16 @@ func (a *EdgeCacheServiceAdapter) Update(ctx context.Context, updateOp *directba
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
+	if err := a.resolveReferences(ctx, a.reader, desired); err != nil {
+		return err
+	}
 	resource := EdgeCacheServiceSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
 	resource.Name = a.id.String()
-	resource.Labels = common.ComputeGCPLabels(a.desired.GetObjectMeta().GetLabels())
+	resource.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
 
 	updateMask := []string{
 		"description",
@@ -242,6 +251,34 @@ func (a *EdgeCacheServiceAdapter) Update(ctx context.Context, updateOp *directba
 		return mapCtx.Err()
 	}
 	return updateOp.UpdateStatus(ctx, status, nil)
+}
+
+func (a *EdgeCacheServiceAdapter) resolveReferences(ctx context.Context, reader client.Reader, obj *krm.NetworkServicesEdgeCacheService) error {
+	// Resolve KeysetRefs
+	for i := range obj.Spec.Routing.PathMatcher {
+		pm := &obj.Spec.Routing.PathMatcher[i]
+		for j := range pm.RouteRule {
+			rr := &pm.RouteRule[j]
+			if rr.RouteAction != nil && rr.RouteAction.CdnPolicy != nil {
+				cp := rr.RouteAction.CdnPolicy
+				if cp.SignedRequestKeysetRef != nil {
+					external, err := cp.SignedRequestKeysetRef.NormalizedExternal(ctx, reader, obj.Namespace)
+					if err != nil {
+						return err
+					}
+					cp.SignedRequestKeysetRef.External = external
+				}
+				if cp.AddSignatures != nil && cp.AddSignatures.KeysetRef != nil {
+					external, err := cp.AddSignatures.KeysetRef.NormalizedExternal(ctx, reader, obj.Namespace)
+					if err != nil {
+						return err
+					}
+					cp.AddSignatures.KeysetRef.External = external
+				}
+			}
+		}
+	}
+	return nil
 }
 
 func (a *EdgeCacheServiceAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
