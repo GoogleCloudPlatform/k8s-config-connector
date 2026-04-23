@@ -56,7 +56,9 @@ This tool will:
 	cmd.Flags().StringVarP(&opts.Output, "output", "o", "-", "Output directory to save the YAML files, or '-' for stdout")
 
 	// Mark source-kubeconfig as required
-	cmd.MarkFlagRequired("source-kubeconfig")
+	if err := cmd.MarkFlagRequired("source-kubeconfig"); err != nil {
+		panic(err)
+	}
 	return cmd
 }
 
