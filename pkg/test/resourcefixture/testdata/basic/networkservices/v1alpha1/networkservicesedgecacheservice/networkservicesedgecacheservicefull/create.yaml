@@ -49,6 +49,9 @@ spec:
             maxTtl: 86400s
             clientTtl: 3600s
             compressionMode: AUTOMATIC
+            signedRequestMode: REQUIRE_SIGNATURES
+            signedRequestKeysetRef:
+              external: projects/${projectId}/locations/global/edgeCacheKeysets/networkservicesedgecachekeyset${uniqueId}
           corsPolicy:
             allowOrigins:
             - "*"
