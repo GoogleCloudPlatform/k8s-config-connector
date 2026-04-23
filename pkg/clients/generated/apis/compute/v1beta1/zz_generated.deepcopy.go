@@ -13777,7 +13777,7 @@ func (in *ReservationProjectMap) DeepCopyInto(out *ReservationProjectMap) {
 	out.KeyRef = in.KeyRef
 	if in.ProjectIDRef != nil {
 		in, out := &in.ProjectIDRef, &out.ProjectIDRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return

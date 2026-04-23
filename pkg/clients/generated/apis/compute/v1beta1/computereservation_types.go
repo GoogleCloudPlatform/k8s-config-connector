@@ -83,11 +83,11 @@ type ReservationLocalSsds struct {
 
 type ReservationProjectMap struct {
 	/* The key of this project config in the parent map. */
-	KeyRef v1alpha1.ResourceRef `json:"keyRef"`
+	KeyRef k8sv1alpha1.ResourceRef `json:"keyRef"`
 
 	/* The project id, should be the same as the key of this project config in the project map. */
 	// +optional
-	ProjectIDRef *v1alpha1.ResourceRef `json:"projectIDRef,omitempty"`
+	ProjectIDRef *k8sv1alpha1.ResourceRef `json:"projectIDRef,omitempty"`
 }
 
 type ReservationShareSettings struct {
