@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -69,6 +70,64 @@ func (r *EdgeCacheServiceRef) NormalizedExternal(ctx context.Context, reader cli
 			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
 		return "", fmt.Errorf("reading referenced %s %s: %w", NetworkServicesEdgeCacheServiceGVK, key, err)
+	}
+	// Get external from status.externalRef. This is the most trustworthy place.
+	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
+	if err != nil {
+		return "", fmt.Errorf("reading status.externalRef: %w", err)
+	}
+	if actualExternalRef == "" {
+		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+	}
+	r.External = actualExternalRef
+	return r.External, nil
+}
+
+var NetworkServicesEdgeCacheKeysetGVK = GroupVersion.WithKind("NetworkServicesEdgeCacheKeyset")
+
+var _ refsv1beta1.ExternalNormalizer = &EdgeCacheKeysetRef{}
+
+// EdgeCacheKeysetRef defines the resource reference to NetworkServicesEdgeCacheKeyset, which "External" field
+// holds the GCP identifier for the KRM object.
+type EdgeCacheKeysetRef struct {
+	/* A reference to an externally managed NetworkServicesEdgeCacheKeyset resource.
+	Should be in the format "projects/{{projectID}}/locations/global/edgeCacheKeysets/{{edgeCacheKeysetID}}" or "{{edgeCacheKeysetID}}". */
+	External string `json:"external,omitempty"`
+
+	/* The name of a NetworkServicesEdgeCacheKeyset resource. */
+	Name string `json:"name,omitempty"`
+
+	/* The namespace of a NetworkServicesEdgeCacheKeyset resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
+// NormalizedExternal provision the "External" value for other resource that depends on NetworkServicesEdgeCacheKeyset.
+func (r *EdgeCacheKeysetRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+	if r.External != "" && r.Name != "" {
+		return "", fmt.Errorf("cannot specify both name and external on %s reference", NetworkServicesEdgeCacheKeysetGVK.Kind)
+	}
+	// From given External
+	if r.External != "" {
+		if !strings.Contains(r.External, "/") {
+			// If it's just the name, return it as is.
+			return r.External, nil
+		}
+		// If it's a full path, we could validate it if we had a Template for it.
+		return r.External, nil
+	}
+
+	// From the Config Connector object
+	if r.Namespace == "" {
+		r.Namespace = otherNamespace
+	}
+	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(NetworkServicesEdgeCacheKeysetGVK)
+	if err := reader.Get(ctx, key, u); err != nil {
+		if apierrors.IsNotFound(err) {
+			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+		}
+		return "", fmt.Errorf("reading referenced %s %s: %w", NetworkServicesEdgeCacheKeysetGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")

@@ -17,63 +17,67 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ identity.Identity = &EdgeCacheServiceIdentity{}
+var edgeCacheServiceURL = gcpurls.Template[EdgeCacheServiceIdentity](
+	"networkservices.googleapis.com",
+	"projects/{projectID}/locations/global/edgeCacheServices/{edgeCacheServiceID}",
+)
 
 // EdgeCacheServiceIdentity represents the identity of a NetworkServicesEdgeCacheService.
+// +k8s:deepcopy-gen=false
 type EdgeCacheServiceIdentity struct {
-	parent *parent.ProjectParent
-	id     string
+	ProjectID          string
+	EdgeCacheServiceID string
 }
 
 func (i *EdgeCacheServiceIdentity) String() string {
-	return i.parent.String() + "/locations/global/edgeCacheServices/" + i.id
+	return edgeCacheServiceURL.ToString(*i)
 }
 
 func (i *EdgeCacheServiceIdentity) ID() string {
-	return i.id
+	return i.EdgeCacheServiceID
 }
 
-func (i *EdgeCacheServiceIdentity) Parent() *parent.ProjectParent {
-	return i.parent
+func (i *EdgeCacheServiceIdentity) Parent() string {
+	return fmt.Sprintf("projects/%s", i.ProjectID)
 }
 
-func (i *EdgeCacheServiceIdentity) FromExternal(ref string) error {
-	ref = strings.TrimPrefix(ref, "/")
-	tokens := strings.Split(ref, "/locations/global/edgeCacheServices/")
-	if len(tokens) != 2 {
-		return fmt.Errorf("format of NetworkServicesEdgeCacheService external=%q was not known (use projects/{{projectID}}/locations/global/edgeCacheServices/{{edgeCacheServiceID}})", ref)
-	}
-	i.parent = &parent.ProjectParent{}
-	if err := i.parent.FromExternal(tokens[0]); err != nil {
+func (i *EdgeCacheServiceIdentity) FromExternal(external string) error {
+	out, match, err := edgeCacheServiceURL.Parse(external)
+	if err != nil {
 		return err
 	}
-	i.id = tokens[1]
-	if i.id == "" {
-		return fmt.Errorf("edgeCacheServiceID was empty in external=%q", ref)
+	if !match {
+		return fmt.Errorf("format of NetworkServicesEdgeCacheService external=%q was not known (use %s)", external, edgeCacheServiceURL.CanonicalForm())
 	}
+	*i = *out
 	return nil
 }
 
 var _ identity.Resource = &NetworkServicesEdgeCacheService{}
 
-// GetIdentity builds a EdgeCacheServiceIdentity from the Config Connector EdgeCacheService object.
+// GetIdentity builds an EdgeCacheServiceIdentity from the Config Connector EdgeCacheService object.
 func (obj *NetworkServicesEdgeCacheService) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	id := &EdgeCacheServiceIdentity{
-		parent: &parent.ProjectParent{},
-	}
+	id := &EdgeCacheServiceIdentity{}
 
-	// Resolve user-configured Parent
-	if err := obj.Spec.ProjectRef.Build(ctx, reader, obj.GetNamespace(), id.parent); err != nil {
+	// Resolve user-configured Project
+	pRef := &refsv1beta1.ProjectRef{
+		External:  obj.Spec.ProjectRef.External,
+		Name:      obj.Spec.ProjectRef.Name,
+		Namespace: obj.Spec.ProjectRef.Namespace,
+	}
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), pRef)
+	if err != nil {
 		return nil, err
 	}
+	id.ProjectID = projectRef.ProjectID
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -83,7 +87,7 @@ func (obj *NetworkServicesEdgeCacheService) GetIdentity(ctx context.Context, rea
 	if resourceID == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
-	id.id = resourceID
+	id.EdgeCacheServiceID = resourceID
 
 	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
@@ -99,10 +103,10 @@ func (obj *NetworkServicesEdgeCacheService) GetIdentity(ctx context.Context, rea
 	return id, nil
 }
 
-func ParseEdgeCacheServiceExternal(external string) (projectParent *parent.ProjectParent, resourceID string, err error) {
+func ParseEdgeCacheServiceExternal(external string) (projectID string, resourceID string, err error) {
 	id := &EdgeCacheServiceIdentity{}
 	if err := id.FromExternal(external); err != nil {
-		return nil, "", err
+		return "", "", err
 	}
-	return id.parent, id.id, nil
+	return id.ProjectID, id.EdgeCacheServiceID, nil
 }

@@ -461,7 +461,7 @@ spec:
                                             items:
                                               type: string
                                             type: array
-                                          keyset:
+                                          keysetRef:
                                             description: |-
                                               The keyset to use for signature generation.
 
@@ -471,7 +471,37 @@ spec:
                                               * 'yourKeyset'
 
                                               This must be specified when the GENERATE_COOKIE or GENERATE_TOKEN_HLS_COOKIELESS actions are specified.  This field may not be specified otherwise.
-                                            type: string
+                                            oneOf:
+                                            - not:
+                                                required:
+                                                - external
+                                              required:
+                                              - name
+                                            - not:
+                                                anyOf:
+                                                - required:
+                                                  - name
+                                                - required:
+                                                  - namespace
+                                              required:
+                                              - external
+                                            properties:
+                                              external:
+                                                description: A reference to an externally
+                                                  managed NetworkServicesEdgeCacheKeyset
+                                                  resource. Should be in the format
+                                                  "projects/{{projectID}}/locations/global/edgeCacheKeysets/{{edgeCacheKeysetID}}"
+                                                  or "{{edgeCacheKeysetID}}".
+                                                type: string
+                                              name:
+                                                description: The name of a NetworkServicesEdgeCacheKeyset
+                                                  resource.
+                                                type: string
+                                              namespace:
+                                                description: The namespace of a NetworkServicesEdgeCacheKeyset
+                                                  resource.
+                                                type: string
+                                            type: object
                                           tokenQueryParameter:
                                             description: |-
                                               The query parameter in which to put the generated token.
@@ -647,11 +677,40 @@ spec:
 
                                           Note that when specifying an explicit negativeCachingPolicy, you should take care to specify a cache TTL for all response codes that you wish to cache. The CDNPolicy will not apply any default negative caching when a policy exists.
                                         type: object
-                                      signedRequestKeyset:
+                                      signedRequestKeysetRef:
                                         description: The EdgeCacheKeyset containing
                                           the set of public keys used to validate
                                           signed requests at the edge.
-                                        type: string
+                                        oneOf:
+                                        - not:
+                                            required:
+                                            - external
+                                          required:
+                                          - name
+                                        - not:
+                                            anyOf:
+                                            - required:
+                                              - name
+                                            - required:
+                                              - namespace
+                                          required:
+                                          - external
+                                        properties:
+                                          external:
+                                            description: A reference to an externally
+                                              managed NetworkServicesEdgeCacheKeyset
+                                              resource. Should be in the format "projects/{{projectID}}/locations/global/edgeCacheKeysets/{{edgeCacheKeysetID}}"
+                                              or "{{edgeCacheKeysetID}}".
+                                            type: string
+                                          name:
+                                            description: The name of a NetworkServicesEdgeCacheKeyset
+                                              resource.
+                                            type: string
+                                          namespace:
+                                            description: The namespace of a NetworkServicesEdgeCacheKeyset
+                                              resource.
+                                            type: string
+                                        type: object
                                       signedRequestMaximumExpirationTtl:
                                         description: |-
                                           Limit how far into the future the expiration time of a signed request may be.

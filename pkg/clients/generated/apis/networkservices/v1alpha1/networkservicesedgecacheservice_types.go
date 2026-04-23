@@ -73,7 +73,7 @@ type EdgecacheserviceAddSignatures struct {
 
 	This must be specified when the GENERATE_COOKIE or GENERATE_TOKEN_HLS_COOKIELESS actions are specified.  This field may not be specified otherwise. */
 	// +optional
-	Keyset *string `json:"keyset,omitempty"`
+	KeysetRef *v1alpha1.ResourceRef `json:"keysetRef,omitempty"`
 
 	/* The query parameter in which to put the generated token.
 
@@ -185,6 +185,10 @@ type EdgecacheserviceCdnPolicy struct {
 	// +optional
 	ClientTtl *string `json:"clientTtl,omitempty"`
 
+	/* Specifies the compression mode for this route. Possible values: ["DISABLED", "AUTOMATIC"]. */
+	// +optional
+	CompressionMode *string `json:"compressionMode,omitempty"`
+
 	/* Specifies the default TTL for cached content served by this origin for responses that do not have an existing valid TTL (max-age or s-max-age).
 
 	Defaults to 3600s (1 hour).
@@ -243,7 +247,7 @@ type EdgecacheserviceCdnPolicy struct {
 
 	/* The EdgeCacheKeyset containing the set of public keys used to validate signed requests at the edge. */
 	// +optional
-	SignedRequestKeyset *string `json:"signedRequestKeyset,omitempty"`
+	SignedRequestKeysetRef *v1alpha1.ResourceRef `json:"signedRequestKeysetRef,omitempty"`
 
 	/* Limit how far into the future the expiration time of a signed request may be.
 
@@ -338,8 +342,7 @@ type EdgecacheserviceHeaderMatch struct {
 	/* The header name to match on. */
 	HeaderName string `json:"headerName"`
 
-	/* If set to false (default), the headerMatch is considered a match if the match criteria above are met.
-	If set to true, the headerMatch is considered a match if the match criteria above are NOT met. */
+	/* If set to false (default), the headerMatch is considered a match if the match criteria above are met. If set to true, the headerMatch is considered a match if the match criteria above are NOT met. */
 	// +optional
 	InvertMatch *bool `json:"invertMatch,omitempty"`
 
@@ -506,6 +509,14 @@ type EdgecacheserviceRouteAction struct {
 	UrlRewrite *EdgecacheserviceUrlRewrite `json:"urlRewrite,omitempty"`
 }
 
+type EdgecacheserviceRouteMethods struct {
+	/* The list of allowed HTTP methods for this route.
+	Supported methods include: GET, HEAD, POST, PUT, DELETE, PATCH, OPTIONS.
+
+	Media CDN defaults to allowing GET, HEAD, and OPTIONS if routeMethods is not specified. */
+	AllowedMethods []string `json:"allowedMethods"`
+}
+
 type EdgecacheserviceRouteRule struct {
 	/* A human-readable description of the routeRule. */
 	// +optional
@@ -515,8 +526,7 @@ type EdgecacheserviceRouteRule struct {
 	// +optional
 	HeaderAction *EdgecacheserviceHeaderAction `json:"headerAction,omitempty"`
 
-	/* The list of criteria for matching attributes of a request to this routeRule. This list has OR semantics: the request matches this routeRule when any of the matchRules are satisfied. However predicates
-	within a given matchRule have AND semantics. All predicates within a matchRule must match for the request to match the rule. */
+	/* The list of criteria for matching attributes of a request to this routeRule. This list has OR semantics: the request matches this routeRule when any of the matchRules are satisfied. However predicates within a given matchRule have AND semantics. All predicates within a matchRule must match for the request to match the rule. */
 	MatchRule []EdgecacheserviceMatchRule `json:"matchRule"`
 
 	/* The Origin resource that requests to this route should fetch from when a matching response is not in cache. Origins can be defined as short names ("my-origin") or fully-qualified resource URLs - e.g. "networkservices.googleapis.com/projects/my-project/global/edgecacheorigins/my-origin"
@@ -536,6 +546,10 @@ type EdgecacheserviceRouteRule struct {
 	/* In response to a matching path, the routeAction performs advanced routing actions like URL rewrites, header transformations, etc. prior to forwarding the request to the selected origin. */
 	// +optional
 	RouteAction *EdgecacheserviceRouteAction `json:"routeAction,omitempty"`
+
+	/* The list of allowed HTTP methods for this route. */
+	// +optional
+	RouteMethods *EdgecacheserviceRouteMethods `json:"routeMethods,omitempty"`
 
 	/* The URL redirect configuration for requests that match this route. */
 	// +optional
@@ -692,10 +706,24 @@ type NetworkServicesEdgeCacheServiceSpec struct {
 	SslPolicy *string `json:"sslPolicy,omitempty"`
 }
 
+type EdgecacheserviceObservedStateStatus struct {
+	/* The IPv4 addresses associated with this service. Addresses are static for the lifetime of the service. */
+	// +optional
+	Ipv4Addresses []string `json:"ipv4Addresses,omitempty"`
+
+	/* The IPv6 addresses associated with this service. Addresses are static for the lifetime of the service. */
+	// +optional
+	Ipv6Addresses []string `json:"ipv6Addresses,omitempty"`
+}
+
 type NetworkServicesEdgeCacheServiceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NetworkServicesEdgeCacheService's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the NetworkServicesEdgeCacheService resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* The IPv4 addresses associated with this service. Addresses are static for the lifetime of the service. */
 	// +optional
 	Ipv4Addresses []string `json:"ipv4Addresses,omitempty"`
@@ -707,6 +735,10 @@ type NetworkServicesEdgeCacheServiceStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *EdgecacheserviceObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
@@ -714,9 +746,7 @@ type NetworkServicesEdgeCacheServiceStatus struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpnetworkservicesedgecacheservice;gcpnetworkservicesedgecacheservices
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
