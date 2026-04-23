@@ -180,3 +180,34 @@ func TestTableFieldsSchemaEqual_MultipleDiffs(t *testing.T) {
 		t.Errorf("missing diff for field2 type")
 	}
 }
+
+func TestTableEq_TimePartitioning(t *testing.T) {
+	a := &bigquery.Table{
+		TimePartitioning: &bigquery.TimePartitioning{
+			Type:  "DAY",
+			Field: "f1",
+		},
+	}
+	b := &bigquery.Table{
+		TimePartitioning: &bigquery.TimePartitioning{
+			Type:  "DAY",
+			Field: "f2",
+		},
+	}
+
+	diff := &structuredreporting.Diff{}
+	equal, err := TableEq(a, b, diff)
+	if err != nil {
+		t.Fatalf("TableEq failed: %v", err)
+	}
+
+	if equal {
+		t.Errorf("TableEq returned true, want false")
+	}
+
+	if len(diff.Fields) != 1 {
+		t.Errorf("got %d diffs, want 1", len(diff.Fields))
+	} else if diff.Fields[0].ID != "time_partitioning" {
+		t.Errorf("got diff ID %s, want time_partitioning", diff.Fields[0].ID)
+	}
+}
