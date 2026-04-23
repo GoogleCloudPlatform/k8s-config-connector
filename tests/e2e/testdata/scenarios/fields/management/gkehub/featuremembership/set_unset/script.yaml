@@ -59,9 +59,9 @@ spec:
     external: projects/${projectId}
   location: global
   membershipRef:
-    name: gkehubmembership-${uniqueId}
+    external: projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}
   featureRef:
-    name: gkehubfeature-${uniqueId}
+    external: projects/${projectId}/locations/global/features/configmanagement
   configmanagement:
     configSync:
       sourceFormat: unstructured
@@ -77,9 +77,9 @@ spec:
     external: projects/${projectId}
   location: global
   membershipRef:
-    name: gkehubmembership-${uniqueId}
+    external: projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}
   featureRef:
-    name: gkehubfeature-${uniqueId}
+    external: projects/${projectId}/locations/global/features/configmanagement
   configmanagement:
     configSync:
       git:
@@ -107,9 +107,9 @@ spec:
     external: projects/${projectId}
   location: global
   membershipRef:
-    name: gkehubmembership-${uniqueId}
+    external: projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}
   featureRef:
-    name: gkehubfeature-${uniqueId}
+    external: projects/${projectId}/locations/global/features/configmanagement
   configmanagement:
     configSync:
       sourceFormat: unstructured

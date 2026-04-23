@@ -15,10 +15,10 @@ spec:
     configSync:
       sourceFormat: unstructured
   featureRef:
-    name: gkehubfeature-${uniqueId}
+    external: projects/${projectId}/locations/global/features/configmanagement
   location: global
   membershipRef:
-    name: gkehubmembership-${uniqueId}
+    external: projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}
   projectRef:
     external: projects/${projectId}
 status:

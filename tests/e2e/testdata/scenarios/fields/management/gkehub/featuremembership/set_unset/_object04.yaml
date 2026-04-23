@@ -27,10 +27,10 @@ spec:
       sourceFormat: hierarchy
     version: 1.18.1
   featureRef:
-    name: gkehubfeature-${uniqueId}
+    external: projects/${projectId}/locations/global/features/configmanagement
   location: global
   membershipRef:
-    name: gkehubmembership-${uniqueId}
+    external: projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}
   projectRef:
     external: projects/${projectId}
 status:
