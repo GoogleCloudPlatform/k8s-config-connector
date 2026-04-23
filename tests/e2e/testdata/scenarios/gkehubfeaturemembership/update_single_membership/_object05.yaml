@@ -17,10 +17,10 @@ spec:
         syncRepo: https://github.com/GoogleCloudPlatform/anthos-config-management-samples
       sourceFormat: hierarchy
   featureRef:
-    name: gkehubfeature-${uniqueId}
+    external: projects/${projectId}/locations/global/features/configmanagement
   location: global
   membershipRef:
-    name: gkehubmembership2-${uniqueId}
+    external: projects/${projectId}/locations/us-central1/memberships/gkehubmembership2-${uniqueId}
   projectRef:
     external: projects/${projectId}
 status:

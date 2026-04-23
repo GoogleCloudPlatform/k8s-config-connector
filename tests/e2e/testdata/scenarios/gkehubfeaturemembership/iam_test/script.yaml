@@ -69,7 +69,7 @@ spec:
   membershipRef:
     external: projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}
   featureRef:
-    external: projects/${projectId}/locations/global/features/gkehubfeature-${uniqueId}
+    external: projects/${projectId}/locations/global/features/configmanagement
   configmanagement:
     configSync:
       git:
@@ -97,7 +97,7 @@ spec:
   membershipRef:
     external: projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}
   featureRef:
-    external: projects/${projectId}/locations/global/features/gkehubfeature-${uniqueId}
+    external: projects/${projectId}/locations/global/features/configmanagement
   configmanagement:
     configSync:
       git:

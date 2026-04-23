@@ -29,7 +29,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/${projectId}/locations/global/memberships/gkehubmembership2-${uniqueId}": {
+    "projects/${projectId}/locations/us-central1/memberships/gkehubmembership2-${uniqueId}": {
       "configmanagement": {
         "configSync": {
           "git": {
@@ -94,7 +94,7 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "membershipSpecs": {
-      "projects/${projectId}/locations/global/memberships/gkehubmembership2-${uniqueId}": {
+      "projects/${projectId}/locations/us-central1/memberships/gkehubmembership2-${uniqueId}": {
         "configmanagement": {
           "configSync": {
             "git": {
