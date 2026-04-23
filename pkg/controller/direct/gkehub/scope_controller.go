@@ -31,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 )
 
 func init() {
@@ -252,6 +253,7 @@ var _ directbase.Model = &gkeHubScopeModelV1Beta1{}
 
 type gkeHubScopeAdapterV1Beta1 struct {
 	id        *krmv1beta1.GKEHubScopeIdentity
+	labels    map[string]string
 	desired   *krmv1beta1.GKEHubScope
 	actual    *gkehubapi.Scope
 	hubClient *gkeHubClient
@@ -283,6 +285,7 @@ func (m *gkeHubScopeModelV1Beta1) AdapterForObject(ctx context.Context, op *dire
 
 	return &gkeHubScopeAdapterV1Beta1{
 		id:        id.(*krmv1beta1.GKEHubScopeIdentity),
+		labels:    label.NewGCPLabelsFromK8sLabels(u.GetLabels()),
 		desired:   obj,
 		hubClient: hubClient,
 	}, nil
@@ -326,7 +329,7 @@ func (a *gkeHubScopeAdapterV1Beta1) Create(ctx context.Context, createOp *direct
 	log.V(2).Info("creating GKEHubScope", "id", a.id.String())
 
 	mapCtx := &direct.MapContext{}
-	desired := GKEHubScopeSpec_ToAPI(mapCtx, &a.desired.Spec)
+	desired := GKEHubScopeSpec_ToAPI(mapCtx, &a.desired.Spec, a.labels)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -360,7 +363,7 @@ func (a *gkeHubScopeAdapterV1Beta1) Update(ctx context.Context, updateOp *direct
 	log.V(2).Info("updating GKEHubScope", "id", a.id.String())
 
 	mapCtx := &direct.MapContext{}
-	desired := GKEHubScopeSpec_ToAPI(mapCtx, &a.desired.Spec)
+	desired := GKEHubScopeSpec_ToAPI(mapCtx, &a.desired.Spec, a.labels)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

@@ -29,10 +29,6 @@ type GKEHubNamespaceSpec struct {
 	/* The Scope that this resource belongs to. */
 	ScopeRef *GKEHubScopeRef `json:"scopeRef"`
 
-	/* Optional. Labels for this Namespace. */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
-
 	/* Optional. Namespace-level labels to propagate to the clusters. */
 	// +optional
 	NamespaceLabels map[string]string `json:"namespaceLabels,omitempty"`

@@ -26,10 +26,6 @@ type GKEHubScopeSpec struct {
 	/* Immutable. The Scope name. */
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Optional. Labels for this Scope. */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
-
 	/* Optional. Scope-level cluster namespace labels. For member clusters bound to the Scope, these labels will be applied to each namespace under the Scope. */
 	// +optional
 	NamespaceLabels map[string]string `json:"namespaceLabels,omitempty"`

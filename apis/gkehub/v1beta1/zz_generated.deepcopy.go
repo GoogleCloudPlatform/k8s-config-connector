@@ -804,13 +804,6 @@ func (in *GKEHubNamespaceSpec) DeepCopyInto(out *GKEHubNamespaceSpec) {
 		*out = new(GKEHubScopeRef)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.Labels != nil {
-		in, out := &in.Labels, &out.Labels
-		*out = make(map[string]string, len(*in))
-		for key, val := range *in {
-			(*out)[key] = val
-		}
-	}
 	if in.NamespaceLabels != nil {
 		in, out := &in.NamespaceLabels, &out.NamespaceLabels
 		*out = make(map[string]string, len(*in))
@@ -1011,13 +1004,6 @@ func (in *GKEHubScopeSpec) DeepCopyInto(out *GKEHubScopeSpec) {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
 		**out = **in
-	}
-	if in.Labels != nil {
-		in, out := &in.Labels, &out.Labels
-		*out = make(map[string]string, len(*in))
-		for key, val := range *in {
-			(*out)[key] = val
-		}
 	}
 	if in.NamespaceLabels != nil {
 		in, out := &in.NamespaceLabels, &out.NamespaceLabels

@@ -29,6 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 )
 
 func init() {
@@ -48,6 +49,7 @@ type namespaceAdapter struct {
 	location         string
 	scopeID          string
 	scopeNamespaceID string
+	labels           map[string]string
 
 	desired *krm.GKEHubNamespace
 	actual  *featureapi.Namespace
@@ -104,6 +106,7 @@ func (m *namespaceModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 		location:         location,
 		scopeID:          scopeID,
 		scopeNamespaceID: resourceID,
+		labels:           label.NewGCPLabelsFromK8sLabels(u.GetLabels()),
 		desired:          obj,
 		hubClient:        hubClient,
 	}, nil
@@ -146,7 +149,7 @@ func (a *namespaceAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 
 func (a *namespaceAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	mapCtx := &direct.MapContext{}
-	desired := GKEHubNamespaceSpec_ToAPI(mapCtx, &a.desired.Spec)
+	desired := GKEHubNamespaceSpec_ToAPI(mapCtx, &a.desired.Spec, a.labels)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -181,12 +184,12 @@ func (a *namespaceAdapter) Create(ctx context.Context, createOp *directbase.Crea
 func (a *namespaceAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	mapCtx := &direct.MapContext{}
 
-	diffs := diffGKEHubNamespace(&a.desired.Spec, a.actual)
+	diffs := diffGKEHubNamespace(&a.desired.Spec, a.labels, a.actual)
 	if len(diffs) == 0 {
 		return nil
 	}
 
-	desired := GKEHubNamespaceSpec_ToAPI(mapCtx, &a.desired.Spec)
+	desired := GKEHubNamespaceSpec_ToAPI(mapCtx, &a.desired.Spec, a.labels)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

@@ -20,12 +20,12 @@ import (
 	gkehubapi "google.golang.org/api/gkehub/v1beta"
 )
 
-func GKEHubScopeSpec_ToAPI(mapCtx *direct.MapContext, in *krm.GKEHubScopeSpec) *gkehubapi.Scope {
+func GKEHubScopeSpec_ToAPI(mapCtx *direct.MapContext, in *krm.GKEHubScopeSpec, labels map[string]string) *gkehubapi.Scope {
 	if in == nil {
 		return nil
 	}
 	out := &gkehubapi.Scope{}
-	out.Labels = in.Labels
+	out.Labels = labels
 	out.NamespaceLabels = in.NamespaceLabels
 	return out
 }

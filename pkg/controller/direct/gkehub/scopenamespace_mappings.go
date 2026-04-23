@@ -20,12 +20,12 @@ import (
 	featureapi "google.golang.org/api/gkehub/v1beta"
 )
 
-func GKEHubNamespaceSpec_ToAPI(mapCtx *direct.MapContext, in *krm.GKEHubNamespaceSpec) *featureapi.Namespace {
+func GKEHubNamespaceSpec_ToAPI(mapCtx *direct.MapContext, in *krm.GKEHubNamespaceSpec, labels map[string]string) *featureapi.Namespace {
 	if in == nil {
 		return nil
 	}
 	out := &featureapi.Namespace{}
-	out.Labels = in.Labels
+	out.Labels = labels
 	out.NamespaceLabels = in.NamespaceLabels
 	return out
 }

@@ -255,9 +255,9 @@ func diffPolicycontroller(left *krm.FeaturemembershipPolicycontroller, right *fe
 	return diffs
 }
 
-func diffGKEHubScope(left *krm.GKEHubScopeSpec, right *featureapi.Scope) []string {
+func diffGKEHubScope(left *krm.GKEHubScopeSpec, leftLabels map[string]string, right *featureapi.Scope) []string {
 	var diffs []string
-	if !reflect.DeepEqual(left.Labels, right.Labels) {
+	if !reflect.DeepEqual(leftLabels, right.Labels) {
 		diffs = append(diffs, "labels")
 	}
 	if !reflect.DeepEqual(left.NamespaceLabels, right.NamespaceLabels) {
@@ -266,9 +266,9 @@ func diffGKEHubScope(left *krm.GKEHubScopeSpec, right *featureapi.Scope) []strin
 	return diffs
 }
 
-func diffGKEHubNamespace(left *krm.GKEHubNamespaceSpec, right *featureapi.Namespace) []string {
+func diffGKEHubNamespace(left *krm.GKEHubNamespaceSpec, leftLabels map[string]string, right *featureapi.Namespace) []string {
 	var diffs []string
-	if !reflect.DeepEqual(left.Labels, right.Labels) {
+	if !reflect.DeepEqual(leftLabels, right.Labels) {
 		diffs = append(diffs, "labels")
 	}
 	if !reflect.DeepEqual(left.NamespaceLabels, right.NamespaceLabels) {

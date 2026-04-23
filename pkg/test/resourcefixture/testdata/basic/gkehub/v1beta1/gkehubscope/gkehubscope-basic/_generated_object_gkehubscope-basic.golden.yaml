@@ -7,11 +7,10 @@ metadata:
   generation: 1
   labels:
     cnrm-test: "true"
+    env: dev
   name: gkehubscope-basic
   namespace: ${uniqueId}
 spec:
-  labels:
-    env: dev
   location: global
   namespaceLabels:
     team: platform

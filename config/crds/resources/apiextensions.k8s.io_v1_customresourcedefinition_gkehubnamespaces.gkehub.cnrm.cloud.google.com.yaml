@@ -61,11 +61,6 @@ spec:
             type: object
           spec:
             properties:
-              labels:
-                additionalProperties:
-                  type: string
-                description: Optional. Labels for this Namespace.
-                type: object
               location:
                 description: Immutable. The location of the namespace
                 type: string

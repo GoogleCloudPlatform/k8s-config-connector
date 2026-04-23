@@ -27,7 +27,9 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "labels": {
-    "env": "dev"
+    "cnrm-test": "true",
+    "env": "dev",
+    "managed-by-cnrm": "true"
   },
   "namespaceLabels": {
     "team": "platform"
@@ -76,7 +78,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.gkehub.v1.Scope",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "labels": {
-      "env": "dev"
+      "cnrm-test": "true",
+      "env": "dev",
+      "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/global/scopes/gkehubscope-basic",
     "namespaceLabels": {
@@ -108,7 +112,9 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
-    "env": "dev"
+    "cnrm-test": "true",
+    "env": "dev",
+    "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/scopes/gkehubscope-basic",
   "namespaceLabels": {

@@ -16,11 +16,11 @@ apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
 kind: GKEHubScope
 metadata:
   name: gkehubscope-basic
+  labels:
+    env: dev
 spec:
   projectRef:
     external: ${projectId}
   location: global
-  labels:
-    env: dev
   namespaceLabels:
     team: platform
