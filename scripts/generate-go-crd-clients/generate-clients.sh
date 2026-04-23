@@ -13,40 +13,44 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 set -o errexit
 set -o nounset
 set -o pipefail
 
-ORIGINAL_GOPATH="${GOPATH:-}"
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+# Extract API names and versions from the directory structure
+# This assumes the structure is pkg/clients/generated/apis/<api>/<version>
+# and we want to generate clients for all of them.
+# We'll use a list of unique API/version pairs.
+cd "${REPO_ROOT}/pkg/clients/generated/"
+API_DIRS=(apis/*/*/)
+API_VERSIONS=()
+for DIR in "${API_DIRS[@]}"; do
+  # DIR is e.g. apis/compute/v1beta1/
+  API_VERSIONS+=($(echo ${DIR} | cut -d'/' -f 2,3))
+done
+
 # Setting GOPATH changes behaviour of k8s codegen tools
+ORIGINAL_GOPATH="${GOPATH:-}"
 unset GOPATH
 
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd "${REPO_ROOT}"
-
-# Clear out old clients to prevent issues with deepcopy-gen
-rm -rf "${REPO_ROOT}/pkg/clients/generated/client"
-
-# Generate strong-typed definitions for existing CRDs
+# Generate the types
 echo "Generating go types"
+cd "${REPO_ROOT}"
 go run ./scripts/generate-go-crd-clients
 
 # Generate deepcopy etc
 echo "Generating deepcopy for go types"
+# We need to run go generate on the directory containing generators.go
+cd "${REPO_ROOT}"
 go generate ./pkg/clients/...
+
+# Clear out old clients to prevent issues with deepcopy-gen
+rm -rf "${REPO_ROOT}/pkg/clients/generated/client"
 
 # Generate the clients
 echo "Generating clients"
-cd "${REPO_ROOT}/pkg/clients/generated/"
-
-# Extract API & version names
-API_DIRS=(apis/*/*/)
-API_VERSIONS=()
-for DIR in "${API_DIRS[@]}";
-do
-  API_VERSIONS+=($(echo ${DIR} | cut -d'/' -f 2,3))
-done
 
 # Join API/version names into a comma-separated list
 printf -v JOINED '%s,' "${API_VERSIONS[@]:1}"
@@ -63,9 +67,6 @@ go run k8s.io/code-generator/cmd/client-gen@v0.29.0 \
   -h ${REPO_ROOT}/hack/boilerplate_client_alpha.go.txt
 
 # Fix up codegen using the wrong alias for k8sv1alpha1 in v1beta1 packages
-# deepcopy-gen and client-gen use 'v1alpha1' by default when there is no shadowing, but our types use 'k8sv1alpha1'
-# We need to handle both the case where it used the 'v1alpha1' alias and the case where it used no alias.
-
 echo "Fixing up imports"
 # 1. We apply the import alias fix to all files in the generated directory.
 # We use a robust regex that handles leading whitespace, optional aliases (including those with underscores),
@@ -76,7 +77,10 @@ find "${REPO_ROOT}/pkg/clients/generated" -name "*.go" -exec sed -E -i 's|^[[:sp
 # This handles all codegen tools and avoids accidental replacements in other v1alpha1 packages.
 find "${REPO_ROOT}/pkg/clients/generated" -name "*.go" | while read -r file; do
   if grep -q "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1" "$file"; then
-    sed -E -i 's/\bv1alpha1\./k8sv1alpha1\./g' "$file"
+    # Aggressive replacement to catch any missed cases, then fix any accidental double-prefixing.
+    # We use a loop to handle multiple occurrences on the same line if necessary (though sed /g handles it).
+    sed -i 's/v1alpha1\./k8sv1alpha1\./g' "$file"
+    sed -i 's/k8sk8sv1alpha1\./k8sv1alpha1\./g' "$file"
   fi
 done
 
@@ -91,3 +95,11 @@ if [[ -n "${ORIGINAL_GOPATH}" ]]; then
 fi
 cd ${REPO_ROOT}
 make fmt # Fix up the formatting and headers
+
+# 3. Final cleanup: Remove any non-aliased k8s/v1alpha1 imports added by goimports
+# that are redundant because the aliased version is already there.
+# This is a safety measure against goimports disagreement between environments.
+find "${REPO_ROOT}/pkg/clients/generated" -name "*.go" -exec sed -i '/"github.com\/GoogleCloudPlatform\/k8s-config-connector\/pkg\/clients\/generated\/apis\/k8s\/v1alpha1"/ { /k8sv1alpha1/ !d }' {} +
+
+# Run fmt again just in case the previous cleanup removed a line from an import block
+make fmt
