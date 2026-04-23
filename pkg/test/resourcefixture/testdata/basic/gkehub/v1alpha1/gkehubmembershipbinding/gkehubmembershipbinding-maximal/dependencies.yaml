@@ -1,0 +1,29 @@
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  name: gkhmb-max-cluster-${uniqueId}
+spec:
+  location: us-central1-a
+  initialNodeCount: 1
+  workloadIdentityConfig:
+    workloadPool: ${projectId}.svc.id.goog
+---
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubMembership
+metadata:
+  name: gkhmb-max-membership-${uniqueId}
+spec:
+  location: global
+  endpoint:
+    gkeCluster:
+      resourceRef:
+        name: gkhmb-max-cluster-${uniqueId}
+---
+apiVersion: gkehub.cnrm.cloud.google.com/v1alpha1
+kind: GKEHubScope
+metadata:
+  name: gkhmb-max-scope-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: global

@@ -1,0 +1,12 @@
+apiVersion: gkehub.cnrm.cloud.google.com/v1alpha1
+kind: GKEHubMembershipBinding
+metadata:
+  name: gkhmb-min-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: global
+  membershipRef:
+    name: gkhmb-min-membership-${uniqueId}
+  scopeRef:
+    name: gkhmb-min-scope-${uniqueId}
