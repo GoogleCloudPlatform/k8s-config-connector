@@ -48,21 +48,18 @@ func policyTagsEqual(a, b *bigquery.TableFieldSchemaPolicyTags) bool {
 	if len(a.Names) != len(b.Names) {
 		return false
 	}
-	sort.Strings(a.Names)
-	sort.Strings(b.Names)
-	for i := range a.Names {
-		if a.Names[i] != b.Names[i] {
+	aNames := make([]string, len(a.Names))
+	copy(aNames, a.Names)
+	bNames := make([]string, len(b.Names))
+	copy(bNames, b.Names)
+	sort.Strings(aNames)
+	sort.Strings(bNames)
+	for i := range aNames {
+		if aNames[i] != bNames[i] {
 			return false
 		}
 	}
 	return true
-}
-
-// Sort the fields in place by name.
-func sortSchemaFields(fields []*bigquery.TableFieldSchema) {
-	sort.Slice(fields, func(i, j int) bool {
-		return fields[i].Name < fields[j].Name // For ascending order
-	})
 }
 
 func tableFieldsSchemaEqual(actual, desired []*bigquery.TableFieldSchema, prefix string, diff *structuredreporting.Diff) (bool, error) {
@@ -81,10 +78,6 @@ func tableFieldsSchemaEqual(actual, desired []*bigquery.TableFieldSchema, prefix
 		return false, nil
 	}
 	startDiffs := len(diff.Fields)
-	// The fields from API can be in a different order.
-	// Sort by name before comparing.
-	sortSchemaFields(actual)
-	sortSchemaFields(desired)
 	for i := range actual {
 		fieldName := actual[i].Name
 		fieldPrefix := fmt.Sprintf("%s[%s]", prefix, fieldName)
@@ -107,7 +100,7 @@ func tableFieldsSchemaEqual(actual, desired []*bigquery.TableFieldSchema, prefix
 			diff.AddField(fieldPrefix+".max_length", actual[i].MaxLength, desired[i].MaxLength)
 		}
 		if !reflect.DeepEqual(actual[i].Mode, desired[i].Mode) {
-			diff.AddField(fieldPrefix+".mode", desired[i].Mode, actual[i].Mode)
+			diff.AddField(fieldPrefix+".mode", actual[i].Mode, desired[i].Mode)
 		}
 		if !reflect.DeepEqual(actual[i].Name, desired[i].Name) {
 			diff.AddField(fieldPrefix+".name", actual[i].Name, desired[i].Name)
@@ -122,10 +115,10 @@ func tableFieldsSchemaEqual(actual, desired []*bigquery.TableFieldSchema, prefix
 			diff.AddField(fieldPrefix+".range_element_type", actual[i].RangeElementType, desired[i].RangeElementType)
 		}
 		if !reflect.DeepEqual(actual[i].RoundingMode, desired[i].RoundingMode) {
-			diff.AddField(fieldPrefix+".rounding_mode", desired[i].RoundingMode, actual[i].RoundingMode)
+			diff.AddField(fieldPrefix+".rounding_mode", actual[i].RoundingMode, desired[i].RoundingMode)
 		}
 		if !reflect.DeepEqual(actual[i].Scale, desired[i].Scale) {
-			diff.AddField(fieldPrefix+".scale", desired[i].Scale, desired[i].Scale)
+			diff.AddField(fieldPrefix+".scale", actual[i].Scale, desired[i].Scale)
 		}
 		if !reflect.DeepEqual(actual[i].Type, desired[i].Type) {
 			diff.AddField(fieldPrefix+".type", actual[i].Type, desired[i].Type)
