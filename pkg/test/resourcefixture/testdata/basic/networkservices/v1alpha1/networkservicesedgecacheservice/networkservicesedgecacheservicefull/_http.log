@@ -184,7 +184,9 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
                 "clientTtl": "3600s",
                 "compressionMode": "AUTOMATIC",
                 "defaultTtl": "3600s",
-                "maxTtl": "86400s"
+                "maxTtl": "86400s",
+                "signedRequestKeyset": "projects/${projectId}/locations/global/edgeCacheKeysets/networkservicesedgecachekeyset${uniqueId}",
+                "signedRequestMode": "REQUIRE_SIGNATURES"
               },
               "corsPolicy": {
                 "allowHeaders": [
@@ -327,7 +329,9 @@ X-Xss-Protection: 0
                   "clientTtl": "3600s",
                   "compressionMode": "AUTOMATIC",
                   "defaultTtl": "3600s",
-                  "maxTtl": "86400s"
+                  "maxTtl": "86400s",
+                  "signedRequestKeyset": "projects/${projectId}/locations/global/edgeCacheKeysets/networkservicesedgecachekeyset${uniqueId}",
+                  "signedRequestMode": "REQUIRE_SIGNATURES"
                 },
                 "corsPolicy": {
                   "allowHeaders": [
@@ -439,7 +443,9 @@ Content-Type: application/json
                 "clientTtl": "3600s",
                 "compressionMode": "AUTOMATIC",
                 "defaultTtl": "3600s",
-                "maxTtl": "86400s"
+                "maxTtl": "86400s",
+                "signedRequestKeyset": "projects/${projectId}/locations/global/edgeCacheKeysets/networkservicesedgecachekeyset${uniqueId}",
+                "signedRequestMode": "REQUIRE_SIGNATURES"
               },
               "corsPolicy": {
                 "allowHeaders": [

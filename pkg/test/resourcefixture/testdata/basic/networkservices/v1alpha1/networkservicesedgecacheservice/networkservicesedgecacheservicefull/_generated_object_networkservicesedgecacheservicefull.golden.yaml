@@ -55,6 +55,9 @@ spec:
             compressionMode: AUTOMATIC
             defaultTtl: 3600s
             maxTtl: 86400s
+            signedRequestKeysetRef:
+              external: projects/${projectId}/locations/global/edgeCacheKeysets/networkservicesedgecachekeyset${uniqueId}
+            signedRequestMode: REQUIRE_SIGNATURES
           corsPolicy:
             allowHeaders:
             - Content-Type

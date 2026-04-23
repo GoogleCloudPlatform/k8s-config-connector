@@ -42,7 +42,6 @@
 [iam_gap_direct] crd=networkconnectivityspokes.networkconnectivity.cnrm.cloud.google.com: supports IAM in REST but not in KCC direct
 [iam_gap_direct] crd=networkservicesedgecachekeysets.networkservices.cnrm.cloud.google.com: supports IAM in REST but not in KCC direct
 [iam_gap_direct] crd=networkservicesedgecacheorigins.networkservices.cnrm.cloud.google.com: supports IAM in REST but not in KCC direct
-[iam_gap_direct] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com: supports IAM in REST but not in KCC direct
 [iam_gap_direct] crd=networkservicesgateways.networkservices.cnrm.cloud.google.com: supports IAM in REST but not in KCC direct
 [iam_gap_direct] crd=privatecacertificatetemplates.privateca.cnrm.cloud.google.com: supports IAM in REST but not in KCC direct
 [iam_gap_direct] crd=pubsubschemas.pubsub.cnrm.cloud.google.com: supports IAM in REST but not in KCC direct
