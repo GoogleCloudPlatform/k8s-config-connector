@@ -65,7 +65,7 @@ Your task is to update dependencies to resolve failing PRs or security alerts.
     - Ensure you are on a clean and updated master branch: `git fetch upstream master && git checkout master && git reset --hard upstream/master`.
     - Create a new branch for the update: `git checkout -b update-dep-$(date +%Y%m%d)`.
 2.  **Update Dependency**:
-    - For failing PRs: Checkout the PR branch and fix the test failures, or apply the update manually in a new branch.
+    - For failing PRs: Do NOT push changes to the Dependabot branch directly. Instead, create a new branch from `master`, apply the dependency update, and fix the test failures in your new branch.
     - For vulnerabilities: Update the package to the recommended version:
       ```bash
       go get `<PACKAGE>`@`<VERSION>`
