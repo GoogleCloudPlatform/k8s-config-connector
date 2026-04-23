@@ -181,11 +181,13 @@ func (a *ReasoningEngineAdapter) Update(ctx context.Context, updateOp *directbas
 
 	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
-		return err
+	        return err
 	}
 
-	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id)
+	paths.Delete("name")
+	paths.Delete("etag")
+
+	if len(paths) == 0 {		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
 
