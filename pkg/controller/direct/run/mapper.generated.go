@@ -1090,6 +1090,7 @@ func RunWorkerPoolObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 	out.LatestReadyRevision = direct.LazyPtr(in.GetLatestReadyRevision())
 	out.LatestCreatedRevision = direct.LazyPtr(in.GetLatestCreatedRevision())
 	out.InstanceSplitStatuses = direct.Slice_FromProto(mapCtx, in.InstanceSplitStatuses, InstanceSplitStatus_v1alpha1_FromProto)
+	// MISSING: CustomAudiences
 	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
 	out.Reconciling = direct.LazyPtr(in.GetReconciling())
 	out.Etag = direct.LazyPtr(in.GetEtag())
@@ -1117,6 +1118,7 @@ func RunWorkerPoolObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 	out.LatestReadyRevision = direct.ValueOf(in.LatestReadyRevision)
 	out.LatestCreatedRevision = direct.ValueOf(in.LatestCreatedRevision)
 	out.InstanceSplitStatuses = direct.Slice_ToProto(mapCtx, in.InstanceSplitStatuses, InstanceSplitStatus_v1alpha1_ToProto)
+	// MISSING: CustomAudiences
 	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
 	out.Reconciling = direct.ValueOf(in.Reconciling)
 	out.Etag = direct.ValueOf(in.Etag)
@@ -1138,7 +1140,7 @@ func RunWorkerPoolSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Work
 	out.Template = WorkerPoolRevisionTemplate_v1alpha1_FromProto(mapCtx, in.GetTemplate())
 	out.InstanceSplits = direct.Slice_FromProto(mapCtx, in.InstanceSplits, InstanceSplit_v1alpha1_FromProto)
 	out.Scaling = WorkerPoolScaling_v1alpha1_FromProto(mapCtx, in.GetScaling())
-	out.CustomAudiences = in.CustomAudiences
+	// MISSING: CustomAudiences
 	return out
 }
 func SecretKeySelector_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecretKeySelector) *krmrunv1alpha1.SecretKeySelector {
@@ -1149,7 +1151,9 @@ func SecretKeySelector_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Secr
 	if in.GetSecret() != "" {
 		out.SecretRef = &krmsecretmanagerv1beta1.SecretRef{External: in.GetSecret()}
 	}
-	out.Version = direct.LazyPtr(in.GetVersion())
+	if in.GetVersion() != "" {
+		out.VersionRef = &krmsecretmanagerv1beta1.SecretVersionRef{External: in.GetVersion()}
+	}
 	return out
 }
 func SecretKeySelector_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.SecretKeySelector) *pb.SecretKeySelector {
@@ -1160,7 +1164,9 @@ func SecretKeySelector_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv1a
 	if in.SecretRef != nil {
 		out.Secret = in.SecretRef.External
 	}
-	out.Version = direct.ValueOf(in.Version)
+	if in.VersionRef != nil {
+		out.Version = in.VersionRef.External
+	}
 	return out
 }
 func SecretKeySelector_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecretKeySelector) *krm.SecretKeySelector {
@@ -1445,7 +1451,9 @@ func VersionToPath_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VersionT
 	}
 	out := &krmrunv1alpha1.VersionToPath{}
 	out.Path = direct.LazyPtr(in.GetPath())
-	out.Version = direct.LazyPtr(in.GetVersion())
+	if in.GetVersion() != "" {
+		out.VersionRef = &krmsecretmanagerv1beta1.SecretVersionRef{External: in.GetVersion()}
+	}
 	out.Mode = direct.LazyPtr(in.GetMode())
 	return out
 }
@@ -1455,7 +1463,9 @@ func VersionToPath_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha
 	}
 	out := &pb.VersionToPath{}
 	out.Path = direct.ValueOf(in.Path)
-	out.Version = direct.ValueOf(in.Version)
+	if in.VersionRef != nil {
+		out.Version = in.VersionRef.External
+	}
 	out.Mode = direct.ValueOf(in.Mode)
 	return out
 }

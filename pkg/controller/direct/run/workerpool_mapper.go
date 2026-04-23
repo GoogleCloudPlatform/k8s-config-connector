@@ -51,7 +51,5 @@ func RunWorkerPoolSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv1a
 	out.Template = WorkerPoolRevisionTemplate_v1alpha1_ToProto(mapCtx, in.Template)
 	out.InstanceSplits = direct.Slice_ToProto(mapCtx, in.InstanceSplits, InstanceSplit_v1alpha1_ToProto)
 	out.Scaling = WorkerPoolScaling_v1alpha1_ToProto(mapCtx, in.Scaling)
-	// MISSING: CustomAudiences
-	out.CustomAudiences = in.CustomAudiences
 	return out
 }

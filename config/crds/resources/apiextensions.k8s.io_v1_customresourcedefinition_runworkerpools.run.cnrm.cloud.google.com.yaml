@@ -88,12 +88,6 @@ spec:
               clientVersion:
                 description: Arbitrary version identifier for the API client.
                 type: string
-              customAudiences:
-                description: One or more custom audiences that you want this worker
-                  pool to support.
-                items:
-                  type: string
-                type: array
               description:
                 description: User-provided description of the WorkerPool. This field
                   currently has a 512-character limit.
@@ -258,10 +252,38 @@ spec:
                                               resource.
                                             type: string
                                         type: object
-                                      version:
+                                      versionRef:
                                         description: The Cloud Secret Manager secret
                                           version.
-                                        type: string
+                                        oneOf:
+                                        - not:
+                                            required:
+                                            - external
+                                          required:
+                                          - name
+                                        - not:
+                                            anyOf:
+                                            - required:
+                                              - name
+                                            - required:
+                                              - namespace
+                                          required:
+                                          - external
+                                        properties:
+                                          external:
+                                            description: A reference to an externally
+                                              managed SecretManagerSecretVersion resource.
+                                              Should be in the format "projects/{{projectID}}/locations/{{location}}/secretversions/{{secretversionID}}".
+                                            type: string
+                                          name:
+                                            description: The name of a SecretManagerSecretVersion
+                                              resource.
+                                            type: string
+                                          namespace:
+                                            description: The namespace of a SecretManagerSecretVersion
+                                              resource.
+                                            type: string
+                                        type: object
                                     type: object
                                 type: object
                             type: object
@@ -758,32 +780,49 @@ spec:
                               items:
                                 properties:
                                   mode:
-                                    description: |-
-                                      Integer octal mode bits to use on this file, must be a value between
-                                       01 and 0777 (octal). If 0 or not set, the Volume's default mode will be
-                                       used.
-
-                                       Notes
-
-                                       * Internally, a umask of 0222 will be applied to any non-zero value.
-                                       * This is an integer representation of the mode bits. So, the octal
-                                       integer value should look exactly as the chmod numeric notation with a
-                                       leading zero. Some examples: for chmod 640 (u=rw,g=r), set to 0640 (octal)
-                                       or 416 (base-10). For chmod 755 (u=rwx,g=rx,o=rx), set to 0755 (octal) or
-                                       493 (base-10).
-                                       * This might be in conflict with other options that affect the
-                                       file mode, like fsGroup, and the result can be other mode bits set.
+                                    description: Integer octal mode bits to use on
+                                      this file, must be a value between 01 and 0777
+                                      (octal). If 0 or not set, the Volume's default
+                                      mode will be used.
                                     format: int32
                                     type: integer
                                   path:
                                     description: Required. The relative path of the
                                       secret in the container.
                                     type: string
-                                  version:
+                                  versionRef:
                                     description: The Cloud Secret Manager secret version.
                                       Can be 'latest' for the latest value, or an
                                       integer or a secret alias for a specific version.
-                                    type: string
+                                    oneOf:
+                                    - not:
+                                        required:
+                                        - external
+                                      required:
+                                      - name
+                                    - not:
+                                        anyOf:
+                                        - required:
+                                          - name
+                                        - required:
+                                          - namespace
+                                      required:
+                                      - external
+                                    properties:
+                                      external:
+                                        description: A reference to an externally
+                                          managed SecretManagerSecretVersion resource.
+                                          Should be in the format "projects/{{projectID}}/locations/{{location}}/secretversions/{{secretversionID}}".
+                                        type: string
+                                      name:
+                                        description: The name of a SecretManagerSecretVersion
+                                          resource.
+                                        type: string
+                                      namespace:
+                                        description: The namespace of a SecretManagerSecretVersion
+                                          resource.
+                                        type: string
+                                    type: object
                                 type: object
                               type: array
                             secretRef:

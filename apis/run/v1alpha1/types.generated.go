@@ -267,36 +267,6 @@ type TCPSocketAction struct {
 	Port *int32 `json:"port,omitempty"`
 }
 
-// +kcc:proto=google.cloud.run.v2.VersionToPath
-type VersionToPath struct {
-	// Required. The relative path of the secret in the container.
-	// +kcc:proto:field=google.cloud.run.v2.VersionToPath.path
-	Path *string `json:"path,omitempty"`
-
-	// The Cloud Secret Manager secret version.
-	//  Can be 'latest' for the latest value, or an integer or a secret alias for a
-	//  specific version.
-	// +kcc:proto:field=google.cloud.run.v2.VersionToPath.version
-	Version *string `json:"version,omitempty"`
-
-	// Integer octal mode bits to use on this file, must be a value between
-	//  01 and 0777 (octal). If 0 or not set, the Volume's default mode will be
-	//  used.
-	//
-	//  Notes
-	//
-	//  * Internally, a umask of 0222 will be applied to any non-zero value.
-	//  * This is an integer representation of the mode bits. So, the octal
-	//  integer value should look exactly as the chmod numeric notation with a
-	//  leading zero. Some examples: for chmod 640 (u=rw,g=r), set to 0640 (octal)
-	//  or 416 (base-10). For chmod 755 (u=rwx,g=rx,o=rx), set to 0755 (octal) or
-	//  493 (base-10).
-	//  * This might be in conflict with other options that affect the
-	//  file mode, like fsGroup, and the result can be other mode bits set.
-	// +kcc:proto:field=google.cloud.run.v2.VersionToPath.mode
-	Mode *int32 `json:"mode,omitempty"`
-}
-
 // +kcc:proto=google.cloud.run.v2.VolumeMount
 type VolumeMount struct {
 	// Required. This must match the Name of a Volume.

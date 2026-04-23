@@ -71,9 +71,6 @@ type RunWorkerPoolSpec struct {
 
 	// Optional. Specifies worker-pool-level scaling settings
 	Scaling *WorkerPoolScaling `json:"scaling,omitempty"`
-
-	// One or more custom audiences that you want this worker pool to support.
-	CustomAudiences []string `json:"customAudiences,omitempty"`
 }
 
 // RunWorkerPoolStatus defines the config connector machine state of RunWorkerPool
@@ -332,7 +329,23 @@ type SecretKeySelector struct {
 	SecretRef *secretmanagerv1beta1.SecretRef `json:"secretRef,omitempty"`
 
 	// The Cloud Secret Manager secret version.
-	Version *string `json:"version,omitempty"`
+	VersionRef *secretmanagerv1beta1.SecretVersionRef `json:"versionRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.run.v2.VersionToPath
+type VersionToPath struct {
+	// Required. The relative path of the secret in the container.
+	Path *string `json:"path,omitempty"`
+
+	// The Cloud Secret Manager secret version.
+	//  Can be 'latest' for the latest value, or an integer or a secret alias for a
+	//  specific version.
+	VersionRef *secretmanagerv1beta1.SecretVersionRef `json:"versionRef,omitempty"`
+
+	// Integer octal mode bits to use on this file, must be a value between
+	//  01 and 0777 (octal). If 0 or not set, the Volume's default mode will be
+	//  used.
+	Mode *int32 `json:"mode,omitempty"`
 }
 
 // +kcc:proto=google.cloud.run.v2.Volume
