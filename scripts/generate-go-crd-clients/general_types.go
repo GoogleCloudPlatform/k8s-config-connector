@@ -33,6 +33,12 @@ func (g *GeneralTypes) WriteToFile(p string) error {
 	}
 	return nil
 }
+func (g *GeneralTypes) printf(msg string, args ...interface{}) {
+	if len(args) != 0 {
+		msg = fmt.Sprintf(msg, args...)
+	}
+	g.sb.WriteString(msg)
+}
 func (g *GeneralTypes) Print(msg string, args ...interface{}) {
 	if len(args) != 0 {
 		msg = fmt.Sprintf(msg, args...)
@@ -91,7 +97,7 @@ func (g *GeneralTypes) Generate() {
 	g.Print("type %sStatus struct {", g.Name)
 	g.Print("\t/* Conditions represent the latest available observations of the")
 	g.Print("\t    %s's current state. */", g.Name)
-	g.Print("Conditions []k8sv1alpha1.Condition `json:\"conditions,omitempty\"`")
+	g.Print("\tConditions []k8sv1alpha1.Condition `json:\"conditions,omitempty\"`")
 
 	for i, f := range g.StatusFields {
 		if i != 0 {
@@ -186,19 +192,19 @@ func (g *GeneralTypes) structField(f *fieldProperties) {
 			lines = append(lines, strings.TrimSpace(line))
 		}
 		if len(lines) == 1 {
-			g.Print("/* %s */", strings.Join(lines, "\n"))
+			g.Print("\t/* %s */", strings.Join(lines, "\n"))
 		} else {
 			g.Print("\t/* %s */", strings.Join(lines, "\n\t"))
 		}
 	}
 	if f.Optional {
-		g.Print("// +optional")
+		g.Print("\t// +optional")
 	}
 	typeName := f.Type
 	if f.UsePointer {
 		typeName = "*" + typeName
 	}
-	g.Print("%s %s `json:\"%s\"`", f.Name, typeName, f.JSONName)
+	g.Print("\t%s %s `json:\"%s\"`", f.Name, typeName, f.JSONName)
 }
 
 func (g *GeneralTypes) WriteHeader() {

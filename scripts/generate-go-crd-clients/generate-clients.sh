@@ -67,8 +67,9 @@ go run k8s.io/code-generator/cmd/client-gen@v0.29.0 \
 
 echo "Fixing up imports"
 # 1. We apply the import alias fix to all files in the generated directory.
-# We use a more robust regex that handles leading whitespace and optional aliases correctly.
-find "${REPO_ROOT}/pkg/clients/generated" -name "*.go" -exec sed -E -i 's|^([[:space:]]*)([a-zA-Z0-9]*[[:space:]]+)?"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"|\1k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"|g' {} +
+# We use a robust regex that handles leading whitespace, optional aliases (including those with underscores),
+# and ensures a canonical tab-indented aliased import.
+find "${REPO_ROOT}/pkg/clients/generated" -name "*.go" -exec sed -E -i 's|^[[:space:]]*([a-zA-Z0-9_]*[[:space:]]+)?"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"|	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"|g' {} +
 
 # 2. In files that now use the k8sv1alpha1 alias, we replace all v1alpha1. usages with k8sv1alpha1.
 # This handles all codegen tools and avoids accidental replacements in other v1alpha1 packages.
