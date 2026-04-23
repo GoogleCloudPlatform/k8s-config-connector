@@ -28,5 +28,6 @@
 // that future versions of the go-client may include breaking changes.
 // Please try it out and give us feedback!
 
+// +k8s:deepcopy-gen=package,register
 // +groupName=k8s.cnrm.cloud.google.com
 package v1alpha1
