@@ -25,7 +25,7 @@
 package v1alpha1
 
 import (
-	k8sk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -225,7 +225,7 @@ func (in *ConnectivitytestCloudRunRevision) DeepCopyInto(out *ConnectivitytestCl
 	*out = *in
 	if in.RunRevisionRef != nil {
 		in, out := &in.RunRevisionRef, &out.RunRevisionRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -389,17 +389,17 @@ func (in *ConnectivitytestDestination) DeepCopyInto(out *ConnectivitytestDestina
 	}
 	if in.ComputeInstanceRef != nil {
 		in, out := &in.ComputeInstanceRef, &out.ComputeInstanceRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ComputeNetworkRef != nil {
 		in, out := &in.ComputeNetworkRef, &out.ComputeNetworkRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ContainerClusterRef != nil {
 		in, out := &in.ContainerClusterRef, &out.ContainerClusterRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Fqdn != nil {
@@ -424,7 +424,7 @@ func (in *ConnectivitytestDestination) DeepCopyInto(out *ConnectivitytestDestina
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.RedisCluster != nil {
@@ -439,7 +439,7 @@ func (in *ConnectivitytestDestination) DeepCopyInto(out *ConnectivitytestDestina
 	}
 	if in.SqlInstance != nil {
 		in, out := &in.SqlInstance, &out.SqlInstance
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -1849,17 +1849,17 @@ func (in *ConnectivitytestSource) DeepCopyInto(out *ConnectivitytestSource) {
 	}
 	if in.ComputeInstanceRef != nil {
 		in, out := &in.ComputeInstanceRef, &out.ComputeInstanceRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ComputeNetworkRef != nil {
 		in, out := &in.ComputeNetworkRef, &out.ComputeNetworkRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ContainerClusterRef != nil {
 		in, out := &in.ContainerClusterRef, &out.ContainerClusterRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Fqdn != nil {
@@ -1884,7 +1884,7 @@ func (in *ConnectivitytestSource) DeepCopyInto(out *ConnectivitytestSource) {
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.RedisCluster != nil {
@@ -1899,7 +1899,7 @@ func (in *ConnectivitytestSource) DeepCopyInto(out *ConnectivitytestSource) {
 	}
 	if in.SqlInstance != nil {
 		in, out := &in.SqlInstance, &out.SqlInstance
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -2433,7 +2433,7 @@ func (in *NetworkManagementConnectivityTestStatus) DeepCopyInto(out *NetworkMana
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {

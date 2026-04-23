@@ -25,7 +25,7 @@
 package v1alpha1
 
 import (
-	k8sk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -127,7 +127,7 @@ func (in *DataplexEntryGroupStatus) DeepCopyInto(out *DataplexEntryGroupStatus) 
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -281,7 +281,7 @@ func (in *DataplexEntryTypeStatus) DeepCopyInto(out *DataplexEntryTypeStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -415,7 +415,7 @@ func (in *DataplexLakeStatus) DeepCopyInto(out *DataplexLakeStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -523,7 +523,7 @@ func (in *DataplexTaskSpec) DeepCopyInto(out *DataplexTaskSpec) {
 	in.ExecutionSpec.DeepCopyInto(&out.ExecutionSpec)
 	if in.LakeRef != nil {
 		in, out := &in.LakeRef, &out.LakeRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Notebook != nil {
@@ -564,7 +564,7 @@ func (in *DataplexTaskStatus) DeepCopyInto(out *DataplexTaskStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -699,7 +699,7 @@ func (in *DataplexZoneStatus) DeepCopyInto(out *DataplexZoneStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -876,7 +876,7 @@ func (in *LakeMetastore) DeepCopyInto(out *LakeMetastore) {
 	*out = *in
 	if in.ServiceRef != nil {
 		in, out := &in.ServiceRef, &out.ServiceRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -1055,7 +1055,7 @@ func (in *TaskExecutionSpec) DeepCopyInto(out *TaskExecutionSpec) {
 	}
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.MaxJobExecutionLifetime != nil {
@@ -1065,7 +1065,7 @@ func (in *TaskExecutionSpec) DeepCopyInto(out *TaskExecutionSpec) {
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	out.ServiceAccountRef = in.ServiceAccountRef

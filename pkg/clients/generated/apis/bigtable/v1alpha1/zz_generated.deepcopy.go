@@ -25,7 +25,7 @@
 package v1alpha1
 
 import (
-	k8sk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -300,7 +300,7 @@ func (in *BigtableAuthorizedViewStatus) DeepCopyInto(out *BigtableAuthorizedView
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -418,7 +418,7 @@ func (in *BigtableBackupSpec) DeepCopyInto(out *BigtableBackupSpec) {
 	}
 	if in.SourceTableRef != nil {
 		in, out := &in.SourceTableRef, &out.SourceTableRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -439,7 +439,7 @@ func (in *BigtableBackupStatus) DeepCopyInto(out *BigtableBackupStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -588,7 +588,7 @@ func (in *BigtableClusterStatus) DeepCopyInto(out *BigtableClusterStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -717,7 +717,7 @@ func (in *BigtableLogicalViewStatus) DeepCopyInto(out *BigtableLogicalViewStatus
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -824,7 +824,7 @@ func (in *BigtableMaterializedViewSpec) DeepCopyInto(out *BigtableMaterializedVi
 	}
 	if in.InstanceRef != nil {
 		in, out := &in.InstanceRef, &out.InstanceRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Query != nil {
@@ -855,7 +855,7 @@ func (in *BigtableMaterializedViewStatus) DeepCopyInto(out *BigtableMaterialized
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -995,7 +995,7 @@ func (in *ClusterEncryptionConfig) DeepCopyInto(out *ClusterEncryptionConfig) {
 	*out = *in
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return

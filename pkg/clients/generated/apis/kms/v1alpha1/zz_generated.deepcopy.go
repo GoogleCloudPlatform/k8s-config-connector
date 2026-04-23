@@ -25,7 +25,7 @@
 package v1alpha1
 
 import (
-	k8sk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -214,7 +214,7 @@ func (in *KMSCryptoKeyVersionStatus) DeepCopyInto(out *KMSCryptoKeyVersionStatus
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Algorithm != nil {
@@ -349,7 +349,7 @@ func (in *KMSKeyRingImportJobStatus) DeepCopyInto(out *KMSKeyRingImportJobStatus
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Attestation != nil {
@@ -492,7 +492,7 @@ func (in *KMSSecretCiphertextStatus) DeepCopyInto(out *KMSSecretCiphertextStatus
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Ciphertext != nil {
@@ -622,7 +622,7 @@ func (in *SecretciphertextValueFrom) DeepCopyInto(out *SecretciphertextValueFrom
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(k8sk8sv1alpha1.SecretKeyRef)
+		*out = new(k8sv1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return

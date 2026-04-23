@@ -25,7 +25,7 @@
 package v1alpha1
 
 import (
-	k8sk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -122,7 +122,7 @@ func (in *IdentityPlatformDefaultSupportedIDPConfigStatus) DeepCopyInto(out *Ide
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Name != nil {
@@ -243,7 +243,7 @@ func (in *IdentityPlatformInboundSAMLConfigStatus) DeepCopyInto(out *IdentityPla
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -357,7 +357,7 @@ func (in *IdentityPlatformProjectDefaultConfigStatus) DeepCopyInto(out *Identity
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Name != nil {
@@ -476,7 +476,7 @@ func (in *IdentityPlatformTenantDefaultSupportedIDPConfigStatus) DeepCopyInto(ou
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Name != nil {
@@ -597,7 +597,7 @@ func (in *IdentityPlatformTenantInboundSAMLConfigStatus) DeepCopyInto(out *Ident
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {

@@ -25,7 +25,7 @@
 package v1alpha1
 
 import (
-	k8sk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -184,7 +184,7 @@ func (in *TPUNodeStatus) DeepCopyInto(out *TPUNodeStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.NetworkEndpoints != nil {
@@ -376,7 +376,7 @@ func (in *TPUVirtualMachineStatus) DeepCopyInto(out *TPUVirtualMachineStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -495,7 +495,7 @@ func (in *VirtualmachineNetworkConfig) DeepCopyInto(out *VirtualmachineNetworkCo
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.QueueCount != nil {
@@ -505,7 +505,7 @@ func (in *VirtualmachineNetworkConfig) DeepCopyInto(out *VirtualmachineNetworkCo
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -536,7 +536,7 @@ func (in *VirtualmachineNetworkConfigs) DeepCopyInto(out *VirtualmachineNetworkC
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.QueueCount != nil {
@@ -546,7 +546,7 @@ func (in *VirtualmachineNetworkConfigs) DeepCopyInto(out *VirtualmachineNetworkC
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -679,7 +679,7 @@ func (in *VirtualmachineServiceAccount) DeepCopyInto(out *VirtualmachineServiceA
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return

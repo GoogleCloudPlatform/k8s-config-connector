@@ -37,8 +37,8 @@ go generate ./pkg/clients/...
 
 # Fix up deepcopy-gen using the wrong alias for k8sv1alpha1 in v1beta1 packages
 # deepcopy-gen uses 'v1alpha1' by default when there is no shadowing, but our types use 'k8sv1alpha1'
-find "${REPO_ROOT}/pkg/clients/generated/apis" -name "zz_generated.deepcopy.go" -exec sed -i 's/v1alpha1 "github.com\/GoogleCloudPlatform\/k8s-config-connector\/pkg\/clients\/generated\/apis\/k8s\/v1alpha1"/k8sv1alpha1 "github.com\/GoogleCloudPlatform\/k8s-config-connector\/pkg\/clients\/generated\/apis\/k8s\/v1alpha1"/g' {} +
-find "${REPO_ROOT}/pkg/clients/generated/apis" -name "zz_generated.deepcopy.go" -exec sed -i 's/v1alpha1\./k8sv1alpha1\./g' {} +
+find "${REPO_ROOT}/pkg/clients/generated/apis" -name "zz_generated.deepcopy.go" -exec sed -i 's/\bv1alpha1\b "github.com\/GoogleCloudPlatform\/k8s-config-connector\/pkg\/clients\/generated\/apis\/k8s\/v1alpha1"/k8sv1alpha1 "github.com\/GoogleCloudPlatform\/k8s-config-connector\/pkg\/clients\/generated\/apis\/k8s\/v1alpha1"/g' {} +
+find "${REPO_ROOT}/pkg/clients/generated/apis" -name "zz_generated.deepcopy.go" -exec sed -i 's/\bv1alpha1\./k8sv1alpha1\./g' {} +
 
 # Generate the clients
 echo "Generating clients"

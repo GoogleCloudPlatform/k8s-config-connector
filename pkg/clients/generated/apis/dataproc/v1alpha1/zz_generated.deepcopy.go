@@ -25,7 +25,7 @@
 package v1alpha1
 
 import (
-	k8sk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -173,7 +173,7 @@ func (in *BatchExecutionConfig) DeepCopyInto(out *BatchExecutionConfig) {
 	}
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.NetworkTags != nil {
@@ -188,12 +188,12 @@ func (in *BatchExecutionConfig) DeepCopyInto(out *BatchExecutionConfig) {
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.StagingBucketRef != nil {
 		in, out := &in.StagingBucketRef, &out.StagingBucketRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.SubnetworkURI != nil {
@@ -538,7 +538,7 @@ func (in *BatchSparkHistoryServerConfig) DeepCopyInto(out *BatchSparkHistoryServ
 	*out = *in
 	if in.DataprocClusterRef != nil {
 		in, out := &in.DataprocClusterRef, &out.DataprocClusterRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -737,7 +737,7 @@ func (in *DataprocBatchSpec) DeepCopyInto(out *DataprocBatchSpec) {
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.PysparkBatch != nil {
@@ -788,7 +788,7 @@ func (in *DataprocBatchStatus) DeepCopyInto(out *DataprocBatchStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -988,7 +988,7 @@ func (in *DataprocJobStatus) DeepCopyInto(out *DataprocJobStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -1102,7 +1102,7 @@ func (in *DataprocNodeGroupSpec) DeepCopyInto(out *DataprocNodeGroupSpec) {
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -1133,7 +1133,7 @@ func (in *DataprocNodeGroupStatus) DeepCopyInto(out *DataprocNodeGroupStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -1437,7 +1437,7 @@ func (in *JobParent) DeepCopyInto(out *JobParent) {
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return

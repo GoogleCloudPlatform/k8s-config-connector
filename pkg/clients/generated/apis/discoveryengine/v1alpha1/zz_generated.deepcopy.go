@@ -25,7 +25,7 @@
 package v1alpha1
 
 import (
-	k8sk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -369,7 +369,7 @@ func (in *DiscoveryEngineDataStoreStatus) DeepCopyInto(out *DiscoveryEngineDataS
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -466,7 +466,7 @@ func (in *DiscoveryEngineDataStoreTargetSiteSpec) DeepCopyInto(out *DiscoveryEng
 	*out = *in
 	if in.DataStoreRef != nil {
 		in, out := &in.DataStoreRef, &out.DataStoreRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ExactMatch != nil {
@@ -502,7 +502,7 @@ func (in *DiscoveryEngineDataStoreTargetSiteStatus) DeepCopyInto(out *DiscoveryE
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -609,7 +609,7 @@ func (in *DiscoveryEngineEngineSpec) DeepCopyInto(out *DiscoveryEngineEngineSpec
 	}
 	if in.DataStoreRefs != nil {
 		in, out := &in.DataStoreRefs, &out.DataStoreRefs
-		*out = make([]k8sk8sv1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.DisableAnalytics != nil {
@@ -651,7 +651,7 @@ func (in *DiscoveryEngineEngineStatus) DeepCopyInto(out *DiscoveryEngineEngineSt
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {

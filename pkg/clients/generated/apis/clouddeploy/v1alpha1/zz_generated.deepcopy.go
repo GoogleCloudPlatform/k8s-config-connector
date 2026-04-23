@@ -25,7 +25,7 @@
 package v1alpha1
 
 import (
-	k8sk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -127,7 +127,7 @@ func (in *CloudDeployCustomTargetTypeStatus) DeepCopyInto(out *CloudDeployCustom
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -270,7 +270,7 @@ func (in *CloudDeployDeployPolicyStatus) DeepCopyInto(out *CloudDeployDeployPoli
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -452,7 +452,7 @@ func (in *CloudDeployTargetStatus) DeepCopyInto(out *CloudDeployTargetStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -562,7 +562,7 @@ func (in *CustomtargettypeGoogleCloudBuildRepo) DeepCopyInto(out *Customtargetty
 	}
 	if in.RepositoryRef != nil {
 		in, out := &in.RepositoryRef, &out.RepositoryRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -1092,7 +1092,7 @@ func (in *TargetAnthosCluster) DeepCopyInto(out *TargetAnthosCluster) {
 	*out = *in
 	if in.MembershipRef != nil {
 		in, out := &in.MembershipRef, &out.MembershipRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -1113,7 +1113,7 @@ func (in *TargetAnthosClusters) DeepCopyInto(out *TargetAnthosClusters) {
 	*out = *in
 	if in.MembershipRef != nil {
 		in, out := &in.MembershipRef, &out.MembershipRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -1164,7 +1164,7 @@ func (in *TargetCustomTarget) DeepCopyInto(out *TargetCustomTarget) {
 	*out = *in
 	if in.CustomTargetTypeRef != nil {
 		in, out := &in.CustomTargetTypeRef, &out.CustomTargetTypeRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -1190,7 +1190,7 @@ func (in *TargetDefaultPool) DeepCopyInto(out *TargetDefaultPool) {
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -1231,7 +1231,7 @@ func (in *TargetExecutionConfigs) DeepCopyInto(out *TargetExecutionConfigs) {
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Usages != nil {
@@ -1246,7 +1246,7 @@ func (in *TargetExecutionConfigs) DeepCopyInto(out *TargetExecutionConfigs) {
 	}
 	if in.WorkerPoolRef != nil {
 		in, out := &in.WorkerPoolRef, &out.WorkerPoolRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -1267,7 +1267,7 @@ func (in *TargetGke) DeepCopyInto(out *TargetGke) {
 	*out = *in
 	if in.ClusterRef != nil {
 		in, out := &in.ClusterRef, &out.ClusterRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.DnsEndpoint != nil {
@@ -1303,7 +1303,7 @@ func (in *TargetGkeClusters) DeepCopyInto(out *TargetGkeClusters) {
 	*out = *in
 	if in.ClusterRef != nil {
 		in, out := &in.ClusterRef, &out.ClusterRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.DnsEndpoint != nil {
@@ -1339,7 +1339,7 @@ func (in *TargetMultiTarget) DeepCopyInto(out *TargetMultiTarget) {
 	*out = *in
 	if in.TargetRefs != nil {
 		in, out := &in.TargetRefs, &out.TargetRefs
-		*out = make([]k8sk8sv1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	return
@@ -1406,12 +1406,12 @@ func (in *TargetPrivatePool) DeepCopyInto(out *TargetPrivatePool) {
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.WorkerPoolRef != nil {
 		in, out := &in.WorkerPoolRef, &out.WorkerPoolRef
-		*out = new(k8sk8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
