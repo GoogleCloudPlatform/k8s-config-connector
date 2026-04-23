@@ -25,7 +25,7 @@
 package v1alpha1
 
 import (
-	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -34,7 +34,7 @@ func (in *ExternalaccessruleDestinationIPRanges) DeepCopyInto(out *Externalacces
 	*out = *in
 	if in.ExternalAddressRef != nil {
 		in, out := &in.ExternalAddressRef, &out.ExternalAddressRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.IpAddress != nil {
@@ -101,7 +101,7 @@ func (in *ExternalaccessruleSourceIPRanges) DeepCopyInto(out *Externalaccessrule
 	*out = *in
 	if in.ExternalAddressRef != nil {
 		in, out := &in.ExternalAddressRef, &out.ExternalAddressRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.IpAddress != nil {
@@ -242,12 +242,12 @@ func (in *NetworkpeeringPeerNetwork) DeepCopyInto(out *NetworkpeeringPeerNetwork
 	*out = *in
 	if in.ComputeNetworkRef != nil {
 		in, out := &in.ComputeNetworkRef, &out.ComputeNetworkRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.VmwareEngineNetworkRef != nil {
 		in, out := &in.VmwareEngineNetworkRef, &out.VmwareEngineNetworkRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -457,7 +457,7 @@ func (in *PrivatecloudNetworkConfig) DeepCopyInto(out *PrivatecloudNetworkConfig
 	*out = *in
 	if in.VmwareEngineNetworkRef != nil {
 		in, out := &in.VmwareEngineNetworkRef, &out.VmwareEngineNetworkRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -795,7 +795,7 @@ func (in *VMwareEngineExternalAccessRuleStatus) DeepCopyInto(out *VMwareEngineEx
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -1012,7 +1012,7 @@ func (in *VMwareEngineNetworkPeeringStatus) DeepCopyInto(out *VMwareEngineNetwor
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -1130,7 +1130,7 @@ func (in *VMwareEngineNetworkPolicySpec) DeepCopyInto(out *VMwareEngineNetworkPo
 	}
 	if in.VmwareEngineNetworkRef != nil {
 		in, out := &in.VmwareEngineNetworkRef, &out.VmwareEngineNetworkRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -1151,7 +1151,7 @@ func (in *VMwareEngineNetworkPolicyStatus) DeepCopyInto(out *VMwareEngineNetwork
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -1214,7 +1214,7 @@ func (in *VMwareEngineNetworkStatus) DeepCopyInto(out *VMwareEngineNetworkStatus
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -1345,7 +1345,7 @@ func (in *VMwareEnginePrivateCloudStatus) DeepCopyInto(out *VMwareEnginePrivateC
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {

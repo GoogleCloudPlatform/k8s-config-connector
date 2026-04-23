@@ -25,7 +25,7 @@
 package v1alpha1
 
 import (
-	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -177,7 +177,7 @@ func (in *WorkflowsWorkflowSpec) DeepCopyInto(out *WorkflowsWorkflowSpec) {
 	}
 	if in.KmsCryptoKeyRef != nil {
 		in, out := &in.KmsCryptoKeyRef, &out.KmsCryptoKeyRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Labels != nil {
@@ -195,7 +195,7 @@ func (in *WorkflowsWorkflowSpec) DeepCopyInto(out *WorkflowsWorkflowSpec) {
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.UserEnvVars != nil {
@@ -223,7 +223,7 @@ func (in *WorkflowsWorkflowStatus) DeepCopyInto(out *WorkflowsWorkflowStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {

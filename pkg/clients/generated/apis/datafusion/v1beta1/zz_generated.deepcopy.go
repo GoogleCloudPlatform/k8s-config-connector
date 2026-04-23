@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -95,7 +95,7 @@ func (in *DataFusionInstanceSpec) DeepCopyInto(out *DataFusionInstanceSpec) {
 	*out = *in
 	if in.DataprocServiceAccountRef != nil {
 		in, out := &in.DataprocServiceAccountRef, &out.DataprocServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Description != nil {
@@ -168,7 +168,7 @@ func (in *DataFusionInstanceStatus) DeepCopyInto(out *DataFusionInstanceStatus) 
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ApiEndpoint != nil {
@@ -282,7 +282,7 @@ func (in *InstanceNetworkConfig) DeepCopyInto(out *InstanceNetworkConfig) {
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return

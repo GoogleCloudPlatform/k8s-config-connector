@@ -25,7 +25,7 @@
 package v1alpha1
 
 import (
-	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -425,7 +425,7 @@ func (in *BackupplanEncryptionKey) DeepCopyInto(out *BackupplanEncryptionKey) {
 	*out = *in
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -917,7 +917,7 @@ func (in *GKEBackupBackupPlanStatus) DeepCopyInto(out *GKEBackupBackupPlanStatus
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -997,7 +997,7 @@ func (in *GKEBackupBackupStatus) DeepCopyInto(out *GKEBackupBackupStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -1192,7 +1192,7 @@ func (in *GKEBackupRestorePlanStatus) DeepCopyInto(out *GKEBackupRestorePlanStat
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -1228,7 +1228,7 @@ func (in *GKEBackupRestoreSpec) DeepCopyInto(out *GKEBackupRestoreSpec) {
 	*out = *in
 	if in.BackupRef != nil {
 		in, out := &in.BackupRef, &out.BackupRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Description != nil {
@@ -1279,7 +1279,7 @@ func (in *GKEBackupRestoreStatus) DeepCopyInto(out *GKEBackupRestoreStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {

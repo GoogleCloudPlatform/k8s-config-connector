@@ -25,7 +25,7 @@
 package v1alpha1
 
 import (
-	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -210,7 +210,7 @@ func (in *SpannerInstanceConfigSpec) DeepCopyInto(out *SpannerInstanceConfigSpec
 	*out = *in
 	if in.BaseConfigRef != nil {
 		in, out := &in.BaseConfigRef, &out.BaseConfigRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Labels != nil {
@@ -256,7 +256,7 @@ func (in *SpannerInstanceConfigStatus) DeepCopyInto(out *SpannerInstanceConfigSt
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {

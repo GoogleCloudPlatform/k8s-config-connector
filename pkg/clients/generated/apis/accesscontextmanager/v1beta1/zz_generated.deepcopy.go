@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -137,7 +137,7 @@ func (in *AccessContextManagerAccessLevelStatus) DeepCopyInto(out *AccessContext
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -255,7 +255,7 @@ func (in *AccessContextManagerAccessPolicyStatus) DeepCopyInto(out *AccessContex
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -436,7 +436,7 @@ func (in *AccessContextManagerServicePerimeterResourceStatus) DeepCopyInto(out *
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -509,7 +509,7 @@ func (in *AccessContextManagerServicePerimeterStatus) DeepCopyInto(out *AccessCo
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -605,7 +605,7 @@ func (in *AccesslevelConditions) DeepCopyInto(out *AccesslevelConditions) {
 	}
 	if in.RequiredAccessLevels != nil {
 		in, out := &in.RequiredAccessLevels, &out.RequiredAccessLevels
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	return
@@ -722,7 +722,7 @@ func (in *AccesslevelMembers) DeepCopyInto(out *AccesslevelMembers) {
 	*out = *in
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.User != nil {
@@ -879,7 +879,7 @@ func (in *ServiceperimeterIdentities) DeepCopyInto(out *ServiceperimeterIdentiti
 	*out = *in
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.User != nil {
@@ -1050,7 +1050,7 @@ func (in *ServiceperimeterResources) DeepCopyInto(out *ServiceperimeterResources
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -1071,12 +1071,12 @@ func (in *ServiceperimeterSources) DeepCopyInto(out *ServiceperimeterSources) {
 	*out = *in
 	if in.AccessLevelRef != nil {
 		in, out := &in.AccessLevelRef, &out.AccessLevelRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -1097,7 +1097,7 @@ func (in *ServiceperimeterSpec) DeepCopyInto(out *ServiceperimeterSpec) {
 	*out = *in
 	if in.AccessLevels != nil {
 		in, out := &in.AccessLevels, &out.AccessLevels
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.EgressPolicies != nil {
@@ -1149,7 +1149,7 @@ func (in *ServiceperimeterStatus) DeepCopyInto(out *ServiceperimeterStatus) {
 	*out = *in
 	if in.AccessLevels != nil {
 		in, out := &in.AccessLevels, &out.AccessLevels
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.EgressPolicies != nil {

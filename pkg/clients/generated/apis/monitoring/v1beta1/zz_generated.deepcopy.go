@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -888,7 +888,7 @@ func (in *DashboardIncidentList) DeepCopyInto(out *DashboardIncidentList) {
 	}
 	if in.PolicyRefs != nil {
 		in, out := &in.PolicyRefs, &out.PolicyRefs
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	return
@@ -2125,7 +2125,7 @@ func (in *MonitoringAlertPolicySpec) DeepCopyInto(out *MonitoringAlertPolicySpec
 	}
 	if in.NotificationChannels != nil {
 		in, out := &in.NotificationChannels, &out.NotificationChannels
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.ResourceID != nil {
@@ -2156,7 +2156,7 @@ func (in *MonitoringAlertPolicyStatus) DeepCopyInto(out *MonitoringAlertPolicySt
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationRecord != nil {
@@ -2304,7 +2304,7 @@ func (in *MonitoringDashboardStatus) DeepCopyInto(out *MonitoringDashboardStatus
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Etag != nil {
@@ -2401,12 +2401,12 @@ func (in *MonitoringGroupSpec) DeepCopyInto(out *MonitoringGroupSpec) {
 	}
 	if in.ParentRef != nil {
 		in, out := &in.ParentRef, &out.ParentRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -2432,7 +2432,7 @@ func (in *MonitoringGroupStatus) DeepCopyInto(out *MonitoringGroupStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -2568,7 +2568,7 @@ func (in *MonitoringMetricDescriptorStatus) DeepCopyInto(out *MonitoringMetricDe
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.MonitoredResourceTypes != nil {
@@ -2686,7 +2686,7 @@ func (in *MonitoringMonitoredProjectStatus) DeepCopyInto(out *MonitoringMonitore
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -2826,7 +2826,7 @@ func (in *MonitoringNotificationChannelStatus) DeepCopyInto(out *MonitoringNotif
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Name != nil {
@@ -2994,7 +2994,7 @@ func (in *MonitoringServiceLevelObjectiveStatus) DeepCopyInto(out *MonitoringSer
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -3100,7 +3100,7 @@ func (in *MonitoringServiceStatus) DeepCopyInto(out *MonitoringServiceStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -3246,7 +3246,7 @@ func (in *MonitoringUptimeCheckConfigStatus) DeepCopyInto(out *MonitoringUptimeC
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -3381,7 +3381,7 @@ func (in *NotificationchannelValueFrom) DeepCopyInto(out *NotificationchannelVal
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.SecretKeyRef)
+		*out = new(k8sv1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return
@@ -4054,7 +4054,7 @@ func (in *UptimecheckconfigResourceGroup) DeepCopyInto(out *UptimecheckconfigRes
 	*out = *in
 	if in.GroupRef != nil {
 		in, out := &in.GroupRef, &out.GroupRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ResourceType != nil {
@@ -4096,7 +4096,7 @@ func (in *UptimecheckconfigValueFrom) DeepCopyInto(out *UptimecheckconfigValueFr
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.SecretKeyRef)
+		*out = new(k8sv1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return

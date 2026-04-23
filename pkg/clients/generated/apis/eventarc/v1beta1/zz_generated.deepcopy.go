@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -95,7 +95,7 @@ func (in *EventarcTriggerSpec) DeepCopyInto(out *EventarcTriggerSpec) {
 	*out = *in
 	if in.ChannelRef != nil {
 		in, out := &in.ChannelRef, &out.ChannelRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	in.Destination.DeepCopyInto(&out.Destination)
@@ -119,7 +119,7 @@ func (in *EventarcTriggerSpec) DeepCopyInto(out *EventarcTriggerSpec) {
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Transport != nil {
@@ -145,7 +145,7 @@ func (in *EventarcTriggerStatus) DeepCopyInto(out *EventarcTriggerStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -225,7 +225,7 @@ func (in *TriggerDestination) DeepCopyInto(out *TriggerDestination) {
 	*out = *in
 	if in.CloudFunctionRef != nil {
 		in, out := &in.CloudFunctionRef, &out.CloudFunctionRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.CloudRunService != nil {
@@ -250,7 +250,7 @@ func (in *TriggerDestination) DeepCopyInto(out *TriggerDestination) {
 	}
 	if in.WorkflowRef != nil {
 		in, out := &in.WorkflowRef, &out.WorkflowRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -347,7 +347,7 @@ func (in *TriggerPubsub) DeepCopyInto(out *TriggerPubsub) {
 	*out = *in
 	if in.TopicRef != nil {
 		in, out := &in.TopicRef, &out.TopicRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return

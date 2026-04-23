@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -140,7 +140,7 @@ func (in *BillingBudgetsBudgetStatus) DeepCopyInto(out *BillingBudgetsBudgetStat
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Etag != nil {
@@ -176,12 +176,12 @@ func (in *BudgetAllUpdatesRule) DeepCopyInto(out *BudgetAllUpdatesRule) {
 	}
 	if in.MonitoringNotificationChannels != nil {
 		in, out := &in.MonitoringNotificationChannels, &out.MonitoringNotificationChannels
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.PubsubTopicRef != nil {
 		in, out := &in.PubsubTopicRef, &out.PubsubTopicRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.SchemaVersion != nil {
@@ -260,7 +260,7 @@ func (in *BudgetBudgetFilter) DeepCopyInto(out *BudgetBudgetFilter) {
 	}
 	if in.Projects != nil {
 		in, out := &in.Projects, &out.Projects
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.Services != nil {
@@ -270,7 +270,7 @@ func (in *BudgetBudgetFilter) DeepCopyInto(out *BudgetBudgetFilter) {
 	}
 	if in.Subaccounts != nil {
 		in, out := &in.Subaccounts, &out.Subaccounts
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	return

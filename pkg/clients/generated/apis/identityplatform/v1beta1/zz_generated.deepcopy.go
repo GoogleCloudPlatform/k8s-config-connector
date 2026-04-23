@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -384,7 +384,7 @@ func (in *ConfigMultiTenant) DeepCopyInto(out *ConfigMultiTenant) {
 	}
 	if in.DefaultTenantLocationRef != nil {
 		in, out := &in.DefaultTenantLocationRef, &out.DefaultTenantLocationRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -1017,7 +1017,7 @@ func (in *ConfigTriggers) DeepCopyInto(out *ConfigTriggers) {
 	*out = *in
 	if in.FunctionUriRef != nil {
 		in, out := &in.FunctionUriRef, &out.FunctionUriRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.UpdateTime != nil {
@@ -1043,7 +1043,7 @@ func (in *ConfigValueFrom) DeepCopyInto(out *ConfigValueFrom) {
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.SecretKeyRef)
+		*out = new(k8sv1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return
@@ -1254,7 +1254,7 @@ func (in *IdentityPlatformConfigStatus) DeepCopyInto(out *IdentityPlatformConfig
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Client != nil {
@@ -1412,7 +1412,7 @@ func (in *IdentityPlatformOAuthIDPConfigStatus) DeepCopyInto(out *IdentityPlatfo
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -1612,7 +1612,7 @@ func (in *IdentityPlatformTenantOAuthIDPConfigStatus) DeepCopyInto(out *Identity
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -1696,7 +1696,7 @@ func (in *IdentityPlatformTenantStatus) DeepCopyInto(out *IdentityPlatformTenant
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -1779,7 +1779,7 @@ func (in *OauthidpconfigValueFrom) DeepCopyInto(out *OauthidpconfigValueFrom) {
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.SecretKeyRef)
+		*out = new(k8sv1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return
@@ -1883,7 +1883,7 @@ func (in *TenantoauthidpconfigValueFrom) DeepCopyInto(out *TenantoauthidpconfigV
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.SecretKeyRef)
+		*out = new(k8sv1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return

@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -34,7 +34,7 @@ func (in *DatasetEncryptionSpec) DeepCopyInto(out *DatasetEncryptionSpec) {
 	*out = *in
 	if in.KmsKeyNameRef != nil {
 		in, out := &in.KmsKeyNameRef, &out.KmsKeyNameRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -511,7 +511,7 @@ func (in *VertexAIDatasetStatus) DeepCopyInto(out *VertexAIDatasetStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -613,7 +613,7 @@ func (in *VertexAIEndpointSpec) DeepCopyInto(out *VertexAIEndpointSpec) {
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	out.ProjectRef = in.ProjectRef
@@ -640,7 +640,7 @@ func (in *VertexAIEndpointStatus) DeepCopyInto(out *VertexAIEndpointStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -769,7 +769,7 @@ func (in *VertexAIIndexStatus) DeepCopyInto(out *VertexAIIndexStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -876,7 +876,7 @@ func (in *VertexAIMetadataStoreSpec) DeepCopyInto(out *VertexAIMetadataStoreSpec
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Region != nil {
@@ -907,7 +907,7 @@ func (in *VertexAIMetadataStoreStatus) DeepCopyInto(out *VertexAIMetadataStoreSt
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {

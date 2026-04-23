@@ -25,7 +25,7 @@
 package v1alpha1
 
 import (
-	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -139,7 +139,7 @@ func (in *CloudDMSConversionWorkspaceStatus) DeepCopyInto(out *CloudDMSConversio
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -236,7 +236,7 @@ func (in *CloudDMSMigrationJobSpec) DeepCopyInto(out *CloudDMSMigrationJobSpec) 
 	*out = *in
 	if in.CmekKeyNameRef != nil {
 		in, out := &in.CmekKeyNameRef, &out.CmekKeyNameRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ConversionWorkspace != nil {
@@ -251,7 +251,7 @@ func (in *CloudDMSMigrationJobSpec) DeepCopyInto(out *CloudDMSMigrationJobSpec) 
 	}
 	if in.DestinationRef != nil {
 		in, out := &in.DestinationRef, &out.DestinationRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.DisplayName != nil {
@@ -297,7 +297,7 @@ func (in *CloudDMSMigrationJobSpec) DeepCopyInto(out *CloudDMSMigrationJobSpec) 
 	}
 	if in.SourceRef != nil {
 		in, out := &in.SourceRef, &out.SourceRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.StaticIPConnectivity != nil {
@@ -333,7 +333,7 @@ func (in *CloudDMSMigrationJobStatus) DeepCopyInto(out *CloudDMSMigrationJobStat
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -447,7 +447,7 @@ func (in *CloudDMSPrivateConnectionSpec) DeepCopyInto(out *CloudDMSPrivateConnec
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -478,7 +478,7 @@ func (in *CloudDMSPrivateConnectionStatus) DeepCopyInto(out *CloudDMSPrivateConn
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -732,12 +732,12 @@ func (in *MigrationjobReverseSSHConnectivity) DeepCopyInto(out *MigrationjobReve
 	}
 	if in.VmRef != nil {
 		in, out := &in.VmRef, &out.VmRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.VpcRef != nil {
 		in, out := &in.VpcRef, &out.VpcRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -800,7 +800,7 @@ func (in *MigrationjobVpcPeeringConnectivity) DeepCopyInto(out *MigrationjobVpcP
 	*out = *in
 	if in.VpcRef != nil {
 		in, out := &in.VpcRef, &out.VpcRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -888,7 +888,7 @@ func (in *PrivateconnectionVpcPeeringConfig) DeepCopyInto(out *Privateconnection
 	}
 	if in.VpcNameRef != nil {
 		in, out := &in.VpcNameRef, &out.VpcNameRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return

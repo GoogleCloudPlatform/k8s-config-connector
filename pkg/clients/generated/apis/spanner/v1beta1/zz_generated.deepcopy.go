@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -86,12 +86,12 @@ func (in *BackupscheduleEncryptionConfig) DeepCopyInto(out *BackupscheduleEncryp
 	}
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.KmsKeyRefs != nil {
 		in, out := &in.KmsKeyRefs, &out.KmsKeyRefs
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	return
@@ -408,7 +408,7 @@ func (in *SpannerBackupScheduleSpec) DeepCopyInto(out *SpannerBackupScheduleSpec
 	}
 	if in.SpannerDatabaseRef != nil {
 		in, out := &in.SpannerDatabaseRef, &out.SpannerDatabaseRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Spec != nil {
@@ -434,7 +434,7 @@ func (in *SpannerBackupScheduleStatus) DeepCopyInto(out *SpannerBackupScheduleSt
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -578,7 +578,7 @@ func (in *SpannerDatabaseStatus) DeepCopyInto(out *SpannerDatabaseStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -723,7 +723,7 @@ func (in *SpannerInstanceStatus) DeepCopyInto(out *SpannerInstanceStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {

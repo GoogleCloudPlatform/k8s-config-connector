@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -557,7 +557,7 @@ func (in *HttprouteDestination) DeepCopyInto(out *HttprouteDestination) {
 	*out = *in
 	if in.ServiceRef != nil {
 		in, out := &in.ServiceRef, &out.ServiceRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Weight != nil {
@@ -583,7 +583,7 @@ func (in *HttprouteDestinations) DeepCopyInto(out *HttprouteDestinations) {
 	*out = *in
 	if in.ServiceRef != nil {
 		in, out := &in.ServiceRef, &out.ServiceRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Weight != nil {
@@ -1091,12 +1091,12 @@ func (in *NetworkServicesEndpointPolicySpec) DeepCopyInto(out *NetworkServicesEn
 	*out = *in
 	if in.AuthorizationPolicyRef != nil {
 		in, out := &in.AuthorizationPolicyRef, &out.AuthorizationPolicyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ClientTlsPolicyRef != nil {
 		in, out := &in.ClientTlsPolicyRef, &out.ClientTlsPolicyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Description != nil {
@@ -1113,7 +1113,7 @@ func (in *NetworkServicesEndpointPolicySpec) DeepCopyInto(out *NetworkServicesEn
 	}
 	if in.ServerTlsPolicyRef != nil {
 		in, out := &in.ServerTlsPolicyRef, &out.ServerTlsPolicyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.TrafficPortSelector != nil {
@@ -1139,7 +1139,7 @@ func (in *NetworkServicesEndpointPolicyStatus) DeepCopyInto(out *NetworkServices
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -1241,7 +1241,7 @@ func (in *NetworkServicesGRPCRouteSpec) DeepCopyInto(out *NetworkServicesGRPCRou
 	}
 	if in.Gateways != nil {
 		in, out := &in.Gateways, &out.Gateways
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.Hostnames != nil {
@@ -1251,7 +1251,7 @@ func (in *NetworkServicesGRPCRouteSpec) DeepCopyInto(out *NetworkServicesGRPCRou
 	}
 	if in.Meshes != nil {
 		in, out := &in.Meshes, &out.Meshes
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	out.ProjectRef = in.ProjectRef
@@ -1285,7 +1285,7 @@ func (in *NetworkServicesGRPCRouteStatus) DeepCopyInto(out *NetworkServicesGRPCR
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -1408,7 +1408,7 @@ func (in *NetworkServicesGatewaySpec) DeepCopyInto(out *NetworkServicesGatewaySp
 	}
 	if in.ServerTlsPolicyRef != nil {
 		in, out := &in.ServerTlsPolicyRef, &out.ServerTlsPolicyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Type != nil {
@@ -1434,7 +1434,7 @@ func (in *NetworkServicesGatewayStatus) DeepCopyInto(out *NetworkServicesGateway
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -1541,7 +1541,7 @@ func (in *NetworkServicesHTTPRouteSpec) DeepCopyInto(out *NetworkServicesHTTPRou
 	}
 	if in.Gateways != nil {
 		in, out := &in.Gateways, &out.Gateways
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.Hostnames != nil {
@@ -1551,7 +1551,7 @@ func (in *NetworkServicesHTTPRouteSpec) DeepCopyInto(out *NetworkServicesHTTPRou
 	}
 	if in.Meshes != nil {
 		in, out := &in.Meshes, &out.Meshes
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	out.ProjectRef = in.ProjectRef
@@ -1585,7 +1585,7 @@ func (in *NetworkServicesHTTPRouteStatus) DeepCopyInto(out *NetworkServicesHTTPR
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -1719,7 +1719,7 @@ func (in *NetworkServicesMeshStatus) DeepCopyInto(out *NetworkServicesMeshStatus
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -1826,12 +1826,12 @@ func (in *NetworkServicesTCPRouteSpec) DeepCopyInto(out *NetworkServicesTCPRoute
 	}
 	if in.Gateways != nil {
 		in, out := &in.Gateways, &out.Gateways
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.Meshes != nil {
 		in, out := &in.Meshes, &out.Meshes
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	out.ProjectRef = in.ProjectRef
@@ -1865,7 +1865,7 @@ func (in *NetworkServicesTCPRouteStatus) DeepCopyInto(out *NetworkServicesTCPRou
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -1972,12 +1972,12 @@ func (in *NetworkServicesTLSRouteSpec) DeepCopyInto(out *NetworkServicesTLSRoute
 	}
 	if in.Gateways != nil {
 		in, out := &in.Gateways, &out.Gateways
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.Meshes != nil {
 		in, out := &in.Meshes, &out.Meshes
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	out.ProjectRef = in.ProjectRef
@@ -2011,7 +2011,7 @@ func (in *NetworkServicesTLSRouteStatus) DeepCopyInto(out *NetworkServicesTLSRou
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {

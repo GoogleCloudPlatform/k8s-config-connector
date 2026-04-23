@@ -25,7 +25,7 @@
 package v1alpha1
 
 import (
-	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -183,7 +183,7 @@ func (in *StorageFolderSpec) DeepCopyInto(out *StorageFolderSpec) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -193,7 +193,7 @@ func (in *StorageFolderSpec) DeepCopyInto(out *StorageFolderSpec) {
 	}
 	if in.StoragebucketRef != nil {
 		in, out := &in.StoragebucketRef, &out.StoragebucketRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -214,7 +214,7 @@ func (in *StorageFolderStatus) DeepCopyInto(out *StorageFolderStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -338,7 +338,7 @@ func (in *StorageHMACKeyStatus) DeepCopyInto(out *StorageHMACKeyStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.AccessId != nil {
@@ -445,7 +445,7 @@ func (in *StorageManagedFolderSpec) DeepCopyInto(out *StorageManagedFolderSpec) 
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -455,7 +455,7 @@ func (in *StorageManagedFolderSpec) DeepCopyInto(out *StorageManagedFolderSpec) 
 	}
 	if in.StoragebucketRef != nil {
 		in, out := &in.StoragebucketRef, &out.StoragebucketRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -476,7 +476,7 @@ func (in *StorageManagedFolderStatus) DeepCopyInto(out *StorageManagedFolderStat
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {

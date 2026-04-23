@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -194,7 +194,7 @@ func (in *ClusterAutoProvisioningDefaults) DeepCopyInto(out *ClusterAutoProvisio
 	*out = *in
 	if in.BootDiskKMSKeyRef != nil {
 		in, out := &in.BootDiskKMSKeyRef, &out.BootDiskKMSKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.DiskSize != nil {
@@ -224,7 +224,7 @@ func (in *ClusterAutoProvisioningDefaults) DeepCopyInto(out *ClusterAutoProvisio
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ShieldedInstanceConfig != nil {
@@ -1615,7 +1615,7 @@ func (in *ClusterNodeConfig) DeepCopyInto(out *ClusterNodeConfig) {
 	}
 	if in.BootDiskKMSCryptoKeyRef != nil {
 		in, out := &in.BootDiskKMSCryptoKeyRef, &out.BootDiskKMSCryptoKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ConfidentialNodes != nil {
@@ -1726,7 +1726,7 @@ func (in *ClusterNodeConfig) DeepCopyInto(out *ClusterNodeConfig) {
 	}
 	if in.NodeGroupRef != nil {
 		in, out := &in.NodeGroupRef, &out.NodeGroupRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.OauthScopes != nil {
@@ -1758,7 +1758,7 @@ func (in *ClusterNodeConfig) DeepCopyInto(out *ClusterNodeConfig) {
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ShieldedInstanceConfig != nil {
@@ -2013,7 +2013,7 @@ func (in *ClusterPrivateClusterConfig) DeepCopyInto(out *ClusterPrivateClusterCo
 	}
 	if in.PrivateEndpointSubnetworkRef != nil {
 		in, out := &in.PrivateEndpointSubnetworkRef, &out.PrivateEndpointSubnetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.PublicEndpoint != nil {
@@ -2096,7 +2096,7 @@ func (in *ClusterPubsub) DeepCopyInto(out *ClusterPubsub) {
 	}
 	if in.TopicRef != nil {
 		in, out := &in.TopicRef, &out.TopicRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -2444,7 +2444,7 @@ func (in *ClusterValueFrom) DeepCopyInto(out *ClusterValueFrom) {
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.SecretKeyRef)
+		*out = new(k8sv1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return
@@ -2820,7 +2820,7 @@ func (in *ContainerClusterSpec) DeepCopyInto(out *ContainerClusterSpec) {
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.NetworkingMode != nil {
@@ -2905,7 +2905,7 @@ func (in *ContainerClusterSpec) DeepCopyInto(out *ContainerClusterSpec) {
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.VerticalPodAutoscaling != nil {
@@ -2936,7 +2936,7 @@ func (in *ContainerClusterStatus) DeepCopyInto(out *ContainerClusterStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Endpoint != nil {
@@ -3145,7 +3145,7 @@ func (in *ContainerNodePoolStatus) DeepCopyInto(out *ContainerNodePoolStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.InstanceGroupUrls != nil {
@@ -3191,12 +3191,12 @@ func (in *NodepoolAdditionalNodeNetworkConfigs) DeepCopyInto(out *NodepoolAdditi
 	*out = *in
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -3227,7 +3227,7 @@ func (in *NodepoolAdditionalPodNetworkConfigs) DeepCopyInto(out *NodepoolAdditio
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -3657,7 +3657,7 @@ func (in *NodepoolNetworkConfig) DeepCopyInto(out *NodepoolNetworkConfig) {
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -3704,7 +3704,7 @@ func (in *NodepoolNodeConfig) DeepCopyInto(out *NodepoolNodeConfig) {
 	}
 	if in.BootDiskKMSCryptoKeyRef != nil {
 		in, out := &in.BootDiskKMSCryptoKeyRef, &out.BootDiskKMSCryptoKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ConfidentialNodes != nil {
@@ -3815,7 +3815,7 @@ func (in *NodepoolNodeConfig) DeepCopyInto(out *NodepoolNodeConfig) {
 	}
 	if in.NodeGroupRef != nil {
 		in, out := &in.NodeGroupRef, &out.NodeGroupRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.OauthScopes != nil {
@@ -3847,7 +3847,7 @@ func (in *NodepoolNodeConfig) DeepCopyInto(out *NodepoolNodeConfig) {
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ShieldedInstanceConfig != nil {
@@ -3919,7 +3919,7 @@ func (in *NodepoolPlacementPolicy) DeepCopyInto(out *NodepoolPlacementPolicy) {
 	*out = *in
 	if in.PolicyNameRef != nil {
 		in, out := &in.PolicyNameRef, &out.PolicyNameRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.TpuTopology != nil {

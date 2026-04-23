@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -196,7 +196,7 @@ func (in *ClusterAutoscalingConfig) DeepCopyInto(out *ClusterAutoscalingConfig) 
 	*out = *in
 	if in.PolicyRef != nil {
 		in, out := &in.PolicyRef, &out.PolicyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -422,7 +422,7 @@ func (in *ClusterEncryptionConfig) DeepCopyInto(out *ClusterEncryptionConfig) {
 	*out = *in
 	if in.GcePdKmsKeyRef != nil {
 		in, out := &in.GcePdKmsKeyRef, &out.GcePdKmsKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -525,7 +525,7 @@ func (in *ClusterGceClusterConfig) DeepCopyInto(out *ClusterGceClusterConfig) {
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.NodeGroupAffinity != nil {
@@ -545,7 +545,7 @@ func (in *ClusterGceClusterConfig) DeepCopyInto(out *ClusterGceClusterConfig) {
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ServiceAccountScopes != nil {
@@ -560,7 +560,7 @@ func (in *ClusterGceClusterConfig) DeepCopyInto(out *ClusterGceClusterConfig) {
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Tags != nil {
@@ -591,7 +591,7 @@ func (in *ClusterGkeClusterConfig) DeepCopyInto(out *ClusterGkeClusterConfig) {
 	*out = *in
 	if in.GkeClusterTargetRef != nil {
 		in, out := &in.GkeClusterTargetRef, &out.GkeClusterTargetRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.NodePoolTarget != nil {
@@ -744,7 +744,7 @@ func (in *ClusterKerberosConfig) DeepCopyInto(out *ClusterKerberosConfig) {
 	}
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Realm != nil {
@@ -937,7 +937,7 @@ func (in *ClusterMasterConfig) DeepCopyInto(out *ClusterMasterConfig) {
 	}
 	if in.ImageRef != nil {
 		in, out := &in.ImageRef, &out.ImageRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.MachineType != nil {
@@ -1202,7 +1202,7 @@ func (in *ClusterSecondaryWorkerConfig) DeepCopyInto(out *ClusterSecondaryWorker
 	}
 	if in.ImageRef != nil {
 		in, out := &in.ImageRef, &out.ImageRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.MachineType != nil {
@@ -1371,7 +1371,7 @@ func (in *ClusterSparkHistoryServerConfig) DeepCopyInto(out *ClusterSparkHistory
 	*out = *in
 	if in.DataprocClusterRef != nil {
 		in, out := &in.DataprocClusterRef, &out.DataprocClusterRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -1470,7 +1470,7 @@ func (in *ClusterVirtualClusterConfig) DeepCopyInto(out *ClusterVirtualClusterCo
 	in.KubernetesClusterConfig.DeepCopyInto(&out.KubernetesClusterConfig)
 	if in.StagingBucketRef != nil {
 		in, out := &in.StagingBucketRef, &out.StagingBucketRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -1503,7 +1503,7 @@ func (in *ClusterWorkerConfig) DeepCopyInto(out *ClusterWorkerConfig) {
 	}
 	if in.ImageRef != nil {
 		in, out := &in.ImageRef, &out.ImageRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.MachineType != nil {
@@ -1644,7 +1644,7 @@ func (in *DataprocAutoscalingPolicySpec) DeepCopyInto(out *DataprocAutoscalingPo
 	in.BasicAlgorithm.DeepCopyInto(&out.BasicAlgorithm)
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -1676,7 +1676,7 @@ func (in *DataprocAutoscalingPolicyStatus) DeepCopyInto(out *DataprocAutoscaling
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -1773,7 +1773,7 @@ func (in *DataprocClusterSpec) DeepCopyInto(out *DataprocClusterSpec) {
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -1804,7 +1804,7 @@ func (in *DataprocClusterStatus) DeepCopyInto(out *DataprocClusterStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ClusterUuid != nil {
@@ -1938,7 +1938,7 @@ func (in *DataprocWorkflowTemplateSpec) DeepCopyInto(out *DataprocWorkflowTempla
 	in.Placement.DeepCopyInto(&out.Placement)
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -1964,7 +1964,7 @@ func (in *DataprocWorkflowTemplateStatus) DeepCopyInto(out *DataprocWorkflowTemp
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -2036,7 +2036,7 @@ func (in *WorkflowtemplateAutoscalingConfig) DeepCopyInto(out *WorkflowtemplateA
 	*out = *in
 	if in.PolicyRef != nil {
 		in, out := &in.PolicyRef, &out.PolicyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -2137,12 +2137,12 @@ func (in *WorkflowtemplateConfig) DeepCopyInto(out *WorkflowtemplateConfig) {
 	}
 	if in.StagingBucketRef != nil {
 		in, out := &in.StagingBucketRef, &out.StagingBucketRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.TempBucketRef != nil {
 		in, out := &in.TempBucketRef, &out.TempBucketRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.WorkerConfig != nil {
@@ -2240,7 +2240,7 @@ func (in *WorkflowtemplateEncryptionConfig) DeepCopyInto(out *WorkflowtemplateEn
 	*out = *in
 	if in.GcePdKmsKeyRef != nil {
 		in, out := &in.GcePdKmsKeyRef, &out.GcePdKmsKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -2317,7 +2317,7 @@ func (in *WorkflowtemplateGceClusterConfig) DeepCopyInto(out *WorkflowtemplateGc
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.NodeGroupAffinity != nil {
@@ -2337,7 +2337,7 @@ func (in *WorkflowtemplateGceClusterConfig) DeepCopyInto(out *WorkflowtemplateGc
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ServiceAccountScopes != nil {
@@ -2352,7 +2352,7 @@ func (in *WorkflowtemplateGceClusterConfig) DeepCopyInto(out *WorkflowtemplateGc
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Tags != nil {
@@ -2635,7 +2635,7 @@ func (in *WorkflowtemplateKerberosConfig) DeepCopyInto(out *WorkflowtemplateKerb
 	}
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Realm != nil {
@@ -2839,7 +2839,7 @@ func (in *WorkflowtemplateMasterConfig) DeepCopyInto(out *WorkflowtemplateMaster
 	}
 	if in.ImageRef != nil {
 		in, out := &in.ImageRef, &out.ImageRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.MachineType != nil {
@@ -3280,7 +3280,7 @@ func (in *WorkflowtemplateSecondaryWorkerConfig) DeepCopyInto(out *Workflowtempl
 	}
 	if in.ImageRef != nil {
 		in, out := &in.ImageRef, &out.ImageRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.MachineType != nil {
@@ -3649,7 +3649,7 @@ func (in *WorkflowtemplateWorkerConfig) DeepCopyInto(out *WorkflowtemplateWorker
 	}
 	if in.ImageRef != nil {
 		in, out := &in.ImageRef, &out.ImageRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.MachineType != nil {

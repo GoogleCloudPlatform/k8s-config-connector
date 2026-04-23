@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -772,7 +772,7 @@ func (in *RedisClusterStatus) DeepCopyInto(out *RedisClusterStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -884,7 +884,7 @@ func (in *RedisInstanceSpec) DeepCopyInto(out *RedisInstanceSpec) {
 	}
 	if in.AuthorizedNetworkRef != nil {
 		in, out := &in.AuthorizedNetworkRef, &out.AuthorizedNetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ConnectMode != nil {
@@ -894,7 +894,7 @@ func (in *RedisInstanceSpec) DeepCopyInto(out *RedisInstanceSpec) {
 	}
 	if in.CustomerManagedKeyRef != nil {
 		in, out := &in.CustomerManagedKeyRef, &out.CustomerManagedKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.DisplayName != nil {
@@ -989,7 +989,7 @@ func (in *RedisInstanceStatus) DeepCopyInto(out *RedisInstanceStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {

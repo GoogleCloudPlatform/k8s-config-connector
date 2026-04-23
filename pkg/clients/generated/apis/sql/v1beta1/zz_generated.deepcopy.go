@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -210,7 +210,7 @@ func (in *InstanceCloneSource) DeepCopyInto(out *InstanceCloneSource) {
 	}
 	if in.SqlInstanceRef != nil {
 		in, out := &in.SqlInstanceRef, &out.SqlInstanceRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -378,7 +378,7 @@ func (in *InstanceIpConfiguration) DeepCopyInto(out *InstanceIpConfiguration) {
 	}
 	if in.PrivateNetworkRef != nil {
 		in, out := &in.PrivateNetworkRef, &out.PrivateNetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.PscConfig != nil {
@@ -663,7 +663,7 @@ func (in *InstanceReplicationCluster) DeepCopyInto(out *InstanceReplicationClust
 	*out = *in
 	if in.FailoverDrReplicaRef != nil {
 		in, out := &in.FailoverDrReplicaRef, &out.FailoverDrReplicaRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -928,7 +928,7 @@ func (in *InstanceSqlServerAuditConfig) DeepCopyInto(out *InstanceSqlServerAudit
 	*out = *in
 	if in.BucketRef != nil {
 		in, out := &in.BucketRef, &out.BucketRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.RetentionInterval != nil {
@@ -959,7 +959,7 @@ func (in *InstanceValueFrom) DeepCopyInto(out *InstanceValueFrom) {
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.SecretKeyRef)
+		*out = new(k8sv1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return
@@ -1078,7 +1078,7 @@ func (in *SQLDatabaseStatus) DeepCopyInto(out *SQLDatabaseStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -1180,7 +1180,7 @@ func (in *SQLInstanceSpec) DeepCopyInto(out *SQLInstanceSpec) {
 	}
 	if in.EncryptionKMSCryptoKeyRef != nil {
 		in, out := &in.EncryptionKMSCryptoKeyRef, &out.EncryptionKMSCryptoKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.InstanceType != nil {
@@ -1195,7 +1195,7 @@ func (in *SQLInstanceSpec) DeepCopyInto(out *SQLInstanceSpec) {
 	}
 	if in.MasterInstanceRef != nil {
 		in, out := &in.MasterInstanceRef, &out.MasterInstanceRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Region != nil {
@@ -1242,7 +1242,7 @@ func (in *SQLInstanceStatus) DeepCopyInto(out *SQLInstanceStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.AvailableMaintenanceVersions != nil {
@@ -1418,7 +1418,7 @@ func (in *SQLSSLCertStatus) DeepCopyInto(out *SQLSSLCertStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Cert != nil {
@@ -1582,7 +1582,7 @@ func (in *SQLUserStatus) DeepCopyInto(out *SQLUserStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -1736,7 +1736,7 @@ func (in *UserValueFrom) DeepCopyInto(out *UserValueFrom) {
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.SecretKeyRef)
+		*out = new(k8sv1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return

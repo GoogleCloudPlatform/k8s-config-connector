@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -152,7 +152,7 @@ func (in *LoggingLinkSpec) DeepCopyInto(out *LoggingLinkSpec) {
 	}
 	if in.LoggingLogBucketRef != nil {
 		in, out := &in.LoggingLogBucketRef, &out.LoggingLogBucketRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -178,7 +178,7 @@ func (in *LoggingLinkStatus) DeepCopyInto(out *LoggingLinkStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -275,7 +275,7 @@ func (in *LoggingLogBucketSpec) DeepCopyInto(out *LoggingLogBucketSpec) {
 	*out = *in
 	if in.BillingAccountRef != nil {
 		in, out := &in.BillingAccountRef, &out.BillingAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Description != nil {
@@ -290,7 +290,7 @@ func (in *LoggingLogBucketSpec) DeepCopyInto(out *LoggingLogBucketSpec) {
 	}
 	if in.FolderRef != nil {
 		in, out := &in.FolderRef, &out.FolderRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Locked != nil {
@@ -300,12 +300,12 @@ func (in *LoggingLogBucketSpec) DeepCopyInto(out *LoggingLogBucketSpec) {
 	}
 	if in.OrganizationRef != nil {
 		in, out := &in.OrganizationRef, &out.OrganizationRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -336,7 +336,7 @@ func (in *LoggingLogBucketStatus) DeepCopyInto(out *LoggingLogBucketStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -438,7 +438,7 @@ func (in *LoggingLogExclusionSpec) DeepCopyInto(out *LoggingLogExclusionSpec) {
 	*out = *in
 	if in.BillingAccountRef != nil {
 		in, out := &in.BillingAccountRef, &out.BillingAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Description != nil {
@@ -453,17 +453,17 @@ func (in *LoggingLogExclusionSpec) DeepCopyInto(out *LoggingLogExclusionSpec) {
 	}
 	if in.FolderRef != nil {
 		in, out := &in.FolderRef, &out.FolderRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.OrganizationRef != nil {
 		in, out := &in.OrganizationRef, &out.OrganizationRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -489,7 +489,7 @@ func (in *LoggingLogExclusionStatus) DeepCopyInto(out *LoggingLogExclusionStatus
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -608,7 +608,7 @@ func (in *LoggingLogMetricSpec) DeepCopyInto(out *LoggingLogMetricSpec) {
 	}
 	if in.LoggingLogBucketRef != nil {
 		in, out := &in.LoggingLogBucketRef, &out.LoggingLogBucketRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.MetricDescriptor != nil {
@@ -645,7 +645,7 @@ func (in *LoggingLogMetricStatus) DeepCopyInto(out *LoggingLogMetricStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -775,7 +775,7 @@ func (in *LoggingLogSinkSpec) DeepCopyInto(out *LoggingLogSinkSpec) {
 	}
 	if in.FolderRef != nil {
 		in, out := &in.FolderRef, &out.FolderRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.IncludeChildren != nil {
@@ -785,12 +785,12 @@ func (in *LoggingLogSinkSpec) DeepCopyInto(out *LoggingLogSinkSpec) {
 	}
 	if in.OrganizationRef != nil {
 		in, out := &in.OrganizationRef, &out.OrganizationRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -821,7 +821,7 @@ func (in *LoggingLogSinkStatus) DeepCopyInto(out *LoggingLogSinkStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -913,7 +913,7 @@ func (in *LoggingLogViewSpec) DeepCopyInto(out *LoggingLogViewSpec) {
 	*out = *in
 	if in.BillingAccountRef != nil {
 		in, out := &in.BillingAccountRef, &out.BillingAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	out.BucketRef = in.BucketRef
@@ -929,7 +929,7 @@ func (in *LoggingLogViewSpec) DeepCopyInto(out *LoggingLogViewSpec) {
 	}
 	if in.FolderRef != nil {
 		in, out := &in.FolderRef, &out.FolderRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -939,12 +939,12 @@ func (in *LoggingLogViewSpec) DeepCopyInto(out *LoggingLogViewSpec) {
 	}
 	if in.OrganizationRef != nil {
 		in, out := &in.OrganizationRef, &out.OrganizationRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -970,7 +970,7 @@ func (in *LoggingLogViewStatus) DeepCopyInto(out *LoggingLogViewStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -1282,22 +1282,22 @@ func (in *LogsinkDestination) DeepCopyInto(out *LogsinkDestination) {
 	*out = *in
 	if in.BigQueryDatasetRef != nil {
 		in, out := &in.BigQueryDatasetRef, &out.BigQueryDatasetRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.LoggingLogBucketRef != nil {
 		in, out := &in.LoggingLogBucketRef, &out.LoggingLogBucketRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.PubSubTopicRef != nil {
 		in, out := &in.PubSubTopicRef, &out.PubSubTopicRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.StorageBucketRef != nil {
 		in, out := &in.StorageBucketRef, &out.StorageBucketRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return

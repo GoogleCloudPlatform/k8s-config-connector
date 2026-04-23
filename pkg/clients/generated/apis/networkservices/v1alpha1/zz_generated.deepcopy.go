@@ -25,7 +25,7 @@
 package v1alpha1
 
 import (
-	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -102,7 +102,7 @@ func (in *EdgecachekeysetValueFrom) DeepCopyInto(out *EdgecachekeysetValueFrom) 
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(k8sv1alpha1.SecretKeyRef)
+		*out = new(k8sk8sv1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return
@@ -1055,7 +1055,7 @@ func (in *LbrouteextensionExtensions) DeepCopyInto(out *LbrouteextensionExtensio
 	}
 	if in.BackendServiceRef != nil {
 		in, out := &in.BackendServiceRef, &out.BackendServiceRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.FailOpen != nil {
@@ -1081,7 +1081,7 @@ func (in *LbrouteextensionExtensions) DeepCopyInto(out *LbrouteextensionExtensio
 	}
 	if in.WasmPluginRef != nil {
 		in, out := &in.WasmPluginRef, &out.WasmPluginRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -1244,7 +1244,7 @@ func (in *NetworkServicesEdgeCacheKeysetStatus) DeepCopyInto(out *NetworkService
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -1403,7 +1403,7 @@ func (in *NetworkServicesEdgeCacheOriginStatus) DeepCopyInto(out *NetworkService
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -1553,7 +1553,7 @@ func (in *NetworkServicesEdgeCacheServiceStatus) DeepCopyInto(out *NetworkServic
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Ipv4Addresses != nil {
@@ -1662,7 +1662,7 @@ func (in *NetworkServicesLBRouteExtensionSpec) DeepCopyInto(out *NetworkServices
 	}
 	if in.ForwardingRuleRefs != nil {
 		in, out := &in.ForwardingRuleRefs, &out.ForwardingRuleRefs
-		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sk8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	in.Metadata.DeepCopyInto(&out.Metadata)
@@ -1690,7 +1690,7 @@ func (in *NetworkServicesLBRouteExtensionStatus) DeepCopyInto(out *NetworkServic
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -1804,7 +1804,7 @@ func (in *NetworkServicesServiceBindingSpec) DeepCopyInto(out *NetworkServicesSe
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -1814,7 +1814,7 @@ func (in *NetworkServicesServiceBindingSpec) DeepCopyInto(out *NetworkServicesSe
 	}
 	if in.ServiceRef != nil {
 		in, out := &in.ServiceRef, &out.ServiceRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -1835,7 +1835,7 @@ func (in *NetworkServicesServiceBindingStatus) DeepCopyInto(out *NetworkServices
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {

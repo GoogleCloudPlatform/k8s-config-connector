@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -144,7 +144,7 @@ func (in *GuestpolicyAssignment) DeepCopyInto(out *GuestpolicyAssignment) {
 	}
 	if in.Instances != nil {
 		in, out := &in.Instances, &out.Instances
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.OsTypes != nil {
@@ -270,7 +270,7 @@ func (in *GuestpolicyGcs) DeepCopyInto(out *GuestpolicyGcs) {
 	*out = *in
 	if in.BucketRef != nil {
 		in, out := &in.BucketRef, &out.BucketRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Generation != nil {
@@ -866,7 +866,7 @@ func (in *OSConfigGuestPolicyStatus) DeepCopyInto(out *OSConfigGuestPolicyStatus
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -1009,7 +1009,7 @@ func (in *OSConfigOSPolicyAssignmentStatus) DeepCopyInto(out *OSConfigOSPolicyAs
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Baseline != nil {

@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -139,7 +139,7 @@ func (in *CertificateManaged) DeepCopyInto(out *CertificateManaged) {
 	}
 	if in.DnsAuthorizationsRefs != nil {
 		in, out := &in.DnsAuthorizationsRefs, &out.DnsAuthorizationsRefs
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.Domains != nil {
@@ -149,7 +149,7 @@ func (in *CertificateManaged) DeepCopyInto(out *CertificateManaged) {
 	}
 	if in.IssuanceConfigRef != nil {
 		in, out := &in.IssuanceConfigRef, &out.IssuanceConfigRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ProvisioningIssue != nil {
@@ -367,7 +367,7 @@ func (in *CertificateManagerCertificateMapEntrySpec) DeepCopyInto(out *Certifica
 	*out = *in
 	if in.CertificatesRefs != nil {
 		in, out := &in.CertificatesRefs, &out.CertificatesRefs
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.Description != nil {
@@ -410,7 +410,7 @@ func (in *CertificateManagerCertificateMapEntryStatus) DeepCopyInto(out *Certifi
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -511,7 +511,7 @@ func (in *CertificateManagerCertificateMapStatus) DeepCopyInto(out *CertificateM
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -596,7 +596,7 @@ func (in *CertificateManagerCertificateStatus) DeepCopyInto(out *CertificateMana
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -720,7 +720,7 @@ func (in *CertificateManagerDNSAuthorizationStatus) DeepCopyInto(out *Certificat
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.DnsResourceRecord != nil {
@@ -919,7 +919,7 @@ func (in *CertificateValueFrom) DeepCopyInto(out *CertificateValueFrom) {
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.SecretKeyRef)
+		*out = new(k8sv1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return

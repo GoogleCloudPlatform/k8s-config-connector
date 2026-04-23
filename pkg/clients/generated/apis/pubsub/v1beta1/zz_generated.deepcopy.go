@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -127,7 +127,7 @@ func (in *PubSubSchemaStatus) DeepCopyInto(out *PubSubSchemaStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -228,7 +228,7 @@ func (in *PubSubSnapshotSpec) DeepCopyInto(out *PubSubSnapshotSpec) {
 	}
 	if in.TopicRef != nil {
 		in, out := &in.TopicRef, &out.TopicRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -249,7 +249,7 @@ func (in *PubSubSnapshotStatus) DeepCopyInto(out *PubSubSnapshotStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -428,7 +428,7 @@ func (in *PubSubSubscriptionStatus) DeepCopyInto(out *PubSubSubscriptionStatus) 
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -515,7 +515,7 @@ func (in *PubSubTopicSpec) DeepCopyInto(out *PubSubTopicSpec) {
 	*out = *in
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.MessageRetentionDuration != nil {
@@ -556,7 +556,7 @@ func (in *PubSubTopicStatus) DeepCopyInto(out *PubSubTopicStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -703,7 +703,7 @@ func (in *SubscriptionDeadLetterPolicy) DeepCopyInto(out *SubscriptionDeadLetter
 	*out = *in
 	if in.DeadLetterTopicRef != nil {
 		in, out := &in.DeadLetterTopicRef, &out.DeadLetterTopicRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.MaxDeliveryAttempts != nil {

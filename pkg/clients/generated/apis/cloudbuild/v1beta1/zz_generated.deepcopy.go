@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -165,7 +165,7 @@ func (in *CloudBuildTriggerSpec) DeepCopyInto(out *CloudBuildTriggerSpec) {
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.SourceToBuild != nil {
@@ -213,7 +213,7 @@ func (in *CloudBuildTriggerStatus) DeepCopyInto(out *CloudBuildTriggerStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -348,7 +348,7 @@ func (in *CloudBuildWorkerPoolStatus) DeepCopyInto(out *CloudBuildWorkerPoolStat
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -454,7 +454,7 @@ func (in *TriggerBitbucketServerTriggerConfig) DeepCopyInto(out *TriggerBitbucke
 	*out = *in
 	if in.BitbucketServerConfigResourceRef != nil {
 		in, out := &in.BitbucketServerConfigResourceRef, &out.BitbucketServerConfigResourceRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ProjectKey != nil {
@@ -510,7 +510,7 @@ func (in *TriggerBuild) DeepCopyInto(out *TriggerBuild) {
 	}
 	if in.LogsBucketRef != nil {
 		in, out := &in.LogsBucketRef, &out.LogsBucketRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Options != nil {
@@ -577,12 +577,12 @@ func (in *TriggerGitFileSource) DeepCopyInto(out *TriggerGitFileSource) {
 	*out = *in
 	if in.BitbucketServerConfigRef != nil {
 		in, out := &in.BitbucketServerConfigRef, &out.BitbucketServerConfigRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.GithubEnterpriseConfigRef != nil {
 		in, out := &in.GithubEnterpriseConfigRef, &out.GithubEnterpriseConfigRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Path != nil {
@@ -597,7 +597,7 @@ func (in *TriggerGitFileSource) DeepCopyInto(out *TriggerGitFileSource) {
 	}
 	if in.RepositoryRef != nil {
 		in, out := &in.RepositoryRef, &out.RepositoryRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Revision != nil {
@@ -628,7 +628,7 @@ func (in *TriggerGithub) DeepCopyInto(out *TriggerGithub) {
 	*out = *in
 	if in.EnterpriseConfigResourceNameRef != nil {
 		in, out := &in.EnterpriseConfigResourceNameRef, &out.EnterpriseConfigResourceNameRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Name != nil {
@@ -806,7 +806,7 @@ func (in *TriggerPubsubConfig) DeepCopyInto(out *TriggerPubsubConfig) {
 	*out = *in
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.State != nil {
@@ -821,7 +821,7 @@ func (in *TriggerPubsubConfig) DeepCopyInto(out *TriggerPubsubConfig) {
 	}
 	if in.TopicRef != nil {
 		in, out := &in.TopicRef, &out.TopicRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -929,7 +929,7 @@ func (in *TriggerRepoSource) DeepCopyInto(out *TriggerRepoSource) {
 	}
 	if in.RepoRef != nil {
 		in, out := &in.RepoRef, &out.RepoRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Substitutions != nil {
@@ -993,7 +993,7 @@ func (in *TriggerSecret) DeepCopyInto(out *TriggerSecret) {
 	*out = *in
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.SecretEnv != nil {
@@ -1026,7 +1026,7 @@ func (in *TriggerSecretManager) DeepCopyInto(out *TriggerSecretManager) {
 	}
 	if in.VersionRef != nil {
 		in, out := &in.VersionRef, &out.VersionRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -1073,12 +1073,12 @@ func (in *TriggerSourceToBuild) DeepCopyInto(out *TriggerSourceToBuild) {
 	*out = *in
 	if in.BitbucketServerConfigRef != nil {
 		in, out := &in.BitbucketServerConfigRef, &out.BitbucketServerConfigRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.GithubEnterpriseConfigRef != nil {
 		in, out := &in.GithubEnterpriseConfigRef, &out.GithubEnterpriseConfigRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Ref != nil {
@@ -1093,7 +1093,7 @@ func (in *TriggerSourceToBuild) DeepCopyInto(out *TriggerSourceToBuild) {
 	}
 	if in.RepositoryRef != nil {
 		in, out := &in.RepositoryRef, &out.RepositoryRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Uri != nil {
@@ -1207,7 +1207,7 @@ func (in *TriggerStorageSource) DeepCopyInto(out *TriggerStorageSource) {
 	*out = *in
 	if in.BucketRef != nil {
 		in, out := &in.BucketRef, &out.BucketRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Generation != nil {
@@ -1284,7 +1284,7 @@ func (in *TriggerTriggerTemplate) DeepCopyInto(out *TriggerTriggerTemplate) {
 	}
 	if in.RepoRef != nil {
 		in, out := &in.RepoRef, &out.RepoRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.TagName != nil {
@@ -1336,7 +1336,7 @@ func (in *TriggerWebhookConfig) DeepCopyInto(out *TriggerWebhookConfig) {
 	*out = *in
 	if in.SecretRef != nil {
 		in, out := &in.SecretRef, &out.SecretRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.State != nil {
@@ -1372,7 +1372,7 @@ func (in *WorkerpoolNetworkConfig) DeepCopyInto(out *WorkerpoolNetworkConfig) {
 	}
 	if in.PeeredNetworkRef != nil {
 		in, out := &in.PeeredNetworkRef, &out.PeeredNetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return

@@ -25,7 +25,7 @@
 package v1alpha1
 
 import (
-	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -146,7 +146,7 @@ func (in *BatchJobStatus) DeepCopyInto(out *BatchJobStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -265,7 +265,7 @@ func (in *BatchTaskStatus) DeepCopyInto(out *BatchTaskStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -392,7 +392,7 @@ func (in *JobAllocationPolicy) DeepCopyInto(out *JobAllocationPolicy) {
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Tags != nil {
@@ -444,7 +444,7 @@ func (in *JobBootDisk) DeepCopyInto(out *JobBootDisk) {
 	}
 	if in.ImageRef != nil {
 		in, out := &in.ImageRef, &out.ImageRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.SizeGB != nil {
@@ -626,7 +626,7 @@ func (in *JobEncryptedVariables) DeepCopyInto(out *JobEncryptedVariables) {
 	}
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -876,7 +876,7 @@ func (in *JobNetworkInterfaces) DeepCopyInto(out *JobNetworkInterfaces) {
 	*out = *in
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.NoExternalIPAddress != nil {
@@ -886,7 +886,7 @@ func (in *JobNetworkInterfaces) DeepCopyInto(out *JobNetworkInterfaces) {
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -912,7 +912,7 @@ func (in *JobNewDisk) DeepCopyInto(out *JobNewDisk) {
 	}
 	if in.ImageRef != nil {
 		in, out := &in.ImageRef, &out.ImageRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.SizeGB != nil {
@@ -979,7 +979,7 @@ func (in *JobNotifications) DeepCopyInto(out *JobNotifications) {
 	}
 	if in.PubsubTopicRef != nil {
 		in, out := &in.PubsubTopicRef, &out.PubsubTopicRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return

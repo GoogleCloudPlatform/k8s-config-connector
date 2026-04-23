@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -128,7 +128,7 @@ func (in *AlloyDBBackupStatus) DeepCopyInto(out *AlloyDBBackupStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -312,7 +312,7 @@ func (in *AlloyDBClusterSpec) DeepCopyInto(out *AlloyDBClusterSpec) {
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	out.ProjectRef = in.ProjectRef
@@ -354,7 +354,7 @@ func (in *AlloyDBClusterStatus) DeepCopyInto(out *AlloyDBClusterStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.BackupSource != nil {
@@ -534,7 +534,7 @@ func (in *AlloyDBInstanceSpec) DeepCopyInto(out *AlloyDBInstanceSpec) {
 	}
 	if in.InstanceTypeRef != nil {
 		in, out := &in.InstanceTypeRef, &out.InstanceTypeRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.MachineConfig != nil {
@@ -585,7 +585,7 @@ func (in *AlloyDBInstanceStatus) DeepCopyInto(out *AlloyDBInstanceStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -759,7 +759,7 @@ func (in *AlloyDBUserStatus) DeepCopyInto(out *AlloyDBUserStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Name != nil {
@@ -985,7 +985,7 @@ func (in *ClusterEncryptionConfig) DeepCopyInto(out *ClusterEncryptionConfig) {
 	*out = *in
 	if in.KmsKeyNameRef != nil {
 		in, out := &in.KmsKeyNameRef, &out.KmsKeyNameRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -1130,7 +1130,7 @@ func (in *ClusterNetworkConfig) DeepCopyInto(out *ClusterNetworkConfig) {
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -1368,7 +1368,7 @@ func (in *ClusterValueFrom) DeepCopyInto(out *ClusterValueFrom) {
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.SecretKeyRef)
+		*out = new(k8sv1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return
@@ -1737,7 +1737,7 @@ func (in *UserValueFrom) DeepCopyInto(out *UserValueFrom) {
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.SecretKeyRef)
+		*out = new(k8sv1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return

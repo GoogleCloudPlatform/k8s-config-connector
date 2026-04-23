@@ -25,7 +25,7 @@
 package v1alpha1
 
 import (
-	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -150,7 +150,7 @@ func (in *BigQueryDataPolicyDataPolicyStatus) DeepCopyInto(out *BigQueryDataPoli
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Name != nil {
@@ -229,7 +229,7 @@ func (in *BigQueryDataPolicySpec) DeepCopyInto(out *BigQueryDataPolicySpec) {
 	}
 	if in.PolicyTagRef != nil {
 		in, out := &in.PolicyTagRef, &out.PolicyTagRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	out.ProjectRef = in.ProjectRef
@@ -256,7 +256,7 @@ func (in *BigQueryDataPolicyStatus) DeepCopyInto(out *BigQueryDataPolicyStatus) 
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {

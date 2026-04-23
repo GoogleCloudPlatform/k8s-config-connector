@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -238,7 +238,7 @@ func (in *IAMAccessBoundaryPolicyStatus) DeepCopyInto(out *IAMAccessBoundaryPoli
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Etag != nil {
@@ -354,7 +354,7 @@ func (in *IAMAuditConfigStatus) DeepCopyInto(out *IAMAuditConfigStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -477,7 +477,7 @@ func (in *IAMCustomRoleStatus) DeepCopyInto(out *IAMCustomRoleStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Deleted != nil {
@@ -598,7 +598,7 @@ func (in *IAMPartialPolicyStatus) DeepCopyInto(out *IAMPartialPolicyStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.AllBindings != nil {
@@ -792,7 +792,7 @@ func (in *IAMPolicyMemberStatus) DeepCopyInto(out *IAMPolicyMemberStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -849,7 +849,7 @@ func (in *IAMPolicyStatus) DeepCopyInto(out *IAMPolicyStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -1001,7 +1001,7 @@ func (in *IAMServiceAccountKeyStatus) DeepCopyInto(out *IAMServiceAccountKeyStat
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Name != nil {
@@ -1121,7 +1121,7 @@ func (in *IAMServiceAccountStatus) DeepCopyInto(out *IAMServiceAccountStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Email != nil {
@@ -1348,7 +1348,7 @@ func (in *IAMWorkforcePoolProviderStatus) DeepCopyInto(out *IAMWorkforcePoolProv
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -1426,7 +1426,7 @@ func (in *IAMWorkforcePoolStatus) DeepCopyInto(out *IAMWorkforcePoolStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -1644,7 +1644,7 @@ func (in *IAMWorkloadIdentityPoolProviderStatus) DeepCopyInto(out *IAMWorkloadId
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -1712,7 +1712,7 @@ func (in *IAMWorkloadIdentityPoolStatus) DeepCopyInto(out *IAMWorkloadIdentityPo
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -1865,27 +1865,27 @@ func (in *PartialpolicyMemberFrom) DeepCopyInto(out *PartialpolicyMemberFrom) {
 	*out = *in
 	if in.BigQueryConnectionConnectionRef != nil {
 		in, out := &in.BigQueryConnectionConnectionRef, &out.BigQueryConnectionConnectionRef
-		*out = new(v1alpha1.IAMResourceRef)
+		*out = new(k8sv1alpha1.IAMResourceRef)
 		**out = **in
 	}
 	if in.LogSinkRef != nil {
 		in, out := &in.LogSinkRef, &out.LogSinkRef
-		*out = new(v1alpha1.IAMResourceRef)
+		*out = new(k8sv1alpha1.IAMResourceRef)
 		**out = **in
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(v1alpha1.IAMResourceRef)
+		*out = new(k8sv1alpha1.IAMResourceRef)
 		**out = **in
 	}
 	if in.ServiceIdentityRef != nil {
 		in, out := &in.ServiceIdentityRef, &out.ServiceIdentityRef
-		*out = new(v1alpha1.IAMResourceRef)
+		*out = new(k8sv1alpha1.IAMResourceRef)
 		**out = **in
 	}
 	if in.SqlInstanceRef != nil {
 		in, out := &in.SqlInstanceRef, &out.SqlInstanceRef
-		*out = new(v1alpha1.IAMResourceRef)
+		*out = new(k8sv1alpha1.IAMResourceRef)
 		**out = **in
 	}
 	return
@@ -2044,27 +2044,27 @@ func (in *PolicymemberMemberFrom) DeepCopyInto(out *PolicymemberMemberFrom) {
 	*out = *in
 	if in.BigQueryConnectionConnectionRef != nil {
 		in, out := &in.BigQueryConnectionConnectionRef, &out.BigQueryConnectionConnectionRef
-		*out = new(v1alpha1.IAMResourceRef)
+		*out = new(k8sv1alpha1.IAMResourceRef)
 		**out = **in
 	}
 	if in.LogSinkRef != nil {
 		in, out := &in.LogSinkRef, &out.LogSinkRef
-		*out = new(v1alpha1.IAMResourceRef)
+		*out = new(k8sv1alpha1.IAMResourceRef)
 		**out = **in
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(v1alpha1.IAMResourceRef)
+		*out = new(k8sv1alpha1.IAMResourceRef)
 		**out = **in
 	}
 	if in.ServiceIdentityRef != nil {
 		in, out := &in.ServiceIdentityRef, &out.ServiceIdentityRef
-		*out = new(v1alpha1.IAMResourceRef)
+		*out = new(k8sv1alpha1.IAMResourceRef)
 		**out = **in
 	}
 	if in.SqlInstanceRef != nil {
 		in, out := &in.SqlInstanceRef, &out.SqlInstanceRef
-		*out = new(v1alpha1.IAMResourceRef)
+		*out = new(k8sv1alpha1.IAMResourceRef)
 		**out = **in
 	}
 	return
@@ -2238,7 +2238,7 @@ func (in *WorkforcepoolproviderValueFrom) DeepCopyInto(out *Workforcepoolprovide
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.SecretKeyRef)
+		*out = new(k8sv1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return

@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -325,7 +325,7 @@ func (in *FeaturemembershipConfigSync) DeepCopyInto(out *FeaturemembershipConfig
 	}
 	if in.MetricsGcpServiceAccountRef != nil {
 		in, out := &in.MetricsGcpServiceAccountRef, &out.MetricsGcpServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Oci != nil {
@@ -469,7 +469,7 @@ func (in *FeaturemembershipGit) DeepCopyInto(out *FeaturemembershipGit) {
 	*out = *in
 	if in.GcpServiceAccountRef != nil {
 		in, out := &in.GcpServiceAccountRef, &out.GcpServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.HttpsProxy != nil {
@@ -667,7 +667,7 @@ func (in *FeaturemembershipOci) DeepCopyInto(out *FeaturemembershipOci) {
 	*out = *in
 	if in.GcpServiceAccountRef != nil {
 		in, out := &in.GcpServiceAccountRef, &out.GcpServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.PolicyDir != nil {
@@ -1121,7 +1121,7 @@ func (in *GKEHubFeatureMembershipStatus) DeepCopyInto(out *GKEHubFeatureMembersh
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -1174,7 +1174,7 @@ func (in *GKEHubFeatureStatus) DeepCopyInto(out *GKEHubFeatureStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -1332,7 +1332,7 @@ func (in *GKEHubMembershipStatus) DeepCopyInto(out *GKEHubMembershipStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Authority != nil {
@@ -1523,7 +1523,7 @@ func (in *MembershipGkeCluster) DeepCopyInto(out *MembershipGkeCluster) {
 	*out = *in
 	if in.ResourceRef != nil {
 		in, out := &in.ResourceRef, &out.ResourceRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return

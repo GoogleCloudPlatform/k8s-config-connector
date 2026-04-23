@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -106,7 +106,7 @@ func (in *ApigeeEndpointAttachmentSpec) DeepCopyInto(out *ApigeeEndpointAttachme
 	}
 	if in.ServiceAttachmentRef != nil {
 		in, out := &in.ServiceAttachmentRef, &out.ServiceAttachmentRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -127,7 +127,7 @@ func (in *ApigeeEndpointAttachmentStatus) DeepCopyInto(out *ApigeeEndpointAttach
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -253,7 +253,7 @@ func (in *ApigeeEnvgroupAttachmentSpec) DeepCopyInto(out *ApigeeEnvgroupAttachme
 	out.EnvgroupRef = in.EnvgroupRef
 	if in.EnvironmentRef != nil {
 		in, out := &in.EnvironmentRef, &out.EnvironmentRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -279,7 +279,7 @@ func (in *ApigeeEnvgroupAttachmentStatus) DeepCopyInto(out *ApigeeEnvgroupAttach
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -375,7 +375,7 @@ func (in *ApigeeEnvgroupStatus) DeepCopyInto(out *ApigeeEnvgroupStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -511,7 +511,7 @@ func (in *ApigeeEnvironmentStatus) DeepCopyInto(out *ApigeeEnvironmentStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreatedAt != nil {
@@ -674,7 +674,7 @@ func (in *ApigeeInstanceAttachmentStatus) DeepCopyInto(out *ApigeeInstanceAttach
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -758,7 +758,7 @@ func (in *ApigeeInstanceSpec) DeepCopyInto(out *ApigeeInstanceSpec) {
 	}
 	if in.DiskEncryptionKMSCryptoKeyRef != nil {
 		in, out := &in.DiskEncryptionKMSCryptoKeyRef, &out.DiskEncryptionKMSCryptoKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.DisplayName != nil {
@@ -800,7 +800,7 @@ func (in *ApigeeInstanceStatus) DeepCopyInto(out *ApigeeInstanceStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -902,7 +902,7 @@ func (in *ApigeeOrganizationSpec) DeepCopyInto(out *ApigeeOrganizationSpec) {
 	}
 	if in.AuthorizedNetworkRef != nil {
 		in, out := &in.AuthorizedNetworkRef, &out.AuthorizedNetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Description != nil {
@@ -930,7 +930,7 @@ func (in *ApigeeOrganizationSpec) DeepCopyInto(out *ApigeeOrganizationSpec) {
 	}
 	if in.RuntimeDatabaseEncryptionKeyRef != nil {
 		in, out := &in.RuntimeDatabaseEncryptionKeyRef, &out.RuntimeDatabaseEncryptionKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -951,7 +951,7 @@ func (in *ApigeeOrganizationStatus) DeepCopyInto(out *ApigeeOrganizationStatus) 
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.BillingType != nil {

@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -234,7 +234,7 @@ func (in *BinaryAuthorizationAttestorStatus) DeepCopyInto(out *BinaryAuthorizati
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -394,7 +394,7 @@ func (in *BinaryAuthorizationPolicyStatus) DeepCopyInto(out *BinaryAuthorization
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -451,7 +451,7 @@ func (in *PolicyClusterAdmissionRules) DeepCopyInto(out *PolicyClusterAdmissionR
 	*out = *in
 	if in.RequireAttestationsBy != nil {
 		in, out := &in.RequireAttestationsBy, &out.RequireAttestationsBy
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	return
@@ -472,7 +472,7 @@ func (in *PolicyDefaultAdmissionRule) DeepCopyInto(out *PolicyDefaultAdmissionRu
 	*out = *in
 	if in.RequireAttestationsBy != nil {
 		in, out := &in.RequireAttestationsBy, &out.RequireAttestationsBy
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	return
@@ -493,7 +493,7 @@ func (in *PolicyIstioServiceIdentityAdmissionRules) DeepCopyInto(out *PolicyIsti
 	*out = *in
 	if in.RequireAttestationsBy != nil {
 		in, out := &in.RequireAttestationsBy, &out.RequireAttestationsBy
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	return
@@ -514,7 +514,7 @@ func (in *PolicyKubernetesNamespaceAdmissionRules) DeepCopyInto(out *PolicyKuber
 	*out = *in
 	if in.RequireAttestationsBy != nil {
 		in, out := &in.RequireAttestationsBy, &out.RequireAttestationsBy
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	return
@@ -535,7 +535,7 @@ func (in *PolicyKubernetesServiceAccountAdmissionRules) DeepCopyInto(out *Policy
 	*out = *in
 	if in.RequireAttestationsBy != nil {
 		in, out := &in.RequireAttestationsBy, &out.RequireAttestationsBy
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	return

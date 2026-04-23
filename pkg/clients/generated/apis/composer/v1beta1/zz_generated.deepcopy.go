@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -134,7 +134,7 @@ func (in *ComposerEnvironmentStatus) DeepCopyInto(out *ComposerEnvironmentStatus
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -489,7 +489,7 @@ func (in *EnvironmentEncryptionConfig) DeepCopyInto(out *EnvironmentEncryptionCo
 	*out = *in
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -636,7 +636,7 @@ func (in *EnvironmentNodeConfig) DeepCopyInto(out *EnvironmentNodeConfig) {
 	}
 	if in.ComposerNetworkAttachmentRef != nil {
 		in, out := &in.ComposerNetworkAttachmentRef, &out.ComposerNetworkAttachmentRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.DiskSizeGB != nil {
@@ -666,7 +666,7 @@ func (in *EnvironmentNodeConfig) DeepCopyInto(out *EnvironmentNodeConfig) {
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.OauthScopes != nil {
@@ -676,12 +676,12 @@ func (in *EnvironmentNodeConfig) DeepCopyInto(out *EnvironmentNodeConfig) {
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Tags != nil {
@@ -795,7 +795,7 @@ func (in *EnvironmentPrivateEnvironmentConfig) DeepCopyInto(out *EnvironmentPriv
 	*out = *in
 	if in.CloudComposerConnectionSubnetworkRef != nil {
 		in, out := &in.CloudComposerConnectionSubnetworkRef, &out.CloudComposerConnectionSubnetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.CloudComposerNetworkIPv4CIDRBlock != nil {
@@ -1042,7 +1042,7 @@ func (in *EnvironmentStorageConfig) DeepCopyInto(out *EnvironmentStorageConfig) 
 	*out = *in
 	if in.BucketRef != nil {
 		in, out := &in.BucketRef, &out.BucketRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return

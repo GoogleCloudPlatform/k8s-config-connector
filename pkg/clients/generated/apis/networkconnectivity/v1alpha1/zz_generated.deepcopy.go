@@ -25,7 +25,7 @@
 package v1alpha1
 
 import (
-	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -179,7 +179,7 @@ func (in *NetworkConnectivityInternalRangeSpec) DeepCopyInto(out *NetworkConnect
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Overlaps != nil {
@@ -199,7 +199,7 @@ func (in *NetworkConnectivityInternalRangeSpec) DeepCopyInto(out *NetworkConnect
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -235,7 +235,7 @@ func (in *NetworkConnectivityInternalRangeStatus) DeepCopyInto(out *NetworkConne
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -337,7 +337,7 @@ func (in *NetworkConnectivityServiceConnectionPolicySpec) DeepCopyInto(out *Netw
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sk8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	out.ProjectRef = in.ProjectRef
@@ -374,7 +374,7 @@ func (in *NetworkConnectivityServiceConnectionPolicyStatus) DeepCopyInto(out *Ne
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sk8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -522,7 +522,7 @@ func (in *ServiceconnectionpolicyPscConfig) DeepCopyInto(out *Serviceconnectionp
 	}
 	if in.SubnetworkRefs != nil {
 		in, out := &in.SubnetworkRefs, &out.SubnetworkRefs
-		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sk8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	return

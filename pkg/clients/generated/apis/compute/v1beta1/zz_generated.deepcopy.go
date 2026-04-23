@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -617,12 +617,12 @@ func (in *BackendserviceGroup) DeepCopyInto(out *BackendserviceGroup) {
 	*out = *in
 	if in.InstanceGroupRef != nil {
 		in, out := &in.InstanceGroupRef, &out.InstanceGroupRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.NetworkEndpointGroupRef != nil {
 		in, out := &in.NetworkEndpointGroupRef, &out.NetworkEndpointGroupRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -643,12 +643,12 @@ func (in *BackendserviceHealthChecks) DeepCopyInto(out *BackendserviceHealthChec
 	*out = *in
 	if in.HealthCheckRef != nil {
 		in, out := &in.HealthCheckRef, &out.HealthCheckRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.HttpHealthCheckRef != nil {
 		in, out := &in.HttpHealthCheckRef, &out.HttpHealthCheckRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -705,7 +705,7 @@ func (in *BackendserviceIap) DeepCopyInto(out *BackendserviceIap) {
 	}
 	if in.Oauth2ClientIdRef != nil {
 		in, out := &in.Oauth2ClientIdRef, &out.Oauth2ClientIdRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Oauth2ClientSecret != nil {
@@ -1007,7 +1007,7 @@ func (in *BackendserviceValueFrom) DeepCopyInto(out *BackendserviceValueFrom) {
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.SecretKeyRef)
+		*out = new(k8sv1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return
@@ -1114,7 +1114,7 @@ func (in *ComputeAddressSpec) DeepCopyInto(out *ComputeAddressSpec) {
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.NetworkTier != nil {
@@ -1139,7 +1139,7 @@ func (in *ComputeAddressSpec) DeepCopyInto(out *ComputeAddressSpec) {
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -1160,7 +1160,7 @@ func (in *ComputeAddressStatus) DeepCopyInto(out *ComputeAddressStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -1324,7 +1324,7 @@ func (in *ComputeBackendBucketStatus) DeepCopyInto(out *ComputeBackendBucketStat
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -1478,7 +1478,7 @@ func (in *ComputeBackendServiceSpec) DeepCopyInto(out *ComputeBackendServiceSpec
 	}
 	if in.EdgeSecurityPolicyRef != nil {
 		in, out := &in.EdgeSecurityPolicyRef, &out.EdgeSecurityPolicyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.EnableCdn != nil {
@@ -1527,7 +1527,7 @@ func (in *ComputeBackendServiceSpec) DeepCopyInto(out *ComputeBackendServiceSpec
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.OutlierDetection != nil {
@@ -1557,7 +1557,7 @@ func (in *ComputeBackendServiceSpec) DeepCopyInto(out *ComputeBackendServiceSpec
 	}
 	if in.SecurityPolicyRef != nil {
 		in, out := &in.SecurityPolicyRef, &out.SecurityPolicyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.SecuritySettings != nil {
@@ -1598,7 +1598,7 @@ func (in *ComputeBackendServiceStatus) DeepCopyInto(out *ComputeBackendServiceSt
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -1730,7 +1730,7 @@ func (in *ComputeDiskSpec) DeepCopyInto(out *ComputeDiskSpec) {
 	}
 	if in.ImageRef != nil {
 		in, out := &in.ImageRef, &out.ImageRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Interface != nil {
@@ -1755,7 +1755,7 @@ func (in *ComputeDiskSpec) DeepCopyInto(out *ComputeDiskSpec) {
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ProvisionedIops != nil {
@@ -1780,7 +1780,7 @@ func (in *ComputeDiskSpec) DeepCopyInto(out *ComputeDiskSpec) {
 	}
 	if in.ResourcePolicies != nil {
 		in, out := &in.ResourcePolicies, &out.ResourcePolicies
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.Size != nil {
@@ -1790,12 +1790,12 @@ func (in *ComputeDiskSpec) DeepCopyInto(out *ComputeDiskSpec) {
 	}
 	if in.SnapshotRef != nil {
 		in, out := &in.SnapshotRef, &out.SnapshotRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.SourceDiskRef != nil {
 		in, out := &in.SourceDiskRef, &out.SourceDiskRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.SourceImageEncryptionKey != nil {
@@ -1831,7 +1831,7 @@ func (in *ComputeDiskStatus) DeepCopyInto(out *ComputeDiskStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -2001,7 +2001,7 @@ func (in *ComputeExternalVPNGatewayStatus) DeepCopyInto(out *ComputeExternalVPNG
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.LabelFingerprint != nil {
@@ -2210,7 +2210,7 @@ func (in *ComputeFirewallPolicyAssociationStatus) DeepCopyInto(out *ComputeFirew
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -2352,12 +2352,12 @@ func (in *ComputeFirewallPolicyRuleSpec) DeepCopyInto(out *ComputeFirewallPolicy
 	in.Match.DeepCopyInto(&out.Match)
 	if in.TargetResources != nil {
 		in, out := &in.TargetResources, &out.TargetResources
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.TargetServiceAccounts != nil {
 		in, out := &in.TargetServiceAccounts, &out.TargetServiceAccounts
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	return
@@ -2378,7 +2378,7 @@ func (in *ComputeFirewallPolicyRuleStatus) DeepCopyInto(out *ComputeFirewallPoli
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -2424,12 +2424,12 @@ func (in *ComputeFirewallPolicySpec) DeepCopyInto(out *ComputeFirewallPolicySpec
 	}
 	if in.FolderRef != nil {
 		in, out := &in.FolderRef, &out.FolderRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.OrganizationRef != nil {
 		in, out := &in.OrganizationRef, &out.OrganizationRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -2455,7 +2455,7 @@ func (in *ComputeFirewallPolicyStatus) DeepCopyInto(out *ComputeFirewallPolicySt
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -2571,7 +2571,7 @@ func (in *ComputeFirewallSpec) DeepCopyInto(out *ComputeFirewallSpec) {
 	}
 	if in.SourceServiceAccounts != nil {
 		in, out := &in.SourceServiceAccounts, &out.SourceServiceAccounts
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.SourceTags != nil {
@@ -2581,7 +2581,7 @@ func (in *ComputeFirewallSpec) DeepCopyInto(out *ComputeFirewallSpec) {
 	}
 	if in.TargetServiceAccounts != nil {
 		in, out := &in.TargetServiceAccounts, &out.TargetServiceAccounts
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.TargetTags != nil {
@@ -2607,7 +2607,7 @@ func (in *ComputeFirewallStatus) DeepCopyInto(out *ComputeFirewallStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -2719,7 +2719,7 @@ func (in *ComputeForwardingRuleSpec) DeepCopyInto(out *ComputeForwardingRuleSpec
 	}
 	if in.BackendServiceRef != nil {
 		in, out := &in.BackendServiceRef, &out.BackendServiceRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Description != nil {
@@ -2761,7 +2761,7 @@ func (in *ComputeForwardingRuleSpec) DeepCopyInto(out *ComputeForwardingRuleSpec
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.NetworkTier != nil {
@@ -2808,7 +2808,7 @@ func (in *ComputeForwardingRuleSpec) DeepCopyInto(out *ComputeForwardingRuleSpec
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Target != nil {
@@ -2834,7 +2834,7 @@ func (in *ComputeForwardingRuleStatus) DeepCopyInto(out *ComputeForwardingRuleSt
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.BaseForwardingRule != nil {
@@ -3022,7 +3022,7 @@ func (in *ComputeHTTPHealthCheckStatus) DeepCopyInto(out *ComputeHTTPHealthCheck
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -3180,7 +3180,7 @@ func (in *ComputeHTTPSHealthCheckStatus) DeepCopyInto(out *ComputeHTTPSHealthChe
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -3358,7 +3358,7 @@ func (in *ComputeHealthCheckStatus) DeepCopyInto(out *ComputeHealthCheckStatus) 
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -3465,7 +3465,7 @@ func (in *ComputeImageSpec) DeepCopyInto(out *ComputeImageSpec) {
 	}
 	if in.DiskRef != nil {
 		in, out := &in.DiskRef, &out.DiskRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.DiskSizeGb != nil {
@@ -3505,12 +3505,12 @@ func (in *ComputeImageSpec) DeepCopyInto(out *ComputeImageSpec) {
 	}
 	if in.SourceImageRef != nil {
 		in, out := &in.SourceImageRef, &out.SourceImageRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.SourceSnapshotRef != nil {
 		in, out := &in.SourceSnapshotRef, &out.SourceSnapshotRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.StorageLocations != nil {
@@ -3536,7 +3536,7 @@ func (in *ComputeImageStatus) DeepCopyInto(out *ComputeImageStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ArchiveSizeBytes != nil {
@@ -3759,7 +3759,7 @@ func (in *ComputeInstanceGroupManagerSpec) DeepCopyInto(out *ComputeInstanceGrou
 	}
 	if in.InstanceTemplateRef != nil {
 		in, out := &in.InstanceTemplateRef, &out.InstanceTemplateRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -3782,7 +3782,7 @@ func (in *ComputeInstanceGroupManagerSpec) DeepCopyInto(out *ComputeInstanceGrou
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.StatefulPolicy != nil {
@@ -3792,7 +3792,7 @@ func (in *ComputeInstanceGroupManagerSpec) DeepCopyInto(out *ComputeInstanceGrou
 	}
 	if in.TargetPools != nil {
 		in, out := &in.TargetPools, &out.TargetPools
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	in.TargetSize.DeepCopyInto(&out.TargetSize)
@@ -3826,7 +3826,7 @@ func (in *ComputeInstanceGroupManagerStatus) DeepCopyInto(out *ComputeInstanceGr
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -3907,7 +3907,7 @@ func (in *ComputeInstanceGroupSpec) DeepCopyInto(out *ComputeInstanceGroupSpec) 
 	}
 	if in.Instances != nil {
 		in, out := &in.Instances, &out.Instances
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.NamedPort != nil {
@@ -3917,7 +3917,7 @@ func (in *ComputeInstanceGroupSpec) DeepCopyInto(out *ComputeInstanceGroupSpec) 
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -3943,7 +3943,7 @@ func (in *ComputeInstanceGroupStatus) DeepCopyInto(out *ComputeInstanceGroupStat
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -4069,7 +4069,7 @@ func (in *ComputeInstanceSpec) DeepCopyInto(out *ComputeInstanceSpec) {
 	}
 	if in.InstanceTemplateRef != nil {
 		in, out := &in.InstanceTemplateRef, &out.InstanceTemplateRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.MachineType != nil {
@@ -4121,7 +4121,7 @@ func (in *ComputeInstanceSpec) DeepCopyInto(out *ComputeInstanceSpec) {
 	}
 	if in.ResourcePolicies != nil {
 		in, out := &in.ResourcePolicies, &out.ResourcePolicies
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.Scheduling != nil {
@@ -4174,7 +4174,7 @@ func (in *ComputeInstanceStatus) DeepCopyInto(out *ComputeInstanceStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CpuPlatform != nil {
@@ -4385,7 +4385,7 @@ func (in *ComputeInstanceTemplateSpec) DeepCopyInto(out *ComputeInstanceTemplate
 	}
 	if in.ResourcePolicies != nil {
 		in, out := &in.ResourcePolicies, &out.ResourcePolicies
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.Scheduling != nil {
@@ -4426,7 +4426,7 @@ func (in *ComputeInstanceTemplateStatus) DeepCopyInto(out *ComputeInstanceTempla
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.MetadataFingerprint != nil {
@@ -4568,7 +4568,7 @@ func (in *ComputeInterconnectAttachmentSpec) DeepCopyInto(out *ComputeInterconne
 	}
 	if in.IpsecInternalAddresses != nil {
 		in, out := &in.IpsecInternalAddresses, &out.IpsecInternalAddresses
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.Mtu != nil {
@@ -4610,7 +4610,7 @@ func (in *ComputeInterconnectAttachmentStatus) DeepCopyInto(out *ComputeIntercon
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CloudRouterIpAddress != nil {
@@ -4779,7 +4779,7 @@ func (in *ComputeManagedSSLCertificateStatus) DeepCopyInto(out *ComputeManagedSS
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -4920,7 +4920,7 @@ func (in *ComputeNetworkEndpointGroupSpec) DeepCopyInto(out *ComputeNetworkEndpo
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -4941,7 +4941,7 @@ func (in *ComputeNetworkEndpointGroupStatus) DeepCopyInto(out *ComputeNetworkEnd
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -5090,7 +5090,7 @@ func (in *ComputeNetworkFirewallPolicyAssociationStatus) DeepCopyInto(out *Compu
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -5181,7 +5181,7 @@ func (in *ComputeNetworkFirewallPolicyStatus) DeepCopyInto(out *ComputeNetworkFi
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -5379,7 +5379,7 @@ func (in *ComputeNetworkPeeringStatus) DeepCopyInto(out *ComputeNetworkPeeringSt
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -5476,7 +5476,7 @@ func (in *ComputeNetworkStatus) DeepCopyInto(out *ComputeNetworkStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.GatewayIpv4 != nil {
@@ -5630,7 +5630,7 @@ func (in *ComputeNodeGroupStatus) DeepCopyInto(out *ComputeNodeGroupStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -5773,7 +5773,7 @@ func (in *ComputeNodeTemplateStatus) DeepCopyInto(out *ComputeNodeTemplateStatus
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -5920,7 +5920,7 @@ func (in *ComputePacketMirroringStatus) DeepCopyInto(out *ComputePacketMirroring
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CollectorIlb != nil {
@@ -6055,7 +6055,7 @@ func (in *ComputeProjectMetadataStatus) DeepCopyInto(out *ComputeProjectMetadata
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -6162,7 +6162,7 @@ func (in *ComputeRegionNetworkEndpointGroupSpec) DeepCopyInto(out *ComputeRegion
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.PscTargetService != nil {
@@ -6177,7 +6177,7 @@ func (in *ComputeRegionNetworkEndpointGroupSpec) DeepCopyInto(out *ComputeRegion
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -6198,7 +6198,7 @@ func (in *ComputeRegionNetworkEndpointGroupStatus) DeepCopyInto(out *ComputeRegi
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -6327,7 +6327,7 @@ func (in *ComputeReservationStatus) DeepCopyInto(out *ComputeReservationStatus) 
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Commitment != nil {
@@ -6480,7 +6480,7 @@ func (in *ComputeResourcePolicyStatus) DeepCopyInto(out *ComputeResourcePolicySt
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ExternalRef != nil {
@@ -6593,12 +6593,12 @@ func (in *ComputeRouteSpec) DeepCopyInto(out *ComputeRouteSpec) {
 	}
 	if in.NextHopILBRef != nil {
 		in, out := &in.NextHopILBRef, &out.NextHopILBRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.NextHopInstanceRef != nil {
 		in, out := &in.NextHopInstanceRef, &out.NextHopInstanceRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.NextHopIp != nil {
@@ -6608,7 +6608,7 @@ func (in *ComputeRouteSpec) DeepCopyInto(out *ComputeRouteSpec) {
 	}
 	if in.NextHopVPNTunnelRef != nil {
 		in, out := &in.NextHopVPNTunnelRef, &out.NextHopVPNTunnelRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Priority != nil {
@@ -6644,7 +6644,7 @@ func (in *ComputeRouteStatus) DeepCopyInto(out *ComputeRouteStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.NextHopNetwork != nil {
@@ -6769,7 +6769,7 @@ func (in *ComputeRouterInterfaceSpec) DeepCopyInto(out *ComputeRouterInterfaceSp
 	*out = *in
 	if in.InterconnectAttachmentRef != nil {
 		in, out := &in.InterconnectAttachmentRef, &out.InterconnectAttachmentRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.IpRange != nil {
@@ -6779,12 +6779,12 @@ func (in *ComputeRouterInterfaceSpec) DeepCopyInto(out *ComputeRouterInterfaceSp
 	}
 	if in.PrivateIpAddressRef != nil {
 		in, out := &in.PrivateIpAddressRef, &out.PrivateIpAddressRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.RedundantInterfaceRef != nil {
 		in, out := &in.RedundantInterfaceRef, &out.RedundantInterfaceRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -6795,12 +6795,12 @@ func (in *ComputeRouterInterfaceSpec) DeepCopyInto(out *ComputeRouterInterfaceSp
 	out.RouterRef = in.RouterRef
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.VpnTunnelRef != nil {
 		in, out := &in.VpnTunnelRef, &out.VpnTunnelRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -6821,7 +6821,7 @@ func (in *ComputeRouterInterfaceStatus) DeepCopyInto(out *ComputeRouterInterface
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -6941,7 +6941,7 @@ func (in *ComputeRouterNATSpec) DeepCopyInto(out *ComputeRouterNATSpec) {
 	*out = *in
 	if in.DrainNatIps != nil {
 		in, out := &in.DrainNatIps, &out.DrainNatIps
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.EnableDynamicPortAllocation != nil {
@@ -6976,7 +6976,7 @@ func (in *ComputeRouterNATSpec) DeepCopyInto(out *ComputeRouterNATSpec) {
 	}
 	if in.NatIps != nil {
 		in, out := &in.NatIps, &out.NatIps
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.ResourceID != nil {
@@ -7037,7 +7037,7 @@ func (in *ComputeRouterNATStatus) DeepCopyInto(out *ComputeRouterNATStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -7186,7 +7186,7 @@ func (in *ComputeRouterPeerSpec) DeepCopyInto(out *ComputeRouterPeerSpec) {
 	}
 	if in.RouterApplianceInstanceRef != nil {
 		in, out := &in.RouterApplianceInstanceRef, &out.RouterApplianceInstanceRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	out.RouterInterfaceRef = in.RouterInterfaceRef
@@ -7209,7 +7209,7 @@ func (in *ComputeRouterPeerStatus) DeepCopyInto(out *ComputeRouterPeerStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ManagementType != nil {
@@ -7277,7 +7277,7 @@ func (in *ComputeRouterStatus) DeepCopyInto(out *ComputeRouterStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -7402,7 +7402,7 @@ func (in *ComputeSSLCertificateStatus) DeepCopyInto(out *ComputeSSLCertificateSt
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CertificateId != nil {
@@ -7550,7 +7550,7 @@ func (in *ComputeSSLPolicyStatus) DeepCopyInto(out *ComputeSSLPolicyStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -7710,7 +7710,7 @@ func (in *ComputeSecurityPolicyStatus) DeepCopyInto(out *ComputeSecurityPolicySt
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.Fingerprint != nil {
@@ -7814,7 +7814,7 @@ func (in *ComputeServiceAttachmentSpec) DeepCopyInto(out *ComputeServiceAttachme
 	}
 	if in.ConsumerRejectLists != nil {
 		in, out := &in.ConsumerRejectLists, &out.ConsumerRejectLists
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.Description != nil {
@@ -7829,7 +7829,7 @@ func (in *ComputeServiceAttachmentSpec) DeepCopyInto(out *ComputeServiceAttachme
 	}
 	if in.NatSubnets != nil {
 		in, out := &in.NatSubnets, &out.NatSubnets
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	out.ProjectRef = in.ProjectRef
@@ -7857,7 +7857,7 @@ func (in *ComputeServiceAttachmentStatus) DeepCopyInto(out *ComputeServiceAttach
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ConnectedEndpoints != nil {
@@ -7992,7 +7992,7 @@ func (in *ComputeSharedVPCHostProjectStatus) DeepCopyInto(out *ComputeSharedVPCH
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -8101,7 +8101,7 @@ func (in *ComputeSharedVPCServiceProjectStatus) DeepCopyInto(out *ComputeSharedV
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -8240,7 +8240,7 @@ func (in *ComputeSnapshotStatus) DeepCopyInto(out *ComputeSnapshotStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -8429,7 +8429,7 @@ func (in *ComputeSubnetworkStatus) DeepCopyInto(out *ComputeSubnetworkStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -8561,7 +8561,7 @@ func (in *ComputeTargetGRPCProxySpec) DeepCopyInto(out *ComputeTargetGRPCProxySp
 	}
 	if in.UrlMapRef != nil {
 		in, out := &in.UrlMapRef, &out.UrlMapRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ValidateForProxyless != nil {
@@ -8587,7 +8587,7 @@ func (in *ComputeTargetGRPCProxyStatus) DeepCopyInto(out *ComputeTargetGRPCProxy
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -8731,7 +8731,7 @@ func (in *ComputeTargetHTTPProxyStatus) DeepCopyInto(out *ComputeTargetHTTPProxy
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -8833,12 +8833,12 @@ func (in *ComputeTargetHTTPSProxySpec) DeepCopyInto(out *ComputeTargetHTTPSProxy
 	*out = *in
 	if in.CertificateManagerCertificates != nil {
 		in, out := &in.CertificateManagerCertificates, &out.CertificateManagerCertificates
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.CertificateMapRef != nil {
 		in, out := &in.CertificateMapRef, &out.CertificateMapRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Description != nil {
@@ -8868,17 +8868,17 @@ func (in *ComputeTargetHTTPSProxySpec) DeepCopyInto(out *ComputeTargetHTTPSProxy
 	}
 	if in.ServerTlsPolicyRef != nil {
 		in, out := &in.ServerTlsPolicyRef, &out.ServerTlsPolicyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.SslCertificates != nil {
 		in, out := &in.SslCertificates, &out.SslCertificates
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.SslPolicyRef != nil {
 		in, out := &in.SslPolicyRef, &out.SslPolicyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	out.UrlMapRef = in.UrlMapRef
@@ -8900,7 +8900,7 @@ func (in *ComputeTargetHTTPSProxyStatus) DeepCopyInto(out *ComputeTargetHTTPSPro
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -9023,7 +9023,7 @@ func (in *ComputeTargetInstanceSpec) DeepCopyInto(out *ComputeTargetInstanceSpec
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -9033,7 +9033,7 @@ func (in *ComputeTargetInstanceSpec) DeepCopyInto(out *ComputeTargetInstanceSpec
 	}
 	if in.SecurityPolicyRef != nil {
 		in, out := &in.SecurityPolicyRef, &out.SecurityPolicyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -9054,7 +9054,7 @@ func (in *ComputeTargetInstanceStatus) DeepCopyInto(out *ComputeTargetInstanceSt
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -9151,7 +9151,7 @@ func (in *ComputeTargetPoolSpec) DeepCopyInto(out *ComputeTargetPoolSpec) {
 	*out = *in
 	if in.BackupTargetPoolRef != nil {
 		in, out := &in.BackupTargetPoolRef, &out.BackupTargetPoolRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Description != nil {
@@ -9173,7 +9173,7 @@ func (in *ComputeTargetPoolSpec) DeepCopyInto(out *ComputeTargetPoolSpec) {
 	}
 	if in.Instances != nil {
 		in, out := &in.Instances, &out.Instances
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.ResourceID != nil {
@@ -9183,7 +9183,7 @@ func (in *ComputeTargetPoolSpec) DeepCopyInto(out *ComputeTargetPoolSpec) {
 	}
 	if in.SecurityPolicyRef != nil {
 		in, out := &in.SecurityPolicyRef, &out.SecurityPolicyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.SessionAffinity != nil {
@@ -9209,7 +9209,7 @@ func (in *ComputeTargetPoolStatus) DeepCopyInto(out *ComputeTargetPoolStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -9302,7 +9302,7 @@ func (in *ComputeTargetSSLProxySpec) DeepCopyInto(out *ComputeTargetSSLProxySpec
 	out.BackendServiceRef = in.BackendServiceRef
 	if in.CertificateMapRef != nil {
 		in, out := &in.CertificateMapRef, &out.CertificateMapRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Description != nil {
@@ -9322,12 +9322,12 @@ func (in *ComputeTargetSSLProxySpec) DeepCopyInto(out *ComputeTargetSSLProxySpec
 	}
 	if in.SslCertificates != nil {
 		in, out := &in.SslCertificates, &out.SslCertificates
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.SslPolicyRef != nil {
 		in, out := &in.SslPolicyRef, &out.SslPolicyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -9348,7 +9348,7 @@ func (in *ComputeTargetSSLProxyStatus) DeepCopyInto(out *ComputeTargetSSLProxySt
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -9492,7 +9492,7 @@ func (in *ComputeTargetTCPProxyStatus) DeepCopyInto(out *ComputeTargetTCPProxySt
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -9626,7 +9626,7 @@ func (in *ComputeTargetVPNGatewayStatus) DeepCopyInto(out *ComputeTargetVPNGatew
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -9795,7 +9795,7 @@ func (in *ComputeURLMapStatus) DeepCopyInto(out *ComputeURLMapStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -9941,7 +9941,7 @@ func (in *ComputeVPNGatewayStatus) DeepCopyInto(out *ComputeVPNGatewayStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -10053,12 +10053,12 @@ func (in *ComputeVPNTunnelSpec) DeepCopyInto(out *ComputeVPNTunnelSpec) {
 	}
 	if in.PeerExternalGatewayRef != nil {
 		in, out := &in.PeerExternalGatewayRef, &out.PeerExternalGatewayRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.PeerGCPGatewayRef != nil {
 		in, out := &in.PeerGCPGatewayRef, &out.PeerGCPGatewayRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.PeerIp != nil {
@@ -10078,13 +10078,13 @@ func (in *ComputeVPNTunnelSpec) DeepCopyInto(out *ComputeVPNTunnelSpec) {
 	}
 	if in.RouterRef != nil {
 		in, out := &in.RouterRef, &out.RouterRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	in.SharedSecret.DeepCopyInto(&out.SharedSecret)
 	if in.TargetVPNGatewayRef != nil {
 		in, out := &in.TargetVPNGatewayRef, &out.TargetVPNGatewayRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.VpnGatewayInterface != nil {
@@ -10094,7 +10094,7 @@ func (in *ComputeVPNTunnelSpec) DeepCopyInto(out *ComputeVPNTunnelSpec) {
 	}
 	if in.VpnGatewayRef != nil {
 		in, out := &in.VpnGatewayRef, &out.VpnGatewayRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -10115,7 +10115,7 @@ func (in *ComputeVPNTunnelStatus) DeepCopyInto(out *ComputeVPNTunnelStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreationTimestamp != nil {
@@ -10188,12 +10188,12 @@ func (in *DiskDiskEncryptionKey) DeepCopyInto(out *DiskDiskEncryptionKey) {
 	*out = *in
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.KmsKeyServiceAccountRef != nil {
 		in, out := &in.KmsKeyServiceAccountRef, &out.KmsKeyServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.RawKey != nil {
@@ -10297,12 +10297,12 @@ func (in *DiskSourceImageEncryptionKey) DeepCopyInto(out *DiskSourceImageEncrypt
 	*out = *in
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.KmsKeyServiceAccountRef != nil {
 		in, out := &in.KmsKeyServiceAccountRef, &out.KmsKeyServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.RawKey != nil {
@@ -10333,12 +10333,12 @@ func (in *DiskSourceSnapshotEncryptionKey) DeepCopyInto(out *DiskSourceSnapshotE
 	*out = *in
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.KmsKeyServiceAccountRef != nil {
 		in, out := &in.KmsKeyServiceAccountRef, &out.KmsKeyServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.RawKey != nil {
@@ -10369,7 +10369,7 @@ func (in *DiskValueFrom) DeepCopyInto(out *DiskValueFrom) {
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.SecretKeyRef)
+		*out = new(k8sv1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return
@@ -10584,7 +10584,7 @@ func (in *ForwardingruleIpAddress) DeepCopyInto(out *ForwardingruleIpAddress) {
 	*out = *in
 	if in.AddressRef != nil {
 		in, out := &in.AddressRef, &out.AddressRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Ip != nil {
@@ -10689,37 +10689,37 @@ func (in *ForwardingruleTarget) DeepCopyInto(out *ForwardingruleTarget) {
 	}
 	if in.ServiceAttachmentRef != nil {
 		in, out := &in.ServiceAttachmentRef, &out.ServiceAttachmentRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.TargetGRPCProxyRef != nil {
 		in, out := &in.TargetGRPCProxyRef, &out.TargetGRPCProxyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.TargetHTTPProxyRef != nil {
 		in, out := &in.TargetHTTPProxyRef, &out.TargetHTTPProxyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.TargetHTTPSProxyRef != nil {
 		in, out := &in.TargetHTTPSProxyRef, &out.TargetHTTPSProxyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.TargetSSLProxyRef != nil {
 		in, out := &in.TargetSSLProxyRef, &out.TargetSSLProxyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.TargetTCPProxyRef != nil {
 		in, out := &in.TargetTCPProxyRef, &out.TargetTCPProxyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.TargetVPNGatewayRef != nil {
 		in, out := &in.TargetVPNGatewayRef, &out.TargetVPNGatewayRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -11058,12 +11058,12 @@ func (in *ImageImageEncryptionKey) DeepCopyInto(out *ImageImageEncryptionKey) {
 	*out = *in
 	if in.KmsKeySelfLinkRef != nil {
 		in, out := &in.KmsKeySelfLinkRef, &out.KmsKeySelfLinkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.KmsKeyServiceAccountRef != nil {
 		in, out := &in.KmsKeyServiceAccountRef, &out.KmsKeyServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -11110,7 +11110,7 @@ func (in *InstanceAccessConfig) DeepCopyInto(out *InstanceAccessConfig) {
 	*out = *in
 	if in.NatIpRef != nil {
 		in, out := &in.NatIpRef, &out.NatIpRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.NetworkTier != nil {
@@ -11208,7 +11208,7 @@ func (in *InstanceAttachedDisk) DeepCopyInto(out *InstanceAttachedDisk) {
 	}
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Mode != nil {
@@ -11260,7 +11260,7 @@ func (in *InstanceBootDisk) DeepCopyInto(out *InstanceBootDisk) {
 	}
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Mode != nil {
@@ -11270,7 +11270,7 @@ func (in *InstanceBootDisk) DeepCopyInto(out *InstanceBootDisk) {
 	}
 	if in.SourceDiskRef != nil {
 		in, out := &in.SourceDiskRef, &out.SourceDiskRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -11364,7 +11364,7 @@ func (in *InstanceInitializeParams) DeepCopyInto(out *InstanceInitializeParams) 
 	}
 	if in.SourceImageRef != nil {
 		in, out := &in.SourceImageRef, &out.SourceImageRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Type != nil {
@@ -11546,12 +11546,12 @@ func (in *InstanceNetworkInterface) DeepCopyInto(out *InstanceNetworkInterface) 
 	}
 	if in.NetworkIpRef != nil {
 		in, out := &in.NetworkIpRef, &out.NetworkIpRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.NicType != nil {
@@ -11576,7 +11576,7 @@ func (in *InstanceNetworkInterface) DeepCopyInto(out *InstanceNetworkInterface) 
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -11786,7 +11786,7 @@ func (in *InstanceServiceAccount) DeepCopyInto(out *InstanceServiceAccount) {
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -11875,7 +11875,7 @@ func (in *InstanceValueFrom) DeepCopyInto(out *InstanceValueFrom) {
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.SecretKeyRef)
+		*out = new(k8sv1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return
@@ -11912,7 +11912,7 @@ func (in *InstancegroupmanagerAutoHealingPolicies) DeepCopyInto(out *Instancegro
 	*out = *in
 	if in.HealthCheckRef != nil {
 		in, out := &in.HealthCheckRef, &out.HealthCheckRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.InitialDelaySec != nil {
@@ -12490,7 +12490,7 @@ func (in *InstancegroupmanagerVersions) DeepCopyInto(out *InstancegroupmanagerVe
 	*out = *in
 	if in.InstanceTemplateRef != nil {
 		in, out := &in.InstanceTemplateRef, &out.InstanceTemplateRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Name != nil {
@@ -12542,7 +12542,7 @@ func (in *InstancetemplateAccessConfig) DeepCopyInto(out *InstancetemplateAccess
 	*out = *in
 	if in.NatIpRef != nil {
 		in, out := &in.NatIpRef, &out.NatIpRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.NetworkTier != nil {
@@ -12698,12 +12698,12 @@ func (in *InstancetemplateDisk) DeepCopyInto(out *InstancetemplateDisk) {
 	}
 	if in.ResourcePolicies != nil {
 		in, out := &in.ResourcePolicies, &out.ResourcePolicies
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.SourceDiskRef != nil {
 		in, out := &in.SourceDiskRef, &out.SourceDiskRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.SourceImageEncryptionKey != nil {
@@ -12713,7 +12713,7 @@ func (in *InstancetemplateDisk) DeepCopyInto(out *InstancetemplateDisk) {
 	}
 	if in.SourceImageRef != nil {
 		in, out := &in.SourceImageRef, &out.SourceImageRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.SourceSnapshotEncryptionKey != nil {
@@ -12723,7 +12723,7 @@ func (in *InstancetemplateDisk) DeepCopyInto(out *InstancetemplateDisk) {
 	}
 	if in.SourceSnapshotRef != nil {
 		in, out := &in.SourceSnapshotRef, &out.SourceSnapshotRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Type != nil {
@@ -12927,7 +12927,7 @@ func (in *InstancetemplateNetworkInterface) DeepCopyInto(out *InstancetemplateNe
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.NicType != nil {
@@ -12952,7 +12952,7 @@ func (in *InstancetemplateNetworkInterface) DeepCopyInto(out *InstancetemplateNe
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -13106,7 +13106,7 @@ func (in *InstancetemplateServiceAccount) DeepCopyInto(out *InstancetemplateServ
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -13159,7 +13159,7 @@ func (in *InstancetemplateSourceImageEncryptionKey) DeepCopyInto(out *Instancete
 	out.KmsKeySelfLinkRef = in.KmsKeySelfLinkRef
 	if in.KmsKeyServiceAccountRef != nil {
 		in, out := &in.KmsKeyServiceAccountRef, &out.KmsKeyServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -13181,7 +13181,7 @@ func (in *InstancetemplateSourceSnapshotEncryptionKey) DeepCopyInto(out *Instanc
 	out.KmsKeySelfLinkRef = in.KmsKeySelfLinkRef
 	if in.KmsKeyServiceAccountRef != nil {
 		in, out := &in.KmsKeyServiceAccountRef, &out.KmsKeyServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -13529,7 +13529,7 @@ func (in *PacketmirroringInstances) DeepCopyInto(out *PacketmirroringInstances) 
 	}
 	if in.UrlRef != nil {
 		in, out := &in.UrlRef, &out.UrlRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -13628,7 +13628,7 @@ func (in *PacketmirroringSubnetworks) DeepCopyInto(out *PacketmirroringSubnetwor
 	}
 	if in.UrlRef != nil {
 		in, out := &in.UrlRef, &out.UrlRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -13649,7 +13649,7 @@ func (in *RegionnetworkendpointgroupCloudFunction) DeepCopyInto(out *Regionnetwo
 	*out = *in
 	if in.FunctionRef != nil {
 		in, out := &in.FunctionRef, &out.FunctionRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.UrlMask != nil {
@@ -13675,7 +13675,7 @@ func (in *RegionnetworkendpointgroupCloudRun) DeepCopyInto(out *Regionnetworkend
 	*out = *in
 	if in.ServiceRef != nil {
 		in, out := &in.ServiceRef, &out.ServiceRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Tag != nil {
@@ -14244,12 +14244,12 @@ func (in *RouternatAction) DeepCopyInto(out *RouternatAction) {
 	*out = *in
 	if in.SourceNatActiveIpsRefs != nil {
 		in, out := &in.SourceNatActiveIpsRefs, &out.SourceNatActiveIpsRefs
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.SourceNatDrainIpsRefs != nil {
 		in, out := &in.SourceNatDrainIpsRefs, &out.SourceNatDrainIpsRefs
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	return
@@ -15178,12 +15178,12 @@ func (in *SnapshotSnapshotEncryptionKey) DeepCopyInto(out *SnapshotSnapshotEncry
 	*out = *in
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.KmsKeyServiceAccountRef != nil {
 		in, out := &in.KmsKeyServiceAccountRef, &out.KmsKeyServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.RawKey != nil {
@@ -15214,7 +15214,7 @@ func (in *SnapshotSourceDiskEncryptionKey) DeepCopyInto(out *SnapshotSourceDiskE
 	*out = *in
 	if in.KmsKeyServiceAccountRef != nil {
 		in, out := &in.KmsKeyServiceAccountRef, &out.KmsKeyServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.RawKey != nil {
@@ -15240,7 +15240,7 @@ func (in *SnapshotValueFrom) DeepCopyInto(out *SnapshotValueFrom) {
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.SecretKeyRef)
+		*out = new(k8sv1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return
@@ -15313,7 +15313,7 @@ func (in *SslcertificateValueFrom) DeepCopyInto(out *SslcertificateValueFrom) {
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.SecretKeyRef)
+		*out = new(k8sv1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return
@@ -15412,7 +15412,7 @@ func (in *TargetpoolHealthChecks) DeepCopyInto(out *TargetpoolHealthChecks) {
 	*out = *in
 	if in.HttpHealthCheckRef != nil {
 		in, out := &in.HttpHealthCheckRef, &out.HttpHealthCheckRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -15568,12 +15568,12 @@ func (in *UrlmapDefaultService) DeepCopyInto(out *UrlmapDefaultService) {
 	*out = *in
 	if in.BackendBucketRef != nil {
 		in, out := &in.BackendBucketRef, &out.BackendBucketRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.BackendServiceRef != nil {
 		in, out := &in.BackendServiceRef, &out.BackendServiceRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -16250,12 +16250,12 @@ func (in *UrlmapService) DeepCopyInto(out *UrlmapService) {
 	*out = *in
 	if in.BackendBucketRef != nil {
 		in, out := &in.BackendBucketRef, &out.BackendBucketRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.BackendServiceRef != nil {
 		in, out := &in.BackendServiceRef, &out.BackendServiceRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -16423,7 +16423,7 @@ func (in *VpngatewayVpnInterfaces) DeepCopyInto(out *VpngatewayVpnInterfaces) {
 	}
 	if in.InterconnectAttachmentRef != nil {
 		in, out := &in.InterconnectAttachmentRef, &out.InterconnectAttachmentRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.IpAddress != nil {
@@ -16475,7 +16475,7 @@ func (in *VpntunnelValueFrom) DeepCopyInto(out *VpntunnelValueFrom) {
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.SecretKeyRef)
+		*out = new(k8sv1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return

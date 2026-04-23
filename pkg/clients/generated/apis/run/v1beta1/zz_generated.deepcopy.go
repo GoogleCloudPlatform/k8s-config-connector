@@ -25,7 +25,7 @@
 package v1beta1
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -60,7 +60,7 @@ func (in *JobCloudSqlInstance) DeepCopyInto(out *JobCloudSqlInstance) {
 	*out = *in
 	if in.InstanceRefs != nil {
 		in, out := &in.InstanceRefs, &out.InstanceRefs
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	return
@@ -220,7 +220,7 @@ func (in *JobGcs) DeepCopyInto(out *JobGcs) {
 	*out = *in
 	if in.BucketRef != nil {
 		in, out := &in.BucketRef, &out.BucketRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.MountOptions != nil {
@@ -320,7 +320,7 @@ func (in *JobItems) DeepCopyInto(out *JobItems) {
 	}
 	if in.VersionRef != nil {
 		in, out := &in.VersionRef, &out.VersionRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -428,12 +428,12 @@ func (in *JobNetworkInterfaces) DeepCopyInto(out *JobNetworkInterfaces) {
 	*out = *in
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Tags != nil {
@@ -551,7 +551,7 @@ func (in *JobSecret) DeepCopyInto(out *JobSecret) {
 	}
 	if in.SecretRef != nil {
 		in, out := &in.SecretRef, &out.SecretRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -572,12 +572,12 @@ func (in *JobSecretKeyRef) DeepCopyInto(out *JobSecretKeyRef) {
 	*out = *in
 	if in.SecretRef != nil {
 		in, out := &in.SecretRef, &out.SecretRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.VersionRef != nil {
 		in, out := &in.VersionRef, &out.VersionRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -672,7 +672,7 @@ func (in *JobTemplate) DeepCopyInto(out *JobTemplate) {
 	}
 	if in.EncryptionKeyRef != nil {
 		in, out := &in.EncryptionKeyRef, &out.EncryptionKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ExecutionEnvironment != nil {
@@ -687,7 +687,7 @@ func (in *JobTemplate) DeepCopyInto(out *JobTemplate) {
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Timeout != nil {
@@ -874,7 +874,7 @@ func (in *JobVpcAccess) DeepCopyInto(out *JobVpcAccess) {
 	*out = *in
 	if in.ConnectorRef != nil {
 		in, out := &in.ConnectorRef, &out.ConnectorRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Egress != nil {
@@ -1000,7 +1000,7 @@ func (in *RunJobSpec) DeepCopyInto(out *RunJobSpec) {
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -1027,7 +1027,7 @@ func (in *RunJobStatus) DeepCopyInto(out *RunJobStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -1260,7 +1260,7 @@ func (in *RunServiceStatus) DeepCopyInto(out *RunServiceStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.CreateTime != nil {
@@ -1384,7 +1384,7 @@ func (in *ServiceCloudSqlInstance) DeepCopyInto(out *ServiceCloudSqlInstance) {
 	*out = *in
 	if in.Instances != nil {
 		in, out := &in.Instances, &out.Instances
-		*out = make([]v1alpha1.ResourceRef, len(*in))
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	return
@@ -1617,7 +1617,7 @@ func (in *ServiceItems) DeepCopyInto(out *ServiceItems) {
 	}
 	if in.VersionRef != nil {
 		in, out := &in.VersionRef, &out.VersionRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -1684,12 +1684,12 @@ func (in *ServiceNetworkInterfaces) DeepCopyInto(out *ServiceNetworkInterfaces) 
 	*out = *in
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Tags != nil {
@@ -1830,7 +1830,7 @@ func (in *ServiceSecretKeyRef) DeepCopyInto(out *ServiceSecretKeyRef) {
 	out.SecretRef = in.SecretRef
 	if in.VersionRef != nil {
 		in, out := &in.VersionRef, &out.VersionRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -1937,7 +1937,7 @@ func (in *ServiceTemplate) DeepCopyInto(out *ServiceTemplate) {
 	}
 	if in.EncryptionKeyRef != nil {
 		in, out := &in.EncryptionKeyRef, &out.EncryptionKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ExecutionEnvironment != nil {
@@ -1969,7 +1969,7 @@ func (in *ServiceTemplate) DeepCopyInto(out *ServiceTemplate) {
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.SessionAffinity != nil {
@@ -2208,7 +2208,7 @@ func (in *ServiceVpcAccess) DeepCopyInto(out *ServiceVpcAccess) {
 	*out = *in
 	if in.ConnectorRef != nil {
 		in, out := &in.ConnectorRef, &out.ConnectorRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Egress != nil {
