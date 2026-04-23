@@ -18,6 +18,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+ORIGINAL_GOPATH="${GOPATH:-}"
 # Setting GOPATH changes behaviour of k8s codegen tools
 unset GOPATH
 
@@ -69,13 +70,12 @@ echo "Fixing up imports"
 # 1. We apply the import alias fix to all files in the generated directory.
 # We use a robust regex that handles leading whitespace, optional aliases (including those with underscores),
 # and ensures a canonical tab-indented aliased import.
-find "${REPO_ROOT}/pkg/clients/generated" -name "*.go" -exec sed -E -i 's|^[[:space:]]*([a-zA-Z0-9_]*[[:space:]]+)?"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"|	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"|g' {} +
+find "${REPO_ROOT}/pkg/clients/generated" -name "*.go" -exec sed -E -i 's|^[[:space:]]*([a-zA-Z0-9_]*[[:space:]]+)?"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"|\tk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"|g' {} +
 
 # 2. In files that now use the k8sv1alpha1 alias, we replace all v1alpha1. usages with k8sv1alpha1.
 # This handles all codegen tools and avoids accidental replacements in other v1alpha1 packages.
-# We use a while loop to be more robust than xargs grep | xargs sed.
 find "${REPO_ROOT}/pkg/clients/generated" -name "*.go" | while read -r file; do
-  if grep -q 'k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"' "$file"; then
+  if grep -q "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1" "$file"; then
     sed -E -i 's/\bv1alpha1\./k8sv1alpha1\./g' "$file"
   fi
 done
@@ -86,5 +86,8 @@ rm -rf "${REPO_ROOT}/github.com"
 rm -rf "${REPO_ROOT}/pkg/clients/github.com"
 
 echo "Applying gofmt"
+if [[ -n "${ORIGINAL_GOPATH}" ]]; then
+  export GOPATH="${ORIGINAL_GOPATH}"
+fi
 cd ${REPO_ROOT}
 make fmt # Fix up the formatting and headers

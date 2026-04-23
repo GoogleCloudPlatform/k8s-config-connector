@@ -96,7 +96,7 @@ func (g *GeneralTypes) Generate() {
 
 	g.Print("type %sStatus struct {", g.Name)
 	g.Print("\t/* Conditions represent the latest available observations of the")
-	g.Print("\t    %s's current state. */", g.Name)
+	g.Print("\t   %s's current state. */", g.Name)
 	g.Print("\tConditions []k8sv1alpha1.Condition `json:\"conditions,omitempty\"`")
 
 	for i, f := range g.StatusFields {
