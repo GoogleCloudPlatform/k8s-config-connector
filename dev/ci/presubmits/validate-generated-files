@@ -45,7 +45,7 @@ def main():
     run_and_verify_no_changes(["dev/tasks/generate-crds"])
     run_and_verify_no_changes(["dev/tasks/generate-resource-report"])
     run_and_verify_no_changes(["dev/tasks/generate_static_config.py"])
-    run_and_verify_no_changes(["make", "generate-go-client"])
+    run_and_verify_no_changes(["make", "generate-go-client", "ensure", "fmt"])
 
 if __name__ == "__main__":
     main()
