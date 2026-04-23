@@ -75,11 +75,11 @@ find "${REPO_ROOT}/pkg/clients/generated" -name "*.go" -exec sed -E -i 's|^[[:sp
 
 # 2. In files that now use the k8sv1alpha1 alias, we replace all v1alpha1. usages with k8sv1alpha1.
 # This handles all codegen tools and avoids accidental replacements in other v1alpha1 packages.
+# We also fix any accidental double-prefixing.
 find "${REPO_ROOT}/pkg/clients/generated" -name "*.go" | while read -r file; do
   if grep -q "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1" "$file"; then
-    # Aggressive replacement to catch any missed cases, then fix any accidental double-prefixing.
-    # We use a loop to handle multiple occurrences on the same line if necessary (though sed /g handles it).
-    sed -i 's/v1alpha1\./k8sv1alpha1\./g' "$file"
+    # Aggressive replacement to catch any missed cases.
+    sed -i 's/\bv1alpha1\./k8sv1alpha1\./g' "$file"
     sed -i 's/k8sk8sv1alpha1\./k8sv1alpha1\./g' "$file"
   fi
 done
@@ -99,7 +99,11 @@ make fmt # Fix up the formatting and headers
 # 3. Final cleanup: Remove any non-aliased k8s/v1alpha1 imports added by goimports
 # that are redundant because the aliased version is already there.
 # This is a safety measure against goimports disagreement between environments.
-find "${REPO_ROOT}/pkg/clients/generated" -name "*.go" -exec sed -i '/"github.com\/GoogleCloudPlatform\/k8s-config-connector\/pkg\/clients\/generated\/apis\/k8s\/v1alpha1"/ { /k8sv1alpha1/ !d }' {} +
+# We use a more robust regex to match the import line regardless of leading whitespace.
+find "${REPO_ROOT}/pkg/clients/generated" -name "*.go" -exec sed -i '/^[[:space:]]*"github.com\/GoogleCloudPlatform\/k8s-config-connector\/pkg\/clients\/generated\/apis\/k8s\/v1alpha1"/ d' {} +
+
+# Re-run Step 1 to ensure the aliased import is present if needed
+find "${REPO_ROOT}/pkg/clients/generated" -name "*.go" -exec sed -E -i 's|^[[:space:]]*([a-zA-Z0-9_]*[[:space:]]+)?"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"|\tk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"|g' {} +
 
 # Run fmt again just in case the previous cleanup removed a line from an import block
 make fmt

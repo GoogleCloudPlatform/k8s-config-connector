@@ -51,6 +51,7 @@ func (g *GeneralTypes) Generate() {
 	g.WriteHeader()
 
 	g.Print("package %s", g.Version.Name)
+	g.Print("")
 
 	g.Print("import (")
 	g.Print("\tk8sv1alpha1 \"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1\"")
