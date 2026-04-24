@@ -2,7 +2,7 @@
 "cel.dev/expr","https://pkg.go.dev/cel.dev/expr@v0.25.1?tab=licenses","Apache-2.0","config-connector","YES","NO"
 "cloud.google.com/go","https://pkg.go.dev/cloud.google.com/go@v0.123.0?tab=licenses","Apache-2.0","config-connector","YES","NO"
 "cloud.google.com/go/accesscontextmanager","https://pkg.go.dev/cloud.google.com/go/accesscontextmanager@v1.9.7?tab=licenses","Apache-2.0","config-connector","YES","NO"
-"cloud.google.com/go/aiplatform","https://pkg.go.dev/cloud.google.com/go/aiplatform@v1.116.0?tab=licenses","Apache-2.0","config-connector","YES","NO"
+"cloud.google.com/go/aiplatform","https://pkg.go.dev/cloud.google.com/go/aiplatform@v1.123.0?tab=licenses","Apache-2.0","config-connector","YES","NO"
 "cloud.google.com/go/alloydb","https://pkg.go.dev/cloud.google.com/go/alloydb@v1.20.0?tab=licenses","Apache-2.0","config-connector","YES","NO"
 "cloud.google.com/go/apigateway","https://pkg.go.dev/cloud.google.com/go/apigateway@v1.7.7?tab=licenses","Apache-2.0","config-connector","YES","NO"
 "cloud.google.com/go/apikeys","https://pkg.go.dev/cloud.google.com/go/apikeys@v1.2.7?tab=licenses","Apache-2.0","config-connector","YES","NO"
