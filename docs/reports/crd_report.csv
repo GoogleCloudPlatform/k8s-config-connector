@@ -73,6 +73,7 @@ bigtable.cnrm.cloud.google.com,BigtableGCPolicy,False,True,False,Terraform,False
 bigtable.cnrm.cloud.google.com,BigtableInstance,False,True,False,Terraform,True
 bigtable.cnrm.cloud.google.com,BigtableLogicalView,True,False,False,Direct,True
 bigtable.cnrm.cloud.google.com,BigtableMaterializedView,True,False,False,Direct,True
+bigtable.cnrm.cloud.google.com,BigtableSchemaBundle,True,False,False,Direct,True
 bigtable.cnrm.cloud.google.com,BigtableTable,False,True,False,Terraform,True
 billing.cnrm.cloud.google.com,BillingAccount,True,False,False,Direct,True
 billingbudgets.cnrm.cloud.google.com,BillingBudgetsBudget,False,True,False,DCL,False

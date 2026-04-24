@@ -39,10 +39,6 @@ for f in $(find apis -name "generate.sh" | sort); do
         echo "Skipping ${f}"
         continue
     fi
-    if [[ "${f}" == *"bigtable"* ]]; then
-        echo "Skipping ${f}"
-        continue
-    fi
     if [[ "${f}" == *"composer"* ]]; then
         echo "Skipping ${f}"
         continue
