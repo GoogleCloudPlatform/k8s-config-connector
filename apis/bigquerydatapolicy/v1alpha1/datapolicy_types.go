@@ -102,6 +102,7 @@ type BigQueryDataPolicyObservedState struct {
 
 // BigQueryDataPolicy is the Schema for the BigQueryDataPolicy API
 // +k8s:openapi-gen=true
+// +kubebuilder:storageversion
 type BigQueryDataPolicy struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
