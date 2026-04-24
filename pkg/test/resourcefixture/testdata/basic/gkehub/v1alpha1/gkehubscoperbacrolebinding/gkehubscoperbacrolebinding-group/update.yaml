@@ -1,0 +1,13 @@
+apiVersion: gkehub.cnrm.cloud.google.com/v1alpha1
+kind: GKEHubScopeRBACRoleBinding
+metadata:
+  name: gkh-rb-group-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: global
+  scopeRef:
+    name: gkh-rb-group-dep-${uniqueId}
+  role:
+    predefinedRole: ADMIN
+  group: groups1@example.com
