@@ -138,6 +138,10 @@ func ResourceStorageBucket() *schema.Resource {
 						"mode": {
 							Type:     schema.TypeString,
 							Optional: true,
+							ValidateFunc: validation.StringInSlice([]string{"Enabled", "Disabled"}, false),
+
+
+
 							Description: `The mode of the IP filter. Valid values are 'Enabled' and 'Disabled'.`,
 						},
 						"public_network_source": {
@@ -151,6 +155,7 @@ func ResourceStorageBucket() *schema.Resource {
 										Optional: true,
 										Elem: &schema.Schema{
 											Type: schema.TypeString,
+															ValidateFunc: validation.IsCIDR,
 										},
 										Description: `The list of public IPv4, IPv6 cidr ranges that are allowed to access the bucket.`,
 									},
@@ -173,6 +178,7 @@ func ResourceStorageBucket() *schema.Resource {
 										Optional: true,
 										Elem: &schema.Schema{
 											Type: schema.TypeString,
+															ValidateFunc: validation.IsCIDR,
 										},
 										Description: `The list of IPv4, IPv6 cidr ranges subnetworks that are allowed to access the bucket.`,
 									},
@@ -725,7 +731,11 @@ func resourceStorageBucketUpdate(d *schema.ResourceData, meta interface{}) error
 		sb.Lifecycle = lifecycle
 	}
 	if d.HasChange("ip_filter") {
-		sb.IpFilter = expandBucketIpFilter(d.Get("ip_filter"))
+		if v, ok := d.GetOk("ip_filter"); ok {
+			sb.IpFilter = expandBucketIpFilter(v)
+		} else {
+			sb.NullFields = append(sb.NullFields, "IpFilter")
+		}
 	}
 
 	if d.HasChange("requester_pays") {
@@ -1718,10 +1728,10 @@ func setStorageBucket(d *schema.ResourceData, config *transport_tpg.Config, res 
 	if err := d.Set("autoclass", flattenBucketAutoclass(res.Autoclass)); err != nil {
 		return fmt.Errorf("Error setting autoclass: %s", err)
 	}
-	if err := d.Set("lifecycle_rule", flattenBucketLifecycle(res.Lifecycle)); err != nil {
 	if err := d.Set("ip_filter", flattenBucketIpFilter(res.IpFilter)); err != nil {
 		return fmt.Errorf("Error setting ip_filter: %s", err)
 	}
+	if err := d.Set("lifecycle_rule", flattenBucketLifecycle(res.Lifecycle)); err != nil {
 		return fmt.Errorf("Error setting lifecycle_rule: %s", err)
 	}
 	if err := d.Set("labels", res.Labels); err != nil {
@@ -1798,18 +1808,18 @@ func flattenBucketIpFilterPublicNetworkSource(publicNetworkSource *storage.Bucke
 	}}
 }
 
-func flattenBucketIpFilterVpcNetworkSources(vpnNetworkSource []*storage.BucketIpFilterVpcNetworkSources) []map[string]interface{} {
-	if len(vpnNetworkSource) == 0 {
+func flattenBucketIpFilterVpcNetworkSources(vpcNetworkSources []*storage.BucketIpFilterVpcNetworkSources) []map[string]interface{} {
+	if len(vpcNetworkSources) == 0 {
 		return nil
 	}
-	vpnNetworkSourceList := make([]map[string]interface{}, 0, len(vpnNetworkSource))
-	for _, v := range vpnNetworkSource {
-		vpnNetworkSourceList = append(vpnNetworkSourceList, map[string]interface{}{
+	vpcNetworkSourcesList := make([]map[string]interface{}, 0, len(vpcNetworkSources))
+	for _, v := range vpcNetworkSources {
+		vpcNetworkSourcesList = append(vpcNetworkSourcesList, map[string]interface{}{
 			"network":                v.Network,
 			"allowed_ip_cidr_ranges": v.AllowedIpCidrRanges,
 		})
 	}
-	return vpnNetworkSourceList
+	return vpcNetworkSourcesList
 }
 
 func expandBucketIpFilter(v interface{}) *storage.BucketIpFilter {
@@ -1856,16 +1866,16 @@ func expandBucketIpFilterVpcNetworkSources(v interface{}) []*storage.BucketIpFil
 	if len(vpcNetworkSources) == 0 {
 		return nil
 	}
-	transformedvpcNetworkSources := make([]*storage.BucketIpFilterVpcNetworkSources, 0, len(vpcNetworkSources))
+	transformedVPCNetworkSources := make([]*storage.BucketIpFilterVpcNetworkSources, 0, len(vpcNetworkSources))
 	for _, v := range vpcNetworkSources {
 		if v == nil {
 			continue
 		}
 		vpcNetworkSource := v.(map[string]interface{})
-		transformedvpcNetworkSources = append(transformedvpcNetworkSources, &storage.BucketIpFilterVpcNetworkSources{
+		transformedVPCNetworkSources = append(transformedVPCNetworkSources, &storage.BucketIpFilterVpcNetworkSources{
 			Network:             vpcNetworkSource["network"].(string),
 			AllowedIpCidrRanges: tpgresource.ConvertStringArr(vpcNetworkSource["allowed_ip_cidr_ranges"].([]interface{})),
 		})
 	}
-	return transformedvpcNetworkSources
+	return transformedVPCNetworkSources
 }
