@@ -21,6 +21,7 @@ import (
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1beta1"
 	compute "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -32,6 +33,9 @@ func BackupDRBackupPlanAssociationSpec_Resource_v1beta1_FromProto(mapCtx *direct
 	if resourceType == krm.ResourceType_ComputeInstance {
 		out.ComputeInstanceRef = &compute.InstanceRef{External: resource}
 	}
+	if resourceType == krm.ResourceType_SQLInstance {
+		out.SQLInstanceRef = &refsv1beta1.SQLInstanceRef{External: resource}
+	}
 	return out
 }
 func BackupDRBackupPlanAssociationSpec_Resource_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Resource) string {
@@ -40,6 +44,9 @@ func BackupDRBackupPlanAssociationSpec_Resource_v1beta1_ToProto(mapCtx *direct.M
 	}
 	if in.ComputeInstanceRef != nil {
 		return in.ComputeInstanceRef.External
+	}
+	if in.SQLInstanceRef != nil {
+		return in.SQLInstanceRef.External
 	}
 	return ""
 }
