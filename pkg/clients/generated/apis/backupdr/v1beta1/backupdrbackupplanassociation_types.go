@@ -42,6 +42,9 @@ type BackupplanassociationResource struct {
 	/* InstanceRef defines the resource reference to ComputeInstance, which "External" field holds the GCP identifier for the KRM object. */
 	// +optional
 	ComputeInstanceRef *v1alpha1.ResourceRef `json:"computeInstanceRef,omitempty"`
+
+	// +optional
+	SqlInstanceRef *v1alpha1.ResourceRef `json:"sqlInstanceRef,omitempty"`
 }
 
 type BackupDRBackupPlanAssociationSpec struct {
