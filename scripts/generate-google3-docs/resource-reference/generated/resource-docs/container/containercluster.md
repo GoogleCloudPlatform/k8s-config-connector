@@ -1772,6 +1772,96 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
     </tr>
     <tr>
         <td>
+            <p><code>ipAllocationPolicy.additionalIpRangesConfigs</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}AdditionalIpRangesConfigs is the configuration for additional pod secondary ranges supporting the ClusterUpdate message. Each AdditionalIPRangesConfig corresponds to a single subnetwork.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalIpRangesConfigs[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalIpRangesConfigs[].podIpv4RangeNames</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}List of secondary ranges names within this subnetwork that can be used for pod IPs.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalIpRangesConfigs[].podIpv4RangeNames[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalIpRangesConfigs[].status</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Status of the subnetwork, If in draining status, subnet will not be selected for new node pools.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalIpRangesConfigs[].subnetworkRef</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The subnetwork path for the additional IP range. Format: projects/{project}/regions/{region}/subnetworks/{subnetwork}.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalIpRangesConfigs[].subnetworkRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalIpRangesConfigs[].subnetworkRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalIpRangesConfigs[].subnetworkRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>ipAllocationPolicy.additionalPodRangesConfig</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -2638,6 +2728,16 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         <td>
             <p><code class="apitype">integer</code></p>
             <p>Immutable. Number of local SSDs to be utilized for GKE Data Cache. Uses NVMe interfaces.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.ephemeralStorageLocalSsdConfig.dataCacheCount</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. Number of local SSDs to be utilized for GKE Data Cache. Uses NVMe interfaces.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

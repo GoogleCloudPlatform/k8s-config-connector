@@ -1353,6 +1353,34 @@ observedState:
         </td>
     </tr>
     <tr>
+        <td><code>observedState.pscAttachmentDetails</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Output only. List of PSC connections for the instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscAttachmentDetails[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscAttachmentDetails[].connectionType</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. Type of Psc endpoint.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscAttachmentDetails[].serviceAttachment</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. Service attachment URI which your self-created PscConnection should use as target.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedState.state</code></td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -1385,6 +1413,20 @@ observedState:
         <td>
             <p><code class="apitype">integer</code></p>
             <p>Output only. Target number of shards for the instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.stateInfo.updateInfo.targetReplicaCount</code></td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Output only. Target number of replica nodes per shard for the instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.stateInfo.updateInfo.targetShardCount</code></td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Output only. Target number of shards for the instance.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
