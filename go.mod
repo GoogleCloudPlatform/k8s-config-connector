@@ -71,7 +71,7 @@ require (
 	cloud.google.com/go/security v1.19.2
 	cloud.google.com/go/spanner v1.88.0
 	cloud.google.com/go/speech v1.30.0
-	cloud.google.com/go/storage v1.59.2
+	cloud.google.com/go/storage v1.61.3
 	cloud.google.com/go/vmwareengine v1.3.6
 	cloud.google.com/go/workflows v1.14.3
 	cloud.google.com/go/workstations v1.1.6
@@ -144,8 +144,8 @@ require go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 require (
 	cloud.google.com/go/osconfig v1.16.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.31.0 // indirect
-	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.54.0 // indirect
-	github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.54.0 // indirect
+	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.55.0 // indirect
+	github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.55.0 // indirect
 	github.com/envoyproxy/go-control-plane/envoy v1.36.0 // indirect
 	github.com/fxamacker/cbor/v2 v2.9.0 // indirect
 	github.com/go-jose/go-jose/v4 v4.1.4 // indirect

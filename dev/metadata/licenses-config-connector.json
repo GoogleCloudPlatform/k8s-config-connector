@@ -793,12 +793,12 @@
   },
   {
     "name": "cloud.google.com/go/storage",
-    "sum": "h1:9p3yDzEN9Vet4JnbN90FECIw6n4FCXcKBK1scxtQnw8=",
-    "version": "v1.59.0",
+    "sum": "h1:VS//ZfBuPGDvakfD9xyPW1RGF1Vy3BWUoVZXgW1KMOg=",
+    "version": "v1.61.3",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/cloud.google.com/go/storage@v1.59.0?tab=licenses"
+        "https://pkg.go.dev/cloud.google.com/go/storage@v1.61.3?tab=licenses"
       ],
       "mustShipCode": false
     }
@@ -889,24 +889,24 @@
   },
   {
     "name": "github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric",
-    "sum": "h1:lhhYARPUu3LmHysQ/igznQphfzynnqI3D75oUyw1HXk=",
-    "version": "v0.54.0",
+    "sum": "h1:UnDZ/zFfG1JhH/DqxIZYU/1CUAlTUScoXD/LcM2Ykk8=",
+    "version": "v0.55.0",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric@v0.54.0?tab=licenses"
+        "https://pkg.go.dev/github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric@v0.55.0?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping",
-    "sum": "h1:s0WlVbf9qpvkh1c/uDAPElam0WrL7fHRIidgZJ7UqZI=",
-    "version": "v0.54.0",
+    "sum": "h1:0s6TxfCu2KHkkZPnBfsQ2y5qia0jl3MMrmBhu3nCOYk=",
+    "version": "v0.55.0",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping@v0.54.0?tab=licenses"
+        "https://pkg.go.dev/github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping@v0.55.0?tab=licenses"
       ],
       "mustShipCode": false
     }
