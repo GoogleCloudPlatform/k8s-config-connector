@@ -27,9 +27,11 @@ func ComputeRouterNATSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Ro
 	}
 	out := &krm.ComputeRouterNATSpec{}
 	out.AutoNetworkTier = in.AutoNetworkTier
-	out.DrainNatIps = make([]refs.ComputeAddressRef, len(in.DrainNatIps))
-	for i, v := range in.DrainNatIps {
-		out.DrainNatIps[i] = ComputeAddressRef_v1beta1_FromProto(mapCtx, v)
+	if in.DrainNatIps != nil {
+		out.DrainNatIps = make([]refs.ComputeAddressRef, len(in.DrainNatIps))
+		for i, v := range in.DrainNatIps {
+			out.DrainNatIps[i] = ComputeAddressRef_v1beta1_FromProto(mapCtx, v)
+		}
 	}
 	out.EnableDynamicPortAllocation = in.EnableDynamicPortAllocation
 	out.EnableEndpointIndependentMapping = in.EnableEndpointIndependentMapping
@@ -40,9 +42,11 @@ func ComputeRouterNATSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Ro
 	out.MinPortsPerVm = in.MinPortsPerVm
 	out.Nat64Subnetworks = direct.Slice_FromProto(mapCtx, in.Nat64Subnetworks, RouterNat64Subnetwork_v1beta1_FromProto)
 	out.NatIpAllocateOption = in.NatIpAllocateOption
-	out.NatIps = make([]refs.ComputeAddressRef, len(in.NatIps))
-	for i, v := range in.NatIps {
-		out.NatIps[i] = ComputeAddressRef_v1beta1_FromProto(mapCtx, v)
+	if in.NatIps != nil {
+		out.NatIps = make([]refs.ComputeAddressRef, len(in.NatIps))
+		for i, v := range in.NatIps {
+			out.NatIps[i] = ComputeAddressRef_v1beta1_FromProto(mapCtx, v)
+		}
 	}
 	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, RouterNatRule_v1beta1_FromProto)
 	out.SourceSubnetworkIpRangesToNat = in.GetSourceSubnetworkIpRangesToNat()
@@ -62,9 +66,11 @@ func ComputeRouterNATSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Com
 	}
 	out := &pb.RouterNat{}
 	out.AutoNetworkTier = in.AutoNetworkTier
-	out.DrainNatIps = make([]string, len(in.DrainNatIps))
-	for i, v := range in.DrainNatIps {
-		out.DrainNatIps[i] = ComputeAddressRef_v1beta1_ToProto(mapCtx, v)
+	if in.DrainNatIps != nil {
+		out.DrainNatIps = make([]string, len(in.DrainNatIps))
+		for i, v := range in.DrainNatIps {
+			out.DrainNatIps[i] = ComputeAddressRef_v1beta1_ToProto(mapCtx, v)
+		}
 	}
 	out.EnableDynamicPortAllocation = in.EnableDynamicPortAllocation
 	out.EnableEndpointIndependentMapping = in.EnableEndpointIndependentMapping
@@ -75,9 +81,11 @@ func ComputeRouterNATSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Com
 	out.MinPortsPerVm = in.MinPortsPerVm
 	out.Nat64Subnetworks = direct.Slice_ToProto(mapCtx, in.Nat64Subnetworks, RouterNat64Subnetwork_v1beta1_ToProto)
 	out.NatIpAllocateOption = in.NatIpAllocateOption
-	out.NatIps = make([]string, len(in.NatIps))
-	for i, v := range in.NatIps {
-		out.NatIps[i] = ComputeAddressRef_v1beta1_ToProto(mapCtx, v)
+	if in.NatIps != nil {
+		out.NatIps = make([]string, len(in.NatIps))
+		for i, v := range in.NatIps {
+			out.NatIps[i] = ComputeAddressRef_v1beta1_ToProto(mapCtx, v)
+		}
 	}
 	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, RouterNatRule_v1beta1_ToProto)
 	out.SourceSubnetworkIpRangesToNat = direct.PtrTo(in.SourceSubnetworkIpRangesToNat)
@@ -166,21 +174,29 @@ func RouterNatRuleAction_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Rou
 		return nil
 	}
 	out := &krm.RouterNatRuleAction{}
-	out.SourceNatActiveIpsRefs = make([]refs.ComputeAddressRef, len(in.SourceNatActiveIps))
-	for i, v := range in.SourceNatActiveIps {
-		out.SourceNatActiveIpsRefs[i] = ComputeAddressRef_v1beta1_FromProto(mapCtx, v)
+	if in.SourceNatActiveIps != nil {
+		out.SourceNatActiveIpsRefs = make([]refs.ComputeAddressRef, len(in.SourceNatActiveIps))
+		for i, v := range in.SourceNatActiveIps {
+			out.SourceNatActiveIpsRefs[i] = ComputeAddressRef_v1beta1_FromProto(mapCtx, v)
+		}
 	}
-	out.SourceNatActiveRangesRefs = make([]refs.ComputeSubnetworkRef, len(in.SourceNatActiveRanges))
-	for i, v := range in.SourceNatActiveRanges {
-		out.SourceNatActiveRangesRefs[i] = ComputeSubnetworkRef_v1beta1_FromProto(mapCtx, v)
+	if in.SourceNatActiveRanges != nil {
+		out.SourceNatActiveRangesRefs = make([]refs.ComputeSubnetworkRef, len(in.SourceNatActiveRanges))
+		for i, v := range in.SourceNatActiveRanges {
+			out.SourceNatActiveRangesRefs[i] = ComputeSubnetworkRef_v1beta1_FromProto(mapCtx, v)
+		}
 	}
-	out.SourceNatDrainIpsRefs = make([]refs.ComputeAddressRef, len(in.SourceNatDrainIps))
-	for i, v := range in.SourceNatDrainIps {
-		out.SourceNatDrainIpsRefs[i] = ComputeAddressRef_v1beta1_FromProto(mapCtx, v)
+	if in.SourceNatDrainIps != nil {
+		out.SourceNatDrainIpsRefs = make([]refs.ComputeAddressRef, len(in.SourceNatDrainIps))
+		for i, v := range in.SourceNatDrainIps {
+			out.SourceNatDrainIpsRefs[i] = ComputeAddressRef_v1beta1_FromProto(mapCtx, v)
+		}
 	}
-	out.SourceNatDrainRangesRefs = make([]refs.ComputeSubnetworkRef, len(in.SourceNatDrainRanges))
-	for i, v := range in.SourceNatDrainRanges {
-		out.SourceNatDrainRangesRefs[i] = ComputeSubnetworkRef_v1beta1_FromProto(mapCtx, v)
+	if in.SourceNatDrainRanges != nil {
+		out.SourceNatDrainRangesRefs = make([]refs.ComputeSubnetworkRef, len(in.SourceNatDrainRanges))
+		for i, v := range in.SourceNatDrainRanges {
+			out.SourceNatDrainRangesRefs[i] = ComputeSubnetworkRef_v1beta1_FromProto(mapCtx, v)
+		}
 	}
 	return out
 }
@@ -190,21 +206,29 @@ func RouterNatRuleAction_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Rout
 		return nil
 	}
 	out := &pb.RouterNatRuleAction{}
-	out.SourceNatActiveIps = make([]string, len(in.SourceNatActiveIpsRefs))
-	for i, v := range in.SourceNatActiveIpsRefs {
-		out.SourceNatActiveIps[i] = ComputeAddressRef_v1beta1_ToProto(mapCtx, v)
+	if in.SourceNatActiveIpsRefs != nil {
+		out.SourceNatActiveIps = make([]string, len(in.SourceNatActiveIpsRefs))
+		for i, v := range in.SourceNatActiveIpsRefs {
+			out.SourceNatActiveIps[i] = ComputeAddressRef_v1beta1_ToProto(mapCtx, v)
+		}
 	}
-	out.SourceNatActiveRanges = make([]string, len(in.SourceNatActiveRangesRefs))
-	for i, v := range in.SourceNatActiveRangesRefs {
-		out.SourceNatActiveRanges[i] = ComputeSubnetworkRef_v1beta1_ToProto(mapCtx, v)
+	if in.SourceNatActiveRangesRefs != nil {
+		out.SourceNatActiveRanges = make([]string, len(in.SourceNatActiveRangesRefs))
+		for i, v := range in.SourceNatActiveRangesRefs {
+			out.SourceNatActiveRanges[i] = ComputeSubnetworkRef_v1beta1_ToProto(mapCtx, v)
+		}
 	}
-	out.SourceNatDrainIps = make([]string, len(in.SourceNatDrainIpsRefs))
-	for i, v := range in.SourceNatDrainIpsRefs {
-		out.SourceNatDrainIps[i] = ComputeAddressRef_v1beta1_ToProto(mapCtx, v)
+	if in.SourceNatDrainIpsRefs != nil {
+		out.SourceNatDrainIps = make([]string, len(in.SourceNatDrainIpsRefs))
+		for i, v := range in.SourceNatDrainIpsRefs {
+			out.SourceNatDrainIps[i] = ComputeAddressRef_v1beta1_ToProto(mapCtx, v)
+		}
 	}
-	out.SourceNatDrainRanges = make([]string, len(in.SourceNatDrainRangesRefs))
-	for i, v := range in.SourceNatDrainRangesRefs {
-		out.SourceNatDrainRanges[i] = ComputeSubnetworkRef_v1beta1_ToProto(mapCtx, v)
+	if in.SourceNatDrainRangesRefs != nil {
+		out.SourceNatDrainRanges = make([]string, len(in.SourceNatDrainRangesRefs))
+		for i, v := range in.SourceNatDrainRangesRefs {
+			out.SourceNatDrainRanges[i] = ComputeSubnetworkRef_v1beta1_ToProto(mapCtx, v)
+		}
 	}
 	return out
 }

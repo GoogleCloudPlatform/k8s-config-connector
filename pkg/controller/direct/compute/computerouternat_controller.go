@@ -210,6 +210,8 @@ func (a *routerNATAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	log.V(2).Info("successfully updated ComputeRouterNAT", "name", a.id)
 
 	status := &krm.ComputeRouterNATStatus{}
+	externalRef := a.id.String()
+	status.ExternalRef = &externalRef
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 

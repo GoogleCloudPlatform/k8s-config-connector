@@ -17,6 +17,7 @@ package compute
 import (
 	"context"
 	"fmt"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"reflect"
 	"strings"
 
@@ -31,7 +32,7 @@ func resolveResourceName(ctx context.Context, reader client.Reader, key client.O
 	obj.SetGroupVersionKind(gvk)
 	if err := reader.Get(ctx, key, obj); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, fmt.Errorf("referenced %s %v not found", gvk.Kind, key)
+			return nil, k8s.NewReferenceNotFoundError(gvk, key)
 		}
 		return nil, fmt.Errorf("error reading referenced %s %v: %w", gvk.Kind, key, err)
 	}

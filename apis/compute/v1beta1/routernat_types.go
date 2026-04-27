@@ -33,11 +33,13 @@ var (
 type RouterNatLogConfig struct {
 	/* Indicates whether or not to export logs. */
 	// +kcc:proto:field=google.cloud.compute.v1.RouterNatLogConfig.enable
-	Enable *bool `json:"enable"`
+	// +optional
+	Enable *bool `json:"enable,omitempty"`
 
 	/* Specifies the desired filtering of logs on this NAT. Possible values: ["ERRORS_ONLY", "TRANSLATIONS_ONLY", "ALL"]. */
 	// +kcc:proto:field=google.cloud.compute.v1.RouterNatLogConfig.filter
-	Filter *string `json:"filter"`
+	// +optional
+	Filter *string `json:"filter,omitempty"`
 }
 
 // +kcc:proto=google.cloud.compute.v1.RouterNatRuleAction
@@ -75,11 +77,13 @@ type RouterNatRule struct {
 
 	/* CEL expression that specifies the match condition that egress traffic from a VM is evaluated against. If it evaluates to true, the corresponding `action` is enforced. */
 	// +kcc:proto:field=google.cloud.compute.v1.RouterNatRule.match
-	Match *string `json:"match"`
+	// +optional
+	Match *string `json:"match,omitempty"`
 
 	/* An integer uniquely identifying a rule in the list. The rule number must be a positive value between 0 and 65000, and must be unique among rules within a NAT. */
 	// +kcc:proto:field=google.cloud.compute.v1.RouterNatRule.rule_number
-	RuleNumber *uint32 `json:"ruleNumber"`
+	// +optional
+	RuleNumber *uint32 `json:"ruleNumber,omitempty"`
 }
 
 // +kcc:proto=google.cloud.compute.v1.RouterNatSubnetworkToNat

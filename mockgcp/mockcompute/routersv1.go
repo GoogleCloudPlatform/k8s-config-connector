@@ -95,7 +95,10 @@ func (s *routersV1) Patch(ctx context.Context, req *pb.PatchRouterRequest) (*pb.
 	}
 
 	// Basic patch logic: only update nats for now
-	if req.GetRouterResource().Nats != nil {
+	// To handle clearing the nats (where it might be unmarshaled as nil or empty),
+	// we assume for now that if we get a patch, we replace nats unconditionally if it was intended to be empty,
+	// or we can just always replace it since we only support updating nats currently.
+	if req.GetRouterResource() != nil {
 		obj.Nats = req.GetRouterResource().Nats
 	}
 

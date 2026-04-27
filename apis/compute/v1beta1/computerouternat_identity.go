@@ -127,6 +127,23 @@ func resolveRouterName(ctx context.Context, reader client.Reader, obj *ComputeRo
 		// External might be just the name or a full URL
 		if strings.Contains(ref.External, "/") {
 			tokens := strings.Split(ref.External, "/")
+			if len(tokens) >= 5 && tokens[len(tokens)-2] == "routers" {
+				parentStr := strings.Join(tokens[:len(tokens)-2], "/")
+				p, err := parent.ParseComputeParent(parentStr)
+				if err != nil {
+					return "", fmt.Errorf("parsing routerRef external URL: %w", err)
+				}
+				parentID, err := obj.GetParentIdentity(ctx, reader)
+				if err != nil {
+					return "", err
+				}
+				if p.ProjectID != parentID.ProjectID {
+					return "", fmt.Errorf("routerRef external URL %q has different project %q than ComputeRouterNAT project %q", ref.External, p.ProjectID, parentID.ProjectID)
+				}
+				if p.Location != parentID.Location {
+					return "", fmt.Errorf("routerRef external URL %q has different region %q than ComputeRouterNAT region %q", ref.External, p.Location, parentID.Location)
+				}
+			}
 			return tokens[len(tokens)-1], nil
 		}
 		return ref.External, nil

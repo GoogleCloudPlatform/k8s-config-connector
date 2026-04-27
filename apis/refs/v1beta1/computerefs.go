@@ -88,7 +88,7 @@ func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src cli
 	})
 	if err := reader.Get(ctx, key, subnetObj); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, fmt.Errorf("referenced ComputeSubnetwork %v not found", key)
+			return nil, k8s.NewReferenceNotFoundError(subnetObj.GroupVersionKind(), key)
 		}
 		return nil, fmt.Errorf("error reading referenced ComputeSubnetwork %v: %w", key, err)
 	}
@@ -144,7 +144,7 @@ func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client
 	})
 	if err := reader.Get(ctx, key, addrObj); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, fmt.Errorf("referenced ComputeAddress %v not found", key)
+			return nil, k8s.NewReferenceNotFoundError(addrObj.GroupVersionKind(), key)
 		}
 		return nil, fmt.Errorf("error reading referenced ComputeAddress %v: %w", key, err)
 	}
