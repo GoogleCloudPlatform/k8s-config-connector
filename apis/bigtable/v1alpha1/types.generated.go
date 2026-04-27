@@ -21,7 +21,6 @@
 // resource: BigtableBackup:Backup
 // resource: BigtableCluster:Cluster
 // resource: BigtableLogicalView:LogicalView
-// resource: BigtableMaterializedView:MaterializedView
 
 package v1alpha1
 
@@ -29,7 +28,6 @@ import (
 	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 )
 
-/* unreachable type AuthorizedView_FamilySubsets
 // +kcc:proto=google.bigtable.admin.v2.AuthorizedView.FamilySubsets
 type AuthorizedView_FamilySubsets struct {
 	// Individual exact column qualifiers to be included in the AuthorizedView.
@@ -44,7 +42,6 @@ type AuthorizedView_FamilySubsets struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.AuthorizedView.FamilySubsets.qualifier_prefixes
 	QualifierPrefixes [][]byte `json:"qualifierPrefixes,omitempty"`
 }
-*/
 
 // +kcc:proto=google.bigtable.admin.v2.AuthorizedView.SubsetView
 type AuthorizedView_SubsetView struct {
@@ -86,11 +83,9 @@ type Cluster_ClusterConfig struct {
 	ClusterAutoscalingConfig *Cluster_ClusterAutoscalingConfig `json:"clusterAutoscalingConfig,omitempty"`
 }
 
-/* unreachable type EncryptionInfo
 // +kcc:proto=google.bigtable.admin.v2.EncryptionInfo
 type EncryptionInfo struct {
 }
-*/
 
 // +kcc:observedstate:proto=google.bigtable.admin.v2.EncryptionInfo
 type EncryptionInfoObservedState struct {

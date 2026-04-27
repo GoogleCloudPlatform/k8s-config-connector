@@ -38,8 +38,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource BigtableAuthorizedView:AuthorizedView \
   --resource BigtableBackup:Backup \
   --resource BigtableCluster:Cluster \
-  --resource BigtableLogicalView:LogicalView \
-  --resource BigtableMaterializedView:MaterializedView
+  --resource BigtableLogicalView:LogicalView
 
 
 
@@ -49,7 +48,8 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version bigtable.cnrm.cloud.google.com/v1beta1  \
   --resource BigtableAppProfile:AppProfile \
   --resource BigtableTable:Table \
-  --resource BigtableGCPolicy:GcRule
+  --resource BigtableGCPolicy:GcRule \
+  --resource BigtableMaterializedView:MaterializedView
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.bigtable.admin.v2 \

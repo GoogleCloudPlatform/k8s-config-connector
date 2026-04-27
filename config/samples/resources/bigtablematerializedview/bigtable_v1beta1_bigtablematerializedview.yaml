@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: bigtable.cnrm.cloud.google.com/v1alpha1
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
 kind: BigtableMaterializedView
 metadata:
-  name: bigtablematerializedview-${uniqueId}
+  name: bigtablematerializedview-sample
 spec:
   instanceRef:
-    name: mvdep${uniqueId}
-  query: "SELECT _key, COUNT(*) as count from `table-${uniqueId}` group by _key;"
+    name: bigtablematerializedview-dep
+  query: "SELECT _key, COUNT(*) as count from `table-sample` group by _key;"
   deletionProtection: true

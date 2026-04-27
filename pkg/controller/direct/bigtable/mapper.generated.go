@@ -401,6 +401,7 @@ func BigtableLogicalViewSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	out.DeletionProtection = direct.ValueOf(in.DeletionProtection)
 	return out
 }
+<<<<<<< HEAD
 func BigtableMaterializedViewObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MaterializedView) *krmbigtablev1alpha1.BigtableMaterializedViewObservedState {
 	if in == nil {
 		return nil
@@ -442,6 +443,10 @@ func BigtableMaterializedViewSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 	return out
 }
 func ChangeStreamConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ChangeStreamConfig) *krmbigtablev1beta1.ChangeStreamConfig {
+=======
+
+func ChangeStreamConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ChangeStreamConfig) *krm.ChangeStreamConfig {
+>>>>>>> 99042a8ba1 (feat: promote BigtableMaterializedView from v1alpha1 to v1beta1)
 	if in == nil {
 		return nil
 	}

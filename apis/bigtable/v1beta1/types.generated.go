@@ -19,7 +19,11 @@
 // proto.service: google.bigtable.admin.v2
 // resource: BigtableAppProfile:AppProfile
 // resource: BigtableTable:Table
+<<<<<<< HEAD
 // resource: BigtableGCPolicy:GcRule
+=======
+// resource: BigtableMaterializedView:MaterializedView
+>>>>>>> 99042a8ba1 (feat: promote BigtableMaterializedView from v1alpha1 to v1beta1)
 
 package v1beta1
 
