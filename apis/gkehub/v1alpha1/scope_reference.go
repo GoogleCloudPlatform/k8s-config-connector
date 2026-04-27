@@ -84,3 +84,17 @@ func (r *GKEHubScopeRef) Normalize(ctx context.Context, reader client.Reader, de
 		return NewGKEHubScopeIdentity(project, location, resourceID).String()
 	})
 }
+
+func ResolveGKEHubScopeRef(ctx context.Context, reader client.Reader, obj client.Object, ref *GKEHubScopeRef) (*GKEHubScopeIdentity, error) {
+	if ref == nil {
+		return nil, nil
+	}
+	if err := ref.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, err
+	}
+	id := &GKEHubScopeIdentity{}
+	if err := id.FromExternal(ref.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
