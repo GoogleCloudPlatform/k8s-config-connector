@@ -19,32 +19,33 @@ import (
 	"testing"
 )
 
-func TestGKEHubScopeIdentity_FromExternal(t *testing.T) {
+func TestGKEHubNamespaceIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
 		name     string
 		external string
-		want     *GKEHubScopeIdentity
+		want     *GKEHubNamespaceIdentity
 		wantErr  bool
 	}{
 		{
 			name:     "canonical format",
-			external: "projects/my-project/locations/global/scopes/my-scope",
-			want: &GKEHubScopeIdentity{
-				ProjectID: "my-project",
-				Location:  "global",
-				ScopeID:   "my-scope",
+			external: "projects/my-project/locations/global/scopes/my-scope/namespaces/my-ns",
+			want: &GKEHubNamespaceIdentity{
+				ProjectID:   "my-project",
+				Location:    "global",
+				ScopeID:     "my-scope",
+				NamespaceID: "my-ns",
 			},
 			wantErr: false,
 		},
 		{
 			name:     "invalid format",
-			external: "projects/my-project/locations/global",
+			external: "projects/my-project/locations/global/scopes/my-scope",
 			wantErr:  true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			i := &GKEHubScopeIdentity{}
+			i := &GKEHubNamespaceIdentity{}
 			if err := i.FromExternal(tt.external); (err != nil) != tt.wantErr {
 				t.Errorf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)
 			}
