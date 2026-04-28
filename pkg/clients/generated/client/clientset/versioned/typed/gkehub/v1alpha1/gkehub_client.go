@@ -31,12 +31,17 @@ import (
 
 type GkehubV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	GKEHubNamespacesGetter
 	GKEHubScopesGetter
 }
 
 // GkehubV1alpha1Client is used to interact with features provided by the gkehub.cnrm.cloud.google.com group.
 type GkehubV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *GkehubV1alpha1Client) GKEHubNamespaces(namespace string) GKEHubNamespaceInterface {
+	return newGKEHubNamespaces(c, namespace)
 }
 
 func (c *GkehubV1alpha1Client) GKEHubScopes(namespace string) GKEHubScopeInterface {
