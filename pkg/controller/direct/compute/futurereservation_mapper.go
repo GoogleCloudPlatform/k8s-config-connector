@@ -25,6 +25,7 @@ func ComputeFutureReservationObservedState_v1alpha1_FromProto(mapCtx *direct.Map
 		return nil
 	}
 	out := &krmcomputev1alpha1.ComputeFutureReservationObservedState{}
+	out.AggregateReservation = AllocationAggregateReservationObservedState_v1alpha1_FromProto(mapCtx, in.GetAggregateReservation())
 	out.CreationTimestamp = in.CreationTimestamp
 	out.ID = in.Id
 	out.Kind = in.Kind
@@ -40,6 +41,7 @@ func ComputeFutureReservationObservedState_v1alpha1_ToProto(mapCtx *direct.MapCo
 		return nil
 	}
 	out := &pb.FutureReservation{}
+	out.AggregateReservation = AllocationAggregateReservationObservedState_v1alpha1_ToProto(mapCtx, in.AggregateReservation)
 	out.CreationTimestamp = in.CreationTimestamp
 	out.Id = in.ID
 	out.Kind = in.Kind

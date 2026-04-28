@@ -68,7 +68,7 @@ func AllocationAggregateReservation_v1alpha1_FromProto(mapCtx *direct.MapContext
 		return nil
 	}
 	out := &krmcomputev1alpha1.AllocationAggregateReservation{}
-	out.InUseResources = direct.Slice_FromProto(mapCtx, in.InUseResources, AllocationAggregateReservationReservedResourceInfo_v1alpha1_FromProto)
+	// MISSING: InUseResources
 	out.ReservedResources = direct.Slice_FromProto(mapCtx, in.ReservedResources, AllocationAggregateReservationReservedResourceInfo_v1alpha1_FromProto)
 	out.VMFamily = in.VmFamily
 	out.WorkloadType = in.WorkloadType
@@ -79,10 +79,32 @@ func AllocationAggregateReservation_v1alpha1_ToProto(mapCtx *direct.MapContext, 
 		return nil
 	}
 	out := &pb.AllocationAggregateReservation{}
-	out.InUseResources = direct.Slice_ToProto(mapCtx, in.InUseResources, AllocationAggregateReservationReservedResourceInfo_v1alpha1_ToProto)
+	// MISSING: InUseResources
 	out.ReservedResources = direct.Slice_ToProto(mapCtx, in.ReservedResources, AllocationAggregateReservationReservedResourceInfo_v1alpha1_ToProto)
 	out.VmFamily = in.VMFamily
 	out.WorkloadType = in.WorkloadType
+	return out
+}
+func AllocationAggregateReservationObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationAggregateReservation) *krmcomputev1alpha1.AllocationAggregateReservationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.AllocationAggregateReservationObservedState{}
+	out.InUseResources = direct.Slice_FromProto(mapCtx, in.InUseResources, AllocationAggregateReservationReservedResourceInfo_v1alpha1_FromProto)
+	// MISSING: ReservedResources
+	// MISSING: VMFamily
+	// MISSING: WorkloadType
+	return out
+}
+func AllocationAggregateReservationObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.AllocationAggregateReservationObservedState) *pb.AllocationAggregateReservation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationAggregateReservation{}
+	out.InUseResources = direct.Slice_ToProto(mapCtx, in.InUseResources, AllocationAggregateReservationReservedResourceInfo_v1alpha1_ToProto)
+	// MISSING: ReservedResources
+	// MISSING: VMFamily
+	// MISSING: WorkloadType
 	return out
 }
 func AllocationAggregateReservationReservedResourceInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationAggregateReservationReservedResourceInfo) *krmcomputev1alpha1.AllocationAggregateReservationReservedResourceInfo {
