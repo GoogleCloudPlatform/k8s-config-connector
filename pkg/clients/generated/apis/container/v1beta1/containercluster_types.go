@@ -266,7 +266,7 @@ type ClusterDatabaseEncryption struct {
 	// +optional
 	KeyName *string `json:"keyName,omitempty"`
 
-	/* ENCRYPTED or DECRYPTED. */
+	/* ENCRYPTED, ALL_OBJECTS_ENCRYPTION_ENABLED or DECRYPTED. */
 	State string `json:"state"`
 }
 
@@ -1112,7 +1112,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	CostManagementConfig *ClusterCostManagementConfig `json:"costManagementConfig,omitempty"`
 
-	/* Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: "ENCRYPTED"; "DECRYPTED". key_name is the name of a CloudKMS key. */
+	/* Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: "ENCRYPTED"; "ALL_OBJECTS_ENCRYPTION_ENABLED"; "DECRYPTED". key_name is the name of a CloudKMS key. */
 	// +optional
 	DatabaseEncryption *ClusterDatabaseEncryption `json:"databaseEncryption,omitempty"`
 
