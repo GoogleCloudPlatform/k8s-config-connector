@@ -51,6 +51,7 @@ func computeFutureReservationFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".specific_sku_properties")
 	f.SpecFields.Insert(".time_window")
 
+	f.StatusFields.Insert(".aggregate_reservation")
 	f.StatusFields.Insert(".creation_timestamp")
 	f.StatusFields.Insert(".id")
 	f.StatusFields.Insert(".kind")
