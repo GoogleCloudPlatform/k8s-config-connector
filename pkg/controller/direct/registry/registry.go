@@ -136,6 +136,10 @@ func IsIAMDirect(groupKind schema.GroupKind) bool {
 // SupportsIAM returns true if this resource supports IAM (not all GCP resources do).
 // An error will be returned if IsDirect(groupKind) is not true.
 func SupportsIAM(groupKind schema.GroupKind) (bool, error) {
+	if IsIAMDirect(groupKind) {
+		return true, nil
+	}
+
 	// TODO: Move to registration somehow?
 	switch groupKind {
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
