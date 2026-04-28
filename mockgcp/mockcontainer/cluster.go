@@ -320,15 +320,22 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 	}
 
 	if update.DesiredEnableCiliumClusterwideNetworkPolicy != nil {
-		if obj.NetworkConfig == nil {
-			obj.NetworkConfig = &pb.NetworkConfig{}
-		}
-		obj.NetworkConfig.EnableCiliumClusterwideNetworkPolicy = update.DesiredEnableCiliumClusterwideNetworkPolicy
-		update.DesiredEnableCiliumClusterwideNetworkPolicy = nil
+	        if obj.NetworkConfig == nil {
+	                obj.NetworkConfig = &pb.NetworkConfig{}
+	        }
+	        obj.NetworkConfig.EnableCiliumClusterwideNetworkPolicy = update.DesiredEnableCiliumClusterwideNetworkPolicy
+	        update.DesiredEnableCiliumClusterwideNetworkPolicy = nil
+	}
+
+	if update.DesiredDisableL4LbFirewallReconciliation != nil {
+	        if obj.NetworkConfig == nil {
+	                obj.NetworkConfig = &pb.NetworkConfig{}
+	        }
+	        obj.NetworkConfig.DisableL4LbFirewallReconciliation = update.DesiredDisableL4LbFirewallReconciliation
+	        update.DesiredDisableL4LbFirewallReconciliation = nil
 	}
 
 	// TODO: Support more updates!
-
 	if !proto.Equal(update, &pb.ClusterUpdate{}) {
 		return nil, status.Errorf(codes.InvalidArgument, "update was not fully implemented ClusterUpdate=%v", prototext.Format(update))
 	}
