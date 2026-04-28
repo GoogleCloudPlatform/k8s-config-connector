@@ -30,28 +30,6 @@ type AcceleratorConfig struct {
 	AcceleratorType *string `json:"acceleratorType,omitempty"`
 }
 
-// +kcc:proto=google.cloud.compute.v1.AllocationAggregateReservation
-type AllocationAggregateReservation struct {
-	// Output only. [Output only] List of resources currently in use.
-	// +kcc:proto:field=google.cloud.compute.v1.AllocationAggregateReservation.in_use_resources
-	InUseResources []AllocationAggregateReservationReservedResourceInfo `json:"inUseResources,omitempty"`
-
-	// List of reserved resources (CPUs, memory, accelerators).
-	// +kcc:proto:field=google.cloud.compute.v1.AllocationAggregateReservation.reserved_resources
-	ReservedResources []AllocationAggregateReservationReservedResourceInfo `json:"reservedResources,omitempty"`
-
-	// The VM family that all instances scheduled against this reservation must
-	//  belong to.
-	//  Check the VmFamily enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1.AllocationAggregateReservation.vm_family
-	VMFamily *string `json:"vmFamily,omitempty"`
-
-	// The workload type of the instances that will target this reservation.
-	//  Check the WorkloadType enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1.AllocationAggregateReservation.workload_type
-	WorkloadType *string `json:"workloadType,omitempty"`
-}
-
 // +kcc:proto=google.cloud.compute.v1.AllocationAggregateReservationReservedResourceInfo
 type AllocationAggregateReservationReservedResourceInfo struct {
 	// Properties of accelerator resources in this reservation.
