@@ -31,6 +31,10 @@ type FakeGkehubV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeGkehubV1alpha1) GKEHubNamespaces(namespace string) v1alpha1.GKEHubNamespaceInterface {
+	return &FakeGKEHubNamespaces{c, namespace}
+}
+
 func (c *FakeGkehubV1alpha1) GKEHubScopes(namespace string) v1alpha1.GKEHubScopeInterface {
 	return &FakeGKEHubScopes{c, namespace}
 }
