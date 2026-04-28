@@ -15,7 +15,9 @@
 package mockmanagedkafka
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
+        "strings"
+
+        "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
@@ -23,12 +25,18 @@ var _ mockgcpregistry.SupportsNormalization = &MockService{}
 const NormalizedTimestamp = "2024-04-01T12:34:56.123456Z"
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
-	// Cluster
-	replacements.ReplacePath(".createTime", NormalizedTimestamp)
-	replacements.ReplacePath(".clusters[].createTime", NormalizedTimestamp)
-	replacements.ReplacePath(".updateTime", NormalizedTimestamp)
-	replacements.ReplacePath(".clusters[].updateTime", NormalizedTimestamp)
+        if !strings.Contains(url, "managedkafka.googleapis.com") {
+                return
+        }
+        // Cluster
+        replacements.ReplacePath(".createTime", NormalizedTimestamp)
+        replacements.ReplacePath(".clusters[].createTime", NormalizedTimestamp)
+        replacements.ReplacePath(".updateTime", NormalizedTimestamp)
+        replacements.ReplacePath(".clusters[].updateTime", NormalizedTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+        if !strings.Contains(event.URL(), "managedkafka.googleapis.com") {
+                return
+        }
 }
