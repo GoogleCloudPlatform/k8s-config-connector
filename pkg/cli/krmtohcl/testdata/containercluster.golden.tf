@@ -87,10 +87,6 @@ resource "google_container_cluster" "twenty_namespaces" {
     channel = "UNSPECIFIED"
   }
 
-  resource_labels = {
-    managed-by-cnrm = "true"
-  }
-
   subnetwork = "projects/my-project/regions/us-central1/subnetworks/default"
 
   workload_identity_config {
