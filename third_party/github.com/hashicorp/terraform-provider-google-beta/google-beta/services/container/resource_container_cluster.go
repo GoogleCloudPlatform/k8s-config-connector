@@ -1921,6 +1921,13 @@ func ResourceContainerCluster() *schema.Resource {
 				},
 			},
 
+			"disable_l4_lb_firewall_reconciliation": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Description: `Disable L4 load balancer VPC firewalls to enable firewall policies.`,
+				Default:     false,
+			},
+
 			"default_snat_status": {
 				Type:        schema.TypeList,
 				MaxItems:    1,
@@ -2222,6 +2229,7 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 			EnableCiliumClusterwideNetworkPolicy: d.Get("enable_cilium_clusterwide_network_policy").(bool),
 			EnableFqdnNetworkPolicy:              d.Get("enable_fqdn_network_policy").(bool),
 			DefaultEnablePrivateNodes:            expandDefaultEnablePrivateNodes(d),
+			DisableL4LbFirewallReconciliation:    d.Get("disable_l4_lb_firewall_reconciliation").(bool),
 		},
 		MasterAuth:           expandMasterAuth(d.Get("master_auth")),
 		NotificationConfig:   expandNotificationConfig(d.Get("notification_config")),
@@ -2737,6 +2745,9 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 	if err := d.Set("enable_l4_ilb_subsetting", cluster.NetworkConfig.EnableL4ilbSubsetting); err != nil {
 		return fmt.Errorf("Error setting enable_l4_ilb_subsetting: %s", err)
 	}
+	if err := d.Set("disable_l4_lb_firewall_reconciliation", cluster.NetworkConfig.DisableL4LbFirewallReconciliation); err != nil {
+		return fmt.Errorf("Error setting disable_l4_lb_firewall_reconciliation: %s", err)
+	}
 	if err := d.Set("cost_management_config", flattenManagementConfig(cluster.CostManagementConfig)); err != nil {
 		return fmt.Errorf("Error setting cost_management_config: %s", err)
 	}
@@ -3213,6 +3224,35 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		log.Printf("[INFO] GKE cluster %s L4 ILB Subsetting has been updated to %v", d.Id(), enabled)
+	}
+
+	if d.HasChange("disable_l4_lb_firewall_reconciliation") {
+		enabled := d.Get("disable_l4_lb_firewall_reconciliation").(bool)
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredDisableL4LbFirewallReconciliation: enabled,
+				ForceSendFields:                          []string{"DesiredDisableL4LbFirewallReconciliation"},
+			},
+		}
+		updateF := func() error {
+			log.Println("[DEBUG] updating disable_l4_lb_firewall_reconciliation")
+			name := containerClusterFullName(project, location, clusterName)
+			clusterUpdateCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.Update(name, req)
+			if config.UserProjectOverride {
+				clusterUpdateCall.Header().Add("X-Goog-User-Project", project)
+			}
+			op, err := clusterUpdateCall.Do()
+			if err != nil {
+				return err
+			}
+
+			err = ContainerOperationWait(config, op, project, location, "updating Disable L4 LB Firewall Reconciliation", userAgent, d.Timeout(schema.TimeoutUpdate))
+			log.Println("[DEBUG] done updating disable_l4_lb_firewall_reconciliation")
+			return err
+		}
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
+			return err
+		}
 	}
 
 	if d.HasChange("enable_cilium_clusterwide_network_policy") {

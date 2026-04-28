@@ -1153,6 +1153,10 @@ type ContainerClusterSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
+	/* Disable L4 load balancer VPC firewalls to enable firewall policies. */
+	// +optional
+	DisableL4LbFirewallReconciliation *bool `json:"disableL4LbFirewallReconciliation,omitempty"`
+
 	/* Immutable. Configuration for Cloud DNS for Kubernetes Engine. */
 	// +optional
 	DnsConfig *ClusterDnsConfig `json:"dnsConfig,omitempty"`
