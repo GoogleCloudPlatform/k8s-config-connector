@@ -21,7 +21,6 @@ import (
 	"cloud.google.com/go/iam/apiv1/iampb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -53,7 +52,7 @@ func GetIAMPolicy(ctx context.Context, reader client.Reader, want *v1beta1.IAMPo
 	}
 
 	for _, binding := range policy.Bindings {
-		actualBinding := v1beta1.IAMPolicyBindings{
+		actualBinding := v1beta1.IAMPolicyBinding{
 			Role:    binding.Role,
 			Members: make([]v1beta1.Member, len(binding.Members)),
 		}
@@ -102,7 +101,7 @@ func SetIAMPolicy(ctx context.Context, reader client.Reader, want *v1beta1.IAMPo
 	}
 
 	for _, binding := range newPolicy.Bindings {
-		actualBinding := v1beta1.IAMPolicyBindings{
+		actualBinding := v1beta1.IAMPolicyBinding{
 			Role:    binding.Role,
 			Members: make([]v1beta1.Member, len(binding.Members)),
 		}
