@@ -21,4 +21,6 @@
 
 package v1alpha1
 
+type GKEHubNamespaceExpansion interface{}
+
 type GKEHubScopeExpansion interface{}
