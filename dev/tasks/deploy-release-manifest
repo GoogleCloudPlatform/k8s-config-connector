@@ -21,8 +21,6 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
-# Generate channel manifests
-dev/tasks/generate-channels
 
 BUILD_DIR="${REPO_ROOT}/.build"
 mkdir -p "${BUILD_DIR}"
@@ -31,26 +29,11 @@ mkdir -p "${BUILD_DIR}"
 MANUAL_DIR="${BUILD_DIR}/manual-release"
 mkdir -p "${MANUAL_DIR}/operator-system"
 
-# Find the version of the operator image
-FOLDER_PATH="${REPO_ROOT}/operator/channels/packages/configconnector"
-
-if [ ! -d "$FOLDER_PATH" ]; then
-    echo "Error: Directory $FOLDER_PATH does not exist"
-    exit 1
-fi
-
-# List all directories in the specified path and store them in an array
-VERSIONS=($(ls -d "$FOLDER_PATH"/*/ 2>/dev/null | xargs -n 1 basename | sort -V))
-
-if [ ${#VERSIONS[@]} -eq 0 ]; then
-    echo "Error: No version directories found in $FOLDER_PATH"
-    exit 1
-fi
 
 # Find the most recent release version
 NEWEST_VERSION=$(git log --oneline | 
     grep "Release " | 
-    sed -n 's/.*Release \(.*\)/\1/p' | 
+    sed -n 's/.*Release \([^ ]*\).*/\1/p' | 
     head -n 1)
 
 if [ -z "$NEWEST_VERSION" ]; then
@@ -84,9 +67,3 @@ tar -czvf ${BUILD_DIR}/release-bundle.tar.gz -C ${MANUAL_DIR}/ .
 
 echo "Generated ${BUILD_DIR}/release-bundle.tar.gz for manual installation."
 
-# Leave this step out of the script for now.
-
-# gcloud storage cp ${REPO_ROOT}/.build/release-bundle.tar.gz gs://configconnector-operator/${LATEST_VERSION}/
-# gcloud storage cp ${REPO_ROOT}/.build/release-bundle.tar.gz gs://configconnector-operator/latest
-
-# echo "Pushed the latest release-bundle."
