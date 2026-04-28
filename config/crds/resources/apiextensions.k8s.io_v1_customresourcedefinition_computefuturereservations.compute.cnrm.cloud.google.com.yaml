@@ -67,26 +67,6 @@ spec:
               aggregateReservation:
                 description: Aggregate reservation details for the future reservation.
                 properties:
-                  inUseResources:
-                    description: Output only. [Output only] List of resources currently
-                      in use.
-                    items:
-                      properties:
-                        accelerator:
-                          description: Properties of accelerator resources in this
-                            reservation.
-                          properties:
-                            acceleratorCount:
-                              description: Number of accelerators of specified type.
-                              format: int32
-                              type: integer
-                            acceleratorType:
-                              description: Full or partial URL to accelerator type.
-                                e.g. "projects/{PROJECT}/zones/{ZONE}/acceleratorTypes/ct4l"
-                              type: string
-                          type: object
-                      type: object
-                    type: array
                   reservedResources:
                     description: List of reserved resources (CPUs, memory, accelerators).
                     items:
@@ -410,6 +390,31 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  aggregateReservation:
+                    description: Aggregate reservation details for the future reservation.
+                    properties:
+                      inUseResources:
+                        description: Output only. [Output only] List of resources
+                          currently in use.
+                        items:
+                          properties:
+                            accelerator:
+                              description: Properties of accelerator resources in
+                                this reservation.
+                              properties:
+                                acceleratorCount:
+                                  description: Number of accelerators of specified
+                                    type.
+                                  format: int32
+                                  type: integer
+                                acceleratorType:
+                                  description: Full or partial URL to accelerator
+                                    type. e.g. "projects/{PROJECT}/zones/{ZONE}/acceleratorTypes/ct4l"
+                                  type: string
+                              type: object
+                          type: object
+                        type: array
+                    type: object
                   creationTimestamp:
                     description: Output only. [Output Only] The creation timestamp
                       for this future reservation in RFC3339 text format.
