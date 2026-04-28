@@ -138,6 +138,24 @@ type ComputeFutureReservationSpec struct {
 	TimeWindow *FutureReservationTimeWindow `json:"timeWindow,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.AllocationAggregateReservation
+type AllocationAggregateReservation struct {
+	// List of reserved resources (CPUs, memory, accelerators).
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationAggregateReservation.reserved_resources
+	ReservedResources []AllocationAggregateReservationReservedResourceInfo `json:"reservedResources,omitempty"`
+
+	// The VM family that all instances scheduled against this reservation must
+	//  belong to.
+	//  Check the VmFamily enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationAggregateReservation.vm_family
+	VMFamily *string `json:"vmFamily,omitempty"`
+
+	// The workload type of the instances that will target this reservation.
+	//  Check the WorkloadType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationAggregateReservation.workload_type
+	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
 // ComputeFutureReservationStatus defines the config connector machine state of ComputeFutureReservation
 type ComputeFutureReservationStatus struct {
 	/* Conditions represent the latest available observations of the
@@ -157,6 +175,10 @@ type ComputeFutureReservationStatus struct {
 // ComputeFutureReservationObservedState is the state of the ComputeFutureReservation resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.compute.v1.FutureReservation
 type ComputeFutureReservationObservedState struct {
+	// Aggregate reservation details for the future reservation.
+	// +kcc:proto:field=google.cloud.compute.v1.FutureReservation.aggregate_reservation
+	AggregateReservation *AllocationAggregateReservationObservedState `json:"aggregateReservation,omitempty"`
+
 	// Output only. [Output Only] The creation timestamp for this future reservation in RFC3339
 	//  text format.
 	// +kcc:proto:field=google.cloud.compute.v1.FutureReservation.creation_timestamp
@@ -186,6 +208,13 @@ type ComputeFutureReservationObservedState struct {
 	// Output only. [Output Only] URL of the Zone where this future reservation resides.
 	// +kcc:proto:field=google.cloud.compute.v1.FutureReservation.zone
 	Zone *string `json:"zone,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.AllocationAggregateReservation
+type AllocationAggregateReservationObservedState struct {
+	// Output only. [Output only] List of resources currently in use.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationAggregateReservation.in_use_resources
+	InUseResources []AllocationAggregateReservationReservedResourceInfo `json:"inUseResources,omitempty"`
 }
 
 // +genclient
