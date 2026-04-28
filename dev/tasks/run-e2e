@@ -38,9 +38,6 @@ flaky_tests=(
   "TestE2EScript/scenarios/iam/iampartialpolicy"
 
   "TestE2EScript/scenarios/acquisition/bigqueryconnectionconnection"
-
-  # flaky test due to background requests leaking into SLEEP step
-  "TestE2EScript/scenarios/acquisition/firewallpolicyrule"
 )
 
 if [[ -n "${SKIP_TESTS:-}" ]]; then
