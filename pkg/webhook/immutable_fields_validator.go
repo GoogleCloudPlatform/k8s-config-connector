@@ -302,6 +302,15 @@ func validateImmutableFieldsForTFBasedResource(obj, oldObj *unstructured.Unstruc
 			fmt.Errorf("couldn't get ResourceConfig for kind %v: %w", obj.GetKind(), err))
 	}
 
+	// If force-acquire annotation is present, skip immutable field validation.
+	// This is because force-acquire implies the user is taking full responsibility
+	// for the resource's state matching the spec, and the controller will merely
+	// verify, not actuate.
+	if val, ok := k8s.GetAnnotation(k8s.ForceAcquireAnnotation, obj); ok && val == "true" {
+		klog.Info("ImmutableFieldsValidator: Skipping validation due to force-acquire annotation", "resource", k8s.GetNamespacedName(obj))
+		return allowedResponse
+	}
+
 	if err := validateContainerAnnotationsForResource(obj.GetKind(), obj.GetAnnotations(), oldObj.GetAnnotations(), rc.Containers, rc.HierarchicalReferences); err != nil {
 		return admission.Errored(http.StatusBadRequest,
 			fmt.Errorf("error validating container annotations: %w", err))
