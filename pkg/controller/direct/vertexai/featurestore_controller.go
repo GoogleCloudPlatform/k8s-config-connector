@@ -29,6 +29,7 @@ import (
 
 	gcp "cloud.google.com/go/aiplatform/apiv1beta1"
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -268,4 +269,29 @@ func (a *FeaturestoreAdapter) Delete(ctx context.Context, deleteOp *directbase.D
 		return false, fmt.Errorf("waiting delete Featurestore %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func (a *FeaturestoreAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.gcpClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id, err)
+	}
+
+	return policy, nil
+}
+
+func (a *FeaturestoreAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.gcpClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id, err)
+	}
+
+	return newPolicy, nil
 }
