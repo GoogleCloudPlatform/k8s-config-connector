@@ -17,9 +17,7 @@ kind: IAMPolicyMember
 metadata:
   name: iampolicymember-${uniqueId}
 spec:
-  memberFrom:
-    serviceAccountRef:
-      name: ms-dep-${uniqueId}
+  member: "user:test@google.com"
   role: roles/memorystore.admin
   resourceRef:
     apiVersion: memorystore.cnrm.cloud.google.com/v1beta1
