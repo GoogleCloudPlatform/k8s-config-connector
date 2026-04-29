@@ -27,10 +27,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 
-	gcp "cloud.google.com/go/parametermanager/apiv1"
-	parametermanagerpb "cloud.google.com/go/parametermanager/apiv1/parametermanagerpb"
 	iam "cloud.google.com/go/iam/apiv1"
 	iampb "cloud.google.com/go/iam/apiv1/iampb"
+	gcp "cloud.google.com/go/parametermanager/apiv1"
+	parametermanagerpb "cloud.google.com/go/parametermanager/apiv1/parametermanagerpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 

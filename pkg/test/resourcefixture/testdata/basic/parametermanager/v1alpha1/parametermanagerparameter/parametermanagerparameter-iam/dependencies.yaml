@@ -11,7 +11,7 @@ kind: ParameterManagerParameter
 metadata:
   name: parameter-${uniqueId}
 spec:
-  projectAndLocationRef:
-    projectRef:
-      external: projects/${projectId}
-    location: us-central1
+
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1
