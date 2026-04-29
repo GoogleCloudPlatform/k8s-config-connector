@@ -29,3 +29,29 @@ spec:
   region: us-central1
   networkRef:
     name: computenetwork-${uniqueId}
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSKeyRing
+metadata:
+  name: keyring-${uniqueId}
+spec:
+  location: us-central1
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSCryptoKey
+metadata:
+  name: cryptokey-${uniqueId}
+spec:
+  keyRingRef:
+    name: keyring-${uniqueId}
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampolicymember-${uniqueId}
+spec:
+  resourceRef:
+    kind: KMSCryptoKey
+    name: cryptokey-${uniqueId}
+  role: roles/cloudkms.cryptoKeyEncrypterDecrypter
+  member: serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com
