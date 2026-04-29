@@ -27,9 +27,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
-	gcp "cloud.google.com/go/managedkafka/apiv1"
 	iam "cloud.google.com/go/iam/apiv1"
 	"cloud.google.com/go/iam/apiv1/iampb"
+	gcp "cloud.google.com/go/managedkafka/apiv1"
 	pb "cloud.google.com/go/managedkafka/apiv1/managedkafkapb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
