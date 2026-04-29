@@ -239,6 +239,8 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 		// untouched until we verify they work.
 		if strings.HasPrefix(testName, "containercluster-autoscaling") {
 			return true
+		} else if strings.HasPrefix(testName, "containercluster-databaseencryption") {
+			return true
 		} else {
 			return false
 		}
