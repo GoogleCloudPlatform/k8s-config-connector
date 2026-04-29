@@ -118,6 +118,7 @@ go run . --file ${API_PROTO} --message "TestIamPermissionsRequest" --mode "repla
   repeated string permissions = 2 [json_name="permissions"];
 EOF
 
+if ! grep -q "rpc TestIamPermissions" ${API_PROTO}; then
 go run . --file ${API_PROTO} --service "FoldersServer" --mode "append" <<EOF
   // Returns permissions that a caller has on the specified project.
   rpc TestIamPermissions(TestIamPermissionsRequest) returns (TestIamPermissionsResponse) {
@@ -147,5 +148,7 @@ go run . --file ${API_PROTO} --service "ProjectsServer" --mode "append" <<EOF
     };
   };
 EOF
+
+fi
 
 sed -i 's/^syntax = "proto3";/syntax = "proto2";/' ${API_PROTO}
