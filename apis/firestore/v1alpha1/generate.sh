@@ -23,18 +23,20 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
-  --service google.firestore.admin.v1 \
-  --api-version firestore.cnrm.cloud.google.com/v1alpha1  \
-  --resource FirestoreDocument:google.firestore.v1.Document \
-  --resource FirestoreField:Field \
-  --resource FirestoreBackupSchedule:BackupSchedule
+# Temporarily disabled: controllerbuilder is not yet generating all transitive dependencies,
+# leading to undefined types in the generated code (e.g. pb.Index_IndexField_SearchConfig).
+# go run . generate-types \
+#   --service google.firestore.admin.v1 \
+#   --api-version firestore.cnrm.cloud.google.com/v1alpha1  \
+#   --resource FirestoreDocument:google.firestore.v1.Document \
+#   --resource FirestoreField:Field \
+#   --resource FirestoreBackupSchedule:BackupSchedule
 
-go run . generate-mapper \
-  --multiversion \
-  --service google.firestore.admin.v1 \
-  --service google.firestore.v1 \
-  --api-version firestore.cnrm.cloud.google.com/v1alpha1
+# go run . generate-mapper \
+#   --multiversion \
+#   --service google.firestore.admin.v1 \
+#   --service google.firestore.v1 \
+#   --api-version firestore.cnrm.cloud.google.com/v1alpha1
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

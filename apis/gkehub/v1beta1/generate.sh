@@ -24,16 +24,17 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
-  --service google.cloud.gkehub.v1beta --api-version gkehub.cnrm.cloud.google.com/v1beta1 \
-  --resource GKEHubFeatureMembership:MembershipFeatureSpec
+# Temporarily disabled: requires manual intervention to complete the API definition.
+# go run . generate-types \
+#   --service google.cloud.gkehub.v1beta --api-version gkehub.cnrm.cloud.google.com/v1beta1 \
+#   --resource GKEHubFeatureMembership:MembershipFeatureSpec
 
 # NOTYET - not yet using proto
 # go run . generate-mapper \
 #   --service google.cloud.gkehub.v1beta --api-version gkehub.cnrm.cloud.google.com/v1beta1
 
 # NOTYET - not yet following full pattern
-rm ${REPO_ROOT}/apis/gkehub/v1beta1/membershipfeaturespec_types.go
+# rm ${REPO_ROOT}/apis/gkehub/v1beta1/membershipfeaturespec_types.go
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

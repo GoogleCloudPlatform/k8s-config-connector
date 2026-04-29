@@ -24,14 +24,16 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
-  --service google.cloud.networkmanagement.v1 \
-  --api-version networkmanagement.cnrm.cloud.google.com/v1alpha1  \
-  --resource NetworkManagementConnectivityTestSpec:ConnectivityTest
+# Temporarily disabled: our tooling is not yet generating all transitive dependencies, 
+# leading to undefined types in the generated code (e.g. LatencyDistribution).
+# go run . generate-types \
+#   --service google.cloud.networkmanagement.v1 \
+#   --api-version networkmanagement.cnrm.cloud.google.com/v1alpha1  \
+#   --resource NetworkManagementConnectivityTestSpec:ConnectivityTest
 
-go run . generate-mapper \
-  --service google.cloud.networkmanagement.v1 \
-  --api-version networkmanagement.cnrm.cloud.google.com/v1alpha1
+# go run . generate-mapper \
+#   --service google.cloud.networkmanagement.v1 \
+#   --api-version networkmanagement.cnrm.cloud.google.com/v1alpha1
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

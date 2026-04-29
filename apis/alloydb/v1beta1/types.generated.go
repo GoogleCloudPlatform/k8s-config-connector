@@ -104,6 +104,15 @@ type CloudSQLBackupRunSource struct {
 	BackupRunID *int64 `json:"backupRunID,omitempty"`
 }
 
+// +kcc:proto=google.cloud.alloydb.v1beta.Cluster.DataplexConfig
+type Cluster_DataplexConfig struct {
+	// Dataplex is enabled by default for resources such as clusters and
+	//  instances. This flag controls the integration of AlloyDB PG
+	//  resources (like databases, schemas, and tables) with Dataplex."
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.DataplexConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
 // +kcc:proto=google.cloud.alloydb.v1beta.Cluster.PrimaryConfig
 type Cluster_PrimaryConfig struct {
 }

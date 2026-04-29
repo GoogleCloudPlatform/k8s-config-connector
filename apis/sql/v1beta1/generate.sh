@@ -24,17 +24,19 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
-  --service google.cloud.sql.v1beta4 \
-  --api-version sql.cnrm.cloud.google.com/v1beta1  \
-  --resource SQLInstance:DatabaseInstance \
-  --skip-scaffold-files \
-  --include-skipped-output
+# Temporarily disabled: controllerbuilder is not yet generating all transitive dependencies,
+# leading to undefined types in the generated code (e.g. pb.ConnectionPoolConfig).
+# go run . generate-types \
+#   --service google.cloud.sql.v1beta4 \
+#   --api-version sql.cnrm.cloud.google.com/v1beta1  \
+#   --resource SQLInstance:DatabaseInstance \
+#   --skip-scaffold-files \
+#   --include-skipped-output
 
-go run . generate-mapper \
-  --service google.cloud.sql.v1beta4 \
-  --api-version sql.cnrm.cloud.google.com/v1beta1 \
-  --include-skipped-output
+# go run . generate-mapper \
+#   --service google.cloud.sql.v1beta4 \
+#   --api-version sql.cnrm.cloud.google.com/v1beta1 \
+#   --include-skipped-output
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
