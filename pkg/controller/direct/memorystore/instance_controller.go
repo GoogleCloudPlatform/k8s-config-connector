@@ -29,9 +29,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
-	gcp "cloud.google.com/go/memorystore/apiv1"
-	"cloud.google.com/go/iam/apiv1/iampb"
 	iam "cloud.google.com/go/iam/apiv1"
+	"cloud.google.com/go/iam/apiv1/iampb"
+	gcp "cloud.google.com/go/memorystore/apiv1"
 
 	memorystorepb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
 	"google.golang.org/api/option"
