@@ -694,8 +694,6 @@
 [missing_field] crd=computebackendservicesignedurlkeys.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.keyValue.value" is not set in unstructured objects
 [missing_field] crd=computebackendservicesignedurlkeys.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.keyValue.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computebackendservicesignedurlkeys.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.aggregateReservation.inUseResources[].accelerator.acceleratorCount" is not set in unstructured objects
-[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.aggregateReservation.inUseResources[].accelerator.acceleratorType" is not set in unstructured objects
 [missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.aggregateReservation.reservedResources[].accelerator.acceleratorCount" is not set in unstructured objects
 [missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.aggregateReservation.reservedResources[].accelerator.acceleratorType" is not set in unstructured objects
 [missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.aggregateReservation.vmFamily" is not set in unstructured objects
