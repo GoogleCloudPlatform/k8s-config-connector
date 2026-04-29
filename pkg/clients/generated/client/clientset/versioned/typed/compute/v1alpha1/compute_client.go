@@ -35,6 +35,7 @@ type ComputeV1alpha1Interface interface {
 	ComputeBackendBucketSignedURLKeysGetter
 	ComputeBackendServiceSignedURLKeysGetter
 	ComputeDiskResourcePolicyAttachmentsGetter
+	ComputeFutureReservationsGetter
 	ComputeGlobalNetworkEndpointsGetter
 	ComputeGlobalNetworkEndpointGroupsGetter
 	ComputeInstanceGroupNamedPortsGetter
@@ -74,6 +75,10 @@ func (c *ComputeV1alpha1Client) ComputeBackendServiceSignedURLKeys(namespace str
 
 func (c *ComputeV1alpha1Client) ComputeDiskResourcePolicyAttachments(namespace string) ComputeDiskResourcePolicyAttachmentInterface {
 	return newComputeDiskResourcePolicyAttachments(c, namespace)
+}
+
+func (c *ComputeV1alpha1Client) ComputeFutureReservations(namespace string) ComputeFutureReservationInterface {
+	return newComputeFutureReservations(c, namespace)
 }
 
 func (c *ComputeV1alpha1Client) ComputeGlobalNetworkEndpoints(namespace string) ComputeGlobalNetworkEndpointInterface {

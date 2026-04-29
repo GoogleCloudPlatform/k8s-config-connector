@@ -47,6 +47,10 @@ func (c *FakeComputeV1alpha1) ComputeDiskResourcePolicyAttachments(namespace str
 	return &FakeComputeDiskResourcePolicyAttachments{c, namespace}
 }
 
+func (c *FakeComputeV1alpha1) ComputeFutureReservations(namespace string) v1alpha1.ComputeFutureReservationInterface {
+	return &FakeComputeFutureReservations{c, namespace}
+}
+
 func (c *FakeComputeV1alpha1) ComputeGlobalNetworkEndpoints(namespace string) v1alpha1.ComputeGlobalNetworkEndpointInterface {
 	return &FakeComputeGlobalNetworkEndpoints{c, namespace}
 }
