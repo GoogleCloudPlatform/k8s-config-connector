@@ -18,8 +18,10 @@ import (
 	"context"
 	"fmt"
 
+	iamapi "cloud.google.com/go/iam/apiv1"
 	api "cloud.google.com/go/redis/cluster/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -31,6 +33,19 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 		config: *config,
 	}
 	return gcpClient, nil
+}
+
+func (m *gcpClient) newIAMClient(ctx context.Context) (*iamapi.IamPolicyClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	opts = append(opts, option.WithEndpoint("redis.googleapis.com"))
+	client, err := iamapi.NewIamPolicyRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building iam client: %w", err)
+	}
+	return client, err
 }
 
 func (m *gcpClient) newClusterClient(ctx context.Context) (*api.CloudRedisClusterClient, error) {

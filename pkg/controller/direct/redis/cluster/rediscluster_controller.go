@@ -20,6 +20,8 @@ import (
 	"reflect"
 	"strings"
 
+	iamapi "cloud.google.com/go/iam/apiv1"
+	"cloud.google.com/go/iam/apiv1/iampb"
 	api "cloud.google.com/go/redis/cluster/apiv1"
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
 	"google.golang.org/protobuf/proto"
@@ -63,10 +65,12 @@ type redisClusterAdapter struct {
 	actual  *pb.Cluster
 
 	clustersClient *api.CloudRedisClusterClient
+	iamClient      *iamapi.IamPolicyClient
 }
 
 // adapter implements the Adapter interface.
 var _ directbase.Adapter = &redisClusterAdapter{}
+var _ direct.IAMAdapter = &redisClusterAdapter{}
 
 // AdapterForObject implements the Model interface.
 func (m *redisClusterModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
@@ -77,6 +81,10 @@ func (m *redisClusterModel) AdapterForObject(ctx context.Context, op *directbase
 		return nil, err
 	}
 	redisClustersClient, err := gcpClient.newClusterClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	iamClient, err := gcpClient.newIAMClient(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -144,10 +152,40 @@ func (m *redisClusterModel) AdapterForObject(ctx context.Context, op *directbase
 		resourceID:     resourceID,
 		desired:        desired,
 		clustersClient: redisClustersClient,
+		iamClient:      iamClient,
 	}, nil
 }
 
 func (m *redisClusterModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	// Format is //redis.googleapis.com/projects/PROJECT_ID/locations/LOCATION/clusters/CLUSTER_ID
+	if !strings.HasPrefix(url, "//redis.googleapis.com/") {
+		return nil, nil
+	}
+
+	tokens := strings.Split(strings.TrimPrefix(url, "//redis.googleapis.com/"), "/")
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "clusters" {
+		gcpClient, err := newGCPClient(ctx, m.config)
+		if err != nil {
+			return nil, err
+		}
+		clustersClient, err := gcpClient.newClusterClient(ctx)
+		if err != nil {
+			return nil, err
+		}
+		iamClient, err := gcpClient.newIAMClient(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		return &redisClusterAdapter{
+			projectID:      tokens[1],
+			location:       tokens[3],
+			resourceID:     tokens[5],
+			clustersClient: clustersClient,
+			iamClient:      iamClient,
+		}, nil
+	}
+
 	return nil, nil
 }
 
@@ -332,4 +370,37 @@ func (a *redisClusterAdapter) Update(ctx context.Context, updateOp *directbase.U
 
 func (a *redisClusterAdapter) fullyQualifiedName() string {
 	return fmt.Sprintf("projects/%s/locations/%s/clusters/%s", a.projectID, a.location, a.resourceID)
+}
+
+func (a *redisClusterAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	if a.resourceID == "" {
+		return nil, fmt.Errorf("cannot get iam policy for missing resource")
+	}
+
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.fullyQualifiedName(),
+	}
+	policy, err := a.iamClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.fullyQualifiedName(), err)
+	}
+
+	return policy, nil
+}
+
+func (a *redisClusterAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	if a.resourceID == "" {
+		return nil, fmt.Errorf("cannot set iam policy for missing resource")
+	}
+
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.fullyQualifiedName(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.iamClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.fullyQualifiedName(), err)
+	}
+
+	return newPolicy, nil
 }
