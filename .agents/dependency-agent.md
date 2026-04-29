@@ -61,10 +61,7 @@ Your task is to update dependencies to resolve failing PRs or security alerts.
 - **Severity**: `<SEVERITY>`
 
 # Task
-1.  **Preparation**:
-    - Ensure you are on a clean and updated master branch: `git fetch upstream master && git checkout master && git reset --hard upstream/master`.
-    - Create a new branch for the update: `git checkout -b update-dep-$(date +%Y%m%d)`.
-2.  **Update Dependency**:
+1.  **Update Dependency**:
     - For failing PRs: Do NOT push changes to the Dependabot branch directly. Instead, create a new branch from `master`, apply the dependency update, and fix the test failures in your new branch.
     - For vulnerabilities: Update the package to the recommended version:
       ```bash
@@ -72,12 +69,12 @@ Your task is to update dependencies to resolve failing PRs or security alerts.
       ```
     - Run `make ensure` to update vendored code.
     - Run `make fmt` to ensure all the code is formatted correctly.
-3.  **Verify**:
+2.  **Verify**:
     - Please verify by running `make all-binary`.
     - Please verify the fix by going to the `mockgcp` directory and run `make all`.
     - Please fix any problem identified then re-verify.
     - Loop up to 10 times to try to resolve any issues found.
-4.  **Push & PR**:
+3.  **Push & PR**:
     - Commit the changes:
       ```bash
       git add go.mod go.sum
