@@ -361,6 +361,22 @@ func (r *Reconciler) sync(ctx context.Context, resource *dcl.Resource) (requeue 
 		return false, err
 	}
 	lifecycleParams := append(LifecycleParams, stateHintApplyOption)
+	// If liveLite is nil, the resource does not exist in GCP yet, so this is a creation.
+	// Report a structured diff for the new object.
+	if liveLite == nil {
+		u, err := resource.MarshalAsUnstructured()
+		// Log error instead of failing reconciliation if marshaling fails,
+		// as diff reporting is for observability and shouldn't block execution.
+		if err != nil {
+			r.logger.Error(err, "error marshaling resource as unstructured for diff reporting")
+		} else {
+			diff := structuredreporting.Diff{
+				Object:      u,
+				IsNewObject: true,
+			}
+			structuredreporting.ReportDiff(ctx, &diff)
+		}
+	}
 	newState, err := dclunstruct.Apply(ctx, dclConfig, dclResource, lifecycleParams...)
 	if err != nil {
 		r.logger.Error(err, "error applying desired state", "resource", resource.GetNamespacedName())

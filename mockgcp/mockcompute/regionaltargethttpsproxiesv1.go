@@ -60,7 +60,7 @@ func (s *RegionalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.Inser
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetTargetHttpsProxyResource()).(*pb.TargetHttpsProxy)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#targetHttpsProxy")
@@ -91,7 +91,7 @@ func (s *RegionalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.Inser
 				if err != nil {
 					return nil, status.Errorf(codes.InvalidArgument, "sslCertName %q is not valid", sslCertName)
 				}
-				certs = append(certs, buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/sslCertificates/%s", sslCertName.Project.ID, sslCertName.Region, sslCertName.Name)))
+				certs = append(certs, BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/sslCertificates/%s", sslCertName.Project.ID, sslCertName.Region, sslCertName.Name)))
 			}
 			obj.SslCertificates = certs
 		}
@@ -102,9 +102,9 @@ func (s *RegionalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.Inser
 		if err != nil {
 			return nil, status.Errorf(codes.InvalidArgument, "mapName %q is not valid", mapName)
 		}
-		obj.UrlMap = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/urlMaps/%s", mapName.Project.ID, mapName.Region, mapName.Name)))
+		obj.UrlMap = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/urlMaps/%s", mapName.Project.ID, mapName.Region, mapName.Name)))
 	}
-	obj.Region = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)))
+	obj.Region = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)))
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -141,7 +141,7 @@ func (s *RegionalTargetHTTPSProxiesV1) SetUrlMap(ctx context.Context, req *pb.Se
 		if err != nil {
 			return nil, status.Errorf(codes.InvalidArgument, "mapName %q is not valid", mapName)
 		}
-		obj.UrlMap = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/urlMaps/%s", mapName.Project.ID, mapName.Region, mapName.Name)))
+		obj.UrlMap = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/urlMaps/%s", mapName.Project.ID, mapName.Region, mapName.Name)))
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {

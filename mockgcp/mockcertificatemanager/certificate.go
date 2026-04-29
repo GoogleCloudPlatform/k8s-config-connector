@@ -57,6 +57,18 @@ func (s *CertificateManagerV1) CreateCertificate(ctx context.Context, req *pb.Cr
 	obj := proto.Clone(req.Certificate).(*pb.Certificate)
 	obj.Name = fqn
 
+	if managed := obj.GetManaged(); managed != nil {
+		if managed.State == pb.Certificate_ManagedCertificate_STATE_UNSPECIFIED {
+			managed.State = pb.Certificate_ManagedCertificate_ACTIVE
+		}
+		for _, domain := range managed.Domains {
+			managed.AuthorizationAttemptInfo = append(managed.AuthorizationAttemptInfo, &pb.Certificate_ManagedCertificate_AuthorizationAttemptInfo{
+				Domain: domain,
+				State:  pb.Certificate_ManagedCertificate_AuthorizationAttemptInfo_AUTHORIZED,
+			})
+		}
+	}
+
 	now := timestamppb.Now()
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

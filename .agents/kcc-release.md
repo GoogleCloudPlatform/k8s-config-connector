@@ -50,6 +50,7 @@ Your goal is to monitor the repo for release triggers and create actionable GitH
     - If the release is NOT published, the version is NOT documented, and no issue/PR exists, create a new issue.
 3.  **Task**: Create an issue titled `Draft release notes for {{VERSION}}` with the labels `overseer`, `area/release`, `priority/medium`.
     - Include the instructions from the **NOTES ISSUE BODY TEMPLATE** below.
+    - Append a link to this chore file (`.agents/kcc-release.md`) at the end of the issue body for traceability.
 
 ---
 
@@ -95,4 +96,5 @@ Your task is to draft the official release notes for version `{{VERSION}}`.
     - **Commit & Push**:
         - `git add docs/releasenotes/release-{{MAJOR_MINOR}}.md && git commit -m "Add release notes for {{VERSION}}"`
         - `git push origin draft-notes-{{VERSION}}`
-        - `gh pr create --title "Release Notes {{VERSION}}" --body "Automated draft of release notes for version {{VERSION}} comparing {{PREVIOUS_TAG}} to {{CURRENT_TAG}}." --head draft-notes-{{VERSION}}`
+        - `gh pr create --title "Release Notes {{VERSION}}" --body "Automated draft of release notes for version {{VERSION}} comparing {{PREVIOUS_TAG}} to {{CURRENT_TAG}}.<br><br>Triggered by chore: \`.agents/kcc-release.md\`" --head draft-notes-{{VERSION}} --label "overseer,area/release,priority/medium"`
+VERSION}}`

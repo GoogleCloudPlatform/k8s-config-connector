@@ -164,3 +164,14 @@ func IsDCLBasedByGVK(gvk schema.GroupVersionKind) bool {
 	}
 	return metadata.DCL
 }
+
+func SupportsIAMByGVK(gvk schema.GroupVersionKind) bool {
+	metadata, ok := legacyGVKs[gvk]
+	if !ok {
+		// For direct resources, we use a different check.
+		// TODO(Direct): implement SupportsIAM in the direct registry
+		supports, _ := registry.SupportsIAM(gvk.GroupKind())
+		return supports
+	}
+	return metadata.SupportsIAM
+}

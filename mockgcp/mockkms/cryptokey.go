@@ -30,7 +30,7 @@ import (
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/kms/v1"
+	pb "cloud.google.com/go/kms/apiv1/kmspb"
 )
 
 func (r *kmsServer) GetCryptoKey(ctx context.Context, req *pb.GetCryptoKeyRequest) (*pb.CryptoKey, error) {
@@ -64,6 +64,9 @@ func (r *kmsServer) CreateCryptoKey(ctx context.Context, req *pb.CreateCryptoKey
 	now := time.Now()
 
 	obj := proto.Clone(req.GetCryptoKey()).(*pb.CryptoKey)
+	if obj == nil {
+		obj = &pb.CryptoKey{}
+	}
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 

@@ -32,6 +32,7 @@ const (
 Equivalent means:
   - No fields are added or deleted (only status.externalRef, status.observedState, and status.observedState's sub-fields, may be added under 'status')
   - Field names and types do not change
+  - x-kubernetes-validations are not added or changed
   - Adding spec.names.listKind is fine
   - Descriptions may change freely
 

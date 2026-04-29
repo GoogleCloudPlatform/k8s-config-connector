@@ -64,16 +64,6 @@ type AccessContextManagerAccessLevelStatus struct {
 	// ObservedState is the state of the resource as most recently observed in GCP.
 	// +optional
 	ObservedState *AccessContextManagerAccessLevelObservedState `json:"observedState,omitempty"`
-
-	// Output only. Time the `AccessLevel` was created in UTC.
-	// +kcc:proto:field=google.identity.accesscontextmanager.v1.AccessLevel.create_time
-	// +optional
-	// CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. Time the `AccessLevel` was updated in UTC.
-	// +kcc:proto:field=google.identity.accesscontextmanager.v1.AccessLevel.update_time
-	// +optional
-	// UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // AccessContextManagerAccessLevelObservedState is the state of the AccessContextManagerAccessLevel resource as most recently observed in GCP.

@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//	http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,27 +24,28 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(networkServicesLBRouteExtensionFuzzer())
+	fuzztesting.RegisterKRMFuzzer(lbRouteExtensionFuzzer())
 }
 
-func networkServicesLBRouteExtensionFuzzer() fuzztesting.KRMFuzzer {
+func lbRouteExtensionFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.LbRouteExtension{},
 		NetworkServicesLBRouteExtensionSpec_FromProto, NetworkServicesLBRouteExtensionSpec_ToProto,
 		NetworkServicesLBRouteExtensionObservedState_FromProto, NetworkServicesLBRouteExtensionObservedState_ToProto,
 	)
 
-	f.SpecField(".description")
-	f.SpecField(".forwarding_rules")
-	f.SpecField(".extension_chains")
-	f.SpecField(".load_balancing_scheme")
-	f.SpecField(".metadata")
+	f.SpecFields.Insert(".description")
+	f.SpecFields.Insert(".forwarding_rules")
+	f.SpecFields.Insert(".extension_chains")
+	f.SpecFields.Insert(".load_balancing_scheme")
+	f.SpecFields.Insert(".metadata")
 
-	f.StatusField(".create_time")
-	f.StatusField(".update_time")
+	f.StatusFields.Insert(".create_time")
+	f.StatusFields.Insert(".update_time")
 
-	f.Unimplemented_Identity(".name")
-	f.Unimplemented_Identity(".extension_chains[].extensions[].service")
+	f.UnimplementedFields.Insert(".name")
 	f.Unimplemented_LabelsAnnotations(".labels")
+
+	f.Unimplemented_NotYetTriaged(".extension_chains[].extensions[].service")
 
 	return f
 }

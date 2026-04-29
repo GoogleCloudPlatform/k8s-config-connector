@@ -1159,14 +1159,6 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		})
 	}
 
-	// Specific to Redis
-	{
-		visitor.ReplacePath(".pscConnections[].address", "10.11.12.13")
-		visitor.ReplacePath(".response.pscConnections[].address", "10.11.12.13")
-		visitor.ReplacePath(".discoveryEndpoints[].address", "10.11.12.13")
-		visitor.ReplacePath(".response.discoveryEndpoints[].address", "10.11.12.13")
-	}
-
 	// Specific to Sql
 	{
 		visitor.ReplacePath(".serverCaCert.cert", "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n")

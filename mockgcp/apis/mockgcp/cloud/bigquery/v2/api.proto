@@ -825,64 +825,66 @@ message DatasetTags {
 message Dataset {
   // Optional. An array of objects that define dataset access for one or more entities. You can set this property when inserting or updating a dataset in order to control who is allowed to access the data. If unspecified at dataset creation time, BigQuery adds default dataset access for the following entities: access.specialGroup: projectReaders; access.role: READER; access.specialGroup: projectWriters; access.role: WRITER; access.specialGroup: projectOwners; access.role: OWNER; access.userByEmail: [dataset creator email]; access.role: OWNER; If you patch a dataset, then this field is overwritten by the patched dataset's access field. To add entities, you must supply the entire existing access array in addition to any new entities that you want to add.
   repeated DatasetAccess access = 1 [json_name="access"];
+  // Output only. The origin of the dataset, one of: * (Unset) - Native BigQuery Dataset * BIGLAKE - Dataset is backed by a namespace stored natively in Biglake
+  optional string catalog_source = 2 [json_name="catalogSource"];
   // Output only. The time when this dataset was created, in milliseconds since the epoch.
-  optional int64 creation_time = 2 [json_name="creationTime"];
+  optional int64 creation_time = 3 [json_name="creationTime"];
   // Required. A reference that identifies the dataset.
-  optional DatasetReference dataset_reference = 3 [json_name="datasetReference"];
+  optional DatasetReference dataset_reference = 4 [json_name="datasetReference"];
   // Optional. Defines the default collation specification of future tables created in the dataset. If a table is created in this dataset without table-level default collation, then the table inherits the dataset default collation, which is applied to the string fields that do not have explicit collation specified. A change to this field affects only tables created afterwards, and does not alter the existing tables. The following values are supported: * 'und:ci': undetermined locale, case insensitive. * '': empty string. Default to case-sensitive behavior.
-  optional string default_collation = 4 [json_name="defaultCollation"];
+  optional string default_collation = 5 [json_name="defaultCollation"];
   // The default encryption key for all tables in the dataset. After this property is set, the encryption key of all newly-created tables in the dataset is set to this value unless the table creation request or query explicitly overrides the key.
-  optional EncryptionConfiguration default_encryption_configuration = 5 [json_name="defaultEncryptionConfiguration"];
+  optional EncryptionConfiguration default_encryption_configuration = 6 [json_name="defaultEncryptionConfiguration"];
   // This default partition expiration, expressed in milliseconds. When new time-partitioned tables are created in a dataset where this property is set, the table will inherit this value, propagated as the `TimePartitioning.expirationMs` property on the new table. If you set `TimePartitioning.expirationMs` explicitly when creating a table, the `defaultPartitionExpirationMs` of the containing dataset is ignored. When creating a partitioned table, if `defaultPartitionExpirationMs` is set, the `defaultTableExpirationMs` value is ignored and the table will not be inherit a table expiration deadline.
-  optional int64 default_partition_expiration_ms = 6 [json_name="defaultPartitionExpirationMs"];
+  optional int64 default_partition_expiration_ms = 7 [json_name="defaultPartitionExpirationMs"];
   // Optional. Defines the default rounding mode specification of new tables created within this dataset. During table creation, if this field is specified, the table within this dataset will inherit the default rounding mode of the dataset. Setting the default rounding mode on a table overrides this option. Existing tables in the dataset are unaffected. If columns are defined during that table creation, they will immediately inherit the table's default rounding mode, unless otherwise specified.
-  optional string default_rounding_mode = 7 [json_name="defaultRoundingMode"];
+  optional string default_rounding_mode = 8 [json_name="defaultRoundingMode"];
   // Optional. The default lifetime of all tables in the dataset, in milliseconds. The minimum lifetime value is 3600000 milliseconds (one hour). To clear an existing default expiration with a PATCH request, set to 0. Once this property is set, all newly-created tables in the dataset will have an expirationTime property set to the creation time plus the value in this property, and changing the value will only affect new tables, not existing ones. When the expirationTime for a given table is reached, that table will be deleted automatically. If a table's expirationTime is modified or removed before the table expires, or if you provide an explicit expirationTime when creating a table, that value takes precedence over the default expiration time indicated by this property.
-  optional int64 default_table_expiration_ms = 8 [json_name="defaultTableExpirationMs"];
+  optional int64 default_table_expiration_ms = 9 [json_name="defaultTableExpirationMs"];
   // Optional. A user-friendly description of the dataset.
-  optional string description = 9 [json_name="description"];
+  optional string description = 10 [json_name="description"];
   // Output only. A hash of the resource.
-  optional string etag = 10 [json_name="etag"];
+  optional string etag = 11 [json_name="etag"];
   // Optional. Options defining open source compatible datasets living in the BigQuery catalog. Contains metadata of open source database, schema or namespace represented by the current dataset.
-  optional ExternalCatalogDatasetOptions external_catalog_dataset_options = 11 [json_name="externalCatalogDatasetOptions"];
+  optional ExternalCatalogDatasetOptions external_catalog_dataset_options = 12 [json_name="externalCatalogDatasetOptions"];
   // Optional. Reference to a read-only external dataset defined in data catalogs outside of BigQuery. Filled out when the dataset type is EXTERNAL.
-  optional ExternalDatasetReference external_dataset_reference = 12 [json_name="externalDatasetReference"];
+  optional ExternalDatasetReference external_dataset_reference = 13 [json_name="externalDatasetReference"];
   // Optional. A descriptive name for the dataset.
-  optional string friendly_name = 13 [json_name="friendlyName"];
+  optional string friendly_name = 14 [json_name="friendlyName"];
   // Output only. The fully-qualified unique name of the dataset in the format projectId:datasetId. The dataset name without the project name is given in the datasetId field. When creating a new dataset, leave this field blank, and instead specify the datasetId field.
-  optional string id = 14 [json_name="id"];
+  optional string id = 15 [json_name="id"];
   // Optional. TRUE if the dataset and its table names are case-insensitive, otherwise FALSE. By default, this is FALSE, which means the dataset and its table names are case-sensitive. This field does not affect routine references.
-  optional bool is_case_insensitive = 15 [json_name="isCaseInsensitive"];
+  optional bool is_case_insensitive = 16 [json_name="isCaseInsensitive"];
   // Output only. The resource type.
-  optional string kind = 16 [json_name="kind"];
+  optional string kind = 17 [json_name="kind"];
   // The labels associated with this dataset. You can use these to organize and group your datasets. You can set this property when inserting or updating a dataset. See [Creating and Updating Dataset Labels](https://cloud.google.com/bigquery/docs/creating-managing-labels#creating_and_updating_dataset_labels) for more information.
-  map<string, string> labels = 17 [json_name="labels"];
+  map<string, string> labels = 18 [json_name="labels"];
   // Output only. The date when this dataset was last modified, in milliseconds since the epoch.
-  optional int64 last_modified_time = 18 [json_name="lastModifiedTime"];
+  optional int64 last_modified_time = 19 [json_name="lastModifiedTime"];
   // Output only. Metadata about the LinkedDataset. Filled out when the dataset type is LINKED.
-  optional LinkedDatasetMetadata linked_dataset_metadata = 19 [json_name="linkedDatasetMetadata"];
+  optional LinkedDatasetMetadata linked_dataset_metadata = 20 [json_name="linkedDatasetMetadata"];
   // Optional. The source dataset reference when the dataset is of type LINKED. For all other dataset types it is not set. This field cannot be updated once it is set. Any attempt to update this field using Update and Patch API Operations will be ignored.
-  optional LinkedDatasetSource linked_dataset_source = 20 [json_name="linkedDatasetSource"];
+  optional LinkedDatasetSource linked_dataset_source = 21 [json_name="linkedDatasetSource"];
   // The geographic location where the dataset should reside. See https://cloud.google.com/bigquery/docs/locations for supported locations.
-  optional string location = 21 [json_name="location"];
+  optional string location = 22 [json_name="location"];
   // Optional. Defines the time travel window in hours. The value can be from 48 to 168 hours (2 to 7 days). The default value is 168 hours if this is not set.
-  optional int64 max_time_travel_hours = 22 [json_name="maxTimeTravelHours"];
+  optional int64 max_time_travel_hours = 23 [json_name="maxTimeTravelHours"];
   // Optional. The [tags](https://cloud.google.com/bigquery/docs/tags) attached to this dataset. Tag keys are globally unique. Tag key is expected to be in the namespaced format, for example "123456789012/environment" where 123456789012 is the ID of the parent organization or project resource for this tag key. Tag value is expected to be the short name, for example "Production". See [Tag definitions](https://cloud.google.com/iam/docs/tags-access-control#definitions) for more details.
-  map<string, string> resource_tags = 23 [json_name="resourceTags"];
+  map<string, string> resource_tags = 24 [json_name="resourceTags"];
   // Optional. Output only. Restriction config for all tables and dataset. If set, restrict certain accesses on the dataset and all its tables based on the config. See [Data egress](https://cloud.google.com/bigquery/docs/analytics-hub-introduction#data_egress) for more details.
-  optional RestrictionConfig restrictions = 24 [json_name="restrictions"];
+  optional RestrictionConfig restrictions = 25 [json_name="restrictions"];
   // Output only. Reserved for future use.
-  optional bool satisfies_pzi = 25 [json_name="satisfiesPzi"];
+  optional bool satisfies_pzi = 26 [json_name="satisfiesPzi"];
   // Output only. Reserved for future use.
-  optional bool satisfies_pzs = 26 [json_name="satisfiesPzs"];
+  optional bool satisfies_pzs = 27 [json_name="satisfiesPzs"];
   // Output only. A URL that can be used to access the resource again. You can use this URL in Get or Update requests to the resource.
-  optional string self_link = 27 [json_name="selfLink"];
+  optional string self_link = 28 [json_name="selfLink"];
   // Optional. Updates storage_billing_model for the dataset.
-  optional string storage_billing_model = 28 [json_name="storageBillingModel"];
+  optional string storage_billing_model = 29 [json_name="storageBillingModel"];
   // Output only. Tags for the dataset. To provide tags as inputs, use the `resourceTags` field.
-  repeated DatasetTags tags = 29 [json_name="tags"];
-  // Output only. Same as `type` in `ListFormatDataset`. The type of the dataset, one of: * DEFAULT - only accessible by owner and authorized accounts, * PUBLIC - accessible by everyone, * LINKED - linked dataset, * EXTERNAL - dataset with definition in external metadata catalog.
-  optional string type = 30 [json_name="type"];
+  repeated DatasetTags tags = 30 [json_name="tags"];
+  // Output only. Same as `type` in `ListFormatDataset`. The type of the dataset, one of: * DEFAULT - only accessible by owner and authorized accounts, * PUBLIC - accessible by everyone, * LINKED - linked dataset, * EXTERNAL - dataset with definition in external metadata catalog, * BIGLAKE_ICEBERG - a Biglake dataset accessible through the Iceberg API, * BIGLAKE_HIVE - a Biglake dataset accessible through the Hive API.
+  optional string type = 31 [json_name="type"];
 }
 
 // Grants all resources of particular types in a particular dataset read access to the current dataset. Similar to how individually authorized views work, updates to any resource granted through its dataset (including creation of new resources) requires read permission to referenced resources, plus write permission to the authorizing dataset.
@@ -894,13 +896,15 @@ message DatasetAccessEntry {
 }
 
 message DatasetListDatasets {
-  optional DatasetReference dataset_reference = 1 [json_name="datasetReference"];
-  optional ExternalDatasetReference external_dataset_reference = 2 [json_name="externalDatasetReference"];
-  optional string friendly_name = 3 [json_name="friendlyName"];
-  optional string id = 4 [json_name="id"];
-  optional string kind = 5 [json_name="kind"];
-  map<string, string> labels = 6 [json_name="labels"];
-  optional string location = 7 [json_name="location"];
+  optional string catalog_source = 1 [json_name="catalogSource"];
+  optional DatasetReference dataset_reference = 2 [json_name="datasetReference"];
+  optional ExternalDatasetReference external_dataset_reference = 3 [json_name="externalDatasetReference"];
+  optional string friendly_name = 4 [json_name="friendlyName"];
+  optional string id = 5 [json_name="id"];
+  optional string kind = 6 [json_name="kind"];
+  map<string, string> labels = 7 [json_name="labels"];
+  optional string location = 8 [json_name="location"];
+  optional string type = 9 [json_name="type"];
 }
 
 // Response format for a page of results when listing datasets.
@@ -1216,7 +1220,7 @@ message ExternalDataConfiguration {
   optional string time_zone = 25 [json_name="timeZone"];
   // Optional. Format used to parse TIMESTAMP values. Supports C-style and SQL-style values.
   optional string timestamp_format = 26 [json_name="timestampFormat"];
-  // Precisions (maximum number of total digits in base 10) for seconds of TIMESTAMP types that are allowed to the destination table for autodetection mode. Available for the formats: CSV. For the CSV Format, Possible values include: Not Specified, [], or [6]: timestamp(6) for all auto detected TIMESTAMP columns [6, 12]: timestamp(6) for all auto detected TIMESTAMP columns that have less than 6 digits of subseconds. timestamp(12) for all auto detected TIMESTAMP columns that have more than 6 digits of subseconds. [12]: timestamp(12) for all auto detected TIMESTAMP columns. The order of the elements in this array is ignored. Inputs that have higher precision than the highest target precision in this array will be truncated.
+  // Precisions (maximum number of total digits in base 10) for seconds of TIMESTAMP types that are allowed to the destination table for autodetection mode. Available for the formats: CSV, PARQUET, and AVRO. Possible values include: Not Specified, [], or [6]: timestamp(6) for all auto detected TIMESTAMP columns [6, 12]: timestamp(6) for all auto detected TIMESTAMP columns that have less than 6 digits of subseconds. timestamp(12) for all auto detected TIMESTAMP columns that have more than 6 digits of subseconds. [12]: timestamp(12) for all auto detected TIMESTAMP columns. The order of the elements in this array is ignored. Inputs that have higher precision than the highest target precision in this array will be truncated.
   repeated int32 timestamp_target_precision = 27 [json_name="timestampTargetPrecision"];
 }
 
@@ -1280,6 +1284,68 @@ message ForeignViewDefinition {
   optional string dialect = 1 [json_name="dialect"];
   // Required. The query that defines the view.
   optional string query = 2 [json_name="query"];
+}
+
+// Provides error statistics for the query job across all AI function calls.
+message GenAiErrorStats {
+  // A list of unique errors at query level (up to 5, truncated to 100 chars)
+  repeated string errors = 1 [json_name="errors"];
+}
+
+// Provides cost optimization statistics for a GenAi function call.
+message GenAiFunctionCostOptimizationStats {
+  // System generated message to provide insights into cost optimization state.
+  optional string message = 1 [json_name="message"];
+  // Number of rows inferred via cost optimized workflow.
+  optional int64 num_cost_optimized_rows = 2 [json_name="numCostOptimizedRows"];
+}
+
+// Provides error statistics for a GenAi function call.
+message GenAiFunctionErrorStats {
+  // A list of unique errors at function level (up to 5, truncated to 100 chars).
+  repeated string errors = 1 [json_name="errors"];
+  // Number of failed rows processed by the function
+  optional int64 num_failed_rows = 2 [json_name="numFailedRows"];
+}
+
+// Provides statistics for each Ai function call within a query.
+message GenAiFunctionStats {
+  // Cost optimization stats if applied on the rows processed by the function.
+  optional GenAiFunctionCostOptimizationStats cost_optimization_stats = 1 [json_name="costOptimizationStats"];
+  // Error stats for the function.
+  optional GenAiFunctionErrorStats error_stats = 2 [json_name="errorStats"];
+  // Name of the function.
+  optional string function_name = 3 [json_name="functionName"];
+  // Number of rows processed by this GenAi function. This includes all cost_optimized, llm_inferred and failed_rows.
+  optional int64 num_processed_rows = 4 [json_name="numProcessedRows"];
+  // User input prompt of the function (truncated to 20 chars).
+  optional string prompt = 5 [json_name="prompt"];
+}
+
+// GenAi stats for the query job.
+message GenAiStats {
+  // Job level error stats across all GenAi functions
+  optional GenAiErrorStats error_stats = 1 [json_name="errorStats"];
+  // Function level stats for GenAi Functions. See https://docs.cloud.google.com/bigquery/docs/generative-ai-overview
+  repeated GenAiFunctionStats function_stats = 2 [json_name="functionStats"];
+}
+
+// Optional. Definition of how values are generated for the field. Only valid for top-level schema fields (not nested fields).
+message GeneratedColumn {
+  // Definition of the expression used to generate the field.
+  optional GeneratedExpressionInfo generated_expression_info = 1 [json_name="generatedExpressionInfo"];
+  // Optional. Dictates when system generated values are used to populate the field.
+  optional string generated_mode = 2 [json_name="generatedMode"];
+}
+
+// Definition of the expression used to generate the field.
+message GeneratedExpressionInfo {
+  // Optional. Whether the column generation is done asynchronously.
+  optional bool asynchronous = 1 [json_name="asynchronous"];
+  // Optional. The generation expression (e.g. AI.EMBED(...)) used to generated the field.
+  optional string generation_expression = 2 [json_name="generationExpression"];
+  // Optional. Whether the generated column is stored in the table.
+  optional bool stored = 3 [json_name="stored"];
 }
 
 // Request message for `GetIamPolicy` method.
@@ -1710,7 +1776,7 @@ message JobConfigurationLoad {
   optional string time_zone = 41 [json_name="timeZone"];
   // Optional. Date format used for parsing TIMESTAMP values.
   optional string timestamp_format = 42 [json_name="timestampFormat"];
-  // Precisions (maximum number of total digits in base 10) for seconds of TIMESTAMP types that are allowed to the destination table for autodetection mode. Available for the formats: CSV. For the CSV Format, Possible values include: Not Specified, [], or [6]: timestamp(6) for all auto detected TIMESTAMP columns [6, 12]: timestamp(6) for all auto detected TIMESTAMP columns that have less than 6 digits of subseconds. timestamp(12) for all auto detected TIMESTAMP columns that have more than 6 digits of subseconds. [12]: timestamp(12) for all auto detected TIMESTAMP columns. The order of the elements in this array is ignored. Inputs that have higher precision than the highest target precision in this array will be truncated.
+  // Precisions (maximum number of total digits in base 10) for seconds of TIMESTAMP types that are allowed to the destination table for autodetection mode. Available for the formats: CSV, PARQUET, and AVRO. Possible values include: Not Specified, [], or [6]: timestamp(6) for all auto detected TIMESTAMP columns [6, 12]: timestamp(6) for all auto detected TIMESTAMP columns that have less than 6 digits of subseconds. timestamp(12) for all auto detected TIMESTAMP columns that have more than 6 digits of subseconds. [12]: timestamp(12) for all auto detected TIMESTAMP columns. The order of the elements in this array is ignored. Inputs that have higher precision than the highest target precision in this array will be truncated.
   repeated int32 timestamp_target_precision = 43 [json_name="timestampTargetPrecision"];
   // Optional. If sourceFormat is set to "AVRO", indicates whether to interpret logical types as the corresponding BigQuery data type (for example, TIMESTAMP), instead of using the raw type (for example, INTEGER).
   optional bool use_avro_logical_types = 44 [json_name="useAvroLogicalTypes"];
@@ -1937,66 +2003,68 @@ message JobStatistics2 {
   optional ExportDataStatistics export_data_statistics = 16 [json_name="exportDataStatistics"];
   // Output only. Job cost breakdown as bigquery internal cost and external service costs.
   repeated ExternalServiceCost external_service_costs = 17 [json_name="externalServiceCosts"];
+  // Output only. Statistics related to GenAI usage in the query.
+  optional GenAiStats gen_ai_stats = 18 [json_name="genAiStats"];
   // Output only. Statistics related to incremental query results, if enabled for the query. This feature is not yet available.
-  optional IncrementalResultStats incremental_result_stats = 18 [json_name="incrementalResultStats"];
+  optional IncrementalResultStats incremental_result_stats = 19 [json_name="incrementalResultStats"];
   // Output only. Statistics for a LOAD query.
-  optional LoadQueryStatistics load_query_statistics = 19 [json_name="loadQueryStatistics"];
+  optional LoadQueryStatistics load_query_statistics = 20 [json_name="loadQueryStatistics"];
   // Output only. Statistics of materialized views of a query job.
-  optional MaterializedViewStatistics materialized_view_statistics = 20 [json_name="materializedViewStatistics"];
+  optional MaterializedViewStatistics materialized_view_statistics = 21 [json_name="materializedViewStatistics"];
   // Output only. Statistics of metadata cache usage in a query for BigLake tables.
-  optional MetadataCacheStatistics metadata_cache_statistics = 21 [json_name="metadataCacheStatistics"];
+  optional MetadataCacheStatistics metadata_cache_statistics = 22 [json_name="metadataCacheStatistics"];
   // Output only. Statistics of a BigQuery ML training job.
-  optional MlStatistics ml_statistics = 22 [json_name="mlStatistics"];
+  optional MlStatistics ml_statistics = 23 [json_name="mlStatistics"];
   // Deprecated.
-  optional BigQueryModelTraining model_training = 23 [json_name="modelTraining"];
+  optional BigQueryModelTraining model_training = 24 [json_name="modelTraining"];
   // Deprecated.
-  optional int32 model_training_current_iteration = 24 [json_name="modelTrainingCurrentIteration"];
+  optional int32 model_training_current_iteration = 25 [json_name="modelTrainingCurrentIteration"];
   // Deprecated.
-  optional int64 model_training_expected_total_iteration = 25 [json_name="modelTrainingExpectedTotalIteration"];
+  optional int64 model_training_expected_total_iteration = 26 [json_name="modelTrainingExpectedTotalIteration"];
   // Output only. The number of rows affected by a DML statement. Present only for DML statements INSERT, UPDATE or DELETE.
-  optional int64 num_dml_affected_rows = 26 [json_name="numDmlAffectedRows"];
+  optional int64 num_dml_affected_rows = 27 [json_name="numDmlAffectedRows"];
   // Output only. Performance insights.
-  optional PerformanceInsights performance_insights = 27 [json_name="performanceInsights"];
+  optional PerformanceInsights performance_insights = 28 [json_name="performanceInsights"];
   // Output only. Query optimization information for a QUERY job.
-  optional QueryInfo query_info = 28 [json_name="queryInfo"];
+  optional QueryInfo query_info = 29 [json_name="queryInfo"];
   // Output only. Describes execution plan for the query.
-  repeated ExplainQueryStage query_plan = 29 [json_name="queryPlan"];
+  repeated ExplainQueryStage query_plan = 30 [json_name="queryPlan"];
   // Output only. Referenced property graphs for the job. Queries that reference more than 50 property graphs will not have a complete list.
-  repeated PropertyGraphReference referenced_property_graphs = 30 [json_name="referencedPropertyGraphs"];
+  repeated PropertyGraphReference referenced_property_graphs = 31 [json_name="referencedPropertyGraphs"];
   // Output only. Referenced routines for the job.
-  repeated RoutineReference referenced_routines = 31 [json_name="referencedRoutines"];
+  repeated RoutineReference referenced_routines = 32 [json_name="referencedRoutines"];
   // Output only. Referenced tables for the job.
-  repeated TableReference referenced_tables = 32 [json_name="referencedTables"];
+  repeated TableReference referenced_tables = 33 [json_name="referencedTables"];
   // Output only. Job resource usage breakdown by reservation. This field reported misleading information and will no longer be populated.
-  repeated JobStatistics2ReservationUsage reservation_usage = 33 [json_name="reservationUsage"];
+  repeated JobStatistics2ReservationUsage reservation_usage = 34 [json_name="reservationUsage"];
   // Output only. The schema of the results. Present only for successful dry run of non-legacy SQL queries.
-  optional TableSchema schema = 34 [json_name="schema"];
+  optional TableSchema schema = 35 [json_name="schema"];
   // Output only. Search query specific statistics.
-  optional SearchStatistics search_statistics = 35 [json_name="searchStatistics"];
+  optional SearchStatistics search_statistics = 36 [json_name="searchStatistics"];
   // Output only. Statistics of a Spark procedure job.
-  optional SparkStatistics spark_statistics = 36 [json_name="sparkStatistics"];
+  optional SparkStatistics spark_statistics = 37 [json_name="sparkStatistics"];
   // Output only. The type of query statement, if valid. Possible values: * `SELECT`: [`SELECT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#select_list) statement. * `ASSERT`: [`ASSERT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/debugging-statements#assert) statement. * `INSERT`: [`INSERT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/dml-syntax#insert_statement) statement. * `UPDATE`: [`UPDATE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/dml-syntax#update_statement) statement. * `DELETE`: [`DELETE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-manipulation-language) statement. * `MERGE`: [`MERGE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-manipulation-language) statement. * `CREATE_TABLE`: [`CREATE TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_table_statement) statement, without `AS SELECT`. * `CREATE_TABLE_AS_SELECT`: [`CREATE TABLE AS SELECT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_table_statement) statement. * `CREATE_VIEW`: [`CREATE VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_view_statement) statement. * `CREATE_MODEL`: [`CREATE MODEL`](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-create#create_model_statement) statement. * `CREATE_MATERIALIZED_VIEW`: [`CREATE MATERIALIZED VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_materialized_view_statement) statement. * `CREATE_FUNCTION`: [`CREATE FUNCTION`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_function_statement) statement. * `CREATE_TABLE_FUNCTION`: [`CREATE TABLE FUNCTION`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_table_function_statement) statement. * `CREATE_PROCEDURE`: [`CREATE PROCEDURE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_procedure) statement. * `CREATE_ROW_ACCESS_POLICY`: [`CREATE ROW ACCESS POLICY`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_row_access_policy_statement) statement. * `CREATE_SCHEMA`: [`CREATE SCHEMA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_schema_statement) statement. * `CREATE_SNAPSHOT_TABLE`: [`CREATE SNAPSHOT TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_snapshot_table_statement) statement. * `CREATE_SEARCH_INDEX`: [`CREATE SEARCH INDEX`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_search_index_statement) statement. * `DROP_TABLE`: [`DROP TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_table_statement) statement. * `DROP_EXTERNAL_TABLE`: [`DROP EXTERNAL TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_external_table_statement) statement. * `DROP_VIEW`: [`DROP VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_view_statement) statement. * `DROP_MODEL`: [`DROP MODEL`](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-drop-model) statement. * `DROP_MATERIALIZED_VIEW`: [`DROP MATERIALIZED VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_materialized_view_statement) statement. * `DROP_FUNCTION` : [`DROP FUNCTION`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_function_statement) statement. * `DROP_TABLE_FUNCTION` : [`DROP TABLE FUNCTION`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_table_function) statement. * `DROP_PROCEDURE`: [`DROP PROCEDURE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_procedure_statement) statement. * `DROP_SEARCH_INDEX`: [`DROP SEARCH INDEX`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_search_index) statement. * `DROP_SCHEMA`: [`DROP SCHEMA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_schema_statement) statement. * `DROP_SNAPSHOT_TABLE`: [`DROP SNAPSHOT TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_snapshot_table_statement) statement. * `DROP_ROW_ACCESS_POLICY`: [`DROP [ALL] ROW ACCESS POLICY|POLICIES`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_row_access_policy_statement) statement. * `ALTER_TABLE`: [`ALTER TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#alter_table_set_options_statement) statement. * `ALTER_VIEW`: [`ALTER VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#alter_view_set_options_statement) statement. * `ALTER_MATERIALIZED_VIEW`: [`ALTER MATERIALIZED VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#alter_materialized_view_set_options_statement) statement. * `ALTER_SCHEMA`: [`ALTER SCHEMA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#alter_schema_set_options_statement) statement. * `SCRIPT`: [`SCRIPT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/procedural-language). * `TRUNCATE_TABLE`: [`TRUNCATE TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/dml-syntax#truncate_table_statement) statement. * `CREATE_EXTERNAL_TABLE`: [`CREATE EXTERNAL TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_external_table_statement) statement. * `EXPORT_DATA`: [`EXPORT DATA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/other-statements#export_data_statement) statement. * `EXPORT_MODEL`: [`EXPORT MODEL`](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-export-model) statement. * `LOAD_DATA`: [`LOAD DATA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/other-statements#load_data_statement) statement. * `CALL`: [`CALL`](https://cloud.google.com/bigquery/docs/reference/standard-sql/procedural-language#call) statement.
-  optional string statement_type = 37 [json_name="statementType"];
+  optional string statement_type = 38 [json_name="statementType"];
   // Output only. Describes a timeline of job execution.
-  repeated QueryTimelineSample timeline = 38 [json_name="timeline"];
+  repeated QueryTimelineSample timeline = 39 [json_name="timeline"];
   // Output only. If the project is configured to use on-demand pricing, then this field contains the total bytes billed for the job. If the project is configured to use flat-rate pricing, then you are not billed for bytes and this field is informational only.
-  optional int64 total_bytes_billed = 39 [json_name="totalBytesBilled"];
+  optional int64 total_bytes_billed = 40 [json_name="totalBytesBilled"];
   // Output only. Total bytes processed for the job.
-  optional int64 total_bytes_processed = 40 [json_name="totalBytesProcessed"];
+  optional int64 total_bytes_processed = 41 [json_name="totalBytesProcessed"];
   // Output only. For dry-run jobs, totalBytesProcessed is an estimate and this field specifies the accuracy of the estimate. Possible values can be: UNKNOWN: accuracy of the estimate is unknown. PRECISE: estimate is precise. LOWER_BOUND: estimate is lower bound of what the query would cost. UPPER_BOUND: estimate is upper bound of what the query would cost.
-  optional string total_bytes_processed_accuracy = 41 [json_name="totalBytesProcessedAccuracy"];
+  optional string total_bytes_processed_accuracy = 42 [json_name="totalBytesProcessedAccuracy"];
   // Output only. Total number of partitions processed from all partitioned tables referenced in the job.
-  optional int64 total_partitions_processed = 42 [json_name="totalPartitionsProcessed"];
+  optional int64 total_partitions_processed = 43 [json_name="totalPartitionsProcessed"];
   // Output only. Total slot milliseconds for the job that ran on external services and billed on the services SKU. This field is only populated for jobs that have external service costs, and is the total of the usage for costs whose billing method is `"SERVICES_SKU"`.
-  optional int64 total_services_sku_slot_ms = 43 [json_name="totalServicesSkuSlotMs"];
+  optional int64 total_services_sku_slot_ms = 44 [json_name="totalServicesSkuSlotMs"];
   // Output only. Slot-milliseconds for the job.
-  optional int64 total_slot_ms = 44 [json_name="totalSlotMs"];
+  optional int64 total_slot_ms = 45 [json_name="totalSlotMs"];
   // Output only. Total bytes transferred for cross-cloud queries such as Cross Cloud Transfer and CREATE TABLE AS SELECT (CTAS).
-  optional int64 transferred_bytes = 45 [json_name="transferredBytes"];
+  optional int64 transferred_bytes = 46 [json_name="transferredBytes"];
   // Output only. GoogleSQL only: list of undeclared query parameters detected during a dry run validation.
-  repeated QueryParameter undeclared_query_parameters = 46 [json_name="undeclaredQueryParameters"];
+  repeated QueryParameter undeclared_query_parameters = 47 [json_name="undeclaredQueryParameters"];
   // Output only. Vector Search query specific statistics.
-  optional VectorSearchStatistics vector_search_statistics = 47 [json_name="vectorSearchStatistics"];
+  optional VectorSearchStatistics vector_search_statistics = 48 [json_name="vectorSearchStatistics"];
 }
 
 // Statistics for a load job.
@@ -2350,7 +2418,7 @@ message ProjectList {
   optional string kind = 2 [json_name="kind"];
   // Use this token to request the next page of results.
   optional string next_page_token = 3 [json_name="nextPageToken"];
-  // Projects to which the user has at least READ access.
+  // Projects to which the user has at least READ access. This field can be omitted if `totalItems` is 0.
   repeated ProjectListProjects projects = 4 [json_name="projects"];
   // The total number of projects in the page. A wrapper is used here because the field should still be in the response when the value is 0.
   optional int32 total_items = 5 [json_name="totalItems"];
@@ -2639,44 +2707,60 @@ message RestrictionConfig {
 message Routine {
   // Optional.
   repeated Argument arguments = 1 [json_name="arguments"];
+  // Output only. The build status of the routine. This field is only applicable to Python UDFs. [Preview](https://cloud.google.com/products/#product-launch-stages)
+  optional RoutineBuildStatus build_status = 2 [json_name="buildStatus"];
   // Output only. The time when this routine was created, in milliseconds since the epoch.
-  optional int64 creation_time = 2 [json_name="creationTime"];
+  optional int64 creation_time = 3 [json_name="creationTime"];
   // Optional. If set to `DATA_MASKING`, the function is validated and made available as a masking function. For more information, see [Create custom masking routines](https://cloud.google.com/bigquery/docs/user-defined-functions#custom-mask).
-  optional string data_governance_type = 3 [json_name="dataGovernanceType"];
+  optional string data_governance_type = 4 [json_name="dataGovernanceType"];
   // Required. The body of the routine. For functions, this is the expression in the AS clause. If `language = "SQL"`, it is the substring inside (but excluding) the parentheses. For example, for the function created with the following statement: `CREATE FUNCTION JoinLines(x string, y string) as (concat(x, "\n", y))` The definition_body is `concat(x, "\n", y)` (\n is not replaced with linebreak). If `language="JAVASCRIPT"`, it is the evaluated string in the AS clause. For example, for the function created with the following statement: `CREATE FUNCTION f() RETURNS STRING LANGUAGE js AS 'return "\n";\n'` The definition_body is `return "\n";\n` Note that both \n are replaced with linebreaks. If `definition_body` references another routine, then that routine must be fully qualified with its project ID.
-  optional string definition_body = 4 [json_name="definitionBody"];
+  optional string definition_body = 5 [json_name="definitionBody"];
   // Optional. The description of the routine, if defined.
-  optional string description = 5 [json_name="description"];
+  optional string description = 6 [json_name="description"];
   // Optional. The determinism level of the JavaScript UDF, if defined.
-  optional string determinism_level = 6 [json_name="determinismLevel"];
+  optional string determinism_level = 7 [json_name="determinismLevel"];
   // Output only. A hash of this resource.
-  optional string etag = 7 [json_name="etag"];
+  optional string etag = 8 [json_name="etag"];
   // Optional. Options for the runtime of the external system executing the routine. This field is only applicable for Python UDFs. [Preview](https://cloud.google.com/products/#product-launch-stages)
-  optional ExternalRuntimeOptions external_runtime_options = 8 [json_name="externalRuntimeOptions"];
+  optional ExternalRuntimeOptions external_runtime_options = 9 [json_name="externalRuntimeOptions"];
   // Optional. If language = "JAVASCRIPT", this field stores the path of the imported JAVASCRIPT libraries.
-  repeated string imported_libraries = 9 [json_name="importedLibraries"];
+  repeated string imported_libraries = 10 [json_name="importedLibraries"];
   // Optional. Defaults to "SQL" if remote_function_options field is absent, not set otherwise.
-  optional string language = 10 [json_name="language"];
+  optional string language = 11 [json_name="language"];
   // Output only. The time when this routine was last modified, in milliseconds since the epoch.
-  optional int64 last_modified_time = 11 [json_name="lastModifiedTime"];
+  optional int64 last_modified_time = 12 [json_name="lastModifiedTime"];
   // Optional. Options for the Python UDF. [Preview](https://cloud.google.com/products/#product-launch-stages)
-  optional PythonOptions python_options = 12 [json_name="pythonOptions"];
+  optional PythonOptions python_options = 13 [json_name="pythonOptions"];
   // Optional. Remote function specific options.
-  optional RemoteFunctionOptions remote_function_options = 13 [json_name="remoteFunctionOptions"];
+  optional RemoteFunctionOptions remote_function_options = 14 [json_name="remoteFunctionOptions"];
   // Optional. Can be set only if routine_type = "TABLE_VALUED_FUNCTION". If absent, the return table type is inferred from definition_body at query time in each query that references this routine. If present, then the columns in the evaluated table result will be cast to match the column types specified in return table type, at query time.
-  optional StandardSqlTableType return_table_type = 14 [json_name="returnTableType"];
+  optional StandardSqlTableType return_table_type = 15 [json_name="returnTableType"];
   // Optional if language = "SQL"; required otherwise. Cannot be set if routine_type = "TABLE_VALUED_FUNCTION". If absent, the return type is inferred from definition_body at query time in each query that references this routine. If present, then the evaluated result will be cast to the specified returned type at query time. For example, for the functions created with the following statements: * `CREATE FUNCTION Add(x FLOAT64, y FLOAT64) RETURNS FLOAT64 AS (x + y);` * `CREATE FUNCTION Increment(x FLOAT64) AS (Add(x, 1));` * `CREATE FUNCTION Decrement(x FLOAT64) RETURNS FLOAT64 AS (Add(x, -1));` The return_type is `{type_kind: "FLOAT64"}` for `Add` and `Decrement`, and is absent for `Increment` (inferred as FLOAT64 at query time). Suppose the function `Add` is replaced by `CREATE OR REPLACE FUNCTION Add(x INT64, y INT64) AS (x + y);` Then the inferred return type of `Increment` is automatically changed to INT64 at query time, while the return type of `Decrement` remains FLOAT64.
-  optional StandardSqlDataType return_type = 15 [json_name="returnType"];
+  optional StandardSqlDataType return_type = 16 [json_name="returnType"];
   // Required. Reference describing the ID of this routine.
-  optional RoutineReference routine_reference = 16 [json_name="routineReference"];
+  optional RoutineReference routine_reference = 17 [json_name="routineReference"];
   // Required. The type of routine.
-  optional string routine_type = 17 [json_name="routineType"];
+  optional string routine_type = 18 [json_name="routineType"];
   // Optional. The security mode of the routine, if defined. If not defined, the security mode is automatically determined from the routine's configuration.
-  optional string security_mode = 18 [json_name="securityMode"];
+  optional string security_mode = 19 [json_name="securityMode"];
   // Optional. Spark specific options.
-  optional SparkOptions spark_options = 19 [json_name="sparkOptions"];
+  optional SparkOptions spark_options = 20 [json_name="sparkOptions"];
   // Optional. Use this option to catch many common errors. Error checking is not exhaustive, and successfully creating a procedure doesn't guarantee that the procedure will successfully execute at runtime. If `strictMode` is set to `TRUE`, the procedure body is further checked for errors such as non-existent tables or columns. The `CREATE PROCEDURE` statement fails if the body fails any of these checks. If `strictMode` is set to `FALSE`, the procedure body is checked only for syntax. For procedures that invoke themselves recursively, specify `strictMode=FALSE` to avoid non-existent procedure errors during validation. Default value is `TRUE`.
-  optional bool strict_mode = 20 [json_name="strictMode"];
+  optional bool strict_mode = 21 [json_name="strictMode"];
+}
+
+// The status of a routine build.
+message RoutineBuildStatus {
+  // Output only. The time taken for the image build. Populated only after the build succeeds or fails.
+  optional .google.protobuf.Duration build_duration = 1 [json_name="buildDuration"];
+  // Output only. The current build state of the routine.
+  optional string build_state = 2 [json_name="buildState"];
+  // Output only. The time when the build state was updated last.
+  optional .google.protobuf.Timestamp build_state_update_time = 3 [json_name="buildStateUpdateTime"];
+  // Output only. A result object that will be present only if the build has failed.
+  optional ErrorProto error_result = 4 [json_name="errorResult"];
+  // Output only. The size of the image in bytes. Populated only after the build succeeds.
+  optional int64 image_size_bytes = 5 [json_name="imageSizeBytes"];
 }
 
 // Id path of a routine.
@@ -3186,26 +3270,28 @@ message TableFieldSchema {
   repeated TableFieldSchema fields = 6 [json_name="fields"];
   // Optional. Definition of the foreign data type. Only valid for top-level schema fields (not nested fields). If the type is FOREIGN, this field is required.
   optional string foreign_type_definition = 7 [json_name="foreignTypeDefinition"];
+  // Optional. Definition of how values are generated for the field. Only valid for top-level schema fields (not nested fields).
+  optional GeneratedColumn generated_column = 8 [json_name="generatedColumn"];
   // Optional. Maximum length of values of this field for STRINGS or BYTES. If max_length is not specified, no maximum length constraint is imposed on this field. If type = "STRING", then max_length represents the maximum UTF-8 length of strings in this field. If type = "BYTES", then max_length represents the maximum number of bytes in this field. It is invalid to set this field if type ≠ "STRING" and ≠ "BYTES".
-  optional int64 max_length = 8 [json_name="maxLength"];
+  optional int64 max_length = 9 [json_name="maxLength"];
   // Optional. The field mode. Possible values include NULLABLE, REQUIRED and REPEATED. The default value is NULLABLE.
-  optional string mode = 9 [json_name="mode"];
+  optional string mode = 10 [json_name="mode"];
   // Required. The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 300 characters.
-  optional string name = 10 [json_name="name"];
+  optional string name = 11 [json_name="name"];
   // Optional. The policy tags attached to this field, used for field-level access control. If not set, defaults to empty policy_tags.
-  optional TableFieldSchemaPolicyTags policy_tags = 11 [json_name="policyTags"];
+  optional TableFieldSchemaPolicyTags policy_tags = 12 [json_name="policyTags"];
   // Optional. Precision (maximum number of total digits in base 10) and scale (maximum number of digits in the fractional part in base 10) constraints for values of this field for NUMERIC or BIGNUMERIC. It is invalid to set precision or scale if type ≠ "NUMERIC" and ≠ "BIGNUMERIC". If precision and scale are not specified, no value range constraint is imposed on this field insofar as values are permitted by the type. Values of this NUMERIC or BIGNUMERIC field must be in this range when: * Precision (P) and scale (S) are specified: [-10P-S + 10-S, 10P-S - 10-S] * Precision (P) is specified but not scale (and thus scale is interpreted to be equal to zero): [-10P + 1, 10P - 1]. Acceptable values for precision and scale if both are specified: * If type = "NUMERIC": 1 ≤ precision - scale ≤ 29 and 0 ≤ scale ≤ 9. * If type = "BIGNUMERIC": 1 ≤ precision - scale ≤ 38 and 0 ≤ scale ≤ 38. Acceptable values for precision if only precision is specified but not scale (and thus scale is interpreted to be equal to zero): * If type = "NUMERIC": 1 ≤ precision ≤ 29. * If type = "BIGNUMERIC": 1 ≤ precision ≤ 38. If scale is specified but not precision, then it is invalid.
-  optional int64 precision = 12 [json_name="precision"];
+  optional int64 precision = 13 [json_name="precision"];
   // Represents the type of a field element.
-  optional TableFieldSchemaRangeElementType range_element_type = 13 [json_name="rangeElementType"];
+  optional TableFieldSchemaRangeElementType range_element_type = 14 [json_name="rangeElementType"];
   // Optional. Specifies the rounding mode to be used when storing values of NUMERIC and BIGNUMERIC type.
-  optional string rounding_mode = 14 [json_name="roundingMode"];
+  optional string rounding_mode = 15 [json_name="roundingMode"];
   // Optional. See documentation for precision.
-  optional int64 scale = 15 [json_name="scale"];
+  optional int64 scale = 16 [json_name="scale"];
   // Optional. Precision (maximum number of total digits in base 10) for seconds of TIMESTAMP type. Possible values include: * 6 (Default, for TIMESTAMP type with microsecond precision) * 12 (For TIMESTAMP type with picosecond precision)
-  optional int64 timestamp_precision = 16 [json_name="timestampPrecision"];
+  optional int64 timestamp_precision = 17 [json_name="timestampPrecision"];
   // Required. The field data type. Possible values include: * STRING * BYTES * INTEGER (or INT64) * FLOAT (or FLOAT64) * BOOLEAN (or BOOL) * TIMESTAMP * DATE * TIME * DATETIME * GEOGRAPHY * NUMERIC * BIGNUMERIC * JSON * RECORD (or STRUCT) * RANGE Use of RECORD/STRUCT indicates that the field contains a nested schema.
-  optional string type = 17 [json_name="type"];
+  optional string type = 18 [json_name="type"];
 }
 
 message View {

@@ -73,7 +73,7 @@ func (s *ParameterManagerV1) GetParameterVersion(ctx context.Context, req *pb.Ge
 	fqn := name.String()
 	if err := s.storage.Get(ctx, fqn, &parameterVersion); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found.", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}

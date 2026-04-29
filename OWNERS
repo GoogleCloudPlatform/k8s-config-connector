@@ -1,20 +1,25 @@
 approvers:
+  - acpana
+  - barney-s
   - cheftako
+  - fedebongio
   - justinsb
+  - ldanielmadariaga
   - maqiuyujoyce
-  - yuwenma
+  - xiaoweim
 reviewers:
   - acpana
   - anhdle-sso
   - barney-s
   - cheftako
+  - fedebongio
   - gemmahou
-  - jasonvigil
   - justinsb
+  - ldanielmadariaga
   - maqiuyujoyce
-  - yuwenma
   - xiaoweim
 emeritus:
   - diviner524
+  - jasonvigil
   - jingyih
-
+  - yuwenma

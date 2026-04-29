@@ -69,6 +69,14 @@ service FoldersServer {
       body: "folder"
     };
   };
+
+  // Returns permissions that a caller has on the specified project.
+  rpc TestIamPermissions(TestIamPermissionsRequest) returns (TestIamPermissionsResponse) {
+    option (google.api.http) = {
+      post: "/v1/{resource=folders/*}:testIamPermissions"
+      body: "*"
+    };
+  };
 }
 
 service LiensServer {
@@ -165,6 +173,14 @@ service OrganizationsServer {
     option (google.api.http) = {
       post: "/v1/{resource=organizations/*}:setOrgPolicy"
       body: "organization"
+    };
+  };
+
+  // Returns permissions that a caller has on the specified project.
+  rpc TestIamPermissions(TestIamPermissionsRequest) returns (TestIamPermissionsResponse) {
+    option (google.api.http) = {
+      post: "/v1/{resource=organizations/*}:testIamPermissions"
+      body: "*"
     };
   };
 }
@@ -269,6 +285,14 @@ service ProjectsServer {
     option (google.api.http) = {
       put: "/v1/projects/{project_id}"
       body: "project"
+    };
+  };
+
+  // Returns permissions that a caller has on the specified project.
+  rpc TestIamPermissions(TestIamPermissionsRequest) returns (TestIamPermissionsResponse) {
+    option (google.api.http) = {
+      post: "/v1/{resource=projects/*}:testIamPermissions"
+      body: "*"
     };
   };
 }
@@ -725,8 +749,12 @@ message Status {
 
 // Request message for `TestIamPermissions` method.
 message TestIamPermissionsRequest {
-  // The set of permissions to check for the `resource`. Permissions with wildcards (such as `*` or `storage.*`) are not allowed. For more information see [IAM Overview](https://cloud.google.com/iam/docs/overview#permissions).
-  repeated string permissions = 1 [json_name="permissions"];
+  // REQUIRED: The resource for which the permission checking is to be performed.
+  optional string resource = 1;
+
+  // The set of permissions to check for the resource.
+  repeated string permissions = 2 [json_name="permissions"];
+
 }
 
 // Response message for `TestIamPermissions` method.

@@ -39,15 +39,11 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type ComputeTargetHTTPSProxySpec struct {
+	/* URLs to certificate manager certificate resources that are used to authenticate connections between users and the load balancer. Currently, you may specify up to 15 certificates. Certificate manager certificates do not apply when the load balancing scheme is set to INTERNAL_SELF_MANAGED. sslCertificates and certificateManagerCertificates fields cannot be defined together. */
 	// +optional
 	CertificateManagerCertificates []v1alpha1.ResourceRef `json:"certificateManagerCertificates,omitempty"`
 
-	/* A reference to the CertificateMap resource uri that identifies a
-	certificate map associated with the given target proxy. This field
-	can only be set for global target proxies. This field is only supported
-	for EXTERNAL and EXTERNAL_MANAGED load balancing schemes.
-	For INTERNAL_MANAGED, use certificateManagerCertificates instead.
-	sslCertificates and certificateMap fields cannot be defined together. */
+	/* A reference to the CertificateMap resource uri that identifies a certificate map associated with the given target proxy. This field can only be set for global target proxies. This field is only supported for EXTERNAL and EXTERNAL_MANAGED load balancing schemes. For INTERNAL_MANAGED, use certificateManagerCertificates instead. sslCertificates and certificateMap fields cannot be defined together. */
 	// +optional
 	CertificateMapRef *v1alpha1.ResourceRef `json:"certificateMapRef,omitempty"`
 
@@ -55,27 +51,18 @@ type ComputeTargetHTTPSProxySpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. Specifies how long to keep a connection open, after completing a response,
-	while there is no matching traffic (in seconds). If an HTTP keepalive is
-	not specified, a default value (610 seconds) will be used. For Global
-	external HTTP(S) load balancer, the minimum allowed value is 5 seconds and
-	the maximum allowed value is 1200 seconds. For Global external HTTP(S)
-	load balancer (classic), this option is not available publicly. */
+	/* Immutable. Specifies how long to keep a connection open, after completing a response, while there is no matching traffic (in seconds). If an HTTP keepalive is not specified, a default value (610 seconds) will be used. For Global external HTTP(S) load balancer, the minimum allowed value is 5 seconds and the maximum allowed value is 1200 seconds. For Global external HTTP(S) load balancer (classic), this option is not available publicly. */
 	// +optional
 	HttpKeepAliveTimeoutSec *int64 `json:"httpKeepAliveTimeoutSec,omitempty"`
 
 	/* Location represents the geographical location of the ComputeTargetHTTPSProxy. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
 
-	/* Immutable. This field only applies when the forwarding rule that references
-	this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED. */
+	/* Immutable. This field only applies when the forwarding rule that references this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED. */
 	// +optional
 	ProxyBind *bool `json:"proxyBind,omitempty"`
 
-	/* Specifies the QUIC override policy for this resource. This determines
-	whether the load balancer will attempt to negotiate QUIC with clients
-	or not. Can specify one of NONE, ENABLE, or DISABLE. If NONE is
-	specified, Google manages whether QUIC is used. Default value: "NONE" Possible values: ["NONE", "ENABLE", "DISABLE"]. */
+	/* Specifies the QUIC override policy for this resource. This determines whether the load balancer will attempt to negotiate QUIC with clients or not. Can specify one of NONE, ENABLE, or DISABLE. If NONE is specified, Google manages whether QUIC is used. Default value: "NONE" Possible values: ["NONE", "ENABLE", "DISABLE"]. */
 	// +optional
 	QuicOverride *string `json:"quicOverride,omitempty"`
 
@@ -83,31 +70,26 @@ type ComputeTargetHTTPSProxySpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. A URL referring to a networksecurity.ServerTlsPolicy
-	resource that describes how the proxy should authenticate inbound
-	traffic. serverTlsPolicy only applies to a global TargetHttpsProxy
-	attached to globalForwardingRules with the loadBalancingScheme
-	set to INTERNAL_SELF_MANAGED or EXTERNAL or EXTERNAL_MANAGED.
-	For details which ServerTlsPolicy resources are accepted with
-	INTERNAL_SELF_MANAGED and which with EXTERNAL, EXTERNAL_MANAGED
-	loadBalancingScheme consult ServerTlsPolicy documentation.
-	If left blank, communications are not encrypted. */
+	/* Immutable. A URL referring to a networksecurity.ServerTlsPolicy resource that describes how the proxy should authenticate inbound traffic. serverTlsPolicy only applies to a global TargetHttpsProxy attached to globalForwardingRules with the loadBalancingScheme set to INTERNAL_SELF_MANAGED or EXTERNAL or EXTERNAL_MANAGED. For details which ServerTlsPolicy resources are accepted with INTERNAL_SELF_MANAGED and which with EXTERNAL, EXTERNAL_MANAGED loadBalancingScheme consult ServerTlsPolicy documentation. If left blank, communications are not encrypted. */
 	// +optional
 	ServerTlsPolicyRef *v1alpha1.ResourceRef `json:"serverTlsPolicyRef,omitempty"`
 
+	/* A list of ComputeSSLCertificate resources that are used to authenticate connections between users and the load balancer. At least one SSL certificate must be specified. */
 	// +optional
 	SslCertificates []v1alpha1.ResourceRef `json:"sslCertificates,omitempty"`
 
-	/* A reference to the ComputeSSLPolicy resource that will be
-	associated with the ComputeTargetHTTPSProxy resource. If not set,
-	the ComputeTargetHTTPSProxy resource will not have any SSL policy
-	configured. */
+	/* A reference to the ComputeSSLPolicy resource that will be associated with the ComputeTargetHTTPSProxy resource. If not set, the ComputeTargetHTTPSProxy resource will not have any SSL policy configured. */
 	// +optional
 	SslPolicyRef *v1alpha1.ResourceRef `json:"sslPolicyRef,omitempty"`
 
-	/* A reference to the ComputeURLMap resource that defines the mapping
-	from URL to the BackendService. */
+	/* A reference to the ComputeURLMap resource that defines the mapping from URL to the BackendService. */
 	UrlMapRef v1alpha1.ResourceRef `json:"urlMapRef"`
+}
+
+type TargethttpsproxyObservedStateStatus struct {
+	/* Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking. */
+	// +optional
+	Fingerprint *string `json:"fingerprint,omitempty"`
 }
 
 type ComputeTargetHTTPSProxyStatus struct {
@@ -118,14 +100,23 @@ type ComputeTargetHTTPSProxyStatus struct {
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
+	/* A unique specifier for the ComputeTargetHTTPSProxy resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *TargethttpsproxyObservedStateStatus `json:"observedState,omitempty"`
 
 	/* The unique identifier for the resource. */
 	// +optional
 	ProxyId *int64 `json:"proxyId,omitempty"`
 
+	/* The SelfLink for the resource. */
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
 }

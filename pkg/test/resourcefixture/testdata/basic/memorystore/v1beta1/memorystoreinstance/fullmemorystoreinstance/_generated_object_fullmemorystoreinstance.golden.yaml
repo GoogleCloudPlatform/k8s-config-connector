@@ -1,6 +1,8 @@
 apiVersion: memorystore.cnrm.cloud.google.com/v1beta1
 kind: MemorystoreInstance
 metadata:
+  annotations:
+    cnrm.cloud.google.com/last-changed-cookie: normalized-cookie
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender

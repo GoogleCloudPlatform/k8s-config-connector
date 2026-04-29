@@ -59,5 +59,11 @@ var (
 		Kind:    reflect.TypeOf(ParameterManagerParameter{}).Name(),
 	}
 
+	ParameterManagerParameterVersionGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ParameterManagerParameterVersion{}).Name(),
+	}
+
 	parametermanagerAPIVersion = SchemeGroupVersion.String()
 )

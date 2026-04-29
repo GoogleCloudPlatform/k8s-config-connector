@@ -107,9 +107,12 @@ spec:
                   value of FULL (default for GET request).
                 properties:
                   data:
-                    description: Required. bytes data for storing payload.
+                    description: Required. bytes data for storing payload. Provide
+                      base64-encoded value
                     format: byte
                     type: string
+                required:
+                - data
                 type: object
               resourceID:
                 description: The ParameterManagerParameterVersion name. If not given,

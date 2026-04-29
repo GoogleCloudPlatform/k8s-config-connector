@@ -55,6 +55,9 @@ func ResolveSQLInstanceRefs(ctx context.Context, kube client.Reader, obj *krm.SQ
 	if err := resolveSourceSQLInstanceRef(ctx, kube, obj); err != nil {
 		return err
 	}
+	if err := resolveFailoverDrReplicaRef(ctx, kube, obj); err != nil {
+		return err
+	}
 	if err := common.NormalizeReferences(ctx, kube, obj, nil); err != nil {
 		return err
 	}
@@ -298,5 +301,50 @@ func resolveSourceSQLInstanceRef(ctx context.Context, kube client.Reader, obj *k
 		return nil
 	} else {
 		return fmt.Errorf("must specify either spec.settings.cloneSource.sqlInstanceRef.external or spec.settings.cloneSource.sqlInstanceRef.name")
+	}
+}
+
+func resolveFailoverDrReplicaRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
+	if obj.Spec.ReplicationCluster == nil || obj.Spec.ReplicationCluster.FailoverDrReplicaRef == nil {
+		return nil
+	}
+
+	ref := obj.Spec.ReplicationCluster.FailoverDrReplicaRef
+
+	if ref.External != "" && ref.Name != "" {
+		return fmt.Errorf("cannot specify both spec.replicationCluster.failoverDrReplicaRef.external and spec.replicationCluster.failoverDrReplicaRef.name")
+	}
+
+	if ref.External != "" {
+		return nil
+	} else if ref.Name != "" {
+		if ref.Namespace == "" {
+			ref.Namespace = obj.Namespace
+		}
+
+		key := types.NamespacedName{
+			Namespace: ref.Namespace,
+			Name:      ref.Name,
+		}
+
+		replicaInstance := &unstructured.Unstructured{}
+		replicaInstance.SetGroupVersionKind(krm.SQLInstanceGVK)
+		if err := kube.Get(ctx, key, replicaInstance); err != nil {
+			if apierrors.IsNotFound(err) {
+				return k8s.NewReferenceNotFoundError(krm.SQLInstanceGVK, key)
+			}
+			return fmt.Errorf("error reading referenced replica instance %v: %w", key, err)
+		}
+
+		replicaInstanceName, err := refs.GetResourceID(replicaInstance)
+		if err != nil {
+			return err
+		}
+
+		obj.Spec.ReplicationCluster.FailoverDrReplicaRef.External = replicaInstanceName
+
+		return nil
+	} else {
+		return fmt.Errorf("must specify either spec.replicationCluster.failoverDrReplicaRef.external or spec.replicationCluster.failoverDrReplicaRef.name")
 	}
 }

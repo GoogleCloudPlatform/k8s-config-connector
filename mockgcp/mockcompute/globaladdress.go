@@ -63,7 +63,7 @@ func (s *GlobalAddressesV1) Insert(ctx context.Context, req *pb.InsertGlobalAddr
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetAddressResource()).(*pb.Address)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#address")

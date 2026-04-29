@@ -36,3 +36,11 @@ status:
     status: "True"
     type: Ready
   observedGeneration: 2
+  observedState:
+    managed:
+      authorizationAttemptInfo:
+      - domain: ${uniqueId}1.hashicorptest.com
+        state: AUTHORIZED
+      - domain: ${uniqueId}2.hashicorptest.com
+        state: AUTHORIZED
+      state: ACTIVE

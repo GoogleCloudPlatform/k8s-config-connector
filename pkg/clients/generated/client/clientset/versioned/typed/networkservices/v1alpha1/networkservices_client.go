@@ -34,6 +34,7 @@ type NetworkservicesV1alpha1Interface interface {
 	NetworkServicesEdgeCacheKeysetsGetter
 	NetworkServicesEdgeCacheOriginsGetter
 	NetworkServicesEdgeCacheServicesGetter
+	NetworkServicesLBRouteExtensionsGetter
 	NetworkServicesServiceBindingsGetter
 }
 
@@ -52,6 +53,10 @@ func (c *NetworkservicesV1alpha1Client) NetworkServicesEdgeCacheOrigins(namespac
 
 func (c *NetworkservicesV1alpha1Client) NetworkServicesEdgeCacheServices(namespace string) NetworkServicesEdgeCacheServiceInterface {
 	return newNetworkServicesEdgeCacheServices(c, namespace)
+}
+
+func (c *NetworkservicesV1alpha1Client) NetworkServicesLBRouteExtensions(namespace string) NetworkServicesLBRouteExtensionInterface {
+	return newNetworkServicesLBRouteExtensions(c, namespace)
 }
 
 func (c *NetworkservicesV1alpha1Client) NetworkServicesServiceBindings(namespace string) NetworkServicesServiceBindingInterface {

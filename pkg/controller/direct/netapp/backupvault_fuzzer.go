@@ -46,9 +46,11 @@ func netAppBackupVaultFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".backup_retention_policy")
 	f.Unimplemented_NotYetTriaged(".backup_vault_type")
 	f.Unimplemented_NotYetTriaged(".destination_backup_vault")
-	f.Unimplemented_NotYetTriaged(".encryption_config")
 	f.Unimplemented_NotYetTriaged(".source_backup_vault")
 	f.Unimplemented_NotYetTriaged(".source_region")
+	f.Unimplemented_NotYetTriaged(".encryption_state")
+	f.Unimplemented_NotYetTriaged(".backups_crypto_key_version")
+	f.Unimplemented_NotYetTriaged(".kms_config")
 
 	return f
 }

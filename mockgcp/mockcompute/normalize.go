@@ -32,6 +32,10 @@ const PlaceholderID = "1234567890"
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "compute.googleapis.com") && !strings.Contains(url, "www.googleapis.com") {
+		return
+	}
+
 	// General
 	replacements.ReplacePath(".creationTimestamp", PlaceholderTimestamp)
 	replacements.ReplacePath(".items[].creationTimestamp", PlaceholderTimestamp)
@@ -61,6 +65,9 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 
 	// BackendService
 	replacements.SortSlice(".backends")
+
+	// FutureReservation
+	replacements.ReplacePath(".status.existingMatchingUsageInfo.timestamp", PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
@@ -167,7 +174,7 @@ func isComputeAPI(event mockgcpregistry.Event) bool {
 		klog.Fatalf("cannot parse URL %q", event.URL())
 	}
 	switch u.Host {
-	case "compute.googleapis.com":
+	case "compute.googleapis.com", "www.googleapis.com":
 		return true
 	}
 	return false

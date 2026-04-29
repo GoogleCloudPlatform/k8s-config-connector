@@ -3497,6 +3497,128 @@ func local_request_ProjectsLocationsRegionalEndpointsServer_ListProjectsLocation
 
 }
 
+func request_ProjectsLocationsRemoteTransportProfilesServer_GetProjectsLocationsRemoteTransportProfile_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsRemoteTransportProfilesServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetProjectsLocationsRemoteTransportProfileRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.GetProjectsLocationsRemoteTransportProfile(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ProjectsLocationsRemoteTransportProfilesServer_GetProjectsLocationsRemoteTransportProfile_0(ctx context.Context, marshaler runtime.Marshaler, server ProjectsLocationsRemoteTransportProfilesServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetProjectsLocationsRemoteTransportProfileRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.GetProjectsLocationsRemoteTransportProfile(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_ProjectsLocationsRemoteTransportProfilesServer_ListProjectsLocationsRemoteTransportProfiles_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+)
+
+func request_ProjectsLocationsRemoteTransportProfilesServer_ListProjectsLocationsRemoteTransportProfiles_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsRemoteTransportProfilesServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListProjectsLocationsRemoteTransportProfilesRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsRemoteTransportProfilesServer_ListProjectsLocationsRemoteTransportProfiles_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.ListProjectsLocationsRemoteTransportProfiles(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ProjectsLocationsRemoteTransportProfilesServer_ListProjectsLocationsRemoteTransportProfiles_0(ctx context.Context, marshaler runtime.Marshaler, server ProjectsLocationsRemoteTransportProfilesServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListProjectsLocationsRemoteTransportProfilesRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsRemoteTransportProfilesServer_ListProjectsLocationsRemoteTransportProfiles_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.ListProjectsLocationsRemoteTransportProfiles(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 var (
 	filter_ProjectsLocationsServiceClassesServer_DeleteProjectsLocationsServiceClasse_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
@@ -5145,6 +5267,370 @@ func local_request_ProjectsLocationsSpokesServer_PatchProjectsLocationsSpoke_0(c
 
 }
 
+var (
+	filter_ProjectsLocationsTransportsServer_CreateProjectsLocationsTransport_0 = &utilities.DoubleArray{Encoding: map[string]int{"projects_locations_transport": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
+)
+
+func request_ProjectsLocationsTransportsServer_CreateProjectsLocationsTransport_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsTransportsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateProjectsLocationsTransportRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.ProjectsLocationsTransport); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsTransportsServer_CreateProjectsLocationsTransport_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.CreateProjectsLocationsTransport(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ProjectsLocationsTransportsServer_CreateProjectsLocationsTransport_0(ctx context.Context, marshaler runtime.Marshaler, server ProjectsLocationsTransportsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateProjectsLocationsTransportRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.ProjectsLocationsTransport); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsTransportsServer_CreateProjectsLocationsTransport_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.CreateProjectsLocationsTransport(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_ProjectsLocationsTransportsServer_DeleteProjectsLocationsTransport_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+)
+
+func request_ProjectsLocationsTransportsServer_DeleteProjectsLocationsTransport_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsTransportsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteProjectsLocationsTransportRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsTransportsServer_DeleteProjectsLocationsTransport_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.DeleteProjectsLocationsTransport(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ProjectsLocationsTransportsServer_DeleteProjectsLocationsTransport_0(ctx context.Context, marshaler runtime.Marshaler, server ProjectsLocationsTransportsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteProjectsLocationsTransportRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsTransportsServer_DeleteProjectsLocationsTransport_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.DeleteProjectsLocationsTransport(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_ProjectsLocationsTransportsServer_GetProjectsLocationsTransport_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsTransportsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetProjectsLocationsTransportRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.GetProjectsLocationsTransport(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ProjectsLocationsTransportsServer_GetProjectsLocationsTransport_0(ctx context.Context, marshaler runtime.Marshaler, server ProjectsLocationsTransportsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetProjectsLocationsTransportRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.GetProjectsLocationsTransport(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_ProjectsLocationsTransportsServer_ListProjectsLocationsTransports_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+)
+
+func request_ProjectsLocationsTransportsServer_ListProjectsLocationsTransports_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsTransportsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListProjectsLocationsTransportsRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsTransportsServer_ListProjectsLocationsTransports_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.ListProjectsLocationsTransports(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ProjectsLocationsTransportsServer_ListProjectsLocationsTransports_0(ctx context.Context, marshaler runtime.Marshaler, server ProjectsLocationsTransportsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListProjectsLocationsTransportsRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsTransportsServer_ListProjectsLocationsTransports_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.ListProjectsLocationsTransports(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_ProjectsLocationsTransportsServer_PatchProjectsLocationsTransport_0 = &utilities.DoubleArray{Encoding: map[string]int{"projects_locations_transport": 0, "name": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
+)
+
+func request_ProjectsLocationsTransportsServer_PatchProjectsLocationsTransport_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsTransportsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq PatchProjectsLocationsTransportRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.ProjectsLocationsTransport); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsTransportsServer_PatchProjectsLocationsTransport_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.PatchProjectsLocationsTransport(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ProjectsLocationsTransportsServer_PatchProjectsLocationsTransport_0(ctx context.Context, marshaler runtime.Marshaler, server ProjectsLocationsTransportsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq PatchProjectsLocationsTransportRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.ProjectsLocationsTransport); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsTransportsServer_PatchProjectsLocationsTransport_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.PatchProjectsLocationsTransport(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 // RegisterProjectsLocationsServerHandlerServer registers the http handlers for service ProjectsLocationsServer to "mux".
 // UnaryRPC     :call ProjectsLocationsServerServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
@@ -6503,6 +6989,65 @@ func RegisterProjectsLocationsRegionalEndpointsServerHandlerServer(ctx context.C
 	return nil
 }
 
+// RegisterProjectsLocationsRemoteTransportProfilesServerHandlerServer registers the http handlers for service ProjectsLocationsRemoteTransportProfilesServer to "mux".
+// UnaryRPC     :call ProjectsLocationsRemoteTransportProfilesServerServer directly.
+// StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterProjectsLocationsRemoteTransportProfilesServerHandlerFromEndpoint instead.
+func RegisterProjectsLocationsRemoteTransportProfilesServerHandlerServer(ctx context.Context, mux *runtime.ServeMux, server ProjectsLocationsRemoteTransportProfilesServerServer) error {
+
+	mux.Handle("GET", pattern_ProjectsLocationsRemoteTransportProfilesServer_GetProjectsLocationsRemoteTransportProfile_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsRemoteTransportProfilesServer/GetProjectsLocationsRemoteTransportProfile", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/remoteTransportProfiles/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ProjectsLocationsRemoteTransportProfilesServer_GetProjectsLocationsRemoteTransportProfile_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsRemoteTransportProfilesServer_GetProjectsLocationsRemoteTransportProfile_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_ProjectsLocationsRemoteTransportProfilesServer_ListProjectsLocationsRemoteTransportProfiles_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsRemoteTransportProfilesServer/ListProjectsLocationsRemoteTransportProfiles", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*}/remoteTransportProfiles"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ProjectsLocationsRemoteTransportProfilesServer_ListProjectsLocationsRemoteTransportProfiles_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsRemoteTransportProfilesServer_ListProjectsLocationsRemoteTransportProfiles_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
+}
+
 // RegisterProjectsLocationsServiceClassesServerHandlerServer registers the http handlers for service ProjectsLocationsServiceClassesServer to "mux".
 // UnaryRPC     :call ProjectsLocationsServiceClassesServerServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
@@ -7117,6 +7662,140 @@ func RegisterProjectsLocationsSpokesServerHandlerServer(ctx context.Context, mux
 		}
 
 		forward_ProjectsLocationsSpokesServer_PatchProjectsLocationsSpoke_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
+}
+
+// RegisterProjectsLocationsTransportsServerHandlerServer registers the http handlers for service ProjectsLocationsTransportsServer to "mux".
+// UnaryRPC     :call ProjectsLocationsTransportsServerServer directly.
+// StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterProjectsLocationsTransportsServerHandlerFromEndpoint instead.
+func RegisterProjectsLocationsTransportsServerHandlerServer(ctx context.Context, mux *runtime.ServeMux, server ProjectsLocationsTransportsServerServer) error {
+
+	mux.Handle("POST", pattern_ProjectsLocationsTransportsServer_CreateProjectsLocationsTransport_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsTransportsServer/CreateProjectsLocationsTransport", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*}/transports"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ProjectsLocationsTransportsServer_CreateProjectsLocationsTransport_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsTransportsServer_CreateProjectsLocationsTransport_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("DELETE", pattern_ProjectsLocationsTransportsServer_DeleteProjectsLocationsTransport_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsTransportsServer/DeleteProjectsLocationsTransport", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/transports/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ProjectsLocationsTransportsServer_DeleteProjectsLocationsTransport_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsTransportsServer_DeleteProjectsLocationsTransport_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_ProjectsLocationsTransportsServer_GetProjectsLocationsTransport_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsTransportsServer/GetProjectsLocationsTransport", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/transports/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ProjectsLocationsTransportsServer_GetProjectsLocationsTransport_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsTransportsServer_GetProjectsLocationsTransport_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_ProjectsLocationsTransportsServer_ListProjectsLocationsTransports_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsTransportsServer/ListProjectsLocationsTransports", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*}/transports"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ProjectsLocationsTransportsServer_ListProjectsLocationsTransports_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsTransportsServer_ListProjectsLocationsTransports_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PATCH", pattern_ProjectsLocationsTransportsServer_PatchProjectsLocationsTransport_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsTransportsServer/PatchProjectsLocationsTransport", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/transports/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ProjectsLocationsTransportsServer_PatchProjectsLocationsTransport_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsTransportsServer_PatchProjectsLocationsTransport_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -8963,6 +9642,103 @@ var (
 	forward_ProjectsLocationsRegionalEndpointsServer_ListProjectsLocationsRegionalEndpoints_0 = runtime.ForwardResponseMessage
 )
 
+// RegisterProjectsLocationsRemoteTransportProfilesServerHandlerFromEndpoint is same as RegisterProjectsLocationsRemoteTransportProfilesServerHandler but
+// automatically dials to "endpoint" and closes the connection when "ctx" gets done.
+func RegisterProjectsLocationsRemoteTransportProfilesServerHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+	conn, err := grpc.Dial(endpoint, opts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err != nil {
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+			return
+		}
+		go func() {
+			<-ctx.Done()
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+		}()
+	}()
+
+	return RegisterProjectsLocationsRemoteTransportProfilesServerHandler(ctx, mux, conn)
+}
+
+// RegisterProjectsLocationsRemoteTransportProfilesServerHandler registers the http handlers for service ProjectsLocationsRemoteTransportProfilesServer to "mux".
+// The handlers forward requests to the grpc endpoint over "conn".
+func RegisterProjectsLocationsRemoteTransportProfilesServerHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterProjectsLocationsRemoteTransportProfilesServerHandlerClient(ctx, mux, NewProjectsLocationsRemoteTransportProfilesServerClient(conn))
+}
+
+// RegisterProjectsLocationsRemoteTransportProfilesServerHandlerClient registers the http handlers for service ProjectsLocationsRemoteTransportProfilesServer
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "ProjectsLocationsRemoteTransportProfilesServerClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "ProjectsLocationsRemoteTransportProfilesServerClient"
+// doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
+// "ProjectsLocationsRemoteTransportProfilesServerClient" to call the correct interceptors.
+func RegisterProjectsLocationsRemoteTransportProfilesServerHandlerClient(ctx context.Context, mux *runtime.ServeMux, client ProjectsLocationsRemoteTransportProfilesServerClient) error {
+
+	mux.Handle("GET", pattern_ProjectsLocationsRemoteTransportProfilesServer_GetProjectsLocationsRemoteTransportProfile_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsRemoteTransportProfilesServer/GetProjectsLocationsRemoteTransportProfile", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/remoteTransportProfiles/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ProjectsLocationsRemoteTransportProfilesServer_GetProjectsLocationsRemoteTransportProfile_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsRemoteTransportProfilesServer_GetProjectsLocationsRemoteTransportProfile_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_ProjectsLocationsRemoteTransportProfilesServer_ListProjectsLocationsRemoteTransportProfiles_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsRemoteTransportProfilesServer/ListProjectsLocationsRemoteTransportProfiles", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*}/remoteTransportProfiles"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ProjectsLocationsRemoteTransportProfilesServer_ListProjectsLocationsRemoteTransportProfiles_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsRemoteTransportProfilesServer_ListProjectsLocationsRemoteTransportProfiles_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
+}
+
+var (
+	pattern_ProjectsLocationsRemoteTransportProfilesServer_GetProjectsLocationsRemoteTransportProfile_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "projects", "locations", "remoteTransportProfiles", "name"}, ""))
+
+	pattern_ProjectsLocationsRemoteTransportProfilesServer_ListProjectsLocationsRemoteTransportProfiles_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3, 2, 4}, []string{"v1", "projects", "locations", "parent", "remoteTransportProfiles"}, ""))
+)
+
+var (
+	forward_ProjectsLocationsRemoteTransportProfilesServer_GetProjectsLocationsRemoteTransportProfile_0 = runtime.ForwardResponseMessage
+
+	forward_ProjectsLocationsRemoteTransportProfilesServer_ListProjectsLocationsRemoteTransportProfiles_0 = runtime.ForwardResponseMessage
+)
+
 // RegisterProjectsLocationsServiceClassesServerHandlerFromEndpoint is same as RegisterProjectsLocationsServiceClassesServerHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
 func RegisterProjectsLocationsServiceClassesServerHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
@@ -9784,4 +10560,179 @@ var (
 	forward_ProjectsLocationsSpokesServer_ListProjectsLocationsSpokes_0 = runtime.ForwardResponseMessage
 
 	forward_ProjectsLocationsSpokesServer_PatchProjectsLocationsSpoke_0 = runtime.ForwardResponseMessage
+)
+
+// RegisterProjectsLocationsTransportsServerHandlerFromEndpoint is same as RegisterProjectsLocationsTransportsServerHandler but
+// automatically dials to "endpoint" and closes the connection when "ctx" gets done.
+func RegisterProjectsLocationsTransportsServerHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+	conn, err := grpc.Dial(endpoint, opts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err != nil {
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+			return
+		}
+		go func() {
+			<-ctx.Done()
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+		}()
+	}()
+
+	return RegisterProjectsLocationsTransportsServerHandler(ctx, mux, conn)
+}
+
+// RegisterProjectsLocationsTransportsServerHandler registers the http handlers for service ProjectsLocationsTransportsServer to "mux".
+// The handlers forward requests to the grpc endpoint over "conn".
+func RegisterProjectsLocationsTransportsServerHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterProjectsLocationsTransportsServerHandlerClient(ctx, mux, NewProjectsLocationsTransportsServerClient(conn))
+}
+
+// RegisterProjectsLocationsTransportsServerHandlerClient registers the http handlers for service ProjectsLocationsTransportsServer
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "ProjectsLocationsTransportsServerClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "ProjectsLocationsTransportsServerClient"
+// doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
+// "ProjectsLocationsTransportsServerClient" to call the correct interceptors.
+func RegisterProjectsLocationsTransportsServerHandlerClient(ctx context.Context, mux *runtime.ServeMux, client ProjectsLocationsTransportsServerClient) error {
+
+	mux.Handle("POST", pattern_ProjectsLocationsTransportsServer_CreateProjectsLocationsTransport_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsTransportsServer/CreateProjectsLocationsTransport", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*}/transports"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ProjectsLocationsTransportsServer_CreateProjectsLocationsTransport_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsTransportsServer_CreateProjectsLocationsTransport_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("DELETE", pattern_ProjectsLocationsTransportsServer_DeleteProjectsLocationsTransport_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsTransportsServer/DeleteProjectsLocationsTransport", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/transports/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ProjectsLocationsTransportsServer_DeleteProjectsLocationsTransport_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsTransportsServer_DeleteProjectsLocationsTransport_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_ProjectsLocationsTransportsServer_GetProjectsLocationsTransport_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsTransportsServer/GetProjectsLocationsTransport", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/transports/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ProjectsLocationsTransportsServer_GetProjectsLocationsTransport_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsTransportsServer_GetProjectsLocationsTransport_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_ProjectsLocationsTransportsServer_ListProjectsLocationsTransports_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsTransportsServer/ListProjectsLocationsTransports", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*}/transports"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ProjectsLocationsTransportsServer_ListProjectsLocationsTransports_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsTransportsServer_ListProjectsLocationsTransports_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PATCH", pattern_ProjectsLocationsTransportsServer_PatchProjectsLocationsTransport_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsTransportsServer/PatchProjectsLocationsTransport", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/transports/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ProjectsLocationsTransportsServer_PatchProjectsLocationsTransport_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsTransportsServer_PatchProjectsLocationsTransport_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
+}
+
+var (
+	pattern_ProjectsLocationsTransportsServer_CreateProjectsLocationsTransport_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3, 2, 4}, []string{"v1", "projects", "locations", "parent", "transports"}, ""))
+
+	pattern_ProjectsLocationsTransportsServer_DeleteProjectsLocationsTransport_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "projects", "locations", "transports", "name"}, ""))
+
+	pattern_ProjectsLocationsTransportsServer_GetProjectsLocationsTransport_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "projects", "locations", "transports", "name"}, ""))
+
+	pattern_ProjectsLocationsTransportsServer_ListProjectsLocationsTransports_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3, 2, 4}, []string{"v1", "projects", "locations", "parent", "transports"}, ""))
+
+	pattern_ProjectsLocationsTransportsServer_PatchProjectsLocationsTransport_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "projects", "locations", "transports", "name"}, ""))
+)
+
+var (
+	forward_ProjectsLocationsTransportsServer_CreateProjectsLocationsTransport_0 = runtime.ForwardResponseMessage
+
+	forward_ProjectsLocationsTransportsServer_DeleteProjectsLocationsTransport_0 = runtime.ForwardResponseMessage
+
+	forward_ProjectsLocationsTransportsServer_GetProjectsLocationsTransport_0 = runtime.ForwardResponseMessage
+
+	forward_ProjectsLocationsTransportsServer_ListProjectsLocationsTransports_0 = runtime.ForwardResponseMessage
+
+	forward_ProjectsLocationsTransportsServer_PatchProjectsLocationsTransport_0 = runtime.ForwardResponseMessage
 )

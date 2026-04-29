@@ -16,13 +16,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "deliveryPipeline \"projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-full-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
     "message": "deliveryPipeline \"projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-full-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }

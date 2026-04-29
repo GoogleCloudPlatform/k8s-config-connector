@@ -53,9 +53,7 @@ type DatasetaccessView struct {
 	/* Immutable. The ID of the project containing this table. */
 	ProjectId string `json:"projectId"`
 
-	/* Immutable. The ID of the table. The ID must contain only letters (a-z,
-	A-Z), numbers (0-9), or underscores (_). The maximum length
-	is 1,024 characters. */
+	/* Immutable. The ID of the table. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters. */
 	TableId string `json:"tableId"`
 }
 
@@ -64,13 +62,10 @@ type BigQueryDatasetAccessSpec struct {
 	// +optional
 	Dataset *DatasetaccessDataset `json:"dataset,omitempty"`
 
-	/* Immutable. A unique ID for this dataset, without the project name. The ID
-	must contain only letters (a-z, A-Z), numbers (0-9), or
-	underscores (_). The maximum length is 1,024 characters. */
+	/* Immutable. A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters. */
 	DatasetId string `json:"datasetId"`
 
-	/* Immutable. A domain to grant access to. Any users signed in with the
-	domain specified will be granted the specified access. */
+	/* Immutable. A domain to grant access to. Any users signed in with the domain specified will be granted the specified access. */
 	// +optional
 	Domain *string `json:"domain,omitempty"`
 
@@ -78,53 +73,38 @@ type BigQueryDatasetAccessSpec struct {
 	// +optional
 	GroupByEmail *string `json:"groupByEmail,omitempty"`
 
-	/* Immutable. Some other type of member that appears in the IAM Policy but isn't a user,
-	group, domain, or special group. For example: 'allUsers'. */
+	/* Immutable. Some other type of member that appears in the IAM Policy but isn't a user, group, domain, or special group. For example: 'allUsers'. */
 	// +optional
 	IamMember *string `json:"iamMember,omitempty"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The routine of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. Describes the rights granted to the user specified by the other
-	member of the access object. Basic, predefined, and custom roles are
-	supported. Predefined roles that have equivalent basic roles are
-	swapped by the API to their basic counterparts, and will show a diff
-	post-create. See
-	[official docs](https://cloud.google.com/bigquery/docs/access-control). */
+	/* Immutable. Describes the rights granted to the user specified by the other member of the access object. Basic, predefined, and custom roles are supported. Predefined roles that have equivalent basic roles are swapped by the API to their basic counterparts, and will show a diff post-create. See [official docs](https://cloud.google.com/bigquery/docs/access-control). */
 	// +optional
 	Role *string `json:"role,omitempty"`
 
 	/* Immutable. A special group to grant access to. Possible values include:
 
-
 	* 'projectOwners': Owners of the enclosing project.
-
 
 	* 'projectReaders': Readers of the enclosing project.
 
-
 	* 'projectWriters': Writers of the enclosing project.
-
 
 	* 'allAuthenticatedUsers': All authenticated BigQuery users. */
 	// +optional
 	SpecialGroup *string `json:"specialGroup,omitempty"`
 
-	/* Immutable. An email address of a user to grant access to. For example:
-	fred@example.com. */
+	/* Immutable. An email address of a user to grant access to. For example: fred@example.com. */
 	// +optional
 	UserByEmail *string `json:"userByEmail,omitempty"`
 
-	/* Immutable. A view from a different dataset to grant access to. Queries
-	executed against that view will have read access to tables in
-	this dataset. The role field is not required when this field is
-	set. If that view is updated by any user, access to the view
-	needs to be granted again via an update operation. */
+	/* Immutable. A view from a different dataset to grant access to. Queries executed against that view will have read access to tables in this dataset. The role field is not required when this field is set. If that view is updated by any user, access to the view needs to be granted again via an update operation. */
 	// +optional
 	View *DatasetaccessView `json:"view,omitempty"`
 }

@@ -39,7 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type DataCatalogPolicyTagSpec struct {
-	/* Description of this policy tag. It must: contain only unicode characters, tabs, newlines, carriage returns and page breaks; and be at most 2000 bytes long when encoded in UTF-8. If not set, defaults to an empty description. If not set, defaults to an empty description. */
+	/* Description of this policy tag. It must: contain only unicode characters, tabs, newlines, carriage returns and page breaks; and be at most 2000 bytes long when encoded in UTF-8. If not set, defaults to an empty description. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 

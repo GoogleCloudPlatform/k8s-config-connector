@@ -580,7 +580,7 @@ message AndroidAttributes {
   optional bool owner_profile_account = 4 [json_name="ownerProfileAccount"];
   // Ownership privileges on device.
   optional string ownership_privilege = 5 [json_name="ownershipPrivilege"];
-  // Whether device supports Android work profiles. If false, this service will not block access to corp data even if an administrator turns on the "Enforce Work Profile" policy.
+  // Whether the device supports Android work profiles. If false, this service will not block access to corp data even if an administrator turns on the "Enforce Work Profile" policy.
   optional bool supports_work_profile = 6 [json_name="supportsWorkProfile"];
   // Whether Android verified boot status is GREEN.
   optional bool verified_boot = 7 [json_name="verifiedBoot"];
@@ -612,7 +612,7 @@ message BlockDeviceUserResponse {
   optional DeviceUser device_user = 1 [json_name="deviceUser"];
 }
 
-// Contains information about browser profiles reported by the Clients on the device (e.g. [Endpoint Verification extension](https://chromewebstore.google.com/detail/endpoint-verification/callobklhcbilhphinckomhgkigmfocg?pli=1)).
+// Contains information about browser profiles reported by the clients on the device (e.g. [Endpoint Verification extension](https://chromewebstore.google.com/detail/endpoint-verification/callobklhcbilhphinckomhgkigmfocg?pli=1)).
 message BrowserAttributes {
   // Represents the current state of the [Chrome browser attributes](https://cloud.google.com/access-context-manager/docs/browser-attributes) sent by the clients on the device, such as [Endpoint Verification extension](https://chromewebstore.google.com/detail/endpoint-verification/callobklhcbilhphinckomhgkigmfocg?pli=1).
   optional BrowserInfo chrome_browser_info = 1 [json_name="chromeBrowserInfo"];

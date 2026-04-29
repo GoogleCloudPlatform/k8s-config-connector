@@ -1,0 +1,10 @@
+apiVersion: parametermanager.cnrm.cloud.google.com/v1alpha1
+kind: ParameterManagerParameterVersion
+metadata:
+  name: parametermanagerparameterversion-full-${uniqueId}
+spec:
+  parameterRef:
+    name: parametermanagerparameter-full-${uniqueId}
+  disabled: false
+  payload:
+    data: a2V5OgogICAgdmFsdWU=

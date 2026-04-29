@@ -28,7 +28,13 @@ import (
 	"github.com/google/go-cmp/cmp"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
+	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
@@ -37,6 +43,7 @@ import (
 
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/yaml"
@@ -1051,12 +1058,12 @@ func TestCRDObjectTypes(t *testing.T) {
 		"firestorebackupschedules.firestore.cnrm.cloud.google.com":                      true, // spec.dailyRecurrence is an empty object
 		"firestorefields.firestore.cnrm.cloud.google.com":                               true, // spec.indexConfig.indexes[].fields[].vectorConfig.flat is an empty object
 		"iamdenypolicies.iam.cnrm.cloud.google.com":                                     true, // status.observedState is an empty object
-		"memorystoreinstances.memorystore.cnrm.cloud.google.com":                        true, // status.observedState.stateInfo.updateInfo is an empty object
 		"monitoringdashboards.monitoring.cnrm.cloud.google.com":                         true, // spec.rowLayout.rows[].widgets[].singleViewGroup is an empty object
 		"recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com": true, // spec.actions[].allow/block/redirect are empty objects
 		"servicenetworkingpeereddnsdomains.servicenetworking.cnrm.cloud.google.com":     true, // status.observedState is an empty object
 		"spannerbackupschedules.spanner.cnrm.cloud.google.com":                          true, // spec.fullBackupSpec is an empty object
 		"vertexaiindexes.vertexai.cnrm.cloud.google.com":                                true, // spec.metadata.config.algorithmConfig.bruteForceConfig is an empty object
+
 	}
 
 	crds, err := crdloader.LoadAllCRDs()
@@ -1143,4 +1150,84 @@ func validateCRDProps(props *apiextensions.JSONSchemaProps, path string) error {
 		}
 	}
 	return nil
+}
+
+func TestIAMSupport(t *testing.T) {
+	smLoader, err := servicemappingloader.New()
+	if err != nil {
+		t.Fatalf("error loading service mappings: %v", err)
+	}
+	dclLoader := dclmetadata.New()
+	dclSchemaLoader, err := dclschemaloader.New()
+	if err != nil {
+		t.Fatalf("error loading dcl schemas: %v", err)
+	}
+
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		gvk := schema.GroupVersionKind{
+			Group:   crd.Spec.Group,
+			Version: crd.Spec.Versions[0].Name,
+			Kind:    crd.Spec.Names.Kind,
+		}
+
+		// Skip IAM resources themselves
+		if gvk.Group == "iam.cnrm.cloud.google.com" {
+			switch gvk.Kind {
+			case "IAMPolicy", "IAMPolicyMember", "IAMPartialPolicy", "IAMAuditConfig":
+				continue
+			}
+		}
+
+		discovered := supportedgvks.SupportsIAMByGVK(gvk)
+		actual := isIAMSupportedInKCC(gvk, smLoader, dclLoader, dclSchemaLoader)
+
+		if discovered && !actual {
+			errs = append(errs, fmt.Sprintf("[iam_gap_direct] crd=%s: supports IAM in REST but not in KCC direct", crd.Name))
+		}
+		if !discovered && actual {
+			// Report resources that support IAM in KCC but REST discovery didn't find it.
+			// This helps identify resources where IAM functions might be under a different name or path.
+			errs = append(errs, fmt.Sprintf("[iam_unexpected] crd=%s: supports IAM in KCC but REST discovery didn't find it", crd.Name))
+		}
+	}
+
+	sort.Strings(errs)
+
+	want := strings.Join(errs, "\n")
+
+	test.CompareGoldenFile(t, "testdata/exceptions/iamsupport.txt", want)
+}
+
+func isIAMSupportedInKCC(gvk schema.GroupVersionKind, _ *servicemappingloader.ServiceMappingLoader, _ dclmetadata.ServiceMetadataLoader, _ dclschemaloader.DCLSchemaLoader) bool {
+	// 1. Check Direct
+	if registry.IsDirectByGK(gvk.GroupKind()) {
+		return registry.IsIAMDirect(gvk.GroupKind())
+	}
+
+	// // 2. Check TF
+	// sm, _ := smLoader.GetServiceMapping(gvk.Group)
+	// if sm != nil {
+	// 	for _, rc := range sm.Spec.Resources {
+	// 		if rc.Kind == gvk.Kind {
+	// 			return rc.IAMConfig.PolicyName != "" || rc.IAMConfig.PolicyMemberName != ""
+	// 		}
+	// 	}
+	// }
+
+	// // 3. Check DCL
+	// if _, ok := dclLoader.GetResourceWithGVK(gvk); ok {
+	// 	dclSchema, err := dclschemaloader.GetDCLSchemaForGVK(gvk, dclLoader, dclSchemaLoader)
+	// 	if err == nil && dclSchema != nil {
+	// 		supportsIAM, _ := extension.HasIam(dclSchema)
+	// 		return supportsIAM
+	// 	}
+	// }
+
+	return false
 }

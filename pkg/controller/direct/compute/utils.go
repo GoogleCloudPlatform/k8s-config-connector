@@ -53,5 +53,6 @@ func IsSelfLinkEqual(a, b *string) bool {
 			}
 		}
 	}
+
 	return aVal == bVal
 }

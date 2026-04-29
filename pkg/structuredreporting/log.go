@@ -16,8 +16,12 @@ package structuredreporting
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"google.golang.org/protobuf/encoding/prototext"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
@@ -36,11 +40,51 @@ func (l *DebugLogListener) OnError(ctx context.Context, err error, args ...any) 
 		"error", err)
 }
 
+// FormatAny is a utility function that will render a string representation of a protobuf message, or any other object.
+func FormatAny(obj any) string {
+	v := obj
+	if protoValue, ok := obj.(protoreflect.Value); ok {
+		val := protoValue.Interface()
+		switch val := val.(type) {
+		case string:
+			v = val
+		case proto.Message:
+			v = val
+		case protoreflect.Message:
+			v = val.Interface()
+		default:
+			return fmt.Sprintf("%v (type:proto:%T)", val, val)
+		}
+	}
+	switch v := v.(type) {
+	case string:
+		return v
+	case proto.Message:
+		return prototext.Format(v)
+	default:
+		return fmt.Sprintf("%v (type:%T)", v, v)
+	}
+}
+
 // OnDiff is called when a controller calls ReportDiffs
 func (l *DebugLogListener) OnDiff(ctx context.Context, diffs *Diff) {
 	log := log.FromContext(ctx)
+
+	var diffFields []string
+	for _, field := range diffs.Fields {
+		oldValue := ""
+		if field.Old != nil {
+			oldValue = FormatAny(field.Old)
+		}
+		newValue := ""
+		if field.New != nil {
+			newValue = FormatAny(field.New)
+		}
+		diffFields = append(diffFields, fmt.Sprintf("%s: %s -> %s", field.ID, oldValue, newValue))
+	}
+
 	log.Info("structuredreporting OnDiff",
-		"diff.fields", diffs.Fields,
+		"diff.fields", diffFields,
 		"diff.isNewObject", diffs.IsNewObject,
 	)
 }

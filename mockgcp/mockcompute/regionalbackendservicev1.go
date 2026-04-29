@@ -59,11 +59,11 @@ func (s *RegionalBackendServicesV1) Insert(ctx context.Context, req *pb.InsertRe
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetBackendServiceResource()).(*pb.BackendService)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#backendService")
-	obj.Region = PtrTo(buildComputeSelfLink(ctx, "projects/"+name.Project.ID+"/regions/"+name.Region))
+	obj.Region = PtrTo(BuildComputeSelfLink(ctx, "projects/"+name.Project.ID+"/regions/"+name.Region))
 
 	s.populateBackendServiceDefaults(obj)
 

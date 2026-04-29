@@ -392,6 +392,19 @@ spec:
                         description: Output only. Memory size in GB of the node.
                         type: number
                     type: object
+                  pscAttachmentDetails:
+                    description: Output only. List of PSC connections for the instance.
+                    items:
+                      properties:
+                        connectionType:
+                          description: Output only. Type of Psc endpoint.
+                          type: string
+                        serviceAttachment:
+                          description: Output only. Service attachment URI which your
+                            self-created PscConnection should use as target.
+                          type: string
+                      type: object
+                    type: array
                   state:
                     description: Output only. Current state of the instance.
                     type: string
@@ -402,6 +415,17 @@ spec:
                       updateInfo:
                         description: Output only. Describes ongoing update when instance
                           state is UPDATING.
+                        properties:
+                          targetReplicaCount:
+                            description: Output only. Target number of replica nodes
+                              per shard for the instance.
+                            format: int32
+                            type: integer
+                          targetShardCount:
+                            description: Output only. Target number of shards for
+                              the instance.
+                            format: int32
+                            type: integer
                         type: object
                     type: object
                   uid:
@@ -787,6 +811,19 @@ spec:
                         description: Output only. Memory size in GB of the node.
                         type: number
                     type: object
+                  pscAttachmentDetails:
+                    description: Output only. List of PSC connections for the instance.
+                    items:
+                      properties:
+                        connectionType:
+                          description: Output only. Type of Psc endpoint.
+                          type: string
+                        serviceAttachment:
+                          description: Output only. Service attachment URI which your
+                            self-created PscConnection should use as target.
+                          type: string
+                      type: object
+                    type: array
                   state:
                     description: Output only. Current state of the instance.
                     type: string
@@ -797,6 +834,17 @@ spec:
                       updateInfo:
                         description: Output only. Describes ongoing update when instance
                           state is UPDATING.
+                        properties:
+                          targetReplicaCount:
+                            description: Output only. Target number of replica nodes
+                              per shard for the instance.
+                            format: int32
+                            type: integer
+                          targetShardCount:
+                            description: Output only. Target number of shards for
+                              the instance.
+                            format: int32
+                            type: integer
                         type: object
                     type: object
                   uid:

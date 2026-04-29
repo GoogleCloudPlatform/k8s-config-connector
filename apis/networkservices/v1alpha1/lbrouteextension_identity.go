@@ -98,6 +98,41 @@ func (obj *NetworkServicesLBRouteExtension) GetIdentity(ctx context.Context, rea
 	return id, nil
 }
 
+// NewLBRouteExtensionIdentity builds a LBRouteExtensionIdentity from the Config Connector LBRouteExtension object.
+func NewLBRouteExtensionIdentity(ctx context.Context, reader client.Reader, obj *NetworkServicesLBRouteExtension) (*LBRouteExtensionIdentity, error) {
+	id := &LBRouteExtensionIdentity{
+		parent: &parent.ProjectAndLocationParent{},
+	}
+
+	// Resolve user-configured Parent
+	if err := obj.Spec.ProjectAndLocationRef.Build(ctx, reader, obj.GetNamespace(), id.parent); err != nil {
+		return nil, err
+	}
+
+	// Get desired ID
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+	id.id = resourceID
+
+	// Use approved External
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		statusIdentity := &LBRouteExtensionIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, fmt.Errorf("cannot parse existing externalRef=%q: %w", externalRef, err)
+		}
+		if statusIdentity.String() != id.String() {
+			return nil, fmt.Errorf("existing externalRef=%q does not match the identity resolved from spec: %q", externalRef, id.String())
+		}
+	}
+	return id, nil
+}
+
 func ParseLBRouteExtensionExternal(external string) (parent *parent.ProjectAndLocationParent, resourceID string, err error) {
 	id := &LBRouteExtensionIdentity{}
 	if err := id.FromExternal(external); err != nil {

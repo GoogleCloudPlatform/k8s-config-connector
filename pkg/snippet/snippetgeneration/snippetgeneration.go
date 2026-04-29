@@ -103,6 +103,7 @@ var preferredSampleForResource = map[string]string{
 	"monitoringuptimecheckconfig":        "http-uptime-check-config",
 	"osconfigospolicyassignment":         "fixed-os-policy-assignment",
 	"parametermanagerparameter":          "globalparameter",
+	"parametermanagerparameterversion":   "jsonparameterversion",
 	"privatecacertificate":               "basic-certificate",
 	"privilegedaccessmanagerentitlement": "project-level-entitlement",
 	"project":                            "project-in-folder",

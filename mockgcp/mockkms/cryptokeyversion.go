@@ -30,7 +30,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/kms/v1"
+	pb "cloud.google.com/go/kms/apiv1/kmspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -122,12 +122,15 @@ func (r *kmsServer) CreateCryptoKeyVersion(ctx context.Context, req *pb.CreateCr
 
 	var obj *pb.CryptoKeyVersion
 	obj = proto.Clone(req.GetCryptoKeyVersion()).(*pb.CryptoKeyVersion)
+	if obj == nil {
+		obj = &pb.CryptoKeyVersion{}
+	}
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.GenerateTime = timestamppb.New(now)
 	obj.State = pb.CryptoKeyVersion_ENABLED
-	obj.Algorithm = req.CryptoKeyVersion.GetAlgorithm()
-	obj.ProtectionLevel = req.CryptoKeyVersion.GetProtectionLevel()
+	obj.Algorithm = req.GetCryptoKeyVersion().GetAlgorithm()
+	obj.ProtectionLevel = req.GetCryptoKeyVersion().GetProtectionLevel()
 
 	if err := r.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err

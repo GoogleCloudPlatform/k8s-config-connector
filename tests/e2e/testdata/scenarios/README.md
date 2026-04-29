@@ -55,3 +55,7 @@ a top-level field `TEST` on the object:
   wait ~ seconds for that value to show up.
 
 * Setting `WRITE-KUBE-OBJECT: false` will not export the KRM objects of the KCC resource.
+
+We also support a few special kinds:
+
+* `kind: SystemRun` will wait for a specified `duration` (in seconds or as a duration string like "2s") to allow for background reconciliation. It will capture all HTTP traffic during the wait but mark it as skippable in the golden log comparison (useful for avoiding flaky background traffic in logs).

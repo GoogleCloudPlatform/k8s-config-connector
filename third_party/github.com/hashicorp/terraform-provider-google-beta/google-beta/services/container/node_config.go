@@ -228,6 +228,13 @@ func schemaNodeConfig() *schema.Schema {
 								ValidateFunc: validation.IntAtLeast(0),
 								Description:  `Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size.`,
 							},
+							"data_cache_count": {
+								Type:         schema.TypeInt,
+								Optional:     true,
+								ForceNew:     true,
+								ValidateFunc: validation.IntAtLeast(0),
+								Description:  `Number of local SSDs to be utilized for GKE Data Cache. Uses NVMe interfaces.`,
+							},
 						},
 					},
 				},
@@ -776,6 +783,10 @@ func expandNodeConfig(v interface{}) *container.NodeConfig {
 		nc.EphemeralStorageLocalSsdConfig = &container.EphemeralStorageLocalSsdConfig{
 			LocalSsdCount: int64(conf["local_ssd_count"].(int)),
 		}
+		dataCacheCount, ok := conf["data_cache_count"]
+		if ok && dataCacheCount != nil {
+			nc.EphemeralStorageLocalSsdConfig.DataCacheCount = int64(dataCacheCount.(int))
+		}
 	}
 
 	if v, ok := nodeConfig["gcfs_config"]; ok && len(v.([]interface{})) > 0 {
@@ -1253,7 +1264,8 @@ func flattenEphemeralStorageLocalSsdConfig(c *container.EphemeralStorageLocalSsd
 	result := []map[string]interface{}{}
 	if c != nil {
 		result = append(result, map[string]interface{}{
-			"local_ssd_count": c.LocalSsdCount,
+			"local_ssd_count":  c.LocalSsdCount,
+			"data_cache_count": c.DataCacheCount,
 		})
 	}
 	return result

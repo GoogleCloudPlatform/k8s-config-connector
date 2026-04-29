@@ -38,7 +38,7 @@ mkdir -p ${THIRD_PARTY}/
 cd ${THIRD_PARTY}
 
 if [ ! -d "googleapis" ]; then
-    git clone https://github.com/googleapis/googleapis.git
+    git clone --depth 1 https://github.com/googleapis/googleapis.git
 fi
 
 if [ "${GOOGLEAPI_VERSION}" == "HEAD" ]; then

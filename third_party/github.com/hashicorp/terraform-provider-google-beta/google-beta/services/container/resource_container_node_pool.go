@@ -371,6 +371,14 @@ var schemaNodePool = map[string]*schema.Schema{
 					ValidateFunc: verify.ValidateIpCidrRange,
 					Description:  `The IP address range for pod IPs in this node pool. Only applicable if create_pod_range is true. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) to pick a specific range to use.`,
 				},
+				"subnetwork": {
+					Type:             schema.TypeString,
+					Optional:         true,
+					ForceNew:         true,
+					Computed:         true,
+					DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
+					Description:      `The name or self_link of the Google Cloud Compute Engine subnetwork in which the cluster's instances are launched.`,
+				},
 				"additional_node_network_configs": {
 					Type:        schema.TypeList,
 					Optional:    true,
@@ -1146,6 +1154,7 @@ func flattenNodeNetworkConfig(c *container.NodeNetworkConfig, d *schema.Resource
 			"create_pod_range":                d.Get(prefix + "network_config.0.create_pod_range"), // API doesn't return this value so we set the old one. Field is ForceNew + Required
 			"pod_ipv4_cidr_block":             c.PodIpv4CidrBlock,
 			"pod_range":                       c.PodRange,
+			"subnetwork":                      c.Subnetwork,
 			"enable_private_nodes":            c.EnablePrivateNodes,
 			"pod_cidr_overprovision_config":   flattenPodCidrOverprovisionConfig(c.PodCidrOverprovisionConfig),
 			"additional_node_network_configs": flattenAdditionalNodeNetworkConfig(c.AdditionalNodeNetworkConfigs),
@@ -1207,6 +1216,13 @@ func expandNodeNetworkConfig(v interface{}) *container.NodeNetworkConfig {
 
 	if v, ok := networkNodeConfig["pod_ipv4_cidr_block"]; ok {
 		nnc.PodIpv4CidrBlock = v.(string)
+	}
+
+	// Allow user to set the top-level node-pool subnetwork via network_config.subnetwork
+	if v, ok := networkNodeConfig["subnetwork"]; ok {
+		if s, ok := v.(string); ok && s != "" {
+			nnc.Subnetwork = s
+		}
 	}
 
 	if v, ok := networkNodeConfig["enable_private_nodes"]; ok {

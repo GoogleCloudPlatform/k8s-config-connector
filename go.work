@@ -5,6 +5,7 @@ toolchain go1.26.1
 use (
 	.
 	./dev/tools/controllerbuilder
+	./dev/tools/crd-mcp-server
 	./experiments/kompanion
 	./experiments/kubectl-plan
 	./experiments/tools/licensescan

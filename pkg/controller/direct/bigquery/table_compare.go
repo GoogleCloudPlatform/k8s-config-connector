@@ -36,23 +36,15 @@ func checkFieldValid(fields []*bigquery.TableFieldSchema) error {
 }
 
 func policyTagsEqual(a, b *bigquery.TableFieldSchemaPolicyTags) bool {
-	if a == nil && b == nil {
+	aEmpty := (a == nil || len(a.Names) == 0)
+	bEmpty := (b == nil || len(b.Names) == 0)
+	if aEmpty && bEmpty {
 		return true
 	}
-	if a == nil || b == nil {
+	if aEmpty || bEmpty {
 		return false
 	}
-	if a.Names == nil && b.Names == nil {
-		return true
-	}
-	// If one of a.Names or b.Names is nil.
-	if a.Names == nil || b.Names == nil {
-		// Suppress nil string and emptry string different.
-		if len(a.Names) == len(b.Names) {
-			return true
-		}
-		return false
-	}
+
 	if len(a.Names) != len(b.Names) {
 		return false
 	}

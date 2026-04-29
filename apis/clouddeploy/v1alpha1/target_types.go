@@ -42,7 +42,7 @@ type CloudDeployTargetSpec struct {
 	// the user, and not by Cloud Deploy. See
 	// https://google.aip.dev/128#annotations for more details such as format and
 	// size limitations.
-	// Annotations map[string]string `json:"annotations,omitempty"`
+	Annotations map[string]string `json:"annotations,omitempty"`
 
 	// Optional. Labels are attributes that can be set and used by both the
 	// user and by Cloud Deploy. Labels must meet the following constraints:

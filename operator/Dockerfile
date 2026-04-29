@@ -16,7 +16,7 @@
 ARG GKE_DISTROLESS_IMG=gcr.io/gke-release/gke-distroless/static:gke_distroless_20260207.00_p0
 
 # Build the manager binary
-FROM golang:1.26.1 AS builder
+FROM golang:1.26.2 AS builder
 
 # Copy in the Go source code
 WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector

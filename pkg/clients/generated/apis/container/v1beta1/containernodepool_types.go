@@ -114,6 +114,10 @@ type NodepoolEphemeralStorageConfig struct {
 }
 
 type NodepoolEphemeralStorageLocalSsdConfig struct {
+	/* Immutable. Number of local SSDs to be utilized for GKE Data Cache. Uses NVMe interfaces. */
+	// +optional
+	DataCacheCount *int64 `json:"dataCacheCount,omitempty"`
+
 	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size. */
 	LocalSsdCount int64 `json:"localSsdCount"`
 }
@@ -241,6 +245,10 @@ type NodepoolNetworkConfig struct {
 	/* Immutable. The ID of the secondary range for pod IPs. If create_pod_range is true, this ID is used for the new range. If create_pod_range is false, uses an existing secondary range with this ID. */
 	// +optional
 	PodRange *string `json:"podRange,omitempty"`
+
+	/* Immutable. The subnetwork path for the node pool. Format: projects/{project}/regions/{region}/subnetworks/{subnetwork}. If not set, the provider/API will choose the subnetwork (e.g. based on IP utilization) and report it here. */
+	// +optional
+	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type NodepoolNodeAffinity struct {

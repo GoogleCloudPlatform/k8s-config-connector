@@ -211,6 +211,8 @@ import (
 	fakefirestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1beta1/fake"
 	gkebackupv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkebackup/v1alpha1"
 	fakegkebackupv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkebackup/v1alpha1/fake"
+	gkehubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1alpha1"
+	fakegkehubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1alpha1/fake"
 	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1beta1"
 	fakegkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1beta1/fake"
 	healthcarev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/healthcare/v1alpha1"
@@ -239,6 +241,8 @@ import (
 	fakemanagedkafkav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/managedkafka/v1beta1/fake"
 	memcachev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memcache/v1beta1"
 	fakememcachev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memcache/v1beta1/fake"
+	memorystorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1alpha1"
+	fakememorystorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1alpha1/fake"
 	memorystorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1beta1"
 	fakememorystorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1beta1/fake"
 	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1alpha1"
@@ -880,6 +884,11 @@ func (c *Clientset) GkebackupV1alpha1() gkebackupv1alpha1.GkebackupV1alpha1Inter
 	return &fakegkebackupv1alpha1.FakeGkebackupV1alpha1{Fake: &c.Fake}
 }
 
+// GkehubV1alpha1 retrieves the GkehubV1alpha1Client
+func (c *Clientset) GkehubV1alpha1() gkehubv1alpha1.GkehubV1alpha1Interface {
+	return &fakegkehubv1alpha1.FakeGkehubV1alpha1{Fake: &c.Fake}
+}
+
 // GkehubV1beta1 retrieves the GkehubV1beta1Client
 func (c *Clientset) GkehubV1beta1() gkehubv1beta1.GkehubV1beta1Interface {
 	return &fakegkehubv1beta1.FakeGkehubV1beta1{Fake: &c.Fake}
@@ -948,6 +957,11 @@ func (c *Clientset) ManagedkafkaV1beta1() managedkafkav1beta1.ManagedkafkaV1beta
 // MemcacheV1beta1 retrieves the MemcacheV1beta1Client
 func (c *Clientset) MemcacheV1beta1() memcachev1beta1.MemcacheV1beta1Interface {
 	return &fakememcachev1beta1.FakeMemcacheV1beta1{Fake: &c.Fake}
+}
+
+// MemorystoreV1alpha1 retrieves the MemorystoreV1alpha1Client
+func (c *Clientset) MemorystoreV1alpha1() memorystorev1alpha1.MemorystoreV1alpha1Interface {
+	return &fakememorystorev1alpha1.FakeMemorystoreV1alpha1{Fake: &c.Fake}
 }
 
 // MemorystoreV1beta1 retrieves the MemorystoreV1beta1Client
