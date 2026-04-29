@@ -29,8 +29,8 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 
-	gcp "cloud.google.com/go/dataplex/apiv1"
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -100,11 +100,7 @@ func (m *zoneModel) AdapterForObject(ctx context.Context, op *directbase.Adapter
 	if err != nil {
 		return nil, fmt.Errorf("building gcp client: %w", err)
 	}
-	zoneClient, err := gcpClient.client(ctx)
-	if err != nil {
-		return nil, err
-	}
-	zoneAdapter.gcpClient = zoneClient
+	zoneAdapter.gcpClient = gcpClient
 
 	return zoneAdapter, nil
 }
@@ -115,7 +111,7 @@ func (m *zoneModel) AdapterForURL(ctx context.Context, url string) (directbase.A
 }
 
 type zoneAdapter struct {
-	gcpClient *gcp.Client
+	gcpClient *gcpClient
 	id        *krm.ZoneIdentity
 	desired   *pb.Zone
 	actual    *pb.Zone
@@ -128,8 +124,13 @@ func (a *zoneAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting dataplex zone", "name", a.id)
 
+	gcpClient, err := a.gcpClient.client(ctx)
+	if err != nil {
+		return false, fmt.Errorf("getting dataplex client: %w", err)
+	}
+
 	req := &pb.GetZoneRequest{Name: a.id.String()}
-	actual, err := a.gcpClient.GetZone(ctx, req)
+	actual, err := gcpClient.GetZone(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -146,12 +147,17 @@ func (a *zoneAdapter) Create(ctx context.Context, createOp *directbase.CreateOpe
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating dataplex zone", "name", a.id)
 
+	gcpClient, err := a.gcpClient.client(ctx)
+	if err != nil {
+		return fmt.Errorf("getting dataplex client: %w", err)
+	}
+
 	req := &pb.CreateZoneRequest{
 		Parent: fmt.Sprintf("projects/%s/locations/%s/lakes/%s", a.id.Project, a.id.Location, a.id.Lake),
 		Zone:   a.desired,
-		ZoneId: a.id.Zone,
-	}
-	op, err := a.gcpClient.CreateZone(ctx, req)
+		ZoneId: a.id.Zone,	}
+	op, err := gcpClient.CreateZone(ctx, req)
+
 	if err != nil {
 		return fmt.Errorf("creating dataplex zone %s: %w", a.id.String(), err)
 	}
@@ -229,11 +235,17 @@ func (a *zoneAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 	} else {
 		structuredreporting.ReportDiff(ctx, report)
 		log.V(2).Info("updating fields", "name", a.id, "paths", updateMask.Paths)
+
+		gcpClient, err := a.gcpClient.client(ctx)
+		if err != nil {
+			return fmt.Errorf("getting dataplex client: %w", err)
+		}
+
 		req := &pb.UpdateZoneRequest{
 			UpdateMask: updateMask,
 			Zone:       zone,
 		}
-		op, err := a.gcpClient.UpdateZone(ctx, req)
+		op, err := gcpClient.UpdateZone(ctx, req)
 		if err != nil {
 			return fmt.Errorf("updating dataplex zone %s: %w", a.id.String(), err)
 		}
@@ -285,8 +297,13 @@ func (a *zoneAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOpe
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting dataplex zone", "name", a.id)
 
+	gcpClient, err := a.gcpClient.client(ctx)
+	if err != nil {
+		return false, fmt.Errorf("getting dataplex client: %w", err)
+	}
+
 	req := &pb.DeleteZoneRequest{Name: a.id.String()}
-	op, err := a.gcpClient.DeleteZone(ctx, req)
+	op, err := gcpClient.DeleteZone(ctx, req)
 	if err != nil {
 		return false, fmt.Errorf("deleting dataplex zone %s: %w", a.id.String(), err)
 	}
@@ -301,4 +318,47 @@ func (a *zoneAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOpe
 	log.V(2).Info("successfully deleted dataplex zone", "name", a.id)
 
 	return true, nil
+}
+
+func (a *zoneAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot get iam policy for missing resource")
+	}
+
+	iamClient, err := a.gcpClient.iamClient(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam client: %w", err)
+	}
+
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := iamClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return policy, nil
+}
+
+func (a *zoneAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot set iam policy for missing resource")
+	}
+
+	iamClient, err := a.gcpClient.iamClient(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam client: %w", err)
+	}
+
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := iamClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return newPolicy, nil
 }
