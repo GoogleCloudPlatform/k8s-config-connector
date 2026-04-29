@@ -358,3 +358,56 @@ func doesTFResourceSupportAuditConfigs(rcs []*v1alpha1.ResourceConfig) bool {
 	// All ResourceConfigs for a given kind support or don't support IAM audit configs.
 	return rcs[0].IAMConfig.AuditConfigName != ""
 }
+
+func (a *iamValidatorHandler) directValidateIAMPolicy(policy *v1beta1.IAMPolicy) admission.Response {
+	resourceRef := policy.Spec.ResourceReference
+	supportsIAM, err := registry.SupportsIAM(resourceRef.GroupVersionKind().GroupKind())
+	if err != nil {
+		return admission.Errored(http.StatusInternalServerError, err)
+	}
+	if !supportsIAM {
+		return admission.Errored(http.StatusForbidden, fmt.Errorf("GroupVersionKind %v does not support IAM Policy", resourceRef.GroupVersionKind()))
+	}
+	if len(policy.Spec.AuditConfigs) > 0 {
+		return admission.Errored(http.StatusForbidden, fmt.Errorf("GroupVersionKind %v does not support IAM Audit Configs", resourceRef.GroupVersionKind()))
+	}
+	if doesIAMPolicyHaveConditions(policy) {
+		return admission.Errored(http.StatusForbidden, fmt.Errorf("GroupVersionKind %v does not support IAM Conditions", resourceRef.GroupVersionKind()))
+	}
+	return allowedResponse
+}
+
+func (a *iamValidatorHandler) directValidateIAMPartialPolicy(partialPolicy *v1beta1.IAMPartialPolicy) admission.Response {
+	resourceRef := partialPolicy.Spec.ResourceReference
+	supportsIAM, err := registry.SupportsIAM(resourceRef.GroupVersionKind().GroupKind())
+	if err != nil {
+		return admission.Errored(http.StatusInternalServerError, err)
+	}
+	if !supportsIAM {
+		return admission.Errored(http.StatusForbidden, fmt.Errorf("GroupVersionKind %v does not support IAM Partial Policy", resourceRef.GroupVersionKind()))
+	}
+	if doesIAMPartialPolicyHaveConditions(partialPolicy) {
+		return admission.Errored(http.StatusForbidden, fmt.Errorf("GroupVersionKind %v does not support IAM Conditions", resourceRef.GroupVersionKind()))
+	}
+	return allowedResponse
+}
+
+func (a *iamValidatorHandler) directValidateIAMPolicyMember(policyMember *v1beta1.IAMPolicyMember) admission.Response {
+	resourceRef := policyMember.Spec.ResourceReference
+	supportsIAM, err := registry.SupportsIAM(resourceRef.GroupVersionKind().GroupKind())
+	if err != nil {
+		return admission.Errored(http.StatusInternalServerError, err)
+	}
+	if !supportsIAM {
+		return admission.Errored(http.StatusForbidden, fmt.Errorf("GroupVersionKind %v does not support IAM Policy Member", resourceRef.GroupVersionKind()))
+	}
+	if doesIAMPolicyMemberHaveCondition(policyMember) {
+		return admission.Errored(http.StatusForbidden, fmt.Errorf("GroupVersionKind %v does not support IAM Conditions in IAM Policy Member", resourceRef.GroupVersionKind()))
+	}
+	return allowedResponse
+}
+
+func (a *iamValidatorHandler) directValidateIAMAuditConfig(auditConfig *v1beta1.IAMAuditConfig) admission.Response {
+	resourceRef := auditConfig.Spec.ResourceReference
+	return admission.Errored(http.StatusForbidden, fmt.Errorf("GroupVersionKind %v does not support IAM Audit Configs", resourceRef.GroupVersionKind()))
+}
