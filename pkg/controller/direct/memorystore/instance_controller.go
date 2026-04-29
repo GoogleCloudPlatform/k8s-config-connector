@@ -30,6 +30,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/memorystore/apiv1"
+	"cloud.google.com/go/iam/apiv1/iampb"
+	iam "cloud.google.com/go/iam/apiv1"
 
 	memorystorepb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
 	"google.golang.org/api/option"
@@ -67,6 +69,20 @@ func (m *modelInstance) client(ctx context.Context) (*gcp.Client, error) {
 	return gcpClient, err
 }
 
+func (m *modelInstance) iamClient(ctx context.Context) (*iam.IamPolicyClient, error) {
+	var opts []option.ClientOption
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	opts = append(opts, option.WithEndpoint("memorystore.googleapis.com:443"))
+	gcpClient, err := iam.NewIamPolicyRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building IAM client: %w", err)
+	}
+	return gcpClient, err
+}
+
 func (m *modelInstance) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
 	reader := op.Reader
@@ -86,6 +102,11 @@ func (m *modelInstance) AdapterForObject(ctx context.Context, op *directbase.Ada
 
 	// Get memorystore GCP client
 	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	iamClient, err := m.iamClient(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -111,6 +132,7 @@ func (m *modelInstance) AdapterForObject(ctx context.Context, op *directbase.Ada
 	return &InstanceAdapter{
 		id:        id,
 		gcpClient: gcpClient,
+		iamClient: iamClient,
 		desired:   desired,
 	}, nil
 }
@@ -123,6 +145,7 @@ func (m *modelInstance) AdapterForURL(ctx context.Context, url string) (directba
 type InstanceAdapter struct {
 	id        *refs.MemorystoreInstanceIdentity
 	gcpClient *gcp.Client
+	iamClient *iam.IamPolicyClient
 	desired   *memorystorepb.Instance
 	actual    *memorystorepb.Instance
 }
@@ -372,4 +395,37 @@ func (a *InstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.Delet
 		return false, fmt.Errorf("waiting delete Instance %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func (a *InstanceAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot get iam policy for missing resource")
+	}
+
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.iamClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return policy, nil
+}
+
+func (a *InstanceAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot set iam policy for missing resource")
+	}
+
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.iamClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return newPolicy, nil
 }
