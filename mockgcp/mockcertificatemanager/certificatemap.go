@@ -109,13 +109,13 @@ func (s *CertificateManagerV1) UpdateCertificateMap(ctx context.Context, req *pb
 		}
 	}
 
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
 	now := timestamppb.Now()
+	obj.UpdateTime = now
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
+
 	lroMetadata := &pb.OperationMetadata{
 		ApiVersion:            "v1",
 		CreateTime:            now,

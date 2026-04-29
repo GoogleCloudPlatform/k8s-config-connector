@@ -81,7 +81,6 @@ func (s *CertificateManagerV1) CreateDnsAuthorization(ctx context.Context, req *
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		result := proto.CloneOf(obj)
 		result.Labels = nil
-		lroMetadata.RequestedCancellation = false
 		return result, nil
 	})
 }
@@ -119,6 +118,8 @@ func (s *CertificateManagerV1) UpdateDnsAuthorization(ctx context.Context, req *
 	}
 
 	now := timestamppb.Now()
+	obj.UpdateTime = now
+
 	lroPrefix := fmt.Sprintf("projects/%s/locations/global", name.Project.ID)
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
