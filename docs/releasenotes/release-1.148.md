@@ -28,3 +28,8 @@
 *   Added a [comprehensive guide](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/docs/features/controller-configuration.md) for controller configuration, detailing Direct, Terraform, and DCL controllers, including precedence rules and overrides.
 *   Added [documentation](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/docs/features/containerresource.md) for enabling VerticalPodAutoscaler (VPA) for Config Connector pods using `ControllerResource` and `NamespacedControllerResource`.
 *   Added [documentation](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/docs/cli/README.md) for the `config-connector` CLI and specifically for the `preview` command.
+
+## Other improvements:
+
+*   [AccessContextManagerServicePerimeter](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/6970) Added `status.externalRef` and refreshed CRD descriptions.
+*   [GCS operations](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/5969) Migrated internal tool usage and documentation from `gsutil` to `gcloud storage`.
