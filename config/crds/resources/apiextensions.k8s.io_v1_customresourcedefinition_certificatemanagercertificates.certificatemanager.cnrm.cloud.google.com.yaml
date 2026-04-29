@@ -410,6 +410,61 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  managed:
+                    description: |-
+                      Immutable. Configuration and state of a Managed Certificate.
+                      Certificate Manager provisions and renews Managed Certificates
+                      automatically, for as long as it's authorized to do so.
+                    properties:
+                      authorizationAttemptInfo:
+                        description: |-
+                          Detailed state of the latest authorization attempt for each domain
+                          specified for this Managed Certificate.
+                        items:
+                          properties:
+                            details:
+                              description: |-
+                                Human readable explanation for reaching the state. Provided to help
+                                address the configuration issues.
+                                Not guaranteed to be stable. For programmatic access use 'failure_reason' field.
+                              type: string
+                            domain:
+                              description: Domain name of the authorization attempt.
+                              type: string
+                            failureReason:
+                              description: Reason for failure of the authorization
+                                attempt for the domain.
+                              type: string
+                            state:
+                              description: State of the domain for managed certificate
+                                issuance.
+                              type: string
+                          type: object
+                        type: array
+                      provisioningIssue:
+                        description: Information about issues with provisioning this
+                          Managed Certificate.
+                        items:
+                          properties:
+                            details:
+                              description: |-
+                                Human readable explanation about the issue. Provided to help address
+                                the configuration issues.
+                                Not guaranteed to be stable. For programmatic access use 'reason' field.
+                              type: string
+                            reason:
+                              description: Reason for provisioning failures.
+                              type: string
+                          type: object
+                        type: array
+                      state:
+                        description: A state of this Managed Certificate.
+                        type: string
+                    type: object
+                type: object
             type: object
         required:
         - spec
@@ -804,6 +859,61 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  managed:
+                    description: |-
+                      Immutable. Configuration and state of a Managed Certificate.
+                      Certificate Manager provisions and renews Managed Certificates
+                      automatically, for as long as it's authorized to do so.
+                    properties:
+                      authorizationAttemptInfo:
+                        description: |-
+                          Detailed state of the latest authorization attempt for each domain
+                          specified for this Managed Certificate.
+                        items:
+                          properties:
+                            details:
+                              description: |-
+                                Human readable explanation for reaching the state. Provided to help
+                                address the configuration issues.
+                                Not guaranteed to be stable. For programmatic access use 'failure_reason' field.
+                              type: string
+                            domain:
+                              description: Domain name of the authorization attempt.
+                              type: string
+                            failureReason:
+                              description: Reason for failure of the authorization
+                                attempt for the domain.
+                              type: string
+                            state:
+                              description: State of the domain for managed certificate
+                                issuance.
+                              type: string
+                          type: object
+                        type: array
+                      provisioningIssue:
+                        description: Information about issues with provisioning this
+                          Managed Certificate.
+                        items:
+                          properties:
+                            details:
+                              description: |-
+                                Human readable explanation about the issue. Provided to help address
+                                the configuration issues.
+                                Not guaranteed to be stable. For programmatic access use 'reason' field.
+                              type: string
+                            reason:
+                              description: Reason for provisioning failures.
+                              type: string
+                          type: object
+                        type: array
+                      state:
+                        description: A state of this Managed Certificate.
+                        type: string
+                    type: object
+                type: object
             type: object
         required:
         - spec
