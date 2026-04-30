@@ -125,6 +125,8 @@ spec:
                         - instanceGroupRef
                       - required:
                         - networkEndpointGroupRef
+                      - required:
+                        - regionNetworkEndpointGroupRef
                       properties:
                         instanceGroupRef:
                           oneOf:
@@ -173,6 +175,34 @@ spec:
                             external:
                               description: 'Allowed value: The `selfLink` field of
                                 a `ComputeNetworkEndpointGroup` resource.'
+                              type: string
+                            name:
+                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                              type: string
+                            namespace:
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              type: string
+                          type: object
+                        regionNetworkEndpointGroupRef:
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: 'Allowed value: The `selfLink` field of
+                                a `ComputeRegionNetworkEndpointGroup` resource.'
                               type: string
                             name:
                               description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
