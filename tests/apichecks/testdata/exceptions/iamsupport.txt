@@ -53,3 +53,4 @@
 [iam_gap_direct] crd=services.serviceusage.cnrm.cloud.google.com: supports IAM in REST but not in KCC direct
 [iam_gap_direct] crd=spannerdatabases.spanner.cnrm.cloud.google.com: supports IAM in REST but not in KCC direct
 [iam_gap_direct] crd=spannerinstances.spanner.cnrm.cloud.google.com: supports IAM in REST but not in KCC direct
+[iam_unexpected] crd=secretmanagersecrets.secretmanager.cnrm.cloud.google.com: supports IAM in KCC but REST discovery didn't find it
