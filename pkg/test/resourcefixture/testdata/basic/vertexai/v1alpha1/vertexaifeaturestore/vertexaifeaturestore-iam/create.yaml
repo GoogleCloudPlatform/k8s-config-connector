@@ -17,7 +17,7 @@ kind: IAMPolicyMember
 metadata:
   name: iampolicymember${uniqueId}
 spec:
-  member: serviceAccount:iamserviceaccount${uniqueId}@${projectId}.iam.gserviceaccount.com
+  member: serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com
   role: roles/aiplatform.user
   resourceRef:
     apiVersion: vertexai.cnrm.cloud.google.com/v1alpha1

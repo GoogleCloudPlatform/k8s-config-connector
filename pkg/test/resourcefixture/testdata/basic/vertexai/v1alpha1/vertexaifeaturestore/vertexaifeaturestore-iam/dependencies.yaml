@@ -27,6 +27,6 @@ spec:
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
-  name: iamserviceaccount${uniqueId}
+  name: gsa-${uniqueId}
 spec:
   displayName: IAM Service Account
