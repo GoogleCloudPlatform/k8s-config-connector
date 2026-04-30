@@ -98,6 +98,28 @@ spec:
 			expectedEventType: []EventType{EventTypeReconcileStart, EventTypeReconcileEnd},
 		},
 		{
+			Group:     "iam.cnrm.cloud.google.com",
+			Kind:      "IAMPartialPolicy",
+			Namespace: ns.GetName(),
+			Name:      "iampartialpolicy-sample",
+		}: {
+			resourceSpec: `apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: iampartialpolicy-sample
+spec:
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: projects/mock-project
+  bindings:
+    - role: roles/viewer
+      members:
+        - member: domain:google.com
+`,
+			expectedEventType: []EventType{EventTypeReconcileStart, EventTypeReconcileEnd},
+		},
+		{
 			Group:     "spanner.cnrm.cloud.google.com",
 			Kind:      "SpannerInstance",
 			Namespace: ns.GetName(),
