@@ -23,21 +23,22 @@ import (
 	"sort"
 	"strings"
 
+	"net/http"
+
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudidentity/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
-	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	api "google.golang.org/api/cloudidentity/v1beta1"
 	"google.golang.org/api/googleapi"
-	"google.golang.org/api/transport/http"
+	httptransport "google.golang.org/api/transport/http"
 	"google.golang.org/protobuf/encoding/protojson"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"net/http"
 )
 
 func init() {
@@ -82,7 +83,7 @@ func (m *modelGroup) AdapterForObject(ctx context.Context, op *directbase.Adapte
 		return nil, err
 	}
 
-	httpClient, _, err := http.NewClient(ctx, opts...)
+	httpClient, _, err := httptransport.NewClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("error creating http client: %w", err)
 	}
