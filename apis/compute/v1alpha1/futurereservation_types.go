@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -156,6 +157,33 @@ type AllocationAggregateReservation struct {
 	WorkloadType *string `json:"workloadType,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.ShareSettings
+type ShareSettings struct {
+	// A map of key(i.e. project or other shared resources) and associated project config. This is only valid when shareType's value is SPECIFIC_PROJECTS.`
+	// +kcc:proto:field=google.cloud.compute.v1.ShareSettingsProjectConfig.project_map
+	ProjectMap []ShareSettingsProjectMap `json:"projectMap,omitempty"`
+
+	// Type of sharing for this shared-reservation
+	//  Check the ShareType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ShareSettings.share_type
+	ShareType *string `json:"shareType,omitempty"`
+}
+
+type ShareSettingsProjectMap struct {
+	// +required
+	KeyRef *common.ResourceReference `json:"keyRef"`
+
+	Value *ShareSettingsProjectConfig `json:"value,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.ShareSettingsProjectConfig
+type ShareSettingsProjectConfig struct {
+	// The project ID, should be same as the key of this project config in the
+	//  parent map.
+	// +kcc:proto:field=google.cloud.compute.v1.ShareSettingsProjectConfig.project_id
+	ProjectIDRef *refsv1beta1.ProjectRef `json:"projectIDRef,omitempty"`
+}
+
 // ComputeFutureReservationStatus defines the config connector machine state of ComputeFutureReservation
 type ComputeFutureReservationStatus struct {
 	/* Conditions represent the latest available observations of the
@@ -215,6 +243,42 @@ type AllocationAggregateReservationObservedState struct {
 	// Output only. [Output only] List of resources currently in use.
 	// +kcc:proto:field=google.cloud.compute.v1.AllocationAggregateReservation.in_use_resources
 	InUseResources []AllocationAggregateReservationReservedResourceInfo `json:"inUseResources,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.FutureReservationStatusLastKnownGoodStateFutureReservationSpecs
+type FutureReservationStatusLastKnownGoodStateFutureReservationSpecs struct {
+	// Output only. [Output Only] The previous share settings of the Future Reservation.
+	// +kcc:proto:field=google.cloud.compute.v1.FutureReservationStatusLastKnownGoodStateFutureReservationSpecs.share_settings
+	ShareSettings *ShareSettingsObservedState `json:"shareSettings,omitempty"`
+
+	// Output only. [Output Only] The previous instance related properties of the
+	//  Future Reservation.
+	// +kcc:proto:field=google.cloud.compute.v1.FutureReservationStatusLastKnownGoodStateFutureReservationSpecs.specific_sku_properties
+	SpecificSkuProperties *FutureReservationSpecificSkuProperties `json:"specificSkuProperties,omitempty"`
+
+	// Output only. [Output Only] The previous time window of the Future Reservation.
+	// +kcc:proto:field=google.cloud.compute.v1.FutureReservationStatusLastKnownGoodStateFutureReservationSpecs.time_window
+	TimeWindow *FutureReservationTimeWindow `json:"timeWindow,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.ShareSettings
+type ShareSettingsObservedState struct {
+	// A map of project id and project config. This is only valid when shareType's value is SPECIFIC_PROJECTS.`
+	// +kcc:proto:field=google.cloud.compute.v1.ShareSettingsProjectConfig.project_map
+	ProjectMap map[string]ShareSettingsProjectConfigObservedState `json:"projectMap,omitempty"`
+
+	// Type of sharing for this shared-reservation
+	//  Check the ShareType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ShareSettings.share_type
+	ShareType *string `json:"shareType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.ShareSettingsProjectConfig
+type ShareSettingsProjectConfigObservedState struct {
+	// The project ID, should be same as the key of this project config in the
+	//  parent map.
+	// +kcc:proto:field=google.cloud.compute.v1.ShareSettingsProjectConfig.project_id
+	ProjectID *string `json:"projectID,omitempty"`
 }
 
 // +genclient

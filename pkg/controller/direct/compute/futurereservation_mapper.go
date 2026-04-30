@@ -16,7 +16,9 @@ package compute
 
 import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
+	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -285,7 +287,7 @@ func FutureReservationStatusLastKnownGoodStateFutureReservationSpecs_v1alpha1_Fr
 		return nil
 	}
 	out := &krmcomputev1alpha1.FutureReservationStatusLastKnownGoodStateFutureReservationSpecs{}
-	out.ShareSettings = ShareSettings_v1alpha1_FromProto(mapCtx, in.GetShareSettings())
+	out.ShareSettings = ShareSettingsObservedState_v1alpha1_FromProto(mapCtx, in.GetShareSettings())
 	out.SpecificSkuProperties = FutureReservationSpecificSkuProperties_v1alpha1_FromProto(mapCtx, in.GetSpecificSkuProperties())
 	out.TimeWindow = FutureReservationTimeWindow_v1alpha1_FromProto(mapCtx, in.GetTimeWindow())
 	return out
@@ -295,7 +297,7 @@ func FutureReservationStatusLastKnownGoodStateFutureReservationSpecs_v1alpha1_To
 		return nil
 	}
 	out := &pb.FutureReservationStatusLastKnownGoodStateFutureReservationSpecs{}
-	out.ShareSettings = ShareSettings_v1alpha1_ToProto(mapCtx, in.ShareSettings)
+	out.ShareSettings = ShareSettingsObservedState_v1alpha1_ToProto(mapCtx, in.ShareSettings)
 	out.SpecificSkuProperties = FutureReservationSpecificSkuProperties_v1alpha1_ToProto(mapCtx, in.SpecificSkuProperties)
 	out.TimeWindow = FutureReservationTimeWindow_v1alpha1_ToProto(mapCtx, in.TimeWindow)
 	return out
@@ -334,5 +336,97 @@ func FutureReservationTimeWindow_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	out.Duration = Duration_v1alpha1_ToProto(mapCtx, in.Duration)
 	out.EndTime = in.EndTime
 	out.StartTime = in.StartTime
+	return out
+}
+func ShareSettings_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettings) *krmcomputev1alpha1.ShareSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ShareSettings{}
+	if in.ProjectMap != nil {
+		for k, v := range in.ProjectMap {
+			out.ProjectMap = append(out.ProjectMap, krmcomputev1alpha1.ShareSettingsProjectMap{
+				KeyRef: &common.ResourceReference{
+					External: k,
+				},
+				Value: ShareSettingsProjectConfig_v1alpha1_FromProto(mapCtx, v),
+			})
+		}
+	}
+	out.ShareType = in.ShareType
+	return out
+}
+func ShareSettings_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ShareSettings) *pb.ShareSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ShareSettings{}
+	if in.ProjectMap != nil {
+		out.ProjectMap = make(map[string]*pb.ShareSettingsProjectConfig)
+		for _, entry := range in.ProjectMap {
+			if entry.KeyRef != nil {
+				if entry.KeyRef.External == "" {
+					mapCtx.Errorf("reference %s was not pre-resolved", entry.KeyRef.Name)
+					continue
+				}
+			}
+			out.ProjectMap[entry.KeyRef.External] = ShareSettingsProjectConfig_v1alpha1_ToProto(mapCtx, entry.Value)
+		}
+	}
+	out.ShareType = in.ShareType
+	return out
+}
+func ShareSettingsProjectConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettingsProjectConfig) *krmcomputev1alpha1.ShareSettingsProjectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ShareSettingsProjectConfig{}
+	if in.GetProjectId() != "" {
+		out.ProjectIDRef = &refsv1beta1.ProjectRef{External: in.GetProjectId()}
+	}
+	return out
+}
+func ShareSettingsProjectConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ShareSettingsProjectConfig) *pb.ShareSettingsProjectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ShareSettingsProjectConfig{}
+	if in.ProjectIDRef != nil {
+		if in.ProjectIDRef.External == "" {
+			mapCtx.Errorf("reference %s was not pre-resolved", in.ProjectIDRef.Name)
+		}
+		out.ProjectId = &in.ProjectIDRef.External
+	}
+	return out
+}
+func ShareSettingsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettings) *krmcomputev1alpha1.ShareSettingsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ShareSettingsObservedState{}
+	if in.ProjectMap != nil {
+		out.ProjectMap = make(map[string]krmcomputev1alpha1.ShareSettingsProjectConfigObservedState)
+		for k, v := range in.ProjectMap {
+			val := ShareSettingsProjectConfigObservedState_v1alpha1_FromProto(mapCtx, v)
+			if val != nil {
+				out.ProjectMap[k] = *val
+			}
+		}
+	}
+	out.ShareType = in.ShareType
+	return out
+}
+func ShareSettingsObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ShareSettingsObservedState) *pb.ShareSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ShareSettings{}
+	if in.ProjectMap != nil {
+		out.ProjectMap = make(map[string]*pb.ShareSettingsProjectConfig)
+		for k, v := range in.ProjectMap {
+			out.ProjectMap[k] = ShareSettingsProjectConfigObservedState_v1alpha1_ToProto(mapCtx, &v)
+		}
+	}
+	out.ShareType = in.ShareType
 	return out
 }

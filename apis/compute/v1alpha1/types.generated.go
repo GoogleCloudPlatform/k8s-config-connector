@@ -379,22 +379,6 @@ type FutureReservationStatusLastKnownGoodState struct {
 	ProcurementStatus *string `json:"procurementStatus,omitempty"`
 }
 
-// +kcc:proto=google.cloud.compute.v1.FutureReservationStatusLastKnownGoodStateFutureReservationSpecs
-type FutureReservationStatusLastKnownGoodStateFutureReservationSpecs struct {
-	// Output only. [Output Only] The previous share settings of the Future Reservation.
-	// +kcc:proto:field=google.cloud.compute.v1.FutureReservationStatusLastKnownGoodStateFutureReservationSpecs.share_settings
-	ShareSettings *ShareSettings `json:"shareSettings,omitempty"`
-
-	// Output only. [Output Only] The previous instance related properties of the
-	//  Future Reservation.
-	// +kcc:proto:field=google.cloud.compute.v1.FutureReservationStatusLastKnownGoodStateFutureReservationSpecs.specific_sku_properties
-	SpecificSkuProperties *FutureReservationSpecificSkuProperties `json:"specificSkuProperties,omitempty"`
-
-	// Output only. [Output Only] The previous time window of the Future Reservation.
-	// +kcc:proto:field=google.cloud.compute.v1.FutureReservationStatusLastKnownGoodStateFutureReservationSpecs.time_window
-	TimeWindow *FutureReservationTimeWindow `json:"timeWindow,omitempty"`
-}
-
 // +kcc:proto=google.cloud.compute.v1.FutureReservationStatusSpecificSKUProperties
 type FutureReservationStatusSpecificSkuProperties struct {
 	// ID of the instance template used to populate the Future Reservation
@@ -522,23 +506,4 @@ type NetworkAttachmentConnectedEndpoint struct {
 	// [Output Only] The CIDR range of the subnet from which the IPv4 internal IP was allocated from.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachmentConnectedEndpoint.subnetwork_cidr_range
 	SubnetworkCIDRRange *string `json:"subnetworkCIDRRange,omitempty"`
-}
-
-// +kcc:proto=google.cloud.compute.v1.ShareSettings
-type ShareSettings struct {
-
-	// TODO: unsupported map type with key string and value message
-
-	// Type of sharing for this shared-reservation
-	//  Check the ShareType enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1.ShareSettings.share_type
-	ShareType *string `json:"shareType,omitempty"`
-}
-
-// +kcc:proto=google.cloud.compute.v1.ShareSettingsProjectConfig
-type ShareSettingsProjectConfig struct {
-	// The project ID, should be same as the key of this project config in the
-	//  parent map.
-	// +kcc:proto:field=google.cloud.compute.v1.ShareSettingsProjectConfig.project_id
-	ProjectID *string `json:"projectID,omitempty"`
 }
