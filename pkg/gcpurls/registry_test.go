@@ -72,8 +72,8 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}":                       true,
 		"//bigtableadmin.googleapis.com/projects/{}/instances/{}/appProfiles/{}":                  true,
 		"//workflowexecutions.googleapis.com/projects/{}/locations/{}/workflows/{}/executions/{}": true,
+		"//compute.googleapis.com/projects/{}/zones/{}/futureReservations/{}":                     true,
 	}
-
 	for _, tmpl := range templates {
 		fullURL := "//" + tmpl.Host() + "/" + tmpl.CanonicalForm()
 		normalized := normalizeTemplateFormat(fullURL)
