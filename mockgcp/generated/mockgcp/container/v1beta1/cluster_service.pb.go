@@ -3322,6 +3322,8 @@ const (
 	// Secrets in etcd are stored in plain text (at etcd level) - this is
 	// unrelated to Compute Engine level full disk encryption.
 	DatabaseEncryption_DECRYPTED DatabaseEncryption_State = 2
+	// Secrets in etcd are encrypted.
+	DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED DatabaseEncryption_State = 3
 )
 
 // Enum value maps for DatabaseEncryption_State.
@@ -3330,11 +3332,13 @@ var (
 		0: "UNKNOWN",
 		1: "ENCRYPTED",
 		2: "DECRYPTED",
+		3: "ALL_OBJECTS_ENCRYPTION_ENABLED",
 	}
 	DatabaseEncryption_State_value = map[string]int32{
-		"UNKNOWN":   0,
-		"ENCRYPTED": 1,
-		"DECRYPTED": 2,
+		"UNKNOWN":                        0,
+		"ENCRYPTED":                      1,
+		"DECRYPTED":                      2,
+		"ALL_OBJECTS_ENCRYPTION_ENABLED": 3,
 	}
 )
 

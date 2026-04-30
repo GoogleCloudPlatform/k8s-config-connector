@@ -522,14 +522,14 @@ spec:
               databaseEncryption:
                 description: 'Application-layer Secrets Encryption settings. The object
                   format is {state = string, key_name = string}. Valid values of state
-                  are: "ENCRYPTED"; "DECRYPTED". key_name is the name of a CloudKMS
-                  key.'
+                  are: "ENCRYPTED"; "ALL_OBJECTS_ENCRYPTION_ENABLED"; "DECRYPTED".
+                  key_name is the name of a CloudKMS key.'
                 properties:
                   keyName:
                     description: The key to use to encrypt/decrypt secrets.
                     type: string
                   state:
-                    description: ENCRYPTED or DECRYPTED.
+                    description: ENCRYPTED, ALL_OBJECTS_ENCRYPTION_ENABLED or DECRYPTED.
                     type: string
                 required:
                 - state
