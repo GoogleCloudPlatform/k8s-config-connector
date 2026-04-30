@@ -25,12 +25,12 @@ Your goal is to ensure that release manifests are correctly updated and that rel
 
 # Scan Trigger: Open Release PRs
 1.  **Identify PRs**:
-    - Search for open PRs with the `release` label: `gh pr list --state open --label "release"`.
+    - Search for open PRs with the `area/release` label: `gh pr list --state open --label "area/release"`.
     - For each identified PR, proceed to perform the review tasks below.
 
 # Task 1: Identify PR Type
 1.  **Analyze PR Content**: Determine if the PR is for **Release Manifest Generation** or **Release Notes**.
-    - Manifest generation PRs typically modify files in `config/crds/resources/`, `operator/channels/`, and update version strings.
+    - Manifest generation PRs typically modify files in `operator/channels/` and update version strings.
     - Release notes PRs typically modify files in `docs/releasenotes/`.
 
 # Task 2: Review Release Manifest Generation PRs
@@ -39,8 +39,6 @@ Your goal is to ensure that release manifests are correctly updated and that rel
     - Verify that all instances of the version strings that need to be updated have been updated.
     - Check image tags in deployment manifests and kustomization files. If you find an old version tag (e.g., `1.147.0`) where the new version (e.g., `1.148.0`) should be, add a review comment pointing it out.
     - Check version labels in CRDs (e.g., `cnrm.cloud.google.com/version`). Ensure they are updated to the new release version.
-2.  **Summary of CRD Changes**:
-    - If possible, provide a summary of changes in `config/crds/resources/`. Highlight new CRDs, deleted CRDs, or significant schema changes.
 
 # Task 3: Review Release Notes PRs
 1.  **Verify Grounding**:
