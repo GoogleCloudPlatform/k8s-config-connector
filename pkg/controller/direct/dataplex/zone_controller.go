@@ -21,6 +21,8 @@
 package dataplex
 
 import (
+	"strings"
+
 	"context"
 	"fmt"
 	"reflect"
@@ -106,7 +108,28 @@ func (m *zoneModel) AdapterForObject(ctx context.Context, op *directbase.Adapter
 }
 
 func (m *zoneModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
+	// Format is //dataplex.googleapis.com/projects/PROJECT_ID/locations/LOCATION/lakes/LAKE_ID/zones/ZONE_ID
+	if !strings.HasPrefix(url, "//dataplex.googleapis.com/") {
+		return nil, nil
+	}
+
+	tokens := strings.Split(strings.TrimPrefix(url, "//dataplex.googleapis.com/"), "/")
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "lakes" && tokens[6] == "zones" {
+		gcpClient, err := newGCPClient(ctx, m.config)
+		if err != nil {
+			return nil, err
+		}
+
+		id := &krm.ZoneIdentity{}
+		if err := id.FromExternal(strings.TrimPrefix(url, "//dataplex.googleapis.com/")); err != nil {
+			return nil, err
+		}
+
+		return &zoneAdapter{
+			gcpClient: gcpClient,
+			id:        id,
+		}, nil
+	}
 	return nil, nil
 }
 
