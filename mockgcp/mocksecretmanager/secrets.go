@@ -20,6 +20,7 @@ import (
 	"strconv"
 	"strings"
 
+	"cloud.google.com/go/iam/apiv1/iampb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -230,4 +231,62 @@ func (s *MockService) parseSecretName(name string) (*secretName, error) {
 	} else {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
+}
+
+func (s *SecretsV1) GetIamPolicy(ctx context.Context, req *iampb.GetIamPolicyRequest) (*iampb.Policy, error) {
+	name, err := s.parseSecretName(req.Resource)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	// Check if secret exists
+	secret := &pb.Secret{}
+	if err := s.storage.Get(ctx, fqn, secret); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Secret [%s] not found.", fqn)
+		}
+		return nil, err
+	}
+
+	policy := &iampb.Policy{}
+	if err := s.storage.Get(ctx, fqn+":iam", policy); err != nil {
+		if status.Code(err) == codes.NotFound {
+			// Return default policy
+			return &iampb.Policy{
+				Etag: []byte("ACAB"), // Simple etag
+			}, nil
+		}
+		return nil, err
+	}
+
+	return policy, nil
+}
+
+func (s *SecretsV1) SetIamPolicy(ctx context.Context, req *iampb.SetIamPolicyRequest) (*iampb.Policy, error) {
+	name, err := s.parseSecretName(req.Resource)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	// Check if secret exists
+	secret := &pb.Secret{}
+	if err := s.storage.Get(ctx, fqn, secret); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Secret [%s] not found.", fqn)
+		}
+		return nil, err
+	}
+
+	policy := req.Policy
+	policy.Etag = []byte("ACAB") // Simple etag update
+
+	if err := s.storage.Update(ctx, fqn+":iam", policy); err != nil {
+		return nil, err
+	}
+
+	return policy, nil
 }
