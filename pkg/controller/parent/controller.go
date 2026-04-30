@@ -140,13 +140,25 @@ func (r *ParentReconciler) Reconcile(ctx context.Context, req reconcile.Request)
 		ccc := &corekccv1alpha1.ConfigConnectorContext{}
 		cccNamespacedName := types.NamespacedName{
 			Namespace: req.Namespace,
-			Name:      "configconnectorcontext",
+			Name:      corekccv1alpha1.ConfigConnectorContextAllowedName,
 		}
 		if err := r.Get(ctx, cccNamespacedName, ccc); err != nil {
-			if !apierrors.IsNotFound(err) {
+			if apierrors.IsNotFound(err) {
+				// Fallback to legacy name
+				cccNamespacedName.Name = "configconnectorcontext"
+				if err := r.Get(ctx, cccNamespacedName, ccc); err != nil {
+					if !apierrors.IsNotFound(err) {
+						logger.Error(err, "error getting ConfigConnectorContext, cannot write status", "resource", req.NamespacedName)
+					}
+					ccc = nil
+				}
+			} else {
 				logger.Error(err, "error getting ConfigConnectorContext, cannot write status", "resource", req.NamespacedName)
+				ccc = nil
 			}
-		} else {
+		}
+
+		if ccc != nil {
 			msg := fmt.Sprintf("controller type %q is not supported for resource %q. Supported types are: %v. Falling back to default %q.",
 				controllerType, r.gvk.GroupKind().String(), config.SupportedControllers, config.DefaultController)
 

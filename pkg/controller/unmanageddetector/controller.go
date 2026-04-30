@@ -150,15 +150,24 @@ func controllerExistsForNamespace(ctx context.Context, namespace string, c clien
 	if ManagerNamespaceIsolation == k8s.ManagerNamespaceIsolationDedicated {
 		u := &unstructured.Unstructured{}
 		u.SetGroupVersionKind(corev1beta1.ConfigConnectorContextGroupVersionKind)
-		err = c.Get(ctx, types.NamespacedName{
+		cccNamespacedName := types.NamespacedName{
 			Namespace: namespace,
 			Name:      corev1beta1.ConfigConnectorContextAllowedName,
-		}, u)
+		}
+		err = c.Get(ctx, cccNamespacedName, u)
 		if err != nil {
 			if apierrors.IsNotFound(err) {
-				return false, nil
+				// Fallback to legacy name
+				cccNamespacedName.Name = "configconnectorcontext"
+				err = c.Get(ctx, cccNamespacedName, u)
 			}
-			return false, err
+
+			if err != nil {
+				if apierrors.IsNotFound(err) {
+					return false, nil
+				}
+				return false, err
+			}
 		}
 		managerNamespace, found, err := unstructured.NestedString(u.Object, "spec", "managerNamespace")
 		if err == nil && found && managerNamespace != "" {

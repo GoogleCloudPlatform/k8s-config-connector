@@ -87,12 +87,26 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 	var cccSettings *operatorv1beta1.ResourceSettings
 	if scopedNamespace != "" {
 		ccc := &operatorv1beta1.ConfigConnectorContext{}
-		if err := c.Get(ctx, types.NamespacedName{Namespace: scopedNamespace, Name: operatorv1beta1.ConfigConnectorContextAllowedName}, ccc); err != nil {
-			if !errors.IsNotFound(err) {
-				return fmt.Errorf("error getting ConfigConnectorContext in %q: %w", scopedNamespace, err)
+		cccNamespacedName := types.NamespacedName{
+			Namespace: scopedNamespace,
+			Name:      operatorv1beta1.ConfigConnectorContextAllowedName,
+		}
+		if err := c.Get(ctx, cccNamespacedName, ccc); err != nil {
+			if errors.IsNotFound(err) {
+				// Fallback to legacy name
+				cccNamespacedName.Name = "configconnectorcontext"
+				err = c.Get(ctx, cccNamespacedName, ccc)
 			}
-			fmt.Printf("ConfigConnectorContext not found in %s\n", scopedNamespace)
-		} else if ccc.Spec.Experiments != nil {
+
+			if err != nil {
+				if !errors.IsNotFound(err) {
+					return fmt.Errorf("error getting ConfigConnectorContext in %q: %w", scopedNamespace, err)
+				}
+				fmt.Printf("ConfigConnectorContext not found in %s\n", scopedNamespace)
+			}
+		}
+
+		if ccc.Name != "" && ccc.Spec.Experiments != nil {
 			cccSettings = ccc.Spec.Experiments.ResourceSettings
 			fmt.Printf("Found CCC Settings in %s: %v\n", scopedNamespace, cccSettings)
 		}
