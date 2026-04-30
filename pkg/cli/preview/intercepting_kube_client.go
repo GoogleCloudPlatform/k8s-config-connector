@@ -221,13 +221,13 @@ func (c *interceptingControllerRuntimeClient) Delete(ctx context.Context, obj cl
 // Update updates the given obj in the Kubernetes cluster. obj must be a
 // struct pointer so that obj can be updated with the content returned by the Server.
 func (c *interceptingControllerRuntimeClient) Update(ctx context.Context, obj client.Object, opts ...client.UpdateOption) error {
-	return c.blockedMethod(ctx, "update", obj, opts)
+	return c.ignoredMethod(ctx, "update", obj, opts)
 }
 
 // Patch patches the given obj in the Kubernetes cluster. obj must be a
 // struct pointer so that obj can be updated with the content returned by the Server.
 func (c *interceptingControllerRuntimeClient) Patch(ctx context.Context, obj client.Object, patch client.Patch, opts ...client.PatchOption) error {
-	return c.blockedMethod(ctx, "patch", obj, opts)
+	return c.ignoredMethod(ctx, "patch", obj, opts)
 }
 
 // DeleteAllOf deletes all objects of the given type matching the given options.
