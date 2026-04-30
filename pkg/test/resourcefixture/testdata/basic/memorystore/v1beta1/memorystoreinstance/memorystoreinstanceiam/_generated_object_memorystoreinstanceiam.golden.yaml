@@ -12,9 +12,7 @@ metadata:
   name: iampolicymember-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  memberFrom:
-    serviceAccountRef:
-      name: ms-dep-${uniqueId}
+  member: "user:test@google.com"
   resourceRef:
     apiVersion: memorystore.cnrm.cloud.google.com/v1beta1
     kind: MemorystoreInstance
