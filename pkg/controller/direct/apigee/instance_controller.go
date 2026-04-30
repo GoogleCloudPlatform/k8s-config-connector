@@ -319,8 +319,8 @@ func convertPolicyToPB(in *api.GoogleIamV1Policy) *iampb.Policy {
 	}
 	for _, b := range in.Bindings {
 		out.Bindings = append(out.Bindings, &iampb.Binding{
-			Role:    b.Role,
-			Members: b.Members,
+			Role:      b.Role,
+			Members:   b.Members,
 			Condition: convertConditionToPB(b.Condition),
 		})
 	}
@@ -348,8 +348,8 @@ func convertPolicyFromPB(in *iampb.Policy) *api.GoogleIamV1Policy {
 	}
 	for _, b := range in.Bindings {
 		out.Bindings = append(out.Bindings, &api.GoogleIamV1Binding{
-			Role:    b.Role,
-			Members: b.Members,
+			Role:      b.Role,
+			Members:   b.Members,
 			Condition: convertConditionFromPB(b.Condition),
 		})
 	}
