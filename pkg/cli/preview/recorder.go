@@ -23,6 +23,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+	kccscheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 
 	constants "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -33,6 +34,7 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/client/apiutil"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
 
@@ -269,7 +271,13 @@ func (r *Recorder) recordKubeAction(ctx context.Context, method string, args []a
 			// We could capture the object here: kubeAction.object = arg.DeepCopy()
 
 		case client.Object:
-			gvk := arg.GetObjectKind().GroupVersionKind()
+			gvk, err := apiutil.GVKForObject(arg, kccscheme.Scheme)
+			if err != nil {
+				klog.V(2).Infof("apiutil.GVKForObject failed: %v", err)
+			}
+			if gvk.Kind == "" {
+				gvk = arg.GetObjectKind().GroupVersionKind()
+			}
 			if gvk.Kind == "" {
 				t := reflect.TypeOf(arg)
 				if t.Kind() == reflect.Ptr {
