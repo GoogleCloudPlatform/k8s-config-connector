@@ -19,7 +19,7 @@ metadata:
 spec:
   memberFrom:
     serviceAccountRef:
-      name: metadatastore-dep-${uniqueId}
+      name: md-store-dep-${uniqueId}
   role: roles/aiplatform.user
   resourceRef:
     apiVersion: vertexai.cnrm.cloud.google.com/v1beta1
