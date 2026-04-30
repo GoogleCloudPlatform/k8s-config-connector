@@ -24,7 +24,7 @@ import (
 
 type gcpClient struct {
 	config  config.ControllerConfig
-	service *api.Service
+	Service *api.Service
 }
 
 func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpClient, error) {
@@ -37,7 +37,7 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 		return nil, err
 	}
 
-	gcpClient.service, err = api.NewService(ctx, opts...)
+	gcpClient.Service, err = api.NewService(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building gcp service client: %w", err)
 	}
@@ -46,25 +46,25 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 }
 
 func (m *gcpClient) instancesClient() *api.OrganizationsInstancesService {
-	return api.NewOrganizationsInstancesService(m.service)
+	return api.NewOrganizationsInstancesService(m.Service)
 }
 
 func (m *gcpClient) instancesAttachmentsClient() *api.OrganizationsInstancesAttachmentsService {
-	return api.NewOrganizationsInstancesAttachmentsService(m.service)
+	return api.NewOrganizationsInstancesAttachmentsService(m.Service)
 }
 
 func (m *gcpClient) endpointsAttachmentsClient() *api.OrganizationsEndpointAttachmentsService {
-	return api.NewOrganizationsEndpointAttachmentsService(m.service)
+	return api.NewOrganizationsEndpointAttachmentsService(m.Service)
 }
 
 func (m *gcpClient) envgroupsClient() *api.OrganizationsEnvgroupsService {
-	return api.NewOrganizationsEnvgroupsService(m.service)
+	return api.NewOrganizationsEnvgroupsService(m.Service)
 }
 
 func (m *gcpClient) envgroupsAttachmentsClient() *api.OrganizationsEnvgroupsAttachmentsService {
-	return api.NewOrganizationsEnvgroupsAttachmentsService(m.service)
+	return api.NewOrganizationsEnvgroupsAttachmentsService(m.Service)
 }
 
 func (m *gcpClient) operationsClient() *api.OrganizationsOperationsService {
-	return api.NewOrganizationsOperationsService(m.service)
+	return api.NewOrganizationsOperationsService(m.Service)
 }

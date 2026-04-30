@@ -20,6 +20,7 @@ import (
 	"reflect"
 	"strings"
 
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -28,6 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	api "google.golang.org/api/apigee/v1"
+	"google.golang.org/genproto/googleapis/type/expr"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -72,6 +74,7 @@ func (m *modelApigeeInstance) AdapterForObject(ctx context.Context, op *directba
 	return &ApigeeInstanceAdapter{
 		id:               id,
 		k8sClient:        reader,
+		gcpClient:        gcpClient,
 		instancesClient:  gcpClient.instancesClient(),
 		operationsClient: gcpClient.operationsClient(),
 		desired:          obj,
@@ -86,6 +89,7 @@ func (m *modelApigeeInstance) AdapterForURL(ctx context.Context, url string) (di
 type ApigeeInstanceAdapter struct {
 	id               *krm.ApigeeInstanceIdentity
 	k8sClient        client.Reader
+	gcpClient        *gcpClient
 	instancesClient  *api.OrganizationsInstancesService
 	operationsClient *api.OrganizationsOperationsService
 	desired          *krm.ApigeeInstance
@@ -272,4 +276,93 @@ func (a *ApigeeInstanceAdapter) Delete(ctx context.Context, deleteOp *directbase
 		return false, fmt.Errorf("waiting delete ApigeeInstance %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func (a *ApigeeInstanceAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("getting IAM policy", "name", a.id)
+
+	// We use the Environments service to call GetIamPolicy because it uses a generic URL pattern
+	// that works for Instances too, and InstancesService doesn't have the method in the current SDK.
+	environmentsService := api.NewOrganizationsEnvironmentsService(a.gcpClient.Service)
+	policy, err := environmentsService.GetIamPolicy(a.id.String()).Context(ctx).Do()
+	if err != nil {
+		return nil, fmt.Errorf("getting IAM policy for %q: %w", a.id, err)
+	}
+
+	return convertPolicyToPB(policy), nil
+}
+
+func (a *ApigeeInstanceAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("setting IAM policy", "name", a.id)
+
+	environmentsService := api.NewOrganizationsEnvironmentsService(a.gcpClient.Service)
+	req := &api.GoogleIamV1SetIamPolicyRequest{
+		Policy: convertPolicyFromPB(policy),
+	}
+	newPolicy, err := environmentsService.SetIamPolicy(a.id.String(), req).Context(ctx).Do()
+	if err != nil {
+		return nil, fmt.Errorf("setting IAM policy for %q: %w", a.id, err)
+	}
+
+	return convertPolicyToPB(newPolicy), nil
+}
+
+func convertPolicyToPB(in *api.GoogleIamV1Policy) *iampb.Policy {
+	if in == nil {
+		return nil
+	}
+	out := &iampb.Policy{
+		Version: int32(in.Version),
+		Etag:    []byte(in.Etag),
+	}
+	for _, b := range in.Bindings {
+		out.Bindings = append(out.Bindings, &iampb.Binding{
+			Role:    b.Role,
+			Members: b.Members,
+			Condition: convertConditionToPB(b.Condition),
+		})
+	}
+	return out
+}
+
+func convertConditionToPB(in *api.GoogleTypeExpr) *expr.Expr {
+	if in == nil {
+		return nil
+	}
+	return &expr.Expr{
+		Expression:  in.Expression,
+		Title:       in.Title,
+		Description: in.Description,
+	}
+}
+
+func convertPolicyFromPB(in *iampb.Policy) *api.GoogleIamV1Policy {
+	if in == nil {
+		return nil
+	}
+	out := &api.GoogleIamV1Policy{
+		Version: int64(in.Version),
+		Etag:    string(in.Etag),
+	}
+	for _, b := range in.Bindings {
+		out.Bindings = append(out.Bindings, &api.GoogleIamV1Binding{
+			Role:    b.Role,
+			Members: b.Members,
+			Condition: convertConditionFromPB(b.Condition),
+		})
+	}
+	return out
+}
+
+func convertConditionFromPB(in *expr.Expr) *api.GoogleTypeExpr {
+	if in == nil {
+		return nil
+	}
+	return &api.GoogleTypeExpr{
+		Expression:  in.Expression,
+		Title:       in.Title,
+		Description: in.Description,
+	}
 }
