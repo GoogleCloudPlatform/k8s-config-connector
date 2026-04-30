@@ -94,8 +94,8 @@ cloud.google.com/go/aiplatform v1.57.0/go.mod h1:pwZMGvqe0JRkI1GWSZCtnAfrR4K1bv6
 cloud.google.com/go/aiplatform v1.58.0/go.mod h1:pwZMGvqe0JRkI1GWSZCtnAfrR4K1bv65IHILGA//VEU=
 cloud.google.com/go/aiplatform v1.58.2/go.mod h1:c3kCiVmb6UC1dHAjZjcpDj6ZS0bHQ2slL88ZjC2LtlA=
 cloud.google.com/go/aiplatform v1.60.0/go.mod h1:eTlGuHOahHprZw3Hio5VKmtThIOak5/qy6pzdsqcQnM=
-cloud.google.com/go/aiplatform v1.120.0 h1:jKWTpEs+xoUhDa1FMdSuhMcEQYyUiMdufGyX3zvtLVQ=
-cloud.google.com/go/aiplatform v1.120.0/go.mod h1:6mDthfmy0oS1EQhVFdijoxkVdI2+HIZkpuGTBpedeCg=
+cloud.google.com/go/aiplatform v1.123.0 h1:Gh/SjaxI5wu/jeYQPPn8m+iGECBxlvsoyCWv8MqJ6xs=
+cloud.google.com/go/aiplatform v1.123.0/go.mod h1:yWTZiCunYDnyxeWWD14tDo6+BMlvAUCC5VxuxhvbrVI=
 cloud.google.com/go/alloydb v1.20.0 h1:p9SbcJhdi6s39SAIpz4lpJJTkfboSQUCwDd7go0bJ6o=
 cloud.google.com/go/alloydb v1.20.0/go.mod h1:ZwDNJOn6Z2uzzwDIlS6ctpM/EgMD1LqPzI+/ynJNaIU=
 cloud.google.com/go/analytics v0.11.0/go.mod h1:DjEWCu41bVbYcKyvlws9Er60YE4a//bK6mnhWvQeFNI=
@@ -3620,8 +3620,8 @@ google.golang.org/genproto/googleapis/rpc v0.0.0-20241113202542-65e8d215514f/go.
 google.golang.org/genproto/googleapis/rpc v0.0.0-20241118233622-e639e219e697/go.mod h1:5uTbfoYQed2U9p3KIj2/Zzm02PYhndfdmML0qC3q3FU=
 google.golang.org/genproto/googleapis/rpc v0.0.0-20241206012308-a4fef0638583/go.mod h1:5uTbfoYQed2U9p3KIj2/Zzm02PYhndfdmML0qC3q3FU=
 google.golang.org/genproto/googleapis/rpc v0.0.0-20241209162323-e6fa225c2576/go.mod h1:5uTbfoYQed2U9p3KIj2/Zzm02PYhndfdmML0qC3q3FU=
-google.golang.org/genproto/googleapis/rpc v0.0.0-20260401001100-f93e5f3e9f0f h1:Rka45QInERYknkHYfJEPBQaoobXl+YpxTMjAKgWUq2A=
-google.golang.org/genproto/googleapis/rpc v0.0.0-20260401001100-f93e5f3e9f0f/go.mod h1:4Hqkh8ycfw05ld/3BWL7rJOSfebL2Q+DVDeRgYgxUU8=
+google.golang.org/genproto/googleapis/rpc v0.0.0-20260401024825-9d38bb4040a9 h1:m8qni9SQFH0tJc1X0vmnpw/0t+AImlSvp30sEupozUg=
+google.golang.org/genproto/googleapis/rpc v0.0.0-20260401024825-9d38bb4040a9/go.mod h1:4Hqkh8ycfw05ld/3BWL7rJOSfebL2Q+DVDeRgYgxUU8=
 google.golang.org/grpc v1.19.0/go.mod h1:mqu4LbDTu4XGKhr4mRzUsmM4RtVoemTSY81AxZiDr8c=
 google.golang.org/grpc v1.20.1/go.mod h1:10oTOabMzJvdu6/UiuZezV6QK5dSlG84ov/aaiqXj38=
 google.golang.org/grpc v1.21.1/go.mod h1:oYelfM1adQP15Ek0mdvEgi9Df8B9CZIaU1084ijfRaM=

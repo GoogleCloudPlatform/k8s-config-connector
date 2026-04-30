@@ -8,7 +8,7 @@ replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
 require (
 	cloud.google.com/go/accesscontextmanager v1.9.7
-	cloud.google.com/go/aiplatform v1.120.0
+	cloud.google.com/go/aiplatform v1.123.0
 	cloud.google.com/go/alloydb v1.20.0
 	cloud.google.com/go/analytics v0.30.1
 	cloud.google.com/go/apigateway v1.7.7
@@ -121,7 +121,7 @@ require (
 	google.golang.org/genproto v0.0.0-20260319201613-d00831a3d3e7
 	google.golang.org/genproto/googleapis/api v0.0.0-20260401024825-9d38bb4040a9
 	google.golang.org/genproto/googleapis/api/serviceusage v0.0.0-20250519155744-55703ea1f237
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20260401001100-f93e5f3e9f0f
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260401024825-9d38bb4040a9
 	google.golang.org/grpc v1.80.0
 	google.golang.org/protobuf v1.36.11
 	gopkg.in/dnaeon/go-vcr.v3 v3.2.0
