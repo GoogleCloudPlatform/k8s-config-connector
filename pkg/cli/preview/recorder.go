@@ -21,9 +21,9 @@ import (
 	"strings"
 	"sync"
 
+	kccscheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
-	kccscheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 
 	constants "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
