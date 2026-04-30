@@ -17,6 +17,7 @@ package preview
 import (
 	"context"
 	"fmt"
+	"reflect"
 	"strings"
 	"sync"
 
@@ -266,6 +267,32 @@ func (r *Recorder) recordKubeAction(ctx context.Context, method string, args []a
 				Name:      arg.GetName(),
 			}
 			// We could capture the object here: kubeAction.object = arg.DeepCopy()
+
+		case client.Object:
+			gvk := arg.GetObjectKind().GroupVersionKind()
+			if gvk.Kind == "" {
+				t := reflect.TypeOf(arg)
+				if t.Kind() == reflect.Ptr {
+					t = t.Elem()
+				}
+				gvk.Kind = t.Name()
+				pkgPath := t.PkgPath()
+				if strings.Contains(pkgPath, "/apis/") {
+					parts := strings.Split(pkgPath, "/apis/")
+					if len(parts) > 1 {
+						subParts := strings.Split(parts[1], "/")
+						if len(subParts) > 0 {
+							gvk.Group = subParts[0] + "." + constants.CNRMDomain
+						}
+					}
+				}
+			}
+			gknn = GKNN{
+				Group:     gvk.Group,
+				Kind:      gvk.Kind,
+				Namespace: arg.GetNamespace(),
+				Name:      arg.GetName(),
+			}
 
 		case []client.SubResourceUpdateOption:
 			// ignore
