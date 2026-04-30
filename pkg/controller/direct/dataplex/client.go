@@ -80,8 +80,8 @@ func (m *gcpClient) iamClient(ctx context.Context) (*iam.IamPolicyClient, error)
 		return nil, err
 	}
 
-        // We MUST add the Dataplex endpoint to the IAM client options!
-        opts = append(opts, option.WithEndpoint("dataplex.googleapis.com"))
+	// We MUST add the Dataplex endpoint to the IAM client options!
+	opts = append(opts, option.WithEndpoint("dataplex.googleapis.com"))
 
 	grpcClient, err := iam.NewIamPolicyClient(ctx, opts...)
 	if err != nil {
