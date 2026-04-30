@@ -23,7 +23,9 @@ import (
 	"testing"
 	"time"
 
+	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/klog/v2"
@@ -238,5 +240,40 @@ func MustSetNestedField(t *testing.T, obj *unstructured.Unstructured, path strin
 	fields := strings.Split(path, ".")
 	if err := unstructured.SetNestedField(obj.Object, value, fields...); err != nil {
 		t.Fatalf("setting nested field %v: %v", path, err)
+	}
+}
+
+func TestRecordKubeAction_TypedObject(t *testing.T) {
+	recorder := NewRecorder()
+	ctx := context.Background()
+
+	obj := &iamv1beta1.IAMPartialPolicy{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "test-policy",
+			Namespace: "test-namespace",
+		},
+	}
+
+	// This should not crash
+	recorder.RecordBlockedKubeMethod(ctx, "update", obj)
+
+	gknn := GKNN{
+		Group:     "iam.cnrm.cloud.google.com",
+		Kind:      "IAMPartialPolicy",
+		Namespace: "test-namespace",
+		Name:      "test-policy",
+	}
+
+	info := recorder.getObjectInfo(gknn)
+	if len(info.events) != 1 {
+		t.Fatalf("expected 1 event, got %d", len(info.events))
+	}
+
+	event := info.events[0]
+	if event.eventType != EventTypeKubeAction {
+		t.Errorf("expected event type %v, got %v", EventTypeKubeAction, event.eventType)
+	}
+	if event.kubeAction.method != "update" {
+		t.Errorf("expected method update, got %v", event.kubeAction.method)
 	}
 }
