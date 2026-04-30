@@ -34,16 +34,16 @@ cloud.google.com/go/bigquery v1.74.0 h1:Q6bAMv+eyvufOpIrfrYxhM46qq1D3ZQTdgUDQqKS
 cloud.google.com/go/bigquery v1.74.0/go.mod h1:iViO7Cx3A/cRKcHNRsHB3yqGAMInFBswrE9Pxazsc90=
 cloud.google.com/go/bigtable v1.42.0 h1:SREvT4jLhJQZXUjsLmFs/1SMQJ+rKEj1cJuPE9liQs8=
 cloud.google.com/go/bigtable v1.42.0/go.mod h1:oZ30nofVB6/UYGg7lBwGLWSea7NZUvw/WvBBgLY07xU=
-cloud.google.com/go/billing v1.21.0 h1:nbQjTXkpgB/E4XnYZQwcZnR63QFsbFwJ9DGsNg61Ghg=
-cloud.google.com/go/billing v1.21.0/go.mod h1:ZGairB3EVnb3i09E2SxFxo50p5unPaMTuo1jh6jW9js=
+cloud.google.com/go/billing v1.23.0 h1:V7n01HI3BBo9Ceg0liX3WWh/pDfuTnF49zLG7QVoQZI=
+cloud.google.com/go/billing v1.23.0/go.mod h1:axqDO1uHegh7u5qngkTfqN1djAeLGsWAFAblERgmgEk=
 cloud.google.com/go/certificatemanager v1.9.6 h1:v5X8X+THKrS9OFZb6k0GRDP1WQxLXTdMko7OInBliw4=
 cloud.google.com/go/certificatemanager v1.9.6/go.mod h1:vWogV874jKZkSRDFCMM3r7wqybv8WXs3XhyNff6o/Zo=
 cloud.google.com/go/cloudbuild v1.25.0 h1:Fkg+iJdN7bfICZJzLr/XV+k9aVxXS/hakIlhjDIRIDw=
 cloud.google.com/go/cloudbuild v1.25.0/go.mod h1:lCu+T6IPkobPo2Nw+vCE7wuaAl9HbXLzdPx/tcF+oWo=
 cloud.google.com/go/clouddms v1.8.8 h1:YWsmRXTyK6Ba0hm4qTBak5g1oLhryuM8rSBxHWC8iq4=
 cloud.google.com/go/clouddms v1.8.8/go.mod h1:QtCyw+a73dlkDb2q20aTAPvfaTZCepDDi6Gb1AKq0a4=
-cloud.google.com/go/cloudquotas v1.4.0 h1:BvAxucMeKH+yuvpHzK8Aw/YlNg4ud8vEMpEe57SkLXU=
-cloud.google.com/go/cloudquotas v1.4.0/go.mod h1:scJFYMJg03mDu5D7qegDL4We9lOf5VZ+ppr0oreKZ0s=
+cloud.google.com/go/cloudquotas v1.11.0 h1:/V18B5MjitIfA1Ggb3p0nLFjdZutlaUeiEnx53JVxeQ=
+cloud.google.com/go/cloudquotas v1.11.0/go.mod h1:4i/yo7jay43HyTMpYxaZwHdpAePkTEK7mAcGwRMf2tI=
 cloud.google.com/go/cloudtasks v1.13.7 h1:H2v8GEolNtMFfYzUpZBaZbydqU7drpyo99GtAgA+m4I=
 cloud.google.com/go/cloudtasks v1.13.7/go.mod h1:H0TThOUG+Ml34e2+ZtW6k6nt4i9KuH3nYAJ5mxh7OM4=
 cloud.google.com/go/compute v1.54.0 h1:4CKmnpO+40z44bKG5bdcKxQ7ocNpRtOc9SCLLUzze1w=
@@ -70,6 +70,8 @@ cloud.google.com/go/documentai v1.42.0 h1:FErf7mEjf3TBGiwcXQCsLrQ3mUqryTKa09NiO1
 cloud.google.com/go/documentai v1.42.0/go.mod h1:CABOUzRNOuvb/QwJS2LS80Hpqbu3UW2afyRKTYuW7bo=
 cloud.google.com/go/edgecontainer v1.4.4 h1:6KTQo6Qf0iEtfPVotlG7orazEO1I93Ham0PMlkHYpdQ=
 cloud.google.com/go/edgecontainer v1.4.4/go.mod h1:yyNVHsCKtsX/0mqFdbljQw0Uo660q2dlMPaiqYiC2Tg=
+cloud.google.com/go/edgenetwork v1.8.0 h1:NqbeFQF9jB6Mwf1bGyZhAn4QrgVk+dhhciA4sj6md8I=
+cloud.google.com/go/edgenetwork v1.8.0/go.mod h1:KRH/rJAmkj/dTZj9xxuhp2NFFdN9CkgRrCk4diTEqrQ=
 cloud.google.com/go/essentialcontacts v1.7.7 h1:v9sO4IHFuwplaOuDnEXZFtfOrjw2bi11TSIVp5PnAU4=
 cloud.google.com/go/essentialcontacts v1.7.7/go.mod h1:ytycWAEn/aKUMRKQPMVgMrAtphEMgjbzL8vFwM3tqXs=
 cloud.google.com/go/eventarc v1.18.0 h1:8WWG1/ogInYur1NQjML6EMHQ0ZBzAdMDGlUVpLD56cI=
@@ -123,6 +125,7 @@ cloud.google.com/go/parametermanager v0.3.1/go.mod h1:uVdpZMPcSzEWaup+Bt0usxRYxy
 cloud.google.com/go/privilegedaccessmanager v0.3.1 h1:gnsf+cXnxF3BLsIFbfeVNxQsvcF0EkeezuB3ZOT2ggA=
 cloud.google.com/go/privilegedaccessmanager v0.3.1/go.mod h1:liYHa55U6nlwfca5OvJ6f31fcgC6UYU0Np+Sc9yIiB4=
 cloud.google.com/go/pubsub v1.50.1 h1:fzbXpPyJnSGvWXF1jabhQeXyxdbCIkXTpjXHy7xviBM=
+cloud.google.com/go/pubsub v1.50.1/go.mod h1:6YVJv3MzWJUVdvQXG081sFvS0dWQOdnV+oTo++q/xFk=
 cloud.google.com/go/pubsub/v2 v2.3.0 h1:DgAN907x+sP0nScYfBzneRiIhWoXcpCD8ZAut8WX9vs=
 cloud.google.com/go/pubsub/v2 v2.3.0/go.mod h1:O5f0KHG9zDheZAd3z5rlCRhxt2JQtB+t/IYLKK3Bpvw=
 cloud.google.com/go/pubsublite v1.8.2 h1:jLQozsEVr+c6tOU13vDugtnaBSUy/PD5zK6mhm+uF1Y=
