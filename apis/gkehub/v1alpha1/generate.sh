@@ -18,4 +18,29 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-# Hand-written types, no proto generation yet.
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+source "${REPO_ROOT}/dev/tools/goimports.sh"
+
+GOOGLEAPI_VERSION=$(grep https://github.com/googleapis/googleapis ${REPO_ROOT}/apis/gkehub/v1alpha1/git.versions | awk '{print $2}')
+${REPO_ROOT}/dev/tools/controllerbuilder/generate-proto.sh ${GOOGLEAPI_VERSION} ${REPO_ROOT}/.build/gkehub-v1alpha1.pb
+
+cd ${REPO_ROOT}/dev/tools/controllerbuilder
+
+go run . generate-types \
+  --proto-source-path ${REPO_ROOT}/.build/gkehub-v1alpha1.pb \
+  --service google.cloud.gkehub.v1 \
+  --api-version gkehub.cnrm.cloud.google.com/v1alpha1 \
+  --resource GKEHubScope:Scope
+
+
+# not yet
+# go run . generate-mapper \
+#   --proto-source-path ${REPO_ROOT}/.build/gkehub-v1alpha1.pb \
+#   --service google.cloud.gkehub.v1 \
+#   --api-version gkehub.cnrm.cloud.google.com/v1alpha1
+
+cd ${REPO_ROOT}
+dev/tasks/generate-crds
+
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/gkehub/
+
