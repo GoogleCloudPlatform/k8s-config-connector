@@ -83,11 +83,5 @@ var (
 		Kind:    reflect.TypeOf(BigtableMaterializedView{}).Name(),
 	}
 
-	BigtableSchemaBundleGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(BigtableSchemaBundle{}).Name(),
-	}
-
 	bigtableAPIVersion = SchemeGroupVersion.String()
 )

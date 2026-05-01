@@ -51,10 +51,6 @@ func (c *FakeBigtableV1alpha1) BigtableMaterializedViews(namespace string) v1alp
 	return &FakeBigtableMaterializedViews{c, namespace}
 }
 
-func (c *FakeBigtableV1alpha1) BigtableSchemaBundles(namespace string) v1alpha1.BigtableSchemaBundleInterface {
-	return &FakeBigtableSchemaBundles{c, namespace}
-}
-
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeBigtableV1alpha1) RESTClient() rest.Interface {

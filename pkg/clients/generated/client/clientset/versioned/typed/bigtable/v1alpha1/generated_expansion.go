@@ -30,5 +30,3 @@ type BigtableClusterExpansion interface{}
 type BigtableLogicalViewExpansion interface{}
 
 type BigtableMaterializedViewExpansion interface{}
-
-type BigtableSchemaBundleExpansion interface{}
