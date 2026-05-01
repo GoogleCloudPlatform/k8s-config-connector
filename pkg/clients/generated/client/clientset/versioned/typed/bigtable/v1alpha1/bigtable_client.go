@@ -36,6 +36,7 @@ type BigtableV1alpha1Interface interface {
 	BigtableClustersGetter
 	BigtableLogicalViewsGetter
 	BigtableMaterializedViewsGetter
+	BigtableSchemaBundlesGetter
 }
 
 // BigtableV1alpha1Client is used to interact with features provided by the bigtable.cnrm.cloud.google.com group.
@@ -61,6 +62,10 @@ func (c *BigtableV1alpha1Client) BigtableLogicalViews(namespace string) Bigtable
 
 func (c *BigtableV1alpha1Client) BigtableMaterializedViews(namespace string) BigtableMaterializedViewInterface {
 	return newBigtableMaterializedViews(c, namespace)
+}
+
+func (c *BigtableV1alpha1Client) BigtableSchemaBundles(namespace string) BigtableSchemaBundleInterface {
+	return newBigtableSchemaBundles(c, namespace)
 }
 
 // NewForConfig creates a new BigtableV1alpha1Client for the given config.
