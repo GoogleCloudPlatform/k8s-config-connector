@@ -59,18 +59,18 @@ func Timestamp_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Times
 	return ts
 }
 
-func PscConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.PscConfigSpec {
+func PSCConfig_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.PSCConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PscConfigSpec{}
+	out := &krm.PSCConfig{}
 	if in.Network != "" {
 		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.Network}
 	}
 	return out
 }
 
-func PscConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.PscConfigSpec) *pb.PscConfig {
+func PSCConfig_ToProto(mapCtx *direct.MapContext, in *krm.PSCConfig) *pb.PscConfig {
 	if in == nil {
 		return nil
 	}
