@@ -27,11 +27,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	grpcpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/dataplex/v1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataplex/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
-
-	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
-	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 )
 
 // MockService represents a mocked dataplex service.
@@ -74,8 +71,8 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		grpcpb.RegisterDataplexServiceHandler,
-		grpcpb.RegisterCatalogServiceHandler,
+		pb.RegisterDataplexServiceHandler,
+		pb.RegisterCatalogServiceHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err

@@ -24,16 +24,17 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
+	pbv1 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1beta"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
-type FutureReservationsV1 struct {
+type FutureReservationsV1Beta struct {
 	*MockService
 	pb.UnimplementedFutureReservationsServer
 }
 
-func (s *FutureReservationsV1) Get(ctx context.Context, req *pb.GetFutureReservationRequest) (*pb.FutureReservation, error) {
+func (s *FutureReservationsV1Beta) Get(ctx context.Context, req *pb.GetFutureReservationRequest) (*pb.FutureReservation, error) {
 	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/futureReservations/" + req.GetFutureReservation()
 	name, err := s.parseFutureReservationName(reqName)
 	if err != nil {
@@ -50,7 +51,7 @@ func (s *FutureReservationsV1) Get(ctx context.Context, req *pb.GetFutureReserva
 	return obj, nil
 }
 
-func (s *FutureReservationsV1) Insert(ctx context.Context, req *pb.InsertFutureReservationRequest) (*pb.Operation, error) {
+func (s *FutureReservationsV1Beta) Insert(ctx context.Context, req *pb.InsertFutureReservationRequest) (*pb.Operation, error) {
 	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/futureReservations/" + req.GetFutureReservationResource().GetName()
 	name, err := s.parseFutureReservationName(reqName)
 	if err != nil {
@@ -86,18 +87,24 @@ func (s *FutureReservationsV1) Insert(ctx context.Context, req *pb.InsertFutureR
 		return nil, err
 	}
 
-	op := &pb.Operation{
+	op := &pbv1.Operation{
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
 		OperationType: PtrTo("insert"),
 		User:          PtrTo("user@example.com"),
 	}
-	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+	opV1, err := s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
 		return obj, nil
 	})
+	if err != nil {
+		return nil, err
+	}
+	opV1Beta := &pb.Operation{}
+	proto.Merge(opV1Beta, opV1)
+	return opV1Beta, nil
 }
 
-func (s *FutureReservationsV1) Update(ctx context.Context, req *pb.UpdateFutureReservationRequest) (*pb.Operation, error) {
+func (s *FutureReservationsV1Beta) Update(ctx context.Context, req *pb.UpdateFutureReservationRequest) (*pb.Operation, error) {
 	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/futureReservations/" + req.GetFutureReservation()
 	name, err := s.parseFutureReservationName(reqName)
 	if err != nil {
@@ -125,18 +132,24 @@ func (s *FutureReservationsV1) Update(ctx context.Context, req *pb.UpdateFutureR
 		return nil, err
 	}
 
-	op := &pb.Operation{
+	op := &pbv1.Operation{
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
 		OperationType: PtrTo("update"),
 		User:          PtrTo("user@example.com"),
 	}
-	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+	opV1, err := s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
 		return obj, nil
 	})
+	if err != nil {
+		return nil, err
+	}
+	opV1Beta := &pb.Operation{}
+	proto.Merge(opV1Beta, opV1)
+	return opV1Beta, nil
 }
 
-func (s *FutureReservationsV1) Cancel(ctx context.Context, req *pb.CancelFutureReservationRequest) (*pb.Operation, error) {
+func (s *FutureReservationsV1Beta) Cancel(ctx context.Context, req *pb.CancelFutureReservationRequest) (*pb.Operation, error) {
 	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/futureReservations/" + req.GetFutureReservation()
 	name, err := s.parseFutureReservationName(reqName)
 	if err != nil {
@@ -160,18 +173,24 @@ func (s *FutureReservationsV1) Cancel(ctx context.Context, req *pb.CancelFutureR
 		return nil, err
 	}
 
-	op := &pb.Operation{
+	op := &pbv1.Operation{
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
 		OperationType: PtrTo("cancel"),
 		User:          PtrTo("user@example.com"),
 	}
-	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+	opV1, err := s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
 		return obj, nil
 	})
+	if err != nil {
+		return nil, err
+	}
+	opV1Beta := &pb.Operation{}
+	proto.Merge(opV1Beta, opV1)
+	return opV1Beta, nil
 }
 
-func (s *FutureReservationsV1) Delete(ctx context.Context, req *pb.DeleteFutureReservationRequest) (*pb.Operation, error) {
+func (s *FutureReservationsV1Beta) Delete(ctx context.Context, req *pb.DeleteFutureReservationRequest) (*pb.Operation, error) {
 	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/futureReservations/" + req.GetFutureReservation()
 	name, err := s.parseFutureReservationName(reqName)
 	if err != nil {
@@ -185,18 +204,24 @@ func (s *FutureReservationsV1) Delete(ctx context.Context, req *pb.DeleteFutureR
 		return nil, err
 	}
 
-	op := &pb.Operation{
+	op := &pbv1.Operation{
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
 		OperationType: PtrTo("delete"),
 		User:          PtrTo("user@example.com"),
 	}
-	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+	opV1, err := s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
 		return obj, nil
 	})
+	if err != nil {
+		return nil, err
+	}
+	opV1Beta := &pb.Operation{}
+	proto.Merge(opV1Beta, opV1)
+	return opV1Beta, nil
 }
 
-func (s *FutureReservationsV1) AggregatedList(ctx context.Context, req *pb.AggregatedListFutureReservationsRequest) (*pb.FutureReservationsAggregatedListResponse, error) {
+func (s *FutureReservationsV1Beta) AggregatedList(ctx context.Context, req *pb.AggregatedListFutureReservationsRequest) (*pb.FutureReservationsAggregatedListResponse, error) {
 	response := &pb.FutureReservationsAggregatedListResponse{}
 	response.Id = PtrTo("0123456789")
 	response.Kind = PtrTo("compute#futureReservationAggregatedList")

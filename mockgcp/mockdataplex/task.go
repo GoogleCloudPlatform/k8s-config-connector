@@ -35,8 +35,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
-	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
+	// Note: we use our internal generated types to avoid version mismatches with the official SDK.
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataplex/v1"
 )
 
 func (s *DataplexService) GetTask(ctx context.Context, req *pb.GetTaskRequest) (*pb.Task, error) {
