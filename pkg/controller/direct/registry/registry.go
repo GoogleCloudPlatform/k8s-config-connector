@@ -152,7 +152,9 @@ func SupportsIAM(groupKind schema.GroupKind) (bool, error) {
 		return false, nil
 	case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineDataStore"}:
 		return false, nil
-		// case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:
+	case schema.GroupKind{Group: "backupdr.cnrm.cloud.google.com", Kind: "BackupDRBackupPlan"}:
+		return true, nil
+	// case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:
 		// 	// https://cloud.google.com/run/docs/reference/iam/roles
 		// 	return true, nil
 	}
