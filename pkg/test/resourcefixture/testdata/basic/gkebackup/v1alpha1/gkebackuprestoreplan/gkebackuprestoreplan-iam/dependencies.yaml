@@ -1,0 +1,93 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computenetwork-iam-${uniqueId}
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computesubnetwork-iam-${uniqueId}
+spec:
+  ipCidrRange: 10.2.0.0/16
+  region: us-central1
+  networkRef:
+    name: computenetwork-iam-${uniqueId}
+---
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: containercluster-iam-${uniqueId}
+spec:
+  location: us-central1
+  initialNodeCount: 1
+  workloadIdentityConfig:
+    workloadPool: ${projectId}.svc.id.goog
+  addonsConfig:
+    gkeBackupAgentConfig:
+      enabled: true
+  networkRef:
+    name: computenetwork-iam-${uniqueId}
+  subnetworkRef:
+    name: computesubnetwork-iam-${uniqueId}
+---
+apiVersion: gkebackup.cnrm.cloud.google.com/v1alpha1
+kind: GKEBackupBackupPlan
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: gkebackupbackupplan-iam-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  description: "test dependent backup plan"
+  clusterRef:
+    name: containercluster-iam-${uniqueId}
+  backupConfig:
+    allNamespaces: true
+    includeSecrets: true
+    includeVolumeData: true
+---
+apiVersion: gkebackup.cnrm.cloud.google.com/v1alpha1
+kind: GKEBackupRestorePlan
+metadata:
+  name: gkebackuprestoreplan-iam-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  description: "Initial description"
+  backupPlanRef:
+    name: gkebackupbackupplan-iam-${uniqueId}
+  clusterRef:
+    name: containercluster-iam-${uniqueId}
+  restoreConfig:
+    allNamespaces: true
+    namespacedResourceRestoreMode: FAIL_ON_CONFLICT
+    volumeDataRestorePolicy: RESTORE_VOLUME_DATA_FROM_BACKUP
+    clusterResourceRestoreScope:
+      allGroupKinds: true
+    clusterResourceConflictPolicy: USE_EXISTING_VERSION
