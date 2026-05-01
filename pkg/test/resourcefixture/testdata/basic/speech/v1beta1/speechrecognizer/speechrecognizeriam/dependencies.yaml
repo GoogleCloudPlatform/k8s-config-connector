@@ -1,0 +1,21 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: kcc-test-sa
+spec:
+  displayName: kcc-test-sa
+---
+apiVersion: speech.cnrm.cloud.google.com/v1beta1
+kind: SpeechRecognizer
+metadata:
+  labels:
+    label-one: "value-one"
+  name: speechrecognizer-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: global
+  defaultRecognitionConfig:
+    languageCodes:
+      - en-US
+  model: latest_long

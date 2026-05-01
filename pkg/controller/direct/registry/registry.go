@@ -125,7 +125,8 @@ func IsIAMDirect(groupKind schema.GroupKind) bool {
 
 	// TODO: Move to registration somehow?
 	switch groupKind {
-	case schema.GroupKind{Group: "privateca.cnrm.cloud.google.com", Kind: "PrivateCACAPool"}:
+	case schema.GroupKind{Group: "privateca.cnrm.cloud.google.com", Kind: "PrivateCACAPool"},
+		schema.GroupKind{Group: "speech.cnrm.cloud.google.com", Kind: "SpeechRecognizer"}:
 		return true
 	}
 	return false
