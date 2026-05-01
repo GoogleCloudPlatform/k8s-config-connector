@@ -1,0 +1,14 @@
+--- pkg/controller/direct/dataform/repository_fuzzer.go
++++ pkg/controller/direct/dataform/repository_fuzzer.go
+@@ -35,10 +35,5 @@
+ 	fuzzer.UnimplementedFields.Insert(".kms_key_name")
+ 	fuzzer.UnimplementedFields.Insert(".internal_metadata")
+-<<<<<<< HEAD
+ 	fuzzer.UnimplementedFields.Insert(".team_folder_name")
+ 	fuzzer.UnimplementedFields.Insert(".containing_folder")
+-=======
+-	fuzzer.UnimplementedFields.Insert(".containing_folder")
+-	fuzzer.UnimplementedFields.Insert(".team_folder_name")
+->>>>>>> 189498dcda (Fix fuzzer drift for NetworkManagement, SQL, and Dataform)
+ 
+ 	return fuzzer
