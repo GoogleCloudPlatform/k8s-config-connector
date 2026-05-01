@@ -51,14 +51,6 @@ type BigtableSchemaBundleStatus struct {
 
 	// A unique specifier for the BigtableSchemaBundle resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
-
-	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *BigtableSchemaBundleObservedState `json:"observedState,omitempty"`
-}
-
-// BigtableSchemaBundleObservedState is the state of the BigtableSchemaBundle resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.bigtable.admin.v2.SchemaBundle
-type BigtableSchemaBundleObservedState struct {
 }
 
 // +genclient

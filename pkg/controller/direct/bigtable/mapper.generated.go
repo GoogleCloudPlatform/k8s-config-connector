@@ -514,24 +514,6 @@ func BigtableMaterializedViewSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 	out.DeletionProtection = direct.ValueOf(in.DeletionProtection)
 	return out
 }
-func BigtableSchemaBundleObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SchemaBundle) *krmbigtablev1alpha1.BigtableSchemaBundleObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmbigtablev1alpha1.BigtableSchemaBundleObservedState{}
-	// MISSING: Name
-	// MISSING: Etag
-	return out
-}
-func BigtableSchemaBundleObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1alpha1.BigtableSchemaBundleObservedState) *pb.SchemaBundle {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SchemaBundle{}
-	// MISSING: Name
-	// MISSING: Etag
-	return out
-}
 func BigtableSchemaBundleSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SchemaBundle) *krmbigtablev1alpha1.BigtableSchemaBundleSpec {
 	if in == nil {
 		return nil
