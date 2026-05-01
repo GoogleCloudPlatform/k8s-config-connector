@@ -58,7 +58,6 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterFutureReservationsServer(grpcServer, &FutureReservationsV1{MockService: s})
 
 	pb.RegisterBackendBucketsServer(grpcServer, &backendBuckets{MockService: s})
 
@@ -137,9 +136,6 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
-	if err := pb.RegisterFutureReservationsHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
 
 	if err := pb.RegisterInstanceGroupManagersHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
