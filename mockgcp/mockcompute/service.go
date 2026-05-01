@@ -136,7 +136,6 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
-
 	if err := pb.RegisterInstanceGroupManagersHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
