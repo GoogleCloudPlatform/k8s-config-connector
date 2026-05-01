@@ -19,7 +19,7 @@ metadata:
 spec:
   memberFrom:
     serviceAccountRef:
-      name: dataplexzone-dep-${uniqueId}
+      name: dz-dep-${uniqueId}
   role: roles/viewer
   resourceRef:
     apiVersion: dataplex.cnrm.cloud.google.com/v1alpha1

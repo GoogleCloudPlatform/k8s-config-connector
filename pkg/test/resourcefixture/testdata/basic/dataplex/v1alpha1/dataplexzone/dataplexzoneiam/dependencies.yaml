@@ -15,7 +15,7 @@
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
-  name: dataplexzone-dep-${uniqueId}
+  name: dz-dep-${uniqueId}
 spec:
   displayName: DataplexZone Dependency
 
