@@ -138,6 +138,8 @@ func IsIAMDirect(groupKind schema.GroupKind) bool {
 func SupportsIAM(groupKind schema.GroupKind) (bool, error) {
 	// TODO: Move to registration somehow?
 	switch groupKind {
+	case schema.GroupKind{Group: "gkebackup.cnrm.cloud.google.com", Kind: "GKEBackupRestorePlan"}:
+		return true, nil
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
 		return false, nil
 	case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringDashboard"}:
