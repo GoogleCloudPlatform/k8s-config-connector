@@ -233,6 +233,18 @@ var (
 		Kind:    reflect.TypeOf(ComputeRegionNetworkEndpointGroup{}).Name(),
 	}
 
+	ComputeRegionSecurityPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ComputeRegionSecurityPolicy{}).Name(),
+	}
+
+	ComputeRegionSecurityPolicyRuleGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ComputeRegionSecurityPolicyRule{}).Name(),
+	}
+
 	ComputeReservationGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

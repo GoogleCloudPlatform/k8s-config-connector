@@ -2231,6 +2231,38 @@ spec:
       containers:
         - type: project
           tfField: project
+    - name: google_compute_region_security_policy
+      kind: ComputeRegionSecurityPolicy
+      idTemplate: "projects/{{project}}/regions/{{region}}/securityPolicies/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      containers:
+        - type: project
+          tfField: project
+      directives:
+        - region
+    - name: google_compute_region_security_policy_rule
+      kind: ComputeRegionSecurityPolicyRule
+      idTemplate: "projects/{{project}}/regions/{{region}}/securityPolicies/{{security_policy}}/priority/{{priority}}"
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      resourceReferences:
+        - tfField: security_policy
+          key: securityPolicyRef
+          gvk:
+            kind: ComputeRegionSecurityPolicy
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: name
+      containers:
+        - type: project
+          tfField: project
+      directives:
+        - region
     - name: google_compute_security_policy
       kind: ComputeSecurityPolicy
       idTemplate: "projects/{{project}}/global/securityPolicies/{{name}}"
