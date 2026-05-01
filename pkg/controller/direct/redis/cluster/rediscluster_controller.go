@@ -34,6 +34,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/redis"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
@@ -113,7 +114,7 @@ func (m *redisClusterModel) AdapterForObject(ctx context.Context, op *directbase
 	}
 
 	mapCtx := &direct.MapContext{}
-	desired := RedisClusterSpec_ToProto(mapCtx, &obj.Spec)
+	desired := redis.RedisClusterSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -243,7 +244,7 @@ func (a *redisClusterAdapter) Create(ctx context.Context, createOp *directbase.C
 	*/
 
 	mapCtx := &direct.MapContext{}
-	observedState := RedisClusterObservedState_FromProto(mapCtx, created)
+	observedState := redis.RedisClusterObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -322,7 +323,7 @@ func (a *redisClusterAdapter) Update(ctx context.Context, updateOp *directbase.U
 	}
 
 	mapCtx := &direct.MapContext{}
-	observedState := RedisClusterObservedState_FromProto(mapCtx, latest)
+	observedState := redis.RedisClusterObservedState_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
