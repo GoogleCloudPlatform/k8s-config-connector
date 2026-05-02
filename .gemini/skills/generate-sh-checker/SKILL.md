@@ -72,7 +72,7 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
     -   If the API types are currently managed by Terraform (i.e. they are defined in `pkg/clients/generated/apis/...` instead of `apis/...`), you will not find an `api_types.go` file.
     -   In this case, `generate.sh` should be used to jump-start the proto generation process, but you MUST avoid scaffolding conflicting top-level structs.
     -   Add `--skip-scaffold-files \` to the `generate-types` command in the `generate.sh` script. This ensures only `types.generated.go` is generated with nested types.
-    -   Comment out the `generate-mapper` command and the `pkg/controller/direct/<SERVICE_NAME>` `goimports` command (since the direct controller mapper might not exist yet).
+    -   Do NOT comment out the `generate-mapper` command or the `pkg/controller/direct/<SERVICE_NAME>` `goimports` command. We generate the mapper functions even if they aren't used yet so they can be tested with a fuzzer.
     -   You may need to update `dev/tools/controllerbuilder/generate-proto.sh` to include the `*.proto` paths for the service if they are missing.
 
 5.  **Special Handling (Promotion/Consolidation)**:

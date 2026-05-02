@@ -31,14 +31,12 @@ go run . generate-types \
   --resource ContainerCluster:Cluster \
   --resource ContainerNodePool:NodePool
 
-# NOTYET - not yet using proto
-# go run . generate-mapper \
-#   --service google.container.v1beta1 \
-#   --api-version container.cnrm.cloud.google.com/v1beta1 \
-#   --include-skipped-output
+go run . generate-mapper \
+  --service google.container.v1beta1 \
+  --api-version container.cnrm.cloud.google.com/v1beta1 \
+  --include-skipped-output
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-# NOTYET - not yet following full pattern
-# go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/container/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/container/
