@@ -1211,6 +1211,8 @@ func GoPackageForProto(parentFile protoreflect.FileDescriptor) string {
 	switch protoGoPackage {
 	case "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb":
 		return "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
+	case "cloud.google.com/go/container/apiv1beta1/containerpb":
+		return "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/container/v1beta1"
 	case "cloud.google.com/go/bigquery/apiv2/bigquerypb":
 		return "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/v2"
 	case "cloud.google.com/go/sql/apiv1beta4/sqlpb":
