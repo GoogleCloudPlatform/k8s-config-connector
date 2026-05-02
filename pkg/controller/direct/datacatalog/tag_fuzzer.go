@@ -30,7 +30,7 @@ func init() {
 func dataCatalogTagFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Tag{},
 		DataCatalogTagSpec_FromProto, DataCatalogTagSpec_ToProto,
-		DataCatalogTagObservedState_FromProto, DataCatalogTagObservedState_ToProto,
+		DataCatalogTagObservedState_v1alpha1_FromProto, DataCatalogTagObservedState_v1alpha1_ToProto,
 	)
 
 	f.SpecFields.Insert(".template")
