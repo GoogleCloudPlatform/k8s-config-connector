@@ -68,8 +68,9 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
     go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/<SERVICE_NAME>/
     ```
 
-4.  **Special Handling (Promotion/Consolidation)**:
-    -   If a `v1beta1` directory is being updated and a `v1alpha1` directory exists for the same service, check if `v1alpha1` should be consolidated.
+4.  **Special Handling**:
+    -   **Preserving manual overrides**: If the existing `types.generated.go` file contains manual modifications (e.g. `ListValue` struct commented out to fix recursion issues, or fields using `apiextensionsv1.JSON`), they will be overwritten by `generate-types`. To preserve these manual overrides, extract the modified structs from `types.generated.go` to a separate file like `api_types.go` BEFORE running `generate.sh`. Ensure you include the corresponding `// +kcc:proto=...` markers on the structs so the generator correctly skips them. Check `git diff` of `types.generated.go` after generation to ensure no manual modifications were lost.
+    -   **Promotion/Consolidation**: If a `v1beta1` directory is being updated and a `v1alpha1` directory exists for the same service, check if `v1alpha1` should be consolidated.
     -   Following #7293, this involves:
         -   Removing the `v1alpha1` directory.
         -   Adding `// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"` to the `v1beta1` `api_types.go` file (near the Kind struct).
