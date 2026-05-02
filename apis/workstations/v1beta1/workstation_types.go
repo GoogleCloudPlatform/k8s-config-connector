@@ -109,6 +109,7 @@ type WorkstationObservedState struct {
 // Workstation is the Schema for the Workstation API
 // +k8s:openapi-gen=true
 // +kubebuilder:storageversion
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 type Workstation struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
