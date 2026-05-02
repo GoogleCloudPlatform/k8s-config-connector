@@ -163,19 +163,14 @@ log
 # failing fuzz output
 pkg/fuzztesting/fuzztests/testdata/fuzz/FuzzAllMappers
 
-# Experimental MCP
 # Let Gemini CLI to ignore env to avoid sensitive data
 .gemini/.env
 # Ignore settings.json till we ship a MCP server.
 .gemini/settings.json
 
 # Ignore pycache
-experiments/mcp/**/__pycache__
-# Ignore python egg files
-experiments/mcp/**/*.egg-info
-
-# MCP eval
 experiments/**/__pycache__/
+
 # Ignore all channel packages by default, but unignore per-namespace-components.yaml
 # The bang (!) prefix is used to unignore the given files.
 operator/channels/packages/configconnector/*/cluster/
