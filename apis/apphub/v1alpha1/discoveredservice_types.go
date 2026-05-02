@@ -29,8 +29,10 @@ type AppHubDiscoveredServiceSpec struct {
 	Location string `json:"location,omitempty"`
 
 	// Required. The host project of the resource.
-	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"` // The AppHubDiscoveredService name. If not given, the metadata.name will be used.
-	ResourceID *string             `json:"resourceID,omitempty"`
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
+
+	// The AppHubDiscoveredService name. If not given, the metadata.name will be used.
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 // AppHubDiscoveredServiceStatus defines the config connector machine state of AppHubDiscoveredService
