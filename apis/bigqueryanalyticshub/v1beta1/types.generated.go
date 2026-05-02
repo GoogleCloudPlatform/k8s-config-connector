@@ -232,14 +232,19 @@ type Listing_BigQueryDatasetSource_SelectedResource struct {
 }
 */
 
+/* unreachable type Listing_CommercialInfo
 // +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.CommercialInfo
 type Listing_CommercialInfo struct {
 }
+*/
 
+/* unreachable type Listing_CommercialInfo_GoogleCloudMarketplaceInfo
 // +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.CommercialInfo.GoogleCloudMarketplaceInfo
 type Listing_CommercialInfo_GoogleCloudMarketplaceInfo struct {
 }
+*/
 
+/* unreachable type Listing_PubSubTopicSource
 // +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.PubSubTopicSource
 type Listing_PubSubTopicSource struct {
 	// Required. Resource name of the Pub/Sub topic source for this listing.
@@ -253,7 +258,9 @@ type Listing_PubSubTopicSource struct {
 	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.PubSubTopicSource.data_affinity_regions
 	DataAffinityRegions []string `json:"dataAffinityRegions,omitempty"`
 }
+*/
 
+/* unreachable type Listing_RestrictedExportConfig
 // +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.RestrictedExportConfig
 type Listing_RestrictedExportConfig struct {
 	// Optional. If true, enable restricted export.
@@ -265,6 +272,7 @@ type Listing_RestrictedExportConfig struct {
 	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.RestrictedExportConfig.restrict_query_result
 	RestrictQueryResult *bool `json:"restrictQueryResult,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.bigquery.analyticshub.v1.Publisher
 type Publisher struct {
@@ -278,6 +286,7 @@ type Publisher struct {
 	PrimaryContact *string `json:"primaryContact,omitempty"`
 }
 
+/* unreachable type SharingEnvironmentConfig
 // +kcc:proto=google.cloud.bigquery.analyticshub.v1.SharingEnvironmentConfig
 type SharingEnvironmentConfig struct {
 	// Default Analytics Hub data exchange, used for secured data sharing.
@@ -288,14 +297,19 @@ type SharingEnvironmentConfig struct {
 	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.SharingEnvironmentConfig.dcr_exchange_config
 	DcrExchangeConfig *SharingEnvironmentConfig_DcrExchangeConfig `json:"dcrExchangeConfig,omitempty"`
 }
+*/
 
+/* unreachable type SharingEnvironmentConfig_DcrExchangeConfig
 // +kcc:proto=google.cloud.bigquery.analyticshub.v1.SharingEnvironmentConfig.DcrExchangeConfig
 type SharingEnvironmentConfig_DcrExchangeConfig struct {
 }
+*/
 
+/* unreachable type SharingEnvironmentConfig_DefaultExchangeConfig
 // +kcc:proto=google.cloud.bigquery.analyticshub.v1.SharingEnvironmentConfig.DefaultExchangeConfig
 type SharingEnvironmentConfig_DefaultExchangeConfig struct {
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.bigquery.analyticshub.v1.DataExchange", skipping
 
@@ -345,6 +359,7 @@ type ListingObservedState struct {
 }
 */
 
+/* unreachable type Listing_CommercialInfoObservedState
 // +kcc:observedstate:proto=google.cloud.bigquery.analyticshub.v1.Listing.CommercialInfo
 type Listing_CommercialInfoObservedState struct {
 	// Output only. Details of the Marketplace Data Product associated with the
@@ -352,7 +367,9 @@ type Listing_CommercialInfoObservedState struct {
 	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.CommercialInfo.cloud_marketplace
 	CloudMarketplace *Listing_CommercialInfo_GoogleCloudMarketplaceInfo `json:"cloudMarketplace,omitempty"`
 }
+*/
 
+/* unreachable type Listing_CommercialInfo_GoogleCloudMarketplaceInfoObservedState
 // +kcc:observedstate:proto=google.cloud.bigquery.analyticshub.v1.Listing.CommercialInfo.GoogleCloudMarketplaceInfo
 type Listing_CommercialInfo_GoogleCloudMarketplaceInfoObservedState struct {
 	// Output only. Resource name of the commercial service associated with
@@ -364,7 +381,9 @@ type Listing_CommercialInfo_GoogleCloudMarketplaceInfoObservedState struct {
 	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.CommercialInfo.GoogleCloudMarketplaceInfo.commercial_state
 	CommercialState *string `json:"commercialState,omitempty"`
 }
+*/
 
+/* unreachable type Listing_RestrictedExportConfigObservedState
 // +kcc:observedstate:proto=google.cloud.bigquery.analyticshub.v1.Listing.RestrictedExportConfig
 type Listing_RestrictedExportConfigObservedState struct {
 	// Output only. If true, restrict direct table access(read
@@ -372,14 +391,18 @@ type Listing_RestrictedExportConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.RestrictedExportConfig.restrict_direct_table_access
 	RestrictDirectTableAccess *bool `json:"restrictDirectTableAccess,omitempty"`
 }
+*/
 
+/* unreachable type SharingEnvironmentConfigObservedState
 // +kcc:observedstate:proto=google.cloud.bigquery.analyticshub.v1.SharingEnvironmentConfig
 type SharingEnvironmentConfigObservedState struct {
 	// Data Clean Room (DCR), used for privacy-safe and secured data sharing.
 	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.SharingEnvironmentConfig.dcr_exchange_config
 	DcrExchangeConfig *SharingEnvironmentConfig_DcrExchangeConfigObservedState `json:"dcrExchangeConfig,omitempty"`
 }
+*/
 
+/* unreachable type SharingEnvironmentConfig_DcrExchangeConfigObservedState
 // +kcc:observedstate:proto=google.cloud.bigquery.analyticshub.v1.SharingEnvironmentConfig.DcrExchangeConfig
 type SharingEnvironmentConfig_DcrExchangeConfigObservedState struct {
 	// Output only. If True, this DCR restricts the contributors to sharing
@@ -399,3 +422,4 @@ type SharingEnvironmentConfig_DcrExchangeConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.SharingEnvironmentConfig.DcrExchangeConfig.single_linked_dataset_per_cleanroom
 	SingleLinkedDatasetPerCleanroom *bool `json:"singleLinkedDatasetPerCleanroom,omitempty"`
 }
+*/
