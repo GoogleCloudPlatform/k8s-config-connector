@@ -16,6 +16,9 @@ package cluster
 
 import (
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
+	"google.golang.org/genproto/googleapis/type/dayofweek"
+	"google.golang.org/genproto/googleapis/type/timeofday"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -218,6 +221,8 @@ func RedisClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.
 	out.RedisConfigs = in.RedisConfigs
 	out.ZoneDistributionConfig = ZoneDistributionConfig_FromProto(mapCtx, in.GetZoneDistributionConfig())
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
+	out.AutomatedBackupConfig = AutomatedBackupConfig_FromProto(mapCtx, in.GetAutomatedBackupConfig())
+	out.MaintenancePolicy = MaintenancePolicy_FromProto(mapCtx, in.GetMaintenancePolicy())
 	return out
 }
 func RedisClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterSpec) *pb.Cluster {
@@ -236,6 +241,92 @@ func RedisClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterSpe
 	out.RedisConfigs = in.RedisConfigs
 	out.ZoneDistributionConfig = ZoneDistributionConfig_ToProto(mapCtx, in.ZoneDistributionConfig)
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
+	out.AutomatedBackupConfig = AutomatedBackupConfig_ToProto(mapCtx, in.AutomatedBackupConfig)
+	out.MaintenancePolicy = MaintenancePolicy_ToProto(mapCtx, in.MaintenancePolicy)
+	return out
+}
+func AutomatedBackupConfig_FromProto(mapCtx *direct.MapContext, in *pb.AutomatedBackupConfig) *krm.AutomatedBackupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AutomatedBackupConfig{}
+	out.AutomatedBackupMode = direct.Enum_FromProto(mapCtx, in.GetAutomatedBackupMode())
+	out.Retention = Duration_FromProto(mapCtx, in.GetRetention())
+	if sched := in.GetFixedFrequencySchedule(); sched != nil {
+		out.FixedFrequencySchedule = &krm.FixedFrequencySchedule{
+			StartTime: StartTime_FromProto(mapCtx, sched.GetStartTime()),
+		}
+	}
+	return out
+}
+func AutomatedBackupConfig_ToProto(mapCtx *direct.MapContext, in *krm.AutomatedBackupConfig) *pb.AutomatedBackupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutomatedBackupConfig{}
+	out.AutomatedBackupMode = direct.Enum_ToProto[pb.AutomatedBackupConfig_AutomatedBackupMode](mapCtx, in.AutomatedBackupMode)
+	out.Retention = Duration_ToProto(mapCtx, in.Retention)
+	if in.FixedFrequencySchedule != nil && in.FixedFrequencySchedule.StartTime != nil {
+		out.Schedule = &pb.AutomatedBackupConfig_FixedFrequencySchedule_{
+			FixedFrequencySchedule: &pb.AutomatedBackupConfig_FixedFrequencySchedule{
+				StartTime: StartTime_ToProto(mapCtx, in.FixedFrequencySchedule.StartTime),
+			},
+		}
+	}
+	return out
+}
+func MaintenancePolicy_FromProto(mapCtx *direct.MapContext, in *pb.ClusterMaintenancePolicy) *krm.MaintenancePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MaintenancePolicy{}
+	out.WeeklyMaintenanceWindow = direct.Slice_FromProto(mapCtx, in.GetWeeklyMaintenanceWindow(), WeeklyMaintenanceWindow_FromProto)
+	return out
+}
+func MaintenancePolicy_ToProto(mapCtx *direct.MapContext, in *krm.MaintenancePolicy) *pb.ClusterMaintenancePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ClusterMaintenancePolicy{}
+	out.WeeklyMaintenanceWindow = direct.Slice_ToProto(mapCtx, in.WeeklyMaintenanceWindow, WeeklyMaintenanceWindow_ToProto)
+	return out
+}
+func StartTime_FromProto(mapCtx *direct.MapContext, in *timeofday.TimeOfDay) *krm.StartTime {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StartTime{}
+	out.Hours = direct.LazyPtr(in.GetHours())
+	out.Minutes = direct.LazyPtr(in.GetMinutes())
+	out.Seconds = direct.LazyPtr(in.GetSeconds())
+	out.Nanos = direct.LazyPtr(in.GetNanos())
+	return out
+}
+func StartTime_ToProto(mapCtx *direct.MapContext, in *krm.StartTime) *timeofday.TimeOfDay {
+	if in == nil {
+		return nil
+	}
+	out := &timeofday.TimeOfDay{}
+	out.Hours = direct.ValueOf(in.Hours)
+	// The API only supports hours for start_time, so we ignore other fields.
+	return out
+}
+func WeeklyMaintenanceWindow_FromProto(mapCtx *direct.MapContext, in *pb.ClusterWeeklyMaintenanceWindow) *krm.WeeklyMaintenanceWindow {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WeeklyMaintenanceWindow{}
+	out.Day = direct.ValueOf(direct.Enum_FromProto(mapCtx, in.GetDay()))
+	out.StartTime = *StartTime_FromProto(mapCtx, in.GetStartTime())
+	return out
+}
+func WeeklyMaintenanceWindow_ToProto(mapCtx *direct.MapContext, in *krm.WeeklyMaintenanceWindow) *pb.ClusterWeeklyMaintenanceWindow {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ClusterWeeklyMaintenanceWindow{}
+	out.Day = direct.Enum_ToProto[dayofweek.DayOfWeek](mapCtx, &in.Day)
+	out.StartTime = StartTime_ToProto(mapCtx, &in.StartTime)
 	return out
 }
 func ZoneDistributionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ZoneDistributionConfig) *krm.ZoneDistributionConfig {
