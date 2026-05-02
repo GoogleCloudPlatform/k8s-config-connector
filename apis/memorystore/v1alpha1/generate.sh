@@ -25,15 +25,9 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 go run . generate-types \
   --service google.cloud.memorystore.v1 \
-  --api-version memorystore.cnrm.cloud.google.com/v1beta1 \
+  --api-version memorystore.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
-  --resource MemorystoreInstance:Instance
-
-go run . generate-mapper \
-  --multiversion \
-  --service google.cloud.memorystore.v1 \
-  --api-version memorystore.cnrm.cloud.google.com/v1beta1 \
-  --include-skipped-output
+  --resource MemorystoreInstanceEndpoint:Instance
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
