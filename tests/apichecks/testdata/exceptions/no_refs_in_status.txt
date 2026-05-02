@@ -1,0 +1,2 @@
+[no_refs_in_status] crd=redisclusters.redis.cnrm.cloud.google.com version=v1alpha1: reference field ".status.observedState.discoveryEndpoints[].pscConfig.networkRef" should not be in status
+[no_refs_in_status] crd=redisclusters.redis.cnrm.cloud.google.com version=v1beta1: reference field ".status.observedState.discoveryEndpoints[].pscConfig.networkRef" should not be in status
