@@ -15,6 +15,7 @@
 package mockcontainer
 
 import (
+	"fmt"
 	"net"
 	"strings"
 
@@ -46,7 +47,11 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 		replacements.TransformLRO(func(m map[string]any) {
 			targetLink, ok := m["targetLink"].(string)
 			if ok && targetLink != "" {
-				m["targetLink"] = projects.ReplaceProjectIDWithProjectNumber(targetLink)
+				val, err := projects.ReplaceProjectWithProjectNumberTemplate(targetLink)
+				if err != nil {
+					panic(fmt.Sprintf("failed to replace project with project number template in targetLink: %v", err))
+				}
+				m["targetLink"] = val
 			}
 		})
 	}
