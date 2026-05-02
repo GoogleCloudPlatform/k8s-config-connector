@@ -11,7 +11,7 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
 
 1.  **Scan for missing scripts**: Find subdirectories in `apis/` (usually `v1beta1` or `v1alpha1`) that do not have a `generate.sh` file.
     ```bash
-    find apis -maxdepth 2 -type d \( -name "v1beta1" -o -name "v1alpha1" \) | while read dir; do [ ! -f "$dir/generate.sh" ] && echo "$dir"; done
+    find apis -maxdepth 2 -type d \( -name "v1beta1" -o -name "v1alpha1" \) | while read dir; do if [ ! -f "$dir/generate.sh" ] && ls $dir/*_types.go >/dev/null 2>&1; then echo "$dir"; fi; done
     ```
 
 2.  **Gather Resource Information**: For each identified directory, read `api_types.go` and `groupversion_info.go` to extract:
