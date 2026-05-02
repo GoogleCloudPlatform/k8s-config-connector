@@ -139,7 +139,7 @@ spec:
                 description: Required. Defines the parent path of the resource.
                 type: string
               projectRef:
-                description: The Project that this resource belongs to.
+                description: Required. The host project of the resource.
                 oneOf:
                 - not:
                     required:
@@ -366,7 +366,7 @@ spec:
                 description: Required. Defines the parent path of the resource.
                 type: string
               projectRef:
-                description: The Project that this resource belongs to.
+                description: Required. The host project of the resource.
                 oneOf:
                 - not:
                     required:
