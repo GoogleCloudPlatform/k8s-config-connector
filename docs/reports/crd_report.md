@@ -396,8 +396,8 @@
 | redis.cnrm.cloud.google.com                   | RedisInstance                                   | False        | True        | False  | Terraform  | False       |
 | resourcemanager.cnrm.cloud.google.com         | ResourceManagerLien                             | False        | True        | False  | Terraform  | False       |
 | resourcemanager.cnrm.cloud.google.com         | ResourceManagerPolicy                           | False        | True        | False  | Terraform  | False       |
-| run.cnrm.cloud.google.com                     | RunJob                                          | False        | True        | False  | Terraform  | True        |
-| run.cnrm.cloud.google.com                     | RunService                                      | False        | True        | False  | Terraform  | False       |
+| run.cnrm.cloud.google.com                     | RunJob                                          | False        | True        | False  | Direct     | True        |
+| run.cnrm.cloud.google.com                     | RunService                                      | False        | True        | False  | Direct     | True        |
 | secretmanager.cnrm.cloud.google.com           | SecretManagerSecret                             | False        | True        | False  | Terraform  | True        |
 | secretmanager.cnrm.cloud.google.com           | SecretManagerSecretVersion                      | False        | True        | False  | Terraform  | True        |
 | securesourcemanager.cnrm.cloud.google.com     | SecureSourceManagerInstance                     | True         | True        | False  | Direct     | True        |
@@ -434,7 +434,7 @@
 | storage.cnrm.cloud.google.com                 | StorageNotification                             | False        | True        | False  | Terraform  | False       |
 | storagetransfer.cnrm.cloud.google.com         | StorageTransferAgentPool                        | True         | False       | False  | Terraform  | False       |
 | storagetransfer.cnrm.cloud.google.com         | StorageTransferJob                              | False        | True        | False  | Terraform  | False       |
-| tags.cnrm.cloud.google.com                    | TagsLocationTagBinding                          | True         | True        | False  | Terraform  | True        |
+| tags.cnrm.cloud.google.com                    | TagsLocationTagBinding                          | True         | True        | False  | Direct     | True        |
 | tags.cnrm.cloud.google.com                    | TagsTagBinding                                  | False        | True        | False  | Terraform  | True        |
 | tags.cnrm.cloud.google.com                    | TagsTagKey                                      | False        | True        | False  | Terraform  | True        |
 | tags.cnrm.cloud.google.com                    | TagsTagValue                                    | False        | True        | False  | Terraform  | True        |

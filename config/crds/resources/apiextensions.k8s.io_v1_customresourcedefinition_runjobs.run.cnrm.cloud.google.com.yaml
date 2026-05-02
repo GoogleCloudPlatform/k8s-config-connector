@@ -7,6 +7,7 @@ metadata:
     cnrm.cloud.google.com/version: 0.0.0-dev
   creationTimestamp: null
   labels:
+    cnrm.cloud.google.com/default-controller: direct
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
@@ -568,11 +569,23 @@ spec:
                         description: Optional. The execution environment being used
                           to host this Task.
                         type: string
+                      gpuZonalRedundancyDisabled:
+                        description: Optional. True if GPU zonal redundancy is disabled
+                          on this task template.
+                        type: boolean
                       maxRetries:
                         description: Number of retries allowed per Task, before marking
                           this Task failed. Defaults to 3.
                         format: int32
                         type: integer
+                      nodeSelector:
+                        description: Optional. The node selector for the task template.
+                        properties:
+                          accelerator:
+                            description: Required. GPU accelerator type to attach
+                              to an instance.
+                            type: string
+                        type: object
                       serviceAccountRef:
                         description: Optional. Email address of the IAM service account
                           associated with the Task of a Job. The service account represents
@@ -623,7 +636,7 @@ spec:
                                 for more information on how to connect Cloud SQL and
                                 Cloud Run.
                               properties:
-                                instanceRefs:
+                                instances:
                                   description: 'The Cloud SQL instance connection
                                     names, as can be found in https://console.cloud.google.com/sql/instances.
                                     Visit https://cloud.google.com/sql/docs/mysql/connect-run

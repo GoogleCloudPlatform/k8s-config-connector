@@ -157,6 +157,7 @@ type RunJobObservedState struct {
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/default-controller=direct"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
@@ -214,7 +215,7 @@ type CloudSQLInstance struct {
 	//  how to connect Cloud SQL and Cloud Run. Format:
 	//  {project}:{location}:{instance}
 	// +kcc:proto:field=google.cloud.run.v2.CloudSqlInstance.instances
-	InstanceRefs []*refs.SQLInstanceRef `json:"instanceRefs,omitempty"`
+	InstanceRefs []*refs.SQLInstanceRef `json:"instances,omitempty"`
 }
 
 // +kcc:proto=google.cloud.run.v2.Container
@@ -538,11 +539,11 @@ type TaskTemplate struct {
 
 	// Optional. The node selector for the task template.
 	// +kcc:proto:field=google.cloud.run.v2.TaskTemplate.node_selector
-	// NodeSelector *NodeSelector `json:"nodeSelector,omitempty"`
+	NodeSelector *NodeSelector `json:"nodeSelector,omitempty"`
 
 	// Optional. True if GPU zonal redundancy is disabled on this task template.
 	// +kcc:proto:field=google.cloud.run.v2.TaskTemplate.gpu_zonal_redundancy_disabled
-	// GpuZonalRedundancyDisabled *bool `json:"gpuZonalRedundancyDisabled,omitempty"`
+	GpuZonalRedundancyDisabled *bool `json:"gpuZonalRedundancyDisabled,omitempty"`
 }
 
 // +kcc:proto=google.cloud.run.v2.VersionToPath
@@ -702,4 +703,15 @@ type Condition struct {
 
 	// A reason for the execution condition.
 	ExecutionReason *string `json:"executionReason,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.run.v2.Container
+type ContainerObservedState struct {
+	// Name of the container specified as a DNS_LABEL (RFC 1123).
+	// +kcc:proto:field=google.cloud.run.v2.Container.name
+	Name *string `json:"name,omitempty"`
+	// Base image for this container. Only supported for services. If set, it
+	//  indicates that the service is enrolled into automatic base image update.
+	// +kcc:proto:field=google.cloud.run.v2.Container.base_image_uri
+	BaseImageURI *string `json:"baseImageURI,omitempty"`
 }

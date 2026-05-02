@@ -18,8 +18,56 @@
 // krm.version: v1beta1
 // proto.service: google.cloud.run.v2
 // resource: RunJob:Job
+// resource: RunService:Service
 
 package v1beta1
+
+// +kcc:proto=google.cloud.run.v2.BuildConfig
+type BuildConfig struct {
+
+	// The Cloud Storage bucket URI where the function source code is located.
+	// +kcc:proto:field=google.cloud.run.v2.BuildConfig.source_location
+	SourceLocation *string `json:"sourceLocation,omitempty"`
+
+	// Optional. The name of the function (as defined in source code) that will be
+	//  executed. Defaults to the resource name suffix, if not specified. For
+	//  backward compatibility, if function with given name is not found, then the
+	//  system will try to use function named "function".
+	// +kcc:proto:field=google.cloud.run.v2.BuildConfig.function_target
+	FunctionTarget *string `json:"functionTarget,omitempty"`
+
+	// Optional. Artifact Registry URI to store the built image.
+	// +kcc:proto:field=google.cloud.run.v2.BuildConfig.image_uri
+	ImageURI *string `json:"imageURI,omitempty"`
+
+	// Optional. The base image used to build the function.
+	// +kcc:proto:field=google.cloud.run.v2.BuildConfig.base_image
+	BaseImage *string `json:"baseImage,omitempty"`
+
+	// Optional. Sets whether the function will receive automatic base image
+	//  updates.
+	// +kcc:proto:field=google.cloud.run.v2.BuildConfig.enable_automatic_updates
+	EnableAutomaticUpdates *bool `json:"enableAutomaticUpdates,omitempty"`
+
+	// Optional. Name of the Cloud Build Custom Worker Pool that should be used to
+	//  build the Cloud Run function. The format of this field is
+	//  `projects/{project}/locations/{region}/workerPools/{workerPool}` where
+	//  `{project}` and `{region}` are the project id and region respectively where
+	//  the worker pool is defined and `{workerPool}` is the short name of the
+	//  worker pool.
+	// +kcc:proto:field=google.cloud.run.v2.BuildConfig.worker_pool
+	WorkerPool *string `json:"workerPool,omitempty"`
+
+	// Optional. User-provided build-time environment variables for the function
+	// +kcc:proto:field=google.cloud.run.v2.BuildConfig.environment_variables
+	EnvironmentVariables map[string]string `json:"environmentVariables,omitempty"`
+
+	// Optional. Service account to be used for building the container. The format
+	//  of this field is
+	//  `projects/{projectId}/serviceAccounts/{serviceAccountEmail}`.
+	// +kcc:proto:field=google.cloud.run.v2.BuildConfig.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+}
 
 // +kcc:proto=google.cloud.run.v2.BuildInfo
 type BuildInfo struct {
@@ -150,6 +198,49 @@ type NodeSelector struct {
 	Accelerator *string `json:"accelerator,omitempty"`
 }
 
+// +kcc:proto=google.cloud.run.v2.RevisionScaling
+type RevisionScaling struct {
+	// Optional. Minimum number of serving instances that this resource should
+	//  have.
+	// +kcc:proto:field=google.cloud.run.v2.RevisionScaling.min_instance_count
+	MinInstanceCount *int32 `json:"minInstanceCount,omitempty"`
+
+	// Optional. Maximum number of serving instances that this resource should
+	//  have. When unspecified, the field is set to the server default value of
+	//  100. For more information see
+	//  https://cloud.google.com/run/docs/configuring/max-instances
+	// +kcc:proto:field=google.cloud.run.v2.RevisionScaling.max_instance_count
+	MaxInstanceCount *int32 `json:"maxInstanceCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.run.v2.ServiceMesh
+type ServiceMesh struct {
+	// The Mesh resource name. Format:
+	//  `projects/{project}/locations/global/meshes/{mesh}`, where `{project}` can
+	//  be project id or number.
+	// +kcc:proto:field=google.cloud.run.v2.ServiceMesh.mesh
+	Mesh *string `json:"mesh,omitempty"`
+}
+
+// +kcc:proto=google.cloud.run.v2.ServiceScaling
+type ServiceScaling struct {
+	// Optional. total min instances for the service. This number of instances is
+	//  divided among all revisions with specified traffic based on the percent
+	//  of traffic they are receiving.
+	// +kcc:proto:field=google.cloud.run.v2.ServiceScaling.min_instance_count
+	MinInstanceCount *int32 `json:"minInstanceCount,omitempty"`
+
+	// Optional. The scaling mode for the service.
+	// +kcc:proto:field=google.cloud.run.v2.ServiceScaling.scaling_mode
+	ScalingMode *string `json:"scalingMode,omitempty"`
+
+	// Optional. total instance count for the service in manual scaling mode. This
+	//  number of instances is divided among all revisions with specified traffic
+	//  based on the percent of traffic they are receiving.
+	// +kcc:proto:field=google.cloud.run.v2.ServiceScaling.manual_instance_count
+	ManualInstanceCount *int32 `json:"manualInstanceCount,omitempty"`
+}
+
 // +kcc:proto=google.cloud.run.v2.TCPSocketAction
 type TCPSocketAction struct {
 	// Optional. Port number to access on the container. Must be in the range 1 to
@@ -157,6 +248,51 @@ type TCPSocketAction struct {
 	//  which is the value of container.ports[0].containerPort.
 	// +kcc:proto:field=google.cloud.run.v2.TCPSocketAction.port
 	Port *int32 `json:"port,omitempty"`
+}
+
+// +kcc:proto=google.cloud.run.v2.TrafficTarget
+type TrafficTarget struct {
+	// The allocation type for this traffic target.
+	// +kcc:proto:field=google.cloud.run.v2.TrafficTarget.type
+	Type *string `json:"type,omitempty"`
+
+	// Revision to which to send this portion of traffic, if traffic allocation is
+	//  by revision.
+	// +kcc:proto:field=google.cloud.run.v2.TrafficTarget.revision
+	Revision *string `json:"revision,omitempty"`
+
+	// Specifies percent of the traffic to this Revision.
+	//  This defaults to zero if unspecified.
+	// +kcc:proto:field=google.cloud.run.v2.TrafficTarget.percent
+	Percent *int32 `json:"percent,omitempty"`
+
+	// Indicates a string to be part of the URI to exclusively reference this
+	//  target.
+	// +kcc:proto:field=google.cloud.run.v2.TrafficTarget.tag
+	Tag *string `json:"tag,omitempty"`
+}
+
+// +kcc:proto=google.cloud.run.v2.TrafficTargetStatus
+type TrafficTargetStatus struct {
+	// The allocation type for this traffic target.
+	// +kcc:proto:field=google.cloud.run.v2.TrafficTargetStatus.type
+	Type *string `json:"type,omitempty"`
+
+	// Revision to which this traffic is sent.
+	// +kcc:proto:field=google.cloud.run.v2.TrafficTargetStatus.revision
+	Revision *string `json:"revision,omitempty"`
+
+	// Specifies percent of the traffic to this Revision.
+	// +kcc:proto:field=google.cloud.run.v2.TrafficTargetStatus.percent
+	Percent *int32 `json:"percent,omitempty"`
+
+	// Indicates the string used in the URI to exclusively reference this target.
+	// +kcc:proto:field=google.cloud.run.v2.TrafficTargetStatus.tag
+	Tag *string `json:"tag,omitempty"`
+
+	// Displays the target URI.
+	// +kcc:proto:field=google.cloud.run.v2.TrafficTargetStatus.uri
+	URI *string `json:"uri,omitempty"`
 }
 
 // +kcc:proto=google.cloud.run.v2.VolumeMount
@@ -172,6 +308,14 @@ type VolumeMount struct {
 	//  volumes, visit https://cloud.google.com/sql/docs/mysql/connect-run
 	// +kcc:proto:field=google.cloud.run.v2.VolumeMount.mount_path
 	MountPath *string `json:"mountPath,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.run.v2.BuildConfig
+type BuildConfigObservedState struct {
+	// Output only. The Cloud Build name of the latest successful deployment of
+	//  the function.
+	// +kcc:proto:field=google.cloud.run.v2.BuildConfig.name
+	Name *string `json:"name,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.run.v2.BuildInfo

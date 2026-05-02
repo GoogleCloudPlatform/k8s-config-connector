@@ -102,3 +102,41 @@ func ResolveRunJobRefs(ctx context.Context, kube client.Reader, desired *krm.Run
 	}
 	return nil
 }
+
+func ResolveRunServiceRefs(ctx context.Context, kube client.Reader, desired *krm.RunService) error {
+	if desired.Spec.Template == nil {
+		return nil
+	}
+	template := desired.Spec.Template
+	var err error
+	if template.EncryptionKeyRef != nil {
+		template.EncryptionKeyRef, err = refs.ResolveKMSCryptoKeyRef(ctx, kube, desired, template.EncryptionKeyRef)
+		if err != nil {
+			return err
+		}
+	}
+	if template.ServiceAccountRef != nil {
+		err = template.ServiceAccountRef.Resolve(ctx, kube, desired)
+		if err != nil {
+			return err
+		}
+	}
+	if template.VPCAccess != nil && template.VPCAccess.ConnectorRef != nil {
+		template.VPCAccess.ConnectorRef.External, err = template.VPCAccess.ConnectorRef.NormalizedExternal(ctx, kube, desired.GetNamespace())
+		if err != nil {
+			return err
+		}
+	}
+	for _, v := range template.Volumes {
+		if v.CloudSQLInstance != nil {
+			for _, sqlInstance := range v.CloudSQLInstance.InstanceRefs {
+				instanceRef, err := refs.ResolveSQLInstanceRef(ctx, kube, desired, sqlInstance)
+				if err != nil {
+					return err
+				}
+				sqlInstance.External = instanceRef.ConnectionName()
+			}
+		}
+	}
+	return nil
+}

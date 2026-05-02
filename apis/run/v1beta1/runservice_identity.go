@@ -15,10 +15,14 @@
 package v1beta1
 
 import (
+	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var RunServiceIdentityFormat = gcpurls.Template[RunServiceIdentity]("run.googleapis.com", "projects/{project}/locations/{location}/services/{service}")
@@ -51,4 +55,53 @@ func (i *RunServiceIdentity) String() string {
 
 func (i *RunServiceIdentity) Host() string {
 	return RunServiceIdentityFormat.Host()
+}
+
+// NewServiceIdentity builds a RunServiceIdentity from the Config Connector RunService object.
+func NewServiceIdentity(ctx context.Context, reader client.Reader, obj *RunService) (*RunServiceIdentity, error) {
+
+	// Get Parent
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	if err != nil {
+		return nil, err
+	}
+	projectID := projectRef.ProjectID
+	if projectID == "" {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+	location := obj.Spec.Location
+
+	// Get desired ID
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
+	// Use approved External
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		// Validate desired with actual
+		actualIdentity := &RunServiceIdentity{}
+		if err := actualIdentity.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+		if actualIdentity.Project != projectID {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualIdentity.Project, projectID)
+		}
+		if actualIdentity.Location != *location {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualIdentity.Location, *location)
+		}
+		if actualIdentity.Service != resourceID {
+			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
+				resourceID, actualIdentity.Service)
+		}
+	}
+	return &RunServiceIdentity{
+		Project:  projectID,
+		Location: *location,
+		Service:  resourceID,
+	}, nil
 }
