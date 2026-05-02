@@ -48,7 +48,7 @@ func (s *subscriberService) CreateSubscription(ctx context.Context, req *pb.Subs
 	}
 	fqn := name.String()
 
-	obj := ProtoClone(req)
+	obj := proto.CloneOf(req)
 	obj.Name = name.String()
 
 	obj.State = pb.Subscription_ACTIVE
@@ -68,7 +68,7 @@ func (s *subscriberService) CreateSubscription(ctx context.Context, req *pb.Subs
 		}
 	}()
 
-	ret := ProtoClone(obj)
+	ret := proto.CloneOf(obj)
 	// If the original subscription contains PushConfig then add the version attribute.
 	if req.PushConfig != nil {
 		if ret.PushConfig.Attributes == nil {
@@ -117,7 +117,7 @@ func (s *subscriberService) UpdateSubscription(ctx context.Context, req *pb.Upda
 		return nil, err
 	}
 
-	updated := ProtoClone(existing)
+	updated := proto.CloneOf(existing)
 	updated.Name = name.String()
 
 	// Required. The update mask applies to the resource.
@@ -168,7 +168,7 @@ func (s *subscriberService) UpdateSubscription(ctx context.Context, req *pb.Upda
 	}
 
 	// Very unusual behaviour on the return value pushConfig ... maybe this is actually async also?
-	ret := ProtoClone(updated)
+	ret := proto.CloneOf(updated)
 	if ret.PushConfig == nil {
 		ret.PushConfig = &pb.PushConfig{}
 	}

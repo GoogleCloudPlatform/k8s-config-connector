@@ -105,7 +105,7 @@ func (s *publisherService) UpdateTopic(ctx context.Context, req *pb.UpdateTopicR
 		return nil, err
 	}
 
-	updated := ProtoClone(existing)
+	updated := proto.CloneOf(existing)
 	updated.Name = name.String()
 
 	paths := req.GetUpdateMask().GetPaths()

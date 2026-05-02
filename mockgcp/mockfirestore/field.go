@@ -128,7 +128,7 @@ func (s *firestoreAdminServer) getOrCreateField(ctx context.Context, name *field
 			}
 
 			for _, index := range defaultField.GetIndexConfig().GetIndexes() {
-				index = ProtoClone(index)
+				index = proto.CloneOf(index)
 				obj.IndexConfig.Indexes = append(obj.IndexConfig.Indexes, index)
 			}
 		} else {
@@ -172,7 +172,7 @@ func (s *firestoreAdminServer) UpdateField(ctx context.Context, req *pb.UpdateFi
 		return nil, err
 	}
 
-	oldObj := ProtoClone(obj)
+	oldObj := proto.CloneOf(obj)
 
 	if obj.IndexConfig == nil {
 		obj.IndexConfig = &pb.Field_IndexConfig{}
@@ -234,7 +234,7 @@ func (s *firestoreAdminServer) UpdateField(ctx context.Context, req *pb.UpdateFi
 			// Removing an existing index
 			indexConfigDelta := &pb.FieldOperationMetadata_IndexConfigDelta{
 				ChangeType: pb.FieldOperationMetadata_IndexConfigDelta_REMOVE,
-				Index:      ProtoClone(oldIndex),
+				Index:      proto.CloneOf(oldIndex),
 			}
 			indexConfigDelta.Index.State = pb.Index_STATE_UNSPECIFIED // Does not return state
 			indexConfigDeltas = append(indexConfigDeltas, indexConfigDelta)
@@ -254,7 +254,7 @@ func (s *firestoreAdminServer) UpdateField(ctx context.Context, req *pb.UpdateFi
 			if !foundMatch {
 				indexConfigDelta := &pb.FieldOperationMetadata_IndexConfigDelta{
 					ChangeType: pb.FieldOperationMetadata_IndexConfigDelta_ADD,
-					Index:      ProtoClone(index),
+					Index:      proto.CloneOf(index),
 				}
 				indexConfigDelta.Index.State = pb.Index_STATE_UNSPECIFIED // Does not return state
 				indexConfigDeltas = append(indexConfigDeltas, indexConfigDelta)
@@ -299,7 +299,7 @@ func (s *firestoreAdminServer) UpdateField(ctx context.Context, req *pb.UpdateFi
 		lroMetadata.EndTime = timestamppb.Now()
 		lroMetadata.ProgressDocuments = &pb.Progress{}
 
-		retObj := ProtoClone(obj)
+		retObj := proto.CloneOf(obj)
 		// Does not return usesAncestorConfig in LRO
 		if retObj.IndexConfig != nil {
 			retObj.IndexConfig.UsesAncestorConfig = false

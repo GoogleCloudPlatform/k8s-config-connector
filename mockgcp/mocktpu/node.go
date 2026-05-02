@@ -128,7 +128,7 @@ func (s *TpuServer) CreateNode(ctx context.Context, req *pb.CreateNodeRequest) (
 		}
 
 		// Return without Health
-		ret := ProtoClone(obj)
+		ret := proto.CloneOf(obj)
 		ret.Health = pb.Node_HEALTH_UNSPECIFIED
 		return ret, nil
 	})
@@ -216,7 +216,7 @@ func (s *TpuServer) UpdateNode(ctx context.Context, req *pb.UpdateNodeRequest) (
 
 	now := time.Now()
 
-	updated := ProtoClone(existing)
+	updated := proto.CloneOf(existing)
 	updated.Name = name.String()
 
 	// Required. The update mask applies to the resource.

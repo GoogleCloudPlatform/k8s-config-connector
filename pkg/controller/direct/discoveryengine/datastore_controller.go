@@ -29,6 +29,7 @@ import (
 	gcp "cloud.google.com/go/discoveryengine/apiv1"
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -163,7 +164,7 @@ func (a *dataStoreAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating discoveryengine datastore", "name", a.id)
 
-	desired := direct.ProtoClone(a.desired)
+	desired := proto.CloneOf(a.desired)
 	desired.Name = a.id.String()
 
 	req := &pb.CreateDataStoreRequest{
@@ -195,7 +196,7 @@ func (a *dataStoreAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating discoveryengine datastore", "name", a.id)
 
-	desired := direct.ProtoClone(a.desired)
+	desired := proto.CloneOf(a.desired)
 	desired.Name = a.id.String()
 
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
