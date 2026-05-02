@@ -20,8 +20,14 @@
 
 package apphub
 
-/* found existing non-generated mapping function "AppHubApplicationObservedState_FromProto", skipping
-func AppHubApplicationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Application) *krm.AppHubApplicationObservedState {
+import (
+	pb "cloud.google.com/go/apphub/apiv1/apphubpb"
+	krmapphubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apphub/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apphub/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+)
+
+func AppHubApplicationObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Application) *krm.AppHubApplicationObservedState {
 	if in == nil {
 		return nil
 	}
@@ -33,10 +39,7 @@ func AppHubApplicationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "AppHubApplicationObservedState_ToProto", skipping
-func AppHubApplicationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AppHubApplicationObservedState) *pb.Application {
+func AppHubApplicationObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AppHubApplicationObservedState) *pb.Application {
 	if in == nil {
 		return nil
 	}
@@ -48,10 +51,7 @@ func AppHubApplicationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.A
 	out.State = direct.Enum_ToProto[pb.Application_State](mapCtx, in.State)
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "AppHubApplicationSpec_FromProto", skipping
-func AppHubApplicationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Application) *krm.AppHubApplicationSpec {
+func AppHubApplicationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Application) *krm.AppHubApplicationSpec {
 	if in == nil {
 		return nil
 	}
@@ -59,14 +59,11 @@ func AppHubApplicationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Applicati
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Attributes = Attributes_FromProto(mapCtx, in.GetAttributes())
-	out.Scope = Scope_FromProto(mapCtx, in.GetScope())
+	out.Attributes = Attributes_v1beta1_FromProto(mapCtx, in.GetAttributes())
+	out.Scope = Scope_v1beta1_FromProto(mapCtx, in.GetScope())
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "AppHubApplicationSpec_ToProto", skipping
-func AppHubApplicationSpec_ToProto(mapCtx *direct.MapContext, in *krm.AppHubApplicationSpec) *pb.Application {
+func AppHubApplicationSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AppHubApplicationSpec) *pb.Application {
 	if in == nil {
 		return nil
 	}
@@ -74,40 +71,31 @@ func AppHubApplicationSpec_ToProto(mapCtx *direct.MapContext, in *krm.AppHubAppl
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
-	out.Attributes = Attributes_ToProto(mapCtx, in.Attributes)
-	out.Scope = Scope_ToProto(mapCtx, in.Scope)
+	out.Attributes = Attributes_v1beta1_ToProto(mapCtx, in.Attributes)
+	out.Scope = Scope_v1beta1_ToProto(mapCtx, in.Scope)
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "AppHubDiscoveredServiceObservedState_FromProto", skipping
-func AppHubDiscoveredServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredService) *krmapphubv1alpha1.AppHubDiscoveredServiceObservedState {
+func AppHubDiscoveredServiceObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredService) *krmapphubv1alpha1.AppHubDiscoveredServiceObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krmapphubv1alpha1.AppHubDiscoveredServiceObservedState{}
 	// MISSING: Name
-	out.ServiceReference = ServiceReferenceObservedState_FromProto(mapCtx, in.GetServiceReference())
-	out.ServiceProperties = ServicePropertiesObservedState_FromProto(mapCtx, in.GetServiceProperties())
+	out.ServiceReference = ServiceReferenceObservedState_v1alpha1_FromProto(mapCtx, in.GetServiceReference())
+	out.ServiceProperties = ServicePropertiesObservedState_v1alpha1_FromProto(mapCtx, in.GetServiceProperties())
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "AppHubDiscoveredServiceObservedState_ToProto", skipping
-func AppHubDiscoveredServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.AppHubDiscoveredServiceObservedState) *pb.DiscoveredService {
+func AppHubDiscoveredServiceObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.AppHubDiscoveredServiceObservedState) *pb.DiscoveredService {
 	if in == nil {
 		return nil
 	}
 	out := &pb.DiscoveredService{}
 	// MISSING: Name
-	out.ServiceReference = ServiceReferenceObservedState_ToProto(mapCtx, in.ServiceReference)
-	out.ServiceProperties = ServicePropertiesObservedState_ToProto(mapCtx, in.ServiceProperties)
+	out.ServiceReference = ServiceReferenceObservedState_v1alpha1_ToProto(mapCtx, in.ServiceReference)
+	out.ServiceProperties = ServicePropertiesObservedState_v1alpha1_ToProto(mapCtx, in.ServiceProperties)
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "AppHubDiscoveredServiceSpec_FromProto", skipping
-func AppHubDiscoveredServiceSpec_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredService) *krmapphubv1alpha1.AppHubDiscoveredServiceSpec {
+func AppHubDiscoveredServiceSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredService) *krmapphubv1alpha1.AppHubDiscoveredServiceSpec {
 	if in == nil {
 		return nil
 	}
@@ -115,10 +103,7 @@ func AppHubDiscoveredServiceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Dis
 	// MISSING: Name
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "AppHubDiscoveredServiceSpec_ToProto", skipping
-func AppHubDiscoveredServiceSpec_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.AppHubDiscoveredServiceSpec) *pb.DiscoveredService {
+func AppHubDiscoveredServiceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.AppHubDiscoveredServiceSpec) *pb.DiscoveredService {
 	if in == nil {
 		return nil
 	}
@@ -126,36 +111,27 @@ func AppHubDiscoveredServiceSpec_ToProto(mapCtx *direct.MapContext, in *krmapphu
 	// MISSING: Name
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "AppHubDiscoveredWorkloadObservedState_FromProto", skipping
-func AppHubDiscoveredWorkloadObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredWorkload) *krmapphubv1alpha1.AppHubDiscoveredWorkloadObservedState {
+func AppHubDiscoveredWorkloadObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredWorkload) *krmapphubv1alpha1.AppHubDiscoveredWorkloadObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krmapphubv1alpha1.AppHubDiscoveredWorkloadObservedState{}
 	// MISSING: Name
-	out.WorkloadReference = WorkloadReferenceObservedState_FromProto(mapCtx, in.GetWorkloadReference())
-	out.WorkloadProperties = WorkloadPropertiesObservedState_FromProto(mapCtx, in.GetWorkloadProperties())
+	out.WorkloadReference = WorkloadReferenceObservedState_v1alpha1_FromProto(mapCtx, in.GetWorkloadReference())
+	out.WorkloadProperties = WorkloadPropertiesObservedState_v1alpha1_FromProto(mapCtx, in.GetWorkloadProperties())
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "AppHubDiscoveredWorkloadObservedState_ToProto", skipping
-func AppHubDiscoveredWorkloadObservedState_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.AppHubDiscoveredWorkloadObservedState) *pb.DiscoveredWorkload {
+func AppHubDiscoveredWorkloadObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.AppHubDiscoveredWorkloadObservedState) *pb.DiscoveredWorkload {
 	if in == nil {
 		return nil
 	}
 	out := &pb.DiscoveredWorkload{}
 	// MISSING: Name
-	out.WorkloadReference = WorkloadReferenceObservedState_ToProto(mapCtx, in.WorkloadReference)
-	out.WorkloadProperties = WorkloadPropertiesObservedState_ToProto(mapCtx, in.WorkloadProperties)
+	out.WorkloadReference = WorkloadReferenceObservedState_v1alpha1_ToProto(mapCtx, in.WorkloadReference)
+	out.WorkloadProperties = WorkloadPropertiesObservedState_v1alpha1_ToProto(mapCtx, in.WorkloadProperties)
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "AppHubDiscoveredWorkloadSpec_FromProto", skipping
-func AppHubDiscoveredWorkloadSpec_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredWorkload) *krmapphubv1alpha1.AppHubDiscoveredWorkloadSpec {
+func AppHubDiscoveredWorkloadSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredWorkload) *krmapphubv1alpha1.AppHubDiscoveredWorkloadSpec {
 	if in == nil {
 		return nil
 	}
@@ -163,10 +139,7 @@ func AppHubDiscoveredWorkloadSpec_FromProto(mapCtx *direct.MapContext, in *pb.Di
 	// MISSING: Name
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "AppHubDiscoveredWorkloadSpec_ToProto", skipping
-func AppHubDiscoveredWorkloadSpec_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.AppHubDiscoveredWorkloadSpec) *pb.DiscoveredWorkload {
+func AppHubDiscoveredWorkloadSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.AppHubDiscoveredWorkloadSpec) *pb.DiscoveredWorkload {
 	if in == nil {
 		return nil
 	}
@@ -174,40 +147,31 @@ func AppHubDiscoveredWorkloadSpec_ToProto(mapCtx *direct.MapContext, in *krmapph
 	// MISSING: Name
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "Attributes_FromProto", skipping
-func Attributes_FromProto(mapCtx *direct.MapContext, in *pb.Attributes) *krm.Attributes {
+func Attributes_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Attributes) *krm.Attributes {
 	if in == nil {
 		return nil
 	}
 	out := &krm.Attributes{}
-	out.Criticality = Criticality_FromProto(mapCtx, in.GetCriticality())
-	out.Environment = Environment_FromProto(mapCtx, in.GetEnvironment())
-	out.DeveloperOwners = direct.Slice_FromProto(mapCtx, in.DeveloperOwners, ContactInfo_FromProto)
-	out.OperatorOwners = direct.Slice_FromProto(mapCtx, in.OperatorOwners, ContactInfo_FromProto)
-	out.BusinessOwners = direct.Slice_FromProto(mapCtx, in.BusinessOwners, ContactInfo_FromProto)
+	out.Criticality = Criticality_v1beta1_FromProto(mapCtx, in.GetCriticality())
+	out.Environment = Environment_v1beta1_FromProto(mapCtx, in.GetEnvironment())
+	out.DeveloperOwners = direct.Slice_FromProto(mapCtx, in.DeveloperOwners, ContactInfo_v1beta1_FromProto)
+	out.OperatorOwners = direct.Slice_FromProto(mapCtx, in.OperatorOwners, ContactInfo_v1beta1_FromProto)
+	out.BusinessOwners = direct.Slice_FromProto(mapCtx, in.BusinessOwners, ContactInfo_v1beta1_FromProto)
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "Attributes_ToProto", skipping
-func Attributes_ToProto(mapCtx *direct.MapContext, in *krm.Attributes) *pb.Attributes {
+func Attributes_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Attributes) *pb.Attributes {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Attributes{}
-	out.Criticality = Criticality_ToProto(mapCtx, in.Criticality)
-	out.Environment = Environment_ToProto(mapCtx, in.Environment)
-	out.DeveloperOwners = direct.Slice_ToProto(mapCtx, in.DeveloperOwners, ContactInfo_ToProto)
-	out.OperatorOwners = direct.Slice_ToProto(mapCtx, in.OperatorOwners, ContactInfo_ToProto)
-	out.BusinessOwners = direct.Slice_ToProto(mapCtx, in.BusinessOwners, ContactInfo_ToProto)
+	out.Criticality = Criticality_v1beta1_ToProto(mapCtx, in.Criticality)
+	out.Environment = Environment_v1beta1_ToProto(mapCtx, in.Environment)
+	out.DeveloperOwners = direct.Slice_ToProto(mapCtx, in.DeveloperOwners, ContactInfo_v1beta1_ToProto)
+	out.OperatorOwners = direct.Slice_ToProto(mapCtx, in.OperatorOwners, ContactInfo_v1beta1_ToProto)
+	out.BusinessOwners = direct.Slice_ToProto(mapCtx, in.BusinessOwners, ContactInfo_v1beta1_ToProto)
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "ContactInfo_FromProto", skipping
-func ContactInfo_FromProto(mapCtx *direct.MapContext, in *pb.ContactInfo) *krm.ContactInfo {
+func ContactInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ContactInfo) *krm.ContactInfo {
 	if in == nil {
 		return nil
 	}
@@ -216,10 +180,7 @@ func ContactInfo_FromProto(mapCtx *direct.MapContext, in *pb.ContactInfo) *krm.C
 	out.Email = direct.LazyPtr(in.GetEmail())
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "ContactInfo_ToProto", skipping
-func ContactInfo_ToProto(mapCtx *direct.MapContext, in *krm.ContactInfo) *pb.ContactInfo {
+func ContactInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ContactInfo) *pb.ContactInfo {
 	if in == nil {
 		return nil
 	}
@@ -228,10 +189,7 @@ func ContactInfo_ToProto(mapCtx *direct.MapContext, in *krm.ContactInfo) *pb.Con
 	out.Email = direct.ValueOf(in.Email)
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "Criticality_FromProto", skipping
-func Criticality_FromProto(mapCtx *direct.MapContext, in *pb.Criticality) *krm.Criticality {
+func Criticality_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Criticality) *krm.Criticality {
 	if in == nil {
 		return nil
 	}
@@ -239,10 +197,7 @@ func Criticality_FromProto(mapCtx *direct.MapContext, in *pb.Criticality) *krm.C
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "Criticality_ToProto", skipping
-func Criticality_ToProto(mapCtx *direct.MapContext, in *krm.Criticality) *pb.Criticality {
+func Criticality_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Criticality) *pb.Criticality {
 	if in == nil {
 		return nil
 	}
@@ -250,10 +205,7 @@ func Criticality_ToProto(mapCtx *direct.MapContext, in *krm.Criticality) *pb.Cri
 	out.Type = direct.Enum_ToProto[pb.Criticality_Type](mapCtx, in.Type)
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "Environment_FromProto", skipping
-func Environment_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.Environment {
+func Environment_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.Environment {
 	if in == nil {
 		return nil
 	}
@@ -261,10 +213,7 @@ func Environment_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.E
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "Environment_ToProto", skipping
-func Environment_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Environment {
+func Environment_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Environment {
 	if in == nil {
 		return nil
 	}
@@ -272,10 +221,7 @@ func Environment_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Env
 	out.Type = direct.Enum_ToProto[pb.Environment_Type](mapCtx, in.Type)
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "Scope_FromProto", skipping
-func Scope_FromProto(mapCtx *direct.MapContext, in *pb.Scope) *krm.Scope {
+func Scope_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Scope) *krm.Scope {
 	if in == nil {
 		return nil
 	}
@@ -283,10 +229,7 @@ func Scope_FromProto(mapCtx *direct.MapContext, in *pb.Scope) *krm.Scope {
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "Scope_ToProto", skipping
-func Scope_ToProto(mapCtx *direct.MapContext, in *krm.Scope) *pb.Scope {
+func Scope_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Scope) *pb.Scope {
 	if in == nil {
 		return nil
 	}
@@ -294,10 +237,7 @@ func Scope_ToProto(mapCtx *direct.MapContext, in *krm.Scope) *pb.Scope {
 	out.Type = direct.Enum_ToProto[pb.Scope_Type](mapCtx, in.Type)
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "ServiceProperties_FromProto", skipping
-func ServiceProperties_FromProto(mapCtx *direct.MapContext, in *pb.ServiceProperties) *krmapphubv1alpha1.ServiceProperties {
+func ServiceProperties_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceProperties) *krmapphubv1alpha1.ServiceProperties {
 	if in == nil {
 		return nil
 	}
@@ -307,10 +247,7 @@ func ServiceProperties_FromProto(mapCtx *direct.MapContext, in *pb.ServiceProper
 	// MISSING: Zone
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "ServiceProperties_ToProto", skipping
-func ServiceProperties_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.ServiceProperties) *pb.ServiceProperties {
+func ServiceProperties_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.ServiceProperties) *pb.ServiceProperties {
 	if in == nil {
 		return nil
 	}
@@ -320,10 +257,7 @@ func ServiceProperties_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.
 	// MISSING: Zone
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "ServicePropertiesObservedState_FromProto", skipping
-func ServicePropertiesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceProperties) *krmapphubv1alpha1.ServicePropertiesObservedState {
+func ServicePropertiesObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceProperties) *krmapphubv1alpha1.ServicePropertiesObservedState {
 	if in == nil {
 		return nil
 	}
@@ -333,10 +267,7 @@ func ServicePropertiesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.Zone = direct.LazyPtr(in.GetZone())
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "ServicePropertiesObservedState_ToProto", skipping
-func ServicePropertiesObservedState_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.ServicePropertiesObservedState) *pb.ServiceProperties {
+func ServicePropertiesObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.ServicePropertiesObservedState) *pb.ServiceProperties {
 	if in == nil {
 		return nil
 	}
@@ -346,10 +277,7 @@ func ServicePropertiesObservedState_ToProto(mapCtx *direct.MapContext, in *krmap
 	out.Zone = direct.ValueOf(in.Zone)
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "ServiceReference_FromProto", skipping
-func ServiceReference_FromProto(mapCtx *direct.MapContext, in *pb.ServiceReference) *krmapphubv1alpha1.ServiceReference {
+func ServiceReference_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceReference) *krmapphubv1alpha1.ServiceReference {
 	if in == nil {
 		return nil
 	}
@@ -357,10 +285,7 @@ func ServiceReference_FromProto(mapCtx *direct.MapContext, in *pb.ServiceReferen
 	// MISSING: URI
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "ServiceReference_ToProto", skipping
-func ServiceReference_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.ServiceReference) *pb.ServiceReference {
+func ServiceReference_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.ServiceReference) *pb.ServiceReference {
 	if in == nil {
 		return nil
 	}
@@ -368,10 +293,7 @@ func ServiceReference_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.S
 	// MISSING: URI
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "ServiceReferenceObservedState_FromProto", skipping
-func ServiceReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceReference) *krmapphubv1alpha1.ServiceReferenceObservedState {
+func ServiceReferenceObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceReference) *krmapphubv1alpha1.ServiceReferenceObservedState {
 	if in == nil {
 		return nil
 	}
@@ -379,10 +301,7 @@ func ServiceReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.S
 	out.URI = direct.LazyPtr(in.GetUri())
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "ServiceReferenceObservedState_ToProto", skipping
-func ServiceReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.ServiceReferenceObservedState) *pb.ServiceReference {
+func ServiceReferenceObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.ServiceReferenceObservedState) *pb.ServiceReference {
 	if in == nil {
 		return nil
 	}
@@ -390,10 +309,7 @@ func ServiceReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krmapp
 	out.Uri = direct.ValueOf(in.URI)
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "WorkloadProperties_FromProto", skipping
-func WorkloadProperties_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadProperties) *krmapphubv1alpha1.WorkloadProperties {
+func WorkloadProperties_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadProperties) *krmapphubv1alpha1.WorkloadProperties {
 	if in == nil {
 		return nil
 	}
@@ -403,10 +319,7 @@ func WorkloadProperties_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadProp
 	// MISSING: Zone
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "WorkloadProperties_ToProto", skipping
-func WorkloadProperties_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.WorkloadProperties) *pb.WorkloadProperties {
+func WorkloadProperties_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.WorkloadProperties) *pb.WorkloadProperties {
 	if in == nil {
 		return nil
 	}
@@ -416,10 +329,7 @@ func WorkloadProperties_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1
 	// MISSING: Zone
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "WorkloadPropertiesObservedState_FromProto", skipping
-func WorkloadPropertiesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadProperties) *krmapphubv1alpha1.WorkloadPropertiesObservedState {
+func WorkloadPropertiesObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadProperties) *krmapphubv1alpha1.WorkloadPropertiesObservedState {
 	if in == nil {
 		return nil
 	}
@@ -429,10 +339,7 @@ func WorkloadPropertiesObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	out.Zone = direct.LazyPtr(in.GetZone())
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "WorkloadPropertiesObservedState_ToProto", skipping
-func WorkloadPropertiesObservedState_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.WorkloadPropertiesObservedState) *pb.WorkloadProperties {
+func WorkloadPropertiesObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.WorkloadPropertiesObservedState) *pb.WorkloadProperties {
 	if in == nil {
 		return nil
 	}
@@ -442,10 +349,7 @@ func WorkloadPropertiesObservedState_ToProto(mapCtx *direct.MapContext, in *krma
 	out.Zone = direct.ValueOf(in.Zone)
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "WorkloadReference_FromProto", skipping
-func WorkloadReference_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadReference) *krmapphubv1alpha1.WorkloadReference {
+func WorkloadReference_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadReference) *krmapphubv1alpha1.WorkloadReference {
 	if in == nil {
 		return nil
 	}
@@ -453,10 +357,7 @@ func WorkloadReference_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadRefer
 	// MISSING: URI
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "WorkloadReference_ToProto", skipping
-func WorkloadReference_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.WorkloadReference) *pb.WorkloadReference {
+func WorkloadReference_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.WorkloadReference) *pb.WorkloadReference {
 	if in == nil {
 		return nil
 	}
@@ -464,10 +365,7 @@ func WorkloadReference_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.
 	// MISSING: URI
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "WorkloadReferenceObservedState_FromProto", skipping
-func WorkloadReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadReference) *krmapphubv1alpha1.WorkloadReferenceObservedState {
+func WorkloadReferenceObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadReference) *krmapphubv1alpha1.WorkloadReferenceObservedState {
 	if in == nil {
 		return nil
 	}
@@ -475,10 +373,7 @@ func WorkloadReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.URI = direct.LazyPtr(in.GetUri())
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "WorkloadReferenceObservedState_ToProto", skipping
-func WorkloadReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.WorkloadReferenceObservedState) *pb.WorkloadReference {
+func WorkloadReferenceObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.WorkloadReferenceObservedState) *pb.WorkloadReference {
 	if in == nil {
 		return nil
 	}
@@ -486,4 +381,3 @@ func WorkloadReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krmap
 	out.Uri = direct.ValueOf(in.URI)
 	return out
 }
-*/

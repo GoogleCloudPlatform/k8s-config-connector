@@ -246,8 +246,8 @@ func (a *ApplicationAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.Parent.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Parent.Location = a.id.Parent().Location
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
+	obj.Spec.Location = a.id.Parent().Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
