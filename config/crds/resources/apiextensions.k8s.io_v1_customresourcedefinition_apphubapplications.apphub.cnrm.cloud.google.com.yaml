@@ -136,10 +136,10 @@ spec:
                   have a maximum length of 63 characters.
                 type: string
               location:
-                description: Required. The location of the application.
+                description: Required. Defines the parent path of the resource.
                 type: string
               projectRef:
-                description: Required. The host project of the application.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -363,10 +363,10 @@ spec:
                   have a maximum length of 63 characters.
                 type: string
               location:
-                description: Required. The location of the application.
+                description: Required. Defines the parent path of the resource.
                 type: string
               projectRef:
-                description: Required. The host project of the application.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:

@@ -32,7 +32,8 @@ go run . generate-types \
 go run . generate-mapper \
   --service google.cloud.apphub.v1 \
   --api-version apphub.cnrm.cloud.google.com/v1beta1 \
-  --include-skipped-output
+  --include-skipped-output \
+  --multiversion
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
