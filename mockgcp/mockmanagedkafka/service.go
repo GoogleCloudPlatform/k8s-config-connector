@@ -21,6 +21,7 @@ import (
 
 	"google.golang.org/grpc"
 
+	"cloud.google.com/go/iam/apiv1/iampb"
 	pb "cloud.google.com/go/managedkafka/apiv1/managedkafkapb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
@@ -60,6 +61,7 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterManagedKafkaServer(grpcServer, s.v1)
+	iampb.RegisterIAMPolicyServer(grpcServer, s.v1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -69,15 +71,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	grpcMux.AddService(pb.NewManagedKafkaClient(conn))
+	grpcMux.AddService(iampb.NewIAMPolicyClient(conn))
 
 	grpcMux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
-
-	// // Returns slightly non-standard errors
-	// grpcMux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-	// 	if error.Code == 404 {
-	// 		error.Errors = nil
-	// 	}
-	// }
 
 	return grpcMux, nil
 }
