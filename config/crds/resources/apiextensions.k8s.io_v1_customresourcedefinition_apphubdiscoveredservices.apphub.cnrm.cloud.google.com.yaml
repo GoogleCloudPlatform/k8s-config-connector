@@ -99,6 +99,8 @@ spec:
                     type: string
                 type: object
               resourceID:
+                description: The AppHubDiscoveredService name. If not given, the metadata.name
+                  will be used.
                 type: string
             type: object
           status:
