@@ -18,7 +18,7 @@ metadata:
   name: iampolicy-${uniqueId}
 spec:
   bindings:
-    - role: roles/secretmanager.admin
+    - role: roles/secretmanager.secretAccessor
       members:
         - serviceAccount:secret-dep-${uniqueId}@${projectId}.iam.gserviceaccount.com
   resourceRef:

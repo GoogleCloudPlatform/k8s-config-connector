@@ -213,8 +213,7 @@ X-Goog-Request-Params: resource=projects%2F${projectId}%2Fsecrets%2Fsecret-${uni
         ],
         "role": "roles/secretmanager.admin"
       }
-    ],
-    "etag": "abcdef0123A="
+    ]
   },
   "resource": "projects/${projectId}/secrets/secret-${uniqueId}"
 }
@@ -283,11 +282,12 @@ X-Goog-Request-Params: resource=projects%2F${projectId}%2Fsecrets%2Fsecret-${uni
   "policy": {
     "bindings": [
       {
-        "role": "roles/secretmanager.admin"
+        "members": [
+          "serviceAccount:secret-dep-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/secretmanager.secretAccessor"
       }
-    ],
-    "etag": "abcdef0123A=",
-    "version": 1
+    ]
   },
   "resource": "projects/${projectId}/secrets/secret-${uniqueId}"
 }
@@ -305,9 +305,69 @@ X-Xss-Protection: 0
 {
   "bindings": [
     {
-      "role": "roles/secretmanager.admin"
+      "members": [
+        "serviceAccount:secret-dep-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/secretmanager.secretAccessor"
     }
   ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secret-${uniqueId}:getIamPolicy?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:secret-dep-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/secretmanager.secretAccessor"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secret-${uniqueId}:setIamPolicy?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "etag": "abcdef0123A=",
+    "version": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
   "etag": "abcdef0123A=",
   "version": 1
 }
