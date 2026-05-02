@@ -117,7 +117,7 @@ func (s *instanceAdminServer) CreateCluster(ctx context.Context, req *pb.CreateC
 	}
 
 	// Populate LRO originalRequest, though not all fields are included
-	lroMetadata.OriginalRequest = ProtoClone(req)
+	lroMetadata.OriginalRequest = proto.CloneOf(req)
 	if lroMetadata.OriginalRequest.Cluster.DefaultStorageType == pb.StorageType_STORAGE_TYPE_UNSPECIFIED {
 		lroMetadata.OriginalRequest.Cluster.DefaultStorageType = pb.StorageType_SSD
 	}
@@ -141,7 +141,7 @@ func (s *instanceAdminServer) CreateCluster(ctx context.Context, req *pb.CreateC
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.FinishTime = timestamppb.New(time.Now())
 
-		returnObj := ProtoClone(obj)
+		returnObj := proto.CloneOf(obj)
 		returnObj.NodeScalingFactor = adminpb.Cluster_NODE_SCALING_FACTOR_UNSPECIFIED // For some reason, not populated here
 		return returnObj, nil
 	})

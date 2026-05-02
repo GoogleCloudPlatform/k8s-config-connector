@@ -80,7 +80,7 @@ func (s *AccessContextManagerV1) CreateAccessLevel(ctx context.Context, req *pb.
 
 	fqn := name.String()
 
-	obj := ProtoClone(req.GetAccessLevel())
+	obj := proto.CloneOf(req.GetAccessLevel())
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -107,7 +107,7 @@ func (s *AccessContextManagerV1) UpdateAccessLevel(ctx context.Context, req *pb.
 		return nil, err
 	}
 
-	updated := ProtoClone(existing)
+	updated := proto.CloneOf(existing)
 	paths := req.GetUpdateMask().GetPaths()
 	if len(paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "update_mask is required")

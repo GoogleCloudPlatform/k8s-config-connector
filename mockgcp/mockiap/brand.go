@@ -55,7 +55,7 @@ func (s *IdentityAwareProxyOAuthService) CreateBrand(ctx context.Context, req *p
 		return nil, status.Errorf(codes.Internal, "failed to check for existing brand: %v", err)
 	}
 
-	obj := ProtoClone(req.GetBrand())
+	obj := proto.CloneOf(req.GetBrand())
 	obj.Name = name.String()
 	obj.OrgInternalOnly = true
 

@@ -64,7 +64,7 @@ func (s *instanceAdminServer) CreateMaterializedView(ctx context.Context, req *p
 
 	fqn := name.String()
 
-	obj := ProtoClone(req.MaterializedView)
+	obj := proto.CloneOf(req.MaterializedView)
 	obj.Name = fqn
 	obj.Etag = "abcdef0123A="
 
@@ -103,7 +103,7 @@ func (s *instanceAdminServer) UpdateMaterializedView(ctx context.Context, req *p
 		return nil, err
 	}
 
-	updated := ProtoClone(existing)
+	updated := proto.CloneOf(existing)
 
 	// Required. The set of fields to update.
 	paths := req.GetUpdateMask().GetPaths()
