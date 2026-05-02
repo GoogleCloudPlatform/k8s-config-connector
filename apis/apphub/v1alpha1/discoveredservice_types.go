@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -24,9 +25,12 @@ var AppHubDiscoveredServiceGVK = GroupVersion.WithKind("AppHubDiscoveredService"
 // AppHubDiscoveredServiceSpec defines the desired state of AppHubDiscoveredService
 // +kcc:spec:proto=google.cloud.apphub.v1.DiscoveredService
 type AppHubDiscoveredServiceSpec struct {
-	Parent `json:",inline"`
-	// The AppHubDiscoveredService name. If not given, the metadata.name will be used.
-	ResourceID *string `json:"resourceID,omitempty"`
+	// Required. The location of the resource.
+	Location string `json:"location,omitempty"`
+
+	// Required. The host project of the resource.
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"` // The AppHubDiscoveredService name. If not given, the metadata.name will be used.
+	ResourceID *string             `json:"resourceID,omitempty"`
 }
 
 // AppHubDiscoveredServiceStatus defines the config connector machine state of AppHubDiscoveredService
