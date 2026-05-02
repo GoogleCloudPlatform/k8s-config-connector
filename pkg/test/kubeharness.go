@@ -346,5 +346,5 @@ func (h *KubeHarness) CreateDummyCRD(gvk schema.GroupVersionKind) {
 		return true, nil
 	}); err != nil {
 		h.Fatalf("error waiting for REST mapper to discover CRD %v: %v", gvk, err)
-}
+	}
 }
