@@ -77,7 +77,7 @@ type SecureSourceManagerRepositoryObservedState struct {
 	Etag *string `json:"etag,omitempty"`
 
 	// Output only. URIs for the repository.
-	URIs *Repository_URIsObservedState `json:"uris,omitempty"`
+	URIs *Repository_UrIsObservedState `json:"uris,omitempty"`
 }
 
 // +genclient
@@ -94,6 +94,7 @@ type SecureSourceManagerRepositoryObservedState struct {
 // SecureSourceManagerRepository is the Schema for the SecureSourceManagerRepository API
 // +k8s:openapi-gen=true
 // +kubebuilder:storageversion
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 type SecureSourceManagerRepository struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

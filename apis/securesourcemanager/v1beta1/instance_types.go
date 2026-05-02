@@ -35,8 +35,7 @@ type SecureSourceManagerInstanceSpec struct {
 	Labels map[string]string `json:"labels,omitempty"`
 
 	// Optional. Immutable. Customer-managed encryption key name.
-	KmsKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
-
+	KMSKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 	// Optional. PrivateConfig includes settings for private instance.
 	PrivateConfig *Instance_PrivateConfig `json:"privateConfig,omitempty"`
 }
@@ -102,7 +101,7 @@ type Instance_PrivateConfig struct {
 	// Required. Immutable. CA pool resource, resource must in the format of
 	//  `projects/{project}/locations/{location}/caPools/{ca_pool}`.
 	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.ca_pool
-	CaPoolRef *refs.PrivateCACAPoolRef `json:"caPoolRef,omitempty"`
+	CAPoolRef *refs.PrivateCACAPoolRef `json:"caPoolRef,omitempty"`
 }
 
 // +genclient
@@ -119,6 +118,7 @@ type Instance_PrivateConfig struct {
 // SecureSourceManagerInstance is the Schema for the SecureSourceManagerInstance API
 // +k8s:openapi-gen=true
 // +kubebuilder:storageversion
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 type SecureSourceManagerInstance struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
@@ -137,4 +137,17 @@ type SecureSourceManagerInstanceList struct {
 
 func init() {
 	SchemeBuilder.Register(&SecureSourceManagerInstance{}, &SecureSourceManagerInstanceList{})
+}
+
+// +kcc:proto=google.cloud.securesourcemanager.v1.Instance.PrivateConfig
+type Instance_PrivateConfigObservedState struct {
+	// Output only. Service Attachment for HTTP, resource is in the format of
+	//  `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.http_service_attachment
+	HTTPServiceAttachment *string `json:"httpServiceAttachment,omitempty"`
+
+	// Output only. Service Attachment for SSH, resource is in the format of
+	//  `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.ssh_service_attachment
+	SSHServiceAttachment *string `json:"sshServiceAttachment,omitempty"`
 }
