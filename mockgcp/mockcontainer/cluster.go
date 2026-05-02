@@ -343,11 +343,21 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		update.DesiredAdditionalIpRangesConfig = nil
 	}
 
-	// TODO: Support more updates!
 	if update.DesiredDatabaseEncryption != nil {
-		obj.DatabaseEncryption = update.DesiredDatabaseEncryption
+		if obj.DatabaseEncryption == nil {
+			obj.DatabaseEncryption = &pb.DatabaseEncryption{}
+		}
+		if update.DesiredDatabaseEncryption.State != pb.DatabaseEncryption_UNKNOWN {
+			obj.DatabaseEncryption.State = update.DesiredDatabaseEncryption.State
+		}
+		if update.DesiredDatabaseEncryption.KeyName != "" {
+			obj.DatabaseEncryption.KeyName = update.DesiredDatabaseEncryption.KeyName
+		}
+		obj.DatabaseEncryption.CurrentState = nil
 		update.DesiredDatabaseEncryption = nil
 	}
+
+	// TODO: Support more updates!
 
 	if !proto.Equal(update, &pb.ClusterUpdate{}) {
 
@@ -358,6 +368,7 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		return nil, err
 	}
 
+	klog.Infof("maqiuyu...2...%+v\n", obj.DatabaseEncryption)
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -618,15 +629,50 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 		obj.CurrentNodeCount = 1
 	}
 
+	// If databaseEncryption field doesn't exist and databaseEncryption.state is UNKNOWN, then it should be defaulted to
+	// DECRYPTED with no key.
+	// Otherwise, UNKNOWN actually represents ALL_OBJECTS_ENCRYPTION_ENABLED (more details see the comments below), and
+	// we will update it to ENCRYPTED.
 	if obj.DatabaseEncryption == nil {
-		obj.DatabaseEncryption = &pb.DatabaseEncryption{}
+		obj.DatabaseEncryption = &pb.DatabaseEncryption{
+			State: pb.DatabaseEncryption_DECRYPTED,
+		}
+	} else {
+		// Possibly because mockgcp is using an older version of the proto,
+		// when the requested state is pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED,
+		// it's dropped in the received request, and then got parsed to pb.DatabaseEncryption_UNKNOWN.
+		//
+		// Besides, if I explicitly do `obj.DatabaseEncryption.State = pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED`
+		// here, this error shows up in the test log:
+		//   Error when reading or editing Container Cluster \"cl-dball-7anl5sn4tkp33jq\": json: cannot unmarshal number
+		//   into Go struct field DatabaseEncryption.databaseEncryption.state of type string
+		if obj.DatabaseEncryption.State == pb.DatabaseEncryption_UNKNOWN {
+			obj.DatabaseEncryption.State = pb.DatabaseEncryption_ENCRYPTED
+		}
 	}
 
-	if obj.DatabaseEncryption.State == pb.DatabaseEncryption_UNKNOWN {
-		obj.DatabaseEncryption.State = pb.DatabaseEncryption_DECRYPTED
-	}
 	if obj.DatabaseEncryption.CurrentState == nil {
-		obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_DECRYPTED)
+		switch obj.DatabaseEncryption.State {
+		case pb.DatabaseEncryption_DECRYPTED:
+			obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_DECRYPTED)
+			if obj.DatabaseEncryption.KeyName != "" {
+				obj.DatabaseEncryption.DecryptionKeys = []string{obj.DatabaseEncryption.KeyName}
+				obj.DatabaseEncryption.KeyName = ""
+			}
+		case pb.DatabaseEncryption_ENCRYPTED:
+			// The real GCP service decided to return `ALL_OBJECTS_ENCRYPTION_ENABLED` when the input is `ENCRYPTED`
+			// for the latest version (1.35 and above).
+			// However, if I explicitly do `obj.DatabaseEncryption.State = pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED`
+			// here, this error shows up in the test log:
+			//   Error when reading or editing Container Cluster \"cl-dball-7anl5sn4tkp33jq\": json: cannot unmarshal number
+			//   into Go struct field DatabaseEncryption.databaseEncryption.state of type string
+			obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_ENCRYPTED)
+		case pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED:
+			// CURRENT_STATE_ALL_OBJECTS_ENCRYPTION_ENABLED value is not yet supported in googleapis library.
+			obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_ENCRYPTED)
+		default:
+			obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_DECRYPTED)
+		}
 	}
 
 	// defaultMaxPodsConstraint
