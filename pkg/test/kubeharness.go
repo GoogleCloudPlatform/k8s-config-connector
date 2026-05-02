@@ -338,4 +338,13 @@ func (h *KubeHarness) CreateDummyCRD(gvk schema.GroupVersionKind) {
 	}
 	crd.SetGroupVersionKind(apiextensions.SchemeGroupVersion.WithKind("CustomResourceDefinition"))
 	h.waitForCRDReady(crd)
+
+	if err := wait.PollImmediate(1*time.Second, 30*time.Second, func() (bool, error) {
+		if _, err := h.client.RESTMapper().RESTMapping(gvk.GroupKind(), gvk.Version); err != nil {
+			return false, nil
+		}
+		return true, nil
+	}); err != nil {
+		h.Fatalf("error waiting for REST mapper to discover CRD %v: %v", gvk, err)
+}
 }
