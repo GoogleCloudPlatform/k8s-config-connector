@@ -24,9 +24,11 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strings"
 
 	gcp "cloud.google.com/go/dataplex/apiv1"
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -96,26 +98,60 @@ func (m *entryGroupModel) AdapterForObject(ctx context.Context, op *directbase.A
 	if err != nil {
 		return nil, err
 	}
+	contentClient, err := gcpClient.contentClient(ctx)
+	if err != nil {
+		return nil, err
+	}
 
 	return &entryGroupAdapter{
-		gcpClient: catalogClient,
-		id:        id,
-		desired:   desired,
-		reader:    reader,
+		catalogClient: catalogClient,
+		contentClient: contentClient,
+		id:            id,
+		desired:       desired,
+		reader:        reader,
 	}, nil
 }
 
 func (m *entryGroupModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	// Format is //dataplex.googleapis.com/projects/PROJECT_ID/locations/LOCATION/entryGroups/ENTRY_GROUP_ID
+	if !strings.HasPrefix(url, "//dataplex.googleapis.com/") {
+		return nil, nil
+	}
+
+	external := strings.TrimPrefix(url, "//dataplex.googleapis.com/")
+	id := &krm.EntryGroupIdentity{}
+	if err := id.FromExternal(external); err != nil {
+		return nil, fmt.Errorf("parsing external %q: %w", external, err)
+	}
+
+	// Get GCP client
+	gcpClient, err := newGCPClient(ctx, m.config)
+	if err != nil {
+		return nil, fmt.Errorf("building gcp client: %w", err)
+	}
+	catalogClient, err := gcpClient.catalogClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	contentClient, err := gcpClient.contentClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &entryGroupAdapter{
+		catalogClient: catalogClient,
+		contentClient: contentClient,
+		id:            id,
+	}, nil
 }
 
 type entryGroupAdapter struct {
-	gcpClient *gcp.CatalogClient
-	id        *krm.EntryGroupIdentity
-	desired   *pb.EntryGroup
-	actual    *pb.EntryGroup
-	reader    client.Reader
+	catalogClient *gcp.CatalogClient
+	contentClient *gcp.ContentClient
+	id            *krm.EntryGroupIdentity
+	desired       *pb.EntryGroup
+	actual        *pb.EntryGroup
+	reader        client.Reader
 }
 
 var _ directbase.Adapter = &entryGroupAdapter{}
@@ -125,7 +161,7 @@ func (a *entryGroupAdapter) Find(ctx context.Context) (bool, error) {
 	log.V(2).Info("getting dataplex entry group", "name", a.id)
 
 	req := &pb.GetEntryGroupRequest{Name: a.id.String()}
-	actual, err := a.gcpClient.GetEntryGroup(ctx, req)
+	actual, err := a.catalogClient.GetEntryGroup(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -146,7 +182,7 @@ func (a *entryGroupAdapter) Create(ctx context.Context, createOp *directbase.Cre
 		EntryGroupId: a.id.Entrygroup,
 		EntryGroup:   a.desired,
 	}
-	op, err := a.gcpClient.CreateEntryGroup(ctx, req)
+	op, err := a.catalogClient.CreateEntryGroup(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating dataplex entry group %s: %w", a.id.String(), err)
 	}
@@ -200,7 +236,7 @@ func (a *entryGroupAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 			UpdateMask: updateMask,
 			EntryGroup: a.desired,
 		}
-		op, err := a.gcpClient.UpdateEntryGroup(ctx, req)
+		op, err := a.catalogClient.UpdateEntryGroup(ctx, req)
 		if err != nil {
 			return fmt.Errorf("updating dataplex entry group %s: %w", a.id.String(), err)
 		}
@@ -255,7 +291,7 @@ func (a *entryGroupAdapter) Delete(ctx context.Context, deleteOp *directbase.Del
 	req := &pb.DeleteEntryGroupRequest{
 		Name: a.id.String(),
 	}
-	op, err := a.gcpClient.DeleteEntryGroup(ctx, req)
+	op, err := a.catalogClient.DeleteEntryGroup(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
@@ -274,4 +310,37 @@ func (a *entryGroupAdapter) Delete(ctx context.Context, deleteOp *directbase.Del
 	log.V(2).Info("successfully deleted dataplex entry group", "name", a.id)
 
 	return true, nil
+}
+
+func (a *entryGroupAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot get iam policy for missing resource")
+	}
+
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.contentClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id, err)
+	}
+
+	return policy, nil
+}
+
+func (a *entryGroupAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot set iam policy for missing resource")
+	}
+
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.contentClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id, err)
+	}
+
+	return newPolicy, nil
 }
