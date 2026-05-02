@@ -164,7 +164,7 @@ func (a *dataprocJobAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	klog.V(2).Infof("creating dataproc job in project %s region %s", a.id.Parent().ProjectID, a.id.Parent().Location)
 
 	mapCtx := &direct.MapContext{}
-	desiredProto := DataprocJobSpec_ToProto(mapCtx, &a.desired.Spec)
+	desiredProto := DataprocJobSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -238,7 +238,7 @@ func (a *dataprocJobAdapter) Create(ctx context.Context, createOp *directbase.Cr
 
 	// Map the *returned* job state to the KRM status
 	status := &krm.DataprocJobStatus{}
-	status.ObservedState = DataprocJobObservedState_FromProto(mapCtx, submittedJob)
+	status.ObservedState = DataprocJobObservedState_v1alpha1_FromProto(mapCtx, submittedJob)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -267,7 +267,7 @@ func (a *dataprocJobAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	mapCtx := &direct.MapContext{}
-	desiredProto := DataprocJobSpec_ToProto(mapCtx, &a.desired.Spec)
+	desiredProto := DataprocJobSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -331,7 +331,7 @@ func (a *dataprocJobAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		// We still need to update the status with the observed state from Find()
 		status := &krm.DataprocJobStatus{}
 		mapCtx := &direct.MapContext{}
-		status.ObservedState = DataprocJobObservedState_FromProto(mapCtx, a.actual)
+		status.ObservedState = DataprocJobObservedState_v1alpha1_FromProto(mapCtx, a.actual)
 		status.ExternalRef = direct.PtrTo(fmt.Sprintf("projects/%s/regions/%s/jobs/%s", a.id.Parent().ProjectID, a.id.Parent().Location, a.id.ID()))
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
@@ -365,7 +365,7 @@ func (a *dataprocJobAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		// Map the updated job state to the KRM status
 		mapCtx := &direct.MapContext{}
 		status := &krm.DataprocJobStatus{}
-		status.ObservedState = DataprocJobObservedState_FromProto(mapCtx, updatedJob)
+		status.ObservedState = DataprocJobObservedState_v1alpha1_FromProto(mapCtx, updatedJob)
 		status.ExternalRef = direct.PtrTo(fmt.Sprintf("projects/%s/regions/%s/jobs/%s", a.id.Parent().ProjectID, a.id.Parent().Location, a.id.ID()))
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
@@ -403,7 +403,7 @@ func (a *dataprocJobAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	}
 
 	mapCtx := &direct.MapContext{}
-	spec := DataprocJobSpec_FromProto(mapCtx, a.actual)
+	spec := DataprocJobSpec_v1alpha1_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -439,7 +439,7 @@ func (a *dataprocJobAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 		klog.Warningf("unknown job type found during export: %T", jobType)
 	}
 	obj.Status = krm.DataprocJobStatus{}
-	obj.Status.ObservedState = DataprocJobObservedState_FromProto(mapCtx, a.actual)
+	obj.Status.ObservedState = DataprocJobObservedState_v1alpha1_FromProto(mapCtx, a.actual)
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
