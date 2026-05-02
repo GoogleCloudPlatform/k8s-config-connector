@@ -62,7 +62,7 @@ func (s *ArtifactRegistryV1) CreateRepository(ctx context.Context, req *pb.Creat
 
 	fqn := name.String()
 
-	obj := ProtoClone(req.Repository)
+	obj := proto.CloneOf(req.Repository)
 	obj.Name = fqn
 
 	now := timestamppb.Now()
@@ -81,7 +81,7 @@ func (s *ArtifactRegistryV1) CreateRepository(ctx context.Context, req *pb.Creat
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
-		retObj := ProtoClone(obj)
+		retObj := proto.CloneOf(obj)
 		retObj.CreateTime = nil
 		retObj.UpdateTime = nil
 		retObj.RegistryUri = ""
@@ -150,7 +150,7 @@ func (s *ArtifactRegistryV1) UpdateRepository(ctx context.Context, req *pb.Updat
 		return nil, err
 	}
 
-	retObj := ProtoClone(obj)
+	retObj := proto.CloneOf(obj)
 	retObj.RegistryUri = ""
 	return retObj, nil
 }

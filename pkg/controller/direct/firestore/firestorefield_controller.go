@@ -28,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/protobuf/encoding/prototext"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -154,7 +155,7 @@ func (a *firestoreFieldAdapter) Create(ctx context.Context, createOp *directbase
 	log.V(0).Info("creating FirestoreField", "name", fqn)
 
 	req := &pb.UpdateFieldRequest{
-		Field: direct.ProtoClone(a.desired),
+		Field: proto.CloneOf(a.desired),
 	}
 	req.Field.Name = fqn
 
@@ -180,7 +181,7 @@ func (a *firestoreFieldAdapter) Update(ctx context.Context, updateOp *directbase
 	fqn := a.id.String()
 
 	req := &pb.UpdateFieldRequest{
-		Field: direct.ProtoClone(a.desired),
+		Field: proto.CloneOf(a.desired),
 	}
 	req.Field.Name = fqn
 

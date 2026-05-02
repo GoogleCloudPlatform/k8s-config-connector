@@ -14,12 +14,6 @@
 
 package mockbigqueryanalyticshub
 
-import "github.com/golang/protobuf/proto"
-
 func PtrTo[T any](t T) *T {
 	return &t
-}
-
-func ProtoClone[T proto.Message](obj T) T {
-	return proto.Clone(obj).(T)
 }

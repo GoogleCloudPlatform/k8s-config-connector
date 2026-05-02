@@ -30,6 +30,7 @@ import (
 	gcp "cloud.google.com/go/netapp/apiv1"
 	netapppb "cloud.google.com/go/netapp/apiv1/netapppb"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -267,8 +268,8 @@ func (a *BackupPolicyAdapter) Delete(ctx context.Context, deleteOp *directbase.D
 }
 
 func computeDiffBackupPolicy(mapCtx *direct.MapContext, actual, desired *netapppb.BackupPolicy) ([]string, error) {
-	desired = direct.ProtoClone(desired)
-	actual = direct.ProtoClone(actual)
+	desired = proto.CloneOf(desired)
+	actual = proto.CloneOf(actual)
 
 	populateServerSideDefaults := func(o *netapppb.BackupPolicy) {
 		if o.Enabled == nil {
