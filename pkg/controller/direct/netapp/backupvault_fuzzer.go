@@ -29,7 +29,7 @@ func init() {
 
 func netAppBackupVaultFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.BackupVault{},
-		BackupVault_FromProto, BackupVault_ToProto,
+		BackupVaultSpec_FromProto, BackupVaultSpec_ToProto,
 		BackupVaultObservedState_FromProto, BackupVaultObservedState_ToProto,
 	)
 
