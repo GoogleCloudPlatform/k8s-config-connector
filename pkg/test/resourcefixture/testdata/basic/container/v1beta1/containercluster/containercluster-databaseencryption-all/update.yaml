@@ -27,4 +27,7 @@ spec:
     clusterIpv4CidrBlock: /20
     servicesIpv4CidrBlock: /20
   databaseEncryption:
+    # No update happens here.
+    # Updating the state from `ALL_OBJECTS_ENCRYPTION_ENABLED` to `ENCRYPTED` won't trigger an update in the GKE cluster
+    # because state will be set to ALL_OBJECTS_ENCRYPTION_ENABLED even if customer tries to use ENCRYPTED.
     state: ENCRYPTED
