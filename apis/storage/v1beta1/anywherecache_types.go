@@ -111,6 +111,7 @@ type StorageAnywhereCacheObservedState struct {
 
 // StorageAnywhereCache is the Schema for the StorageAnywhereCache API
 // +k8s:openapi-gen=true
+// +kubebuilder:storageversion
 type StorageAnywhereCache struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

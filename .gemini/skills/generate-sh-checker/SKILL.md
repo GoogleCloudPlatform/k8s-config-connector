@@ -68,12 +68,13 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
     go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/<SERVICE_NAME>/
     ```
 
-4.  **Special Handling (Promotion/Consolidation)**:
+4.  **Special Handling (Promotion/Consolidation and Mappers)**:
     -   If a `v1beta1` directory is being updated and a `v1alpha1` directory exists for the same service, check if `v1alpha1` should be consolidated.
     -   Following #7293, this involves:
         -   Removing the `v1alpha1` directory.
         -   Adding `// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"` to the `v1beta1` `api_types.go` file (near the Kind struct).
         -   Ensuring `v1beta1` has `// +kubebuilder:storageversion`.
+    -   If the resource has manually written mapping functions (e.g. `_mappings.go`) or the controller package structure is customized, you may omit the `generate-mapper` section from `generate.sh` to avoid overwriting or conflicting with the manual mappings.
 
 5.  **Execute and Verify**:
     -   Make `generate.sh` executable: `chmod +x apis/<SERVICE>/<VERSION>/generate.sh`.
