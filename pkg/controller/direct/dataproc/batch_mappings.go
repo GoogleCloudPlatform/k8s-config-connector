@@ -23,7 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func ExecutionConfig_NetworkUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.ExecutionConfig_NetworkUri {
+func ExecutionConfig_NetworkUri_v1alpha1_ToProto(mapCtx *direct.MapContext, in *string) *pb.ExecutionConfig_NetworkUri {
 	if in == nil {
 		return nil
 	}
@@ -33,7 +33,7 @@ func ExecutionConfig_NetworkUri_ToProto(mapCtx *direct.MapContext, in *string) *
 	return out
 }
 
-func ExecutionConfig_SubnetworkUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.ExecutionConfig_SubnetworkUri {
+func ExecutionConfig_SubnetworkUri_v1alpha1_ToProto(mapCtx *direct.MapContext, in *string) *pb.ExecutionConfig_SubnetworkUri {
 	if in == nil {
 		return nil
 	}
@@ -43,7 +43,7 @@ func ExecutionConfig_SubnetworkUri_ToProto(mapCtx *direct.MapContext, in *string
 	return out
 }
 
-func SparkBatch_MainJarFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.SparkBatch_MainJarFileUri {
+func SparkBatch_MainJarFileUri_v1alpha1_ToProto(mapCtx *direct.MapContext, in *string) *pb.SparkBatch_MainJarFileUri {
 	if in == nil {
 		return nil
 	}
@@ -53,7 +53,7 @@ func SparkBatch_MainJarFileUri_ToProto(mapCtx *direct.MapContext, in *string) *p
 	return out
 }
 
-func SparkBatch_MainClass_ToProto(mapCtx *direct.MapContext, in *string) *pb.SparkBatch_MainClass {
+func SparkBatch_MainClass_v1alpha1_ToProto(mapCtx *direct.MapContext, in *string) *pb.SparkBatch_MainClass {
 	if in == nil {
 		return nil
 	}
@@ -63,7 +63,7 @@ func SparkBatch_MainClass_ToProto(mapCtx *direct.MapContext, in *string) *pb.Spa
 	return out
 }
 
-func PySparkBatch_FromProto(mapCtx *direct.MapContext, in *pb.PySparkBatch) *krm.PySparkBatch {
+func PySparkBatch_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PySparkBatch) *krm.PySparkBatch {
 	if in == nil {
 		return nil
 	}
@@ -76,7 +76,7 @@ func PySparkBatch_FromProto(mapCtx *direct.MapContext, in *pb.PySparkBatch) *krm
 	out.ArchiveURIs = in.ArchiveUris
 	return out
 }
-func PySparkBatch_ToProto(mapCtx *direct.MapContext, in *krm.PySparkBatch) *pb.PySparkBatch {
+func PySparkBatch_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.PySparkBatch) *pb.PySparkBatch {
 	if in == nil {
 		return nil
 	}
@@ -89,7 +89,7 @@ func PySparkBatch_ToProto(mapCtx *direct.MapContext, in *krm.PySparkBatch) *pb.P
 	out.ArchiveUris = in.ArchiveURIs
 	return out
 }
-func SparkBatch_FromProto(mapCtx *direct.MapContext, in *pb.SparkBatch) *krm.SparkBatch {
+func SparkBatch_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SparkBatch) *krm.SparkBatch {
 	if in == nil {
 		return nil
 	}
@@ -102,15 +102,15 @@ func SparkBatch_FromProto(mapCtx *direct.MapContext, in *pb.SparkBatch) *krm.Spa
 	out.ArchiveURIs = in.ArchiveUris
 	return out
 }
-func SparkBatch_ToProto(mapCtx *direct.MapContext, in *krm.SparkBatch) *pb.SparkBatch {
+func SparkBatch_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.SparkBatch) *pb.SparkBatch {
 	if in == nil {
 		return nil
 	}
 	out := &pb.SparkBatch{}
-	if oneof := SparkBatch_MainJarFileUri_ToProto(mapCtx, in.MainJarFileURI); oneof != nil {
+	if oneof := SparkBatch_MainJarFileUri_v1alpha1_ToProto(mapCtx, in.MainJarFileURI); oneof != nil {
 		out.Driver = oneof
 	}
-	if oneof := SparkBatch_MainClass_ToProto(mapCtx, in.MainClass); oneof != nil {
+	if oneof := SparkBatch_MainClass_v1alpha1_ToProto(mapCtx, in.MainClass); oneof != nil {
 		out.Driver = oneof
 	}
 	out.Args = in.Args
@@ -119,7 +119,7 @@ func SparkBatch_ToProto(mapCtx *direct.MapContext, in *krm.SparkBatch) *pb.Spark
 	out.ArchiveUris = in.ArchiveURIs
 	return out
 }
-func SparkRBatch_FromProto(mapCtx *direct.MapContext, in *pb.SparkRBatch) *krm.SparkRBatch {
+func SparkRBatch_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SparkRBatch) *krm.SparkRBatch {
 	if in == nil {
 		return nil
 	}
@@ -130,7 +130,7 @@ func SparkRBatch_FromProto(mapCtx *direct.MapContext, in *pb.SparkRBatch) *krm.S
 	out.ArchiveURIs = in.ArchiveUris
 	return out
 }
-func SparkRBatch_ToProto(mapCtx *direct.MapContext, in *krm.SparkRBatch) *pb.SparkRBatch {
+func SparkRBatch_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.SparkRBatch) *pb.SparkRBatch {
 	if in == nil {
 		return nil
 	}
@@ -141,7 +141,7 @@ func SparkRBatch_ToProto(mapCtx *direct.MapContext, in *krm.SparkRBatch) *pb.Spa
 	out.ArchiveUris = in.ArchiveURIs
 	return out
 }
-func SparkSQLBatch_FromProto(mapCtx *direct.MapContext, in *pb.SparkSqlBatch) *krm.SparkSQLBatch {
+func SparkSQLBatch_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SparkSqlBatch) *krm.SparkSQLBatch {
 	if in == nil {
 		return nil
 	}
@@ -151,7 +151,7 @@ func SparkSQLBatch_FromProto(mapCtx *direct.MapContext, in *pb.SparkSqlBatch) *k
 	out.JarFileURIs = in.JarFileUris
 	return out
 }
-func SparkSQLBatch_ToProto(mapCtx *direct.MapContext, in *krm.SparkSQLBatch) *pb.SparkSqlBatch {
+func SparkSQLBatch_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.SparkSQLBatch) *pb.SparkSqlBatch {
 	if in == nil {
 		return nil
 	}
@@ -162,7 +162,7 @@ func SparkSQLBatch_ToProto(mapCtx *direct.MapContext, in *krm.SparkSQLBatch) *pb
 	return out
 }
 
-func AutotuningConfig_FromProto(mapCtx *direct.MapContext, in *pb.AutotuningConfig) *krm.AutotuningConfig {
+func AutotuningConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutotuningConfig) *krm.AutotuningConfig {
 	if in == nil {
 		return nil
 	}
@@ -170,7 +170,7 @@ func AutotuningConfig_FromProto(mapCtx *direct.MapContext, in *pb.AutotuningConf
 	out.Scenarios = direct.EnumSlice_FromProto(mapCtx, in.Scenarios)
 	return out
 }
-func AutotuningConfig_ToProto(mapCtx *direct.MapContext, in *krm.AutotuningConfig) *pb.AutotuningConfig {
+func AutotuningConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.AutotuningConfig) *pb.AutotuningConfig {
 	if in == nil {
 		return nil
 	}
@@ -178,7 +178,7 @@ func AutotuningConfig_ToProto(mapCtx *direct.MapContext, in *krm.AutotuningConfi
 	out.Scenarios = direct.EnumSlice_ToProto[pb.AutotuningConfig_Scenario](mapCtx, in.Scenarios)
 	return out
 }
-func Batch_StateHistory_FromProto(mapCtx *direct.MapContext, in *pb.Batch_StateHistory) *krm.Batch_StateHistory {
+func Batch_StateHistory_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Batch_StateHistory) *krm.Batch_StateHistory {
 	if in == nil {
 		return nil
 	}
@@ -188,7 +188,7 @@ func Batch_StateHistory_FromProto(mapCtx *direct.MapContext, in *pb.Batch_StateH
 	// MISSING: StateStartTime
 	return out
 }
-func Batch_StateHistory_ToProto(mapCtx *direct.MapContext, in *krm.Batch_StateHistory) *pb.Batch_StateHistory {
+func Batch_StateHistory_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Batch_StateHistory) *pb.Batch_StateHistory {
 	if in == nil {
 		return nil
 	}
@@ -198,7 +198,7 @@ func Batch_StateHistory_ToProto(mapCtx *direct.MapContext, in *krm.Batch_StateHi
 	// MISSING: StateStartTime
 	return out
 }
-func Batch_StateHistoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Batch_StateHistory) *krm.Batch_StateHistoryObservedState {
+func Batch_StateHistoryObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Batch_StateHistory) *krm.Batch_StateHistoryObservedState {
 	if in == nil {
 		return nil
 	}
@@ -208,7 +208,7 @@ func Batch_StateHistoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	out.StateStartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStateStartTime())
 	return out
 }
-func Batch_StateHistoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Batch_StateHistoryObservedState) *pb.Batch_StateHistory {
+func Batch_StateHistoryObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Batch_StateHistoryObservedState) *pb.Batch_StateHistory {
 	if in == nil {
 		return nil
 	}
@@ -218,7 +218,7 @@ func Batch_StateHistoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.StateStartTime = direct.StringTimestamp_ToProto(mapCtx, in.StateStartTime)
 	return out
 }
-func DataprocBatchObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Batch) *krm.DataprocBatchObservedState {
+func DataprocBatchObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Batch) *krm.DataprocBatchObservedState {
 	if in == nil {
 		return nil
 	}
@@ -226,16 +226,16 @@ func DataprocBatchObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Batc
 	// MISSING: Name
 	out.Uuid = direct.LazyPtr(in.GetUuid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.RuntimeInfo = RuntimeInfoObservedState_FromProto(mapCtx, in.GetRuntimeInfo())
+	out.RuntimeInfo = RuntimeInfoObservedState_v1alpha1_FromProto(mapCtx, in.GetRuntimeInfo())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.StateMessage = direct.LazyPtr(in.GetStateMessage())
 	out.StateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStateTime())
 	out.Creator = direct.LazyPtr(in.GetCreator())
 	out.Operation = direct.LazyPtr(in.GetOperation())
-	out.StateHistory = direct.Slice_FromProto(mapCtx, in.StateHistory, Batch_StateHistoryObservedState_FromProto)
+	out.StateHistory = direct.Slice_FromProto(mapCtx, in.StateHistory, Batch_StateHistoryObservedState_v1alpha1_FromProto)
 	return out
 }
-func DataprocBatchObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataprocBatchObservedState) *pb.Batch {
+func DataprocBatchObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.DataprocBatchObservedState) *pb.Batch {
 	if in == nil {
 		return nil
 	}
@@ -243,72 +243,72 @@ func DataprocBatchObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Datap
 	// MISSING: Name
 	out.Uuid = direct.ValueOf(in.Uuid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.RuntimeInfo = RuntimeInfoObservedState_ToProto(mapCtx, in.RuntimeInfo)
+	out.RuntimeInfo = RuntimeInfoObservedState_v1alpha1_ToProto(mapCtx, in.RuntimeInfo)
 	out.State = direct.Enum_ToProto[pb.Batch_State](mapCtx, in.State)
 	out.StateMessage = direct.ValueOf(in.StateMessage)
 	out.StateTime = direct.StringTimestamp_ToProto(mapCtx, in.StateTime)
 	out.Creator = direct.ValueOf(in.Creator)
 	out.Operation = direct.ValueOf(in.Operation)
-	out.StateHistory = direct.Slice_ToProto(mapCtx, in.StateHistory, Batch_StateHistoryObservedState_ToProto)
+	out.StateHistory = direct.Slice_ToProto(mapCtx, in.StateHistory, Batch_StateHistoryObservedState_v1alpha1_ToProto)
 	return out
 }
-func DataprocBatchSpec_FromProto(mapCtx *direct.MapContext, in *pb.Batch) *krm.DataprocBatchSpec {
+func DataprocBatchSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Batch) *krm.DataprocBatchSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.DataprocBatchSpec{}
 	// MISSING: Name
-	out.PysparkBatch = PySparkBatch_FromProto(mapCtx, in.GetPysparkBatch())
-	out.SparkBatch = SparkBatch_FromProto(mapCtx, in.GetSparkBatch())
-	out.SparkRBatch = SparkRBatch_FromProto(mapCtx, in.GetSparkRBatch())
-	out.SparkSQLBatch = SparkSQLBatch_FromProto(mapCtx, in.GetSparkSqlBatch())
+	out.PysparkBatch = PySparkBatch_v1alpha1_FromProto(mapCtx, in.GetPysparkBatch())
+	out.SparkBatch = SparkBatch_v1alpha1_FromProto(mapCtx, in.GetSparkBatch())
+	out.SparkRBatch = SparkRBatch_v1alpha1_FromProto(mapCtx, in.GetSparkRBatch())
+	out.SparkSQLBatch = SparkSQLBatch_v1alpha1_FromProto(mapCtx, in.GetSparkSqlBatch())
 	out.Labels = in.Labels
-	out.RuntimeConfig = RuntimeConfig_FromProto(mapCtx, in.GetRuntimeConfig())
-	out.EnvironmentConfig = EnvironmentConfig_FromProto(mapCtx, in.GetEnvironmentConfig())
+	out.RuntimeConfig = RuntimeConfig_v1alpha1_FromProto(mapCtx, in.GetRuntimeConfig())
+	out.EnvironmentConfig = EnvironmentConfig_v1alpha1_FromProto(mapCtx, in.GetEnvironmentConfig())
 	return out
 }
-func DataprocBatchSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataprocBatchSpec) *pb.Batch {
+func DataprocBatchSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.DataprocBatchSpec) *pb.Batch {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Batch{}
 	// MISSING: Name
-	if oneof := PySparkBatch_ToProto(mapCtx, in.PysparkBatch); oneof != nil {
+	if oneof := PySparkBatch_v1alpha1_ToProto(mapCtx, in.PysparkBatch); oneof != nil {
 		out.BatchConfig = &pb.Batch_PysparkBatch{PysparkBatch: oneof}
 	}
-	if oneof := SparkBatch_ToProto(mapCtx, in.SparkBatch); oneof != nil {
+	if oneof := SparkBatch_v1alpha1_ToProto(mapCtx, in.SparkBatch); oneof != nil {
 		out.BatchConfig = &pb.Batch_SparkBatch{SparkBatch: oneof}
 	}
-	if oneof := SparkRBatch_ToProto(mapCtx, in.SparkRBatch); oneof != nil {
+	if oneof := SparkRBatch_v1alpha1_ToProto(mapCtx, in.SparkRBatch); oneof != nil {
 		out.BatchConfig = &pb.Batch_SparkRBatch{SparkRBatch: oneof}
 	}
-	if oneof := SparkSQLBatch_ToProto(mapCtx, in.SparkSQLBatch); oneof != nil {
+	if oneof := SparkSQLBatch_v1alpha1_ToProto(mapCtx, in.SparkSQLBatch); oneof != nil {
 		out.BatchConfig = &pb.Batch_SparkSqlBatch{SparkSqlBatch: oneof}
 	}
 	out.Labels = in.Labels
-	out.RuntimeConfig = RuntimeConfig_ToProto(mapCtx, in.RuntimeConfig)
-	out.EnvironmentConfig = EnvironmentConfig_ToProto(mapCtx, in.EnvironmentConfig)
+	out.RuntimeConfig = RuntimeConfig_v1alpha1_ToProto(mapCtx, in.RuntimeConfig)
+	out.EnvironmentConfig = EnvironmentConfig_v1alpha1_ToProto(mapCtx, in.EnvironmentConfig)
 	return out
 }
-func EnvironmentConfig_FromProto(mapCtx *direct.MapContext, in *pb.EnvironmentConfig) *krm.EnvironmentConfig {
+func EnvironmentConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.EnvironmentConfig) *krm.EnvironmentConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krm.EnvironmentConfig{}
-	out.ExecutionConfig = ExecutionConfig_FromProto(mapCtx, in.GetExecutionConfig())
-	out.PeripheralsConfig = PeripheralsConfig_FromProto(mapCtx, in.GetPeripheralsConfig())
+	out.ExecutionConfig = ExecutionConfig_v1alpha1_FromProto(mapCtx, in.GetExecutionConfig())
+	out.PeripheralsConfig = PeripheralsConfig_v1alpha1_FromProto(mapCtx, in.GetPeripheralsConfig())
 	return out
 }
-func EnvironmentConfig_ToProto(mapCtx *direct.MapContext, in *krm.EnvironmentConfig) *pb.EnvironmentConfig {
+func EnvironmentConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.EnvironmentConfig) *pb.EnvironmentConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.EnvironmentConfig{}
-	out.ExecutionConfig = ExecutionConfig_ToProto(mapCtx, in.ExecutionConfig)
-	out.PeripheralsConfig = PeripheralsConfig_ToProto(mapCtx, in.PeripheralsConfig)
+	out.ExecutionConfig = ExecutionConfig_v1alpha1_ToProto(mapCtx, in.ExecutionConfig)
+	out.PeripheralsConfig = PeripheralsConfig_v1alpha1_ToProto(mapCtx, in.PeripheralsConfig)
 	return out
 }
-func ExecutionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionConfig) *krm.ExecutionConfig {
+func ExecutionConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionConfig) *krm.ExecutionConfig {
 	if in == nil {
 		return nil
 	}
@@ -329,7 +329,7 @@ func ExecutionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionConfig
 	}
 	return out
 }
-func ExecutionConfig_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionConfig) *pb.ExecutionConfig {
+func ExecutionConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionConfig) *pb.ExecutionConfig {
 	if in == nil {
 		return nil
 	}
@@ -337,10 +337,10 @@ func ExecutionConfig_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionConfig)
 	if in.ServiceAccountRef != nil {
 		out.ServiceAccount = direct.ValueOf(&in.ServiceAccountRef.External)
 	}
-	if oneof := ExecutionConfig_NetworkUri_ToProto(mapCtx, in.NetworkURI); oneof != nil {
+	if oneof := ExecutionConfig_NetworkUri_v1alpha1_ToProto(mapCtx, in.NetworkURI); oneof != nil {
 		out.Network = oneof
 	}
-	if oneof := ExecutionConfig_SubnetworkUri_ToProto(mapCtx, in.SubnetworkURI); oneof != nil {
+	if oneof := ExecutionConfig_SubnetworkUri_v1alpha1_ToProto(mapCtx, in.SubnetworkURI); oneof != nil {
 		out.Network = oneof
 	}
 	out.NetworkTags = in.NetworkTags
@@ -354,25 +354,25 @@ func ExecutionConfig_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionConfig)
 	}
 	return out
 }
-func PeripheralsConfig_FromProto(mapCtx *direct.MapContext, in *pb.PeripheralsConfig) *krm.PeripheralsConfig {
+func PeripheralsConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PeripheralsConfig) *krm.PeripheralsConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krm.PeripheralsConfig{}
 	out.MetastoreService = direct.LazyPtr(in.GetMetastoreService())
-	out.SparkHistoryServerConfig = SparkHistoryServerConfig_FromProto(mapCtx, in.GetSparkHistoryServerConfig())
+	out.SparkHistoryServerConfig = SparkHistoryServerConfig_v1alpha1_FromProto(mapCtx, in.GetSparkHistoryServerConfig())
 	return out
 }
-func PeripheralsConfig_ToProto(mapCtx *direct.MapContext, in *krm.PeripheralsConfig) *pb.PeripheralsConfig {
+func PeripheralsConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.PeripheralsConfig) *pb.PeripheralsConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.PeripheralsConfig{}
 	out.MetastoreService = direct.ValueOf(in.MetastoreService)
-	out.SparkHistoryServerConfig = SparkHistoryServerConfig_ToProto(mapCtx, in.SparkHistoryServerConfig)
+	out.SparkHistoryServerConfig = SparkHistoryServerConfig_v1alpha1_ToProto(mapCtx, in.SparkHistoryServerConfig)
 	return out
 }
-func PyPiRepositoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.PyPiRepositoryConfig) *krm.PyPiRepositoryConfig {
+func PyPiRepositoryConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PyPiRepositoryConfig) *krm.PyPiRepositoryConfig {
 	if in == nil {
 		return nil
 	}
@@ -380,7 +380,7 @@ func PyPiRepositoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.PyPiReposi
 	out.PypiRepository = direct.LazyPtr(in.GetPypiRepository())
 	return out
 }
-func PyPiRepositoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.PyPiRepositoryConfig) *pb.PyPiRepositoryConfig {
+func PyPiRepositoryConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.PyPiRepositoryConfig) *pb.PyPiRepositoryConfig {
 	if in == nil {
 		return nil
 	}
@@ -388,23 +388,23 @@ func PyPiRepositoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.PyPiReposit
 	out.PypiRepository = direct.ValueOf(in.PypiRepository)
 	return out
 }
-func RepositoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.RepositoryConfig) *krm.RepositoryConfig {
+func RepositoryConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RepositoryConfig) *krm.RepositoryConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krm.RepositoryConfig{}
-	out.PypiRepositoryConfig = PyPiRepositoryConfig_FromProto(mapCtx, in.GetPypiRepositoryConfig())
+	out.PypiRepositoryConfig = PyPiRepositoryConfig_v1alpha1_FromProto(mapCtx, in.GetPypiRepositoryConfig())
 	return out
 }
-func RepositoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.RepositoryConfig) *pb.RepositoryConfig {
+func RepositoryConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.RepositoryConfig) *pb.RepositoryConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.RepositoryConfig{}
-	out.PypiRepositoryConfig = PyPiRepositoryConfig_ToProto(mapCtx, in.PypiRepositoryConfig)
+	out.PypiRepositoryConfig = PyPiRepositoryConfig_v1alpha1_ToProto(mapCtx, in.PypiRepositoryConfig)
 	return out
 }
-func RuntimeConfig_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeConfig) *krm.RuntimeConfig {
+func RuntimeConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeConfig) *krm.RuntimeConfig {
 	if in == nil {
 		return nil
 	}
@@ -412,12 +412,12 @@ func RuntimeConfig_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeConfig) *k
 	out.Version = direct.LazyPtr(in.GetVersion())
 	out.ContainerImage = direct.LazyPtr(in.GetContainerImage())
 	out.Properties = in.Properties
-	out.RepositoryConfig = RepositoryConfig_FromProto(mapCtx, in.GetRepositoryConfig())
-	out.AutotuningConfig = AutotuningConfig_FromProto(mapCtx, in.GetAutotuningConfig())
+	out.RepositoryConfig = RepositoryConfig_v1alpha1_FromProto(mapCtx, in.GetRepositoryConfig())
+	out.AutotuningConfig = AutotuningConfig_v1alpha1_FromProto(mapCtx, in.GetAutotuningConfig())
 	out.Cohort = direct.LazyPtr(in.GetCohort())
 	return out
 }
-func RuntimeConfig_ToProto(mapCtx *direct.MapContext, in *krm.RuntimeConfig) *pb.RuntimeConfig {
+func RuntimeConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.RuntimeConfig) *pb.RuntimeConfig {
 	if in == nil {
 		return nil
 	}
@@ -425,12 +425,12 @@ func RuntimeConfig_ToProto(mapCtx *direct.MapContext, in *krm.RuntimeConfig) *pb
 	out.Version = direct.ValueOf(in.Version)
 	out.ContainerImage = direct.ValueOf(in.ContainerImage)
 	out.Properties = in.Properties
-	out.RepositoryConfig = RepositoryConfig_ToProto(mapCtx, in.RepositoryConfig)
-	out.AutotuningConfig = AutotuningConfig_ToProto(mapCtx, in.AutotuningConfig)
+	out.RepositoryConfig = RepositoryConfig_v1alpha1_ToProto(mapCtx, in.RepositoryConfig)
+	out.AutotuningConfig = AutotuningConfig_v1alpha1_ToProto(mapCtx, in.AutotuningConfig)
 	out.Cohort = direct.ValueOf(in.Cohort)
 	return out
 }
-func RuntimeInfo_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeInfo) *krm.RuntimeInfo {
+func RuntimeInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeInfo) *krm.RuntimeInfo {
 	if in == nil {
 		return nil
 	}
@@ -442,7 +442,7 @@ func RuntimeInfo_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeInfo) *krm.R
 	// MISSING: CurrentUsage
 	return out
 }
-func RuntimeInfo_ToProto(mapCtx *direct.MapContext, in *krm.RuntimeInfo) *pb.RuntimeInfo {
+func RuntimeInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.RuntimeInfo) *pb.RuntimeInfo {
 	if in == nil {
 		return nil
 	}
@@ -454,7 +454,7 @@ func RuntimeInfo_ToProto(mapCtx *direct.MapContext, in *krm.RuntimeInfo) *pb.Run
 	// MISSING: CurrentUsage
 	return out
 }
-func RuntimeInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeInfo) *krm.RuntimeInfoObservedState {
+func RuntimeInfoObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeInfo) *krm.RuntimeInfoObservedState {
 	if in == nil {
 		return nil
 	}
@@ -462,11 +462,11 @@ func RuntimeInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Runtim
 	out.Endpoints = in.Endpoints
 	out.OutputURI = direct.LazyPtr(in.GetOutputUri())
 	out.DiagnosticOutputURI = direct.LazyPtr(in.GetDiagnosticOutputUri())
-	out.ApproximateUsage = UsageMetrics_FromProto(mapCtx, in.GetApproximateUsage())
-	out.CurrentUsage = UsageSnapshot_FromProto(mapCtx, in.GetCurrentUsage())
+	out.ApproximateUsage = UsageMetrics_v1alpha1_FromProto(mapCtx, in.GetApproximateUsage())
+	out.CurrentUsage = UsageSnapshot_v1alpha1_FromProto(mapCtx, in.GetCurrentUsage())
 	return out
 }
-func RuntimeInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RuntimeInfoObservedState) *pb.RuntimeInfo {
+func RuntimeInfoObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.RuntimeInfoObservedState) *pb.RuntimeInfo {
 	if in == nil {
 		return nil
 	}
@@ -474,11 +474,11 @@ func RuntimeInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Runtime
 	out.Endpoints = in.Endpoints
 	out.OutputUri = direct.ValueOf(in.OutputURI)
 	out.DiagnosticOutputUri = direct.ValueOf(in.DiagnosticOutputURI)
-	out.ApproximateUsage = UsageMetrics_ToProto(mapCtx, in.ApproximateUsage)
-	out.CurrentUsage = UsageSnapshot_ToProto(mapCtx, in.CurrentUsage)
+	out.ApproximateUsage = UsageMetrics_v1alpha1_ToProto(mapCtx, in.ApproximateUsage)
+	out.CurrentUsage = UsageSnapshot_v1alpha1_ToProto(mapCtx, in.CurrentUsage)
 	return out
 }
-func SparkHistoryServerConfig_FromProto(mapCtx *direct.MapContext, in *pb.SparkHistoryServerConfig) *krm.SparkHistoryServerConfig {
+func SparkHistoryServerConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SparkHistoryServerConfig) *krm.SparkHistoryServerConfig {
 	if in == nil {
 		return nil
 	}
@@ -488,7 +488,7 @@ func SparkHistoryServerConfig_FromProto(mapCtx *direct.MapContext, in *pb.SparkH
 	}
 	return out
 }
-func SparkHistoryServerConfig_ToProto(mapCtx *direct.MapContext, in *krm.SparkHistoryServerConfig) *pb.SparkHistoryServerConfig {
+func SparkHistoryServerConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.SparkHistoryServerConfig) *pb.SparkHistoryServerConfig {
 	if in == nil {
 		return nil
 	}
@@ -498,7 +498,7 @@ func SparkHistoryServerConfig_ToProto(mapCtx *direct.MapContext, in *krm.SparkHi
 	}
 	return out
 }
-func UsageMetrics_FromProto(mapCtx *direct.MapContext, in *pb.UsageMetrics) *krm.UsageMetrics {
+func UsageMetrics_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.UsageMetrics) *krm.UsageMetrics {
 	if in == nil {
 		return nil
 	}
@@ -509,7 +509,7 @@ func UsageMetrics_FromProto(mapCtx *direct.MapContext, in *pb.UsageMetrics) *krm
 	out.AcceleratorType = direct.LazyPtr(in.GetAcceleratorType())
 	return out
 }
-func UsageMetrics_ToProto(mapCtx *direct.MapContext, in *krm.UsageMetrics) *pb.UsageMetrics {
+func UsageMetrics_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.UsageMetrics) *pb.UsageMetrics {
 	if in == nil {
 		return nil
 	}
@@ -520,7 +520,7 @@ func UsageMetrics_ToProto(mapCtx *direct.MapContext, in *krm.UsageMetrics) *pb.U
 	out.AcceleratorType = direct.ValueOf(in.AcceleratorType)
 	return out
 }
-func UsageSnapshot_FromProto(mapCtx *direct.MapContext, in *pb.UsageSnapshot) *krm.UsageSnapshot {
+func UsageSnapshot_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.UsageSnapshot) *krm.UsageSnapshot {
 	if in == nil {
 		return nil
 	}
@@ -534,7 +534,7 @@ func UsageSnapshot_FromProto(mapCtx *direct.MapContext, in *pb.UsageSnapshot) *k
 	out.SnapshotTime = direct.StringTimestamp_FromProto(mapCtx, in.GetSnapshotTime())
 	return out
 }
-func UsageSnapshot_ToProto(mapCtx *direct.MapContext, in *krm.UsageSnapshot) *pb.UsageSnapshot {
+func UsageSnapshot_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.UsageSnapshot) *pb.UsageSnapshot {
 	if in == nil {
 		return nil
 	}
