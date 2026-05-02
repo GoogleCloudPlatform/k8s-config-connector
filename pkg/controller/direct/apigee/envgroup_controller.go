@@ -21,6 +21,8 @@ import (
 	"sort"
 	"strings"
 
+	"cloud.google.com/go/iam/apiv1/iampb"
+	expr "google.golang.org/genproto/googleapis/type/expr"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -77,10 +79,11 @@ func (m *modelApigeeEnvgroup) AdapterForObject(ctx context.Context, op *directba
 	desired.Name = id.ResourceID
 
 	return &Adapter{
-		id:               id,
-		desired:          desired,
-		envgroupsClient:  gcpClient.envgroupsClient(),
-		operationsClient: gcpClient.operationsClient(),
+		id:                 id,
+		desired:            desired,
+		envgroupsClient:    gcpClient.envgroupsClient(),
+		environmentsClient: gcpClient.environmentsClient(),
+		operationsClient:   gcpClient.operationsClient(),
 	}, nil
 }
 
@@ -90,14 +93,16 @@ func (m *modelApigeeEnvgroup) AdapterForURL(ctx context.Context, url string) (di
 }
 
 type Adapter struct {
-	id               *krm.ApigeeEnvgroupIdentity
-	desired          *krm.ApigeeEnvgroup
-	actual           *api.GoogleCloudApigeeV1EnvironmentGroup
-	envgroupsClient  *api.OrganizationsEnvgroupsService
-	operationsClient *api.OrganizationsOperationsService
+	id                 *krm.ApigeeEnvgroupIdentity
+	desired            *krm.ApigeeEnvgroup
+	actual             *api.GoogleCloudApigeeV1EnvironmentGroup
+	envgroupsClient    *api.OrganizationsEnvgroupsService
+	environmentsClient *api.OrganizationsEnvironmentsService
+	operationsClient   *api.OrganizationsOperationsService
 }
 
 var _ directbase.Adapter = &Adapter{}
+var _ direct.IAMAdapter = &Adapter{}
 
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter `Update` call.
@@ -268,4 +273,93 @@ func asSortedCopy(in []string) []string {
 	sort.Strings(out)
 
 	return out
+}
+
+func (a *Adapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	if a.id.String() == "" {
+		return nil, fmt.Errorf("cannot get iam policy for missing resource")
+	}
+
+	policy, err := a.environmentsClient.GetIamPolicy(a.fullyQualifiedName()).Context(ctx).Do()
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id, err)
+	}
+
+	return GoogleIamV1Policy_ToProto(policy), nil
+}
+
+func (a *Adapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	if a.id.String() == "" {
+		return nil, fmt.Errorf("cannot set iam policy for missing resource")
+	}
+
+	req := &api.GoogleIamV1SetIamPolicyRequest{
+		Policy: GoogleIamV1Policy_FromProto(policy),
+	}
+	newPolicy, err := a.environmentsClient.SetIamPolicy(a.fullyQualifiedName(), req).Context(ctx).Do()
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id, err)
+	}
+
+	return GoogleIamV1Policy_ToProto(newPolicy), nil
+}
+
+func GoogleIamV1Policy_ToProto(in *api.GoogleIamV1Policy) *iampb.Policy {
+	if in == nil {
+		return nil
+	}
+	out := &iampb.Policy{
+		Version: int32(in.Version),
+		Etag:    []byte(in.Etag),
+	}
+	for _, b := range in.Bindings {
+		out.Bindings = append(out.Bindings, &iampb.Binding{
+			Role:      b.Role,
+			Members:   b.Members,
+			Condition: GoogleTypeExpr_ToProto(b.Condition),
+		})
+	}
+	return out
+}
+
+func GoogleTypeExpr_ToProto(in *api.GoogleTypeExpr) *expr.Expr {
+	if in == nil {
+		return nil
+	}
+	return &expr.Expr{
+		Expression:  in.Expression,
+		Title:       in.Title,
+		Description: in.Description,
+		Location:    in.Location,
+	}
+}
+
+func GoogleIamV1Policy_FromProto(in *iampb.Policy) *api.GoogleIamV1Policy {
+	if in == nil {
+		return nil
+	}
+	out := &api.GoogleIamV1Policy{
+		Version: int64(in.Version),
+		Etag:    string(in.Etag),
+	}
+	for _, b := range in.Bindings {
+		out.Bindings = append(out.Bindings, &api.GoogleIamV1Binding{
+			Role:      b.Role,
+			Members:   b.Members,
+			Condition: GoogleTypeExpr_FromProto(b.Condition),
+		})
+	}
+	return out
+}
+
+func GoogleTypeExpr_FromProto(in *expr.Expr) *api.GoogleTypeExpr {
+	if in == nil {
+		return nil
+	}
+	return &api.GoogleTypeExpr{
+		Expression:  in.Expression,
+		Title:       in.Title,
+		Description: in.Description,
+		Location:    in.Location,
+	}
 }
