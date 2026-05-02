@@ -142,7 +142,7 @@ func (a *batchAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := DataprocBatchSpec_ToProto(mapCtx, &desired.Spec)
+	resource := DataprocBatchSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -168,7 +168,7 @@ func (a *batchAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 	log.V(2).Info("successfully created dataproc batch in gcp", "name", a.id)
 
 	status := &krm.DataprocBatchStatus{}
-	status.ObservedState = DataprocBatchObservedState_FromProto(mapCtx, created)
+	status.ObservedState = DataprocBatchObservedState_v1alpha1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -181,7 +181,7 @@ func (a *batchAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating dataproc batch", "name", a.id)
 
-	desiredpb := DataprocBatchSpec_ToProto(&direct.MapContext{}, &a.desired.Spec)
+	desiredpb := DataprocBatchSpec_v1alpha1_ToProto(&direct.MapContext{}, &a.desired.Spec)
 	paths, err := common.CompareProtoMessage(desiredpb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
@@ -224,7 +224,7 @@ func (a *batchAdapter) Export(ctx context.Context) (*unstructured.Unstructured, 
 
 	obj := &krm.DataprocBatch{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(DataprocBatchSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(DataprocBatchSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
