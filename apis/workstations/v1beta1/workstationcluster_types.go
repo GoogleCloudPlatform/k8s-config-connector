@@ -164,6 +164,7 @@ type WorkstationClusterObservedState struct {
 // WorkstationCluster is the Schema for the WorkstationCluster API
 // +k8s:openapi-gen=true
 // +kubebuilder:storageversion
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 type WorkstationCluster struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
