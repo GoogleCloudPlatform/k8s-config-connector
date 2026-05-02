@@ -13,6 +13,7 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
     ```bash
     find apis -maxdepth 2 -type d \( -name "v1beta1" -o -name "v1alpha1" \) | while read dir; do if [ ! -f "$dir/generate.sh" ] && ls $dir/*_types.go >/dev/null 2>&1; then echo "$dir"; fi; done
     ```
+    *(Note: `apis/refs` is a special folder and does not correspond to a GCP service. Since it lacks `*_types.go` files, the above command naturally skips it, which is correct.)*
 
 2.  **Gather Resource Information**: For each identified directory, read `api_types.go` and `groupversion_info.go` to extract:
     -   `PROTO_SERVICE`: Look for `// +kcc:spec:proto=` or `// +kcc:proto=` markers in `api_types.go`.
