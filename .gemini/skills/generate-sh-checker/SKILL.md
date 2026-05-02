@@ -93,3 +93,7 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
     -   **Ref fields with acronyms**: If you encounter `// MISSING: [Acronym]...` (like `MISSING: KMSKey` or `MISSING: CAPool`) in the generated `mapper.generated.go`, it might be because the `generate-mapper` tool expects the field in the KRM struct to use the fully capitalized acronym (e.g. `KMSKeyRef` instead of `KmsKeyRef`, `CAPoolRef` instead of `CaPoolRef`). Rename the Go struct field to match the acronym (this won't break the yaml if the `json` tag is unchanged), and update any references in `mapper.go` or `[service]_controller.go`. The generator should then automatically map the `Ref` field properly.
 
 6.  **Commit and PR**: Create a branch, commit the changes, and propose a PR with a descriptive title like `chore: apis/<SERVICE> should follow generate.sh pattern`.
+
+## Troubleshooting
+
+-   **Deepcopy-gen errors (`invalid slice element type: invalid type`)**: This typically happens if `generate-types` outputs a struct name with a different capitalization than what is currently manually written in the `*_types.go` file (e.g. `PSCConfig` vs `PscConfig`). To fix, rename the type and all its usages in the `*_types.go` and `pkg/controller/direct/<SERVICE>/mapper.go` files to match the generated capitalization, then run `./generate.sh` again.
