@@ -81,7 +81,6 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
 5.  **Execute and Verify**:
     -   Make `generate.sh` executable: `chmod +x apis/<SERVICE>/<VERSION>/generate.sh`.
     -   Run it: `./apis/<SERVICE>/<VERSION>/generate.sh`.
-        - *Note:* If the script fails with a syntax error like `expected declaration` inside a generated file, it is likely because proto comments contain `*/` (e.g. `projects/*/locations/*`), which breaks the `/* ... */` block comments used by `--include-skipped-output`. In this case, simply remove the `--include-skipped-output` flag from `generate.sh` and try again.
     -   Verify that `types.generated.go` is created in the API directory.
     -   Verify that `pkg/controller/direct/<SERVICE>/mapper.generated.go` is updated.
     -   Verify that CRDs in `config/crds/resources/` are updated.
