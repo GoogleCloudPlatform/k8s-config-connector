@@ -27,7 +27,8 @@ go run . generate-types \
   --service google.cloud.memorystore.v1 \
   --api-version memorystore.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output \
-  --resource MemorystoreInstance:Instance
+  --resource MemorystoreInstance:Instance \
+  --resource MemorystoreInstanceEndpoint:Instance
 
 go run . generate-mapper \
   --service google.cloud.memorystore.v1 \
