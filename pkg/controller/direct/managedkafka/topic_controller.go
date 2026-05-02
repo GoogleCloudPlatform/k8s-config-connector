@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	gcp "cloud.google.com/go/managedkafka/apiv1"
 	pb "cloud.google.com/go/managedkafka/apiv1/managedkafkapb"
 	"google.golang.org/api/option"
@@ -54,11 +55,11 @@ type modelTopic struct {
 
 func (m *modelTopic) client(ctx context.Context) (*gcp.Client, error) {
 	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	opts, err := m.config.GRPCClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building Topic client: %w", err)
 	}
@@ -103,6 +104,33 @@ type TopicAdapter struct {
 }
 
 var _ directbase.Adapter = &TopicAdapter{}
+var _ direct.IAMAdapter = &TopicAdapter{}
+
+func (a *TopicAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+		Options: &iampb.GetPolicyOptions{
+			RequestedPolicyVersion: 3,
+		},
+	}
+	policy, err := iampb.NewIAMPolicyClient(a.gcpClient.Connection()).GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting IAM policy for %q: %w", a.id.String(), err)
+	}
+	return policy, nil
+}
+
+func (a *TopicAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := iampb.NewIAMPolicyClient(a.gcpClient.Connection()).SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting IAM policy for %q: %w", a.id.String(), err)
+	}
+	return newPolicy, nil
+}
 
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter `Update` call.
