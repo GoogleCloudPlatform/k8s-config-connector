@@ -76,6 +76,7 @@ type ApigeeInstanceAttachmentObservedState struct {
 
 // ApigeeInstanceAttachment is the Schema for the ApigeeInstanceAttachment API
 // +k8s:openapi-gen=true
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 type ApigeeInstanceAttachment struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

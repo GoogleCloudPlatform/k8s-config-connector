@@ -140,6 +140,7 @@ type ApigeeInstanceObservedState struct {
 
 // ApigeeInstance is the Schema for the ApigeeInstance API
 // +k8s:openapi-gen=true
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 type ApigeeInstance struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
