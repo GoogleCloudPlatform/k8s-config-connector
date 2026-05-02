@@ -67,6 +67,7 @@ func alloyDBClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".restore_continuous_backup_source")
 	f.SpecFields.Insert(".secondary_config")
 	f.SpecFields.Insert(".continuous_backup_config")
+	f.SpecFields.Insert(".dataplex_config")
 
 	f.StatusFields.Insert(".name")
 	f.StatusFields.Insert(".database_version")
@@ -76,6 +77,7 @@ func alloyDBClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".continuous_backup_info")
 	f.StatusFields.Insert(".migration_source")
 	f.StatusFields.Insert(".backup_source")
+	f.StatusFields.Insert(".dataplex_config")
 
 	// Fields that we haven't implemented yet
 	f.Unimplemented_NotYetTriaged(".service_account_email")

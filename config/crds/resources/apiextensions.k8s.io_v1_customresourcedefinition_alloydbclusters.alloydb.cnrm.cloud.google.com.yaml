@@ -795,6 +795,16 @@ spec:
                       field and it's populated at the Cluster creation time. This
                       field cannot be changed after cluster creation.
                     type: string
+                  dataplexConfig:
+                    description: Optional. The configuration for Dataplex integration.
+                    properties:
+                      enabled:
+                        description: Optional. Dataplex is enabled by default for
+                          resources such as clusters and instances. This flag controls
+                          the integration of AlloyDB PG resources (like databases,
+                          schemas, and tables) with Dataplex."
+                        type: boolean
+                    type: object
                 type: object
               uid:
                 description: Output only. The system-generated UID of the resource.
@@ -1577,6 +1587,16 @@ spec:
                       field and it's populated at the Cluster creation time. This
                       field cannot be changed after cluster creation.
                     type: string
+                  dataplexConfig:
+                    description: Optional. The configuration for Dataplex integration.
+                    properties:
+                      enabled:
+                        description: Optional. Dataplex is enabled by default for
+                          resources such as clusters and instances. This flag controls
+                          the integration of AlloyDB PG resources (like databases,
+                          schemas, and tables) with Dataplex."
+                        type: boolean
+                    type: object
                 type: object
               uid:
                 description: Output only. The system-generated UID of the resource.

@@ -96,6 +96,21 @@ go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/alloydb
 
 EOF
 
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/alloydb/v1beta/resources.proto --message Cluster --mode append <<EOF
+
+  // Configuration for Dataplex integration.
+  message DataplexConfig {
+    // Optional. Dataplex is enabled by default for resources such as clusters and
+    // instances. This flag controls the integration of AlloyDB PG resources
+    // (like databases, schemas, and tables) with Dataplex."
+    optional bool enabled = 1 [(google.api.field_behavior) = OPTIONAL];
+  }
+
+  // Optional. The configuration for Dataplex integration.
+  DataplexConfig dataplex_config = 67 [(google.api.field_behavior) = OPTIONAL];
+
+EOF
+
 # Container/GKE patches
 
 sed -i '/message NodeNetworkConfig {/,/}/ s/string subnetwork = 19 \[(google.api.field_behavior) = OUTPUT_ONLY\];/string subnetwork = 19;/' ${REPO_ROOT}/mockgcp/third_party/googleapis/google/container/v1beta1/cluster_service.proto

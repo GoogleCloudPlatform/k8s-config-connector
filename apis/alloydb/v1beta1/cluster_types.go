@@ -438,6 +438,10 @@ type AlloyDBClusterObservedState struct {
 	// cannot be changed after cluster creation.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.database_version
 	DatabaseVersion *string `json:"databaseVersion,omitempty"`
+
+	// Optional. The configuration for Dataplex integration.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.dataplex_config
+	DataplexConfig *Cluster_DataplexConfig `json:"dataplexConfig,omitempty"`
 }
 
 /*
