@@ -1584,7 +1584,7 @@ func ResourceContainerCluster() *schema.Resource {
 										Type:        schema.TypeString,
 										Optional:    true,
 										Description: `Status of the subnetwork, If in draining status, subnet will not be selected for new node pools.`,
-									},								},
+									}},
 							},
 						},
 					},
@@ -5898,7 +5898,7 @@ func flattenIPAllocationPolicy(c *container.Cluster, d *schema.ResourceData, con
 			"stack_type":                    p.StackType,
 			"pod_cidr_overprovision_config": flattenPodCidrOverprovisionConfig(p.PodCidrOverprovisionConfig),
 			"additional_pod_ranges_config":  flattenAdditionalPodRangesConfig(c.IpAllocationPolicy),
-			"additional_ip_ranges_configs":   flattenAdditionalIpRangesConfigs(p.AdditionalIpRangesConfigs),
+			"additional_ip_ranges_configs":  flattenAdditionalIpRangesConfigs(p.AdditionalIpRangesConfigs),
 		},
 	}, nil
 }
@@ -6615,6 +6615,11 @@ func containerClusterEnableK8sBetaApisCustomizeDiffFunc(d tpgresource.TerraformR
 func DatabaseEncryptionSuppress(k, old, new string, d *schema.ResourceData) bool {
 	// The API sometimes returns ALL_OBJECTS_ENCRYPTION_ENABLED when the user sets ENCRYPTED
 	// and vice versa (depending on the cluster version and underlying resource storage).
+	//
+	// It's unclear whether this service-side change only applied to GKE 1.35 or above, or will be backported to older
+	// versions in the long term, so we suppressed the diff without checking the cluster version.
+	// This may cause some false negatives if the cluster can truly be switched between ALL_OBJECTS_ENCRYPTION_ENABLED
+	// and ENCRYPTED in the service.
 	if old == "ALL_OBJECTS_ENCRYPTION_ENABLED" && new == "ENCRYPTED" {
 		return true
 	}
@@ -6623,4 +6628,3 @@ func DatabaseEncryptionSuppress(k, old, new string, d *schema.ResourceData) bool
 	}
 	return false
 }
-
