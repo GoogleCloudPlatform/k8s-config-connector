@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 set -o errexit
 set -o nounset
 set -o pipefail
@@ -32,7 +31,11 @@ go run . generate-types \
     --resource VertexAIDeploymentResourcePool:DeploymentResourcePool \
     --resource VertexAIExampleStore:ExampleStore
 
-# go run . generate-mapper     --service google.cloud.aiplatform.v1beta1     --api-version vertexai.cnrm.cloud.google.com/v1alpha1
+go run . generate-mapper \
+    --api-dir "${REPO_ROOT}/apis/vertexai/v1alpha1" \
+    --api-go-package-path "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1" \
+    --service google.cloud.aiplatform.v1beta1 \
+    --api-version vertexai.cnrm.cloud.google.com/v1alpha1
 
 go run . generate-types \
     --service google.cloud.aiplatform.v1 \

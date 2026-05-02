@@ -16,6 +16,7 @@ package vertexai
 
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -72,5 +73,28 @@ func VertexAIFeaturestoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexA
 	out.EncryptionSpec = EncryptionSpecV1alpha1_ToProto(mapCtx, in.EncryptionSpec)
 	// MISSING: SatisfiesPzs
 	// MISSING: SatisfiesPzi
+	return out
+}
+
+func EncryptionSpecV1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionSpec{
+		KMSKeyRef: &v1beta1.KMSCryptoKeyRef{
+			External: in.KmsKeyName,
+		},
+	}
+	return out
+}
+
+func EncryptionSpecV1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *pb.EncryptionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionSpec{}
+	if in.KMSKeyRef != nil {
+		out.KmsKeyName = in.KMSKeyRef.External
+	}
 	return out
 }
