@@ -24,6 +24,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/testing/protocmp"
+	"k8s.io/utils/ptr"
 	"sigs.k8s.io/yaml"
 )
 
@@ -100,17 +101,16 @@ func TestMapping(t *testing.T) {
 		AndroidKeyRestrictions: &v1alpha1.KeyAndroidKeyRestrictions{
 			AllowedApplications: []v1alpha1.KeyAllowedApplications{
 				{
-					Sha1Fingerprint: "sha1-fingerprint",
-					PackageName:     "package-name",
+					Sha1Fingerprint: ptr.To("sha1-fingerprint"),
+					PackageName:     ptr.To("package-name"),
 				},
 				{
-					Sha1Fingerprint: "sha1-fingerprint-2",
-					PackageName:     "package-name-2",
+					Sha1Fingerprint: ptr.To("sha1-fingerprint-2"),
+					PackageName:     ptr.To("package-name-2"),
 				},
 			},
 		},
 	}
-
 	gotProto := &pb.Key{}
 	if err := keyMapping.Map(originalKRM, gotProto); err != nil {
 		t.Fatalf("error mapping: %v", err)
