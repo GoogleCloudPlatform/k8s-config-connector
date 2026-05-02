@@ -27,7 +27,7 @@ func BigQueryAnalyticsHubDataExchangeObservedState_FromProto(mapCtx *direct.MapC
 		return nil
 	}
 	out := &krm.BigQueryAnalyticsHubDataExchangeObservedState{}
-	out.ListingCount = direct.LazyPtr(int64(in.GetListingCount()))
+	out.ListingCount = direct.LazyPtr(in.GetListingCount())
 	// MISSING: SharingEnvironmentConfig // not yet
 	return out
 }
@@ -116,12 +116,12 @@ func Listing_BigQueryDatasetSource_FromProto(mapCtx *direct.MapContext, in *pb.L
 		}
 	}
 
-	out.SelectedResources = direct.Slice_FromProto(mapCtx, in.SelectedResources, Listing_BigQueryDatasetSource_SelectedResource_FromProto)
-	out.RestrictedExportPolicy = Listing_BigQueryDatasetSource_RestrictedExportPolicy_FromProto(mapCtx, in.GetRestrictedExportPolicy())
+	out.SelectedResources = direct.Slice_FromProto(mapCtx, in.SelectedResources, SelectedResource_FromProto)
+	out.RestrictedExportPolicy = RestrictedExportPolicy_FromProto(mapCtx, in.GetRestrictedExportPolicy())
 	return out
 }
 
-func Listing_BigQueryDatasetSource_SelectedResource_FromProto(mapCtx *direct.MapContext, in *pb.Listing_BigQueryDatasetSource_SelectedResource) *krm.SelectedResource {
+func SelectedResource_FromProto(mapCtx *direct.MapContext, in *pb.Listing_BigQueryDatasetSource_SelectedResource) *krm.SelectedResource {
 	if in == nil {
 		return nil
 	}
@@ -134,7 +134,7 @@ func Listing_BigQueryDatasetSource_SelectedResource_FromProto(mapCtx *direct.Map
 
 	return out
 }
-func Listing_BigQueryDatasetSource_SelectedResource_ToProto(mapCtx *direct.MapContext, in *krm.SelectedResource) *pb.Listing_BigQueryDatasetSource_SelectedResource {
+func SelectedResource_ToProto(mapCtx *direct.MapContext, in *krm.SelectedResource) *pb.Listing_BigQueryDatasetSource_SelectedResource {
 	if in == nil {
 		return nil
 	}
@@ -148,7 +148,7 @@ func Listing_BigQueryDatasetSource_SelectedResource_ToProto(mapCtx *direct.MapCo
 	return out
 }
 
-func Listing_BigQueryDatasetSource_RestrictedExportPolicy_FromProto(mapCtx *direct.MapContext, in *pb.Listing_BigQueryDatasetSource_RestrictedExportPolicy) *krm.RestrictedExportPolicy {
+func RestrictedExportPolicy_FromProto(mapCtx *direct.MapContext, in *pb.Listing_BigQueryDatasetSource_RestrictedExportPolicy) *krm.RestrictedExportPolicy {
 	if in == nil {
 		return nil
 	}
@@ -165,7 +165,7 @@ func Listing_BigQueryDatasetSource_RestrictedExportPolicy_FromProto(mapCtx *dire
 
 	return out
 }
-func Listing_BigQueryDatasetSource_RestrictedExportPolicy_ToProto(mapCtx *direct.MapContext, in *krm.RestrictedExportPolicy) *pb.Listing_BigQueryDatasetSource_RestrictedExportPolicy {
+func RestrictedExportPolicy_ToProto(mapCtx *direct.MapContext, in *krm.RestrictedExportPolicy) *pb.Listing_BigQueryDatasetSource_RestrictedExportPolicy {
 	if in == nil {
 		return nil
 	}
@@ -318,4 +318,61 @@ func Publisher_ToProto(mapCtx *direct.MapContext, in *krm.Publisher) *pb.Publish
 	out.Name = direct.ValueOf(in.Name)
 	out.PrimaryContact = direct.ValueOf(in.PrimaryContact)
 	return out
+}
+
+func Listing_CommercialInfo_GoogleCloudMarketplaceInfoObservedState_CommercialState_ToProto(mapCtx *direct.MapContext, in *string) *pb.Listing_CommercialInfo_GoogleCloudMarketplaceInfo_CommercialState {
+	if in == nil {
+		return nil
+	}
+	val := pb.Listing_CommercialInfo_GoogleCloudMarketplaceInfo_CommercialState(pb.Listing_CommercialInfo_GoogleCloudMarketplaceInfo_CommercialState_value[*in])
+	return &val
+}
+
+func Listing_CommercialInfo_GoogleCloudMarketplaceInfoObservedState_CommercialState_FromProto(mapCtx *direct.MapContext, in *pb.Listing_CommercialInfo_GoogleCloudMarketplaceInfo_CommercialState) *string {
+	if in == nil {
+		return nil
+	}
+	name, ok := pb.Listing_CommercialInfo_GoogleCloudMarketplaceInfo_CommercialState_name[int32(*in)]
+	if !ok {
+		return nil
+	}
+	return &name
+}
+
+func BigQueryAnalyticsHubDataExchangeSpec_DiscoveryType_ToProto(mapCtx *direct.MapContext, in *string) *pb.DiscoveryType {
+	if in == nil {
+		return nil
+	}
+	val := pb.DiscoveryType(pb.DiscoveryType_value[*in])
+	return &val
+}
+
+func BigQueryAnalyticsHubListingSpec_DiscoveryType_ToProto(mapCtx *direct.MapContext, in *string) *pb.DiscoveryType {
+	if in == nil {
+		return nil
+	}
+	val := pb.DiscoveryType(pb.DiscoveryType_value[*in])
+	return &val
+}
+
+func BigQueryAnalyticsHubDataExchangeSpec_DiscoveryType_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveryType) *string {
+	if in == nil {
+		return nil
+	}
+	name, ok := pb.DiscoveryType_name[int32(*in)]
+	if !ok {
+		return nil
+	}
+	return &name
+}
+
+func BigQueryAnalyticsHubListingSpec_DiscoveryType_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveryType) *string {
+	if in == nil {
+		return nil
+	}
+	name, ok := pb.DiscoveryType_name[int32(*in)]
+	if !ok {
+		return nil
+	}
+	return &name
 }

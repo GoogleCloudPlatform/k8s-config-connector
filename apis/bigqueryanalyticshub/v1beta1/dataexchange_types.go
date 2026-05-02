@@ -103,7 +103,7 @@ type BigQueryAnalyticsHubDataExchangeObservedState struct {
 
 	/* Number of listings contained in the data exchange. */
 	// +optional
-	ListingCount *int64 `json:"listingCount,omitempty"`
+	ListingCount *int32 `json:"listingCount,omitempty"`
 }
 
 // +genclient
@@ -111,6 +111,7 @@ type BigQueryAnalyticsHubDataExchangeObservedState struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigqueryanalyticshubdataexchange;gcpbigqueryanalyticshubdataexchanges
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
