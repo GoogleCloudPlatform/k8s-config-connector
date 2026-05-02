@@ -27,7 +27,6 @@ import (
 func init() {
 	fuzztesting.RegisterKRMFuzzer(NetworkManagementConnectivityTestFuzzer())
 }
-
 func NetworkManagementConnectivityTestFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.ConnectivityTest{},
 		NetworkManagementConnectivityTestSpec_FromProto, NetworkManagementConnectivityTestSpec_ToProto,
