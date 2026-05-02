@@ -27,14 +27,8 @@ go run . generate-types \
   --service google.cloud.apphub.v1 \
   --api-version apphub.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
-  --resource AppHubApplication:Application \
   --resource AppHubDiscoveredService:DiscoveredService \
   --resource AppHubDiscoveredWorkload:DiscoveredWorkload
-
-go run . generate-mapper \
-  --service google.cloud.apphub.v1 \
-  --api-version apphub.cnrm.cloud.google.com/v1alpha1 \
-  --include-skipped-output
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
