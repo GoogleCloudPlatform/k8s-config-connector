@@ -26,6 +26,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.cloud.eventarc.v1 \
   --api-version eventarc.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
   --resource EventarcChannel:Channel \
   --resource EventarcGoogleChannelConfig:GoogleChannelConfig
 
