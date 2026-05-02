@@ -30,6 +30,7 @@ import (
 
 	apiv1 "cloud.google.com/go/firestore/apiv1/admin"
 	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -201,7 +202,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	// Simulate server-side defaulting, so we don't issue updates for fields that
 	// are different only because of defaulting.
-	expected := direct.ProtoClone(desired)
+	expected := proto.CloneOf(desired)
 	ApplyServerSideDefaults(expected)
 
 	actual := a.actual
@@ -228,7 +229,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	structuredreporting.ReportDiff(ctx, diff)
 
-	latest := direct.ProtoClone(actual)
+	latest := proto.CloneOf(actual)
 	if len(updateMask.Paths) != 0 {
 		req := &pb.UpdateDatabaseRequest{
 			Database:   desired,

@@ -96,7 +96,7 @@ func (s *analyticsAdminServer) UpdateAccount(ctx context.Context, req *pb.Update
 		return nil, err
 	}
 
-	updated := ProtoClone(existing)
+	updated := proto.CloneOf(existing)
 
 	// Required. The set of fields to update.
 	paths := req.GetUpdateMask().GetPaths()
@@ -123,7 +123,7 @@ func (s *analyticsAdminServer) ProvisionAccountTicket(ctx context.Context, req *
 	// Service-generated resource ID.
 	fqn := "123456"
 
-	obj := ProtoClone(req.Account)
+	obj := proto.CloneOf(req.Account)
 	obj.Name = fmt.Sprintf("accounts/%s", fqn)
 	now := time.Now()
 	obj.CreateTime = timestamppb.New(now)
@@ -158,8 +158,4 @@ func (s *analyticsAdminServer) parseAccountName(name string) (*accountName, erro
 	}
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
-}
-
-func ProtoClone[T proto.Message](obj T) T {
-	return proto.Clone(obj).(T)
 }

@@ -68,7 +68,7 @@ func (s *scheduleService) ListSchedules(ctx context.Context, req *pb.ListSchedul
 	}, func(obj proto.Message) error {
 		schedule := obj.(*pb.Schedule)
 
-		scheduleCopy := ProtoClone(schedule)
+		scheduleCopy := proto.CloneOf(schedule)
 		scheduleCopy.UpdateTime = nil
 		name, err := s.parseScheduleName(scheduleCopy.Name)
 		if err != nil {

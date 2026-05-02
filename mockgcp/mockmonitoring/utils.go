@@ -30,7 +30,3 @@ func computeEtag(obj proto.Message) string {
 	hash := md5.Sum(b)
 	return base64.StdEncoding.EncodeToString(hash[:])
 }
-
-func ProtoClone[T proto.Message](obj T) T {
-	return proto.Clone(obj).(T)
-}

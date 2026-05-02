@@ -25,7 +25,6 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "cloud.google.com/go/edgecontainer/apiv1/edgecontainerpb"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 )
 
 func (s *EdgeContainerV1) GetCluster(ctx context.Context, req *pb.GetClusterRequest) (*pb.Cluster, error) {
@@ -52,7 +51,7 @@ func (s *EdgeContainerV1) CreateCluster(ctx context.Context, req *pb.CreateClust
 
 	fqn := name.String()
 
-	obj := common.ProtoClone(req.Cluster)
+	obj := proto.CloneOf(req.Cluster)
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -67,7 +66,7 @@ func (s *EdgeContainerV1) CreateCluster(ctx context.Context, req *pb.CreateClust
 	opPrefix := req.GetParent()
 	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
 		// Many fields are not populated in the LRO result
-		result := common.ProtoClone(obj)
+		result := proto.CloneOf(obj)
 		result.CreateTime = nil
 		result.UpdateTime = nil
 
@@ -90,7 +89,7 @@ func (s *EdgeContainerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClust
 
 	now := time.Now()
 
-	updated := common.ProtoClone(existing)
+	updated := proto.CloneOf(existing)
 	paths := req.GetUpdateMask().GetPaths()
 	for _, path := range paths {
 		switch path {
@@ -116,7 +115,7 @@ func (s *EdgeContainerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClust
 	opPrefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
 	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
 		// Many fields are not populated in the LRO result
-		result := common.ProtoClone(updated)
+		result := proto.CloneOf(updated)
 		result.CreateTime = nil
 		result.UpdateTime = nil
 

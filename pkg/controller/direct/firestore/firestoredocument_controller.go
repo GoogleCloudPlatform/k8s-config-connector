@@ -141,7 +141,7 @@ func (a *firestoreDocumentAdapter) Create(ctx context.Context, createOp *directb
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating FirestoreDocument", "name", fqn)
 
-	resource := direct.ProtoClone(a.desired)
+	resource := proto.CloneOf(a.desired)
 
 	req := &pb.CreateDocumentRequest{
 		Parent:       a.id.Parent.String() + "/documents",
@@ -173,7 +173,7 @@ func (a *firestoreDocumentAdapter) Update(ctx context.Context, updateOp *directb
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating FirestoreDocument", "name", fqn)
 
-	resource := direct.ProtoClone(a.desired)
+	resource := proto.CloneOf(a.desired)
 
 	latest := a.actual
 

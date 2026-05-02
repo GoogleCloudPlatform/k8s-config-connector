@@ -29,6 +29,7 @@ import (
 	gcp "cloud.google.com/go/securesourcemanager/apiv1"
 	pb "cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -160,7 +161,7 @@ func (a *secureSourceManagerInstanceAdapter) Create(ctx context.Context, createO
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Instance", "name", a.id.External)
 
-	instance := direct.ProtoClone(a.desired)
+	instance := proto.CloneOf(a.desired)
 
 	parent, err := a.id.Parent()
 	if err != nil {

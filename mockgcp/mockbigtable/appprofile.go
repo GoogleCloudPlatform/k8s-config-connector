@@ -65,7 +65,7 @@ func (s *instanceAdminServer) CreateAppProfile(ctx context.Context, req *pb.Crea
 
 	fqn := name.String()
 
-	obj := ProtoClone(req.AppProfile)
+	obj := proto.CloneOf(req.AppProfile)
 	obj.Name = fqn
 	if obj.Isolation == nil {
 		obj.Isolation = &pb.AppProfile_StandardIsolation_{
@@ -94,7 +94,7 @@ func (s *instanceAdminServer) UpdateAppProfile(ctx context.Context, req *pb.Upda
 		return nil, err
 	}
 
-	updated := ProtoClone(existing)
+	updated := proto.CloneOf(existing)
 
 	// Required. The set of fields to update.
 	paths := req.GetUpdateMask().GetPaths()
@@ -150,7 +150,7 @@ func (s *instanceAdminServer) UpdateAppProfile(ctx context.Context, req *pb.Upda
 	zone := "us-central1-a" // TODO
 	prefix := fmt.Sprintf("operations/%s/locations/%s", name.String(), zone)
 
-	lroRet := ProtoClone(updated)
+	lroRet := proto.CloneOf(updated)
 	updatePaths := sets.New(req.GetUpdateMask().GetPaths()...)
 	// Only return in LRO whatever has actually been updated/changed.
 	if !updatePaths.Has("standard_isolation") && !updatePaths.Has("standardIsolation") && !updatePaths.Has("dataBoostIsolationReadOnly") && !updatePaths.Has("data_boost_isolation_read_only") {
