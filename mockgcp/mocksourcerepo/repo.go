@@ -81,7 +81,7 @@ func (s *SourceRepoServer) CreateRepo(ctx context.Context, req *pb.CreateRepoReq
 	}
 	fqn := name.String()
 
-	obj := ProtoClone(req.GetRepo())
+	obj := proto.CloneOf(req.GetRepo())
 	obj.Name = fqn
 	obj.Url = fmt.Sprintf("https://source.developers.google.com/p/%s/r/%s", name.Project.ID, name.Repo)
 
