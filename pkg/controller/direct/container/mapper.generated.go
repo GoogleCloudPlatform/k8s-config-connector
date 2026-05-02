@@ -21,8 +21,8 @@
 package container
 
 import (
-	pb "cloud.google.com/go/container/apiv1beta1/containerpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/container/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	codepb "google.golang.org/genproto/googleapis/rpc/code"
 )
@@ -649,7 +649,7 @@ func Cluster_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.Cluster {
 	out.Locations = in.Locations
 	out.EnableKubernetesAlpha = direct.LazyPtr(in.GetEnableKubernetesAlpha())
 	out.AlphaClusterFeatureGates = in.AlphaClusterFeatureGates
-	out.EnableK8sBetaApis = K8sBetaAPIConfig_FromProto(mapCtx, in.GetEnableK8sBetaApis())
+	out.EnableK8sBetaApis = K8SBetaAPIConfig_FromProto(mapCtx, in.GetEnableK8SBetaApis())
 	out.ResourceLabels = in.ResourceLabels
 	out.LabelFingerprint = direct.LazyPtr(in.GetLabelFingerprint())
 	out.LegacyAbac = LegacyAbac_FromProto(mapCtx, in.GetLegacyAbac())
@@ -743,7 +743,7 @@ func Cluster_ToProto(mapCtx *direct.MapContext, in *krm.Cluster) *pb.Cluster {
 	out.Locations = in.Locations
 	out.EnableKubernetesAlpha = direct.ValueOf(in.EnableKubernetesAlpha)
 	out.AlphaClusterFeatureGates = in.AlphaClusterFeatureGates
-	out.EnableK8sBetaApis = K8sBetaAPIConfig_ToProto(mapCtx, in.EnableK8sBetaApis)
+	out.EnableK8SBetaApis = K8SBetaAPIConfig_ToProto(mapCtx, in.EnableK8sBetaApis)
 	out.ResourceLabels = in.ResourceLabels
 	out.LabelFingerprint = direct.ValueOf(in.LabelFingerprint)
 	out.LegacyAbac = LegacyAbac_ToProto(mapCtx, in.LegacyAbac)
@@ -2105,7 +2105,7 @@ func IstioConfig_ToProto(mapCtx *direct.MapContext, in *krm.IstioConfig) *pb.Ist
 	out.Auth = direct.Enum_ToProto[pb.IstioConfig_IstioAuthMode](mapCtx, in.Auth)
 	return out
 }
-func K8sBetaAPIConfig_FromProto(mapCtx *direct.MapContext, in *pb.K8sBetaAPIConfig) *krm.K8sBetaAPIConfig {
+func K8SBetaAPIConfig_FromProto(mapCtx *direct.MapContext, in *pb.K8SBetaAPIConfig) *krm.K8sBetaAPIConfig {
 	if in == nil {
 		return nil
 	}
@@ -2113,11 +2113,11 @@ func K8sBetaAPIConfig_FromProto(mapCtx *direct.MapContext, in *pb.K8sBetaAPIConf
 	out.EnabledApis = in.EnabledApis
 	return out
 }
-func K8sBetaAPIConfig_ToProto(mapCtx *direct.MapContext, in *krm.K8sBetaAPIConfig) *pb.K8sBetaAPIConfig {
+func K8SBetaAPIConfig_ToProto(mapCtx *direct.MapContext, in *krm.K8sBetaAPIConfig) *pb.K8SBetaAPIConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.K8sBetaAPIConfig{}
+	out := &pb.K8SBetaAPIConfig{}
 	out.EnabledApis = in.EnabledApis
 	return out
 }
@@ -2198,8 +2198,8 @@ func LinuxNodeConfig_HugepagesConfig_FromProto(mapCtx *direct.MapContext, in *pb
 		return nil
 	}
 	out := &krm.LinuxNodeConfig_HugepagesConfig{}
-	out.HugepageSize2m = in.HugepageSize2m
-	out.HugepageSize1g = in.HugepageSize1g
+	out.HugepageSize2m = in.HugepageSize2M
+	out.HugepageSize1g = in.HugepageSize1G
 	return out
 }
 func LinuxNodeConfig_HugepagesConfig_ToProto(mapCtx *direct.MapContext, in *krm.LinuxNodeConfig_HugepagesConfig) *pb.LinuxNodeConfig_HugepagesConfig {
@@ -2207,8 +2207,8 @@ func LinuxNodeConfig_HugepagesConfig_ToProto(mapCtx *direct.MapContext, in *krm.
 		return nil
 	}
 	out := &pb.LinuxNodeConfig_HugepagesConfig{}
-	out.HugepageSize2m = in.HugepageSize2m
-	out.HugepageSize1g = in.HugepageSize1g
+	out.HugepageSize2M = in.HugepageSize2m
+	out.HugepageSize1G = in.HugepageSize1g
 	return out
 }
 func LocalNvmeSsdBlockConfig_FromProto(mapCtx *direct.MapContext, in *pb.LocalNvmeSsdBlockConfig) *krm.LocalNvmeSsdBlockConfig {
@@ -2608,7 +2608,7 @@ func NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *k
 	// MISSING: Subnetwork
 	out.EnableIntraNodeVisibility = direct.LazyPtr(in.GetEnableIntraNodeVisibility())
 	out.DefaultSnatStatus = DefaultSnatStatus_FromProto(mapCtx, in.GetDefaultSnatStatus())
-	out.EnableL4ilbSubsetting = direct.LazyPtr(in.GetEnableL4ilbSubsetting())
+	out.EnableL4ilbSubsetting = direct.LazyPtr(in.GetEnableL4IlbSubsetting())
 	out.DatapathProvider = direct.Enum_FromProto(mapCtx, in.GetDatapathProvider())
 	out.PrivateIPV6GoogleAccess = direct.Enum_FromProto(mapCtx, in.GetPrivateIpv6GoogleAccess())
 	out.DNSConfig = DNSConfig_FromProto(mapCtx, in.GetDnsConfig())
@@ -2632,7 +2632,7 @@ func NetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfig) *pb
 	// MISSING: Subnetwork
 	out.EnableIntraNodeVisibility = direct.ValueOf(in.EnableIntraNodeVisibility)
 	out.DefaultSnatStatus = DefaultSnatStatus_ToProto(mapCtx, in.DefaultSnatStatus)
-	out.EnableL4ilbSubsetting = direct.ValueOf(in.EnableL4ilbSubsetting)
+	out.EnableL4IlbSubsetting = direct.ValueOf(in.EnableL4ilbSubsetting)
 	out.DatapathProvider = direct.Enum_ToProto[pb.DatapathProvider](mapCtx, in.DatapathProvider)
 	out.PrivateIpv6GoogleAccess = direct.Enum_ToProto[pb.PrivateIPv6GoogleAccess](mapCtx, in.PrivateIPV6GoogleAccess)
 	out.DnsConfig = DNSConfig_ToProto(mapCtx, in.DNSConfig)

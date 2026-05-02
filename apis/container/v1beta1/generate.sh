@@ -40,3 +40,32 @@ cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
 go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/container/
+
+
+
+
+
+# Fix capitalization differences between KRM and protobuf
+python3 -c '
+import os
+import re
+with open("pkg/controller/direct/container/mapper.generated.go", "r") as f: s = f.read()
+
+s = s.replace("in.GetEnableK8sBetaApis()", "in.GetEnableK8SBetaApis()")
+s = s.replace("out.EnableK8sBetaApis = K8sBetaAPIConfig_ToProto", "out.EnableK8SBetaApis = K8sBetaAPIConfig_ToProto")
+s = s.replace("out.EnableK8SBetaApis = K8sBetaAPIConfig_FromProto(mapCtx, in.GetEnableK8SBetaApis())", "out.EnableK8sBetaApis = K8sBetaAPIConfig_FromProto(mapCtx, in.GetEnableK8SBetaApis())")
+s = s.replace("pb.K8sBetaAPIConfig", "pb.K8SBetaAPIConfig")
+s = s.replace("K8sBetaAPIConfig_FromProto", "K8SBetaAPIConfig_FromProto")
+s = s.replace("K8sBetaAPIConfig_ToProto", "K8SBetaAPIConfig_ToProto")
+
+s = s.replace("in.GetEnableL4ilbSubsetting()", "in.GetEnableL4IlbSubsetting()")
+s = s.replace("out.EnableL4ilbSubsetting = direct.ValueOf(in.EnableL4ilbSubsetting)", "out.EnableL4IlbSubsetting = direct.ValueOf(in.EnableL4ilbSubsetting)")
+s = s.replace("out.EnableL4IlbSubsetting = direct.LazyPtr(in.GetEnableL4IlbSubsetting())", "out.EnableL4ilbSubsetting = direct.LazyPtr(in.GetEnableL4IlbSubsetting())")
+
+s = re.sub(r"func LinuxNodeConfig_HugepagesConfig_FromProto.*?return out\n\}", "func LinuxNodeConfig_HugepagesConfig_FromProto(mapCtx *direct.MapContext, in *pb.LinuxNodeConfig_HugepagesConfig) *krm.LinuxNodeConfig_HugepagesConfig {\n\tif in == nil {\n\t\treturn nil\n\t}\n\tout := &krm.LinuxNodeConfig_HugepagesConfig{}\n\tout.HugepageSize2m = in.HugepageSize2M\n\tout.HugepageSize1g = in.HugepageSize1G\n\treturn out\n}", s, flags=re.DOTALL)
+
+s = re.sub(r"func LinuxNodeConfig_HugepagesConfig_ToProto.*?return out\n\}", "func LinuxNodeConfig_HugepagesConfig_ToProto(mapCtx *direct.MapContext, in *krm.LinuxNodeConfig_HugepagesConfig) *pb.LinuxNodeConfig_HugepagesConfig {\n\tif in == nil {\n\t\treturn nil\n\t}\n\tout := &pb.LinuxNodeConfig_HugepagesConfig{}\n\tout.HugepageSize2M = in.HugepageSize2m\n\tout.HugepageSize1G = in.HugepageSize1g\n\treturn out\n}", s, flags=re.DOTALL)
+
+
+with open("pkg/controller/direct/container/mapper.generated.go", "w") as f: f.write(s)
+'
