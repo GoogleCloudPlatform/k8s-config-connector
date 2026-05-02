@@ -43,6 +43,7 @@ type MockService struct {
 	// Store the underlying GRPC servers
 	dataplexService *DataplexService
 	catalogService  *CatalogService
+	contentService  *ContentService
 }
 
 type DataplexService struct {
@@ -59,6 +60,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	}
 	s.dataplexService = &DataplexService{MockService: s}
 	s.catalogService = &CatalogService{MockService: s}
+	s.contentService = &ContentService{MockService: s}
 	return s
 }
 
@@ -69,6 +71,7 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDataplexServiceServer(grpcServer, s.dataplexService)
 	pb.RegisterCatalogServiceServer(grpcServer, s.catalogService)
+	pb.RegisterContentServiceServer(grpcServer, s.contentService)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -79,6 +82,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	grpcMux.AddService(pb.NewDataplexServiceClient(conn))
 	grpcMux.AddService(pb.NewCatalogServiceClient(conn))
+	grpcMux.AddService(pb.NewContentServiceClient(conn))
 	grpcMux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
 	return grpcMux, nil
