@@ -74,6 +74,7 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
         -   Removing the `v1alpha1` directory.
         -   Adding `// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"` to the `v1beta1` `api_types.go` file (near the Kind struct).
         -   Ensuring `v1beta1` has `// +kubebuilder:storageversion`.
+    -   If the existing types files are not named `<lowercasekind>_types.go` (e.g., `cluster_types.go` instead of `workstationcluster_types.go`), rename them using `git mv` to match the expected pattern *before* running `generate.sh`. Otherwise, `controllerbuilder generate-types` will fail to find the existing types and create duplicate files.
 
 5.  **Execute and Verify**:
     -   Make `generate.sh` executable: `chmod +x apis/<SERVICE>/<VERSION>/generate.sh`.
