@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.12.4
-// source: mockgcp/cloud/serviceusage/v1beta1/serviceusage.proto
+// source: mockgcp/api/serviceusage/v1beta1/serviceusage.proto
 
 package serviceusage
 
@@ -116,7 +116,7 @@ func NewServiceUsageClient(cc grpc.ClientConnInterface) ServiceUsageClient {
 // Deprecated: Do not use.
 func (c *serviceUsageClient) EnableService(ctx context.Context, in *EnableServiceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/EnableService", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/EnableService", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -126,7 +126,7 @@ func (c *serviceUsageClient) EnableService(ctx context.Context, in *EnableServic
 // Deprecated: Do not use.
 func (c *serviceUsageClient) DisableService(ctx context.Context, in *DisableServiceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/DisableService", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/DisableService", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -136,7 +136,7 @@ func (c *serviceUsageClient) DisableService(ctx context.Context, in *DisableServ
 // Deprecated: Do not use.
 func (c *serviceUsageClient) GetService(ctx context.Context, in *GetServiceRequest, opts ...grpc.CallOption) (*Service, error) {
 	out := new(Service)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/GetService", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/GetService", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -146,7 +146,7 @@ func (c *serviceUsageClient) GetService(ctx context.Context, in *GetServiceReque
 // Deprecated: Do not use.
 func (c *serviceUsageClient) ListServices(ctx context.Context, in *ListServicesRequest, opts ...grpc.CallOption) (*ListServicesResponse, error) {
 	out := new(ListServicesResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/ListServices", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/ListServices", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -156,7 +156,7 @@ func (c *serviceUsageClient) ListServices(ctx context.Context, in *ListServicesR
 // Deprecated: Do not use.
 func (c *serviceUsageClient) BatchEnableServices(ctx context.Context, in *BatchEnableServicesRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/BatchEnableServices", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/BatchEnableServices", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -165,7 +165,7 @@ func (c *serviceUsageClient) BatchEnableServices(ctx context.Context, in *BatchE
 
 func (c *serviceUsageClient) ListConsumerQuotaMetrics(ctx context.Context, in *ListConsumerQuotaMetricsRequest, opts ...grpc.CallOption) (*ListConsumerQuotaMetricsResponse, error) {
 	out := new(ListConsumerQuotaMetricsResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/ListConsumerQuotaMetrics", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/ListConsumerQuotaMetrics", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -174,7 +174,7 @@ func (c *serviceUsageClient) ListConsumerQuotaMetrics(ctx context.Context, in *L
 
 func (c *serviceUsageClient) GetConsumerQuotaMetric(ctx context.Context, in *GetConsumerQuotaMetricRequest, opts ...grpc.CallOption) (*ConsumerQuotaMetric, error) {
 	out := new(ConsumerQuotaMetric)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/GetConsumerQuotaMetric", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/GetConsumerQuotaMetric", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -183,7 +183,7 @@ func (c *serviceUsageClient) GetConsumerQuotaMetric(ctx context.Context, in *Get
 
 func (c *serviceUsageClient) GetConsumerQuotaLimit(ctx context.Context, in *GetConsumerQuotaLimitRequest, opts ...grpc.CallOption) (*ConsumerQuotaLimit, error) {
 	out := new(ConsumerQuotaLimit)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/GetConsumerQuotaLimit", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/GetConsumerQuotaLimit", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -192,7 +192,7 @@ func (c *serviceUsageClient) GetConsumerQuotaLimit(ctx context.Context, in *GetC
 
 func (c *serviceUsageClient) CreateAdminOverride(ctx context.Context, in *CreateAdminOverrideRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/CreateAdminOverride", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/CreateAdminOverride", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -201,7 +201,7 @@ func (c *serviceUsageClient) CreateAdminOverride(ctx context.Context, in *Create
 
 func (c *serviceUsageClient) UpdateAdminOverride(ctx context.Context, in *UpdateAdminOverrideRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/UpdateAdminOverride", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/UpdateAdminOverride", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -210,7 +210,7 @@ func (c *serviceUsageClient) UpdateAdminOverride(ctx context.Context, in *Update
 
 func (c *serviceUsageClient) DeleteAdminOverride(ctx context.Context, in *DeleteAdminOverrideRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/DeleteAdminOverride", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/DeleteAdminOverride", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -219,7 +219,7 @@ func (c *serviceUsageClient) DeleteAdminOverride(ctx context.Context, in *Delete
 
 func (c *serviceUsageClient) ListAdminOverrides(ctx context.Context, in *ListAdminOverridesRequest, opts ...grpc.CallOption) (*ListAdminOverridesResponse, error) {
 	out := new(ListAdminOverridesResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/ListAdminOverrides", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/ListAdminOverrides", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -228,7 +228,7 @@ func (c *serviceUsageClient) ListAdminOverrides(ctx context.Context, in *ListAdm
 
 func (c *serviceUsageClient) ImportAdminOverrides(ctx context.Context, in *ImportAdminOverridesRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/ImportAdminOverrides", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/ImportAdminOverrides", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -237,7 +237,7 @@ func (c *serviceUsageClient) ImportAdminOverrides(ctx context.Context, in *Impor
 
 func (c *serviceUsageClient) CreateConsumerOverride(ctx context.Context, in *CreateConsumerOverrideRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/CreateConsumerOverride", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/CreateConsumerOverride", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -246,7 +246,7 @@ func (c *serviceUsageClient) CreateConsumerOverride(ctx context.Context, in *Cre
 
 func (c *serviceUsageClient) UpdateConsumerOverride(ctx context.Context, in *UpdateConsumerOverrideRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/UpdateConsumerOverride", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/UpdateConsumerOverride", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -255,7 +255,7 @@ func (c *serviceUsageClient) UpdateConsumerOverride(ctx context.Context, in *Upd
 
 func (c *serviceUsageClient) DeleteConsumerOverride(ctx context.Context, in *DeleteConsumerOverrideRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/DeleteConsumerOverride", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/DeleteConsumerOverride", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -264,7 +264,7 @@ func (c *serviceUsageClient) DeleteConsumerOverride(ctx context.Context, in *Del
 
 func (c *serviceUsageClient) ListConsumerOverrides(ctx context.Context, in *ListConsumerOverridesRequest, opts ...grpc.CallOption) (*ListConsumerOverridesResponse, error) {
 	out := new(ListConsumerOverridesResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/ListConsumerOverrides", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/ListConsumerOverrides", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -273,7 +273,7 @@ func (c *serviceUsageClient) ListConsumerOverrides(ctx context.Context, in *List
 
 func (c *serviceUsageClient) ImportConsumerOverrides(ctx context.Context, in *ImportConsumerOverridesRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/ImportConsumerOverrides", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/ImportConsumerOverrides", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -282,7 +282,7 @@ func (c *serviceUsageClient) ImportConsumerOverrides(ctx context.Context, in *Im
 
 func (c *serviceUsageClient) GenerateServiceIdentity(ctx context.Context, in *GenerateServiceIdentityRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/GenerateServiceIdentity", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/GenerateServiceIdentity", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -460,7 +460,7 @@ func _ServiceUsage_EnableService_Handler(srv interface{}, ctx context.Context, d
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/EnableService",
+		FullMethod: "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/EnableService",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).EnableService(ctx, req.(*EnableServiceRequest))
@@ -478,7 +478,7 @@ func _ServiceUsage_DisableService_Handler(srv interface{}, ctx context.Context, 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/DisableService",
+		FullMethod: "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/DisableService",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).DisableService(ctx, req.(*DisableServiceRequest))
@@ -496,7 +496,7 @@ func _ServiceUsage_GetService_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/GetService",
+		FullMethod: "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/GetService",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).GetService(ctx, req.(*GetServiceRequest))
@@ -514,7 +514,7 @@ func _ServiceUsage_ListServices_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/ListServices",
+		FullMethod: "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/ListServices",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).ListServices(ctx, req.(*ListServicesRequest))
@@ -532,7 +532,7 @@ func _ServiceUsage_BatchEnableServices_Handler(srv interface{}, ctx context.Cont
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/BatchEnableServices",
+		FullMethod: "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/BatchEnableServices",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).BatchEnableServices(ctx, req.(*BatchEnableServicesRequest))
@@ -550,7 +550,7 @@ func _ServiceUsage_ListConsumerQuotaMetrics_Handler(srv interface{}, ctx context
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/ListConsumerQuotaMetrics",
+		FullMethod: "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/ListConsumerQuotaMetrics",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).ListConsumerQuotaMetrics(ctx, req.(*ListConsumerQuotaMetricsRequest))
@@ -568,7 +568,7 @@ func _ServiceUsage_GetConsumerQuotaMetric_Handler(srv interface{}, ctx context.C
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/GetConsumerQuotaMetric",
+		FullMethod: "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/GetConsumerQuotaMetric",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).GetConsumerQuotaMetric(ctx, req.(*GetConsumerQuotaMetricRequest))
@@ -586,7 +586,7 @@ func _ServiceUsage_GetConsumerQuotaLimit_Handler(srv interface{}, ctx context.Co
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/GetConsumerQuotaLimit",
+		FullMethod: "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/GetConsumerQuotaLimit",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).GetConsumerQuotaLimit(ctx, req.(*GetConsumerQuotaLimitRequest))
@@ -604,7 +604,7 @@ func _ServiceUsage_CreateAdminOverride_Handler(srv interface{}, ctx context.Cont
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/CreateAdminOverride",
+		FullMethod: "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/CreateAdminOverride",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).CreateAdminOverride(ctx, req.(*CreateAdminOverrideRequest))
@@ -622,7 +622,7 @@ func _ServiceUsage_UpdateAdminOverride_Handler(srv interface{}, ctx context.Cont
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/UpdateAdminOverride",
+		FullMethod: "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/UpdateAdminOverride",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).UpdateAdminOverride(ctx, req.(*UpdateAdminOverrideRequest))
@@ -640,7 +640,7 @@ func _ServiceUsage_DeleteAdminOverride_Handler(srv interface{}, ctx context.Cont
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/DeleteAdminOverride",
+		FullMethod: "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/DeleteAdminOverride",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).DeleteAdminOverride(ctx, req.(*DeleteAdminOverrideRequest))
@@ -658,7 +658,7 @@ func _ServiceUsage_ListAdminOverrides_Handler(srv interface{}, ctx context.Conte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/ListAdminOverrides",
+		FullMethod: "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/ListAdminOverrides",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).ListAdminOverrides(ctx, req.(*ListAdminOverridesRequest))
@@ -676,7 +676,7 @@ func _ServiceUsage_ImportAdminOverrides_Handler(srv interface{}, ctx context.Con
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/ImportAdminOverrides",
+		FullMethod: "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/ImportAdminOverrides",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).ImportAdminOverrides(ctx, req.(*ImportAdminOverridesRequest))
@@ -694,7 +694,7 @@ func _ServiceUsage_CreateConsumerOverride_Handler(srv interface{}, ctx context.C
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/CreateConsumerOverride",
+		FullMethod: "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/CreateConsumerOverride",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).CreateConsumerOverride(ctx, req.(*CreateConsumerOverrideRequest))
@@ -712,7 +712,7 @@ func _ServiceUsage_UpdateConsumerOverride_Handler(srv interface{}, ctx context.C
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/UpdateConsumerOverride",
+		FullMethod: "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/UpdateConsumerOverride",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).UpdateConsumerOverride(ctx, req.(*UpdateConsumerOverrideRequest))
@@ -730,7 +730,7 @@ func _ServiceUsage_DeleteConsumerOverride_Handler(srv interface{}, ctx context.C
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/DeleteConsumerOverride",
+		FullMethod: "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/DeleteConsumerOverride",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).DeleteConsumerOverride(ctx, req.(*DeleteConsumerOverrideRequest))
@@ -748,7 +748,7 @@ func _ServiceUsage_ListConsumerOverrides_Handler(srv interface{}, ctx context.Co
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/ListConsumerOverrides",
+		FullMethod: "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/ListConsumerOverrides",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).ListConsumerOverrides(ctx, req.(*ListConsumerOverridesRequest))
@@ -766,7 +766,7 @@ func _ServiceUsage_ImportConsumerOverrides_Handler(srv interface{}, ctx context.
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/ImportConsumerOverrides",
+		FullMethod: "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/ImportConsumerOverrides",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).ImportConsumerOverrides(ctx, req.(*ImportConsumerOverridesRequest))
@@ -784,7 +784,7 @@ func _ServiceUsage_GenerateServiceIdentity_Handler(srv interface{}, ctx context.
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.serviceusage.v1beta1.ServiceUsage/GenerateServiceIdentity",
+		FullMethod: "/mockgcp.api.serviceusage.v1beta1.ServiceUsage/GenerateServiceIdentity",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).GenerateServiceIdentity(ctx, req.(*GenerateServiceIdentityRequest))
@@ -796,7 +796,7 @@ func _ServiceUsage_GenerateServiceIdentity_Handler(srv interface{}, ctx context.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ServiceUsage_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "mockgcp.cloud.serviceusage.v1beta1.ServiceUsage",
+	ServiceName: "mockgcp.api.serviceusage.v1beta1.ServiceUsage",
 	HandlerType: (*ServiceUsageServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -877,5 +877,5 @@ var ServiceUsage_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "mockgcp/cloud/serviceusage/v1beta1/serviceusage.proto",
+	Metadata: "mockgcp/api/serviceusage/v1beta1/serviceusage.proto",
 }
