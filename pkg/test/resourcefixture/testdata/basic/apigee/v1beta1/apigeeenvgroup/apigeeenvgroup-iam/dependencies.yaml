@@ -1,0 +1,9 @@
+apiVersion: apigee.cnrm.cloud.google.com/v1beta1
+kind: ApigeeEnvgroup
+metadata:
+  name: apigeeenvgroup-${uniqueId}
+spec:
+  hostnames:
+    - ${uniqueId}.mytesthost.net
+  organizationRef:
+    external: organizations/${projectId}
