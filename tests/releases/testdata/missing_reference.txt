@@ -1,0 +1,2 @@
+metastore.cnrm.cloud.google.com/v1beta1, Kind=MetastoreFederation
+metastore.cnrm.cloud.google.com/v1beta1, Kind=MetastoreService

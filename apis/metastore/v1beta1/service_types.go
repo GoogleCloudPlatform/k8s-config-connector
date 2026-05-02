@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
@@ -53,6 +53,10 @@ type NetworkConfig_ConsumerObservedState struct {
 	//  `projects/{project}/locations/{location}`.
 	// +kcc:proto:field=google.cloud.metastore.v1.NetworkConfig.Consumer.endpoint_location
 	EndpointLocation *string `json:"endpointLocation,omitempty"`
+}
+
+// +kcc:proto=google.cloud.metastore.v1.MetadataManagementActivity
+type MetadataManagementActivity struct {
 }
 
 // +kcc:observedstate:proto=google.cloud.metastore.v1.MetadataManagementActivity
@@ -224,6 +228,7 @@ type MetastoreServiceObservedState struct {
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // MetastoreService is the Schema for the MetastoreService API
+// +kubebuilder:storageversion
 // +k8s:openapi-gen=true
 type MetastoreService struct {
 	metav1.TypeMeta   `json:",inline"`

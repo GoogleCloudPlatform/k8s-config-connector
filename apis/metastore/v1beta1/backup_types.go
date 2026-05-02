@@ -15,7 +15,6 @@
 package v1beta1
 
 import (
-	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -26,7 +25,7 @@ var MetastoreBackupGVK = GroupVersion.WithKind("MetastoreBackup")
 type MetastoreBackupParent struct {
 	// +required
 	// The MetastoreService that the backup belongs to.
-	ServiceRef metastorev1alpha1.ServiceRef `json:"serviceRef"`
+	ServiceRef ServiceRef `json:"serviceRef"`
 }
 
 // MetastoreBackupSpec defines the desired state of MetastoreBackup
@@ -76,7 +75,7 @@ type MetastoreBackupObservedState struct {
 	// +kcc:proto:field=google.cloud.metastore.v1.Backup.service_revision
 	// +kubebuilder:pruning:PreserveUnknownFields
 	// +kubebuilder:validation:Schemaless
-	ServiceRevision *metastorev1alpha1.MetastoreServiceSpec `json:"serviceRevision,omitempty"`
+	ServiceRevision *MetastoreServiceSpec `json:"serviceRevision,omitempty"`
 
 	// Output only. Services that are restoring from the backup.
 	// +kcc:proto:field=google.cloud.metastore.v1.Backup.restoring_services

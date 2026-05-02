@@ -1861,24 +1861,7 @@
 [missing_field] crd=managedkafkaconsumergroups.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=managedkafkaconsumergroups.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=memorystoreinstanceendpoints.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpoints[].connections[].pscConnection.port" is not set in unstructured objects
-[missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.databaseType" is not set in unstructured objects
-[missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionConfig.kmsKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.hiveMetastoreConfig.configOverrides" is not set in unstructured objects
-[missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.hiveMetastoreConfig.endpointProtocol" is not set in unstructured objects
-[missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.hiveMetastoreConfig.kerberosConfig.keytab.secretRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.hiveMetastoreConfig.kerberosConfig.krb5ConfigGCSURI" is not set in unstructured objects
-[missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.hiveMetastoreConfig.kerberosConfig.principal" is not set in unstructured objects
-[missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.hiveMetastoreConfig.version" is not set in unstructured objects
-[missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.maintenanceWindow.dayOfWeek" is not set in unstructured objects
-[missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.maintenanceWindow.hourOfDay.value" is not set in unstructured objects
-[missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkConfig.consumers[].subnetworkRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.port" is not set in unstructured objects
-[missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.releaseChannel" is not set in unstructured objects
-[missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.scalingConfig.instanceSize" is not set in unstructured objects
-[missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.scalingConfig.scalingFactor" is not set in unstructured objects
-[missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.telemetryConfig.logFormat" is not set in unstructured objects
+[missing_field] crd=memorystoreinstanceendpoints.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=mlenginemodels.mlengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.defaultVersion.name" is not set in unstructured objects
 [missing_field] crd=mlenginemodels.mlengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.onlinePredictionConsoleLogging" is not set in unstructured objects
 [missing_field] crd=mlenginemodels.mlengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.onlinePredictionLogging" is not set in unstructured objects
