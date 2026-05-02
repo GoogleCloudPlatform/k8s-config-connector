@@ -65,24 +65,6 @@ func ContainerImage_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Container
 	out.Tag = direct.ValueOf(in.Tag)
 	return out
 }
-func Instance_AcceleratorConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_AcceleratorConfig) *krmnotebooksv1alpha1.Instance_AcceleratorConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krmnotebooksv1alpha1.Instance_AcceleratorConfig{}
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	out.CoreCount = direct.LazyPtr(in.GetCoreCount())
-	return out
-}
-func Instance_AcceleratorConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.Instance_AcceleratorConfig) *pb.Instance_AcceleratorConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance_AcceleratorConfig{}
-	out.Type = direct.Enum_ToProto[pb.Instance_AcceleratorType](mapCtx, in.Type)
-	out.CoreCount = direct.ValueOf(in.CoreCount)
-	return out
-}
 func Instance_AcceleratorConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_AcceleratorConfig) *krm.Instance_AcceleratorConfig {
 	if in == nil {
 		return nil
@@ -99,44 +81,6 @@ func Instance_AcceleratorConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *k
 	out := &pb.Instance_AcceleratorConfig{}
 	out.Type = direct.Enum_ToProto[pb.Instance_AcceleratorType](mapCtx, in.Type)
 	out.CoreCount = direct.ValueOf(in.CoreCount)
-	return out
-}
-func Instance_Disk_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_Disk) *krmnotebooksv1alpha1.Instance_Disk {
-	if in == nil {
-		return nil
-	}
-	out := &krmnotebooksv1alpha1.Instance_Disk{}
-	out.AutoDelete = direct.LazyPtr(in.GetAutoDelete())
-	out.Boot = direct.LazyPtr(in.GetBoot())
-	out.DeviceName = direct.LazyPtr(in.GetDeviceName())
-	out.DiskSizeGB = direct.LazyPtr(in.GetDiskSizeGb())
-	out.GuestOSFeatures = direct.Slice_FromProto(mapCtx, in.GuestOsFeatures, Instance_Disk_GuestOSFeature_v1alpha1_FromProto)
-	out.Index = direct.LazyPtr(in.GetIndex())
-	out.Interface = direct.LazyPtr(in.GetInterface())
-	out.Kind = direct.LazyPtr(in.GetKind())
-	out.Licenses = in.Licenses
-	out.Mode = direct.LazyPtr(in.GetMode())
-	out.Source = direct.LazyPtr(in.GetSource())
-	out.Type = direct.LazyPtr(in.GetType())
-	return out
-}
-func Instance_Disk_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.Instance_Disk) *pb.Instance_Disk {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance_Disk{}
-	out.AutoDelete = direct.ValueOf(in.AutoDelete)
-	out.Boot = direct.ValueOf(in.Boot)
-	out.DeviceName = direct.ValueOf(in.DeviceName)
-	out.DiskSizeGb = direct.ValueOf(in.DiskSizeGB)
-	out.GuestOsFeatures = direct.Slice_ToProto(mapCtx, in.GuestOSFeatures, Instance_Disk_GuestOSFeature_v1alpha1_ToProto)
-	out.Index = direct.ValueOf(in.Index)
-	out.Interface = direct.ValueOf(in.Interface)
-	out.Kind = direct.ValueOf(in.Kind)
-	out.Licenses = in.Licenses
-	out.Mode = direct.ValueOf(in.Mode)
-	out.Source = direct.ValueOf(in.Source)
-	out.Type = direct.ValueOf(in.Type)
 	return out
 }
 func Instance_Disk_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_Disk) *krm.Instance_Disk {
@@ -177,22 +121,6 @@ func Instance_Disk_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Instance_D
 	out.Type = direct.ValueOf(in.Type)
 	return out
 }
-func Instance_Disk_GuestOSFeature_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_Disk_GuestOsFeature) *krmnotebooksv1alpha1.Instance_Disk_GuestOSFeature {
-	if in == nil {
-		return nil
-	}
-	out := &krmnotebooksv1alpha1.Instance_Disk_GuestOSFeature{}
-	out.Type = direct.LazyPtr(in.GetType())
-	return out
-}
-func Instance_Disk_GuestOSFeature_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.Instance_Disk_GuestOSFeature) *pb.Instance_Disk_GuestOsFeature {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance_Disk_GuestOsFeature{}
-	out.Type = direct.ValueOf(in.Type)
-	return out
-}
 func Instance_Disk_GuestOSFeature_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_Disk_GuestOsFeature) *krm.Instance_Disk_GuestOSFeature {
 	if in == nil {
 		return nil
@@ -207,26 +135,6 @@ func Instance_Disk_GuestOSFeature_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 	}
 	out := &pb.Instance_Disk_GuestOsFeature{}
 	out.Type = direct.ValueOf(in.Type)
-	return out
-}
-func Instance_ShieldedInstanceConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ShieldedInstanceConfig) *krmnotebooksv1alpha1.Instance_ShieldedInstanceConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krmnotebooksv1alpha1.Instance_ShieldedInstanceConfig{}
-	out.EnableSecureBoot = direct.LazyPtr(in.GetEnableSecureBoot())
-	out.EnableVTPM = direct.LazyPtr(in.GetEnableVtpm())
-	out.EnableIntegrityMonitoring = direct.LazyPtr(in.GetEnableIntegrityMonitoring())
-	return out
-}
-func Instance_ShieldedInstanceConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.Instance_ShieldedInstanceConfig) *pb.Instance_ShieldedInstanceConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance_ShieldedInstanceConfig{}
-	out.EnableSecureBoot = direct.ValueOf(in.EnableSecureBoot)
-	out.EnableVtpm = direct.ValueOf(in.EnableVTPM)
-	out.EnableIntegrityMonitoring = direct.ValueOf(in.EnableIntegrityMonitoring)
 	return out
 }
 func Instance_ShieldedInstanceConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ShieldedInstanceConfig) *krm.Instance_ShieldedInstanceConfig {
@@ -247,40 +155,6 @@ func Instance_ShieldedInstanceConfig_v1beta1_ToProto(mapCtx *direct.MapContext, 
 	out.EnableSecureBoot = direct.ValueOf(in.EnableSecureBoot)
 	out.EnableVtpm = direct.ValueOf(in.EnableVTPM)
 	out.EnableIntegrityMonitoring = direct.ValueOf(in.EnableIntegrityMonitoring)
-	return out
-}
-func Instance_UpgradeHistoryEntry_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_UpgradeHistoryEntry) *krmnotebooksv1alpha1.Instance_UpgradeHistoryEntry {
-	if in == nil {
-		return nil
-	}
-	out := &krmnotebooksv1alpha1.Instance_UpgradeHistoryEntry{}
-	out.Snapshot = direct.LazyPtr(in.GetSnapshot())
-	out.VMImage = direct.LazyPtr(in.GetVmImage())
-	out.ContainerImage = direct.LazyPtr(in.GetContainerImage())
-	out.Framework = direct.LazyPtr(in.GetFramework())
-	out.Version = direct.LazyPtr(in.GetVersion())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.TargetImage = direct.LazyPtr(in.GetTargetImage())
-	out.Action = direct.Enum_FromProto(mapCtx, in.GetAction())
-	out.TargetVersion = direct.LazyPtr(in.GetTargetVersion())
-	return out
-}
-func Instance_UpgradeHistoryEntry_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.Instance_UpgradeHistoryEntry) *pb.Instance_UpgradeHistoryEntry {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance_UpgradeHistoryEntry{}
-	out.Snapshot = direct.ValueOf(in.Snapshot)
-	out.VmImage = direct.ValueOf(in.VMImage)
-	out.ContainerImage = direct.ValueOf(in.ContainerImage)
-	out.Framework = direct.ValueOf(in.Framework)
-	out.Version = direct.ValueOf(in.Version)
-	out.State = direct.Enum_ToProto[pb.Instance_UpgradeHistoryEntry_State](mapCtx, in.State)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.TargetImage = direct.ValueOf(in.TargetImage)
-	out.Action = direct.Enum_ToProto[pb.Instance_UpgradeHistoryEntry_Action](mapCtx, in.Action)
-	out.TargetVersion = direct.ValueOf(in.TargetVersion)
 	return out
 }
 func Instance_UpgradeHistoryEntry_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_UpgradeHistoryEntry) *krm.Instance_UpgradeHistoryEntry {
@@ -317,34 +191,6 @@ func Instance_UpgradeHistoryEntry_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 	out.TargetVersion = direct.ValueOf(in.TargetVersion)
 	return out
 }
-func NotebookInstanceObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmnotebooksv1alpha1.NotebookInstanceObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmnotebooksv1alpha1.NotebookInstanceObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.ProxyURI = direct.LazyPtr(in.GetProxyUri())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.Disks = direct.Slice_FromProto(mapCtx, in.Disks, Instance_Disk_v1alpha1_FromProto)
-	out.Creator = direct.LazyPtr(in.GetCreator())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	return out
-}
-func NotebookInstanceObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.NotebookInstanceObservedState) *pb.Instance {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance{}
-	out.Name = direct.ValueOf(in.Name)
-	out.ProxyUri = direct.ValueOf(in.ProxyURI)
-	out.State = direct.Enum_ToProto[pb.Instance_State](mapCtx, in.State)
-	out.Disks = direct.Slice_ToProto(mapCtx, in.Disks, Instance_Disk_v1alpha1_ToProto)
-	out.Creator = direct.ValueOf(in.Creator)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	return out
-}
 func NotebookInstanceObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.NotebookInstanceObservedState {
 	if in == nil {
 		return nil
@@ -373,103 +219,12 @@ func NotebookInstanceObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
-func NotebookInstanceSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmnotebooksv1alpha1.NotebookInstanceSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmnotebooksv1alpha1.NotebookInstanceSpec{}
-	out.VMImage = VMImage_v1alpha1_FromProto(mapCtx, in.GetVmImage())
-	out.ContainerImage = ContainerImage_v1alpha1_FromProto(mapCtx, in.GetContainerImage())
-	out.PostStartupScript = direct.LazyPtr(in.GetPostStartupScript())
-	out.InstanceOwners = in.InstanceOwners
-	if in.GetServiceAccount() != "" {
-		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
-	}
-	out.ServiceAccountScopes = in.ServiceAccountScopes
-	out.MachineType = direct.LazyPtr(in.GetMachineType())
-	out.AcceleratorConfig = Instance_AcceleratorConfig_v1alpha1_FromProto(mapCtx, in.GetAcceleratorConfig())
-	out.InstallGpuDriver = direct.LazyPtr(in.GetInstallGpuDriver())
-	out.CustomGpuDriverPath = direct.LazyPtr(in.GetCustomGpuDriverPath())
-	out.BootDiskType = direct.Enum_FromProto(mapCtx, in.GetBootDiskType())
-	out.BootDiskSizeGB = direct.LazyPtr(in.GetBootDiskSizeGb())
-	out.DataDiskType = direct.Enum_FromProto(mapCtx, in.GetDataDiskType())
-	out.DataDiskSizeGB = direct.LazyPtr(in.GetDataDiskSizeGb())
-	out.NoRemoveDataDisk = direct.LazyPtr(in.GetNoRemoveDataDisk())
-	out.DiskEncryption = direct.Enum_FromProto(mapCtx, in.GetDiskEncryption())
-	if in.GetKmsKey() != "" {
-		out.KMSKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
-	}
-	out.ShieldedInstanceConfig = Instance_ShieldedInstanceConfig_v1alpha1_FromProto(mapCtx, in.GetShieldedInstanceConfig())
-	out.NoPublicIP = direct.LazyPtr(in.GetNoPublicIp())
-	out.NoProxyAccess = direct.LazyPtr(in.GetNoProxyAccess())
-	if in.GetNetwork() != "" {
-		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
-	}
-	if in.GetSubnet() != "" {
-		out.SubnetRef = &refsv1beta1.ComputeSubnetworkRef{External: in.GetSubnet()}
-	}
-	out.Labels = in.Labels
-	out.Metadata = in.Metadata
-	out.Tags = in.Tags
-	out.UpgradeHistory = direct.Slice_FromProto(mapCtx, in.UpgradeHistory, Instance_UpgradeHistoryEntry_v1alpha1_FromProto)
-	out.NicType = direct.Enum_FromProto(mapCtx, in.GetNicType())
-	out.ReservationAffinity = ReservationAffinity_v1alpha1_FromProto(mapCtx, in.GetReservationAffinity())
-	out.CanIPForward = direct.LazyPtr(in.GetCanIpForward())
-	return out
-}
-func NotebookInstanceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.NotebookInstanceSpec) *pb.Instance {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance{}
-	if oneof := VMImage_v1alpha1_ToProto(mapCtx, in.VMImage); oneof != nil {
-		out.Environment = &pb.Instance_VmImage{VmImage: oneof}
-	}
-	if oneof := ContainerImage_v1alpha1_ToProto(mapCtx, in.ContainerImage); oneof != nil {
-		out.Environment = &pb.Instance_ContainerImage{ContainerImage: oneof}
-	}
-	out.PostStartupScript = direct.ValueOf(in.PostStartupScript)
-	out.InstanceOwners = in.InstanceOwners
-	if in.ServiceAccountRef != nil {
-		out.ServiceAccount = in.ServiceAccountRef.External
-	}
-	out.ServiceAccountScopes = in.ServiceAccountScopes
-	out.MachineType = direct.ValueOf(in.MachineType)
-	out.AcceleratorConfig = Instance_AcceleratorConfig_v1alpha1_ToProto(mapCtx, in.AcceleratorConfig)
-	out.InstallGpuDriver = direct.ValueOf(in.InstallGpuDriver)
-	out.CustomGpuDriverPath = direct.ValueOf(in.CustomGpuDriverPath)
-	out.BootDiskType = direct.Enum_ToProto[pb.Instance_DiskType](mapCtx, in.BootDiskType)
-	out.BootDiskSizeGb = direct.ValueOf(in.BootDiskSizeGB)
-	out.DataDiskType = direct.Enum_ToProto[pb.Instance_DiskType](mapCtx, in.DataDiskType)
-	out.DataDiskSizeGb = direct.ValueOf(in.DataDiskSizeGB)
-	out.NoRemoveDataDisk = direct.ValueOf(in.NoRemoveDataDisk)
-	out.DiskEncryption = direct.Enum_ToProto[pb.Instance_DiskEncryption](mapCtx, in.DiskEncryption)
-	if in.KMSKeyRef != nil {
-		out.KmsKey = in.KMSKeyRef.External
-	}
-	out.ShieldedInstanceConfig = Instance_ShieldedInstanceConfig_v1alpha1_ToProto(mapCtx, in.ShieldedInstanceConfig)
-	out.NoPublicIp = direct.ValueOf(in.NoPublicIP)
-	out.NoProxyAccess = direct.ValueOf(in.NoProxyAccess)
-	if in.NetworkRef != nil {
-		out.Network = in.NetworkRef.External
-	}
-	if in.SubnetRef != nil {
-		out.Subnet = in.SubnetRef.External
-	}
-	out.Labels = in.Labels
-	out.Metadata = in.Metadata
-	out.Tags = in.Tags
-	out.UpgradeHistory = direct.Slice_ToProto(mapCtx, in.UpgradeHistory, Instance_UpgradeHistoryEntry_v1alpha1_ToProto)
-	out.NicType = direct.Enum_ToProto[pb.Instance_NicType](mapCtx, in.NicType)
-	out.ReservationAffinity = ReservationAffinity_v1alpha1_ToProto(mapCtx, in.ReservationAffinity)
-	out.CanIpForward = direct.ValueOf(in.CanIPForward)
-	return out
-}
 func NotebookInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.NotebookInstanceSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.NotebookInstanceSpec{}
+	// MISSING: Name
 	out.VMImage = VMImage_v1beta1_FromProto(mapCtx, in.GetVmImage())
 	out.ContainerImage = ContainerImage_v1beta1_FromProto(mapCtx, in.GetContainerImage())
 	out.PostStartupScript = direct.LazyPtr(in.GetPostStartupScript())
@@ -514,6 +269,7 @@ func NotebookInstanceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Not
 		return nil
 	}
 	out := &pb.Instance{}
+	// MISSING: Name
 	if oneof := VMImage_v1beta1_ToProto(mapCtx, in.VMImage); oneof != nil {
 		out.Environment = &pb.Instance_VmImage{VmImage: oneof}
 	}
@@ -621,26 +377,6 @@ found existing non-generated mapping function "NotebooksEnvironmentSpec_v1alpha1
 		return out
 	}
 */
-func ReservationAffinity_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krmnotebooksv1alpha1.ReservationAffinity {
-	if in == nil {
-		return nil
-	}
-	out := &krmnotebooksv1alpha1.ReservationAffinity{}
-	out.ConsumeReservationType = direct.Enum_FromProto(mapCtx, in.GetConsumeReservationType())
-	out.Key = direct.LazyPtr(in.GetKey())
-	out.Values = in.Values
-	return out
-}
-func ReservationAffinity_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.ReservationAffinity) *pb.ReservationAffinity {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ReservationAffinity{}
-	out.ConsumeReservationType = direct.Enum_ToProto[pb.ReservationAffinity_Type](mapCtx, in.ConsumeReservationType)
-	out.Key = direct.ValueOf(in.Key)
-	out.Values = in.Values
-	return out
-}
 func ReservationAffinity_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krm.ReservationAffinity {
 	if in == nil {
 		return nil
