@@ -736,9 +736,13 @@ func (o *objectWalker) TransformString(targetPath string, transform func(string)
 	})
 }
 
-func (o *objectWalker) ReplaceProjectIDWithProjectNumber(targetPath string) {
+func (o *objectWalker) ReplaceProjectWithProjectNumberTemplate(targetPath string) {
 	o.TransformString(targetPath, func(s string) string {
-		return projects.ReplaceProjectIDWithProjectNumber(s)
+		val, err := projects.ReplaceProjectWithProjectNumberTemplate(s)
+		if err != nil {
+			panic(fmt.Sprintf("failed to replace project with project number template in %q: %v", targetPath, err))
+		}
+		return val
 	})
 }
 
