@@ -19,7 +19,7 @@ metadata:
 spec:
   memberFrom:
     serviceAccountRef:
-      name: datacatalogentrygroup-dep-${uniqueId}
+      name: dc-eg-dep-${uniqueId}
   role: roles/datacatalog.entryGroupViewer
   resourceRef:
     apiVersion: datacatalog.cnrm.cloud.google.com/v1alpha1

@@ -15,7 +15,7 @@
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
-  name: datacatalogentrygroup-dep-${uniqueId}
+  name: dc-eg-dep-${uniqueId}
 spec:
   displayName: Service Account for IAM test
 ---
