@@ -17,8 +17,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-REPO_ROOT="${SCRIPT_DIR}/../../.."
+REPO_ROOT="$(git rev-parse --show-toplevel)"
 
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
