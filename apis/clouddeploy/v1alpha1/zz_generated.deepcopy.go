@@ -19,7 +19,6 @@
 package v1alpha1
 
 import (
-	cloudbuildv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1alpha1"
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
@@ -1272,7 +1271,7 @@ func (in *SkaffoldModules_SkaffoldGcbRepoSource) DeepCopyInto(out *SkaffoldModul
 	*out = *in
 	if in.RepositoryRef != nil {
 		in, out := &in.RepositoryRef, &out.RepositoryRef
-		*out = new(cloudbuildv1alpha1.RepositoryRef)
+		*out = new(cloudbuildv1beta1.RepositoryRef)
 		**out = **in
 	}
 	if in.Path != nil {
