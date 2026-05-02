@@ -75,22 +75,21 @@ func (m *secureSourceManagerInstanceModel) AdapterForObject(ctx context.Context,
 		return nil, err
 	}
 
-	if obj.Spec.KmsKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, u, obj.Spec.KmsKeyRef)
+	if obj.Spec.KMSKeyRef != nil {
+		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, u, obj.Spec.KMSKeyRef)
 		if err != nil {
 			return nil, err
 		}
-		obj.Spec.KmsKeyRef = kmsKeyRef
+		obj.Spec.KMSKeyRef = kmsKeyRef
 	}
 
 	if obj.Spec.PrivateConfig != nil {
-		caPoolRef, err := refs.ResolvePrivateCACAPoolRef(ctx, reader, u, obj.Spec.PrivateConfig.CaPoolRef)
+		caPoolRef, err := refs.ResolvePrivateCACAPoolRef(ctx, reader, u, obj.Spec.PrivateConfig.CAPoolRef)
 		if err != nil {
 			return nil, err
 		}
-		obj.Spec.PrivateConfig.CaPoolRef = caPoolRef
+		obj.Spec.PrivateConfig.CAPoolRef = caPoolRef
 	}
-
 	mapCtx := &direct.MapContext{}
 	desired := SecureSourceManagerInstanceSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
