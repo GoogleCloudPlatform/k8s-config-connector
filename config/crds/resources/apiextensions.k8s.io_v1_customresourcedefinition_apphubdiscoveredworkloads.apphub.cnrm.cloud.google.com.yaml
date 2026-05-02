@@ -64,10 +64,10 @@ spec:
               AppHubDiscoveredWorkload
             properties:
               location:
-                description: Required. The location of the application.
+                description: Required. The location of the resource.
                 type: string
               projectRef:
-                description: Required. The host project of the application.
+                description: Required. The host project of the resource.
                 oneOf:
                 - not:
                     required:
