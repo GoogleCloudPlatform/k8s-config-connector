@@ -22,7 +22,8 @@ import (
 
 var WorkflowsWorkflowGVK = GroupVersion.WithKind("WorkflowsWorkflow")
 
-type WorkflowsWorkflow_StateError struct {
+// +kcc:proto=google.cloud.workflows.v1.Workflow.StateError
+type Workflow_StateError struct {
 	// Provides specifics about the error.
 	Details *string `json:"details,omitempty"`
 
@@ -138,7 +139,7 @@ type WorkflowsWorkflowObservedState struct {
 	// Error regarding the state of the workflow. For example, this
 	// field will have error details if the execution data is unavailable due to
 	// revoked KMS key permissions.
-	StateError *WorkflowsWorkflow_StateError `json:"stateError,omitempty"`
+	StateError *Workflow_StateError `json:"stateError,omitempty"`
 }
 
 // +genclient
