@@ -96,6 +96,9 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
 
 ## Troubleshooting
 
+<<<<<<< HEAD
 See `notes.md` for troubleshooting uncommon edge cases.
 
+=======
+>>>>>>> b3a25ca8a9 (chore: apis/networkconnectivity should follow generate.sh pattern)
 -   **Deepcopy-gen errors (`invalid slice element type: invalid type`)**: This typically happens if `generate-types` outputs a struct name with a different capitalization than what is currently manually written in the `*_types.go` file (e.g. `PSCConfig` vs `PscConfig`). To fix, rename the type and all its usages in the `*_types.go` and `pkg/controller/direct/<SERVICE>/mapper.go` files to match the generated capitalization, then run `./generate.sh` again.
