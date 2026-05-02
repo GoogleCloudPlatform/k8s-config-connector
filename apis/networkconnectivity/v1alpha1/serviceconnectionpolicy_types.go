@@ -56,14 +56,14 @@ type NetworkConnectivityServiceConnectionPolicySpec struct {
 	Network *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Configuration used for Private Service Connect connections. Used when Infrastructure is PSC.
-	PscConfig *PscConfig `json:"pscConfig,omitempty"`
+	PSCConfig *PSCConfig `json:"pscConfig,omitempty"`
 
 	// The service class identifier for which this ServiceConnectionPolicy is for. The service class identifier is a unique, symbolic representation of a ServiceClass. It is provided by the Service Producer. Google services have a prefix of gcp. For example, gcp-cloud-sql. 3rd party services do not. For example, test-service-a3dfcx.
 	ServiceClass *string `json:"serviceClass,omitempty"`
 }
 
 // +kcc:proto=mockgcp.cloud.networkconnectivity.v1.PscConfig
-type PscConfig struct {
+type PSCConfig struct {
 	/* TODO:AFTER-MAPPINGS
 	// Optional. List of Projects, Folders, or Organizations from where the Producer instance can be within. For example, a network administrator can provide both 'organizations/foo' and 'projects/bar' as allowed_google_producers_resource_hierarchy_levels. This allowlists this network to connect with any Producer instance within the 'foo' organization or the 'bar' project. By default, allowed_google_producers_resource_hierarchy_level is empty. The format for each allowed_google_producers_resource_hierarchy_level is / where is one of 'projects', 'folders', or 'organizations' and is either the ID or the number of the resource type. Format for each allowed_google_producers_resource_hierarchy_level value: 'projects/' or 'folders/' or 'organizations/' Eg. [projects/my-project-id, projects/567, folders/891, organizations/123]
 	AllowedGoogleProducersResourceHierarchyLevel []string `json:"allowedGoogleProducersResourceHierarchyLevel,omitempty"`
@@ -111,7 +111,7 @@ type NetworkConnectivityServiceConnectionPolicyObservedState struct {
 	Infrastructure *string `json:"infrastructure,omitempty"`
 
 	// Output only. [Output only] Information about each Private Service Connect connection.
-	PscConnections []PscConnection `json:"pscConnections,omitempty"`
+	PSCConnections []PSCConnection `json:"pscConnections,omitempty"`
 
 	// Output only. Time when the ServiceConnectionMap was updated.
 	UpdateTime *string `json:"updateTime,omitempty"`
