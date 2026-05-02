@@ -61,6 +61,7 @@ if [[ "${changed_file_count}" != "0" ]] || [[ "${added_go_client_file_count}" !=
     echo "Full diff:"
     git diff
     echo "ERROR: Resource Go Clients must be regenerated. Please run 'make ready-pr' or 'make generate-go-client ensure fmt' and update your PR."
+    echo "<hint_for_agent>Run 'make ready-pr' to regenerate Go clients.</hint_for_agent>"
     echo "Affected files:"
     git diff --name-only
     git ls-files --others --exclude-standard pkg/clients/generated/
