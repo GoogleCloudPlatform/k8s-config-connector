@@ -27,14 +27,7 @@ go run . generate-types \
   --service google.cloud.notebooks.v1 \
   --api-version notebooks.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
-  --resource NotebooksEnvironment:Environment \
-  --resource NotebookInstance:Instance
-
-go run . generate-mapper \
-  --multiversion \
-  --service google.cloud.notebooks.v1 \
-  --api-version notebooks.cnrm.cloud.google.com/v1alpha1 \
-  --include-skipped-output
+  --resource NotebooksEnvironment:Environment
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
