@@ -11,7 +11,7 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
 
 1.  **Scan for missing scripts**: Find subdirectories in `apis/` (usually `v1beta1` or `v1alpha1`) that do not have a `generate.sh` file.
     ```bash
-    find apis -maxdepth 2 -type d \( -name "v1beta1" -o -name "v1alpha1" \) | while read dir; do if [ ! -f "$dir/generate.sh" ] && ls $dir/*_types.go >/dev/null 2>&1; then echo "$dir"; fi; done
+    find apis -maxdepth 2 -type d \( -name "v1beta1" -o -name "v1alpha1" \) | while read dir; do if [ ! -f "$dir/generate.sh" ] && ls "$dir"/*_type*.go >/dev/null 2>&1; then echo "$dir"; fi; done
     ```
     *(Note: `apis/refs` is a special folder and does not correspond to a GCP service. Since it lacks `*_types.go` files, the above command naturally skips it, which is correct.)*
 
@@ -21,6 +21,8 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
     -   `VERSION`: The directory name (e.g., `v1beta1`).
     -   `RESOURCE_MAPPINGS`: Mapping of `Kind:ProtoMessage` from `// +kcc:spec:proto=` markers.
     -   `SERVICE_NAME`: The parent directory name in `apis/` (e.g., `apigateway`).
+
+    *Note: If the directory does not contain any `*_type*.go` file (e.g., it only contains reference types like `service_reference.go`), there are no types or mappers to generate. In this case, `generate.sh` is not required.*
 
 3.  **Create generate.sh**: Create a `generate.sh` file in the directory. Ensure the year in the copyright header is current (2026).
     
