@@ -22,13 +22,13 @@ import (
 	"strings"
 
 	"cloud.google.com/go/iam/apiv1/iampb"
-	expr "google.golang.org/genproto/googleapis/type/expr"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+	expr "google.golang.org/genproto/googleapis/type/expr"
 
 	api "google.golang.org/api/apigee/v1"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
