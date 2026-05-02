@@ -125,7 +125,7 @@ type AppHubApplicationSpec struct {
 	// +optional
 	Location *string `json:"location,omitempty"`
 
-	/* The Project that this resource belongs to. */
+	/* Required. The host project of the resource. */
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
