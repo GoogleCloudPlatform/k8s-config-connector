@@ -29,8 +29,8 @@ func init() {
 
 func dataprocJobFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Job{},
-		DataprocJobSpec_FromProto, DataprocJobSpec_ToProto,
-		DataprocJobObservedState_FromProto, DataprocJobObservedState_ToProto,
+		DataprocJobSpec_v1alpha1_FromProto, DataprocJobSpec_v1alpha1_ToProto,
+		DataprocJobObservedState_v1alpha1_FromProto, DataprocJobObservedState_v1alpha1_ToProto,
 	)
 
 	f.SpecFields.Insert(".reference")

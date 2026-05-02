@@ -71,12 +71,12 @@ func FuzzDataprocJobSpec(f *testing.F) {
 		fuzz.Visit("", p1.ProtoReflect(), nil, clearFields)
 
 		ctx := &direct.MapContext{}
-		k := DataprocJobSpec_FromProto(ctx, p1)
+		k := DataprocJobSpec_v1alpha1_FromProto(ctx, p1)
 		if ctx.Err() != nil {
 			t.Fatalf("error mapping from proto to krm: %v", ctx.Err())
 		}
 
-		p2 := DataprocJobSpec_ToProto(ctx, k)
+		p2 := DataprocJobSpec_v1alpha1_ToProto(ctx, k)
 		if ctx.Err() != nil {
 			t.Fatalf("error mapping from krm to proto: %v", ctx.Err())
 		}
