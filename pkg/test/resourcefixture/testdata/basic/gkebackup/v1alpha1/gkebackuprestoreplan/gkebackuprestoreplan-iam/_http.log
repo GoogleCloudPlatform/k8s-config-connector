@@ -814,7 +814,7 @@ X-Xss-Protection: 0
     "maxUnavailable": {
       "fixed": 1
     },
-    "iamAction": "REPLACE",
+    "minimalAction": "REPLACE",
     "replacementMethod": "SUBSTITUTE",
     "type": "OPPORTUNISTIC"
   },
@@ -1185,7 +1185,7 @@ X-Xss-Protection: 0
     "maxUnavailable": {
       "fixed": 1
     },
-    "iamAction": "REPLACE",
+    "minimalAction": "REPLACE",
     "replacementMethod": "SUBSTITUTE",
     "type": "OPPORTUNISTIC"
   },
@@ -1440,47 +1440,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkebackup.googleapis.com/v1/projects/${projectId}/locations/us-central1/restorePlans/gkebackuprestoreplan-iam-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FrestorePlans%2Fgkebackuprestoreplan-iam-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "backupPlan": "projects/${projectId}/locations/us-central1/backupPlans/gkebackupbackupplan-iam-${uniqueId}",
-  "cluster": "projects/${projectId}/locations/us-central1/clusters/containercluster-iam-${uniqueId}",
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Initial description",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/us-central1/restorePlans/gkebackuprestoreplan-iam-${uniqueId}",
-  "restoreConfig": {
-    "allNamespaces": true,
-    "clusterResourceConflictPolicy": 1,
-    "clusterResourceRestoreScope": {
-      "allGroupKinds": true
-    },
-    "namespacedResourceRestoreMode": 2,
-    "volumeDataRestorePolicy": 1
-  },
-  "state": 2,
-  "stateReason": "Resource has been created successfully.",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
----
-
 GET https://gkebackup.googleapis.com/v1/projects/${projectId}/locations/us-central1/restorePlans/gkebackuprestoreplan-iam-${uniqueId}:getIamPolicy?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -1655,6 +1614,45 @@ X-Xss-Protection: 0
 {
   "etag": "abcdef0123A=",
   "version": 1
+}
+
+---
+
+GET https://gkebackup.googleapis.com/v1/projects/${projectId}/locations/us-central1/restorePlans/gkebackuprestoreplan-iam-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FrestorePlans%2Fgkebackuprestoreplan-iam-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backupPlan": "projects/${projectId}/locations/us-central1/backupPlans/gkebackupbackupplan-iam-${uniqueId}",
+  "cluster": "projects/${projectId}/locations/us-central1/clusters/containercluster-iam-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Initial description",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us-central1/restorePlans/gkebackuprestoreplan-iam-${uniqueId}",
+  "restoreConfig": {
+    "allNamespaces": true,
+    "clusterResourceConflictPolicy": 1,
+    "clusterResourceRestoreScope": {
+      "allGroupKinds": true
+    },
+    "namespacedResourceRestoreMode": 2,
+    "volumeDataRestorePolicy": 1
+  },
+  "state": 2,
+  "stateReason": "Resource has been created successfully.",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -2179,7 +2177,7 @@ X-Xss-Protection: 0
     "maxUnavailable": {
       "fixed": 1
     },
-    "iamAction": "REPLACE",
+    "minimalAction": "REPLACE",
     "replacementMethod": "SUBSTITUTE",
     "type": "OPPORTUNISTIC"
   },
