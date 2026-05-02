@@ -68,18 +68,25 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
     go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/<SERVICE_NAME>/
     ```
 
-4.  **Special Handling (Promotion/Consolidation)**:
+4.  **Special Handling (TF-based Resources Not Yet Direct)**:
+    -   If the API types are currently managed by Terraform (i.e. they are defined in `pkg/clients/generated/apis/...` instead of `apis/...`), you will not find an `api_types.go` file.
+    -   In this case, `generate.sh` should be used to jump-start the proto generation process, but you MUST avoid scaffolding conflicting top-level structs.
+    -   Add `--skip-scaffold-files \` to the `generate-types` command in the `generate.sh` script. This ensures only `types.generated.go` is generated with nested types.
+    -   Comment out the `generate-mapper` command and the `pkg/controller/direct/<SERVICE_NAME>` `goimports` command (since the direct controller mapper might not exist yet).
+    -   You may need to update `dev/tools/controllerbuilder/generate-proto.sh` to include the `*.proto` paths for the service if they are missing.
+
+5.  **Special Handling (Promotion/Consolidation)**:
     -   If a `v1beta1` directory is being updated and a `v1alpha1` directory exists for the same service, check if `v1alpha1` should be consolidated.
     -   Following #7293, this involves:
         -   Removing the `v1alpha1` directory.
         -   Adding `// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"` to the `v1beta1` `api_types.go` file (near the Kind struct).
         -   Ensuring `v1beta1` has `// +kubebuilder:storageversion`.
 
-5.  **Execute and Verify**:
+6.  **Execute and Verify**:
     -   Make `generate.sh` executable: `chmod +x apis/<SERVICE>/<VERSION>/generate.sh`.
     -   Run it: `./apis/<SERVICE>/<VERSION>/generate.sh`.
     -   Verify that `types.generated.go` is created in the API directory.
-    -   Verify that `pkg/controller/direct/<SERVICE>/mapper.generated.go` is updated.
+    -   Verify that `pkg/controller/direct/<SERVICE>/mapper.generated.go` is updated (if `generate-mapper` was run).
     -   Verify that CRDs in `config/crds/resources/` are updated.
 
-6.  **Commit and PR**: Create a branch, commit the changes, and propose a PR with a descriptive title like `chore: apis/<SERVICE> should follow generate.sh pattern`.
+7.  **Commit and PR**: Create a branch, commit the changes, and propose a PR with a descriptive title like `chore: apis/<SERVICE> should follow generate.sh pattern`.
