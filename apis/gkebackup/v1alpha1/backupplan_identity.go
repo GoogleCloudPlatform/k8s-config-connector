@@ -43,6 +43,13 @@ func (i *BackupPlanIdentity) Parent() *BackupPlanParent {
 	return i.parent
 }
 
+func NewBackupPlanIdentityFromParts(parent *BackupPlanParent, id string) *BackupPlanIdentity {
+	return &BackupPlanIdentity{
+		parent: parent,
+		id:     id,
+	}
+}
+
 type BackupPlanParent struct {
 	ProjectID string
 	Location  string
