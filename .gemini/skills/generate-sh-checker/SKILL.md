@@ -68,6 +68,10 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
     go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/<SERVICE_NAME>/
     ```
 
+    **Troubleshooting:**
+    - If `types.generated.go` already exists and was maintained manually (lacks the `// Code generated` header), rename it to `types_common.go` first. This preserves existing hand-written types and prevents `generate-types` from overwriting them, avoiding CRD backward compatibility issues.
+    - If the API doesn't use standard gRPC protobufs (e.g., uses `google.golang.org/api/...`), the `generate-mapper` tool might generate invalid code or fail to resolve the package `cloud.google.com/go/.../apiv2/...pb`. In that case, omit the `generate-mapper` command from the script.
+
 4.  **Special Handling (Promotion/Consolidation)**:
     -   If a `v1beta1` directory is being updated and a `v1alpha1` directory exists for the same service, check if `v1alpha1` should be consolidated.
     -   Following #7293, this involves:
