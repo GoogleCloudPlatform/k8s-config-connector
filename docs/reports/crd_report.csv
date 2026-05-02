@@ -357,7 +357,7 @@ networkconnectivity.cnrm.cloud.google.com,NetworkConnectivityHub,False,True,Fals
 networkconnectivity.cnrm.cloud.google.com,NetworkConnectivityInternalRange,True,False,False,Direct,True
 networkconnectivity.cnrm.cloud.google.com,NetworkConnectivityRegionalEndpoint,True,False,False,Direct,True
 networkconnectivity.cnrm.cloud.google.com,NetworkConnectivityServiceConnectionPolicy,True,False,False,Direct,True
-networkconnectivity.cnrm.cloud.google.com,NetworkConnectivitySpoke,False,True,False,DCL,False
+networkconnectivity.cnrm.cloud.google.com,NetworkConnectivitySpoke,False,True,False,DCL,True
 networkmanagement.cnrm.cloud.google.com,NetworkManagementConnectivityTest,True,False,False,Direct,True
 networksecurity.cnrm.cloud.google.com,NetworkSecurityAuthorizationPolicy,False,True,False,DCL,True
 networksecurity.cnrm.cloud.google.com,NetworkSecurityClientTLSPolicy,False,True,False,DCL,True

@@ -560,6 +560,7 @@
 [acronyms] crd=networkconnectivityspokes.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".spec.linkedVpnTunnels.uris[].external" should be ".spec.linkedVPNTunnels.uris[].external"
 [acronyms] crd=networkconnectivityspokes.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".spec.linkedVpnTunnels.uris[].name" should be ".spec.linkedVPNTunnels.uris[].name"
 [acronyms] crd=networkconnectivityspokes.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".spec.linkedVpnTunnels.uris[].namespace" should be ".spec.linkedVPNTunnels.uris[].namespace"
+[acronyms] crd=networkconnectivityspokes.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".status.observedState.uniqueId" should be ".status.observedState.uniqueID"
 [acronyms] crd=networkconnectivityspokes.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".status.uniqueId" should be ".status.uniqueID"
 [acronyms] crd=networksecurityclienttlspolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.clientCertificate.grpcEndpoint.targetUri" should be ".spec.clientCertificate.grpcEndpoint.targetURI"
 [acronyms] crd=networksecurityclienttlspolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.serverValidationCa" should be ".spec.serverValidationCA"
