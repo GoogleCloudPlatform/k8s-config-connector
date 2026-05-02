@@ -93,7 +93,7 @@ spec:
                   target:
                     description: 'Immutable. Resource path of the target resource.
                       The target project can be different, as in the cases when migrating
-                      to peer networks. The resource For example: /projects/{project}/regions/{region}/subnetworks/{subnet}'
+                      to peer networks. For example: /projects/{project}/regions/{region}/subnetworks/{subnet}'
                     type: string
                 type: object
               networkRef:
