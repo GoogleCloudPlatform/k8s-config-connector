@@ -117,7 +117,7 @@ func (s *environmentsServer) UpdateOrganizationsEnvironment(ctx context.Context,
 	}
 
 	// All fields should be passed by callergst
-	updated := ProtoClone(req.GetOrganizationsEnvironment())
+	updated := proto.CloneOf(req.GetOrganizationsEnvironment())
 	updated.Name = obj.Name
 
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
