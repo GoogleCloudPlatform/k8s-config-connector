@@ -18,15 +18,23 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 go run . generate-types \
   --service google.cloud.datacatalog.v1 \
   --api-version datacatalog.cnrm.cloud.google.com/v1beta1 \
   --resource DataCatalogPolicyTag:PolicyTag \
+  --resource DataCatalogTaxonomy:Taxonomy \
   --include-skipped-output
 
 go run . generate-mapper \
   --service google.cloud.datacatalog.v1 \
   --api-version datacatalog.cnrm.cloud.google.com/v1beta1 \
+  --multiversion \
   --include-skipped-output
+
+cd ${REPO_ROOT}
+dev/tasks/generate-crds
+
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/datacatalog/
