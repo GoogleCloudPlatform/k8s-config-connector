@@ -47,7 +47,7 @@ func (s *IAMServer) GetServiceAccountKey(ctx context.Context, req *pb.GetService
 	}
 
 	// Don't return key after initial creation
-	ret := ProtoClone(obj)
+	ret := proto.CloneOf(obj)
 	ret.PrivateKeyData = nil
 	ret.PrivateKeyType = pb.ServiceAccountPrivateKeyType_TYPE_UNSPECIFIED
 
@@ -76,7 +76,7 @@ func (s *IAMServer) ListServiceAccountKeys(ctx context.Context, req *pb.ListServ
 		}
 
 		// Don't return key after initial creation
-		ret := ProtoClone(key)
+		ret := proto.CloneOf(key)
 		ret.PrivateKeyData = nil
 		ret.PrivateKeyType = pb.ServiceAccountPrivateKeyType_TYPE_UNSPECIFIED
 
