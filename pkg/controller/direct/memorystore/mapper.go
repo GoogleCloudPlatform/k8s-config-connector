@@ -16,7 +16,6 @@ package memorystore
 
 import (
 	pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
-	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1alpha1"
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	timeofdaypb "google.golang.org/genproto/googleapis/type/timeofday"
@@ -24,29 +23,6 @@ import (
 
 // Mappers that are not automatically generated
 
-func TimeOfDay_v1alpha1_FromProto(mapCtx *direct.MapContext, in *timeofdaypb.TimeOfDay) *krmv1alpha1.TimeOfDay {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.TimeOfDay{}
-	out.Hours = direct.LazyPtr(in.GetHours())
-	out.Minutes = direct.LazyPtr(in.GetMinutes())
-	out.Seconds = direct.LazyPtr(in.GetSeconds())
-	out.Nanos = direct.LazyPtr(in.GetNanos())
-	return out
-}
-
-func TimeOfDay_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.TimeOfDay) *timeofdaypb.TimeOfDay {
-	if in == nil {
-		return nil
-	}
-	out := &timeofdaypb.TimeOfDay{}
-	out.Hours = direct.ValueOf(in.Hours)
-	out.Minutes = direct.ValueOf(in.Minutes)
-	out.Seconds = direct.ValueOf(in.Seconds)
-	out.Nanos = direct.ValueOf(in.Nanos)
-	return out
-}
 
 func TimeOfDay_v1beta1_FromProto(mapCtx *direct.MapContext, in *timeofdaypb.TimeOfDay) *krmv1beta1.TimeOfDay {
 	if in == nil {

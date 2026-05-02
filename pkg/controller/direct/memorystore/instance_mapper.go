@@ -101,7 +101,7 @@ func Instance_InstanceEndpointObservedState_v1beta1_ToProto(mapCtx *direct.MapCo
 		return nil
 	}
 	out := &pb.Instance_InstanceEndpoint{}
-	out.Connections = direct.Slice_ToProto(mapCtx, in.Connections, Instance_InstanceEndpointObservedState_v1beta1_ToProto)
+	out.Connections = direct.Slice_ToProto(mapCtx, in.Connections, Instance_ConnectionDetailObservedState_v1beta1_ToProto)
 	return out
 }
 func Instance_StateInfoObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_StateInfo) *krmv1beta1.Instance_StateInfoObservedState {
@@ -154,7 +154,7 @@ func MemorystoreInstanceObservedState_v1beta1_FromProto(mapCtx *direct.MapContex
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_v1beta1_FromProto)
 	out.EffectiveMaintenanceVersion = direct.LazyPtr(in.GetEffectiveMaintenanceVersion())
 	out.AvailableMaintenanceVersions = in.AvailableMaintenanceVersions
-	out.PscAttachmentDetails = direct.Slice_FromProto(mapCtx, in.PscAttachmentDetails, PscAttachmentDetailObservedState_FromProto)
+	out.PscAttachmentDetails = direct.Slice_FromProto(mapCtx, in.PscAttachmentDetails, PscAttachmentDetailObservedState_v1beta1_FromProto)
 	return out
 }
 func MemorystoreInstanceObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MemorystoreInstanceObservedState) *pb.Instance {
@@ -171,7 +171,7 @@ func MemorystoreInstanceObservedState_v1beta1_ToProto(mapCtx *direct.MapContext,
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_v1beta1_ToProto)
 	out.EffectiveMaintenanceVersion = in.EffectiveMaintenanceVersion
 	out.AvailableMaintenanceVersions = in.AvailableMaintenanceVersions
-	out.PscAttachmentDetails = direct.Slice_ToProto(mapCtx, in.PscAttachmentDetails, PscAttachmentDetailObservedState_ToProto)
+	out.PscAttachmentDetails = direct.Slice_ToProto(mapCtx, in.PscAttachmentDetails, PscAttachmentDetailObservedState_v1beta1_ToProto)
 	return out
 }
 func MemorystoreInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmv1beta1.MemorystoreInstanceSpec {
@@ -482,7 +482,7 @@ func AutomatedBackupConfig_FixedFrequencySchedule_FromProto(mapCtx *direct.MapCo
 		return nil
 	}
 	out := &krmv1beta1.AutomatedBackupConfig_FixedFrequencySchedule{}
-	out.StartTime = TimeOfDay_FromProto(mapCtx, in.GetStartTime())
+	out.StartTime = TimeOfDay_v1beta1_FromProto(mapCtx, in.GetStartTime())
 	return out
 }
 
@@ -491,6 +491,6 @@ func AutomatedBackupConfig_FixedFrequencySchedule_ToProto(mapCtx *direct.MapCont
 		return nil
 	}
 	out := &pb.AutomatedBackupConfig_FixedFrequencySchedule{}
-	out.StartTime = TimeOfDay_ToProto(mapCtx, in.StartTime)
+	out.StartTime = TimeOfDay_v1beta1_ToProto(mapCtx, in.StartTime)
 	return out
 }
