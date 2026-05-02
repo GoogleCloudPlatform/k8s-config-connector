@@ -19,8 +19,8 @@
 package v1beta1
 
 import (
-	documentaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1alpha1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -171,7 +171,7 @@ func (in *DocumentAIProcessorVersionSpec) DeepCopyInto(out *DocumentAIProcessorV
 	}
 	if in.KMSKeyVersionNameRef != nil {
 		in, out := &in.KMSKeyVersionNameRef, &out.KMSKeyVersionNameRef
-		*out = new(v1alpha1.KMSCryptoKeyVersionRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyVersionRef)
 		**out = **in
 	}
 }
@@ -505,7 +505,7 @@ func (in *Parent) DeepCopyInto(out *Parent) {
 	*out = *in
 	if in.ProcessorRef != nil {
 		in, out := &in.ProcessorRef, &out.ProcessorRef
-		*out = new(documentaiv1alpha1.ProcessorRef)
+		*out = new(v1alpha1.ProcessorRef)
 		**out = **in
 	}
 }

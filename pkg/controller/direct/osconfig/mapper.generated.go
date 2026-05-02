@@ -123,7 +123,7 @@ func OSPolicy_FromProto(mapCtx *direct.MapContext, in *pb.OSPolicy) *krm.OSPolic
 		return nil
 	}
 	out := &krm.OSPolicy{}
-	out.ID = direct.LazyPtr(in.GetId())
+	out.ID = in.GetId()
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
 	out.ResourceGroups = direct.Slice_FromProto(mapCtx, in.ResourceGroups, OSPolicy_ResourceGroup_FromProto)
@@ -177,7 +177,7 @@ func OSPolicyAssignment_InstanceFilter_Inventory_FromProto(mapCtx *direct.MapCon
 		return nil
 	}
 	out := &krm.OSPolicyAssignment_InstanceFilter_Inventory{}
-	out.OSShortName = direct.LazyPtr(in.GetOsShortName())
+	out.OSShortName = in.GetOsShortName()
 	out.OSVersion = direct.LazyPtr(in.GetOsVersion())
 	return out
 }
@@ -243,7 +243,7 @@ func OSPolicy_InventoryFilter_FromProto(mapCtx *direct.MapContext, in *pb.OSPoli
 		return nil
 	}
 	out := &krm.OSPolicy_InventoryFilter{}
-	out.OSShortName = direct.LazyPtr(in.GetOsShortName())
+	out.OSShortName = in.GetOsShortName()
 	out.OSVersion = direct.LazyPtr(in.GetOsVersion())
 	return out
 }
@@ -267,7 +267,7 @@ func OSPolicy_Resource_FromProto(mapCtx *direct.MapContext, in *pb.OSPolicy_Reso
 		return nil
 	}
 	out := &krm.OSPolicy_Resource{}
-	out.ID = direct.LazyPtr(in.GetId())
+	out.ID = in.GetId()
 	out.Pkg = OSPolicy_Resource_PackageResource_FromProto(mapCtx, in.GetPkg())
 	out.Repository = OSPolicy_Resource_RepositoryResource_FromProto(mapCtx, in.GetRepository())
 	out.Exec = OSPolicy_Resource_ExecResource_FromProto(mapCtx, in.GetExec())
@@ -421,7 +421,7 @@ func OSPolicy_Resource_FileResource_FromProto(mapCtx *direct.MapContext, in *pb.
 	out := &krm.OSPolicy_Resource_FileResource{}
 	out.File = OSPolicy_Resource_File_FromProto(mapCtx, in.GetFile())
 	out.Content = direct.LazyPtr(in.GetContent())
-	out.Path = direct.LazyPtr(in.GetPath())
+	out.Path = in.GetPath()
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.Permissions = direct.LazyPtr(in.GetPermissions())
 	return out
@@ -461,8 +461,8 @@ func OSPolicy_Resource_File_GCS_FromProto(mapCtx *direct.MapContext, in *pb.OSPo
 		return nil
 	}
 	out := &krm.OSPolicy_Resource_File_GCS{}
-	out.Bucket = direct.LazyPtr(in.GetBucket())
-	out.Object = direct.LazyPtr(in.GetObject())
+	out.Bucket = in.GetBucket()
+	out.Object = in.GetObject()
 	out.Generation = direct.LazyPtr(in.GetGeneration())
 	return out
 }
@@ -487,7 +487,7 @@ func OSPolicy_Resource_File_Remote_FromProto(mapCtx *direct.MapContext, in *pb.O
 		return nil
 	}
 	out := &krm.OSPolicy_Resource_File_Remote{}
-	out.URI = direct.LazyPtr(in.GetUri())
+	out.URI = in.GetUri()
 	out.Sha256Checksum = direct.LazyPtr(in.GetSha256Checksum())
 	return out
 }
@@ -561,7 +561,7 @@ func OSPolicy_Resource_PackageResource_Apt_FromProto(mapCtx *direct.MapContext, 
 		return nil
 	}
 	out := &krm.OSPolicy_Resource_PackageResource_Apt{}
-	out.Name = direct.LazyPtr(in.GetName())
+	out.Name = in.GetName()
 	return out
 }
 */
@@ -603,7 +603,7 @@ func OSPolicy_Resource_PackageResource_GooGet_FromProto(mapCtx *direct.MapContex
 		return nil
 	}
 	out := &krm.OSPolicy_Resource_PackageResource_GooGet{}
-	out.Name = direct.LazyPtr(in.GetName())
+	out.Name = in.GetName()
 	return out
 }
 */
@@ -663,7 +663,7 @@ func OSPolicy_Resource_PackageResource_Yum_FromProto(mapCtx *direct.MapContext, 
 		return nil
 	}
 	out := &krm.OSPolicy_Resource_PackageResource_Yum{}
-	out.Name = direct.LazyPtr(in.GetName())
+	out.Name = in.GetName()
 	return out
 }
 */
@@ -685,7 +685,7 @@ func OSPolicy_Resource_PackageResource_Zypper_FromProto(mapCtx *direct.MapContex
 		return nil
 	}
 	out := &krm.OSPolicy_Resource_PackageResource_Zypper{}
-	out.Name = direct.LazyPtr(in.GetName())
+	out.Name = in.GetName()
 	return out
 }
 */
@@ -740,8 +740,8 @@ func OSPolicy_Resource_RepositoryResource_AptRepository_FromProto(mapCtx *direct
 	}
 	out := &krm.OSPolicy_Resource_RepositoryResource_AptRepository{}
 	out.ArchiveType = direct.Enum_FromProto(mapCtx, in.GetArchiveType())
-	out.URI = direct.LazyPtr(in.GetUri())
-	out.Distribution = direct.LazyPtr(in.GetDistribution())
+	out.URI = in.GetUri()
+	out.Distribution = in.GetDistribution()
 	out.Components = in.Components
 	out.GpgKey = direct.LazyPtr(in.GetGpgKey())
 	return out
@@ -769,8 +769,8 @@ func OSPolicy_Resource_RepositoryResource_GooRepository_FromProto(mapCtx *direct
 		return nil
 	}
 	out := &krm.OSPolicy_Resource_RepositoryResource_GooRepository{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.URL = direct.LazyPtr(in.GetUrl())
+	out.Name = in.GetName()
+	out.URL = in.GetUrl()
 	return out
 }
 */
@@ -793,9 +793,9 @@ func OSPolicy_Resource_RepositoryResource_YumRepository_FromProto(mapCtx *direct
 		return nil
 	}
 	out := &krm.OSPolicy_Resource_RepositoryResource_YumRepository{}
-	out.ID = direct.LazyPtr(in.GetId())
+	out.ID = in.GetId()
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.BaseURL = direct.LazyPtr(in.GetBaseUrl())
+	out.BaseURL = in.GetBaseUrl()
 	out.GpgKeys = in.GpgKeys
 	return out
 }
@@ -821,9 +821,9 @@ func OSPolicy_Resource_RepositoryResource_ZypperRepository_FromProto(mapCtx *dir
 		return nil
 	}
 	out := &krm.OSPolicy_Resource_RepositoryResource_ZypperRepository{}
-	out.ID = direct.LazyPtr(in.GetId())
+	out.ID = in.GetId()
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.BaseURL = direct.LazyPtr(in.GetBaseUrl())
+	out.BaseURL = in.GetBaseUrl()
 	out.GpgKeys = in.GpgKeys
 	return out
 }
