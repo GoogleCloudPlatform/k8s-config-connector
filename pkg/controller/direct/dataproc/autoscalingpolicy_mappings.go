@@ -20,7 +20,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func InstanceGroupAutoscalingPolicyConfig_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupAutoscalingPolicyConfig) *krm.InstanceGroupAutoscalingPolicyConfig {
+func InstanceGroupAutoscalingPolicyConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupAutoscalingPolicyConfig) *krm.InstanceGroupAutoscalingPolicyConfig {
 	if in == nil {
 		return nil
 	}
@@ -31,7 +31,7 @@ func InstanceGroupAutoscalingPolicyConfig_FromProto(mapCtx *direct.MapContext, i
 	return out
 }
 
-func InstanceGroupAutoscalingPolicyConfig_ToProto(mapCtx *direct.MapContext, in *krm.InstanceGroupAutoscalingPolicyConfig) *pb.InstanceGroupAutoscalingPolicyConfig {
+func InstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceGroupAutoscalingPolicyConfig) *pb.InstanceGroupAutoscalingPolicyConfig {
 	if in == nil {
 		return nil
 	}
@@ -42,7 +42,7 @@ func InstanceGroupAutoscalingPolicyConfig_ToProto(mapCtx *direct.MapContext, in 
 	return out
 }
 
-func SecondaryInstanceGroupAutoscalingPolicyConfig_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupAutoscalingPolicyConfig) *krm.SecondaryInstanceGroupAutoscalingPolicyConfig {
+func SecondaryInstanceGroupAutoscalingPolicyConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupAutoscalingPolicyConfig) *krm.SecondaryInstanceGroupAutoscalingPolicyConfig {
 	if in == nil {
 		return nil
 	}
@@ -53,7 +53,7 @@ func SecondaryInstanceGroupAutoscalingPolicyConfig_FromProto(mapCtx *direct.MapC
 	return out
 }
 
-func SecondaryInstanceGroupAutoscalingPolicyConfig_ToProto(mapCtx *direct.MapContext, in *krm.SecondaryInstanceGroupAutoscalingPolicyConfig) *pb.InstanceGroupAutoscalingPolicyConfig {
+func SecondaryInstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SecondaryInstanceGroupAutoscalingPolicyConfig) *pb.InstanceGroupAutoscalingPolicyConfig {
 	if in == nil {
 		return nil
 	}
