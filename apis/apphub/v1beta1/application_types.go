@@ -46,7 +46,9 @@ type AppHubApplicationSpec struct {
 	Scope *Scope `json:"scope,omitempty"`
 
 	// Required. Defines the parent path of the resource.
-	*Parent `json:",inline"`
+	Location string `json:"location,omitempty"`
+
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
 
 	// The AppHubApplication name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -66,14 +68,6 @@ type Environment struct {
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
 	// +kcc:proto:field=google.cloud.apphub.v1.Environment.type
 	Type *string `json:"type,omitempty"`
-}
-
-type Parent struct {
-	// Required. The location of the application.
-	Location string `json:"location,omitempty"`
-
-	// Required. The host project of the application.
-	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
 }
 
 // AppHubApplicationStatus defines the config connector machine state of AppHubApplication
