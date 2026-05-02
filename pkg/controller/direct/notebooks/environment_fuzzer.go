@@ -29,8 +29,8 @@ func init() {
 
 func notebooksEnvironmentFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Environment{},
-		NotebooksEnvironmentSpec_FromProto, NotebooksEnvironmentSpec_ToProto,
-		NotebooksEnvironmentObservedState_FromProto, NotebooksEnvironmentObservedState_ToProto,
+		NotebooksEnvironmentSpec_v1alpha1_FromProto, NotebooksEnvironmentSpec_v1alpha1_ToProto,
+		NotebooksEnvironmentObservedState_v1alpha1_FromProto, NotebooksEnvironmentObservedState_v1alpha1_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".name") // special field
