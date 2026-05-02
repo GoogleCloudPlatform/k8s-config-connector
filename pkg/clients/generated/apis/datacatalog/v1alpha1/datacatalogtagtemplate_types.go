@@ -45,7 +45,8 @@ type TagtemplateAllowedValues struct {
 	The name must contain only Unicode letters, numbers (0-9), underscores
 	(_), dashes (-), spaces ( ), and can't start or end with spaces. The
 	maximum length is 200 characters. */
-	DisplayName string `json:"displayName"`
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 }
 
 type TagtemplateEnumType struct {
@@ -80,6 +81,9 @@ type TagtemplateFields struct {
 	IsRequired *bool `json:"isRequired,omitempty"`
 
 	/* Identifier. The resource name of the tag template field in URL format.
+	Example:
+
+	`projects/{PROJECT_ID}/locations/{LOCATION}/tagTemplates/{TAG_TEMPLATE}/fields/{FIELD}`
 
 	Note: The tag template field itself might not be stored in the location
 	specified in its name.
@@ -100,7 +104,8 @@ type TagtemplateFields struct {
 	Order *int32 `json:"order,omitempty"`
 
 	/* Required. The type of value this tag field can contain. */
-	Type TagtemplateType `json:"type"`
+	// +optional
+	Type *TagtemplateType `json:"type,omitempty"`
 }
 
 type TagtemplateType struct {
