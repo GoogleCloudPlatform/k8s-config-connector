@@ -48,8 +48,8 @@ type AppHubApplicationSpec struct {
 	// Required. Defines the parent path of the resource.
 	Location string `json:"location,omitempty"`
 
+	// Required. The host project of the resource.
 	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
-
 	// The AppHubApplication name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 }
