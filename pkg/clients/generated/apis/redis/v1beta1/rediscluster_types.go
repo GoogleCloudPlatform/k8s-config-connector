@@ -106,7 +106,7 @@ type RedisClusterSpec struct {
 	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Required. Each PscConfig configures the consumer network where IPs will be designated to the cluster for client access through Private Service Connect Automation. Currently, only one PscConfig is supported. */
+	/* Required. Each PSCConfig configures the consumer network where IPs will be designated to the cluster for client access through Private Service Connect Automation. Currently, only one PSCConfig is supported. */
 	// +optional
 	PscConfigs []ClusterPscConfigs `json:"pscConfigs,omitempty"`
 
@@ -160,7 +160,7 @@ type ClusterObservedStateStatus struct {
 
 	/* Output only. Precise value of redis memory size in GB for the entire cluster. */
 	// +optional
-	PreciseSizeGb *float64 `json:"preciseSizeGb,omitempty"`
+	PreciseSizeGB *float64 `json:"preciseSizeGB,omitempty"`
 
 	/* Output only. PSC connections for discovery of the cluster topology and accessing the cluster. */
 	// +optional
@@ -168,7 +168,7 @@ type ClusterObservedStateStatus struct {
 
 	/* Output only. Redis memory size in GB for the entire cluster rounded up to the next integer. */
 	// +optional
-	SizeGb *int32 `json:"sizeGb,omitempty"`
+	SizeGB *int32 `json:"sizeGB,omitempty"`
 
 	/* Output only. The current state of this cluster. Can be CREATING, READY, UPDATING, DELETING and SUSPENDED */
 	// +optional
@@ -184,31 +184,35 @@ type ClusterObservedStateStatus struct {
 }
 
 type ClusterPscConfigStatus struct {
-	/* Required. The network where the IP address of the discovery endpoint will be reserved, in the form of projects/{network_project}/global/networks/{network_id}. */
+	/* The network where the IP address of the discovery endpoint will be reserved. */
 	// +optional
 	Network *string `json:"network,omitempty"`
 }
 
 type ClusterPscConnectionsStatus struct {
-	/* Output only. The IP allocated on the consumer network for the PSC forwarding rule. */
+	/* Required. The IP allocated on the consumer network for the PSC forwarding rule. */
 	// +optional
 	Address *string `json:"address,omitempty"`
 
-	/* Output only. The URI of the consumer side forwarding rule. Example: projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}. */
+	/* Required. The URI of the consumer side forwarding rule. Example: projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}. */
 	// +optional
 	ForwardingRule *string `json:"forwardingRule,omitempty"`
 
-	/* The consumer network where the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}. */
+	/* Required. The consumer network where the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}. */
 	// +optional
 	Network *string `json:"network,omitempty"`
 
-	/* Output only. The consumer project_id where the forwarding rule is created from. */
+	/* Optional. Project ID of the consumer project where the forwarding rule is created in. */
 	// +optional
 	ProjectID *string `json:"projectID,omitempty"`
 
-	/* Output only. The PSC connection id of the forwarding rule connected to the service attachment. */
+	/* Required. The PSC connection id of the forwarding rule connected to the service attachment. */
 	// +optional
 	PscConnectionID *string `json:"pscConnectionID,omitempty"`
+
+	/* Required. The service attachment which is the target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}. */
+	// +optional
+	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
 }
 
 type ClusterStateInfoStatus struct {

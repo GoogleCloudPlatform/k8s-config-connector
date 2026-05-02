@@ -22,6 +22,7 @@ package cluster
 
 import (
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
+	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
@@ -617,6 +618,42 @@ func PSCAutoConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.P
 	out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
 	out.PscConnectionStatus = direct.Enum_ToProto[pb.PscConnectionStatus](mapCtx, in.PSCConnectionStatus)
 	out.ConnectionType = direct.Enum_ToProto[pb.ConnectionType](mapCtx, in.ConnectionType)
+	return out
+}
+func PSCConfig_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.PSCConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PSCConfig{}
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	return out
+}
+func PSCConfig_ToProto(mapCtx *direct.MapContext, in *krm.PSCConfig) *pb.PscConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PscConfig{}
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	return out
+}
+func PSCConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.PSCConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PSCConfigObservedState{}
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	return out
+}
+func PSCConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PSCConfigObservedState) *pb.PscConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PscConfig{}
+	out.Network = direct.ValueOf(in.Network)
 	return out
 }
 func PSCConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *krm.PSCConnection {

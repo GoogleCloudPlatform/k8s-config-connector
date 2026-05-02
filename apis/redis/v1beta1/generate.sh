@@ -38,6 +38,7 @@ mv ${REPO_ROOT}/pkg/controller/direct/redis/mapper.generated.go ${REPO_ROOT}/pkg
 sed -i 's/package redis/package cluster/' ${REPO_ROOT}/pkg/controller/direct/redis/cluster/mapper.generated.go
 
 cd ${REPO_ROOT}
+sed -i 's/PSCConfig \*PSCConfig `json:"pscConfig,omitempty"`/PSCConfig \*PSCConfigObservedState `json:"pscConfig,omitempty"`/' ${REPO_ROOT}/apis/redis/v1beta1/types.generated.go
 dev/tasks/generate-crds
 
 go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/redis/cluster/

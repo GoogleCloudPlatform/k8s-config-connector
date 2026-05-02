@@ -96,8 +96,8 @@ func (in *ClusterObservedStateStatus) DeepCopyInto(out *ClusterObservedStateStat
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.PreciseSizeGb != nil {
-		in, out := &in.PreciseSizeGb, &out.PreciseSizeGb
+	if in.PreciseSizeGB != nil {
+		in, out := &in.PreciseSizeGB, &out.PreciseSizeGB
 		*out = new(float64)
 		**out = **in
 	}
@@ -108,8 +108,8 @@ func (in *ClusterObservedStateStatus) DeepCopyInto(out *ClusterObservedStateStat
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.SizeGb != nil {
-		in, out := &in.SizeGb, &out.SizeGb
+	if in.SizeGB != nil {
+		in, out := &in.SizeGB, &out.SizeGB
 		*out = new(int32)
 		**out = **in
 	}
@@ -235,6 +235,11 @@ func (in *ClusterPscConnectionsStatus) DeepCopyInto(out *ClusterPscConnectionsSt
 	}
 	if in.PscConnectionID != nil {
 		in, out := &in.PscConnectionID, &out.PscConnectionID
+		*out = new(string)
+		**out = **in
+	}
+	if in.ServiceAttachment != nil {
+		in, out := &in.ServiceAttachment, &out.ServiceAttachment
 		*out = new(string)
 		**out = **in
 	}

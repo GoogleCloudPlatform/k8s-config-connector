@@ -74,6 +74,7 @@ type RedisClusterSpec struct {
 	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
 }
 
+// +kcc:proto=google.cloud.redis.cluster.v1.PscConfig
 type PSCConfig struct {
 	// Required. The network where the IP address of the discovery endpoint will
 	//  be reserved, in the form of
@@ -169,4 +170,10 @@ type RedisClusterList struct {
 
 func init() {
 	SchemeBuilder.Register(&RedisCluster{}, &RedisClusterList{})
+}
+
+// +kcc:proto=google.cloud.redis.cluster.v1.PscConfig
+type PSCConfigObservedState struct {
+	// The network where the IP address of the discovery endpoint will be reserved.
+	Network *string `json:"network,omitempty"`
 }

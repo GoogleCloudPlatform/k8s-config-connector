@@ -573,7 +573,7 @@ type DiscoveryEndpointObservedState struct {
 	// Output only. Customer configuration for where the endpoint is created and
 	//  accessed from.
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.DiscoveryEndpoint.psc_config
-	PSCConfig *PSCConfig `json:"pscConfig,omitempty"`
+	PSCConfig *PSCConfigObservedState `json:"pscConfig,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.EncryptionInfo
