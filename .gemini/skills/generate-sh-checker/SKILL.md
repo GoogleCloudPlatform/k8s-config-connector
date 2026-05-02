@@ -83,3 +83,7 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
     -   Verify that CRDs in `config/crds/resources/` are updated.
 
 6.  **Commit and PR**: Create a branch, commit the changes, and propose a PR with a descriptive title like `chore: apis/<SERVICE> should follow generate.sh pattern`.
+
+## Troubleshooting
+
+-   **Deepcopy-gen errors (`invalid slice element type: invalid type`)**: This typically happens if `generate-types` outputs a struct name with a different capitalization than what is currently manually written in the `*_types.go` file (e.g. `PSCConfig` vs `PscConfig`). To fix, rename the type and all its usages in the `*_types.go` and `pkg/controller/direct/<SERVICE>/mapper.go` files to match the generated capitalization, then run `./generate.sh` again.
