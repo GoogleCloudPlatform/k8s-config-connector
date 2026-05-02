@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.12.4
-// source: mockgcp/api/serviceusage/v1/serviceusage.proto
+// source: mockgcp/cloud/serviceusage/v1/serviceusage.proto
 
 package serviceusagepb
 
@@ -68,7 +68,7 @@ func NewServiceUsageClient(cc grpc.ClientConnInterface) ServiceUsageClient {
 
 func (c *serviceUsageClient) EnableService(ctx context.Context, in *EnableServiceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1.ServiceUsage/EnableService", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1.ServiceUsage/EnableService", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +77,7 @@ func (c *serviceUsageClient) EnableService(ctx context.Context, in *EnableServic
 
 func (c *serviceUsageClient) DisableService(ctx context.Context, in *DisableServiceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1.ServiceUsage/DisableService", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1.ServiceUsage/DisableService", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -86,7 +86,7 @@ func (c *serviceUsageClient) DisableService(ctx context.Context, in *DisableServ
 
 func (c *serviceUsageClient) GetService(ctx context.Context, in *GetServiceRequest, opts ...grpc.CallOption) (*Service, error) {
 	out := new(Service)
-	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1.ServiceUsage/GetService", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1.ServiceUsage/GetService", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -95,7 +95,7 @@ func (c *serviceUsageClient) GetService(ctx context.Context, in *GetServiceReque
 
 func (c *serviceUsageClient) ListServices(ctx context.Context, in *ListServicesRequest, opts ...grpc.CallOption) (*ListServicesResponse, error) {
 	out := new(ListServicesResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1.ServiceUsage/ListServices", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1.ServiceUsage/ListServices", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -104,7 +104,7 @@ func (c *serviceUsageClient) ListServices(ctx context.Context, in *ListServicesR
 
 func (c *serviceUsageClient) BatchEnableServices(ctx context.Context, in *BatchEnableServicesRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1.ServiceUsage/BatchEnableServices", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1.ServiceUsage/BatchEnableServices", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -113,7 +113,7 @@ func (c *serviceUsageClient) BatchEnableServices(ctx context.Context, in *BatchE
 
 func (c *serviceUsageClient) BatchGetServices(ctx context.Context, in *BatchGetServicesRequest, opts ...grpc.CallOption) (*BatchGetServicesResponse, error) {
 	out := new(BatchGetServicesResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.api.serviceusage.v1.ServiceUsage/BatchGetServices", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.serviceusage.v1.ServiceUsage/BatchGetServices", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -205,7 +205,7 @@ func _ServiceUsage_EnableService_Handler(srv interface{}, ctx context.Context, d
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.api.serviceusage.v1.ServiceUsage/EnableService",
+		FullMethod: "/mockgcp.cloud.serviceusage.v1.ServiceUsage/EnableService",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).EnableService(ctx, req.(*EnableServiceRequest))
@@ -223,7 +223,7 @@ func _ServiceUsage_DisableService_Handler(srv interface{}, ctx context.Context, 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.api.serviceusage.v1.ServiceUsage/DisableService",
+		FullMethod: "/mockgcp.cloud.serviceusage.v1.ServiceUsage/DisableService",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).DisableService(ctx, req.(*DisableServiceRequest))
@@ -241,7 +241,7 @@ func _ServiceUsage_GetService_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.api.serviceusage.v1.ServiceUsage/GetService",
+		FullMethod: "/mockgcp.cloud.serviceusage.v1.ServiceUsage/GetService",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).GetService(ctx, req.(*GetServiceRequest))
@@ -259,7 +259,7 @@ func _ServiceUsage_ListServices_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.api.serviceusage.v1.ServiceUsage/ListServices",
+		FullMethod: "/mockgcp.cloud.serviceusage.v1.ServiceUsage/ListServices",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).ListServices(ctx, req.(*ListServicesRequest))
@@ -277,7 +277,7 @@ func _ServiceUsage_BatchEnableServices_Handler(srv interface{}, ctx context.Cont
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.api.serviceusage.v1.ServiceUsage/BatchEnableServices",
+		FullMethod: "/mockgcp.cloud.serviceusage.v1.ServiceUsage/BatchEnableServices",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).BatchEnableServices(ctx, req.(*BatchEnableServicesRequest))
@@ -295,7 +295,7 @@ func _ServiceUsage_BatchGetServices_Handler(srv interface{}, ctx context.Context
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.api.serviceusage.v1.ServiceUsage/BatchGetServices",
+		FullMethod: "/mockgcp.cloud.serviceusage.v1.ServiceUsage/BatchGetServices",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceUsageServer).BatchGetServices(ctx, req.(*BatchGetServicesRequest))
@@ -307,7 +307,7 @@ func _ServiceUsage_BatchGetServices_Handler(srv interface{}, ctx context.Context
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ServiceUsage_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "mockgcp.api.serviceusage.v1.ServiceUsage",
+	ServiceName: "mockgcp.cloud.serviceusage.v1.ServiceUsage",
 	HandlerType: (*ServiceUsageServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -336,5 +336,5 @@ var ServiceUsage_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "mockgcp/api/serviceusage/v1/serviceusage.proto",
+	Metadata: "mockgcp/cloud/serviceusage/v1/serviceusage.proto",
 }
