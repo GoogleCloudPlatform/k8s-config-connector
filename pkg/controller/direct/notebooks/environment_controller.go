@@ -129,7 +129,7 @@ func (a *EnvironmentAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := NotebooksEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+	resource := NotebooksEnvironmentSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -150,7 +150,7 @@ func (a *EnvironmentAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	log.V(2).Info("successfully created Environment", "name", a.id)
 
 	status := &krm.NotebooksEnvironmentStatus{}
-	status.ObservedState = NotebooksEnvironmentObservedState_FromProto(mapCtx, created)
+	status.ObservedState = NotebooksEnvironmentObservedState_v1alpha1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -172,7 +172,7 @@ func (a *EnvironmentAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 
 	obj := &krm.NotebooksEnvironment{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(NotebooksEnvironmentSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(NotebooksEnvironmentSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
