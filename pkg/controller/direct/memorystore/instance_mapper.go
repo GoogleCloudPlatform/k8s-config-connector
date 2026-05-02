@@ -28,101 +28,101 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func Instance_ConnectionDetail_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ConnectionDetail) *krmv1beta1.Instance_ConnectionDetail {
+func Instance_ConnectionDetail_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ConnectionDetail) *krmv1beta1.Instance_ConnectionDetail {
 	if in == nil {
 		return nil
 	}
 	out := &krmv1beta1.Instance_ConnectionDetail{}
-	out.PscAutoConnection = PscAutoConnection_FromProto(mapCtx, in.GetPscAutoConnection())
-	// out.PscConnection = PscConnection_FromProto(mapCtx, in.GetPscConnection())
+	out.PscAutoConnection = PscAutoConnection_v1beta1_FromProto(mapCtx, in.GetPscAutoConnection())
+	// out.PscConnection = PscConnection_v1beta1_FromProto(mapCtx, in.GetPscConnection())
 	return out
 }
-func Instance_ConnectionDetail_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Instance_ConnectionDetail) *pb.Instance_ConnectionDetail {
+func Instance_ConnectionDetail_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Instance_ConnectionDetail) *pb.Instance_ConnectionDetail {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Instance_ConnectionDetail{}
-	if oneof := PscAutoConnection_ToProto(mapCtx, in.PscAutoConnection); oneof != nil {
+	if oneof := PscAutoConnection_v1beta1_ToProto(mapCtx, in.PscAutoConnection); oneof != nil {
 		out.Connection = &pb.Instance_ConnectionDetail_PscAutoConnection{PscAutoConnection: oneof}
 	}
-	// if oneof := PscConnection_ToProto(mapCtx, in.PscConnection); oneof != nil {
+	// if oneof := PscConnection_v1beta1_ToProto(mapCtx, in.PscConnection); oneof != nil {
 	// 	out.Connection = &pb.Instance_ConnectionDetail_PscConnection{PscConnection: oneof}
 	// }
 	return out
 }
-func Instance_ConnectionDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ConnectionDetail) *krmv1beta1.Instance_ConnectionDetailObservedState {
+func Instance_ConnectionDetailObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ConnectionDetail) *krmv1beta1.Instance_ConnectionDetailObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krmv1beta1.Instance_ConnectionDetailObservedState{}
-	out.PscAutoConnection = PscAutoConnectionObservedState_FromProto(mapCtx, in.GetPscAutoConnection())
-	// out.PscConnection = PscConnectionObservedState_FromProto(mapCtx, in.GetPscConnection())
+	out.PscAutoConnection = PscAutoConnectionObservedState_v1beta1_FromProto(mapCtx, in.GetPscAutoConnection())
+	// out.PscConnection = PscConnectionObservedState_v1beta1_FromProto(mapCtx, in.GetPscConnection())
 	return out
 }
-func Instance_ConnectionDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Instance_ConnectionDetailObservedState) *pb.Instance_ConnectionDetail {
+func Instance_ConnectionDetailObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Instance_ConnectionDetailObservedState) *pb.Instance_ConnectionDetail {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Instance_ConnectionDetail{}
-	if oneof := PscAutoConnectionObservedState_ToProto(mapCtx, in.PscAutoConnection); oneof != nil {
+	if oneof := PscAutoConnectionObservedState_v1beta1_ToProto(mapCtx, in.PscAutoConnection); oneof != nil {
 		out.Connection = &pb.Instance_ConnectionDetail_PscAutoConnection{PscAutoConnection: oneof}
 	}
-	// if oneof := PscConnectionObservedState_ToProto(mapCtx, in.PscConnection); oneof != nil {
+	// if oneof := PscConnectionObservedState_v1beta1_ToProto(mapCtx, in.PscConnection); oneof != nil {
 	// 	out.Connection = &pb.Instance_ConnectionDetail_PscConnection{PscConnection: oneof}
 	// }
 	return out
 }
-func Instance_InstanceEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceEndpoint) *krmv1beta1.Instance_InstanceEndpoint {
+func Instance_InstanceEndpoint_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceEndpoint) *krmv1beta1.Instance_InstanceEndpoint {
 	if in == nil {
 		return nil
 	}
 	out := &krmv1beta1.Instance_InstanceEndpoint{}
-	out.Connections = direct.Slice_FromProto(mapCtx, in.Connections, Instance_ConnectionDetail_FromProto)
+	out.Connections = direct.Slice_FromProto(mapCtx, in.Connections, Instance_ConnectionDetail_v1beta1_FromProto)
 	return out
 }
-func Instance_InstanceEndpoint_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Instance_InstanceEndpoint) *pb.Instance_InstanceEndpoint {
+func Instance_InstanceEndpoint_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Instance_InstanceEndpoint) *pb.Instance_InstanceEndpoint {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Instance_InstanceEndpoint{}
-	out.Connections = direct.Slice_ToProto(mapCtx, in.Connections, Instance_ConnectionDetail_ToProto)
+	out.Connections = direct.Slice_ToProto(mapCtx, in.Connections, Instance_ConnectionDetail_v1beta1_ToProto)
 	return out
 }
-func Instance_InstanceEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceEndpoint) *krmv1beta1.Instance_InstanceEndpointObservedState {
+func Instance_InstanceEndpointObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceEndpoint) *krmv1beta1.Instance_InstanceEndpointObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krmv1beta1.Instance_InstanceEndpointObservedState{}
-	out.Connections = direct.Slice_FromProto(mapCtx, in.Connections, Instance_ConnectionDetailObservedState_FromProto)
+	out.Connections = direct.Slice_FromProto(mapCtx, in.Connections, Instance_ConnectionDetailObservedState_v1beta1_FromProto)
 	return out
 }
-func Instance_InstanceEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Instance_InstanceEndpointObservedState) *pb.Instance_InstanceEndpoint {
+func Instance_InstanceEndpointObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Instance_InstanceEndpointObservedState) *pb.Instance_InstanceEndpoint {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Instance_InstanceEndpoint{}
-	out.Connections = direct.Slice_ToProto(mapCtx, in.Connections, Instance_ConnectionDetailObservedState_ToProto)
+	out.Connections = direct.Slice_ToProto(mapCtx, in.Connections, Instance_InstanceEndpointObservedState_v1beta1_ToProto)
 	return out
 }
-func Instance_StateInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_StateInfo) *krmv1beta1.Instance_StateInfoObservedState {
+func Instance_StateInfoObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_StateInfo) *krmv1beta1.Instance_StateInfoObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krmv1beta1.Instance_StateInfoObservedState{}
-	out.UpdateInfo = Instance_StateInfo_UpdateInfoObservedState_FromProto(mapCtx, in.GetUpdateInfo())
+	out.UpdateInfo = Instance_StateInfo_UpdateInfoObservedState_v1beta1_FromProto(mapCtx, in.GetUpdateInfo())
 	return out
 }
-func Instance_StateInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Instance_StateInfoObservedState) *pb.Instance_StateInfo {
+func Instance_StateInfoObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Instance_StateInfoObservedState) *pb.Instance_StateInfo {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Instance_StateInfo{}
-	if oneof := Instance_StateInfo_UpdateInfoObservedState_ToProto(mapCtx, in.UpdateInfo); oneof != nil {
+	if oneof := Instance_StateInfo_UpdateInfoObservedState_v1beta1_ToProto(mapCtx, in.UpdateInfo); oneof != nil {
 		out.Info = &pb.Instance_StateInfo_UpdateInfo_{UpdateInfo: oneof}
 	}
 	return out
 }
-func Instance_StateInfo_UpdateInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_StateInfo_UpdateInfo) *krmv1beta1.Instance_StateInfo_UpdateInfoObservedState {
+func Instance_StateInfo_UpdateInfoObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_StateInfo_UpdateInfo) *krmv1beta1.Instance_StateInfo_UpdateInfoObservedState {
 	if in == nil {
 		return nil
 	}
@@ -131,7 +131,7 @@ func Instance_StateInfo_UpdateInfoObservedState_FromProto(mapCtx *direct.MapCont
 	out.TargetReplicaCount = in.TargetReplicaCount
 	return out
 }
-func Instance_StateInfo_UpdateInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Instance_StateInfo_UpdateInfoObservedState) *pb.Instance_StateInfo_UpdateInfo {
+func Instance_StateInfo_UpdateInfoObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Instance_StateInfo_UpdateInfoObservedState) *pb.Instance_StateInfo_UpdateInfo {
 	if in == nil {
 		return nil
 	}
@@ -140,7 +140,7 @@ func Instance_StateInfo_UpdateInfoObservedState_ToProto(mapCtx *direct.MapContex
 	out.TargetReplicaCount = in.TargetReplicaCount
 	return out
 }
-func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmv1beta1.MemorystoreInstanceObservedState {
+func MemorystoreInstanceObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmv1beta1.MemorystoreInstanceObservedState {
 	if in == nil {
 		return nil
 	}
@@ -148,16 +148,16 @@ func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.StateInfo = Instance_StateInfoObservedState_FromProto(mapCtx, in.GetStateInfo())
+	out.StateInfo = Instance_StateInfoObservedState_v1beta1_FromProto(mapCtx, in.GetStateInfo())
 	out.Uid = direct.LazyPtr(in.GetUid())
-	out.NodeConfig = NodeConfigObservedState_FromProto(mapCtx, in.GetNodeConfig())
-	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_FromProto)
+	out.NodeConfig = NodeConfigObservedState_v1beta1_FromProto(mapCtx, in.GetNodeConfig())
+	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_v1beta1_FromProto)
 	out.EffectiveMaintenanceVersion = direct.LazyPtr(in.GetEffectiveMaintenanceVersion())
 	out.AvailableMaintenanceVersions = in.AvailableMaintenanceVersions
 	out.PscAttachmentDetails = direct.Slice_FromProto(mapCtx, in.PscAttachmentDetails, PscAttachmentDetailObservedState_FromProto)
 	return out
 }
-func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MemorystoreInstanceObservedState) *pb.Instance {
+func MemorystoreInstanceObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MemorystoreInstanceObservedState) *pb.Instance {
 	if in == nil {
 		return nil
 	}
@@ -165,16 +165,16 @@ func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.State = direct.Enum_ToProto[pb.Instance_State](mapCtx, in.State)
-	out.StateInfo = Instance_StateInfoObservedState_ToProto(mapCtx, in.StateInfo)
+	out.StateInfo = Instance_StateInfoObservedState_v1beta1_ToProto(mapCtx, in.StateInfo)
 	out.Uid = direct.ValueOf(in.Uid)
-	out.NodeConfig = NodeConfigObservedState_ToProto(mapCtx, in.NodeConfig)
-	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_ToProto)
+	out.NodeConfig = NodeConfigObservedState_v1beta1_ToProto(mapCtx, in.NodeConfig)
+	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_v1beta1_ToProto)
 	out.EffectiveMaintenanceVersion = in.EffectiveMaintenanceVersion
 	out.AvailableMaintenanceVersions = in.AvailableMaintenanceVersions
 	out.PscAttachmentDetails = direct.Slice_ToProto(mapCtx, in.PscAttachmentDetails, PscAttachmentDetailObservedState_ToProto)
 	return out
 }
-func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmv1beta1.MemorystoreInstanceSpec {
+func MemorystoreInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmv1beta1.MemorystoreInstanceSpec {
 	if in == nil {
 		return nil
 	}
@@ -185,12 +185,12 @@ func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instanc
 	out.TransitEncryptionMode = direct.Enum_FromProto(mapCtx, in.GetTransitEncryptionMode())
 	out.ShardCount = direct.LazyPtr(in.GetShardCount())
 	out.NodeType = direct.Enum_FromProto(mapCtx, in.GetNodeType())
-	out.PersistenceConfig = PersistenceConfig_FromProto(mapCtx, in.GetPersistenceConfig())
+	out.PersistenceConfig = PersistenceConfig_v1beta1_FromProto(mapCtx, in.GetPersistenceConfig())
 	out.EngineVersion = direct.LazyPtr(in.GetEngineVersion())
 	out.EngineConfigs = in.EngineConfigs
-	out.ZoneDistributionConfig = ZoneDistributionConfig_FromProto(mapCtx, in.GetZoneDistributionConfig())
+	out.ZoneDistributionConfig = ZoneDistributionConfig_v1beta1_FromProto(mapCtx, in.GetZoneDistributionConfig())
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
-	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_FromProto)
+	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_v1beta1_FromProto)
 	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
 	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_FromProto(mapCtx, in.GetCrossInstanceReplicationConfig())
 	out.AutomatedBackupConfig = AutomatedBackupConfig_FromProto(mapCtx, in.GetAutomatedBackupConfig())
@@ -199,7 +199,7 @@ func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instanc
 	return out
 }
 
-func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MemorystoreInstanceSpec) *pb.Instance {
+func MemorystoreInstanceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MemorystoreInstanceSpec) *pb.Instance {
 	if in == nil {
 		return nil
 	}
@@ -210,19 +210,19 @@ func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.M
 	out.TransitEncryptionMode = direct.Enum_ToProto[pb.Instance_TransitEncryptionMode](mapCtx, in.TransitEncryptionMode)
 	out.ShardCount = direct.ValueOf(in.ShardCount)
 	out.NodeType = direct.Enum_ToProto[pb.Instance_NodeType](mapCtx, in.NodeType)
-	out.PersistenceConfig = PersistenceConfig_ToProto(mapCtx, in.PersistenceConfig)
+	out.PersistenceConfig = PersistenceConfig_v1beta1_ToProto(mapCtx, in.PersistenceConfig)
 	out.EngineVersion = direct.ValueOf(in.EngineVersion)
 	out.EngineConfigs = in.EngineConfigs
-	out.ZoneDistributionConfig = ZoneDistributionConfig_ToProto(mapCtx, in.ZoneDistributionConfig)
+	out.ZoneDistributionConfig = ZoneDistributionConfig_v1beta1_ToProto(mapCtx, in.ZoneDistributionConfig)
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
-	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_ToProto)
+	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_v1beta1_ToProto)
 	out.Mode = direct.Enum_ToProto[pb.Instance_Mode](mapCtx, in.Mode)
 	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_ToProto(mapCtx, in.CrossInstanceReplicationConfig)
 	out.AutomatedBackupConfig = AutomatedBackupConfig_ToProto(mapCtx, in.AutomatedBackupConfig)
 	out.MaintenanceVersion = in.MaintenanceVersion
 	return out
 }
-func NodeConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krmv1beta1.NodeConfigObservedState {
+func NodeConfigObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krmv1beta1.NodeConfigObservedState {
 	if in == nil {
 		return nil
 	}
@@ -230,7 +230,7 @@ func NodeConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NodeCon
 	out.SizeGB = direct.LazyPtr(in.GetSizeGb())
 	return out
 }
-func NodeConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.NodeConfigObservedState) *pb.NodeConfig {
+func NodeConfigObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.NodeConfigObservedState) *pb.NodeConfig {
 	if in == nil {
 		return nil
 	}
@@ -238,27 +238,27 @@ func NodeConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.N
 	out.SizeGb = direct.ValueOf(in.SizeGB)
 	return out
 }
-func PersistenceConfig_FromProto(mapCtx *direct.MapContext, in *pb.PersistenceConfig) *krmv1beta1.PersistenceConfig {
+func PersistenceConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PersistenceConfig) *krmv1beta1.PersistenceConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krmv1beta1.PersistenceConfig{}
 	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
-	out.RdbConfig = PersistenceConfig_RdbConfig_FromProto(mapCtx, in.GetRdbConfig())
-	out.AofConfig = PersistenceConfig_AofConfig_FromProto(mapCtx, in.GetAofConfig())
+	out.RdbConfig = PersistenceConfig_RdbConfig_v1beta1_FromProto(mapCtx, in.GetRdbConfig())
+	out.AofConfig = PersistenceConfig_AofConfig_v1beta1_FromProto(mapCtx, in.GetAofConfig())
 	return out
 }
-func PersistenceConfig_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.PersistenceConfig) *pb.PersistenceConfig {
+func PersistenceConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.PersistenceConfig) *pb.PersistenceConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.PersistenceConfig{}
 	out.Mode = direct.Enum_ToProto[pb.PersistenceConfig_PersistenceMode](mapCtx, in.Mode)
-	out.RdbConfig = PersistenceConfig_RdbConfig_ToProto(mapCtx, in.RdbConfig)
-	out.AofConfig = PersistenceConfig_AofConfig_ToProto(mapCtx, in.AofConfig)
+	out.RdbConfig = PersistenceConfig_RdbConfig_v1beta1_ToProto(mapCtx, in.RdbConfig)
+	out.AofConfig = PersistenceConfig_AofConfig_v1beta1_ToProto(mapCtx, in.AofConfig)
 	return out
 }
-func PersistenceConfig_AofConfig_FromProto(mapCtx *direct.MapContext, in *pb.PersistenceConfig_AOFConfig) *krmv1beta1.PersistenceConfig_AofConfig {
+func PersistenceConfig_AofConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PersistenceConfig_AOFConfig) *krmv1beta1.PersistenceConfig_AofConfig {
 	if in == nil {
 		return nil
 	}
@@ -266,7 +266,7 @@ func PersistenceConfig_AofConfig_FromProto(mapCtx *direct.MapContext, in *pb.Per
 	out.AppendFsync = direct.Enum_FromProto(mapCtx, in.GetAppendFsync())
 	return out
 }
-func PersistenceConfig_AofConfig_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.PersistenceConfig_AofConfig) *pb.PersistenceConfig_AOFConfig {
+func PersistenceConfig_AofConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.PersistenceConfig_AofConfig) *pb.PersistenceConfig_AOFConfig {
 	if in == nil {
 		return nil
 	}
@@ -274,7 +274,7 @@ func PersistenceConfig_AofConfig_ToProto(mapCtx *direct.MapContext, in *krmv1bet
 	out.AppendFsync = direct.Enum_ToProto[pb.PersistenceConfig_AOFConfig_AppendFsync](mapCtx, in.AppendFsync)
 	return out
 }
-func PersistenceConfig_RdbConfig_FromProto(mapCtx *direct.MapContext, in *pb.PersistenceConfig_RDBConfig) *krmv1beta1.PersistenceConfig_RdbConfig {
+func PersistenceConfig_RdbConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PersistenceConfig_RDBConfig) *krmv1beta1.PersistenceConfig_RdbConfig {
 	if in == nil {
 		return nil
 	}
@@ -283,7 +283,7 @@ func PersistenceConfig_RdbConfig_FromProto(mapCtx *direct.MapContext, in *pb.Per
 	out.RdbSnapshotStartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRdbSnapshotStartTime())
 	return out
 }
-func PersistenceConfig_RdbConfig_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.PersistenceConfig_RdbConfig) *pb.PersistenceConfig_RDBConfig {
+func PersistenceConfig_RdbConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.PersistenceConfig_RdbConfig) *pb.PersistenceConfig_RDBConfig {
 	if in == nil {
 		return nil
 	}
@@ -292,7 +292,7 @@ func PersistenceConfig_RdbConfig_ToProto(mapCtx *direct.MapContext, in *krmv1bet
 	out.RdbSnapshotStartTime = direct.StringTimestamp_ToProto(mapCtx, in.RdbSnapshotStartTime)
 	return out
 }
-func PscAutoConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscAutoConnection) *krmv1beta1.PscAutoConnection {
+func PscAutoConnection_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PscAutoConnection) *krmv1beta1.PscAutoConnection {
 	if in == nil {
 		return nil
 	}
@@ -305,7 +305,7 @@ func PscAutoConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscAutoConnec
 	}
 	return out
 }
-func PscAutoConnection_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.PscAutoConnection) *pb.PscAutoConnection {
+func PscAutoConnection_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.PscAutoConnection) *pb.PscAutoConnection {
 	if in == nil {
 		return nil
 	}
@@ -322,7 +322,7 @@ func PscAutoConnection_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.PscAuto
 	}
 	return out
 }
-func PscAutoConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PscAutoConnection) *krmv1beta1.PscAutoConnectionObservedState {
+func PscAutoConnectionObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PscAutoConnection) *krmv1beta1.PscAutoConnectionObservedState {
 	if in == nil {
 		return nil
 	}
@@ -336,12 +336,12 @@ func PscAutoConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.ConnectionType = direct.Enum_FromProto(mapCtx, in.GetConnectionType())
 	return out
 }
-func PscAutoConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.PscAutoConnectionObservedState) *pb.PscAutoConnection {
+func PscAutoConnectionObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.PscAutoConnectionObservedState) *pb.PscAutoConnection {
 	if in == nil {
 		return nil
 	}
 	out := &pb.PscAutoConnection{}
-	if oneof := PscAutoConnectionObservedState_Port_ToProto(mapCtx, in.Port); oneof != nil {
+	if oneof := PscAutoConnectionObservedState_Port_v1beta1_ToProto(mapCtx, in.Port); oneof != nil {
 		out.Ports = oneof
 	}
 	out.PscConnectionId = direct.ValueOf(in.PscConnectionID)
@@ -353,12 +353,12 @@ func PscAutoConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1
 	return out
 }
 
-func PscAutoConnectionObservedState_Port_ToProto(mapCtx *direct.MapContext, in *int32) *pb.PscAutoConnection_Port {
+func PscAutoConnectionObservedState_Port_v1beta1_ToProto(mapCtx *direct.MapContext, in *int32) *pb.PscAutoConnection_Port {
 	out := &pb.PscAutoConnection_Port{}
 	out.Port = direct.ValueOf(in)
 	return out
 }
-func ZoneDistributionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ZoneDistributionConfig) *krmv1beta1.ZoneDistributionConfig {
+func ZoneDistributionConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ZoneDistributionConfig) *krmv1beta1.ZoneDistributionConfig {
 	if in == nil {
 		return nil
 	}
@@ -367,7 +367,7 @@ func ZoneDistributionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ZoneDist
 	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
 	return out
 }
-func ZoneDistributionConfig_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.ZoneDistributionConfig) *pb.ZoneDistributionConfig {
+func ZoneDistributionConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.ZoneDistributionConfig) *pb.ZoneDistributionConfig {
 	if in == nil {
 		return nil
 	}

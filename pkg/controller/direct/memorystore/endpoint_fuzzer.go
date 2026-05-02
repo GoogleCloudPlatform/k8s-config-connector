@@ -29,8 +29,8 @@ func init() {
 
 func memorystoreInstanceEndpointFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Instance{},
-		MemorystoreInstanceEndpointSpec_FromProto, MemorystoreInstanceEndpointSpec_ToProto,
-		MemorystoreInstanceEndpointObservedState_FromProto, MemorystoreInstanceEndpointObservedState_ToProto,
+		MemorystoreInstanceEndpointSpec_v1alpha1_FromProto, MemorystoreInstanceEndpointSpec_v1alpha1_ToProto,
+		MemorystoreInstanceEndpointObservedState_v1alpha1_FromProto, MemorystoreInstanceEndpointObservedState_v1alpha1_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".allow_fewer_zones_deployment")
