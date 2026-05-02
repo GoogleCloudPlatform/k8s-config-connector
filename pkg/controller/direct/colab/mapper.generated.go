@@ -122,6 +122,8 @@ func ColabRuntimeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ColabR
 	// MISSING: SatisfiesPzi
 	return out
 }
+
+/* found existing non-generated mapping function "ColabRuntimeSpec_FromProto", skipping
 func ColabRuntimeSpec_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntime) *krm.ColabRuntimeSpec {
 	if in == nil {
 		return nil
@@ -144,28 +146,34 @@ func ColabRuntimeSpec_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntim
 	// MISSING: SatisfiesPzi
 	return out
 }
-func ColabRuntimeSpec_ToProto(mapCtx *direct.MapContext, in *krm.ColabRuntimeSpec) *pb.NotebookRuntime {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "ColabRuntimeSpec_ToProto", skipping
+
+	func ColabRuntimeSpec_ToProto(mapCtx *direct.MapContext, in *krm.ColabRuntimeSpec) *pb.NotebookRuntime {
+		if in == nil {
+			return nil
+		}
+		out := &pb.NotebookRuntime{}
+		// MISSING: Name
+		out.RuntimeUser = direct.ValueOf(in.RuntimeUser)
+		// MISSING: NotebookRuntimeTemplateRef
+		out.DisplayName = direct.ValueOf(in.DisplayName)
+		out.Description = direct.ValueOf(in.Description)
+		out.Labels = in.Labels
+		// MISSING: MachineSpec
+		// MISSING: DataPersistentDiskSpec
+		// MISSING: NetworkSpec
+		// MISSING: EUCConfig
+		// MISSING: ShieldedVMConfig
+		out.NetworkTags = in.NetworkTags
+		// MISSING: SoftwareConfig
+		// MISSING: SatisfiesPzs
+		// MISSING: SatisfiesPzi
+		return out
 	}
-	out := &pb.NotebookRuntime{}
-	// MISSING: Name
-	out.RuntimeUser = direct.ValueOf(in.RuntimeUser)
-	// MISSING: NotebookRuntimeTemplateRef
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.Labels = in.Labels
-	// MISSING: MachineSpec
-	// MISSING: DataPersistentDiskSpec
-	// MISSING: NetworkSpec
-	// MISSING: EUCConfig
-	// MISSING: ShieldedVMConfig
-	out.NetworkTags = in.NetworkTags
-	// MISSING: SoftwareConfig
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	return out
-}
+*/
 func ColabRuntimeTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntimeTemplate) *krm.ColabRuntimeTemplateObservedState {
 	if in == nil {
 		return nil
