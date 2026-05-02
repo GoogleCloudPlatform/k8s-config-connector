@@ -46,7 +46,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: APIKeysKey is the Schema for the APIKeys Key resource.
+        description: APIKeysKey is the Schema for the APIKeysKey API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -61,6 +61,7 @@ spec:
           metadata:
             type: object
           spec:
+            description: APIKeysKeySpec defines the desired state of APIKeysKey
             properties:
               displayName:
                 description: Human-readable display name of this key that you can
@@ -123,13 +124,8 @@ spec:
                                 or DA39A3EE5E6B4B0D3255BFEF95601890AFD80709. Output
                                 format is the latter.'
                               type: string
-                          required:
-                          - packageName
-                          - sha1Fingerprint
                           type: object
                         type: array
-                    required:
-                    - allowedApplications
                     type: object
                   apiTargets:
                     description: A restriction for a specific service and optionally
@@ -153,8 +149,6 @@ spec:
                             You can use [`gcloud services list`](/sdk/gcloud/reference/services/list)
                             to get a list of services that are enabled in the project.'
                           type: string
-                      required:
-                      - service
                       type: object
                     type: array
                   browserKeyRestrictions:
@@ -167,8 +161,6 @@ spec:
                         items:
                           type: string
                         type: array
-                    required:
-                    - allowedReferrers
                     type: object
                   iosKeyRestrictions:
                     description: The iOS apps that are allowed to use the key.
@@ -179,8 +171,6 @@ spec:
                         items:
                           type: string
                         type: array
-                    required:
-                    - allowedBundleIds
                     type: object
                   serverKeyRestrictions:
                     description: The IP addresses of callers that are allowed to use
@@ -192,14 +182,14 @@ spec:
                         items:
                           type: string
                         type: array
-                    required:
-                    - allowedIps
                     type: object
                 type: object
             required:
             - projectRef
             type: object
           status:
+            description: APIKeysKeyStatus defines the config connector machine state
+              of APIKeysKey
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -227,6 +217,9 @@ spec:
                       type: string
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the APIKeysKey resource in GCP.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
