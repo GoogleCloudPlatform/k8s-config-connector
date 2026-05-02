@@ -30,6 +30,7 @@ go run . generate-types \
   --resource NetworkConnectivityInternalRange:InternalRange \
   --resource NetworkConnectivityServiceConnectionPolicy:ServiceConnectionPolicy \
   --resource NetworkConnectivityRegionalEndpoint:RegionalEndpoint
+  --resource NetworkConnectivityServiceConnectionPolicy:ServiceConnectionPolicy
 
 go run . generate-mapper \
   --service mockgcp.cloud.networkconnectivity.v1 \
