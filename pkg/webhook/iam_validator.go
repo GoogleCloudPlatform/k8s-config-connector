@@ -102,6 +102,10 @@ func (a *iamValidatorHandler) Handle(_ context.Context, req admission.Request) a
 			return admission.Errored(http.StatusForbidden,
 				fmt.Errorf("object of GroupVersionKind %v does not have IAM Audit Config support", obj.GroupVersionKind()))
 		}
+		if registry.IsIAMDirect(refResourceGVK.GroupKind()) {
+			return admission.Errored(http.StatusForbidden,
+				fmt.Errorf("GroupVersionKind %v does not support IAM Audit Configs", refResourceGVK))
+		}
 		rcs, err := getResourceConfigs(a.smLoader, refResourceGVK)
 		if err != nil {
 			return admission.Errored(http.StatusBadRequest, err)
@@ -182,6 +186,10 @@ func getResourceConfigs(smLoader *servicemappingloader.ServiceMappingLoader, gvk
 
 func (a *iamValidatorHandler) validateIAMPolicy(policy *v1beta1.IAMPolicy, isDCLResource bool) admission.Response {
 	resourceRef := policy.Spec.ResourceReference
+	if registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()) {
+		return allowedResponse
+	}
+
 	if isDCLResource {
 		return a.dclValidateIAMPolicy(policy)
 	}
@@ -196,6 +204,10 @@ func (a *iamValidatorHandler) validateIAMPolicy(policy *v1beta1.IAMPolicy, isDCL
 
 func (a *iamValidatorHandler) validateIAMPartialPolicy(partialPolicy *v1beta1.IAMPartialPolicy, isDCLResource bool) admission.Response {
 	resourceRef := partialPolicy.Spec.ResourceReference
+	if registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()) {
+		return allowedResponse
+	}
+
 	if isDCLResource {
 		return a.dclValidateIAMPartialPolicy(partialPolicy)
 	}
@@ -209,6 +221,14 @@ func (a *iamValidatorHandler) validateIAMPartialPolicy(partialPolicy *v1beta1.IA
 
 func (a *iamValidatorHandler) validateIAMPolicyMember(policyMember *v1beta1.IAMPolicyMember, isDCLResource bool) admission.Response {
 	resourceRef := policyMember.Spec.ResourceReference
+	if registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()) {
+		if doesIAMPolicyMemberHaveCondition(policyMember) {
+			return admission.Errored(http.StatusForbidden,
+				fmt.Errorf("GroupVersionKind %v does not support IAM Conditions in IAM Policy Member", resourceRef.GroupVersionKind()))
+		}
+		return allowedResponse
+	}
+
 	if isDCLResource {
 		return a.dclValidateIAMPolicyMember(policyMember)
 	}
