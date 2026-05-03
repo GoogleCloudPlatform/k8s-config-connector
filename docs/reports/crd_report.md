@@ -340,8 +340,8 @@
 | memorystore.cnrm.cloud.google.com             | MemorystoreInstanceEndpoint                     | True         | False       | False  | Direct     | True        |
 | memorystore.cnrm.cloud.google.com             | MemorystoreInstance                             | True         | True        | False  | Direct     | True        |
 | metastore.cnrm.cloud.google.com               | MetastoreBackup                                 | True         | True        | False  | Direct     | True        |
-| metastore.cnrm.cloud.google.com               | MetastoreFederation                             | False        | True        | False  | Direct     | True        |
-| metastore.cnrm.cloud.google.com               | MetastoreService                                | False        | True        | False  | Direct     | True        |
+| metastore.cnrm.cloud.google.com               | MetastoreFederation                             | True         | True        | False  | Direct     | True        |
+| metastore.cnrm.cloud.google.com               | MetastoreService                                | True         | True        | False  | Direct     | True        |
 | mlengine.cnrm.cloud.google.com                | MLEngineModel                                   | True         | False       | False  | Terraform  | False       |
 | monitoring.cnrm.cloud.google.com              | MonitoringAlertPolicy                           | False        | True        | False  | Terraform  | False       |
 | monitoring.cnrm.cloud.google.com              | MonitoringDashboard                             | False        | True        | False  | Direct     | True        |
