@@ -22,7 +22,6 @@ package cluster
 
 import (
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
-	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
@@ -503,7 +502,7 @@ func DiscoveryEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out := &krm.DiscoveryEndpointObservedState{}
 	out.Address = direct.LazyPtr(in.GetAddress())
 	out.Port = direct.LazyPtr(in.GetPort())
-	out.PSCConfig = PSCConfig_FromProto(mapCtx, in.GetPscConfig())
+	out.PSCConfig = PSCConfigObservedState_FromProto(mapCtx, in.GetPscConfig())
 	return out
 }
 func DiscoveryEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryEndpointObservedState) *pb.DiscoveryEndpoint {
@@ -513,7 +512,7 @@ func DiscoveryEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.D
 	out := &pb.DiscoveryEndpoint{}
 	out.Address = direct.ValueOf(in.Address)
 	out.Port = direct.ValueOf(in.Port)
-	out.PscConfig = PSCConfig_ToProto(mapCtx, in.PSCConfig)
+	out.PscConfig = PSCConfigObservedState_ToProto(mapCtx, in.PSCConfig)
 	return out
 }
 func EncryptionInfo_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krm.EncryptionInfo {
@@ -620,6 +619,8 @@ func PSCAutoConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.P
 	out.ConnectionType = direct.Enum_ToProto[pb.ConnectionType](mapCtx, in.ConnectionType)
 	return out
 }
+
+/* found existing non-generated mapping function "PSCConfig_FromProto", skipping
 func PSCConfig_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.PSCConfig {
 	if in == nil {
 		return nil
@@ -630,16 +631,22 @@ func PSCConfig_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.PSCCo
 	}
 	return out
 }
-func PSCConfig_ToProto(mapCtx *direct.MapContext, in *krm.PSCConfig) *pb.PscConfig {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "PSCConfig_ToProto", skipping
+
+	func PSCConfig_ToProto(mapCtx *direct.MapContext, in *krm.PSCConfig) *pb.PscConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.PscConfig{}
+		if in.NetworkRef != nil {
+			out.Network = in.NetworkRef.External
+		}
+		return out
 	}
-	out := &pb.PscConfig{}
-	if in.NetworkRef != nil {
-		out.Network = in.NetworkRef.External
-	}
-	return out
-}
+*/
 func PSCConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.PSCConfigObservedState {
 	if in == nil {
 		return nil

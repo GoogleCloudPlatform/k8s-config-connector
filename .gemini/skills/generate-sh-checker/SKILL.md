@@ -75,11 +75,28 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
         -   Adding `// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"` to the `v1beta1` `api_types.go` file (near the Kind struct).
         -   Ensuring `v1beta1` has `// +kubebuilder:storageversion`.
 
-5.  **Execute and Verify**:
+5.  **Special Handling (Mapper Subdirectories)**:
+    -   If the handwritten `mapper.go` is located in a subdirectory of `pkg/controller/direct/<SERVICE_NAME>` (e.g., `pkg/controller/direct/redis/cluster`), `generate-mapper` will not find it and will overwrite any custom mapping functions.
+    -   To fix this, temporarily copy the handwritten `mapper.go` to the parent directory and change its package name before running `generate-mapper`:
+        ```bash
+        cp ${REPO_ROOT}/pkg/controller/direct/<SERVICE_NAME>/<SUBDIR>/mapper.go ${REPO_ROOT}/pkg/controller/direct/<SERVICE_NAME>/mapper.go
+        sed -i 's/package <SUBDIR>/package <SERVICE_NAME>/' ${REPO_ROOT}/pkg/controller/direct/<SERVICE_NAME>/mapper.go
+        
+        go run . generate-mapper ...
+        
+        rm ${REPO_ROOT}/pkg/controller/direct/<SERVICE_NAME>/mapper.go
+        mv ${REPO_ROOT}/pkg/controller/direct/<SERVICE_NAME>/mapper.generated.go ${REPO_ROOT}/pkg/controller/direct/<SERVICE_NAME>/<SUBDIR>/mapper.generated.go
+        sed -i 's/package <SERVICE_NAME>/package <SUBDIR>/' ${REPO_ROOT}/pkg/controller/direct/<SERVICE_NAME>/<SUBDIR>/mapper.generated.go
+        ```
+
+6.  **Special Handling (Type modifications)**:
+    -   If you need to sed `types.generated.go` to change a generated type (e.g., changing a struct to an `ObservedState` struct), ensure the `sed` command runs **BEFORE** `generate-mapper`. This guarantees that `generate-mapper` generates the mapping functions for the updated types.
+
+7.  **Execute and Verify**:
     -   Make `generate.sh` executable: `chmod +x apis/<SERVICE>/<VERSION>/generate.sh`.
     -   Run it: `./apis/<SERVICE>/<VERSION>/generate.sh`.
     -   Verify that `types.generated.go` is created in the API directory.
     -   Verify that `pkg/controller/direct/<SERVICE>/mapper.generated.go` is updated.
     -   Verify that CRDs in `config/crds/resources/` are updated.
 
-6.  **Commit and PR**: Create a branch, commit the changes, and propose a PR with a descriptive title like `chore: apis/<SERVICE> should follow generate.sh pattern`.
+8.  **Commit and PR**: Create a branch, commit the changes, and propose a PR with a descriptive title like `chore: apis/<SERVICE> should follow generate.sh pattern`.
