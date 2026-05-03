@@ -13,25 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 set -o errexit
 set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
+
+./generate-proto.sh
 
 go run . generate-types \
   --service google.cloud.dataproc.v1 \
-  --api-version dataproc.cnrm.cloud.google.com/v1beta1 \
-  --resource DataprocAutoscalingPolicy:AutoscalingPolicy \
-  --include-skipped-output
-
-go run . generate-mapper \
-  --service google.cloud.dataproc.v1 \
-  --api-version dataproc.cnrm.cloud.google.com/v1beta1 \
-  --multiversion \
+  --api-version dataproc.cnrm.cloud.google.com/v1alpha1 \
+  --resource DataprocBatch:Batch \
+  --resource DataprocJob:Job \
+  --resource DataprocNodeGroup:NodeGroup \
   --include-skipped-output
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
+
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/dataproc/

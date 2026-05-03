@@ -27,7 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AcceleratorConfig_FromProto(mapCtx *direct.MapContext, in *pb.AcceleratorConfig) *krmdataprocv1alpha1.AcceleratorConfig {
+func AcceleratorConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AcceleratorConfig) *krmdataprocv1alpha1.AcceleratorConfig {
 	if in == nil {
 		return nil
 	}
@@ -36,7 +36,7 @@ func AcceleratorConfig_FromProto(mapCtx *direct.MapContext, in *pb.AcceleratorCo
 	out.AcceleratorCount = direct.LazyPtr(in.GetAcceleratorCount())
 	return out
 }
-func AcceleratorConfig_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.AcceleratorConfig) *pb.AcceleratorConfig {
+func AcceleratorConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.AcceleratorConfig) *pb.AcceleratorConfig {
 	if in == nil {
 		return nil
 	}
@@ -45,9 +45,25 @@ func AcceleratorConfig_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha
 	out.AcceleratorCount = direct.ValueOf(in.AcceleratorCount)
 	return out
 }
+func AuthenticationConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthenticationConfig) *krmdataprocv1alpha1.AuthenticationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataprocv1alpha1.AuthenticationConfig{}
+	out.UserWorkloadAuthenticationType = direct.Enum_FromProto(mapCtx, in.GetUserWorkloadAuthenticationType())
+	return out
+}
+func AuthenticationConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.AuthenticationConfig) *pb.AuthenticationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthenticationConfig{}
+	out.UserWorkloadAuthenticationType = direct.Enum_ToProto[pb.AuthenticationConfig_AuthenticationType](mapCtx, in.UserWorkloadAuthenticationType)
+	return out
+}
 
-/* found existing non-generated mapping function "AutotuningConfig_FromProto", skipping
-func AutotuningConfig_FromProto(mapCtx *direct.MapContext, in *pb.AutotuningConfig) *krmdataprocv1alpha1.AutotuningConfig {
+/* found existing non-generated mapping function "AutotuningConfig_v1alpha1_FromProto", skipping
+func AutotuningConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutotuningConfig) *krmdataprocv1alpha1.AutotuningConfig {
 	if in == nil {
 		return nil
 	}
@@ -58,9 +74,9 @@ func AutotuningConfig_FromProto(mapCtx *direct.MapContext, in *pb.AutotuningConf
 */
 
 /*
-found existing non-generated mapping function "AutotuningConfig_ToProto", skipping
+found existing non-generated mapping function "AutotuningConfig_v1alpha1_ToProto", skipping
 
-	func AutotuningConfig_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.AutotuningConfig) *pb.AutotuningConfig {
+	func AutotuningConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.AutotuningConfig) *pb.AutotuningConfig {
 		if in == nil {
 			return nil
 		}
@@ -69,27 +85,27 @@ found existing non-generated mapping function "AutotuningConfig_ToProto", skippi
 		return out
 	}
 */
-func BasicAutoscalingAlgorithm_FromProto(mapCtx *direct.MapContext, in *pb.BasicAutoscalingAlgorithm) *krm.BasicAutoscalingAlgorithm {
+func BasicAutoscalingAlgorithm_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BasicAutoscalingAlgorithm) *krm.BasicAutoscalingAlgorithm {
 	if in == nil {
 		return nil
 	}
 	out := &krm.BasicAutoscalingAlgorithm{}
-	out.YarnConfig = BasicYarnAutoscalingConfig_FromProto(mapCtx, in.GetYarnConfig())
+	out.YarnConfig = BasicYarnAutoscalingConfig_v1beta1_FromProto(mapCtx, in.GetYarnConfig())
 	out.CooldownPeriod = direct.StringDuration_FromProto(mapCtx, in.GetCooldownPeriod())
 	return out
 }
-func BasicAutoscalingAlgorithm_ToProto(mapCtx *direct.MapContext, in *krm.BasicAutoscalingAlgorithm) *pb.BasicAutoscalingAlgorithm {
+func BasicAutoscalingAlgorithm_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BasicAutoscalingAlgorithm) *pb.BasicAutoscalingAlgorithm {
 	if in == nil {
 		return nil
 	}
 	out := &pb.BasicAutoscalingAlgorithm{}
-	if oneof := BasicYarnAutoscalingConfig_ToProto(mapCtx, in.YarnConfig); oneof != nil {
+	if oneof := BasicYarnAutoscalingConfig_v1beta1_ToProto(mapCtx, in.YarnConfig); oneof != nil {
 		out.Config = &pb.BasicAutoscalingAlgorithm_YarnConfig{YarnConfig: oneof}
 	}
 	out.CooldownPeriod = direct.StringDuration_ToProto(mapCtx, in.CooldownPeriod)
 	return out
 }
-func BasicYarnAutoscalingConfig_FromProto(mapCtx *direct.MapContext, in *pb.BasicYarnAutoscalingConfig) *krm.BasicYarnAutoscalingConfig {
+func BasicYarnAutoscalingConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BasicYarnAutoscalingConfig) *krm.BasicYarnAutoscalingConfig {
 	if in == nil {
 		return nil
 	}
@@ -101,7 +117,7 @@ func BasicYarnAutoscalingConfig_FromProto(mapCtx *direct.MapContext, in *pb.Basi
 	out.ScaleDownMinWorkerFraction = direct.LazyPtr(in.GetScaleDownMinWorkerFraction())
 	return out
 }
-func BasicYarnAutoscalingConfig_ToProto(mapCtx *direct.MapContext, in *krm.BasicYarnAutoscalingConfig) *pb.BasicYarnAutoscalingConfig {
+func BasicYarnAutoscalingConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BasicYarnAutoscalingConfig) *pb.BasicYarnAutoscalingConfig {
 	if in == nil {
 		return nil
 	}
@@ -114,8 +130,8 @@ func BasicYarnAutoscalingConfig_ToProto(mapCtx *direct.MapContext, in *krm.Basic
 	return out
 }
 
-/* found existing non-generated mapping function "Batch_StateHistory_FromProto", skipping
-func Batch_StateHistory_FromProto(mapCtx *direct.MapContext, in *pb.Batch_StateHistory) *krmdataprocv1alpha1.Batch_StateHistory {
+/* found existing non-generated mapping function "Batch_StateHistory_v1alpha1_FromProto", skipping
+func Batch_StateHistory_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Batch_StateHistory) *krmdataprocv1alpha1.Batch_StateHistory {
 	if in == nil {
 		return nil
 	}
@@ -127,8 +143,8 @@ func Batch_StateHistory_FromProto(mapCtx *direct.MapContext, in *pb.Batch_StateH
 }
 */
 
-/* found existing non-generated mapping function "Batch_StateHistory_ToProto", skipping
-func Batch_StateHistory_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.Batch_StateHistory) *pb.Batch_StateHistory {
+/* found existing non-generated mapping function "Batch_StateHistory_v1alpha1_ToProto", skipping
+func Batch_StateHistory_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.Batch_StateHistory) *pb.Batch_StateHistory {
 	if in == nil {
 		return nil
 	}
@@ -140,8 +156,8 @@ func Batch_StateHistory_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alph
 }
 */
 
-/* found existing non-generated mapping function "Batch_StateHistoryObservedState_FromProto", skipping
-func Batch_StateHistoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Batch_StateHistory) *krmdataprocv1alpha1.Batch_StateHistoryObservedState {
+/* found existing non-generated mapping function "Batch_StateHistoryObservedState_v1alpha1_FromProto", skipping
+func Batch_StateHistoryObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Batch_StateHistory) *krmdataprocv1alpha1.Batch_StateHistoryObservedState {
 	if in == nil {
 		return nil
 	}
@@ -154,9 +170,9 @@ func Batch_StateHistoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 */
 
 /*
-found existing non-generated mapping function "Batch_StateHistoryObservedState_ToProto", skipping
+found existing non-generated mapping function "Batch_StateHistoryObservedState_v1alpha1_ToProto", skipping
 
-	func Batch_StateHistoryObservedState_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.Batch_StateHistoryObservedState) *pb.Batch_StateHistory {
+	func Batch_StateHistoryObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.Batch_StateHistoryObservedState) *pb.Batch_StateHistory {
 		if in == nil {
 			return nil
 		}
@@ -167,37 +183,37 @@ found existing non-generated mapping function "Batch_StateHistoryObservedState_T
 		return out
 	}
 */
-func DataprocAutoscalingPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPolicy) *krm.DataprocAutoscalingPolicySpec {
+func DataprocAutoscalingPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPolicy) *krm.DataprocAutoscalingPolicySpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.DataprocAutoscalingPolicySpec{}
 	// MISSING: ID
 	// MISSING: Name
-	out.BasicAlgorithm = BasicAutoscalingAlgorithm_FromProto(mapCtx, in.GetBasicAlgorithm())
-	out.WorkerConfig = InstanceGroupAutoscalingPolicyConfig_FromProto(mapCtx, in.GetWorkerConfig())
-	out.SecondaryWorkerConfig = SecondaryInstanceGroupAutoscalingPolicyConfig_FromProto(mapCtx, in.GetSecondaryWorkerConfig())
+	out.BasicAlgorithm = BasicAutoscalingAlgorithm_v1beta1_FromProto(mapCtx, in.GetBasicAlgorithm())
+	out.WorkerConfig = InstanceGroupAutoscalingPolicyConfig_v1beta1_FromProto(mapCtx, in.GetWorkerConfig())
+	out.SecondaryWorkerConfig = SecondaryInstanceGroupAutoscalingPolicyConfig_v1beta1_FromProto(mapCtx, in.GetSecondaryWorkerConfig())
 	// MISSING: Labels
 	return out
 }
-func DataprocAutoscalingPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataprocAutoscalingPolicySpec) *pb.AutoscalingPolicy {
+func DataprocAutoscalingPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.DataprocAutoscalingPolicySpec) *pb.AutoscalingPolicy {
 	if in == nil {
 		return nil
 	}
 	out := &pb.AutoscalingPolicy{}
 	// MISSING: ID
 	// MISSING: Name
-	if oneof := BasicAutoscalingAlgorithm_ToProto(mapCtx, in.BasicAlgorithm); oneof != nil {
+	if oneof := BasicAutoscalingAlgorithm_v1beta1_ToProto(mapCtx, in.BasicAlgorithm); oneof != nil {
 		out.Algorithm = &pb.AutoscalingPolicy_BasicAlgorithm{BasicAlgorithm: oneof}
 	}
-	out.WorkerConfig = InstanceGroupAutoscalingPolicyConfig_ToProto(mapCtx, in.WorkerConfig)
-	out.SecondaryWorkerConfig = SecondaryInstanceGroupAutoscalingPolicyConfig_ToProto(mapCtx, in.SecondaryWorkerConfig)
+	out.WorkerConfig = InstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto(mapCtx, in.WorkerConfig)
+	out.SecondaryWorkerConfig = SecondaryInstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto(mapCtx, in.SecondaryWorkerConfig)
 	// MISSING: Labels
 	return out
 }
 
-/* found existing non-generated mapping function "DataprocBatchObservedState_FromProto", skipping
-func DataprocBatchObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Batch) *krmdataprocv1alpha1.DataprocBatchObservedState {
+/* found existing non-generated mapping function "DataprocBatchObservedState_v1alpha1_FromProto", skipping
+func DataprocBatchObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Batch) *krmdataprocv1alpha1.DataprocBatchObservedState {
 	if in == nil {
 		return nil
 	}
@@ -205,19 +221,19 @@ func DataprocBatchObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Batc
 	// MISSING: Name
 	out.Uuid = direct.LazyPtr(in.GetUuid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.RuntimeInfo = RuntimeInfoObservedState_FromProto(mapCtx, in.GetRuntimeInfo())
+	out.RuntimeInfo = RuntimeInfoObservedState_v1alpha1_FromProto(mapCtx, in.GetRuntimeInfo())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.StateMessage = direct.LazyPtr(in.GetStateMessage())
 	out.StateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStateTime())
 	out.Creator = direct.LazyPtr(in.GetCreator())
 	out.Operation = direct.LazyPtr(in.GetOperation())
-	out.StateHistory = direct.Slice_FromProto(mapCtx, in.StateHistory, Batch_StateHistoryObservedState_FromProto)
+	out.StateHistory = direct.Slice_FromProto(mapCtx, in.StateHistory, Batch_StateHistoryObservedState_v1alpha1_FromProto)
 	return out
 }
 */
 
-/* found existing non-generated mapping function "DataprocBatchObservedState_ToProto", skipping
-func DataprocBatchObservedState_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DataprocBatchObservedState) *pb.Batch {
+/* found existing non-generated mapping function "DataprocBatchObservedState_v1alpha1_ToProto", skipping
+func DataprocBatchObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DataprocBatchObservedState) *pb.Batch {
 	if in == nil {
 		return nil
 	}
@@ -225,71 +241,71 @@ func DataprocBatchObservedState_ToProto(mapCtx *direct.MapContext, in *krmdatapr
 	// MISSING: Name
 	out.Uuid = direct.ValueOf(in.Uuid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.RuntimeInfo = RuntimeInfoObservedState_ToProto(mapCtx, in.RuntimeInfo)
+	out.RuntimeInfo = RuntimeInfoObservedState_v1alpha1_ToProto(mapCtx, in.RuntimeInfo)
 	out.State = direct.Enum_ToProto[pb.Batch_State](mapCtx, in.State)
 	out.StateMessage = direct.ValueOf(in.StateMessage)
 	out.StateTime = direct.StringTimestamp_ToProto(mapCtx, in.StateTime)
 	out.Creator = direct.ValueOf(in.Creator)
 	out.Operation = direct.ValueOf(in.Operation)
-	out.StateHistory = direct.Slice_ToProto(mapCtx, in.StateHistory, Batch_StateHistoryObservedState_ToProto)
+	out.StateHistory = direct.Slice_ToProto(mapCtx, in.StateHistory, Batch_StateHistoryObservedState_v1alpha1_ToProto)
 	return out
 }
 */
 
-/* found existing non-generated mapping function "DataprocBatchSpec_FromProto", skipping
-func DataprocBatchSpec_FromProto(mapCtx *direct.MapContext, in *pb.Batch) *krmdataprocv1alpha1.DataprocBatchSpec {
+/* found existing non-generated mapping function "DataprocBatchSpec_v1alpha1_FromProto", skipping
+func DataprocBatchSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Batch) *krmdataprocv1alpha1.DataprocBatchSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krmdataprocv1alpha1.DataprocBatchSpec{}
 	// MISSING: Name
-	out.PysparkBatch = PySparkBatch_FromProto(mapCtx, in.GetPysparkBatch())
-	out.SparkBatch = SparkBatch_FromProto(mapCtx, in.GetSparkBatch())
-	out.SparkRBatch = SparkRBatch_FromProto(mapCtx, in.GetSparkRBatch())
-	out.SparkSQLBatch = SparkSQLBatch_FromProto(mapCtx, in.GetSparkSqlBatch())
+	out.PysparkBatch = PySparkBatch_v1alpha1_FromProto(mapCtx, in.GetPysparkBatch())
+	out.SparkBatch = SparkBatch_v1alpha1_FromProto(mapCtx, in.GetSparkBatch())
+	out.SparkRBatch = SparkRBatch_v1alpha1_FromProto(mapCtx, in.GetSparkRBatch())
+	out.SparkSQLBatch = SparkSQLBatch_v1alpha1_FromProto(mapCtx, in.GetSparkSqlBatch())
 	out.Labels = in.Labels
-	out.RuntimeConfig = RuntimeConfig_FromProto(mapCtx, in.GetRuntimeConfig())
-	out.EnvironmentConfig = EnvironmentConfig_FromProto(mapCtx, in.GetEnvironmentConfig())
+	out.RuntimeConfig = RuntimeConfig_v1alpha1_FromProto(mapCtx, in.GetRuntimeConfig())
+	out.EnvironmentConfig = EnvironmentConfig_v1alpha1_FromProto(mapCtx, in.GetEnvironmentConfig())
 	return out
 }
 */
 
-/* found existing non-generated mapping function "DataprocBatchSpec_ToProto", skipping
-func DataprocBatchSpec_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DataprocBatchSpec) *pb.Batch {
+/* found existing non-generated mapping function "DataprocBatchSpec_v1alpha1_ToProto", skipping
+func DataprocBatchSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DataprocBatchSpec) *pb.Batch {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Batch{}
 	// MISSING: Name
-	if oneof := PySparkBatch_ToProto(mapCtx, in.PysparkBatch); oneof != nil {
+	if oneof := PySparkBatch_v1alpha1_ToProto(mapCtx, in.PysparkBatch); oneof != nil {
 		out.BatchConfig = &pb.Batch_PysparkBatch{PysparkBatch: oneof}
 	}
-	if oneof := SparkBatch_ToProto(mapCtx, in.SparkBatch); oneof != nil {
+	if oneof := SparkBatch_v1alpha1_ToProto(mapCtx, in.SparkBatch); oneof != nil {
 		out.BatchConfig = &pb.Batch_SparkBatch{SparkBatch: oneof}
 	}
-	if oneof := SparkRBatch_ToProto(mapCtx, in.SparkRBatch); oneof != nil {
+	if oneof := SparkRBatch_v1alpha1_ToProto(mapCtx, in.SparkRBatch); oneof != nil {
 		out.BatchConfig = &pb.Batch_SparkRBatch{SparkRBatch: oneof}
 	}
-	if oneof := SparkSQLBatch_ToProto(mapCtx, in.SparkSQLBatch); oneof != nil {
+	if oneof := SparkSQLBatch_v1alpha1_ToProto(mapCtx, in.SparkSQLBatch); oneof != nil {
 		out.BatchConfig = &pb.Batch_SparkSqlBatch{SparkSqlBatch: oneof}
 	}
 	out.Labels = in.Labels
-	out.RuntimeConfig = RuntimeConfig_ToProto(mapCtx, in.RuntimeConfig)
-	out.EnvironmentConfig = EnvironmentConfig_ToProto(mapCtx, in.EnvironmentConfig)
+	out.RuntimeConfig = RuntimeConfig_v1alpha1_ToProto(mapCtx, in.RuntimeConfig)
+	out.EnvironmentConfig = EnvironmentConfig_v1alpha1_ToProto(mapCtx, in.EnvironmentConfig)
 	return out
 }
 */
 
-/* found existing non-generated mapping function "DataprocJobObservedState_FromProto", skipping
-func DataprocJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krmdataprocv1alpha1.DataprocJobObservedState {
+/* found existing non-generated mapping function "DataprocJobObservedState_v1alpha1_FromProto", skipping
+func DataprocJobObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krmdataprocv1alpha1.DataprocJobObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krmdataprocv1alpha1.DataprocJobObservedState{}
-	out.Placement = JobPlacementObservedState_FromProto(mapCtx, in.GetPlacement())
-	out.Status = JobStatusObservedState_FromProto(mapCtx, in.GetStatus())
-	out.StatusHistory = direct.Slice_FromProto(mapCtx, in.StatusHistory, JobStatusObservedState_FromProto)
-	out.YarnApplications = direct.Slice_FromProto(mapCtx, in.YarnApplications, YarnApplication_FromProto)
+	out.Placement = JobPlacementObservedState_v1alpha1_FromProto(mapCtx, in.GetPlacement())
+	out.Status = JobStatusObservedState_v1alpha1_FromProto(mapCtx, in.GetStatus())
+	out.StatusHistory = direct.Slice_FromProto(mapCtx, in.StatusHistory, JobStatusObservedState_v1alpha1_FromProto)
+	out.YarnApplications = direct.Slice_FromProto(mapCtx, in.YarnApplications, YarnApplication_v1alpha1_FromProto)
 	out.DriverOutputResourceURI = direct.LazyPtr(in.GetDriverOutputResourceUri())
 	out.DriverControlFilesURI = direct.LazyPtr(in.GetDriverControlFilesUri())
 	// MISSING: JobUuid
@@ -299,16 +315,16 @@ func DataprocJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *
 }
 */
 
-/* found existing non-generated mapping function "DataprocJobObservedState_ToProto", skipping
-func DataprocJobObservedState_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DataprocJobObservedState) *pb.Job {
+/* found existing non-generated mapping function "DataprocJobObservedState_v1alpha1_ToProto", skipping
+func DataprocJobObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DataprocJobObservedState) *pb.Job {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Job{}
-	out.Placement = JobPlacementObservedState_ToProto(mapCtx, in.Placement)
-	out.Status = JobStatusObservedState_ToProto(mapCtx, in.Status)
-	out.StatusHistory = direct.Slice_ToProto(mapCtx, in.StatusHistory, JobStatusObservedState_ToProto)
-	out.YarnApplications = direct.Slice_ToProto(mapCtx, in.YarnApplications, YarnApplication_ToProto)
+	out.Placement = JobPlacementObservedState_v1alpha1_ToProto(mapCtx, in.Placement)
+	out.Status = JobStatusObservedState_v1alpha1_ToProto(mapCtx, in.Status)
+	out.StatusHistory = direct.Slice_ToProto(mapCtx, in.StatusHistory, JobStatusObservedState_v1alpha1_ToProto)
+	out.YarnApplications = direct.Slice_ToProto(mapCtx, in.YarnApplications, YarnApplication_v1alpha1_ToProto)
 	out.DriverOutputResourceUri = direct.ValueOf(in.DriverOutputResourceURI)
 	out.DriverControlFilesUri = direct.ValueOf(in.DriverControlFilesURI)
 	// MISSING: JobUuid
@@ -318,122 +334,122 @@ func DataprocJobObservedState_ToProto(mapCtx *direct.MapContext, in *krmdataproc
 }
 */
 
-/* found existing non-generated mapping function "DataprocJobSpec_FromProto", skipping
-func DataprocJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krmdataprocv1alpha1.DataprocJobSpec {
+/* found existing non-generated mapping function "DataprocJobSpec_v1alpha1_FromProto", skipping
+func DataprocJobSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krmdataprocv1alpha1.DataprocJobSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krmdataprocv1alpha1.DataprocJobSpec{}
-	out.Reference = JobReference_FromProto(mapCtx, in.GetReference())
-	out.Placement = JobPlacement_FromProto(mapCtx, in.GetPlacement())
-	out.HadoopJob = HadoopJob_FromProto(mapCtx, in.GetHadoopJob())
-	out.SparkJob = SparkJob_FromProto(mapCtx, in.GetSparkJob())
-	out.PysparkJob = PySparkJob_FromProto(mapCtx, in.GetPysparkJob())
-	out.HiveJob = HiveJob_FromProto(mapCtx, in.GetHiveJob())
-	out.PigJob = PigJob_FromProto(mapCtx, in.GetPigJob())
-	out.SparkRJob = SparkRJob_FromProto(mapCtx, in.GetSparkRJob())
-	out.SparkSQLJob = SparkSQLJob_FromProto(mapCtx, in.GetSparkSqlJob())
-	out.PrestoJob = PrestoJob_FromProto(mapCtx, in.GetPrestoJob())
-	out.TrinoJob = TrinoJob_FromProto(mapCtx, in.GetTrinoJob())
-	out.FlinkJob = FlinkJob_FromProto(mapCtx, in.GetFlinkJob())
+	out.Reference = JobReference_v1alpha1_FromProto(mapCtx, in.GetReference())
+	out.Placement = JobPlacement_v1alpha1_FromProto(mapCtx, in.GetPlacement())
+	out.HadoopJob = HadoopJob_v1alpha1_FromProto(mapCtx, in.GetHadoopJob())
+	out.SparkJob = SparkJob_v1alpha1_FromProto(mapCtx, in.GetSparkJob())
+	out.PysparkJob = PySparkJob_v1alpha1_FromProto(mapCtx, in.GetPysparkJob())
+	out.HiveJob = HiveJob_v1alpha1_FromProto(mapCtx, in.GetHiveJob())
+	out.PigJob = PigJob_v1alpha1_FromProto(mapCtx, in.GetPigJob())
+	out.SparkRJob = SparkRJob_v1alpha1_FromProto(mapCtx, in.GetSparkRJob())
+	out.SparkSQLJob = SparkSQLJob_v1alpha1_FromProto(mapCtx, in.GetSparkSqlJob())
+	out.PrestoJob = PrestoJob_v1alpha1_FromProto(mapCtx, in.GetPrestoJob())
+	out.TrinoJob = TrinoJob_v1alpha1_FromProto(mapCtx, in.GetTrinoJob())
+	out.FlinkJob = FlinkJob_v1alpha1_FromProto(mapCtx, in.GetFlinkJob())
 	out.Labels = in.Labels
-	out.Scheduling = JobScheduling_FromProto(mapCtx, in.GetScheduling())
+	out.Scheduling = JobScheduling_v1alpha1_FromProto(mapCtx, in.GetScheduling())
 	// MISSING: JobUuid
-	out.DriverSchedulingConfig = DriverSchedulingConfig_FromProto(mapCtx, in.GetDriverSchedulingConfig())
+	out.DriverSchedulingConfig = DriverSchedulingConfig_v1alpha1_FromProto(mapCtx, in.GetDriverSchedulingConfig())
 	return out
 }
 */
 
 /*
-found existing non-generated mapping function "DataprocJobSpec_ToProto", skipping
+found existing non-generated mapping function "DataprocJobSpec_v1alpha1_ToProto", skipping
 
-	func DataprocJobSpec_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DataprocJobSpec) *pb.Job {
+	func DataprocJobSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DataprocJobSpec) *pb.Job {
 		if in == nil {
 			return nil
 		}
 		out := &pb.Job{}
-		out.Reference = JobReference_ToProto(mapCtx, in.Reference)
-		out.Placement = JobPlacement_ToProto(mapCtx, in.Placement)
-		if oneof := HadoopJob_ToProto(mapCtx, in.HadoopJob); oneof != nil {
+		out.Reference = JobReference_v1alpha1_ToProto(mapCtx, in.Reference)
+		out.Placement = JobPlacement_v1alpha1_ToProto(mapCtx, in.Placement)
+		if oneof := HadoopJob_v1alpha1_ToProto(mapCtx, in.HadoopJob); oneof != nil {
 			out.TypeJob = &pb.Job_HadoopJob{HadoopJob: oneof}
 		}
-		if oneof := SparkJob_ToProto(mapCtx, in.SparkJob); oneof != nil {
+		if oneof := SparkJob_v1alpha1_ToProto(mapCtx, in.SparkJob); oneof != nil {
 			out.TypeJob = &pb.Job_SparkJob{SparkJob: oneof}
 		}
-		if oneof := PySparkJob_ToProto(mapCtx, in.PysparkJob); oneof != nil {
+		if oneof := PySparkJob_v1alpha1_ToProto(mapCtx, in.PysparkJob); oneof != nil {
 			out.TypeJob = &pb.Job_PysparkJob{PysparkJob: oneof}
 		}
-		if oneof := HiveJob_ToProto(mapCtx, in.HiveJob); oneof != nil {
+		if oneof := HiveJob_v1alpha1_ToProto(mapCtx, in.HiveJob); oneof != nil {
 			out.TypeJob = &pb.Job_HiveJob{HiveJob: oneof}
 		}
-		if oneof := PigJob_ToProto(mapCtx, in.PigJob); oneof != nil {
+		if oneof := PigJob_v1alpha1_ToProto(mapCtx, in.PigJob); oneof != nil {
 			out.TypeJob = &pb.Job_PigJob{PigJob: oneof}
 		}
-		if oneof := SparkRJob_ToProto(mapCtx, in.SparkRJob); oneof != nil {
+		if oneof := SparkRJob_v1alpha1_ToProto(mapCtx, in.SparkRJob); oneof != nil {
 			out.TypeJob = &pb.Job_SparkRJob{SparkRJob: oneof}
 		}
-		if oneof := SparkSQLJob_ToProto(mapCtx, in.SparkSQLJob); oneof != nil {
+		if oneof := SparkSQLJob_v1alpha1_ToProto(mapCtx, in.SparkSQLJob); oneof != nil {
 			out.TypeJob = &pb.Job_SparkSqlJob{SparkSqlJob: oneof}
 		}
-		if oneof := PrestoJob_ToProto(mapCtx, in.PrestoJob); oneof != nil {
+		if oneof := PrestoJob_v1alpha1_ToProto(mapCtx, in.PrestoJob); oneof != nil {
 			out.TypeJob = &pb.Job_PrestoJob{PrestoJob: oneof}
 		}
-		if oneof := TrinoJob_ToProto(mapCtx, in.TrinoJob); oneof != nil {
+		if oneof := TrinoJob_v1alpha1_ToProto(mapCtx, in.TrinoJob); oneof != nil {
 			out.TypeJob = &pb.Job_TrinoJob{TrinoJob: oneof}
 		}
-		if oneof := FlinkJob_ToProto(mapCtx, in.FlinkJob); oneof != nil {
+		if oneof := FlinkJob_v1alpha1_ToProto(mapCtx, in.FlinkJob); oneof != nil {
 			out.TypeJob = &pb.Job_FlinkJob{FlinkJob: oneof}
 		}
 		out.Labels = in.Labels
-		out.Scheduling = JobScheduling_ToProto(mapCtx, in.Scheduling)
+		out.Scheduling = JobScheduling_v1alpha1_ToProto(mapCtx, in.Scheduling)
 		// MISSING: JobUuid
-		out.DriverSchedulingConfig = DriverSchedulingConfig_ToProto(mapCtx, in.DriverSchedulingConfig)
+		out.DriverSchedulingConfig = DriverSchedulingConfig_v1alpha1_ToProto(mapCtx, in.DriverSchedulingConfig)
 		return out
 	}
 */
-func DataprocNodeGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NodeGroup) *krmdataprocv1alpha1.DataprocNodeGroupObservedState {
+func DataprocNodeGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NodeGroup) *krmdataprocv1alpha1.DataprocNodeGroupObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krmdataprocv1alpha1.DataprocNodeGroupObservedState{}
 	// MISSING: Name
-	out.NodeGroupConfig = InstanceGroupConfigObservedState_FromProto(mapCtx, in.GetNodeGroupConfig())
+	out.NodeGroupConfig = InstanceGroupConfigObservedState_v1alpha1_FromProto(mapCtx, in.GetNodeGroupConfig())
 	return out
 }
-func DataprocNodeGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DataprocNodeGroupObservedState) *pb.NodeGroup {
+func DataprocNodeGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DataprocNodeGroupObservedState) *pb.NodeGroup {
 	if in == nil {
 		return nil
 	}
 	out := &pb.NodeGroup{}
 	// MISSING: Name
-	out.NodeGroupConfig = InstanceGroupConfigObservedState_ToProto(mapCtx, in.NodeGroupConfig)
+	out.NodeGroupConfig = InstanceGroupConfigObservedState_v1alpha1_ToProto(mapCtx, in.NodeGroupConfig)
 	return out
 }
-func DataprocNodeGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.NodeGroup) *krmdataprocv1alpha1.DataprocNodeGroupSpec {
+func DataprocNodeGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NodeGroup) *krmdataprocv1alpha1.DataprocNodeGroupSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krmdataprocv1alpha1.DataprocNodeGroupSpec{}
 	// MISSING: Name
 	out.Roles = direct.EnumSlice_FromProto(mapCtx, in.Roles)
-	out.NodeGroupConfig = InstanceGroupConfig_FromProto(mapCtx, in.GetNodeGroupConfig())
+	out.NodeGroupConfig = InstanceGroupConfig_v1alpha1_FromProto(mapCtx, in.GetNodeGroupConfig())
 	out.Labels = in.Labels
 	return out
 }
-func DataprocNodeGroupSpec_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DataprocNodeGroupSpec) *pb.NodeGroup {
+func DataprocNodeGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DataprocNodeGroupSpec) *pb.NodeGroup {
 	if in == nil {
 		return nil
 	}
 	out := &pb.NodeGroup{}
 	// MISSING: Name
 	out.Roles = direct.EnumSlice_ToProto[pb.NodeGroup_Role](mapCtx, in.Roles)
-	out.NodeGroupConfig = InstanceGroupConfig_ToProto(mapCtx, in.NodeGroupConfig)
+	out.NodeGroupConfig = InstanceGroupConfig_v1alpha1_ToProto(mapCtx, in.NodeGroupConfig)
 	out.Labels = in.Labels
 	return out
 }
 
-/* found existing non-generated mapping function "DiskConfig_FromProto", skipping
-func DiskConfig_FromProto(mapCtx *direct.MapContext, in *pb.DiskConfig) *krmdataprocv1alpha1.DiskConfig {
+/* found existing non-generated mapping function "DiskConfig_v1alpha1_FromProto", skipping
+func DiskConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DiskConfig) *krmdataprocv1alpha1.DiskConfig {
 	if in == nil {
 		return nil
 	}
@@ -451,8 +467,8 @@ func DiskConfig_FromProto(mapCtx *direct.MapContext, in *pb.DiskConfig) *krmdata
 }
 */
 
-/* found existing non-generated mapping function "DiskConfig_ToProto", skipping
-func DiskConfig_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DiskConfig) *pb.DiskConfig {
+/* found existing non-generated mapping function "DiskConfig_v1alpha1_ToProto", skipping
+func DiskConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DiskConfig) *pb.DiskConfig {
 	if in == nil {
 		return nil
 	}
@@ -470,8 +486,8 @@ func DiskConfig_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DiskC
 }
 */
 
-/* found existing non-generated mapping function "DriverSchedulingConfig_FromProto", skipping
-func DriverSchedulingConfig_FromProto(mapCtx *direct.MapContext, in *pb.DriverSchedulingConfig) *krmdataprocv1alpha1.DriverSchedulingConfig {
+/* found existing non-generated mapping function "DriverSchedulingConfig_v1alpha1_FromProto", skipping
+func DriverSchedulingConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DriverSchedulingConfig) *krmdataprocv1alpha1.DriverSchedulingConfig {
 	if in == nil {
 		return nil
 	}
@@ -482,8 +498,8 @@ func DriverSchedulingConfig_FromProto(mapCtx *direct.MapContext, in *pb.DriverSc
 }
 */
 
-/* found existing non-generated mapping function "DriverSchedulingConfig_ToProto", skipping
-func DriverSchedulingConfig_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DriverSchedulingConfig) *pb.DriverSchedulingConfig {
+/* found existing non-generated mapping function "DriverSchedulingConfig_v1alpha1_ToProto", skipping
+func DriverSchedulingConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DriverSchedulingConfig) *pb.DriverSchedulingConfig {
 	if in == nil {
 		return nil
 	}
@@ -494,32 +510,32 @@ func DriverSchedulingConfig_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1
 }
 */
 
-/* found existing non-generated mapping function "EnvironmentConfig_FromProto", skipping
-func EnvironmentConfig_FromProto(mapCtx *direct.MapContext, in *pb.EnvironmentConfig) *krmdataprocv1alpha1.EnvironmentConfig {
+/* found existing non-generated mapping function "EnvironmentConfig_v1alpha1_FromProto", skipping
+func EnvironmentConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.EnvironmentConfig) *krmdataprocv1alpha1.EnvironmentConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krmdataprocv1alpha1.EnvironmentConfig{}
-	out.ExecutionConfig = ExecutionConfig_FromProto(mapCtx, in.GetExecutionConfig())
-	out.PeripheralsConfig = PeripheralsConfig_FromProto(mapCtx, in.GetPeripheralsConfig())
+	out.ExecutionConfig = ExecutionConfig_v1alpha1_FromProto(mapCtx, in.GetExecutionConfig())
+	out.PeripheralsConfig = PeripheralsConfig_v1alpha1_FromProto(mapCtx, in.GetPeripheralsConfig())
 	return out
 }
 */
 
-/* found existing non-generated mapping function "EnvironmentConfig_ToProto", skipping
-func EnvironmentConfig_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.EnvironmentConfig) *pb.EnvironmentConfig {
+/* found existing non-generated mapping function "EnvironmentConfig_v1alpha1_ToProto", skipping
+func EnvironmentConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.EnvironmentConfig) *pb.EnvironmentConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.EnvironmentConfig{}
-	out.ExecutionConfig = ExecutionConfig_ToProto(mapCtx, in.ExecutionConfig)
-	out.PeripheralsConfig = PeripheralsConfig_ToProto(mapCtx, in.PeripheralsConfig)
+	out.ExecutionConfig = ExecutionConfig_v1alpha1_ToProto(mapCtx, in.ExecutionConfig)
+	out.PeripheralsConfig = PeripheralsConfig_v1alpha1_ToProto(mapCtx, in.PeripheralsConfig)
 	return out
 }
 */
 
-/* found existing non-generated mapping function "ExecutionConfig_FromProto", skipping
-func ExecutionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionConfig) *krmdataprocv1alpha1.ExecutionConfig {
+/* found existing non-generated mapping function "ExecutionConfig_v1alpha1_FromProto", skipping
+func ExecutionConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionConfig) *krmdataprocv1alpha1.ExecutionConfig {
 	if in == nil {
 		return nil
 	}
@@ -543,55 +559,51 @@ func ExecutionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionConfig
 }
 */
 
-/* found existing non-generated mapping function "ExecutionConfig_ToProto", skipping
-func ExecutionConfig_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.ExecutionConfig) *pb.ExecutionConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ExecutionConfig{}
-	if in.ServiceAccountRef != nil {
-		out.ServiceAccount = in.ServiceAccountRef.External
-	}
-	if oneof := ExecutionConfig_NetworkUri_ToProto(mapCtx, in.NetworkURI); oneof != nil {
-		out.Network = oneof
-	}
-	if oneof := ExecutionConfig_SubnetworkUri_ToProto(mapCtx, in.SubnetworkURI); oneof != nil {
-		out.Network = oneof
-	}
-	out.NetworkTags = in.NetworkTags
-	if in.KMSKeyRef != nil {
-		out.KmsKey = in.KMSKeyRef.External
-	}
-	out.IdleTtl = direct.StringDuration_ToProto(mapCtx, in.IdleTTL)
-	out.Ttl = direct.StringDuration_ToProto(mapCtx, in.TTL)
-	if in.StagingBucketRef != nil {
-		out.StagingBucket = in.StagingBucketRef.External
-	}
-	// MISSING: AuthenticationConfig
-	return out
-}
-*/
+/*
+found existing non-generated mapping function "ExecutionConfig_v1alpha1_ToProto", skipping
 
-/* found existing non-generated mapping function "ExecutionConfig_NetworkUri_ToProto", skipping
+	func ExecutionConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.ExecutionConfig) *pb.ExecutionConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ExecutionConfig{}
+		if in.ServiceAccountRef != nil {
+			out.ServiceAccount = in.ServiceAccountRef.External
+		}
+		if oneof := ExecutionConfig_NetworkUri_ToProto(mapCtx, in.NetworkURI); oneof != nil {
+			out.Network = oneof
+		}
+		if oneof := ExecutionConfig_SubnetworkUri_ToProto(mapCtx, in.SubnetworkURI); oneof != nil {
+			out.Network = oneof
+		}
+		out.NetworkTags = in.NetworkTags
+		if in.KMSKeyRef != nil {
+			out.KmsKey = in.KMSKeyRef.External
+		}
+		out.IdleTtl = direct.StringDuration_ToProto(mapCtx, in.IdleTTL)
+		out.Ttl = direct.StringDuration_ToProto(mapCtx, in.TTL)
+		if in.StagingBucketRef != nil {
+			out.StagingBucket = in.StagingBucketRef.External
+		}
+		// MISSING: AuthenticationConfig
+		return out
+	}
+*/
 func ExecutionConfig_NetworkUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.ExecutionConfig_NetworkUri {
 	if in == nil {
 		return nil
 	}
 	return &pb.ExecutionConfig_NetworkUri{NetworkUri: *in}
 }
-*/
-
-/* found existing non-generated mapping function "ExecutionConfig_SubnetworkUri_ToProto", skipping
 func ExecutionConfig_SubnetworkUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.ExecutionConfig_SubnetworkUri {
 	if in == nil {
 		return nil
 	}
 	return &pb.ExecutionConfig_SubnetworkUri{SubnetworkUri: *in}
 }
-*/
 
-/* found existing non-generated mapping function "FlinkJob_FromProto", skipping
-func FlinkJob_FromProto(mapCtx *direct.MapContext, in *pb.FlinkJob) *krmdataprocv1alpha1.FlinkJob {
+/* found existing non-generated mapping function "FlinkJob_v1alpha1_FromProto", skipping
+func FlinkJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FlinkJob) *krmdataprocv1alpha1.FlinkJob {
 	if in == nil {
 		return nil
 	}
@@ -603,53 +615,49 @@ func FlinkJob_FromProto(mapCtx *direct.MapContext, in *pb.FlinkJob) *krmdataproc
 	// (near miss): "JarFileUris" vs "JarFileURIs"
 	out.SavepointURI = direct.LazyPtr(in.GetSavepointUri())
 	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
+	out.LoggingConfig = LoggingConfig_v1alpha1_FromProto(mapCtx, in.GetLoggingConfig())
 	return out
 }
 */
 
-/* found existing non-generated mapping function "FlinkJob_ToProto", skipping
-func FlinkJob_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.FlinkJob) *pb.FlinkJob {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FlinkJob{}
-	if oneof := FlinkJob_MainJarFileUri_ToProto(mapCtx, in.MainJarFileURI); oneof != nil {
-		out.Driver = oneof
-	}
-	if oneof := FlinkJob_MainClass_ToProto(mapCtx, in.MainClass); oneof != nil {
-		out.Driver = oneof
-	}
-	out.Args = in.Args
-	// MISSING: JarFileUris
-	// (near miss): "JarFileUris" vs "JarFileURIs"
-	out.SavepointUri = direct.ValueOf(in.SavepointURI)
-	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
-	return out
-}
-*/
+/*
+found existing non-generated mapping function "FlinkJob_v1alpha1_ToProto", skipping
 
-/* found existing non-generated mapping function "FlinkJob_MainJarFileUri_ToProto", skipping
+	func FlinkJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.FlinkJob) *pb.FlinkJob {
+		if in == nil {
+			return nil
+		}
+		out := &pb.FlinkJob{}
+		if oneof := FlinkJob_MainJarFileUri_ToProto(mapCtx, in.MainJarFileURI); oneof != nil {
+			out.Driver = oneof
+		}
+		if oneof := FlinkJob_MainClass_ToProto(mapCtx, in.MainClass); oneof != nil {
+			out.Driver = oneof
+		}
+		out.Args = in.Args
+		// MISSING: JarFileUris
+		// (near miss): "JarFileUris" vs "JarFileURIs"
+		out.SavepointUri = direct.ValueOf(in.SavepointURI)
+		out.Properties = in.Properties
+		out.LoggingConfig = LoggingConfig_v1alpha1_ToProto(mapCtx, in.LoggingConfig)
+		return out
+	}
+*/
 func FlinkJob_MainJarFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.FlinkJob_MainJarFileUri {
 	if in == nil {
 		return nil
 	}
 	return &pb.FlinkJob_MainJarFileUri{MainJarFileUri: *in}
 }
-*/
-
-/* found existing non-generated mapping function "FlinkJob_MainClass_ToProto", skipping
 func FlinkJob_MainClass_ToProto(mapCtx *direct.MapContext, in *string) *pb.FlinkJob_MainClass {
 	if in == nil {
 		return nil
 	}
 	return &pb.FlinkJob_MainClass{MainClass: *in}
 }
-*/
 
-/* found existing non-generated mapping function "HadoopJob_FromProto", skipping
-func HadoopJob_FromProto(mapCtx *direct.MapContext, in *pb.HadoopJob) *krmdataprocv1alpha1.HadoopJob {
+/* found existing non-generated mapping function "HadoopJob_v1alpha1_FromProto", skipping
+func HadoopJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.HadoopJob) *krmdataprocv1alpha1.HadoopJob {
 	if in == nil {
 		return nil
 	}
@@ -664,62 +672,58 @@ func HadoopJob_FromProto(mapCtx *direct.MapContext, in *pb.HadoopJob) *krmdatapr
 	// MISSING: ArchiveUris
 	// (near miss): "ArchiveUris" vs "ArchiveURIs"
 	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
+	out.LoggingConfig = LoggingConfig_v1alpha1_FromProto(mapCtx, in.GetLoggingConfig())
 	return out
 }
 */
 
-/* found existing non-generated mapping function "HadoopJob_ToProto", skipping
-func HadoopJob_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.HadoopJob) *pb.HadoopJob {
-	if in == nil {
-		return nil
-	}
-	out := &pb.HadoopJob{}
-	if oneof := HadoopJob_MainJarFileUri_ToProto(mapCtx, in.MainJarFileURI); oneof != nil {
-		out.Driver = oneof
-	}
-	if oneof := HadoopJob_MainClass_ToProto(mapCtx, in.MainClass); oneof != nil {
-		out.Driver = oneof
-	}
-	out.Args = in.Args
-	// MISSING: JarFileUris
-	// (near miss): "JarFileUris" vs "JarFileURIs"
-	// MISSING: FileUris
-	// (near miss): "FileUris" vs "FileURIs"
-	// MISSING: ArchiveUris
-	// (near miss): "ArchiveUris" vs "ArchiveURIs"
-	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
-	return out
-}
-*/
+/*
+found existing non-generated mapping function "HadoopJob_v1alpha1_ToProto", skipping
 
-/* found existing non-generated mapping function "HadoopJob_MainJarFileUri_ToProto", skipping
+	func HadoopJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.HadoopJob) *pb.HadoopJob {
+		if in == nil {
+			return nil
+		}
+		out := &pb.HadoopJob{}
+		if oneof := HadoopJob_MainJarFileUri_ToProto(mapCtx, in.MainJarFileURI); oneof != nil {
+			out.Driver = oneof
+		}
+		if oneof := HadoopJob_MainClass_ToProto(mapCtx, in.MainClass); oneof != nil {
+			out.Driver = oneof
+		}
+		out.Args = in.Args
+		// MISSING: JarFileUris
+		// (near miss): "JarFileUris" vs "JarFileURIs"
+		// MISSING: FileUris
+		// (near miss): "FileUris" vs "FileURIs"
+		// MISSING: ArchiveUris
+		// (near miss): "ArchiveUris" vs "ArchiveURIs"
+		out.Properties = in.Properties
+		out.LoggingConfig = LoggingConfig_v1alpha1_ToProto(mapCtx, in.LoggingConfig)
+		return out
+	}
+*/
 func HadoopJob_MainJarFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.HadoopJob_MainJarFileUri {
 	if in == nil {
 		return nil
 	}
 	return &pb.HadoopJob_MainJarFileUri{MainJarFileUri: *in}
 }
-*/
-
-/* found existing non-generated mapping function "HadoopJob_MainClass_ToProto", skipping
 func HadoopJob_MainClass_ToProto(mapCtx *direct.MapContext, in *string) *pb.HadoopJob_MainClass {
 	if in == nil {
 		return nil
 	}
 	return &pb.HadoopJob_MainClass{MainClass: *in}
 }
-*/
 
-/* found existing non-generated mapping function "HiveJob_FromProto", skipping
-func HiveJob_FromProto(mapCtx *direct.MapContext, in *pb.HiveJob) *krmdataprocv1alpha1.HiveJob {
+/* found existing non-generated mapping function "HiveJob_v1alpha1_FromProto", skipping
+func HiveJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.HiveJob) *krmdataprocv1alpha1.HiveJob {
 	if in == nil {
 		return nil
 	}
 	out := &krmdataprocv1alpha1.HiveJob{}
 	out.QueryFileURI = direct.LazyPtr(in.GetQueryFileUri())
-	out.QueryList = QueryList_FromProto(mapCtx, in.GetQueryList())
+	out.QueryList = QueryList_v1alpha1_FromProto(mapCtx, in.GetQueryList())
 	out.ContinueOnFailure = direct.LazyPtr(in.GetContinueOnFailure())
 	out.ScriptVariables = in.ScriptVariables
 	out.Properties = in.Properties
@@ -729,78 +733,75 @@ func HiveJob_FromProto(mapCtx *direct.MapContext, in *pb.HiveJob) *krmdataprocv1
 }
 */
 
-/* found existing non-generated mapping function "HiveJob_ToProto", skipping
-func HiveJob_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.HiveJob) *pb.HiveJob {
-	if in == nil {
-		return nil
-	}
-	out := &pb.HiveJob{}
-	if oneof := HiveJob_QueryFileUri_ToProto(mapCtx, in.QueryFileURI); oneof != nil {
-		out.Queries = oneof
-	}
-	if oneof := QueryList_ToProto(mapCtx, in.QueryList); oneof != nil {
-		out.Queries = &pb.HiveJob_QueryList{QueryList: oneof}
-	}
-	out.ContinueOnFailure = direct.ValueOf(in.ContinueOnFailure)
-	out.ScriptVariables = in.ScriptVariables
-	out.Properties = in.Properties
-	// MISSING: JarFileUris
-	// (near miss): "JarFileUris" vs "JarFileURIs"
-	return out
-}
-*/
-
 /*
-found existing non-generated mapping function "HiveJob_QueryFileUri_ToProto", skipping
+found existing non-generated mapping function "HiveJob_v1alpha1_ToProto", skipping
 
-	func HiveJob_QueryFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.HiveJob_QueryFileUri {
+	func HiveJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.HiveJob) *pb.HiveJob {
 		if in == nil {
 			return nil
 		}
-		return &pb.HiveJob_QueryFileUri{QueryFileUri: *in}
+		out := &pb.HiveJob{}
+		if oneof := HiveJob_QueryFileUri_ToProto(mapCtx, in.QueryFileURI); oneof != nil {
+			out.Queries = oneof
+		}
+		if oneof := QueryList_v1alpha1_ToProto(mapCtx, in.QueryList); oneof != nil {
+			out.Queries = &pb.HiveJob_QueryList{QueryList: oneof}
+		}
+		out.ContinueOnFailure = direct.ValueOf(in.ContinueOnFailure)
+		out.ScriptVariables = in.ScriptVariables
+		out.Properties = in.Properties
+		// MISSING: JarFileUris
+		// (near miss): "JarFileUris" vs "JarFileURIs"
+		return out
 	}
 */
-func InstanceFlexibilityPolicy_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy) *krmdataprocv1alpha1.InstanceFlexibilityPolicy {
+func HiveJob_QueryFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.HiveJob_QueryFileUri {
+	if in == nil {
+		return nil
+	}
+	return &pb.HiveJob_QueryFileUri{QueryFileUri: *in}
+}
+func InstanceFlexibilityPolicy_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy) *krmdataprocv1alpha1.InstanceFlexibilityPolicy {
 	if in == nil {
 		return nil
 	}
 	out := &krmdataprocv1alpha1.InstanceFlexibilityPolicy{}
-	out.ProvisioningModelMix = InstanceFlexibilityPolicy_ProvisioningModelMix_FromProto(mapCtx, in.GetProvisioningModelMix())
-	out.InstanceSelectionList = direct.Slice_FromProto(mapCtx, in.InstanceSelectionList, InstanceFlexibilityPolicy_InstanceSelection_FromProto)
+	out.ProvisioningModelMix = InstanceFlexibilityPolicy_ProvisioningModelMix_v1alpha1_FromProto(mapCtx, in.GetProvisioningModelMix())
+	out.InstanceSelectionList = direct.Slice_FromProto(mapCtx, in.InstanceSelectionList, InstanceFlexibilityPolicy_InstanceSelection_v1alpha1_FromProto)
 	// MISSING: InstanceSelectionResults
 	return out
 }
-func InstanceFlexibilityPolicy_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceFlexibilityPolicy) *pb.InstanceFlexibilityPolicy {
+func InstanceFlexibilityPolicy_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceFlexibilityPolicy) *pb.InstanceFlexibilityPolicy {
 	if in == nil {
 		return nil
 	}
 	out := &pb.InstanceFlexibilityPolicy{}
-	out.ProvisioningModelMix = InstanceFlexibilityPolicy_ProvisioningModelMix_ToProto(mapCtx, in.ProvisioningModelMix)
-	out.InstanceSelectionList = direct.Slice_ToProto(mapCtx, in.InstanceSelectionList, InstanceFlexibilityPolicy_InstanceSelection_ToProto)
+	out.ProvisioningModelMix = InstanceFlexibilityPolicy_ProvisioningModelMix_v1alpha1_ToProto(mapCtx, in.ProvisioningModelMix)
+	out.InstanceSelectionList = direct.Slice_ToProto(mapCtx, in.InstanceSelectionList, InstanceFlexibilityPolicy_InstanceSelection_v1alpha1_ToProto)
 	// MISSING: InstanceSelectionResults
 	return out
 }
-func InstanceFlexibilityPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy) *krmdataprocv1alpha1.InstanceFlexibilityPolicyObservedState {
+func InstanceFlexibilityPolicyObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy) *krmdataprocv1alpha1.InstanceFlexibilityPolicyObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krmdataprocv1alpha1.InstanceFlexibilityPolicyObservedState{}
 	// MISSING: ProvisioningModelMix
 	// MISSING: InstanceSelectionList
-	out.InstanceSelectionResults = direct.Slice_FromProto(mapCtx, in.InstanceSelectionResults, InstanceFlexibilityPolicy_InstanceSelectionResult_FromProto)
+	out.InstanceSelectionResults = direct.Slice_FromProto(mapCtx, in.InstanceSelectionResults, InstanceFlexibilityPolicy_InstanceSelectionResult_v1alpha1_FromProto)
 	return out
 }
-func InstanceFlexibilityPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceFlexibilityPolicyObservedState) *pb.InstanceFlexibilityPolicy {
+func InstanceFlexibilityPolicyObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceFlexibilityPolicyObservedState) *pb.InstanceFlexibilityPolicy {
 	if in == nil {
 		return nil
 	}
 	out := &pb.InstanceFlexibilityPolicy{}
 	// MISSING: ProvisioningModelMix
 	// MISSING: InstanceSelectionList
-	out.InstanceSelectionResults = direct.Slice_ToProto(mapCtx, in.InstanceSelectionResults, InstanceFlexibilityPolicy_InstanceSelectionResult_ToProto)
+	out.InstanceSelectionResults = direct.Slice_ToProto(mapCtx, in.InstanceSelectionResults, InstanceFlexibilityPolicy_InstanceSelectionResult_v1alpha1_ToProto)
 	return out
 }
-func InstanceFlexibilityPolicy_InstanceSelection_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy_InstanceSelection) *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelection {
+func InstanceFlexibilityPolicy_InstanceSelection_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy_InstanceSelection) *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelection {
 	if in == nil {
 		return nil
 	}
@@ -809,7 +810,7 @@ func InstanceFlexibilityPolicy_InstanceSelection_FromProto(mapCtx *direct.MapCon
 	out.Rank = direct.LazyPtr(in.GetRank())
 	return out
 }
-func InstanceFlexibilityPolicy_InstanceSelection_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelection) *pb.InstanceFlexibilityPolicy_InstanceSelection {
+func InstanceFlexibilityPolicy_InstanceSelection_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelection) *pb.InstanceFlexibilityPolicy_InstanceSelection {
 	if in == nil {
 		return nil
 	}
@@ -818,7 +819,7 @@ func InstanceFlexibilityPolicy_InstanceSelection_ToProto(mapCtx *direct.MapConte
 	out.Rank = direct.ValueOf(in.Rank)
 	return out
 }
-func InstanceFlexibilityPolicy_InstanceSelectionResult_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy_InstanceSelectionResult) *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResult {
+func InstanceFlexibilityPolicy_InstanceSelectionResult_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy_InstanceSelectionResult) *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResult {
 	if in == nil {
 		return nil
 	}
@@ -827,7 +828,7 @@ func InstanceFlexibilityPolicy_InstanceSelectionResult_FromProto(mapCtx *direct.
 	// MISSING: VMCount
 	return out
 }
-func InstanceFlexibilityPolicy_InstanceSelectionResult_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResult) *pb.InstanceFlexibilityPolicy_InstanceSelectionResult {
+func InstanceFlexibilityPolicy_InstanceSelectionResult_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResult) *pb.InstanceFlexibilityPolicy_InstanceSelectionResult {
 	if in == nil {
 		return nil
 	}
@@ -836,27 +837,25 @@ func InstanceFlexibilityPolicy_InstanceSelectionResult_ToProto(mapCtx *direct.Ma
 	// MISSING: VMCount
 	return out
 }
-func InstanceFlexibilityPolicy_InstanceSelectionResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy_InstanceSelectionResult) *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResultObservedState {
+func InstanceFlexibilityPolicy_InstanceSelectionResultObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy_InstanceSelectionResult) *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResultObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResultObservedState{}
 	out.MachineType = in.MachineType
-	// MISSING: VMCount
-	// (near miss): "VMCount" vs "VmCount"
+	out.VMCount = in.VmCount
 	return out
 }
-func InstanceFlexibilityPolicy_InstanceSelectionResultObservedState_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResultObservedState) *pb.InstanceFlexibilityPolicy_InstanceSelectionResult {
+func InstanceFlexibilityPolicy_InstanceSelectionResultObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResultObservedState) *pb.InstanceFlexibilityPolicy_InstanceSelectionResult {
 	if in == nil {
 		return nil
 	}
 	out := &pb.InstanceFlexibilityPolicy_InstanceSelectionResult{}
 	out.MachineType = in.MachineType
-	// MISSING: VMCount
-	// (near miss): "VMCount" vs "VmCount"
+	out.VmCount = in.VMCount
 	return out
 }
-func InstanceFlexibilityPolicy_ProvisioningModelMix_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy_ProvisioningModelMix) *krmdataprocv1alpha1.InstanceFlexibilityPolicy_ProvisioningModelMix {
+func InstanceFlexibilityPolicy_ProvisioningModelMix_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy_ProvisioningModelMix) *krmdataprocv1alpha1.InstanceFlexibilityPolicy_ProvisioningModelMix {
 	if in == nil {
 		return nil
 	}
@@ -865,7 +864,7 @@ func InstanceFlexibilityPolicy_ProvisioningModelMix_FromProto(mapCtx *direct.Map
 	out.StandardCapacityPercentAboveBase = in.StandardCapacityPercentAboveBase
 	return out
 }
-func InstanceFlexibilityPolicy_ProvisioningModelMix_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceFlexibilityPolicy_ProvisioningModelMix) *pb.InstanceFlexibilityPolicy_ProvisioningModelMix {
+func InstanceFlexibilityPolicy_ProvisioningModelMix_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceFlexibilityPolicy_ProvisioningModelMix) *pb.InstanceFlexibilityPolicy_ProvisioningModelMix {
 	if in == nil {
 		return nil
 	}
@@ -875,8 +874,8 @@ func InstanceFlexibilityPolicy_ProvisioningModelMix_ToProto(mapCtx *direct.MapCo
 	return out
 }
 
-/* found existing non-generated mapping function "InstanceGroupAutoscalingPolicyConfig_FromProto", skipping
-func InstanceGroupAutoscalingPolicyConfig_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupAutoscalingPolicyConfig) *krm.InstanceGroupAutoscalingPolicyConfig {
+/* found existing non-generated mapping function "InstanceGroupAutoscalingPolicyConfig_v1beta1_FromProto", skipping
+func InstanceGroupAutoscalingPolicyConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupAutoscalingPolicyConfig) *krm.InstanceGroupAutoscalingPolicyConfig {
 	if in == nil {
 		return nil
 	}
@@ -889,9 +888,9 @@ func InstanceGroupAutoscalingPolicyConfig_FromProto(mapCtx *direct.MapContext, i
 */
 
 /*
-found existing non-generated mapping function "InstanceGroupAutoscalingPolicyConfig_ToProto", skipping
+found existing non-generated mapping function "InstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto", skipping
 
-	func InstanceGroupAutoscalingPolicyConfig_ToProto(mapCtx *direct.MapContext, in *krm.InstanceGroupAutoscalingPolicyConfig) *pb.InstanceGroupAutoscalingPolicyConfig {
+	func InstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceGroupAutoscalingPolicyConfig) *pb.InstanceGroupAutoscalingPolicyConfig {
 		if in == nil {
 			return nil
 		}
@@ -902,7 +901,7 @@ found existing non-generated mapping function "InstanceGroupAutoscalingPolicyCon
 		return out
 	}
 */
-func InstanceGroupConfig_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupConfig) *krmdataprocv1alpha1.InstanceGroupConfig {
+func InstanceGroupConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupConfig) *krmdataprocv1alpha1.InstanceGroupConfig {
 	if in == nil {
 		return nil
 	}
@@ -912,18 +911,18 @@ func InstanceGroupConfig_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGro
 	// MISSING: InstanceReferences
 	out.ImageURI = direct.LazyPtr(in.GetImageUri())
 	out.MachineTypeURI = direct.LazyPtr(in.GetMachineTypeUri())
-	out.DiskConfig = DiskConfig_FromProto(mapCtx, in.GetDiskConfig())
+	out.DiskConfig = DiskConfig_v1alpha1_FromProto(mapCtx, in.GetDiskConfig())
 	// MISSING: IsPreemptible
 	out.Preemptibility = direct.Enum_FromProto(mapCtx, in.GetPreemptibility())
 	// MISSING: ManagedGroupConfig
-	out.Accelerators = direct.Slice_FromProto(mapCtx, in.Accelerators, AcceleratorConfig_FromProto)
+	out.Accelerators = direct.Slice_FromProto(mapCtx, in.Accelerators, AcceleratorConfig_v1alpha1_FromProto)
 	out.MinCPUPlatform = direct.LazyPtr(in.GetMinCpuPlatform())
 	out.MinNumInstances = direct.LazyPtr(in.GetMinNumInstances())
-	out.InstanceFlexibilityPolicy = InstanceFlexibilityPolicy_FromProto(mapCtx, in.GetInstanceFlexibilityPolicy())
-	out.StartupConfig = StartupConfig_FromProto(mapCtx, in.GetStartupConfig())
+	out.InstanceFlexibilityPolicy = InstanceFlexibilityPolicy_v1alpha1_FromProto(mapCtx, in.GetInstanceFlexibilityPolicy())
+	out.StartupConfig = StartupConfig_v1alpha1_FromProto(mapCtx, in.GetStartupConfig())
 	return out
 }
-func InstanceGroupConfig_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceGroupConfig) *pb.InstanceGroupConfig {
+func InstanceGroupConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceGroupConfig) *pb.InstanceGroupConfig {
 	if in == nil {
 		return nil
 	}
@@ -933,60 +932,60 @@ func InstanceGroupConfig_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alp
 	// MISSING: InstanceReferences
 	out.ImageUri = direct.ValueOf(in.ImageURI)
 	out.MachineTypeUri = direct.ValueOf(in.MachineTypeURI)
-	out.DiskConfig = DiskConfig_ToProto(mapCtx, in.DiskConfig)
+	out.DiskConfig = DiskConfig_v1alpha1_ToProto(mapCtx, in.DiskConfig)
 	// MISSING: IsPreemptible
 	out.Preemptibility = direct.Enum_ToProto[pb.InstanceGroupConfig_Preemptibility](mapCtx, in.Preemptibility)
 	// MISSING: ManagedGroupConfig
-	out.Accelerators = direct.Slice_ToProto(mapCtx, in.Accelerators, AcceleratorConfig_ToProto)
+	out.Accelerators = direct.Slice_ToProto(mapCtx, in.Accelerators, AcceleratorConfig_v1alpha1_ToProto)
 	out.MinCpuPlatform = direct.ValueOf(in.MinCPUPlatform)
 	out.MinNumInstances = direct.ValueOf(in.MinNumInstances)
-	out.InstanceFlexibilityPolicy = InstanceFlexibilityPolicy_ToProto(mapCtx, in.InstanceFlexibilityPolicy)
-	out.StartupConfig = StartupConfig_ToProto(mapCtx, in.StartupConfig)
+	out.InstanceFlexibilityPolicy = InstanceFlexibilityPolicy_v1alpha1_ToProto(mapCtx, in.InstanceFlexibilityPolicy)
+	out.StartupConfig = StartupConfig_v1alpha1_ToProto(mapCtx, in.StartupConfig)
 	return out
 }
-func InstanceGroupConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupConfig) *krmdataprocv1alpha1.InstanceGroupConfigObservedState {
+func InstanceGroupConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupConfig) *krmdataprocv1alpha1.InstanceGroupConfigObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krmdataprocv1alpha1.InstanceGroupConfigObservedState{}
 	// MISSING: NumInstances
 	out.InstanceNames = in.InstanceNames
-	out.InstanceReferences = direct.Slice_FromProto(mapCtx, in.InstanceReferences, InstanceReference_FromProto)
+	out.InstanceReferences = direct.Slice_FromProto(mapCtx, in.InstanceReferences, InstanceReference_v1alpha1_FromProto)
 	// MISSING: ImageURI
 	// MISSING: MachineTypeURI
 	// MISSING: DiskConfig
 	out.IsPreemptible = direct.LazyPtr(in.GetIsPreemptible())
 	// MISSING: Preemptibility
-	out.ManagedGroupConfig = ManagedGroupConfig_FromProto(mapCtx, in.GetManagedGroupConfig())
+	out.ManagedGroupConfig = ManagedGroupConfig_v1alpha1_FromProto(mapCtx, in.GetManagedGroupConfig())
 	// MISSING: Accelerators
 	// MISSING: MinCPUPlatform
 	// MISSING: MinNumInstances
-	out.InstanceFlexibilityPolicy = InstanceFlexibilityPolicyObservedState_FromProto(mapCtx, in.GetInstanceFlexibilityPolicy())
+	out.InstanceFlexibilityPolicy = InstanceFlexibilityPolicyObservedState_v1alpha1_FromProto(mapCtx, in.GetInstanceFlexibilityPolicy())
 	// MISSING: StartupConfig
 	return out
 }
-func InstanceGroupConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceGroupConfigObservedState) *pb.InstanceGroupConfig {
+func InstanceGroupConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceGroupConfigObservedState) *pb.InstanceGroupConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.InstanceGroupConfig{}
 	// MISSING: NumInstances
 	out.InstanceNames = in.InstanceNames
-	out.InstanceReferences = direct.Slice_ToProto(mapCtx, in.InstanceReferences, InstanceReference_ToProto)
+	out.InstanceReferences = direct.Slice_ToProto(mapCtx, in.InstanceReferences, InstanceReference_v1alpha1_ToProto)
 	// MISSING: ImageURI
 	// MISSING: MachineTypeURI
 	// MISSING: DiskConfig
 	out.IsPreemptible = direct.ValueOf(in.IsPreemptible)
 	// MISSING: Preemptibility
-	out.ManagedGroupConfig = ManagedGroupConfig_ToProto(mapCtx, in.ManagedGroupConfig)
+	out.ManagedGroupConfig = ManagedGroupConfig_v1alpha1_ToProto(mapCtx, in.ManagedGroupConfig)
 	// MISSING: Accelerators
 	// MISSING: MinCPUPlatform
 	// MISSING: MinNumInstances
-	out.InstanceFlexibilityPolicy = InstanceFlexibilityPolicyObservedState_ToProto(mapCtx, in.InstanceFlexibilityPolicy)
+	out.InstanceFlexibilityPolicy = InstanceFlexibilityPolicyObservedState_v1alpha1_ToProto(mapCtx, in.InstanceFlexibilityPolicy)
 	// MISSING: StartupConfig
 	return out
 }
-func InstanceReference_FromProto(mapCtx *direct.MapContext, in *pb.InstanceReference) *krmdataprocv1alpha1.InstanceReference {
+func InstanceReference_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceReference) *krmdataprocv1alpha1.InstanceReference {
 	if in == nil {
 		return nil
 	}
@@ -997,7 +996,7 @@ func InstanceReference_FromProto(mapCtx *direct.MapContext, in *pb.InstanceRefer
 	out.PublicEciesKey = direct.LazyPtr(in.GetPublicEciesKey())
 	return out
 }
-func InstanceReference_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceReference) *pb.InstanceReference {
+func InstanceReference_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceReference) *pb.InstanceReference {
 	if in == nil {
 		return nil
 	}
@@ -1009,8 +1008,8 @@ func InstanceReference_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha
 	return out
 }
 
-/* found existing non-generated mapping function "JobPlacement_FromProto", skipping
-func JobPlacement_FromProto(mapCtx *direct.MapContext, in *pb.JobPlacement) *krmdataprocv1alpha1.JobPlacement {
+/* found existing non-generated mapping function "JobPlacement_v1alpha1_FromProto", skipping
+func JobPlacement_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.JobPlacement) *krmdataprocv1alpha1.JobPlacement {
 	if in == nil {
 		return nil
 	}
@@ -1022,8 +1021,8 @@ func JobPlacement_FromProto(mapCtx *direct.MapContext, in *pb.JobPlacement) *krm
 }
 */
 
-/* found existing non-generated mapping function "JobPlacement_ToProto", skipping
-func JobPlacement_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.JobPlacement) *pb.JobPlacement {
+/* found existing non-generated mapping function "JobPlacement_v1alpha1_ToProto", skipping
+func JobPlacement_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.JobPlacement) *pb.JobPlacement {
 	if in == nil {
 		return nil
 	}
@@ -1035,8 +1034,8 @@ func JobPlacement_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.Job
 }
 */
 
-/* found existing non-generated mapping function "JobPlacementObservedState_FromProto", skipping
-func JobPlacementObservedState_FromProto(mapCtx *direct.MapContext, in *pb.JobPlacement) *krmdataprocv1alpha1.JobPlacementObservedState {
+/* found existing non-generated mapping function "JobPlacementObservedState_v1alpha1_FromProto", skipping
+func JobPlacementObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.JobPlacement) *krmdataprocv1alpha1.JobPlacementObservedState {
 	if in == nil {
 		return nil
 	}
@@ -1048,8 +1047,8 @@ func JobPlacementObservedState_FromProto(mapCtx *direct.MapContext, in *pb.JobPl
 }
 */
 
-/* found existing non-generated mapping function "JobPlacementObservedState_ToProto", skipping
-func JobPlacementObservedState_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.JobPlacementObservedState) *pb.JobPlacement {
+/* found existing non-generated mapping function "JobPlacementObservedState_v1alpha1_ToProto", skipping
+func JobPlacementObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.JobPlacementObservedState) *pb.JobPlacement {
 	if in == nil {
 		return nil
 	}
@@ -1061,8 +1060,8 @@ func JobPlacementObservedState_ToProto(mapCtx *direct.MapContext, in *krmdatapro
 }
 */
 
-/* found existing non-generated mapping function "JobReference_FromProto", skipping
-func JobReference_FromProto(mapCtx *direct.MapContext, in *pb.JobReference) *krmdataprocv1alpha1.JobReference {
+/* found existing non-generated mapping function "JobReference_v1alpha1_FromProto", skipping
+func JobReference_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.JobReference) *krmdataprocv1alpha1.JobReference {
 	if in == nil {
 		return nil
 	}
@@ -1073,8 +1072,8 @@ func JobReference_FromProto(mapCtx *direct.MapContext, in *pb.JobReference) *krm
 }
 */
 
-/* found existing non-generated mapping function "JobReference_ToProto", skipping
-func JobReference_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.JobReference) *pb.JobReference {
+/* found existing non-generated mapping function "JobReference_v1alpha1_ToProto", skipping
+func JobReference_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.JobReference) *pb.JobReference {
 	if in == nil {
 		return nil
 	}
@@ -1085,8 +1084,8 @@ func JobReference_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.Job
 }
 */
 
-/* found existing non-generated mapping function "JobScheduling_FromProto", skipping
-func JobScheduling_FromProto(mapCtx *direct.MapContext, in *pb.JobScheduling) *krmdataprocv1alpha1.JobScheduling {
+/* found existing non-generated mapping function "JobScheduling_v1alpha1_FromProto", skipping
+func JobScheduling_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.JobScheduling) *krmdataprocv1alpha1.JobScheduling {
 	if in == nil {
 		return nil
 	}
@@ -1097,8 +1096,8 @@ func JobScheduling_FromProto(mapCtx *direct.MapContext, in *pb.JobScheduling) *k
 }
 */
 
-/* found existing non-generated mapping function "JobScheduling_ToProto", skipping
-func JobScheduling_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.JobScheduling) *pb.JobScheduling {
+/* found existing non-generated mapping function "JobScheduling_v1alpha1_ToProto", skipping
+func JobScheduling_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.JobScheduling) *pb.JobScheduling {
 	if in == nil {
 		return nil
 	}
@@ -1109,8 +1108,8 @@ func JobScheduling_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.Jo
 }
 */
 
-/* found existing non-generated mapping function "JobStatus_FromProto", skipping
-func JobStatus_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus) *krmdataprocv1alpha1.JobStatus {
+/* found existing non-generated mapping function "JobStatus_v1alpha1_FromProto", skipping
+func JobStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus) *krmdataprocv1alpha1.JobStatus {
 	if in == nil {
 		return nil
 	}
@@ -1123,8 +1122,8 @@ func JobStatus_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus) *krmdatapr
 }
 */
 
-/* found existing non-generated mapping function "JobStatus_ToProto", skipping
-func JobStatus_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.JobStatus) *pb.JobStatus {
+/* found existing non-generated mapping function "JobStatus_v1alpha1_ToProto", skipping
+func JobStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.JobStatus) *pb.JobStatus {
 	if in == nil {
 		return nil
 	}
@@ -1137,8 +1136,8 @@ func JobStatus_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.JobSta
 }
 */
 
-/* found existing non-generated mapping function "JobStatusObservedState_FromProto", skipping
-func JobStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus) *krmdataprocv1alpha1.JobStatusObservedState {
+/* found existing non-generated mapping function "JobStatusObservedState_v1alpha1_FromProto", skipping
+func JobStatusObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus) *krmdataprocv1alpha1.JobStatusObservedState {
 	if in == nil {
 		return nil
 	}
@@ -1151,8 +1150,8 @@ func JobStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.JobStatu
 }
 */
 
-/* found existing non-generated mapping function "JobStatusObservedState_ToProto", skipping
-func JobStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.JobStatusObservedState) *pb.JobStatus {
+/* found existing non-generated mapping function "JobStatusObservedState_v1alpha1_ToProto", skipping
+func JobStatusObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.JobStatusObservedState) *pb.JobStatus {
 	if in == nil {
 		return nil
 	}
@@ -1165,8 +1164,8 @@ func JobStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1
 }
 */
 
-/* found existing non-generated mapping function "LoggingConfig_FromProto", skipping
-func LoggingConfig_FromProto(mapCtx *direct.MapContext, in *pb.LoggingConfig) *krmdataprocv1alpha1.LoggingConfig {
+/* found existing non-generated mapping function "LoggingConfig_v1alpha1_FromProto", skipping
+func LoggingConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.LoggingConfig) *krmdataprocv1alpha1.LoggingConfig {
 	if in == nil {
 		return nil
 	}
@@ -1177,9 +1176,9 @@ func LoggingConfig_FromProto(mapCtx *direct.MapContext, in *pb.LoggingConfig) *k
 */
 
 /*
-found existing non-generated mapping function "LoggingConfig_ToProto", skipping
+found existing non-generated mapping function "LoggingConfig_v1alpha1_ToProto", skipping
 
-	func LoggingConfig_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.LoggingConfig) *pb.LoggingConfig {
+	func LoggingConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.LoggingConfig) *pb.LoggingConfig {
 		if in == nil {
 			return nil
 		}
@@ -1188,7 +1187,7 @@ found existing non-generated mapping function "LoggingConfig_ToProto", skipping
 		return out
 	}
 */
-func ManagedGroupConfig_FromProto(mapCtx *direct.MapContext, in *pb.ManagedGroupConfig) *krmdataprocv1alpha1.ManagedGroupConfig {
+func ManagedGroupConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ManagedGroupConfig) *krmdataprocv1alpha1.ManagedGroupConfig {
 	if in == nil {
 		return nil
 	}
@@ -1198,7 +1197,7 @@ func ManagedGroupConfig_FromProto(mapCtx *direct.MapContext, in *pb.ManagedGroup
 	// MISSING: InstanceGroupManagerURI
 	return out
 }
-func ManagedGroupConfig_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.ManagedGroupConfig) *pb.ManagedGroupConfig {
+func ManagedGroupConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.ManagedGroupConfig) *pb.ManagedGroupConfig {
 	if in == nil {
 		return nil
 	}
@@ -1208,7 +1207,7 @@ func ManagedGroupConfig_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alph
 	// MISSING: InstanceGroupManagerURI
 	return out
 }
-func ManagedGroupConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ManagedGroupConfig) *krmdataprocv1alpha1.ManagedGroupConfigObservedState {
+func ManagedGroupConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ManagedGroupConfig) *krmdataprocv1alpha1.ManagedGroupConfigObservedState {
 	if in == nil {
 		return nil
 	}
@@ -1218,7 +1217,7 @@ func ManagedGroupConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	out.InstanceGroupManagerURI = direct.LazyPtr(in.GetInstanceGroupManagerUri())
 	return out
 }
-func ManagedGroupConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.ManagedGroupConfigObservedState) *pb.ManagedGroupConfig {
+func ManagedGroupConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.ManagedGroupConfigObservedState) *pb.ManagedGroupConfig {
 	if in == nil {
 		return nil
 	}
@@ -1229,128 +1228,126 @@ func ManagedGroupConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmd
 	return out
 }
 
-/* found existing non-generated mapping function "PeripheralsConfig_FromProto", skipping
-func PeripheralsConfig_FromProto(mapCtx *direct.MapContext, in *pb.PeripheralsConfig) *krmdataprocv1alpha1.PeripheralsConfig {
+/* found existing non-generated mapping function "PeripheralsConfig_v1alpha1_FromProto", skipping
+func PeripheralsConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PeripheralsConfig) *krmdataprocv1alpha1.PeripheralsConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krmdataprocv1alpha1.PeripheralsConfig{}
 	out.MetastoreService = direct.LazyPtr(in.GetMetastoreService())
-	out.SparkHistoryServerConfig = SparkHistoryServerConfig_FromProto(mapCtx, in.GetSparkHistoryServerConfig())
+	out.SparkHistoryServerConfig = SparkHistoryServerConfig_v1alpha1_FromProto(mapCtx, in.GetSparkHistoryServerConfig())
 	return out
 }
 */
 
-/* found existing non-generated mapping function "PeripheralsConfig_ToProto", skipping
-func PeripheralsConfig_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.PeripheralsConfig) *pb.PeripheralsConfig {
+/* found existing non-generated mapping function "PeripheralsConfig_v1alpha1_ToProto", skipping
+func PeripheralsConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.PeripheralsConfig) *pb.PeripheralsConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.PeripheralsConfig{}
 	out.MetastoreService = direct.ValueOf(in.MetastoreService)
-	out.SparkHistoryServerConfig = SparkHistoryServerConfig_ToProto(mapCtx, in.SparkHistoryServerConfig)
+	out.SparkHistoryServerConfig = SparkHistoryServerConfig_v1alpha1_ToProto(mapCtx, in.SparkHistoryServerConfig)
 	return out
 }
 */
 
-/* found existing non-generated mapping function "PigJob_FromProto", skipping
-func PigJob_FromProto(mapCtx *direct.MapContext, in *pb.PigJob) *krmdataprocv1alpha1.PigJob {
+/* found existing non-generated mapping function "PigJob_v1alpha1_FromProto", skipping
+func PigJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PigJob) *krmdataprocv1alpha1.PigJob {
 	if in == nil {
 		return nil
 	}
 	out := &krmdataprocv1alpha1.PigJob{}
 	out.QueryFileURI = direct.LazyPtr(in.GetQueryFileUri())
-	out.QueryList = QueryList_FromProto(mapCtx, in.GetQueryList())
+	out.QueryList = QueryList_v1alpha1_FromProto(mapCtx, in.GetQueryList())
 	out.ContinueOnFailure = direct.LazyPtr(in.GetContinueOnFailure())
 	out.ScriptVariables = in.ScriptVariables
 	out.Properties = in.Properties
 	// MISSING: JarFileUris
 	// (near miss): "JarFileUris" vs "JarFileURIs"
-	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
+	out.LoggingConfig = LoggingConfig_v1alpha1_FromProto(mapCtx, in.GetLoggingConfig())
 	return out
 }
 */
 
-/* found existing non-generated mapping function "PigJob_ToProto", skipping
-func PigJob_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.PigJob) *pb.PigJob {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PigJob{}
-	if oneof := PigJob_QueryFileUri_ToProto(mapCtx, in.QueryFileURI); oneof != nil {
-		out.Queries = oneof
-	}
-	if oneof := QueryList_ToProto(mapCtx, in.QueryList); oneof != nil {
-		out.Queries = &pb.PigJob_QueryList{QueryList: oneof}
-	}
-	out.ContinueOnFailure = direct.ValueOf(in.ContinueOnFailure)
-	out.ScriptVariables = in.ScriptVariables
-	out.Properties = in.Properties
-	// MISSING: JarFileUris
-	// (near miss): "JarFileUris" vs "JarFileURIs"
-	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
-	return out
-}
-*/
+/*
+found existing non-generated mapping function "PigJob_v1alpha1_ToProto", skipping
 
-/* found existing non-generated mapping function "PigJob_QueryFileUri_ToProto", skipping
+	func PigJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.PigJob) *pb.PigJob {
+		if in == nil {
+			return nil
+		}
+		out := &pb.PigJob{}
+		if oneof := PigJob_QueryFileUri_ToProto(mapCtx, in.QueryFileURI); oneof != nil {
+			out.Queries = oneof
+		}
+		if oneof := QueryList_v1alpha1_ToProto(mapCtx, in.QueryList); oneof != nil {
+			out.Queries = &pb.PigJob_QueryList{QueryList: oneof}
+		}
+		out.ContinueOnFailure = direct.ValueOf(in.ContinueOnFailure)
+		out.ScriptVariables = in.ScriptVariables
+		out.Properties = in.Properties
+		// MISSING: JarFileUris
+		// (near miss): "JarFileUris" vs "JarFileURIs"
+		out.LoggingConfig = LoggingConfig_v1alpha1_ToProto(mapCtx, in.LoggingConfig)
+		return out
+	}
+*/
 func PigJob_QueryFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.PigJob_QueryFileUri {
 	if in == nil {
 		return nil
 	}
 	return &pb.PigJob_QueryFileUri{QueryFileUri: *in}
 }
-*/
 
-/* found existing non-generated mapping function "PrestoJob_FromProto", skipping
-func PrestoJob_FromProto(mapCtx *direct.MapContext, in *pb.PrestoJob) *krmdataprocv1alpha1.PrestoJob {
+/* found existing non-generated mapping function "PrestoJob_v1alpha1_FromProto", skipping
+func PrestoJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PrestoJob) *krmdataprocv1alpha1.PrestoJob {
 	if in == nil {
 		return nil
 	}
 	out := &krmdataprocv1alpha1.PrestoJob{}
 	out.QueryFileURI = direct.LazyPtr(in.GetQueryFileUri())
-	out.QueryList = QueryList_FromProto(mapCtx, in.GetQueryList())
+	out.QueryList = QueryList_v1alpha1_FromProto(mapCtx, in.GetQueryList())
 	out.ContinueOnFailure = direct.LazyPtr(in.GetContinueOnFailure())
 	out.OutputFormat = direct.LazyPtr(in.GetOutputFormat())
 	out.ClientTags = in.ClientTags
 	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
+	out.LoggingConfig = LoggingConfig_v1alpha1_FromProto(mapCtx, in.GetLoggingConfig())
 	return out
 }
 */
 
-/* found existing non-generated mapping function "PrestoJob_ToProto", skipping
-func PrestoJob_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.PrestoJob) *pb.PrestoJob {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PrestoJob{}
-	if oneof := PrestoJob_QueryFileUri_ToProto(mapCtx, in.QueryFileURI); oneof != nil {
-		out.Queries = oneof
-	}
-	if oneof := QueryList_ToProto(mapCtx, in.QueryList); oneof != nil {
-		out.Queries = &pb.PrestoJob_QueryList{QueryList: oneof}
-	}
-	out.ContinueOnFailure = direct.ValueOf(in.ContinueOnFailure)
-	out.OutputFormat = direct.ValueOf(in.OutputFormat)
-	out.ClientTags = in.ClientTags
-	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
-	return out
-}
-*/
+/*
+found existing non-generated mapping function "PrestoJob_v1alpha1_ToProto", skipping
 
-/* found existing non-generated mapping function "PrestoJob_QueryFileUri_ToProto", skipping
+	func PrestoJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.PrestoJob) *pb.PrestoJob {
+		if in == nil {
+			return nil
+		}
+		out := &pb.PrestoJob{}
+		if oneof := PrestoJob_QueryFileUri_ToProto(mapCtx, in.QueryFileURI); oneof != nil {
+			out.Queries = oneof
+		}
+		if oneof := QueryList_v1alpha1_ToProto(mapCtx, in.QueryList); oneof != nil {
+			out.Queries = &pb.PrestoJob_QueryList{QueryList: oneof}
+		}
+		out.ContinueOnFailure = direct.ValueOf(in.ContinueOnFailure)
+		out.OutputFormat = direct.ValueOf(in.OutputFormat)
+		out.ClientTags = in.ClientTags
+		out.Properties = in.Properties
+		out.LoggingConfig = LoggingConfig_v1alpha1_ToProto(mapCtx, in.LoggingConfig)
+		return out
+	}
+*/
 func PrestoJob_QueryFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.PrestoJob_QueryFileUri {
 	if in == nil {
 		return nil
 	}
 	return &pb.PrestoJob_QueryFileUri{QueryFileUri: *in}
 }
-*/
 
-/* found existing non-generated mapping function "PyPiRepositoryConfig_FromProto", skipping
-func PyPiRepositoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.PyPiRepositoryConfig) *krmdataprocv1alpha1.PyPiRepositoryConfig {
+/* found existing non-generated mapping function "PyPiRepositoryConfig_v1alpha1_FromProto", skipping
+func PyPiRepositoryConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PyPiRepositoryConfig) *krmdataprocv1alpha1.PyPiRepositoryConfig {
 	if in == nil {
 		return nil
 	}
@@ -1360,8 +1357,8 @@ func PyPiRepositoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.PyPiReposi
 }
 */
 
-/* found existing non-generated mapping function "PyPiRepositoryConfig_ToProto", skipping
-func PyPiRepositoryConfig_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.PyPiRepositoryConfig) *pb.PyPiRepositoryConfig {
+/* found existing non-generated mapping function "PyPiRepositoryConfig_v1alpha1_ToProto", skipping
+func PyPiRepositoryConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.PyPiRepositoryConfig) *pb.PyPiRepositoryConfig {
 	if in == nil {
 		return nil
 	}
@@ -1371,8 +1368,8 @@ func PyPiRepositoryConfig_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1al
 }
 */
 
-/* found existing non-generated mapping function "PySparkBatch_FromProto", skipping
-func PySparkBatch_FromProto(mapCtx *direct.MapContext, in *pb.PySparkBatch) *krmdataprocv1alpha1.PySparkBatch {
+/* found existing non-generated mapping function "PySparkBatch_v1alpha1_FromProto", skipping
+func PySparkBatch_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PySparkBatch) *krmdataprocv1alpha1.PySparkBatch {
 	if in == nil {
 		return nil
 	}
@@ -1391,8 +1388,8 @@ func PySparkBatch_FromProto(mapCtx *direct.MapContext, in *pb.PySparkBatch) *krm
 }
 */
 
-/* found existing non-generated mapping function "PySparkBatch_ToProto", skipping
-func PySparkBatch_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.PySparkBatch) *pb.PySparkBatch {
+/* found existing non-generated mapping function "PySparkBatch_v1alpha1_ToProto", skipping
+func PySparkBatch_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.PySparkBatch) *pb.PySparkBatch {
 	if in == nil {
 		return nil
 	}
@@ -1411,8 +1408,8 @@ func PySparkBatch_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.PyS
 }
 */
 
-/* found existing non-generated mapping function "PySparkJob_FromProto", skipping
-func PySparkJob_FromProto(mapCtx *direct.MapContext, in *pb.PySparkJob) *krmdataprocv1alpha1.PySparkJob {
+/* found existing non-generated mapping function "PySparkJob_v1alpha1_FromProto", skipping
+func PySparkJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PySparkJob) *krmdataprocv1alpha1.PySparkJob {
 	if in == nil {
 		return nil
 	}
@@ -1428,13 +1425,13 @@ func PySparkJob_FromProto(mapCtx *direct.MapContext, in *pb.PySparkJob) *krmdata
 	// MISSING: ArchiveUris
 	// (near miss): "ArchiveUris" vs "ArchiveURIs"
 	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
+	out.LoggingConfig = LoggingConfig_v1alpha1_FromProto(mapCtx, in.GetLoggingConfig())
 	return out
 }
 */
 
-/* found existing non-generated mapping function "PySparkJob_ToProto", skipping
-func PySparkJob_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.PySparkJob) *pb.PySparkJob {
+/* found existing non-generated mapping function "PySparkJob_v1alpha1_ToProto", skipping
+func PySparkJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.PySparkJob) *pb.PySparkJob {
 	if in == nil {
 		return nil
 	}
@@ -1450,13 +1447,13 @@ func PySparkJob_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.PySpa
 	// MISSING: ArchiveUris
 	// (near miss): "ArchiveUris" vs "ArchiveURIs"
 	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
+	out.LoggingConfig = LoggingConfig_v1alpha1_ToProto(mapCtx, in.LoggingConfig)
 	return out
 }
 */
 
-/* found existing non-generated mapping function "QueryList_FromProto", skipping
-func QueryList_FromProto(mapCtx *direct.MapContext, in *pb.QueryList) *krmdataprocv1alpha1.QueryList {
+/* found existing non-generated mapping function "QueryList_v1alpha1_FromProto", skipping
+func QueryList_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.QueryList) *krmdataprocv1alpha1.QueryList {
 	if in == nil {
 		return nil
 	}
@@ -1466,8 +1463,8 @@ func QueryList_FromProto(mapCtx *direct.MapContext, in *pb.QueryList) *krmdatapr
 }
 */
 
-/* found existing non-generated mapping function "QueryList_ToProto", skipping
-func QueryList_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.QueryList) *pb.QueryList {
+/* found existing non-generated mapping function "QueryList_v1alpha1_ToProto", skipping
+func QueryList_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.QueryList) *pb.QueryList {
 	if in == nil {
 		return nil
 	}
@@ -1477,30 +1474,30 @@ func QueryList_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.QueryL
 }
 */
 
-/* found existing non-generated mapping function "RepositoryConfig_FromProto", skipping
-func RepositoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.RepositoryConfig) *krmdataprocv1alpha1.RepositoryConfig {
+/* found existing non-generated mapping function "RepositoryConfig_v1alpha1_FromProto", skipping
+func RepositoryConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RepositoryConfig) *krmdataprocv1alpha1.RepositoryConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krmdataprocv1alpha1.RepositoryConfig{}
-	out.PypiRepositoryConfig = PyPiRepositoryConfig_FromProto(mapCtx, in.GetPypiRepositoryConfig())
+	out.PypiRepositoryConfig = PyPiRepositoryConfig_v1alpha1_FromProto(mapCtx, in.GetPypiRepositoryConfig())
 	return out
 }
 */
 
-/* found existing non-generated mapping function "RepositoryConfig_ToProto", skipping
-func RepositoryConfig_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.RepositoryConfig) *pb.RepositoryConfig {
+/* found existing non-generated mapping function "RepositoryConfig_v1alpha1_ToProto", skipping
+func RepositoryConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.RepositoryConfig) *pb.RepositoryConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.RepositoryConfig{}
-	out.PypiRepositoryConfig = PyPiRepositoryConfig_ToProto(mapCtx, in.PypiRepositoryConfig)
+	out.PypiRepositoryConfig = PyPiRepositoryConfig_v1alpha1_ToProto(mapCtx, in.PypiRepositoryConfig)
 	return out
 }
 */
 
-/* found existing non-generated mapping function "RuntimeConfig_FromProto", skipping
-func RuntimeConfig_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeConfig) *krmdataprocv1alpha1.RuntimeConfig {
+/* found existing non-generated mapping function "RuntimeConfig_v1alpha1_FromProto", skipping
+func RuntimeConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeConfig) *krmdataprocv1alpha1.RuntimeConfig {
 	if in == nil {
 		return nil
 	}
@@ -1508,15 +1505,15 @@ func RuntimeConfig_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeConfig) *k
 	out.Version = direct.LazyPtr(in.GetVersion())
 	out.ContainerImage = direct.LazyPtr(in.GetContainerImage())
 	out.Properties = in.Properties
-	out.RepositoryConfig = RepositoryConfig_FromProto(mapCtx, in.GetRepositoryConfig())
-	out.AutotuningConfig = AutotuningConfig_FromProto(mapCtx, in.GetAutotuningConfig())
+	out.RepositoryConfig = RepositoryConfig_v1alpha1_FromProto(mapCtx, in.GetRepositoryConfig())
+	out.AutotuningConfig = AutotuningConfig_v1alpha1_FromProto(mapCtx, in.GetAutotuningConfig())
 	out.Cohort = direct.LazyPtr(in.GetCohort())
 	return out
 }
 */
 
-/* found existing non-generated mapping function "RuntimeConfig_ToProto", skipping
-func RuntimeConfig_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.RuntimeConfig) *pb.RuntimeConfig {
+/* found existing non-generated mapping function "RuntimeConfig_v1alpha1_ToProto", skipping
+func RuntimeConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.RuntimeConfig) *pb.RuntimeConfig {
 	if in == nil {
 		return nil
 	}
@@ -1524,15 +1521,15 @@ func RuntimeConfig_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.Ru
 	out.Version = direct.ValueOf(in.Version)
 	out.ContainerImage = direct.ValueOf(in.ContainerImage)
 	out.Properties = in.Properties
-	out.RepositoryConfig = RepositoryConfig_ToProto(mapCtx, in.RepositoryConfig)
-	out.AutotuningConfig = AutotuningConfig_ToProto(mapCtx, in.AutotuningConfig)
+	out.RepositoryConfig = RepositoryConfig_v1alpha1_ToProto(mapCtx, in.RepositoryConfig)
+	out.AutotuningConfig = AutotuningConfig_v1alpha1_ToProto(mapCtx, in.AutotuningConfig)
 	out.Cohort = direct.ValueOf(in.Cohort)
 	return out
 }
 */
 
-/* found existing non-generated mapping function "RuntimeInfo_FromProto", skipping
-func RuntimeInfo_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeInfo) *krmdataprocv1alpha1.RuntimeInfo {
+/* found existing non-generated mapping function "RuntimeInfo_v1alpha1_FromProto", skipping
+func RuntimeInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeInfo) *krmdataprocv1alpha1.RuntimeInfo {
 	if in == nil {
 		return nil
 	}
@@ -1546,8 +1543,8 @@ func RuntimeInfo_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeInfo) *krmda
 }
 */
 
-/* found existing non-generated mapping function "RuntimeInfo_ToProto", skipping
-func RuntimeInfo_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.RuntimeInfo) *pb.RuntimeInfo {
+/* found existing non-generated mapping function "RuntimeInfo_v1alpha1_ToProto", skipping
+func RuntimeInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.RuntimeInfo) *pb.RuntimeInfo {
 	if in == nil {
 		return nil
 	}
@@ -1561,8 +1558,8 @@ func RuntimeInfo_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.Runt
 }
 */
 
-/* found existing non-generated mapping function "RuntimeInfoObservedState_FromProto", skipping
-func RuntimeInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeInfo) *krmdataprocv1alpha1.RuntimeInfoObservedState {
+/* found existing non-generated mapping function "RuntimeInfoObservedState_v1alpha1_FromProto", skipping
+func RuntimeInfoObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeInfo) *krmdataprocv1alpha1.RuntimeInfoObservedState {
 	if in == nil {
 		return nil
 	}
@@ -1570,14 +1567,14 @@ func RuntimeInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Runtim
 	out.Endpoints = in.Endpoints
 	out.OutputURI = direct.LazyPtr(in.GetOutputUri())
 	out.DiagnosticOutputURI = direct.LazyPtr(in.GetDiagnosticOutputUri())
-	out.ApproximateUsage = UsageMetrics_FromProto(mapCtx, in.GetApproximateUsage())
-	out.CurrentUsage = UsageSnapshot_FromProto(mapCtx, in.GetCurrentUsage())
+	out.ApproximateUsage = UsageMetrics_v1alpha1_FromProto(mapCtx, in.GetApproximateUsage())
+	out.CurrentUsage = UsageSnapshot_v1alpha1_FromProto(mapCtx, in.GetCurrentUsage())
 	return out
 }
 */
 
-/* found existing non-generated mapping function "RuntimeInfoObservedState_ToProto", skipping
-func RuntimeInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.RuntimeInfoObservedState) *pb.RuntimeInfo {
+/* found existing non-generated mapping function "RuntimeInfoObservedState_v1alpha1_ToProto", skipping
+func RuntimeInfoObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.RuntimeInfoObservedState) *pb.RuntimeInfo {
 	if in == nil {
 		return nil
 	}
@@ -1585,14 +1582,14 @@ func RuntimeInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krmdataproc
 	out.Endpoints = in.Endpoints
 	out.OutputUri = direct.ValueOf(in.OutputURI)
 	out.DiagnosticOutputUri = direct.ValueOf(in.DiagnosticOutputURI)
-	out.ApproximateUsage = UsageMetrics_ToProto(mapCtx, in.ApproximateUsage)
-	out.CurrentUsage = UsageSnapshot_ToProto(mapCtx, in.CurrentUsage)
+	out.ApproximateUsage = UsageMetrics_v1alpha1_ToProto(mapCtx, in.ApproximateUsage)
+	out.CurrentUsage = UsageSnapshot_v1alpha1_ToProto(mapCtx, in.CurrentUsage)
 	return out
 }
 */
 
-/* found existing non-generated mapping function "SecondaryInstanceGroupAutoscalingPolicyConfig_FromProto", skipping
-func SecondaryInstanceGroupAutoscalingPolicyConfig_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupAutoscalingPolicyConfig) *krm.SecondaryInstanceGroupAutoscalingPolicyConfig {
+/* found existing non-generated mapping function "SecondaryInstanceGroupAutoscalingPolicyConfig_v1beta1_FromProto", skipping
+func SecondaryInstanceGroupAutoscalingPolicyConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupAutoscalingPolicyConfig) *krm.SecondaryInstanceGroupAutoscalingPolicyConfig {
 	if in == nil {
 		return nil
 	}
@@ -1604,8 +1601,8 @@ func SecondaryInstanceGroupAutoscalingPolicyConfig_FromProto(mapCtx *direct.MapC
 }
 */
 
-/* found existing non-generated mapping function "SecondaryInstanceGroupAutoscalingPolicyConfig_ToProto", skipping
-func SecondaryInstanceGroupAutoscalingPolicyConfig_ToProto(mapCtx *direct.MapContext, in *krm.SecondaryInstanceGroupAutoscalingPolicyConfig) *pb.InstanceGroupAutoscalingPolicyConfig {
+/* found existing non-generated mapping function "SecondaryInstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto", skipping
+func SecondaryInstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SecondaryInstanceGroupAutoscalingPolicyConfig) *pb.InstanceGroupAutoscalingPolicyConfig {
 	if in == nil {
 		return nil
 	}
@@ -1617,8 +1614,8 @@ func SecondaryInstanceGroupAutoscalingPolicyConfig_ToProto(mapCtx *direct.MapCon
 }
 */
 
-/* found existing non-generated mapping function "SparkBatch_FromProto", skipping
-func SparkBatch_FromProto(mapCtx *direct.MapContext, in *pb.SparkBatch) *krmdataprocv1alpha1.SparkBatch {
+/* found existing non-generated mapping function "SparkBatch_v1alpha1_FromProto", skipping
+func SparkBatch_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SparkBatch) *krmdataprocv1alpha1.SparkBatch {
 	if in == nil {
 		return nil
 	}
@@ -1636,49 +1633,45 @@ func SparkBatch_FromProto(mapCtx *direct.MapContext, in *pb.SparkBatch) *krmdata
 }
 */
 
-/* found existing non-generated mapping function "SparkBatch_ToProto", skipping
-func SparkBatch_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.SparkBatch) *pb.SparkBatch {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SparkBatch{}
-	if oneof := SparkBatch_MainJarFileUri_ToProto(mapCtx, in.MainJarFileURI); oneof != nil {
-		out.Driver = oneof
-	}
-	if oneof := SparkBatch_MainClass_ToProto(mapCtx, in.MainClass); oneof != nil {
-		out.Driver = oneof
-	}
-	out.Args = in.Args
-	// MISSING: JarFileUris
-	// (near miss): "JarFileUris" vs "JarFileURIs"
-	// MISSING: FileUris
-	// (near miss): "FileUris" vs "FileURIs"
-	// MISSING: ArchiveUris
-	// (near miss): "ArchiveUris" vs "ArchiveURIs"
-	return out
-}
-*/
+/*
+found existing non-generated mapping function "SparkBatch_v1alpha1_ToProto", skipping
 
-/* found existing non-generated mapping function "SparkBatch_MainJarFileUri_ToProto", skipping
+	func SparkBatch_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.SparkBatch) *pb.SparkBatch {
+		if in == nil {
+			return nil
+		}
+		out := &pb.SparkBatch{}
+		if oneof := SparkBatch_MainJarFileUri_ToProto(mapCtx, in.MainJarFileURI); oneof != nil {
+			out.Driver = oneof
+		}
+		if oneof := SparkBatch_MainClass_ToProto(mapCtx, in.MainClass); oneof != nil {
+			out.Driver = oneof
+		}
+		out.Args = in.Args
+		// MISSING: JarFileUris
+		// (near miss): "JarFileUris" vs "JarFileURIs"
+		// MISSING: FileUris
+		// (near miss): "FileUris" vs "FileURIs"
+		// MISSING: ArchiveUris
+		// (near miss): "ArchiveUris" vs "ArchiveURIs"
+		return out
+	}
+*/
 func SparkBatch_MainJarFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.SparkBatch_MainJarFileUri {
 	if in == nil {
 		return nil
 	}
 	return &pb.SparkBatch_MainJarFileUri{MainJarFileUri: *in}
 }
-*/
-
-/* found existing non-generated mapping function "SparkBatch_MainClass_ToProto", skipping
 func SparkBatch_MainClass_ToProto(mapCtx *direct.MapContext, in *string) *pb.SparkBatch_MainClass {
 	if in == nil {
 		return nil
 	}
 	return &pb.SparkBatch_MainClass{MainClass: *in}
 }
-*/
 
-/* found existing non-generated mapping function "SparkHistoryServerConfig_FromProto", skipping
-func SparkHistoryServerConfig_FromProto(mapCtx *direct.MapContext, in *pb.SparkHistoryServerConfig) *krmdataprocv1alpha1.SparkHistoryServerConfig {
+/* found existing non-generated mapping function "SparkHistoryServerConfig_v1alpha1_FromProto", skipping
+func SparkHistoryServerConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SparkHistoryServerConfig) *krmdataprocv1alpha1.SparkHistoryServerConfig {
 	if in == nil {
 		return nil
 	}
@@ -1690,8 +1683,8 @@ func SparkHistoryServerConfig_FromProto(mapCtx *direct.MapContext, in *pb.SparkH
 }
 */
 
-/* found existing non-generated mapping function "SparkHistoryServerConfig_ToProto", skipping
-func SparkHistoryServerConfig_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.SparkHistoryServerConfig) *pb.SparkHistoryServerConfig {
+/* found existing non-generated mapping function "SparkHistoryServerConfig_v1alpha1_ToProto", skipping
+func SparkHistoryServerConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.SparkHistoryServerConfig) *pb.SparkHistoryServerConfig {
 	if in == nil {
 		return nil
 	}
@@ -1703,8 +1696,8 @@ func SparkHistoryServerConfig_ToProto(mapCtx *direct.MapContext, in *krmdataproc
 }
 */
 
-/* found existing non-generated mapping function "SparkJob_FromProto", skipping
-func SparkJob_FromProto(mapCtx *direct.MapContext, in *pb.SparkJob) *krmdataprocv1alpha1.SparkJob {
+/* found existing non-generated mapping function "SparkJob_v1alpha1_FromProto", skipping
+func SparkJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SparkJob) *krmdataprocv1alpha1.SparkJob {
 	if in == nil {
 		return nil
 	}
@@ -1719,56 +1712,52 @@ func SparkJob_FromProto(mapCtx *direct.MapContext, in *pb.SparkJob) *krmdataproc
 	// MISSING: ArchiveUris
 	// (near miss): "ArchiveUris" vs "ArchiveURIs"
 	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
+	out.LoggingConfig = LoggingConfig_v1alpha1_FromProto(mapCtx, in.GetLoggingConfig())
 	return out
 }
 */
 
-/* found existing non-generated mapping function "SparkJob_ToProto", skipping
-func SparkJob_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.SparkJob) *pb.SparkJob {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SparkJob{}
-	if oneof := SparkJob_MainJarFileUri_ToProto(mapCtx, in.MainJarFileURI); oneof != nil {
-		out.Driver = oneof
-	}
-	if oneof := SparkJob_MainClass_ToProto(mapCtx, in.MainClass); oneof != nil {
-		out.Driver = oneof
-	}
-	out.Args = in.Args
-	// MISSING: JarFileUris
-	// (near miss): "JarFileUris" vs "JarFileURIs"
-	// MISSING: FileUris
-	// (near miss): "FileUris" vs "FileURIs"
-	// MISSING: ArchiveUris
-	// (near miss): "ArchiveUris" vs "ArchiveURIs"
-	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
-	return out
-}
-*/
+/*
+found existing non-generated mapping function "SparkJob_v1alpha1_ToProto", skipping
 
-/* found existing non-generated mapping function "SparkJob_MainJarFileUri_ToProto", skipping
+	func SparkJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.SparkJob) *pb.SparkJob {
+		if in == nil {
+			return nil
+		}
+		out := &pb.SparkJob{}
+		if oneof := SparkJob_MainJarFileUri_ToProto(mapCtx, in.MainJarFileURI); oneof != nil {
+			out.Driver = oneof
+		}
+		if oneof := SparkJob_MainClass_ToProto(mapCtx, in.MainClass); oneof != nil {
+			out.Driver = oneof
+		}
+		out.Args = in.Args
+		// MISSING: JarFileUris
+		// (near miss): "JarFileUris" vs "JarFileURIs"
+		// MISSING: FileUris
+		// (near miss): "FileUris" vs "FileURIs"
+		// MISSING: ArchiveUris
+		// (near miss): "ArchiveUris" vs "ArchiveURIs"
+		out.Properties = in.Properties
+		out.LoggingConfig = LoggingConfig_v1alpha1_ToProto(mapCtx, in.LoggingConfig)
+		return out
+	}
+*/
 func SparkJob_MainJarFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.SparkJob_MainJarFileUri {
 	if in == nil {
 		return nil
 	}
 	return &pb.SparkJob_MainJarFileUri{MainJarFileUri: *in}
 }
-*/
-
-/* found existing non-generated mapping function "SparkJob_MainClass_ToProto", skipping
 func SparkJob_MainClass_ToProto(mapCtx *direct.MapContext, in *string) *pb.SparkJob_MainClass {
 	if in == nil {
 		return nil
 	}
 	return &pb.SparkJob_MainClass{MainClass: *in}
 }
-*/
 
-/* found existing non-generated mapping function "SparkRBatch_FromProto", skipping
-func SparkRBatch_FromProto(mapCtx *direct.MapContext, in *pb.SparkRBatch) *krmdataprocv1alpha1.SparkRBatch {
+/* found existing non-generated mapping function "SparkRBatch_v1alpha1_FromProto", skipping
+func SparkRBatch_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SparkRBatch) *krmdataprocv1alpha1.SparkRBatch {
 	if in == nil {
 		return nil
 	}
@@ -1783,8 +1772,8 @@ func SparkRBatch_FromProto(mapCtx *direct.MapContext, in *pb.SparkRBatch) *krmda
 }
 */
 
-/* found existing non-generated mapping function "SparkRBatch_ToProto", skipping
-func SparkRBatch_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.SparkRBatch) *pb.SparkRBatch {
+/* found existing non-generated mapping function "SparkRBatch_v1alpha1_ToProto", skipping
+func SparkRBatch_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.SparkRBatch) *pb.SparkRBatch {
 	if in == nil {
 		return nil
 	}
@@ -1799,8 +1788,8 @@ func SparkRBatch_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.Spar
 }
 */
 
-/* found existing non-generated mapping function "SparkRJob_FromProto", skipping
-func SparkRJob_FromProto(mapCtx *direct.MapContext, in *pb.SparkRJob) *krmdataprocv1alpha1.SparkRJob {
+/* found existing non-generated mapping function "SparkRJob_v1alpha1_FromProto", skipping
+func SparkRJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SparkRJob) *krmdataprocv1alpha1.SparkRJob {
 	if in == nil {
 		return nil
 	}
@@ -1812,13 +1801,13 @@ func SparkRJob_FromProto(mapCtx *direct.MapContext, in *pb.SparkRJob) *krmdatapr
 	// MISSING: ArchiveUris
 	// (near miss): "ArchiveUris" vs "ArchiveURIs"
 	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
+	out.LoggingConfig = LoggingConfig_v1alpha1_FromProto(mapCtx, in.GetLoggingConfig())
 	return out
 }
 */
 
-/* found existing non-generated mapping function "SparkRJob_ToProto", skipping
-func SparkRJob_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.SparkRJob) *pb.SparkRJob {
+/* found existing non-generated mapping function "SparkRJob_v1alpha1_ToProto", skipping
+func SparkRJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.SparkRJob) *pb.SparkRJob {
 	if in == nil {
 		return nil
 	}
@@ -1830,13 +1819,13 @@ func SparkRJob_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.SparkR
 	// MISSING: ArchiveUris
 	// (near miss): "ArchiveUris" vs "ArchiveURIs"
 	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
+	out.LoggingConfig = LoggingConfig_v1alpha1_ToProto(mapCtx, in.LoggingConfig)
 	return out
 }
 */
 
-/* found existing non-generated mapping function "SparkSQLBatch_FromProto", skipping
-func SparkSQLBatch_FromProto(mapCtx *direct.MapContext, in *pb.SparkSqlBatch) *krmdataprocv1alpha1.SparkSQLBatch {
+/* found existing non-generated mapping function "SparkSQLBatch_v1alpha1_FromProto", skipping
+func SparkSQLBatch_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SparkSqlBatch) *krmdataprocv1alpha1.SparkSQLBatch {
 	if in == nil {
 		return nil
 	}
@@ -1849,8 +1838,8 @@ func SparkSQLBatch_FromProto(mapCtx *direct.MapContext, in *pb.SparkSqlBatch) *k
 }
 */
 
-/* found existing non-generated mapping function "SparkSQLBatch_ToProto", skipping
-func SparkSQLBatch_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.SparkSQLBatch) *pb.SparkSqlBatch {
+/* found existing non-generated mapping function "SparkSQLBatch_v1alpha1_ToProto", skipping
+func SparkSQLBatch_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.SparkSQLBatch) *pb.SparkSqlBatch {
 	if in == nil {
 		return nil
 	}
@@ -1863,55 +1852,52 @@ func SparkSQLBatch_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.Sp
 }
 */
 
-/* found existing non-generated mapping function "SparkSQLJob_FromProto", skipping
-func SparkSQLJob_FromProto(mapCtx *direct.MapContext, in *pb.SparkSqlJob) *krmdataprocv1alpha1.SparkSQLJob {
+/* found existing non-generated mapping function "SparkSQLJob_v1alpha1_FromProto", skipping
+func SparkSQLJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SparkSqlJob) *krmdataprocv1alpha1.SparkSQLJob {
 	if in == nil {
 		return nil
 	}
 	out := &krmdataprocv1alpha1.SparkSQLJob{}
 	out.QueryFileURI = direct.LazyPtr(in.GetQueryFileUri())
-	out.QueryList = QueryList_FromProto(mapCtx, in.GetQueryList())
+	out.QueryList = QueryList_v1alpha1_FromProto(mapCtx, in.GetQueryList())
 	out.ScriptVariables = in.ScriptVariables
 	out.Properties = in.Properties
 	// MISSING: JarFileUris
 	// (near miss): "JarFileUris" vs "JarFileURIs"
-	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "SparkSQLJob_ToProto", skipping
-func SparkSQLJob_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.SparkSQLJob) *pb.SparkSqlJob {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SparkSqlJob{}
-	if oneof := SparkSQLJob_QueryFileUri_ToProto(mapCtx, in.QueryFileURI); oneof != nil {
-		out.Queries = oneof
-	}
-	if oneof := QueryList_ToProto(mapCtx, in.QueryList); oneof != nil {
-		out.Queries = &pb.SparkSqlJob_QueryList{QueryList: oneof}
-	}
-	out.ScriptVariables = in.ScriptVariables
-	out.Properties = in.Properties
-	// MISSING: JarFileUris
-	// (near miss): "JarFileUris" vs "JarFileURIs"
-	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
+	out.LoggingConfig = LoggingConfig_v1alpha1_FromProto(mapCtx, in.GetLoggingConfig())
 	return out
 }
 */
 
 /*
-found existing non-generated mapping function "SparkSQLJob_QueryFileUri_ToProto", skipping
+found existing non-generated mapping function "SparkSQLJob_v1alpha1_ToProto", skipping
 
-	func SparkSQLJob_QueryFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.SparkSqlJob_QueryFileUri {
+	func SparkSQLJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.SparkSQLJob) *pb.SparkSqlJob {
 		if in == nil {
 			return nil
 		}
-		return &pb.SparkSqlJob_QueryFileUri{QueryFileUri: *in}
+		out := &pb.SparkSqlJob{}
+		if oneof := SparkSQLJob_QueryFileUri_ToProto(mapCtx, in.QueryFileURI); oneof != nil {
+			out.Queries = oneof
+		}
+		if oneof := QueryList_v1alpha1_ToProto(mapCtx, in.QueryList); oneof != nil {
+			out.Queries = &pb.SparkSqlJob_QueryList{QueryList: oneof}
+		}
+		out.ScriptVariables = in.ScriptVariables
+		out.Properties = in.Properties
+		// MISSING: JarFileUris
+		// (near miss): "JarFileUris" vs "JarFileURIs"
+		out.LoggingConfig = LoggingConfig_v1alpha1_ToProto(mapCtx, in.LoggingConfig)
+		return out
 	}
 */
-func StartupConfig_FromProto(mapCtx *direct.MapContext, in *pb.StartupConfig) *krmdataprocv1alpha1.StartupConfig {
+func SparkSQLJob_QueryFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.SparkSqlJob_QueryFileUri {
+	if in == nil {
+		return nil
+	}
+	return &pb.SparkSqlJob_QueryFileUri{QueryFileUri: *in}
+}
+func StartupConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.StartupConfig) *krmdataprocv1alpha1.StartupConfig {
 	if in == nil {
 		return nil
 	}
@@ -1919,7 +1905,7 @@ func StartupConfig_FromProto(mapCtx *direct.MapContext, in *pb.StartupConfig) *k
 	out.RequiredRegistrationFraction = in.RequiredRegistrationFraction
 	return out
 }
-func StartupConfig_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.StartupConfig) *pb.StartupConfig {
+func StartupConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.StartupConfig) *pb.StartupConfig {
 	if in == nil {
 		return nil
 	}
@@ -1928,55 +1914,54 @@ func StartupConfig_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.St
 	return out
 }
 
-/* found existing non-generated mapping function "TrinoJob_FromProto", skipping
-func TrinoJob_FromProto(mapCtx *direct.MapContext, in *pb.TrinoJob) *krmdataprocv1alpha1.TrinoJob {
+/* found existing non-generated mapping function "TrinoJob_v1alpha1_FromProto", skipping
+func TrinoJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TrinoJob) *krmdataprocv1alpha1.TrinoJob {
 	if in == nil {
 		return nil
 	}
 	out := &krmdataprocv1alpha1.TrinoJob{}
 	out.QueryFileURI = direct.LazyPtr(in.GetQueryFileUri())
-	out.QueryList = QueryList_FromProto(mapCtx, in.GetQueryList())
+	out.QueryList = QueryList_v1alpha1_FromProto(mapCtx, in.GetQueryList())
 	out.ContinueOnFailure = direct.LazyPtr(in.GetContinueOnFailure())
 	out.OutputFormat = direct.LazyPtr(in.GetOutputFormat())
 	out.ClientTags = in.ClientTags
 	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
+	out.LoggingConfig = LoggingConfig_v1alpha1_FromProto(mapCtx, in.GetLoggingConfig())
 	return out
 }
 */
 
-/* found existing non-generated mapping function "TrinoJob_ToProto", skipping
-func TrinoJob_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.TrinoJob) *pb.TrinoJob {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TrinoJob{}
-	if oneof := TrinoJob_QueryFileUri_ToProto(mapCtx, in.QueryFileURI); oneof != nil {
-		out.Queries = oneof
-	}
-	if oneof := QueryList_ToProto(mapCtx, in.QueryList); oneof != nil {
-		out.Queries = &pb.TrinoJob_QueryList{QueryList: oneof}
-	}
-	out.ContinueOnFailure = direct.ValueOf(in.ContinueOnFailure)
-	out.OutputFormat = direct.ValueOf(in.OutputFormat)
-	out.ClientTags = in.ClientTags
-	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
-	return out
-}
-*/
+/*
+found existing non-generated mapping function "TrinoJob_v1alpha1_ToProto", skipping
 
-/* found existing non-generated mapping function "TrinoJob_QueryFileUri_ToProto", skipping
+	func TrinoJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.TrinoJob) *pb.TrinoJob {
+		if in == nil {
+			return nil
+		}
+		out := &pb.TrinoJob{}
+		if oneof := TrinoJob_QueryFileUri_ToProto(mapCtx, in.QueryFileURI); oneof != nil {
+			out.Queries = oneof
+		}
+		if oneof := QueryList_v1alpha1_ToProto(mapCtx, in.QueryList); oneof != nil {
+			out.Queries = &pb.TrinoJob_QueryList{QueryList: oneof}
+		}
+		out.ContinueOnFailure = direct.ValueOf(in.ContinueOnFailure)
+		out.OutputFormat = direct.ValueOf(in.OutputFormat)
+		out.ClientTags = in.ClientTags
+		out.Properties = in.Properties
+		out.LoggingConfig = LoggingConfig_v1alpha1_ToProto(mapCtx, in.LoggingConfig)
+		return out
+	}
+*/
 func TrinoJob_QueryFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.TrinoJob_QueryFileUri {
 	if in == nil {
 		return nil
 	}
 	return &pb.TrinoJob_QueryFileUri{QueryFileUri: *in}
 }
-*/
 
-/* found existing non-generated mapping function "UsageMetrics_FromProto", skipping
-func UsageMetrics_FromProto(mapCtx *direct.MapContext, in *pb.UsageMetrics) *krmdataprocv1alpha1.UsageMetrics {
+/* found existing non-generated mapping function "UsageMetrics_v1alpha1_FromProto", skipping
+func UsageMetrics_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.UsageMetrics) *krmdataprocv1alpha1.UsageMetrics {
 	if in == nil {
 		return nil
 	}
@@ -1989,8 +1974,8 @@ func UsageMetrics_FromProto(mapCtx *direct.MapContext, in *pb.UsageMetrics) *krm
 }
 */
 
-/* found existing non-generated mapping function "UsageMetrics_ToProto", skipping
-func UsageMetrics_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.UsageMetrics) *pb.UsageMetrics {
+/* found existing non-generated mapping function "UsageMetrics_v1alpha1_ToProto", skipping
+func UsageMetrics_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.UsageMetrics) *pb.UsageMetrics {
 	if in == nil {
 		return nil
 	}
@@ -2003,8 +1988,8 @@ func UsageMetrics_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.Usa
 }
 */
 
-/* found existing non-generated mapping function "UsageSnapshot_FromProto", skipping
-func UsageSnapshot_FromProto(mapCtx *direct.MapContext, in *pb.UsageSnapshot) *krmdataprocv1alpha1.UsageSnapshot {
+/* found existing non-generated mapping function "UsageSnapshot_v1alpha1_FromProto", skipping
+func UsageSnapshot_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.UsageSnapshot) *krmdataprocv1alpha1.UsageSnapshot {
 	if in == nil {
 		return nil
 	}
@@ -2020,8 +2005,8 @@ func UsageSnapshot_FromProto(mapCtx *direct.MapContext, in *pb.UsageSnapshot) *k
 }
 */
 
-/* found existing non-generated mapping function "UsageSnapshot_ToProto", skipping
-func UsageSnapshot_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.UsageSnapshot) *pb.UsageSnapshot {
+/* found existing non-generated mapping function "UsageSnapshot_v1alpha1_ToProto", skipping
+func UsageSnapshot_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.UsageSnapshot) *pb.UsageSnapshot {
 	if in == nil {
 		return nil
 	}
@@ -2037,8 +2022,8 @@ func UsageSnapshot_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.Us
 }
 */
 
-/* found existing non-generated mapping function "YarnApplication_FromProto", skipping
-func YarnApplication_FromProto(mapCtx *direct.MapContext, in *pb.YarnApplication) *krmdataprocv1alpha1.YarnApplication {
+/* found existing non-generated mapping function "YarnApplication_v1alpha1_FromProto", skipping
+func YarnApplication_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.YarnApplication) *krmdataprocv1alpha1.YarnApplication {
 	if in == nil {
 		return nil
 	}
@@ -2051,8 +2036,8 @@ func YarnApplication_FromProto(mapCtx *direct.MapContext, in *pb.YarnApplication
 }
 */
 
-/* found existing non-generated mapping function "YarnApplication_ToProto", skipping
-func YarnApplication_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.YarnApplication) *pb.YarnApplication {
+/* found existing non-generated mapping function "YarnApplication_v1alpha1_ToProto", skipping
+func YarnApplication_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.YarnApplication) *pb.YarnApplication {
 	if in == nil {
 		return nil
 	}
