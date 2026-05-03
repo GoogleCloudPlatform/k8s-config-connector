@@ -42,7 +42,7 @@ type SpannerInstanceRef struct {
 }
 
 func init() {
-	refs.Register(&SpannerInstanceRef{})
+	refs.Register(&SpannerInstanceRef{}, &SpannerInstanceIdentity{})
 }
 
 func (r *SpannerInstanceRef) GetGVK() schema.GroupVersionKind {

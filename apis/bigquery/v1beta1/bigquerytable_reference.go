@@ -28,7 +28,7 @@ import (
 var BigQueryTableGVK = GroupVersion.WithKind("BigQueryTable")
 
 func init() {
-	refs.Register(&BigQueryTableRef{})
+	refs.Register(&BigQueryTableRef{}, &BigQueryTableIdentity{})
 }
 
 var _ refs.Ref = &BigQueryTableRef{}

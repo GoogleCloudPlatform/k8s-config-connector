@@ -41,7 +41,7 @@ type WorkflowsExecutionRef struct {
 }
 
 func init() {
-	refs.Register(&WorkflowsExecutionRef{})
+	refs.Register(&WorkflowsExecutionRef{}, &WorkflowsExecutionIdentity{})
 }
 
 func (r *WorkflowsExecutionRef) GetGVK() schema.GroupVersionKind {

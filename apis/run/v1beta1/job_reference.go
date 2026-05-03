@@ -27,7 +27,7 @@ import (
 var _ refsv1beta1.Ref = &JobRef{}
 
 func init() {
-	refsv1beta1.Register(&JobRef{})
+	refsv1beta1.Register(&JobRef{}, &JobIdentity{})
 }
 
 // JobRef defines the resource reference to RunJob, which "External" field

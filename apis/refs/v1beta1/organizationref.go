@@ -35,7 +35,7 @@ var OrganizationGVK = schema.GroupVersionKind{
 }
 
 func init() {
-	Register(&OrganizationRef{})
+	Register(&OrganizationRef{}, &OrganizationIdentity{})
 }
 
 // OrganizationRef represents the Organization that this resource belongs to.

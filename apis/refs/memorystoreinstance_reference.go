@@ -48,7 +48,7 @@ type MemorystoreInstanceRef struct {
 }
 
 func init() {
-	refs.Register(&MemorystoreInstanceRef{})
+	refs.Register(&MemorystoreInstanceRef{}, &MemorystoreInstanceIdentity{})
 }
 
 func (r *MemorystoreInstanceRef) GetGVK() schema.GroupVersionKind {

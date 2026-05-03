@@ -19,20 +19,28 @@ import (
 	"reflect"
 	"sync"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 var (
 	registryMu sync.Mutex
-	registry   = make(map[schema.GroupKind]reflect.Type)
+	registry   = make(map[schema.GroupKind]registryEntry)
 )
 
+type registryEntry struct {
+	RefType  reflect.Type
+	IdentityType reflect.Type
+}
 // Register registers a Ref implementation.
 // It is thread-safe.
-func Register(ref Ref) {
+func Register(ref Ref, identity identity.Identity) {
 	registryMu.Lock()
 	defer registryMu.Unlock()
-	registry[ref.GetGVK().GroupKind()] = reflect.TypeOf(ref).Elem()
+	registry[ref.GetGVK().GroupKind()] = registryEntry{
+		RefType: reflect.TypeOf(ref).Elem(),
+		IdentityType: reflect.TypeOf(identity).Elem(),
+	}
 }
 
 // NewRef returns a new instance of Ref for the given GroupKind.
@@ -40,11 +48,24 @@ func Register(ref Ref) {
 func NewRef(gk schema.GroupKind) (Ref, error) {
 	registryMu.Lock()
 	defer registryMu.Unlock()
-	typ, ok := registry[gk]
+	entry, ok := registry[gk]
 	if !ok {
 		return nil, fmt.Errorf("no Ref registered for GroupKind %v", gk)
 	}
-	return reflect.New(typ).Interface().(Ref), nil
+	return reflect.New(entry.RefType).Interface().(Ref), nil
+}
+
+
+// NewIdentity returns a new instance of identity.Identity for the given GroupKind.
+// It is thread-safe.
+func NewIdentity(gk schema.GroupKind) (identity.Identity, error) {
+	registryMu.Lock()
+	defer registryMu.Unlock()
+	entry, ok := registry[gk]
+	if !ok {
+		return nil, fmt.Errorf("no Ref registered for GroupKind %v", gk)
+	}
+	return reflect.New(entry.IdentityType).Interface().(identity.Identity), nil
 }
 
 // NewRefByKind returns a new instance of Ref for the given Kind.
@@ -55,12 +76,12 @@ func NewRefByKind(kind string) (Ref, error) {
 	registryMu.Lock()
 	defer registryMu.Unlock()
 	var found reflect.Type
-	for gk, typ := range registry {
+	for gk, entry := range registry {
 		if gk.Kind == kind {
 			if found != nil {
 				return nil, fmt.Errorf("multiple Refs registered for Kind %q", kind)
 			}
-			found = typ
+			found = entry.RefType
 		}
 	}
 	if found != nil {

@@ -30,7 +30,7 @@ var _ refsv1beta1.Ref = &StorageBucketRef{}
 var StorageBucketGVK = GroupVersion.WithKind("StorageBucket")
 
 func init() {
-	refsv1beta1.Register(&StorageBucketRef{})
+	refsv1beta1.Register(&StorageBucketRef{}, &StorageBucketIdentity{})
 }
 
 // StorageBucketRef defines the resource reference to StorageBucket, which "External" field

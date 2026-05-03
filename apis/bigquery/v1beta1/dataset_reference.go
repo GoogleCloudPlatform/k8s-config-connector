@@ -26,7 +26,7 @@ import (
 )
 
 func init() {
-	refs.Register(&DatasetRef{})
+	refs.Register(&DatasetRef{}, &DatasetIdentity{})
 }
 
 var _ refs.Ref = &DatasetRef{}
