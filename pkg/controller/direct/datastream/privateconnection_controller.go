@@ -78,9 +78,14 @@ func (m *modelPrivateConnection) AdapterForObject(ctx context.Context, op *direc
 	if err != nil {
 		return nil, err
 	}
+	iamClient, err := gcpClient.newIamPolicyClient(ctx)
+	if err != nil {
+		return nil, err
+	}
 	return &PrivateConnectionAdapter{
 		id:        id,
 		gcpClient: datastreamClient,
+		iamClient: iamClient,
 		desired:   obj,
 		reader:    reader,
 	}, nil
@@ -94,6 +99,7 @@ func (m *modelPrivateConnection) AdapterForURL(ctx context.Context, url string) 
 type PrivateConnectionAdapter struct {
 	id        *krm.PrivateConnectionIdentity
 	gcpClient *gcp.Client
+	iamClient *gcp.IamPolicyClient
 	desired   *krm.DatastreamPrivateConnection
 	actual    *pb.PrivateConnection
 	reader    client.Reader
@@ -277,7 +283,7 @@ func (a *PrivateConnectionAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Pol
 	req := &iampb.GetIamPolicyRequest{
 		Resource: a.id.String(),
 	}
-	policy, err := a.gcpClient.GetIamPolicy(ctx, req)
+	policy, err := a.iamClient.GetIamPolicy(ctx, req)
 	if err != nil {
 		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id.String(), err)
 	}
@@ -290,7 +296,7 @@ func (a *PrivateConnectionAdapter) SetIAMPolicy(ctx context.Context, policy *iam
 		Resource: a.id.String(),
 		Policy:   policy,
 	}
-	newPolicy, err := a.gcpClient.SetIamPolicy(ctx, req)
+	newPolicy, err := a.iamClient.SetIamPolicy(ctx, req)
 	if err != nil {
 		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id.String(), err)
 	}

@@ -47,3 +47,15 @@ func (m *gcpClient) newDatastreamClient(ctx context.Context) (*api.Client, error
 	}
 	return client, err
 }
+
+func (m *gcpClient) newIamPolicyClient(ctx context.Context) (*api.IamPolicyClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := api.NewIamPolicyRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building iam policy client: %w", err)
+	}
+	return client, err
+}
