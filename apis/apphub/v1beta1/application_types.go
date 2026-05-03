@@ -46,8 +46,10 @@ type AppHubApplicationSpec struct {
 	Scope *Scope `json:"scope,omitempty"`
 
 	// Required. Defines the parent path of the resource.
-	*Parent `json:",inline"`
+	Location string `json:"location,omitempty"`
 
+	// Required. The host project of the resource.
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
 	// The AppHubApplication name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 }
@@ -66,14 +68,6 @@ type Environment struct {
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
 	// +kcc:proto:field=google.cloud.apphub.v1.Environment.type
 	Type *string `json:"type,omitempty"`
-}
-
-type Parent struct {
-	// Required. The location of the application.
-	Location string `json:"location,omitempty"`
-
-	// Required. The host project of the application.
-	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
 }
 
 // AppHubApplicationStatus defines the config connector machine state of AppHubApplication
@@ -119,6 +113,7 @@ type AppHubApplicationObservedState struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
