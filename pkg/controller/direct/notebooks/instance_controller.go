@@ -131,7 +131,7 @@ func (a *InstanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := NotebookInstanceSpec_ToProto(mapCtx, &desired.Spec)
+	resource := NotebookInstanceSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -152,7 +152,7 @@ func (a *InstanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	log.V(2).Info("successfully created Instance", "name", a.id)
 
 	status := &krm.NotebookInstanceStatus{}
-	status.ObservedState = NotebookInstanceObservedState_FromProto(mapCtx, created)
+	status.ObservedState = NotebookInstanceObservedState_v1beta1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -166,7 +166,7 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	log.V(2).Info("updating Instance", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desiredPb := NotebookInstanceSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	desiredPb := NotebookInstanceSpec_v1beta1_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -242,12 +242,12 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 
 	status := &krm.NotebookInstanceStatus{}
 	if updated != nil {
-		status.ObservedState = NotebookInstanceObservedState_FromProto(mapCtx, updated)
+		status.ObservedState = NotebookInstanceObservedState_v1beta1_FromProto(mapCtx, updated)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
 	} else {
-		status.ObservedState = NotebookInstanceObservedState_FromProto(mapCtx, a.actual)
+		status.ObservedState = NotebookInstanceObservedState_v1beta1_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
@@ -265,7 +265,7 @@ func (a *InstanceAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 
 	obj := &krm.NotebookInstance{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(NotebookInstanceSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(NotebookInstanceSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
