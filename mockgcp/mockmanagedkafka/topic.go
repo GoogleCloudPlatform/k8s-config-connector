@@ -143,14 +143,14 @@ func (s *managedKafka) UpdateTopic(ctx context.Context, req *pb.UpdateTopicReque
 	}
 	// updateMask=configs,partition_count
 	for _, path := range paths {
-	        switch path {
-	        case "configs":
-	                obj.Configs = req.GetTopic().GetConfigs()
-	        case "partitionCount", "partition_count":
-	                obj.PartitionCount = req.GetTopic().GetPartitionCount()
-	        default:
-	                return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled in mock", path)
-	        }
+		switch path {
+		case "configs":
+			obj.Configs = req.GetTopic().GetConfigs()
+		case "partitionCount", "partition_count":
+			obj.PartitionCount = req.GetTopic().GetPartitionCount()
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled in mock", path)
+		}
 	}
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
