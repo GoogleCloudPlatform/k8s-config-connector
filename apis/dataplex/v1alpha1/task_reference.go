@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,19 +17,22 @@ package v1alpha1
 import (
 	"context"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &TaskRef{}
+var _ refs.Ref = &TaskRef{}
 
 // TaskRef defines the resource reference to DataplexTask, which "External" field
 // holds the GCP identifier for the KRM object.
 type TaskRef struct {
 	// A reference to an externally managed DataplexTask resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/tasks/{{taskID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/lakes/{{lakeID}}/tasks/{{taskID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a DataplexTask resource.
@@ -37,6 +40,10 @@ type TaskRef struct {
 
 	// The namespace of a DataplexTask resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refs.Register(&TaskRef{})
 }
 
 func (r *TaskRef) GetGVK() schema.GroupVersionKind {
@@ -66,6 +73,25 @@ func (r *TaskRef) ValidateExternal(ref string) error {
 	return nil
 }
 
+func (r *TaskRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &TaskIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
 func (r *TaskRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
+	fallback := func(u *unstructured.Unstructured) string {
+		obj := &DataplexTask{}
+		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, obj); err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromDataplexTaskSpec(ctx, reader, obj)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
