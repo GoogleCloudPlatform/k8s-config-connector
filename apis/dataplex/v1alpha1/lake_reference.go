@@ -17,13 +17,15 @@ package v1alpha1
 import (
 	"context"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &LakeRef{}
+var _ refs.Ref = &LakeRef{}
 
 // LakeRef defines the resource reference to DataplexLake, which "External" field
 // holds the GCP identifier for the KRM object.
@@ -37,6 +39,10 @@ type LakeRef struct {
 
 	// The namespace of a DataplexLake resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refs.Register(&LakeRef{})
 }
 
 func (r *LakeRef) GetGVK() schema.GroupVersionKind {
@@ -66,6 +72,21 @@ func (r *LakeRef) ValidateExternal(ref string) error {
 	return nil
 }
 
+func (r *LakeRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &LakeIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
 func (r *LakeRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
+	fallback := func(u *unstructured.Unstructured) string {
+		identity, err := getIdentityFromDataplexLakeSpec(ctx, reader, u)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

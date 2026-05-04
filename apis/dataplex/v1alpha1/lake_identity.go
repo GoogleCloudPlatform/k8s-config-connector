@@ -17,86 +17,92 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ identity.Identity = &LakeIdentity{}
-
-const (
-	LakeIDURL = parent.ProjectAndLocationURL + "/lakes/{{lakeID}}"
+var (
+	_ identity.IdentityV2 = &LakeIdentity{}
+	_ identity.Resource   = &DataplexLake{}
 )
 
-// LakeIdentity defines the resource reference to DataplexLake, which "External" field
-// holds the GCP identifier for the KRM object.
+var LakeIdentityFormat = gcpurls.Template[LakeIdentity]("dataplex.googleapis.com", "projects/{project}/locations/{location}/lakes/{lake}")
+
+// +k8s:deepcopy-gen=false
 type LakeIdentity struct {
-	parent *parent.ProjectAndLocationParent
-	id     string
+	Project  string
+	Location string
+	Lake     string
 }
 
 func (i *LakeIdentity) String() string {
-	return i.parent.String() + "/lakes/" + i.id
-}
-
-func (i *LakeIdentity) ID() string {
-	return i.id
-}
-
-func (i *LakeIdentity) Parent() *parent.ProjectAndLocationParent {
-	return i.parent
+	return LakeIdentityFormat.ToString(*i)
 }
 
 func (i *LakeIdentity) FromExternal(ref string) error {
-	tokens := strings.Split(ref, "/lakes/")
-	if len(tokens) != 2 {
-		return fmt.Errorf("format of DataplexLake external=%q was not known (use %s)", ref, LakeIDURL)
+	parsed, match, err := LakeIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of DataplexLake external=%q was not known (use %s): %w", ref, LakeIdentityFormat.CanonicalForm(), err)
 	}
-	i.parent = &parent.ProjectAndLocationParent{}
-	if err := i.parent.FromExternal(tokens[0]); err != nil {
-		return err
+	if !match {
+		return fmt.Errorf("format of DataplexLake external=%q was not known (use %s)", ref, LakeIdentityFormat.CanonicalForm())
 	}
-	i.id = tokens[1]
-	if i.id == "" {
-		return fmt.Errorf("lakeID was empty in external=%q", ref)
-	}
+
+	*i = *parsed
 	return nil
 }
 
-var _ identity.Resource = &DataplexLake{}
+func (i *LakeIdentity) Host() string {
+	return LakeIdentityFormat.Host()
+}
 
-func (obj *DataplexLake) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	newIdentity := &LakeIdentity{
-		parent: &parent.ProjectAndLocationParent{},
-	}
-
-	// Resolve Parent
-	if err := obj.Spec.ParentRef.Build(ctx, reader, obj.GetNamespace(), newIdentity.parent); err != nil {
-		return nil, err
-	}
-
-	// Get desired ID
-	newIdentity.id = common.ValueOf(obj.Spec.ResourceID)
-	if newIdentity.id == "" {
-		newIdentity.id = obj.GetName()
-	}
-	if newIdentity.id == "" {
+func getIdentityFromDataplexLakeSpec(ctx context.Context, reader client.Reader, obj client.Object) (*LakeIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Validate against the ID stored in status.externalRef
+	location, err := refs.GetLocation(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+
+	identity := &LakeIdentity{
+		Project:  projectID,
+		Location: location,
+		Lake:     resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *DataplexLake) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromDataplexLakeSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
+		// Validate desired with actual
 		statusIdentity := &LakeIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
-			return nil, fmt.Errorf("cannot parse existing externalRef=%q: %w", externalRef, err)
+			return nil, err
 		}
-		if statusIdentity.String() != newIdentity.String() {
-			return nil, fmt.Errorf("existing externalRef=%q does not match the identity resolved from spec: %q", externalRef, newIdentity.String())
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change DataplexLake identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
-	return newIdentity, nil
+
+	return specIdentity, nil
 }

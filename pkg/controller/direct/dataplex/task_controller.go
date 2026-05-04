@@ -145,9 +145,9 @@ func (a *taskAdapter) Create(ctx context.Context, createOp *directbase.CreateOpe
 	log.V(2).Info("creating dataplex task", "name", a.id)
 
 	req := &pb.CreateTaskRequest{
-		Parent: a.id.Parent().String(),
+		Parent: fmt.Sprintf("projects/%s/locations/%s/lakes/%s", a.id.Project, a.id.Location, a.id.Lake),
 		Task:   a.desired,
-		TaskId: a.id.ID(),
+		TaskId: a.id.Task,
 	}
 	op, err := a.gcpClient.CreateTask(ctx, req)
 	if err != nil {
@@ -290,14 +290,14 @@ func (a *taskAdapter) Export(ctx context.Context) (*unstructured.Unstructured, e
 	}
 
 	// Set parent references
-	obj.Spec.LakeRef = &krm.LakeRef{External: a.id.Parent().String()}
+	obj.Spec.LakeRef = &krm.LakeRef{External: fmt.Sprintf("projects/%s/locations/%s/lakes/%s", a.id.Project, a.id.Location, a.id.Lake)}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u := &unstructured.Unstructured{Object: uObj}
-	u.SetName(a.id.ID()) // Use the task_id as the KRM resource name
+	u.SetName(a.id.Task) // Use the task_id as the KRM resource name
 	u.SetGroupVersionKind(krm.DataplexTaskGVK)
 
 	log.Info("exported object", "obj", u, "gvk", u.GroupVersionKind())
