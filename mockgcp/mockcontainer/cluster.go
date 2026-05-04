@@ -357,8 +357,6 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		update.DesiredDatabaseEncryption = nil
 	}
 
-	// TODO: Support more updates!
-
 	if !proto.Equal(update, &pb.ClusterUpdate{}) {
 
 		return nil, status.Errorf(codes.InvalidArgument, "update was not fully implemented ClusterUpdate=%v", prototext.Format(update))
@@ -368,7 +366,6 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		return nil, err
 	}
 
-	klog.Infof("maqiuyu...2...%+v\n", obj.DatabaseEncryption)
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
