@@ -32,6 +32,7 @@ import (
 type MemorystoreV1beta1Interface interface {
 	RESTClient() rest.Interface
 	MemorystoreInstancesGetter
+	MemorystoreInstanceEndpointsGetter
 }
 
 // MemorystoreV1beta1Client is used to interact with features provided by the memorystore.cnrm.cloud.google.com group.
@@ -41,6 +42,10 @@ type MemorystoreV1beta1Client struct {
 
 func (c *MemorystoreV1beta1Client) MemorystoreInstances(namespace string) MemorystoreInstanceInterface {
 	return newMemorystoreInstances(c, namespace)
+}
+
+func (c *MemorystoreV1beta1Client) MemorystoreInstanceEndpoints(namespace string) MemorystoreInstanceEndpointInterface {
+	return newMemorystoreInstanceEndpoints(c, namespace)
 }
 
 // NewForConfig creates a new MemorystoreV1beta1Client for the given config.

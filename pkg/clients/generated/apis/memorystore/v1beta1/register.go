@@ -59,5 +59,11 @@ var (
 		Kind:    reflect.TypeOf(MemorystoreInstance{}).Name(),
 	}
 
+	MemorystoreInstanceEndpointGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(MemorystoreInstanceEndpoint{}).Name(),
+	}
+
 	memorystoreAPIVersion = SchemeGroupVersion.String()
 )
