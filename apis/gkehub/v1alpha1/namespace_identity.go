@@ -19,6 +19,7 @@ import (
 	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -83,6 +84,15 @@ func NewGKEHubNamespaceIdentity(project, location, scopeID, namespaceID string) 
 }
 
 func (obj *GKEHubNamespace) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	var projectID string
+	if obj.Spec.ProjectRef != nil {
+		project, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+		if err != nil {
+			return nil, err
+		}
+		projectID = project.ProjectID
+	}
+
 	if obj.Spec.ScopeRef == nil {
 		return nil, fmt.Errorf("spec.scopeRef is required")
 	}
@@ -90,14 +100,22 @@ func (obj *GKEHubNamespace) GetIdentity(ctx context.Context, reader client.Reade
 	if err != nil {
 		return nil, err
 	}
-	projectID := scopeRef.ProjectID
+
 	if projectID == "" {
-		return nil, fmt.Errorf("could not derive projectID from scopeRef")
+		projectID = scopeRef.ProjectID
 	}
-	location := scopeRef.Location
+	if projectID == "" {
+		return nil, fmt.Errorf("could not derive projectID")
+	}
+
+	location := direct.ValueOf(obj.Spec.Location)
 	if location == "" {
-		return nil, fmt.Errorf("could not derive location from scopeRef")
+		location = scopeRef.Location
 	}
+	if location == "" {
+		return nil, fmt.Errorf("could not derive location")
+	}
+
 	scopeID := scopeRef.ID()
 	if scopeID == "" {
 		return nil, fmt.Errorf("could not derive scopeID from scopeRef")
@@ -105,7 +123,10 @@ func (obj *GKEHubNamespace) GetIdentity(ctx context.Context, reader client.Reade
 
 	namespaceID := direct.ValueOf(obj.Spec.NamespaceID)
 	if namespaceID == "" {
-		return nil, fmt.Errorf("spec.namespaceID is required")
+		namespaceID = direct.ValueOf(obj.Spec.ResourceID)
+	}
+	if namespaceID == "" {
+		namespaceID = obj.GetName()
 	}
 
 	return NewGKEHubNamespaceIdentity(projectID, location, scopeID, namespaceID), nil
