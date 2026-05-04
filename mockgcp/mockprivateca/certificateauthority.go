@@ -68,36 +68,6 @@ func (s *PrivateCAV1) CreateCertificateAuthority(ctx context.Context, req *pb.Cr
 
 	// Populate Output-only fields
 	obj.PemCaCertificates = []string{"-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"}
-	caDesc := &pb.CertificateDescription{
-		CertFingerprint: &pb.CertificateDescription_CertificateFingerprint{
-			Sha256Hash: fmt.Sprintf("0123456789abcdef0123456789abcdef0123456789abcdef0123456789%s", name.CertificateAuthorityID),
-		},
-		AuthorityKeyId: &pb.CertificateDescription_KeyId{
-			KeyId: "58ff0120decc0d87caa30eb45fef39e38133e733",
-		},
-		SubjectKeyId: &pb.CertificateDescription_KeyId{
-			KeyId: "58ff0120decc0d87caa30eb45fef39e38133e733",
-		},
-	}
-	if obj.Config != nil && obj.Config.SubjectConfig != nil {
-		caDesc.SubjectDescription = &pb.CertificateDescription_SubjectDescription{
-			Subject:         proto.Clone(obj.Config.SubjectConfig.Subject).(*pb.Subject),
-			SubjectAltName:  proto.Clone(obj.Config.SubjectConfig.SubjectAltName).(*pb.SubjectAltNames),
-			HexSerialNumber: "0123456789abcdef",
-			Lifetime:        obj.Lifetime,
-			NotBeforeTime:   obj.CreateTime,
-			NotAfterTime:    timestamppb.New(now.Add(time.Duration(obj.Lifetime.Seconds) * time.Second)),
-		}
-	}
-	if obj.Config != nil {
-		caDesc.X509Description = proto.Clone(obj.Config.X509Config).(*pb.X509Parameters)
-		decodedKey, _ := base64.StdEncoding.DecodeString("LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUFyeGt3dVBoREZTNlc1eEgvMW1MVApTYXhzMTNONnpGYlRXSUY4aG4vTlk1cXlJYmFpd0FYdEVOeU53NkhSSmd4R2c0WElkRXlMVGpCK1VNVVVLYU9OCnd0WFJTUW9CeGR2VitKeWRlL05jTUUzM3QyT3d1UDBRVzY2UnRLak52b2R5dzRLTHphVmp6T1hPY0YwV0NNYy8KRjV4cU5uUHpOalVncUlBanozSHkrejROWmNnT0lnM3dVdEJRRlNTUm16TmtzdjMwejhLQjdXUXJkaElWb3JuOQpuWVFPeW11eTZPT0dLM3FIUXRZYk1MYU9oREY1VnJ3amozblUxeStQMzdRR1kwdG5KS3VYbGNwR3hJN0tkWTI5CjRJM1F6K0JHemI0Wll0WE1uTzNOZFZVaTRteG14VTBMbVE3VlJkdHpkTGN6cTJDUEoyV2JjTTZkUldmVERoNisKYzdDQys3K1ZBdzlxeW1OSnFXN0wxb2JNSkNuTHpwcHBPVWg0RjNXU1V0SXVLcUZ2alo1eFMzUXBFSGJsRFoybgpUaTY1Tm4yR2JzeVYrc2FxTkpOdUdmVEpvUzRJOGFoakljY2hDaXUzRDMxNm5MczlENmMwckRLNmxsbUpHdFRLCmZsSVEyQkZmY2FtV2VlSXlNU1dIK3Uza2lKTTY2YWF1NVJrNlFXWWlKMTRhaWswNmsvK1pMRnNMazUvbVV3eVEKTWFUMXNPUGQ1Z3FSeUsrdGgyVXNkb1p1dE5PZFZYMWdRNjk4cXdVZk1oTmpkSzNLZUkzNWQvY2xuR2F1UGVPSgo2ZlgySy9WN1hTblQrcGRjRTExZjNFU0FZVEIybnJJSXgzK3NjYXdZalREd0Qrd2JQZ0p4ZG4wc1ppOTNtV2FKCkFPdTV4QjBOSStsYXhZT2tPZHhrYklVQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=")
-		caDesc.PublicKey = &pb.PublicKey{
-			Key:    decodedKey,
-			Format: pb.PublicKey_PEM,
-		}
-	}
-	obj.CaCertificateDescriptions = []*pb.CertificateDescription{caDesc}
 
 	// Fetch CAPool to check publishing options
 	caPool := &pb.CaPool{}
@@ -112,14 +82,60 @@ func (s *PrivateCAV1) CreateCertificateAuthority(ctx context.Context, req *pb.Cr
 
 	obj.Tier = caPool.Tier
 	obj.State = pb.CertificateAuthority_STAGED
+	obj.SatisfiesPzi = true
 
-	if caPool.GetPublishingOptions().GetPublishCrl() {
-		obj.AccessUrls = &pb.CertificateAuthority_AccessUrls{
-			CrlAccessUrls: []string{
-				fmt.Sprintf("http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/%s/crl", name.CertificateAuthorityID),
-			},
+	if caPool.GetPublishingOptions() != nil {
+		opts := caPool.GetPublishingOptions()
+		if opts.GetPublishCrl() || opts.GetPublishCaCert() {
+			obj.AccessUrls = &pb.CertificateAuthority_AccessUrls{}
+			if opts.GetPublishCrl() {
+				obj.AccessUrls.CrlAccessUrls = []string{
+					"http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/crl",
+				}
+			}
+			if opts.GetPublishCaCert() {
+				obj.AccessUrls.CaCertificateAccessUrl = "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/ca.crt"
+			}
 		}
 	}
+
+	caDesc := &pb.CertificateDescription{
+		CertFingerprint: &pb.CertificateDescription_CertificateFingerprint{
+			Sha256Hash: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+		},
+		TbsCertificateDigest: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+		AuthorityKeyId: &pb.CertificateDescription_KeyId{
+			KeyId: "0123456789abcdef0123456789abcdef01234567",
+		},
+		SubjectKeyId: &pb.CertificateDescription_KeyId{
+			KeyId: "0123456789abcdef0123456789abcdef01234567",
+		},
+	}
+	if obj.Config != nil && obj.Config.SubjectConfig != nil {
+		subjectDescription := &pb.CertificateDescription_SubjectDescription{
+			HexSerialNumber: "0123456789abcdef",
+			NotBeforeTime:   obj.CreateTime,
+		}
+		if obj.Config.SubjectConfig.Subject != nil {
+			subjectDescription.Subject = proto.Clone(obj.Config.SubjectConfig.Subject).(*pb.Subject)
+		}
+		if obj.Config.SubjectConfig.SubjectAltName != nil {
+			subjectDescription.SubjectAltName = proto.Clone(obj.Config.SubjectConfig.SubjectAltName).(*pb.SubjectAltNames)
+		}
+		if obj.Lifetime != nil {
+			subjectDescription.Lifetime = obj.Lifetime
+			subjectDescription.NotAfterTime = timestamppb.New(now.Add(time.Duration(obj.Lifetime.Seconds) * time.Second))
+		}
+		caDesc.SubjectDescription = subjectDescription
+	}
+	if obj.Config != nil {
+		caDesc.X509Description = proto.Clone(obj.Config.X509Config).(*pb.X509Parameters)
+		decodedKey, _ := base64.StdEncoding.DecodeString("LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUFyeGt3dVBoREZTNlc1eEgvMW1MVApTYXhzMTNONnpGYlRXSUY4aG4vTlk1cXlJYmFpd0FYdEVOeU53NkhSSmd4R2c0WElkRXlMVGpCK1VNVVVLYU9OCnd0WFJTUW9CeGR2VitKeWRlL05jTUUzM3QyT3d1UDBRVzY2UnRLak52b2R5dzRLTHphVmp6T1hPY0YwV0NNYy8KRjV4cU5uUHpOalVncUlBanozSHkrejROWmNnT0lnM3dVdEJRRlNTUm16TmtzdjMwejhLQjdXUXJkaElWb3JuOQpuWVFPeW11eTZPT0dLM3FIUXRZYk1MYU9oREY1VnJ3amozblUxeStQMzdRR1kwdG5KS3VYbGNwR3hJN0tkWTI5CjRJM1F6K0JHemI0Wll0WE1uTzNOZFZVaTRteG14VTBMbVE3VlJkdHpkTGN6cTJDUEoyV2JjTTZkUldmVERoNisKYzdDQys3K1ZBdzlxeW1OSnFXN0wxb2JNSkNuTHpwcHBPVWg0RjNXU1V0SXVLcUZ2alo1eFMzUXBFSGJsRFoybgpUaTY1Tm4yR2JzeVYrc2FxTkpOdUdmVEpvUzRJOGFoakljY2hDaXUzRDMxNm5MczlENmMwckRLNmxsbUpHdFRLCmZsSVEyQkZmY2FtV2VlSXlNU1dIK3Uza2lKTTY2YWF1NVJrNlFXWWlKMTRhaWswNmsvK1pMRnNMazUvbVV3eVEKTWFUMXNPUGQ1Z3FSeUsrdGgyVXNkb1p1dE5PZFZYMWdRNjk4cXdVZk1oTmpkSzNLZUkzNWQvY2xuR2F1UGVPSgo2ZlgySy9WN1hTblQrcGRjRTExZjNFU0FZVEIybnJJSXgzK3NjYXdZalREd0Qrd2JQZ0p4ZG4wc1ppOTNtV2FKCkFPdTV4QjBOSStsYXhZT2tPZHhrYklVQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=")
+		caDesc.PublicKey = &pb.PublicKey{
+			Key: decodedKey,
+		}
+	}
+	obj.CaCertificateDescriptions = []*pb.CertificateDescription{caDesc}
 
 	// service seems to remove "zero" values
 	pruneKU := func(ku *pb.KeyUsage) {

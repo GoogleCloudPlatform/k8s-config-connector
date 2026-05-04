@@ -19,8 +19,8 @@
 package v1alpha1
 
 import (
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -195,7 +195,7 @@ func (in *MemorystoreInstanceEndpointSpec) DeepCopyInto(out *MemorystoreInstance
 	*out = *in
 	if in.InstanceRef != nil {
 		in, out := &in.InstanceRef, &out.InstanceRef
-		*out = new(v1beta1.MemorystoreInstanceRef)
+		*out = new(refs.MemorystoreInstanceRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -257,7 +257,7 @@ func (in *PscConnection) DeepCopyInto(out *PscConnection) {
 	*out = *in
 	if in.ForwardingRuleRef != nil {
 		in, out := &in.ForwardingRuleRef, &out.ForwardingRuleRef
-		*out = new(computev1beta1.ForwardingRuleRef)
+		*out = new(v1beta1.ForwardingRuleRef)
 		**out = **in
 	}
 	if in.Port != nil {

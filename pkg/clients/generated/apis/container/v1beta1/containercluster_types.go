@@ -38,6 +38,19 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
+type ClusterAdditionalIpRangesConfigs struct {
+	/* List of secondary ranges names within this subnetwork that can be used for pod IPs. */
+	// +optional
+	PodIpv4RangeNames []string `json:"podIpv4RangeNames,omitempty"`
+
+	/* Status of the subnetwork, If in draining status, subnet will not be selected for new node pools. */
+	// +optional
+	Status *string `json:"status,omitempty"`
+
+	/* The subnetwork path for the additional IP range. Format: projects/{project}/regions/{region}/subnetworks/{subnetwork}. */
+	SubnetworkRef v1alpha1.ResourceRef `json:"subnetworkRef"`
+}
+
 type ClusterAdditionalPodRangesConfig struct {
 	/* Name for pod secondary ipv4 range which has the actual range defined ahead. */
 	PodRangeNames []string `json:"podRangeNames"`
@@ -266,7 +279,7 @@ type ClusterDatabaseEncryption struct {
 	// +optional
 	KeyName *string `json:"keyName,omitempty"`
 
-	/* ENCRYPTED or DECRYPTED. */
+	/* ENCRYPTED, ALL_OBJECTS_ENCRYPTION_ENABLED or DECRYPTED. */
 	State string `json:"state"`
 }
 
@@ -426,6 +439,10 @@ type ClusterIdentityServiceConfig struct {
 }
 
 type ClusterIpAllocationPolicy struct {
+	/* AdditionalIpRangesConfigs is the configuration for additional pod secondary ranges supporting the ClusterUpdate message. Each AdditionalIPRangesConfig corresponds to a single subnetwork. */
+	// +optional
+	AdditionalIpRangesConfigs []ClusterAdditionalIpRangesConfigs `json:"additionalIpRangesConfigs,omitempty"`
+
 	/* AdditionalPodRangesConfig is the configuration for additional pod secondary ranges supporting the ClusterUpdate message. */
 	// +optional
 	AdditionalPodRangesConfig *ClusterAdditionalPodRangesConfig `json:"additionalPodRangesConfig,omitempty"`
@@ -1116,7 +1133,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	CostManagementConfig *ClusterCostManagementConfig `json:"costManagementConfig,omitempty"`
 
-	/* Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: "ENCRYPTED"; "DECRYPTED". key_name is the name of a CloudKMS key. */
+	/* Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: "ENCRYPTED"; "ALL_OBJECTS_ENCRYPTION_ENABLED"; "DECRYPTED". key_name is the name of a CloudKMS key. */
 	// +optional
 	DatabaseEncryption *ClusterDatabaseEncryption `json:"databaseEncryption,omitempty"`
 

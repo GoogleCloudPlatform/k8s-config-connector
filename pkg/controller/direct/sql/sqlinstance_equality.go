@@ -15,6 +15,7 @@
 package sql
 
 import (
+	"fmt"
 	"reflect"
 	"sort"
 
@@ -173,9 +174,7 @@ func DiffSettings(desired *api.Settings, actual *api.Settings) *structuredreport
 	if desired.TimeZone != actual.TimeZone {
 		diff.AddField(".settings.timeZone", actual.TimeZone, desired.TimeZone)
 	}
-	if !mapsMatch(desired.UserLabels, actual.UserLabels) {
-		diff.AddField(".settings.userLabels", actual.UserLabels, desired.UserLabels)
-	}
+	mapsMatch(diff, ".settings.userLabels", desired.UserLabels, actual.UserLabels)
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
 	return diff
@@ -193,16 +192,22 @@ func slicesMatch[T any](desired []T, actual []T) bool {
 	return reflect.DeepEqual(desired, actual)
 }
 
-// mapsMatch checks if two maps are equal, matching with reflect.DeepEqual.
-// As a special-case, the empty map is treated the same as the nil map
-func mapsMatch[K comparable, V any](desired map[K]V, actual map[K]V) bool {
-	if len(desired) != len(actual) {
-		return false
+// mapsMatch checks if two maps are equal, reporting differences to the provided Diff object.
+func mapsMatch[K comparable, V any](diff *structuredreporting.Diff, path string, desired map[K]V, actual map[K]V) {
+	for k, vDesired := range desired {
+		vActual, ok := actual[k]
+		kStr := fmt.Sprint(k)
+		if !ok {
+			diff.AddField(path+"[+\""+kStr+"\"]", nil, vDesired)
+		} else if !reflect.DeepEqual(vDesired, vActual) {
+			diff.AddField(path+"[*\""+kStr+"\"]", vActual, vDesired)
+		}
 	}
-	if len(desired) == 0 && len(actual) == 0 {
-		return true
+	for k, vActual := range actual {
+		if _, ok := desired[k]; !ok {
+			diff.AddField(path+"[-\""+fmt.Sprint(k)+"\"]", vActual, nil)
+		}
 	}
-	return reflect.DeepEqual(desired, actual)
 }
 
 func DiffMysqlReplicaConfiguration(desired *api.MySqlReplicaConfiguration, actual *api.MySqlReplicaConfiguration) *structuredreporting.Diff {

@@ -476,23 +476,47 @@ spec:
                 properties:
                   googleAPIsBundle:
                     type: string
-                  memorystoreInstanceServiceAttachmentRef:
-                    description: The service attachment for a Memorystore for Valkey
-                      instance.
+                  memorystoreInstanceServiceAttachment:
+                    description: Target a serviceAttachment for a Memorystore for
+                      Valkey instance.
                     properties:
-                      memorystoreInstanceName:
-                        description: The name of a MemorystoreInstance resource.
+                      connectionType:
+                        description: The connection type of the serviceAttachment.
+                          A memorystore instance has multiple serviceAttachments,
+                          each with a different connection type. Use connectionType
+                          to control which serviceAttachment to target. The empty
+                          value matches a serviceAttachment with an empty connectionType.
                         type: string
-                      memorystoreInstanceNamespace:
-                        description: The namespace of a MemorystoreInstance resource.
-                        type: string
-                      pscAttachmentDetailsIndex:
-                        description: The index of the PSC attachment details.
-                        type: integer
-                      serviceAttachmentExternal:
-                        description: A reference to a ServiceAttachment managed by
-                          a MemorystoreInstance resource.
-                        type: string
+                      memorystoreInstanceRef:
+                        description: A reference to a MemorystoreInstance resource.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed MemorystoreInstance
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                            type: string
+                          name:
+                            description: The name of a MemorystoreInstance resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a MemorystoreInstance resource.
+                            type: string
+                        type: object
+                    required:
+                    - memorystoreInstanceRef
                     type: object
                   serviceAttachmentRef:
                     oneOf:

@@ -504,6 +504,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		testgcp.RecaptchaEnterpriseTestProject.Set("kcc-recaptcha-enterprise")
 		testgcp.TestKCCAlloyDBProject.Set("mock-project")
 		testgcp.TestKCCAlloyDBProjectNumber.Set("518915279")
+		testgcp.TestSharedReservationsProject.Set("mock-project")
 
 		crm := h.getCloudResourceManagerClient(kccConfig.HTTPClient)
 		req := &cloudresourcemanagerv1.Project{
@@ -958,6 +959,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNodeTemplate"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeManagedSSLCertificate"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeRegionNetworkEndpointGroup"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeReservation"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeServiceAttachment"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeSSLCertificate"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeSSLPolicy"}:

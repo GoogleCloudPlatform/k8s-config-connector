@@ -193,6 +193,10 @@ type InstanceObservedStateStatus struct {
 	// +optional
 	NodeConfig *InstanceNodeConfigStatus `json:"nodeConfig,omitempty"`
 
+	/* Output only. List of PSC connections for the instance. */
+	// +optional
+	PscAttachmentDetails []InstancePscAttachmentDetailsStatus `json:"pscAttachmentDetails,omitempty"`
+
 	/* Output only. Current state of the instance. */
 	// +optional
 	State *string `json:"state,omitempty"`
@@ -208,6 +212,16 @@ type InstanceObservedStateStatus struct {
 	/* Output only. Latest update timestamp of the instance. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type InstancePscAttachmentDetailsStatus struct {
+	/* Output only. Type of Psc endpoint. */
+	// +optional
+	ConnectionType *string `json:"connectionType,omitempty"`
+
+	/* Output only. Service attachment URI which your self-created PscConnection should use as target. */
+	// +optional
+	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
 }
 
 type InstancePscAutoConnectionStatus struct {
@@ -247,6 +261,13 @@ type InstanceStateInfoStatus struct {
 }
 
 type InstanceUpdateInfoStatus struct {
+	/* Output only. Target number of replica nodes per shard for the instance. */
+	// +optional
+	TargetReplicaCount *int32 `json:"targetReplicaCount,omitempty"`
+
+	/* Output only. Target number of shards for the instance. */
+	// +optional
+	TargetShardCount *int32 `json:"targetShardCount,omitempty"`
 }
 
 type MemorystoreInstanceStatus struct {

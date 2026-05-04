@@ -429,6 +429,12 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 
 	if !existsAlready {
 		createOp := NewCreateOperation(r.Reconciler.LifecycleHandler, r.Reconciler.Client, u)
+		diff := structuredreporting.Diff{
+			Object:      u,
+			IsNewObject: true,
+		}
+		structuredreporting.ReportDiff(ctx, &diff)
+
 		if err := adapter.Create(ctx, createOp); err != nil {
 			if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 				logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))

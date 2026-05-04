@@ -15,7 +15,8 @@
 package v1beta1
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -44,7 +45,7 @@ type MetadataFilterLabelMatch struct {
 
 type IpAddress struct {
 	// +optional
-	AddressRef *refs.ComputeAddressRef `json:"addressRef,omitempty"`
+	AddressRef *refsv1beta1.ComputeAddressRef `json:"addressRef,omitempty"`
 
 	// +optional
 	Ip *string `json:"ip,omitempty"`
@@ -85,30 +86,46 @@ type Target struct {
 	// +optional
 	GoogleAPIsBundle *string `json:"googleAPIsBundle,omitempty"`
 
-	// The service attachment for a Memorystore for Valkey instance.
+	// Target a serviceAttachment for a Memorystore for Valkey instance.
 	// +optional
-	MemorystoreInstanceServiceAttachmentRef *refs.MemorystoreInstanceServiceAttachmentRef `json:"memorystoreInstanceServiceAttachmentRef,omitempty"`
+	MemorystoreInstanceServiceAttachment *MemorystoreInstanceServiceAttachment `json:"memorystoreInstanceServiceAttachment,omitempty"`
 
 	// +optional
-	ServiceAttachmentRef *refs.ComputeServiceAttachmentRef `json:"serviceAttachmentRef,omitempty"`
+	ServiceAttachmentRef *refsv1beta1.ComputeServiceAttachmentRef `json:"serviceAttachmentRef,omitempty"`
 
 	// +optional
-	TargetGRPCProxyRef *refs.ComputeTargetGrpcProxyRef `json:"targetGRPCProxyRef,omitempty"`
+	TargetGRPCProxyRef *refsv1beta1.ComputeTargetGrpcProxyRef `json:"targetGRPCProxyRef,omitempty"`
 
 	// +optional
-	TargetHTTPProxyRef *refs.ComputeTargetHTTPProxyRef `json:"targetHTTPProxyRef,omitempty"`
+	TargetHTTPProxyRef *refsv1beta1.ComputeTargetHTTPProxyRef `json:"targetHTTPProxyRef,omitempty"`
 
 	// +optional
-	TargetHTTPSProxyRef *refs.ComputeTargetHTTPSProxyRef `json:"targetHTTPSProxyRef,omitempty"`
+	TargetHTTPSProxyRef *refsv1beta1.ComputeTargetHTTPSProxyRef `json:"targetHTTPSProxyRef,omitempty"`
 
 	// +optional
-	TargetSSLProxyRef *refs.ComputeTargetSSLProxyRef `json:"targetSSLProxyRef,omitempty"`
+	TargetSSLProxyRef *refsv1beta1.ComputeTargetSSLProxyRef `json:"targetSSLProxyRef,omitempty"`
 
 	// +optional
-	TargetTCPProxyRef *refs.ComputeTargetTCPProxyRef `json:"targetTCPProxyRef,omitempty"`
+	TargetTCPProxyRef *refsv1beta1.ComputeTargetTCPProxyRef `json:"targetTCPProxyRef,omitempty"`
 
 	// +optional
-	TargetVPNGatewayRef *refs.ComputeTargetVPNGatewayRef `json:"targetVPNGatewayRef,omitempty"`
+	TargetVPNGatewayRef *refsv1beta1.ComputeTargetVPNGatewayRef `json:"targetVPNGatewayRef,omitempty"`
+}
+
+// MemorystoreInstanceServiceAttachment defines the resource reference to the GCP identifier
+// for the ServiceAttachment managed by the MemorystoreInstance pointed by the MemorystoreInstanceRef.
+// +k8s:deepcopy-gen=true
+type MemorystoreInstanceServiceAttachment struct {
+	// A reference to a MemorystoreInstance resource.
+	// +required
+	MemorystoreInstanceRef *refs.MemorystoreInstanceRef `json:"memorystoreInstanceRef,omitempty"`
+
+	// The connection type of the serviceAttachment.
+	// A memorystore instance has multiple serviceAttachments, each with a different connection type.
+	// Use connectionType to control which serviceAttachment to target.
+	// The empty value matches a serviceAttachment with an empty connectionType.
+	// +optional
+	ConnectionType *string `json:"connectionType,omitempty"`
 }
 
 // +kcc:spec:proto=google.cloud.compute.v1.ForwardingRule
@@ -353,7 +370,7 @@ type ComputeForwardingRuleSpec struct {
 	optional. However, if the network is in custom subnet mode, a
 	subnetwork must be specified. */
 	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.subnetwork
-	SubnetworkRef *refs.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *refsv1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 
 	/* The target resource to receive the matched traffic. The forwarded
 	traffic must be of a type appropriate to the target object. For

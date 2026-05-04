@@ -1,0 +1,4 @@
+- exec: gcloud compute future-reservations create test-${uniqueId} --zone=us-central1-a --description="test future reservation" --total-count=10 --machine-type=n2-standard-4 --start-time=2026-05-20T07:00:00Z --end-time=2026-06-20T07:00:00Z --project=${projectId} --no-auto-delete-auto-created-reservations
+- exec: gcloud compute future-reservations describe test-${uniqueId} --zone=us-central1-a --project=${projectId}
+- exec: gcloud compute future-reservations update test-${uniqueId} --zone=us-central1-a --description="test future reservation updated" --project=${projectId}
+- exec: gcloud compute future-reservations delete test-${uniqueId} --zone=us-central1-a --project=${projectId} --quiet

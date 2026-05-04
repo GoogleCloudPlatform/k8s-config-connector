@@ -50,6 +50,10 @@ func (s *computeOperations) regionalOperationFQN(projectID string, region string
 	return "projects/" + projectID + "/regions/" + region + "/operations/" + name
 }
 
+func (s *computeOperations) zonalOperationFQN(projectID string, zone string, name string) string {
+	return "projects/" + projectID + "/zones/" + zone + "/operations/" + name
+}
+
 // Deprecated: use startGlobalLRO
 func (s *computeOperations) newLRO(ctx context.Context, projectID string) (*pb.Operation, error) {
 	log := klog.FromContext(ctx)
@@ -178,6 +182,19 @@ func (s *computeOperations) startRegionalLRO(ctx context.Context, projectID stri
 
 	op.Name = PtrTo(name)
 	op.Region = PtrTo(BuildComputeSelfLink(ctx, "projects/"+projectID+"/regions/"+region))
+	return s.startLRO0(ctx, op, fqn, callback)
+}
+
+func (s *computeOperations) startZonalLRO(ctx context.Context, projectID string, zone string, op *pb.Operation, callback func() (proto.Message, error)) (*pb.Operation, error) {
+	now := time.Now()
+	millis := now.UnixMilli()
+	id := uuid.NewUUID()
+
+	name := fmt.Sprintf("operation-%d-%s", millis, id)
+	fqn := s.zonalOperationFQN(projectID, zone, name)
+
+	op.Name = PtrTo(name)
+	op.Zone = PtrTo(BuildComputeSelfLink(ctx, "projects/"+projectID+"/zones/"+zone))
 	return s.startLRO0(ctx, op, fqn, callback)
 }
 

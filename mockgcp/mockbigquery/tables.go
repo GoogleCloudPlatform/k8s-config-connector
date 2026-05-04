@@ -63,6 +63,8 @@ func (s *tablesServer) PatchTable(ctx context.Context, req *pb.PatchTableRequest
 
 	updated.Etag = PtrTo(computeEtag(updated))
 
+	s.normalizeTable(updated)
+
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
@@ -85,6 +87,8 @@ func (s *tablesServer) GetTable(ctx context.Context, req *pb.GetTableRequest) (*
 		}
 		return nil, err
 	}
+
+	s.normalizeTable(obj)
 
 	return obj, nil
 }
@@ -347,6 +351,8 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 
 	obj.Etag = PtrTo(computeEtag(obj))
 
+	s.normalizeTable(obj)
+
 	ret := CloneProto(obj)
 
 	// TimePartitioning.RequirePartitionFilter is not returned in the POST response,
@@ -426,6 +432,8 @@ func (s *tablesServer) UpdateTable(ctx context.Context, req *pb.UpdateTableReque
 		}
 	}
 
+	s.normalizeTable(updated)
+
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
@@ -486,4 +494,21 @@ func (s *MockService) buildTableName(projectName string, datasetID string, table
 	}
 
 	return name, nil
+}
+
+func (s *tablesServer) normalizeTable(table *pb.Table) {
+	if table.Schema != nil {
+		for _, field := range table.Schema.Fields {
+			s.normalizeTableField(field)
+		}
+	}
+}
+
+func (s *tablesServer) normalizeTableField(field *pb.TableFieldSchema) {
+	if field.PolicyTags != nil && len(field.PolicyTags.Names) == 0 {
+		field.PolicyTags = nil
+	}
+	for _, subField := range field.Fields {
+		s.normalizeTableField(subField)
+	}
 }

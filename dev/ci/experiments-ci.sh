@@ -26,7 +26,6 @@ cd ${REPO_ROOT}
 projects=(
   "experiments/kompanion"
   "experiments/kubectl-plan"
-  "experiments/composite"
   "experiments/tools/licensescan"
 )
 

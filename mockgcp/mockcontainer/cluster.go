@@ -335,9 +335,22 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		update.DesiredEnableCiliumClusterwideNetworkPolicy = nil
 	}
 
+	if update.DesiredAdditionalIpRangesConfig != nil {
+		if obj.IpAllocationPolicy == nil {
+			obj.IpAllocationPolicy = &pb.IPAllocationPolicy{}
+		}
+		obj.IpAllocationPolicy.AdditionalIpRangesConfigs = update.DesiredAdditionalIpRangesConfig.AdditionalIpRangesConfigs
+		update.DesiredAdditionalIpRangesConfig = nil
+	}
+
 	// TODO: Support more updates!
+	if update.DesiredDatabaseEncryption != nil {
+		obj.DatabaseEncryption = update.DesiredDatabaseEncryption
+		update.DesiredDatabaseEncryption = nil
+	}
 
 	if !proto.Equal(update, &pb.ClusterUpdate{}) {
+
 		return nil, status.Errorf(codes.InvalidArgument, "update was not fully implemented ClusterUpdate=%v", prototext.Format(update))
 	}
 

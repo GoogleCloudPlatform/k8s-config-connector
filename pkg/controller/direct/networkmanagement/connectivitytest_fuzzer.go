@@ -96,20 +96,8 @@ func NetworkManagementConnectivityTestFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].interconnect_attachment")
 	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].interconnect_attachment")
 
-	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].drop.source_geolocation_code")
-	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].drop.source_geolocation_code")
-
-	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].drop.destination_geolocation_code")
-	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].drop.destination_geolocation_code")
-
-	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].deliver.google_service_type")
-	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].deliver.google_service_type")
-
-	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].hybrid_subnet.uri")
-	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].hybrid_subnet.uri")
-
-	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].vpn_gateway.vpn_tunnel_uri")
-	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].vpn_gateway.vpn_tunnel_uri")
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].hybrid_subnet")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].hybrid_subnet")
 
 	f.Unimplemented_NotYetTriaged(".probing_details.edge_responses")
 	f.Unimplemented_NotYetTriaged(".destination.cloud_run_revision.service_uri")
@@ -118,15 +106,6 @@ func NetworkManagementConnectivityTestFuzzer() fuzztesting.KRMFuzzer {
 
 	f.Unimplemented_NotYetTriaged(".source.gke_pod")
 	f.Unimplemented_NotYetTriaged(".destination.gke_pod")
-	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].gke_pod.pod_uri")
-	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].gke_pod.pod_uri")
-	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].nat.cloud_nat_gateway_type")
-	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].nat.cloud_nat_gateway_type")
-	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].ip_masquerading_skipped")
-	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].ip_masquerading_skipped")
-
-	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].gke_pod")
-	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].gke_pod")
 
 	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].instance")
 	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].instance")
@@ -182,6 +161,17 @@ func NetworkManagementConnectivityTestFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].storage_bucket")
 	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].serverless_neg")
 	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].serverless_neg")
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].gke_pod")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].gke_pod")
+
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].ip_masquerading_skipped")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].ip_masquerading_skipped")
+
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].ngfw_packet_inspection")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].ngfw_packet_inspection")
+
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].gke_network_policy")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].gke_network_policy")
 
 	return f
 }

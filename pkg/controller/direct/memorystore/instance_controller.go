@@ -19,7 +19,8 @@ import (
 	"fmt"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -120,7 +121,7 @@ func (m *modelInstance) AdapterForURL(ctx context.Context, url string) (directba
 }
 
 type InstanceAdapter struct {
-	id        *krm.InstanceIdentity
+	id        *refs.MemorystoreInstanceIdentity
 	gcpClient *gcp.Client
 	desired   *memorystorepb.Instance
 	actual    *memorystorepb.Instance
@@ -335,7 +336,7 @@ func (a *InstanceAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
+	obj.Spec.ProjectRef = &refsv1beta1.ProjectRef{External: a.id.Parent().ProjectID}
 	obj.Spec.Location = a.id.Parent().Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {

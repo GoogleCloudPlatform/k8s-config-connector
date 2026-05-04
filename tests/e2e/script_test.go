@@ -136,6 +136,7 @@ func TestE2EScript(t *testing.T) {
 						}
 						baseOutputPath := filepath.Join(script.SourceDir, fmt.Sprintf("_cli-%d-", i))
 						runCLI(h, args, uniqueID, baseOutputPath)
+						captureHTTPLogEvents(true)
 						continue
 					}
 

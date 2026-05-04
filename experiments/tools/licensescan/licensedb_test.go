@@ -65,9 +65,19 @@ func TestLicensesForConsistency(t *testing.T) {
 			}
 
 			if m1.License != m2.License {
-				switch f1 {
-				case "modules/github.com/klauspost/compress/v1.11.2.yaml":
+				module := filepath.Dir(f1)
+				switch module {
+				case "modules/github.com/klauspost/compress":
 					// license changed after v1.11.2
+				case "modules/github.com/fxamacker/cbor/v2":
+					// license changed from BSD-3-Clause to MIT in v2.9.0
+				case "modules/go.opentelemetry.io/otel",
+					"modules/go.opentelemetry.io/otel/metric",
+					"modules/go.opentelemetry.io/otel/sdk",
+					"modules/go.opentelemetry.io/otel/sdk/metric",
+					"modules/go.opentelemetry.io/otel/trace",
+					"modules/go.opentelemetry.io/contrib/detectors/gcp":
+					// license changed from Apache-2.0 to (Apache-2.0, BSD-3-Clause) in newer versions
 				default:
 					t.Errorf("license mismatch: %v=%v, %v=%v", f1, m1.License, f2, m2.License)
 				}

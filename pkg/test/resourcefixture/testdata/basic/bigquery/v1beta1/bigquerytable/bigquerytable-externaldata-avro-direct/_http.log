@@ -452,14 +452,12 @@ X-Xss-Protection: 0
         "description": "The common name of the state.",
         "mode": "REQUIRED",
         "name": "name",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "The postal code abbreviation of the state.",
         "mode": "REQUIRED",
         "name": "post_abbr",
-        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -527,14 +525,12 @@ X-Xss-Protection: 0
         "description": "The common name of the state.",
         "mode": "REQUIRED",
         "name": "name",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "The postal code abbreviation of the state.",
         "mode": "REQUIRED",
         "name": "post_abbr",
-        "policyTags": {},
         "type": "STRING"
       }
     ]
