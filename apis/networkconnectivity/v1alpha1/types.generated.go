@@ -233,6 +233,8 @@ type PSCConfig struct {
 }
 */
 
+/* found existing non-generated go type "PSCConnection", skipping
+
 // +kcc:proto=mockgcp.cloud.networkconnectivity.v1.PscConnection
 type PSCConnection struct {
 	// The resource reference of the consumer address.
@@ -291,6 +293,7 @@ type PSCConnection struct {
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.state
 	State *string `json:"state,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy", skipping
 
