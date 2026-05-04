@@ -340,3 +340,61 @@ func ConvertIntToInt32(in *int) *int32 {
 	v := int32(*in)
 	return &v
 }
+
+func ReservationSpecificReservation_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationSpecificSKUReservation) *krm.ReservationSpecificReservation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReservationSpecificReservation{}
+	out.Count = Int32_FromProto(in.Count)
+	out.InUseCount = Int32_FromProto(in.InUseCount)
+	out.InstanceProperties = ReservationInstanceProperties_v1beta1_FromProto(mapCtx, in.GetInstanceProperties())
+	return out
+}
+
+func ReservationSpecificReservation_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ReservationSpecificReservation) *pb.AllocationSpecificSKUReservation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationSpecificSKUReservation{}
+	out.Count = Int32_ToProto(in.Count)
+	out.InUseCount = Int32_ToProto(in.InUseCount)
+	out.InstanceProperties = ReservationInstanceProperties_v1beta1_ToProto(mapCtx, in.InstanceProperties)
+	return out
+}
+
+func ReservationLocalSsds_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk) *krm.ReservationLocalSsds {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReservationLocalSsds{}
+	out.DiskSizeGb = Int32_FromProto(in.DiskSizeGb)
+	out.Interface = in.Interface
+	return out
+}
+
+func ReservationLocalSsds_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ReservationLocalSsds) *pb.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk{}
+	out.DiskSizeGb = Int32_ToProto(in.DiskSizeGb)
+	out.Interface = in.Interface
+	return out
+}
+
+func Int32_FromProto(in *int64) *int32 {
+	if in == nil {
+		return nil
+	}
+	out := int32(*in)
+	return &out
+}
+
+func Int32_ToProto(in *int32) *int64 {
+	if in == nil {
+		return nil
+	}
+	out := int64(*in)
+	return &out
+}
