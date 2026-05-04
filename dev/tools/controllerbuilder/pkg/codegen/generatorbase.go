@@ -32,11 +32,15 @@ type generatorBase struct {
 	outputBaseDir  string
 	generatedFiles map[generatedFileKey]*generatedFile
 	errors         []error
+
+	sourceTrees map[string]*goSourceTree
 }
 
 func (g *generatorBase) init(outputBaseDir string) {
 	g.outputBaseDir = outputBaseDir
 	g.generatedFiles = make(map[generatedFileKey]*generatedFile)
+
+	g.sourceTrees = make(map[string]*goSourceTree)
 }
 
 func (g *generatorBase) getOutputFile(k generatedFileKey) *generatedFile {
@@ -212,7 +216,56 @@ func (g *generatorBase) findTypeDeclaration(goTypeName string, srcDir string, sk
 	return nil, nil
 }
 
-func (g *generatorBase) findTypeDeclarationWithProtoTag(protoTag string, srcDir string, skipGenerated bool) (*string, error) {
+type goSourceTree struct {
+	types     []*goTypeDeclarationWithProtoTag
+	functions []*goFunctionDeclaration
+}
+
+type goTypeDeclarationWithProtoTag struct {
+	IsGenerated     bool
+	DeclarationLine string
+}
+
+type goFunctionDeclaration struct {
+	IsGenerated     bool
+	DeclarationLine string
+}
+
+func (c *goSourceTree) findTypeDeclarationWithProtoTag(protoTag string, skipGenerated bool, keys []string) []*goTypeDeclarationWithProtoTag {
+	var matches []*goTypeDeclarationWithProtoTag
+	for _, goType := range c.types {
+		if skipGenerated && goType.IsGenerated {
+			continue
+		}
+		for _, key := range keys {
+			if v, ok := GetAnnotation(goType.DeclarationLine, key); ok && v == protoTag {
+				matches = append(matches, goType)
+			}
+		}
+	}
+	return matches
+}
+
+func (c *goSourceTree) findFuncDeclaration(goFuncName string, skipGenerated bool) []*goFunctionDeclaration {
+	var matches []*goFunctionDeclaration
+	for _, goFunc := range c.functions {
+		if skipGenerated && goFunc.IsGenerated {
+			continue
+		}
+
+		trimmed := strings.TrimSpace(goFunc.DeclarationLine)
+
+		if strings.HasPrefix(trimmed, "func "+goFuncName+"(") {
+			matches = append(matches, goFunc)
+		}
+	}
+
+	return matches
+}
+
+func ParseGoSource(srcDir string) (*goSourceTree, error) {
+	result := &goSourceTree{}
+
 	files, err := os.ReadDir(srcDir)
 	if err != nil {
 		return nil, fmt.Errorf("reading directory %q: %w", srcDir, err)
@@ -223,54 +276,78 @@ func (g *generatorBase) findTypeDeclarationWithProtoTag(protoTag string, srcDir 
 		if !strings.HasSuffix(p, ".go") {
 			continue
 		}
-		if skipGenerated && strings.HasSuffix(p, "generated.go") {
-			continue
-		}
+
 		b, err := os.ReadFile(p)
 		if err != nil {
 			return nil, fmt.Errorf("reading file %q: %w", p, err)
 		}
 
+		isGenerated := strings.HasSuffix(p, "generated.go")
+
 		for _, line := range strings.Split(string(b), "\n") {
-			if proto, ok := GetProtoMessageFromAnnotation(line); ok {
-				if proto == protoTag {
-					return &line, nil
+			if _, ok := GetProtoMessageFromAnnotation(line); ok {
+				t := &goTypeDeclarationWithProtoTag{
+					IsGenerated:     isGenerated,
+					DeclarationLine: line,
 				}
+				result.types = append(result.types, t)
 			}
+
+			trimmed := strings.TrimSpace(line)
+			if strings.HasPrefix(trimmed, "func ") {
+				g := &goFunctionDeclaration{
+					DeclarationLine: line,
+					IsGenerated:     isGenerated,
+				}
+				result.functions = append(result.functions, g)
+			}
+
 		}
 	}
 
-	return nil, nil
+	return result, nil
+}
+
+func (g *generatorBase) findTypeDeclarationWithProtoTag(protoTag string, srcDir string, skipGenerated bool, prefixes []string) (*string, error) {
+	sourceTree, ok := g.sourceTrees[srcDir]
+	if !ok {
+		s, err := ParseGoSource(srcDir)
+		if err != nil {
+			return nil, fmt.Errorf("parsing go source: %w", err)
+		}
+		g.sourceTrees[srcDir] = s
+		sourceTree = s
+	}
+	results := sourceTree.findTypeDeclarationWithProtoTag(protoTag, skipGenerated, prefixes)
+	if len(results) == 0 {
+		return nil, nil
+	}
+	if len(results) > 1 {
+		klog.Warningf("multiple go type declarations found with proto tag %q", protoTag)
+		for _, r := range results {
+			klog.Infof("  %s", r.DeclarationLine)
+		}
+	}
+	return &results[0].DeclarationLine, nil
 }
 
 func (g *generatorBase) findFuncDeclaration(goFuncName string, srcDir string, skipGenerated bool) *string {
-	files, err := os.ReadDir(srcDir)
-	if err != nil {
-		g.Errorf("reading directory %q: %w", srcDir, err)
+	sourceTree, ok := g.sourceTrees[srcDir]
+	if !ok {
+		s, err := ParseGoSource(srcDir)
+		if err != nil {
+			klog.Fatalf("parsing go source: %v", err)
+		}
+		g.sourceTrees[srcDir] = s
+		sourceTree = s
+	}
+
+	results := sourceTree.findFuncDeclaration(goFuncName, skipGenerated)
+	if len(results) == 0 {
 		return nil
 	}
-
-	for _, f := range files {
-		p := filepath.Join(srcDir, f.Name())
-		if !strings.HasSuffix(p, ".go") {
-			continue
-		}
-		if skipGenerated && strings.HasSuffix(p, "generated.go") {
-			continue
-		}
-		b, err := os.ReadFile(p)
-		if err != nil {
-			g.Errorf("reading file %q: %w", p, err)
-			return nil
-		}
-
-		for _, line := range strings.Split(string(b), "\n") {
-			line = strings.TrimSpace(line)
-			if strings.HasPrefix(line, "func "+goFuncName+"(") {
-				return &line
-			}
-		}
+	if len(results) > 1 {
+		klog.Warningf("multiple function declarations found with name %q", goFuncName)
 	}
-
-	return nil
+	return &results[0].DeclarationLine
 }
