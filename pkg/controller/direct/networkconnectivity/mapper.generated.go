@@ -317,12 +317,12 @@ func PSCConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *k
 	out.ErrorInfo = GoogleRpcErrorInfo_FromProto(mapCtx, in.GetErrorInfo())
 	out.ErrorType = direct.LazyPtr(in.GetErrorType())
 	out.GCEOperation = direct.LazyPtr(in.GetGceOperation())
-	out.IPVersion = direct.LazyPtr(in.GetIpVersion())
+	// MISSING: IPVersion
 	out.ProducerInstanceID = direct.LazyPtr(in.GetProducerInstanceId())
-	out.ProducerInstanceMetadata = in.ProducerInstanceMetadata
+	// MISSING: ProducerInstanceMetadata
 	out.PSCConnectionID = direct.LazyPtr(in.GetPscConnectionId())
 	out.SelectedSubnetwork = direct.LazyPtr(in.GetSelectedSubnetwork())
-	out.ServiceClass = direct.LazyPtr(in.GetServiceClass())
+	// MISSING: ServiceClass
 	out.State = direct.LazyPtr(in.GetState())
 	return out
 }
@@ -338,12 +338,12 @@ func PSCConnection_ToProto(mapCtx *direct.MapContext, in *krm.PSCConnection) *pb
 	out.ErrorInfo = GoogleRpcErrorInfo_ToProto(mapCtx, in.ErrorInfo)
 	out.ErrorType = direct.ValueOf(in.ErrorType)
 	out.GceOperation = direct.ValueOf(in.GCEOperation)
-	out.IpVersion = direct.ValueOf(in.IPVersion)
+	// MISSING: IPVersion
 	out.ProducerInstanceId = direct.ValueOf(in.ProducerInstanceID)
-	out.ProducerInstanceMetadata = in.ProducerInstanceMetadata
+	// MISSING: ProducerInstanceMetadata
 	out.PscConnectionId = direct.ValueOf(in.PSCConnectionID)
 	out.SelectedSubnetwork = direct.ValueOf(in.SelectedSubnetwork)
-	out.ServiceClass = direct.ValueOf(in.ServiceClass)
+	// MISSING: ServiceClass
 	out.State = direct.ValueOf(in.State)
 	return out
 }

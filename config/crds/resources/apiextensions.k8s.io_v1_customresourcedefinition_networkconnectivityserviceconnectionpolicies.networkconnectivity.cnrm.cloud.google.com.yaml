@@ -325,19 +325,10 @@ spec:
                           description: The last Compute Engine operation to setup
                             PSC connection.
                           type: string
-                        ipVersion:
-                          description: The requested IP version for the PSC connection.
-                          type: string
                         producerInstanceID:
                           description: Immutable. Deprecated. Use producer_instance_metadata
                             instead. An immutable identifier for the producer instance.
                           type: string
-                        producerInstanceMetadata:
-                          additionalProperties:
-                            type: string
-                          description: Immutable. An immutable map for the producer
-                            instance metadata.
-                          type: object
                         pscConnectionID:
                           description: The PSC connection id of the PSC forwarding
                             rule.
@@ -345,12 +336,6 @@ spec:
                         selectedSubnetwork:
                           description: Output only. The URI of the subnetwork selected
                             to allocate IP address for this connection.
-                          type: string
-                        serviceClass:
-                          description: Output only. [Output only] The service class
-                            associated with this PSC Connection. The value is derived
-                            from the SCPolicy and matches the service class name provided
-                            by the customer.
                           type: string
                         state:
                           description: State of the PSC Connection
