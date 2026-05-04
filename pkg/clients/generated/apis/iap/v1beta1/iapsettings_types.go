@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,217 +30,272 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type SettingsAccessDeniedPageSettings struct {
-	/* The URI to be redirected to when access is denied. */
-	// +optional
-	AccessDeniedPageURI *string `json:"accessDeniedPageURI,omitempty"`
+/* The URI to be redirected to when access is denied. */
+// +optional
+AccessDeniedPageURI *string `json:"accessDeniedPageURI,omitempty"`
 
-	/* Whether to generate a troubleshooting URL on access denied events to this application. */
-	// +optional
-	GenerateTroubleshootingURI *bool `json:"generateTroubleshootingURI,omitempty"`
+/* Whether to generate a troubleshooting URL on access denied events to this application. */
+// +optional
+GenerateTroubleshootingURI *bool `json:"generateTroubleshootingURI,omitempty"`
 
-	/* Whether to generate remediation token on access denied events to this application. */
-	// +optional
-	RemediationTokenGenerationEnabled *bool `json:"remediationTokenGenerationEnabled,omitempty"`
+/* Whether to generate remediation token on access denied events to this application. */
+// +optional
+RemediationTokenGenerationEnabled *bool `json:"remediationTokenGenerationEnabled,omitempty"`
 }
 
 type SettingsAccessSettings struct {
-	/* Settings to configure and enable allowed domains. */
-	// +optional
-	AllowedDomainsSettings *SettingsAllowedDomainsSettings `json:"allowedDomainsSettings,omitempty"`
+/* Optional. Settings to configure and enable allowed domains. */
+// +optional
+AllowedDomainsSettings *SettingsAllowedDomainsSettings `json:"allowedDomainsSettings,omitempty"`
 
-	/* Configuration to allow cross-origin requests via IAP. */
-	// +optional
-	CorsSettings *SettingsCorsSettings `json:"corsSettings,omitempty"`
+/* Optional. Configuration to allow cross-origin requests via IAP. */
+// +optional
+CorsSettings *SettingsCorsSettings `json:"corsSettings,omitempty"`
 
-	/* GCIP claims and endpoint configurations for 3p identity providers. */
-	// +optional
-	GcipSettings *SettingsGcipSettings `json:"gcipSettings,omitempty"`
+/* Optional. GCIP claims and endpoint configurations for 3p identity providers. */
+// +optional
+GcipSettings *SettingsGcipSettings `json:"gcipSettings,omitempty"`
 
-	/* Settings to configure IAP's OAuth behavior. */
-	// +optional
-	OauthSettings *SettingsOauthSettings `json:"oauthSettings,omitempty"`
+/* Optional. Identity sources that IAP can use to authenticate the end user. Only one identity source can be configured. */
+// +optional
+IdentitySources []string `json:"identitySources,omitempty"`
 
-	/* Settings to configure reauthentication policies in IAP. */
-	// +optional
-	ReauthSettings *SettingsReauthSettings `json:"reauthSettings,omitempty"`
+/* Optional. Settings to configure IAP's OAuth behavior. */
+// +optional
+OauthSettings *SettingsOauthSettings `json:"oauthSettings,omitempty"`
+
+/* Optional. Settings to configure reauthentication policies in IAP. */
+// +optional
+ReauthSettings *SettingsReauthSettings `json:"reauthSettings,omitempty"`
+
+/* Optional. Settings to configure the workforce identity federation, including workforce pools and OAuth 2.0 settings. */
+// +optional
+WorkforceIdentitySettings *SettingsWorkforceIdentitySettings `json:"workforceIdentitySettings,omitempty"`
 }
 
 type SettingsAllowedDomainsSettings struct {
-	/* List of trusted domains. */
-	// +optional
-	Domains []string `json:"domains,omitempty"`
+/* Optional. List of trusted domains. */
+// +optional
+Domains []string `json:"domains,omitempty"`
 
-	/* Configuration for customers to opt in for the feature. */
-	// +optional
-	Enable *bool `json:"enable,omitempty"`
+/* Optional. Configuration for customers to opt in for the feature. */
+// +optional
+Enable *bool `json:"enable,omitempty"`
 }
 
 type SettingsApplicationSettings struct {
-	/* Customization for Access Denied page. */
-	// +optional
-	AccessDeniedPageSettings *SettingsAccessDeniedPageSettings `json:"accessDeniedPageSettings,omitempty"`
+/* Optional. Customization for Access Denied page. */
+// +optional
+AccessDeniedPageSettings *SettingsAccessDeniedPageSettings `json:"accessDeniedPageSettings,omitempty"`
 
-	/* Settings to configure attribute propagation. */
-	// +optional
-	AttributePropagationSettings *SettingsAttributePropagationSettings `json:"attributePropagationSettings,omitempty"`
+/* Optional. Settings to configure attribute propagation. */
+// +optional
+AttributePropagationSettings *SettingsAttributePropagationSettings `json:"attributePropagationSettings,omitempty"`
 
-	/* The Domain value to set for cookies generated by IAP. This value is not validated by the API, but will be ignored at runtime if invalid. */
-	// +optional
-	CookieDomain *string `json:"cookieDomain,omitempty"`
+/* The Domain value to set for cookies generated by IAP. This value is not validated by the API, but will be ignored at runtime if invalid. */
+// +optional
+CookieDomain *string `json:"cookieDomain,omitempty"`
 
-	/* Settings to configure IAP's behavior for a service mesh. */
-	// +optional
-	CsmSettings *SettingsCsmSettings `json:"csmSettings,omitempty"`
+/* Optional. Settings to configure IAP's behavior for a service mesh. */
+// +optional
+CsmSettings *SettingsCsmSettings `json:"csmSettings,omitempty"`
 }
 
 type SettingsAttributePropagationSettings struct {
-	/* Whether the provided attribute propagation settings should be evaluated on user requests. If set to true, attributes returned from the expression will be propagated in the set output credentials. */
-	// +optional
-	Enable *bool `json:"enable,omitempty"`
+/* Optional. Whether the provided attribute propagation settings should be evaluated on user requests. If set to true, attributes returned from the expression will be propagated in the set output credentials. */
+// +optional
+Enable *bool `json:"enable,omitempty"`
 
-	/* Raw string CEL expression. Must return a list of attributes. A maximum of
-	45 attributes can be selected. Expressions can select different attribute
-	types from `attributes`: `attributes.saml_attributes`,
+	/* Optional. Raw string CEL expression. Must return a list of attributes. A
+	maximum of 45 attributes can be selected. Expressions can select different
+	attribute types from `attributes`: `attributes.saml_attributes`,
 	`attributes.iap_attributes`. The following functions are supported:
-
+	
 	- filter `<list>.filter(<iter_var>, <predicate>)`: Returns a subset of
 	`<list>` where `<predicate>` is true for every item.
-
+	
 	- in `<var> in <list>`: Returns true if `<list>` contains `<var>`.
-
+	
 	- selectByName `<list>.selectByName(<string>)`: Returns the attribute
 	in
 	`<list>` with the given `<string>` name, otherwise returns empty.
-
+	
 	- emitAs `<attribute>.emitAs(<string>)`: Sets the `<attribute>` name
 	field to the given `<string>` for propagation in selected output
 	credentials.
-
+	
 	- strict `<attribute>.strict()`: Ignores the `x-goog-iap-attr-` prefix
 	for the provided `<attribute>` when propagating with the `HEADER` output
 	credential, such as request headers.
-
+	
 	- append `<target_list>.append(<attribute>)` OR
 	`<target_list>.append(<list>)`: Appends the provided `<attribute>` or
 	`<list>` to the end of `<target_list>`.
-
+	
 	Example expression: `attributes.saml_attributes.filter(x, x.name in
 	['test']).append(attributes.iap_attributes.selectByName('exact').emitAs('custom').strict())` */
-	// +optional
-	Expression *string `json:"expression,omitempty"`
+// +optional
+Expression *string `json:"expression,omitempty"`
 
-	/* Which output credentials attributes selected by the CEL expression should be propagated in. All attributes will be fully duplicated in each selected output credential. */
-	// +optional
-	OutputCredentials []string `json:"outputCredentials,omitempty"`
+/* Optional. Which output credentials attributes selected by the CEL expression should be propagated in. All attributes will be fully duplicated in each selected output credential. */
+// +optional
+OutputCredentials []string `json:"outputCredentials,omitempty"`
 }
 
 type SettingsCorsSettings struct {
-	/* Configuration to allow HTTP OPTIONS calls to skip authorization. If undefined, IAP will not apply any special logic to OPTIONS requests. */
-	// +optional
-	AllowHTTPOptions *bool `json:"allowHTTPOptions,omitempty"`
+/* Configuration to allow HTTP `OPTIONS` calls to skip authentication and authorization. If undefined, IAP will not apply any special logic to `OPTIONS` requests. */
+// +optional
+AllowHTTPOptions *bool `json:"allowHTTPOptions,omitempty"`
 }
 
 type SettingsCsmSettings struct {
-	/* Audience claim set in the generated RCToken. This value is not validated by IAP. */
-	// +optional
-	RctokenAud *string `json:"rctokenAud,omitempty"`
+/* Audience claim set in the generated RCToken. This value is not validated by IAP. */
+// +optional
+RctokenAud *string `json:"rctokenAud,omitempty"`
 }
 
 type SettingsGcipSettings struct {
-	/* Login page URI associated with the GCIP tenants. Typically, all resources within the same project share the same login page, though it could be overridden at the sub resource level. */
-	// +optional
-	LoginPageURI *string `json:"loginPageURI,omitempty"`
+/* Login page URI associated with the GCIP tenants. Typically, all resources within the same project share the same login page, though it could be overridden at the sub resource level. */
+// +optional
+LoginPageURI *string `json:"loginPageURI,omitempty"`
 
-	/* GCIP tenant ids that are linked to the IAP resource. tenant_ids could be a string beginning with a number character to indicate authenticating with GCIP tenant flow, or in the format of _<ProjectNumber> to indicate authenticating with GCIP agent flow. If agent flow is used, tenant_ids should only contain one single element, while for tenant flow, tenant_ids can contain multiple elements. */
-	// +optional
-	TenantIDs []string `json:"tenantIDs,omitempty"`
+/* GCIP tenant ids that are linked to the IAP resource. tenant_ids could be a string beginning with a number character to indicate authenticating with GCIP tenant flow, or in the format of _<ProjectNumber> to indicate authenticating with GCIP agent flow. If agent flow is used, tenant_ids should only contain one single element, while for tenant flow, tenant_ids can contain multiple elements. */
+// +optional
+TenantIDs []string `json:"tenantIDs,omitempty"`
+}
+
+type SettingsOauth2 struct {
+/* The OAuth 2.0 client ID registered in the workforce identity federation OAuth 2.0 Server. */
+// +optional
+ClientID *string `json:"clientID,omitempty"`
+
+/* Input only. The OAuth 2.0 client secret created while registering the client ID. */
+// +optional
+ClientSecret *string `json:"clientSecret,omitempty"`
 }
 
 type SettingsOauthSettings struct {
-	/* Domain hint to send as hd=? parameter in OAuth request flow. Enables redirect to primary IDP by skipping Google's login screen. https://developers.google.com/identity/protocols/OpenIDConnect#hd-param Note: IAP does not verify that the id token's hd claim matches this value since access behavior is managed by IAM policies. */
-	// +optional
-	LoginHint *string `json:"loginHint,omitempty"`
+/* Domain hint to send as hd=? parameter in OAuth request flow. Enables redirect to primary IDP by skipping Google's login screen. https://developers.google.com/identity/protocols/OpenIDConnect#hd-param Note: IAP does not verify that the id token's hd claim matches this value since access behavior is managed by IAM policies. */
+// +optional
+LoginHint *string `json:"loginHint,omitempty"`
 
-	/* List of OAuth client IDs allowed to programmatically authenticate with IAP. */
-	// +optional
-	ProgrammaticClients []string `json:"programmaticClients,omitempty"`
+/* Optional. List of client ids allowed to use IAP programmatically. */
+// +optional
+ProgrammaticClients []string `json:"programmaticClients,omitempty"`
 }
 
 type SettingsReauthSettings struct {
-	/* Reauth session lifetime, how long before a user has to reauthenticate again. */
-	// +optional
-	MaxAge *string `json:"maxAge,omitempty"`
+/* Optional. Reauth session lifetime, how long before a user has to reauthenticate again. */
+// +optional
+MaxAge *string `json:"maxAge,omitempty"`
 
-	/* Reauth method requested. */
-	// +optional
-	Method *string `json:"method,omitempty"`
+/* Optional. Reauth method requested. */
+// +optional
+Method *string `json:"method,omitempty"`
 
-	/* How IAP determines the effective policy in cases of hierarchial policies. Policies are merged from higher in the hierarchy to lower in the hierarchy. */
-	// +optional
-	PolicyType *string `json:"policyType,omitempty"`
+/* Optional. How IAP determines the effective policy in cases of hierarchical policies. Policies are merged from higher in the hierarchy to lower in the hierarchy. */
+// +optional
+PolicyType *string `json:"policyType,omitempty"`
+}
+
+type SettingsWorkforceIdentitySettings struct {
+/* OAuth 2.0 settings for IAP to perform OIDC flow with workforce identity federation services. */
+// +optional
+Oauth2 *SettingsOauth2 `json:"oauth2,omitempty"`
+
+/* The workforce pool resources. Only one workforce pool is accepted. */
+// +optional
+WorkforcePools []string `json:"workforcePools,omitempty"`
 }
 
 type IAPSettingsSpec struct {
-	/* Top level wrapper for all access related setting in IAP */
-	// +optional
-	AccessSettings *SettingsAccessSettings `json:"accessSettings,omitempty"`
+/* Top level wrapper for all access related setting in IAP */
+// +optional
+AccessSettings *SettingsAccessSettings `json:"accessSettings,omitempty"`
 
-	/* Project-wide App Engine service settings */
-	// +optional
-	AppEngineRef *v1alpha1.ResourceRef `json:"appEngineRef,omitempty"`
+/* Project-wide App Engine service settings */
+// +optional
+AppEngineRef *v1alpha1.ResourceRef `json:"appEngineRef,omitempty"`
 
-	/* Top level wrapper for all application related settings in IAP */
-	// +optional
-	ApplicationSettings *SettingsApplicationSettings `json:"applicationSettings,omitempty"`
+/* Top level wrapper for all application related settings in IAP */
+// +optional
+ApplicationSettings *SettingsApplicationSettings `json:"applicationSettings,omitempty"`
 
-	/* Project-wide Compute service settings */
-	// +optional
-	ComputeServiceRef *v1alpha1.ResourceRef `json:"computeServiceRef,omitempty"`
+/* Project-wide Compute service settings */
+// +optional
+ComputeServiceRef *v1alpha1.ResourceRef `json:"computeServiceRef,omitempty"`
 
-	/* Folder-level settings */
-	// +optional
-	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+/* Folder-level settings */
+// +optional
+FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
-	/* Organization-level settings */
-	// +optional
-	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+/* Organization-level settings */
+// +optional
+OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
-	/* Project-level settings */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+/* Project-level settings */
+// +optional
+ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/* Project-wide web service settings */
-	// +optional
-	ProjectWebRef *v1alpha1.ResourceRef `json:"projectWebRef,omitempty"`
+/* Project-wide web service settings */
+// +optional
+ProjectWebRef *v1alpha1.ResourceRef `json:"projectWebRef,omitempty"`
 
-	/* The IAPSettings name. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The IAPSettings name. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
+}
+
+type SettingsAccessSettingsStatus struct {
+/* Optional. Settings to configure the workforce identity federation, including workforce pools and OAuth 2.0 settings. */
+// +optional
+WorkforceIdentitySettings *SettingsWorkforceIdentitySettingsStatus `json:"workforceIdentitySettings,omitempty"`
+}
+
+type SettingsOauth2Status struct {
+/* Output only. SHA256 hash value for the client secret. This field is returned by IAP when the settings are retrieved. */
+// +optional
+ClientSecretSha256 *string `json:"clientSecretSha256,omitempty"`
+}
+
+type SettingsObservedStateStatus struct {
+/* Optional. Top level wrapper for all access related setting in IAP */
+// +optional
+AccessSettings *SettingsAccessSettingsStatus `json:"accessSettings,omitempty"`
+}
+
+type SettingsWorkforceIdentitySettingsStatus struct {
+/* OAuth 2.0 settings for IAP to perform OIDC flow with workforce identity federation services. */
+// +optional
+Oauth2 *SettingsOauth2Status `json:"oauth2,omitempty"`
 }
 
 type IAPSettingsStatus struct {
 	/* Conditions represent the latest available observations of the
-	   IAPSettings's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the IAPSettings resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    IAPSettings's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the IAPSettings resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *SettingsObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpiapsettings
@@ -254,22 +310,20 @@ type IAPSettingsStatus struct {
 // IAPSettings is the Schema for the iap API
 // +k8s:openapi-gen=true
 type IAPSettings struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   IAPSettingsSpec   `json:"spec,omitempty"`
-	Status IAPSettingsStatus `json:"status,omitempty"`
+  Spec IAPSettingsSpec `json:"spec,omitempty"`
+  Status IAPSettingsStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// IAPSettingsList contains a list of IAPSettings
-type IAPSettingsList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []IAPSettings `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&IAPSettings{}, &IAPSettingsList{})
-}
+ // IAPSettingsList contains a list of IAPSettings
+ type IAPSettingsList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []IAPSettings `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&IAPSettings{}, &IAPSettingsList{})
+ }
