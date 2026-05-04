@@ -10,4 +10,5 @@ spec:
   crossInstanceReplicationConfig:
     instanceRole: SECONDARY
     primaryInstance:
-      instance: projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}-primary
+      instanceRef:
+        external: projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}-primary
