@@ -11,4 +11,4 @@ spec:
     instanceRole: SECONDARY
     primaryInstance:
       instanceRef:
-        external: projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}-primary
+        name: memorystoreinstance-${uniqueId}-primary
