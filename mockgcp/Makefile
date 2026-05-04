@@ -36,8 +36,8 @@ gen-proto: tools sync-repo
 .PHONY: gen-proto-no-fixup
 gen-proto-no-fixup:
 	PATH=bin/:${PATH} bin/protoc/bin/protoc \
-		-I ./third_party/googleapis \
 		-I ./apis \
+		-I ./third_party/googleapis \
 		--go_out ./generated \
 		--go_opt paths=source_relative \
 		--go-grpc_out ./generated \
@@ -53,6 +53,7 @@ gen-proto-no-fixup:
 		./apis/mockgcp/cloud/ids/v1/*.proto \
 		./apis/mockgcp/cloud/networkconnectivity/v1/*.proto \
 		./apis/mockgcp/cloud/servicenetworking/v1/*.proto \
+		./apis/mockgcp/cloud/clouddms/v1/*.proto \
 		./apis/mockgcp/cloud/resourcemanager/v1/*.proto \
 		./apis/mockgcp/storage/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/apikeys/v2/*.proto \
@@ -170,8 +171,8 @@ generate-grpc-for-google-protos:
 	mkdir -p ./generated
 
 	PATH=bin/:${PATH} bin/protoc/bin/protoc \
-		-I ./third_party/googleapis \
 		-I ./apis \
+		-I ./third_party/googleapis \
 		--experimental_allow_proto3_optional \
 		--grpc-gateway_out ./generated \
 		--grpc-gateway_opt logtostderr=true \
@@ -184,8 +185,9 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/apigateway/v1/apigateway_service.proto \
 		./third_party/googleapis/google/cloud/networksecurity/v1beta1/*.proto \
 		./third_party/googleapis/google/cloud/networkservices/v1/*.proto \
-		./third_party/googleapis/google/cloud/clouddms/v1/*.proto \
-		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto \
+                ./third_party/googleapis/google/cloud/dataplex/v1/*.proto \
+                ./third_party/googleapis/google/cloud/notebooks/v1/*.proto \
+                ./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto \
 		./third_party/googleapis/google/iam/v2/*.proto \
 		./third_party/googleapis/google/analytics/admin/v1alpha/*.proto
 
