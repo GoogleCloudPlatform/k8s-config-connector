@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -29,6 +30,15 @@ type GKEHubNamespaceStateStatus struct {
 
 // +kcc:spec:proto=google.cloud.gkehub.v1beta.Namespace
 type GKEHubNamespaceSpec struct {
+	/* Immutable. The Project that this resource belongs to. */
+	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
+
+	/* Immutable. The location for the resource */
+	Location *string `json:"location,omitempty"`
+
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Immutable. The scope that this namespace belongs to. */
 	ScopeRef *GKEHubScopeRef `json:"scopeRef"`
 
