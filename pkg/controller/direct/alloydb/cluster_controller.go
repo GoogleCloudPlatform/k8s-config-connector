@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"strings"
 
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
+	iam "cloud.google.com/go/iam/apiv1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
 	computev1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -121,12 +123,33 @@ func (m *modelCluster) AdapterForObject(ctx context.Context, op *directbase.Adap
 	if err != nil {
 		return nil, err
 	}
+	iamClient, err := m.iamClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+
 	return &ClusterAdapter{
 		id:        id,
 		gcpClient: gcpClient,
+		iamClient: iamClient,
 		desired:   obj,
-		reader:    reader,
+		reader:    op.Reader,
 	}, nil
+}
+
+func (m *modelCluster) iamClient(ctx context.Context) (*iam.IamPolicyClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	// Many resources that support IAM mixins in the REST API can be accessed via the standard :getIamPolicy endpoint on THEIR service.
+	// The Go SDK for AlloyDB does not yet include these methods in its GAPIC client.
+	opts = append(opts, option.WithEndpoint("alloydb.googleapis.com:443"))
+	gcpClient, err := iam.NewIamPolicyRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building IAM Policy Cluster client: %w", err)
+	}
+	return gcpClient, err
 }
 
 func (m *modelCluster) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
@@ -137,12 +160,47 @@ func (m *modelCluster) AdapterForURL(ctx context.Context, url string) (directbas
 type ClusterAdapter struct {
 	id        *krm.ClusterIdentity
 	gcpClient *gcp.AlloyDBAdminClient
+	iamClient *iam.IamPolicyClient
 	desired   *krm.AlloyDBCluster
 	actual    *alloydbpb.Cluster
 	reader    client.Reader
 }
 
 var _ directbase.Adapter = &ClusterAdapter{}
+var _ direct.IAMAdapter = &ClusterAdapter{}
+
+func (a *ClusterAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot get iam policy for missing resource")
+	}
+
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.iamClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id, err)
+	}
+
+	return policy, nil
+}
+
+func (a *ClusterAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot set iam policy for missing resource")
+	}
+
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.iamClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id, err)
+	}
+
+	return newPolicy, nil
+}
 
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter `Update` call.
