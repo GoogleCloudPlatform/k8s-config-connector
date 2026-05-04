@@ -36,12 +36,9 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".name") // Special field: resource name
 	f.UnimplementedFields.Insert(".satisfies_pzi")
 	f.UnimplementedFields.Insert(".satisfies_pzs")
-	f.UnimplementedFields.Insert(".psc_auto_connections")
+
 	f.UnimplementedFields.Insert(".discovery_endpoints")
 	f.UnimplementedFields.Insert(".node_config") // Handled in status, but not spec.
-	// The `port` field in PscAutoConnection is a repeated field in proto
-	// but a singular field in KRM, making it not round-trippable.
-	f.UnimplementedFields.Insert(".endpoints[].connections[].psc_auto_connection.port")
 	// The `state_info` struct in KRM is empty, meaning its subfields are not propagated.
 	f.UnimplementedFields.Insert(".state_info.update_info")
 	f.UnimplementedFields.Insert(".maintenance_schedule")
@@ -85,6 +82,11 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".encryption_info")
 	f.Unimplemented_NotYetTriaged(".simulate_maintenance_event")
 	f.Unimplemented_NotYetTriaged(".kms_key")
+
+	f.Unimplemented_NotYetTriaged(".endpoints[].connections[].psc_auto_connection.port")
+
+	// Deprecated: use endpoints.connections.psc_auto_connection value instead.
+	f.Unimplemented_Deprecated(".psc_auto_connections")
 
 	return f
 }

@@ -45,6 +45,11 @@ spec:
             external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
           projectRef:
             external: ${projectId}
+    - pscAutoConnection:
+          networkRef:
+            name: computenetwork-project-2
+          projectRef:
+            name: project-2
   mode: CLUSTER
   labels:
     keyx: valx
