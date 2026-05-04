@@ -17,6 +17,7 @@ kind: ComputeHealthCheck
 metadata:
   name: iamexternalonlyref-${uniqueId}
 spec:
+  location: global
   httpHealthCheck:
     port: 80
 ---
@@ -25,6 +26,7 @@ kind: ComputeBackendService
 metadata:
   name: iamexternalonlyref-${uniqueId}
 spec:
+  location: global
   healthChecks:
   - healthCheckRef:
       name: iamexternalonlyref-${uniqueId}
