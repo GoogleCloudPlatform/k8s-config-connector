@@ -76,8 +76,8 @@ func AttachedOidcConfig_FromProto(mapCtx *direct.MapContext, in *pb.AttachedOidc
 		return nil
 	}
 	out := &krm.AttachedOidcConfig{}
-	out.IssuerURL = direct.LazyPtr(in.GetIssuerUrl())
-	out.Jwks = []krm.byte{direct.LazyPtr(in.GetJwks())}
+	out.IssuerURL = in.GetIssuerUrl()
+	out.Jwks = in.GetJwks()
 	return out
 }
 */
@@ -91,9 +91,7 @@ found existing non-generated mapping function "AttachedOidcConfig_ToProto", skip
 		}
 		out := &pb.AttachedOidcConfig{}
 		out.IssuerURL = AttachedOidcConfig_IssuerUrl_ToProto(mapCtx, in.IssuerURL)
-		if len(in.Jwks) > 0 && in.Jwks[0] != nil {
-			out.Jwks = direct.ValueOf(in.Jwks[0])
-		}
+		out.Jwks = in.Jwks
 		return out
 	}
 */
@@ -140,8 +138,8 @@ func ContainerAttachedClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.At
 	out.Description = direct.LazyPtr(in.GetDescription())
 	// MISSING: OIDCConfig
 	// (near miss): "OIDCConfig" vs "OidcConfig"
-	out.PlatformVersion = direct.LazyPtr(in.GetPlatformVersion())
-	out.Distribution = direct.LazyPtr(in.GetDistribution())
+	out.PlatformVersion = in.GetPlatformVersion()
+	out.Distribution = in.GetDistribution()
 	// MISSING: ClusterRegion
 	out.Fleet = Fleet_FromProto(mapCtx, in.GetFleet())
 	// MISSING: State
