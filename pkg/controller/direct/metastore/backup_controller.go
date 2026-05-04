@@ -31,9 +31,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	gcp "cloud.google.com/go/metastore/apiv1"
 	pb "cloud.google.com/go/metastore/apiv1/metastorepb"
-	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
