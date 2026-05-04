@@ -22,7 +22,7 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	runv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1alpha1"
+	runv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -627,7 +627,7 @@ func (in *Endpoint_CloudRunRevisionEndpoint) DeepCopyInto(out *Endpoint_CloudRun
 	*out = *in
 	if in.RunRevisionRef != nil {
 		in, out := &in.RunRevisionRef, &out.RunRevisionRef
-		*out = new(runv1alpha1.RevisionRef)
+		*out = new(runv1beta1.RevisionRef)
 		**out = **in
 	}
 }

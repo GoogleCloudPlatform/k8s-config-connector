@@ -208,7 +208,7 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 		return nil, err
 	}
 
-	retObj := ProtoClone(obj)
+	retObj := proto.CloneOf(obj)
 	retObj.Acl = nil
 	retObj.DefaultObjectAcl = nil
 	retObj.Owner = nil

@@ -21,18 +21,18 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func WorkflowsWorkflowStateError_FromProto(mapCtx *direct.MapContext, in *pb.Workflow_StateError) *krm.WorkflowsWorkflow_StateError {
+func WorkflowsWorkflowStateError_FromProto(mapCtx *direct.MapContext, in *pb.Workflow_StateError) *krm.Workflow_StateError {
 	if in == nil {
 		return nil
 	}
-	out := &krm.WorkflowsWorkflow_StateError{
+	out := &krm.Workflow_StateError{
 		Details: direct.LazyPtr(in.GetDetails()),
 		Type:    direct.LazyPtr(in.GetType().String()),
 	}
 	return out
 }
 
-func WorkflowsWorkflowStateError_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsWorkflow_StateError) *pb.Workflow_StateError {
+func WorkflowsWorkflowStateError_ToProto(mapCtx *direct.MapContext, in *krm.Workflow_StateError) *pb.Workflow_StateError {
 	if in == nil {
 		return nil
 	}

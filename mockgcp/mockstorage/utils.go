@@ -42,8 +42,3 @@ func ValueOf[T any](p *T) T {
 	}
 	return v
 }
-
-// ProtoClone is a type-safe wrapper around proto.Clone.
-func ProtoClone[T proto.Message](src T) T {
-	return proto.Clone(src).(T)
-}

@@ -27,6 +27,7 @@ import (
 	metric "google.golang.org/genproto/googleapis/api/metric"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 	"k8s.io/klog/v2"
 )
 
@@ -52,7 +53,7 @@ func (s *metricService) GetMetricDescriptor(ctx context.Context, req *pb.GetMetr
 	}
 
 	// returned object does not include launchStage or metadata
-	retObj := ProtoClone(obj)
+	retObj := proto.CloneOf(obj)
 	retObj.LaunchStage = api.LaunchStage_LAUNCH_STAGE_UNSPECIFIED
 	retObj.Metadata = nil
 
@@ -100,7 +101,7 @@ func (s *metricService) CreateMetricDescriptor(ctx context.Context, req *pb.Crea
 
 	fqn := name.String()
 
-	obj := ProtoClone(req.MetricDescriptor)
+	obj := proto.CloneOf(req.MetricDescriptor)
 	obj.Name = fqn
 
 	// Creation is actually async - but without an LRO (!!!)
@@ -110,7 +111,7 @@ func (s *metricService) CreateMetricDescriptor(ctx context.Context, req *pb.Crea
 
 		time.Sleep(1 * time.Second)
 
-		obj = ProtoClone(obj)
+		obj = proto.CloneOf(obj)
 
 		populateDefaultsForMetricDescriptor(obj)
 

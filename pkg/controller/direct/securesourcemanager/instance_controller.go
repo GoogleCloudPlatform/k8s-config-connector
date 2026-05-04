@@ -29,6 +29,7 @@ import (
 	gcp "cloud.google.com/go/securesourcemanager/apiv1"
 	pb "cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -75,22 +76,21 @@ func (m *secureSourceManagerInstanceModel) AdapterForObject(ctx context.Context,
 		return nil, err
 	}
 
-	if obj.Spec.KmsKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, u, obj.Spec.KmsKeyRef)
+	if obj.Spec.KMSKeyRef != nil {
+		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, u, obj.Spec.KMSKeyRef)
 		if err != nil {
 			return nil, err
 		}
-		obj.Spec.KmsKeyRef = kmsKeyRef
+		obj.Spec.KMSKeyRef = kmsKeyRef
 	}
 
 	if obj.Spec.PrivateConfig != nil {
-		caPoolRef, err := refs.ResolvePrivateCACAPoolRef(ctx, reader, u, obj.Spec.PrivateConfig.CaPoolRef)
+		caPoolRef, err := refs.ResolvePrivateCACAPoolRef(ctx, reader, u, obj.Spec.PrivateConfig.CAPoolRef)
 		if err != nil {
 			return nil, err
 		}
-		obj.Spec.PrivateConfig.CaPoolRef = caPoolRef
+		obj.Spec.PrivateConfig.CAPoolRef = caPoolRef
 	}
-
 	mapCtx := &direct.MapContext{}
 	desired := SecureSourceManagerInstanceSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
@@ -161,7 +161,7 @@ func (a *secureSourceManagerInstanceAdapter) Create(ctx context.Context, createO
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Instance", "name", a.id.External)
 
-	instance := direct.ProtoClone(a.desired)
+	instance := proto.CloneOf(a.desired)
 
 	parent, err := a.id.Parent()
 	if err != nil {

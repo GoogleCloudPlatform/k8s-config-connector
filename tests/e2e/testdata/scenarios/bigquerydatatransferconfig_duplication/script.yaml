@@ -1,0 +1,56 @@
+# Step 0: Create BQDT with missing dependency
+# Use APPLY-10-SEC to record the expected failure and missing externalRef
+# without waiting for the full 20-minute timeout.
+TEST: APPLY-10-SEC
+apiVersion: bigquerydatatransfer.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataTransferConfig
+metadata:
+  name: bqdt-duplication-test
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us
+  displayName: "duplication test"
+  dataSourceID: "scheduled_query"
+  params:
+    destination_table_name_template: "my_table"
+    write_disposition: "WRITE_APPEND"
+    query:  "SELECT 1"
+  schedule: "every day 05:00"
+  serviceAccountRef:
+    name: dependency-sa
+---
+# Step 1: Create the dependency
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: dependency-sa
+spec:
+  displayName: "Dependency SA"
+---
+# Step 2: Touch BQDT to trigger reconciliation
+TEST: TOUCH
+apiVersion: bigquerydatatransfer.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataTransferConfig
+metadata:
+  name: bqdt-duplication-test
+---
+# Step 3: Ensure BQDT is Ready before cleanup to avoid long deletion timeouts
+# Default APPLY will wait for BQDT to be Ready
+apiVersion: bigquerydatatransfer.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataTransferConfig
+metadata:
+  name: bqdt-duplication-test
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us
+  displayName: "duplication test"
+  dataSourceID: "scheduled_query"
+  params:
+    destination_table_name_template: "my_table"
+    write_disposition: "WRITE_APPEND"
+    query:  "SELECT 1"
+  schedule: "every day 05:00"
+  serviceAccountRef:
+    name: dependency-sa

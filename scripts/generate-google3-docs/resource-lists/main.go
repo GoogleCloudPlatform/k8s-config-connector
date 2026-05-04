@@ -109,6 +109,7 @@ func resourcesWithServerGeneratedResourceID(smLoader *servicemappingloader.Servi
 	// todo: temporarily list current direct resources with generated ID until we can generate them by code
 	// This is needed otherwise "make resource-docs" will revert the resource-lists
 	directResources := []schema.GroupVersionKind{
+		{Group: "bigquerydatatransfer.cnrm.cloud.google.com", Version: "v1beta1", Kind: "BigQueryDataTransferConfig"},
 		{Group: "datacatalog.cnrm.cloud.google.com", Version: "v1beta1", Kind: "DataCatalogPolicyTag"},
 		{Group: "datacatalog.cnrm.cloud.google.com", Version: "v1beta1", Kind: "DataCatalogTaxonomy"},
 		{Group: "essentialcontacts.cnrm.cloud.google.com", Version: "v1beta1", Kind: "EssentialContactsContact"},

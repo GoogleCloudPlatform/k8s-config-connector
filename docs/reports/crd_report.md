@@ -123,6 +123,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeFirewallPolicyRule                       | False        | True        | False  | Direct     | True        |
 | compute.cnrm.cloud.google.com                 | ComputeFirewall                                 | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeForwardingRule                           | False        | True        | False  | Terraform  | True        |
+| compute.cnrm.cloud.google.com                 | ComputeFutureReservation                        | True         | False       | False  | Direct     | True        |
 | compute.cnrm.cloud.google.com                 | ComputeGlobalNetworkEndpointGroup               | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeGlobalNetworkEndpoint                    | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeHealthCheck                              | False        | True        | False  | Terraform  | False       |
@@ -279,6 +280,7 @@
 | gkehub.cnrm.cloud.google.com                  | GKEHubFeatureMembership                         | False        | True        | False  | Direct     | True        |
 | gkehub.cnrm.cloud.google.com                  | GKEHubFeature                                   | False        | True        | False  | DCL        | False       |
 | gkehub.cnrm.cloud.google.com                  | GKEHubMembership                                | False        | True        | False  | DCL        | False       |
+| gkehub.cnrm.cloud.google.com                  | GKEHubNamespace                                 | True         | False       | False  | Direct     | True        |
 | gkehub.cnrm.cloud.google.com                  | GKEHubScope                                     | True         | False       | False  | Direct     | True        |
 | healthcare.cnrm.cloud.google.com              | HealthcareConsentStore                          | True         | False       | False  | Terraform  | False       |
 | healthcare.cnrm.cloud.google.com              | HealthcareDataset                               | True         | False       | False  | Terraform  | False       |

@@ -20,102 +20,102 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func DataprocJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.DataprocJobObservedState {
+func DataprocJobObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.DataprocJobObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.DataprocJobObservedState{}
-	out.Placement = JobPlacementObservedState_FromProto(mapCtx, in.GetPlacement())
-	out.Status = JobStatusObservedState_FromProto(mapCtx, in.GetStatus())
-	out.StatusHistory = direct.Slice_FromProto(mapCtx, in.StatusHistory, JobStatusObservedState_FromProto)
-	out.YarnApplications = direct.Slice_FromProto(mapCtx, in.YarnApplications, YarnApplication_FromProto)
+	out.Placement = JobPlacementObservedState_v1alpha1_FromProto(mapCtx, in.GetPlacement())
+	out.Status = JobStatusObservedState_v1alpha1_FromProto(mapCtx, in.GetStatus())
+	out.StatusHistory = direct.Slice_FromProto(mapCtx, in.StatusHistory, JobStatusObservedState_v1alpha1_FromProto)
+	out.YarnApplications = direct.Slice_FromProto(mapCtx, in.YarnApplications, YarnApplication_v1alpha1_FromProto)
 	out.DriverOutputResourceURI = direct.LazyPtr(in.GetDriverOutputResourceUri())
 	out.DriverControlFilesURI = direct.LazyPtr(in.GetDriverControlFilesUri())
 	out.JobUUid = direct.LazyPtr(in.JobUuid)
 	out.Done = direct.LazyPtr(in.GetDone())
 	return out
 }
-func DataprocJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataprocJobObservedState) *pb.Job {
+func DataprocJobObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.DataprocJobObservedState) *pb.Job {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Job{}
-	out.Placement = JobPlacementObservedState_ToProto(mapCtx, in.Placement)
-	out.Status = JobStatusObservedState_ToProto(mapCtx, in.Status)
-	out.StatusHistory = direct.Slice_ToProto(mapCtx, in.StatusHistory, JobStatusObservedState_ToProto)
-	out.YarnApplications = direct.Slice_ToProto(mapCtx, in.YarnApplications, YarnApplication_ToProto)
+	out.Placement = JobPlacementObservedState_v1alpha1_ToProto(mapCtx, in.Placement)
+	out.Status = JobStatusObservedState_v1alpha1_ToProto(mapCtx, in.Status)
+	out.StatusHistory = direct.Slice_ToProto(mapCtx, in.StatusHistory, JobStatusObservedState_v1alpha1_ToProto)
+	out.YarnApplications = direct.Slice_ToProto(mapCtx, in.YarnApplications, YarnApplication_v1alpha1_ToProto)
 	out.DriverOutputResourceUri = direct.ValueOf(in.DriverOutputResourceURI)
 	out.DriverControlFilesUri = direct.ValueOf(in.DriverControlFilesURI)
 	out.JobUuid = direct.ValueOf(in.JobUUid)
 	out.Done = direct.ValueOf(in.Done)
 	return out
 }
-func DataprocJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.DataprocJobSpec {
+func DataprocJobSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.DataprocJobSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.DataprocJobSpec{}
-	out.Reference = JobReference_FromProto(mapCtx, in.GetReference())
-	out.Placement = JobPlacement_FromProto(mapCtx, in.GetPlacement())
-	out.HadoopJob = HadoopJob_FromProto(mapCtx, in.GetHadoopJob())
-	out.SparkJob = SparkJob_FromProto(mapCtx, in.GetSparkJob())
-	out.PysparkJob = PySparkJob_FromProto(mapCtx, in.GetPysparkJob())
-	out.HiveJob = HiveJob_FromProto(mapCtx, in.GetHiveJob())
-	out.PigJob = PigJob_FromProto(mapCtx, in.GetPigJob())
-	out.SparkRJob = SparkRJob_FromProto(mapCtx, in.GetSparkRJob())
-	out.SparkSQLJob = SparkSQLJob_FromProto(mapCtx, in.GetSparkSqlJob())
-	out.PrestoJob = PrestoJob_FromProto(mapCtx, in.GetPrestoJob())
-	out.TrinoJob = TrinoJob_FromProto(mapCtx, in.GetTrinoJob())
-	out.FlinkJob = FlinkJob_FromProto(mapCtx, in.GetFlinkJob())
+	out.Reference = JobReference_v1alpha1_FromProto(mapCtx, in.GetReference())
+	out.Placement = JobPlacement_v1alpha1_FromProto(mapCtx, in.GetPlacement())
+	out.HadoopJob = HadoopJob_v1alpha1_FromProto(mapCtx, in.GetHadoopJob())
+	out.SparkJob = SparkJob_v1alpha1_FromProto(mapCtx, in.GetSparkJob())
+	out.PysparkJob = PySparkJob_v1alpha1_FromProto(mapCtx, in.GetPysparkJob())
+	out.HiveJob = HiveJob_v1alpha1_FromProto(mapCtx, in.GetHiveJob())
+	out.PigJob = PigJob_v1alpha1_FromProto(mapCtx, in.GetPigJob())
+	out.SparkRJob = SparkRJob_v1alpha1_FromProto(mapCtx, in.GetSparkRJob())
+	out.SparkSQLJob = SparkSQLJob_v1alpha1_FromProto(mapCtx, in.GetSparkSqlJob())
+	out.PrestoJob = PrestoJob_v1alpha1_FromProto(mapCtx, in.GetPrestoJob())
+	out.TrinoJob = TrinoJob_v1alpha1_FromProto(mapCtx, in.GetTrinoJob())
+	out.FlinkJob = FlinkJob_v1alpha1_FromProto(mapCtx, in.GetFlinkJob())
 	out.Labels = in.Labels
-	out.Scheduling = JobScheduling_FromProto(mapCtx, in.GetScheduling())
-	out.DriverSchedulingConfig = DriverSchedulingConfig_FromProto(mapCtx, in.GetDriverSchedulingConfig())
+	out.Scheduling = JobScheduling_v1alpha1_FromProto(mapCtx, in.GetScheduling())
+	out.DriverSchedulingConfig = DriverSchedulingConfig_v1alpha1_FromProto(mapCtx, in.GetDriverSchedulingConfig())
 	return out
 }
-func DataprocJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataprocJobSpec) *pb.Job {
+func DataprocJobSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.DataprocJobSpec) *pb.Job {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Job{}
-	out.Reference = JobReference_ToProto(mapCtx, in.Reference)
-	out.Placement = JobPlacement_ToProto(mapCtx, in.Placement)
-	if oneof := HadoopJob_ToProto(mapCtx, in.HadoopJob); oneof != nil {
+	out.Reference = JobReference_v1alpha1_ToProto(mapCtx, in.Reference)
+	out.Placement = JobPlacement_v1alpha1_ToProto(mapCtx, in.Placement)
+	if oneof := HadoopJob_v1alpha1_ToProto(mapCtx, in.HadoopJob); oneof != nil {
 		out.TypeJob = &pb.Job_HadoopJob{HadoopJob: oneof}
 	}
-	if oneof := SparkJob_ToProto(mapCtx, in.SparkJob); oneof != nil {
+	if oneof := SparkJob_v1alpha1_ToProto(mapCtx, in.SparkJob); oneof != nil {
 		out.TypeJob = &pb.Job_SparkJob{SparkJob: oneof}
 	}
-	if oneof := PySparkJob_ToProto(mapCtx, in.PysparkJob); oneof != nil {
+	if oneof := PySparkJob_v1alpha1_ToProto(mapCtx, in.PysparkJob); oneof != nil {
 		out.TypeJob = &pb.Job_PysparkJob{PysparkJob: oneof}
 	}
-	if oneof := HiveJob_ToProto(mapCtx, in.HiveJob); oneof != nil {
+	if oneof := HiveJob_v1alpha1_ToProto(mapCtx, in.HiveJob); oneof != nil {
 		out.TypeJob = &pb.Job_HiveJob{HiveJob: oneof}
 	}
-	if oneof := PigJob_ToProto(mapCtx, in.PigJob); oneof != nil {
+	if oneof := PigJob_v1alpha1_ToProto(mapCtx, in.PigJob); oneof != nil {
 		out.TypeJob = &pb.Job_PigJob{PigJob: oneof}
 	}
-	if oneof := SparkRJob_ToProto(mapCtx, in.SparkRJob); oneof != nil {
+	if oneof := SparkRJob_v1alpha1_ToProto(mapCtx, in.SparkRJob); oneof != nil {
 		out.TypeJob = &pb.Job_SparkRJob{SparkRJob: oneof}
 	}
-	if oneof := SparkSQLJob_ToProto(mapCtx, in.SparkSQLJob); oneof != nil {
+	if oneof := SparkSQLJob_v1alpha1_ToProto(mapCtx, in.SparkSQLJob); oneof != nil {
 		out.TypeJob = &pb.Job_SparkSqlJob{SparkSqlJob: oneof}
 	}
-	if oneof := PrestoJob_ToProto(mapCtx, in.PrestoJob); oneof != nil {
+	if oneof := PrestoJob_v1alpha1_ToProto(mapCtx, in.PrestoJob); oneof != nil {
 		out.TypeJob = &pb.Job_PrestoJob{PrestoJob: oneof}
 	}
-	if oneof := TrinoJob_ToProto(mapCtx, in.TrinoJob); oneof != nil {
+	if oneof := TrinoJob_v1alpha1_ToProto(mapCtx, in.TrinoJob); oneof != nil {
 		out.TypeJob = &pb.Job_TrinoJob{TrinoJob: oneof}
 	}
-	if oneof := FlinkJob_ToProto(mapCtx, in.FlinkJob); oneof != nil {
+	if oneof := FlinkJob_v1alpha1_ToProto(mapCtx, in.FlinkJob); oneof != nil {
 		out.TypeJob = &pb.Job_FlinkJob{FlinkJob: oneof}
 	}
 	out.Labels = in.Labels
-	out.Scheduling = JobScheduling_ToProto(mapCtx, in.Scheduling)
-	out.DriverSchedulingConfig = DriverSchedulingConfig_ToProto(mapCtx, in.DriverSchedulingConfig)
+	out.Scheduling = JobScheduling_v1alpha1_ToProto(mapCtx, in.Scheduling)
+	out.DriverSchedulingConfig = DriverSchedulingConfig_v1alpha1_ToProto(mapCtx, in.DriverSchedulingConfig)
 	return out
 }
 
-func FlinkJob_FromProto(mapCtx *direct.MapContext, in *pb.FlinkJob) *krm.FlinkJob {
+func FlinkJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FlinkJob) *krm.FlinkJob {
 	if in == nil {
 		return nil
 	}
@@ -126,28 +126,28 @@ func FlinkJob_FromProto(mapCtx *direct.MapContext, in *pb.FlinkJob) *krm.FlinkJo
 	out.JarFileURIs = in.GetJarFileUris()
 	out.SavepointURI = direct.LazyPtr(in.GetSavepointUri())
 	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
+	out.LoggingConfig = LoggingConfig_v1alpha1_FromProto(mapCtx, in.GetLoggingConfig())
 	return out
 }
-func FlinkJob_ToProto(mapCtx *direct.MapContext, in *krm.FlinkJob) *pb.FlinkJob {
+func FlinkJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.FlinkJob) *pb.FlinkJob {
 	if in == nil {
 		return nil
 	}
 	out := &pb.FlinkJob{}
-	if oneof := FlinkJob_MainJarFileUri_ToProto(mapCtx, in.MainJarFileURI); oneof != nil {
+	if oneof := FlinkJob_MainJarFileUri_v1alpha1_ToProto(mapCtx, in.MainJarFileURI); oneof != nil {
 		out.Driver = oneof
 	}
-	if oneof := FlinkJob_MainClass_ToProto(mapCtx, in.MainClass); oneof != nil {
+	if oneof := FlinkJob_MainClass_v1alpha1_ToProto(mapCtx, in.MainClass); oneof != nil {
 		out.Driver = oneof
 	}
 	out.Args = append(out.Args, in.Args...)
 	out.JarFileUris = in.JarFileURIs
 	out.SavepointUri = direct.ValueOf(in.SavepointURI)
 	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
+	out.LoggingConfig = LoggingConfig_v1alpha1_ToProto(mapCtx, in.LoggingConfig)
 	return out
 }
-func HadoopJob_FromProto(mapCtx *direct.MapContext, in *pb.HadoopJob) *krm.HadoopJob {
+func HadoopJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.HadoopJob) *krm.HadoopJob {
 	if in == nil {
 		return nil
 	}
@@ -159,18 +159,18 @@ func HadoopJob_FromProto(mapCtx *direct.MapContext, in *pb.HadoopJob) *krm.Hadoo
 	out.FileURIs = in.FileUris
 	out.ArchiveURIs = in.ArchiveUris
 	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
+	out.LoggingConfig = LoggingConfig_v1alpha1_FromProto(mapCtx, in.GetLoggingConfig())
 	return out
 }
-func HadoopJob_ToProto(mapCtx *direct.MapContext, in *krm.HadoopJob) *pb.HadoopJob {
+func HadoopJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.HadoopJob) *pb.HadoopJob {
 	if in == nil {
 		return nil
 	}
 	out := &pb.HadoopJob{}
-	if oneof := HadoopJob_MainJarFileUri_ToProto(mapCtx, in.MainJarFileURI); oneof != nil {
+	if oneof := HadoopJob_MainJarFileUri_v1alpha1_ToProto(mapCtx, in.MainJarFileURI); oneof != nil {
 		out.Driver = oneof
 	}
-	if oneof := HadoopJob_MainClass_ToProto(mapCtx, in.MainClass); oneof != nil {
+	if oneof := HadoopJob_MainClass_v1alpha1_ToProto(mapCtx, in.MainClass); oneof != nil {
 		out.Driver = oneof
 	}
 	out.Args = append(out.Args, in.Args...)
@@ -178,31 +178,31 @@ func HadoopJob_ToProto(mapCtx *direct.MapContext, in *krm.HadoopJob) *pb.HadoopJ
 	out.FileUris = in.FileURIs
 	out.ArchiveUris = in.ArchiveURIs
 	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
+	out.LoggingConfig = LoggingConfig_v1alpha1_ToProto(mapCtx, in.LoggingConfig)
 	return out
 }
-func HiveJob_FromProto(mapCtx *direct.MapContext, in *pb.HiveJob) *krm.HiveJob {
+func HiveJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.HiveJob) *krm.HiveJob {
 	if in == nil {
 		return nil
 	}
 	out := &krm.HiveJob{}
 	out.QueryFileURI = direct.LazyPtr(in.GetQueryFileUri())
-	out.QueryList = QueryList_FromProto(mapCtx, in.GetQueryList())
+	out.QueryList = QueryList_v1alpha1_FromProto(mapCtx, in.GetQueryList())
 	out.ContinueOnFailure = direct.LazyPtr(in.GetContinueOnFailure())
 	out.ScriptVariables = in.ScriptVariables
 	out.Properties = in.Properties
 	out.JarFileURIs = in.JarFileUris
 	return out
 }
-func HiveJob_ToProto(mapCtx *direct.MapContext, in *krm.HiveJob) *pb.HiveJob {
+func HiveJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.HiveJob) *pb.HiveJob {
 	if in == nil {
 		return nil
 	}
 	out := &pb.HiveJob{}
-	if oneof := HiveJob_QueryFileUri_ToProto(mapCtx, in.QueryFileURI); oneof != nil {
+	if oneof := HiveJob_QueryFileUri_v1alpha1_ToProto(mapCtx, in.QueryFileURI); oneof != nil {
 		out.Queries = oneof
 	}
-	if oneof := QueryList_ToProto(mapCtx, in.QueryList); oneof != nil {
+	if oneof := QueryList_v1alpha1_ToProto(mapCtx, in.QueryList); oneof != nil {
 		out.Queries = &pb.HiveJob_QueryList{QueryList: oneof}
 	}
 	out.ContinueOnFailure = direct.ValueOf(in.ContinueOnFailure)
@@ -212,40 +212,40 @@ func HiveJob_ToProto(mapCtx *direct.MapContext, in *krm.HiveJob) *pb.HiveJob {
 	return out
 }
 
-func PigJob_FromProto(mapCtx *direct.MapContext, in *pb.PigJob) *krm.PigJob {
+func PigJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PigJob) *krm.PigJob {
 	if in == nil {
 		return nil
 	}
 	out := &krm.PigJob{}
 	out.QueryFileURI = direct.LazyPtr(in.GetQueryFileUri())
-	out.QueryList = QueryList_FromProto(mapCtx, in.GetQueryList())
+	out.QueryList = QueryList_v1alpha1_FromProto(mapCtx, in.GetQueryList())
 	out.ContinueOnFailure = direct.LazyPtr(in.GetContinueOnFailure())
 	out.ScriptVariables = in.ScriptVariables
 	out.Properties = in.Properties
 	out.JarFileURIs = in.JarFileUris
-	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
+	out.LoggingConfig = LoggingConfig_v1alpha1_FromProto(mapCtx, in.GetLoggingConfig())
 	return out
 }
-func PigJob_ToProto(mapCtx *direct.MapContext, in *krm.PigJob) *pb.PigJob {
+func PigJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.PigJob) *pb.PigJob {
 	if in == nil {
 		return nil
 	}
 	out := &pb.PigJob{}
-	if oneof := PigJob_QueryFileUri_ToProto(mapCtx, in.QueryFileURI); oneof != nil {
+	if oneof := PigJob_QueryFileUri_v1alpha1_ToProto(mapCtx, in.QueryFileURI); oneof != nil {
 		out.Queries = oneof
 	}
-	if oneof := QueryList_ToProto(mapCtx, in.QueryList); oneof != nil {
+	if oneof := QueryList_v1alpha1_ToProto(mapCtx, in.QueryList); oneof != nil {
 		out.Queries = &pb.PigJob_QueryList{QueryList: oneof}
 	}
 	out.ContinueOnFailure = direct.ValueOf(in.ContinueOnFailure)
 	out.ScriptVariables = in.ScriptVariables
 	out.Properties = in.Properties
 	out.JarFileUris = in.JarFileURIs
-	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
+	out.LoggingConfig = LoggingConfig_v1alpha1_ToProto(mapCtx, in.LoggingConfig)
 	return out
 }
 
-func PySparkJob_FromProto(mapCtx *direct.MapContext, in *pb.PySparkJob) *krm.PySparkJob {
+func PySparkJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PySparkJob) *krm.PySparkJob {
 	if in == nil {
 		return nil
 	}
@@ -257,10 +257,10 @@ func PySparkJob_FromProto(mapCtx *direct.MapContext, in *pb.PySparkJob) *krm.PyS
 	out.FileURIs = in.FileUris
 	out.ArchiveURIs = in.ArchiveUris
 	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
+	out.LoggingConfig = LoggingConfig_v1alpha1_FromProto(mapCtx, in.GetLoggingConfig())
 	return out
 }
-func PySparkJob_ToProto(mapCtx *direct.MapContext, in *krm.PySparkJob) *pb.PySparkJob {
+func PySparkJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.PySparkJob) *pb.PySparkJob {
 	if in == nil {
 		return nil
 	}
@@ -272,10 +272,10 @@ func PySparkJob_ToProto(mapCtx *direct.MapContext, in *krm.PySparkJob) *pb.PySpa
 	out.FileUris = in.FileURIs
 	out.ArchiveUris = in.ArchiveURIs
 	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
+	out.LoggingConfig = LoggingConfig_v1alpha1_ToProto(mapCtx, in.LoggingConfig)
 	return out
 }
-func SparkJob_FromProto(mapCtx *direct.MapContext, in *pb.SparkJob) *krm.SparkJob {
+func SparkJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SparkJob) *krm.SparkJob {
 	if in == nil {
 		return nil
 	}
@@ -287,18 +287,18 @@ func SparkJob_FromProto(mapCtx *direct.MapContext, in *pb.SparkJob) *krm.SparkJo
 	out.FileURIs = in.FileUris
 	out.ArchiveURIs = in.ArchiveUris
 	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
+	out.LoggingConfig = LoggingConfig_v1alpha1_FromProto(mapCtx, in.GetLoggingConfig())
 	return out
 }
-func SparkJob_ToProto(mapCtx *direct.MapContext, in *krm.SparkJob) *pb.SparkJob {
+func SparkJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.SparkJob) *pb.SparkJob {
 	if in == nil {
 		return nil
 	}
 	out := &pb.SparkJob{}
-	if oneof := SparkJob_MainJarFileUri_ToProto(mapCtx, in.MainJarFileURI); oneof != nil {
+	if oneof := SparkJob_MainJarFileUri_v1alpha1_ToProto(mapCtx, in.MainJarFileURI); oneof != nil {
 		out.Driver = oneof
 	}
-	if oneof := SparkJob_MainClass_ToProto(mapCtx, in.MainClass); oneof != nil {
+	if oneof := SparkJob_MainClass_v1alpha1_ToProto(mapCtx, in.MainClass); oneof != nil {
 		out.Driver = oneof
 	}
 	out.Args = append(out.Args, in.Args...)
@@ -306,10 +306,10 @@ func SparkJob_ToProto(mapCtx *direct.MapContext, in *krm.SparkJob) *pb.SparkJob 
 	out.FileUris = in.FileURIs
 	out.ArchiveUris = in.ArchiveURIs
 	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
+	out.LoggingConfig = LoggingConfig_v1alpha1_ToProto(mapCtx, in.LoggingConfig)
 	return out
 }
-func SparkRJob_FromProto(mapCtx *direct.MapContext, in *pb.SparkRJob) *krm.SparkRJob {
+func SparkRJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SparkRJob) *krm.SparkRJob {
 	if in == nil {
 		return nil
 	}
@@ -319,10 +319,10 @@ func SparkRJob_FromProto(mapCtx *direct.MapContext, in *pb.SparkRJob) *krm.Spark
 	out.FileURIs = in.FileUris
 	out.ArchiveURIs = in.ArchiveUris
 	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
+	out.LoggingConfig = LoggingConfig_v1alpha1_FromProto(mapCtx, in.GetLoggingConfig())
 	return out
 }
-func SparkRJob_ToProto(mapCtx *direct.MapContext, in *krm.SparkRJob) *pb.SparkRJob {
+func SparkRJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.SparkRJob) *pb.SparkRJob {
 	if in == nil {
 		return nil
 	}
@@ -332,41 +332,41 @@ func SparkRJob_ToProto(mapCtx *direct.MapContext, in *krm.SparkRJob) *pb.SparkRJ
 	out.FileUris = in.FileURIs
 	out.ArchiveUris = in.ArchiveURIs
 	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
+	out.LoggingConfig = LoggingConfig_v1alpha1_ToProto(mapCtx, in.LoggingConfig)
 	return out
 }
-func SparkSQLJob_FromProto(mapCtx *direct.MapContext, in *pb.SparkSqlJob) *krm.SparkSQLJob {
+func SparkSQLJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SparkSqlJob) *krm.SparkSQLJob {
 	if in == nil {
 		return nil
 	}
 	out := &krm.SparkSQLJob{}
 	out.QueryFileURI = direct.LazyPtr(in.GetQueryFileUri())
-	out.QueryList = QueryList_FromProto(mapCtx, in.GetQueryList())
+	out.QueryList = QueryList_v1alpha1_FromProto(mapCtx, in.GetQueryList())
 	out.ScriptVariables = in.ScriptVariables
 	out.Properties = in.Properties
 	out.JarFileURIs = in.JarFileUris
-	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
+	out.LoggingConfig = LoggingConfig_v1alpha1_FromProto(mapCtx, in.GetLoggingConfig())
 	return out
 }
-func SparkSQLJob_ToProto(mapCtx *direct.MapContext, in *krm.SparkSQLJob) *pb.SparkSqlJob {
+func SparkSQLJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.SparkSQLJob) *pb.SparkSqlJob {
 	if in == nil {
 		return nil
 	}
 	out := &pb.SparkSqlJob{}
-	if oneof := SparkSQLJob_QueryFileUri_ToProto(mapCtx, in.QueryFileURI); oneof != nil {
+	if oneof := SparkSQLJob_QueryFileUri_v1alpha1_ToProto(mapCtx, in.QueryFileURI); oneof != nil {
 		out.Queries = oneof
 	}
-	if oneof := QueryList_ToProto(mapCtx, in.QueryList); oneof != nil {
+	if oneof := QueryList_v1alpha1_ToProto(mapCtx, in.QueryList); oneof != nil {
 		out.Queries = &pb.SparkSqlJob_QueryList{QueryList: oneof}
 	}
 	out.ScriptVariables = in.ScriptVariables
 	out.Properties = in.Properties
 	out.JarFileUris = in.JarFileURIs
-	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
+	out.LoggingConfig = LoggingConfig_v1alpha1_ToProto(mapCtx, in.LoggingConfig)
 	return out
 }
 
-func FlinkJob_MainJarFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.FlinkJob_MainJarFileUri {
+func FlinkJob_MainJarFileUri_v1alpha1_ToProto(mapCtx *direct.MapContext, in *string) *pb.FlinkJob_MainJarFileUri {
 	if in == nil {
 		return nil
 	}
@@ -376,7 +376,7 @@ func FlinkJob_MainJarFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.
 	return out
 }
 
-func FlinkJob_MainClass_ToProto(mapCtx *direct.MapContext, in *string) *pb.FlinkJob_MainClass {
+func FlinkJob_MainClass_v1alpha1_ToProto(mapCtx *direct.MapContext, in *string) *pb.FlinkJob_MainClass {
 	if in == nil {
 		return nil
 	}
@@ -386,7 +386,7 @@ func FlinkJob_MainClass_ToProto(mapCtx *direct.MapContext, in *string) *pb.Flink
 	return out
 }
 
-func HadoopJob_MainJarFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.HadoopJob_MainJarFileUri {
+func HadoopJob_MainJarFileUri_v1alpha1_ToProto(mapCtx *direct.MapContext, in *string) *pb.HadoopJob_MainJarFileUri {
 	if in == nil {
 		return nil
 	}
@@ -396,7 +396,7 @@ func HadoopJob_MainJarFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb
 	return out
 }
 
-func HadoopJob_MainClass_ToProto(mapCtx *direct.MapContext, in *string) *pb.HadoopJob_MainClass {
+func HadoopJob_MainClass_v1alpha1_ToProto(mapCtx *direct.MapContext, in *string) *pb.HadoopJob_MainClass {
 	if in == nil {
 		return nil
 	}
@@ -406,7 +406,7 @@ func HadoopJob_MainClass_ToProto(mapCtx *direct.MapContext, in *string) *pb.Hado
 	return out
 }
 
-func HiveJob_QueryFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.HiveJob_QueryFileUri {
+func HiveJob_QueryFileUri_v1alpha1_ToProto(mapCtx *direct.MapContext, in *string) *pb.HiveJob_QueryFileUri {
 	if in == nil {
 		return nil
 	}
@@ -416,7 +416,7 @@ func HiveJob_QueryFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.Hiv
 	return out
 }
 
-func PrestoJob_QueryFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.PrestoJob_QueryFileUri {
+func PrestoJob_QueryFileUri_v1alpha1_ToProto(mapCtx *direct.MapContext, in *string) *pb.PrestoJob_QueryFileUri {
 	if in == nil {
 		return nil
 	}
@@ -426,7 +426,7 @@ func PrestoJob_QueryFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.P
 	return out
 }
 
-func SparkJob_MainJarFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.SparkJob_MainJarFileUri {
+func SparkJob_MainJarFileUri_v1alpha1_ToProto(mapCtx *direct.MapContext, in *string) *pb.SparkJob_MainJarFileUri {
 	if in == nil {
 		return nil
 	}
@@ -435,7 +435,7 @@ func SparkJob_MainJarFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.
 	}
 	return out
 }
-func SparkJob_MainClass_ToProto(mapCtx *direct.MapContext, in *string) *pb.SparkJob_MainClass {
+func SparkJob_MainClass_v1alpha1_ToProto(mapCtx *direct.MapContext, in *string) *pb.SparkJob_MainClass {
 	if in == nil {
 		return nil
 	}
@@ -445,7 +445,7 @@ func SparkJob_MainClass_ToProto(mapCtx *direct.MapContext, in *string) *pb.Spark
 	return out
 }
 
-func PigJob_QueryFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.PigJob_QueryFileUri {
+func PigJob_QueryFileUri_v1alpha1_ToProto(mapCtx *direct.MapContext, in *string) *pb.PigJob_QueryFileUri {
 	if in == nil {
 		return nil
 	}
@@ -455,7 +455,7 @@ func PigJob_QueryFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.PigJ
 	return out
 }
 
-func SparkSQLJob_QueryFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.SparkSqlJob_QueryFileUri {
+func SparkSQLJob_QueryFileUri_v1alpha1_ToProto(mapCtx *direct.MapContext, in *string) *pb.SparkSqlJob_QueryFileUri {
 	if in == nil {
 		return nil
 	}
@@ -464,7 +464,7 @@ func SparkSQLJob_QueryFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb
 	}
 	return out
 }
-func TrinoJob_QueryFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.TrinoJob_QueryFileUri {
+func TrinoJob_QueryFileUri_v1alpha1_ToProto(mapCtx *direct.MapContext, in *string) *pb.TrinoJob_QueryFileUri {
 	if in == nil {
 		return nil
 	}
@@ -474,7 +474,7 @@ func TrinoJob_QueryFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.Tr
 	return out
 }
 
-func DriverSchedulingConfig_FromProto(mapCtx *direct.MapContext, in *pb.DriverSchedulingConfig) *krm.DriverSchedulingConfig {
+func DriverSchedulingConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DriverSchedulingConfig) *krm.DriverSchedulingConfig {
 	if in == nil {
 		return nil
 	}
@@ -483,7 +483,7 @@ func DriverSchedulingConfig_FromProto(mapCtx *direct.MapContext, in *pb.DriverSc
 	out.Vcores = direct.LazyPtr(in.GetVcores())
 	return out
 }
-func DriverSchedulingConfig_ToProto(mapCtx *direct.MapContext, in *krm.DriverSchedulingConfig) *pb.DriverSchedulingConfig {
+func DriverSchedulingConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.DriverSchedulingConfig) *pb.DriverSchedulingConfig {
 	if in == nil {
 		return nil
 	}
@@ -492,7 +492,7 @@ func DriverSchedulingConfig_ToProto(mapCtx *direct.MapContext, in *krm.DriverSch
 	out.Vcores = direct.ValueOf(in.Vcores)
 	return out
 }
-func JobPlacement_FromProto(mapCtx *direct.MapContext, in *pb.JobPlacement) *krm.JobPlacement {
+func JobPlacement_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.JobPlacement) *krm.JobPlacement {
 	if in == nil {
 		return nil
 	}
@@ -502,7 +502,7 @@ func JobPlacement_FromProto(mapCtx *direct.MapContext, in *pb.JobPlacement) *krm
 	out.ClusterLabels = in.ClusterLabels
 	return out
 }
-func JobPlacement_ToProto(mapCtx *direct.MapContext, in *krm.JobPlacement) *pb.JobPlacement {
+func JobPlacement_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.JobPlacement) *pb.JobPlacement {
 	if in == nil {
 		return nil
 	}
@@ -512,7 +512,7 @@ func JobPlacement_ToProto(mapCtx *direct.MapContext, in *krm.JobPlacement) *pb.J
 	out.ClusterLabels = in.ClusterLabels
 	return out
 }
-func JobPlacementObservedState_FromProto(mapCtx *direct.MapContext, in *pb.JobPlacement) *krm.JobPlacementObservedState {
+func JobPlacementObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.JobPlacement) *krm.JobPlacementObservedState {
 	if in == nil {
 		return nil
 	}
@@ -522,7 +522,7 @@ func JobPlacementObservedState_FromProto(mapCtx *direct.MapContext, in *pb.JobPl
 	// MISSING: ClusterLabels
 	return out
 }
-func JobPlacementObservedState_ToProto(mapCtx *direct.MapContext, in *krm.JobPlacementObservedState) *pb.JobPlacement {
+func JobPlacementObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.JobPlacementObservedState) *pb.JobPlacement {
 	if in == nil {
 		return nil
 	}
@@ -532,7 +532,7 @@ func JobPlacementObservedState_ToProto(mapCtx *direct.MapContext, in *krm.JobPla
 	// MISSING: ClusterLabels
 	return out
 }
-func JobReference_FromProto(mapCtx *direct.MapContext, in *pb.JobReference) *krm.JobReference {
+func JobReference_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.JobReference) *krm.JobReference {
 	if in == nil {
 		return nil
 	}
@@ -541,7 +541,7 @@ func JobReference_FromProto(mapCtx *direct.MapContext, in *pb.JobReference) *krm
 	out.JobID = direct.LazyPtr(in.GetJobId())
 	return out
 }
-func JobReference_ToProto(mapCtx *direct.MapContext, in *krm.JobReference) *pb.JobReference {
+func JobReference_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.JobReference) *pb.JobReference {
 	if in == nil {
 		return nil
 	}
@@ -550,7 +550,7 @@ func JobReference_ToProto(mapCtx *direct.MapContext, in *krm.JobReference) *pb.J
 	out.JobId = direct.ValueOf(in.JobID)
 	return out
 }
-func JobScheduling_FromProto(mapCtx *direct.MapContext, in *pb.JobScheduling) *krm.JobScheduling {
+func JobScheduling_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.JobScheduling) *krm.JobScheduling {
 	if in == nil {
 		return nil
 	}
@@ -559,7 +559,7 @@ func JobScheduling_FromProto(mapCtx *direct.MapContext, in *pb.JobScheduling) *k
 	out.MaxFailuresTotal = direct.LazyPtr(in.GetMaxFailuresTotal())
 	return out
 }
-func JobScheduling_ToProto(mapCtx *direct.MapContext, in *krm.JobScheduling) *pb.JobScheduling {
+func JobScheduling_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.JobScheduling) *pb.JobScheduling {
 	if in == nil {
 		return nil
 	}
@@ -568,7 +568,7 @@ func JobScheduling_ToProto(mapCtx *direct.MapContext, in *krm.JobScheduling) *pb
 	out.MaxFailuresTotal = direct.ValueOf(in.MaxFailuresTotal)
 	return out
 }
-func JobStatus_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus) *krm.JobStatus {
+func JobStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus) *krm.JobStatus {
 	if in == nil {
 		return nil
 	}
@@ -579,7 +579,7 @@ func JobStatus_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus) *krm.JobSt
 	// MISSING: Substate
 	return out
 }
-func JobStatus_ToProto(mapCtx *direct.MapContext, in *krm.JobStatus) *pb.JobStatus {
+func JobStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.JobStatus) *pb.JobStatus {
 	if in == nil {
 		return nil
 	}
@@ -590,7 +590,7 @@ func JobStatus_ToProto(mapCtx *direct.MapContext, in *krm.JobStatus) *pb.JobStat
 	// MISSING: Substate
 	return out
 }
-func JobStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus) *krm.JobStatusObservedState {
+func JobStatusObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus) *krm.JobStatusObservedState {
 	if in == nil {
 		return nil
 	}
@@ -601,7 +601,7 @@ func JobStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.JobStatu
 	out.Substate = direct.Enum_FromProto(mapCtx, in.GetSubstate())
 	return out
 }
-func JobStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.JobStatusObservedState) *pb.JobStatus {
+func JobStatusObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.JobStatusObservedState) *pb.JobStatus {
 	if in == nil {
 		return nil
 	}
@@ -612,7 +612,7 @@ func JobStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.JobStatus
 	out.Substate = direct.Enum_ToProto[pb.JobStatus_Substate](mapCtx, in.Substate)
 	return out
 }
-func LoggingConfig_FromProto(mapCtx *direct.MapContext, in *pb.LoggingConfig) *krm.LoggingConfig {
+func LoggingConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.LoggingConfig) *krm.LoggingConfig {
 	if in == nil {
 		return nil
 	}
@@ -620,7 +620,7 @@ func LoggingConfig_FromProto(mapCtx *direct.MapContext, in *pb.LoggingConfig) *k
 	// MISSING: DriverLogLevels
 	return out
 }
-func LoggingConfig_ToProto(mapCtx *direct.MapContext, in *krm.LoggingConfig) *pb.LoggingConfig {
+func LoggingConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.LoggingConfig) *pb.LoggingConfig {
 	if in == nil {
 		return nil
 	}
@@ -628,39 +628,39 @@ func LoggingConfig_ToProto(mapCtx *direct.MapContext, in *krm.LoggingConfig) *pb
 	// MISSING: DriverLogLevels
 	return out
 }
-func PrestoJob_FromProto(mapCtx *direct.MapContext, in *pb.PrestoJob) *krm.PrestoJob {
+func PrestoJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PrestoJob) *krm.PrestoJob {
 	if in == nil {
 		return nil
 	}
 	out := &krm.PrestoJob{}
 	out.QueryFileURI = direct.LazyPtr(in.GetQueryFileUri())
-	out.QueryList = QueryList_FromProto(mapCtx, in.GetQueryList())
+	out.QueryList = QueryList_v1alpha1_FromProto(mapCtx, in.GetQueryList())
 	out.ContinueOnFailure = direct.LazyPtr(in.GetContinueOnFailure())
 	out.OutputFormat = direct.LazyPtr(in.GetOutputFormat())
 	out.ClientTags = in.ClientTags
 	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
+	out.LoggingConfig = LoggingConfig_v1alpha1_FromProto(mapCtx, in.GetLoggingConfig())
 	return out
 }
-func PrestoJob_ToProto(mapCtx *direct.MapContext, in *krm.PrestoJob) *pb.PrestoJob {
+func PrestoJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.PrestoJob) *pb.PrestoJob {
 	if in == nil {
 		return nil
 	}
 	out := &pb.PrestoJob{}
-	if oneof := PrestoJob_QueryFileUri_ToProto(mapCtx, in.QueryFileURI); oneof != nil {
+	if oneof := PrestoJob_QueryFileUri_v1alpha1_ToProto(mapCtx, in.QueryFileURI); oneof != nil {
 		out.Queries = oneof
 	}
-	if oneof := QueryList_ToProto(mapCtx, in.QueryList); oneof != nil {
+	if oneof := QueryList_v1alpha1_ToProto(mapCtx, in.QueryList); oneof != nil {
 		out.Queries = &pb.PrestoJob_QueryList{QueryList: oneof}
 	}
 	out.ContinueOnFailure = direct.ValueOf(in.ContinueOnFailure)
 	out.OutputFormat = direct.ValueOf(in.OutputFormat)
 	out.ClientTags = in.ClientTags
 	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
+	out.LoggingConfig = LoggingConfig_v1alpha1_ToProto(mapCtx, in.LoggingConfig)
 	return out
 }
-func QueryList_FromProto(mapCtx *direct.MapContext, in *pb.QueryList) *krm.QueryList {
+func QueryList_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.QueryList) *krm.QueryList {
 	if in == nil {
 		return nil
 	}
@@ -668,7 +668,7 @@ func QueryList_FromProto(mapCtx *direct.MapContext, in *pb.QueryList) *krm.Query
 	out.Queries = in.Queries
 	return out
 }
-func QueryList_ToProto(mapCtx *direct.MapContext, in *krm.QueryList) *pb.QueryList {
+func QueryList_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.QueryList) *pb.QueryList {
 	if in == nil {
 		return nil
 	}
@@ -676,39 +676,39 @@ func QueryList_ToProto(mapCtx *direct.MapContext, in *krm.QueryList) *pb.QueryLi
 	out.Queries = in.Queries
 	return out
 }
-func TrinoJob_FromProto(mapCtx *direct.MapContext, in *pb.TrinoJob) *krm.TrinoJob {
+func TrinoJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TrinoJob) *krm.TrinoJob {
 	if in == nil {
 		return nil
 	}
 	out := &krm.TrinoJob{}
 	out.QueryFileURI = direct.LazyPtr(in.GetQueryFileUri())
-	out.QueryList = QueryList_FromProto(mapCtx, in.GetQueryList())
+	out.QueryList = QueryList_v1alpha1_FromProto(mapCtx, in.GetQueryList())
 	out.ContinueOnFailure = direct.LazyPtr(in.GetContinueOnFailure())
 	out.OutputFormat = direct.LazyPtr(in.GetOutputFormat())
 	out.ClientTags = in.ClientTags
 	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
+	out.LoggingConfig = LoggingConfig_v1alpha1_FromProto(mapCtx, in.GetLoggingConfig())
 	return out
 }
-func TrinoJob_ToProto(mapCtx *direct.MapContext, in *krm.TrinoJob) *pb.TrinoJob {
+func TrinoJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.TrinoJob) *pb.TrinoJob {
 	if in == nil {
 		return nil
 	}
 	out := &pb.TrinoJob{}
-	if oneof := TrinoJob_QueryFileUri_ToProto(mapCtx, in.QueryFileURI); oneof != nil {
+	if oneof := TrinoJob_QueryFileUri_v1alpha1_ToProto(mapCtx, in.QueryFileURI); oneof != nil {
 		out.Queries = oneof
 	}
-	if oneof := QueryList_ToProto(mapCtx, in.QueryList); oneof != nil {
+	if oneof := QueryList_v1alpha1_ToProto(mapCtx, in.QueryList); oneof != nil {
 		out.Queries = &pb.TrinoJob_QueryList{QueryList: oneof}
 	}
 	out.ContinueOnFailure = direct.ValueOf(in.ContinueOnFailure)
 	out.OutputFormat = direct.ValueOf(in.OutputFormat)
 	out.ClientTags = in.ClientTags
 	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
+	out.LoggingConfig = LoggingConfig_v1alpha1_ToProto(mapCtx, in.LoggingConfig)
 	return out
 }
-func YarnApplication_FromProto(mapCtx *direct.MapContext, in *pb.YarnApplication) *krm.YarnApplication {
+func YarnApplication_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.YarnApplication) *krm.YarnApplication {
 	if in == nil {
 		return nil
 	}
@@ -719,7 +719,7 @@ func YarnApplication_FromProto(mapCtx *direct.MapContext, in *pb.YarnApplication
 	out.TrackingURL = direct.LazyPtr(in.GetTrackingUrl())
 	return out
 }
-func YarnApplication_ToProto(mapCtx *direct.MapContext, in *krm.YarnApplication) *pb.YarnApplication {
+func YarnApplication_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.YarnApplication) *pb.YarnApplication {
 	if in == nil {
 		return nil
 	}
