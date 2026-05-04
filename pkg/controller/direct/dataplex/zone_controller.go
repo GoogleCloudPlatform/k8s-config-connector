@@ -147,9 +147,9 @@ func (a *zoneAdapter) Create(ctx context.Context, createOp *directbase.CreateOpe
 	log.V(2).Info("creating dataplex zone", "name", a.id)
 
 	req := &pb.CreateZoneRequest{
-		Parent: a.id.Parent().String(),
+		Parent: fmt.Sprintf("projects/%s/locations/%s/lakes/%s", a.id.Project, a.id.Location, a.id.Lake),
 		Zone:   a.desired,
-		ZoneId: a.id.ID(),
+		ZoneId: a.id.Zone,
 	}
 	op, err := a.gcpClient.CreateZone(ctx, req)
 	if err != nil {
