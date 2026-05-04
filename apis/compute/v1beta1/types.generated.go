@@ -25,18 +25,112 @@
 // resource: ComputeTargetTcpProxy:TargetTcpProxy
 // resource: ComputeTargetHTTPSProxy:TargetHttpsProxy
 // resource: ComputeNodeTemplate:NodeTemplate
+// resource: ComputeReservation:Reservation
 
 package v1beta1
 
-// +kcc:proto=google.cloud.compute.v1.AcceleratorConfig
-type AcceleratorConfig struct {
-	// The number of the guest accelerator cards exposed to this instance.
-	// +kcc:proto:field=google.cloud.compute.v1.AcceleratorConfig.accelerator_count
+// +kcc:proto=google.cloud.compute.v1.AllocationAggregateReservation
+type AllocationAggregateReservation struct {
+	// [Output only] List of resources currently in use.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationAggregateReservation.in_use_resources
+	InUseResources []AllocationAggregateReservationReservedResourceInfo `json:"inUseResources,omitempty"`
+
+	// List of reserved resources (CPUs, memory, accelerators).
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationAggregateReservation.reserved_resources
+	ReservedResources []AllocationAggregateReservationReservedResourceInfo `json:"reservedResources,omitempty"`
+
+	// The VM family that all instances scheduled against this reservation must belong to.
+	//  Check the VmFamily enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationAggregateReservation.vm_family
+	VMFamily *string `json:"vmFamily,omitempty"`
+
+	// The workload type of the instances that will target this reservation.
+	//  Check the WorkloadType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationAggregateReservation.workload_type
+	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.AllocationAggregateReservationReservedResourceInfo
+type AllocationAggregateReservationReservedResourceInfo struct {
+	// Properties of accelerator resources in this reservation.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationAggregateReservationReservedResourceInfo.accelerator
+	Accelerator *AllocationAggregateReservationReservedResourceInfoAccelerator `json:"accelerator,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.AllocationAggregateReservationReservedResourceInfoAccelerator
+type AllocationAggregateReservationReservedResourceInfoAccelerator struct {
+	// Number of accelerators of specified type.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationAggregateReservationReservedResourceInfoAccelerator.accelerator_count
 	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
 
-	// Full or partial URL of the accelerator type resource to attach to this instance. For example: projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100 If you are creating an instance template, specify only the accelerator name. See GPUs on Compute Engine for a full list of accelerator types.
-	// +kcc:proto:field=google.cloud.compute.v1.AcceleratorConfig.accelerator_type
+	// Full or partial URL to accelerator type. e.g. "projects/{PROJECT}/zones/{ZONE}/acceleratorTypes/ct4l"
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationAggregateReservationReservedResourceInfoAccelerator.accelerator_type
 	AcceleratorType *string `json:"acceleratorType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.AllocationReservationSharingPolicy
+type AllocationReservationSharingPolicy struct {
+	// Sharing config for all Google Cloud services.
+	//  Check the ServiceShareType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationReservationSharingPolicy.service_share_type
+	ServiceShareType *string `json:"serviceShareType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.AllocationResourceStatus
+type AllocationResourceStatus struct {
+	// [Output only] Health information for the reservation.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationResourceStatus.health_info
+	HealthInfo *AllocationResourceStatusHealthInfo `json:"healthInfo,omitempty"`
+
+	// The number of reservation blocks associated with this reservation.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationResourceStatus.reservation_block_count
+	ReservationBlockCount *int32 `json:"reservationBlockCount,omitempty"`
+
+	// Maintenance information for this reservation
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationResourceStatus.reservation_maintenance
+	ReservationMaintenance *GroupMaintenanceInfo `json:"reservationMaintenance,omitempty"`
+
+	// Allocation Properties of this reservation.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationResourceStatus.specific_sku_allocation
+	SpecificSkuAllocation *AllocationResourceStatusSpecificSkuAllocation `json:"specificSkuAllocation,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.AllocationResourceStatusHealthInfo
+type AllocationResourceStatusHealthInfo struct {
+	// The number of reservation blocks that are degraded.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationResourceStatusHealthInfo.degraded_block_count
+	DegradedBlockCount *int32 `json:"degradedBlockCount,omitempty"`
+
+	// The health status of the reservation.
+	//  Check the HealthStatus enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationResourceStatusHealthInfo.health_status
+	HealthStatus *string `json:"healthStatus,omitempty"`
+
+	// The number of reservation blocks that are healthy.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationResourceStatusHealthInfo.healthy_block_count
+	HealthyBlockCount *int32 `json:"healthyBlockCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.AllocationResourceStatusSpecificSKUAllocation
+type AllocationResourceStatusSpecificSkuAllocation struct {
+	// ID of the instance template used to populate reservation properties.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationResourceStatusSpecificSKUAllocation.source_instance_template_id
+	SourceInstanceTemplateID *string `json:"sourceInstanceTemplateID,omitempty"`
+
+	// Per service utilization breakdown. The Key is the Google Cloud managed service name.
+	// +kcc:proto:field=google.cloud.compute.v1.AllocationResourceStatusSpecificSKUAllocation.utilizations
+	Utilizations map[string]int64 `json:"utilizations,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.Duration
+type Duration struct {
+	// Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 `seconds` field and a positive `nanos` field. Must be from 0 to 999,999,999 inclusive.
+	// +kcc:proto:field=google.cloud.compute.v1.Duration.nanos
+	Nanos *int32 `json:"nanos,omitempty"`
+
+	// Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive. Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years
+	// +kcc:proto:field=google.cloud.compute.v1.Duration.seconds
+	Seconds *int64 `json:"seconds,omitempty"`
 }
 
 // +kcc:proto=google.cloud.compute.v1.Expr
@@ -70,6 +164,42 @@ type FirewallPolicyRuleSecureTag struct {
 	State *string `json:"state,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.GroupMaintenanceInfo
+type GroupMaintenanceInfo struct {
+	// Describes number of instances that have ongoing maintenance.
+	// +kcc:proto:field=google.cloud.compute.v1.GroupMaintenanceInfo.instance_maintenance_ongoing_count
+	InstanceMaintenanceOngoingCount *int32 `json:"instanceMaintenanceOngoingCount,omitempty"`
+
+	// Describes number of instances that have pending maintenance.
+	// +kcc:proto:field=google.cloud.compute.v1.GroupMaintenanceInfo.instance_maintenance_pending_count
+	InstanceMaintenancePendingCount *int32 `json:"instanceMaintenancePendingCount,omitempty"`
+
+	// Progress for ongoing maintenance for this group of VMs/hosts. Describes number of hosts in the block that have ongoing maintenance.
+	// +kcc:proto:field=google.cloud.compute.v1.GroupMaintenanceInfo.maintenance_ongoing_count
+	MaintenanceOngoingCount *int32 `json:"maintenanceOngoingCount,omitempty"`
+
+	// Progress for ongoing maintenance for this group of VMs/hosts. Describes number of hosts in the block that have pending maintenance.
+	// +kcc:proto:field=google.cloud.compute.v1.GroupMaintenanceInfo.maintenance_pending_count
+	MaintenancePendingCount *int32 `json:"maintenancePendingCount,omitempty"`
+
+	// The type of maintenance for the reservation.
+	//  Check the SchedulingType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.GroupMaintenanceInfo.scheduling_type
+	SchedulingType *string `json:"schedulingType,omitempty"`
+
+	// Describes number of subblock Infrastructure that has ongoing maintenance. Here, Subblock Infrastructure Maintenance pertains to upstream hardware contained in the Subblock that is necessary for a VM Family(e.g. NVLink Domains). Not all VM Families will support this field.
+	// +kcc:proto:field=google.cloud.compute.v1.GroupMaintenanceInfo.subblock_infra_maintenance_ongoing_count
+	SubblockInfraMaintenanceOngoingCount *int32 `json:"subblockInfraMaintenanceOngoingCount,omitempty"`
+
+	// Describes number of subblock Infrastructure that has pending maintenance. Here, Subblock Infrastructure Maintenance pertains to upstream hardware contained in the Subblock that is necessary for a VM Family (e.g. NVLink Domains). Not all VM Families will support this field.
+	// +kcc:proto:field=google.cloud.compute.v1.GroupMaintenanceInfo.subblock_infra_maintenance_pending_count
+	SubblockInfraMaintenancePendingCount *int32 `json:"subblockInfraMaintenancePendingCount,omitempty"`
+
+	// Maintenance information on this group of VMs.
+	// +kcc:proto:field=google.cloud.compute.v1.GroupMaintenanceInfo.upcoming_group_maintenance
+	UpcomingGroupMaintenance *UpcomingMaintenance `json:"upcomingGroupMaintenance,omitempty"`
+}
+
 // +kcc:proto=google.cloud.compute.v1.LocalDisk
 type LocalDisk struct {
 	// Specifies the number of such disks.
@@ -83,6 +213,14 @@ type LocalDisk struct {
 	// Specifies the desired disk type on the node. This disk type must be a local storage type (e.g.: local-ssd). Note that for nodeTemplates, this should be the name of the disk type and not its URL.
 	// +kcc:proto:field=google.cloud.compute.v1.LocalDisk.disk_type
 	DiskType *string `json:"diskType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.ReservationAdvancedDeploymentControl
+type ReservationAdvancedDeploymentControl struct {
+	// Indicates chosen reservation operational mode for the reservation.
+	//  Check the ReservationOperationalMode enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ReservationAdvancedDeploymentControl.reservation_operational_mode
+	ReservationOperationalMode *string `json:"reservationOperationalMode,omitempty"`
 }
 
 // +kcc:proto=google.cloud.compute.v1.ResourcePolicyResourceStatus
@@ -293,9 +431,64 @@ type SecurityPolicyUserDefinedField struct {
 	Size *int32 `json:"size,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.ShareSettings
+type ShareSettings struct {
+
+	// TODO: unsupported map type with key string and value message
+
+	// Type of sharing for this shared-reservation
+	//  Check the ShareType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ShareSettings.share_type
+	ShareType *string `json:"shareType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.ShareSettingsProjectConfig
+type ShareSettingsProjectConfig struct {
+	// The project ID, should be same as the key of this project config in the parent map.
+	// +kcc:proto:field=google.cloud.compute.v1.ShareSettingsProjectConfig.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+}
+
 // +kcc:proto=google.cloud.compute.v1.SubnetworkParams
 type SubnetworkParams struct {
 	// Tag keys/values directly bound to this resource. Tag keys and values have the same definition as resource manager tags. The field is allowed for INSERT only. The keys/values to set on the resource should be specified in either ID { : } or Namespaced format { : }. For example the following are valid inputs: * {"tagKeys/333" : "tagValues/444", "tagKeys/123" : "tagValues/456"} * {"123/environment" : "production", "345/abc" : "xyz"} Note: * Invalid combinations of ID & namespaced format is not supported. For instance: {"123/environment" : "tagValues/444"} is invalid.
 	// +kcc:proto:field=google.cloud.compute.v1.SubnetworkParams.resource_manager_tags
 	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.UpcomingMaintenance
+type UpcomingMaintenance struct {
+	// Indicates if the maintenance can be customer triggered.
+	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.can_reschedule
+	CanReschedule *bool `json:"canReschedule,omitempty"`
+
+	// The latest time for the planned maintenance window to start. This timestamp value is in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.latest_window_start_time
+	LatestWindowStartTime *string `json:"latestWindowStartTime,omitempty"`
+
+	// Indicates whether the UpcomingMaintenance will be triggered on VM shutdown.
+	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.maintenance_on_shutdown
+	MaintenanceOnShutdown *bool `json:"maintenanceOnShutdown,omitempty"`
+
+	// The reasons for the maintenance. Only valid for vms.
+	//  Check the MaintenanceReasons enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.maintenance_reasons
+	MaintenanceReasons []string `json:"maintenanceReasons,omitempty"`
+
+	// Check the MaintenanceStatus enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.maintenance_status
+	MaintenanceStatus *string `json:"maintenanceStatus,omitempty"`
+
+	// Defines the type of maintenance.
+	//  Check the Type enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.type
+	Type *string `json:"type,omitempty"`
+
+	// The time by which the maintenance disruption will be completed. This timestamp value is in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.window_end_time
+	WindowEndTime *string `json:"windowEndTime,omitempty"`
+
+	// The current start time of the maintenance window. This timestamp value is in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.window_start_time
+	WindowStartTime *string `json:"windowStartTime,omitempty"`
 }
