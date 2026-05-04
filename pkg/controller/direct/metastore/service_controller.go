@@ -16,7 +16,7 @@
 // proto.service: google.cloud.metastore.v1.DataprocMetastore
 // proto.message: google.cloud.metastore.v1.Service
 // crd.type: MetastoreService
-// crd.version: v1alpha1
+// crd.version: v1beta1
 
 package metastore
 

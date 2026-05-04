@@ -14,7 +14,7 @@
 
 // +generated:mapper
 // krm.group: metastore.cnrm.cloud.google.com
-// krm.version: v1alpha1
+// krm.version: v1beta1
 // proto.service: google.cloud.metastore.v1
 
 package metastore
