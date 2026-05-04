@@ -82,9 +82,9 @@ func getIdentityFromDataplexZoneSpec(ctx context.Context, reader client.Reader, 
 	}
 
 	identity := &ZoneIdentity{
-		Project:  lakeIdentity.Parent().ProjectID,
-		Location: lakeIdentity.Parent().Location,
-		Lake:     lakeIdentity.ID(),
+		Project:  lakeIdentity.Project,
+		Location: lakeIdentity.Location,
+		Lake:     lakeIdentity.Lake,
 		Zone:     resourceID,
 	}
 	return identity, nil

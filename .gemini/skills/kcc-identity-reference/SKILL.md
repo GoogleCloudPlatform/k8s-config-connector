@@ -43,6 +43,7 @@ Create or update the file to match the canonical example. Key requirements:
 - Implement `String()`, `FromExternal(ref string)`, and `Host()` by delegating to the format var.
 - Implement `getIdentityFrom<Kind>Spec(...)` to extract fields from the spec/obj (often using `refs.ResolveProjectID`, `refs.GetLocation`, etc.).
 - Implement `GetIdentity(ctx, reader)` on the Resource struct, including cross-checking `externalRef` or `status.Name`. (Look at `artifactregistryrepository_identity.go`'s `GetIdentity` implementation for exactly how to do this cross-check).
+  - **Note:** If you are updating an existing resource's Identity struct to the IdentityV2 pattern, be sure to grep for existing usages of the struct and its old methods (e.g. `.Parent()`, `.ID()`) in dependent identity files and direct controllers, and update them to use the new fields (e.g. `.Project`, `.Location`, etc.).
 
 ### Step 4: Implement the Reference (`<kind>_reference.go`)
 
