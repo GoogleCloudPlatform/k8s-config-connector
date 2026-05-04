@@ -19,8 +19,8 @@ import (
 	"fmt"
 	"strings"
 
-	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	iam "cloud.google.com/go/iam/apiv1"
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
 	computev1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
