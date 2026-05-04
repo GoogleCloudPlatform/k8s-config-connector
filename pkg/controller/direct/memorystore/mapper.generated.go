@@ -756,7 +756,7 @@ func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	// MISSING: OndemandMaintenance
 	// MISSING: MaintenancePolicy
 	// MISSING: MaintenanceSchedule
-	// MISSING: CrossInstanceReplicationConfig
+	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfigObservedState_FromProto(mapCtx, in.GetCrossInstanceReplicationConfig())
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
 	// MISSING: BackupCollection
 	// MISSING: AutomatedBackupConfig
@@ -787,7 +787,7 @@ func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: OndemandMaintenance
 	// MISSING: MaintenancePolicy
 	// MISSING: MaintenanceSchedule
-	// MISSING: CrossInstanceReplicationConfig
+	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfigObservedState_ToProto(mapCtx, in.CrossInstanceReplicationConfig)
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
 	// MISSING: BackupCollection
 	// MISSING: AutomatedBackupConfig
@@ -823,7 +823,7 @@ func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instanc
 	// MISSING: OndemandMaintenance
 	// MISSING: MaintenancePolicy
 	// MISSING: MaintenanceSchedule
-	// MISSING: CrossInstanceReplicationConfig
+	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_FromProto(mapCtx, in.GetCrossInstanceReplicationConfig())
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
 	// MISSING: BackupCollection
 	// MISSING: AutomatedBackupConfig
@@ -859,7 +859,7 @@ func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Memoryst
 	// MISSING: OndemandMaintenance
 	// MISSING: MaintenancePolicy
 	// MISSING: MaintenanceSchedule
-	// MISSING: CrossInstanceReplicationConfig
+	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_ToProto(mapCtx, in.CrossInstanceReplicationConfig)
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
 	// MISSING: BackupCollection
 	// MISSING: AutomatedBackupConfig
