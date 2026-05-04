@@ -11,7 +11,8 @@ This skill guides an automated agent through adding a missing field to a GCP res
 1. **Add the field to the `_types.go` file**
    - Locate the `_types.go` file for the resource (e.g., `apis/group/version/resource_types.go`).
    - Add the field to the `Spec` (for inputs) or `ObservedState` (for outputs) struct as appropriate.
-   - If the type relies on autogeneration (e.g., via `generate.sh`), you can use the `types.generated.go` as a reference. You may need to run `generate.sh --include-skipped-output` if it's hand-coded and skipped by default.
+   - If the type relies on autogeneration, you can use `types.generated.go` as a reference. Note that `types.generated.go` includes generated code for all types if `--include-skipped-output` is passed to the generate commands.
+   - **Important:** If the field represents a GCP URI or URI fragment (e.g., the path to another resource), you should use a KCC reference field (e.g., `InstanceRef *refs.MemorystoreInstanceRef`) instead of a simple string.
    - Follow KRM naming conventions (camelCase in Go, etc.).
 
 2. **Update the Fuzzer**

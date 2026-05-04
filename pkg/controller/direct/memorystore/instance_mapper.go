@@ -23,6 +23,7 @@ import (
 	pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
+	api_refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -365,5 +366,79 @@ func ZoneDistributionConfig_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Zo
 	out := &pb.ZoneDistributionConfig{}
 	out.Zone = direct.ValueOf(in.Zone)
 	out.Mode = direct.Enum_ToProto[pb.ZoneDistributionConfig_ZoneDistributionMode](mapCtx, in.Mode)
+	return out
+}
+
+func CrossInstanceReplicationConfig_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.CrossInstanceReplicationConfig) *pb.CrossInstanceReplicationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CrossInstanceReplicationConfig{}
+	out.InstanceRole = direct.Enum_ToProto[pb.CrossInstanceReplicationConfig_InstanceRole](mapCtx, in.InstanceRole)
+	if in.PrimaryInstance != nil {
+		out.PrimaryInstance = &pb.CrossInstanceReplicationConfig_RemoteInstance{}
+		if in.PrimaryInstance.InstanceRef != nil {
+			out.PrimaryInstance.Instance = in.PrimaryInstance.InstanceRef.External
+		}
+	}
+	return out
+}
+
+func CrossInstanceReplicationConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig) *krmv1beta1.CrossInstanceReplicationConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.CrossInstanceReplicationConfigObservedState{}
+	if in.PrimaryInstance != nil {
+		out.PrimaryInstance = &krmv1beta1.CrossInstanceReplicationConfig_RemoteInstanceObservedState{}
+		out.PrimaryInstance.Instance = direct.LazyPtr(in.PrimaryInstance.Instance)
+		out.PrimaryInstance.Uid = direct.LazyPtr(in.PrimaryInstance.Uid)
+	}
+	if in.SecondaryInstances != nil {
+		for _, s := range in.SecondaryInstances {
+			if s == nil {
+				continue
+			}
+			out.SecondaryInstances = append(out.SecondaryInstances, krmv1beta1.CrossInstanceReplicationConfig_RemoteInstanceObservedState{
+				Instance: direct.LazyPtr(s.Instance),
+				Uid:      direct.LazyPtr(s.Uid),
+			})
+		}
+	}
+	if in.Membership != nil {
+		out.Membership = &krmv1beta1.CrossInstanceReplicationConfig_MembershipObservedState{}
+		if in.Membership.PrimaryInstance != nil {
+			out.Membership.PrimaryInstance = &krmv1beta1.CrossInstanceReplicationConfig_RemoteInstanceObservedState{
+				Instance: direct.LazyPtr(in.Membership.PrimaryInstance.Instance),
+				Uid:      direct.LazyPtr(in.Membership.PrimaryInstance.Uid),
+			}
+		}
+		if in.Membership.SecondaryInstances != nil {
+			for _, s := range in.Membership.SecondaryInstances {
+				if s == nil {
+					continue
+				}
+				out.Membership.SecondaryInstances = append(out.Membership.SecondaryInstances, krmv1beta1.CrossInstanceReplicationConfig_RemoteInstanceObservedState{
+					Instance: direct.LazyPtr(s.Instance),
+					Uid:      direct.LazyPtr(s.Uid),
+				})
+			}
+		}
+	}
+	return out
+}
+
+func CrossInstanceReplicationConfig_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig) *krmv1beta1.CrossInstanceReplicationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.CrossInstanceReplicationConfig{}
+	out.InstanceRole = direct.Enum_FromProto(mapCtx, in.GetInstanceRole())
+	if in.GetPrimaryInstance() != nil {
+		out.PrimaryInstance = &krmv1beta1.CrossInstanceReplicationConfig_RemoteInstance{}
+		out.PrimaryInstance.InstanceRef = &api_refs.MemorystoreInstanceRef{
+			External: in.GetPrimaryInstance().GetInstance(),
+		}
+	}
 	return out
 }
