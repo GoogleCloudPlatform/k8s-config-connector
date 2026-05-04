@@ -1,0 +1,198 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1beta1
+
+import (
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+var ComputeNodeGroupGVK = GroupVersion.WithKind("ComputeNodeGroup")
+
+// +kcc:proto=google.cloud.compute.v1.NodeGroupAutoscalingPolicy
+type NodeGroupAutoscalingPolicy struct {
+	/* Immutable. Maximum size of the node group. Set to a value less than or equal
+	to 100 and greater than or equal to min-nodes. */
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroupAutoscalingPolicy.max_nodes
+	MaxNodes *int32 `json:"maxNodes,omitempty"`
+
+	/* Immutable. Minimum size of the node group. Must be less
+	than or equal to max-nodes. The default value is 0. */
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroupAutoscalingPolicy.min_nodes
+	MinNodes *int32 `json:"minNodes,omitempty"`
+
+	/* Immutable. The autoscaling mode. Set to one of the following:
+	- OFF: Disables the autoscaler.
+	- ON: Enables scaling in and scaling out.
+	- ONLY_SCALE_OUT: Enables only scaling out.
+	You must use this mode if your node groups are configured to
+	restart their hosted VMs on minimal servers. Possible values: ["OFF", "ON", "ONLY_SCALE_OUT"]. */
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroupAutoscalingPolicy.mode
+	Mode *string `json:"mode,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.NodeGroupMaintenanceWindow
+type NodeGroupMaintenanceWindow struct {
+	/* Immutable. instances.start time of the window. This must be in UTC format that resolves to one of 00:00, 04:00, 08:00, 12:00, 16:00, or 20:00. For example, both 13:00-5 and 08:00 are valid. */
+	// +required
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroupMaintenanceWindow.start_time
+	StartTime *string `json:"startTime"`
+}
+
+type ComputeNodeGroupProjectRef struct {
+	/* The `projectID` field of a project, when not managed by Config Connector. */
+	External string `json:"external,omitempty"`
+	/* The `name` field of a `Project` resource. */
+	Name string `json:"name,omitempty"`
+	/* The `namespace` field of a `Project` resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.ShareSettingsProjectConfig
+type NodeGroupProjectMap struct {
+	/* The key of this project config in the parent map. */
+	// +required
+	IdRef ComputeNodeGroupProjectRef `json:"idRef"`
+
+	/* The project id/number should be the same as the key of this project
+	config in the project map. */
+	// +required
+	// +kcc:proto:field=google.cloud.compute.v1.ShareSettingsProjectConfig.project_id
+	ProjectIdRef ComputeNodeGroupProjectRef `json:"projectIdRef"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.ShareSettings
+type NodeGroupShareSettings struct {
+	/* Immutable. A map of project id and project config. This is only valid when shareType's value is SPECIFIC_PROJECTS. */
+	// +kcc:proto:field=google.cloud.compute.v1.ShareSettings.project_map
+	ProjectMap []NodeGroupProjectMap `json:"projectMap,omitempty"`
+
+	/* Immutable. Share settings for the node group. Possible values: ["ORGANIZATION", "SPECIFIC_PROJECTS", "LOCAL"]. */
+	// +required
+	// +kcc:proto:field=google.cloud.compute.v1.ShareSettings.share_type
+	ShareType *string `json:"shareType"`
+}
+
+// ComputeNodeGroupSpec defines the desired state of ComputeNodeGroup
+// +kcc:spec:proto=google.cloud.compute.v1.NodeGroup
+type ComputeNodeGroupSpec struct {
+	/* Immutable. If you use sole-tenant nodes for your workloads, you can use the node
+	group autoscaler to automatically manage the sizes of your node groups. */
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.autoscaling_policy
+	AutoscalingPolicy *NodeGroupAutoscalingPolicy `json:"autoscalingPolicy,omitempty"`
+
+	/* Immutable. An optional textual description of the resource. */
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.description
+	Description *string `json:"description,omitempty"`
+
+	/* Immutable. The initial number of nodes in the node group. One of 'initial_size' or 'size' must be specified. */
+	InitialSize *int32 `json:"initialSize,omitempty"`
+
+	/* Immutable. Specifies how to handle instances when a node in the group undergoes maintenance. Set to one of: DEFAULT, RESTART_IN_PLACE, or MIGRATE_WITHIN_NODE_GROUP. The default value is DEFAULT. */
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.maintenance_policy
+	MaintenancePolicy *string `json:"maintenancePolicy,omitempty"`
+
+	/* Immutable. contains properties for the timeframe of maintenance. */
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.maintenance_window
+	MaintenanceWindow *NodeGroupMaintenanceWindow `json:"maintenanceWindow,omitempty"`
+
+	/* The node template to which this node group belongs. */
+	// +required
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.node_template
+	NodeTemplateRef *refsv1beta1.ComputeNodeTemplateRef `json:"nodeTemplateRef"`
+
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Immutable. Share settings for the node group. */
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.share_settings
+	ShareSettings *NodeGroupShareSettings `json:"shareSettings,omitempty"`
+
+	/* Immutable. The total number of nodes in the node group. One of 'initial_size' or 'size' must be specified. */
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.size
+	Size *int32 `json:"size,omitempty"`
+
+	/* Immutable. Zone where this node group is located. */
+	// +required
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.zone
+	Zone *string `json:"zone"`
+}
+
+// ComputeNodeGroupStatus defines the config connector machine state of ComputeNodeGroup
+// +kcc:status:proto=google.cloud.compute.v1.NodeGroup
+type ComputeNodeGroupStatus struct {
+	/* Conditions represent the latest available observations of the
+	   object's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+
+	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	// A unique specifier for the ComputeNodeGroup resource in GCP.
+	ExternalRef *string `json:"externalRef,omitempty"`
+
+	// ObservedState is the state of the resource as most recently observed in GCP.
+	ObservedState *ComputeNodeGroupObservedState `json:"observedState,omitempty"`
+
+	/* Creation timestamp in RFC3339 text format. */
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+}
+
+// ComputeNodeGroupObservedState is the state of the ComputeNodeGroup resource as most recently observed in GCP.
+// +kcc:observedstate:proto=google.cloud.compute.v1.NodeGroup
+type ComputeNodeGroupObservedState struct {
+}
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpcomputenodegroup;gcpcomputenodegroups
+// +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
+
+// ComputeNodeGroup is the Schema for the ComputeNodeGroup API
+// +k8s:openapi-gen=true
+type ComputeNodeGroup struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	// +required
+	Spec   ComputeNodeGroupSpec   `json:"spec,omitempty"`
+	Status ComputeNodeGroupStatus `json:"status,omitempty"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// ComputeNodeGroupList contains a list of ComputeNodeGroup
+type ComputeNodeGroupList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeNodeGroup `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ComputeNodeGroup{}, &ComputeNodeGroupList{})
+}

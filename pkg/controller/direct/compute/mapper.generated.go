@@ -24,6 +24,7 @@ import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -181,6 +182,138 @@ func AllocationSpecificSkuAllocationReservedInstanceProperties_v1alpha1_ToProto(
 	out.LocationHint = in.LocationHint
 	out.MachineType = in.MachineType
 	out.MinCpuPlatform = in.MinCPUPlatform
+	return out
+}
+func ComputeNodeGroupObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeGroup) *krm.ComputeNodeGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeNodeGroupObservedState{}
+	// MISSING: CreationTimestamp
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LocationHint
+	// MISSING: MaintenanceInterval
+	// MISSING: Name
+	// MISSING: SelfLink
+	// MISSING: Status
+	return out
+}
+func ComputeNodeGroupObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNodeGroupObservedState) *pb.NodeGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodeGroup{}
+	// MISSING: CreationTimestamp
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LocationHint
+	// MISSING: MaintenanceInterval
+	// MISSING: Name
+	// MISSING: SelfLink
+	// MISSING: Status
+	return out
+}
+func ComputeNodeGroupSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeGroup) *krm.ComputeNodeGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeNodeGroupSpec{}
+	out.AutoscalingPolicy = NodeGroupAutoscalingPolicy_v1beta1_FromProto(mapCtx, in.GetAutoscalingPolicy())
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LocationHint
+	// MISSING: MaintenanceInterval
+	out.MaintenancePolicy = in.MaintenancePolicy
+	out.MaintenanceWindow = NodeGroupMaintenanceWindow_v1beta1_FromProto(mapCtx, in.GetMaintenanceWindow())
+	// MISSING: Name
+	if in.GetNodeTemplate() != "" {
+		out.NodeTemplateRef = &refsv1beta1.ComputeNodeTemplateRef{External: in.GetNodeTemplate()}
+	}
+	// MISSING: SelfLink
+	out.ShareSettings = NodeGroupShareSettings_v1beta1_FromProto(mapCtx, in.GetShareSettings())
+	out.Size = in.Size
+	// MISSING: Status
+	out.Zone = in.Zone
+	return out
+}
+func ComputeNodeGroupSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNodeGroupSpec) *pb.NodeGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodeGroup{}
+	out.AutoscalingPolicy = NodeGroupAutoscalingPolicy_v1beta1_ToProto(mapCtx, in.AutoscalingPolicy)
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LocationHint
+	// MISSING: MaintenanceInterval
+	out.MaintenancePolicy = in.MaintenancePolicy
+	out.MaintenanceWindow = NodeGroupMaintenanceWindow_v1beta1_ToProto(mapCtx, in.MaintenanceWindow)
+	// MISSING: Name
+	if in.NodeTemplateRef != nil {
+		out.NodeTemplate = &in.NodeTemplateRef.External
+	}
+	// MISSING: SelfLink
+	out.ShareSettings = NodeGroupShareSettings_v1beta1_ToProto(mapCtx, in.ShareSettings)
+	out.Size = in.Size
+	// MISSING: Status
+	out.Zone = in.Zone
+	return out
+}
+func ComputeNodeGroupStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeGroup) *krm.ComputeNodeGroupStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeNodeGroupStatus{}
+	// MISSING: AutoscalingPolicy
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LocationHint
+	// MISSING: MaintenanceInterval
+	// MISSING: MaintenancePolicy
+	// MISSING: MaintenanceWindow
+	// MISSING: Name
+	// MISSING: NodeTemplate
+	out.SelfLink = in.SelfLink
+	// MISSING: ShareSettings
+	// MISSING: Size
+	// MISSING: Status
+	// MISSING: Zone
+	return out
+}
+func ComputeNodeGroupStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNodeGroupStatus) *pb.NodeGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodeGroup{}
+	// MISSING: AutoscalingPolicy
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LocationHint
+	// MISSING: MaintenanceInterval
+	// MISSING: MaintenancePolicy
+	// MISSING: MaintenanceWindow
+	// MISSING: Name
+	// MISSING: NodeTemplate
+	out.SelfLink = in.SelfLink
+	// MISSING: ShareSettings
+	// MISSING: Size
+	// MISSING: Status
+	// MISSING: Zone
 	return out
 }
 func ComputeNodeTemplateSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeTemplate) *krm.ComputeNodeTemplateSpec {
@@ -529,6 +662,24 @@ func Duration_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1
 	out.Seconds = in.Seconds
 	return out
 }
+func Duration_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Duration) *krm.Duration {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Duration{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
+func Duration_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Duration) *pb.Duration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Duration{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
 func Expr_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Expr) *krm.Expr {
 	if in == nil {
 		return nil
@@ -801,6 +952,78 @@ func NetworkAttachmentConnectedEndpoint_v1alpha1_ToProto(mapCtx *direct.MapConte
 	out.Status = in.Status
 	out.Subnetwork = in.Subnetwork
 	out.SubnetworkCidrRange = in.SubnetworkCIDRRange
+	return out
+}
+func NodeGroupAutoscalingPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeGroupAutoscalingPolicy) *krm.NodeGroupAutoscalingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodeGroupAutoscalingPolicy{}
+	out.MaxNodes = in.MaxNodes
+	out.MinNodes = in.MinNodes
+	out.Mode = in.Mode
+	return out
+}
+func NodeGroupAutoscalingPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NodeGroupAutoscalingPolicy) *pb.NodeGroupAutoscalingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodeGroupAutoscalingPolicy{}
+	out.MaxNodes = in.MaxNodes
+	out.MinNodes = in.MinNodes
+	out.Mode = in.Mode
+	return out
+}
+func NodeGroupMaintenanceWindow_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeGroupMaintenanceWindow) *krm.NodeGroupMaintenanceWindow {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodeGroupMaintenanceWindow{}
+	// MISSING: MaintenanceDuration
+	out.StartTime = in.StartTime
+	return out
+}
+func NodeGroupMaintenanceWindow_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NodeGroupMaintenanceWindow) *pb.NodeGroupMaintenanceWindow {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodeGroupMaintenanceWindow{}
+	// MISSING: MaintenanceDuration
+	out.StartTime = in.StartTime
+	return out
+}
+func NodeGroupProjectMap_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettingsProjectConfig) *krm.NodeGroupProjectMap {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodeGroupProjectMap{}
+	// MISSING: ProjectID
+	return out
+}
+func NodeGroupProjectMap_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NodeGroupProjectMap) *pb.ShareSettingsProjectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ShareSettingsProjectConfig{}
+	// MISSING: ProjectID
+	return out
+}
+func NodeGroupShareSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettings) *krm.NodeGroupShareSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodeGroupShareSettings{}
+	// TODO: map type string message for field ProjectMap
+	out.ShareType = in.ShareType
+	return out
+}
+func NodeGroupShareSettings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NodeGroupShareSettings) *pb.ShareSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ShareSettings{}
+	// TODO: map type string message for field ProjectMap
+	out.ShareType = in.ShareType
 	return out
 }
 func NodeTemplateNodeTypeFlexibility_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeTemplateNodeTypeFlexibility) *krm.NodeTemplateNodeTypeFlexibility {

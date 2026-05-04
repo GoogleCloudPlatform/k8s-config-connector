@@ -25,6 +25,7 @@
 // resource: ComputeTargetTcpProxy:TargetTcpProxy
 // resource: ComputeTargetHTTPSProxy:TargetHttpsProxy
 // resource: ComputeNodeTemplate:NodeTemplate
+// resource: ComputeNodeGroup:NodeGroup
 
 package v1beta1
 
@@ -37,6 +38,17 @@ type AcceleratorConfig struct {
 	// Full or partial URL of the accelerator type resource to attach to this instance. For example: projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100 If you are creating an instance template, specify only the accelerator name. See GPUs on Compute Engine for a full list of accelerator types.
 	// +kcc:proto:field=google.cloud.compute.v1.AcceleratorConfig.accelerator_type
 	AcceleratorType *string `json:"acceleratorType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.Duration
+type Duration struct {
+	// Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 `seconds` field and a positive `nanos` field. Must be from 0 to 999,999,999 inclusive.
+	// +kcc:proto:field=google.cloud.compute.v1.Duration.nanos
+	Nanos *int32 `json:"nanos,omitempty"`
+
+	// Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive. Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years
+	// +kcc:proto:field=google.cloud.compute.v1.Duration.seconds
+	Seconds *int64 `json:"seconds,omitempty"`
 }
 
 // +kcc:proto=google.cloud.compute.v1.Expr
