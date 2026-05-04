@@ -156,7 +156,6 @@ func TestIsOrphaned(t *testing.T) {
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			t.Parallel()
 			testID := testvariable.NewUniqueID()
 			tc.resource.SetNamespace(testID)
 			h.EnsureNamespaceExists(testID)

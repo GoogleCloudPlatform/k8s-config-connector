@@ -16,7 +16,7 @@
 // proto.service: google.cloud.networkconnectivity.v1.HubService
 // proto.message: google.cloud.networkconnectivity.v1.InternalRange
 // crd.type: NetworkConnectivityInternalRange
-// crd.version: v1alpha1
+// crd.version: v1beta1
 
 package networkconnectivity
 
@@ -33,7 +33,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -43,7 +43,7 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.NetworkConnectivityInternalRangeGVK, NewInternalRangeModel)
+	registry.RegisterModel(krmv1beta1.NetworkConnectivityInternalRangeGVK, NewInternalRangeModel)
 }
 
 func NewInternalRangeModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -59,7 +59,7 @@ type internalRangeModel struct {
 func (m *internalRangeModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
 	reader := op.Reader
-	obj := &krm.NetworkConnectivityInternalRange{}
+	obj := &krmv1beta1.NetworkConnectivityInternalRange{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
@@ -68,7 +68,7 @@ func (m *internalRangeModel) AdapterForObject(ctx context.Context, op *directbas
 	if err != nil {
 		return nil, err
 	}
-	id := idIdentity.(*krm.InternalRangeIdentity)
+	id := idIdentity.(*krmv1beta1.InternalRangeIdentity)
 
 	// normalize reference fields
 	if obj.Spec.NetworkRef != nil {
@@ -100,8 +100,8 @@ func (m *internalRangeModel) AdapterForURL(ctx context.Context, url string) (dir
 
 type internalRangeAdapter struct {
 	gcpClient *api.Service
-	id        *krm.InternalRangeIdentity
-	desired   *krm.NetworkConnectivityInternalRange
+	id        *krmv1beta1.InternalRangeIdentity
+	desired   *krmv1beta1.NetworkConnectivityInternalRange
 	actual    *pb.InternalRange
 }
 
@@ -137,7 +137,7 @@ func (a *internalRangeAdapter) Create(ctx context.Context, createOp *directbase.
 	log.V(2).Info("creating networkconnectivity internalrange", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desired := NetworkConnectivityInternalRangeSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	desired := NetworkConnectivityInternalRangeSpec_v1beta1_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -170,8 +170,8 @@ func (a *internalRangeAdapter) Create(ctx context.Context, createOp *directbase.
 	if err := convertAPIToProto(created, &createdPB); err != nil {
 		return err
 	}
-	status := &krm.NetworkConnectivityInternalRangeStatus{}
-	status.ObservedState = NetworkConnectivityInternalRangeObservedState_FromProto(mapCtx, createdPB)
+	status := &krmv1beta1.NetworkConnectivityInternalRangeStatus{}
+	status.ObservedState = NetworkConnectivityInternalRangeObservedState_v1beta1_FromProto(mapCtx, createdPB)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -184,7 +184,7 @@ func (a *internalRangeAdapter) Update(ctx context.Context, updateOp *directbase.
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := NetworkConnectivityInternalRangeSpec_ToProto(mapCtx, &desired.Spec)
+	resource := NetworkConnectivityInternalRangeSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -246,8 +246,8 @@ func (a *internalRangeAdapter) Update(ctx context.Context, updateOp *directbase.
 		}
 	}
 
-	status := &krm.NetworkConnectivityInternalRangeStatus{}
-	status.ObservedState = NetworkConnectivityInternalRangeObservedState_FromProto(mapCtx, a.actual)
+	status := &krmv1beta1.NetworkConnectivityInternalRangeStatus{}
+	status.ObservedState = NetworkConnectivityInternalRangeObservedState_v1beta1_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -260,9 +260,9 @@ func (a *internalRangeAdapter) Export(ctx context.Context) (*unstructured.Unstru
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krm.NetworkConnectivityInternalRange{}
+	obj := &krmv1beta1.NetworkConnectivityInternalRange{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(NetworkConnectivityInternalRangeSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(NetworkConnectivityInternalRangeSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -273,8 +273,8 @@ func (a *internalRangeAdapter) Export(ctx context.Context) (*unstructured.Unstru
 		return nil, err
 	}
 
-	u.SetName(a.actual.Name)
-	u.SetGroupVersionKind(krm.NetworkConnectivityInternalRangeGVK)
+	u.SetName(lastComponent(a.actual.Name))
+	u.SetGroupVersionKind(krmv1beta1.NetworkConnectivityInternalRangeGVK)
 	u.Object = uObj
 	return u, nil
 }
@@ -312,6 +312,9 @@ func (a *internalRangeAdapter) waitForOperation(ctx context.Context, op *api.Goo
 		}
 
 		if latest.Done {
+			if latest.Error != nil {
+				return fmt.Errorf("operation failed: %v", latest.Error.Message)
+			}
 			return nil
 		}
 
