@@ -53,9 +53,10 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".managed_backup_source")
 	f.UnimplementedFields.Insert(".async_instance_endpoints_deletion_enabled")
 	f.UnimplementedFields.Insert(".ondemand_maintenance")
-	f.UnimplementedFields.Insert(".cross_instance_replication_config")
 	f.UnimplementedFields.Insert(".gcs_source")
 
+	f.SpecFields.Insert(".cross_instance_replication_config")
+	f.StatusFields.Insert(".cross_instance_replication_config")
 	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".replica_count")
 	f.SpecFields.Insert(".authorization_mode")
