@@ -1,0 +1,16 @@
+apiVersion: gkehub.cnrm.cloud.google.com/v1alpha1
+kind: GKEHubNamespace
+metadata:
+  name: gkh-ns-max-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: global
+  resourceID: gkh-ns-max-${uniqueId}
+  scopeRef:
+    name: gkehubscope-dep-max-${uniqueId}
+  namespaceID: gkh-ns-max-${uniqueId}
+  labels:
+    test-label: maximal
+  namespaceLabels:
+    fleet-label: maximal
