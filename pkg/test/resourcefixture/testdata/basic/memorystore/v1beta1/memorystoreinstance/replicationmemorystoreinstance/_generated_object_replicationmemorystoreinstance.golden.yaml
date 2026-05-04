@@ -1,0 +1,38 @@
+apiVersion: memorystore.cnrm.cloud.google.com/v1beta1
+kind: MemorystoreInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/last-changed-cookie: normalized-cookie
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: memorystoreinstance-${uniqueId}-secondary
+  namespace: ${uniqueId}
+spec:
+  crossInstanceReplicationConfig:
+    instanceRole: SECONDARY
+    primaryInstance:
+      instance: projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}-primary
+  location: us-east1
+  projectRef:
+    external: ${projectId}
+  shardCount: 3
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-east1/instances/memorystoreinstance-${uniqueId}-secondary
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    nodeConfig:
+      sizeGB: 13
+    state: ACTIVE
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"
