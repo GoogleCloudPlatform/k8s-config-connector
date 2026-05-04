@@ -663,22 +663,10 @@ func (in *PSCConnection) DeepCopyInto(out *PSCConnection) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.IPVersion != nil {
-		in, out := &in.IPVersion, &out.IPVersion
-		*out = new(string)
-		**out = **in
-	}
 	if in.ProducerInstanceID != nil {
 		in, out := &in.ProducerInstanceID, &out.ProducerInstanceID
 		*out = new(string)
 		**out = **in
-	}
-	if in.ProducerInstanceMetadata != nil {
-		in, out := &in.ProducerInstanceMetadata, &out.ProducerInstanceMetadata
-		*out = make(map[string]string, len(*in))
-		for key, val := range *in {
-			(*out)[key] = val
-		}
 	}
 	if in.PSCConnectionID != nil {
 		in, out := &in.PSCConnectionID, &out.PSCConnectionID
@@ -687,11 +675,6 @@ func (in *PSCConnection) DeepCopyInto(out *PSCConnection) {
 	}
 	if in.SelectedSubnetwork != nil {
 		in, out := &in.SelectedSubnetwork, &out.SelectedSubnetwork
-		*out = new(string)
-		**out = **in
-	}
-	if in.ServiceClass != nil {
-		in, out := &in.ServiceClass, &out.ServiceClass
 		*out = new(string)
 		**out = **in
 	}
