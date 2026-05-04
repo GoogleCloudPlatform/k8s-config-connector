@@ -190,9 +190,11 @@ func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instanc
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_FromProto)
 	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_FromProto(mapCtx, in.GetCrossInstanceReplicationConfig())
 
 	return out
 }
+
 func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MemorystoreInstanceSpec) *pb.Instance {
 	if in == nil {
 		return nil
