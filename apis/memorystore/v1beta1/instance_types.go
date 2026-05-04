@@ -92,6 +92,10 @@ type MemorystoreInstanceSpec struct {
 	// Optional. The mode config for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.mode
 	Mode *string `json:"mode,omitempty"`
+
+	// Optional. The cross instance replication config for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.cross_instance_replication_config
+	CrossInstanceReplicationConfig *CrossInstanceReplicationConfig `json:"crossInstanceReplicationConfig,omitempty"`
 }
 
 var _ identity.Resource = &MemorystoreInstance{}
@@ -179,6 +183,10 @@ type MemorystoreInstanceObservedState struct {
 	// Output only. List of PSC connections for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.psc_attachment_details
 	PscAttachmentDetails []PscAttachmentDetailObservedState `json:"pscAttachmentDetails,omitempty"`
+
+	// Optional. The cross instance replication config for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.cross_instance_replication_config
+	CrossInstanceReplicationConfig *CrossInstanceReplicationConfigObservedState `json:"crossInstanceReplicationConfig,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.Instance.ConnectionDetail
