@@ -39,6 +39,7 @@ Create or update the file to match the canonical example. Key requirements:
 - Declare interface implementations: `_ identity.IdentityV2 = &<Kind>Identity{}` and `_ identity.Resource = &<Kind>{}`
 - Define the template var: `var <Kind>IdentityFormat = gcpurls.Template[<Kind>Identity]("api.googleapis.com", "projects/{project}/...")`
 - The struct must map exactly to the template fields (e.g., `Project string`, `Location string`, `Instance string`) and have `// +k8s:deepcopy-gen=false`.
+  - **Note:** If an existing deepcopy method was previously generated for this identity struct, run `dev/tasks/generate-types-and-mappers` to regenerate the types and remove the obsolete code.
 - Implement `String()`, `FromExternal(ref string)`, and `Host()` by delegating to the format var.
 - Implement `getIdentityFrom<Kind>Spec(...)` to extract fields from the spec/obj (often using `refs.ResolveProjectID`, `refs.GetLocation`, etc.).
 - Implement `GetIdentity(ctx, reader)` on the Resource struct, including cross-checking `externalRef` or `status.Name`. (Look at `artifactregistryrepository_identity.go`'s `GetIdentity` implementation for exactly how to do this cross-check).
@@ -56,8 +57,8 @@ Create or update the file to match the canonical example. Key requirements:
   - The `Name` and `Namespace` fields should have godocs: `"The name of a <Kind> resource."` and `"The namespace of a <Kind> resource."`.
 - Include `func init() { refs.Register(&<Kind>Ref{}) }`.
 - Implement boilerplate methods: `GetGVK`, `GetNamespacedName`, `GetExternal`, `SetExternal`, `ValidateExternal`, `ParseExternalToIdentity`.
-- Implement `Normalize` delegating to `refs.NormalizeWithFallback`, using `getIdentityFrom<Kind>Spec` as the fallback if `status.externalRef` is not available.
+- Implement `Normalize` delegating to `refs.NormalizeWithFallback`. In the fallback function `func(u *unstructured.Unstructured) string`, safely convert `u.Object` to the `<Kind>` object using `runtime.DefaultUnstructuredConverter.FromUnstructured` before passing it to `getIdentityFrom<Kind>Spec`.
 
 ### Step 5: Verify
 
-Ensure the code compiles and there are no lint errors. You can run `go build ./apis/<groupPrefix>/<version>/...` to check for compilation errors.
+Ensure the code compiles and there are no lint errors. You MUST always run `go vet ./...` and `go build ./...` before sending the PR to verify that your changes have not introduced any compilation errors across the entire project.
