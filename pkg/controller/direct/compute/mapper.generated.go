@@ -992,40 +992,6 @@ func NodeGroupMaintenanceWindow_v1beta1_ToProto(mapCtx *direct.MapContext, in *k
 	out.StartTime = in.StartTime
 	return out
 }
-func NodeGroupProjectMap_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettingsProjectConfig) *krm.NodeGroupProjectMap {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NodeGroupProjectMap{}
-	// MISSING: ProjectID
-	return out
-}
-func NodeGroupProjectMap_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NodeGroupProjectMap) *pb.ShareSettingsProjectConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ShareSettingsProjectConfig{}
-	// MISSING: ProjectID
-	return out
-}
-func NodeGroupShareSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettings) *krm.NodeGroupShareSettings {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NodeGroupShareSettings{}
-	// TODO: map type string message for field ProjectMap
-	out.ShareType = in.ShareType
-	return out
-}
-func NodeGroupShareSettings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NodeGroupShareSettings) *pb.ShareSettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ShareSettings{}
-	// TODO: map type string message for field ProjectMap
-	out.ShareType = in.ShareType
-	return out
-}
 func NodeTemplateNodeTypeFlexibility_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeTemplateNodeTypeFlexibility) *krm.NodeTemplateNodeTypeFlexibility {
 	if in == nil {
 		return nil
