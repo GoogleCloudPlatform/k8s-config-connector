@@ -59,5 +59,17 @@ var (
 		Kind:    reflect.TypeOf(MetastoreBackup{}).Name(),
 	}
 
+	MetastoreFederationGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(MetastoreFederation{}).Name(),
+	}
+
+	MetastoreServiceGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(MetastoreService{}).Name(),
+	}
+
 	metastoreAPIVersion = SchemeGroupVersion.String()
 )

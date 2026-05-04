@@ -32,6 +32,8 @@ import (
 type MetastoreV1beta1Interface interface {
 	RESTClient() rest.Interface
 	MetastoreBackupsGetter
+	MetastoreFederationsGetter
+	MetastoreServicesGetter
 }
 
 // MetastoreV1beta1Client is used to interact with features provided by the metastore.cnrm.cloud.google.com group.
@@ -41,6 +43,14 @@ type MetastoreV1beta1Client struct {
 
 func (c *MetastoreV1beta1Client) MetastoreBackups(namespace string) MetastoreBackupInterface {
 	return newMetastoreBackups(c, namespace)
+}
+
+func (c *MetastoreV1beta1Client) MetastoreFederations(namespace string) MetastoreFederationInterface {
+	return newMetastoreFederations(c, namespace)
+}
+
+func (c *MetastoreV1beta1Client) MetastoreServices(namespace string) MetastoreServiceInterface {
+	return newMetastoreServices(c, namespace)
 }
 
 // NewForConfig creates a new MetastoreV1beta1Client for the given config.

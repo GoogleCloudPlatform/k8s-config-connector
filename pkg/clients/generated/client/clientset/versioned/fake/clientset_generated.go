@@ -249,8 +249,6 @@ import (
 	fakememorystorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1alpha1/fake"
 	memorystorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1beta1"
 	fakememorystorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1beta1/fake"
-	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1alpha1"
-	fakemetastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1alpha1/fake"
 	metastorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1beta1"
 	fakemetastorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1beta1/fake"
 	mlenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/mlengine/v1alpha1"
@@ -997,11 +995,6 @@ func (c *Clientset) MemorystoreV1alpha1() memorystorev1alpha1.MemorystoreV1alpha
 // MemorystoreV1beta1 retrieves the MemorystoreV1beta1Client
 func (c *Clientset) MemorystoreV1beta1() memorystorev1beta1.MemorystoreV1beta1Interface {
 	return &fakememorystorev1beta1.FakeMemorystoreV1beta1{Fake: &c.Fake}
-}
-
-// MetastoreV1alpha1 retrieves the MetastoreV1alpha1Client
-func (c *Clientset) MetastoreV1alpha1() metastorev1alpha1.MetastoreV1alpha1Interface {
-	return &fakemetastorev1alpha1.FakeMetastoreV1alpha1{Fake: &c.Fake}
 }
 
 // MetastoreV1beta1 retrieves the MetastoreV1beta1Client
