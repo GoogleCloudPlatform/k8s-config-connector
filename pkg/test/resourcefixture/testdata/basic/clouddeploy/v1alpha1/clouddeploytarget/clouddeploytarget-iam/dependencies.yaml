@@ -13,6 +13,6 @@ spec:
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
-  name: service-account-${uniqueId}
+  name: sa-${uniqueId}
 spec:
   displayName: Service Account for IAM test
