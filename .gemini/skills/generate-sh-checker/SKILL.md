@@ -93,3 +93,7 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
     -   **Ref fields with acronyms**: If you encounter `// MISSING: [Acronym]...` (like `MISSING: KMSKey` or `MISSING: CAPool`) in the generated `mapper.generated.go`, it might be because the `generate-mapper` tool expects the field in the KRM struct to use the fully capitalized acronym (e.g. `KMSKeyRef` instead of `KmsKeyRef`, `CAPoolRef` instead of `CaPoolRef`). Rename the Go struct field to match the acronym (this won't break the yaml if the `json` tag is unchanged), and update any references in `mapper.go` or `[service]_controller.go`. The generator should then automatically map the `Ref` field properly.
 
 6.  **Commit and PR**: Create a branch, commit the changes, and propose a PR with a descriptive title like `chore: apis/<SERVICE> should follow generate.sh pattern`.
+
+## Troubleshooting
+
+See `notes.md` for troubleshooting uncommon edge cases.

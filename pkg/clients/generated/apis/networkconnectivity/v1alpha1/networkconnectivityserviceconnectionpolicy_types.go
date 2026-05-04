@@ -85,7 +85,7 @@ type ServiceconnectionpolicyErrorInfoStatus struct {
 	// +optional
 	Domain *string `json:"domain,omitempty"`
 
-	/* Additional structured details about this error. Keys must match /a-z+/ but should ideally be lowerCamelCase. Also they must be limited to 64 characters in length. When identifying the current value of an exceeded limit, the units should be contained in the key, not the value. For example, rather than {"instanceLimit": "100/request"}, should be returned as, {"instanceLimitPerRequest": "100"}, if the client exceeds the number of instances that can be created in a single (batch) request. */
+	/* Additional structured details about this error. Keys must match a regular expression of `a-z+` but should ideally be lowerCamelCase. Also, they must be limited to 64 characters in length. When identifying the current value of an exceeded limit, the units should be contained in the key, not the value. For example, rather than `{"instanceLimit": "100/request"}`, should be returned as, `{"instanceLimitPerRequest": "100"}`, if the client exceeds the number of instances that can be created in a single (batch) request. */
 	// +optional
 	Metadata map[string]string `json:"metadata,omitempty"`
 
@@ -139,7 +139,7 @@ type ServiceconnectionpolicyPscConnectionsStatus struct {
 	// +optional
 	ConsumerTargetProject *string `json:"consumerTargetProject,omitempty"`
 
-	/* The most recent error during operating this connection. */
+	/* The most recent error during operating this connection. Deprecated, please use error_info instead. */
 	// +optional
 	Error *ServiceconnectionpolicyErrorStatus `json:"error,omitempty"`
 
@@ -155,7 +155,7 @@ type ServiceconnectionpolicyPscConnectionsStatus struct {
 	// +optional
 	GceOperation *string `json:"gceOperation,omitempty"`
 
-	/* Immutable. An immutable identifier for the producer instance. */
+	/* Immutable. Deprecated. Use producer_instance_metadata instead. An immutable identifier for the producer instance. */
 	// +optional
 	ProducerInstanceID *string `json:"producerInstanceID,omitempty"`
 

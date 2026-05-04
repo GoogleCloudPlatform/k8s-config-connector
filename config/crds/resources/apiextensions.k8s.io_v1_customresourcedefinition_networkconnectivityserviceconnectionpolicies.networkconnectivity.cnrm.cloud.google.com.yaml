@@ -266,7 +266,7 @@ spec:
                           type: string
                         error:
                           description: The most recent error during operating this
-                            connection.
+                            connection. Deprecated, please use error_info instead.
                           properties:
                             code:
                               description: The status code, which should be an enum
@@ -298,13 +298,14 @@ spec:
                               additionalProperties:
                                 type: string
                               description: 'Additional structured details about this
-                                error. Keys must match /a-z+/ but should ideally be
-                                lowerCamelCase. Also they must be limited to 64 characters
-                                in length. When identifying the current value of an
-                                exceeded limit, the units should be contained in the
-                                key, not the value. For example, rather than {"instanceLimit":
-                                "100/request"}, should be returned as, {"instanceLimitPerRequest":
-                                "100"}, if the client exceeds the number of instances
+                                error. Keys must match a regular expression of `a-z+`
+                                but should ideally be lowerCamelCase. Also, they must
+                                be limited to 64 characters in length. When identifying
+                                the current value of an exceeded limit, the units
+                                should be contained in the key, not the value. For
+                                example, rather than `{"instanceLimit": "100/request"}`,
+                                should be returned as, `{"instanceLimitPerRequest":
+                                "100"}`, if the client exceeds the number of instances
                                 that can be created in a single (batch) request.'
                               type: object
                             reason:
@@ -325,8 +326,8 @@ spec:
                             PSC connection.
                           type: string
                         producerInstanceID:
-                          description: Immutable. An immutable identifier for the
-                            producer instance.
+                          description: Immutable. Deprecated. Use producer_instance_metadata
+                            instead. An immutable identifier for the producer instance.
                           type: string
                         pscConnectionID:
                           description: The PSC connection id of the PSC forwarding
