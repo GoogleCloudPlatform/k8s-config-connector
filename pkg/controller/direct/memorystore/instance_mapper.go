@@ -210,6 +210,7 @@ func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.M
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_ToProto)
 	out.Mode = direct.Enum_ToProto[pb.Instance_Mode](mapCtx, in.Mode)
+	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_ToProto(mapCtx, in.CrossInstanceReplicationConfig)
 	return out
 }
 func NodeConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krmv1beta1.NodeConfigObservedState {
