@@ -94,6 +94,12 @@ type ClusterContinuousBackupConfig struct {
 	RecoveryWindowDays *int32 `json:"recoveryWindowDays,omitempty"`
 }
 
+type ClusterDataplexConfig struct {
+	/* Optional. Dataplex is enabled by default for resources such as clusters and instances. This flag controls the integration of AlloyDB PG resources (like databases, schemas, and tables) with Dataplex." */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
 type ClusterEncryptionConfig struct {
 	/* The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME] */
 	// +optional
@@ -254,6 +260,10 @@ type AlloyDBClusterSpec struct {
 	// +optional
 	DatabaseVersion *string `json:"databaseVersion,omitempty"`
 
+	/* Optional. The configuration for Dataplex integration. */
+	// +optional
+	DataplexConfig *ClusterDataplexConfig `json:"dataplexConfig,omitempty"`
+
 	/* Policy to determine if the cluster should be deleted forcefully. Deleting a cluster forcefully, deletes the cluster and all its associated instances within the cluster. Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion_policy = "FORCE" otherwise an error is returned. This is needed as there is no support to delete just the secondary instance, and the only way to delete secondary instance is to delete the associated secondary cluster forcefully which also deletes the secondary instance. */
 	// +optional
 	DeletionPolicy *string `json:"deletionPolicy,omitempty"`
@@ -328,6 +338,12 @@ type ClusterContinuousBackupInfoStatus struct {
 	Schedule []string `json:"schedule,omitempty"`
 }
 
+type ClusterDataplexConfigStatus struct {
+	/* Optional. Dataplex is enabled by default for resources such as clusters and instances. This flag controls the integration of AlloyDB PG resources (like databases, schemas, and tables) with Dataplex." */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
 type ClusterEncryptionInfoStatus struct {
 	/* Output only. Type of encryption. */
 	// +optional
@@ -360,6 +376,10 @@ type ClusterObservedStateStatus struct {
 	/* The database engine major version. This is an output-only field and it's populated at the Cluster creation time. This field cannot be changed after cluster creation. */
 	// +optional
 	DatabaseVersion *string `json:"databaseVersion,omitempty"`
+
+	/* Optional. The configuration for Dataplex integration. */
+	// +optional
+	DataplexConfig *ClusterDataplexConfigStatus `json:"dataplexConfig,omitempty"`
 }
 
 type AlloyDBClusterStatus struct {
