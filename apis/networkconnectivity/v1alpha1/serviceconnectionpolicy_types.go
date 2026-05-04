@@ -148,3 +148,50 @@ type NetworkConnectivityServiceConnectionPolicyList struct {
 func init() {
 	SchemeBuilder.Register(&NetworkConnectivityServiceConnectionPolicy{}, &NetworkConnectivityServiceConnectionPolicyList{})
 }
+
+// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.PscConnection
+type PSCConnection struct {
+	// The resource reference of the consumer address.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.consumer_address
+	ConsumerAddress *string `json:"consumerAddress,omitempty"`
+
+	// The resource reference of the PSC Forwarding Rule within the consumer VPC.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.consumer_forwarding_rule
+	ConsumerForwardingRule *string `json:"consumerForwardingRule,omitempty"`
+
+	// The project where the PSC connection is created.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.consumer_target_project
+	ConsumerTargetProject *string `json:"consumerTargetProject,omitempty"`
+
+	// The most recent error during operating this connection. Deprecated, please use error_info instead.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.error
+	Error *GoogleRpcStatus `json:"error,omitempty"`
+
+	// Output only. The error info for the latest error during operating this connection.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.error_info
+	ErrorInfo *GoogleRpcErrorInfo `json:"errorInfo,omitempty"`
+
+	// The error type indicates whether the error is consumer facing, producer facing or system internal.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.error_type
+	ErrorType *string `json:"errorType,omitempty"`
+
+	// The last Compute Engine operation to setup PSC connection.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.gce_operation
+	GCEOperation *string `json:"gceOperation,omitempty"`
+
+	// Immutable. Deprecated. Use producer_instance_metadata instead. An immutable identifier for the producer instance.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.producer_instance_id
+	ProducerInstanceID *string `json:"producerInstanceID,omitempty"`
+
+	// The PSC connection id of the PSC forwarding rule.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.psc_connection_id
+	PSCConnectionID *string `json:"pscConnectionID,omitempty"`
+
+	// Output only. The URI of the subnetwork selected to allocate IP address for this connection.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.selected_subnetwork
+	SelectedSubnetwork *string `json:"selectedSubnetwork,omitempty"`
+
+	// State of the PSC Connection
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.state
+	State *string `json:"state,omitempty"`
+}
