@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,89 +29,89 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type NodegroupAutoscalingPolicy struct {
-/* Immutable. Maximum size of the node group. Set to a value less than or equal to 100 and greater than or equal to min-nodes. */
-// +optional
-MaxNodes *int32 `json:"maxNodes,omitempty"`
+	/* Immutable. Maximum size of the node group. Set to a value less than or equal to 100 and greater than or equal to min-nodes. */
+	// +optional
+	MaxNodes *int32 `json:"maxNodes,omitempty"`
 
-/* Immutable. Minimum size of the node group. Must be less than or equal to max-nodes. The default value is 0. */
-// +optional
-MinNodes *int32 `json:"minNodes,omitempty"`
+	/* Immutable. Minimum size of the node group. Must be less than or equal to max-nodes. The default value is 0. */
+	// +optional
+	MinNodes *int32 `json:"minNodes,omitempty"`
 
-/* Immutable. The autoscaling mode. Set to one of the following: - OFF: Disables the autoscaler. - ON: Enables scaling in and scaling out. - ONLY_SCALE_OUT: Enables only scaling out. You must use this mode if your node groups are configured to restart their hosted VMs on minimal servers. Possible values: ["OFF", "ON", "ONLY_SCALE_OUT"]. */
-// +optional
-Mode *string `json:"mode,omitempty"`
+	/* Immutable. The autoscaling mode. Set to one of the following: - OFF: Disables the autoscaler. - ON: Enables scaling in and scaling out. - ONLY_SCALE_OUT: Enables only scaling out. You must use this mode if your node groups are configured to restart their hosted VMs on minimal servers. Possible values: ["OFF", "ON", "ONLY_SCALE_OUT"]. */
+	// +optional
+	Mode *string `json:"mode,omitempty"`
 }
 
 type NodegroupMaintenanceWindow struct {
-/* Immutable. instances.start time of the window. This must be in UTC format that resolves to one of 00:00, 04:00, 08:00, 12:00, 16:00, or 20:00. For example, both 13:00-5 and 08:00 are valid. */
-StartTime string `json:"startTime"`
+	/* Immutable. instances.start time of the window. This must be in UTC format that resolves to one of 00:00, 04:00, 08:00, 12:00, 16:00, or 20:00. For example, both 13:00-5 and 08:00 are valid. */
+	StartTime string `json:"startTime"`
 }
 
 type NodegroupProjectMap struct {
-/* The key of this project config in the parent map. */
-IdRef v1alpha1.ResourceRef `json:"idRef"`
+	/* The key of this project config in the parent map. */
+	IdRef v1alpha1.ResourceRef `json:"idRef"`
 
-/* The project id/number should be the same as the key of this project config in the project map. */
-ProjectIdRef v1alpha1.ResourceRef `json:"projectIdRef"`
+	/* The project id/number should be the same as the key of this project config in the project map. */
+	ProjectIdRef v1alpha1.ResourceRef `json:"projectIdRef"`
 }
 
 type NodegroupShareSettings struct {
-/* Immutable. A map of project id and project config. This is only valid when shareType's value is SPECIFIC_PROJECTS. */
-// +optional
-ProjectMap []NodegroupProjectMap `json:"projectMap,omitempty"`
+	/* Immutable. A map of project id and project config. This is only valid when shareType's value is SPECIFIC_PROJECTS. */
+	// +optional
+	ProjectMap []NodegroupProjectMap `json:"projectMap,omitempty"`
 
-/* Immutable. Share settings for the node group. Possible values: ["ORGANIZATION", "SPECIFIC_PROJECTS", "LOCAL"]. */
-ShareType string `json:"shareType"`
+	/* Immutable. Share settings for the node group. Possible values: ["ORGANIZATION", "SPECIFIC_PROJECTS", "LOCAL"]. */
+	ShareType string `json:"shareType"`
 }
 
 type ComputeNodeGroupSpec struct {
-/* Immutable. If you use sole-tenant nodes for your workloads, you can use the node group autoscaler to automatically manage the sizes of your node groups. */
-// +optional
-AutoscalingPolicy *NodegroupAutoscalingPolicy `json:"autoscalingPolicy,omitempty"`
+	/* Immutable. If you use sole-tenant nodes for your workloads, you can use the node group autoscaler to automatically manage the sizes of your node groups. */
+	// +optional
+	AutoscalingPolicy *NodegroupAutoscalingPolicy `json:"autoscalingPolicy,omitempty"`
 
-/* Immutable. An optional textual description of the resource. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Immutable. An optional textual description of the resource. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Immutable. The initial number of nodes in the node group. One of 'initial_size' or 'size' must be specified. */
-// +optional
-InitialSize *int32 `json:"initialSize,omitempty"`
+	/* Immutable. The initial number of nodes in the node group. One of 'initial_size' or 'size' must be specified. */
+	// +optional
+	InitialSize *int32 `json:"initialSize,omitempty"`
 
-/* Immutable. Specifies how to handle instances when a node in the group undergoes maintenance. Set to one of: DEFAULT, RESTART_IN_PLACE, or MIGRATE_WITHIN_NODE_GROUP. The default value is DEFAULT. */
-// +optional
-MaintenancePolicy *string `json:"maintenancePolicy,omitempty"`
+	/* Immutable. Specifies how to handle instances when a node in the group undergoes maintenance. Set to one of: DEFAULT, RESTART_IN_PLACE, or MIGRATE_WITHIN_NODE_GROUP. The default value is DEFAULT. */
+	// +optional
+	MaintenancePolicy *string `json:"maintenancePolicy,omitempty"`
 
-/* Immutable. contains properties for the timeframe of maintenance. */
-// +optional
-MaintenanceWindow *NodegroupMaintenanceWindow `json:"maintenanceWindow,omitempty"`
+	/* Immutable. contains properties for the timeframe of maintenance. */
+	// +optional
+	MaintenanceWindow *NodegroupMaintenanceWindow `json:"maintenanceWindow,omitempty"`
 
-/* The node template to which this node group belongs. */
-NodeTemplateRef v1alpha1.ResourceRef `json:"nodeTemplateRef"`
+	/* The node template to which this node group belongs. */
+	NodeTemplateRef v1alpha1.ResourceRef `json:"nodeTemplateRef"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Immutable. Share settings for the node group. */
-// +optional
-ShareSettings *NodegroupShareSettings `json:"shareSettings,omitempty"`
+	/* Immutable. Share settings for the node group. */
+	// +optional
+	ShareSettings *NodegroupShareSettings `json:"shareSettings,omitempty"`
 
-/* Immutable. The total number of nodes in the node group. One of 'initial_size' or 'size' must be specified. */
-// +optional
-Size *int32 `json:"size,omitempty"`
+	/* Immutable. The total number of nodes in the node group. One of 'initial_size' or 'size' must be specified. */
+	// +optional
+	Size *int32 `json:"size,omitempty"`
 
-/* Immutable. Zone where this node group is located. */
-Zone string `json:"zone"`
+	/* Immutable. Zone where this node group is located. */
+	Zone string `json:"zone"`
 }
 
 type NodegroupObservedStateStatus struct {
@@ -120,28 +119,29 @@ type NodegroupObservedStateStatus struct {
 
 type ComputeNodeGroupStatus struct {
 	/* Conditions represent the latest available observations of the
-	    ComputeNodeGroup's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* Creation timestamp in RFC3339 text format. */
-// +optional
-CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+	   ComputeNodeGroup's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* Creation timestamp in RFC3339 text format. */
+	// +optional
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-/* A unique specifier for the ComputeNodeGroup resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	/* A unique specifier for the ComputeNodeGroup resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *NodegroupObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *NodegroupObservedStateStatus `json:"observedState,omitempty"`
 
-/* Server-defined URL for the resource. */
-// +optional
-SelfLink *string `json:"selfLink,omitempty"`
+	/* Server-defined URL for the resource. */
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputenodegroup;gcpcomputenodegroups
@@ -158,20 +158,22 @@ SelfLink *string `json:"selfLink,omitempty"`
 // ComputeNodeGroup is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeNodeGroup struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ComputeNodeGroupSpec `json:"spec,omitempty"`
-  Status ComputeNodeGroupStatus `json:"status,omitempty"`
+	Spec   ComputeNodeGroupSpec   `json:"spec,omitempty"`
+	Status ComputeNodeGroupStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ComputeNodeGroupList contains a list of ComputeNodeGroup
- type ComputeNodeGroupList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []ComputeNodeGroup `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&ComputeNodeGroup{}, &ComputeNodeGroupList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ComputeNodeGroupList contains a list of ComputeNodeGroup
+type ComputeNodeGroupList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeNodeGroup `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ComputeNodeGroup{}, &ComputeNodeGroupList{})
+}

@@ -159,6 +159,9 @@ type ComputeNodeGroupStatus struct {
 // ComputeNodeGroupObservedState is the state of the ComputeNodeGroup resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.compute.v1.NodeGroup
 type ComputeNodeGroupObservedState struct {
+	/* The current status of the node group. Possible values: ["CREATING", "READY", "DELETING", "INVALID"]. */
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.status
+	Status *string `json:"status,omitempty"`
 }
 
 // +genclient

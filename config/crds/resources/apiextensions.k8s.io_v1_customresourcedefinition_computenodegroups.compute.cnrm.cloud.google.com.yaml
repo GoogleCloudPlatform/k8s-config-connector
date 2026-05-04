@@ -286,6 +286,11 @@ spec:
               observedState:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
+                properties:
+                  status:
+                    description: 'The current status of the node group. Possible values:
+                      ["CREATING", "READY", "DELETING", "INVALID"].'
+                    type: string
                 type: object
               selfLink:
                 description: Server-defined URL for the resource.

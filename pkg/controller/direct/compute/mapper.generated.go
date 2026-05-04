@@ -197,7 +197,7 @@ func ComputeNodeGroupObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, 
 	// MISSING: MaintenanceInterval
 	// MISSING: Name
 	// MISSING: SelfLink
-	// MISSING: Status
+	out.Status = in.Status
 	return out
 }
 func ComputeNodeGroupObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNodeGroupObservedState) *pb.NodeGroup {
@@ -213,7 +213,7 @@ func ComputeNodeGroupObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in
 	// MISSING: MaintenanceInterval
 	// MISSING: Name
 	// MISSING: SelfLink
-	// MISSING: Status
+	out.Status = in.Status
 	return out
 }
 func ComputeNodeGroupSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeGroup) *krm.ComputeNodeGroupSpec {
@@ -238,7 +238,6 @@ func ComputeNodeGroupSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.No
 	// MISSING: SelfLink
 	out.ShareSettings = NodeGroupShareSettings_v1beta1_FromProto(mapCtx, in.GetShareSettings())
 	out.Size = in.Size
-	// MISSING: Status
 	out.Zone = in.Zone
 	return out
 }
@@ -264,7 +263,6 @@ func ComputeNodeGroupSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Com
 	// MISSING: SelfLink
 	out.ShareSettings = NodeGroupShareSettings_v1beta1_ToProto(mapCtx, in.ShareSettings)
 	out.Size = in.Size
-	// MISSING: Status
 	out.Zone = in.Zone
 	return out
 }
