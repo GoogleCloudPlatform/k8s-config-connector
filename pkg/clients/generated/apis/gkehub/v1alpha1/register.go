@@ -71,5 +71,11 @@ var (
 		Kind:    reflect.TypeOf(GKEHubScope{}).Name(),
 	}
 
+	GKEHubScopeRBACRoleBindingGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(GKEHubScopeRBACRoleBinding{}).Name(),
+	}
+
 	gkehubAPIVersion = SchemeGroupVersion.String()
 )

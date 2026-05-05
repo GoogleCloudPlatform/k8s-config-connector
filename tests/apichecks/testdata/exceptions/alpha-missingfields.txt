@@ -1715,6 +1715,8 @@
 [missing_field] crd=gkebackuprestores.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumeDataRestorePolicyOverrides[].selectedPVCs.namespacedNames[].namespace" is not set in unstructured objects
 [missing_field] crd=gkehubmembershipbindings.gkehub.cnrm.cloud.google.com version=v1alpha1: field ".spec.membershipRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=gkehubmembershipbindings.gkehub.cnrm.cloud.google.com version=v1alpha1: field ".spec.scopeRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=gkehubscoperbacrolebindings.gkehub.cnrm.cloud.google.com version=v1alpha1: field ".spec.rbacRoleBindingID" is not set in unstructured objects
+[missing_field] crd=gkehubscoperbacrolebindings.gkehub.cnrm.cloud.google.com version=v1alpha1: field ".spec.role.customRole" is not set in unstructured objects
 [missing_field] crd=healthcareconsentstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset" is not set in unstructured objects
 [missing_field] crd=healthcareconsentstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.defaultConsentTtl" is not set in unstructured objects
 [missing_field] crd=healthcareconsentstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.enableConsentCreateOnUpdate" is not set in unstructured objects
