@@ -44,6 +44,20 @@ type InstanceAofConfig struct {
 	AppendFsync *string `json:"appendFsync,omitempty"`
 }
 
+type InstanceAutomatedBackupConfig struct {
+	/* Optional. The automated backup mode. If the mode is disabled, the other fields will be ignored. */
+	// +optional
+	AutomatedBackupMode *string `json:"automatedBackupMode,omitempty"`
+
+	/* Optional. Trigger automated backups at a fixed frequency. */
+	// +optional
+	FixedFrequencySchedule *InstanceFixedFrequencySchedule `json:"fixedFrequencySchedule,omitempty"`
+
+	/* Optional. How long to keep automated backups before the backups are deleted. The value should be between 1 day and 365 days. If not specified, the default value is 35 days. */
+	// +optional
+	Retention *string `json:"retention,omitempty"`
+}
+
 type InstanceConnections struct {
 	/* Detailed information of a PSC connection that is created through service connectivity automation. */
 	// +optional
@@ -67,6 +81,12 @@ type InstanceEndpoints struct {
 	/* Optional. A group of PSC connections. They are created in the same VPC network, one for each service attachment in the cluster. */
 	// +optional
 	Connections []InstanceConnections `json:"connections,omitempty"`
+}
+
+type InstanceFixedFrequencySchedule struct {
+	/* Required. The start time of every automated backup in UTC. It must be set to the start of an hour. This field is required. */
+	// +optional
+	StartTime *InstanceStartTime `json:"startTime,omitempty"`
 }
 
 type InstancePersistenceConfig struct {
@@ -107,6 +127,24 @@ type InstanceRdbConfig struct {
 	RdbSnapshotStartTime *string `json:"rdbSnapshotStartTime,omitempty"`
 }
 
+type InstanceStartTime struct {
+	/* Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time. */
+	// +optional
+	Hours *int32 `json:"hours,omitempty"`
+
+	/* Minutes of hour of day. Must be from 0 to 59. */
+	// +optional
+	Minutes *int32 `json:"minutes,omitempty"`
+
+	/* Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999. */
+	// +optional
+	Nanos *int32 `json:"nanos,omitempty"`
+
+	/* Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds. */
+	// +optional
+	Seconds *int32 `json:"seconds,omitempty"`
+}
+
 type InstanceZoneDistributionConfig struct {
 	/* Optional. Current zone distribution mode. Defaults to MULTI_ZONE. */
 	// +optional
@@ -121,6 +159,10 @@ type MemorystoreInstanceSpec struct {
 	/* Optional. Immutable. Authorization mode of the instance. */
 	// +optional
 	AuthorizationMode *string `json:"authorizationMode,omitempty"`
+
+	/* Optional. The automated backup config for the instance. */
+	// +optional
+	AutomatedBackupConfig *InstanceAutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
 
 	/* Optional. The cross instance replication config for the instance. */
 	// +optional
