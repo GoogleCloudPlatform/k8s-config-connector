@@ -3,8 +3,6 @@ kind: GKEHubNamespace
 metadata:
   name: gkh-ns-min-${uniqueId}
 spec:
-  projectRef:
-    external: projects/${projectId}
   scopeRef:
     name: gkehubscope-dep-${uniqueId}
   namespaceID: gkh-ns-min-${uniqueId}
