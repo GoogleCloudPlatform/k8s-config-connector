@@ -65,6 +65,52 @@ spec:
               authorizationMode:
                 description: Optional. Immutable. Authorization mode of the instance.
                 type: string
+              crossInstanceReplicationConfig:
+                description: Optional. The cross instance replication config for the
+                  instance.
+                properties:
+                  instanceRole:
+                    description: Required. The role of the instance in cross instance
+                      replication.
+                    type: string
+                  primaryInstance:
+                    description: |-
+                      Optional. Details of the primary instance that is used as the replication
+                       source for this secondary instance.
+
+                       This field is only set for a secondary instance.
+                    properties:
+                      instanceRef:
+                        description: Optional. The full resource path of the remote
+                          instance.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed MemorystoreInstance
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                            type: string
+                          name:
+                            description: The name of a MemorystoreInstance resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a MemorystoreInstance resource.
+                            type: string
+                        type: object
+                    type: object
+                type: object
               deletionProtectionEnabled:
                 description: Optional. If set to true deletion of the instance will
                   fail.
@@ -329,6 +375,80 @@ spec:
                   createTime:
                     description: Output only. Creation timestamp of the instance.
                     type: string
+                  crossInstanceReplicationConfig:
+                    description: Optional. The cross instance replication config for
+                      the instance.
+                    properties:
+                      membership:
+                        description: Output only. An output only view of all the member
+                          instances participating in the cross instance replication.
+                          This view will be provided by every member instance irrespective
+                          of its instance role(primary or secondary).
+                        properties:
+                          primaryInstance:
+                            description: Output only. The primary instance that acts
+                              as the source of replication for the secondary instances.
+                            properties:
+                              instance:
+                                description: Optional. The full resource path of the
+                                  remote instance.
+                                type: string
+                              uid:
+                                description: Output only. The unique identifier of
+                                  the remote instance.
+                                type: string
+                            type: object
+                          secondaryInstances:
+                            description: Output only. The list of secondary instances
+                              replicating from the primary instance.
+                            items:
+                              properties:
+                                instance:
+                                  description: Optional. The full resource path of
+                                    the remote instance.
+                                  type: string
+                                uid:
+                                  description: Output only. The unique identifier
+                                    of the remote instance.
+                                  type: string
+                              type: object
+                            type: array
+                        type: object
+                      primaryInstance:
+                        description: |-
+                          Optional. Details of the primary instance that is used as the replication
+                           source for this secondary instance.
+
+                           This field is only set for a secondary instance.
+                        properties:
+                          instance:
+                            description: Optional. The full resource path of the remote
+                              instance.
+                            type: string
+                          uid:
+                            description: Output only. The unique identifier of the
+                              remote instance.
+                            type: string
+                        type: object
+                      secondaryInstances:
+                        description: |-
+                          Optional. List of secondary instances that are replicating from this
+                           primary instance.
+
+                           This field is only set for a primary instance.
+                        items:
+                          properties:
+                            instance:
+                              description: Optional. The full resource path of the
+                                remote instance.
+                              type: string
+                            uid:
+                              description: Output only. The unique identifier of the
+                                remote instance.
+                              type: string
+                          type: object
+                        type: array
+                    type: object
                   endpoints:
                     description: Optional. Endpoints for the instance.
                     items:
@@ -484,6 +604,52 @@ spec:
               authorizationMode:
                 description: Optional. Immutable. Authorization mode of the instance.
                 type: string
+              crossInstanceReplicationConfig:
+                description: Optional. The cross instance replication config for the
+                  instance.
+                properties:
+                  instanceRole:
+                    description: Required. The role of the instance in cross instance
+                      replication.
+                    type: string
+                  primaryInstance:
+                    description: |-
+                      Optional. Details of the primary instance that is used as the replication
+                       source for this secondary instance.
+
+                       This field is only set for a secondary instance.
+                    properties:
+                      instanceRef:
+                        description: Optional. The full resource path of the remote
+                          instance.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed MemorystoreInstance
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                            type: string
+                          name:
+                            description: The name of a MemorystoreInstance resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a MemorystoreInstance resource.
+                            type: string
+                        type: object
+                    type: object
+                type: object
               deletionProtectionEnabled:
                 description: Optional. If set to true deletion of the instance will
                   fail.
@@ -748,6 +914,80 @@ spec:
                   createTime:
                     description: Output only. Creation timestamp of the instance.
                     type: string
+                  crossInstanceReplicationConfig:
+                    description: Optional. The cross instance replication config for
+                      the instance.
+                    properties:
+                      membership:
+                        description: Output only. An output only view of all the member
+                          instances participating in the cross instance replication.
+                          This view will be provided by every member instance irrespective
+                          of its instance role(primary or secondary).
+                        properties:
+                          primaryInstance:
+                            description: Output only. The primary instance that acts
+                              as the source of replication for the secondary instances.
+                            properties:
+                              instance:
+                                description: Optional. The full resource path of the
+                                  remote instance.
+                                type: string
+                              uid:
+                                description: Output only. The unique identifier of
+                                  the remote instance.
+                                type: string
+                            type: object
+                          secondaryInstances:
+                            description: Output only. The list of secondary instances
+                              replicating from the primary instance.
+                            items:
+                              properties:
+                                instance:
+                                  description: Optional. The full resource path of
+                                    the remote instance.
+                                  type: string
+                                uid:
+                                  description: Output only. The unique identifier
+                                    of the remote instance.
+                                  type: string
+                              type: object
+                            type: array
+                        type: object
+                      primaryInstance:
+                        description: |-
+                          Optional. Details of the primary instance that is used as the replication
+                           source for this secondary instance.
+
+                           This field is only set for a secondary instance.
+                        properties:
+                          instance:
+                            description: Optional. The full resource path of the remote
+                              instance.
+                            type: string
+                          uid:
+                            description: Output only. The unique identifier of the
+                              remote instance.
+                            type: string
+                        type: object
+                      secondaryInstances:
+                        description: |-
+                          Optional. List of secondary instances that are replicating from this
+                           primary instance.
+
+                           This field is only set for a primary instance.
+                        items:
+                          properties:
+                            instance:
+                              description: Optional. The full resource path of the
+                                remote instance.
+                              type: string
+                            uid:
+                              description: Output only. The unique identifier of the
+                                remote instance.
+                              type: string
+                          type: object
+                        type: array
+                    type: object
                   endpoints:
                     description: Optional. Endpoints for the instance.
                     items:
