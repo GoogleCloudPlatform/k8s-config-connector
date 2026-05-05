@@ -13,7 +13,7 @@ import (
 	"io"
 	"net/http"
 
-	extNetworksecuritypb "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
+	networksecuritypb_0 "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
 	"google.golang.org/grpc"
@@ -36,8 +36,8 @@ var (
 	filter_NetworkSecurity_ListAuthorizationPolicies_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_NetworkSecurity_ListAuthorizationPolicies_0(ctx context.Context, marshaler runtime.Marshaler, client extNetworksecuritypb.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.ListAuthorizationPoliciesRequest
+func request_NetworkSecurity_ListAuthorizationPolicies_0(ctx context.Context, marshaler runtime.Marshaler, client networksecuritypb_0.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.ListAuthorizationPoliciesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -69,8 +69,8 @@ func request_NetworkSecurity_ListAuthorizationPolicies_0(ctx context.Context, ma
 
 }
 
-func local_request_NetworkSecurity_ListAuthorizationPolicies_0(ctx context.Context, marshaler runtime.Marshaler, server extNetworksecuritypb.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.ListAuthorizationPoliciesRequest
+func local_request_NetworkSecurity_ListAuthorizationPolicies_0(ctx context.Context, marshaler runtime.Marshaler, server networksecuritypb_0.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.ListAuthorizationPoliciesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -102,8 +102,8 @@ func local_request_NetworkSecurity_ListAuthorizationPolicies_0(ctx context.Conte
 
 }
 
-func request_NetworkSecurity_GetAuthorizationPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extNetworksecuritypb.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.GetAuthorizationPolicyRequest
+func request_NetworkSecurity_GetAuthorizationPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client networksecuritypb_0.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.GetAuthorizationPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -128,8 +128,8 @@ func request_NetworkSecurity_GetAuthorizationPolicy_0(ctx context.Context, marsh
 
 }
 
-func local_request_NetworkSecurity_GetAuthorizationPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extNetworksecuritypb.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.GetAuthorizationPolicyRequest
+func local_request_NetworkSecurity_GetAuthorizationPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server networksecuritypb_0.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.GetAuthorizationPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -158,8 +158,8 @@ var (
 	filter_NetworkSecurity_CreateAuthorizationPolicy_0 = &utilities.DoubleArray{Encoding: map[string]int{"authorization_policy": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_NetworkSecurity_CreateAuthorizationPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extNetworksecuritypb.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.CreateAuthorizationPolicyRequest
+func request_NetworkSecurity_CreateAuthorizationPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client networksecuritypb_0.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.CreateAuthorizationPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -199,8 +199,8 @@ func request_NetworkSecurity_CreateAuthorizationPolicy_0(ctx context.Context, ma
 
 }
 
-func local_request_NetworkSecurity_CreateAuthorizationPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extNetworksecuritypb.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.CreateAuthorizationPolicyRequest
+func local_request_NetworkSecurity_CreateAuthorizationPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server networksecuritypb_0.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.CreateAuthorizationPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -244,8 +244,8 @@ var (
 	filter_NetworkSecurity_UpdateAuthorizationPolicy_0 = &utilities.DoubleArray{Encoding: map[string]int{"authorization_policy": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_NetworkSecurity_UpdateAuthorizationPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extNetworksecuritypb.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.UpdateAuthorizationPolicyRequest
+func request_NetworkSecurity_UpdateAuthorizationPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client networksecuritypb_0.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.UpdateAuthorizationPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -292,8 +292,8 @@ func request_NetworkSecurity_UpdateAuthorizationPolicy_0(ctx context.Context, ma
 
 }
 
-func local_request_NetworkSecurity_UpdateAuthorizationPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extNetworksecuritypb.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.UpdateAuthorizationPolicyRequest
+func local_request_NetworkSecurity_UpdateAuthorizationPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server networksecuritypb_0.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.UpdateAuthorizationPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -340,8 +340,8 @@ func local_request_NetworkSecurity_UpdateAuthorizationPolicy_0(ctx context.Conte
 
 }
 
-func request_NetworkSecurity_DeleteAuthorizationPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extNetworksecuritypb.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.DeleteAuthorizationPolicyRequest
+func request_NetworkSecurity_DeleteAuthorizationPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client networksecuritypb_0.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.DeleteAuthorizationPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -366,8 +366,8 @@ func request_NetworkSecurity_DeleteAuthorizationPolicy_0(ctx context.Context, ma
 
 }
 
-func local_request_NetworkSecurity_DeleteAuthorizationPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extNetworksecuritypb.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.DeleteAuthorizationPolicyRequest
+func local_request_NetworkSecurity_DeleteAuthorizationPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server networksecuritypb_0.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.DeleteAuthorizationPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -396,8 +396,8 @@ var (
 	filter_NetworkSecurity_ListServerTlsPolicies_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_NetworkSecurity_ListServerTlsPolicies_0(ctx context.Context, marshaler runtime.Marshaler, client extNetworksecuritypb.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.ListServerTlsPoliciesRequest
+func request_NetworkSecurity_ListServerTlsPolicies_0(ctx context.Context, marshaler runtime.Marshaler, client networksecuritypb_0.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.ListServerTlsPoliciesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -429,8 +429,8 @@ func request_NetworkSecurity_ListServerTlsPolicies_0(ctx context.Context, marsha
 
 }
 
-func local_request_NetworkSecurity_ListServerTlsPolicies_0(ctx context.Context, marshaler runtime.Marshaler, server extNetworksecuritypb.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.ListServerTlsPoliciesRequest
+func local_request_NetworkSecurity_ListServerTlsPolicies_0(ctx context.Context, marshaler runtime.Marshaler, server networksecuritypb_0.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.ListServerTlsPoliciesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -462,8 +462,8 @@ func local_request_NetworkSecurity_ListServerTlsPolicies_0(ctx context.Context, 
 
 }
 
-func request_NetworkSecurity_GetServerTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extNetworksecuritypb.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.GetServerTlsPolicyRequest
+func request_NetworkSecurity_GetServerTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client networksecuritypb_0.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.GetServerTlsPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -488,8 +488,8 @@ func request_NetworkSecurity_GetServerTlsPolicy_0(ctx context.Context, marshaler
 
 }
 
-func local_request_NetworkSecurity_GetServerTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extNetworksecuritypb.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.GetServerTlsPolicyRequest
+func local_request_NetworkSecurity_GetServerTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server networksecuritypb_0.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.GetServerTlsPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -518,8 +518,8 @@ var (
 	filter_NetworkSecurity_CreateServerTlsPolicy_0 = &utilities.DoubleArray{Encoding: map[string]int{"server_tls_policy": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_NetworkSecurity_CreateServerTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extNetworksecuritypb.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.CreateServerTlsPolicyRequest
+func request_NetworkSecurity_CreateServerTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client networksecuritypb_0.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.CreateServerTlsPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -559,8 +559,8 @@ func request_NetworkSecurity_CreateServerTlsPolicy_0(ctx context.Context, marsha
 
 }
 
-func local_request_NetworkSecurity_CreateServerTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extNetworksecuritypb.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.CreateServerTlsPolicyRequest
+func local_request_NetworkSecurity_CreateServerTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server networksecuritypb_0.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.CreateServerTlsPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -604,8 +604,8 @@ var (
 	filter_NetworkSecurity_UpdateServerTlsPolicy_0 = &utilities.DoubleArray{Encoding: map[string]int{"server_tls_policy": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_NetworkSecurity_UpdateServerTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extNetworksecuritypb.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.UpdateServerTlsPolicyRequest
+func request_NetworkSecurity_UpdateServerTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client networksecuritypb_0.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.UpdateServerTlsPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -652,8 +652,8 @@ func request_NetworkSecurity_UpdateServerTlsPolicy_0(ctx context.Context, marsha
 
 }
 
-func local_request_NetworkSecurity_UpdateServerTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extNetworksecuritypb.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.UpdateServerTlsPolicyRequest
+func local_request_NetworkSecurity_UpdateServerTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server networksecuritypb_0.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.UpdateServerTlsPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -700,8 +700,8 @@ func local_request_NetworkSecurity_UpdateServerTlsPolicy_0(ctx context.Context, 
 
 }
 
-func request_NetworkSecurity_DeleteServerTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extNetworksecuritypb.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.DeleteServerTlsPolicyRequest
+func request_NetworkSecurity_DeleteServerTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client networksecuritypb_0.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.DeleteServerTlsPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -726,8 +726,8 @@ func request_NetworkSecurity_DeleteServerTlsPolicy_0(ctx context.Context, marsha
 
 }
 
-func local_request_NetworkSecurity_DeleteServerTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extNetworksecuritypb.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.DeleteServerTlsPolicyRequest
+func local_request_NetworkSecurity_DeleteServerTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server networksecuritypb_0.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.DeleteServerTlsPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -756,8 +756,8 @@ var (
 	filter_NetworkSecurity_ListClientTlsPolicies_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_NetworkSecurity_ListClientTlsPolicies_0(ctx context.Context, marshaler runtime.Marshaler, client extNetworksecuritypb.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.ListClientTlsPoliciesRequest
+func request_NetworkSecurity_ListClientTlsPolicies_0(ctx context.Context, marshaler runtime.Marshaler, client networksecuritypb_0.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.ListClientTlsPoliciesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -789,8 +789,8 @@ func request_NetworkSecurity_ListClientTlsPolicies_0(ctx context.Context, marsha
 
 }
 
-func local_request_NetworkSecurity_ListClientTlsPolicies_0(ctx context.Context, marshaler runtime.Marshaler, server extNetworksecuritypb.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.ListClientTlsPoliciesRequest
+func local_request_NetworkSecurity_ListClientTlsPolicies_0(ctx context.Context, marshaler runtime.Marshaler, server networksecuritypb_0.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.ListClientTlsPoliciesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -822,8 +822,8 @@ func local_request_NetworkSecurity_ListClientTlsPolicies_0(ctx context.Context, 
 
 }
 
-func request_NetworkSecurity_GetClientTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extNetworksecuritypb.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.GetClientTlsPolicyRequest
+func request_NetworkSecurity_GetClientTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client networksecuritypb_0.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.GetClientTlsPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -848,8 +848,8 @@ func request_NetworkSecurity_GetClientTlsPolicy_0(ctx context.Context, marshaler
 
 }
 
-func local_request_NetworkSecurity_GetClientTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extNetworksecuritypb.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.GetClientTlsPolicyRequest
+func local_request_NetworkSecurity_GetClientTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server networksecuritypb_0.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.GetClientTlsPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -878,8 +878,8 @@ var (
 	filter_NetworkSecurity_CreateClientTlsPolicy_0 = &utilities.DoubleArray{Encoding: map[string]int{"client_tls_policy": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_NetworkSecurity_CreateClientTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extNetworksecuritypb.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.CreateClientTlsPolicyRequest
+func request_NetworkSecurity_CreateClientTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client networksecuritypb_0.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.CreateClientTlsPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -919,8 +919,8 @@ func request_NetworkSecurity_CreateClientTlsPolicy_0(ctx context.Context, marsha
 
 }
 
-func local_request_NetworkSecurity_CreateClientTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extNetworksecuritypb.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.CreateClientTlsPolicyRequest
+func local_request_NetworkSecurity_CreateClientTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server networksecuritypb_0.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.CreateClientTlsPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -964,8 +964,8 @@ var (
 	filter_NetworkSecurity_UpdateClientTlsPolicy_0 = &utilities.DoubleArray{Encoding: map[string]int{"client_tls_policy": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_NetworkSecurity_UpdateClientTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extNetworksecuritypb.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.UpdateClientTlsPolicyRequest
+func request_NetworkSecurity_UpdateClientTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client networksecuritypb_0.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.UpdateClientTlsPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1012,8 +1012,8 @@ func request_NetworkSecurity_UpdateClientTlsPolicy_0(ctx context.Context, marsha
 
 }
 
-func local_request_NetworkSecurity_UpdateClientTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extNetworksecuritypb.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.UpdateClientTlsPolicyRequest
+func local_request_NetworkSecurity_UpdateClientTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server networksecuritypb_0.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.UpdateClientTlsPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1060,8 +1060,8 @@ func local_request_NetworkSecurity_UpdateClientTlsPolicy_0(ctx context.Context, 
 
 }
 
-func request_NetworkSecurity_DeleteClientTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extNetworksecuritypb.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.DeleteClientTlsPolicyRequest
+func request_NetworkSecurity_DeleteClientTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client networksecuritypb_0.NetworkSecurityClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.DeleteClientTlsPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1086,8 +1086,8 @@ func request_NetworkSecurity_DeleteClientTlsPolicy_0(ctx context.Context, marsha
 
 }
 
-func local_request_NetworkSecurity_DeleteClientTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extNetworksecuritypb.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extNetworksecuritypb.DeleteClientTlsPolicyRequest
+func local_request_NetworkSecurity_DeleteClientTlsPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server networksecuritypb_0.NetworkSecurityServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq networksecuritypb_0.DeleteClientTlsPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1116,7 +1116,7 @@ func local_request_NetworkSecurity_DeleteClientTlsPolicy_0(ctx context.Context, 
 // UnaryRPC     :call NetworkSecurityServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterNetworkSecurityHandlerFromEndpoint instead.
-func RegisterNetworkSecurityHandlerServer(ctx context.Context, mux *runtime.ServeMux, server extNetworksecuritypb.NetworkSecurityServer) error {
+func RegisterNetworkSecurityHandlerServer(ctx context.Context, mux *runtime.ServeMux, server networksecuritypb_0.NetworkSecurityServer) error {
 
 	mux.Handle("GET", pattern_NetworkSecurity_ListAuthorizationPolicies_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -1524,15 +1524,15 @@ func RegisterNetworkSecurityHandlerFromEndpoint(ctx context.Context, mux *runtim
 // RegisterNetworkSecurityHandler registers the http handlers for service NetworkSecurity to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
 func RegisterNetworkSecurityHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterNetworkSecurityHandlerClient(ctx, mux, extNetworksecuritypb.NewNetworkSecurityClient(conn))
+	return RegisterNetworkSecurityHandlerClient(ctx, mux, networksecuritypb_0.NewNetworkSecurityClient(conn))
 }
 
 // RegisterNetworkSecurityHandlerClient registers the http handlers for service NetworkSecurity
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "extNetworksecuritypb.NetworkSecurityClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "extNetworksecuritypb.NetworkSecurityClient"
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "networksecuritypb_0.NetworkSecurityClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "networksecuritypb_0.NetworkSecurityClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "extNetworksecuritypb.NetworkSecurityClient" to call the correct interceptors.
-func RegisterNetworkSecurityHandlerClient(ctx context.Context, mux *runtime.ServeMux, client extNetworksecuritypb.NetworkSecurityClient) error {
+// "networksecuritypb_0.NetworkSecurityClient" to call the correct interceptors.
+func RegisterNetworkSecurityHandlerClient(ctx context.Context, mux *runtime.ServeMux, client networksecuritypb_0.NetworkSecurityClient) error {
 
 	mux.Handle("GET", pattern_NetworkSecurity_ListAuthorizationPolicies_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())

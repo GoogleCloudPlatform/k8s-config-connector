@@ -21,6 +21,7 @@ import (
 
 	pb "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -64,6 +65,25 @@ func (s *NetworkSecurityServer) CreateAuthorizationPolicy(ctx context.Context, r
 	})
 }
 
+func (s *NetworkSecurityServer) ListAuthorizationPolicies(ctx context.Context, req *pb.ListAuthorizationPoliciesRequest) (*pb.ListAuthorizationPoliciesResponse, error) {
+	parent, err := s.parseLocationName(req.Parent)
+	if err != nil {
+		return nil, err
+	}
+
+	res := &pb.ListAuthorizationPoliciesResponse{}
+	if err := s.storage.List(ctx, (&pb.AuthorizationPolicy{}).ProtoReflect().Descriptor(), storage.ListOptions{
+		Prefix: parent.String() + "/",
+	}, func(obj proto.Message) error {
+		res.AuthorizationPolicies = append(res.AuthorizationPolicies, obj.(*pb.AuthorizationPolicy))
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
 func (s *NetworkSecurityServer) GetAuthorizationPolicy(ctx context.Context, req *pb.GetAuthorizationPolicyRequest) (*pb.AuthorizationPolicy, error) {
 	name, err := s.parseAuthorizationPolicyName(req.Name)
 	if err != nil {
@@ -73,16 +93,12 @@ func (s *NetworkSecurityServer) GetAuthorizationPolicy(ctx context.Context, req 
 	fqn := name.String()
 
 	obj := &pb.AuthorizationPolicy{}
-	obj.Name = fqn
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
-	now := time.Now()
-	obj.CreateTime = timestamppb.New(now)
-	obj.UpdateTime = timestamppb.New(now)
 	return obj, nil
 }
 
@@ -159,6 +175,32 @@ type authorizationPolicyName struct {
 
 func (n *authorizationPolicyName) String() string {
 	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/authorizationPolicies/" + n.AuthorizationPolicyID
+}
+
+type locationName struct {
+	Project  *projects.ProjectData
+	Location string
+}
+
+func (n *locationName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location
+}
+
+func (s *NetworkSecurityServer) parseLocationName(name string) (*locationName, error) {
+	tokens := strings.Split(name, "/")
+	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "locations" {
+		project, err := s.Projects.GetProject(&projects.ProjectName{ProjectID: tokens[1]})
+		if err != nil {
+			return nil, err
+		}
+		name := &locationName{
+			Project:  project,
+			Location: tokens[3],
+		}
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
 }
 
 func (s *NetworkSecurityServer) parseAuthorizationPolicyName(name string) (*authorizationPolicyName, error) {
