@@ -38,16 +38,23 @@ func fuzzGKEHubNamespace() fuzztesting.KRMFuzzer_NoProto {
 		GKEHubNamespaceStatus_ToAPI,
 	)
 
-	f.SpecField(".labels")
-	f.SpecField(".namespace_labels")
+	f.SpecField(".Labels")
+	f.SpecField(".NamespaceLabels")
 
-	f.StatusField(".create_time")
-	f.StatusField(".update_time")
-	f.StatusField(".delete_time")
-	f.StatusField(".uid")
-	f.StatusField(".state")
+	f.StatusField(".CreateTime")
+	f.StatusField(".UpdateTime")
+	f.StatusField(".DeleteTime")
+	f.StatusField(".Uid")
+	f.StatusField(".State")
 
-	f.Unimplemented_NotYetTriaged(".name")
+	f.Unimplemented_NotYetTriaged(".Name")
+	f.Unimplemented_NotYetTriaged(".Scope")
+	f.Unimplemented_NotYetTriaged(".ForceSendFields")
+	f.Unimplemented_NotYetTriaged(".NullFields")
+	f.Unimplemented_NotYetTriaged(".ServerResponse")
+
+	f.Unimplemented_NotYetTriaged(".State.ForceSendFields")
+	f.Unimplemented_NotYetTriaged(".State.NullFields")
 
 	return f
 }
