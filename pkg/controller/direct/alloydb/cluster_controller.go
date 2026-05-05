@@ -17,7 +17,6 @@ package alloydb
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
 	computev1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
@@ -264,6 +263,9 @@ func (a *ClusterAdapter) resolveKRMDefaultsForCreate() {
 	if obj.Spec.ContinuousBackupConfig != nil && obj.Spec.ContinuousBackupConfig.Enabled == nil {
 		obj.Spec.ContinuousBackupConfig.Enabled = direct.PtrTo(true)
 	}
+	if obj.Spec.DataplexConfig != nil && obj.Spec.DataplexConfig.Enabled == nil {
+		obj.Spec.DataplexConfig.Enabled = direct.PtrTo(true)
+	}
 	if obj.Spec.DeletionPolicy == nil || direct.ValueOf(obj.Spec.DeletionPolicy) == "" {
 		obj.Spec.DeletionPolicy = direct.LazyPtr("DEFAULT")
 	}
@@ -501,6 +503,16 @@ func (a *ClusterAdapter) resolveGCPDefaults(desired *alloydbpb.Cluster, actual *
 		desired.ContinuousBackupConfig.RecoveryWindowDays = 14
 	}
 
+	if desired.DataplexConfig == nil && actual.DataplexConfig != nil {
+		desired.DataplexConfig = actual.DataplexConfig
+	}
+	if desired.DataplexConfig == nil {
+		desired.DataplexConfig = &alloydbpb.Cluster_DataplexConfig{Enabled: true}
+	}
+	if actual.DataplexConfig == nil {
+		actual.DataplexConfig = &alloydbpb.Cluster_DataplexConfig{Enabled: true}
+	}
+
 	// GeminiConfig deprecated in v1beta and removed in v1
 	if desired.GeminiConfig == nil {
 		desired.GeminiConfig = &alloydbpb.GeminiClusterConfig{}
@@ -604,13 +616,8 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 
 	// TODO: Decide if we want to clean up default fields set in desired state.
 
-	topLevelFieldPaths := sets.New[string]()
-	for path, _ := range paths {
-		tokens := strings.Split(path, ".")
-		topLevelFieldPaths.Insert(tokens[0])
-	}
 	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(topLevelFieldPaths),
+		Paths: sets.List(paths),
 	}
 
 	updateOp.RecordUpdatingEvent()

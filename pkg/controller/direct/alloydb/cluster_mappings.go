@@ -162,7 +162,7 @@ func Cluster_DataplexConfig_FromProto(mapCtx *direct.MapContext, in *pb.Cluster_
 		return nil
 	}
 	out := &krm.Cluster_DataplexConfig{}
-	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	out.Enabled = direct.PtrTo(in.GetEnabled())
 	return out
 }
 
