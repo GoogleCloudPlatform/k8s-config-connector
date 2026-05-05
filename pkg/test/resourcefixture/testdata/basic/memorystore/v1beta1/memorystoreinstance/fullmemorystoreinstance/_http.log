@@ -529,6 +529,15 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
   "authorizationMode": 2,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 2,
+    "fixedFrequencySchedule": {
+      "startTime": {
+        "hours": 2
+      }
+    },
+    "retention": "345600s"
+  },
   "deletionProtectionEnabled": true,
   "endpoints": [
     {
@@ -620,7 +629,13 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
     "automatedBackupConfig": {
-      "automatedBackupMode": "DISABLED"
+      "automatedBackupMode": "ENABLED",
+      "fixedFrequencySchedule": {
+        "startTime": {
+          "hours": 2
+        }
+      },
+      "retention": "345600s"
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": true,
@@ -714,7 +729,13 @@ X-Xss-Protection: 0
 {
   "authorizationMode": 2,
   "automatedBackupConfig": {
-    "automatedBackupMode": 1
+    "automatedBackupMode": 2,
+    "fixedFrequencySchedule": {
+      "startTime": {
+        "hours": 2
+      }
+    },
+    "retention": "345600s"
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": true,
@@ -789,13 +810,22 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=deletionProtectionEnabled
+PATCH https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupConfig
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystore-${uniqueId}
 
 {
   "authorizationMode": 2,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 2,
+    "fixedFrequencySchedule": {
+      "startTime": {
+        "hours": 3
+      }
+    },
+    "retention": "432000s"
+  },
   "deletionProtectionEnabled": false,
   "endpoints": [
     {
@@ -891,7 +921,206 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
     "automatedBackupConfig": {
-      "automatedBackupMode": "DISABLED"
+      "automatedBackupMode": "ENABLED",
+      "fixedFrequencySchedule": {
+        "startTime": {
+          "hours": 3
+        }
+      },
+      "retention": "432000s"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deletionProtectionEnabled": true,
+    "endpoints": [
+      {
+        "connections": [
+          {
+            "pscAutoConnection": {
+              "connectionType": "CONNECTION_TYPE_DISCOVERY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98115",
+              "ipAddress": "10.128.0.21",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "port": 6379,
+              "projectId": "${projectId}",
+              "pscConnectionId": "1234567890123456789",
+              "serviceAttachment": "projects/tp-memorystore-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystore-${uniqueId}"
+            }
+          },
+          {
+            "pscAutoConnection": {
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98116",
+              "ipAddress": "10.128.0.22",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "1234567890123456790",
+              "serviceAttachment": "projects/tp-memorystore-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystore-${uniqueId}-2"
+            }
+          }
+        ]
+      }
+    ],
+    "engineConfigs": {
+      "maxmemory-policy": "volatile-ttl"
+    },
+    "engineVersion": "VALKEY_7_2",
+    "labels": {
+      "key1": "val1",
+      "key2": "val2"
+    },
+    "mode": "CLUSTER",
+    "name": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
+    "nodeConfig": {
+      "sizeGb": 6.5
+    },
+    "nodeType": "STANDARD_SMALL",
+    "persistenceConfig": {
+      "aofConfig": {
+        "appendFsync": "EVERY_SEC"
+      },
+      "mode": "AOF"
+    },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/tp-memorystore-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystore-${uniqueId}"
+      },
+      {
+        "serviceAttachment": "projects/tp-memorystore-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystore-${uniqueId}-2"
+      }
+    ],
+    "replicaCount": 2,
+    "shardCount": 6,
+    "state": "ACTIVE",
+    "transitEncryptionMode": "SERVER_AUTHENTICATION",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "zoneDistributionConfig": {
+      "mode": "SINGLE_ZONE",
+      "zone": "us-central1-b"
+    }
+  }
+}
+
+---
+
+PATCH https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=deletionProtectionEnabled
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystore-${uniqueId}
+
+{
+  "authorizationMode": 2,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 2,
+    "fixedFrequencySchedule": {
+      "startTime": {
+        "hours": 3
+      }
+    },
+    "retention": "432000s"
+  },
+  "deletionProtectionEnabled": false,
+  "endpoints": [
+    {
+      "connections": [
+        {
+          "pscAutoConnection": {
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "${projectId}"
+          }
+        }
+      ]
+    }
+  ],
+  "engineConfigs": {
+    "maxclients": "10000",
+    "maxmemory-policy": "volatile-ttl"
+  },
+  "engineVersion": "VALKEY_7_2",
+  "labels": {
+    "key1": "val1",
+    "key2": "val2",
+    "keyx": "valx"
+  },
+  "mode": 2,
+  "name": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
+  "nodeType": 4,
+  "persistenceConfig": {
+    "mode": 2,
+    "rdbConfig": {
+      "rdbSnapshotPeriod": 1,
+      "rdbSnapshotStartTime": "2029-10-02T15:01:23Z"
+    }
+  },
+  "replicaCount": 1,
+  "shardCount": 12,
+  "transitEncryptionMode": 2,
+  "zoneDistributionConfig": {
+    "mode": 2,
+    "zone": "us-central1-b"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
+    "authorizationMode": "IAM_AUTH",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "ENABLED",
+      "fixedFrequencySchedule": {
+        "startTime": {
+          "hours": 3
+        }
+      },
+      "retention": "432000s"
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
@@ -974,6 +1203,15 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
 
 {
   "authorizationMode": 2,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 2,
+    "fixedFrequencySchedule": {
+      "startTime": {
+        "hours": 3
+      }
+    },
+    "retention": "432000s"
+  },
   "deletionProtectionEnabled": false,
   "endpoints": [
     {
@@ -1069,7 +1307,13 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
     "automatedBackupConfig": {
-      "automatedBackupMode": "DISABLED"
+      "automatedBackupMode": "ENABLED",
+      "fixedFrequencySchedule": {
+        "startTime": {
+          "hours": 3
+        }
+      },
+      "retention": "432000s"
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
@@ -1152,6 +1396,15 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
 
 {
   "authorizationMode": 2,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 2,
+    "fixedFrequencySchedule": {
+      "startTime": {
+        "hours": 3
+      }
+    },
+    "retention": "432000s"
+  },
   "deletionProtectionEnabled": false,
   "endpoints": [
     {
@@ -1247,7 +1500,13 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
     "automatedBackupConfig": {
-      "automatedBackupMode": "DISABLED"
+      "automatedBackupMode": "ENABLED",
+      "fixedFrequencySchedule": {
+        "startTime": {
+          "hours": 3
+        }
+      },
+      "retention": "432000s"
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
@@ -1331,6 +1590,15 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
 
 {
   "authorizationMode": 2,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 2,
+    "fixedFrequencySchedule": {
+      "startTime": {
+        "hours": 3
+      }
+    },
+    "retention": "432000s"
+  },
   "deletionProtectionEnabled": false,
   "endpoints": [
     {
@@ -1426,7 +1694,13 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
     "automatedBackupConfig": {
-      "automatedBackupMode": "DISABLED"
+      "automatedBackupMode": "ENABLED",
+      "fixedFrequencySchedule": {
+        "startTime": {
+          "hours": 3
+        }
+      },
+      "retention": "432000s"
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
@@ -1511,6 +1785,15 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
 
 {
   "authorizationMode": 2,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 2,
+    "fixedFrequencySchedule": {
+      "startTime": {
+        "hours": 3
+      }
+    },
+    "retention": "432000s"
+  },
   "deletionProtectionEnabled": false,
   "endpoints": [
     {
@@ -1606,7 +1889,13 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
     "automatedBackupConfig": {
-      "automatedBackupMode": "DISABLED"
+      "automatedBackupMode": "ENABLED",
+      "fixedFrequencySchedule": {
+        "startTime": {
+          "hours": 3
+        }
+      },
+      "retention": "432000s"
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
@@ -1692,6 +1981,15 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
 
 {
   "authorizationMode": 2,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 2,
+    "fixedFrequencySchedule": {
+      "startTime": {
+        "hours": 3
+      }
+    },
+    "retention": "432000s"
+  },
   "deletionProtectionEnabled": false,
   "endpoints": [
     {
@@ -1787,7 +2085,13 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
     "automatedBackupConfig": {
-      "automatedBackupMode": "DISABLED"
+      "automatedBackupMode": "ENABLED",
+      "fixedFrequencySchedule": {
+        "startTime": {
+          "hours": 3
+        }
+      },
+      "retention": "432000s"
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
@@ -1873,6 +2177,15 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
 
 {
   "authorizationMode": 2,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 2,
+    "fixedFrequencySchedule": {
+      "startTime": {
+        "hours": 3
+      }
+    },
+    "retention": "432000s"
+  },
   "deletionProtectionEnabled": false,
   "endpoints": [
     {
@@ -1968,7 +2281,13 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
     "automatedBackupConfig": {
-      "automatedBackupMode": "DISABLED"
+      "automatedBackupMode": "ENABLED",
+      "fixedFrequencySchedule": {
+        "startTime": {
+          "hours": 3
+        }
+      },
+      "retention": "432000s"
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
@@ -2065,7 +2384,13 @@ X-Xss-Protection: 0
 {
   "authorizationMode": 2,
   "automatedBackupConfig": {
-    "automatedBackupMode": 1
+    "automatedBackupMode": 2,
+    "fixedFrequencySchedule": {
+      "startTime": {
+        "hours": 3
+      }
+    },
+    "retention": "432000s"
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
