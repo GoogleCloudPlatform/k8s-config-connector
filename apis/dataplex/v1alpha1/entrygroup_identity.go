@@ -17,86 +17,92 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ identity.Identity = &EntryGroupIdentity{}
-
-const (
-	EntryGroupIDURL = parent.ProjectAndLocationURL + "/entryGroups/{{entrygroupID}}"
+var (
+	_ identity.IdentityV2 = &EntryGroupIdentity{}
+	_ identity.Resource   = &DataplexEntryGroup{}
 )
 
-// EntryGroupIdentity defines the resource reference to DataplexEntryGroup, which "External" field
-// holds the GCP identifier for the KRM object.
+var EntryGroupIdentityFormat = gcpurls.Template[EntryGroupIdentity]("dataplex.googleapis.com", "projects/{project}/locations/{location}/entryGroups/{entrygroup}")
+
+// +k8s:deepcopy-gen=false
 type EntryGroupIdentity struct {
-	parent *parent.ProjectAndLocationParent
-	id     string
+	Project    string
+	Location   string
+	Entrygroup string
 }
 
 func (i *EntryGroupIdentity) String() string {
-	return i.parent.String() + "/entryGroups/" + i.id
-}
-
-func (i *EntryGroupIdentity) ID() string {
-	return i.id
-}
-
-func (i *EntryGroupIdentity) Parent() *parent.ProjectAndLocationParent {
-	return i.parent
+	return EntryGroupIdentityFormat.ToString(*i)
 }
 
 func (i *EntryGroupIdentity) FromExternal(ref string) error {
-	tokens := strings.Split(ref, "/entryGroups/")
-	if len(tokens) != 2 {
-		return fmt.Errorf("format of DataplexEntryGroup external=%q was not known (use %s)", ref, EntryGroupIDURL)
+	parsed, match, err := EntryGroupIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of DataplexEntryGroup external=%q was not known (use %s): %w", ref, EntryGroupIdentityFormat.CanonicalForm(), err)
 	}
-	i.parent = &parent.ProjectAndLocationParent{}
-	if err := i.parent.FromExternal(tokens[0]); err != nil {
-		return err
+	if !match {
+		return fmt.Errorf("format of DataplexEntryGroup external=%q was not known (use %s)", ref, EntryGroupIdentityFormat.CanonicalForm())
 	}
-	i.id = tokens[1]
-	if i.id == "" {
-		return fmt.Errorf("entryGroupID was empty in external=%q", ref)
-	}
+
+	*i = *parsed
 	return nil
 }
 
-var _ identity.Resource = &DataplexEntryGroup{}
+func (i *EntryGroupIdentity) Host() string {
+	return EntryGroupIdentityFormat.Host()
+}
 
-func (obj *DataplexEntryGroup) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	newIdentity := &EntryGroupIdentity{
-		parent: &parent.ProjectAndLocationParent{},
-	}
-
-	// Resolve Parent
-	if err := obj.Spec.ParentRef.Build(ctx, reader, obj.GetNamespace(), newIdentity.parent); err != nil {
-		return nil, err
-	}
-
-	// Get desired ID
-	newIdentity.id = common.ValueOf(obj.Spec.ResourceID)
-	if newIdentity.id == "" {
-		newIdentity.id = obj.GetName()
-	}
-	if newIdentity.id == "" {
+func getIdentityFromEntryGroupSpec(ctx context.Context, reader client.Reader, obj client.Object) (*EntryGroupIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	location, err := refs.GetLocation(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+
+	identity := &EntryGroupIdentity{
+		Project:    projectID,
+		Location:   location,
+		Entrygroup: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *DataplexEntryGroup) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromEntryGroupSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
+		// Validate desired with actual
 		statusIdentity := &EntryGroupIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
-			return nil, fmt.Errorf("cannot parse existing externalRef=%q: %w", externalRef, err)
+			return nil, err
 		}
-		if statusIdentity.String() != newIdentity.String() {
-			return nil, fmt.Errorf("existing externalRef=%q does not match the identity resolved from spec: %q", externalRef, newIdentity.String())
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change DataplexEntryGroup identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
-	return newIdentity, nil
+
+	return specIdentity, nil
 }

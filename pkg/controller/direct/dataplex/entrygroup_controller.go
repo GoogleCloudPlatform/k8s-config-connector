@@ -142,8 +142,8 @@ func (a *entryGroupAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	log.V(2).Info("creating dataplex entry group", "name", a.id)
 
 	req := &pb.CreateEntryGroupRequest{
-		Parent:       a.id.Parent().String(),
-		EntryGroupId: a.id.ID(),
+		Parent:       fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location),
+		EntryGroupId: a.id.Entrygroup,
 		EntryGroup:   a.desired,
 	}
 	op, err := a.gcpClient.CreateEntryGroup(ctx, req)
@@ -233,15 +233,15 @@ func (a *entryGroupAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 		return nil, mapCtx.Err()
 	}
 	obj.Spec.ParentRef = &parent.ProjectAndLocationRef{
-		ProjectRef: &refs.ProjectRef{External: a.id.Parent().ProjectID},
-		Location:   a.id.Parent().Location,
+		ProjectRef: &refs.ProjectRef{External: a.id.Project},
+		Location:   a.id.Location,
 	}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.id.ID()) // Use the Entry Group ID as the K8s resource name
+	u.SetName(a.id.Entrygroup) // Use the Entry Group ID as the K8s resource name
 	u.SetGroupVersionKind(krm.DataplexEntryGroupGVK)
 	u.Object = uObj
 
