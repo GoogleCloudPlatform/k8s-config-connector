@@ -29,7 +29,7 @@ When asked to update or create the identity and reference for a "resource of the
 1. Read the corresponding line in `docs/ai/metadata/cloudassetinventory_names.jsonl` using grep. Search for the resource kind to find its URL format.
    - Example: `grep -i memorystore docs/ai/metadata/cloudassetinventory_names.jsonl`
    - Output might be: `{"resourceType": "memorystore.googleapis.com/Instance", "nameFormats": ["//memorystore.googleapis.com/projects/{{PROJECT_ID}}/locations/{{LOCATION}}/instances/{{INSTANCE}}"]}`
-   - **Note:** If the resource is missing from `cloudassetinventory_names.jsonl`, check the existing `_identity.go` or direct controller to infer the URL format. Pay attention to camelCase path segments (e.g. `entryGroups` instead of `entrygroups`), as GCP URLs are case-sensitive.
+   - **Note:** If the resource is missing from `cloudassetinventory_names.jsonl` (e.g. not handled by CAIS), check the existing `_identity.go` or direct controller to infer the URL format. Pay attention to camelCase path segments (e.g. `entryGroups` instead of `entrygroups`), as GCP URLs are case-sensitive. Additionally, if the resource is missing from `cloudassetinventory_names.jsonl`, you will also need to add its URL format as an exception in `pkg/gcpurls/registry_test.go` to prevent the `TestRegisteredTemplatesMatchCAI` test from failing.
 2. Map the format to the `gcpurls.Template` format: `"projects/{project}/locations/{location}/instances/{instance}"`.
 3. Read the canonical `apis/artifactregistry/v1beta1/artifactregistryrepository_identity.go` to refresh your understanding of the implementation details.
 
