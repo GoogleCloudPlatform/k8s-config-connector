@@ -158,9 +158,9 @@ func (s *NetworkSecurityServer) DeleteClientTlsPolicy(ctx context.Context, req *
 }
 
 type clientTlsPolicyName struct {
-	Project             *projects.ProjectData
-	Location            string
-	ClientTlsPolicyID   string
+	Project           *projects.ProjectData
+	Location          string
+	ClientTlsPolicyID string
 }
 
 func (n *clientTlsPolicyName) String() string {
