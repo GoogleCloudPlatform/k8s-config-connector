@@ -145,7 +145,7 @@ type ComputeReservationStatus struct {
 type ComputeReservationObservedState struct {
 	// [Output Only] A unique identifier for this future reservation. The server defines this identifier.
 	// +kcc:proto:field=google.cloud.compute.v1.Reservation.id
-	ID *uint64 `json:"id,omitempty"`
+	ID *int64 `json:"id,omitempty"`
 
 	// [Output Only] Allocation Properties of this reservation.
 	// +kcc:proto:field=google.cloud.compute.v1.Reservation.resource_status
