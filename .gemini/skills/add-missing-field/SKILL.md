@@ -23,6 +23,7 @@ This skill guides an automated agent through adding a missing field to a GCP res
 
 3. **Update the Mappers**
    - If the resource uses hand-written mappers (e.g., `mapper.go`), add the appropriate logic to convert between the Kubernetes resource (`KRM`) and the GCP API (`API`).
+   - Check `mapper.generated.go` for blocks starting with `/* found existing non-generated mapping function ... */`. If the generator skipped a parent mapper, it may also skip nested types and leave comments like `// MISSING: <Type>`. You will need to manually write `_FromProto` and `_ToProto` functions for these missing nested types.
    - **Important:** We almost always want to update the `ToProto` and `FromProto` methods "symmetrically", so that they round trip. If you map a field in `Spec_ToProto`, make sure to also map it in `Spec_FromProto`.
    - Again, `mapper.generated.go` can provide a good reference if `generate.sh --include-skipped-output` is used.
 
