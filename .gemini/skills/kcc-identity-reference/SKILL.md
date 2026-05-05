@@ -29,6 +29,7 @@ When asked to update or create the identity and reference for a "resource of the
 1. Read the corresponding line in `docs/ai/metadata/cloudassetinventory_names.jsonl` using grep. Search for the resource kind to find its URL format.
    - Example: `grep -i memorystore docs/ai/metadata/cloudassetinventory_names.jsonl`
    - Output might be: `{"resourceType": "memorystore.googleapis.com/Instance", "nameFormats": ["//memorystore.googleapis.com/projects/{{PROJECT_ID}}/locations/{{LOCATION}}/instances/{{INSTANCE}}"]}`
+   - **Note:** If the resource is missing from `cloudassetinventory_names.jsonl`, check the existing `_identity.go` or direct controller to infer the URL format. Pay attention to camelCase path segments (e.g. `entryGroups` instead of `entrygroups`), as GCP URLs are case-sensitive.
 2. Map the format to the `gcpurls.Template` format: `"projects/{project}/locations/{location}/instances/{instance}"`.
 3. Read the canonical `apis/artifactregistry/v1beta1/artifactregistryrepository_identity.go` to refresh your understanding of the implementation details.
 
@@ -43,7 +44,7 @@ Create or update the file to match the canonical example. Key requirements:
 - Implement `String()`, `FromExternal(ref string)`, and `Host()` by delegating to the format var.
 - Implement `getIdentityFrom<Kind>Spec(...)` to extract fields from the spec/obj (often using `refs.ResolveProjectID`, `refs.GetLocation`, etc.).
 - Implement `GetIdentity(ctx, reader)` on the Resource struct, including cross-checking `externalRef` or `status.Name`. (Look at `artifactregistryrepository_identity.go`'s `GetIdentity` implementation for exactly how to do this cross-check).
-  - **Note:** If you are updating an existing resource's Identity struct to the IdentityV2 pattern, be sure to grep for existing usages of the struct and its old methods (e.g. `.Parent()`, `.ID()`) in dependent identity files and direct controllers, and update them to use the new fields (e.g. `.Project`, `.Location`, etc.).
+  - **Note:** If you are updating an existing resource's Identity struct to the IdentityV2 pattern, be sure to check for existing usages of the struct and its old methods (e.g. `.Parent()`, `.ID()`) in dependent identity files and direct controllers, and update them to use the new fields (e.g. `.Project`, `.Location`, etc.).  The compiler is your friend: remove the functions, then run `go vet ./...` or `go build ./...` to look for references to functions that no longer exist.
 
 ### Step 4: Implement the Reference (`<kind>_reference.go`)
 
