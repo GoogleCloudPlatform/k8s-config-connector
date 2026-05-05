@@ -107,6 +107,11 @@ func (in *GKEHubNamespaceSpec) DeepCopyInto(out *GKEHubNamespaceSpec) {
 			(*out)[key] = val
 		}
 	}
+	if in.ResourceID != nil {
+		in, out := &in.ResourceID, &out.ResourceID
+		*out = new(string)
+		**out = **in
+	}
 	out.ScopeRef = in.ScopeRef
 	return
 }

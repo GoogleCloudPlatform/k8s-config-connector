@@ -50,6 +50,10 @@ type GKEHubNamespaceSpec struct {
 	// +optional
 	NamespaceLabels map[string]string `json:"namespaceLabels,omitempty"`
 
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Immutable. The scope that this namespace belongs to. */
 	ScopeRef v1alpha1.ResourceRef `json:"scopeRef"`
 }

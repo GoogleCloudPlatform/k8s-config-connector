@@ -82,6 +82,11 @@ spec:
                   in the Fleet Scope resource) take precedence over Namespace-level
                   labels if they share a key. Keys and values must be Kubernetes-conformant.
                 type: object
+              resourceID:
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
+                type: string
               scopeRef:
                 description: Immutable. The scope that this namespace belongs to.
                 oneOf:

@@ -90,14 +90,17 @@ func (obj *GKEHubNamespace) GetIdentity(ctx context.Context, reader client.Reade
 	if err != nil {
 		return nil, err
 	}
+
 	projectID := scopeRef.ProjectID
 	if projectID == "" {
 		return nil, fmt.Errorf("could not derive projectID from scopeRef")
 	}
+
 	location := scopeRef.Location
 	if location == "" {
 		return nil, fmt.Errorf("could not derive location from scopeRef")
 	}
+
 	scopeID := scopeRef.ID()
 	if scopeID == "" {
 		return nil, fmt.Errorf("could not derive scopeID from scopeRef")
@@ -105,7 +108,10 @@ func (obj *GKEHubNamespace) GetIdentity(ctx context.Context, reader client.Reade
 
 	namespaceID := direct.ValueOf(obj.Spec.NamespaceID)
 	if namespaceID == "" {
-		return nil, fmt.Errorf("spec.namespaceID is required")
+		namespaceID = direct.ValueOf(obj.Spec.ResourceID)
+	}
+	if namespaceID == "" {
+		namespaceID = obj.GetName()
 	}
 
 	return NewGKEHubNamespaceIdentity(projectID, location, scopeID, namespaceID), nil

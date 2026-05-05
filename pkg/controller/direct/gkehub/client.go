@@ -19,6 +19,7 @@ import (
 	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	gkehubv1 "google.golang.org/api/gkehub/v1"
 	featureapi "google.golang.org/api/gkehub/v1beta"
 )
 
@@ -34,9 +35,11 @@ func newGCPClient(config *config.ControllerConfig) (*gcpClient, error) {
 }
 
 type gkeHubClient struct {
-	featureClient   *featureapi.ProjectsLocationsFeaturesService
-	scopeClient     *featureapi.ProjectsLocationsScopesService
-	operationClient *featureapi.ProjectsLocationsOperationsService
+	featureClientV1beta   *featureapi.ProjectsLocationsFeaturesService
+	scopeClientV1beta     *featureapi.ProjectsLocationsScopesService
+	operationClientV1beta *featureapi.ProjectsLocationsOperationsService
+	namespaceClientV1     *gkehubv1.ProjectsLocationsScopesNamespacesService
+	operationClientV1     *gkehubv1.ProjectsLocationsOperationsService
 }
 
 func (m *gcpClient) newGkeHubClient(ctx context.Context) (*gkeHubClient, error) {
@@ -44,13 +47,19 @@ func (m *gcpClient) newGkeHubClient(ctx context.Context) (*gkeHubClient, error) 
 	if err != nil {
 		return nil, err
 	}
-	service, err := featureapi.NewService(ctx, opts...)
+	serviceV1beta, err := featureapi.NewService(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building service for gkehub: %w", err)
 	}
+	serviceV1, err := gkehubv1.NewService(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building v1 service for gkehub: %w", err)
+	}
 	return &gkeHubClient{
-		featureClient:   featureapi.NewProjectsLocationsFeaturesService(service),
-		scopeClient:     featureapi.NewProjectsLocationsScopesService(service),
-		operationClient: featureapi.NewProjectsLocationsOperationsService(service),
+		featureClientV1beta:   featureapi.NewProjectsLocationsFeaturesService(serviceV1beta),
+		scopeClientV1beta:     featureapi.NewProjectsLocationsScopesService(serviceV1beta),
+		operationClientV1beta: featureapi.NewProjectsLocationsOperationsService(serviceV1beta),
+		namespaceClientV1:     gkehubv1.NewProjectsLocationsScopesNamespacesService(serviceV1),
+		operationClientV1:     gkehubv1.NewProjectsLocationsOperationsService(serviceV1),
 	}, nil
 }
