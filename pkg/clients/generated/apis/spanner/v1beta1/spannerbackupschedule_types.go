@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +30,11 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -42,7 +43,7 @@ type BackupscheduleCronSpec struct {
 	/* Required. Textual representation of the crontab. User can customize the
 	backup frequency and the backup version time using the cron
 	expression. The version time must be in UTC timzeone.
-
+	
 	The backup will contain an externally consistent copy of the
 	database at the version time. Allowed frequencies are 12 hour, 1 day,
 	1 week and 1 month. Examples of valid cron specifications:
@@ -51,23 +52,23 @@ type BackupscheduleCronSpec struct {
 	* `0 2 * * * `    : once a day at 2 past midnight in UTC.
 	* `0 2 * * 0 `    : once a week every Sunday at 2 past midnight in UTC.
 	* `0 2 8 * * `    : once a month on 8th day at 2 past midnight in UTC. */
-	// +optional
-	Text *string `json:"text,omitempty"`
+// +optional
+Text *string `json:"text,omitempty"`
 }
 
 type BackupscheduleEncryptionConfig struct {
-	/* Required. The encryption type of the backup. */
-	// +optional
-	EncryptionType *string `json:"encryptionType,omitempty"`
+/* Required. The encryption type of the backup. */
+// +optional
+EncryptionType *string `json:"encryptionType,omitempty"`
 
-	/* Optional. The Cloud KMS key that will be used to protect the backup. This field should be set only when [encryption_type][google.spanner.admin.database.v1.CreateBackupEncryptionConfig.encryption_type] is `CUSTOMER_MANAGED_ENCRYPTION`. Values are of the form `projects/<project>/locations/<location>/keyRings/<key_ring>/cryptoKeys/<kms_key_name>`. */
-	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+/* Optional. The Cloud KMS key that will be used to protect the backup. This field should be set only when [encryption_type][google.spanner.admin.database.v1.CreateBackupEncryptionConfig.encryption_type] is `CUSTOMER_MANAGED_ENCRYPTION`. Values are of the form `projects/<project>/locations/<location>/keyRings/<key_ring>/cryptoKeys/<kms_key_name>`. */
+// +optional
+KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* Optional. Specifies the KMS configuration for the one or more keys used to
 	protect the backup. Values are of the form
 	`projects/<project>/locations/<location>/keyRings/<key_ring>/cryptoKeys/<kms_key_name>`.
-
+	
 	The keys referenced by kms_key_names must fully cover all
 	regions of the backup's instance configuration. Some examples:
 	* For single region instance configs, specify a single regional
@@ -79,8 +80,8 @@ type BackupscheduleEncryptionConfig struct {
 	regional location KMS keys to cover each region in the instance config.
 	Multi-regional location KMS keys are not supported for USER_MANAGED
 	instance configs. */
-	// +optional
-	KmsKeyRefs []v1alpha1.ResourceRef `json:"kmsKeyRefs,omitempty"`
+// +optional
+KmsKeyRefs []v1alpha1.ResourceRef `json:"kmsKeyRefs,omitempty"`
 }
 
 type BackupscheduleFullBackupSpec struct {
@@ -90,78 +91,77 @@ type BackupscheduleIncrementalBackupSpec struct {
 }
 
 type BackupscheduleSpec struct {
-	/* Cron style schedule specification. */
-	// +optional
-	CronSpec *BackupscheduleCronSpec `json:"cronSpec,omitempty"`
+/* Cron style schedule specification. */
+// +optional
+CronSpec *BackupscheduleCronSpec `json:"cronSpec,omitempty"`
 }
 
 type SpannerBackupScheduleSpec struct {
-	/* Optional. The encryption configuration that will be used to encrypt the backup. If this field is not specified, the backup will use the same encryption configuration as the database. */
-	// +optional
-	EncryptionConfig *BackupscheduleEncryptionConfig `json:"encryptionConfig,omitempty"`
+/* Optional. The encryption configuration that will be used to encrypt the backup. If this field is not specified, the backup will use the same encryption configuration as the database. */
+// +optional
+EncryptionConfig *BackupscheduleEncryptionConfig `json:"encryptionConfig,omitempty"`
 
-	/* The schedule creates only full backups. */
-	// +optional
-	FullBackupSpec *BackupscheduleFullBackupSpec `json:"fullBackupSpec,omitempty"`
+/* The schedule creates only full backups. */
+// +optional
+FullBackupSpec *BackupscheduleFullBackupSpec `json:"fullBackupSpec,omitempty"`
 
-	/* The schedule creates incremental backup chains. */
-	// +optional
-	IncrementalBackupSpec *BackupscheduleIncrementalBackupSpec `json:"incrementalBackupSpec,omitempty"`
+/* The schedule creates incremental backup chains. */
+// +optional
+IncrementalBackupSpec *BackupscheduleIncrementalBackupSpec `json:"incrementalBackupSpec,omitempty"`
 
-	/* The SpannerBackupSchedule name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The SpannerBackupSchedule name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Optional. The retention duration of a backup that must be at least 6 hours and at most 366 days. The backup is eligible to be automatically deleted once the retention period has elapsed. */
-	// +optional
-	RetentionDuration *string `json:"retentionDuration,omitempty"`
+/* Optional. The retention duration of a backup that must be at least 6 hours and at most 366 days. The backup is eligible to be automatically deleted once the retention period has elapsed. */
+// +optional
+RetentionDuration *string `json:"retentionDuration,omitempty"`
 
-	/* Required. The Spanner Database that this backup applies to. */
-	// +optional
-	SpannerDatabaseRef *v1alpha1.ResourceRef `json:"spannerDatabaseRef,omitempty"`
+/* Required. The Spanner Database that this backup applies to. */
+// +optional
+SpannerDatabaseRef *v1alpha1.ResourceRef `json:"spannerDatabaseRef,omitempty"`
 
-	/* Optional. The schedule specification based on which the backup creations are triggered. */
-	// +optional
-	Spec *BackupscheduleSpec `json:"spec,omitempty"`
+/* Optional. The schedule specification based on which the backup creations are triggered. */
+// +optional
+Spec *BackupscheduleSpec `json:"spec,omitempty"`
 }
 
 type BackupscheduleCronSpecStatus struct {
-	/* Output only. Schedule backups will contain an externally consistent copy of the database at the version time specified in `schedule_spec.cron_spec`. However, Spanner may not initiate the creation of the scheduled backups at that version time. Spanner will initiate the creation of scheduled backups within the time window bounded by the version_time specified in `schedule_spec.cron_spec` and version_time + `creation_window`. */
-	// +optional
-	CreationWindow *string `json:"creationWindow,omitempty"`
+/* Output only. Schedule backups will contain an externally consistent copy of the database at the version time specified in `schedule_spec.cron_spec`. However, Spanner may not initiate the creation of the scheduled backups at that version time. Spanner will initiate the creation of scheduled backups within the time window bounded by the version_time specified in `schedule_spec.cron_spec` and version_time + `creation_window`. */
+// +optional
+CreationWindow *string `json:"creationWindow,omitempty"`
 
-	/* Output only. The time zone of the times in `CrontabSpec.text`. Currently only UTC is supported. */
-	// +optional
-	TimeZone *string `json:"timeZone,omitempty"`
+/* Output only. The time zone of the times in `CrontabSpec.text`. Currently only UTC is supported. */
+// +optional
+TimeZone *string `json:"timeZone,omitempty"`
 }
 
 type BackupscheduleObservedStateStatus struct {
-	/* Cron style schedule specification. */
-	// +optional
-	CronSpec *BackupscheduleCronSpecStatus `json:"cronSpec,omitempty"`
+/* Cron style schedule specification. */
+// +optional
+CronSpec *BackupscheduleCronSpecStatus `json:"cronSpec,omitempty"`
 
-	/* Output only. The timestamp at which the schedule was last updated. If the schedule has never been updated, this field contains the timestamp when the schedule was first created. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. The timestamp at which the schedule was last updated. If the schedule has never been updated, this field contains the timestamp when the schedule was first created. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type SpannerBackupScheduleStatus struct {
 	/* Conditions represent the latest available observations of the
-	   SpannerBackupSchedule's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the SpannerBackupSchedule resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    SpannerBackupSchedule's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the SpannerBackupSchedule resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *BackupscheduleObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *BackupscheduleObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpspannerbackupschedule;gcpspannerbackupschedules
@@ -176,22 +176,20 @@ type SpannerBackupScheduleStatus struct {
 // SpannerBackupSchedule is the Schema for the spanner API
 // +k8s:openapi-gen=true
 type SpannerBackupSchedule struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   SpannerBackupScheduleSpec   `json:"spec,omitempty"`
-	Status SpannerBackupScheduleStatus `json:"status,omitempty"`
+  Spec SpannerBackupScheduleSpec `json:"spec,omitempty"`
+  Status SpannerBackupScheduleStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// SpannerBackupScheduleList contains a list of SpannerBackupSchedule
-type SpannerBackupScheduleList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []SpannerBackupSchedule `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&SpannerBackupSchedule{}, &SpannerBackupScheduleList{})
-}
+ // SpannerBackupScheduleList contains a list of SpannerBackupSchedule
+ type SpannerBackupScheduleList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []SpannerBackupSchedule `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&SpannerBackupSchedule{}, &SpannerBackupScheduleList{})
+ }

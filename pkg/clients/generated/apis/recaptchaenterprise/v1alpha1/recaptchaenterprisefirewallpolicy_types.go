@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,39 +30,39 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type FirewallpolicyActions struct {
-	/* The user request did not match any policy and should be allowed access to the requested resource. */
-	// +optional
-	Allow *FirewallpolicyAllow `json:"allow,omitempty"`
+/* The user request did not match any policy and should be allowed access to the requested resource. */
+// +optional
+Allow *FirewallpolicyAllow `json:"allow,omitempty"`
 
-	/* This action denies access to a given page. The user gets an HTTP error code. */
-	// +optional
-	Block *FirewallpolicyBlock `json:"block,omitempty"`
+/* This action denies access to a given page. The user gets an HTTP error code. */
+// +optional
+Block *FirewallpolicyBlock `json:"block,omitempty"`
 
-	/* This action injects reCAPTCHA JavaScript code into the HTML page returned by the site backend. */
-	// +optional
-	IncludeRecaptchaScript *FirewallpolicyIncludeRecaptchaScript `json:"includeRecaptchaScript,omitempty"`
+/* This action injects reCAPTCHA JavaScript code into the HTML page returned by the site backend. */
+// +optional
+IncludeRecaptchaScript *FirewallpolicyIncludeRecaptchaScript `json:"includeRecaptchaScript,omitempty"`
 
-	/* This action redirects the request to a reCAPTCHA interstitial to attach a token. */
-	// +optional
-	Redirect *FirewallpolicyRedirect `json:"redirect,omitempty"`
+/* This action redirects the request to a reCAPTCHA interstitial to attach a token. */
+// +optional
+Redirect *FirewallpolicyRedirect `json:"redirect,omitempty"`
 
-	/* This action sets a custom header but allow the request to continue to the customer backend. */
-	// +optional
-	SetHeader *FirewallpolicySetHeader `json:"setHeader,omitempty"`
+/* This action sets a custom header but allow the request to continue to the customer backend. */
+// +optional
+SetHeader *FirewallpolicySetHeader `json:"setHeader,omitempty"`
 
-	/* This action transparently serves a different page to an offending user. */
-	// +optional
-	Substitute *FirewallpolicySubstitute `json:"substitute,omitempty"`
+/* This action transparently serves a different page to an offending user. */
+// +optional
+Substitute *FirewallpolicySubstitute `json:"substitute,omitempty"`
 }
 
 type FirewallpolicyAllow struct {
@@ -77,59 +78,58 @@ type FirewallpolicyRedirect struct {
 }
 
 type FirewallpolicySetHeader struct {
-	/* Optional. The header key to set in the request to the backend server. */
-	// +optional
-	Key *string `json:"key,omitempty"`
+/* Optional. The header key to set in the request to the backend server. */
+// +optional
+Key *string `json:"key,omitempty"`
 
-	/* Optional. The header value to set in the request to the backend server. */
-	// +optional
-	Value *string `json:"value,omitempty"`
+/* Optional. The header value to set in the request to the backend server. */
+// +optional
+Value *string `json:"value,omitempty"`
 }
 
 type FirewallpolicySubstitute struct {
-	/* Optional. The address to redirect to. The target is a relative path in the current host. Example: "/blog/404.html". */
-	// +optional
-	Path *string `json:"path,omitempty"`
+/* Optional. The address to redirect to. The target is a relative path in the current host. Example: "/blog/404.html". */
+// +optional
+Path *string `json:"path,omitempty"`
 }
 
 type ReCAPTCHAEnterpriseFirewallPolicySpec struct {
-	/* Optional. The actions that the caller should take regarding user access. There should be at most one terminal action. A terminal action is any action that forces a response, such as `AllowAction`, `BlockAction` or `SubstituteAction`. Zero or more non-terminal actions such as `SetHeader` might be specified. A single policy can contain up to 16 actions. */
-	// +optional
-	Actions []FirewallpolicyActions `json:"actions,omitempty"`
+/* Optional. The actions that the caller should take regarding user access. There should be at most one terminal action. A terminal action is any action that forces a response, such as `AllowAction`, `BlockAction` or `SubstituteAction`. Zero or more non-terminal actions such as `SetHeader` might be specified. A single policy can contain up to 16 actions. */
+// +optional
+Actions []FirewallpolicyActions `json:"actions,omitempty"`
 
-	/* Optional. A CEL (Common Expression Language) conditional expression that specifies if this policy applies to an incoming user request. If this condition evaluates to true and the requested path matched the path pattern, the associated actions should be executed by the caller. The condition string is checked for CEL syntax correctness on creation. For more information, see the [CEL spec](https://github.com/google/cel-spec) and its [language definition](https://github.com/google/cel-spec/blob/master/doc/langdef.md). A condition has a max length of 500 characters. */
-	// +optional
-	Condition *string `json:"condition,omitempty"`
+/* Optional. A CEL (Common Expression Language) conditional expression that specifies if this policy applies to an incoming user request. If this condition evaluates to true and the requested path matched the path pattern, the associated actions should be executed by the caller. The condition string is checked for CEL syntax correctness on creation. For more information, see the [CEL spec](https://github.com/google/cel-spec) and its [language definition](https://github.com/google/cel-spec/blob/master/doc/langdef.md). A condition has a max length of 500 characters. */
+// +optional
+Condition *string `json:"condition,omitempty"`
 
-	/* Optional. A description of what this policy aims to achieve, for convenience purposes. The description can at most include 256 UTF-8 characters. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* Optional. A description of what this policy aims to achieve, for convenience purposes. The description can at most include 256 UTF-8 characters. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Optional. The path for which this policy applies, specified as a glob pattern. For more information on glob, see the [manual page](https://man7.org/linux/man-pages/man7/glob.7.html). A path has a max length of 200 characters. */
-	// +optional
-	Path *string `json:"path,omitempty"`
+/* Optional. The path for which this policy applies, specified as a glob pattern. For more information on glob, see the [manual page](https://man7.org/linux/man-pages/man7/glob.7.html). A path has a max length of 200 characters. */
+// +optional
+Path *string `json:"path,omitempty"`
 
-	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The ReCAPTCHAEnterpriseFirewallPolicy name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The ReCAPTCHAEnterpriseFirewallPolicy name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ReCAPTCHAEnterpriseFirewallPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
-	   ReCAPTCHAEnterpriseFirewallPolicy's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the ReCAPTCHAEnterpriseFirewallPolicy resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    ReCAPTCHAEnterpriseFirewallPolicy's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the ReCAPTCHAEnterpriseFirewallPolicy resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcprecaptchaenterprisefirewallpolicy;gcprecaptchaenterprisefirewallpolicies
@@ -144,22 +144,20 @@ type ReCAPTCHAEnterpriseFirewallPolicyStatus struct {
 // ReCAPTCHAEnterpriseFirewallPolicy is the Schema for the recaptchaenterprise API
 // +k8s:openapi-gen=true
 type ReCAPTCHAEnterpriseFirewallPolicy struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ReCAPTCHAEnterpriseFirewallPolicySpec   `json:"spec,omitempty"`
-	Status ReCAPTCHAEnterpriseFirewallPolicyStatus `json:"status,omitempty"`
+  Spec ReCAPTCHAEnterpriseFirewallPolicySpec `json:"spec,omitempty"`
+  Status ReCAPTCHAEnterpriseFirewallPolicyStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// ReCAPTCHAEnterpriseFirewallPolicyList contains a list of ReCAPTCHAEnterpriseFirewallPolicy
-type ReCAPTCHAEnterpriseFirewallPolicyList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ReCAPTCHAEnterpriseFirewallPolicy `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&ReCAPTCHAEnterpriseFirewallPolicy{}, &ReCAPTCHAEnterpriseFirewallPolicyList{})
-}
+ // ReCAPTCHAEnterpriseFirewallPolicyList contains a list of ReCAPTCHAEnterpriseFirewallPolicy
+ type ReCAPTCHAEnterpriseFirewallPolicyList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []ReCAPTCHAEnterpriseFirewallPolicy `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&ReCAPTCHAEnterpriseFirewallPolicy{}, &ReCAPTCHAEnterpriseFirewallPolicyList{})
+ }

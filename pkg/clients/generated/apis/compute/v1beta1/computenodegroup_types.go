@@ -115,6 +115,9 @@ type ComputeNodeGroupSpec struct {
 }
 
 type NodegroupObservedStateStatus struct {
+	/* The current status of the node group. Possible values: ["CREATING", "READY", "DELETING", "INVALID"]. */
+	// +optional
+	Status *string `json:"status,omitempty"`
 }
 
 type ComputeNodeGroupStatus struct {

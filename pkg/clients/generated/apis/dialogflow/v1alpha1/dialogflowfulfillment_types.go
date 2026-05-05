@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +30,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -41,64 +42,63 @@ var _ = apiextensionsv1.JSON{}
 type FulfillmentFeatures struct {
 	/* The type of the feature that enabled for fulfillment.
 	* SMALLTALK: Fulfillment is enabled for SmallTalk. Possible values: ["SMALLTALK"]. */
-	Type string `json:"type"`
+Type string `json:"type"`
 }
 
 type FulfillmentGenericWebService struct {
-	/* The password for HTTP Basic authentication. */
-	// +optional
-	Password *string `json:"password,omitempty"`
+/* The password for HTTP Basic authentication. */
+// +optional
+Password *string `json:"password,omitempty"`
 
-	/* The HTTP request headers to send together with fulfillment requests. */
-	// +optional
-	RequestHeaders map[string]string `json:"requestHeaders,omitempty"`
+/* The HTTP request headers to send together with fulfillment requests. */
+// +optional
+RequestHeaders map[string]string `json:"requestHeaders,omitempty"`
 
-	/* The fulfillment URI for receiving POST requests. It must use https protocol. */
-	Uri string `json:"uri"`
+/* The fulfillment URI for receiving POST requests. It must use https protocol. */
+Uri string `json:"uri"`
 
-	/* The user name for HTTP Basic authentication. */
-	// +optional
-	Username *string `json:"username,omitempty"`
+/* The user name for HTTP Basic authentication. */
+// +optional
+Username *string `json:"username,omitempty"`
 }
 
 type DialogflowFulfillmentSpec struct {
-	/* The human-readable name of the fulfillment, unique within the agent. */
-	DisplayName string `json:"displayName"`
+/* The human-readable name of the fulfillment, unique within the agent. */
+DisplayName string `json:"displayName"`
 
-	/* Whether fulfillment is enabled. */
-	// +optional
-	Enabled *bool `json:"enabled,omitempty"`
+/* Whether fulfillment is enabled. */
+// +optional
+Enabled *bool `json:"enabled,omitempty"`
 
-	/* The field defines whether the fulfillment is enabled for certain features. */
-	// +optional
-	Features []FulfillmentFeatures `json:"features,omitempty"`
+/* The field defines whether the fulfillment is enabled for certain features. */
+// +optional
+Features []FulfillmentFeatures `json:"features,omitempty"`
 
-	/* Represents configuration for a generic web service. Dialogflow supports two mechanisms for authentications: - Basic authentication with username and password. - Authentication with additional authentication headers. */
-	// +optional
-	GenericWebService *FulfillmentGenericWebService `json:"genericWebService,omitempty"`
+/* Represents configuration for a generic web service. Dialogflow supports two mechanisms for authentications: - Basic authentication with username and password. - Authentication with additional authentication headers. */
+// +optional
+GenericWebService *FulfillmentGenericWebService `json:"genericWebService,omitempty"`
 
-	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type DialogflowFulfillmentStatus struct {
 	/* Conditions represent the latest available observations of the
-	   DialogflowFulfillment's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	    DialogflowFulfillment's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The unique identifier of the fulfillment.
 	Format: projects/<Project ID>/agent/fulfillment - projects/<Project ID>/locations/<Location ID>/agent/fulfillment. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+// +optional
+Name *string `json:"name,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdialogflowfulfillment;gcpdialogflowfulfillments
@@ -115,22 +115,20 @@ type DialogflowFulfillmentStatus struct {
 // DialogflowFulfillment is the Schema for the dialogflow API
 // +k8s:openapi-gen=true
 type DialogflowFulfillment struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   DialogflowFulfillmentSpec   `json:"spec,omitempty"`
-	Status DialogflowFulfillmentStatus `json:"status,omitempty"`
+  Spec DialogflowFulfillmentSpec `json:"spec,omitempty"`
+  Status DialogflowFulfillmentStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// DialogflowFulfillmentList contains a list of DialogflowFulfillment
-type DialogflowFulfillmentList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []DialogflowFulfillment `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&DialogflowFulfillment{}, &DialogflowFulfillmentList{})
-}
+ // DialogflowFulfillmentList contains a list of DialogflowFulfillment
+ type DialogflowFulfillmentList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []DialogflowFulfillment `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&DialogflowFulfillment{}, &DialogflowFulfillmentList{})
+ }

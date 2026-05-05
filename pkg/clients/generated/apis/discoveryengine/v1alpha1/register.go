@@ -53,23 +53,25 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	DiscoveryEngineDataStoreGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DiscoveryEngineDataStore{}).Name(),
-	}
+	
+  	DiscoveryEngineDataStoreGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(DiscoveryEngineDataStore{}).Name(),
+  	}
+  
+  	DiscoveryEngineDataStoreTargetSiteGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(DiscoveryEngineDataStoreTargetSite{}).Name(),
+  	}
+  
+  	DiscoveryEngineEngineGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(DiscoveryEngineEngine{}).Name(),
+  	}
+  
 
-	DiscoveryEngineDataStoreTargetSiteGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DiscoveryEngineDataStoreTargetSite{}).Name(),
-	}
-
-	DiscoveryEngineEngineGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DiscoveryEngineEngine{}).Name(),
-	}
-
-	discoveryengineAPIVersion = SchemeGroupVersion.String()
+  	discoveryengineAPIVersion = SchemeGroupVersion.String()
 )

@@ -53,17 +53,19 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	NetworkConnectivityHubGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(NetworkConnectivityHub{}).Name(),
-	}
+	
+  	NetworkConnectivityHubGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(NetworkConnectivityHub{}).Name(),
+  	}
+  
+  	NetworkConnectivitySpokeGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(NetworkConnectivitySpoke{}).Name(),
+  	}
+  
 
-	NetworkConnectivitySpokeGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(NetworkConnectivitySpoke{}).Name(),
-	}
-
-	networkconnectivityAPIVersion = SchemeGroupVersion.String()
+  	networkconnectivityAPIVersion = SchemeGroupVersion.String()
 )

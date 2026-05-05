@@ -53,23 +53,25 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	GKEHubFeatureGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(GKEHubFeature{}).Name(),
-	}
+	
+  	GKEHubFeatureGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(GKEHubFeature{}).Name(),
+  	}
+  
+  	GKEHubFeatureMembershipGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(GKEHubFeatureMembership{}).Name(),
+  	}
+  
+  	GKEHubMembershipGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(GKEHubMembership{}).Name(),
+  	}
+  
 
-	GKEHubFeatureMembershipGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(GKEHubFeatureMembership{}).Name(),
-	}
-
-	GKEHubMembershipGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(GKEHubMembership{}).Name(),
-	}
-
-	gkehubAPIVersion = SchemeGroupVersion.String()
+  	gkehubAPIVersion = SchemeGroupVersion.String()
 )

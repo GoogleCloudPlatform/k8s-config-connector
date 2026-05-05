@@ -53,29 +53,31 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	DialogflowAgentGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DialogflowAgent{}).Name(),
-	}
+	
+  	DialogflowAgentGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(DialogflowAgent{}).Name(),
+  	}
+  
+  	DialogflowEntityTypeGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(DialogflowEntityType{}).Name(),
+  	}
+  
+  	DialogflowFulfillmentGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(DialogflowFulfillment{}).Name(),
+  	}
+  
+  	DialogflowIntentGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(DialogflowIntent{}).Name(),
+  	}
+  
 
-	DialogflowEntityTypeGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DialogflowEntityType{}).Name(),
-	}
-
-	DialogflowFulfillmentGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DialogflowFulfillment{}).Name(),
-	}
-
-	DialogflowIntentGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DialogflowIntent{}).Name(),
-	}
-
-	dialogflowAPIVersion = SchemeGroupVersion.String()
+  	dialogflowAPIVersion = SchemeGroupVersion.String()
 )

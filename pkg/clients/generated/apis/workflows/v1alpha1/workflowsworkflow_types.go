@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,107 +30,106 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type WorkflowsWorkflowSpec struct {
-	/* Optional. Describes the level of platform logging to apply to calls and call responses during executions of this workflow. If both the workflow and the execution specify a logging level, the execution level takes precedence. */
-	// +optional
-	CallLogLevel *string `json:"callLogLevel,omitempty"`
+/* Optional. Describes the level of platform logging to apply to calls and call responses during executions of this workflow. If both the workflow and the execution specify a logging level, the execution level takes precedence. */
+// +optional
+CallLogLevel *string `json:"callLogLevel,omitempty"`
 
-	/* Description of the workflow provided by the user. Must be at most 1000 unicode characters long. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* Description of the workflow provided by the user. Must be at most 1000 unicode characters long. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Optional. The resource name of a KMS crypto key used to encrypt or decrypt the data associated with the workflow. If not provided, data associated with the workflow will not be CMEK-encrypted. */
-	// +optional
-	KmsCryptoKeyRef *v1alpha1.ResourceRef `json:"kmsCryptoKeyRef,omitempty"`
+/* Optional. The resource name of a KMS crypto key used to encrypt or decrypt the data associated with the workflow. If not provided, data associated with the workflow will not be CMEK-encrypted. */
+// +optional
+KmsCryptoKeyRef *v1alpha1.ResourceRef `json:"kmsCryptoKeyRef,omitempty"`
 
-	/* Labels associated with this workflow. Labels can contain at most 64 entries. Keys and values can be no longer than 63 characters and can only contain lowercase letters, numeric characters, underscores, and dashes. Label keys must start with a letter. International characters are allowed. */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
+/* Labels associated with this workflow. Labels can contain at most 64 entries. Keys and values can be no longer than 63 characters and can only contain lowercase letters, numeric characters, underscores, and dashes. Label keys must start with a letter. International characters are allowed. */
+// +optional
+Labels map[string]string `json:"labels,omitempty"`
 
-	/* Immutable. */
-	Location string `json:"location"`
+/* Immutable. */
+Location string `json:"location"`
 
-	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The Workflow name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The Workflow name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* The service account associated with the latest workflow version. This service account represents the identity of the workflow and determines what permissions the workflow has. If not provided, workflow will use the project's default service account. Modifying this field for an existing workflow results in a new workflow revision. */
-	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+/* The service account associated with the latest workflow version. This service account represents the identity of the workflow and determines what permissions the workflow has. If not provided, workflow will use the project's default service account. Modifying this field for an existing workflow results in a new workflow revision. */
+// +optional
+ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
-	/* Required. Workflow code to be executed. The size limit is 128KB. */
-	SourceContents string `json:"sourceContents"`
+/* Required. Workflow code to be executed. The size limit is 128KB. */
+SourceContents string `json:"sourceContents"`
 
-	/* Optional.User-defined environment variables associated with this workflow revision. This map has a maximum length of 20. Each string can take up to 40KiB. Keys cannot be empty strings and cannot start with “GOOGLE” or “WORKFLOWS". */
-	// +optional
-	UserEnvVars map[string]string `json:"userEnvVars,omitempty"`
+/* Optional.User-defined environment variables associated with this workflow revision. This map has a maximum length of 20. Each string can take up to 40KiB. Keys cannot be empty strings and cannot start with “GOOGLE” or “WORKFLOWS". */
+// +optional
+UserEnvVars map[string]string `json:"userEnvVars,omitempty"`
 }
 
 type WorkflowObservedStateStatus struct {
-	/* The timestamp for when the workflow was created. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* The timestamp for when the workflow was created. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* The timestamp for the latest revision of the workflow's creation. */
-	// +optional
-	RevisionCreateTime *string `json:"revisionCreateTime,omitempty"`
+/* The timestamp for the latest revision of the workflow's creation. */
+// +optional
+RevisionCreateTime *string `json:"revisionCreateTime,omitempty"`
 
-	/* The revision of the workflow. A new revision of a workflow is created as a result of updating the following properties of a workflow: - service_account - source_content The format is "000001-a4d", where the first six characters define the zero-padded revision ordinal number. They are followed by a hyphen and three hexadecimal random characters. */
-	// +optional
-	RevisionId *string `json:"revisionId,omitempty"`
+/* The revision of the workflow. A new revision of a workflow is created as a result of updating the following properties of a workflow: - service_account - source_content The format is "000001-a4d", where the first six characters define the zero-padded revision ordinal number. They are followed by a hyphen and three hexadecimal random characters. */
+// +optional
+RevisionId *string `json:"revisionId,omitempty"`
 
-	/* State of the workflow deployment. */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* State of the workflow deployment. */
+// +optional
+State *string `json:"state,omitempty"`
 
-	/* Error regarding the state of the workflow. For example, this field will have error details if the execution data is unavailable due to revoked KMS key permissions. */
-	// +optional
-	StateError *WorkflowStateErrorStatus `json:"stateError,omitempty"`
+/* Error regarding the state of the workflow. For example, this field will have error details if the execution data is unavailable due to revoked KMS key permissions. */
+// +optional
+StateError *WorkflowStateErrorStatus `json:"stateError,omitempty"`
 
-	/* The timestamp for when the workflow was last updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* The timestamp for when the workflow was last updated. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type WorkflowStateErrorStatus struct {
-	/* Provides specifics about the error. */
-	// +optional
-	Details *string `json:"details,omitempty"`
+/* Provides specifics about the error. */
+// +optional
+Details *string `json:"details,omitempty"`
 
-	/* The type of this state error. */
-	// +optional
-	Type *string `json:"type,omitempty"`
+/* The type of this state error. */
+// +optional
+Type *string `json:"type,omitempty"`
 }
 
 type WorkflowsWorkflowStatus struct {
 	/* Conditions represent the latest available observations of the
-	   WorkflowsWorkflow's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the Workflow resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    WorkflowsWorkflow's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the Workflow resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *WorkflowObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *WorkflowObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpworkflowsworkflow;gcpworkflowsworkflows
@@ -144,22 +144,20 @@ type WorkflowsWorkflowStatus struct {
 // WorkflowsWorkflow is the Schema for the workflows API
 // +k8s:openapi-gen=true
 type WorkflowsWorkflow struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   WorkflowsWorkflowSpec   `json:"spec,omitempty"`
-	Status WorkflowsWorkflowStatus `json:"status,omitempty"`
+  Spec WorkflowsWorkflowSpec `json:"spec,omitempty"`
+  Status WorkflowsWorkflowStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// WorkflowsWorkflowList contains a list of WorkflowsWorkflow
-type WorkflowsWorkflowList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []WorkflowsWorkflow `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&WorkflowsWorkflow{}, &WorkflowsWorkflowList{})
-}
+ // WorkflowsWorkflowList contains a list of WorkflowsWorkflow
+ type WorkflowsWorkflowList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []WorkflowsWorkflow `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&WorkflowsWorkflow{}, &WorkflowsWorkflowList{})
+ }

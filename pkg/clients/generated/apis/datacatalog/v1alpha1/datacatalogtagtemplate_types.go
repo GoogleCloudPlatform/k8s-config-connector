@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +30,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -41,138 +42,137 @@ var _ = apiextensionsv1.JSON{}
 type TagtemplateAllowedValues struct {
 	/* Required. The display name of the enum value. Must not be an empty
 	string.
-
+	
 	The name must contain only Unicode letters, numbers (0-9), underscores
 	(_), dashes (-), spaces ( ), and can't start or end with spaces. The
 	maximum length is 200 characters. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+// +optional
+DisplayName *string `json:"displayName,omitempty"`
 }
 
 type TagtemplateEnumType struct {
 	/* The set of allowed values for this enum.
-
+	
 	This set must not be empty and can include up to 100 allowed values.
 	The display names of the values in this set must not be empty and must
 	be case-insensitively unique within this set.
-
+	
 	The order of items in this set is preserved. This field can be used to
 	create, remove, and reorder enum values. To rename enum values, use the
 	`RenameTagTemplateFieldEnumValue` method. */
-	// +optional
-	AllowedValues []TagtemplateAllowedValues `json:"allowedValues,omitempty"`
+// +optional
+AllowedValues []TagtemplateAllowedValues `json:"allowedValues,omitempty"`
 }
 
 type TagtemplateFields struct {
-	/* The description for this field. Defaults to an empty string. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* The description for this field. Defaults to an empty string. */
+// +optional
+Description *string `json:"description,omitempty"`
 
 	/* The display name for this field. Defaults to an empty string.
-
+	
 	The name must contain only Unicode letters, numbers (0-9), underscores (_),
 	dashes (-), spaces ( ), and can't start or end with spaces.
 	The maximum length is 200 characters. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+// +optional
+DisplayName *string `json:"displayName,omitempty"`
 
-	/* If true, this field is required. Defaults to false. */
-	// +optional
-	IsRequired *bool `json:"isRequired,omitempty"`
+/* If true, this field is required. Defaults to false. */
+// +optional
+IsRequired *bool `json:"isRequired,omitempty"`
 
 	/* Identifier. The resource name of the tag template field in URL format.
 	Example:
-
+	
 	`projects/{PROJECT_ID}/locations/{LOCATION}/tagTemplates/{TAG_TEMPLATE}/fields/{FIELD}`
-
+	
 	Note: The tag template field itself might not be stored in the location
 	specified in its name.
-
+	
 	The name must contain only letters (a-z, A-Z), numbers (0-9),
 	or underscores (_), and must start with a letter or underscore.
 	The maximum length is 64 characters. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+// +optional
+Name *string `json:"name,omitempty"`
 
 	/* The order of this field with respect to other fields in this tag
 	template.
-
+	
 	For example, a higher value can indicate a more important field.
 	The value can be negative. Multiple fields can have the same order and
 	field orders within a tag don't have to be sequential. */
-	// +optional
-	Order *int32 `json:"order,omitempty"`
+// +optional
+Order *int32 `json:"order,omitempty"`
 
-	/* Required. The type of value this tag field can contain. */
-	// +optional
-	Type *TagtemplateType `json:"type,omitempty"`
+/* Required. The type of value this tag field can contain. */
+// +optional
+Type *TagtemplateType `json:"type,omitempty"`
 }
 
 type TagtemplateType struct {
-	/* An enum type. */
-	// +optional
-	EnumType *TagtemplateEnumType `json:"enumType,omitempty"`
+/* An enum type. */
+// +optional
+EnumType *TagtemplateEnumType `json:"enumType,omitempty"`
 
-	/* Primitive types, such as string, boolean, etc. */
-	// +optional
-	PrimitiveType *string `json:"primitiveType,omitempty"`
+/* Primitive types, such as string, boolean, etc. */
+// +optional
+PrimitiveType *string `json:"primitiveType,omitempty"`
 }
 
 type DataCatalogTagTemplateSpec struct {
 	/* Display name for this template. Defaults to an empty string.
-
+	
 	The name must contain only Unicode letters, numbers (0-9), underscores (_),
 	dashes (-), spaces ( ), and can't start or end with spaces.
 	The maximum length is 200 characters. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+// +optional
+DisplayName *string `json:"displayName,omitempty"`
 
-	/* Fields used to create a Tag */
-	// +optional
-	Fields map[string]TagtemplateFields `json:"fields,omitempty"`
+/* Fields used to create a Tag */
+// +optional
+Fields map[string]TagtemplateFields `json:"fields,omitempty"`
 
 	/* Indicates whether tags created with this template are public. Public tags
 	do not require tag template access to appear in
 	[ListTags][google.cloud.datacatalog.v1.DataCatalog.ListTags] API response.
-
+	
 	Additionally, you can search for a public tag by value with a
 	simple search query in addition to using a ``tag:`` predicate. */
-	// +optional
-	IsPubliclyReadable *bool `json:"isPubliclyReadable,omitempty"`
+// +optional
+IsPubliclyReadable *bool `json:"isPubliclyReadable,omitempty"`
 
-	Location string `json:"location"`
+Location string `json:"location"`
 
-	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The DataCatalogTagTemplate name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The DataCatalogTagTemplate name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type TagtemplateObservedStateStatus struct {
-	/* Optional. Transfer status of the TagTemplate */
-	// +optional
-	DataplexTransferStatus *string `json:"dataplexTransferStatus,omitempty"`
+/* Optional. Transfer status of the TagTemplate */
+// +optional
+DataplexTransferStatus *string `json:"dataplexTransferStatus,omitempty"`
 }
 
 type DataCatalogTagTemplateStatus struct {
 	/* Conditions represent the latest available observations of the
-	   DataCatalogTagTemplate's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the DataCatalogTagTemplate resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    DataCatalogTagTemplate's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the DataCatalogTagTemplate resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *TagtemplateObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *TagtemplateObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdatacatalogtagtemplate;gcpdatacatalogtagtemplates
@@ -187,22 +187,20 @@ type DataCatalogTagTemplateStatus struct {
 // DataCatalogTagTemplate is the Schema for the datacatalog API
 // +k8s:openapi-gen=true
 type DataCatalogTagTemplate struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   DataCatalogTagTemplateSpec   `json:"spec,omitempty"`
-	Status DataCatalogTagTemplateStatus `json:"status,omitempty"`
+  Spec DataCatalogTagTemplateSpec `json:"spec,omitempty"`
+  Status DataCatalogTagTemplateStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// DataCatalogTagTemplateList contains a list of DataCatalogTagTemplate
-type DataCatalogTagTemplateList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []DataCatalogTagTemplate `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&DataCatalogTagTemplate{}, &DataCatalogTagTemplateList{})
-}
+ // DataCatalogTagTemplateList contains a list of DataCatalogTagTemplate
+ type DataCatalogTagTemplateList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []DataCatalogTagTemplate `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&DataCatalogTagTemplate{}, &DataCatalogTagTemplateList{})
+ }

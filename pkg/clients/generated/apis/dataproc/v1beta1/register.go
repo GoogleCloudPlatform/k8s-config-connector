@@ -53,23 +53,25 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	DataprocAutoscalingPolicyGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DataprocAutoscalingPolicy{}).Name(),
-	}
+	
+  	DataprocAutoscalingPolicyGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(DataprocAutoscalingPolicy{}).Name(),
+  	}
+  
+  	DataprocClusterGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(DataprocCluster{}).Name(),
+  	}
+  
+  	DataprocWorkflowTemplateGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(DataprocWorkflowTemplate{}).Name(),
+  	}
+  
 
-	DataprocClusterGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DataprocCluster{}).Name(),
-	}
-
-	DataprocWorkflowTemplateGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DataprocWorkflowTemplate{}).Name(),
-	}
-
-	dataprocAPIVersion = SchemeGroupVersion.String()
+  	dataprocAPIVersion = SchemeGroupVersion.String()
 )

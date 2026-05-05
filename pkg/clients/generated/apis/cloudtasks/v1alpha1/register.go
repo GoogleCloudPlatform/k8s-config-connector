@@ -53,11 +53,13 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	TasksQueueGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(TasksQueue{}).Name(),
-	}
+	
+  	TasksQueueGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(TasksQueue{}).Name(),
+  	}
+  
 
-	cloudtasksAPIVersion = SchemeGroupVersion.String()
+  	cloudtasksAPIVersion = SchemeGroupVersion.String()
 )

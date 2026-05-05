@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,67 +30,66 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type TargetpoolHealthChecks struct {
-	// +optional
-	HttpHealthCheckRef *v1alpha1.ResourceRef `json:"httpHealthCheckRef,omitempty"`
+// +optional
+HttpHealthCheckRef *v1alpha1.ResourceRef `json:"httpHealthCheckRef,omitempty"`
 }
 
 type ComputeTargetPoolSpec struct {
-	// +optional
-	BackupTargetPoolRef *v1alpha1.ResourceRef `json:"backupTargetPoolRef,omitempty"`
+// +optional
+BackupTargetPoolRef *v1alpha1.ResourceRef `json:"backupTargetPoolRef,omitempty"`
 
-	/* Immutable. Textual description field. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* Immutable. Textual description field. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Immutable. Ratio (0 to 1) of failed nodes before using the backup pool (which must also be set). */
-	// +optional
-	FailoverRatio *float64 `json:"failoverRatio,omitempty"`
+/* Immutable. Ratio (0 to 1) of failed nodes before using the backup pool (which must also be set). */
+// +optional
+FailoverRatio *float64 `json:"failoverRatio,omitempty"`
 
-	// +optional
-	HealthChecks []TargetpoolHealthChecks `json:"healthChecks,omitempty"`
+// +optional
+HealthChecks []TargetpoolHealthChecks `json:"healthChecks,omitempty"`
 
-	// +optional
-	Instances []v1alpha1.ResourceRef `json:"instances,omitempty"`
+// +optional
+Instances []v1alpha1.ResourceRef `json:"instances,omitempty"`
 
-	/* Immutable. Where the target pool resides. Defaults to project region. */
-	Region string `json:"region"`
+/* Immutable. Where the target pool resides. Defaults to project region. */
+Region string `json:"region"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* The resource URL for the security policy associated with this target pool. */
-	// +optional
-	SecurityPolicyRef *v1alpha1.ResourceRef `json:"securityPolicyRef,omitempty"`
+/* The resource URL for the security policy associated with this target pool. */
+// +optional
+SecurityPolicyRef *v1alpha1.ResourceRef `json:"securityPolicyRef,omitempty"`
 
-	/* Immutable. How to distribute load. Options are "NONE" (no affinity). "CLIENT_IP" (hash of the source/dest addresses / ports), and "CLIENT_IP_PROTO" also includes the protocol (default "NONE"). */
-	// +optional
-	SessionAffinity *string `json:"sessionAffinity,omitempty"`
+/* Immutable. How to distribute load. Options are "NONE" (no affinity). "CLIENT_IP" (hash of the source/dest addresses / ports), and "CLIENT_IP_PROTO" also includes the protocol (default "NONE"). */
+// +optional
+SessionAffinity *string `json:"sessionAffinity,omitempty"`
 }
 
 type ComputeTargetPoolStatus struct {
 	/* Conditions represent the latest available observations of the
-	   ComputeTargetPool's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	    ComputeTargetPool's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* The URI of the created resource. */
-	// +optional
-	SelfLink *string `json:"selfLink,omitempty"`
+/* The URI of the created resource. */
+// +optional
+SelfLink *string `json:"selfLink,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputetargetpool;gcpcomputetargetpools
@@ -106,22 +106,20 @@ type ComputeTargetPoolStatus struct {
 // ComputeTargetPool is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeTargetPool struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ComputeTargetPoolSpec   `json:"spec,omitempty"`
-	Status ComputeTargetPoolStatus `json:"status,omitempty"`
+  Spec ComputeTargetPoolSpec `json:"spec,omitempty"`
+  Status ComputeTargetPoolStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// ComputeTargetPoolList contains a list of ComputeTargetPool
-type ComputeTargetPoolList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ComputeTargetPool `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&ComputeTargetPool{}, &ComputeTargetPoolList{})
-}
+ // ComputeTargetPoolList contains a list of ComputeTargetPool
+ type ComputeTargetPoolList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []ComputeTargetPool `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&ComputeTargetPool{}, &ComputeTargetPoolList{})
+ }

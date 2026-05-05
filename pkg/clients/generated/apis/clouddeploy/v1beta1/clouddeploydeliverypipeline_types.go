@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,356 +30,355 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type DeliverypipelineCanary struct {
-	/* Optional. Configures the progressive based deployment for a Target. */
-	// +optional
-	CanaryDeployment *DeliverypipelineCanaryDeployment `json:"canaryDeployment,omitempty"`
+/* Optional. Configures the progressive based deployment for a Target. */
+// +optional
+CanaryDeployment *DeliverypipelineCanaryDeployment `json:"canaryDeployment,omitempty"`
 
-	/* Optional. Configures the progressive based deployment for a Target, but allows customizing at the phase level where a phase represents each of the percentage deployments. */
-	// +optional
-	CustomCanaryDeployment *DeliverypipelineCustomCanaryDeployment `json:"customCanaryDeployment,omitempty"`
+/* Optional. Configures the progressive based deployment for a Target, but allows customizing at the phase level where a phase represents each of the percentage deployments. */
+// +optional
+CustomCanaryDeployment *DeliverypipelineCustomCanaryDeployment `json:"customCanaryDeployment,omitempty"`
 
-	/* Optional. Runtime specific configurations for the deployment strategy. The runtime configuration is used to determine how Cloud Deploy will split traffic to enable a progressive deployment. */
-	// +optional
-	RuntimeConfig *DeliverypipelineRuntimeConfig `json:"runtimeConfig,omitempty"`
+/* Optional. Runtime specific configurations for the deployment strategy. The runtime configuration is used to determine how Cloud Deploy will split traffic to enable a progressive deployment. */
+// +optional
+RuntimeConfig *DeliverypipelineRuntimeConfig `json:"runtimeConfig,omitempty"`
 }
 
 type DeliverypipelineCanaryDeployment struct {
-	/* Required. The percentage based deployments that will occur as a part of a `Rollout`. List is expected in ascending order and each integer n is 0 <= n < 100. If the GatewayServiceMesh is configured for Kubernetes, then the range for n is 0 <= n <= 100. */
-	// +optional
-	Percentages []int64 `json:"percentages,omitempty"`
+/* Required. The percentage based deployments that will occur as a part of a `Rollout`. List is expected in ascending order and each integer n is 0 <= n < 100. If the GatewayServiceMesh is configured for Kubernetes, then the range for n is 0 <= n <= 100. */
+// +optional
+Percentages []int64 `json:"percentages,omitempty"`
 
-	/* Optional. Configuration for the postdeploy job of the last phase. If this is not configured, there will be no postdeploy job for this phase. */
-	// +optional
-	Postdeploy *DeliverypipelinePostdeploy `json:"postdeploy,omitempty"`
+/* Optional. Configuration for the postdeploy job of the last phase. If this is not configured, there will be no postdeploy job for this phase. */
+// +optional
+Postdeploy *DeliverypipelinePostdeploy `json:"postdeploy,omitempty"`
 
-	/* Optional. Configuration for the predeploy job of the first phase. If this is not configured, there will be no predeploy job for this phase. */
-	// +optional
-	Predeploy *DeliverypipelinePredeploy `json:"predeploy,omitempty"`
+/* Optional. Configuration for the predeploy job of the first phase. If this is not configured, there will be no predeploy job for this phase. */
+// +optional
+Predeploy *DeliverypipelinePredeploy `json:"predeploy,omitempty"`
 
-	/* Optional. Whether to run verify tests after each percentage deployment via `skaffold verify`. */
-	// +optional
-	Verify *bool `json:"verify,omitempty"`
+/* Optional. Whether to run verify tests after each percentage deployment via `skaffold verify`. */
+// +optional
+Verify *bool `json:"verify,omitempty"`
 }
 
 type DeliverypipelineCloudRun struct {
-	/* Optional. Whether Cloud Deploy should update the traffic stanza in a Cloud Run Service on the user's behalf to facilitate traffic splitting. This is required to be true for CanaryDeployments, but optional for CustomCanaryDeployments. */
-	// +optional
-	AutomaticTrafficControl *bool `json:"automaticTrafficControl,omitempty"`
+/* Optional. Whether Cloud Deploy should update the traffic stanza in a Cloud Run Service on the user's behalf to facilitate traffic splitting. This is required to be true for CanaryDeployments, but optional for CustomCanaryDeployments. */
+// +optional
+AutomaticTrafficControl *bool `json:"automaticTrafficControl,omitempty"`
 
-	/* Optional. A list of tags that are added to the canary revision while the canary phase is in progress. */
-	// +optional
-	CanaryRevisionTags []string `json:"canaryRevisionTags,omitempty"`
+/* Optional. A list of tags that are added to the canary revision while the canary phase is in progress. */
+// +optional
+CanaryRevisionTags []string `json:"canaryRevisionTags,omitempty"`
 
-	/* Optional. A list of tags that are added to the prior revision while the canary phase is in progress. */
-	// +optional
-	PriorRevisionTags []string `json:"priorRevisionTags,omitempty"`
+/* Optional. A list of tags that are added to the prior revision while the canary phase is in progress. */
+// +optional
+PriorRevisionTags []string `json:"priorRevisionTags,omitempty"`
 
-	/* Optional. A list of tags that are added to the final stable revision when the stable phase is applied. */
-	// +optional
-	StableRevisionTags []string `json:"stableRevisionTags,omitempty"`
+/* Optional. A list of tags that are added to the final stable revision when the stable phase is applied. */
+// +optional
+StableRevisionTags []string `json:"stableRevisionTags,omitempty"`
 }
 
 type DeliverypipelineCustomCanaryDeployment struct {
-	/* Required. Configuration for each phase in the canary deployment in the order executed. */
-	// +optional
-	PhaseConfigs []DeliverypipelinePhaseConfigs `json:"phaseConfigs,omitempty"`
+/* Required. Configuration for each phase in the canary deployment in the order executed. */
+// +optional
+PhaseConfigs []DeliverypipelinePhaseConfigs `json:"phaseConfigs,omitempty"`
 }
 
 type DeliverypipelineDeployParameters struct {
-	/* Optional. Deploy parameters are applied to targets with match labels. If unspecified, deploy parameters are applied to all targets (including child targets of a multi-target). */
-	// +optional
-	MatchTargetLabels map[string]string `json:"matchTargetLabels,omitempty"`
+/* Optional. Deploy parameters are applied to targets with match labels. If unspecified, deploy parameters are applied to all targets (including child targets of a multi-target). */
+// +optional
+MatchTargetLabels map[string]string `json:"matchTargetLabels,omitempty"`
 
-	/* Required. Values are deploy parameters in key-value pairs. */
-	// +optional
-	Values map[string]string `json:"values,omitempty"`
+/* Required. Values are deploy parameters in key-value pairs. */
+// +optional
+Values map[string]string `json:"values,omitempty"`
 }
 
 type DeliverypipelineGatewayServiceMesh struct {
-	/* Required. Name of the Kubernetes Deployment whose traffic is managed by the specified HTTPRoute and Service. */
-	// +optional
-	Deployment *string `json:"deployment,omitempty"`
+/* Required. Name of the Kubernetes Deployment whose traffic is managed by the specified HTTPRoute and Service. */
+// +optional
+Deployment *string `json:"deployment,omitempty"`
 
-	/* Required. Name of the Gateway API HTTPRoute. */
-	// +optional
-	HttpRoute *string `json:"httpRoute,omitempty"`
+/* Required. Name of the Gateway API HTTPRoute. */
+// +optional
+HttpRoute *string `json:"httpRoute,omitempty"`
 
-	/* Optional. The label to use when selecting Pods for the Deployment and Service resources. This label must already be present in both resources. */
-	// +optional
-	PodSelectorLabel *string `json:"podSelectorLabel,omitempty"`
+/* Optional. The label to use when selecting Pods for the Deployment and Service resources. This label must already be present in both resources. */
+// +optional
+PodSelectorLabel *string `json:"podSelectorLabel,omitempty"`
 
-	/* Optional. Route destinations allow configuring the Gateway API HTTPRoute to be deployed to additional clusters. This option is available for multi-cluster service mesh set ups that require the route to exist in the clusters that call the service. If unspecified, the HTTPRoute will only be deployed to the Target cluster. */
-	// +optional
-	RouteDestinations *DeliverypipelineRouteDestinations `json:"routeDestinations,omitempty"`
+/* Optional. Route destinations allow configuring the Gateway API HTTPRoute to be deployed to additional clusters. This option is available for multi-cluster service mesh set ups that require the route to exist in the clusters that call the service. If unspecified, the HTTPRoute will only be deployed to the Target cluster. */
+// +optional
+RouteDestinations *DeliverypipelineRouteDestinations `json:"routeDestinations,omitempty"`
 
-	/* Optional. The time to wait for route updates to propagate. The maximum configurable time is 3 hours, in seconds format. If unspecified, there is no wait time. */
-	// +optional
-	RouteUpdateWaitTime *string `json:"routeUpdateWaitTime,omitempty"`
+/* Optional. The time to wait for route updates to propagate. The maximum configurable time is 3 hours, in seconds format. If unspecified, there is no wait time. */
+// +optional
+RouteUpdateWaitTime *string `json:"routeUpdateWaitTime,omitempty"`
 
-	/* Required. Name of the Kubernetes Service. */
-	// +optional
-	Service *string `json:"service,omitempty"`
+/* Required. Name of the Kubernetes Service. */
+// +optional
+Service *string `json:"service,omitempty"`
 
-	/* Optional. The amount of time to migrate traffic back from the canary Service to the original Service during the stable phase deployment. If specified, must be between 15s and 3600s. If unspecified, there is no cutback time. */
-	// +optional
-	StableCutbackDuration *string `json:"stableCutbackDuration,omitempty"`
+/* Optional. The amount of time to migrate traffic back from the canary Service to the original Service during the stable phase deployment. If specified, must be between 15s and 3600s. If unspecified, there is no cutback time. */
+// +optional
+StableCutbackDuration *string `json:"stableCutbackDuration,omitempty"`
 }
 
 type DeliverypipelineKubernetes struct {
-	/* Optional. Kubernetes Gateway API service mesh configuration. */
-	// +optional
-	GatewayServiceMesh *DeliverypipelineGatewayServiceMesh `json:"gatewayServiceMesh,omitempty"`
+/* Optional. Kubernetes Gateway API service mesh configuration. */
+// +optional
+GatewayServiceMesh *DeliverypipelineGatewayServiceMesh `json:"gatewayServiceMesh,omitempty"`
 
-	/* Optional. Kubernetes Service networking configuration. */
-	// +optional
-	ServiceNetworking *DeliverypipelineServiceNetworking `json:"serviceNetworking,omitempty"`
+/* Optional. Kubernetes Service networking configuration. */
+// +optional
+ServiceNetworking *DeliverypipelineServiceNetworking `json:"serviceNetworking,omitempty"`
 }
 
 type DeliverypipelinePhaseConfigs struct {
-	/* Required. Percentage deployment for the phase. */
-	// +optional
-	Percentage *int32 `json:"percentage,omitempty"`
+/* Required. Percentage deployment for the phase. */
+// +optional
+Percentage *int32 `json:"percentage,omitempty"`
 
-	/* Required. The ID to assign to the `Rollout` phase. This value must consist of lower-case letters, numbers, and hyphens, start with a letter and end with a letter or a number, and have a max length of 63 characters. In other words, it must match the following regex: `^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$`. */
-	// +optional
-	PhaseID *string `json:"phaseID,omitempty"`
+/* Required. The ID to assign to the `Rollout` phase. This value must consist of lower-case letters, numbers, and hyphens, start with a letter and end with a letter or a number, and have a max length of 63 characters. In other words, it must match the following regex: `^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$`. */
+// +optional
+PhaseID *string `json:"phaseID,omitempty"`
 
-	/* Optional. Configuration for the postdeploy job of this phase. If this is not configured, there will be no postdeploy job for this phase. */
-	// +optional
-	Postdeploy *DeliverypipelinePostdeploy `json:"postdeploy,omitempty"`
+/* Optional. Configuration for the postdeploy job of this phase. If this is not configured, there will be no postdeploy job for this phase. */
+// +optional
+Postdeploy *DeliverypipelinePostdeploy `json:"postdeploy,omitempty"`
 
-	/* Optional. Configuration for the predeploy job of this phase. If this is not configured, there will be no predeploy job for this phase. */
-	// +optional
-	Predeploy *DeliverypipelinePredeploy `json:"predeploy,omitempty"`
+/* Optional. Configuration for the predeploy job of this phase. If this is not configured, there will be no predeploy job for this phase. */
+// +optional
+Predeploy *DeliverypipelinePredeploy `json:"predeploy,omitempty"`
 
-	/* Optional. Skaffold profiles to use when rendering the manifest for this phase. These are in addition to the profiles list specified in the `DeliveryPipeline` stage. */
-	// +optional
-	Profiles []string `json:"profiles,omitempty"`
+/* Optional. Skaffold profiles to use when rendering the manifest for this phase. These are in addition to the profiles list specified in the `DeliveryPipeline` stage. */
+// +optional
+Profiles []string `json:"profiles,omitempty"`
 
-	/* Optional. Whether to run verify tests after the deployment via `skaffold verify`. */
-	// +optional
-	Verify *bool `json:"verify,omitempty"`
+/* Optional. Whether to run verify tests after the deployment via `skaffold verify`. */
+// +optional
+Verify *bool `json:"verify,omitempty"`
 }
 
 type DeliverypipelinePostdeploy struct {
-	/* Optional. A sequence of Skaffold custom actions to invoke during execution of the postdeploy job. */
-	// +optional
-	Actions []string `json:"actions,omitempty"`
+/* Optional. A sequence of Skaffold custom actions to invoke during execution of the postdeploy job. */
+// +optional
+Actions []string `json:"actions,omitempty"`
 }
 
 type DeliverypipelinePredeploy struct {
-	/* Optional. A sequence of Skaffold custom actions to invoke during execution of the predeploy job. */
-	// +optional
-	Actions []string `json:"actions,omitempty"`
+/* Optional. A sequence of Skaffold custom actions to invoke during execution of the predeploy job. */
+// +optional
+Actions []string `json:"actions,omitempty"`
 }
 
 type DeliverypipelineRouteDestinations struct {
-	/* Required. The clusters where the Gateway API HTTPRoute resource will be deployed to. Valid entries include the associated entities IDs configured in the Target resource and "@self" to include the Target cluster. */
-	// +optional
-	DestinationIDs []string `json:"destinationIDs,omitempty"`
+/* Required. The clusters where the Gateway API HTTPRoute resource will be deployed to. Valid entries include the associated entities IDs configured in the Target resource and "@self" to include the Target cluster. */
+// +optional
+DestinationIDs []string `json:"destinationIDs,omitempty"`
 
-	/* Optional. Whether to propagate the Kubernetes Service to the route destination clusters. The Service will always be deployed to the Target cluster even if the HTTPRoute is not. This option may be used to facilitate successful DNS lookup in the route destination clusters. Can only be set to true if destinations are specified. */
-	// +optional
-	PropagateService *bool `json:"propagateService,omitempty"`
+/* Optional. Whether to propagate the Kubernetes Service to the route destination clusters. The Service will always be deployed to the Target cluster even if the HTTPRoute is not. This option may be used to facilitate successful DNS lookup in the route destination clusters. Can only be set to true if destinations are specified. */
+// +optional
+PropagateService *bool `json:"propagateService,omitempty"`
 }
 
 type DeliverypipelineRuntimeConfig struct {
-	/* Optional. Cloud Run runtime configuration. */
-	// +optional
-	CloudRun *DeliverypipelineCloudRun `json:"cloudRun,omitempty"`
+/* Optional. Cloud Run runtime configuration. */
+// +optional
+CloudRun *DeliverypipelineCloudRun `json:"cloudRun,omitempty"`
 
-	/* Optional. Kubernetes runtime configuration. */
-	// +optional
-	Kubernetes *DeliverypipelineKubernetes `json:"kubernetes,omitempty"`
+/* Optional. Kubernetes runtime configuration. */
+// +optional
+Kubernetes *DeliverypipelineKubernetes `json:"kubernetes,omitempty"`
 }
 
 type DeliverypipelineSerialPipeline struct {
-	/* Optional. Each stage specifies configuration for a `Target`. The ordering of this list defines the promotion flow. */
-	// +optional
-	Stages []DeliverypipelineStages `json:"stages,omitempty"`
+/* Optional. Each stage specifies configuration for a `Target`. The ordering of this list defines the promotion flow. */
+// +optional
+Stages []DeliverypipelineStages `json:"stages,omitempty"`
 }
 
 type DeliverypipelineServiceNetworking struct {
-	/* Required. Name of the Kubernetes Deployment whose traffic is managed by the specified Service. */
-	// +optional
-	Deployment *string `json:"deployment,omitempty"`
+/* Required. Name of the Kubernetes Deployment whose traffic is managed by the specified Service. */
+// +optional
+Deployment *string `json:"deployment,omitempty"`
 
-	/* Optional. Whether to disable Pod overprovisioning. If Pod overprovisioning is disabled then Cloud Deploy will limit the number of total Pods used for the deployment strategy to the number of Pods the Deployment has on the cluster. */
-	// +optional
-	DisablePodOverprovisioning *bool `json:"disablePodOverprovisioning,omitempty"`
+/* Optional. Whether to disable Pod overprovisioning. If Pod overprovisioning is disabled then Cloud Deploy will limit the number of total Pods used for the deployment strategy to the number of Pods the Deployment has on the cluster. */
+// +optional
+DisablePodOverprovisioning *bool `json:"disablePodOverprovisioning,omitempty"`
 
-	/* Optional. The label to use when selecting Pods for the Deployment resource. This label must already be present in the Deployment. */
-	// +optional
-	PodSelectorLabel *string `json:"podSelectorLabel,omitempty"`
+/* Optional. The label to use when selecting Pods for the Deployment resource. This label must already be present in the Deployment. */
+// +optional
+PodSelectorLabel *string `json:"podSelectorLabel,omitempty"`
 
-	/* Required. Name of the Kubernetes Service. */
-	// +optional
-	Service *string `json:"service,omitempty"`
+/* Required. Name of the Kubernetes Service. */
+// +optional
+Service *string `json:"service,omitempty"`
 }
 
 type DeliverypipelineStages struct {
-	/* Optional. The deploy parameters to use for the target in this stage. */
-	// +optional
-	DeployParameters []DeliverypipelineDeployParameters `json:"deployParameters,omitempty"`
+/* Optional. The deploy parameters to use for the target in this stage. */
+// +optional
+DeployParameters []DeliverypipelineDeployParameters `json:"deployParameters,omitempty"`
 
-	/* Optional. Skaffold profiles to use when rendering the manifest for this stage's `Target`. */
-	// +optional
-	Profiles []string `json:"profiles,omitempty"`
+/* Optional. Skaffold profiles to use when rendering the manifest for this stage's `Target`. */
+// +optional
+Profiles []string `json:"profiles,omitempty"`
 
-	/* Optional. The strategy to use for a `Rollout` to this stage. */
-	// +optional
-	Strategy *DeliverypipelineStrategy `json:"strategy,omitempty"`
+/* Optional. The strategy to use for a `Rollout` to this stage. */
+// +optional
+Strategy *DeliverypipelineStrategy `json:"strategy,omitempty"`
 
-	/* Optional. The target_id to which this stage points. This field refers exclusively to the last segment of a target name. For example, this field would just be `my-target` (rather than `projects/project/locations/location/targets/my-target`). The location of the `Target` is inferred to be the same as the location of the `DeliveryPipeline` that contains this `Stage`. */
-	// +optional
-	TargetID *string `json:"targetID,omitempty"`
+/* Optional. The target_id to which this stage points. This field refers exclusively to the last segment of a target name. For example, this field would just be `my-target` (rather than `projects/project/locations/location/targets/my-target`). The location of the `Target` is inferred to be the same as the location of the `DeliveryPipeline` that contains this `Stage`. */
+// +optional
+TargetID *string `json:"targetID,omitempty"`
 }
 
 type DeliverypipelineStandard struct {
-	/* Optional. Configuration for the postdeploy job. If this is not configured, the postdeploy job will not be present. */
-	// +optional
-	Postdeploy *DeliverypipelinePostdeploy `json:"postdeploy,omitempty"`
+/* Optional. Configuration for the postdeploy job. If this is not configured, the postdeploy job will not be present. */
+// +optional
+Postdeploy *DeliverypipelinePostdeploy `json:"postdeploy,omitempty"`
 
-	/* Optional. Configuration for the predeploy job. If this is not configured, the predeploy job will not be present. */
-	// +optional
-	Predeploy *DeliverypipelinePredeploy `json:"predeploy,omitempty"`
+/* Optional. Configuration for the predeploy job. If this is not configured, the predeploy job will not be present. */
+// +optional
+Predeploy *DeliverypipelinePredeploy `json:"predeploy,omitempty"`
 
-	/* Optional. Whether to verify a deployment via `skaffold verify`. */
-	// +optional
-	Verify *bool `json:"verify,omitempty"`
+/* Optional. Whether to verify a deployment via `skaffold verify`. */
+// +optional
+Verify *bool `json:"verify,omitempty"`
 }
 
 type DeliverypipelineStrategy struct {
-	/* Optional. Canary deployment strategy provides progressive percentage based deployments to a Target. */
-	// +optional
-	Canary *DeliverypipelineCanary `json:"canary,omitempty"`
+/* Optional. Canary deployment strategy provides progressive percentage based deployments to a Target. */
+// +optional
+Canary *DeliverypipelineCanary `json:"canary,omitempty"`
 
-	/* Optional. Standard deployment strategy executes a single deploy and allows verifying the deployment. */
-	// +optional
-	Standard *DeliverypipelineStandard `json:"standard,omitempty"`
+/* Optional. Standard deployment strategy executes a single deploy and allows verifying the deployment. */
+// +optional
+Standard *DeliverypipelineStandard `json:"standard,omitempty"`
 }
 
 type CloudDeployDeliveryPipelineSpec struct {
-	/* User annotations. These attributes can only be set and used by the user, and not by Cloud Deploy. */
-	// +optional
-	Annotations map[string]string `json:"annotations,omitempty"`
+/* User annotations. These attributes can only be set and used by the user, and not by Cloud Deploy. */
+// +optional
+Annotations map[string]string `json:"annotations,omitempty"`
 
-	/* Description of the `DeliveryPipeline`. Max length is 255 characters. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* Description of the `DeliveryPipeline`. Max length is 255 characters. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Immutable. The location where the DeliveryPipeline should reside. */
-	Location string `json:"location"`
+/* Immutable. The location where the DeliveryPipeline should reside. */
+Location string `json:"location"`
 
-	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The GCP resource identifier. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The GCP resource identifier. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* SerialPipeline defines a sequential set of stages for a `DeliveryPipeline`. */
-	// +optional
-	SerialPipeline *DeliverypipelineSerialPipeline `json:"serialPipeline,omitempty"`
+/* SerialPipeline defines a sequential set of stages for a `DeliveryPipeline`. */
+// +optional
+SerialPipeline *DeliverypipelineSerialPipeline `json:"serialPipeline,omitempty"`
 
-	/* When suspended, no new releases or rollouts can be created, but in-progress ones will complete. */
-	// +optional
-	Suspended *bool `json:"suspended,omitempty"`
+/* When suspended, no new releases or rollouts can be created, but in-progress ones will complete. */
+// +optional
+Suspended *bool `json:"suspended,omitempty"`
 }
 
 type DeliverypipelineConditionStatus struct {
-	/* Details around the Pipeline's overall status. */
-	// +optional
-	PipelineReadyCondition *DeliverypipelinePipelineReadyConditionStatus `json:"pipelineReadyCondition,omitempty"`
+/* Details around the Pipeline's overall status. */
+// +optional
+PipelineReadyCondition *DeliverypipelinePipelineReadyConditionStatus `json:"pipelineReadyCondition,omitempty"`
 
-	/* Details around targets enumerated in the pipeline. */
-	// +optional
-	TargetsPresentCondition *DeliverypipelineTargetsPresentConditionStatus `json:"targetsPresentCondition,omitempty"`
+/* Details around targets enumerated in the pipeline. */
+// +optional
+TargetsPresentCondition *DeliverypipelineTargetsPresentConditionStatus `json:"targetsPresentCondition,omitempty"`
 
-	/* Details on the whether the targets enumerated in the pipeline are of the same type. */
-	// +optional
-	TargetsTypeCondition *DeliverypipelineTargetsTypeConditionStatus `json:"targetsTypeCondition,omitempty"`
+/* Details on the whether the targets enumerated in the pipeline are of the same type. */
+// +optional
+TargetsTypeCondition *DeliverypipelineTargetsTypeConditionStatus `json:"targetsTypeCondition,omitempty"`
 }
 
 type DeliverypipelineObservedStateStatus struct {
-	/* Output only. Information around the state of the Delivery Pipeline. */
-	// +optional
-	Condition *DeliverypipelineConditionStatus `json:"condition,omitempty"`
+/* Output only. Information around the state of the Delivery Pipeline. */
+// +optional
+Condition *DeliverypipelineConditionStatus `json:"condition,omitempty"`
 
-	/* Output only. Time at which the pipeline was created. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. Time at which the pipeline was created. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. Unique identifier of the `DeliveryPipeline`. */
-	// +optional
-	Uid *string `json:"uid,omitempty"`
+/* Output only. Unique identifier of the `DeliveryPipeline`. */
+// +optional
+Uid *string `json:"uid,omitempty"`
 
-	/* Output only. Most recent time at which the pipeline was updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. Most recent time at which the pipeline was updated. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type DeliverypipelinePipelineReadyConditionStatus struct {
-	/* True if the Pipeline is in a valid state. Otherwise at least one condition in `PipelineCondition` is in an invalid state. Iterate over those conditions and see which condition(s) has status = false to find out what is wrong with the Pipeline. */
-	// +optional
-	Status *bool `json:"status,omitempty"`
+/* True if the Pipeline is in a valid state. Otherwise at least one condition in `PipelineCondition` is in an invalid state. Iterate over those conditions and see which condition(s) has status = false to find out what is wrong with the Pipeline. */
+// +optional
+Status *bool `json:"status,omitempty"`
 
-	/* Last time the condition was updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Last time the condition was updated. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type DeliverypipelineTargetsPresentConditionStatus struct {
-	/* The list of Target names that do not exist. For example, `projects/{project_id}/locations/{location_name}/targets/{target_name}`. */
-	// +optional
-	MissingTargets []string `json:"missingTargets,omitempty"`
+/* The list of Target names that do not exist. For example, `projects/{project_id}/locations/{location_name}/targets/{target_name}`. */
+// +optional
+MissingTargets []string `json:"missingTargets,omitempty"`
 
-	/* True if there aren't any missing Targets. */
-	// +optional
-	Status *bool `json:"status,omitempty"`
+/* True if there aren't any missing Targets. */
+// +optional
+Status *bool `json:"status,omitempty"`
 
-	/* Last time the condition was updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Last time the condition was updated. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type DeliverypipelineTargetsTypeConditionStatus struct {
-	/* Human readable error message. */
-	// +optional
-	ErrorDetails *string `json:"errorDetails,omitempty"`
+/* Human readable error message. */
+// +optional
+ErrorDetails *string `json:"errorDetails,omitempty"`
 
-	/* True if the targets are all a comparable type. For example this is true if all targets are GKE clusters. This is false if some targets are Cloud Run targets and others are GKE clusters. */
-	// +optional
-	Status *bool `json:"status,omitempty"`
+/* True if the targets are all a comparable type. For example this is true if all targets are GKE clusters. This is false if some targets are Cloud Run targets and others are GKE clusters. */
+// +optional
+Status *bool `json:"status,omitempty"`
 }
 
 type CloudDeployDeliveryPipelineStatus struct {
 	/* Conditions represent the latest available observations of the
-	   CloudDeployDeliveryPipeline's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the DeployDeliveryPipeline resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    CloudDeployDeliveryPipeline's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the DeployDeliveryPipeline resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *DeliverypipelineObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *DeliverypipelineObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdeploydeliverypipeline;gcpdeploydeliverypipelines
@@ -393,22 +393,20 @@ type CloudDeployDeliveryPipelineStatus struct {
 // CloudDeployDeliveryPipeline is the Schema for the clouddeploy API
 // +k8s:openapi-gen=true
 type CloudDeployDeliveryPipeline struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   CloudDeployDeliveryPipelineSpec   `json:"spec,omitempty"`
-	Status CloudDeployDeliveryPipelineStatus `json:"status,omitempty"`
+  Spec CloudDeployDeliveryPipelineSpec `json:"spec,omitempty"`
+  Status CloudDeployDeliveryPipelineStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// CloudDeployDeliveryPipelineList contains a list of CloudDeployDeliveryPipeline
-type CloudDeployDeliveryPipelineList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []CloudDeployDeliveryPipeline `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&CloudDeployDeliveryPipeline{}, &CloudDeployDeliveryPipelineList{})
-}
+ // CloudDeployDeliveryPipelineList contains a list of CloudDeployDeliveryPipeline
+ type CloudDeployDeliveryPipelineList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []CloudDeployDeliveryPipeline `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&CloudDeployDeliveryPipeline{}, &CloudDeployDeliveryPipelineList{})
+ }

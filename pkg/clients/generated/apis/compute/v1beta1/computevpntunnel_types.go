@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,139 +30,138 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type VpntunnelSharedSecret struct {
-	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	// +optional
-	Value *string `json:"value,omitempty"`
+/* Value of the field. Cannot be used if 'valueFrom' is specified. */
+// +optional
+Value *string `json:"value,omitempty"`
 
-	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	// +optional
-	ValueFrom *VpntunnelValueFrom `json:"valueFrom,omitempty"`
+/* Source for the field's value. Cannot be used if 'value' is specified. */
+// +optional
+ValueFrom *VpntunnelValueFrom `json:"valueFrom,omitempty"`
 }
 
 type VpntunnelValueFrom struct {
-	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-	// +optional
-	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
+/* Reference to a value with the given key in the given Secret in the resource's namespace. */
+// +optional
+SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type ComputeVPNTunnelSpec struct {
-	/* Immutable. An optional description of this resource. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* Immutable. An optional description of this resource. */
+// +optional
+Description *string `json:"description,omitempty"`
 
 	/* Immutable. IKE protocol version to use when establishing the VPN tunnel with
 	peer VPN gateway.
 	Acceptable IKE versions are 1 or 2. Default version is 2. */
-	// +optional
-	IkeVersion *int64 `json:"ikeVersion,omitempty"`
+// +optional
+IkeVersion *int64 `json:"ikeVersion,omitempty"`
 
 	/* Immutable. Local traffic selector to use when establishing the VPN tunnel with
 	peer VPN gateway. The value should be a CIDR formatted string,
 	for example '192.168.0.0/16'. The ranges should be disjoint.
 	Only IPv4 is supported. */
-	// +optional
-	LocalTrafficSelector []string `json:"localTrafficSelector,omitempty"`
+// +optional
+LocalTrafficSelector []string `json:"localTrafficSelector,omitempty"`
 
-	/* Immutable. The interface ID of the external VPN gateway to which this VPN tunnel is connected. */
-	// +optional
-	PeerExternalGatewayInterface *int64 `json:"peerExternalGatewayInterface,omitempty"`
+/* Immutable. The interface ID of the external VPN gateway to which this VPN tunnel is connected. */
+// +optional
+PeerExternalGatewayInterface *int64 `json:"peerExternalGatewayInterface,omitempty"`
 
 	/* The peer side external VPN gateway to which this VPN tunnel
 	is connected. */
-	// +optional
-	PeerExternalGatewayRef *v1alpha1.ResourceRef `json:"peerExternalGatewayRef,omitempty"`
+// +optional
+PeerExternalGatewayRef *v1alpha1.ResourceRef `json:"peerExternalGatewayRef,omitempty"`
 
 	/* The peer side HA GCP VPN gateway to which this VPN tunnel is
 	connected. If provided, the VPN tunnel will automatically use the
 	same VPN gateway interface ID in the peer GCP VPN gateway. */
-	// +optional
-	PeerGCPGatewayRef *v1alpha1.ResourceRef `json:"peerGCPGatewayRef,omitempty"`
+// +optional
+PeerGCPGatewayRef *v1alpha1.ResourceRef `json:"peerGCPGatewayRef,omitempty"`
 
-	/* Immutable. IP address of the peer VPN gateway. Only IPv4 is supported. */
-	// +optional
-	PeerIp *string `json:"peerIp,omitempty"`
+/* Immutable. IP address of the peer VPN gateway. Only IPv4 is supported. */
+// +optional
+PeerIp *string `json:"peerIp,omitempty"`
 
-	/* Immutable. The region where the tunnel is located. If unset, is set to the region of 'target_vpn_gateway'. */
-	Region string `json:"region"`
+/* Immutable. The region where the tunnel is located. If unset, is set to the region of 'target_vpn_gateway'. */
+Region string `json:"region"`
 
 	/* Immutable. Remote traffic selector to use when establishing the VPN tunnel with
 	peer VPN gateway. The value should be a CIDR formatted string,
 	for example '192.168.0.0/16'. The ranges should be disjoint.
 	Only IPv4 is supported. */
-	// +optional
-	RemoteTrafficSelector []string `json:"remoteTrafficSelector,omitempty"`
+// +optional
+RemoteTrafficSelector []string `json:"remoteTrafficSelector,omitempty"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* The router to be used for dynamic routing. */
-	// +optional
-	RouterRef *v1alpha1.ResourceRef `json:"routerRef,omitempty"`
+/* The router to be used for dynamic routing. */
+// +optional
+RouterRef *v1alpha1.ResourceRef `json:"routerRef,omitempty"`
 
 	/* Immutable. Shared secret used to set the secure session between the Cloud VPN
 	gateway and the peer VPN gateway. */
-	SharedSecret VpntunnelSharedSecret `json:"sharedSecret"`
+SharedSecret VpntunnelSharedSecret `json:"sharedSecret"`
 
 	/* The ComputeTargetVPNGateway with which this VPN tunnel is
 	associated. */
-	// +optional
-	TargetVPNGatewayRef *v1alpha1.ResourceRef `json:"targetVPNGatewayRef,omitempty"`
+// +optional
+TargetVPNGatewayRef *v1alpha1.ResourceRef `json:"targetVPNGatewayRef,omitempty"`
 
-	/* Immutable. The interface ID of the VPN gateway with which this VPN tunnel is associated. */
-	// +optional
-	VpnGatewayInterface *int64 `json:"vpnGatewayInterface,omitempty"`
+/* Immutable. The interface ID of the VPN gateway with which this VPN tunnel is associated. */
+// +optional
+VpnGatewayInterface *int64 `json:"vpnGatewayInterface,omitempty"`
 
 	/* The ComputeVPNGateway with which this VPN tunnel is associated.
 	This must be used if a High Availability VPN gateway resource is
 	created. */
-	// +optional
-	VpnGatewayRef *v1alpha1.ResourceRef `json:"vpnGatewayRef,omitempty"`
+// +optional
+VpnGatewayRef *v1alpha1.ResourceRef `json:"vpnGatewayRef,omitempty"`
 }
 
 type ComputeVPNTunnelStatus struct {
 	/* Conditions represent the latest available observations of the
-	   ComputeVPNTunnel's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Creation timestamp in RFC3339 text format. */
-	// +optional
-	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+	    ComputeVPNTunnel's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* Creation timestamp in RFC3339 text format. */
+// +optional
+CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-	/* Detailed status message for the VPN tunnel. */
-	// +optional
-	DetailedStatus *string `json:"detailedStatus,omitempty"`
+/* Detailed status message for the VPN tunnel. */
+// +optional
+DetailedStatus *string `json:"detailedStatus,omitempty"`
 
 	/* The fingerprint used for optimistic locking of this resource.  Used
 	internally during updates. */
-	// +optional
-	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
+// +optional
+LabelFingerprint *string `json:"labelFingerprint,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// +optional
-	SelfLink *string `json:"selfLink,omitempty"`
+// +optional
+SelfLink *string `json:"selfLink,omitempty"`
 
-	/* Hash of the shared secret. */
-	// +optional
-	SharedSecretHash *string `json:"sharedSecretHash,omitempty"`
+/* Hash of the shared secret. */
+// +optional
+SharedSecretHash *string `json:"sharedSecretHash,omitempty"`
 
-	/* The unique identifier for the resource. This identifier is defined by the server. */
-	// +optional
-	TunnelId *string `json:"tunnelId,omitempty"`
+/* The unique identifier for the resource. This identifier is defined by the server. */
+// +optional
+TunnelId *string `json:"tunnelId,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputevpntunnel;gcpcomputevpntunnels
@@ -178,22 +178,20 @@ type ComputeVPNTunnelStatus struct {
 // ComputeVPNTunnel is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeVPNTunnel struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ComputeVPNTunnelSpec   `json:"spec,omitempty"`
-	Status ComputeVPNTunnelStatus `json:"status,omitempty"`
+  Spec ComputeVPNTunnelSpec `json:"spec,omitempty"`
+  Status ComputeVPNTunnelStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// ComputeVPNTunnelList contains a list of ComputeVPNTunnel
-type ComputeVPNTunnelList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ComputeVPNTunnel `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&ComputeVPNTunnel{}, &ComputeVPNTunnelList{})
-}
+ // ComputeVPNTunnelList contains a list of ComputeVPNTunnel
+ type ComputeVPNTunnelList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []ComputeVPNTunnel `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&ComputeVPNTunnel{}, &ComputeVPNTunnelList{})
+ }

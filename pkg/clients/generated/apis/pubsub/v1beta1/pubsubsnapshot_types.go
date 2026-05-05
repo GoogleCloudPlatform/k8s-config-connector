@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,58 +30,57 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type PubSubSnapshotSpec struct {
-	/* Optional. See [Creating and managing labels] (https://cloud.google.com/pubsub/docs/labels). */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
+/* Optional. See [Creating and managing labels] (https://cloud.google.com/pubsub/docs/labels). */
+// +optional
+Labels map[string]string `json:"labels,omitempty"`
 
-	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The subscription whose backlog the snapshot retains. Specifically, the created snapshot is guaranteed to retain: (a) The existing backlog on the subscription. More precisely, this is defined as the messages in the subscription's backlog that are unacknowledged upon the successful completion of the snapshots.create request; as well as: (b) Any messages published to the subscription's topic following the successful completion of the snapshots.create request. Format is projects/{project}/subscriptions/{sub}. */
-	PubSubSubscriptionRef v1alpha1.ResourceRef `json:"pubSubSubscriptionRef"`
+/* The subscription whose backlog the snapshot retains. Specifically, the created snapshot is guaranteed to retain: (a) The existing backlog on the subscription. More precisely, this is defined as the messages in the subscription's backlog that are unacknowledged upon the successful completion of the snapshots.create request; as well as: (b) Any messages published to the subscription's topic following the successful completion of the snapshots.create request. Format is projects/{project}/subscriptions/{sub}. */
+PubSubSubscriptionRef v1alpha1.ResourceRef `json:"pubSubSubscriptionRef"`
 
-	/* The PubSubSnapshot name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The PubSubSnapshot name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Optional. The name of the topic from which this snapshot is retaining messages. */
-	// +optional
-	TopicRef *v1alpha1.ResourceRef `json:"topicRef,omitempty"`
+/* Optional. The name of the topic from which this snapshot is retaining messages. */
+// +optional
+TopicRef *v1alpha1.ResourceRef `json:"topicRef,omitempty"`
 }
 
 type SnapshotObservedStateStatus struct {
-	/* Optional. The snapshot is guaranteed to exist up until this time. A newly-created snapshot expires no later than 7 days from the time of its creation. Its exact lifetime is determined at creation by the existing backlog in the source subscription. Specifically, the lifetime of the snapshot is `7 days - (age of oldest unacked message in the subscription)`. For example, consider a subscription whose oldest unacked message is 3 days old. If a snapshot is created from this subscription, the snapshot -- which will always capture this 3-day-old backlog as long as the snapshot exists -- will expire in 4 days. The service will refuse to create a snapshot that would expire in less than 1 hour after creation. */
-	// +optional
-	ExpireTime *string `json:"expireTime,omitempty"`
+/* Optional. The snapshot is guaranteed to exist up until this time. A newly-created snapshot expires no later than 7 days from the time of its creation. Its exact lifetime is determined at creation by the existing backlog in the source subscription. Specifically, the lifetime of the snapshot is `7 days - (age of oldest unacked message in the subscription)`. For example, consider a subscription whose oldest unacked message is 3 days old. If a snapshot is created from this subscription, the snapshot -- which will always capture this 3-day-old backlog as long as the snapshot exists -- will expire in 4 days. The service will refuse to create a snapshot that would expire in less than 1 hour after creation. */
+// +optional
+ExpireTime *string `json:"expireTime,omitempty"`
 }
 
 type PubSubSnapshotStatus struct {
 	/* Conditions represent the latest available observations of the
-	   PubSubSnapshot's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the PubSubSnapshot resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    PubSubSnapshot's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the PubSubSnapshot resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *SnapshotObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *SnapshotObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcppubsubsnapshot;gcppubsubsnapshots
@@ -95,22 +95,20 @@ type PubSubSnapshotStatus struct {
 // PubSubSnapshot is the Schema for the pubsub API
 // +k8s:openapi-gen=true
 type PubSubSnapshot struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   PubSubSnapshotSpec   `json:"spec,omitempty"`
-	Status PubSubSnapshotStatus `json:"status,omitempty"`
+  Spec PubSubSnapshotSpec `json:"spec,omitempty"`
+  Status PubSubSnapshotStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// PubSubSnapshotList contains a list of PubSubSnapshot
-type PubSubSnapshotList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []PubSubSnapshot `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&PubSubSnapshot{}, &PubSubSnapshotList{})
-}
+ // PubSubSnapshotList contains a list of PubSubSnapshot
+ type PubSubSnapshotList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []PubSubSnapshot `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&PubSubSnapshot{}, &PubSubSnapshotList{})
+ }

@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,93 +30,92 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type MetadatastoreDataplexConfig struct {
-	/* Optional. Whether or not Data Lineage synchronization is enabled for Vertex Pipelines. */
-	// +optional
-	EnabledPipelinesLineage *bool `json:"enabledPipelinesLineage,omitempty"`
+/* Optional. Whether or not Data Lineage synchronization is enabled for Vertex Pipelines. */
+// +optional
+EnabledPipelinesLineage *bool `json:"enabledPipelinesLineage,omitempty"`
 }
 
 type MetadatastoreEncryptionSpec struct {
-	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. The key needs to be in the same region as where the compute resource is created. */
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
+/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. The key needs to be in the same region as where the compute resource is created. */
+KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
 }
 
 type VertexAIMetadataStoreSpec struct {
-	/* Optional. Dataplex integration settings. */
-	// +optional
-	DataplexConfig *MetadatastoreDataplexConfig `json:"dataplexConfig,omitempty"`
+/* Optional. Dataplex integration settings. */
+// +optional
+DataplexConfig *MetadatastoreDataplexConfig `json:"dataplexConfig,omitempty"`
 
-	/* Description of the MetadataStore. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* Description of the MetadataStore. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Customer-managed encryption key spec for a Metadata Store. If set, this Metadata Store and all sub-resources of this Metadata Store are secured using this key. */
-	// +optional
-	EncryptionSpec *MetadatastoreEncryptionSpec `json:"encryptionSpec,omitempty"`
+/* Customer-managed encryption key spec for a Metadata Store. If set, this Metadata Store and all sub-resources of this Metadata Store are secured using this key. */
+// +optional
+EncryptionSpec *MetadatastoreEncryptionSpec `json:"encryptionSpec,omitempty"`
 
-	/* The project that this resource belongs to. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+/* The project that this resource belongs to. */
+// +optional
+ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/* The region of the Metadata Store. eg us-central1. */
-	// +optional
-	Region *string `json:"region,omitempty"`
+/* The region of the Metadata Store. eg us-central1. */
+// +optional
+Region *string `json:"region,omitempty"`
 
-	/* The VertexAIMetadataStore name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The VertexAIMetadataStore name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type MetadatastoreObservedStateStatus struct {
-	/* Output only. Timestamp when this MetadataStore was created. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. Timestamp when this MetadataStore was created. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. The resource name of the MetadataStore instance. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+/* Output only. The resource name of the MetadataStore instance. */
+// +optional
+Name *string `json:"name,omitempty"`
 
-	/* Output only. State information of the MetadataStore. */
-	// +optional
-	State *MetadatastoreStateStatus `json:"state,omitempty"`
+/* Output only. State information of the MetadataStore. */
+// +optional
+State *MetadatastoreStateStatus `json:"state,omitempty"`
 
-	/* Output only. Timestamp when this MetadataStore was last updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. Timestamp when this MetadataStore was last updated. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type MetadatastoreStateStatus struct {
-	/* The disk utilization of the MetadataStore in bytes. */
-	// +optional
-	DiskUtilizationBytes *int64 `json:"diskUtilizationBytes,omitempty"`
+/* The disk utilization of the MetadataStore in bytes. */
+// +optional
+DiskUtilizationBytes *int64 `json:"diskUtilizationBytes,omitempty"`
 }
 
 type VertexAIMetadataStoreStatus struct {
 	/* Conditions represent the latest available observations of the
-	   VertexAIMetadataStore's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the VertexAIMetadataStore resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    VertexAIMetadataStore's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the VertexAIMetadataStore resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *MetadatastoreObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *MetadatastoreObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpvertexaimetadatastore;gcpvertexaimetadatastores
@@ -131,22 +131,20 @@ type VertexAIMetadataStoreStatus struct {
 // VertexAIMetadataStore is the Schema for the vertexai API
 // +k8s:openapi-gen=true
 type VertexAIMetadataStore struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   VertexAIMetadataStoreSpec   `json:"spec,omitempty"`
-	Status VertexAIMetadataStoreStatus `json:"status,omitempty"`
+  Spec VertexAIMetadataStoreSpec `json:"spec,omitempty"`
+  Status VertexAIMetadataStoreStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// VertexAIMetadataStoreList contains a list of VertexAIMetadataStore
-type VertexAIMetadataStoreList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []VertexAIMetadataStore `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&VertexAIMetadataStore{}, &VertexAIMetadataStoreList{})
-}
+ // VertexAIMetadataStoreList contains a list of VertexAIMetadataStore
+ type VertexAIMetadataStoreList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []VertexAIMetadataStore `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&VertexAIMetadataStore{}, &VertexAIMetadataStoreList{})
+ }

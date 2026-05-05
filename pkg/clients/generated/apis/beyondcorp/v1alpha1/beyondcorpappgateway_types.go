@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,70 +30,69 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type BeyondCorpAppGatewaySpec struct {
-	/* Immutable. An arbitrary user-provided name for the AppGateway. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+/* Immutable. An arbitrary user-provided name for the AppGateway. */
+// +optional
+DisplayName *string `json:"displayName,omitempty"`
 
-	/* Immutable. The type of hosting used by the AppGateway. Default value: "HOST_TYPE_UNSPECIFIED" Possible values: ["HOST_TYPE_UNSPECIFIED", "GCP_REGIONAL_MIG"]. */
-	// +optional
-	HostType *string `json:"hostType,omitempty"`
+/* Immutable. The type of hosting used by the AppGateway. Default value: "HOST_TYPE_UNSPECIFIED" Possible values: ["HOST_TYPE_UNSPECIFIED", "GCP_REGIONAL_MIG"]. */
+// +optional
+HostType *string `json:"hostType,omitempty"`
 
-	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. The region of the AppGateway. */
-	Region string `json:"region"`
+/* Immutable. The region of the AppGateway. */
+Region string `json:"region"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. The type of network connectivity used by the AppGateway. Default value: "TYPE_UNSPECIFIED" Possible values: ["TYPE_UNSPECIFIED", "TCP_PROXY"]. */
-	// +optional
-	Type *string `json:"type,omitempty"`
+/* Immutable. The type of network connectivity used by the AppGateway. Default value: "TYPE_UNSPECIFIED" Possible values: ["TYPE_UNSPECIFIED", "TCP_PROXY"]. */
+// +optional
+Type *string `json:"type,omitempty"`
 }
 
 type AppgatewayAllocatedConnectionsStatus struct {
-	/* The ingress port of an allocated connection. */
-	// +optional
-	IngressPort *int64 `json:"ingressPort,omitempty"`
+/* The ingress port of an allocated connection. */
+// +optional
+IngressPort *int64 `json:"ingressPort,omitempty"`
 
-	/* The PSC uri of an allocated connection. */
-	// +optional
-	PscUri *string `json:"pscUri,omitempty"`
+/* The PSC uri of an allocated connection. */
+// +optional
+PscUri *string `json:"pscUri,omitempty"`
 }
 
 type BeyondCorpAppGatewayStatus struct {
 	/* Conditions represent the latest available observations of the
-	   BeyondCorpAppGateway's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A list of connections allocated for the Gateway. */
-	// +optional
-	AllocatedConnections []AppgatewayAllocatedConnectionsStatus `json:"allocatedConnections,omitempty"`
+	    BeyondCorpAppGateway's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A list of connections allocated for the Gateway. */
+// +optional
+AllocatedConnections []AppgatewayAllocatedConnectionsStatus `json:"allocatedConnections,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* Represents the different states of a AppGateway. */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* Represents the different states of a AppGateway. */
+// +optional
+State *string `json:"state,omitempty"`
 
-	/* Server-defined URI for this resource. */
-	// +optional
-	Uri *string `json:"uri,omitempty"`
+/* Server-defined URI for this resource. */
+// +optional
+Uri *string `json:"uri,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbeyondcorpappgateway;gcpbeyondcorpappgateways
@@ -109,22 +109,20 @@ type BeyondCorpAppGatewayStatus struct {
 // BeyondCorpAppGateway is the Schema for the beyondcorp API
 // +k8s:openapi-gen=true
 type BeyondCorpAppGateway struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   BeyondCorpAppGatewaySpec   `json:"spec,omitempty"`
-	Status BeyondCorpAppGatewayStatus `json:"status,omitempty"`
+  Spec BeyondCorpAppGatewaySpec `json:"spec,omitempty"`
+  Status BeyondCorpAppGatewayStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// BeyondCorpAppGatewayList contains a list of BeyondCorpAppGateway
-type BeyondCorpAppGatewayList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []BeyondCorpAppGateway `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&BeyondCorpAppGateway{}, &BeyondCorpAppGatewayList{})
-}
+ // BeyondCorpAppGatewayList contains a list of BeyondCorpAppGateway
+ type BeyondCorpAppGatewayList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []BeyondCorpAppGateway `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&BeyondCorpAppGateway{}, &BeyondCorpAppGatewayList{})
+ }

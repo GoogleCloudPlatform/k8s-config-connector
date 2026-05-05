@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +30,11 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -41,58 +42,57 @@ var _ = apiextensionsv1.JSON{}
 type DatabaseEncryptionConfig struct {
 	/* Fully qualified name of the KMS key to use to encrypt this database. This key
 	must exist in the same location as the Spanner Database. */
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
+KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
 }
 
 type SpannerDatabaseSpec struct {
 	/* Immutable. The dialect of the Cloud Spanner Database.
 	If it is not provided, "GOOGLE_STANDARD_SQL" will be used. Possible values: ["GOOGLE_STANDARD_SQL", "POSTGRESQL"]. */
-	// +optional
-	DatabaseDialect *string `json:"databaseDialect,omitempty"`
+// +optional
+DatabaseDialect *string `json:"databaseDialect,omitempty"`
 
 	/* An optional list of DDL statements to run inside the newly created
 	database. Statements can create tables, indexes, etc. These statements
 	execute atomically with the creation of the database: if there is an
 	error in any statement, the database is not created. */
-	// +optional
-	Ddl []string `json:"ddl,omitempty"`
+// +optional
+Ddl []string `json:"ddl,omitempty"`
 
-	// +optional
-	EnableDropProtection *bool `json:"enableDropProtection,omitempty"`
+// +optional
+EnableDropProtection *bool `json:"enableDropProtection,omitempty"`
 
-	/* Immutable. Encryption configuration for the database. */
-	// +optional
-	EncryptionConfig *DatabaseEncryptionConfig `json:"encryptionConfig,omitempty"`
+/* Immutable. Encryption configuration for the database. */
+// +optional
+EncryptionConfig *DatabaseEncryptionConfig `json:"encryptionConfig,omitempty"`
 
-	/* The instance to create the database on. */
-	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
+/* The instance to create the database on. */
+InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
 	/* The retention period for the database. The retention period must be between 1 hour
 	and 7 days, and can be specified in days, hours, minutes, or seconds. For example,
 	the values 1d, 24h, 1440m, and 86400s are equivalent. Default value is 1h.
 	If this property is used, you must avoid adding new DDL statements to 'ddl' that
 	update the database's version_retention_period. */
-	// +optional
-	VersionRetentionPeriod *string `json:"versionRetentionPeriod,omitempty"`
+// +optional
+VersionRetentionPeriod *string `json:"versionRetentionPeriod,omitempty"`
 }
 
 type SpannerDatabaseStatus struct {
 	/* Conditions represent the latest available observations of the
-	   SpannerDatabase's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	    SpannerDatabase's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* An explanation of the status of the database. */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* An explanation of the status of the database. */
+// +optional
+State *string `json:"state,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpspannerdatabase;gcpspannerdatabases
@@ -109,22 +109,20 @@ type SpannerDatabaseStatus struct {
 // SpannerDatabase is the Schema for the spanner API
 // +k8s:openapi-gen=true
 type SpannerDatabase struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   SpannerDatabaseSpec   `json:"spec,omitempty"`
-	Status SpannerDatabaseStatus `json:"status,omitempty"`
+  Spec SpannerDatabaseSpec `json:"spec,omitempty"`
+  Status SpannerDatabaseStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// SpannerDatabaseList contains a list of SpannerDatabase
-type SpannerDatabaseList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []SpannerDatabase `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&SpannerDatabase{}, &SpannerDatabaseList{})
-}
+ // SpannerDatabaseList contains a list of SpannerDatabase
+ type SpannerDatabaseList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []SpannerDatabase `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&SpannerDatabase{}, &SpannerDatabaseList{})
+ }

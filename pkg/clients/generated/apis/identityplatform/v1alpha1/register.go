@@ -53,35 +53,37 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	IdentityPlatformDefaultSupportedIDPConfigGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IdentityPlatformDefaultSupportedIDPConfig{}).Name(),
-	}
+	
+  	IdentityPlatformDefaultSupportedIDPConfigGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(IdentityPlatformDefaultSupportedIDPConfig{}).Name(),
+  	}
+  
+  	IdentityPlatformInboundSAMLConfigGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(IdentityPlatformInboundSAMLConfig{}).Name(),
+  	}
+  
+  	IdentityPlatformProjectDefaultConfigGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(IdentityPlatformProjectDefaultConfig{}).Name(),
+  	}
+  
+  	IdentityPlatformTenantDefaultSupportedIDPConfigGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(IdentityPlatformTenantDefaultSupportedIDPConfig{}).Name(),
+  	}
+  
+  	IdentityPlatformTenantInboundSAMLConfigGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(IdentityPlatformTenantInboundSAMLConfig{}).Name(),
+  	}
+  
 
-	IdentityPlatformInboundSAMLConfigGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IdentityPlatformInboundSAMLConfig{}).Name(),
-	}
-
-	IdentityPlatformProjectDefaultConfigGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IdentityPlatformProjectDefaultConfig{}).Name(),
-	}
-
-	IdentityPlatformTenantDefaultSupportedIDPConfigGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IdentityPlatformTenantDefaultSupportedIDPConfig{}).Name(),
-	}
-
-	IdentityPlatformTenantInboundSAMLConfigGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IdentityPlatformTenantInboundSAMLConfig{}).Name(),
-	}
-
-	identityplatformAPIVersion = SchemeGroupVersion.String()
+  	identityplatformAPIVersion = SchemeGroupVersion.String()
 )

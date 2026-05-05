@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,120 +30,119 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type InstanceFullManagementConfig struct {
-	/* Immutable. The IP address range for the cluster pod IPs. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick a specific range to use. */
-	// +optional
-	ClusterCidrBlock *string `json:"clusterCidrBlock,omitempty"`
+/* Immutable. The IP address range for the cluster pod IPs. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick a specific range to use. */
+// +optional
+ClusterCidrBlock *string `json:"clusterCidrBlock,omitempty"`
 
-	/* Immutable. The name of the existing secondary range in the cluster's subnetwork to use for pod IP addresses. Alternatively, cluster_cidr_block can be used to automatically create a GKE-managed one. */
-	// +optional
-	ClusterNamedRange *string `json:"clusterNamedRange,omitempty"`
+/* Immutable. The name of the existing secondary range in the cluster's subnetwork to use for pod IP addresses. Alternatively, cluster_cidr_block can be used to automatically create a GKE-managed one. */
+// +optional
+ClusterNamedRange *string `json:"clusterNamedRange,omitempty"`
 
-	/* Immutable. Master Authorized Network. Allows access to the k8s master from this block. */
-	// +optional
-	ManBlock *string `json:"manBlock,omitempty"`
+/* Immutable. Master Authorized Network. Allows access to the k8s master from this block. */
+// +optional
+ManBlock *string `json:"manBlock,omitempty"`
 
-	/* Immutable. The /28 network that the masters will use. */
-	// +optional
-	MasterIPv4CidrBlock *string `json:"masterIPv4CidrBlock,omitempty"`
+/* Immutable. The /28 network that the masters will use. */
+// +optional
+MasterIPv4CidrBlock *string `json:"masterIPv4CidrBlock,omitempty"`
 
-	/* Immutable. */
-	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+/* Immutable. */
+// +optional
+NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
-	/* Immutable. The IP address range for the cluster service IPs. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick a specific range to use. */
-	// +optional
-	ServicesCidrBlock *string `json:"servicesCidrBlock,omitempty"`
+/* Immutable. The IP address range for the cluster service IPs. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick a specific range to use. */
+// +optional
+ServicesCidrBlock *string `json:"servicesCidrBlock,omitempty"`
 
-	/* Immutable. The name of the existing secondary range in the cluster's subnetwork to use for service ClusterIPs. Alternatively, services_cidr_block can be used to automatically create a GKE-managed one. */
-	// +optional
-	ServicesNamedRange *string `json:"servicesNamedRange,omitempty"`
+/* Immutable. The name of the existing secondary range in the cluster's subnetwork to use for service ClusterIPs. Alternatively, services_cidr_block can be used to automatically create a GKE-managed one. */
+// +optional
+ServicesNamedRange *string `json:"servicesNamedRange,omitempty"`
 }
 
 type InstanceManagementConfig struct {
-	/* Immutable. Configuration of the full (Autopilot) cluster management */
-	// +optional
-	FullManagementConfig *InstanceFullManagementConfig `json:"fullManagementConfig,omitempty"`
+/* Immutable. Configuration of the full (Autopilot) cluster management */
+// +optional
+FullManagementConfig *InstanceFullManagementConfig `json:"fullManagementConfig,omitempty"`
 
-	/* Immutable. Configuration of the standard (GKE) cluster management */
-	// +optional
-	StandardManagementConfig *InstanceStandardManagementConfig `json:"standardManagementConfig,omitempty"`
+/* Immutable. Configuration of the standard (GKE) cluster management */
+// +optional
+StandardManagementConfig *InstanceStandardManagementConfig `json:"standardManagementConfig,omitempty"`
 }
 
 type InstanceStandardManagementConfig struct {
-	/* Immutable. The IP address range for the cluster pod IPs. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick a specific range to use. */
-	// +optional
-	ClusterCidrBlock *string `json:"clusterCidrBlock,omitempty"`
+/* Immutable. The IP address range for the cluster pod IPs. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick a specific range to use. */
+// +optional
+ClusterCidrBlock *string `json:"clusterCidrBlock,omitempty"`
 
-	/* Immutable. The name of the existing secondary range in the cluster's subnetwork to use for pod IP addresses. Alternatively, cluster_cidr_block can be used to automatically create a GKE-managed one. */
-	// +optional
-	ClusterNamedRange *string `json:"clusterNamedRange,omitempty"`
+/* Immutable. The name of the existing secondary range in the cluster's subnetwork to use for pod IP addresses. Alternatively, cluster_cidr_block can be used to automatically create a GKE-managed one. */
+// +optional
+ClusterNamedRange *string `json:"clusterNamedRange,omitempty"`
 
-	/* Immutable. Master Authorized Network. Allows access to the k8s master from this block. */
-	// +optional
-	ManBlock *string `json:"manBlock,omitempty"`
+/* Immutable. Master Authorized Network. Allows access to the k8s master from this block. */
+// +optional
+ManBlock *string `json:"manBlock,omitempty"`
 
-	/* Immutable. The /28 network that the masters will use. */
-	MasterIPv4CidrBlock string `json:"masterIPv4CidrBlock"`
+/* Immutable. The /28 network that the masters will use. */
+MasterIPv4CidrBlock string `json:"masterIPv4CidrBlock"`
 
-	/* Immutable. */
-	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+/* Immutable. */
+// +optional
+NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
-	/* Immutable. The IP address range for the cluster service IPs. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick a specific range to use. */
-	// +optional
-	ServicesCidrBlock *string `json:"servicesCidrBlock,omitempty"`
+/* Immutable. The IP address range for the cluster service IPs. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick a specific range to use. */
+// +optional
+ServicesCidrBlock *string `json:"servicesCidrBlock,omitempty"`
 
-	/* Immutable. The name of the existing secondary range in the cluster's subnetwork to use for service ClusterIPs. Alternatively, services_cidr_block can be used to automatically create a GKE-managed one. */
-	// +optional
-	ServicesNamedRange *string `json:"servicesNamedRange,omitempty"`
+/* Immutable. The name of the existing secondary range in the cluster's subnetwork to use for service ClusterIPs. Alternatively, services_cidr_block can be used to automatically create a GKE-managed one. */
+// +optional
+ServicesNamedRange *string `json:"servicesNamedRange,omitempty"`
 }
 
 type ConfigControllerInstanceSpec struct {
-	/* Immutable. The location for the resource */
-	Location string `json:"location"`
+/* Immutable. The location for the resource */
+Location string `json:"location"`
 
-	/* Immutable. Configuration of the cluster management */
-	ManagementConfig InstanceManagementConfig `json:"managementConfig"`
+/* Immutable. Configuration of the cluster management */
+ManagementConfig InstanceManagementConfig `json:"managementConfig"`
 
-	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* Immutable. The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. Only allow access to the master's private endpoint IP. */
-	// +optional
-	UsePrivateEndpoint *bool `json:"usePrivateEndpoint,omitempty"`
+/* Immutable. Only allow access to the master's private endpoint IP. */
+// +optional
+UsePrivateEndpoint *bool `json:"usePrivateEndpoint,omitempty"`
 }
 
 type ConfigControllerInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
-	   ConfigControllerInstance's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Output only. KrmApiHost GCP self link used for identifying the underlying endpoint (GKE cluster currently). */
-	// +optional
-	GkeResourceLink *string `json:"gkeResourceLink,omitempty"`
+	    ConfigControllerInstance's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* Output only. KrmApiHost GCP self link used for identifying the underlying endpoint (GKE cluster currently). */
+// +optional
+GkeResourceLink *string `json:"gkeResourceLink,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* Output only. The current state of the internal state machine for the KrmApiHost. Possible values: STATE_UNSPECIFIED, CREATING, RUNNING, DELETING, SUSPENDED, READ_ONLY */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* Output only. The current state of the internal state machine for the KrmApiHost. Possible values: STATE_UNSPECIFIED, CREATING, RUNNING, DELETING, SUSPENDED, READ_ONLY */
+// +optional
+State *string `json:"state,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpconfigcontrollerinstance;gcpconfigcontrollerinstances
@@ -159,22 +159,20 @@ type ConfigControllerInstanceStatus struct {
 // ConfigControllerInstance is the Schema for the configcontroller API
 // +k8s:openapi-gen=true
 type ConfigControllerInstance struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ConfigControllerInstanceSpec   `json:"spec,omitempty"`
-	Status ConfigControllerInstanceStatus `json:"status,omitempty"`
+  Spec ConfigControllerInstanceSpec `json:"spec,omitempty"`
+  Status ConfigControllerInstanceStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// ConfigControllerInstanceList contains a list of ConfigControllerInstance
-type ConfigControllerInstanceList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ConfigControllerInstance `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&ConfigControllerInstance{}, &ConfigControllerInstanceList{})
-}
+ // ConfigControllerInstanceList contains a list of ConfigControllerInstance
+ type ConfigControllerInstanceList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []ConfigControllerInstance `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&ConfigControllerInstance{}, &ConfigControllerInstanceList{})
+ }
