@@ -13,6 +13,15 @@ metadata:
   namespace: ${uniqueId}
 spec:
   authorizationMode: IAM_AUTH
+  automatedBackupConfig:
+    automatedBackupMode: ENABLED
+    fixedFrequencySchedule:
+      startTime:
+        hours: 3
+        minutes: 0
+        nanos: 0
+        seconds: 0
+    retention: 432000s
   deletionProtectionEnabled: false
   endpoints:
   - connections:
