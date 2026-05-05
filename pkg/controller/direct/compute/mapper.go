@@ -383,6 +383,26 @@ func ReservationLocalSsds_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Res
 	return out
 }
 
+func ComputeReservationObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.ComputeReservationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeReservationObservedState{}
+	out.ID = Uint64_FromProto(in.Id)
+	out.ResourceStatus = AllocationResourceStatus_v1beta1_FromProto(mapCtx, in.GetResourceStatus())
+	return out
+}
+
+func ComputeReservationObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeReservationObservedState) *pb.Reservation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Reservation{}
+	out.Id = Uint64_ToProto(in.ID)
+	out.ResourceStatus = AllocationResourceStatus_v1beta1_ToProto(mapCtx, in.ResourceStatus)
+	return out
+}
+
 func Int32_FromProto(in *int64) *int32 {
 	if in == nil {
 		return nil
@@ -396,5 +416,21 @@ func Int32_ToProto(in *int32) *int64 {
 		return nil
 	}
 	out := int64(*in)
+	return &out
+}
+
+func Uint64_FromProto(in *uint64) *int64 {
+	if in == nil {
+		return nil
+	}
+	out := int64(*in)
+	return &out
+}
+
+func Uint64_ToProto(in *int64) *uint64 {
+	if in == nil {
+		return nil
+	}
+	out := uint64(*in)
 	return &out
 }
