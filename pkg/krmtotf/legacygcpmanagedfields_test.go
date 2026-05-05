@@ -99,7 +99,7 @@ func TestResolveGCPManagedFields(t *testing.T) {
 			name: "ContainerCluster with remove-default-node-pool true and allow-node-config true removes applied nodeConfig to suppress diffs",
 			kind: "ContainerCluster",
 			annotations: map[string]string{
-				"cnrm.cloud.google.com/remove-default-node-pool":              "true",
+				"cnrm.cloud.google.com/remove-default-node-pool":                   "true",
 				"cnrm.cloud.google.com/remove-default-node-pool-allow-node-config": "true",
 			},
 			lastAppliedConfig: map[string]interface{}{
