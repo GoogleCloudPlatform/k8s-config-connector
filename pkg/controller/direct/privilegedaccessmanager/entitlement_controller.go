@@ -32,6 +32,8 @@ import (
 	privilegedaccessmanagerpb "cloud.google.com/go/privilegedaccessmanager/apiv1/privilegedaccessmanagerpb"
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/api/option"
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
+	iamapi "cloud.google.com/go/iam/apiv1"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -67,6 +69,20 @@ func (m *entitlementModel) client(ctx context.Context) (*gcp.Client, error) {
 	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building PrivilegedAccessManager client for Entitlement: %w", err)
+	}
+	return gcpClient, err
+}
+
+func (m *entitlementModel) iamClient(ctx context.Context) (*iamapi.IamPolicyClient, error) {
+	var opts []option.ClientOption
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	opts = append(opts, option.WithEndpoint("privilegedaccessmanager.googleapis.com"))
+	gcpClient, err := iamapi.NewIamPolicyRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building IAM Policy client: %w", err)
 	}
 	return gcpClient, err
 }
@@ -139,9 +155,14 @@ func (m *entitlementModel) AdapterForObject(ctx context.Context, op *directbase.
 	if err != nil {
 		return nil, err
 	}
+	iamClient, err := m.iamClient(ctx)
+	if err != nil {
+		return nil, err
+	}
 	return &Adapter{
 		id:        id,
 		gcpClient: gcpClient,
+		iamClient: iamClient,
 		desired:   obj,
 	}, nil
 }
@@ -209,13 +230,35 @@ func oneOfContainer(ctx context.Context, reader client.Reader, obj *krm.Privileg
 }
 
 func (m *entitlementModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	// Format is //privilegedaccessmanager.googleapis.com/projects/PROJECT_ID/locations/LOCATION/entitlements/ENTITLEMENT_ID
+	if !strings.HasPrefix(url, serviceDomain) {
+		return nil, nil
+	}
+
+	id, err := asID(url)
+	if err != nil {
+		return nil, err
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+	iamClient, err := m.iamClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &Adapter{
+		id:        id,
+		gcpClient: gcpClient,
+		iamClient: iamClient,
+	}, nil
 }
 
 type Adapter struct {
 	id        *PrivilegedAccessManagerEntitlementIdentity
 	gcpClient *gcp.Client
+	iamClient *iamapi.IamPolicyClient
 	desired   *krm.PrivilegedAccessManagerEntitlement
 	actual    *privilegedaccessmanagerpb.Entitlement
 }
@@ -472,6 +515,31 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 
 	log.V(2).Info("successfully deleted PrivilegedAccessManagerEntitlement", "name", a.id.FullyQualifiedName())
 	return true, nil
+}
+
+func (a *Adapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.FullyQualifiedName(),
+	}
+	policy, err := a.iamClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting IAM policy for %q: %w", a.id.FullyQualifiedName(), err)
+	}
+
+	return policy, nil
+}
+
+func (a *Adapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.FullyQualifiedName(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.iamClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting IAM policy for %q: %w", a.id.FullyQualifiedName(), err)
+	}
+
+	return newPolicy, nil
 }
 
 func setStatus(u *unstructured.Unstructured, typedStatus any) error {
