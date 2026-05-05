@@ -389,60 +389,6 @@ func ComputeNodeTemplateStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: StatusMessage
 	return out
 }
-func ComputeReservationObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.ComputeReservationObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ComputeReservationObservedState{}
-	// MISSING: AdvancedDeploymentControl
-	// MISSING: AggregateReservation
-	// MISSING: Commitment
-	// MISSING: CreationTimestamp
-	// MISSING: DeleteAfterDuration
-	// MISSING: DeleteAtTime
-	// MISSING: DeploymentType
-	// MISSING: EnableEmergentMaintenance
-	out.ID = in.Id
-	// MISSING: Kind
-	// MISSING: LinkedCommitments
-	// MISSING: Name
-	// MISSING: ReservationSharingPolicy
-	// MISSING: ResourcePolicies
-	out.ResourceStatus = AllocationResourceStatus_v1beta1_FromProto(mapCtx, in.GetResourceStatus())
-	// MISSING: SatisfiesPzs
-	// MISSING: SchedulingType
-	// MISSING: SelfLink
-	// MISSING: ShareSettings
-	// MISSING: Status
-	return out
-}
-func ComputeReservationObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeReservationObservedState) *pb.Reservation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Reservation{}
-	// MISSING: AdvancedDeploymentControl
-	// MISSING: AggregateReservation
-	// MISSING: Commitment
-	// MISSING: CreationTimestamp
-	// MISSING: DeleteAfterDuration
-	// MISSING: DeleteAtTime
-	// MISSING: DeploymentType
-	// MISSING: EnableEmergentMaintenance
-	out.Id = in.ID
-	// MISSING: Kind
-	// MISSING: LinkedCommitments
-	// MISSING: Name
-	// MISSING: ReservationSharingPolicy
-	// MISSING: ResourcePolicies
-	out.ResourceStatus = AllocationResourceStatus_v1beta1_ToProto(mapCtx, in.ResourceStatus)
-	// MISSING: SatisfiesPzs
-	// MISSING: SchedulingType
-	// MISSING: SelfLink
-	// MISSING: ShareSettings
-	// MISSING: Status
-	return out
-}
 func ComputeReservationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.ComputeReservationSpec {
 	if in == nil {
 		return nil
