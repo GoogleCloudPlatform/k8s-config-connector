@@ -127,13 +127,6 @@ func (in *GKEHubMembershipBindingSpec) DeepCopyInto(out *GKEHubMembershipBinding
 	*out = *in
 	out.MembershipRef = in.MembershipRef
 	out.ScopeRef = in.ScopeRef
-	if in.Labels != nil {
-		in, out := &in.Labels, &out.Labels
-		*out = make(map[string]string, len(*in))
-		for key, val := range *in {
-			(*out)[key] = val
-		}
-	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)

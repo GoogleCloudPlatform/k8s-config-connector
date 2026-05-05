@@ -35,10 +35,6 @@ type GKEHubMembershipBindingSpec struct {
 	/* Immutable. The scope that this binding is bound to. */
 	ScopeRef GKEHubScopeRef `json:"scopeRef"`
 
-	/* Optional. Labels for the GKEHubMembershipBinding. */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
-
 	/* Immutable. Optional. The resourceID of the resource; if not provided, the name of the resource will be used as the resourceID. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
