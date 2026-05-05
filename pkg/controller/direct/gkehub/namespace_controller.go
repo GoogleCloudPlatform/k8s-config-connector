@@ -17,7 +17,6 @@ package gkehub
 import (
 	"context"
 	"fmt"
-	"reflect"
 	"time"
 
 	gkehubv1 "google.golang.org/api/gkehub/v1"
@@ -31,7 +30,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -174,21 +172,6 @@ func (a *gkeHubNamespaceAdapter) Update(ctx context.Context, updateOp *directbas
 		return err
 	}
 
-	// But we still use structured reporting to report any diffs
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-
-	// Manual comparison for labels and namespaceLabels
-	if !reflect.DeepEqual(a.desired.Spec.Labels, a.actual.Labels) {
-		report.AddField("spec.labels", a.actual.Labels, a.desired.Spec.Labels)
-	}
-	if !reflect.DeepEqual(a.desired.Spec.NamespaceLabels, a.actual.NamespaceLabels) {
-		report.AddField("spec.namespaceLabels", a.actual.NamespaceLabels, a.desired.Spec.NamespaceLabels)
-	}
-
-	if len(report.Fields) > 0 {
-		structuredreporting.ReportDiff(ctx, report)
-	}
-
 	// For now, GKEHubNamespace is immutable, so we don't call Patch.
 
 	// Update status
@@ -252,11 +235,6 @@ func (a *gkeHubNamespaceAdapter) waitForOp(ctx context.Context, op *gkehubv1.Ope
 }
 
 func (a *gkeHubNamespaceAdapter) normalizeReferences(ctx context.Context) error {
-	if a.desired.Spec.ProjectRef != nil {
-		if err := a.desired.Spec.ProjectRef.Normalize(ctx, a.reader, a.desired.Namespace); err != nil {
-			return err
-		}
-	}
 	if a.desired.Spec.ScopeRef != nil {
 		if err := a.desired.Spec.ScopeRef.Normalize(ctx, a.reader, a.desired.Namespace); err != nil {
 			return err

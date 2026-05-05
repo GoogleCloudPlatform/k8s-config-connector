@@ -65,9 +65,6 @@ spec:
                   type: string
                 description: Optional. Labels for this Namespace.
                 type: object
-              location:
-                description: Immutable. The location for the resource
-                type: string
               namespaceID:
                 description: Immutable. The namespaceID of the resource.
                 maxLength: 63
@@ -84,38 +81,6 @@ spec:
                   bound to the parent Scope. Scope-level labels (namespace_labels
                   in the Fleet Scope resource) take precedence over Namespace-level
                   labels if they share a key. Keys and values must be Kubernetes-conformant.
-                type: object
-              projectRef:
-                description: Immutable. The Project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
-                  name:
-                    description: The `name` field of a `Project` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `Project` resource.
-                    type: string
                 type: object
               resourceID:
                 description: Immutable. Optional. The name of the resource. Used for
