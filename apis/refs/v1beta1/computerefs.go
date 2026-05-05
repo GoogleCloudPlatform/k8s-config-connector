@@ -231,15 +231,6 @@ type ComputeTargetVPNGatewayRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-type ComputeNodeTemplateRef struct {
-	/* The ComputeNodeTemplate selflink in the form "projects/{{project}}/regions/{{region}}/nodeTemplates/{{name}}" when not managed by Config Connector. */
-	External string `json:"external,omitempty"`
-	/* The `name` field of a `ComputeNodeTemplate` resource. */
-	Name string `json:"name,omitempty"`
-	/* The `namespace` field of a `ComputeNodeTemplate` resource. */
-	Namespace string `json:"namespace,omitempty"`
-}
-
 type ComputeFirewallPolicyRef struct {
 	// A reference to an externally managed ComputeFirewallPolicy resource.
 	// Should be in the format `locations/global/firewallPolicies/{{firewallPolicyID}}`.

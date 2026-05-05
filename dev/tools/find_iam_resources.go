@@ -19,7 +19,6 @@ import (
 	"sort"
 	"strings"
 
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"

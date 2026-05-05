@@ -52,12 +52,12 @@ type NodeGroupMaintenanceWindow struct {
 	StartTime *string `json:"startTime"`
 }
 
-type ComputeNodeGroupProjectRef struct {
-	/* The `projectID` field of a project, when not managed by Config Connector. */
+type ComputeNodeTemplateRef struct {
+	/* The ComputeNodeTemplate selflink in the form "projects/{{project}}/regions/{{region}}/nodeTemplates/{{name}}" when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
-	/* The `name` field of a `Project` resource. */
+	/* The `name` field of a `ComputeNodeTemplate` resource. */
 	Name string `json:"name,omitempty"`
-	/* The `namespace` field of a `Project` resource. */
+	/* The `namespace` field of a `ComputeNodeTemplate` resource. */
 	Namespace string `json:"namespace,omitempty"`
 }
 
@@ -65,13 +65,13 @@ type ComputeNodeGroupProjectRef struct {
 type NodeGroupProjectMap struct {
 	/* The key of this project config in the parent map. */
 	// +required
-	IdRef ComputeNodeGroupProjectRef `json:"idRef"`
+	IdRef refsv1beta1.ProjectRef `json:"idRef"`
 
 	/* The project id/number should be the same as the key of this project
 	config in the project map. */
 	// +required
 	// +kcc:proto:field=google.cloud.compute.v1.ShareSettingsProjectConfig.project_id
-	ProjectIdRef ComputeNodeGroupProjectRef `json:"projectIdRef"`
+	ProjectIdRef refsv1beta1.ProjectRef `json:"projectIdRef"`
 }
 
 // +kcc:proto=google.cloud.compute.v1.ShareSettings
@@ -112,7 +112,7 @@ type ComputeNodeGroupSpec struct {
 	/* The node template to which this node group belongs. */
 	// +required
 	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.node_template
-	NodeTemplateRef *refsv1beta1.ComputeNodeTemplateRef `json:"nodeTemplateRef"`
+	NodeTemplateRef *ComputeNodeTemplateRef `json:"nodeTemplateRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	ResourceID *string `json:"resourceID,omitempty"`

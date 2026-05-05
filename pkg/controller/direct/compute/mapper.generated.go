@@ -24,7 +24,6 @@ import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -233,7 +232,7 @@ func ComputeNodeGroupSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.No
 	out.MaintenanceWindow = NodeGroupMaintenanceWindow_v1beta1_FromProto(mapCtx, in.GetMaintenanceWindow())
 	// MISSING: Name
 	if in.GetNodeTemplate() != "" {
-		out.NodeTemplateRef = &refsv1beta1.ComputeNodeTemplateRef{External: in.GetNodeTemplate()}
+		out.NodeTemplateRef = &krm.ComputeNodeTemplateRef{External: in.GetNodeTemplate()}
 	}
 	// MISSING: SelfLink
 	out.ShareSettings = NodeGroupShareSettings_v1beta1_FromProto(mapCtx, in.GetShareSettings())

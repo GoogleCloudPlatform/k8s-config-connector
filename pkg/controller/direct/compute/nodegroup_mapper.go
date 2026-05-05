@@ -26,7 +26,7 @@ func NodeGroupProjectMap_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Sha
 	}
 	out := &krm.NodeGroupProjectMap{}
 	if in.ProjectId != nil {
-		out.ProjectIdRef = krm.ComputeNodeGroupProjectRef{External: *in.ProjectId}
+		out.ProjectIdRef.External = *in.ProjectId
 	}
 	return out
 }
@@ -50,7 +50,7 @@ func NodeGroupShareSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 	if in.ProjectMap != nil {
 		for k, v := range in.ProjectMap {
 			item := NodeGroupProjectMap_v1beta1_FromProto(mapCtx, v)
-			item.IdRef = krm.ComputeNodeGroupProjectRef{External: k}
+			item.IdRef.External = k
 			out.ProjectMap = append(out.ProjectMap, *item)
 		}
 	}
