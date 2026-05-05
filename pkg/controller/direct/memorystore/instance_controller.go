@@ -279,6 +279,13 @@ func compareInstance(ctx context.Context, actual, desired *memorystorepb.Instanc
 			instance.PersistenceConfig.Mode = memorystorepb.PersistenceConfig_DISABLED
 		}
 
+		if instance.AutomatedBackupConfig == nil {
+			instance.AutomatedBackupConfig = &memorystorepb.AutomatedBackupConfig{}
+		}
+		if instance.AutomatedBackupConfig.AutomatedBackupMode == memorystorepb.AutomatedBackupConfig_AUTOMATED_BACKUP_MODE_UNSPECIFIED {
+			instance.AutomatedBackupConfig.AutomatedBackupMode = memorystorepb.AutomatedBackupConfig_DISABLED
+		}
+
 		// mode is immutable, so we must default this one!
 		if instance.Mode == memorystorepb.Instance_MODE_UNSPECIFIED {
 			instance.Mode = memorystorepb.Instance_CLUSTER
