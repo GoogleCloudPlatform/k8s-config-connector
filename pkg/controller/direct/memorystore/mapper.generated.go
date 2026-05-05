@@ -28,44 +28,6 @@ import (
 	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
 )
 
-func AutomatedBackupConfig_FromProto(mapCtx *direct.MapContext, in *pb.AutomatedBackupConfig) *krm.AutomatedBackupConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AutomatedBackupConfig{}
-	out.FixedFrequencySchedule = AutomatedBackupConfig_FixedFrequencySchedule_FromProto(mapCtx, in.GetFixedFrequencySchedule())
-	out.AutomatedBackupMode = direct.Enum_FromProto(mapCtx, in.GetAutomatedBackupMode())
-	out.Retention = direct.StringDuration_FromProto(mapCtx, in.GetRetention())
-	return out
-}
-func AutomatedBackupConfig_ToProto(mapCtx *direct.MapContext, in *krm.AutomatedBackupConfig) *pb.AutomatedBackupConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AutomatedBackupConfig{}
-	if oneof := AutomatedBackupConfig_FixedFrequencySchedule_ToProto(mapCtx, in.FixedFrequencySchedule); oneof != nil {
-		out.Schedule = &pb.AutomatedBackupConfig_FixedFrequencySchedule_{FixedFrequencySchedule: oneof}
-	}
-	out.AutomatedBackupMode = direct.Enum_ToProto[pb.AutomatedBackupConfig_AutomatedBackupMode](mapCtx, in.AutomatedBackupMode)
-	out.Retention = direct.StringDuration_ToProto(mapCtx, in.Retention)
-	return out
-}
-func AutomatedBackupConfig_FixedFrequencySchedule_FromProto(mapCtx *direct.MapContext, in *pb.AutomatedBackupConfig_FixedFrequencySchedule) *krm.AutomatedBackupConfig_FixedFrequencySchedule {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AutomatedBackupConfig_FixedFrequencySchedule{}
-	out.StartTime = TimeOfDay_FromProto(mapCtx, in.GetStartTime())
-	return out
-}
-func AutomatedBackupConfig_FixedFrequencySchedule_ToProto(mapCtx *direct.MapContext, in *krm.AutomatedBackupConfig_FixedFrequencySchedule) *pb.AutomatedBackupConfig_FixedFrequencySchedule {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AutomatedBackupConfig_FixedFrequencySchedule{}
-	out.StartTime = TimeOfDay_ToProto(mapCtx, in.StartTime)
-	return out
-}
 func DiscoveryEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveryEndpoint) *krm.DiscoveryEndpointObservedState {
 	if in == nil {
 		return nil
@@ -639,7 +601,6 @@ func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfigObservedState_FromProto(mapCtx, in.GetCrossInstanceReplicationConfig())
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
 	// MISSING: BackupCollection
-	// MISSING: AutomatedBackupConfig
 	return out
 }
 */
@@ -670,7 +631,6 @@ func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfigObservedState_ToProto(mapCtx, in.CrossInstanceReplicationConfig)
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
 	// MISSING: BackupCollection
-	// MISSING: AutomatedBackupConfig
 	return out
 }
 */
@@ -706,7 +666,7 @@ func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instanc
 	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_FromProto(mapCtx, in.GetCrossInstanceReplicationConfig())
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
 	// MISSING: BackupCollection
-	// MISSING: AutomatedBackupConfig
+	out.AutomatedBackupConfig = AutomatedBackupConfig_FromProto(mapCtx, in.GetAutomatedBackupConfig())
 	return out
 }
 */
@@ -742,7 +702,7 @@ func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Memoryst
 	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_ToProto(mapCtx, in.CrossInstanceReplicationConfig)
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
 	// MISSING: BackupCollection
-	// MISSING: AutomatedBackupConfig
+	out.AutomatedBackupConfig = AutomatedBackupConfig_ToProto(mapCtx, in.AutomatedBackupConfig)
 	return out
 }
 */
