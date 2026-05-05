@@ -279,6 +279,7 @@
 | gkebackup.cnrm.cloud.google.com               | GKEBackupRestore                                | True         | False       | False  | Direct     | True        |
 | gkehub.cnrm.cloud.google.com                  | GKEHubFeatureMembership                         | False        | True        | False  | Direct     | True        |
 | gkehub.cnrm.cloud.google.com                  | GKEHubFeature                                   | False        | True        | False  | DCL        | False       |
+| gkehub.cnrm.cloud.google.com                  | GKEHubMembershipBinding                         | True         | False       | False  | Direct     | True        |
 | gkehub.cnrm.cloud.google.com                  | GKEHubMembership                                | False        | True        | False  | DCL        | False       |
 | gkehub.cnrm.cloud.google.com                  | GKEHubNamespace                                 | True         | False       | False  | Direct     | True        |
 | gkehub.cnrm.cloud.google.com                  | GKEHubScope                                     | True         | False       | False  | Direct     | True        |
