@@ -1713,10 +1713,6 @@
 [missing_field] crd=gkebackuprestores.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumeDataRestorePolicyOverrides[].policy" is not set in unstructured objects
 [missing_field] crd=gkebackuprestores.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumeDataRestorePolicyOverrides[].selectedPVCs.namespacedNames[].name" is not set in unstructured objects
 [missing_field] crd=gkebackuprestores.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumeDataRestorePolicyOverrides[].selectedPVCs.namespacedNames[].namespace" is not set in unstructured objects
-[missing_field] crd=gkehubnamespaces.gkehub.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=gkehubnamespaces.gkehub.cnrm.cloud.google.com version=v1alpha1: field ".spec.namespaceID" is not set in unstructured objects
-[missing_field] crd=gkehubnamespaces.gkehub.cnrm.cloud.google.com version=v1alpha1: field ".spec.namespaceLabels" is not set in unstructured objects
-[missing_field] crd=gkehubnamespaces.gkehub.cnrm.cloud.google.com version=v1alpha1: field ".spec.scopeRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=healthcareconsentstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset" is not set in unstructured objects
 [missing_field] crd=healthcareconsentstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.defaultConsentTtl" is not set in unstructured objects
 [missing_field] crd=healthcareconsentstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.enableConsentCreateOnUpdate" is not set in unstructured objects
