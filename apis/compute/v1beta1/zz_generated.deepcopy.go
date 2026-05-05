@@ -951,7 +951,7 @@ func (in *ComputeReservationObservedState) DeepCopyInto(out *ComputeReservationO
 	*out = *in
 	if in.ID != nil {
 		in, out := &in.ID, &out.ID
-		*out = new(uint64)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ResourceStatus != nil {
