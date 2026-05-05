@@ -32,7 +32,7 @@ var (
 
 	membershipbindingURL = gcpurls.Template[GKEHubMembershipBindingIdentity](
 		"gkehub.googleapis.com",
-		"projects/{projectID}/locations/{location}/memberships/{membershipID}/bindings/{membershipbindingID}",
+		"projects/{projectID}/locations/{location}/memberships/{membershipID}/bindings/{membershipBindingID}",
 	)
 )
 
@@ -43,7 +43,7 @@ type GKEHubMembershipBindingIdentity struct {
 	ProjectID           string
 	Location            string
 	MembershipID        string
-	MembershipbindingID string
+	MembershipBindingID string
 }
 
 func (i *GKEHubMembershipBindingIdentity) String() string {
@@ -51,7 +51,7 @@ func (i *GKEHubMembershipBindingIdentity) String() string {
 }
 
 func (i *GKEHubMembershipBindingIdentity) ID() string {
-	return i.MembershipbindingID
+	return i.MembershipBindingID
 }
 
 func (i *GKEHubMembershipBindingIdentity) Host() string {
@@ -74,12 +74,12 @@ func (i *GKEHubMembershipBindingIdentity) FromExternal(external string) error {
 	return nil
 }
 
-func NewGKEHubMembershipBindingIdentity(project, location, membershipID, membershipbindingID string) *GKEHubMembershipBindingIdentity {
+func NewGKEHubMembershipBindingIdentity(project, location, membershipID, membershipBindingID string) *GKEHubMembershipBindingIdentity {
 	return &GKEHubMembershipBindingIdentity{
 		ProjectID:           project,
 		Location:            location,
 		MembershipID:        membershipID,
-		MembershipbindingID: membershipbindingID,
+		MembershipBindingID: membershipBindingID,
 	}
 }
 
