@@ -43,12 +43,24 @@ type GKEHubNamespaceSpec struct {
 	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
 
+	/* Immutable. The location for the resource */
+	// +optional
+	Location *string `json:"location,omitempty"`
+
 	/* Immutable. The namespaceID of the resource. */
 	NamespaceID string `json:"namespaceID"`
 
 	/* Optional. Namespace-level cluster namespace labels. These labels are applied to the related namespace of the member clusters bound to the parent Scope. Scope-level labels (namespace_labels in the Fleet Scope resource) take precedence over Namespace-level labels if they share a key. Keys and values must be Kubernetes-conformant. */
 	// +optional
 	NamespaceLabels map[string]string `json:"namespaceLabels,omitempty"`
+
+	/* Immutable. The Project that this resource belongs to. */
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Immutable. The scope that this namespace belongs to. */
 	ScopeRef v1alpha1.ResourceRef `json:"scopeRef"`
