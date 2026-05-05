@@ -32,6 +32,7 @@ func TestResolveGCPManagedFields(t *testing.T) {
 	tests := []struct {
 		name              string
 		kind              string
+		annotations       map[string]string
 		lastAppliedConfig map[string]interface{}
 		resourceExists    bool
 		inputConfig       map[string]interface{}
@@ -62,6 +63,63 @@ func TestResolveGCPManagedFields(t *testing.T) {
 					"channel": "REGULAR",
 				},
 			},
+		},
+		{
+			name: "ContainerCluster with remove-default-node-pool true preserves applied nodeConfig if allow-node-config is absent",
+			kind: "ContainerCluster",
+			annotations: map[string]string{
+				"cnrm.cloud.google.com/remove-default-node-pool": "true",
+			},
+			lastAppliedConfig: map[string]interface{}{
+				"spec": map[string]interface{}{
+					"nodeConfig": map[string]interface{}{
+						"metadata": map[string]interface{}{
+							"dev": "true",
+						},
+					},
+				},
+			},
+			resourceExists: true,
+			inputConfig: map[string]interface{}{
+				"nodeConfig": map[string]interface{}{
+					"metadata": map[string]interface{}{
+						"dev": "true",
+					},
+				},
+			},
+			expectedConfig: map[string]interface{}{
+				"nodeConfig": map[string]interface{}{
+					"metadata": map[string]interface{}{
+						"dev": "true",
+					},
+				},
+			},
+		},
+		{
+			name: "ContainerCluster with remove-default-node-pool true and allow-node-config true removes applied nodeConfig to suppress diffs",
+			kind: "ContainerCluster",
+			annotations: map[string]string{
+				"cnrm.cloud.google.com/remove-default-node-pool":              "true",
+				"cnrm.cloud.google.com/remove-default-node-pool-allow-node-config": "true",
+			},
+			lastAppliedConfig: map[string]interface{}{
+				"spec": map[string]interface{}{
+					"nodeConfig": map[string]interface{}{
+						"metadata": map[string]interface{}{
+							"dev": "true",
+						},
+					},
+				},
+			},
+			resourceExists: true,
+			inputConfig: map[string]interface{}{
+				"nodeConfig": map[string]interface{}{
+					"metadata": map[string]interface{}{
+						"dev": "true",
+					},
+				},
+			},
+			expectedConfig: map[string]interface{}{},
 		},
 		{
 			name: "SQLInstance treats disk size as GCP-managed when disk autoresize set",
@@ -539,9 +597,13 @@ func TestResolveGCPManagedFields(t *testing.T) {
 			if err != nil {
 				t.Fatalf("error marshaling last applied config: %v", err)
 			}
-			r.SetAnnotations(map[string]string{
+			annotations := map[string]string{
 				k8s.LastAppliedConfigurationAnnotation: string(lastAppliedConfigJSON),
-			})
+			}
+			for k, v := range tc.annotations {
+				annotations[k] = v
+			}
+			r.SetAnnotations(annotations)
 			var liveState *terraform.InstanceState
 			if tc.resourceExists {
 				// The content of the instance state does not matter here,

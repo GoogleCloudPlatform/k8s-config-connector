@@ -1,0 +1,55 @@
+# step00: Create ContainerCluster with remove-default-node-pool: "true"
+# We use APPLY to wait for the cluster to become Ready in real GCP
+TEST: APPLY
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/remove-default-node-pool: "true"
+  name: cluster-${uniqueId}
+spec:
+  location: us-central1-a
+  initialNodeCount: 1
+  nodeConfig:
+    metadata:
+      dev: "true"
+---
+# step01: Trigger a reconcile.
+# Without the allow-node-config annotation, this should fail with the diff error.
+# We use APPLY-60-SEC to apply it and wait a bit, then it will be captured in golden file.
+TEST: APPLY-10-SEC
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/remove-default-node-pool: "true"
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"container.cnrm.cloud.google.com/v1beta1","kind":"ContainerCluster","spec":{"location":"us-central1-a","initialNodeCount":1,"nodeConfig":{"metadata":{"dev":"true"}}}}
+  labels:
+    touch: "1"
+  name: cluster-${uniqueId}
+spec:
+  location: us-central1-a
+  initialNodeCount: 1
+  nodeConfig:
+    metadata:
+      dev: "true"
+---
+# step02: Add the fix annotation.
+# This should allow the resource to become Healthy again.
+TEST: APPLY
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/remove-default-node-pool: "true"
+    cnrm.cloud.google.com/remove-default-node-pool-allow-node-config: "true"
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"container.cnrm.cloud.google.com/v1beta1","kind":"ContainerCluster","spec":{"location":"us-central1-a","initialNodeCount":1,"nodeConfig":{"metadata":{"dev":"true"}}}}
+  name: cluster-${uniqueId}
+spec:
+  location: us-central1-a
+  initialNodeCount: 1
+  nodeConfig:
+    metadata:
+      dev: "true"

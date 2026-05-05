@@ -107,14 +107,18 @@ func resolveSQLInstanceDiskSize(r *Resource, config map[string]interface{}) erro
 }
 
 func resolveContainerClusterNodeVersion(r *Resource, config map[string]interface{}) error {
-	// If the customer sets a release channel on their cluster, then GKE assumes ownership
-	// of the node version and will automatically revert any changes.
 	releaseChannel, found, err := unstructured.NestedMap(config, "releaseChannel")
 	if err != nil {
 		return fmt.Errorf("error determining if release channel is set: %w", err)
 	}
-	if !found || releaseChannel == nil {
-		// Release channel is not specified, so no special behavior required.
+
+	removeDefaultNodePoolKey := k8s.FormatAnnotation("remove-default-node-pool")
+	removeDefaultNodePoolVal, removeDefaultNodePoolFound := k8s.GetAnnotation(removeDefaultNodePoolKey, r)
+
+	releaseChannelSet := found && releaseChannel != nil
+	removeDefaultNodePoolSet := removeDefaultNodePoolFound && removeDefaultNodePoolVal == "true"
+
+	if !releaseChannelSet && !removeDefaultNodePoolSet {
 		return nil
 	}
 	if err := removeFromConfigIfNotApplied(r, config, "nodeVersion"); err != nil {
@@ -168,10 +172,26 @@ func resolveContainerClusterNodeConfig(r *Resource, liveState *terraform.Instanc
 		return nil
 	}
 
+	if suppressed, err := suppressDefaultNodePoolNodeConfigDiff(r, config, nodeConfigFieldInKRMConfig); err != nil {
+		return err
+	} else if suppressed {
+		return nil
+	}
+
 	if err := removeFromConfigIfNotApplied(r, config, nodeConfigFieldInKRMConfig); err != nil {
 		return fmt.Errorf("error removing field '%v' in config: %w", nodeConfigFieldInKRMConfig, err)
 	}
 	return nil
+}
+
+// Suppress diff loops by removing `nodeConfig` if the `remove-default-node-pool-allow-node-config` annotation is set.
+func suppressDefaultNodePoolNodeConfigDiff(r *Resource, config map[string]interface{}, nodeConfigFieldInKRMConfig string) (bool, error) {
+	allowKey := k8s.FormatAnnotation("remove-default-node-pool-allow-node-config")
+	if allowVal, ok := k8s.GetAnnotation(allowKey, r); ok && allowVal == "true" {
+		unstructured.RemoveNestedField(config, nodeConfigFieldInKRMConfig)
+		return true, nil
+	}
+	return false, nil
 }
 
 func topLevelObjectFieldExistsInStateMap(state map[string]interface{}, field string) (bool, error) {
