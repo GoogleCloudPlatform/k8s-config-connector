@@ -53,37 +53,35 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	AppEngineDomainMappingGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(AppEngineDomainMapping{}).Name(),
-  	}
-  
-  	AppEngineFirewallRuleGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(AppEngineFirewallRule{}).Name(),
-  	}
-  
-  	AppEngineFlexibleAppVersionGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(AppEngineFlexibleAppVersion{}).Name(),
-  	}
-  
-  	AppEngineServiceSplitTrafficGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(AppEngineServiceSplitTraffic{}).Name(),
-  	}
-  
-  	AppEngineStandardAppVersionGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(AppEngineStandardAppVersion{}).Name(),
-  	}
-  
+	AppEngineDomainMappingGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(AppEngineDomainMapping{}).Name(),
+	}
 
-  	appengineAPIVersion = SchemeGroupVersion.String()
+	AppEngineFirewallRuleGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(AppEngineFirewallRule{}).Name(),
+	}
+
+	AppEngineFlexibleAppVersionGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(AppEngineFlexibleAppVersion{}).Name(),
+	}
+
+	AppEngineServiceSplitTrafficGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(AppEngineServiceSplitTraffic{}).Name(),
+	}
+
+	AppEngineStandardAppVersionGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(AppEngineStandardAppVersion{}).Name(),
+	}
+
+	appengineAPIVersion = SchemeGroupVersion.String()
 )

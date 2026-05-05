@@ -53,19 +53,17 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	BinaryAuthorizationAttestorGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(BinaryAuthorizationAttestor{}).Name(),
-  	}
-  
-  	BinaryAuthorizationPolicyGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(BinaryAuthorizationPolicy{}).Name(),
-  	}
-  
+	BinaryAuthorizationAttestorGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(BinaryAuthorizationAttestor{}).Name(),
+	}
 
-  	binaryauthorizationAPIVersion = SchemeGroupVersion.String()
+	BinaryAuthorizationPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(BinaryAuthorizationPolicy{}).Name(),
+	}
+
+	binaryauthorizationAPIVersion = SchemeGroupVersion.String()
 )

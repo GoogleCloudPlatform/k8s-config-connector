@@ -53,31 +53,29 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	PubSubSchemaGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(PubSubSchema{}).Name(),
-  	}
-  
-  	PubSubSnapshotGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(PubSubSnapshot{}).Name(),
-  	}
-  
-  	PubSubSubscriptionGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(PubSubSubscription{}).Name(),
-  	}
-  
-  	PubSubTopicGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(PubSubTopic{}).Name(),
-  	}
-  
+	PubSubSchemaGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(PubSubSchema{}).Name(),
+	}
 
-  	pubsubAPIVersion = SchemeGroupVersion.String()
+	PubSubSnapshotGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(PubSubSnapshot{}).Name(),
+	}
+
+	PubSubSubscriptionGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(PubSubSubscription{}).Name(),
+	}
+
+	PubSubTopicGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(PubSubTopic{}).Name(),
+	}
+
+	pubsubAPIVersion = SchemeGroupVersion.String()
 )

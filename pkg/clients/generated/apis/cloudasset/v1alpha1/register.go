@@ -53,25 +53,23 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	CloudAssetFolderFeedGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(CloudAssetFolderFeed{}).Name(),
-  	}
-  
-  	CloudAssetOrganizationFeedGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(CloudAssetOrganizationFeed{}).Name(),
-  	}
-  
-  	CloudAssetProjectFeedGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(CloudAssetProjectFeed{}).Name(),
-  	}
-  
+	CloudAssetFolderFeedGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(CloudAssetFolderFeed{}).Name(),
+	}
 
-  	cloudassetAPIVersion = SchemeGroupVersion.String()
+	CloudAssetOrganizationFeedGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(CloudAssetOrganizationFeed{}).Name(),
+	}
+
+	CloudAssetProjectFeedGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(CloudAssetProjectFeed{}).Name(),
+	}
+
+	cloudassetAPIVersion = SchemeGroupVersion.String()
 )

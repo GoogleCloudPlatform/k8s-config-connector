@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -46,72 +45,73 @@ type DomainmappingSslSettings struct {
 	or to configure SSL manually, specify 'SslManagementType.MANUAL' on a 'CREATE' or 'UPDATE' request. You must be
 	authorized to administer the 'AuthorizedCertificate' resource to manually map it to a DomainMapping resource.
 	Example: 12345. */
-// +optional
-CertificateId *string `json:"certificateId,omitempty"`
+	// +optional
+	CertificateId *string `json:"certificateId,omitempty"`
 
 	/* ID of the managed 'AuthorizedCertificate' resource currently being provisioned, if applicable. Until the new
 	managed certificate has been successfully provisioned, the previous SSL state will be preserved. Once the
 	provisioning process completes, the 'certificateId' field will reflect the new managed certificate and this
 	field will be left empty. To remove SSL support while there is still a pending managed certificate, clear the
 	'certificateId' field with an update request. */
-// +optional
-PendingManagedCertificateId *string `json:"pendingManagedCertificateId,omitempty"`
+	// +optional
+	PendingManagedCertificateId *string `json:"pendingManagedCertificateId,omitempty"`
 
 	/* SSL management type for this domain. If 'AUTOMATIC', a managed certificate is automatically provisioned.
 	If 'MANUAL', 'certificateId' must be manually specified in order to configure SSL for this domain. Possible values: ["AUTOMATIC", "MANUAL"]. */
-SslManagementType string `json:"sslManagementType"`
+	SslManagementType string `json:"sslManagementType"`
 }
 
 type AppEngineDomainMappingSpec struct {
 	/* Whether the domain creation should override any existing mappings for this domain.
 	By default, overrides are rejected. Default value: "STRICT" Possible values: ["STRICT", "OVERRIDE"]. */
-// +optional
-OverrideStrategy *string `json:"overrideStrategy,omitempty"`
+	// +optional
+	OverrideStrategy *string `json:"overrideStrategy,omitempty"`
 
-/* Immutable. */
-// +optional
-Project *string `json:"project,omitempty"`
+	/* Immutable. */
+	// +optional
+	Project *string `json:"project,omitempty"`
 
-/* Immutable. Optional. The domainName of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The domainName of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* SSL configuration for this domain. If unconfigured, this domain will not serve with SSL. */
-// +optional
-SslSettings *DomainmappingSslSettings `json:"sslSettings,omitempty"`
+	/* SSL configuration for this domain. If unconfigured, this domain will not serve with SSL. */
+	// +optional
+	SslSettings *DomainmappingSslSettings `json:"sslSettings,omitempty"`
 }
 
 type DomainmappingResourceRecordsStatus struct {
-/* Relative name of the object affected by this record. Only applicable for CNAME records. Example: 'www'. */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* Relative name of the object affected by this record. Only applicable for CNAME records. Example: 'www'. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* Data for this record. Values vary by record type, as defined in RFC 1035 (section 5) and RFC 1034 (section 3.6.1). */
-// +optional
-Rrdata *string `json:"rrdata,omitempty"`
+	/* Data for this record. Values vary by record type, as defined in RFC 1035 (section 5) and RFC 1034 (section 3.6.1). */
+	// +optional
+	Rrdata *string `json:"rrdata,omitempty"`
 
-/* Resource record type. Example: 'AAAA'. Possible values: ["A", "AAAA", "CNAME"]. */
-// +optional
-Type *string `json:"type,omitempty"`
+	/* Resource record type. Example: 'AAAA'. Possible values: ["A", "AAAA", "CNAME"]. */
+	// +optional
+	Type *string `json:"type,omitempty"`
 }
 
 type AppEngineDomainMappingStatus struct {
 	/* Conditions represent the latest available observations of the
-	    AppEngineDomainMapping's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* Full path to the DomainMapping resource in the API. Example: apps/myapp/domainMapping/example.com. */
-// +optional
-Name *string `json:"name,omitempty"`
+	   AppEngineDomainMapping's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* Full path to the DomainMapping resource in the API. Example: apps/myapp/domainMapping/example.com. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The resource records required to configure this domain mapping. These records must be added to the domain's DNS
 	configuration in order to serve the application via this domain mapping. */
-// +optional
-ResourceRecords []DomainmappingResourceRecordsStatus `json:"resourceRecords,omitempty"`
+	// +optional
+	ResourceRecords []DomainmappingResourceRecordsStatus `json:"resourceRecords,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpappenginedomainmapping;gcpappenginedomainmappings
@@ -128,20 +128,22 @@ ResourceRecords []DomainmappingResourceRecordsStatus `json:"resourceRecords,omit
 // AppEngineDomainMapping is the Schema for the appengine API
 // +k8s:openapi-gen=true
 type AppEngineDomainMapping struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec AppEngineDomainMappingSpec `json:"spec,omitempty"`
-  Status AppEngineDomainMappingStatus `json:"status,omitempty"`
+	Spec   AppEngineDomainMappingSpec   `json:"spec,omitempty"`
+	Status AppEngineDomainMappingStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // AppEngineDomainMappingList contains a list of AppEngineDomainMapping
- type AppEngineDomainMappingList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []AppEngineDomainMapping `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&AppEngineDomainMapping{}, &AppEngineDomainMappingList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// AppEngineDomainMappingList contains a list of AppEngineDomainMapping
+type AppEngineDomainMappingList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []AppEngineDomainMapping `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&AppEngineDomainMapping{}, &AppEngineDomainMappingList{})
+}

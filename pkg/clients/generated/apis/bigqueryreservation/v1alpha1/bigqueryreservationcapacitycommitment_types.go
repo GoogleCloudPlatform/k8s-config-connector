@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,70 +29,71 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type BigQueryReservationCapacityCommitmentSpec struct {
-/* Immutable. The edition type. Valid values are STANDARD, ENTERPRISE, ENTERPRISE_PLUS. */
-// +optional
-Edition *string `json:"edition,omitempty"`
+	/* Immutable. The edition type. Valid values are STANDARD, ENTERPRISE, ENTERPRISE_PLUS. */
+	// +optional
+	Edition *string `json:"edition,omitempty"`
 
-/* Immutable. If true, fail the request if another project in the organization has a capacity commitment. */
-// +optional
-EnforceSingleAdminProjectPerOrg *string `json:"enforceSingleAdminProjectPerOrg,omitempty"`
+	/* Immutable. If true, fail the request if another project in the organization has a capacity commitment. */
+	// +optional
+	EnforceSingleAdminProjectPerOrg *string `json:"enforceSingleAdminProjectPerOrg,omitempty"`
 
 	/* Immutable. The geographic location where the transfer config should reside.
 	Examples: US, EU, asia-northeast1. The default value is US. */
-Location string `json:"location"`
+	Location string `json:"location"`
 
-/* Capacity commitment plan. Valid values are at https://cloud.google.com/bigquery/docs/reference/reservations/rpc/google.cloud.bigquery.reservation.v1#commitmentplan. */
-Plan string `json:"plan"`
+	/* Capacity commitment plan. Valid values are at https://cloud.google.com/bigquery/docs/reference/reservations/rpc/google.cloud.bigquery.reservation.v1#commitmentplan. */
+	Plan string `json:"plan"`
 
-/* The project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* The plan this capacity commitment is converted to after commitmentEndTime passes. Once the plan is changed, committed period is extended according to commitment plan. Only applicable some commitment plans. */
-// +optional
-RenewalPlan *string `json:"renewalPlan,omitempty"`
+	/* The plan this capacity commitment is converted to after commitmentEndTime passes. Once the plan is changed, committed period is extended according to commitment plan. Only applicable some commitment plans. */
+	// +optional
+	RenewalPlan *string `json:"renewalPlan,omitempty"`
 
-/* Immutable. Optional. The capacityCommitmentId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The capacityCommitmentId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Immutable. Number of slots in this commitment. */
-SlotCount int64 `json:"slotCount"`
+	/* Immutable. Number of slots in this commitment. */
+	SlotCount int64 `json:"slotCount"`
 }
 
 type BigQueryReservationCapacityCommitmentStatus struct {
 	/* Conditions represent the latest available observations of the
-	    BigQueryReservationCapacityCommitment's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* The start of the current commitment period. It is applicable only for ACTIVE capacity commitments. */
-// +optional
-CommitmentEndTime *string `json:"commitmentEndTime,omitempty"`
+	   BigQueryReservationCapacityCommitment's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* The start of the current commitment period. It is applicable only for ACTIVE capacity commitments. */
+	// +optional
+	CommitmentEndTime *string `json:"commitmentEndTime,omitempty"`
 
-/* The start of the current commitment period. It is applicable only for ACTIVE capacity commitments. */
-// +optional
-CommitmentStartTime *string `json:"commitmentStartTime,omitempty"`
+	/* The start of the current commitment period. It is applicable only for ACTIVE capacity commitments. */
+	// +optional
+	CommitmentStartTime *string `json:"commitmentStartTime,omitempty"`
 
-/* The resource name of the capacity commitment, e.g., projects/myproject/locations/US/capacityCommitments/123. */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* The resource name of the capacity commitment, e.g., projects/myproject/locations/US/capacityCommitments/123. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* State of the commitment. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* State of the commitment. */
+	// +optional
+	State *string `json:"state,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigqueryreservationcapacitycommitment;gcpbigqueryreservationcapacitycommitments
@@ -110,20 +110,22 @@ State *string `json:"state,omitempty"`
 // BigQueryReservationCapacityCommitment is the Schema for the bigqueryreservation API
 // +k8s:openapi-gen=true
 type BigQueryReservationCapacityCommitment struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec BigQueryReservationCapacityCommitmentSpec `json:"spec,omitempty"`
-  Status BigQueryReservationCapacityCommitmentStatus `json:"status,omitempty"`
+	Spec   BigQueryReservationCapacityCommitmentSpec   `json:"spec,omitempty"`
+	Status BigQueryReservationCapacityCommitmentStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // BigQueryReservationCapacityCommitmentList contains a list of BigQueryReservationCapacityCommitment
- type BigQueryReservationCapacityCommitmentList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []BigQueryReservationCapacityCommitment `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&BigQueryReservationCapacityCommitment{}, &BigQueryReservationCapacityCommitmentList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// BigQueryReservationCapacityCommitmentList contains a list of BigQueryReservationCapacityCommitment
+type BigQueryReservationCapacityCommitmentList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []BigQueryReservationCapacityCommitment `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&BigQueryReservationCapacityCommitment{}, &BigQueryReservationCapacityCommitmentList{})
+}

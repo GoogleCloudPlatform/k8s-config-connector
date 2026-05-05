@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,40 +29,40 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type DeploymentConfig struct {
-/* The full YAML contents of your configuration file. */
-Content string `json:"content"`
+	/* The full YAML contents of your configuration file. */
+	Content string `json:"content"`
 }
 
 type DeploymentImports struct {
-/* The full contents of the template that you want to import. */
-// +optional
-Content *string `json:"content,omitempty"`
+	/* The full contents of the template that you want to import. */
+	// +optional
+	Content *string `json:"content,omitempty"`
 
 	/* The name of the template to import, as declared in the YAML
 	configuration. */
-// +optional
-Name *string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
 }
 
 type DeploymentTarget struct {
-/* The root configuration file to use for this deployment. */
-Config DeploymentConfig `json:"config"`
+	/* The root configuration file to use for this deployment. */
+	Config DeploymentConfig `json:"config"`
 
 	/* Specifies import files for this configuration. This can be
 	used to import templates or other files. For example, you might
 	import a text file in order to use the file in a template. */
-// +optional
-Imports []DeploymentImports `json:"imports,omitempty"`
+	// +optional
+	Imports []DeploymentImports `json:"imports,omitempty"`
 }
 
 type DeploymentManagerDeploymentSpec struct {
@@ -72,8 +71,8 @@ type DeploymentManagerDeploymentSpec struct {
 	'ACQUIRE'. If set to 'ACQUIRE' and resources do not already exist,
 	the deployment will fail. Note that updating this field does not
 	actually affect the deployment, just how it is updated. Default value: "CREATE_OR_ACQUIRE" Possible values: ["ACQUIRE", "CREATE_OR_ACQUIRE"]. */
-// +optional
-CreatePolicy *string `json:"createPolicy,omitempty"`
+	// +optional
+	CreatePolicy *string `json:"createPolicy,omitempty"`
 
 	/* Immutable. Set the policy to use for deleting new resources on update/delete.
 	Valid values are 'DELETE' (default) or 'ABANDON'. If 'DELETE',
@@ -81,49 +80,50 @@ CreatePolicy *string `json:"createPolicy,omitempty"`
 	'ABANDON', the resource is only removed from Deployment Manager
 	and is not actually deleted. Note that updating this field does not
 	actually change the deployment, just how it is updated. Default value: "DELETE" Possible values: ["ABANDON", "DELETE"]. */
-// +optional
-DeletePolicy *string `json:"deletePolicy,omitempty"`
+	// +optional
+	DeletePolicy *string `json:"deletePolicy,omitempty"`
 
-/* Optional user-provided description of deployment. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Optional user-provided description of deployment. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-// +optional
-Preview *bool `json:"preview,omitempty"`
+	// +optional
+	Preview *bool `json:"preview,omitempty"`
 
-/* The project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Parameters that define your deployment, including the deployment
 	configuration and relevant templates. */
-Target DeploymentTarget `json:"target"`
+	Target DeploymentTarget `json:"target"`
 }
 
 type DeploymentManagerDeploymentStatus struct {
 	/* Conditions represent the latest available observations of the
-	    DeploymentManagerDeployment's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* Unique identifier for deployment. Output only. */
-// +optional
-DeploymentId *string `json:"deploymentId,omitempty"`
+	   DeploymentManagerDeployment's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* Unique identifier for deployment. Output only. */
+	// +optional
+	DeploymentId *string `json:"deploymentId,omitempty"`
 
 	/* Output only. URL of the manifest representing the last manifest that
 	was successfully deployed. */
-// +optional
-Manifest *string `json:"manifest,omitempty"`
+	// +optional
+	Manifest *string `json:"manifest,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* Output only. Server defined URL for the resource. */
-// +optional
-SelfLink *string `json:"selfLink,omitempty"`
+	/* Output only. Server defined URL for the resource. */
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdeploymentmanagerdeployment;gcpdeploymentmanagerdeployments
@@ -140,20 +140,22 @@ SelfLink *string `json:"selfLink,omitempty"`
 // DeploymentManagerDeployment is the Schema for the deploymentmanager API
 // +k8s:openapi-gen=true
 type DeploymentManagerDeployment struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec DeploymentManagerDeploymentSpec `json:"spec,omitempty"`
-  Status DeploymentManagerDeploymentStatus `json:"status,omitempty"`
+	Spec   DeploymentManagerDeploymentSpec   `json:"spec,omitempty"`
+	Status DeploymentManagerDeploymentStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // DeploymentManagerDeploymentList contains a list of DeploymentManagerDeployment
- type DeploymentManagerDeploymentList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []DeploymentManagerDeployment `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&DeploymentManagerDeployment{}, &DeploymentManagerDeploymentList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// DeploymentManagerDeploymentList contains a list of DeploymentManagerDeployment
+type DeploymentManagerDeploymentList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DeploymentManagerDeployment `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&DeploymentManagerDeployment{}, &DeploymentManagerDeploymentList{})
+}

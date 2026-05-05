@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,43 +29,44 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type AuditconfigAuditLogConfigs struct {
-/* Identities that do not cause logging for this type of permission. The format is the same as that for 'members' in IAMPolicy/IAMPolicyMember. */
-// +optional
-ExemptedMembers []string `json:"exemptedMembers,omitempty"`
+	/* Identities that do not cause logging for this type of permission. The format is the same as that for 'members' in IAMPolicy/IAMPolicyMember. */
+	// +optional
+	ExemptedMembers []string `json:"exemptedMembers,omitempty"`
 
-/* Permission type for which logging is to be configured. Must be one of 'DATA_READ', 'DATA_WRITE', or 'ADMIN_READ'. */
-LogType string `json:"logType"`
+	/* Permission type for which logging is to be configured. Must be one of 'DATA_READ', 'DATA_WRITE', or 'ADMIN_READ'. */
+	LogType string `json:"logType"`
 }
 
 type IAMAuditConfigSpec struct {
-/* Required. The configuration for logging of each type of permission. */
-AuditLogConfigs []AuditconfigAuditLogConfigs `json:"auditLogConfigs"`
+	/* Required. The configuration for logging of each type of permission. */
+	AuditLogConfigs []AuditconfigAuditLogConfigs `json:"auditLogConfigs"`
 
-/* Immutable. Required. The GCP resource to set the IAMAuditConfig on (e.g. project). */
-ResourceRef v1alpha1.IAMResourceRef `json:"resourceRef"`
+	/* Immutable. Required. The GCP resource to set the IAMAuditConfig on (e.g. project). */
+	ResourceRef v1alpha1.IAMResourceRef `json:"resourceRef"`
 
-/* Immutable. Required. The service for which to enable Data Access audit logs. The special value 'allServices' covers all services. Note that if there are audit configs covering both 'allServices' and a specific service, then the union of the two audit configs is used for that service: the 'logTypes' specified in each 'auditLogConfig' are enabled, and the 'exemptedMembers' in each 'auditLogConfig' are exempted. */
-Service string `json:"service"`
+	/* Immutable. Required. The service for which to enable Data Access audit logs. The special value 'allServices' covers all services. Note that if there are audit configs covering both 'allServices' and a specific service, then the union of the two audit configs is used for that service: the 'logTypes' specified in each 'auditLogConfig' are enabled, and the 'exemptedMembers' in each 'auditLogConfig' are exempted. */
+	Service string `json:"service"`
 }
 
 type IAMAuditConfigStatus struct {
 	/* Conditions represent the latest available observations of the
-	    IAMAuditConfig's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   IAMAuditConfig's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpiamauditconfig;gcpiamauditconfigs
@@ -81,20 +81,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // IAMAuditConfig is the Schema for the iam API
 // +k8s:openapi-gen=true
 type IAMAuditConfig struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec IAMAuditConfigSpec `json:"spec,omitempty"`
-  Status IAMAuditConfigStatus `json:"status,omitempty"`
+	Spec   IAMAuditConfigSpec   `json:"spec,omitempty"`
+	Status IAMAuditConfigStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // IAMAuditConfigList contains a list of IAMAuditConfig
- type IAMAuditConfigList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []IAMAuditConfig `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&IAMAuditConfig{}, &IAMAuditConfigList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// IAMAuditConfigList contains a list of IAMAuditConfig
+type IAMAuditConfigList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []IAMAuditConfig `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&IAMAuditConfig{}, &IAMAuditConfigList{})
+}

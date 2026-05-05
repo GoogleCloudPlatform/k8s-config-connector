@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,39 +29,40 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ComputeFirewallPolicyAssociationSpec struct {
-/* Immutable. */
-AttachmentTargetRef v1alpha1.ResourceRef `json:"attachmentTargetRef"`
+	/* Immutable. */
+	AttachmentTargetRef v1alpha1.ResourceRef `json:"attachmentTargetRef"`
 
-/* Immutable. */
-FirewallPolicyRef v1alpha1.ResourceRef `json:"firewallPolicyRef"`
+	/* Immutable. */
+	FirewallPolicyRef v1alpha1.ResourceRef `json:"firewallPolicyRef"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ComputeFirewallPolicyAssociationStatus struct {
 	/* Conditions represent the latest available observations of the
-	    ComputeFirewallPolicyAssociation's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   ComputeFirewallPolicyAssociation's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* The short name of the firewall policy of the association. */
-// +optional
-ShortName *string `json:"shortName,omitempty"`
+	/* The short name of the firewall policy of the association. */
+	// +optional
+	ShortName *string `json:"shortName,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputefirewallpolicyassociation;gcpcomputefirewallpolicyassociations
@@ -79,20 +79,22 @@ ShortName *string `json:"shortName,omitempty"`
 // ComputeFirewallPolicyAssociation is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeFirewallPolicyAssociation struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ComputeFirewallPolicyAssociationSpec `json:"spec,omitempty"`
-  Status ComputeFirewallPolicyAssociationStatus `json:"status,omitempty"`
+	Spec   ComputeFirewallPolicyAssociationSpec   `json:"spec,omitempty"`
+	Status ComputeFirewallPolicyAssociationStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ComputeFirewallPolicyAssociationList contains a list of ComputeFirewallPolicyAssociation
- type ComputeFirewallPolicyAssociationList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []ComputeFirewallPolicyAssociation `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&ComputeFirewallPolicyAssociation{}, &ComputeFirewallPolicyAssociationList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ComputeFirewallPolicyAssociationList contains a list of ComputeFirewallPolicyAssociation
+type ComputeFirewallPolicyAssociationList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeFirewallPolicyAssociation `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ComputeFirewallPolicyAssociation{}, &ComputeFirewallPolicyAssociationList{})
+}

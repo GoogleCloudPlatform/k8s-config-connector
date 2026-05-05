@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,125 +29,126 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type FeatureDefaultConfig struct {
-/* The logs routing mode Possible values: MODE_UNSPECIFIED, COPY, MOVE */
-// +optional
-Mode *string `json:"mode,omitempty"`
+	/* The logs routing mode Possible values: MODE_UNSPECIFIED, COPY, MOVE */
+	// +optional
+	Mode *string `json:"mode,omitempty"`
 }
 
 type FeatureFleetScopeLogsConfig struct {
-/* The logs routing mode Possible values: MODE_UNSPECIFIED, COPY, MOVE */
-// +optional
-Mode *string `json:"mode,omitempty"`
+	/* The logs routing mode Possible values: MODE_UNSPECIFIED, COPY, MOVE */
+	// +optional
+	Mode *string `json:"mode,omitempty"`
 }
 
 type FeatureFleetobservability struct {
-/* Fleet Observability Logging-specific spec. */
-// +optional
-LoggingConfig *FeatureLoggingConfig `json:"loggingConfig,omitempty"`
+	/* Fleet Observability Logging-specific spec. */
+	// +optional
+	LoggingConfig *FeatureLoggingConfig `json:"loggingConfig,omitempty"`
 }
 
 type FeatureLoggingConfig struct {
-/* Specified if applying the default routing config to logs not specified in other configs. */
-// +optional
-DefaultConfig *FeatureDefaultConfig `json:"defaultConfig,omitempty"`
+	/* Specified if applying the default routing config to logs not specified in other configs. */
+	// +optional
+	DefaultConfig *FeatureDefaultConfig `json:"defaultConfig,omitempty"`
 
-/* Specified if applying the routing config to all logs for all fleet scopes. */
-// +optional
-FleetScopeLogsConfig *FeatureFleetScopeLogsConfig `json:"fleetScopeLogsConfig,omitempty"`
+	/* Specified if applying the routing config to all logs for all fleet scopes. */
+	// +optional
+	FleetScopeLogsConfig *FeatureFleetScopeLogsConfig `json:"fleetScopeLogsConfig,omitempty"`
 }
 
 type FeatureMulticlusteringress struct {
-ConfigMembershipRef v1alpha1.ResourceRef `json:"configMembershipRef"`
+	ConfigMembershipRef v1alpha1.ResourceRef `json:"configMembershipRef"`
 }
 
 type FeatureSpec struct {
-/* Fleet Observability spec. */
-// +optional
-Fleetobservability *FeatureFleetobservability `json:"fleetobservability,omitempty"`
+	/* Fleet Observability spec. */
+	// +optional
+	Fleetobservability *FeatureFleetobservability `json:"fleetobservability,omitempty"`
 
-/* Multicluster Ingress-specific spec. */
-// +optional
-Multiclusteringress *FeatureMulticlusteringress `json:"multiclusteringress,omitempty"`
+	/* Multicluster Ingress-specific spec. */
+	// +optional
+	Multiclusteringress *FeatureMulticlusteringress `json:"multiclusteringress,omitempty"`
 }
 
 type GKEHubFeatureSpec struct {
-/* Immutable. The location for the resource */
-Location string `json:"location"`
+	/* Immutable. The location for the resource */
+	Location string `json:"location"`
 
-/* Immutable. The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* Immutable. The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Optional. Hub-wide Feature configuration. If this Feature does not support any Hub-wide configuration, this field may be unused. */
-// +optional
-Spec *FeatureSpec `json:"spec,omitempty"`
+	/* Optional. Hub-wide Feature configuration. If this Feature does not support any Hub-wide configuration, this field may be unused. */
+	// +optional
+	Spec *FeatureSpec `json:"spec,omitempty"`
 }
 
 type FeatureResourceStateStatus struct {
-/* Whether this Feature has outstanding resources that need to be cleaned up before it can be disabled. */
-// +optional
-HasResources *bool `json:"hasResources,omitempty"`
+	/* Whether this Feature has outstanding resources that need to be cleaned up before it can be disabled. */
+	// +optional
+	HasResources *bool `json:"hasResources,omitempty"`
 
-/* The current state of the Feature resource in the Hub API. Possible values: STATE_UNSPECIFIED, ENABLING, ACTIVE, DISABLING, UPDATING, SERVICE_UPDATING */
-// +optional
-State *string `json:"state,omitempty"`
+	/* The current state of the Feature resource in the Hub API. Possible values: STATE_UNSPECIFIED, ENABLING, ACTIVE, DISABLING, UPDATING, SERVICE_UPDATING */
+	// +optional
+	State *string `json:"state,omitempty"`
 }
 
 type FeatureStateStatus struct {
-/* The high-level, machine-readable status of this Feature. Possible values: CODE_UNSPECIFIED, OK, WARNING, ERROR */
-// +optional
-Code *string `json:"code,omitempty"`
+	/* The high-level, machine-readable status of this Feature. Possible values: CODE_UNSPECIFIED, OK, WARNING, ERROR */
+	// +optional
+	Code *string `json:"code,omitempty"`
 
-/* A human-readable description of the current status. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* A human-readable description of the current status. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* The time this status and any related Feature-specific details were updated. A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z" */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* The time this status and any related Feature-specific details were updated. A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z" */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type GKEHubFeatureStatus struct {
 	/* Conditions represent the latest available observations of the
-	    GKEHubFeature's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* Output only. When the Feature resource was created. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	   GKEHubFeature's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* Output only. When the Feature resource was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. When the Feature resource was deleted. */
-// +optional
-DeleteTime *string `json:"deleteTime,omitempty"`
+	/* Output only. When the Feature resource was deleted. */
+	// +optional
+	DeleteTime *string `json:"deleteTime,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* State of the Feature resource itself. */
-// +optional
-ResourceState *FeatureResourceStateStatus `json:"resourceState,omitempty"`
+	/* State of the Feature resource itself. */
+	// +optional
+	ResourceState *FeatureResourceStateStatus `json:"resourceState,omitempty"`
 
-/* Output only. The Hub-wide Feature state */
-// +optional
-State *FeatureStateStatus `json:"state,omitempty"`
+	/* Output only. The Hub-wide Feature state */
+	// +optional
+	State *FeatureStateStatus `json:"state,omitempty"`
 
-/* Output only. When the Feature resource was last updated. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. When the Feature resource was last updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpgkehubfeature;gcpgkehubfeatures
@@ -165,20 +165,22 @@ UpdateTime *string `json:"updateTime,omitempty"`
 // GKEHubFeature is the Schema for the gkehub API
 // +k8s:openapi-gen=true
 type GKEHubFeature struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec GKEHubFeatureSpec `json:"spec,omitempty"`
-  Status GKEHubFeatureStatus `json:"status,omitempty"`
+	Spec   GKEHubFeatureSpec   `json:"spec,omitempty"`
+	Status GKEHubFeatureStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // GKEHubFeatureList contains a list of GKEHubFeature
- type GKEHubFeatureList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []GKEHubFeature `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&GKEHubFeature{}, &GKEHubFeatureList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// GKEHubFeatureList contains a list of GKEHubFeature
+type GKEHubFeatureList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []GKEHubFeature `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&GKEHubFeature{}, &GKEHubFeatureList{})
+}

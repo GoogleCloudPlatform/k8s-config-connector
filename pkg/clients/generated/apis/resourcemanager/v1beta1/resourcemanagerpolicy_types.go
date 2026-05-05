@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,115 +29,116 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type PolicyAllow struct {
-/* The policy allows or denies all values. */
-// +optional
-All *bool `json:"all,omitempty"`
+	/* The policy allows or denies all values. */
+	// +optional
+	All *bool `json:"all,omitempty"`
 
-/* The policy can define specific values that are allowed or denied. */
-// +optional
-Values []string `json:"values,omitempty"`
+	/* The policy can define specific values that are allowed or denied. */
+	// +optional
+	Values []string `json:"values,omitempty"`
 }
 
 type PolicyBooleanPolicy struct {
-/* If true, then the Policy is enforced. If false, then any configuration is acceptable. */
-Enforced bool `json:"enforced"`
+	/* If true, then the Policy is enforced. If false, then any configuration is acceptable. */
+	Enforced bool `json:"enforced"`
 }
 
 type PolicyDeny struct {
-/* The policy allows or denies all values. */
-// +optional
-All *bool `json:"all,omitempty"`
+	/* The policy allows or denies all values. */
+	// +optional
+	All *bool `json:"all,omitempty"`
 
-/* The policy can define specific values that are allowed or denied. */
-// +optional
-Values []string `json:"values,omitempty"`
+	/* The policy can define specific values that are allowed or denied. */
+	// +optional
+	Values []string `json:"values,omitempty"`
 }
 
 type PolicyListPolicy struct {
-/* One or the other must be set. */
-// +optional
-Allow *PolicyAllow `json:"allow,omitempty"`
+	/* One or the other must be set. */
+	// +optional
+	Allow *PolicyAllow `json:"allow,omitempty"`
 
-/* One or the other must be set. */
-// +optional
-Deny *PolicyDeny `json:"deny,omitempty"`
+	/* One or the other must be set. */
+	// +optional
+	Deny *PolicyDeny `json:"deny,omitempty"`
 
-/* If set to true, the values from the effective Policy of the parent resource are inherited, meaning the values set in this Policy are added to the values inherited up the hierarchy. */
-// +optional
-InheritFromParent *bool `json:"inheritFromParent,omitempty"`
+	/* If set to true, the values from the effective Policy of the parent resource are inherited, meaning the values set in this Policy are added to the values inherited up the hierarchy. */
+	// +optional
+	InheritFromParent *bool `json:"inheritFromParent,omitempty"`
 
-/* The Google Cloud Console will try to default to a configuration that matches the value specified in this field. */
-// +optional
-SuggestedValue *string `json:"suggestedValue,omitempty"`
+	/* The Google Cloud Console will try to default to a configuration that matches the value specified in this field. */
+	// +optional
+	SuggestedValue *string `json:"suggestedValue,omitempty"`
 }
 
 type PolicyRestorePolicy struct {
-/* May only be set to true. If set, then the default Policy is restored. */
-Default bool `json:"default"`
+	/* May only be set to true. If set, then the default Policy is restored. */
+	Default bool `json:"default"`
 }
 
 type ResourceManagerPolicySpec struct {
-/* A boolean policy is a constraint that is either enforced or not. */
-// +optional
-BooleanPolicy *PolicyBooleanPolicy `json:"booleanPolicy,omitempty"`
+	/* A boolean policy is a constraint that is either enforced or not. */
+	// +optional
+	BooleanPolicy *PolicyBooleanPolicy `json:"booleanPolicy,omitempty"`
 
-/* Immutable. The name of the Constraint the Policy is configuring, for example, serviceuser.services. */
-Constraint string `json:"constraint"`
+	/* Immutable. The name of the Constraint the Policy is configuring, for example, serviceuser.services. */
+	Constraint string `json:"constraint"`
 
 	/* The folder on which to configure the constraint. Only one of
 	projectRef, folderRef, or organizationRef may be specified. */
-// +optional
-FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+	// +optional
+	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
-/* A policy that can define specific values that are allowed or denied for the given constraint. It can also be used to allow or deny all values. . */
-// +optional
-ListPolicy *PolicyListPolicy `json:"listPolicy,omitempty"`
+	/* A policy that can define specific values that are allowed or denied for the given constraint. It can also be used to allow or deny all values. . */
+	// +optional
+	ListPolicy *PolicyListPolicy `json:"listPolicy,omitempty"`
 
 	/* The organization on which to configure the constraint. Only one of
 	projectRef, folderRef, or organizationRef may be specified. */
-// +optional
-OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+	// +optional
+	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
 	/* The project on which to configure the constraint. Only one of
 	projectRef, folderRef, or organizationRef may be specified. */
-// +optional
-ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-/* A restore policy is a constraint to restore the default policy. */
-// +optional
-RestorePolicy *PolicyRestorePolicy `json:"restorePolicy,omitempty"`
+	/* A restore policy is a constraint to restore the default policy. */
+	// +optional
+	RestorePolicy *PolicyRestorePolicy `json:"restorePolicy,omitempty"`
 
-/* Version of the Policy. Default version is 0. */
-// +optional
-Version *int64 `json:"version,omitempty"`
+	/* Version of the Policy. Default version is 0. */
+	// +optional
+	Version *int64 `json:"version,omitempty"`
 }
 
 type ResourceManagerPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
-	    ResourceManagerPolicy's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* The etag of the organization policy. etag is used for optimistic concurrency control as a way to help prevent simultaneous updates of a policy from overwriting each other. */
-// +optional
-Etag *string `json:"etag,omitempty"`
+	   ResourceManagerPolicy's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* The etag of the organization policy. etag is used for optimistic concurrency control as a way to help prevent simultaneous updates of a policy from overwriting each other. */
+	// +optional
+	Etag *string `json:"etag,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* The timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds, representing when the variable was last updated. Example: "2016-10-09T12:33:37.578138407Z". */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* The timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds, representing when the variable was last updated. Example: "2016-10-09T12:33:37.578138407Z". */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpresourcemanagerpolicy;gcpresourcemanagerpolicies
@@ -155,20 +155,22 @@ UpdateTime *string `json:"updateTime,omitempty"`
 // ResourceManagerPolicy is the Schema for the resourcemanager API
 // +k8s:openapi-gen=true
 type ResourceManagerPolicy struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ResourceManagerPolicySpec `json:"spec,omitempty"`
-  Status ResourceManagerPolicyStatus `json:"status,omitempty"`
+	Spec   ResourceManagerPolicySpec   `json:"spec,omitempty"`
+	Status ResourceManagerPolicyStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ResourceManagerPolicyList contains a list of ResourceManagerPolicy
- type ResourceManagerPolicyList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []ResourceManagerPolicy `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&ResourceManagerPolicy{}, &ResourceManagerPolicyList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ResourceManagerPolicyList contains a list of ResourceManagerPolicy
+type ResourceManagerPolicyList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ResourceManagerPolicy `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ResourceManagerPolicy{}, &ResourceManagerPolicyList{})
+}

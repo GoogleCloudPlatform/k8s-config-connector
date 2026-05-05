@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,93 +29,94 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type InstanceendpointConnections struct {
-/* Optional. Detailed information of a PSC connection that is created by the user. */
-// +optional
-PscConnection *InstanceendpointPscConnection `json:"pscConnection,omitempty"`
+	/* Optional. Detailed information of a PSC connection that is created by the user. */
+	// +optional
+	PscConnection *InstanceendpointPscConnection `json:"pscConnection,omitempty"`
 }
 
 type InstanceendpointEndpoints struct {
-/* Optional. A group of PSC connections. They are created in the same VPC network, one for each service attachment in the cluster. */
-// +optional
-Connections []InstanceendpointConnections `json:"connections,omitempty"`
+	/* Optional. A group of PSC connections. They are created in the same VPC network, one for each service attachment in the cluster. */
+	// +optional
+	Connections []InstanceendpointConnections `json:"connections,omitempty"`
 }
 
 type InstanceendpointPscConnection struct {
-/* Required. The consumer side forwarding rule. */
-ForwardingRuleRef v1alpha1.ResourceRef `json:"forwardingRuleRef"`
+	/* Required. The consumer side forwarding rule. */
+	ForwardingRuleRef v1alpha1.ResourceRef `json:"forwardingRuleRef"`
 
-/* Optional. The port number of the PSC connection. Port will only be set for Primary/Reader or Discovery endpoint. */
-// +optional
-Port *int32 `json:"port,omitempty"`
+	/* Optional. The port number of the PSC connection. Port will only be set for Primary/Reader or Discovery endpoint. */
+	// +optional
+	Port *int32 `json:"port,omitempty"`
 }
 
 type MemorystoreInstanceEndpointSpec struct {
-/* Optional. Endpoints for the instance. */
-// +optional
-Endpoints []InstanceendpointEndpoints `json:"endpoints,omitempty"`
+	/* Optional. Endpoints for the instance. */
+	// +optional
+	Endpoints []InstanceendpointEndpoints `json:"endpoints,omitempty"`
 
-/* Required. The Memorystore instance reference of the endpoint. */
-InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
+	/* Required. The Memorystore instance reference of the endpoint. */
+	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
 
-/* Optional. The MemorystoreInstanceEndpoint name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Optional. The MemorystoreInstanceEndpoint name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type InstanceendpointConnectionsStatus struct {
-/* Optional. Detailed information of a PSC connection that is created through service connectivity automation. */
-// +optional
-PscConnection *InstanceendpointPscConnectionStatus `json:"pscConnection,omitempty"`
+	/* Optional. Detailed information of a PSC connection that is created through service connectivity automation. */
+	// +optional
+	PscConnection *InstanceendpointPscConnectionStatus `json:"pscConnection,omitempty"`
 }
 
 type InstanceendpointEndpointsStatus struct {
-/* Optional. A group of PSC connections. They are created in the same VPC network, one for each service attachment in the cluster. */
-// +optional
-Connections []InstanceendpointConnectionsStatus `json:"connections,omitempty"`
+	/* Optional. A group of PSC connections. They are created in the same VPC network, one for each service attachment in the cluster. */
+	// +optional
+	Connections []InstanceendpointConnectionsStatus `json:"connections,omitempty"`
 }
 
 type InstanceendpointObservedStateStatus struct {
-/* Optional. Endpoints for the instance. */
-// +optional
-Endpoints []InstanceendpointEndpointsStatus `json:"endpoints,omitempty"`
+	/* Optional. Endpoints for the instance. */
+	// +optional
+	Endpoints []InstanceendpointEndpointsStatus `json:"endpoints,omitempty"`
 }
 
 type InstanceendpointPscConnectionStatus struct {
-/* Output only. Type of the PSC connection. For valid values, see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#connectiontype */
-// +optional
-ConnectionType *string `json:"connectionType,omitempty"`
+	/* Output only. Type of the PSC connection. For valid values, see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#connectiontype */
+	// +optional
+	ConnectionType *string `json:"connectionType,omitempty"`
 
-/* Output only. The consumer project_id where the forwarding rule is created from. */
-// +optional
-ProjectID *string `json:"projectID,omitempty"`
+	/* Output only. The consumer project_id where the forwarding rule is created from. */
+	// +optional
+	ProjectID *string `json:"projectID,omitempty"`
 
-/* Output only. The status of the PSC connection: whether a connection exists and ACTIVE or it no longer exists. Please note that this value is updated periodically. Please use Private Service Connect APIs for the latest status. For valid values, see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#pscconnectionstatus */
-// +optional
-PscConnectionStatus *string `json:"pscConnectionStatus,omitempty"`
+	/* Output only. The status of the PSC connection: whether a connection exists and ACTIVE or it no longer exists. Please note that this value is updated periodically. Please use Private Service Connect APIs for the latest status. For valid values, see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#pscconnectionstatus */
+	// +optional
+	PscConnectionStatus *string `json:"pscConnectionStatus,omitempty"`
 }
 
 type MemorystoreInstanceEndpointStatus struct {
 	/* Conditions represent the latest available observations of the
-	    MemorystoreInstanceEndpoint's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   MemorystoreInstanceEndpoint's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *InstanceendpointObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *InstanceendpointObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpmemorystoreinstanceendpoint;gcpmemorystoreinstanceendpoints
@@ -131,20 +131,22 @@ ObservedState *InstanceendpointObservedStateStatus `json:"observedState,omitempt
 // MemorystoreInstanceEndpoint is the Schema for the memorystore API
 // +k8s:openapi-gen=true
 type MemorystoreInstanceEndpoint struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec MemorystoreInstanceEndpointSpec `json:"spec,omitempty"`
-  Status MemorystoreInstanceEndpointStatus `json:"status,omitempty"`
+	Spec   MemorystoreInstanceEndpointSpec   `json:"spec,omitempty"`
+	Status MemorystoreInstanceEndpointStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // MemorystoreInstanceEndpointList contains a list of MemorystoreInstanceEndpoint
- type MemorystoreInstanceEndpointList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []MemorystoreInstanceEndpoint `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&MemorystoreInstanceEndpoint{}, &MemorystoreInstanceEndpointList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// MemorystoreInstanceEndpointList contains a list of MemorystoreInstanceEndpoint
+type MemorystoreInstanceEndpointList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []MemorystoreInstanceEndpoint `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&MemorystoreInstanceEndpoint{}, &MemorystoreInstanceEndpointList{})
+}

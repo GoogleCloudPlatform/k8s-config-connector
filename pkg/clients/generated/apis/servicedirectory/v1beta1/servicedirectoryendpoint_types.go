@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,56 +29,57 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ServiceDirectoryEndpointSpec struct {
-// +optional
-AddressRef *v1alpha1.ResourceRef `json:"addressRef,omitempty"`
+	// +optional
+	AddressRef *v1alpha1.ResourceRef `json:"addressRef,omitempty"`
 
 	/* Only the `external` field is supported to configure the reference.
-	
+
 	Immutable. The Google Compute Engine network (VPC) of the endpoint in the format
 	projects/<project number>/locations/global/networks/*.
-	
+
 	The project must be specified by project number (project id is rejected). Incorrectly formatted networks are
 	rejected, but no other validation is performed on this field (ex. network or project existence,
 	reachability, or permissions). */
-// +optional
-NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Port that the endpoint is running on, must be in the
 	range of [0, 65535]. If unspecified, the default is 0. */
-// +optional
-Port *int64 `json:"port,omitempty"`
+	// +optional
+	Port *int64 `json:"port,omitempty"`
 
-/* Immutable. Optional. The endpointId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The endpointId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* The ServiceDirectoryService that this endpoint belongs to. */
-ServiceRef v1alpha1.ResourceRef `json:"serviceRef"`
+	/* The ServiceDirectoryService that this endpoint belongs to. */
+	ServiceRef v1alpha1.ResourceRef `json:"serviceRef"`
 }
 
 type ServiceDirectoryEndpointStatus struct {
 	/* Conditions represent the latest available observations of the
-	    ServiceDirectoryEndpoint's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	   ServiceDirectoryEndpoint's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The resource name for the endpoint in the format
 	'projects/* /locations/* /namespaces/* /services/* /endpoints/*'. */
-// +optional
-Name *string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpservicedirectoryendpoint;gcpservicedirectoryendpoints
@@ -96,20 +96,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // ServiceDirectoryEndpoint is the Schema for the servicedirectory API
 // +k8s:openapi-gen=true
 type ServiceDirectoryEndpoint struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ServiceDirectoryEndpointSpec `json:"spec,omitempty"`
-  Status ServiceDirectoryEndpointStatus `json:"status,omitempty"`
+	Spec   ServiceDirectoryEndpointSpec   `json:"spec,omitempty"`
+	Status ServiceDirectoryEndpointStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ServiceDirectoryEndpointList contains a list of ServiceDirectoryEndpoint
- type ServiceDirectoryEndpointList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []ServiceDirectoryEndpoint `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&ServiceDirectoryEndpoint{}, &ServiceDirectoryEndpointList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ServiceDirectoryEndpointList contains a list of ServiceDirectoryEndpoint
+type ServiceDirectoryEndpointList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ServiceDirectoryEndpoint `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ServiceDirectoryEndpoint{}, &ServiceDirectoryEndpointList{})
+}

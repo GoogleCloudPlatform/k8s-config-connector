@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,66 +29,67 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ParameterversionPayload struct {
-/* Required. bytes data for storing payload. Provide base64-encoded value */
-Data string `json:"data"`
+	/* Required. bytes data for storing payload. Provide base64-encoded value */
+	Data string `json:"data"`
 }
 
 type ParameterManagerParameterVersionSpec struct {
-/* Optional. Disabled boolean to determine if a ParameterVersion acts as a metadata only resource (payload is never returned if disabled is true). If true any calls will always default to BASIC view even if the user explicitly passes FULL view as part of the request. A render call on a disabled resource fails with an error. Default value is False. */
-// +optional
-Disabled *bool `json:"disabled,omitempty"`
+	/* Optional. Disabled boolean to determine if a ParameterVersion acts as a metadata only resource (payload is never returned if disabled is true). If true any calls will always default to BASIC view even if the user explicitly passes FULL view as part of the request. A render call on a disabled resource fails with an error. Default value is False. */
+	// +optional
+	Disabled *bool `json:"disabled,omitempty"`
 
-/* The resource name of the [Parameter][google.cloud.parametermanager.v1.Parameter] to create a [ParameterVersion][google.cloud.parametermanager.v1.ParameterVersion] for. */
-ParameterRef v1alpha1.ResourceRef `json:"parameterRef"`
+	/* The resource name of the [Parameter][google.cloud.parametermanager.v1.Parameter] to create a [ParameterVersion][google.cloud.parametermanager.v1.ParameterVersion] for. */
+	ParameterRef v1alpha1.ResourceRef `json:"parameterRef"`
 
-/* Required. Immutable. Payload content of a ParameterVersion resource.  This is only returned when the request provides the View value of FULL (default for GET request). */
-Payload ParameterversionPayload `json:"payload"`
+	/* Required. Immutable. Payload content of a ParameterVersion resource.  This is only returned when the request provides the View value of FULL (default for GET request). */
+	Payload ParameterversionPayload `json:"payload"`
 
-/* The ParameterManagerParameterVersion name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The ParameterManagerParameterVersion name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ParameterversionObservedStateStatus struct {
-/* Output only. [Output only] Create time stamp */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. [Output only] Create time stamp */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Optional. Output only. [Output only] The resource name of the KMS key version used to encrypt the ParameterVersion payload. This field is populated only if the Parameter resource has customer managed encryption key (CMEK) configured. */
-// +optional
-KmsKeyVersion *string `json:"kmsKeyVersion,omitempty"`
+	/* Optional. Output only. [Output only] The resource name of the KMS key version used to encrypt the ParameterVersion payload. This field is populated only if the Parameter resource has customer managed encryption key (CMEK) configured. */
+	// +optional
+	KmsKeyVersion *string `json:"kmsKeyVersion,omitempty"`
 
-/* Output only. [Output only] Update time stamp */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. [Output only] Update time stamp */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type ParameterManagerParameterVersionStatus struct {
 	/* Conditions represent the latest available observations of the
-	    ParameterManagerParameterVersion's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the ParameterManagerParameterVersion resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   ParameterManagerParameterVersion's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the ParameterManagerParameterVersion resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *ParameterversionObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *ParameterversionObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpparametermanagerparameterversion;gcpparametermanagerparameterversions
@@ -104,20 +104,22 @@ ObservedState *ParameterversionObservedStateStatus `json:"observedState,omitempt
 // ParameterManagerParameterVersion is the Schema for the parametermanager API
 // +k8s:openapi-gen=true
 type ParameterManagerParameterVersion struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ParameterManagerParameterVersionSpec `json:"spec,omitempty"`
-  Status ParameterManagerParameterVersionStatus `json:"status,omitempty"`
+	Spec   ParameterManagerParameterVersionSpec   `json:"spec,omitempty"`
+	Status ParameterManagerParameterVersionStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ParameterManagerParameterVersionList contains a list of ParameterManagerParameterVersion
- type ParameterManagerParameterVersionList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []ParameterManagerParameterVersion `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&ParameterManagerParameterVersion{}, &ParameterManagerParameterVersionList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ParameterManagerParameterVersionList contains a list of ParameterManagerParameterVersion
+type ParameterManagerParameterVersionList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ParameterManagerParameterVersion `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ParameterManagerParameterVersion{}, &ParameterManagerParameterVersionList{})
+}

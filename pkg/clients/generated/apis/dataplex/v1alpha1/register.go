@@ -53,37 +53,35 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	DataplexEntryGroupGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DataplexEntryGroup{}).Name(),
-  	}
-  
-  	DataplexEntryTypeGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DataplexEntryType{}).Name(),
-  	}
-  
-  	DataplexLakeGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DataplexLake{}).Name(),
-  	}
-  
-  	DataplexTaskGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DataplexTask{}).Name(),
-  	}
-  
-  	DataplexZoneGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DataplexZone{}).Name(),
-  	}
-  
+	DataplexEntryGroupGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DataplexEntryGroup{}).Name(),
+	}
 
-  	dataplexAPIVersion = SchemeGroupVersion.String()
+	DataplexEntryTypeGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DataplexEntryType{}).Name(),
+	}
+
+	DataplexLakeGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DataplexLake{}).Name(),
+	}
+
+	DataplexTaskGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DataplexTask{}).Name(),
+	}
+
+	DataplexZoneGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DataplexZone{}).Name(),
+	}
+
+	dataplexAPIVersion = SchemeGroupVersion.String()
 )

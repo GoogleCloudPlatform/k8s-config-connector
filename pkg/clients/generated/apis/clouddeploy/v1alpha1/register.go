@@ -53,25 +53,23 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	CloudDeployCustomTargetTypeGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(CloudDeployCustomTargetType{}).Name(),
-  	}
-  
-  	CloudDeployDeployPolicyGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(CloudDeployDeployPolicy{}).Name(),
-  	}
-  
-  	CloudDeployTargetGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(CloudDeployTarget{}).Name(),
-  	}
-  
+	CloudDeployCustomTargetTypeGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(CloudDeployCustomTargetType{}).Name(),
+	}
 
-  	clouddeployAPIVersion = SchemeGroupVersion.String()
+	CloudDeployDeployPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(CloudDeployDeployPolicy{}).Name(),
+	}
+
+	CloudDeployTargetGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(CloudDeployTarget{}).Name(),
+	}
+
+	clouddeployAPIVersion = SchemeGroupVersion.String()
 )

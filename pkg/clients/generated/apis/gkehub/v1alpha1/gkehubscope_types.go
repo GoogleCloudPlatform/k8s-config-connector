@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,65 +29,66 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type GKEHubScopeSpec struct {
-/* Immutable. The location for the resource. Typically "global". */
-Location string `json:"location"`
+	/* Immutable. The location for the resource. Typically "global". */
+	Location string `json:"location"`
 
-/* Optional. Labels for the GKEHubScope. */
-// +optional
-NamespaceLabels map[string]string `json:"namespaceLabels,omitempty"`
+	/* Optional. Labels for the GKEHubScope. */
+	// +optional
+	NamespaceLabels map[string]string `json:"namespaceLabels,omitempty"`
 
-/* Immutable. The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* Immutable. The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Immutable. Optional. The resourceID of the resource; if not provided, the name of the resource will be used as the resourceID. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The resourceID of the resource; if not provided, the name of the resource will be used as the resourceID. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ScopeStateStatus struct {
-/* Output only. Code describes the state of a Scope resource. Possible values: CODE_UNSPECIFIED, CREATING, READY, DELETING, UPDATING */
-// +optional
-Code *string `json:"code,omitempty"`
+	/* Output only. Code describes the state of a Scope resource. Possible values: CODE_UNSPECIFIED, CREATING, READY, DELETING, UPDATING */
+	// +optional
+	Code *string `json:"code,omitempty"`
 }
 
 type GKEHubScopeStatus struct {
 	/* Conditions represent the latest available observations of the
-	    GKEHubScope's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* Output only. The time at which this scope was created. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	   GKEHubScope's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* Output only. The time at which this scope was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. The time at which this scope was deleted. */
-// +optional
-DeleteTime *string `json:"deleteTime,omitempty"`
+	/* Output only. The time at which this scope was deleted. */
+	// +optional
+	DeleteTime *string `json:"deleteTime,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* Output only. State of the scope resource. */
-// +optional
-State *ScopeStateStatus `json:"state,omitempty"`
+	/* Output only. State of the scope resource. */
+	// +optional
+	State *ScopeStateStatus `json:"state,omitempty"`
 
-/* Output only. Google-generated UUID for this resource. This is unique across all scope resources. If a scope resource is deleted and another with the same name is created, it will have a different uid. */
-// +optional
-Uid *string `json:"uid,omitempty"`
+	/* Output only. Google-generated UUID for this resource. This is unique across all scope resources. If a scope resource is deleted and another with the same name is created, it will have a different uid. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
 
-/* Output only. The time at which this scope was last updated. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. The time at which this scope was last updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpgkehubscope;gcpgkehubscopes
@@ -103,20 +103,22 @@ UpdateTime *string `json:"updateTime,omitempty"`
 // GKEHubScope is the Schema for the gkehub API
 // +k8s:openapi-gen=true
 type GKEHubScope struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec GKEHubScopeSpec `json:"spec,omitempty"`
-  Status GKEHubScopeStatus `json:"status,omitempty"`
+	Spec   GKEHubScopeSpec   `json:"spec,omitempty"`
+	Status GKEHubScopeStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // GKEHubScopeList contains a list of GKEHubScope
- type GKEHubScopeList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []GKEHubScope `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&GKEHubScope{}, &GKEHubScopeList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// GKEHubScopeList contains a list of GKEHubScope
+type GKEHubScopeList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []GKEHubScope `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&GKEHubScope{}, &GKEHubScopeList{})
+}

@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -44,229 +43,230 @@ type RecognizerDefaultRecognitionConfig struct {
 	[BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag.
 	Language tags are normalized to BCP-47 before they are used eg "en-us"
 	becomes "en-US".
-	
+
 	Supported languages for each model are listed in the [Table of Supported
 	Models](https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages).
-	
+
 	If additional languages are provided, recognition result will contain
 	recognition in the most likely language detected. The recognition result
 	will include the language tag of the language detected in the audio. */
-// +optional
-LanguageCodes []string `json:"languageCodes,omitempty"`
+	// +optional
+	LanguageCodes []string `json:"languageCodes,omitempty"`
 
 	/* Optional. Which model to use for recognition requests. Select the model
 	best suited to your domain to get best results.
-	
+
 	Guidance for choosing which model to use can be found in the [Transcription
 	Models
 	Documentation](https://cloud.google.com/speech-to-text/v2/docs/transcription-model)
 	and the models supported in each region can be found in the [Table Of
 	Supported
 	Models](https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages). */
-// +optional
-Model *string `json:"model,omitempty"`
+	// +optional
+	Model *string `json:"model,omitempty"`
 }
 
 type SpeechRecognizerSpec struct {
-/* Allows users to store small amounts of arbitrary data. Both the key and the value must be 63 characters or less each. At most 100 annotations. */
-// +optional
-Annotations map[string]string `json:"annotations,omitempty"`
+	/* Allows users to store small amounts of arbitrary data. Both the key and the value must be 63 characters or less each. At most 100 annotations. */
+	// +optional
+	Annotations map[string]string `json:"annotations,omitempty"`
 
-/* Default configuration to use for requests with this Recognizer. This can be overwritten by inline configuration in the [RecognizeRequest.config][google.cloud.speech.v2.RecognizeRequest.config] field. */
-// +optional
-DefaultRecognitionConfig *RecognizerDefaultRecognitionConfig `json:"defaultRecognitionConfig,omitempty"`
+	/* Default configuration to use for requests with this Recognizer. This can be overwritten by inline configuration in the [RecognizeRequest.config][google.cloud.speech.v2.RecognizeRequest.config] field. */
+	// +optional
+	DefaultRecognitionConfig *RecognizerDefaultRecognitionConfig `json:"defaultRecognitionConfig,omitempty"`
 
-/* User-settable, human-readable name for the Recognizer. Must be 63 characters or less. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* User-settable, human-readable name for the Recognizer. Must be 63 characters or less. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* Immutable. */
-Location string `json:"location"`
+	/* Immutable. */
+	Location string `json:"location"`
 
-/* The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* The SpeechRecognizer name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The SpeechRecognizer name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type RecognizerAdaptationStatus struct {
-/* A list of inline CustomClasses. Existing CustomClass resources can be referenced directly in a PhraseSet. */
-// +optional
-CustomClasses []RecognizerCustomClassesStatus `json:"customClasses,omitempty"`
+	/* A list of inline CustomClasses. Existing CustomClass resources can be referenced directly in a PhraseSet. */
+	// +optional
+	CustomClasses []RecognizerCustomClassesStatus `json:"customClasses,omitempty"`
 
-/* A list of inline or referenced PhraseSets. */
-// +optional
-PhraseSets []RecognizerPhraseSetsStatus `json:"phraseSets,omitempty"`
+	/* A list of inline or referenced PhraseSets. */
+	// +optional
+	PhraseSets []RecognizerPhraseSetsStatus `json:"phraseSets,omitempty"`
 }
 
 type RecognizerCustomClassesStatus struct {
-/* Output only. Creation time. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. Creation time. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. The time at which this resource was requested for deletion. */
-// +optional
-DeleteTime *string `json:"deleteTime,omitempty"`
+	/* Output only. The time at which this resource was requested for deletion. */
+	// +optional
+	DeleteTime *string `json:"deleteTime,omitempty"`
 
-/* Output only. This checksum is computed by the server based on the value of other fields. This may be sent on update, undelete, and delete requests to ensure the client has an up-to-date value before proceeding. */
-// +optional
-Etag *string `json:"etag,omitempty"`
+	/* Output only. This checksum is computed by the server based on the value of other fields. This may be sent on update, undelete, and delete requests to ensure the client has an up-to-date value before proceeding. */
+	// +optional
+	Etag *string `json:"etag,omitempty"`
 
-/* Output only. The time at which this resource will be purged. */
-// +optional
-ExpireTime *string `json:"expireTime,omitempty"`
+	/* Output only. The time at which this resource will be purged. */
+	// +optional
+	ExpireTime *string `json:"expireTime,omitempty"`
 
-/* Output only. The [KMS key name](https://cloud.google.com/kms/docs/resource-hierarchy#keys) with which the CustomClass is encrypted. The expected format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`. */
-// +optional
-KmsKeyName *string `json:"kmsKeyName,omitempty"`
+	/* Output only. The [KMS key name](https://cloud.google.com/kms/docs/resource-hierarchy#keys) with which the CustomClass is encrypted. The expected format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`. */
+	// +optional
+	KmsKeyName *string `json:"kmsKeyName,omitempty"`
 
-/* Output only. The [KMS key version name](https://cloud.google.com/kms/docs/resource-hierarchy#key_versions) with which the CustomClass is encrypted. The expected format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}`. */
-// +optional
-KmsKeyVersionName *string `json:"kmsKeyVersionName,omitempty"`
+	/* Output only. The [KMS key version name](https://cloud.google.com/kms/docs/resource-hierarchy#key_versions) with which the CustomClass is encrypted. The expected format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}`. */
+	// +optional
+	KmsKeyVersionName *string `json:"kmsKeyVersionName,omitempty"`
 
-/* Output only. Identifier. The resource name of the CustomClass. Format: `projects/{project}/locations/{location}/customClasses/{custom_class}`. */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* Output only. Identifier. The resource name of the CustomClass. Format: `projects/{project}/locations/{location}/customClasses/{custom_class}`. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* Output only. Whether or not this CustomClass is in the process of being updated. */
-// +optional
-Reconciling *bool `json:"reconciling,omitempty"`
+	/* Output only. Whether or not this CustomClass is in the process of being updated. */
+	// +optional
+	Reconciling *bool `json:"reconciling,omitempty"`
 
-/* Output only. The CustomClass lifecycle state. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. The CustomClass lifecycle state. */
+	// +optional
+	State *string `json:"state,omitempty"`
 
-/* Output only. System-assigned unique identifier for the CustomClass. */
-// +optional
-Uid *string `json:"uid,omitempty"`
+	/* Output only. System-assigned unique identifier for the CustomClass. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
 
-/* Output only. The most recent time this resource was modified. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. The most recent time this resource was modified. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type RecognizerDefaultRecognitionConfigStatus struct {
-/* Speech adaptation context that weights recognizer predictions for specific words and phrases. */
-// +optional
-Adaptation *RecognizerAdaptationStatus `json:"adaptation,omitempty"`
+	/* Speech adaptation context that weights recognizer predictions for specific words and phrases. */
+	// +optional
+	Adaptation *RecognizerAdaptationStatus `json:"adaptation,omitempty"`
 }
 
 type RecognizerInlinePhraseSetStatus struct {
-/* Output only. Creation time. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. Creation time. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. The time at which this resource was requested for deletion. */
-// +optional
-DeleteTime *string `json:"deleteTime,omitempty"`
+	/* Output only. The time at which this resource was requested for deletion. */
+	// +optional
+	DeleteTime *string `json:"deleteTime,omitempty"`
 
-/* Output only. This checksum is computed by the server based on the value of other fields. This may be sent on update, undelete, and delete requests to ensure the client has an up-to-date value before proceeding. */
-// +optional
-Etag *string `json:"etag,omitempty"`
+	/* Output only. This checksum is computed by the server based on the value of other fields. This may be sent on update, undelete, and delete requests to ensure the client has an up-to-date value before proceeding. */
+	// +optional
+	Etag *string `json:"etag,omitempty"`
 
-/* Output only. The time at which this resource will be purged. */
-// +optional
-ExpireTime *string `json:"expireTime,omitempty"`
+	/* Output only. The time at which this resource will be purged. */
+	// +optional
+	ExpireTime *string `json:"expireTime,omitempty"`
 
-/* Output only. The [KMS key name](https://cloud.google.com/kms/docs/resource-hierarchy#keys) with which the PhraseSet is encrypted. The expected format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`. */
-// +optional
-KmsKeyName *string `json:"kmsKeyName,omitempty"`
+	/* Output only. The [KMS key name](https://cloud.google.com/kms/docs/resource-hierarchy#keys) with which the PhraseSet is encrypted. The expected format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`. */
+	// +optional
+	KmsKeyName *string `json:"kmsKeyName,omitempty"`
 
-/* Output only. The [KMS key version name](https://cloud.google.com/kms/docs/resource-hierarchy#key_versions) with which the PhraseSet is encrypted. The expected format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}`. */
-// +optional
-KmsKeyVersionName *string `json:"kmsKeyVersionName,omitempty"`
+	/* Output only. The [KMS key version name](https://cloud.google.com/kms/docs/resource-hierarchy#key_versions) with which the PhraseSet is encrypted. The expected format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}`. */
+	// +optional
+	KmsKeyVersionName *string `json:"kmsKeyVersionName,omitempty"`
 
-/* Output only. Identifier. The resource name of the PhraseSet. Format: `projects/{project}/locations/{location}/phraseSets/{phrase_set}`. */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* Output only. Identifier. The resource name of the PhraseSet. Format: `projects/{project}/locations/{location}/phraseSets/{phrase_set}`. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* Output only. Whether or not this PhraseSet is in the process of being updated. */
-// +optional
-Reconciling *bool `json:"reconciling,omitempty"`
+	/* Output only. Whether or not this PhraseSet is in the process of being updated. */
+	// +optional
+	Reconciling *bool `json:"reconciling,omitempty"`
 
-/* Output only. The PhraseSet lifecycle state. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. The PhraseSet lifecycle state. */
+	// +optional
+	State *string `json:"state,omitempty"`
 
-/* Output only. System-assigned unique identifier for the PhraseSet. */
-// +optional
-Uid *string `json:"uid,omitempty"`
+	/* Output only. System-assigned unique identifier for the PhraseSet. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
 
-/* Output only. The most recent time this resource was modified. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. The most recent time this resource was modified. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type RecognizerObservedStateStatus struct {
-/* Output only. Creation time. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. Creation time. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Default configuration to use for requests with this Recognizer. This can be overwritten by inline configuration in the [RecognizeRequest.config][google.cloud.speech.v2.RecognizeRequest.config] field. */
-// +optional
-DefaultRecognitionConfig *RecognizerDefaultRecognitionConfigStatus `json:"defaultRecognitionConfig,omitempty"`
+	/* Default configuration to use for requests with this Recognizer. This can be overwritten by inline configuration in the [RecognizeRequest.config][google.cloud.speech.v2.RecognizeRequest.config] field. */
+	// +optional
+	DefaultRecognitionConfig *RecognizerDefaultRecognitionConfigStatus `json:"defaultRecognitionConfig,omitempty"`
 
-/* Output only. The time at which this Recognizer was requested for deletion. */
-// +optional
-DeleteTime *string `json:"deleteTime,omitempty"`
+	/* Output only. The time at which this Recognizer was requested for deletion. */
+	// +optional
+	DeleteTime *string `json:"deleteTime,omitempty"`
 
-/* Output only. This checksum is computed by the server based on the value of other fields. This may be sent on update, undelete, and delete requests to ensure the client has an up-to-date value before proceeding. */
-// +optional
-Etag *string `json:"etag,omitempty"`
+	/* Output only. This checksum is computed by the server based on the value of other fields. This may be sent on update, undelete, and delete requests to ensure the client has an up-to-date value before proceeding. */
+	// +optional
+	Etag *string `json:"etag,omitempty"`
 
-/* Output only. The time at which this Recognizer will be purged. */
-// +optional
-ExpireTime *string `json:"expireTime,omitempty"`
+	/* Output only. The time at which this Recognizer will be purged. */
+	// +optional
+	ExpireTime *string `json:"expireTime,omitempty"`
 
-/* Output only. The [KMS key name](https://cloud.google.com/kms/docs/resource-hierarchy#keys) with which the Recognizer is encrypted. The expected format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`. */
-// +optional
-KmsKeyName *string `json:"kmsKeyName,omitempty"`
+	/* Output only. The [KMS key name](https://cloud.google.com/kms/docs/resource-hierarchy#keys) with which the Recognizer is encrypted. The expected format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`. */
+	// +optional
+	KmsKeyName *string `json:"kmsKeyName,omitempty"`
 
-/* Output only. The [KMS key version name](https://cloud.google.com/kms/docs/resource-hierarchy#key_versions) with which the Recognizer is encrypted. The expected format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}`. */
-// +optional
-KmsKeyVersionName *string `json:"kmsKeyVersionName,omitempty"`
+	/* Output only. The [KMS key version name](https://cloud.google.com/kms/docs/resource-hierarchy#key_versions) with which the Recognizer is encrypted. The expected format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}`. */
+	// +optional
+	KmsKeyVersionName *string `json:"kmsKeyVersionName,omitempty"`
 
-/* Output only. Whether or not this Recognizer is in the process of being updated. */
-// +optional
-Reconciling *bool `json:"reconciling,omitempty"`
+	/* Output only. Whether or not this Recognizer is in the process of being updated. */
+	// +optional
+	Reconciling *bool `json:"reconciling,omitempty"`
 
-/* Output only. The Recognizer lifecycle state. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. The Recognizer lifecycle state. */
+	// +optional
+	State *string `json:"state,omitempty"`
 
-/* Output only. System-assigned unique identifier for the Recognizer. */
-// +optional
-Uid *string `json:"uid,omitempty"`
+	/* Output only. System-assigned unique identifier for the Recognizer. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
 
-/* Output only. The most recent time this Recognizer was modified. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. The most recent time this Recognizer was modified. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type RecognizerPhraseSetsStatus struct {
-/* An inline defined PhraseSet. */
-// +optional
-InlinePhraseSet *RecognizerInlinePhraseSetStatus `json:"inlinePhraseSet,omitempty"`
+	/* An inline defined PhraseSet. */
+	// +optional
+	InlinePhraseSet *RecognizerInlinePhraseSetStatus `json:"inlinePhraseSet,omitempty"`
 }
 
 type SpeechRecognizerStatus struct {
 	/* Conditions represent the latest available observations of the
-	    SpeechRecognizer's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the SpeechRecognizer resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   SpeechRecognizer's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the SpeechRecognizer resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *RecognizerObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *RecognizerObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpspeechrecognizer;gcpspeechrecognizers
@@ -281,20 +281,22 @@ ObservedState *RecognizerObservedStateStatus `json:"observedState,omitempty"`
 // SpeechRecognizer is the Schema for the speech API
 // +k8s:openapi-gen=true
 type SpeechRecognizer struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec SpeechRecognizerSpec `json:"spec,omitempty"`
-  Status SpeechRecognizerStatus `json:"status,omitempty"`
+	Spec   SpeechRecognizerSpec   `json:"spec,omitempty"`
+	Status SpeechRecognizerStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // SpeechRecognizerList contains a list of SpeechRecognizer
- type SpeechRecognizerList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []SpeechRecognizer `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&SpeechRecognizer{}, &SpeechRecognizerList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// SpeechRecognizerList contains a list of SpeechRecognizer
+type SpeechRecognizerList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []SpeechRecognizer `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&SpeechRecognizer{}, &SpeechRecognizerList{})
+}

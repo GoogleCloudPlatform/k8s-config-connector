@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -42,197 +41,198 @@ var _ = apiextensionsv1.JSON{}
 type PrivatecloudManagementCluster struct {
 	/* Required. The user-provided identifier of the new `Cluster`.
 	The identifier must meet the following requirements:
-	
+
 	* Only contains 1-63 alphanumeric characters and hyphens
 	* Begins with an alphabetical character
 	* Ends with a non-hyphen character
 	* Not formatted as a UUID
 	* Complies with [RFC
 	1034](https://datatracker.ietf.org/doc/html/rfc1034) (section 3.5) */
-ClusterID string `json:"clusterID"`
+	ClusterID string `json:"clusterID"`
 
-/* Required. A list of cluster node types in this cluster. */
-NodeTypeConfigs []PrivatecloudNodeTypeConfigs `json:"nodeTypeConfigs"`
+	/* Required. A list of cluster node types in this cluster. */
+	NodeTypeConfigs []PrivatecloudNodeTypeConfigs `json:"nodeTypeConfigs"`
 }
 
 type PrivatecloudNetworkConfig struct {
-/* Required. Management CIDR used by VMware management appliances. */
-ManagementCIDR string `json:"managementCIDR"`
+	/* Required. Management CIDR used by VMware management appliances. */
+	ManagementCIDR string `json:"managementCIDR"`
 
-/* Optional. The name of the VMware Engine network attached to the private cloud. */
-// +optional
-VmwareEngineNetworkRef *v1alpha1.ResourceRef `json:"vmwareEngineNetworkRef,omitempty"`
+	/* Optional. The name of the VMware Engine network attached to the private cloud. */
+	// +optional
+	VmwareEngineNetworkRef *v1alpha1.ResourceRef `json:"vmwareEngineNetworkRef,omitempty"`
 }
 
 type PrivatecloudNodeTypeConfigs struct {
-/* Optional. Customized number of cores available to each node of the type. This number must always be one of `nodeType.availableCustomCoreCounts`. If zero is provided max value from `nodeType.availableCustomCoreCounts` will be used. */
-// +optional
-CustomCoreCount *int32 `json:"customCoreCount,omitempty"`
+	/* Optional. Customized number of cores available to each node of the type. This number must always be one of `nodeType.availableCustomCoreCounts`. If zero is provided max value from `nodeType.availableCustomCoreCounts` will be used. */
+	// +optional
+	CustomCoreCount *int32 `json:"customCoreCount,omitempty"`
 
-/* Required. The number of nodes of this type in the cluster */
-NodeCount int32 `json:"nodeCount"`
+	/* Required. The number of nodes of this type in the cluster */
+	NodeCount int32 `json:"nodeCount"`
 
-/* Required. The type of the node. The canonical identifier of the node type (corresponds to the NodeType). For example: standard-72. */
-NodeTypeID string `json:"nodeTypeID"`
+	/* Required. The type of the node. The canonical identifier of the node type (corresponds to the NodeType). For example: standard-72. */
+	NodeTypeID string `json:"nodeTypeID"`
 }
 
 type VMwareEnginePrivateCloudSpec struct {
-/* User-provided description for this private cloud. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* User-provided description for this private cloud. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Immutable. */
-Location string `json:"location"`
+	/* Immutable. */
+	Location string `json:"location"`
 
 	/* Required. Input only. The management cluster for this private cloud.
 	This field is required during creation of the private cloud to provide
 	details for the default cluster.
-	
+
 	The following fields can't be changed after private cloud creation:
 	`ManagementCluster.clusterId`, `ManagementCluster.nodeTypeId`. */
-ManagementCluster PrivatecloudManagementCluster `json:"managementCluster"`
+	ManagementCluster PrivatecloudManagementCluster `json:"managementCluster"`
 
-/* Required. Network configuration of the private cloud. */
-NetworkConfig PrivatecloudNetworkConfig `json:"networkConfig"`
+	/* Required. Network configuration of the private cloud. */
+	NetworkConfig PrivatecloudNetworkConfig `json:"networkConfig"`
 
-/* The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* The VMwareEnginePrivateCloud name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The VMwareEnginePrivateCloud name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Optional. Type of the private cloud. Defaults to STANDARD. */
-// +optional
-Type *string `json:"type,omitempty"`
+	/* Optional. Type of the private cloud. Defaults to STANDARD. */
+	// +optional
+	Type *string `json:"type,omitempty"`
 }
 
 type PrivatecloudHcxStatus struct {
-/* Fully qualified domain name of the appliance. */
-// +optional
-Fqdn *string `json:"fqdn,omitempty"`
+	/* Fully qualified domain name of the appliance. */
+	// +optional
+	Fqdn *string `json:"fqdn,omitempty"`
 
-/* Internal IP address of the appliance. */
-// +optional
-InternalIP *string `json:"internalIP,omitempty"`
+	/* Internal IP address of the appliance. */
+	// +optional
+	InternalIP *string `json:"internalIP,omitempty"`
 
-/* Output only. The state of the appliance. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. The state of the appliance. */
+	// +optional
+	State *string `json:"state,omitempty"`
 
-/* Version of the appliance. */
-// +optional
-Version *string `json:"version,omitempty"`
+	/* Version of the appliance. */
+	// +optional
+	Version *string `json:"version,omitempty"`
 }
 
 type PrivatecloudNetworkConfigStatus struct {
-/* Output only. DNS Server IP of the Private Cloud. All DNS queries can be forwarded to this address for name resolution of Private Cloud's management entities like vCenter, NSX-T Manager and ESXi hosts. */
-// +optional
-DnsServerIP *string `json:"dnsServerIP,omitempty"`
+	/* Output only. DNS Server IP of the Private Cloud. All DNS queries can be forwarded to this address for name resolution of Private Cloud's management entities like vCenter, NSX-T Manager and ESXi hosts. */
+	// +optional
+	DnsServerIP *string `json:"dnsServerIP,omitempty"`
 
-/* Output only. The IP address layout version of the management IP address range. Possible versions include: * `managementIpAddressLayoutVersion=1`: Indicates the legacy IP address layout used by some existing private cloudqs. This is no longer supported for new private clouds as it does not support all features. * `managementIpAddressLayoutVersion=2`: Indicates the latest IP address layout used by all newly created private clouds. This version supports all current features. */
-// +optional
-ManagementIPAddressLayoutVersion *int32 `json:"managementIPAddressLayoutVersion,omitempty"`
+	/* Output only. The IP address layout version of the management IP address range. Possible versions include: * `managementIpAddressLayoutVersion=1`: Indicates the legacy IP address layout used by some existing private cloudqs. This is no longer supported for new private clouds as it does not support all features. * `managementIpAddressLayoutVersion=2`: Indicates the latest IP address layout used by all newly created private clouds. This version supports all current features. */
+	// +optional
+	ManagementIPAddressLayoutVersion *int32 `json:"managementIPAddressLayoutVersion,omitempty"`
 
-/* Output only. The canonical name of the VMware Engine network in the form: `projects/{project_number}/locations/{location}/vmwareEngineNetworks/{vmware_engine_network_id}` */
-// +optional
-VmwareEngineNetworkCanonical *string `json:"vmwareEngineNetworkCanonical,omitempty"`
+	/* Output only. The canonical name of the VMware Engine network in the form: `projects/{project_number}/locations/{location}/vmwareEngineNetworks/{vmware_engine_network_id}` */
+	// +optional
+	VmwareEngineNetworkCanonical *string `json:"vmwareEngineNetworkCanonical,omitempty"`
 }
 
 type PrivatecloudNsxStatus struct {
-/* Fully qualified domain name of the appliance. */
-// +optional
-Fqdn *string `json:"fqdn,omitempty"`
+	/* Fully qualified domain name of the appliance. */
+	// +optional
+	Fqdn *string `json:"fqdn,omitempty"`
 
-/* Internal IP address of the appliance. */
-// +optional
-InternalIP *string `json:"internalIP,omitempty"`
+	/* Internal IP address of the appliance. */
+	// +optional
+	InternalIP *string `json:"internalIP,omitempty"`
 
-/* Output only. The state of the appliance. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. The state of the appliance. */
+	// +optional
+	State *string `json:"state,omitempty"`
 
-/* Version of the appliance. */
-// +optional
-Version *string `json:"version,omitempty"`
+	/* Version of the appliance. */
+	// +optional
+	Version *string `json:"version,omitempty"`
 }
 
 type PrivatecloudObservedStateStatus struct {
-/* Output only. Creation time of this resource. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. Creation time of this resource. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. Time when the resource was scheduled for deletion. */
-// +optional
-DeleteTime *string `json:"deleteTime,omitempty"`
+	/* Output only. Time when the resource was scheduled for deletion. */
+	// +optional
+	DeleteTime *string `json:"deleteTime,omitempty"`
 
-/* Output only. Time when the resource will be irreversibly deleted. */
-// +optional
-ExpireTime *string `json:"expireTime,omitempty"`
+	/* Output only. Time when the resource will be irreversibly deleted. */
+	// +optional
+	ExpireTime *string `json:"expireTime,omitempty"`
 
-/* Output only. HCX appliance. */
-// +optional
-Hcx *PrivatecloudHcxStatus `json:"hcx,omitempty"`
+	/* Output only. HCX appliance. */
+	// +optional
+	Hcx *PrivatecloudHcxStatus `json:"hcx,omitempty"`
 
-/* Network configuration of the private cloud. */
-// +optional
-NetworkConfig *PrivatecloudNetworkConfigStatus `json:"networkConfig,omitempty"`
+	/* Network configuration of the private cloud. */
+	// +optional
+	NetworkConfig *PrivatecloudNetworkConfigStatus `json:"networkConfig,omitempty"`
 
-/* Output only. NSX appliance. */
-// +optional
-Nsx *PrivatecloudNsxStatus `json:"nsx,omitempty"`
+	/* Output only. NSX appliance. */
+	// +optional
+	Nsx *PrivatecloudNsxStatus `json:"nsx,omitempty"`
 
-/* Output only. State of the resource. New values may be added to this enum when appropriate. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. State of the resource. New values may be added to this enum when appropriate. */
+	// +optional
+	State *string `json:"state,omitempty"`
 
-/* Output only. System-generated unique identifier for the resource. */
-// +optional
-Uid *string `json:"uid,omitempty"`
+	/* Output only. System-generated unique identifier for the resource. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
 
-/* Output only. Last update time of this resource. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. Last update time of this resource. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 
-/* Output only. Vcenter appliance. */
-// +optional
-Vcenter *PrivatecloudVcenterStatus `json:"vcenter,omitempty"`
+	/* Output only. Vcenter appliance. */
+	// +optional
+	Vcenter *PrivatecloudVcenterStatus `json:"vcenter,omitempty"`
 }
 
 type PrivatecloudVcenterStatus struct {
-/* Fully qualified domain name of the appliance. */
-// +optional
-Fqdn *string `json:"fqdn,omitempty"`
+	/* Fully qualified domain name of the appliance. */
+	// +optional
+	Fqdn *string `json:"fqdn,omitempty"`
 
-/* Internal IP address of the appliance. */
-// +optional
-InternalIP *string `json:"internalIP,omitempty"`
+	/* Internal IP address of the appliance. */
+	// +optional
+	InternalIP *string `json:"internalIP,omitempty"`
 
-/* Output only. The state of the appliance. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. The state of the appliance. */
+	// +optional
+	State *string `json:"state,omitempty"`
 
-/* Version of the appliance. */
-// +optional
-Version *string `json:"version,omitempty"`
+	/* Version of the appliance. */
+	// +optional
+	Version *string `json:"version,omitempty"`
 }
 
 type VMwareEnginePrivateCloudStatus struct {
 	/* Conditions represent the latest available observations of the
-	    VMwareEnginePrivateCloud's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the VMwareEnginePrivateCloud resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   VMwareEnginePrivateCloud's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the VMwareEnginePrivateCloud resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *PrivatecloudObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *PrivatecloudObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpvmwareengineprivatecloud;gcpvmwareengineprivateclouds
@@ -247,20 +247,22 @@ ObservedState *PrivatecloudObservedStateStatus `json:"observedState,omitempty"`
 // VMwareEnginePrivateCloud is the Schema for the vmwareengine API
 // +k8s:openapi-gen=true
 type VMwareEnginePrivateCloud struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec VMwareEnginePrivateCloudSpec `json:"spec,omitempty"`
-  Status VMwareEnginePrivateCloudStatus `json:"status,omitempty"`
+	Spec   VMwareEnginePrivateCloudSpec   `json:"spec,omitempty"`
+	Status VMwareEnginePrivateCloudStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // VMwareEnginePrivateCloudList contains a list of VMwareEnginePrivateCloud
- type VMwareEnginePrivateCloudList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []VMwareEnginePrivateCloud `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&VMwareEnginePrivateCloud{}, &VMwareEnginePrivateCloudList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// VMwareEnginePrivateCloudList contains a list of VMwareEnginePrivateCloud
+type VMwareEnginePrivateCloudList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []VMwareEnginePrivateCloud `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&VMwareEnginePrivateCloud{}, &VMwareEnginePrivateCloudList{})
+}
