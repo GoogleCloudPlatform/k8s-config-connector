@@ -19,7 +19,6 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -38,8 +37,6 @@ func GKEHubNamespaceSpec_FromAPI(mapCtx *direct.MapContext, r *gkehubv1.Namespac
 		return nil
 	}
 	out := &krm.GKEHubNamespaceSpec{}
-	out.ProjectRef = &refs.ProjectRef{External: "projects/" + id.ProjectID}
-	out.Location = direct.LazyPtr(id.Location)
 	out.ScopeRef = &krm.GKEHubScopeRef{External: id.Parent().String()}
 	out.NamespaceID = direct.LazyPtr(id.ID())
 	out.ResourceID = direct.LazyPtr(id.ID())
