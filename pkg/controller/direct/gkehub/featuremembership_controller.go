@@ -148,7 +148,7 @@ func (a *gkeHubAdapter) Find(ctx context.Context) (bool, error) {
 	if a.membershipID == "" || a.featureID == "" {
 		return false, nil
 	}
-	feature, err := a.hubClient.featureClient.Get(a.featureID).Context(ctx).ReturnPartialSuccess(true).Do()
+	feature, err := a.hubClient.featureClientV1beta.Get(a.featureID).Context(ctx).ReturnPartialSuccess(true).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -204,7 +204,7 @@ func (a *gkeHubAdapter) patchMembershipSpec(ctx context.Context) ([]byte, error)
 	// MembershipSpecs is a map of membership spec. Here we only patch one membership.
 	// GKE Hub server doesn't patch other memberships if they are not present in the membershipSpecs map.
 	feature.MembershipSpecs = mSpecs
-	op, err := a.hubClient.featureClient.Patch(a.featureID, feature).UpdateMask("membershipSpecs").Context(ctx).Do()
+	op, err := a.hubClient.featureClientV1beta.Patch(a.featureID, feature).UpdateMask("membershipSpecs").Context(ctx).Do()
 	if err != nil {
 		return nil, err
 	}
@@ -218,7 +218,7 @@ func (a *gkeHubAdapter) waitForOp(ctx context.Context, op *featureapi.Operation)
 	retryPeriod := baseDelay
 	timeoutAt := time.Now().Add(timeoutDuration)
 	for {
-		current, err := a.hubClient.operationClient.Get(op.Name).Context(ctx).Do()
+		current, err := a.hubClient.operationClientV1beta.Get(op.Name).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("getting operation status of %q failed: %w", op.Name, err)
 		}

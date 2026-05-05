@@ -93,7 +93,7 @@ func (a *gkeHubScopeAdapter) Find(ctx context.Context) (bool, error) {
 	if a.id == nil {
 		return false, nil
 	}
-	actual, err := a.hubClient.scopeClient.Get(a.id.String()).Context(ctx).Do()
+	actual, err := a.hubClient.scopeClientV1beta.Get(a.id.String()).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -105,7 +105,7 @@ func (a *gkeHubScopeAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *gkeHubScopeAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	op, err := a.hubClient.scopeClient.Delete(a.id.String()).Context(ctx).Do()
+	op, err := a.hubClient.scopeClientV1beta.Delete(a.id.String()).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -129,7 +129,7 @@ func (a *gkeHubScopeAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	}
 
 	parent := a.id.Parent()
-	op, err := a.hubClient.scopeClient.Create(parent, desired).ScopeId(a.id.ID()).Context(ctx).Do()
+	op, err := a.hubClient.scopeClientV1beta.Create(parent, desired).ScopeId(a.id.ID()).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("creating GKEHubScope %q: %w", a.id.String(), err)
 	}
@@ -164,7 +164,7 @@ func (a *gkeHubScopeAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 	if !reflect.DeepEqual(a.actual.NamespaceLabels, desired.NamespaceLabels) {
 		updateMask := "namespaceLabels"
-		op, err := a.hubClient.scopeClient.Patch(a.id.String(), desired).UpdateMask(updateMask).Context(ctx).Do()
+		op, err := a.hubClient.scopeClientV1beta.Patch(a.id.String(), desired).UpdateMask(updateMask).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("patching GKEHubScope %q: %w", a.id.String(), err)
 		}
@@ -214,7 +214,7 @@ func (a *gkeHubScopeAdapter) waitForOp(ctx context.Context, op *gkehubapi.Operat
 	timeoutDuration := 20 * time.Minute
 	timeoutAt := time.Now().Add(timeoutDuration)
 	for {
-		current, err := a.hubClient.operationClient.Get(op.Name).Context(ctx).Do()
+		current, err := a.hubClient.operationClientV1beta.Get(op.Name).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("getting operation status of %q failed: %w", op.Name, err)
 		}
