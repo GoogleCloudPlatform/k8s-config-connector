@@ -17,19 +17,21 @@ package v1alpha1
 import (
 	"context"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &EntryGroupRef{}
+var _ refs.Ref = &EntryGroupRef{}
 
 // EntryGroupRef defines the resource reference to DataplexEntryGroup, which "External" field
 // holds the GCP identifier for the KRM object.
 type EntryGroupRef struct {
 	// A reference to an externally managed DataplexEntryGroup resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/entrygroups/{{entrygroupID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/entryGroups/{{entrygroupID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a DataplexEntryGroup resource.
@@ -37,6 +39,10 @@ type EntryGroupRef struct {
 
 	// The namespace of a DataplexEntryGroup resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refs.Register(&EntryGroupRef{})
 }
 
 func (r *EntryGroupRef) GetGVK() schema.GroupVersionKind {
@@ -66,6 +72,21 @@ func (r *EntryGroupRef) ValidateExternal(ref string) error {
 	return nil
 }
 
+func (r *EntryGroupRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &EntryGroupIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
 func (r *EntryGroupRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
+	fallback := func(u *unstructured.Unstructured) string {
+		identity, err := getIdentityFromEntryGroupSpec(ctx, reader, u)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
