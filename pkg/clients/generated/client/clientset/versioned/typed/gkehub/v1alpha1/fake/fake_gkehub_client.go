@@ -43,6 +43,10 @@ func (c *FakeGkehubV1alpha1) GKEHubScopes(namespace string) v1alpha1.GKEHubScope
 	return &FakeGKEHubScopes{c, namespace}
 }
 
+func (c *FakeGkehubV1alpha1) GKEHubScopeRBACRoleBindings(namespace string) v1alpha1.GKEHubScopeRBACRoleBindingInterface {
+	return &FakeGKEHubScopeRBACRoleBindings{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeGkehubV1alpha1) RESTClient() rest.Interface {
