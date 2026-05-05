@@ -96,6 +96,10 @@ type MemorystoreInstanceSpec struct {
 	// Optional. The cross instance replication config for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.cross_instance_replication_config
 	CrossInstanceReplicationConfig *CrossInstanceReplicationConfig `json:"crossInstanceReplicationConfig,omitempty"`
+
+	// Optional. The automated backup config for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.automated_backup_config
+	AutomatedBackupConfig *AutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
 }
 
 var _ identity.Resource = &MemorystoreInstance{}
@@ -475,4 +479,29 @@ type CrossInstanceReplicationConfig_MembershipObservedState struct {
 	//  instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership.secondary_instances
 	SecondaryInstances []CrossInstanceReplicationConfig_RemoteInstanceObservedState `json:"secondaryInstances,omitempty"`
+}
+
+type AutomatedBackupConfig struct {
+	// Optional. Trigger automated backups at a fixed frequency.
+	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.fixed_frequency_schedule
+	FixedFrequencySchedule *AutomatedBackupConfig_FixedFrequencySchedule `json:"fixedFrequencySchedule,omitempty"`
+
+	// Optional. The automated backup mode. If the mode is disabled, the other
+	//  fields will be ignored.
+	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.automated_backup_mode
+	AutomatedBackupMode *string `json:"automatedBackupMode,omitempty"`
+
+	// Optional. How long to keep automated backups before the backups are
+	//  deleted. The value should be between 1 day and 365 days. If not specified,
+	//  the default value is 35 days.
+	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.retention
+	Retention *string `json:"retention,omitempty"`
+}
+
+// +kcc:proto=google.cloud.memorystore.v1.AutomatedBackupConfig.FixedFrequencySchedule
+type AutomatedBackupConfig_FixedFrequencySchedule struct {
+	// Required. The start time of every automated backup in UTC. It must be set
+	//  to the start of an hour. This field is required.
+	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.FixedFrequencySchedule.start_time
+	StartTime *TimeOfDay `json:"startTime,omitempty"`
 }
