@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,233 +29,234 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ReservationGuestAccelerators struct {
-/* Immutable. The number of the guest accelerator cards exposed to this instance. */
-AcceleratorCount int32 `json:"acceleratorCount"`
+	/* Immutable. The number of the guest accelerator cards exposed to this instance. */
+	AcceleratorCount int32 `json:"acceleratorCount"`
 
-/* Immutable. The full or partial URL of the accelerator type to attach to this instance. For example: 'projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100' If you are creating an instance template, specify only the accelerator name. */
-AcceleratorType string `json:"acceleratorType"`
+	/* Immutable. The full or partial URL of the accelerator type to attach to this instance. For example: 'projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100' If you are creating an instance template, specify only the accelerator name. */
+	AcceleratorType string `json:"acceleratorType"`
 }
 
 type ReservationInstanceProperties struct {
-/* Immutable. Guest accelerator type and count. */
-// +optional
-GuestAccelerators []ReservationGuestAccelerators `json:"guestAccelerators,omitempty"`
+	/* Immutable. Guest accelerator type and count. */
+	// +optional
+	GuestAccelerators []ReservationGuestAccelerators `json:"guestAccelerators,omitempty"`
 
-/* Immutable. The amount of local ssd to reserve with each instance. This reserves disks of type 'local-ssd'. */
-// +optional
-LocalSsds []ReservationLocalSsds `json:"localSsds,omitempty"`
+	/* Immutable. The amount of local ssd to reserve with each instance. This reserves disks of type 'local-ssd'. */
+	// +optional
+	LocalSsds []ReservationLocalSsds `json:"localSsds,omitempty"`
 
-/* Immutable. The name of the machine type to reserve. */
-MachineType string `json:"machineType"`
+	/* Immutable. The name of the machine type to reserve. */
+	MachineType string `json:"machineType"`
 
-/* Immutable. The minimum CPU platform for the reservation. For example, '"Intel Skylake"'. See the CPU platform availability reference](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform#availablezones) for information on available CPU platforms. */
-// +optional
-MinCpuPlatform *string `json:"minCpuPlatform,omitempty"`
+	/* Immutable. The minimum CPU platform for the reservation. For example, '"Intel Skylake"'. See the CPU platform availability reference](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform#availablezones) for information on available CPU platforms. */
+	// +optional
+	MinCpuPlatform *string `json:"minCpuPlatform,omitempty"`
 }
 
 type ReservationLocalSsds struct {
-/* Immutable. The size of the disk in base-2 GB. */
-DiskSizeGb int32 `json:"diskSizeGb"`
+	/* Immutable. The size of the disk in base-2 GB. */
+	DiskSizeGb int32 `json:"diskSizeGb"`
 
-/* Immutable. The disk interface to use for attaching this disk. Default value: "SCSI" Possible values: ["SCSI", "NVME"]. */
-// +optional
-Interface *string `json:"interface,omitempty"`
+	/* Immutable. The disk interface to use for attaching this disk. Default value: "SCSI" Possible values: ["SCSI", "NVME"]. */
+	// +optional
+	Interface *string `json:"interface,omitempty"`
 }
 
 type ReservationSpecificReservation struct {
-/* The number of resources that are allocated. */
-Count int32 `json:"count"`
+	/* The number of resources that are allocated. */
+	Count int32 `json:"count"`
 
-/* How many instances are in use. */
-// +optional
-InUseCount *int32 `json:"inUseCount,omitempty"`
+	/* How many instances are in use. */
+	// +optional
+	InUseCount *int32 `json:"inUseCount,omitempty"`
 
-/* Immutable. The instance properties for the reservation. */
-InstanceProperties ReservationInstanceProperties `json:"instanceProperties"`
+	/* Immutable. The instance properties for the reservation. */
+	InstanceProperties ReservationInstanceProperties `json:"instanceProperties"`
 }
 
 type ComputeReservationSpec struct {
-/* Immutable. An optional description of this resource. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Immutable. An optional description of this resource. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Reservation for instances with specific machine shapes. */
-SpecificReservation ReservationSpecificReservation `json:"specificReservation"`
+	/* Reservation for instances with specific machine shapes. */
+	SpecificReservation ReservationSpecificReservation `json:"specificReservation"`
 
-/* Immutable. When set to true, only VMs that target this reservation by name can consume this reservation. Otherwise, it can be consumed by VMs with affinity for any reservation. Defaults to false. */
-// +optional
-SpecificReservationRequired *bool `json:"specificReservationRequired,omitempty"`
+	/* Immutable. When set to true, only VMs that target this reservation by name can consume this reservation. Otherwise, it can be consumed by VMs with affinity for any reservation. Defaults to false. */
+	// +optional
+	SpecificReservationRequired *bool `json:"specificReservationRequired,omitempty"`
 
-/* Immutable. The zone where the reservation is made. */
-Zone string `json:"zone"`
+	/* Immutable. The zone where the reservation is made. */
+	Zone string `json:"zone"`
 }
 
 type ReservationHealthInfoStatus struct {
-/* The number of reservation blocks that are degraded. */
-// +optional
-DegradedBlockCount *int32 `json:"degradedBlockCount,omitempty"`
+	/* The number of reservation blocks that are degraded. */
+	// +optional
+	DegradedBlockCount *int32 `json:"degradedBlockCount,omitempty"`
 
-/* The health status of the reservation. Check the HealthStatus enum for the list of possible values. */
-// +optional
-HealthStatus *string `json:"healthStatus,omitempty"`
+	/* The health status of the reservation. Check the HealthStatus enum for the list of possible values. */
+	// +optional
+	HealthStatus *string `json:"healthStatus,omitempty"`
 
-/* The number of reservation blocks that are healthy. */
-// +optional
-HealthyBlockCount *int32 `json:"healthyBlockCount,omitempty"`
+	/* The number of reservation blocks that are healthy. */
+	// +optional
+	HealthyBlockCount *int32 `json:"healthyBlockCount,omitempty"`
 }
 
 type ReservationObservedStateStatus struct {
-/* [Output Only] A unique identifier for this future reservation. The server defines this identifier. */
-// +optional
-Id *int64 `json:"id,omitempty"`
+	/* [Output Only] A unique identifier for this future reservation. The server defines this identifier. */
+	// +optional
+	Id *int64 `json:"id,omitempty"`
 
-/* [Output Only] Allocation Properties of this reservation. */
-// +optional
-ResourceStatus *ReservationResourceStatusStatus `json:"resourceStatus,omitempty"`
+	/* [Output Only] Allocation Properties of this reservation. */
+	// +optional
+	ResourceStatus *ReservationResourceStatusStatus `json:"resourceStatus,omitempty"`
 }
 
 type ReservationReservationMaintenanceStatus struct {
-/* Describes number of instances that have ongoing maintenance. */
-// +optional
-InstanceMaintenanceOngoingCount *int32 `json:"instanceMaintenanceOngoingCount,omitempty"`
+	/* Describes number of instances that have ongoing maintenance. */
+	// +optional
+	InstanceMaintenanceOngoingCount *int32 `json:"instanceMaintenanceOngoingCount,omitempty"`
 
-/* Describes number of instances that have pending maintenance. */
-// +optional
-InstanceMaintenancePendingCount *int32 `json:"instanceMaintenancePendingCount,omitempty"`
+	/* Describes number of instances that have pending maintenance. */
+	// +optional
+	InstanceMaintenancePendingCount *int32 `json:"instanceMaintenancePendingCount,omitempty"`
 
-/* Progress for ongoing maintenance for this group of VMs/hosts. Describes number of hosts in the block that have ongoing maintenance. */
-// +optional
-MaintenanceOngoingCount *int32 `json:"maintenanceOngoingCount,omitempty"`
+	/* Progress for ongoing maintenance for this group of VMs/hosts. Describes number of hosts in the block that have ongoing maintenance. */
+	// +optional
+	MaintenanceOngoingCount *int32 `json:"maintenanceOngoingCount,omitempty"`
 
-/* Progress for ongoing maintenance for this group of VMs/hosts. Describes number of hosts in the block that have pending maintenance. */
-// +optional
-MaintenancePendingCount *int32 `json:"maintenancePendingCount,omitempty"`
+	/* Progress for ongoing maintenance for this group of VMs/hosts. Describes number of hosts in the block that have pending maintenance. */
+	// +optional
+	MaintenancePendingCount *int32 `json:"maintenancePendingCount,omitempty"`
 
-/* The type of maintenance for the reservation. Check the SchedulingType enum for the list of possible values. */
-// +optional
-SchedulingType *string `json:"schedulingType,omitempty"`
+	/* The type of maintenance for the reservation. Check the SchedulingType enum for the list of possible values. */
+	// +optional
+	SchedulingType *string `json:"schedulingType,omitempty"`
 
-/* Describes number of subblock Infrastructure that has ongoing maintenance. Here, Subblock Infrastructure Maintenance pertains to upstream hardware contained in the Subblock that is necessary for a VM Family(e.g. NVLink Domains). Not all VM Families will support this field. */
-// +optional
-SubblockInfraMaintenanceOngoingCount *int32 `json:"subblockInfraMaintenanceOngoingCount,omitempty"`
+	/* Describes number of subblock Infrastructure that has ongoing maintenance. Here, Subblock Infrastructure Maintenance pertains to upstream hardware contained in the Subblock that is necessary for a VM Family(e.g. NVLink Domains). Not all VM Families will support this field. */
+	// +optional
+	SubblockInfraMaintenanceOngoingCount *int32 `json:"subblockInfraMaintenanceOngoingCount,omitempty"`
 
-/* Describes number of subblock Infrastructure that has pending maintenance. Here, Subblock Infrastructure Maintenance pertains to upstream hardware contained in the Subblock that is necessary for a VM Family (e.g. NVLink Domains). Not all VM Families will support this field. */
-// +optional
-SubblockInfraMaintenancePendingCount *int32 `json:"subblockInfraMaintenancePendingCount,omitempty"`
+	/* Describes number of subblock Infrastructure that has pending maintenance. Here, Subblock Infrastructure Maintenance pertains to upstream hardware contained in the Subblock that is necessary for a VM Family (e.g. NVLink Domains). Not all VM Families will support this field. */
+	// +optional
+	SubblockInfraMaintenancePendingCount *int32 `json:"subblockInfraMaintenancePendingCount,omitempty"`
 
-/* Maintenance information on this group of VMs. */
-// +optional
-UpcomingGroupMaintenance *ReservationUpcomingGroupMaintenanceStatus `json:"upcomingGroupMaintenance,omitempty"`
+	/* Maintenance information on this group of VMs. */
+	// +optional
+	UpcomingGroupMaintenance *ReservationUpcomingGroupMaintenanceStatus `json:"upcomingGroupMaintenance,omitempty"`
 }
 
 type ReservationResourceStatusStatus struct {
-/* [Output only] Health information for the reservation. */
-// +optional
-HealthInfo *ReservationHealthInfoStatus `json:"healthInfo,omitempty"`
+	/* [Output only] Health information for the reservation. */
+	// +optional
+	HealthInfo *ReservationHealthInfoStatus `json:"healthInfo,omitempty"`
 
-/* The number of reservation blocks associated with this reservation. */
-// +optional
-ReservationBlockCount *int32 `json:"reservationBlockCount,omitempty"`
+	/* The number of reservation blocks associated with this reservation. */
+	// +optional
+	ReservationBlockCount *int32 `json:"reservationBlockCount,omitempty"`
 
-/* Maintenance information for this reservation */
-// +optional
-ReservationMaintenance *ReservationReservationMaintenanceStatus `json:"reservationMaintenance,omitempty"`
+	/* Maintenance information for this reservation */
+	// +optional
+	ReservationMaintenance *ReservationReservationMaintenanceStatus `json:"reservationMaintenance,omitempty"`
 
-/* Allocation Properties of this reservation. */
-// +optional
-SpecificSkuAllocation *ReservationSpecificSkuAllocationStatus `json:"specificSkuAllocation,omitempty"`
+	/* Allocation Properties of this reservation. */
+	// +optional
+	SpecificSkuAllocation *ReservationSpecificSkuAllocationStatus `json:"specificSkuAllocation,omitempty"`
 }
 
 type ReservationSpecificSkuAllocationStatus struct {
-/* ID of the instance template used to populate reservation properties. */
-// +optional
-SourceInstanceTemplateID *string `json:"sourceInstanceTemplateID,omitempty"`
+	/* ID of the instance template used to populate reservation properties. */
+	// +optional
+	SourceInstanceTemplateID *string `json:"sourceInstanceTemplateID,omitempty"`
 
-/* Per service utilization breakdown. The Key is the Google Cloud managed service name. */
-// +optional
-Utilizations map[string]int64 `json:"utilizations,omitempty"`
+	/* Per service utilization breakdown. The Key is the Google Cloud managed service name. */
+	// +optional
+	Utilizations map[string]int64 `json:"utilizations,omitempty"`
 }
 
 type ReservationUpcomingGroupMaintenanceStatus struct {
-/* Indicates if the maintenance can be customer triggered. */
-// +optional
-CanReschedule *bool `json:"canReschedule,omitempty"`
+	/* Indicates if the maintenance can be customer triggered. */
+	// +optional
+	CanReschedule *bool `json:"canReschedule,omitempty"`
 
-/* The latest time for the planned maintenance window to start. This timestamp value is in RFC3339 text format. */
-// +optional
-LatestWindowStartTime *string `json:"latestWindowStartTime,omitempty"`
+	/* The latest time for the planned maintenance window to start. This timestamp value is in RFC3339 text format. */
+	// +optional
+	LatestWindowStartTime *string `json:"latestWindowStartTime,omitempty"`
 
-/* Indicates whether the UpcomingMaintenance will be triggered on VM shutdown. */
-// +optional
-MaintenanceOnShutdown *bool `json:"maintenanceOnShutdown,omitempty"`
+	/* Indicates whether the UpcomingMaintenance will be triggered on VM shutdown. */
+	// +optional
+	MaintenanceOnShutdown *bool `json:"maintenanceOnShutdown,omitempty"`
 
-/* The reasons for the maintenance. Only valid for vms. Check the MaintenanceReasons enum for the list of possible values. */
-// +optional
-MaintenanceReasons []string `json:"maintenanceReasons,omitempty"`
+	/* The reasons for the maintenance. Only valid for vms. Check the MaintenanceReasons enum for the list of possible values. */
+	// +optional
+	MaintenanceReasons []string `json:"maintenanceReasons,omitempty"`
 
-/* Check the MaintenanceStatus enum for the list of possible values. */
-// +optional
-MaintenanceStatus *string `json:"maintenanceStatus,omitempty"`
+	/* Check the MaintenanceStatus enum for the list of possible values. */
+	// +optional
+	MaintenanceStatus *string `json:"maintenanceStatus,omitempty"`
 
-/* Defines the type of maintenance. Check the Type enum for the list of possible values. */
-// +optional
-Type *string `json:"type,omitempty"`
+	/* Defines the type of maintenance. Check the Type enum for the list of possible values. */
+	// +optional
+	Type *string `json:"type,omitempty"`
 
-/* The time by which the maintenance disruption will be completed. This timestamp value is in RFC3339 text format. */
-// +optional
-WindowEndTime *string `json:"windowEndTime,omitempty"`
+	/* The time by which the maintenance disruption will be completed. This timestamp value is in RFC3339 text format. */
+	// +optional
+	WindowEndTime *string `json:"windowEndTime,omitempty"`
 
-/* The current start time of the maintenance window. This timestamp value is in RFC3339 text format. */
-// +optional
-WindowStartTime *string `json:"windowStartTime,omitempty"`
+	/* The current start time of the maintenance window. This timestamp value is in RFC3339 text format. */
+	// +optional
+	WindowStartTime *string `json:"windowStartTime,omitempty"`
 }
 
 type ComputeReservationStatus struct {
 	/* Conditions represent the latest available observations of the
-	    ComputeReservation's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* Full or partial URL to a parent commitment. This field displays for reservations that are tied to a commitment. */
-// +optional
-Commitment *string `json:"commitment,omitempty"`
+	   ComputeReservation's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* Full or partial URL to a parent commitment. This field displays for reservations that are tied to a commitment. */
+	// +optional
+	Commitment *string `json:"commitment,omitempty"`
 
-/* Creation timestamp in RFC3339 text format. */
-// +optional
-CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+	/* Creation timestamp in RFC3339 text format. */
+	// +optional
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-/* A unique specifier for the ComputeReservation resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	/* A unique specifier for the ComputeReservation resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *ReservationObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *ReservationObservedStateStatus `json:"observedState,omitempty"`
 
-/* Server-defined URL for the resource. */
-// +optional
-SelfLink *string `json:"selfLink,omitempty"`
+	/* Server-defined URL for the resource. */
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 
-/* The status of the reservation. */
-// +optional
-Status *string `json:"status,omitempty"`
+	/* The status of the reservation. */
+	// +optional
+	Status *string `json:"status,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputereservation;gcpcomputereservations
@@ -273,20 +273,22 @@ Status *string `json:"status,omitempty"`
 // ComputeReservation is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeReservation struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ComputeReservationSpec `json:"spec,omitempty"`
-  Status ComputeReservationStatus `json:"status,omitempty"`
+	Spec   ComputeReservationSpec   `json:"spec,omitempty"`
+	Status ComputeReservationStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ComputeReservationList contains a list of ComputeReservation
- type ComputeReservationList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []ComputeReservation `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&ComputeReservation{}, &ComputeReservationList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ComputeReservationList contains a list of ComputeReservation
+type ComputeReservationList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeReservation `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ComputeReservation{}, &ComputeReservationList{})
+}
