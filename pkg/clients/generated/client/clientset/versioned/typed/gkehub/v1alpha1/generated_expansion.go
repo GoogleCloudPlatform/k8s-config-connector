@@ -26,3 +26,5 @@ type GKEHubMembershipBindingExpansion interface{}
 type GKEHubNamespaceExpansion interface{}
 
 type GKEHubScopeExpansion interface{}
+
+type GKEHubScopeRBACRoleBindingExpansion interface{}
