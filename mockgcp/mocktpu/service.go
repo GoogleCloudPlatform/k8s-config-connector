@@ -28,8 +28,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/tpu/v2"
 	pbv1 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/tpu/v1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/tpu/v2"
 	pbv2alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/tpu/v2alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -46,8 +46,8 @@ type MockService struct {
 
 	operations *operations.Operations
 
-	tpuServer        *TpuServer
-	tpuV1Server      *TpuV1Server
+	tpuServer         *TpuServer
+	tpuV1Server       *TpuV1Server
 	tpuV2Alpha1Server *TpuV2Alpha1Server
 }
 
