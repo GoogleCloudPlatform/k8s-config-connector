@@ -402,13 +402,13 @@ func ComputeReservationObservedState_v1beta1_FromProto(mapCtx *direct.MapContext
 	// MISSING: DeleteAtTime
 	// MISSING: DeploymentType
 	// MISSING: EnableEmergentMaintenance
-	// MISSING: ID
+	out.ID = in.Id
 	// MISSING: Kind
 	// MISSING: LinkedCommitments
 	// MISSING: Name
 	// MISSING: ReservationSharingPolicy
 	// MISSING: ResourcePolicies
-	// MISSING: ResourceStatus
+	out.ResourceStatus = AllocationResourceStatus_v1beta1_FromProto(mapCtx, in.GetResourceStatus())
 	// MISSING: SatisfiesPzs
 	// MISSING: SchedulingType
 	// MISSING: SelfLink
@@ -429,13 +429,13 @@ func ComputeReservationObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, 
 	// MISSING: DeleteAtTime
 	// MISSING: DeploymentType
 	// MISSING: EnableEmergentMaintenance
-	// MISSING: ID
+	out.Id = in.ID
 	// MISSING: Kind
 	// MISSING: LinkedCommitments
 	// MISSING: Name
 	// MISSING: ReservationSharingPolicy
 	// MISSING: ResourcePolicies
-	// MISSING: ResourceStatus
+	out.ResourceStatus = AllocationResourceStatus_v1beta1_ToProto(mapCtx, in.ResourceStatus)
 	// MISSING: SatisfiesPzs
 	// MISSING: SchedulingType
 	// MISSING: SelfLink
@@ -457,13 +457,11 @@ func ComputeReservationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: DeploymentType
 	out.Description = in.Description
 	// MISSING: EnableEmergentMaintenance
-	// MISSING: ID
 	// MISSING: Kind
 	// MISSING: LinkedCommitments
 	// MISSING: Name
 	// MISSING: ReservationSharingPolicy
 	// MISSING: ResourcePolicies
-	// MISSING: ResourceStatus
 	// MISSING: SatisfiesPzs
 	// MISSING: SchedulingType
 	// MISSING: SelfLink
@@ -488,13 +486,11 @@ func ComputeReservationSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.C
 	// MISSING: DeploymentType
 	out.Description = in.Description
 	// MISSING: EnableEmergentMaintenance
-	// MISSING: ID
 	// MISSING: Kind
 	// MISSING: LinkedCommitments
 	// MISSING: Name
 	// MISSING: ReservationSharingPolicy
 	// MISSING: ResourcePolicies
-	// MISSING: ResourceStatus
 	// MISSING: SatisfiesPzs
 	// MISSING: SchedulingType
 	// MISSING: SelfLink
