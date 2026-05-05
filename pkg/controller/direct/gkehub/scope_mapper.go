@@ -15,47 +15,116 @@
 package gkehub
 
 import (
-	gkehubapi "google.golang.org/api/gkehub/v1beta"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1"
+	gkehubapi "google.golang.org/api/gkehub/v1"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func GKEHubScopeSpecKRMtoAPI(mapCtx *direct.MapContext, r *krm.GKEHubScopeSpec) *gkehubapi.Scope {
-	if r == nil {
-		return nil
-	}
-	out := &gkehubapi.Scope{}
-	out.NamespaceLabels = r.NamespaceLabels
-	return out
-}
-
-func GKEHubScopeSpecAPIToKRM(mapCtx *direct.MapContext, r *gkehubapi.Scope, id *krm.GKEHubScopeIdentity) *krm.GKEHubScopeSpec {
-	if r == nil {
+func GKEHubScopeSpec_FromProto(mapCtx *direct.MapContext, in *pb.Scope) *krm.GKEHubScopeSpec {
+	if in == nil {
 		return nil
 	}
 	out := &krm.GKEHubScopeSpec{}
-	out.ProjectRef = refs.ProjectRef{External: "projects/" + id.ProjectID}
-	out.Location = direct.LazyPtr(id.Location)
-	out.NamespaceLabels = r.NamespaceLabels
-	out.ResourceID = direct.LazyPtr(id.ID())
+	out.NamespaceLabels = in.NamespaceLabels
+	return out
+}
+
+func GKEHubScopeSpec_ToProto(mapCtx *direct.MapContext, in *krm.GKEHubScopeSpec) *pb.Scope {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Scope{}
+	out.NamespaceLabels = in.NamespaceLabels
+	return out
+}
+
+func GKEHubScopeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Scope) *krm.GKEHubScopeStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GKEHubScopeStatus{}
+	out.Uid = direct.LazyPtr(in.Uid)
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.UpdateTime)
+	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.DeleteTime)
+	if in.State != nil {
+		out.State = &krm.GKEHubScopeStateStatus{
+			Code: direct.LazyPtr(in.State.Code.String()),
+		}
+	}
+	return out
+}
+
+func GKEHubScopeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GKEHubScopeStatus) *pb.Scope {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Scope{}
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
+	if in.State != nil {
+		val := pb.ScopeLifecycleState_Code_value[direct.ValueOf(in.State.Code)]
+		out.State = &pb.ScopeLifecycleState{
+			Code: pb.ScopeLifecycleState_Code(val),
+		}
+	}
+	return out
+}
+
+// --- Discovery API Mappings (Helper for Controller) ---
+
+func GKEHubScopeSpec_FromAPI(mapCtx *direct.MapContext, in *gkehubapi.Scope) *krm.GKEHubScopeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GKEHubScopeSpec{}
+	out.NamespaceLabels = in.NamespaceLabels
+	return out
+}
+
+func GKEHubScopeObservedState_FromAPI(mapCtx *direct.MapContext, in *gkehubapi.Scope) *krm.GKEHubScopeStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GKEHubScopeStatus{}
+	out.Uid = direct.LazyPtr(in.Uid)
+	out.CreateTime = direct.LazyPtr(in.CreateTime)
+	out.UpdateTime = direct.LazyPtr(in.UpdateTime)
+	out.DeleteTime = direct.LazyPtr(in.DeleteTime)
+	if in.State != nil {
+		out.State = &krm.GKEHubScopeStateStatus{
+			Code: direct.LazyPtr(in.State.Code),
+		}
+	}
+	return out
+}
+
+// --- Legacy Helpers ---
+
+func GKEHubScopeSpecKRMtoAPI(mapCtx *direct.MapContext, r *krm.GKEHubScopeSpec) *gkehubapi.Scope {
+	pbObj := GKEHubScopeSpec_ToProto(mapCtx, r)
+	apiObj := &gkehubapi.Scope{}
+	if err := Convert_v1_pb_to_api(pbObj, apiObj); err != nil {
+		mapCtx.Errorf("error converting pb to api: %v", err)
+	}
+	return apiObj
+}
+
+func GKEHubScopeSpecAPIToKRM(mapCtx *direct.MapContext, r *gkehubapi.Scope, id *krm.GKEHubScopeIdentity) *krm.GKEHubScopeSpec {
+	out := GKEHubScopeSpec_FromAPI(mapCtx, r)
+	if out != nil {
+		out.ProjectRef = refs.ProjectRef{External: "projects/" + id.ProjectID}
+		out.Location = direct.LazyPtr(id.Location)
+		out.ResourceID = direct.LazyPtr(id.ID())
+	}
 	return out
 }
 
 func GKEHubScopeStatusAPIToKRM(mapCtx *direct.MapContext, r *gkehubapi.Scope) *krm.GKEHubScopeStatus {
-	if r == nil {
-		return nil
-	}
-	out := &krm.GKEHubScopeStatus{}
-	out.CreateTime = direct.LazyPtr(r.CreateTime)
-	out.UpdateTime = direct.LazyPtr(r.UpdateTime)
-	out.DeleteTime = direct.LazyPtr(r.DeleteTime)
-	out.Uid = direct.LazyPtr(r.Uid)
-	if r.State != nil {
-		out.State = &krm.GKEHubScopeStateStatus{
-			Code: direct.LazyPtr(r.State.Code),
-		}
-	}
-	return out
+	return GKEHubScopeObservedState_FromAPI(mapCtx, r)
 }

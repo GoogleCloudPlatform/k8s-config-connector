@@ -54,6 +54,103 @@ func (s *MockService) parseMembershipName(name string) (*membershipName, error) 
 	}
 }
 
+type scopeRBACRoleBindingName struct {
+	Project  *projects.ProjectData
+	Location string
+	Scope    string
+	Binding  string
+}
+
+func (n *scopeRBACRoleBindingName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/scopes/" + n.Scope + "/rbacrolebindings/" + n.Binding
+}
+
+func (s *MockService) parseScopeRBACRoleBindingName(name string) (*scopeRBACRoleBindingName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "scopes" && tokens[6] == "rbacrolebindings" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &scopeRBACRoleBindingName{
+			Project:  project,
+			Location: tokens[3],
+			Scope:    tokens[5],
+			Binding:  tokens[7],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
+type namespaceName struct {
+	Project   *projects.ProjectData
+	Location  string
+	Namespace string
+}
+
+func (n *namespaceName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/namespaces/" + n.Namespace
+}
+
+func (s *MockService) parseNamespaceName(name string) (*namespaceName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "namespaces" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &namespaceName{
+			Project:   project,
+			Location:  tokens[3],
+			Namespace: tokens[5],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
+type membershipBindingName struct {
+	Project    *projects.ProjectData
+	Location   string
+	Membership string
+	Binding    string
+}
+
+func (n *membershipBindingName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/memberships/" + n.Membership + "/bindings/" + n.Binding
+}
+
+func (s *MockService) parseMembershipBindingName(name string) (*membershipBindingName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "memberships" && tokens[6] == "bindings" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &membershipBindingName{
+			Project:    project,
+			Location:   tokens[3],
+			Membership: tokens[5],
+			Binding:    tokens[7],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
 type featureName struct {
 	Project  *projects.ProjectData
 	Location string
@@ -62,6 +159,37 @@ type featureName struct {
 
 func (n *featureName) String() string {
 	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/features/" + n.Features
+}
+
+type scopeName struct {
+	Project  *projects.ProjectData
+	Location string
+	Scopes   string
+}
+
+func (n *scopeName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/scopes/" + n.Scopes
+}
+
+func (s *MockService) parseScopeName(name string) (*scopeName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "scopes" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &scopeName{
+			Project:  project,
+			Location: tokens[3],
+			Scopes:   tokens[5],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
 }
 
 // parseFeatureName parses a string into a featureName.

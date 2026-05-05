@@ -50,6 +50,7 @@ gen-proto-no-fixup:
 		./apis/google/cloud/dns/v1/*.proto \
 		./apis/mockgcp/cloud/apigee/v1/*.proto \
 		./apis/mockgcp/cloud/bigquery/v2/*.proto \
+		./apis/mockgcp/cloud/gkehub/v1/*.proto \
 		./apis/mockgcp/cloud/ids/v1/*.proto \
 		./apis/mockgcp/cloud/networkconnectivity/v1/*.proto \
 		./apis/mockgcp/cloud/servicenetworking/v1/*.proto \
@@ -124,12 +125,18 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/edgenetwork/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/filestore/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/functions/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/gkehub/v1/feature.proto \
+		./third_party/googleapis/mockgcp/cloud/gkehub/v1/membership.proto \
+		./third_party/googleapis/mockgcp/cloud/gkehub/v1/service.proto \
+		./third_party/googleapis/mockgcp/cloud/gkehub/v1/configmanagement/*.proto \
+		./third_party/googleapis/mockgcp/cloud/gkehub/v1/multiclusteringress/*.proto \
 		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta/*.proto \
-		./third_party/googleapis/mockgcp/cloud/gkehub/policycontroller/v1beta/*.proto \
 		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta/configmanagement/*.proto \
 		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta/metering/*.proto \
 		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta/multiclusteringress/*.proto \
+		./third_party/googleapis/mockgcp/cloud/gkehub/policycontroller/v1beta/*.proto \
 		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta1/membership.proto \
+		./apis/mockgcp/cloud/gkehub/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/gkemulticloud/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/deploy/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/memorystore/v1/*.proto \
