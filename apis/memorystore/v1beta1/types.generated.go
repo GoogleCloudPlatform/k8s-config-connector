@@ -21,6 +21,8 @@
 
 package v1beta1
 
+/* found existing non-generated go type "AutomatedBackupConfig", skipping
+
 // +kcc:proto=google.cloud.memorystore.v1.AutomatedBackupConfig
 type AutomatedBackupConfig struct {
 	// Optional. Trigger automated backups at a fixed frequency.
@@ -38,6 +40,9 @@ type AutomatedBackupConfig struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.retention
 	Retention *string `json:"retention,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "AutomatedBackupConfig_FixedFrequencySchedule", skipping
 
 // +kcc:proto=google.cloud.memorystore.v1.AutomatedBackupConfig.FixedFrequencySchedule
 type AutomatedBackupConfig_FixedFrequencySchedule struct {
@@ -46,6 +51,7 @@ type AutomatedBackupConfig_FixedFrequencySchedule struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.FixedFrequencySchedule.start_time
 	StartTime *TimeOfDay `json:"startTime,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "CrossInstanceReplicationConfig", skipping
 
