@@ -1,0 +1,445 @@
+test	UNKNOWN STEP	﻿2026-04-20T21:40:55.9449460Z Current runner version: '2.333.1'
+test	UNKNOWN STEP	2026-04-20T21:40:55.9475571Z ##[group]Runner Image Provisioner
+test	UNKNOWN STEP	2026-04-20T21:40:55.9476354Z Hosted Compute Agent
+test	UNKNOWN STEP	2026-04-20T21:40:55.9476967Z Version: 20260213.493
+test	UNKNOWN STEP	2026-04-20T21:40:55.9477553Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+test	UNKNOWN STEP	2026-04-20T21:40:55.9478364Z Build Date: 2026-02-13T00:28:41Z
+test	UNKNOWN STEP	2026-04-20T21:40:55.9479000Z Worker ID: {c633bbc4-e5a3-42df-9c5f-41b7bd983e76}
+test	UNKNOWN STEP	2026-04-20T21:40:55.9479700Z Azure Region: northcentralus
+test	UNKNOWN STEP	2026-04-20T21:40:55.9480377Z ##[endgroup]
+test	UNKNOWN STEP	2026-04-20T21:40:55.9482003Z ##[group]Operating System
+test	UNKNOWN STEP	2026-04-20T21:40:55.9483080Z Ubuntu
+test	UNKNOWN STEP	2026-04-20T21:40:55.9483565Z 24.04.4
+test	UNKNOWN STEP	2026-04-20T21:40:55.9484059Z LTS
+test	UNKNOWN STEP	2026-04-20T21:40:55.9484473Z ##[endgroup]
+test	UNKNOWN STEP	2026-04-20T21:40:55.9485062Z ##[group]Runner Image
+test	UNKNOWN STEP	2026-04-20T21:40:55.9485589Z Image: ubuntu-24.04
+test	UNKNOWN STEP	2026-04-20T21:40:55.9486137Z Version: 20260413.86.1
+test	UNKNOWN STEP	2026-04-20T21:40:55.9487378Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260413.86/images/ubuntu/Ubuntu2404-Readme.md
+test	UNKNOWN STEP	2026-04-20T21:40:55.9488826Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260413.86
+test	UNKNOWN STEP	2026-04-20T21:40:55.9489787Z ##[endgroup]
+test	UNKNOWN STEP	2026-04-20T21:40:55.9490890Z ##[group]GITHUB_TOKEN Permissions
+test	UNKNOWN STEP	2026-04-20T21:40:55.9493257Z Contents: read
+test	UNKNOWN STEP	2026-04-20T21:40:55.9493783Z Metadata: read
+test	UNKNOWN STEP	2026-04-20T21:40:55.9494306Z Packages: read
+test	UNKNOWN STEP	2026-04-20T21:40:55.9494899Z ##[endgroup]
+test	UNKNOWN STEP	2026-04-20T21:40:55.9496970Z Secret source: None
+test	UNKNOWN STEP	2026-04-20T21:40:55.9497646Z Prepare workflow directory
+test	UNKNOWN STEP	2026-04-20T21:40:55.9829569Z Prepare all required actions
+test	UNKNOWN STEP	2026-04-20T21:40:55.9867323Z Getting action download info
+test	UNKNOWN STEP	2026-04-20T21:40:56.3403381Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+test	UNKNOWN STEP	2026-04-20T21:40:56.4508834Z Download action repository 'actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c' (SHA:4dc6199c7b1a012772edbd06daecab0f50c9053c)
+test	UNKNOWN STEP	2026-04-20T21:40:57.1225565Z Complete job name: test
+test	UNKNOWN STEP	2026-04-20T21:40:57.1927611Z ##[group]Run actions/checkout@v4
+test	UNKNOWN STEP	2026-04-20T21:40:57.1928474Z with:
+test	UNKNOWN STEP	2026-04-20T21:40:57.1928982Z   repository: GoogleCloudPlatform/k8s-config-connector
+test	UNKNOWN STEP	2026-04-20T21:40:57.1929823Z   token: ***
+test	UNKNOWN STEP	2026-04-20T21:40:57.1930227Z   ssh-strict: true
+test	UNKNOWN STEP	2026-04-20T21:40:57.1930654Z   ssh-user: git
+test	UNKNOWN STEP	2026-04-20T21:40:57.1931098Z   persist-credentials: true
+test	UNKNOWN STEP	2026-04-20T21:40:57.1931571Z   clean: true
+test	UNKNOWN STEP	2026-04-20T21:40:57.1931998Z   sparse-checkout-cone-mode: true
+test	UNKNOWN STEP	2026-04-20T21:40:57.1932494Z   fetch-depth: 1
+test	UNKNOWN STEP	2026-04-20T21:40:57.1933143Z   fetch-tags: false
+test	UNKNOWN STEP	2026-04-20T21:40:57.1933564Z   show-progress: true
+test	UNKNOWN STEP	2026-04-20T21:40:57.1933995Z   lfs: false
+test	UNKNOWN STEP	2026-04-20T21:40:57.1934402Z   submodules: false
+test	UNKNOWN STEP	2026-04-20T21:40:57.1934857Z   set-safe-directory: true
+test	UNKNOWN STEP	2026-04-20T21:40:57.1935551Z ##[endgroup]
+test	UNKNOWN STEP	2026-04-20T21:40:57.3023411Z Syncing repository: GoogleCloudPlatform/k8s-config-connector
+test	UNKNOWN STEP	2026-04-20T21:40:57.3025459Z ##[group]Getting Git version info
+test	UNKNOWN STEP	2026-04-20T21:40:57.3026415Z Working directory is '/home/runner/work/k8s-config-connector/k8s-config-connector'
+test	UNKNOWN STEP	2026-04-20T21:40:57.3027623Z [command]/usr/bin/git version
+test	UNKNOWN STEP	2026-04-20T21:40:57.3064956Z git version 2.53.0
+test	UNKNOWN STEP	2026-04-20T21:40:57.3090097Z ##[endgroup]
+test	UNKNOWN STEP	2026-04-20T21:40:57.3106171Z Temporarily overriding HOME='/home/runner/work/_temp/093cf8de-6ae8-455d-9a08-1393a846c7ef' before making global git config changes
+test	UNKNOWN STEP	2026-04-20T21:40:57.3108738Z Adding repository directory to the temporary git global config as a safe directory
+test	UNKNOWN STEP	2026-04-20T21:40:57.3113099Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/k8s-config-connector/k8s-config-connector
+test	UNKNOWN STEP	2026-04-20T21:40:57.3145622Z Deleting the contents of '/home/runner/work/k8s-config-connector/k8s-config-connector'
+test	UNKNOWN STEP	2026-04-20T21:40:57.3148671Z ##[group]Initializing the repository
+test	UNKNOWN STEP	2026-04-20T21:40:57.3152840Z [command]/usr/bin/git init /home/runner/work/k8s-config-connector/k8s-config-connector
+test	UNKNOWN STEP	2026-04-20T21:40:57.3210789Z hint: Using 'master' as the name for the initial branch. This default branch name
+test	UNKNOWN STEP	2026-04-20T21:40:57.3212853Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+test	UNKNOWN STEP	2026-04-20T21:40:57.3214955Z hint: to use in all of your new repositories, which will suppress this warning,
+test	UNKNOWN STEP	2026-04-20T21:40:57.3216270Z hint: call:
+test	UNKNOWN STEP	2026-04-20T21:40:57.3216926Z hint:
+test	UNKNOWN STEP	2026-04-20T21:40:57.3217804Z hint: 	git config --global init.defaultBranch <name>
+test	UNKNOWN STEP	2026-04-20T21:40:57.3218836Z hint:
+test	UNKNOWN STEP	2026-04-20T21:40:57.3219807Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+test	UNKNOWN STEP	2026-04-20T21:40:57.3221383Z hint: 'development'. The just-created branch can be renamed via this command:
+test	UNKNOWN STEP	2026-04-20T21:40:57.3222903Z hint:
+test	UNKNOWN STEP	2026-04-20T21:40:57.3223621Z hint: 	git branch -m <name>
+test	UNKNOWN STEP	2026-04-20T21:40:57.3224427Z hint:
+test	UNKNOWN STEP	2026-04-20T21:40:57.3225504Z hint: Disable this message with "git config set advice.defaultBranchName false"
+test	UNKNOWN STEP	2026-04-20T21:40:57.3227518Z Initialized empty Git repository in /home/runner/work/k8s-config-connector/k8s-config-connector/.git/
+test	UNKNOWN STEP	2026-04-20T21:40:57.3230998Z [command]/usr/bin/git remote add origin https://github.com/GoogleCloudPlatform/k8s-config-connector
+test	UNKNOWN STEP	2026-04-20T21:40:57.3256304Z ##[endgroup]
+test	UNKNOWN STEP	2026-04-20T21:40:57.3257562Z ##[group]Disabling automatic garbage collection
+test	UNKNOWN STEP	2026-04-20T21:40:57.3261262Z [command]/usr/bin/git config --local gc.auto 0
+test	UNKNOWN STEP	2026-04-20T21:40:57.3289912Z ##[endgroup]
+test	UNKNOWN STEP	2026-04-20T21:40:57.3291097Z ##[group]Setting up auth
+test	UNKNOWN STEP	2026-04-20T21:40:57.3297597Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test	UNKNOWN STEP	2026-04-20T21:40:57.3329467Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test	UNKNOWN STEP	2026-04-20T21:40:57.3612102Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test	UNKNOWN STEP	2026-04-20T21:40:57.3642281Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test	UNKNOWN STEP	2026-04-20T21:40:57.3870208Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test	UNKNOWN STEP	2026-04-20T21:40:57.3900598Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test	UNKNOWN STEP	2026-04-20T21:40:57.4129814Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+test	UNKNOWN STEP	2026-04-20T21:40:57.4164137Z ##[endgroup]
+test	UNKNOWN STEP	2026-04-20T21:40:57.4165080Z ##[group]Fetching the repository
+test	UNKNOWN STEP	2026-04-20T21:40:57.4172245Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +08b7f5d712a8e2edd94c3d4449f3abd523eede3b:refs/remotes/pull/7638/merge
+test	UNKNOWN STEP	2026-04-20T21:41:09.6127321Z From https://github.com/GoogleCloudPlatform/k8s-config-connector
+test	UNKNOWN STEP	2026-04-20T21:41:09.6128303Z  * [new ref]           08b7f5d712a8e2edd94c3d4449f3abd523eede3b -> pull/7638/merge
+test	UNKNOWN STEP	2026-04-20T21:41:09.6159441Z ##[endgroup]
+test	UNKNOWN STEP	2026-04-20T21:41:09.6159933Z ##[group]Determining the checkout info
+test	UNKNOWN STEP	2026-04-20T21:41:09.6161359Z ##[endgroup]
+test	UNKNOWN STEP	2026-04-20T21:41:09.6167754Z [command]/usr/bin/git sparse-checkout disable
+test	UNKNOWN STEP	2026-04-20T21:41:09.6206337Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+test	UNKNOWN STEP	2026-04-20T21:41:09.6232138Z ##[group]Checking out the ref
+test	UNKNOWN STEP	2026-04-20T21:41:09.6237005Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/7638/merge
+test	UNKNOWN STEP	2026-04-20T21:41:10.6716733Z Updating files:  39% (12131/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:10.6988402Z Updating files:  40% (12326/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:10.7184378Z Updating files:  41% (12634/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:10.7365706Z Updating files:  42% (12942/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:10.7540092Z Updating files:  43% (13250/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:10.7705893Z Updating files:  44% (13558/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:10.7867289Z Updating files:  45% (13866/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:10.8026650Z Updating files:  46% (14174/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:10.8161164Z Updating files:  47% (14483/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:10.8423230Z Updating files:  48% (14791/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:10.8638451Z Updating files:  49% (15099/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:10.8813205Z Updating files:  50% (15407/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:10.9034483Z Updating files:  51% (15715/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:10.9266697Z Updating files:  52% (16023/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:10.9566851Z Updating files:  53% (16331/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:10.9697265Z Updating files:  54% (16640/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:10.9835443Z Updating files:  55% (16948/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:10.9998066Z Updating files:  56% (17256/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.0185564Z Updating files:  57% (17564/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.0400930Z Updating files:  58% (17872/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.0613758Z Updating files:  59% (18180/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.0904412Z Updating files:  60% (18488/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.1120151Z Updating files:  61% (18796/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.1324166Z Updating files:  62% (19105/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.1625120Z Updating files:  63% (19413/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.1873969Z Updating files:  64% (19721/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.2160442Z Updating files:  65% (20029/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.2379874Z Updating files:  66% (20337/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.2597825Z Updating files:  67% (20645/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.3087166Z Updating files:  68% (20953/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.3290259Z Updating files:  69% (21261/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.3543725Z Updating files:  70% (21570/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.3875880Z Updating files:  71% (21878/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.4046506Z Updating files:  72% (22186/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.4274824Z Updating files:  73% (22494/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.4486380Z Updating files:  74% (22802/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.4736883Z Updating files:  75% (23110/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.4867441Z Updating files:  76% (23418/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.5013114Z Updating files:  77% (23727/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.5163980Z Updating files:  78% (24035/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.5305301Z Updating files:  79% (24343/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.5445012Z Updating files:  80% (24651/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.5598252Z Updating files:  81% (24959/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.5746662Z Updating files:  82% (25267/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.5882501Z Updating files:  83% (25575/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.6040901Z Updating files:  84% (25883/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.6185895Z Updating files:  85% (26192/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.6331994Z Updating files:  86% (26500/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.6485600Z Updating files:  87% (26808/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.6567064Z Updating files:  88% (27116/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.6638138Z Updating files:  88% (27276/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.6870469Z Updating files:  89% (27424/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.7115256Z Updating files:  90% (27732/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.7392125Z Updating files:  91% (28040/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.7648720Z Updating files:  92% (28348/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.7871269Z Updating files:  93% (28657/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.8063328Z Updating files:  94% (28965/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.8241625Z Updating files:  95% (29273/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.8432310Z Updating files:  96% (29581/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.8590412Z Updating files:  97% (29889/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.8858396Z Updating files:  98% (30197/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.9062906Z Updating files:  99% (30505/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.9063524Z Updating files: 100% (30813/30813)
+test	UNKNOWN STEP	2026-04-20T21:41:11.9064045Z Updating files: 100% (30813/30813), done.
+test	UNKNOWN STEP	2026-04-20T21:41:11.9474913Z Note: switching to 'refs/remotes/pull/7638/merge'.
+test	UNKNOWN STEP	2026-04-20T21:41:11.9475545Z 
+test	UNKNOWN STEP	2026-04-20T21:41:11.9476000Z You are in 'detached HEAD' state. You can look around, make experimental
+test	UNKNOWN STEP	2026-04-20T21:41:11.9476869Z changes and commit them, and you can discard any commits you make in this
+test	UNKNOWN STEP	2026-04-20T21:41:11.9477783Z state without impacting any branches by switching back to a branch.
+test	UNKNOWN STEP	2026-04-20T21:41:11.9478336Z 
+test	UNKNOWN STEP	2026-04-20T21:41:11.9478761Z If you want to create a new branch to retain commits you create, you may
+test	UNKNOWN STEP	2026-04-20T21:41:11.9479614Z do so (now or later) by using -c with the switch command. Example:
+test	UNKNOWN STEP	2026-04-20T21:41:11.9480471Z 
+test	UNKNOWN STEP	2026-04-20T21:41:11.9480725Z   git switch -c <new-branch-name>
+test	UNKNOWN STEP	2026-04-20T21:41:11.9481082Z 
+test	UNKNOWN STEP	2026-04-20T21:41:11.9481358Z Or undo this operation with:
+test	UNKNOWN STEP	2026-04-20T21:41:11.9481687Z 
+test	UNKNOWN STEP	2026-04-20T21:41:11.9481964Z   git switch -
+test	UNKNOWN STEP	2026-04-20T21:41:11.9482227Z 
+test	UNKNOWN STEP	2026-04-20T21:41:11.9482877Z Turn off this advice by setting config variable advice.detachedHead to false
+test	UNKNOWN STEP	2026-04-20T21:41:11.9483490Z 
+test	UNKNOWN STEP	2026-04-20T21:41:11.9484202Z HEAD is now at 08b7f5d7 Merge ef6fece77c2409eb9b86d69253ddfd941d54bf93 into 31fe3b905287e3b3d71127b16483c1dad5ae52d9
+test	UNKNOWN STEP	2026-04-20T21:41:11.9556757Z ##[endgroup]
+test	UNKNOWN STEP	2026-04-20T21:41:11.9602338Z [command]/usr/bin/git log -1 --format=%H
+test	UNKNOWN STEP	2026-04-20T21:41:11.9630808Z 08b7f5d712a8e2edd94c3d4449f3abd523eede3b
+test	UNKNOWN STEP	2026-04-20T21:41:11.9869677Z ##[group]Run actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c
+test	UNKNOWN STEP	2026-04-20T21:41:11.9870037Z with:
+test	UNKNOWN STEP	2026-04-20T21:41:11.9870228Z   go-version: 1.26
+test	UNKNOWN STEP	2026-04-20T21:41:11.9870422Z   check-latest: false
+test	UNKNOWN STEP	2026-04-20T21:41:11.9870763Z   token: ***
+test	UNKNOWN STEP	2026-04-20T21:41:11.9870932Z   cache: true
+test	UNKNOWN STEP	2026-04-20T21:41:11.9871114Z ##[endgroup]
+test	UNKNOWN STEP	2026-04-20T21:41:12.1473399Z Setup go version spec 1.26
+test	UNKNOWN STEP	2026-04-20T21:41:12.1803890Z Attempting to download 1.26...
+test	UNKNOWN STEP	2026-04-20T21:41:12.7060141Z matching 1.26...
+test	UNKNOWN STEP	2026-04-20T21:41:12.7068674Z Acquiring 1.26.2 from https://github.com/actions/go-versions/releases/download/1.26.2-24114135105/go-1.26.2-linux-x64.tar.gz
+test	UNKNOWN STEP	2026-04-20T21:41:13.1846144Z Extracting Go...
+test	UNKNOWN STEP	2026-04-20T21:41:13.1947079Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/6875ee03-ed0a-4135-8ece-c247e44dc904 -f /home/runner/work/_temp/b842adff-7e55-4166-92b3-42aa15f6e56a
+test	UNKNOWN STEP	2026-04-20T21:41:14.9151414Z Successfully extracted go to /home/runner/work/_temp/6875ee03-ed0a-4135-8ece-c247e44dc904
+test	UNKNOWN STEP	2026-04-20T21:41:14.9152101Z Adding to the cache ...
+test	UNKNOWN STEP	2026-04-20T21:41:20.0588223Z Successfully cached go to /opt/hostedtoolcache/go/1.26.2/x64
+test	UNKNOWN STEP	2026-04-20T21:41:20.0589425Z Added go to the path
+test	UNKNOWN STEP	2026-04-20T21:41:20.0592367Z Successfully set up Go version 1.26
+test	UNKNOWN STEP	2026-04-20T21:41:20.0786703Z [command]/opt/hostedtoolcache/go/1.26.2/x64/bin/go env GOMODCACHE
+test	UNKNOWN STEP	2026-04-20T21:41:20.0816978Z [command]/opt/hostedtoolcache/go/1.26.2/x64/bin/go env GOCACHE
+test	UNKNOWN STEP	2026-04-20T21:41:20.0849790Z /home/runner/go/pkg/mod
+test	UNKNOWN STEP	2026-04-20T21:41:20.0864757Z /home/runner/.cache/go-build
+test	UNKNOWN STEP	2026-04-20T21:41:20.1911642Z Cache is not found
+test	UNKNOWN STEP	2026-04-20T21:41:20.1934730Z go version go1.26.2 linux/amd64
+test	UNKNOWN STEP	2026-04-20T21:41:20.1934925Z 
+test	UNKNOWN STEP	2026-04-20T21:41:20.1935190Z ##[group]go env
+test	UNKNOWN STEP	2026-04-20T21:41:20.3377838Z AR='ar'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3378154Z CC='gcc'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3378461Z CGO_CFLAGS='-O2 -g'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3378785Z CGO_CPPFLAGS=''
+test	UNKNOWN STEP	2026-04-20T21:41:20.3379057Z CGO_CXXFLAGS='-O2 -g'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3379304Z CGO_ENABLED='1'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3379497Z CGO_FFLAGS='-O2 -g'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3379688Z CGO_LDFLAGS='-O2 -g'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3379890Z CXX='g++'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3380065Z GCCGO='gccgo'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3380252Z GO111MODULE=''
+test	UNKNOWN STEP	2026-04-20T21:41:20.3380433Z GOAMD64='v1'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3380608Z GOARCH='amd64'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3380770Z GOAUTH='netrc'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3380938Z GOBIN=''
+test	UNKNOWN STEP	2026-04-20T21:41:20.3381133Z GOCACHE='/home/runner/.cache/go-build'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3381388Z GOCACHEPROG=''
+test	UNKNOWN STEP	2026-04-20T21:41:20.3381571Z GODEBUG=''
+test	UNKNOWN STEP	2026-04-20T21:41:20.3381758Z GOENV='/home/runner/.config/go/env'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3381985Z GOEXE=''
+test	UNKNOWN STEP	2026-04-20T21:41:20.3382147Z GOEXPERIMENT=''
+test	UNKNOWN STEP	2026-04-20T21:41:20.3382338Z GOFIPS140='off'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3382506Z GOFLAGS=''
+test	UNKNOWN STEP	2026-04-20T21:41:20.3383470Z GOGCCFLAGS='-fPIC -m64 -pthread -Wl,--no-gc-sections -fmessage-length=0 -ffile-prefix-map=/tmp/go-build2344447980=/tmp/go-build -gno-record-gcc-switches'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3384094Z GOHOSTARCH='amd64'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3384291Z GOHOSTOS='linux'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3384469Z GOINSECURE=''
+test	UNKNOWN STEP	2026-04-20T21:41:20.3384789Z GOMOD='/home/runner/work/k8s-config-connector/k8s-config-connector/go.mod'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3385174Z GOMODCACHE='/home/runner/go/pkg/mod'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3385650Z GONOPROXY=''
+test	UNKNOWN STEP	2026-04-20T21:41:20.3385828Z GONOSUMDB=''
+test	UNKNOWN STEP	2026-04-20T21:41:20.3386027Z GOOS='linux'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3386212Z GOPATH='/home/runner/go'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3386409Z GOPRIVATE=''
+test	UNKNOWN STEP	2026-04-20T21:41:20.3386652Z GOPROXY='https://proxy.golang.org,direct'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3386952Z GOROOT='/opt/hostedtoolcache/go/1.26.2/x64'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3387220Z GOSUMDB='sum.golang.org'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3387454Z GOTELEMETRY='local'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3387702Z GOTELEMETRYDIR='/home/runner/.config/go/telemetry'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3387997Z GOTMPDIR=''
+test	UNKNOWN STEP	2026-04-20T21:41:20.3388177Z GOTOOLCHAIN='local'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3388478Z GOTOOLDIR='/opt/hostedtoolcache/go/1.26.2/x64/pkg/tool/linux_amd64'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3388992Z GOVCS=''
+test	UNKNOWN STEP	2026-04-20T21:41:20.3389179Z GOVERSION='go1.26.2'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3389505Z GOWORK='/home/runner/work/k8s-config-connector/k8s-config-connector/go.work'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3389889Z PKG_CONFIG='pkg-config'
+test	UNKNOWN STEP	2026-04-20T21:41:20.3390022Z 
+test	UNKNOWN STEP	2026-04-20T21:41:20.3390373Z ##[endgroup]
+test	UNKNOWN STEP	2026-04-20T21:41:20.3570694Z ##[group]Run chmod +x dev/ci/experiments-ci.sh
+test	UNKNOWN STEP	2026-04-20T21:41:20.3571128Z [36;1mchmod +x dev/ci/experiments-ci.sh[0m
+test	UNKNOWN STEP	2026-04-20T21:41:20.3571424Z [36;1mdev/ci/experiments-ci.sh[0m
+test	UNKNOWN STEP	2026-04-20T21:41:20.3599834Z shell: /usr/bin/bash -e {0}
+test	UNKNOWN STEP	2026-04-20T21:41:20.3600073Z env:
+test	UNKNOWN STEP	2026-04-20T21:41:20.3600254Z   GOTOOLCHAIN: local
+test	UNKNOWN STEP	2026-04-20T21:41:20.3600454Z ##[endgroup]
+test	UNKNOWN STEP	2026-04-20T21:41:20.3732328Z Downloading envtest assets...
+test	UNKNOWN STEP	2026-04-20T21:41:20.4187590Z go: downloading sigs.k8s.io/controller-runtime v0.22.6-0.20260125163108-a19ec76a3c5d
+test	UNKNOWN STEP	2026-04-20T21:41:20.4189170Z go: downloading sigs.k8s.io/controller-runtime/tools/setup-envtest v0.0.0-20260125163108-a19ec76a3c5d
+test	UNKNOWN STEP	2026-04-20T21:41:20.5908308Z go: downloading github.com/go-logr/zapr v1.3.0
+test	UNKNOWN STEP	2026-04-20T21:41:20.5909032Z go: downloading github.com/go-logr/logr v1.4.2
+test	UNKNOWN STEP	2026-04-20T21:41:20.5909891Z go: downloading github.com/spf13/afero v1.12.0
+test	UNKNOWN STEP	2026-04-20T21:41:20.5915883Z go: downloading github.com/spf13/pflag v1.0.6
+test	UNKNOWN STEP	2026-04-20T21:41:20.6354001Z go: downloading go.uber.org/zap v1.27.0
+test	UNKNOWN STEP	2026-04-20T21:41:20.6823902Z go: downloading golang.org/x/text v0.23.0
+test	UNKNOWN STEP	2026-04-20T21:41:20.7214635Z go: downloading sigs.k8s.io/yaml v1.6.0
+test	UNKNOWN STEP	2026-04-20T21:41:20.7777621Z go: downloading go.uber.org/multierr v1.10.0
+test	UNKNOWN STEP	2026-04-20T21:41:20.8162956Z go: downloading go.yaml.in/yaml/v2 v2.4.2
+test	UNKNOWN STEP	2026-04-20T21:41:35.1802833Z --- Testing experiments/kompanion ---
+test	UNKNOWN STEP	2026-04-20T21:41:35.1891362Z go: downloading github.com/mark3labs/mcp-go v0.45.0
+test	UNKNOWN STEP	2026-04-20T21:41:35.1895564Z go: downloading github.com/spf13/cobra v1.10.2
+test	UNKNOWN STEP	2026-04-20T21:41:35.1895904Z go: downloading golang.org/x/sync v0.20.0
+test	UNKNOWN STEP	2026-04-20T21:41:35.2250194Z go: downloading k8s.io/apimachinery v0.34.2
+test	UNKNOWN STEP	2026-04-20T21:41:35.3549684Z go: downloading k8s.io/client-go v0.34.2
+test	UNKNOWN STEP	2026-04-20T21:41:35.7928099Z go: downloading github.com/spf13/pflag v1.0.10
+test	UNKNOWN STEP	2026-04-20T21:41:35.7943256Z go: downloading k8s.io/klog/v2 v2.130.1
+test	UNKNOWN STEP	2026-04-20T21:41:35.8063656Z go: downloading github.com/invopop/jsonschema v0.13.0
+test	UNKNOWN STEP	2026-04-20T21:41:35.8215973Z go: downloading github.com/spf13/cast v1.7.1
+test	UNKNOWN STEP	2026-04-20T21:41:35.8321979Z go: downloading github.com/yosida95/uritemplate/v3 v3.0.2
+test	UNKNOWN STEP	2026-04-20T21:41:35.8352973Z go: downloading github.com/google/uuid v1.6.0
+test	UNKNOWN STEP	2026-04-20T21:41:35.8353601Z go: downloading github.com/google/gnostic-models v0.7.0
+test	UNKNOWN STEP	2026-04-20T21:41:35.8478862Z go: downloading google.golang.org/protobuf v1.36.11
+test	UNKNOWN STEP	2026-04-20T21:41:35.8479398Z go: downloading k8s.io/api v0.34.2
+test	UNKNOWN STEP	2026-04-20T21:41:35.8675583Z go: downloading github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822
+test	UNKNOWN STEP	2026-04-20T21:41:35.8832217Z go: downloading golang.org/x/net v0.52.0
+test	UNKNOWN STEP	2026-04-20T21:41:36.1407641Z go: downloading k8s.io/utils v0.0.0-20250604170112-4c0f3b243397
+test	UNKNOWN STEP	2026-04-20T21:41:36.1508750Z go: downloading golang.org/x/term v0.41.0
+test	UNKNOWN STEP	2026-04-20T21:41:36.1723585Z go: downloading github.com/wk8/go-ordered-map/v2 v2.1.8
+test	UNKNOWN STEP	2026-04-20T21:41:36.1867703Z go: downloading github.com/go-logr/logr v1.4.3
+test	UNKNOWN STEP	2026-04-20T21:41:36.1942731Z go: downloading go.yaml.in/yaml/v3 v3.0.4
+test	UNKNOWN STEP	2026-04-20T21:41:36.3298505Z go: downloading k8s.io/kube-openapi v0.0.0-20250710124328-f3f2b991d03b
+test	UNKNOWN STEP	2026-04-20T21:41:36.3348608Z go: downloading golang.org/x/oauth2 v0.36.0
+test	UNKNOWN STEP	2026-04-20T21:41:36.3668446Z go: downloading golang.org/x/time v0.15.0
+test	UNKNOWN STEP	2026-04-20T21:41:36.3737136Z go: downloading github.com/bahlo/generic-list-go v0.2.0
+test	UNKNOWN STEP	2026-04-20T21:41:36.3821586Z go: downloading github.com/buger/jsonparser v1.1.2
+test	UNKNOWN STEP	2026-04-20T21:41:36.3944523Z go: downloading github.com/mailru/easyjson v0.7.7
+test	UNKNOWN STEP	2026-04-20T21:41:36.5023781Z go: downloading gopkg.in/yaml.v3 v3.0.1
+test	UNKNOWN STEP	2026-04-20T21:41:36.5050625Z go: downloading github.com/gogo/protobuf v1.3.2
+test	UNKNOWN STEP	2026-04-20T21:41:36.5124043Z go: downloading github.com/go-openapi/swag v0.23.0
+test	UNKNOWN STEP	2026-04-20T21:41:36.5234596Z go: downloading sigs.k8s.io/randfill v1.0.0
+test	UNKNOWN STEP	2026-04-20T21:41:36.5378025Z go: downloading github.com/go-openapi/jsonreference v0.21.0
+test	UNKNOWN STEP	2026-04-20T21:41:36.5423472Z go: downloading sigs.k8s.io/structured-merge-diff/v6 v6.3.0
+test	UNKNOWN STEP	2026-04-20T21:41:36.5493679Z go: downloading gopkg.in/evanphx/json-patch.v4 v4.12.0
+test	UNKNOWN STEP	2026-04-20T21:41:36.5578070Z go: downloading github.com/emicklei/go-restful/v3 v3.12.2
+test	UNKNOWN STEP	2026-04-20T21:41:36.5736024Z go: downloading github.com/go-openapi/jsonpointer v0.21.0
+test	UNKNOWN STEP	2026-04-20T21:41:36.5816430Z go: downloading github.com/pkg/errors v0.9.1
+test	UNKNOWN STEP	2026-04-20T21:41:36.5836676Z go: downloading github.com/josharian/intern v1.0.0
+test	UNKNOWN STEP	2026-04-20T21:41:36.8649037Z ##[error]pkg/utils/utils.go:22:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8656887Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8665049Z ##[error]/home/runner/go/pkg/mod/github.com/google/gnostic-models@v0.7.0/extensions/extensions.go:22:2: google.golang.org/protobuf@v1.36.11: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8666333Z 	go mod download google.golang.org/protobuf
+test	UNKNOWN STEP	2026-04-20T21:41:36.8667567Z ##[error]/home/runner/go/pkg/mod/github.com/google/gnostic-models@v0.7.0/extensions/extension.pb.go:24:2: google.golang.org/protobuf@v1.36.11: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8668753Z 	go mod download google.golang.org/protobuf
+test	UNKNOWN STEP	2026-04-20T21:41:36.8669855Z ##[error]/home/runner/go/pkg/mod/github.com/google/gnostic-models@v0.7.0/extensions/extension.pb.go:25:2: google.golang.org/protobuf@v1.36.11: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8670968Z 	go mod download google.golang.org/protobuf
+test	UNKNOWN STEP	2026-04-20T21:41:36.8672007Z ##[error]/home/runner/go/pkg/mod/github.com/google/gnostic-models@v0.7.0/extensions/extension.pb.go:26:2: google.golang.org/protobuf@v1.36.11: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8673408Z 	go mod download google.golang.org/protobuf
+test	UNKNOWN STEP	2026-04-20T21:41:36.8674425Z ##[error]/home/runner/go/pkg/mod/github.com/google/gnostic-models@v0.7.0/jsonschema/models.go:19:8: go.yaml.in/yaml/v3@v3.0.4: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8675484Z 	go mod download go.yaml.in/yaml/v3
+test	UNKNOWN STEP	2026-04-20T21:41:36.8676686Z ##[error]/home/runner/go/pkg/mod/k8s.io/api@v0.34.2/apidiscovery/v2/generated.pb.go:28:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8677750Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8678670Z ##[error]/home/runner/go/pkg/mod/k8s.io/api@v0.34.2/apidiscovery/v2/register.go:21:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8679705Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8680746Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/discovery/discovery_client.go:37:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8681772Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8682838Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/discovery/discovery_client.go:41:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8683866Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8684980Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/discovery/discovery_client.go:42:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8685982Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8686808Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/discovery/helper.go:25:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8687788Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8688642Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/discovery/discovery_client.go:43:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8689638Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8690601Z ##[error]/home/runner/go/pkg/mod/k8s.io/api@v0.34.2/core/v1/generated.pb.go:29:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8691783Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8692859Z ##[error]/home/runner/go/pkg/mod/k8s.io/api@v0.34.2/core/v1/generated.pb.go:38:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8693862Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8694675Z ##[error]/home/runner/go/pkg/mod/k8s.io/api@v0.34.2/core/v1/types.go:23:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8695602Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8696665Z ##[error]/home/runner/go/pkg/mod/k8s.io/api@v0.34.2/extensions/v1beta1/zz_generated.validations.go:28:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8697724Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8698615Z ##[error]/home/runner/go/pkg/mod/k8s.io/api@v0.34.2/extensions/v1beta1/zz_generated.validations.go:29:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8699660Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8700530Z ##[error]/home/runner/go/pkg/mod/k8s.io/api@v0.34.2/extensions/v1beta1/zz_generated.validations.go:30:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8701615Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8702481Z ##[error]/home/runner/go/pkg/mod/k8s.io/api@v0.34.2/extensions/v1beta1/zz_generated.validations.go:32:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8704056Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8705041Z ##[error]/home/runner/go/pkg/mod/k8s.io/api@v0.34.2/resource/v1/types.go:25:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8705983Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8706912Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/openapi/typeconverter.go:23:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8707890Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8708767Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/rest/request.go:37:2: golang.org/x/net@v0.52.0: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8709738Z 	go mod download golang.org/x/net
+test	UNKNOWN STEP	2026-04-20T21:41:36.8710554Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/rest/config.go:36:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8711496Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8712281Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/rest/request.go:43:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8713477Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8714273Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/rest/request.go:44:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8715402Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8716189Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/rest/request.go:45:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8717112Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8718020Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/features/envvar.go:26:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8718975Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8719929Z ##[error]/home/runner/go/pkg/mod/k8s.io/klog/v2@v2.130.1/contextual.go:22:2: github.com/go-logr/logr@v1.4.3: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8720889Z 	go mod download github.com/go-logr/logr
+test	UNKNOWN STEP	2026-04-20T21:41:36.8722261Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/plugin/pkg/client/auth/exec/exec.go:35:2: golang.org/x/term@v0.41.0: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8723548Z 	go mod download golang.org/x/term
+test	UNKNOWN STEP	2026-04-20T21:41:36.8724451Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/plugin/pkg/client/auth/exec/exec.go:40:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8725460Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8726740Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/pkg/apis/clientauthentication/v1/zz_generated.conversion.go:28:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8727891Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8728808Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/transport/cache.go:29:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8729800Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8730872Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/util/workqueue/default_rate_limiters.go:24:2: golang.org/x/time@v0.15.0: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8731923Z 	go mod download golang.org/x/time
+test	UNKNOWN STEP	2026-04-20T21:41:36.8733174Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/util/workqueue/delaying_queue.go:26:2: k8s.io/utils@v0.0.0-20250604170112-4c0f3b243397: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8734251Z 	go mod download k8s.io/utils
+test	UNKNOWN STEP	2026-04-20T21:41:36.8735262Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/util/cert/cert.go:37:2: k8s.io/utils@v0.0.0-20250604170112-4c0f3b243397: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8736266Z 	go mod download k8s.io/utils
+test	UNKNOWN STEP	2026-04-20T21:41:36.8737317Z ##[error]/home/runner/go/pkg/mod/github.com/google/gnostic-models@v0.7.0/openapiv3/annotations.pb.go:26:2: google.golang.org/protobuf@v1.36.11: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8738428Z 	go mod download google.golang.org/protobuf
+test	UNKNOWN STEP	2026-04-20T21:41:36.8739750Z ##[error]/home/runner/go/pkg/mod/k8s.io/kube-openapi@v0.0.0-20250710124328-f3f2b991d03b/pkg/common/common.go:23:2: github.com/emicklei/go-restful/v3@v3.12.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8740933Z 	go mod download github.com/emicklei/go-restful/v3
+test	UNKNOWN STEP	2026-04-20T21:41:36.8741770Z ##[error]cmd/export/export.go:32:2: github.com/spf13/cobra@v1.10.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8742841Z 	go mod download github.com/spf13/cobra
+test	UNKNOWN STEP	2026-04-20T21:41:36.8743556Z ##[error]cmd/export/export.go:34:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8744389Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8745326Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/dynamic/simple.go:22:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8746288Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8747277Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/dynamic/scheme.go:25:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8748241Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8749129Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/util/apply/apply.go:22:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8750086Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8750882Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/util/apply/apply.go:24:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8751821Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8753225Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/applyconfigurations/internal/internal.go:25:2: sigs.k8s.io/structured-merge-diff/v6@v6.3.0: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8754543Z 	go mod download sigs.k8s.io/structured-merge-diff/v6
+test	UNKNOWN STEP	2026-04-20T21:41:36.8755731Z ##[error]/home/runner/go/pkg/mod/k8s.io/kube-openapi@v0.0.0-20250710124328-f3f2b991d03b/pkg/util/proto/document.go:25:2: go.yaml.in/yaml/v2@v2.4.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8756842Z 	go mod download go.yaml.in/yaml/v2
+test	UNKNOWN STEP	2026-04-20T21:41:36.8757729Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/gentype/fake.go:26:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8758688Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8759572Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/testing/fixture.go:32:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8760531Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8761321Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/testing/actions.go:25:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8762272Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8763299Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/testing/fixture.go:40:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8764251Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8765042Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/testing/fixture.go:26:2: sigs.k8s.io/yaml@v1.6.0: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8765972Z 	go mod download sigs.k8s.io/yaml
+test	UNKNOWN STEP	2026-04-20T21:41:36.8767005Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/tools/clientcmd/overrides.go:23:2: github.com/spf13/pflag@v1.0.10: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8768013Z 	go mod download github.com/spf13/pflag
+test	UNKNOWN STEP	2026-04-20T21:41:36.8768877Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/tools/clientcmd/loader.go:31:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8769865Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8770864Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/tools/clientcmd/api/latest/latest.go:23:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8771885Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8772742Z ##[error]cmd/mcp/tools.go:27:2: golang.org/x/sync@v0.20.0: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8773609Z 	go mod download golang.org/x/sync
+test	UNKNOWN STEP	2026-04-20T21:41:36.8774272Z ##[error]cmd/mcp/tools.go:33:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	UNKNOWN STEP	2026-04-20T21:41:36.8775074Z 	go mod download k8s.io/apimachinery
+test	UNKNOWN STEP	2026-04-20T21:41:36.8779607Z ##[error]Process completed with exit code 1.
+test	UNKNOWN STEP	2026-04-20T21:41:36.8878788Z Post job cleanup.
+test	UNKNOWN STEP	2026-04-20T21:41:36.9818816Z [command]/usr/bin/git version
+test	UNKNOWN STEP	2026-04-20T21:41:36.9854991Z git version 2.53.0
+test	UNKNOWN STEP	2026-04-20T21:41:36.9903117Z Temporarily overriding HOME='/home/runner/work/_temp/c9de7ed4-30b7-409a-a1b2-8cb9a4364528' before making global git config changes
+test	UNKNOWN STEP	2026-04-20T21:41:36.9904326Z Adding repository directory to the temporary git global config as a safe directory
+test	UNKNOWN STEP	2026-04-20T21:41:36.9908612Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/k8s-config-connector/k8s-config-connector
+test	UNKNOWN STEP	2026-04-20T21:41:36.9944072Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test	UNKNOWN STEP	2026-04-20T21:41:36.9976623Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test	UNKNOWN STEP	2026-04-20T21:41:37.0245434Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test	UNKNOWN STEP	2026-04-20T21:41:37.0267211Z http.https://github.com/.extraheader
+test	UNKNOWN STEP	2026-04-20T21:41:37.0280223Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+test	UNKNOWN STEP	2026-04-20T21:41:37.0311728Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test	UNKNOWN STEP	2026-04-20T21:41:37.0573906Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test	UNKNOWN STEP	2026-04-20T21:41:37.0606993Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test	UNKNOWN STEP	2026-04-20T21:41:37.0993573Z Cleaning up orphan processes
+test	UNKNOWN STEP	2026-04-20T21:41:37.1313866Z ##[warning]Node.js 20 actions are deprecated. The following actions are running on Node.js 20 and may not work as expected: actions/checkout@v4, actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c. Actions will be forced to run with Node.js 24 by default starting June 2nd, 2026. Node.js 20 will be removed from the runner on September 16th, 2026. Please check if updated versions of these actions are available that support Node.js 24. To opt into Node.js 24 now, set the FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true environment variable on the runner or in your workflow file. Once Node.js 24 becomes the default, you can temporarily opt out by setting ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

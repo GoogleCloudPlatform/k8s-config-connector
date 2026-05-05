@@ -299,6 +299,9 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseVersion": 4,
+  "dataplexConfig": {
+    "enabled": true
+  },
   "encryptionInfo": {
     "encryptionType": 1
   },
@@ -321,7 +324,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=initialUser
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=initialUser.password%2CinitialUser.user
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fsouthamerica-east1%2Fclusters%2Falloydbcluster${uniqueId}
@@ -357,6 +360,9 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fsoutha
     "recoveryWindowDays": 14
   },
   "databaseVersion": 4,
+  "dataplexConfig": {
+    "enabled": true
+  },
   "geminiConfig": {},
   "initialUser": {
     "password": "updated",
@@ -560,6 +566,9 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseVersion": 4,
+  "dataplexConfig": {
+    "enabled": true
+  },
   "encryptionInfo": {
     "encryptionType": 1
   },

@@ -594,18 +594,17 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 
+		status := AlloyDBClusterStatus_FromProto(mapCtx, a.actual)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
 		if a.desired.Status.ExternalRef == nil {
 			// If it is the first reconciliation after switching to direct controller,
 			// or is an acquisition, then update Status to fill out the ExternalRef
 			// and ObservedState.
-			status := AlloyDBClusterStatus_FromProto(mapCtx, a.actual)
-			if mapCtx.Err() != nil {
-				return mapCtx.Err()
-			}
 			status.ExternalRef = direct.LazyPtr(a.id.String())
-			return updateOp.UpdateStatus(ctx, status, nil)
 		}
-		return nil
+		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
