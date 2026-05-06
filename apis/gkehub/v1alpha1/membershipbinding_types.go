@@ -39,6 +39,10 @@ type GKEHubMembershipBindingSpec struct {
 	/* Immutable. Optional. The resourceID of the resource; if not provided, the name of the resource will be used as the resourceID. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Optional. Labels for this MembershipBinding. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
 }
 
 type GKEHubMembershipBindingObservedState struct {
