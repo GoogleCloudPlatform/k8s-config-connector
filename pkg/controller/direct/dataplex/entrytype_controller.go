@@ -144,8 +144,8 @@ func (a *entryTypeAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	log.V(2).Info("creating dataplex entrytype", "name", a.id)
 
 	req := &pb.CreateEntryTypeRequest{
-		Parent:      a.id.Parent().String(),
-		EntryTypeId: a.id.ID(),
+		Parent:      fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location),
+		EntryTypeId: a.id.EntryType,
 		EntryType:   a.desired,
 	}
 	op, err := a.gcpClient.CreateEntryType(ctx, req)
@@ -253,8 +253,8 @@ func (a *entryTypeAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 		return nil, mapCtx.Err()
 	}
 	obj.Spec.ParentRef = &parent.ProjectAndLocationRef{
-		ProjectRef: &refs.ProjectRef{External: a.id.Parent().ProjectID},
-		Location:   a.id.Parent().Location,
+		ProjectRef: &refs.ProjectRef{External: a.id.Project},
+		Location:   a.id.Location,
 	}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
@@ -262,7 +262,7 @@ func (a *entryTypeAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 	}
 
 	u := &unstructured.Unstructured{Object: uObj}
-	u.SetName(a.id.ID())
+	u.SetName(a.id.EntryType)
 	u.SetGroupVersionKind(krm.DataplexEntryTypeGVK)
 
 	log.Info("exported object", "obj", u, "gvk", u.GroupVersionKind())
