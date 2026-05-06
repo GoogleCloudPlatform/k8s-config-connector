@@ -137,11 +137,12 @@ type ComputeReservationStatus struct {
 	Status *string `json:"status,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *ComputeReservationObservedState `json:"observedState,omitempty"`
+	// ObservedState *ComputeReservationObservedState `json:"observedState,omitempty"`
 }
 
 // ComputeReservationObservedState is the state of the ComputeReservation resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.compute.v1.Reservation
+/*
 type ComputeReservationObservedState struct {
 	// [Output Only] A unique identifier for this future reservation. The server defines this identifier.
 	// +kcc:proto:field=google.cloud.compute.v1.Reservation.id
@@ -151,6 +152,7 @@ type ComputeReservationObservedState struct {
 	// +kcc:proto:field=google.cloud.compute.v1.Reservation.resource_status
 	ResourceStatus *AllocationResourceStatus `json:"resourceStatus,omitempty"`
 }
+*/
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
