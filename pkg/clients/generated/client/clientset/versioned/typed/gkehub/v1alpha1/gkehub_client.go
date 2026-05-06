@@ -34,6 +34,7 @@ type GkehubV1alpha1Interface interface {
 	GKEHubMembershipBindingsGetter
 	GKEHubNamespacesGetter
 	GKEHubScopesGetter
+	GKEHubScopeRBACRoleBindingsGetter
 }
 
 // GkehubV1alpha1Client is used to interact with features provided by the gkehub.cnrm.cloud.google.com group.
@@ -51,6 +52,10 @@ func (c *GkehubV1alpha1Client) GKEHubNamespaces(namespace string) GKEHubNamespac
 
 func (c *GkehubV1alpha1Client) GKEHubScopes(namespace string) GKEHubScopeInterface {
 	return newGKEHubScopes(c, namespace)
+}
+
+func (c *GkehubV1alpha1Client) GKEHubScopeRBACRoleBindings(namespace string) GKEHubScopeRBACRoleBindingInterface {
+	return newGKEHubScopeRBACRoleBindings(c, namespace)
 }
 
 // NewForConfig creates a new GkehubV1alpha1Client for the given config.
