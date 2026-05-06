@@ -19,7 +19,6 @@
 package v1alpha1
 
 import (
-	reference "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -2111,7 +2110,7 @@ func (in *ShareSettingsProjectMap) DeepCopyInto(out *ShareSettingsProjectMap) {
 	*out = *in
 	if in.KeyRef != nil {
 		in, out := &in.KeyRef, &out.KeyRef
-		*out = new(reference.ResourceReference)
+		*out = new(v1beta1.ExtendedProjectRef)
 		**out = **in
 	}
 	if in.Value != nil {
