@@ -59,7 +59,7 @@ Create or update the file to match the canonical example. Key requirements:
   - The `Name` and `Namespace` fields should have godocs: `"The name of a <Kind> resource."` and `"The namespace of a <Kind> resource."`.
 - Include `func init() { refs.Register(&<Kind>Ref{}) }`.
 - Implement boilerplate methods: `GetGVK`, `GetNamespacedName`, `GetExternal`, `SetExternal`, `ValidateExternal`, `ParseExternalToIdentity`.
-- Implement `Normalize` delegating to `refs.NormalizeWithFallback`. In the fallback function `func(u *unstructured.Unstructured) string`, safely convert `u.Object` to the `<Kind>` object using `runtime.DefaultUnstructuredConverter.FromUnstructured` before passing it to `getIdentityFrom<Kind>Spec`.
+- Implement `Normalize` delegating to `refs.NormalizeWithFallback`. In the fallback function `func(u *unstructured.Unstructured) string`, simply pass `u` directly to `getIdentityFrom<Kind>Spec` since `*unstructured.Unstructured` implements `client.Object`.
 
 ### Step 5: Verify
 
