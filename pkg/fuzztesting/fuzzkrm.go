@@ -23,10 +23,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/fuzz"
 	"github.com/google/go-cmp/cmp"
-	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/testing/protocmp"
+	"google.golang.org/protobuf/types/dynamicpb"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
@@ -66,6 +66,14 @@ type KRMTypedFuzzer[ProtoT proto.Message, SpecType any, StatusType any] struct {
 
 	FilterSpec   func(in ProtoT)
 	FilterStatus func(in ProtoT)
+
+	ProtoSourcePath string
+}
+
+// WithProtoSource sets the path to the .pb file containing the descriptors for this fuzzer.
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) WithProtoSource(path string) *KRMTypedFuzzer[ProtoT, SpecType, StatusType] {
+	f.ProtoSourcePath = path
+	return f
 }
 
 // SpecField marks the specified fieldPath as round-tripping to/from the Spec
@@ -140,6 +148,7 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) FuzzSpec(t *testing.T, se
 	fuzzer.IgnoreFields = f.StatusFields
 	fuzzer.UnimplementedFields = f.UnimplementedFields
 	fuzzer.Filter = f.FilterSpec
+	fuzzer.ProtoSourcePath = f.ProtoSourcePath
 	fuzzer.Fuzz(t, seed)
 }
 
@@ -148,6 +157,7 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) FuzzStatus(t *testing.T, 
 	fuzzer.IgnoreFields = f.SpecFields
 	fuzzer.UnimplementedFields = f.UnimplementedFields
 	fuzzer.Filter = f.FilterStatus
+	fuzzer.ProtoSourcePath = f.ProtoSourcePath
 	fuzzer.Fuzz(t, seed)
 }
 
@@ -182,6 +192,8 @@ type FuzzTest[ProtoT proto.Message, KRMType any] struct {
 	IgnoreFields        sets.Set[string]
 
 	Filter func(in ProtoT)
+
+	ProtoSourcePath string
 }
 
 func NewFuzzTest[ProtoT proto.Message, KRMType any](protoType ProtoT, fromProto func(ctx *direct.MapContext, in ProtoT) *KRMType, toProto func(ctx *direct.MapContext, in *KRMType) ProtoT) *FuzzTest[ProtoT, KRMType] {
@@ -197,45 +209,113 @@ func NewFuzzTest[ProtoT proto.Message, KRMType any](protoType ProtoT, fromProto 
 func (f *FuzzTest[ProtoT, KRMType]) Fuzz(t *testing.T, seed int64) {
 	randStream := rand.New(rand.NewSource(seed))
 
-	p1 := proto.Clone(f.ProtoType).(ProtoT)
-	fuzz.FillWithRandom(t, randStream, p1)
+	var p1_comp ProtoT
 
-	ignoreFields := sets.New[string]()
-	ignoreFields = ignoreFields.Union(f.IgnoreFields)
-	ignoreFields = ignoreFields.Union(f.UnimplementedFields)
+	if f.ProtoSourcePath != "" {
+		var md protoreflect.MessageDescriptor
+		files, err := fuzz.GetProtoRegistry(f.ProtoSourcePath)
+		if err != nil {
+			t.Fatalf("failed to load proto source %q: %v", f.ProtoSourcePath, err)
+		}
+		fullName := f.ProtoType.ProtoReflect().Descriptor().FullName()
+		desc, err := files.FindDescriptorByName(fullName)
+		if err != nil {
+			t.Fatalf("failed to find descriptor for %q in %q: %v", fullName, f.ProtoSourcePath, err)
+		}
+		md = desc.(protoreflect.MessageDescriptor)
+		p1_dyn := dynamicpb.NewMessage(md)
+		fuzz.FillWithRandom(t, randStream, p1_dyn)
 
-	// Remove any output only or known-unimplemented fields
-	clearFields := &fuzz.ClearFields{
-		Paths: ignoreFields,
-	}
-	fuzz.Visit("", p1.ProtoReflect(), nil, clearFields)
+		// Remove any output only or known-unimplemented fields
+		ignoreFields := sets.New[string]()
+		ignoreFields = ignoreFields.Union(f.IgnoreFields)
+		ignoreFields = ignoreFields.Union(f.UnimplementedFields)
+		clearFields := &fuzz.ClearFields{
+			Paths: ignoreFields,
+		}
+		fuzz.Visit("", p1_dyn.ProtoReflect(), nil, clearFields)
 
-	if f.Filter != nil {
-		f.Filter(p1)
-	}
+		// Convert dynamic to compiled for the mapper
+		p1_comp = proto.Clone(f.ProtoType).(ProtoT)
+		b, err := proto.Marshal(p1_dyn)
+		if err != nil {
+			t.Fatalf("failed to marshal dynamic message: %v", err)
+		}
+		if err := proto.Unmarshal(b, p1_comp); err != nil {
+			t.Fatalf("failed to unmarshal bytes to compiled message: %v", err)
+		}
 
-	ctx := &direct.MapContext{}
-	krm := f.FromProto(ctx, p1)
-	if ctx.Err() != nil {
-		t.Logf("p1 = %v", prototext.Format(p1))
-		t.Fatalf("error mapping from proto to krm: %v", ctx.Err())
-	}
+		if f.Filter != nil {
+			f.Filter(p1_comp)
+		}
 
-	p2 := f.ToProto(ctx, krm)
-	if ctx.Err() != nil {
-		t.Logf("p1 = %v", prototext.Format(p1))
-		t.Fatalf("error mapping from krm to proto: %v", ctx.Err())
-	}
+		ctx := &direct.MapContext{}
+		krm := f.FromProto(ctx, p1_comp)
+		if ctx.Err() != nil {
+			t.Fatalf("error mapping from proto to krm: %v", ctx.Err())
+		}
 
-	if diff := cmp.Diff(p1, p2, protocmp.Transform()); diff != "" {
-		t.Logf("p1 = %v", prototext.Format(p1))
-		t.Logf("p2 = %v", prototext.Format(p2))
-		t.Errorf("roundtrip failed for KRM %T; diff:\n%s", krm, diff)
-		diffPaths := diffFieldPaths(p1, p2)
-		for _, diffPath := range diffPaths {
-			hint := fmt.Sprintf("Add `f.Unimplemented_NotYetTriaged(%q)` to the fuzzer for the proto type %v to mark this field as not yet triaged.", diffPath, f.ProtoType.ProtoReflect().Descriptor().FullName())
-			fmt.Fprintf(os.Stderr, "<hint_for_agent>%s</hint_for_agent>", hint)
-			break
+		p2_comp := f.ToProto(ctx, krm)
+		if ctx.Err() != nil {
+			t.Fatalf("error mapping from krm to proto: %v", ctx.Err())
+		}
+
+		// Convert p2 back to dynamic for comparison
+		p2_dyn := dynamicpb.NewMessage(md)
+		b2, err := proto.Marshal(p2_comp)
+		if err != nil {
+			t.Fatalf("failed to marshal compiled message p2: %v", err)
+		}
+		if err := proto.Unmarshal(b2, p2_dyn); err != nil {
+			t.Fatalf("failed to unmarshal bytes to dynamic message p2: %v", err)
+		}
+
+		if diff := cmp.Diff(p1_dyn, p2_dyn, protocmp.Transform()); diff != "" {
+			t.Errorf("roundtrip failed for KRM %T; diff:\n%s", krm, diff)
+			diffPaths := diffFieldPaths(p1_dyn, p2_dyn)
+			for _, diffPath := range diffPaths {
+				hint := fmt.Sprintf("Add `f.Unimplemented_NotYetTriaged(%q)` to the fuzzer for the proto type %v to mark this field as not yet triaged.", diffPath, f.ProtoType.ProtoReflect().Descriptor().FullName())
+				fmt.Fprintf(os.Stderr, "<hint_for_agent>%s</hint_for_agent>", hint)
+				break
+			}
+		}
+	} else {
+		p1_comp = proto.Clone(f.ProtoType).(ProtoT)
+		fuzz.FillWithRandom(t, randStream, p1_comp)
+
+		ignoreFields := sets.New[string]()
+		ignoreFields = ignoreFields.Union(f.IgnoreFields)
+		ignoreFields = ignoreFields.Union(f.UnimplementedFields)
+
+		// Remove any output only or known-unimplemented fields
+		clearFields := &fuzz.ClearFields{
+			Paths: ignoreFields,
+		}
+		fuzz.Visit("", p1_comp.ProtoReflect(), nil, clearFields)
+
+		if f.Filter != nil {
+			f.Filter(p1_comp)
+		}
+
+		ctx := &direct.MapContext{}
+		krm := f.FromProto(ctx, p1_comp)
+		if ctx.Err() != nil {
+			t.Fatalf("error mapping from proto to krm: %v", ctx.Err())
+		}
+
+		p2_comp := f.ToProto(ctx, krm)
+		if ctx.Err() != nil {
+			t.Fatalf("error mapping from krm to proto: %v", ctx.Err())
+		}
+
+		if diff := cmp.Diff(p1_comp, p2_comp, protocmp.Transform()); diff != "" {
+			t.Errorf("roundtrip failed for KRM %T; diff:\n%s", krm, diff)
+			diffPaths := diffFieldPaths(p1_comp, p2_comp)
+			for _, diffPath := range diffPaths {
+				hint := fmt.Sprintf("Add `f.Unimplemented_NotYetTriaged(%q)` to the fuzzer for the proto type %v to mark this field as not yet triaged.", diffPath, f.ProtoType.ProtoReflect().Descriptor().FullName())
+				fmt.Fprintf(os.Stderr, "<hint_for_agent>%s</hint_for_agent>", hint)
+				break
+			}
 		}
 	}
 }
