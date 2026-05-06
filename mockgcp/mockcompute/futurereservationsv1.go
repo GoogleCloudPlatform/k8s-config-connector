@@ -26,6 +26,7 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -156,27 +157,12 @@ func (s *FutureReservationsV1) Update(ctx context.Context, req *pb.UpdateFutureR
 	}
 
 	paths := strings.Split(req.GetUpdateMask(), ",")
-	for _, path := range paths {
-		switch path {
-		case "description":
-			obj.Description = req.GetFutureReservationResource().Description
-		case "specific_sku_properties.total_count", "specific_sku_properties.instance_properties.machine_type", "specific_sku_properties.instance_properties.min_cpu_platform":
-			obj.SpecificSkuProperties = req.GetFutureReservationResource().SpecificSkuProperties
-		case "auto_delete_auto_created_reservations":
-			obj.AutoDeleteAutoCreatedReservations = req.GetFutureReservationResource().AutoDeleteAutoCreatedReservations
-		case "auto_created_reservations_duration", "auto_created_reservations_duration.seconds", "auto_created_reservations_duration.nanos":
-			obj.AutoCreatedReservationsDuration = req.GetFutureReservationResource().AutoCreatedReservationsDuration
-		case "auto_created_reservations_delete_time":
-			obj.AutoCreatedReservationsDeleteTime = req.GetFutureReservationResource().AutoCreatedReservationsDeleteTime
-		case "time_window.start_time":
-			obj.TimeWindow.StartTime = req.GetFutureReservationResource().TimeWindow.StartTime
-		case "time_window.end_time":
-			obj.TimeWindow.EndTime = req.GetFutureReservationResource().TimeWindow.EndTime
-		case "time_window.duration", "time_window.duration.seconds", "time_window.duration.nanos":
-			obj.TimeWindow.Duration = req.GetFutureReservationResource().TimeWindow.Duration
-		default:
-			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
-		}
+	if len(paths) == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
+	}
+
+	if err := fields.UpdateByFieldMask(obj, req.GetFutureReservationResource(), paths); err != nil {
+		return nil, fmt.Errorf("applying updates: %w", err)
 	}
 
 	// handle endtime calculated by duration
