@@ -182,6 +182,12 @@ spec:
                         description: 'Output only. Code describes the state of a MembershipBinding
                           resource. Possible values: CODE_UNSPECIFIED, CREATING, READY,
                           DELETING, UPDATING'
+                        enum:
+                        - CODE_UNSPECIFIED
+                        - CREATING
+                        - READY
+                        - DELETING
+                        - UPDATING
                         type: string
                     type: object
                   uid:
