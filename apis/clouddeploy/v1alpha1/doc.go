@@ -13,4 +13,5 @@
 // limitations under the License.
 
 // +kcc:proto=google.cloud.deploy.v1
+// +k8s:deepcopy-gen=package
 package v1alpha1

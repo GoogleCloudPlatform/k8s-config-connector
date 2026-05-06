@@ -29,8 +29,8 @@ func init() {
 
 func cloudDeployTargetFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Target{},
-		CloudDeployTargetSpec_FromProto, CloudDeployTargetSpec_ToProto,
-		CloudDeployTargetObservedState_FromProto, CloudDeployTargetObservedState_ToProto,
+		CloudDeployTargetSpec_v1alpha1_FromProto, CloudDeployTargetSpec_v1alpha1_ToProto,
+		CloudDeployTargetObservedState_v1alpha1_FromProto, CloudDeployTargetObservedState_v1alpha1_ToProto,
 	)
 
 	f.SpecFields.Insert(".description")
