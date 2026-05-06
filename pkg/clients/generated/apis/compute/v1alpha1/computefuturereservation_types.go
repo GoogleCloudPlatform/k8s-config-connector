@@ -139,6 +139,7 @@ type FuturereservationLocalSsds struct {
 }
 
 type FuturereservationProjectMap struct {
+	/* The resource reference that defaults to Project if Kind is not specified. */
 	KeyRef v1alpha1.ResourceRef `json:"keyRef"`
 
 	// +optional
