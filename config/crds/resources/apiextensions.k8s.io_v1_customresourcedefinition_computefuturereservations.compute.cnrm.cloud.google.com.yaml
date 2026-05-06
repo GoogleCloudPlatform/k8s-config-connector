@@ -240,6 +240,8 @@ spec:
                     items:
                       properties:
                         keyRef:
+                          description: The resource reference that defaults to Project
+                            if Kind is not specified.
                           oneOf:
                           - not:
                               required:
@@ -265,14 +267,13 @@ spec:
                               description: The external name of the referenced resource
                               type: string
                             kind:
+                              default: Project
                               description: Kind of the referenced resource
                               type: string
                             name:
                               type: string
                             namespace:
                               type: string
-                          required:
-                          - kind
                           type: object
                         value:
                           properties:

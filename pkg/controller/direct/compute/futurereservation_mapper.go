@@ -16,7 +16,6 @@ package compute
 
 import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
-	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -346,7 +345,7 @@ func ShareSettings_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSet
 	if in.ProjectMap != nil {
 		for k, v := range in.ProjectMap {
 			out.ProjectMap = append(out.ProjectMap, krmcomputev1alpha1.ShareSettingsProjectMap{
-				KeyRef: &common.ResourceReference{
+				KeyRef: &refsv1beta1.ExtendedProjectRef{
 					External: k,
 				},
 				Value: ShareSettingsProjectConfig_v1alpha1_FromProto(mapCtx, v),

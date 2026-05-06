@@ -15,7 +15,6 @@
 package v1alpha1
 
 import (
-	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -171,7 +170,7 @@ type ShareSettings struct {
 
 type ShareSettingsProjectMap struct {
 	// +required
-	KeyRef *common.ResourceReference `json:"keyRef"`
+	KeyRef *refsv1beta1.ExtendedProjectRef `json:"keyRef"`
 
 	Value *ShareSettingsProjectConfig `json:"value,omitempty"`
 }
