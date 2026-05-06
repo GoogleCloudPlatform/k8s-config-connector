@@ -18,6 +18,7 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
@@ -65,6 +66,26 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	if err != nil {
 		return nil, err
 	}
+
+	// Add manual handlers for IAM policies
+	mux.ServeMux.Handle("GET",
+		runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 8, 5, 4}, []string{"v1", "projects", "locations", "entitlements", "resource"}, "getIamPolicy")),
+		func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+			w.Header().Set("Content-Type", "application/json")
+			w.Write([]byte(`{}`))
+		})
+	mux.ServeMux.Handle("POST",
+		runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 8, 5, 4}, []string{"v1", "projects", "locations", "entitlements", "resource"}, "getIamPolicy")),
+		func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+			w.Header().Set("Content-Type", "application/json")
+			w.Write([]byte(`{}`))
+		})
+	mux.ServeMux.Handle("POST",
+		runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 8, 5, 4}, []string{"v1", "projects", "locations", "entitlements", "resource"}, "setIamPolicy")),
+		func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+			w.Header().Set("Content-Type", "application/json")
+			w.Write([]byte(`{}`))
+		})
 
 	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
 		if error.Code == 404 {
