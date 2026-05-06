@@ -39,6 +39,10 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type GKEHubMembershipBindingSpec struct {
+	/* Optional. Labels for this MembershipBinding. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
+
 	/* Immutable. The membership that this binding belongs to. */
 	MembershipRef v1alpha1.ResourceRef `json:"membershipRef"`
 
