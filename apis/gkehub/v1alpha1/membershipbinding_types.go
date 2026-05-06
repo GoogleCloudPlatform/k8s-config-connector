@@ -24,6 +24,7 @@ var GKEHubMembershipBindingGVK = GroupVersion.WithKind("GKEHubMembershipBinding"
 
 type GKEHubMembershipBindingStateStatus struct {
 	/* Output only. Code describes the state of a MembershipBinding resource. Possible values: CODE_UNSPECIFIED, CREATING, READY, DELETING, UPDATING */
+	// +kubebuilder:validation:Enum=CODE_UNSPECIFIED;CREATING;READY;DELETING;UPDATING
 	Code *string `json:"code,omitempty"`
 }
 
