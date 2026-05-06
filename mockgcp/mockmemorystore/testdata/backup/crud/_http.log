@@ -5,7 +5,7 @@ Connection: keep-alive
 Content-Type: application/json
 
 {
-  "backupId": "test-backup-${uniqueId}",
+  "backupId": "${backup}",
   "ttl": "86400s"
 }
 
@@ -64,9 +64,13 @@ X-Xss-Protection: 0
     "automatedBackupConfig": {
       "automatedBackupMode": "DISABLED"
     },
-    "backupCollection": "projects/${projectId}/locations/us-central1/backupCollections/backupCollection-test-instance-${uniqueId}",
+    "backupCollection": "projects/${projectId}/locations/us-central1/backupCollections/${backupCollectionID}",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
     "engineVersion": "VALKEY_7_2",
     "mode": "CLUSTER_DISABLED",
     "name": "projects/${projectId}/locations/us-central1/instances/test-instance-${uniqueId}",
@@ -80,11 +84,11 @@ X-Xss-Protection: 0
     "pscAttachmentDetails": [
       {
         "connectionType": "CONNECTION_TYPE_PRIMARY",
-        "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+        "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
       },
       {
         "connectionType": "CONNECTION_TYPE_READER",
-        "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+        "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
       }
     ],
     "replicaCount": 0,
@@ -122,9 +126,13 @@ X-Xss-Protection: 0
   "automatedBackupConfig": {
     "automatedBackupMode": "DISABLED"
   },
-  "backupCollection": "projects/${projectId}/locations/us-central1/backupCollections/backupCollection-test-instance-${uniqueId}",
+  "backupCollection": "projects/${projectId}/locations/us-central1/backupCollections/${backupCollectionID}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
+  "encryptionInfo": {
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+  },
   "engineVersion": "VALKEY_7_2",
   "mode": "CLUSTER_DISABLED",
   "name": "projects/${projectId}/locations/us-central1/instances/test-instance-${uniqueId}",
@@ -138,11 +146,11 @@ X-Xss-Protection: 0
   "pscAttachmentDetails": [
     {
       "connectionType": "CONNECTION_TYPE_PRIMARY",
-      "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
     },
     {
       "connectionType": "CONNECTION_TYPE_READER",
-      "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
     }
   ],
   "replicaCount": 0,
@@ -159,7 +167,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupCollections/backupCollection-test-instance-${uniqueId}/backups/test-backup-${uniqueId}?alt=json
+GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupCollections/${backupCollectionID}/backups/${backup}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -178,17 +186,21 @@ X-Xss-Protection: 0
   "backupFiles": [
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
-      "fileName": "file-test-backup-${uniqueId}.rdb",
+      "fileName": "fakefilename.rdb",
       "sizeBytes": "141"
     }
   ],
   "backupType": "ON_DEMAND",
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "encryptionInfo": {
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION",
+    "lastUpdateTime": "2024-04-01T12:34:56.123456Z"
+  },
   "engineVersion": "VALKEY_7_2",
   "expireTime": "2024-04-01T12:34:56.123456Z",
   "instance": "projects/${projectId}/locations/us-central1/instances/test-instance-${uniqueId}",
-  "instanceUid": "instance-test-instance-${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/backupCollections/backupCollection-test-instance-${uniqueId}/backups/test-backup-${uniqueId}",
+  "instanceUid": "11111111-1111-1111-1111-111111111111",
+  "name": "projects/${projectId}/locations/us-central1/backupCollections/${backupCollectionID}/backups/${backup}",
   "nodeType": "HIGHMEM_MEDIUM",
   "shardCount": 1,
   "state": "ACTIVE",
@@ -198,7 +210,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupCollections/backupCollection-test-instance-${uniqueId}/backups/test-backup-${uniqueId}?alt=json
+DELETE https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupCollections/${backupCollectionID}/backups/${backup}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -218,7 +230,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/backupCollections/backupCollection-test-instance-${uniqueId}/backups/test-backup-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1/backupCollections/${backupCollectionID}/backups/${backup}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
@@ -248,7 +260,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/backupCollections/backupCollection-test-instance-${uniqueId}/backups/test-backup-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1/backupCollections/${backupCollectionID}/backups/${backup}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
