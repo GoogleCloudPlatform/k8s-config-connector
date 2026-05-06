@@ -20,6 +20,10 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
+  "encryptionInfo": {
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+  },
   "endpoints": [
     {
       "connections": [
@@ -32,7 +36,7 @@ X-Xss-Protection: 0
             "port": 6379,
             "projectId": "${projectId}",
             "pscConnectionId": "1234567890123456789",
-            "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
           }
         },
         {
@@ -44,7 +48,7 @@ X-Xss-Protection: 0
             "port": 6379,
             "projectId": "${projectId}",
             "pscConnectionId": "1234567890123456790",
-            "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
           }
         }
       ]
@@ -63,11 +67,11 @@ X-Xss-Protection: 0
   "pscAttachmentDetails": [
     {
       "connectionType": "CONNECTION_TYPE_PRIMARY",
-      "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
     },
     {
       "connectionType": "CONNECTION_TYPE_READER",
-      "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
     }
   ],
   "replicaCount": 0,
@@ -97,6 +101,10 @@ Content-Type: application/json
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
+  "encryptionInfo": {
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+  },
   "endpoints": [
     {
       "connections": [
@@ -106,7 +114,7 @@ Content-Type: application/json
             "ipAddress": "8.8.8.8",
             "network": "projects/${projectId}/global/networks/test-network-${uniqueId}",
             "pscConnectionId": "",
-            "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
           }
         },
         {
@@ -115,7 +123,7 @@ Content-Type: application/json
             "ipAddress": "8.8.8.8",
             "network": "projects/${projectId}/global/networks/test-network-${uniqueId}",
             "pscConnectionId": "",
-            "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
           }
         }
       ]
@@ -134,11 +142,11 @@ Content-Type: application/json
   "pscAttachmentDetails": [
     {
       "connectionType": "CONNECTION_TYPE_PRIMARY",
-      "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
     },
     {
       "connectionType": "CONNECTION_TYPE_READER",
-      "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
     }
   ],
   "replicaCount": 0,
@@ -210,6 +218,10 @@ X-Xss-Protection: 0
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
     "endpoints": [
       {
         "connections": [
@@ -222,7 +234,7 @@ X-Xss-Protection: 0
               "port": 6379,
               "projectId": "${projectId}",
               "pscConnectionId": "1234567890123456789",
-              "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+              "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
           {
@@ -234,7 +246,7 @@ X-Xss-Protection: 0
               "port": 6379,
               "projectId": "${projectId}",
               "pscConnectionId": "1234567890123456790",
-              "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+              "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
         ]
@@ -251,7 +263,7 @@ X-Xss-Protection: 0
               "projectId": "${projectId}",
               "pscConnectionId": "1234567890123456791",
               "pscConnectionStatus": "ACTIVE",
-              "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+              "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
           {
@@ -264,7 +276,7 @@ X-Xss-Protection: 0
               "projectId": "${projectId}",
               "pscConnectionId": "1234567890123456792",
               "pscConnectionStatus": "ACTIVE",
-              "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+              "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
         ]
@@ -283,11 +295,11 @@ X-Xss-Protection: 0
     "pscAttachmentDetails": [
       {
         "connectionType": "CONNECTION_TYPE_PRIMARY",
-        "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+        "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
       },
       {
         "connectionType": "CONNECTION_TYPE_READER",
-        "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+        "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
       }
     ],
     "replicaCount": 0,
@@ -327,6 +339,10 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
+  "encryptionInfo": {
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+  },
   "endpoints": [
     {
       "connections": [
@@ -339,7 +355,7 @@ X-Xss-Protection: 0
             "port": 6379,
             "projectId": "${projectId}",
             "pscConnectionId": "1234567890123456789",
-            "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
           }
         },
         {
@@ -351,7 +367,7 @@ X-Xss-Protection: 0
             "port": 6379,
             "projectId": "${projectId}",
             "pscConnectionId": "1234567890123456790",
-            "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
           }
         }
       ]
@@ -368,7 +384,7 @@ X-Xss-Protection: 0
             "projectId": "${projectId}",
             "pscConnectionId": "1234567890123456791",
             "pscConnectionStatus": "ACTIVE",
-            "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
           }
         },
         {
@@ -381,7 +397,7 @@ X-Xss-Protection: 0
             "projectId": "${projectId}",
             "pscConnectionId": "1234567890123456792",
             "pscConnectionStatus": "ACTIVE",
-            "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
           }
         }
       ]
@@ -400,11 +416,11 @@ X-Xss-Protection: 0
   "pscAttachmentDetails": [
     {
       "connectionType": "CONNECTION_TYPE_PRIMARY",
-      "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
     },
     {
       "connectionType": "CONNECTION_TYPE_READER",
-      "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
     }
   ],
   "replicaCount": 0,
@@ -434,6 +450,10 @@ Content-Type: application/json
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
+  "encryptionInfo": {
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+  },
   "engineVersion": "VALKEY_7_2",
   "mode": "CLUSTER_DISABLED",
   "name": "projects/${projectId}/locations/us-central1/instances/test-instance-${uniqueId}",
@@ -447,11 +467,11 @@ Content-Type: application/json
   "pscAttachmentDetails": [
     {
       "connectionType": "CONNECTION_TYPE_PRIMARY",
-      "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
     },
     {
       "connectionType": "CONNECTION_TYPE_READER",
-      "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
     }
   ],
   "replicaCount": 0,
@@ -523,6 +543,10 @@ X-Xss-Protection: 0
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
     "endpoints": [
       {
         "connections": [
@@ -535,7 +559,7 @@ X-Xss-Protection: 0
               "port": 6379,
               "projectId": "${projectId}",
               "pscConnectionId": "1234567890123456789",
-              "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+              "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
           {
@@ -547,7 +571,7 @@ X-Xss-Protection: 0
               "port": 6379,
               "projectId": "${projectId}",
               "pscConnectionId": "1234567890123456790",
-              "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+              "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
         ]
@@ -566,11 +590,11 @@ X-Xss-Protection: 0
     "pscAttachmentDetails": [
       {
         "connectionType": "CONNECTION_TYPE_PRIMARY",
-        "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+        "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
       },
       {
         "connectionType": "CONNECTION_TYPE_READER",
-        "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+        "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
       }
     ],
     "replicaCount": 0,
@@ -610,6 +634,10 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
+  "encryptionInfo": {
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+  },
   "endpoints": [
     {
       "connections": [
@@ -622,7 +650,7 @@ X-Xss-Protection: 0
             "port": 6379,
             "projectId": "${projectId}",
             "pscConnectionId": "1234567890123456789",
-            "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
           }
         },
         {
@@ -634,7 +662,7 @@ X-Xss-Protection: 0
             "port": 6379,
             "projectId": "${projectId}",
             "pscConnectionId": "1234567890123456790",
-            "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
           }
         }
       ]
@@ -653,11 +681,11 @@ X-Xss-Protection: 0
   "pscAttachmentDetails": [
     {
       "connectionType": "CONNECTION_TYPE_PRIMARY",
-      "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
     },
     {
       "connectionType": "CONNECTION_TYPE_READER",
-      "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
     }
   ],
   "replicaCount": 0,
