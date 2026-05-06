@@ -28,9 +28,10 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/memorystore/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocks"
+	"github.com/google/uuid"
 )
 
 type instanceServer struct {
@@ -106,7 +107,17 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	}
 
 	if obj.DeletionProtectionEnabled == nil {
-		obj.DeletionProtectionEnabled = mocks.PtrTo(false)
+		obj.DeletionProtectionEnabled = new(false)
+	}
+
+	if obj.EffectiveMaintenanceVersion == nil {
+		obj.EffectiveMaintenanceVersion = new("MEMORYSTORE_20260313_01_02")
+	}
+
+	if obj.EncryptionInfo == nil {
+		obj.EncryptionInfo = &pb.EncryptionInfo{
+			EncryptionType: pb.EncryptionInfo_GOOGLE_DEFAULT_ENCRYPTION,
+		}
 	}
 
 	if obj.NodeType == pb.Instance_NODE_TYPE_UNSPECIFIED {
@@ -116,6 +127,7 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	if obj.Mode == pb.Instance_MODE_UNSPECIFIED {
 		obj.Mode = pb.Instance_CLUSTER
 	}
+
 	if len(obj.PscAttachmentDetails) == 0 {
 		var types []pb.ConnectionType
 		switch obj.GetMode() {
@@ -126,17 +138,20 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 			types = append(types, pb.ConnectionType_CONNECTION_TYPE_PRIMARY)
 			types = append(types, pb.ConnectionType_CONNECTION_TYPE_READER)
 		}
+		pscProjectNumber := 11199043661                                 // This is (presumably) a project owned by memorystore
+		pscUID := strings.ReplaceAll(uuid.New().String(), "-", "")[:15] // Take a substring to get a shorter UID
 		obj.PscAttachmentDetails = []*pb.PscAttachmentDetail{
 			{
-				ServiceAttachment: fmt.Sprintf("projects/tp-%s/regions/%s/serviceAttachments/sa-%s", name.Name, name.Location, name.Name),
+				ServiceAttachment: fmt.Sprintf("projects/%d/regions/%s/serviceAttachments/gcp-memorystore-auto-j%s-psc-sa", pscProjectNumber, name.Location, pscUID),
 				ConnectionType:    types[0],
 			},
 			{
-				ServiceAttachment: fmt.Sprintf("projects/tp-%s/regions/%s/serviceAttachments/sa-%s-2", name.Name, name.Location, name.Name),
+				ServiceAttachment: fmt.Sprintf("projects/%d/regions/%s/serviceAttachments/gcp-memorystore-auto-j%s-psc-sa-2", pscProjectNumber, name.Location, pscUID),
 				ConnectionType:    types[1],
 			},
 		}
 	}
+
 	if len(obj.Endpoints) > 0 {
 		if obj.Endpoints[0] != nil && len(obj.Endpoints[0].Connections) > 0 {
 			connections := obj.Endpoints[0].Connections
@@ -228,8 +243,9 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 		obj.TransitEncryptionMode = pb.Instance_TRANSIT_ENCRYPTION_DISABLED
 	}
 	if obj.Uid == "" {
-		obj.Uid = fmt.Sprintf("instance-%s", name.Name)
+		obj.Uid = uuid.New().String()
 	}
+
 	if obj.ZoneDistributionConfig == nil {
 		obj.ZoneDistributionConfig = &pb.ZoneDistributionConfig{}
 	}
@@ -570,6 +586,12 @@ func (r *instanceServer) BackupInstance(ctx context.Context, req *pb.BackupInsta
 		TotalSizeBytes: 141,
 		Uid:            fmt.Sprintf("backup-%s", backupID),
 	}
+
+	obj.EncryptionInfo = &pb.EncryptionInfo{
+		EncryptionType: pb.EncryptionInfo_GOOGLE_DEFAULT_ENCRYPTION,
+		LastUpdateTime: timestamppb.New(now),
+	}
+
 	if err := r.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
