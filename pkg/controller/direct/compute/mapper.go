@@ -383,6 +383,7 @@ func ReservationLocalSsds_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Res
 	return out
 }
 
+/*
 func ComputeReservationObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.ComputeReservationObservedState {
 	if in == nil {
 		return nil
@@ -402,6 +403,7 @@ func ComputeReservationObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, 
 	out.ResourceStatus = AllocationResourceStatus_v1beta1_ToProto(mapCtx, in.ResourceStatus)
 	return out
 }
+*/
 
 func Int32_FromProto(in *int64) *int32 {
 	if in == nil {
