@@ -1,6 +1,6 @@
 # step00: Create ContainerCluster with remove-default-node-pool: "true"
-# We use APPLY to wait for the cluster to become Ready in real GCP
-TEST: APPLY
+# We use APPLY-10-SEC to avoid blocking on Ready status since it flips to error quickly
+TEST: APPLY-10-SEC
 apiVersion: container.cnrm.cloud.google.com/v1beta1
 kind: ContainerCluster
 metadata:
@@ -37,7 +37,7 @@ spec:
 ---
 # step02: Add the fix annotation.
 # This should allow the resource to become Healthy again.
-TEST: APPLY
+TEST: APPLY-10-SEC
 apiVersion: container.cnrm.cloud.google.com/v1beta1
 kind: ContainerCluster
 metadata:

@@ -7,10 +7,14 @@ metadata:
     cnrm.cloud.google.com/project-id: ${projectId}
     cnrm.cloud.google.com/remove-default-node-pool: "true"
     cnrm.cloud.google.com/state-into-spec: absent
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"container.cnrm.cloud.google.com/v1beta1","kind":"ContainerCluster","spec":{"location":"us-central1-a","initialNodeCount":1,"nodeConfig":{"metadata":{"dev":"true"}}}}
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
   generation: 2
+  labels:
+    touch: "1"
   name: cluster-${uniqueId}
   namespace: ${projectId}
 spec:
