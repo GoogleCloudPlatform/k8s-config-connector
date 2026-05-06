@@ -49,6 +49,7 @@ type KRMTypedFuzzer_NoProto[APIType any, SpecType any, StatusType any] struct {
 
 	FilterSpec   func(in APIType)
 	FilterStatus func(in APIType)
+	CmpOptions   []cmp.Option
 }
 
 // SpecField marks the specified fieldPath as round-tripping to/from the Spec
@@ -104,6 +105,7 @@ func (f *KRMTypedFuzzer_NoProto[APIType, SpecType, StatusType]) FuzzSpec(t *test
 	fuzzer.IgnoreFields = f.StatusFields
 	fuzzer.UnimplementedFields = f.UnimplementedFields
 	fuzzer.Filter = f.FilterSpec
+	fuzzer.CmpOptions = f.CmpOptions
 	fuzzer.Fuzz(t, seed)
 }
 
@@ -112,6 +114,7 @@ func (f *KRMTypedFuzzer_NoProto[APIType, SpecType, StatusType]) FuzzStatus(t *te
 	fuzzer.IgnoreFields = f.SpecFields
 	fuzzer.UnimplementedFields = f.UnimplementedFields
 	fuzzer.Filter = f.FilterStatus
+	fuzzer.CmpOptions = f.CmpOptions
 	fuzzer.Fuzz(t, seed)
 }
 
@@ -139,6 +142,7 @@ type FuzzTest_NoProto[APIType any, KRMType any] struct {
 
 	FromAPI func(ctx *direct.MapContext, in APIType) *KRMType
 	ToAPI   func(ctx *direct.MapContext, in *KRMType) APIType
+	CmpOptions []cmp.Option
 
 	UnimplementedFields sets.Set[string]
 	IgnoreFields        sets.Set[string]
@@ -172,7 +176,7 @@ func (f *FuzzTest_NoProto[APIType, KRMType]) Fuzz(t *testing.T, seed int64) {
 		}
 		zeroOverrides[ignoreField] = func(t *testing.T, fieldName string, field reflect.Value) {
 			// zero out ignored fields after mapping - needed for e.g. ForceSendFields
-			field.Set(reflect.Zero(field.Type()))
+			if field.CanSet() { field.Set(reflect.Zero(field.Type())) }
 		}
 	}
 
@@ -202,7 +206,7 @@ func (f *FuzzTest_NoProto[APIType, KRMType]) Fuzz(t *testing.T, seed int64) {
 	zeroFiller.Fill(t, p1)
 	zeroFiller.Fill(t, p2)
 
-	if diff := cmp.Diff(p1, p2); diff != "" {
+	if diff := cmp.Diff(p1, p2, f.CmpOptions...); diff != "" {
 		t.Logf("p1 = %v", p1)
 		t.Logf("p2 = %v", p2)
 		t.Errorf("roundtrip failed for KRM %T; diff:\n%s", krm, diff)

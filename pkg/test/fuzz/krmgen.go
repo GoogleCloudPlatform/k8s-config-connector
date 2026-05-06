@@ -51,6 +51,9 @@ func (rf *RandomFiller) Fill(t *testing.T, obj interface{}) {
 }
 
 func (rf *RandomFiller) fillWithRandom(t *testing.T, fieldName string, field reflect.Value) {
+	if !field.CanSet() {
+		return
+	}
 	if field.Kind() == reflect.Ptr {
 		if field.IsNil() {
 			field.Set(reflect.New(field.Type().Elem()))
