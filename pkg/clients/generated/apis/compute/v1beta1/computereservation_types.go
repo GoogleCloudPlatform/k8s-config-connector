@@ -104,126 +104,6 @@ type ComputeReservationSpec struct {
 	Zone string `json:"zone"`
 }
 
-type ReservationHealthInfoStatus struct {
-	/* The number of reservation blocks that are degraded. */
-	// +optional
-	DegradedBlockCount *int32 `json:"degradedBlockCount,omitempty"`
-
-	/* The health status of the reservation. Check the HealthStatus enum for the list of possible values. */
-	// +optional
-	HealthStatus *string `json:"healthStatus,omitempty"`
-
-	/* The number of reservation blocks that are healthy. */
-	// +optional
-	HealthyBlockCount *int32 `json:"healthyBlockCount,omitempty"`
-}
-
-type ReservationObservedStateStatus struct {
-	/* [Output Only] A unique identifier for this future reservation. The server defines this identifier. */
-	// +optional
-	Id *int64 `json:"id,omitempty"`
-
-	/* [Output Only] Allocation Properties of this reservation. */
-	// +optional
-	ResourceStatus *ReservationResourceStatusStatus `json:"resourceStatus,omitempty"`
-}
-
-type ReservationReservationMaintenanceStatus struct {
-	/* Describes number of instances that have ongoing maintenance. */
-	// +optional
-	InstanceMaintenanceOngoingCount *int32 `json:"instanceMaintenanceOngoingCount,omitempty"`
-
-	/* Describes number of instances that have pending maintenance. */
-	// +optional
-	InstanceMaintenancePendingCount *int32 `json:"instanceMaintenancePendingCount,omitempty"`
-
-	/* Progress for ongoing maintenance for this group of VMs/hosts. Describes number of hosts in the block that have ongoing maintenance. */
-	// +optional
-	MaintenanceOngoingCount *int32 `json:"maintenanceOngoingCount,omitempty"`
-
-	/* Progress for ongoing maintenance for this group of VMs/hosts. Describes number of hosts in the block that have pending maintenance. */
-	// +optional
-	MaintenancePendingCount *int32 `json:"maintenancePendingCount,omitempty"`
-
-	/* The type of maintenance for the reservation. Check the SchedulingType enum for the list of possible values. */
-	// +optional
-	SchedulingType *string `json:"schedulingType,omitempty"`
-
-	/* Describes number of subblock Infrastructure that has ongoing maintenance. Here, Subblock Infrastructure Maintenance pertains to upstream hardware contained in the Subblock that is necessary for a VM Family(e.g. NVLink Domains). Not all VM Families will support this field. */
-	// +optional
-	SubblockInfraMaintenanceOngoingCount *int32 `json:"subblockInfraMaintenanceOngoingCount,omitempty"`
-
-	/* Describes number of subblock Infrastructure that has pending maintenance. Here, Subblock Infrastructure Maintenance pertains to upstream hardware contained in the Subblock that is necessary for a VM Family (e.g. NVLink Domains). Not all VM Families will support this field. */
-	// +optional
-	SubblockInfraMaintenancePendingCount *int32 `json:"subblockInfraMaintenancePendingCount,omitempty"`
-
-	/* Maintenance information on this group of VMs. */
-	// +optional
-	UpcomingGroupMaintenance *ReservationUpcomingGroupMaintenanceStatus `json:"upcomingGroupMaintenance,omitempty"`
-}
-
-type ReservationResourceStatusStatus struct {
-	/* [Output only] Health information for the reservation. */
-	// +optional
-	HealthInfo *ReservationHealthInfoStatus `json:"healthInfo,omitempty"`
-
-	/* The number of reservation blocks associated with this reservation. */
-	// +optional
-	ReservationBlockCount *int32 `json:"reservationBlockCount,omitempty"`
-
-	/* Maintenance information for this reservation */
-	// +optional
-	ReservationMaintenance *ReservationReservationMaintenanceStatus `json:"reservationMaintenance,omitempty"`
-
-	/* Allocation Properties of this reservation. */
-	// +optional
-	SpecificSkuAllocation *ReservationSpecificSkuAllocationStatus `json:"specificSkuAllocation,omitempty"`
-}
-
-type ReservationSpecificSkuAllocationStatus struct {
-	/* ID of the instance template used to populate reservation properties. */
-	// +optional
-	SourceInstanceTemplateID *string `json:"sourceInstanceTemplateID,omitempty"`
-
-	/* Per service utilization breakdown. The Key is the Google Cloud managed service name. */
-	// +optional
-	Utilizations map[string]int64 `json:"utilizations,omitempty"`
-}
-
-type ReservationUpcomingGroupMaintenanceStatus struct {
-	/* Indicates if the maintenance can be customer triggered. */
-	// +optional
-	CanReschedule *bool `json:"canReschedule,omitempty"`
-
-	/* The latest time for the planned maintenance window to start. This timestamp value is in RFC3339 text format. */
-	// +optional
-	LatestWindowStartTime *string `json:"latestWindowStartTime,omitempty"`
-
-	/* Indicates whether the UpcomingMaintenance will be triggered on VM shutdown. */
-	// +optional
-	MaintenanceOnShutdown *bool `json:"maintenanceOnShutdown,omitempty"`
-
-	/* The reasons for the maintenance. Only valid for vms. Check the MaintenanceReasons enum for the list of possible values. */
-	// +optional
-	MaintenanceReasons []string `json:"maintenanceReasons,omitempty"`
-
-	/* Check the MaintenanceStatus enum for the list of possible values. */
-	// +optional
-	MaintenanceStatus *string `json:"maintenanceStatus,omitempty"`
-
-	/* Defines the type of maintenance. Check the Type enum for the list of possible values. */
-	// +optional
-	Type *string `json:"type,omitempty"`
-
-	/* The time by which the maintenance disruption will be completed. This timestamp value is in RFC3339 text format. */
-	// +optional
-	WindowEndTime *string `json:"windowEndTime,omitempty"`
-
-	/* The current start time of the maintenance window. This timestamp value is in RFC3339 text format. */
-	// +optional
-	WindowStartTime *string `json:"windowStartTime,omitempty"`
-}
-
 type ComputeReservationStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeReservation's current state. */
@@ -243,10 +123,6 @@ type ComputeReservationStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
-
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *ReservationObservedStateStatus `json:"observedState,omitempty"`
 
 	/* Server-defined URL for the resource. */
 	// +optional
