@@ -45,24 +45,6 @@ func AcceleratorConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomput
 	out.AcceleratorType = in.AcceleratorType
 	return out
 }
-func AcceleratorConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AcceleratorConfig) *krm.AcceleratorConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AcceleratorConfig{}
-	out.AcceleratorCount = in.AcceleratorCount
-	out.AcceleratorType = in.AcceleratorType
-	return out
-}
-func AcceleratorConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AcceleratorConfig) *pb.AcceleratorConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AcceleratorConfig{}
-	out.AcceleratorCount = in.AcceleratorCount
-	out.AcceleratorType = in.AcceleratorType
-	return out
-}
 func AllocationAggregateReservation_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationAggregateReservation) *krmcomputev1alpha1.AllocationAggregateReservation {
 	if in == nil {
 		return nil
@@ -81,6 +63,28 @@ func AllocationAggregateReservation_v1alpha1_ToProto(mapCtx *direct.MapContext, 
 	out := &pb.AllocationAggregateReservation{}
 	// MISSING: InUseResources
 	out.ReservedResources = direct.Slice_ToProto(mapCtx, in.ReservedResources, AllocationAggregateReservationReservedResourceInfo_v1alpha1_ToProto)
+	out.VmFamily = in.VMFamily
+	out.WorkloadType = in.WorkloadType
+	return out
+}
+func AllocationAggregateReservation_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationAggregateReservation) *krm.AllocationAggregateReservation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllocationAggregateReservation{}
+	out.InUseResources = direct.Slice_FromProto(mapCtx, in.InUseResources, AllocationAggregateReservationReservedResourceInfo_v1beta1_FromProto)
+	out.ReservedResources = direct.Slice_FromProto(mapCtx, in.ReservedResources, AllocationAggregateReservationReservedResourceInfo_v1beta1_FromProto)
+	out.VMFamily = in.VmFamily
+	out.WorkloadType = in.WorkloadType
+	return out
+}
+func AllocationAggregateReservation_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllocationAggregateReservation) *pb.AllocationAggregateReservation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationAggregateReservation{}
+	out.InUseResources = direct.Slice_ToProto(mapCtx, in.InUseResources, AllocationAggregateReservationReservedResourceInfo_v1beta1_ToProto)
+	out.ReservedResources = direct.Slice_ToProto(mapCtx, in.ReservedResources, AllocationAggregateReservationReservedResourceInfo_v1beta1_ToProto)
 	out.VmFamily = in.VMFamily
 	out.WorkloadType = in.WorkloadType
 	return out
@@ -123,6 +127,22 @@ func AllocationAggregateReservationReservedResourceInfo_v1alpha1_ToProto(mapCtx 
 	out.Accelerator = AllocationAggregateReservationReservedResourceInfoAccelerator_v1alpha1_ToProto(mapCtx, in.Accelerator)
 	return out
 }
+func AllocationAggregateReservationReservedResourceInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationAggregateReservationReservedResourceInfo) *krm.AllocationAggregateReservationReservedResourceInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllocationAggregateReservationReservedResourceInfo{}
+	out.Accelerator = AllocationAggregateReservationReservedResourceInfoAccelerator_v1beta1_FromProto(mapCtx, in.GetAccelerator())
+	return out
+}
+func AllocationAggregateReservationReservedResourceInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllocationAggregateReservationReservedResourceInfo) *pb.AllocationAggregateReservationReservedResourceInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationAggregateReservationReservedResourceInfo{}
+	out.Accelerator = AllocationAggregateReservationReservedResourceInfoAccelerator_v1beta1_ToProto(mapCtx, in.Accelerator)
+	return out
+}
 func AllocationAggregateReservationReservedResourceInfoAccelerator_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationAggregateReservationReservedResourceInfoAccelerator) *krmcomputev1alpha1.AllocationAggregateReservationReservedResourceInfoAccelerator {
 	if in == nil {
 		return nil
@@ -139,6 +159,100 @@ func AllocationAggregateReservationReservedResourceInfoAccelerator_v1alpha1_ToPr
 	out := &pb.AllocationAggregateReservationReservedResourceInfoAccelerator{}
 	out.AcceleratorCount = in.AcceleratorCount
 	out.AcceleratorType = in.AcceleratorType
+	return out
+}
+func AllocationAggregateReservationReservedResourceInfoAccelerator_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationAggregateReservationReservedResourceInfoAccelerator) *krm.AllocationAggregateReservationReservedResourceInfoAccelerator {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllocationAggregateReservationReservedResourceInfoAccelerator{}
+	out.AcceleratorCount = in.AcceleratorCount
+	out.AcceleratorType = in.AcceleratorType
+	return out
+}
+func AllocationAggregateReservationReservedResourceInfoAccelerator_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllocationAggregateReservationReservedResourceInfoAccelerator) *pb.AllocationAggregateReservationReservedResourceInfoAccelerator {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationAggregateReservationReservedResourceInfoAccelerator{}
+	out.AcceleratorCount = in.AcceleratorCount
+	out.AcceleratorType = in.AcceleratorType
+	return out
+}
+func AllocationReservationSharingPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationReservationSharingPolicy) *krm.AllocationReservationSharingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllocationReservationSharingPolicy{}
+	out.ServiceShareType = in.ServiceShareType
+	return out
+}
+func AllocationReservationSharingPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllocationReservationSharingPolicy) *pb.AllocationReservationSharingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationReservationSharingPolicy{}
+	out.ServiceShareType = in.ServiceShareType
+	return out
+}
+func AllocationResourceStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationResourceStatus) *krm.AllocationResourceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllocationResourceStatus{}
+	out.HealthInfo = AllocationResourceStatusHealthInfo_v1beta1_FromProto(mapCtx, in.GetHealthInfo())
+	out.ReservationBlockCount = in.ReservationBlockCount
+	out.ReservationMaintenance = GroupMaintenanceInfo_v1beta1_FromProto(mapCtx, in.GetReservationMaintenance())
+	out.SpecificSkuAllocation = AllocationResourceStatusSpecificSkuAllocation_v1beta1_FromProto(mapCtx, in.GetSpecificSkuAllocation())
+	return out
+}
+func AllocationResourceStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllocationResourceStatus) *pb.AllocationResourceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationResourceStatus{}
+	out.HealthInfo = AllocationResourceStatusHealthInfo_v1beta1_ToProto(mapCtx, in.HealthInfo)
+	out.ReservationBlockCount = in.ReservationBlockCount
+	out.ReservationMaintenance = GroupMaintenanceInfo_v1beta1_ToProto(mapCtx, in.ReservationMaintenance)
+	out.SpecificSkuAllocation = AllocationResourceStatusSpecificSkuAllocation_v1beta1_ToProto(mapCtx, in.SpecificSkuAllocation)
+	return out
+}
+func AllocationResourceStatusHealthInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationResourceStatusHealthInfo) *krm.AllocationResourceStatusHealthInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllocationResourceStatusHealthInfo{}
+	out.DegradedBlockCount = in.DegradedBlockCount
+	out.HealthStatus = in.HealthStatus
+	out.HealthyBlockCount = in.HealthyBlockCount
+	return out
+}
+func AllocationResourceStatusHealthInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllocationResourceStatusHealthInfo) *pb.AllocationResourceStatusHealthInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationResourceStatusHealthInfo{}
+	out.DegradedBlockCount = in.DegradedBlockCount
+	out.HealthStatus = in.HealthStatus
+	out.HealthyBlockCount = in.HealthyBlockCount
+	return out
+}
+func AllocationResourceStatusSpecificSkuAllocation_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationResourceStatusSpecificSKUAllocation) *krm.AllocationResourceStatusSpecificSkuAllocation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllocationResourceStatusSpecificSkuAllocation{}
+	out.SourceInstanceTemplateID = in.SourceInstanceTemplateId
+	out.Utilizations = in.Utilizations
+	return out
+}
+func AllocationResourceStatusSpecificSkuAllocation_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllocationResourceStatusSpecificSkuAllocation) *pb.AllocationResourceStatusSpecificSKUAllocation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationResourceStatusSpecificSKUAllocation{}
+	out.SourceInstanceTemplateId = in.SourceInstanceTemplateID
+	out.Utilizations = in.Utilizations
 	return out
 }
 func AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDisk_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk) *krmcomputev1alpha1.AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDisk {
@@ -273,6 +387,68 @@ func ComputeNodeTemplateStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: ServerBinding
 	// MISSING: Status
 	// MISSING: StatusMessage
+	return out
+}
+func ComputeReservationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.ComputeReservationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeReservationSpec{}
+	// MISSING: AdvancedDeploymentControl
+	// MISSING: AggregateReservation
+	// MISSING: Commitment
+	// MISSING: CreationTimestamp
+	// MISSING: DeleteAfterDuration
+	// MISSING: DeleteAtTime
+	// MISSING: DeploymentType
+	out.Description = in.Description
+	// MISSING: EnableEmergentMaintenance
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LinkedCommitments
+	// MISSING: Name
+	// MISSING: ReservationSharingPolicy
+	// MISSING: ResourcePolicies
+	// MISSING: ResourceStatus
+	// MISSING: SatisfiesPzs
+	// MISSING: SchedulingType
+	// MISSING: SelfLink
+	// MISSING: ShareSettings
+	out.SpecificReservation = ReservationSpecificReservation_v1beta1_FromProto(mapCtx, in.GetSpecificReservation())
+	out.SpecificReservationRequired = in.SpecificReservationRequired
+	// MISSING: Status
+	out.Zone = in.Zone
+	return out
+}
+func ComputeReservationSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeReservationSpec) *pb.Reservation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Reservation{}
+	// MISSING: AdvancedDeploymentControl
+	// MISSING: AggregateReservation
+	// MISSING: Commitment
+	// MISSING: CreationTimestamp
+	// MISSING: DeleteAfterDuration
+	// MISSING: DeleteAtTime
+	// MISSING: DeploymentType
+	out.Description = in.Description
+	// MISSING: EnableEmergentMaintenance
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LinkedCommitments
+	// MISSING: Name
+	// MISSING: ReservationSharingPolicy
+	// MISSING: ResourcePolicies
+	// MISSING: ResourceStatus
+	// MISSING: SatisfiesPzs
+	// MISSING: SchedulingType
+	// MISSING: SelfLink
+	// MISSING: ShareSettings
+	out.SpecificReservation = ReservationSpecificReservation_v1beta1_ToProto(mapCtx, in.SpecificReservation)
+	out.SpecificReservationRequired = in.SpecificReservationRequired
+	// MISSING: Status
+	out.Zone = in.Zone
 	return out
 }
 func ComputeSecurityPolicyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicy) *krm.ComputeSecurityPolicyObservedState {
@@ -529,6 +705,24 @@ func Duration_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1
 	out.Seconds = in.Seconds
 	return out
 }
+func Duration_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Duration) *krm.Duration {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Duration{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
+func Duration_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Duration) *pb.Duration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Duration{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
 func Expr_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Expr) *krm.Expr {
 	if in == nil {
 		return nil
@@ -631,6 +825,36 @@ func ForwardingruleServiceDirectoryRegistrations_v1beta1_ToProto(mapCtx *direct.
 	out.Namespace = in.Namespace
 	out.Service = in.Service
 	// MISSING: ServiceDirectoryRegion
+	return out
+}
+func GroupMaintenanceInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GroupMaintenanceInfo) *krm.GroupMaintenanceInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GroupMaintenanceInfo{}
+	out.InstanceMaintenanceOngoingCount = in.InstanceMaintenanceOngoingCount
+	out.InstanceMaintenancePendingCount = in.InstanceMaintenancePendingCount
+	out.MaintenanceOngoingCount = in.MaintenanceOngoingCount
+	out.MaintenancePendingCount = in.MaintenancePendingCount
+	out.SchedulingType = in.SchedulingType
+	out.SubblockInfraMaintenanceOngoingCount = in.SubblockInfraMaintenanceOngoingCount
+	out.SubblockInfraMaintenancePendingCount = in.SubblockInfraMaintenancePendingCount
+	out.UpcomingGroupMaintenance = UpcomingMaintenance_v1beta1_FromProto(mapCtx, in.GetUpcomingGroupMaintenance())
+	return out
+}
+func GroupMaintenanceInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.GroupMaintenanceInfo) *pb.GroupMaintenanceInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GroupMaintenanceInfo{}
+	out.InstanceMaintenanceOngoingCount = in.InstanceMaintenanceOngoingCount
+	out.InstanceMaintenancePendingCount = in.InstanceMaintenancePendingCount
+	out.MaintenanceOngoingCount = in.MaintenanceOngoingCount
+	out.MaintenancePendingCount = in.MaintenancePendingCount
+	out.SchedulingType = in.SchedulingType
+	out.SubblockInfraMaintenanceOngoingCount = in.SubblockInfraMaintenanceOngoingCount
+	out.SubblockInfraMaintenancePendingCount = in.SubblockInfraMaintenancePendingCount
+	out.UpcomingGroupMaintenance = UpcomingMaintenance_v1beta1_ToProto(mapCtx, in.UpcomingGroupMaintenance)
 	return out
 }
 func InterconnectCircuitInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectCircuitInfo) *krmcomputev1alpha1.InterconnectCircuitInfo {
@@ -837,6 +1061,66 @@ func NodeTemplateServerBinding_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	}
 	out := &pb.ServerBinding{}
 	out.Type = in.Type
+	return out
+}
+func ReservationAdvancedDeploymentControl_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAdvancedDeploymentControl) *krm.ReservationAdvancedDeploymentControl {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReservationAdvancedDeploymentControl{}
+	out.ReservationOperationalMode = in.ReservationOperationalMode
+	return out
+}
+func ReservationAdvancedDeploymentControl_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ReservationAdvancedDeploymentControl) *pb.ReservationAdvancedDeploymentControl {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReservationAdvancedDeploymentControl{}
+	out.ReservationOperationalMode = in.ReservationOperationalMode
+	return out
+}
+func ReservationGuestAccelerators_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AcceleratorConfig) *krm.ReservationGuestAccelerators {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReservationGuestAccelerators{}
+	out.AcceleratorCount = in.AcceleratorCount
+	out.AcceleratorType = in.AcceleratorType
+	return out
+}
+func ReservationGuestAccelerators_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ReservationGuestAccelerators) *pb.AcceleratorConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AcceleratorConfig{}
+	out.AcceleratorCount = in.AcceleratorCount
+	out.AcceleratorType = in.AcceleratorType
+	return out
+}
+func ReservationInstanceProperties_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationSpecificSKUAllocationReservedInstanceProperties) *krm.ReservationInstanceProperties {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReservationInstanceProperties{}
+	out.GuestAccelerators = direct.Slice_FromProto(mapCtx, in.GuestAccelerators, ReservationGuestAccelerators_v1beta1_FromProto)
+	out.LocalSsds = direct.Slice_FromProto(mapCtx, in.LocalSsds, ReservationLocalSsds_v1beta1_FromProto)
+	// MISSING: LocationHint
+	out.MachineType = in.MachineType
+	// MISSING: MinCPUPlatform
+	// (near miss): "MinCPUPlatform" vs "MinCpuPlatform"
+	return out
+}
+func ReservationInstanceProperties_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ReservationInstanceProperties) *pb.AllocationSpecificSKUAllocationReservedInstanceProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationSpecificSKUAllocationReservedInstanceProperties{}
+	out.GuestAccelerators = direct.Slice_ToProto(mapCtx, in.GuestAccelerators, ReservationGuestAccelerators_v1beta1_ToProto)
+	out.LocalSsds = direct.Slice_ToProto(mapCtx, in.LocalSsds, ReservationLocalSsds_v1beta1_ToProto)
+	// MISSING: LocationHint
+	out.MachineType = in.MachineType
+	// MISSING: MinCPUPlatform
+	// (near miss): "MinCPUPlatform" vs "MinCpuPlatform"
 	return out
 }
 func ResourcePolicyResourceStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ResourcePolicyResourceStatus) *krm.ResourcePolicyResourceStatus {
@@ -1337,6 +1621,24 @@ func ShareSettings_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1a
 	out.ShareType = in.ShareType
 	return out
 }
+func ShareSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettings) *krm.ShareSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ShareSettings{}
+	// MISSING: ProjectMap
+	out.ShareType = in.ShareType
+	return out
+}
+func ShareSettings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ShareSettings) *pb.ShareSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ShareSettings{}
+	// MISSING: ProjectMap
+	out.ShareType = in.ShareType
+	return out
+}
 func ShareSettingsProjectConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettingsProjectConfig) *krmcomputev1alpha1.ShareSettingsProjectConfig {
 	if in == nil {
 		return nil
@@ -1346,6 +1648,22 @@ func ShareSettingsProjectConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 	return out
 }
 func ShareSettingsProjectConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ShareSettingsProjectConfig) *pb.ShareSettingsProjectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ShareSettingsProjectConfig{}
+	out.ProjectId = in.ProjectID
+	return out
+}
+func ShareSettingsProjectConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettingsProjectConfig) *krm.ShareSettingsProjectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ShareSettingsProjectConfig{}
+	out.ProjectID = in.ProjectId
+	return out
+}
+func ShareSettingsProjectConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ShareSettingsProjectConfig) *pb.ShareSettingsProjectConfig {
 	if in == nil {
 		return nil
 	}
@@ -1413,5 +1731,35 @@ func SubnetworkSecondaryRange_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 	out.IpCidrRange = in.IPCIDRRange
 	out.RangeName = in.RangeName
 	// MISSING: ReservedInternalRange
+	return out
+}
+func UpcomingMaintenance_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UpcomingMaintenance) *krm.UpcomingMaintenance {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UpcomingMaintenance{}
+	out.CanReschedule = in.CanReschedule
+	out.LatestWindowStartTime = in.LatestWindowStartTime
+	out.MaintenanceOnShutdown = in.MaintenanceOnShutdown
+	out.MaintenanceReasons = in.MaintenanceReasons
+	out.MaintenanceStatus = in.MaintenanceStatus
+	out.Type = in.Type
+	out.WindowEndTime = in.WindowEndTime
+	out.WindowStartTime = in.WindowStartTime
+	return out
+}
+func UpcomingMaintenance_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UpcomingMaintenance) *pb.UpcomingMaintenance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UpcomingMaintenance{}
+	out.CanReschedule = in.CanReschedule
+	out.LatestWindowStartTime = in.LatestWindowStartTime
+	out.MaintenanceOnShutdown = in.MaintenanceOnShutdown
+	out.MaintenanceReasons = in.MaintenanceReasons
+	out.MaintenanceStatus = in.MaintenanceStatus
+	out.Type = in.Type
+	out.WindowEndTime = in.WindowEndTime
+	out.WindowStartTime = in.WindowStartTime
 	return out
 }
