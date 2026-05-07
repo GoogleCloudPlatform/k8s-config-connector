@@ -64,6 +64,11 @@ spec:
                 description: Immutable. group is the group, as seen by the kubernetes
                   cluster. One of 'user' or 'group' must be specified.
                 type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. Labels for this RBACRoleBinding.
+                type: object
               rbacRoleBindingID:
                 description: Immutable. Optional. The rbacRoleBindingID of the resource;
                   if not provided, the name of the resource will be used as the rbacRoleBindingID.
