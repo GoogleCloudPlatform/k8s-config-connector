@@ -130,15 +130,3 @@ func (m *gcpClient) newFutureReservationsClient(ctx context.Context) (*compute.F
 	}
 	return client, err
 }
-
-func (m *gcpClient) newReservationsClient(ctx context.Context) (*compute.ReservationsClient, error) {
-	opts, err := m.config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-	client, err := compute.NewReservationsRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building compute Reservations client: %w", err)
-	}
-	return client, err
-}
