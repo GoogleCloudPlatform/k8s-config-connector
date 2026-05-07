@@ -31,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -204,6 +205,12 @@ func (a *gkeHubScopeRBACRoleBindingAdapter) Update(ctx context.Context, updateOp
 		log.V(2).Info("no updates required for GKEHubScopeRBACRoleBinding", "name", a.id.String())
 		return nil
 	}
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for _, m := range updateMask {
+		report.AddField(m, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
 
 	patchReq := a.hubClient.scopeRBACRoleBindingClientV1.Patch(a.id.String(), &actualCopy)
 	updateMaskStr := ""
