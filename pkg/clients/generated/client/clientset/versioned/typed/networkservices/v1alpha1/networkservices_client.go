@@ -36,6 +36,7 @@ type NetworkservicesV1alpha1Interface interface {
 	NetworkServicesEdgeCacheServicesGetter
 	NetworkServicesLBRouteExtensionsGetter
 	NetworkServicesServiceBindingsGetter
+	NetworkServicesWasmPluginsGetter
 }
 
 // NetworkservicesV1alpha1Client is used to interact with features provided by the networkservices.cnrm.cloud.google.com group.
@@ -61,6 +62,10 @@ func (c *NetworkservicesV1alpha1Client) NetworkServicesLBRouteExtensions(namespa
 
 func (c *NetworkservicesV1alpha1Client) NetworkServicesServiceBindings(namespace string) NetworkServicesServiceBindingInterface {
 	return newNetworkServicesServiceBindings(c, namespace)
+}
+
+func (c *NetworkservicesV1alpha1Client) NetworkServicesWasmPlugins(namespace string) NetworkServicesWasmPluginInterface {
+	return newNetworkServicesWasmPlugins(c, namespace)
 }
 
 // NewForConfig creates a new NetworkservicesV1alpha1Client for the given config.
