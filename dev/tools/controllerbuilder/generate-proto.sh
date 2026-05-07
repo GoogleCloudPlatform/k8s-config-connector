@@ -12,60 +12,43 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 if [[ -n ${SKIP_GENERATE_PROTOS:-} ]]; then
   echo "SKIP_GENERATE_PROTOS is set; skipping generation of protos"
   exit 0
 fi
-
-
 set -o errexit
 set -o nounset
 set -o pipefail
-
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-
 # We share the version with mockgcp, which is maybe a boundary violation, but is convenient.
 # (It would be confusing if these were out of sync!)
 DEFAULT_GOOGLE_API_VERSION=$(grep https://github.com/googleapis/googleapis ${REPO_ROOT}/apis/git.versions | awk '{print $2}')
-
 # Take googleapi version as parameter, default to version from git.versions.
 # Use "HEAD" to get the latest from remote.
 GOOGLEAPI_VERSION=${1:-$DEFAULT_GOOGLE_API_VERSION}
-
 # Take output path as parameter, default to .build/googleapis.pb
 OUTPUT_PATH=${2:-"${REPO_ROOT}/.build/googleapis.pb"}
-
-
 THIRD_PARTY=${REPO_ROOT}/.build/third_party
 mkdir -p ${THIRD_PARTY}/
 cd ${THIRD_PARTY}
-
 if [ ! -d "googleapis" ]; then
     git clone --depth 1 https://github.com/googleapis/googleapis.git
 fi
-
 if [ "${GOOGLEAPI_VERSION}" == "HEAD" ]; then
     echo "Fetching latest googleapis for HEAD version"
     # Get latest version from https://github.com/googleapis/googleapis.git
     GOOGLEAPI_VERSION=$(git ls-remote https://github.com/googleapis/googleapis.git refs/heads/master | awk '{print $1}')
 fi
-
 VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
-
 cd googleapis
-
 # Fetch only if we don't have the SHA locally
 if ! git cat-file -e ${GOOGLEAPI_VERSION}^{commit} 2> /dev/null; then
     echo "Fetching googleapis git objects to find version ${GOOGLEAPI_VERSION}"
     git fetch origin ${GOOGLEAPI_VERSION}
 fi
-
 # Reset to the desired version
 git reset --hard ${GOOGLEAPI_VERSION}
-
-
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"
 else
@@ -79,14 +62,11 @@ else
       sudo apt install -y protobuf-compiler
     fi
 fi
-
-
 if [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
     echo "Using cached googleapis pb file at ${VERSIONED_OUTPUT_PATH}"
     cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
     exit 0
 fi
-
 protoc --include_imports --include_source_info \
     --experimental_allow_proto3_optional \
     -I ${THIRD_PARTY}/googleapis/ \
@@ -127,6 +107,6 @@ protoc --include_imports --include_source_info \
     ${THIRD_PARTY}/googleapis/google/cloud/memorystore/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/container/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/privacy/dlp/v2/*.proto \
+    $( [ "${GOOGLEAPI_VERSION}" != "${DEFAULT_GOOGLE_API_VERSION}" ] && echo "${THIRD_PARTY}/googleapis/google/cloud/networksecurity/v1/*.proto" || true ) \
     -o ${VERSIONED_OUTPUT_PATH} 2> >(grep -v "Import .* is unused" >&2)
-
 cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
