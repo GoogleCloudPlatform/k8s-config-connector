@@ -1,0 +1,74 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1alpha1
+kind: ComputeFutureReservation
+metadata:
+  name: computefuturereservation-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1-a
+  description: "A full future reservation test"
+  # Either provide the reservationName or a namePrefix
+  namePrefix: "fr-full"
+  autoDeleteAutoCreatedReservations: true
+  # one of autoCreatedReservationsDuration or autoCreatedReservationsDeleteTime
+  # Auto-created reservations cannot be deleted before future reservation end time
+  autoCreatedReservationsDeleteTime: 2026-05-11T00:00:01Z
+  # one of specificSkuProperties or aggregateReservation
+  specificSkuProperties:
+    totalCount: 1
+    instanceProperties:
+      machineType: n1-standard-1
+      minCPUPlatform: "Intel Haswell"
+      # Future reservation with location hint is not supported.
+      # locationHint: "hint"
+      localSsds:
+      - diskSizeGB: 375
+        interface: "SCSI"
+#      guestAccelerators:
+#      - acceleratorCount: 8
+#        acceleratorType: "nvidia-b200"
+#  aggregateReservation:
+#    reservedResources:
+#    - accelerator:
+#        acceleratorCount: 1
+#        acceleratorType: "nvidia-tesla-t4"
+#    vmFamily: "VM_FAMILY_CLOUD_TPU_POD_SLICE_CT4P"
+#    workloadType: "BATCH"
+#  Future Reservation requests with commitment info are not yet supported.
+#  commitmentInfo:
+#    commitmentName: "commitment-${uniqueId}"
+#    commitmentPlan: "TWELVE_MONTH"
+#    previousCommitmentTerms: "EXTEND"
+  enableEmergentMaintenance: false
+  specificReservationRequired: false
+  planningStatus: "DRAFT"
+#  Extended reservation(Calendar mode or AI Hypercomputer) requires TAM approval.
+#  https://docs.cloud.google.com/compute/docs/instances/choose-reservation-type
+#  Exclude fields that will trigger an extended reservation in test for now.
+#  reservationName: "fr-full"
+#  reservationMode: "CALENDAR"
+#  deploymentType: "DENSE"
+#  schedulingType: "GROUPED"
+  schedulingType: "FLEXIBLE"
+  shareSettings:
+    shareType: "LOCAL"
+  timeWindow:
+    # Future reservation must specify a future start time.
+    startTime: 2026-05-10T00:00:00Z
+    # One of duration or endTime must be set.
+    # Auto-created reservations cannot be deleted before future reservation end time.
+    endTime: 2026-05-11T00:00:00Z
