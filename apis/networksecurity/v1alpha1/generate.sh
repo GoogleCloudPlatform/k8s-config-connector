@@ -20,7 +20,7 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-# We need a newer googleapis to get BackendAuthenticationConfig
+# We need a newer googleapis to get BackendAuthenticationConfig and GatewaySecurityPolicy
 PROTO_SHA="cdc919ff596e263f2cc55a9780d2f74633da1ced" 
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 
@@ -48,6 +48,7 @@ go run . generate-types \
   --resource NetworkSecuritySACRealm:SACRealm \
   --resource NetworkSecuritySecurityProfile:SecurityProfile \
   --resource NetworkSecurityFirewallEndpointAssociation:FirewallEndpointAssociation \
+  --resource NetworkSecurityGatewaySecurityPolicy:GatewaySecurityPolicy \
   --proto-source-path ${PROTO_OUT}
 
 # Run for google.cloud.networksecurity.v1alpha1 resources (PartnerSSERealm)
