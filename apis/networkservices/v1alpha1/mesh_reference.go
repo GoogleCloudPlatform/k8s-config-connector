@@ -28,11 +28,14 @@ import (
 var _ refsv1beta1.Ref = &NetworkServicesMeshRef{}
 
 type NetworkServicesMeshRef struct {
-	/* The name of the mesh. Allowed value: The Google Cloud resource name of a `NetworkServicesMesh` resource (format: `projects/{{project}}/locations/{{location}}/meshes/{{name}}`).*/
+	// A reference to an externally managed NetworkServicesMesh resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/meshes/{{meshID}}".
 	External string `json:"external,omitempty"`
-	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+
+	// The name of a NetworkServicesMesh resource.
 	Name string `json:"name,omitempty"`
-	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+
+	// The namespace of a NetworkServicesMesh resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
