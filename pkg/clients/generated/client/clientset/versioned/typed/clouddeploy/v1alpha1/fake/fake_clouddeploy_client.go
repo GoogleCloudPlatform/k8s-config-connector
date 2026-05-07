@@ -31,6 +31,10 @@ type FakeClouddeployV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeClouddeployV1alpha1) CloudDeployAutomations(namespace string) v1alpha1.CloudDeployAutomationInterface {
+	return &FakeCloudDeployAutomations{c, namespace}
+}
+
 func (c *FakeClouddeployV1alpha1) CloudDeployCustomTargetTypes(namespace string) v1alpha1.CloudDeployCustomTargetTypeInterface {
 	return &FakeCloudDeployCustomTargetTypes{c, namespace}
 }
