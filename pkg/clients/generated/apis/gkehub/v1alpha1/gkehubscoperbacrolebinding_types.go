@@ -53,6 +53,10 @@ type GKEHubScopeRBACRoleBindingSpec struct {
 	// +optional
 	Group *string `json:"group,omitempty"`
 
+	/* Optional. Labels for this RBACRoleBinding. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
+
 	/* Immutable. Optional. The rbacRoleBindingID of the resource; if not provided, the name of the resource will be used as the rbacRoleBindingID. */
 	// +optional
 	RbacRoleBindingID *string `json:"rbacRoleBindingID,omitempty"`
