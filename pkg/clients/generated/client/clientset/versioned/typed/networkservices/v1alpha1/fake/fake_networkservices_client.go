@@ -51,6 +51,10 @@ func (c *FakeNetworkservicesV1alpha1) NetworkServicesServiceBindings(namespace s
 	return &FakeNetworkServicesServiceBindings{c, namespace}
 }
 
+func (c *FakeNetworkservicesV1alpha1) NetworkServicesWasmPlugins(namespace string) v1alpha1.NetworkServicesWasmPluginInterface {
+	return &FakeNetworkServicesWasmPlugins{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeNetworkservicesV1alpha1) RESTClient() rest.Interface {
