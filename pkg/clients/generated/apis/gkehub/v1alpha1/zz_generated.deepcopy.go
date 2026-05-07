@@ -419,6 +419,13 @@ func (in *GKEHubScopeRBACRoleBindingSpec) DeepCopyInto(out *GKEHubScopeRBACRoleB
 		*out = new(string)
 		**out = **in
 	}
+	if in.Labels != nil {
+		in, out := &in.Labels, &out.Labels
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
+	}
 	if in.RbacRoleBindingID != nil {
 		in, out := &in.RbacRoleBindingID, &out.RbacRoleBindingID
 		*out = new(string)
