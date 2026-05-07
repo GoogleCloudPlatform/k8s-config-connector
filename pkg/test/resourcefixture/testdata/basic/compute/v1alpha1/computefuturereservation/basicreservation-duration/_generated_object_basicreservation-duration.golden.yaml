@@ -1,0 +1,42 @@
+apiVersion: compute.cnrm.cloud.google.com/v1alpha1
+kind: ComputeFutureReservation
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: ${futureReservationID}
+  namespace: ${uniqueId}
+spec:
+  autoDeleteAutoCreatedReservations: false
+  location: us-central1-a
+  projectRef:
+    external: ${projectId}
+  specificSkuProperties:
+    instanceProperties:
+      machineType: n2-standard-4
+    totalCount: 2
+  timeWindow:
+    duration:
+      seconds: 86401
+    startTime: "2026-10-10T00:00:00Z"
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}
+  observedGeneration: 2
+  observedState:
+    creationTimestamp: "1970-01-01T00:00:00Z"
+    id: 1111111111111111
+    kind: compute#futureReservation
+    selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}
+    selfLinkWithID: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}
+    status:
+      procurementStatus: DRAFTING
+    zone: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a
