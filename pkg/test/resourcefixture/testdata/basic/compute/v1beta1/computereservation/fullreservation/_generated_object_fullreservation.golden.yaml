@@ -14,13 +14,20 @@ metadata:
   name: ${reservationID}
   namespace: ${uniqueId}
 spec:
-  description: Basic compute reservation
+  description: Full compute reservation
   resourceID: ${reservationID}
   specificReservation:
     count: 1
     instanceProperties:
-      machineType: n1-standard-1
-      minCpuPlatform: Intel Sandy Bridge
+      guestAccelerators:
+      - acceleratorCount: 1
+        acceleratorType: nvidia-tesla-v100
+      localSsds:
+      - diskSizeGb: 375
+        interface: NVME
+      machineType: n1-highmem-8
+      minCpuPlatform: Intel Skylake
+  specificReservationRequired: true
   zone: us-central1-a
 status:
   conditions:
