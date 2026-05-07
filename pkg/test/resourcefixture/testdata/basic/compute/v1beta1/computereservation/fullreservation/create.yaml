@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,10 +17,17 @@ kind: ComputeReservation
 metadata:
   name: computereservation-${uniqueId}
 spec:
-  description: Basic compute reservation
+  description: Full compute reservation
   zone: us-central1-a
+  specificReservationRequired: true
   specificReservation:
     count: 2
     instanceProperties:
-      machineType: n1-standard-1
-      minCpuPlatform: "Intel Sandy Bridge"
+      machineType: n1-highmem-8
+      minCpuPlatform: "Intel Skylake"
+      guestAccelerators:
+        - acceleratorCount: 1
+          acceleratorType: nvidia-tesla-v100
+      localSsds:
+        - interface: NVME
+          diskSizeGb: 375
