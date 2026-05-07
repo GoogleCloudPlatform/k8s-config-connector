@@ -91,6 +91,7 @@
 | cloudasset.cnrm.cloud.google.com              | CloudAssetProjectFeed                           | True         | False       | False  | Terraform  | False       |
 | cloudbuild.cnrm.cloud.google.com              | CloudBuildTrigger                               | False        | True        | False  | Terraform  | True        |
 | cloudbuild.cnrm.cloud.google.com              | CloudBuildWorkerPool                            | True         | True        | False  | Direct     | True        |
+| clouddeploy.cnrm.cloud.google.com             | CloudDeployAutomation                           | True         | False       | False  | Direct     | True        |
 | clouddeploy.cnrm.cloud.google.com             | CloudDeployCustomTargetType                     | True         | False       | False  | Direct     | True        |
 | clouddeploy.cnrm.cloud.google.com             | CloudDeployDeliveryPipeline                     | True         | True        | False  | Direct     | True        |
 | clouddeploy.cnrm.cloud.google.com             | CloudDeployDeployPolicy                         | True         | False       | False  | Direct     | True        |
@@ -123,6 +124,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeFirewallPolicyRule                       | False        | True        | False  | Direct     | True        |
 | compute.cnrm.cloud.google.com                 | ComputeFirewall                                 | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeForwardingRule                           | False        | True        | False  | Terraform  | True        |
+| compute.cnrm.cloud.google.com                 | ComputeFutureReservation                        | True         | False       | False  | Direct     | True        |
 | compute.cnrm.cloud.google.com                 | ComputeGlobalNetworkEndpointGroup               | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeGlobalNetworkEndpoint                    | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeHealthCheck                              | False        | True        | False  | Terraform  | False       |
@@ -161,7 +163,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeRegionNetworkEndpointGroup               | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeRegionPerInstanceConfig                  | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeRegionSSLPolicy                          | True         | False       | False  | Terraform  | False       |
-| compute.cnrm.cloud.google.com                 | ComputeReservation                              | False        | True        | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeReservation                              | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeResourcePolicy                           | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeRouterInterface                          | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeRouterNAT                                | False        | True        | False  | Terraform  | False       |
@@ -278,7 +280,11 @@
 | gkebackup.cnrm.cloud.google.com               | GKEBackupRestore                                | True         | False       | False  | Direct     | True        |
 | gkehub.cnrm.cloud.google.com                  | GKEHubFeatureMembership                         | False        | True        | False  | Direct     | True        |
 | gkehub.cnrm.cloud.google.com                  | GKEHubFeature                                   | False        | True        | False  | DCL        | False       |
+| gkehub.cnrm.cloud.google.com                  | GKEHubMembershipBinding                         | True         | False       | False  | Direct     | True        |
 | gkehub.cnrm.cloud.google.com                  | GKEHubMembership                                | False        | True        | False  | DCL        | False       |
+| gkehub.cnrm.cloud.google.com                  | GKEHubNamespace                                 | True         | False       | False  | Direct     | True        |
+| gkehub.cnrm.cloud.google.com                  | GKEHubScopeRBACRoleBinding                      | True         | False       | False  | Direct     | True        |
+| gkehub.cnrm.cloud.google.com                  | GKEHubScope                                     | True         | False       | False  | Direct     | True        |
 | healthcare.cnrm.cloud.google.com              | HealthcareConsentStore                          | True         | False       | False  | Terraform  | False       |
 | healthcare.cnrm.cloud.google.com              | HealthcareDataset                               | True         | False       | False  | Terraform  | False       |
 | healthcare.cnrm.cloud.google.com              | HealthcareDICOMStore                            | True         | False       | False  | Terraform  | False       |
@@ -327,6 +333,7 @@
 | managedkafka.cnrm.cloud.google.com            | ManagedKafkaConsumerGroup                       | True         | False       | False  | Direct     | True        |
 | managedkafka.cnrm.cloud.google.com            | ManagedKafkaTopic                               | True         | True        | False  | Direct     | True        |
 | memcache.cnrm.cloud.google.com                | MemcacheInstance                                | False        | True        | False  | Terraform  | False       |
+| memorystore.cnrm.cloud.google.com             | MemorystoreInstanceEndpoint                     | True         | False       | False  | Direct     | True        |
 | memorystore.cnrm.cloud.google.com             | MemorystoreInstance                             | True         | True        | False  | Direct     | True        |
 | metastore.cnrm.cloud.google.com               | MetastoreBackup                                 | True         | True        | False  | Direct     | True        |
 | metastore.cnrm.cloud.google.com               | MetastoreFederation                             | True         | False       | False  | Direct     | True        |
@@ -363,6 +370,7 @@
 | networkservices.cnrm.cloud.google.com         | NetworkServicesServiceBinding                   | True         | False       | False  | Direct     | True        |
 | networkservices.cnrm.cloud.google.com         | NetworkServicesTCPRoute                         | False        | True        | False  | DCL        | False       |
 | networkservices.cnrm.cloud.google.com         | NetworkServicesTLSRoute                         | False        | True        | False  | DCL        | False       |
+| networkservices.cnrm.cloud.google.com         | NetworkServicesWasmPlugin                       | True         | False       | False  | Direct     | True        |
 | notebooks.cnrm.cloud.google.com               | NotebookInstance                                | True         | True        | False  | Direct     | True        |
 | notebooks.cnrm.cloud.google.com               | NotebooksEnvironment                            | True         | False       | False  | Direct     | True        |
 | orgpolicy.cnrm.cloud.google.com               | OrgPolicyCustomConstraint                       | True         | True        | False  | Direct     | True        |

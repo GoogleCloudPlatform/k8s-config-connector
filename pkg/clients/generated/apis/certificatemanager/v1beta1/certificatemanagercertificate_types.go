@@ -200,6 +200,61 @@ type CertificateManagerCertificateSpec struct {
 	SelfManaged *CertificateSelfManaged `json:"selfManaged,omitempty"`
 }
 
+type CertificateAuthorizationAttemptInfoStatus struct {
+	/* Human readable explanation for reaching the state. Provided to help
+	address the configuration issues.
+	Not guaranteed to be stable. For programmatic access use 'failure_reason' field. */
+	// +optional
+	Details *string `json:"details,omitempty"`
+
+	/* Domain name of the authorization attempt. */
+	// +optional
+	Domain *string `json:"domain,omitempty"`
+
+	/* Reason for failure of the authorization attempt for the domain. */
+	// +optional
+	FailureReason *string `json:"failureReason,omitempty"`
+
+	/* State of the domain for managed certificate issuance. */
+	// +optional
+	State *string `json:"state,omitempty"`
+}
+
+type CertificateManagedStatus struct {
+	/* Detailed state of the latest authorization attempt for each domain
+	specified for this Managed Certificate. */
+	// +optional
+	AuthorizationAttemptInfo []CertificateAuthorizationAttemptInfoStatus `json:"authorizationAttemptInfo,omitempty"`
+
+	/* Information about issues with provisioning this Managed Certificate. */
+	// +optional
+	ProvisioningIssue []CertificateProvisioningIssueStatus `json:"provisioningIssue,omitempty"`
+
+	/* A state of this Managed Certificate. */
+	// +optional
+	State *string `json:"state,omitempty"`
+}
+
+type CertificateObservedStateStatus struct {
+	/* Immutable. Configuration and state of a Managed Certificate.
+	Certificate Manager provisions and renews Managed Certificates
+	automatically, for as long as it's authorized to do so. */
+	// +optional
+	Managed *CertificateManagedStatus `json:"managed,omitempty"`
+}
+
+type CertificateProvisioningIssueStatus struct {
+	/* Human readable explanation about the issue. Provided to help address
+	the configuration issues.
+	Not guaranteed to be stable. For programmatic access use 'reason' field. */
+	// +optional
+	Details *string `json:"details,omitempty"`
+
+	/* Reason for provisioning failures. */
+	// +optional
+	Reason *string `json:"reason,omitempty"`
+}
+
 type CertificateManagerCertificateStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CertificateManagerCertificate's current state. */
@@ -207,6 +262,10 @@ type CertificateManagerCertificateStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *CertificateObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

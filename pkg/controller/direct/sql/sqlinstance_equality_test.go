@@ -158,3 +158,58 @@ func TestDiffInstances_DatabaseFlagsSorting(t *testing.T) {
 		t.Errorf("DiffInstances() identified unexpected diffs due to DatabaseFlags sorting: %v", diff.Fields)
 	}
 }
+
+func TestDiffInstances_UserLabelsDiff(t *testing.T) {
+	desired := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			UserLabels: map[string]string{
+				"key1": "val1",
+				"key2": "val2-changed",
+				"key3": "val3-new",
+			},
+		},
+	}
+
+	actual := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			UserLabels: map[string]string{
+				"key1": "val1",
+				"key2": "val2",
+				"key4": "val4-removed",
+			},
+		},
+	}
+
+	diff := DiffInstances(desired, actual)
+
+	if !diff.HasDiff() {
+		t.Errorf("DiffInstances() expected diffs, but got none")
+	}
+
+	expectedDiffs := map[string]struct {
+		Old any
+		New any
+	}{
+		".settings.userLabels[*\"key2\"]": {Old: "val2", New: "val2-changed"},
+		".settings.userLabels[+\"key3\"]": {Old: nil, New: "val3-new"},
+		".settings.userLabels[-\"key4\"]": {Old: "val4-removed", New: nil},
+	}
+
+	if len(diff.Fields) != len(expectedDiffs) {
+		t.Fatalf("DiffInstances() expected %d diffs, got %d. Fields: %v", len(expectedDiffs), len(diff.Fields), diff.Fields)
+	}
+
+	for _, field := range diff.Fields {
+		expected, ok := expectedDiffs[field.ID]
+		if !ok {
+			t.Errorf("Unexpected diff field ID %q", field.ID)
+			continue
+		}
+		if field.Old != expected.Old {
+			t.Errorf("For field %q, expected Old=%v, got %v", field.ID, expected.Old, field.Old)
+		}
+		if field.New != expected.New {
+			t.Errorf("For field %q, expected New=%v, got %v", field.ID, expected.New, field.New)
+		}
+	}
+}

@@ -17,6 +17,7 @@ package mockcompute
 import (
 	"context"
 	"net/http"
+	"net/url"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
@@ -57,6 +58,8 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
+	pb.RegisterFutureReservationsServer(grpcServer, &FutureReservationsV1{MockService: s})
+
 	pb.RegisterBackendBucketsServer(grpcServer, &backendBuckets{MockService: s})
 
 	pb.RegisterExternalVpnGatewaysServer(grpcServer, &externalVPNGateways{MockService: s})
@@ -89,6 +92,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterRegionDisksServer(grpcServer, &RegionalDisksV1{MockService: s})
 
 	pb.RegisterRegionOperationsServer(grpcServer, &RegionalOperationsV1{MockService: s})
+	pb.RegisterZoneOperationsServer(grpcServer, &ZonalOperationsV1{MockService: s})
 	pb.RegisterGlobalOperationsServer(grpcServer, &GlobalOperationsV1{MockService: s})
 	pb.RegisterGlobalOrganizationOperationsServer(grpcServer, &GlobalOrganizationOperationsV1{MockService: s})
 
@@ -120,13 +124,28 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterInstancesServer(grpcServer, &InstancesV1{MockService: s})
 	pb.RegisterInstanceTemplatesServer(grpcServer, &InstanceTemplatesV1{MockService: s})
 
+	pb.RegisterInstanceGroupManagersServer(grpcServer, &instanceGroupManagers{MockService: s})
+
 	pb.RegisterZonesServer(grpcServer, &ZonesV1{MockService: s})
+	pb.RegisterReservationsServer(grpcServer, &ReservationsV1{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterRoutesHandler)
 	if err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterFutureReservationsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterInstanceGroupManagersHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterReservationsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 
@@ -233,6 +252,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	if err := pb.RegisterRegionOperationsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
+	if err := pb.RegisterZoneOperationsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
 	if err := pb.RegisterGlobalOperationsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
@@ -301,10 +323,46 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	// I'm sure eventually we'll find something that needs special handling.
 	rewriteBetaToV1 := func(w http.ResponseWriter, r *http.Request) {
 		u := r.URL
+		u2 := *u
+		changed := false
 		if strings.HasPrefix(u.Path, "/compute/beta/") {
-			u2 := *u
 			u2.Path = "/compute/v1/" + strings.TrimPrefix(u.Path, "/compute/beta/")
+			changed = true
+		}
+		if changed {
 			r = httpmux.RewriteRequest(r, &u2)
+		}
+
+		// Merge multiple 'paths' query parameters into a single comma-separated 'paths' parameter.
+		// This is needed because the Compute API (and Terraform) can send multiple 'paths' parameters,
+		// but our generated proto has 'paths' as a single string field, and grpc-gateway fails
+		// if it sees multiple values for a non-repeated field.
+		if r.URL.Query().Has("paths") {
+			q := r.URL.Query()
+			if paths := q["paths"]; len(paths) > 1 {
+				u2 := *r.URL
+				// We avoid q.Encode() because it sorts query parameters alphabetically,
+				// which would cause diffs in the HTTP logs for many tests.
+				// Instead we rebuild the RawQuery while maintaining the order.
+				var newParts []string
+				pathsHandled := false
+				for _, part := range strings.Split(u2.RawQuery, "&") {
+					key := part
+					if i := strings.Index(part, "="); i >= 0 {
+						key = part[:i]
+					}
+					if key == "paths" {
+						if !pathsHandled {
+							newParts = append(newParts, "paths="+url.QueryEscape(strings.Join(paths, ",")))
+							pathsHandled = true
+						}
+						continue
+					}
+					newParts = append(newParts, part)
+				}
+				u2.RawQuery = strings.Join(newParts, "&")
+				r = httpmux.RewriteRequest(r, &u2)
+			}
 		}
 
 		mux.ServeHTTP(w, r)

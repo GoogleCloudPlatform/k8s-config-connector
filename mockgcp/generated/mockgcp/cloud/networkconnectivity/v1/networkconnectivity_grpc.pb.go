@@ -76,7 +76,7 @@ type ProjectsLocationsServerClient interface {
 	CheckConsumerConfigProjectsLocation(ctx context.Context, in *CheckConsumerConfigProjectsLocationRequest, opts ...grpc.CallOption) (*CheckConsumerConfigResponse, error)
 	// Gets information about a location.
 	GetProjectsLocation(ctx context.Context, in *GetProjectsLocationRequest, opts ...grpc.CallOption) (*Location, error)
-	// Lists information about the supported locations for this service. This method can be called in two ways: * **List all public locations:** Use the path `GET /v1/locations`. * **List project-visible locations:** Use the path `GET /v1/projects/{project_id}/locations`. This may include public locations as well as private or other locations specifically visible to the project.
+	// Lists information about the supported locations for this service. This method lists locations based on the resource scope provided in the [ListLocationsRequest.name] field: * **Global locations**: If `name` is empty, the method lists the public locations available to all projects. * **Project-specific locations**: If `name` follows the format `projects/{project}`, the method lists locations visible to that specific project. This includes public, private, or other project-specific locations enabled for the project. For gRPC and client library implementations, the resource name is passed as the `name` field. For direct service calls, the resource name is incorporated into the request path based on the specific service implementation and version.
 	ListProjectsLocations(ctx context.Context, in *ListProjectsLocationsRequest, opts ...grpc.CallOption) (*ListLocationsResponse, error)
 }
 
@@ -123,7 +123,7 @@ type ProjectsLocationsServerServer interface {
 	CheckConsumerConfigProjectsLocation(context.Context, *CheckConsumerConfigProjectsLocationRequest) (*CheckConsumerConfigResponse, error)
 	// Gets information about a location.
 	GetProjectsLocation(context.Context, *GetProjectsLocationRequest) (*Location, error)
-	// Lists information about the supported locations for this service. This method can be called in two ways: * **List all public locations:** Use the path `GET /v1/locations`. * **List project-visible locations:** Use the path `GET /v1/projects/{project_id}/locations`. This may include public locations as well as private or other locations specifically visible to the project.
+	// Lists information about the supported locations for this service. This method lists locations based on the resource scope provided in the [ListLocationsRequest.name] field: * **Global locations**: If `name` is empty, the method lists the public locations available to all projects. * **Project-specific locations**: If `name` follows the format `projects/{project}`, the method lists locations visible to that specific project. This includes public, private, or other project-specific locations enabled for the project. For gRPC and client library implementations, the resource name is passed as the `name` field. For direct service calls, the resource name is incorporated into the request path based on the specific service implementation and version.
 	ListProjectsLocations(context.Context, *ListProjectsLocationsRequest) (*ListLocationsResponse, error)
 	mustEmbedUnimplementedProjectsLocationsServerServer()
 }
@@ -2630,6 +2630,133 @@ var ProjectsLocationsRegionalEndpointsServer_ServiceDesc = grpc.ServiceDesc{
 	Metadata: "mockgcp/cloud/networkconnectivity/v1/networkconnectivity.proto",
 }
 
+// ProjectsLocationsRemoteTransportProfilesServerClient is the client API for ProjectsLocationsRemoteTransportProfilesServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type ProjectsLocationsRemoteTransportProfilesServerClient interface {
+	// Gets details of a single RemoteTransportProfile.
+	GetProjectsLocationsRemoteTransportProfile(ctx context.Context, in *GetProjectsLocationsRemoteTransportProfileRequest, opts ...grpc.CallOption) (*RemoteTransportProfile, error)
+	// Lists RemoteTransportProfiles in a given project and location.
+	ListProjectsLocationsRemoteTransportProfiles(ctx context.Context, in *ListProjectsLocationsRemoteTransportProfilesRequest, opts ...grpc.CallOption) (*ListRemoteTransportProfilesResponse, error)
+}
+
+type projectsLocationsRemoteTransportProfilesServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewProjectsLocationsRemoteTransportProfilesServerClient(cc grpc.ClientConnInterface) ProjectsLocationsRemoteTransportProfilesServerClient {
+	return &projectsLocationsRemoteTransportProfilesServerClient{cc}
+}
+
+func (c *projectsLocationsRemoteTransportProfilesServerClient) GetProjectsLocationsRemoteTransportProfile(ctx context.Context, in *GetProjectsLocationsRemoteTransportProfileRequest, opts ...grpc.CallOption) (*RemoteTransportProfile, error) {
+	out := new(RemoteTransportProfile)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsRemoteTransportProfilesServer/GetProjectsLocationsRemoteTransportProfile", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsLocationsRemoteTransportProfilesServerClient) ListProjectsLocationsRemoteTransportProfiles(ctx context.Context, in *ListProjectsLocationsRemoteTransportProfilesRequest, opts ...grpc.CallOption) (*ListRemoteTransportProfilesResponse, error) {
+	out := new(ListRemoteTransportProfilesResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsRemoteTransportProfilesServer/ListProjectsLocationsRemoteTransportProfiles", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ProjectsLocationsRemoteTransportProfilesServerServer is the server API for ProjectsLocationsRemoteTransportProfilesServer service.
+// All implementations must embed UnimplementedProjectsLocationsRemoteTransportProfilesServerServer
+// for forward compatibility
+type ProjectsLocationsRemoteTransportProfilesServerServer interface {
+	// Gets details of a single RemoteTransportProfile.
+	GetProjectsLocationsRemoteTransportProfile(context.Context, *GetProjectsLocationsRemoteTransportProfileRequest) (*RemoteTransportProfile, error)
+	// Lists RemoteTransportProfiles in a given project and location.
+	ListProjectsLocationsRemoteTransportProfiles(context.Context, *ListProjectsLocationsRemoteTransportProfilesRequest) (*ListRemoteTransportProfilesResponse, error)
+	mustEmbedUnimplementedProjectsLocationsRemoteTransportProfilesServerServer()
+}
+
+// UnimplementedProjectsLocationsRemoteTransportProfilesServerServer must be embedded to have forward compatible implementations.
+type UnimplementedProjectsLocationsRemoteTransportProfilesServerServer struct {
+}
+
+func (UnimplementedProjectsLocationsRemoteTransportProfilesServerServer) GetProjectsLocationsRemoteTransportProfile(context.Context, *GetProjectsLocationsRemoteTransportProfileRequest) (*RemoteTransportProfile, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProjectsLocationsRemoteTransportProfile not implemented")
+}
+func (UnimplementedProjectsLocationsRemoteTransportProfilesServerServer) ListProjectsLocationsRemoteTransportProfiles(context.Context, *ListProjectsLocationsRemoteTransportProfilesRequest) (*ListRemoteTransportProfilesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListProjectsLocationsRemoteTransportProfiles not implemented")
+}
+func (UnimplementedProjectsLocationsRemoteTransportProfilesServerServer) mustEmbedUnimplementedProjectsLocationsRemoteTransportProfilesServerServer() {
+}
+
+// UnsafeProjectsLocationsRemoteTransportProfilesServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ProjectsLocationsRemoteTransportProfilesServerServer will
+// result in compilation errors.
+type UnsafeProjectsLocationsRemoteTransportProfilesServerServer interface {
+	mustEmbedUnimplementedProjectsLocationsRemoteTransportProfilesServerServer()
+}
+
+func RegisterProjectsLocationsRemoteTransportProfilesServerServer(s grpc.ServiceRegistrar, srv ProjectsLocationsRemoteTransportProfilesServerServer) {
+	s.RegisterService(&ProjectsLocationsRemoteTransportProfilesServer_ServiceDesc, srv)
+}
+
+func _ProjectsLocationsRemoteTransportProfilesServer_GetProjectsLocationsRemoteTransportProfile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProjectsLocationsRemoteTransportProfileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsRemoteTransportProfilesServerServer).GetProjectsLocationsRemoteTransportProfile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsRemoteTransportProfilesServer/GetProjectsLocationsRemoteTransportProfile",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsRemoteTransportProfilesServerServer).GetProjectsLocationsRemoteTransportProfile(ctx, req.(*GetProjectsLocationsRemoteTransportProfileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsLocationsRemoteTransportProfilesServer_ListProjectsLocationsRemoteTransportProfiles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListProjectsLocationsRemoteTransportProfilesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsRemoteTransportProfilesServerServer).ListProjectsLocationsRemoteTransportProfiles(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsRemoteTransportProfilesServer/ListProjectsLocationsRemoteTransportProfiles",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsRemoteTransportProfilesServerServer).ListProjectsLocationsRemoteTransportProfiles(ctx, req.(*ListProjectsLocationsRemoteTransportProfilesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// ProjectsLocationsRemoteTransportProfilesServer_ServiceDesc is the grpc.ServiceDesc for ProjectsLocationsRemoteTransportProfilesServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var ProjectsLocationsRemoteTransportProfilesServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsRemoteTransportProfilesServer",
+	HandlerType: (*ProjectsLocationsRemoteTransportProfilesServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetProjectsLocationsRemoteTransportProfile",
+			Handler:    _ProjectsLocationsRemoteTransportProfilesServer_GetProjectsLocationsRemoteTransportProfile_Handler,
+		},
+		{
+			MethodName: "ListProjectsLocationsRemoteTransportProfiles",
+			Handler:    _ProjectsLocationsRemoteTransportProfilesServer_ListProjectsLocationsRemoteTransportProfiles_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/networkconnectivity/v1/networkconnectivity.proto",
+}
+
 // ProjectsLocationsServiceClassesServerClient is the client API for ProjectsLocationsServiceClassesServer service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
@@ -3753,6 +3880,247 @@ var ProjectsLocationsSpokesServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PatchProjectsLocationsSpoke",
 			Handler:    _ProjectsLocationsSpokesServer_PatchProjectsLocationsSpoke_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/networkconnectivity/v1/networkconnectivity.proto",
+}
+
+// ProjectsLocationsTransportsServerClient is the client API for ProjectsLocationsTransportsServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type ProjectsLocationsTransportsServerClient interface {
+	// Creates a new Transport in a given project and location.
+	CreateProjectsLocationsTransport(ctx context.Context, in *CreateProjectsLocationsTransportRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deletes a single Transport.
+	DeleteProjectsLocationsTransport(ctx context.Context, in *DeleteProjectsLocationsTransportRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Gets details of a single Transport.
+	GetProjectsLocationsTransport(ctx context.Context, in *GetProjectsLocationsTransportRequest, opts ...grpc.CallOption) (*Transport, error)
+	// Lists Transports in a given project and location.
+	ListProjectsLocationsTransports(ctx context.Context, in *ListProjectsLocationsTransportsRequest, opts ...grpc.CallOption) (*ListTransportsResponse, error)
+	// Updates the parameters of a single Transport.
+	PatchProjectsLocationsTransport(ctx context.Context, in *PatchProjectsLocationsTransportRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+}
+
+type projectsLocationsTransportsServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewProjectsLocationsTransportsServerClient(cc grpc.ClientConnInterface) ProjectsLocationsTransportsServerClient {
+	return &projectsLocationsTransportsServerClient{cc}
+}
+
+func (c *projectsLocationsTransportsServerClient) CreateProjectsLocationsTransport(ctx context.Context, in *CreateProjectsLocationsTransportRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsTransportsServer/CreateProjectsLocationsTransport", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsLocationsTransportsServerClient) DeleteProjectsLocationsTransport(ctx context.Context, in *DeleteProjectsLocationsTransportRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsTransportsServer/DeleteProjectsLocationsTransport", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsLocationsTransportsServerClient) GetProjectsLocationsTransport(ctx context.Context, in *GetProjectsLocationsTransportRequest, opts ...grpc.CallOption) (*Transport, error) {
+	out := new(Transport)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsTransportsServer/GetProjectsLocationsTransport", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsLocationsTransportsServerClient) ListProjectsLocationsTransports(ctx context.Context, in *ListProjectsLocationsTransportsRequest, opts ...grpc.CallOption) (*ListTransportsResponse, error) {
+	out := new(ListTransportsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsTransportsServer/ListProjectsLocationsTransports", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsLocationsTransportsServerClient) PatchProjectsLocationsTransport(ctx context.Context, in *PatchProjectsLocationsTransportRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsTransportsServer/PatchProjectsLocationsTransport", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ProjectsLocationsTransportsServerServer is the server API for ProjectsLocationsTransportsServer service.
+// All implementations must embed UnimplementedProjectsLocationsTransportsServerServer
+// for forward compatibility
+type ProjectsLocationsTransportsServerServer interface {
+	// Creates a new Transport in a given project and location.
+	CreateProjectsLocationsTransport(context.Context, *CreateProjectsLocationsTransportRequest) (*longrunningpb.Operation, error)
+	// Deletes a single Transport.
+	DeleteProjectsLocationsTransport(context.Context, *DeleteProjectsLocationsTransportRequest) (*longrunningpb.Operation, error)
+	// Gets details of a single Transport.
+	GetProjectsLocationsTransport(context.Context, *GetProjectsLocationsTransportRequest) (*Transport, error)
+	// Lists Transports in a given project and location.
+	ListProjectsLocationsTransports(context.Context, *ListProjectsLocationsTransportsRequest) (*ListTransportsResponse, error)
+	// Updates the parameters of a single Transport.
+	PatchProjectsLocationsTransport(context.Context, *PatchProjectsLocationsTransportRequest) (*longrunningpb.Operation, error)
+	mustEmbedUnimplementedProjectsLocationsTransportsServerServer()
+}
+
+// UnimplementedProjectsLocationsTransportsServerServer must be embedded to have forward compatible implementations.
+type UnimplementedProjectsLocationsTransportsServerServer struct {
+}
+
+func (UnimplementedProjectsLocationsTransportsServerServer) CreateProjectsLocationsTransport(context.Context, *CreateProjectsLocationsTransportRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateProjectsLocationsTransport not implemented")
+}
+func (UnimplementedProjectsLocationsTransportsServerServer) DeleteProjectsLocationsTransport(context.Context, *DeleteProjectsLocationsTransportRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteProjectsLocationsTransport not implemented")
+}
+func (UnimplementedProjectsLocationsTransportsServerServer) GetProjectsLocationsTransport(context.Context, *GetProjectsLocationsTransportRequest) (*Transport, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProjectsLocationsTransport not implemented")
+}
+func (UnimplementedProjectsLocationsTransportsServerServer) ListProjectsLocationsTransports(context.Context, *ListProjectsLocationsTransportsRequest) (*ListTransportsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListProjectsLocationsTransports not implemented")
+}
+func (UnimplementedProjectsLocationsTransportsServerServer) PatchProjectsLocationsTransport(context.Context, *PatchProjectsLocationsTransportRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PatchProjectsLocationsTransport not implemented")
+}
+func (UnimplementedProjectsLocationsTransportsServerServer) mustEmbedUnimplementedProjectsLocationsTransportsServerServer() {
+}
+
+// UnsafeProjectsLocationsTransportsServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ProjectsLocationsTransportsServerServer will
+// result in compilation errors.
+type UnsafeProjectsLocationsTransportsServerServer interface {
+	mustEmbedUnimplementedProjectsLocationsTransportsServerServer()
+}
+
+func RegisterProjectsLocationsTransportsServerServer(s grpc.ServiceRegistrar, srv ProjectsLocationsTransportsServerServer) {
+	s.RegisterService(&ProjectsLocationsTransportsServer_ServiceDesc, srv)
+}
+
+func _ProjectsLocationsTransportsServer_CreateProjectsLocationsTransport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateProjectsLocationsTransportRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsTransportsServerServer).CreateProjectsLocationsTransport(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsTransportsServer/CreateProjectsLocationsTransport",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsTransportsServerServer).CreateProjectsLocationsTransport(ctx, req.(*CreateProjectsLocationsTransportRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsLocationsTransportsServer_DeleteProjectsLocationsTransport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteProjectsLocationsTransportRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsTransportsServerServer).DeleteProjectsLocationsTransport(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsTransportsServer/DeleteProjectsLocationsTransport",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsTransportsServerServer).DeleteProjectsLocationsTransport(ctx, req.(*DeleteProjectsLocationsTransportRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsLocationsTransportsServer_GetProjectsLocationsTransport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProjectsLocationsTransportRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsTransportsServerServer).GetProjectsLocationsTransport(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsTransportsServer/GetProjectsLocationsTransport",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsTransportsServerServer).GetProjectsLocationsTransport(ctx, req.(*GetProjectsLocationsTransportRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsLocationsTransportsServer_ListProjectsLocationsTransports_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListProjectsLocationsTransportsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsTransportsServerServer).ListProjectsLocationsTransports(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsTransportsServer/ListProjectsLocationsTransports",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsTransportsServerServer).ListProjectsLocationsTransports(ctx, req.(*ListProjectsLocationsTransportsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsLocationsTransportsServer_PatchProjectsLocationsTransport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchProjectsLocationsTransportRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsTransportsServerServer).PatchProjectsLocationsTransport(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsTransportsServer/PatchProjectsLocationsTransport",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsTransportsServerServer).PatchProjectsLocationsTransport(ctx, req.(*PatchProjectsLocationsTransportRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// ProjectsLocationsTransportsServer_ServiceDesc is the grpc.ServiceDesc for ProjectsLocationsTransportsServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var ProjectsLocationsTransportsServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsTransportsServer",
+	HandlerType: (*ProjectsLocationsTransportsServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateProjectsLocationsTransport",
+			Handler:    _ProjectsLocationsTransportsServer_CreateProjectsLocationsTransport_Handler,
+		},
+		{
+			MethodName: "DeleteProjectsLocationsTransport",
+			Handler:    _ProjectsLocationsTransportsServer_DeleteProjectsLocationsTransport_Handler,
+		},
+		{
+			MethodName: "GetProjectsLocationsTransport",
+			Handler:    _ProjectsLocationsTransportsServer_GetProjectsLocationsTransport_Handler,
+		},
+		{
+			MethodName: "ListProjectsLocationsTransports",
+			Handler:    _ProjectsLocationsTransportsServer_ListProjectsLocationsTransports_Handler,
+		},
+		{
+			MethodName: "PatchProjectsLocationsTransport",
+			Handler:    _ProjectsLocationsTransportsServer_PatchProjectsLocationsTransport_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

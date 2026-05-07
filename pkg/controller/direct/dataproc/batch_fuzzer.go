@@ -29,8 +29,8 @@ func init() {
 
 func dataprocBatchFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Batch{},
-		DataprocBatchSpec_FromProto, DataprocBatchSpec_ToProto,
-		DataprocBatchObservedState_FromProto, DataprocBatchObservedState_ToProto,
+		DataprocBatchSpec_v1alpha1_FromProto, DataprocBatchSpec_v1alpha1_ToProto,
+		DataprocBatchObservedState_v1alpha1_FromProto, DataprocBatchObservedState_v1alpha1_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".name")      // special field

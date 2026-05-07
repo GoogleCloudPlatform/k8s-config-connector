@@ -64,8 +64,8 @@ func (s *FirewallPoliciesV1) Insert(ctx context.Context, req *pb.InsertFirewallP
 	fqn := policyName.String()
 
 	obj := proto.Clone(req.GetFirewallPolicyResource()).(*pb.FirewallPolicy)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, policyName.String()))
-	obj.SelfLinkWithId = PtrTo(buildComputeSelfLink(ctx, policyName.String()) + "/" + policyId)
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, policyName.String()))
+	obj.SelfLinkWithId = PtrTo(BuildComputeSelfLink(ctx, policyName.String()) + "/" + policyId)
 	obj.Parent = PtrTo(req.ParentId)
 	obj.RuleTupleCount = PtrTo(int32(8))
 	obj.Id = PtrTo(id)

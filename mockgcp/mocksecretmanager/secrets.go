@@ -113,11 +113,6 @@ func (s *SecretsV1) GetSecret(ctx context.Context, req *pb.GetSecretRequest) (*p
 	return &secret, nil
 }
 
-// ProtoClone is a type-safe wrapper around proto.Clone
-func ProtoClone[T proto.Message](t T) T {
-	return proto.Clone(t).(T)
-}
-
 // Update metadata for a given [Secret][google.cloud.secretmanager.v1.Secret].
 func (s *SecretsV1) UpdateSecret(ctx context.Context, req *pb.UpdateSecretRequest) (*pb.Secret, error) {
 	name, err := s.parseSecretName(req.Secret.Name)
@@ -130,7 +125,7 @@ func (s *SecretsV1) UpdateSecret(ctx context.Context, req *pb.UpdateSecretReques
 		return nil, err
 	}
 
-	updated := ProtoClone(existing)
+	updated := proto.CloneOf(existing)
 	updated.Name = name.String()
 
 	// Required. The update mask applies to the resource.

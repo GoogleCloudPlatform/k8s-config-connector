@@ -571,6 +571,8 @@
 [missing_field] crd=computeforwardingrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceDirectoryRegistrations[].namespace" is not set in unstructured objects
 [missing_field] crd=computeforwardingrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceDirectoryRegistrations[].service" is not set in unstructured objects
 [missing_field] crd=computeforwardingrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceIpRanges[]" is not set in unstructured objects
+[missing_field] crd=computeforwardingrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.target.memorystoreInstanceServiceAttachment.connectionType" is not set in unstructured objects
+[missing_field] crd=computeforwardingrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.target.memorystoreInstanceServiceAttachment.memorystoreInstanceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.grpcHealthCheck.grpcServiceName" is not set in unstructured objects
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.grpcHealthCheck.port" is not set in unstructured objects
@@ -1268,8 +1270,6 @@
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.clusterTelemetry.type" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.confidentialNodes.enabled" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.costManagementConfig.enabled" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.databaseEncryption.keyName" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.databaseEncryption.state" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.defaultMaxPodsPerNode" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.defaultSnatStatus.disabled" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
@@ -1290,9 +1290,7 @@
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.gatewayApiConfig.channel" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.identityServiceConfig.enabled" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.ipAllocationPolicy.additionalPodRangesConfig.podRangeNames[]" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.ipAllocationPolicy.clusterSecondaryRangeName" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.ipAllocationPolicy.podCidrOverprovisionConfig.disabled" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.ipAllocationPolicy.servicesSecondaryRangeName" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.ipAllocationPolicy.stackType" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.masterAuth.clientCertificate" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.masterAuth.clientCertificateConfig.issueClientCertificate" is not set in unstructured objects
@@ -1438,7 +1436,6 @@
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.tags[]" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.workloadMetadataConfig.mode" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.workloadMetadataConfig.nodeMetadata" is not set in unstructured objects
-[missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeCount" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeLocations[]" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.placementPolicy.policyNameRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.placementPolicy.tpuTopology" is not set in unstructured objects

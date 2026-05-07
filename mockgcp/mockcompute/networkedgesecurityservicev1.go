@@ -67,8 +67,8 @@ func (s *networkEdgeSecurityServicesV1) Insert(ctx context.Context, req *pb.Inse
 
 	obj := proto.Clone(req.GetNetworkEdgeSecurityServiceResource()).(*pb.NetworkEdgeSecurityService)
 	obj.Id = proto.Uint64(s.generateID())
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
-	obj.SelfLinkWithId = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/networkEdgeSecurityServices/%d", name.Project.ID, name.Region, id)))
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
+	obj.SelfLinkWithId = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/networkEdgeSecurityServices/%d", name.Project.ID, name.Region, id)))
 	obj.Kind = PtrTo("compute#networkEdgeSecurityService")
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Region = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s", name.Project.ID, name.Region))

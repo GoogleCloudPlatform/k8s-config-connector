@@ -59,7 +59,7 @@ func (s *GlobalSSLCertificatesV1) Insert(ctx context.Context, req *pb.InsertSslC
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetSslCertificateResource()).(*pb.SslCertificate)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#sslCertificate")

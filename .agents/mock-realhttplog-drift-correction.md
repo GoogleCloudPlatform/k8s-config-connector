@@ -42,6 +42,7 @@ Use `gh` and `bash`/`git` to perform your duties.
     - The issue title should be: `Fix mock realhttp log drift for <service>`
     - The issue should be labeled with: `overseer`, `priority/medium`, `step/mockgcp`.
     - The issue body MUST contain the exact text from the **ISSUE BODY TEMPLATE** below, replacing `<service>` with the appropriate service name.
+    - Append a link to this chore file (`.agents/mock-realhttplog-drift-correction.md`) at the end of the issue body for traceability.
 7. Discard all local changes to the repo: `git checkout main && git reset --hard HEAD && git clean -fd` (Use the correct default branch, it might be master or main).
 8. IMPORTANT: If there are more than 15 open PRs for this task, stop and dont create any more.
 
@@ -97,5 +98,7 @@ This issue tracks the required updates to the mock definitions for `<service>` t
 - [ ] 5. **Create a PR**:
     Create a PR including the changes in `mockgcp/mock<service>` and the updated `_http.log` files.
     Create the PR using `gh` and don't forget to link it to this issue (e.g., `Fixes #<issue number>`) in the PR description.
+    Include a link to the chore file (`.agents/mock-realhttplog-drift-correction.md`) in the PR description.
+    Apply the same labels to the PR as are on this issue.
     
 ------------ END ISSUE BODY TEMPLATE ------------

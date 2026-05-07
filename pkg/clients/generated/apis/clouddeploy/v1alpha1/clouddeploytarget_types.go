@@ -165,7 +165,7 @@ type TargetGkeClusters struct {
 type TargetMultiTarget struct {
 	/* Required. The target_ids of this multiTarget. */
 	// +optional
-	TargetIDs []string `json:"targetIDs,omitempty"`
+	TargetRefs []v1alpha1.ResourceRef `json:"targetRefs,omitempty"`
 }
 
 type TargetPrivatePool struct {
@@ -189,6 +189,10 @@ type TargetRun struct {
 }
 
 type CloudDeployTargetSpec struct {
+	/* Optional. User annotations. These attributes can only be set and used by the user, and not by Cloud Deploy. See https://google.aip.dev/128#annotations for more details such as format and size limitations. */
+	// +optional
+	Annotations map[string]string `json:"annotations,omitempty"`
+
 	/* Information specifying an Anthos Cluster. */
 	// +optional
 	AnthosCluster *TargetAnthosCluster `json:"anthosCluster,omitempty"`

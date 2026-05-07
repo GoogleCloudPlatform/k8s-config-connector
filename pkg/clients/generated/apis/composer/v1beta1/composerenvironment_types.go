@@ -791,6 +791,7 @@ type ComposerEnvironmentSpec struct {
 	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
 
+	/* The location that this resource belongs to. */
 	Location string `json:"location"`
 
 	/* The Project that this resource belongs to. */

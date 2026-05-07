@@ -119,6 +119,7 @@ import (
 	firestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1alpha1"
 	firestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1beta1"
 	gkebackupv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkebackup/v1alpha1"
+	gkehubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1alpha1"
 	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1beta1"
 	healthcarev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/healthcare/v1alpha1"
 	iamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iam/v1alpha1"
@@ -133,6 +134,7 @@ import (
 	managedkafkav1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/managedkafka/v1alpha1"
 	managedkafkav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/managedkafka/v1beta1"
 	memcachev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memcache/v1beta1"
+	memorystorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1alpha1"
 	memorystorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1beta1"
 	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1alpha1"
 	metastorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1beta1"
@@ -291,6 +293,7 @@ type Interface interface {
 	FirestoreV1alpha1() firestorev1alpha1.FirestoreV1alpha1Interface
 	FirestoreV1beta1() firestorev1beta1.FirestoreV1beta1Interface
 	GkebackupV1alpha1() gkebackupv1alpha1.GkebackupV1alpha1Interface
+	GkehubV1alpha1() gkehubv1alpha1.GkehubV1alpha1Interface
 	GkehubV1beta1() gkehubv1beta1.GkehubV1beta1Interface
 	HealthcareV1alpha1() healthcarev1alpha1.HealthcareV1alpha1Interface
 	IamV1alpha1() iamv1alpha1.IamV1alpha1Interface
@@ -305,6 +308,7 @@ type Interface interface {
 	ManagedkafkaV1alpha1() managedkafkav1alpha1.ManagedkafkaV1alpha1Interface
 	ManagedkafkaV1beta1() managedkafkav1beta1.ManagedkafkaV1beta1Interface
 	MemcacheV1beta1() memcachev1beta1.MemcacheV1beta1Interface
+	MemorystoreV1alpha1() memorystorev1alpha1.MemorystoreV1alpha1Interface
 	MemorystoreV1beta1() memorystorev1beta1.MemorystoreV1beta1Interface
 	MetastoreV1alpha1() metastorev1alpha1.MetastoreV1alpha1Interface
 	MetastoreV1beta1() metastorev1beta1.MetastoreV1beta1Interface
@@ -461,6 +465,7 @@ type Clientset struct {
 	firestoreV1alpha1              *firestorev1alpha1.FirestoreV1alpha1Client
 	firestoreV1beta1               *firestorev1beta1.FirestoreV1beta1Client
 	gkebackupV1alpha1              *gkebackupv1alpha1.GkebackupV1alpha1Client
+	gkehubV1alpha1                 *gkehubv1alpha1.GkehubV1alpha1Client
 	gkehubV1beta1                  *gkehubv1beta1.GkehubV1beta1Client
 	healthcareV1alpha1             *healthcarev1alpha1.HealthcareV1alpha1Client
 	iamV1alpha1                    *iamv1alpha1.IamV1alpha1Client
@@ -475,6 +480,7 @@ type Clientset struct {
 	managedkafkaV1alpha1           *managedkafkav1alpha1.ManagedkafkaV1alpha1Client
 	managedkafkaV1beta1            *managedkafkav1beta1.ManagedkafkaV1beta1Client
 	memcacheV1beta1                *memcachev1beta1.MemcacheV1beta1Client
+	memorystoreV1alpha1            *memorystorev1alpha1.MemorystoreV1alpha1Client
 	memorystoreV1beta1             *memorystorev1beta1.MemorystoreV1beta1Client
 	metastoreV1alpha1              *metastorev1alpha1.MetastoreV1alpha1Client
 	metastoreV1beta1               *metastorev1beta1.MetastoreV1beta1Client
@@ -1004,6 +1010,11 @@ func (c *Clientset) GkebackupV1alpha1() gkebackupv1alpha1.GkebackupV1alpha1Inter
 	return c.gkebackupV1alpha1
 }
 
+// GkehubV1alpha1 retrieves the GkehubV1alpha1Client
+func (c *Clientset) GkehubV1alpha1() gkehubv1alpha1.GkehubV1alpha1Interface {
+	return c.gkehubV1alpha1
+}
+
 // GkehubV1beta1 retrieves the GkehubV1beta1Client
 func (c *Clientset) GkehubV1beta1() gkehubv1beta1.GkehubV1beta1Interface {
 	return c.gkehubV1beta1
@@ -1072,6 +1083,11 @@ func (c *Clientset) ManagedkafkaV1beta1() managedkafkav1beta1.ManagedkafkaV1beta
 // MemcacheV1beta1 retrieves the MemcacheV1beta1Client
 func (c *Clientset) MemcacheV1beta1() memcachev1beta1.MemcacheV1beta1Interface {
 	return c.memcacheV1beta1
+}
+
+// MemorystoreV1alpha1 retrieves the MemorystoreV1alpha1Client
+func (c *Clientset) MemorystoreV1alpha1() memorystorev1alpha1.MemorystoreV1alpha1Interface {
+	return c.memorystoreV1alpha1
 }
 
 // MemorystoreV1beta1 retrieves the MemorystoreV1beta1Client
@@ -1779,6 +1795,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.gkehubV1alpha1, err = gkehubv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.gkehubV1beta1, err = gkehubv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1832,6 +1852,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.memcacheV1beta1, err = memcachev1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.memorystoreV1alpha1, err = memorystorev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -2178,6 +2202,7 @@ func New(c rest.Interface) *Clientset {
 	cs.firestoreV1alpha1 = firestorev1alpha1.New(c)
 	cs.firestoreV1beta1 = firestorev1beta1.New(c)
 	cs.gkebackupV1alpha1 = gkebackupv1alpha1.New(c)
+	cs.gkehubV1alpha1 = gkehubv1alpha1.New(c)
 	cs.gkehubV1beta1 = gkehubv1beta1.New(c)
 	cs.healthcareV1alpha1 = healthcarev1alpha1.New(c)
 	cs.iamV1alpha1 = iamv1alpha1.New(c)
@@ -2192,6 +2217,7 @@ func New(c rest.Interface) *Clientset {
 	cs.managedkafkaV1alpha1 = managedkafkav1alpha1.New(c)
 	cs.managedkafkaV1beta1 = managedkafkav1beta1.New(c)
 	cs.memcacheV1beta1 = memcachev1beta1.New(c)
+	cs.memorystoreV1alpha1 = memorystorev1alpha1.New(c)
 	cs.memorystoreV1beta1 = memorystorev1beta1.New(c)
 	cs.metastoreV1alpha1 = metastorev1alpha1.New(c)
 	cs.metastoreV1beta1 = metastorev1beta1.New(c)

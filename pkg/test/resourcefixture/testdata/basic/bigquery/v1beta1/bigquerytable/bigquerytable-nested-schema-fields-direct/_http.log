@@ -338,21 +338,18 @@ X-Xss-Protection: 0
         "description": "Fully qualified name of the entity",
         "mode": "REQUIRED",
         "name": "qualified_name",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Name of the entity",
         "mode": "REQUIRED",
         "name": "name",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
-        "policyTags": {},
         "type": "STRING"
       },
       {
@@ -362,21 +359,18 @@ X-Xss-Protection: 0
             "description": "Name of Atlan Tag",
             "mode": "NULLABLE",
             "name": "type_name",
-            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "GUID of the entity for this tag",
             "mode": "NULLABLE",
             "name": "entity_guid",
-            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "Status of the entity",
             "mode": "NULLABLE",
             "name": "entity_status",
-            "policyTags": {},
             "type": "STRING"
           }
         ],
@@ -391,14 +385,12 @@ X-Xss-Protection: 0
             "description": "key",
             "mode": "NULLABLE",
             "name": "key",
-            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "values",
             "mode": "NULLABLE",
             "name": "value",
-            "policyTags": {},
             "type": "STRING"
           }
         ],
@@ -410,21 +402,18 @@ X-Xss-Protection: 0
         "description": "Name of the entity",
         "mode": "REQUIRED",
         "name": "type_resource",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Last update time of the entity",
         "mode": "REQUIRED",
         "name": "update_time",
-        "policyTags": {},
         "type": "TIMESTAMP"
       },
       {
         "description": "time when cdp get data",
         "mode": "REQUIRED",
         "name": "atlan_get_time",
-        "policyTags": {},
         "type": "TIMESTAMP"
       }
     ]
@@ -489,21 +478,18 @@ X-Xss-Protection: 0
         "description": "Fully qualified name of the entity",
         "mode": "REQUIRED",
         "name": "qualified_name",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Name of the entity",
         "mode": "REQUIRED",
         "name": "name",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
-        "policyTags": {},
         "type": "STRING"
       },
       {
@@ -513,21 +499,18 @@ X-Xss-Protection: 0
             "description": "Name of Atlan Tag",
             "mode": "NULLABLE",
             "name": "type_name",
-            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "GUID of the entity for this tag",
             "mode": "NULLABLE",
             "name": "entity_guid",
-            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "Status of the entity",
             "mode": "NULLABLE",
             "name": "entity_status",
-            "policyTags": {},
             "type": "STRING"
           }
         ],
@@ -542,14 +525,12 @@ X-Xss-Protection: 0
             "description": "key",
             "mode": "NULLABLE",
             "name": "key",
-            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "values",
             "mode": "NULLABLE",
             "name": "value",
-            "policyTags": {},
             "type": "STRING"
           }
         ],
@@ -561,21 +542,18 @@ X-Xss-Protection: 0
         "description": "Name of the entity",
         "mode": "REQUIRED",
         "name": "type_resource",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Last update time of the entity",
         "mode": "REQUIRED",
         "name": "update_time",
-        "policyTags": {},
         "type": "TIMESTAMP"
       },
       {
         "description": "time when cdp get data",
         "mode": "REQUIRED",
         "name": "atlan_get_time",
-        "policyTags": {},
         "type": "TIMESTAMP"
       }
     ]
@@ -756,21 +734,18 @@ X-Xss-Protection: 0
         "description": "Fully qualified name of the entity",
         "mode": "REQUIRED",
         "name": "qualified_name",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Name of the entity",
         "mode": "REQUIRED",
         "name": "name",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
-        "policyTags": {},
         "type": "STRING"
       },
       {
@@ -780,21 +755,18 @@ X-Xss-Protection: 0
             "description": "Name of Atlan Tag",
             "mode": "NULLABLE",
             "name": "type_name",
-            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "GUID of the entity for this tag",
             "mode": "NULLABLE",
             "name": "entity_guid",
-            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "Status of the entity",
             "mode": "NULLABLE",
             "name": "entity_status",
-            "policyTags": {},
             "type": "STRING"
           }
         ],
@@ -809,14 +781,12 @@ X-Xss-Protection: 0
             "description": "key",
             "mode": "NULLABLE",
             "name": "key",
-            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "values",
             "mode": "NULLABLE",
             "name": "value",
-            "policyTags": {},
             "type": "STRING"
           }
         ],
@@ -828,21 +798,18 @@ X-Xss-Protection: 0
         "description": "Name of the entity",
         "mode": "REQUIRED",
         "name": "type_resource",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Last update time of the entity",
         "mode": "REQUIRED",
         "name": "update_time",
-        "policyTags": {},
         "type": "TIMESTAMP"
       },
       {
         "description": "time when cdp get data",
         "mode": "REQUIRED",
         "name": "atlan_get_time",
-        "policyTags": {},
         "type": "TIMESTAMP"
       }
     ]
@@ -907,21 +874,18 @@ X-Xss-Protection: 0
         "description": "Fully qualified name of the entity",
         "mode": "REQUIRED",
         "name": "qualified_name",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Name of the entity",
         "mode": "REQUIRED",
         "name": "name",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
-        "policyTags": {},
         "type": "STRING"
       },
       {
@@ -931,21 +895,18 @@ X-Xss-Protection: 0
             "description": "Name of Atlan Tag",
             "mode": "NULLABLE",
             "name": "type_name",
-            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "GUID of the entity for this tag",
             "mode": "NULLABLE",
             "name": "entity_guid",
-            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "Status of the entity",
             "mode": "NULLABLE",
             "name": "entity_status",
-            "policyTags": {},
             "type": "STRING"
           }
         ],
@@ -960,14 +921,12 @@ X-Xss-Protection: 0
             "description": "key",
             "mode": "NULLABLE",
             "name": "key",
-            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "values",
             "mode": "NULLABLE",
             "name": "value",
-            "policyTags": {},
             "type": "STRING"
           }
         ],
@@ -979,21 +938,18 @@ X-Xss-Protection: 0
         "description": "Name of the entity",
         "mode": "REQUIRED",
         "name": "type_resource",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Last update time of the entity",
         "mode": "REQUIRED",
         "name": "update_time",
-        "policyTags": {},
         "type": "TIMESTAMP"
       },
       {
         "description": "time when cdp get data",
         "mode": "REQUIRED",
         "name": "atlan_get_time",
-        "policyTags": {},
         "type": "TIMESTAMP"
       }
     ]

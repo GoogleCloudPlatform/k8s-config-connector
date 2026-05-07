@@ -56,6 +56,7 @@ IMPORTANT:
 * Before creating an issue for a resource, check if an issue already exists (open or closed) to avoid duplicates.
 * The issue title should be in the format: `Create generate.sh and types.go files for <Group> <Kind>`
 * Use `gh` tool to create issue.
+* Append a link to this chore file (`.agents/tf2d-create-issue-for-types-go-gen-sh.md`) at the end of the issue body for traceability.
 
 ## Issue Title
 
@@ -138,6 +139,12 @@ Currently, `DataCatalogPolicyTag` is managed by the Terraform controller (marked
 9. **Update Migration Tracker**:
    - When creating a PR for this issue, please update the metadata for `DataCatalogPolicyTag` in `dev/migration-tracker/data.json`.
    - Change its `"state"` to `"In Progress"` and update the `"steps"` as they are completed.
+
+10. **Create PR**:
+   - Create a Pull Request with your changes.
+   - Apply the same labels to the PR as are on this issue.
+   - Include a link to the chore file (`.agents/tf2d-create-issue-for-types-go-gen-sh.md`) in the PR description.
+   - Include `Fixes #<issue-number>` in the PR description.
 
 This issue is part of Epic #5954.
 ------------ END ISSUE BODY TEMPLATE ------------

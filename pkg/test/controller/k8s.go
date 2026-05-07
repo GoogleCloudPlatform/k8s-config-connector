@@ -186,6 +186,7 @@ func ReplaceTestVars(t *testing.T, b []byte, uniqueID string, project testgcp.GC
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestInterconnectID.Key), testgcp.TestInterconnectID.Get(), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestKCCAlloyDBProject.Key), testgcp.TestKCCAlloyDBProject.Get(), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestKCCAlloyDBProjectNumber.Key), testgcp.TestKCCAlloyDBProjectNumber.Get(), -1)
+	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestSharedReservationsProject.Key), testgcp.TestSharedReservationsProject.Get(), -1)
 	return []byte(s)
 }
 

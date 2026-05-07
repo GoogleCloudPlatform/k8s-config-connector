@@ -26,7 +26,7 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/kms/v1"
+	pb "cloud.google.com/go/kms/apiv1/kmspb"
 )
 
 type autokeyAdminServer struct {
@@ -65,8 +65,11 @@ func (r *autokeyAdminServer) UpdateAutokeyConfig(ctx context.Context, req *pb.Up
 	fqn := name.String()
 
 	obj := proto.Clone(req.GetAutokeyConfig()).(*pb.AutokeyConfig)
+	if obj == nil {
+		obj = &pb.AutokeyConfig{}
+	}
 	obj.Name = fqn
-	if len(req.AutokeyConfig.KeyProject) > 0 {
+	if len(req.GetAutokeyConfig().GetKeyProject()) > 0 {
 		obj.State = pb.AutokeyConfig_ACTIVE
 	} else {
 		obj.State = pb.AutokeyConfig_UNINITIALIZED

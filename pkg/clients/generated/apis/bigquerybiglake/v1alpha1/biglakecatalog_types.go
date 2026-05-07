@@ -39,6 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type BigLakeCatalogSpec struct {
+	/* The location that this resource belongs to. */
 	Location string `json:"location"`
 
 	/* The Project that this resource belongs to. */

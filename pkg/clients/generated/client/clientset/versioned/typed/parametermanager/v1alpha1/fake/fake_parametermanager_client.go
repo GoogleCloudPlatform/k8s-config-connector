@@ -35,6 +35,10 @@ func (c *FakeParametermanagerV1alpha1) ParameterManagerParameters(namespace stri
 	return &FakeParameterManagerParameters{c, namespace}
 }
 
+func (c *FakeParametermanagerV1alpha1) ParameterManagerParameterVersions(namespace string) v1alpha1.ParameterManagerParameterVersionInterface {
+	return &FakeParameterManagerParameterVersions{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeParametermanagerV1alpha1) RESTClient() rest.Interface {

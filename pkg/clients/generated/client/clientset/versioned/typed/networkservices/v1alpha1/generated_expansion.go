@@ -27,4 +27,6 @@ type NetworkServicesEdgeCacheOriginExpansion interface{}
 
 type NetworkServicesEdgeCacheServiceExpansion interface{}
 
+type NetworkServicesLBRouteExtensionExpansion interface{}
+
 type NetworkServicesServiceBindingExpansion interface{}

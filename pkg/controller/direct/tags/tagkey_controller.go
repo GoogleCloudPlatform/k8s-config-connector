@@ -28,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/iterator"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -175,7 +176,7 @@ func (a *TagsTagKeyAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	log.V(0).Info("creating TagsTagKey")
 
 	req := &pb.CreateTagKeyRequest{
-		TagKey: direct.ProtoClone(a.desired),
+		TagKey: proto.CloneOf(a.desired),
 	}
 
 	op, err := a.tagKeysClient.CreateTagKey(ctx, req)
@@ -253,7 +254,7 @@ func (a *TagsTagKeyAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	fqn := a.id.String()
 
 	req := &pb.UpdateTagKeyRequest{
-		TagKey: direct.ProtoClone(a.desired),
+		TagKey: proto.CloneOf(a.desired),
 	}
 	req.TagKey.Name = fqn
 
@@ -382,5 +383,5 @@ func (a *TagsTagKeyAdapter) changedFields(ctx context.Context) (*structuredrepor
 		actualMasked = specProto.ProtoReflect()
 	}
 
-	return buildDiff(ctx, a.desired.ProtoReflect(), actualMasked)
+	return DiffForTopLevelFields(ctx, a.desired.ProtoReflect(), actualMasked)
 }

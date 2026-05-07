@@ -40,7 +40,7 @@ func (s *ZonesV1) Get(ctx context.Context, req *pb.GetZoneRequest) (*pb.Zone, er
 	}
 
 	region := strings.Join(strings.Split(name.Zone, "-")[:2], "-")
-	region = buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, region))
+	region = BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, region))
 
 	obj := &pb.Zone{}
 
@@ -48,7 +48,7 @@ func (s *ZonesV1) Get(ctx context.Context, req *pb.GetZoneRequest) (*pb.Zone, er
 	obj.Name = PtrTo(name.Zone)
 	obj.Status = PtrTo("UP")
 	obj.Region = &region
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, name.String()))
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, name.String()))
 	obj.SupportsPzs = PtrTo(false)
 	obj.Description = PtrTo(name.Zone)
 	obj.CreationTimestamp = PtrTo(s.formatDate(time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)))

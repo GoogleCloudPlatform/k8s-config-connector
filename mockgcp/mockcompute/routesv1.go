@@ -63,7 +63,7 @@ func (s *RoutesV1) List(ctx context.Context, req *pb.ListRoutesRequest) (*pb.Rou
 	response := &pb.RouteList{}
 	response.Id = PtrTo("0123456789")
 	response.Kind = PtrTo("compute#routeList")
-	response.SelfLink = PtrTo(buildComputeSelfLink(ctx, strings.TrimSuffix(findPrefix, "/")))
+	response.SelfLink = PtrTo(BuildComputeSelfLink(ctx, strings.TrimSuffix(findPrefix, "/")))
 
 	findKind := (&pb.Route{}).ProtoReflect().Descriptor()
 	if err := s.storage.List(ctx, findKind, storage.ListOptions{Prefix: findPrefix}, func(obj proto.Message) error {
@@ -94,7 +94,7 @@ func (s *RoutesV1) Insert(ctx context.Context, req *pb.InsertRouteRequest) (*pb.
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetRouteResource()).(*pb.Route)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#route")
@@ -103,7 +103,7 @@ func (s *RoutesV1) Insert(ctx context.Context, req *pb.InsertRouteRequest) (*pb.
 	if err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, "network %q is not valid", obj.GetNetwork())
 	}
-	obj.Network = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/%s", networkName.Project.ID, networkName.Name)))
+	obj.Network = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/%s", networkName.Project.ID, networkName.Name)))
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err

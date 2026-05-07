@@ -1562,6 +1562,31 @@ func ResourceContainerCluster() *schema.Resource {
 								},
 							},
 						},
+						"additional_ip_ranges_configs": {
+							Type:        schema.TypeList,
+							Optional:    true,
+							Description: `AdditionalIpRangesConfigs is the configuration for additional pod secondary ranges supporting the ClusterUpdate message. Each AdditionalIPRangesConfig corresponds to a single subnetwork.`,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"subnetwork": {
+										Type:             schema.TypeString,
+										Required:         true,
+										DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
+										Description:      `Name of the subnetwork. This can be the full path of the subnetwork or just the name.`,
+									},
+									"pod_ipv4_range_names": {
+										Type:        schema.TypeList,
+										Optional:    true,
+										Elem:        &schema.Schema{Type: schema.TypeString},
+										Description: `List of secondary ranges names within this subnetwork that can be used for pod IPs.`,
+									},
+									"status": {
+										Type:        schema.TypeString,
+										Optional:    true,
+										Description: `Status of the subnetwork, If in draining status, subnet will not be selected for new node pools.`,
+									}},
+							},
+						},
 					},
 				},
 			},
@@ -1832,14 +1857,15 @@ func ResourceContainerCluster() *schema.Resource {
 				MaxItems:    1,
 				Optional:    true,
 				Computed:    true,
-				Description: `Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: "ENCRYPTED"; "DECRYPTED". key_name is the name of a CloudKMS key.`,
+				Description: `Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: "ENCRYPTED"; "ALL_OBJECTS_ENCRYPTION_ENABLED"; "DECRYPTED". key_name is the name of a CloudKMS key.`,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"state": {
-							Type:         schema.TypeString,
-							Required:     true,
-							ValidateFunc: validation.StringInSlice([]string{"ENCRYPTED", "DECRYPTED"}, false),
-							Description:  `ENCRYPTED or DECRYPTED.`,
+							Type:             schema.TypeString,
+							Required:         true,
+							ValidateFunc:     validation.StringInSlice([]string{"ENCRYPTED", "ALL_OBJECTS_ENCRYPTION_ENABLED", "DECRYPTED"}, false),
+							Description:      `ENCRYPTED, ALL_OBJECTS_ENCRYPTION_ENABLED or DECRYPTED.`,
+							DiffSuppressFunc: DatabaseEncryptionSuppress,
 						},
 						"key_name": {
 							Type:        schema.TypeString,
@@ -2144,7 +2170,7 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 
 	clusterName := d.Get("name").(string)
 
-	ipAllocationBlock, err := expandIPAllocationPolicy(d.Get("ip_allocation_policy"), d.Get("networking_mode").(string), d.Get("enable_autopilot").(bool))
+	ipAllocationBlock, aircs, err := expandIPAllocationPolicy(d.Get("ip_allocation_policy"), d, d.Get("networking_mode").(string), d.Get("enable_autopilot").(bool), config)
 	if err != nil {
 		return err
 	}
@@ -2458,6 +2484,35 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		err = ContainerOperationWait(config, op, project, location, "updating enable private endpoint", userAgent, d.Timeout(schema.TimeoutCreate))
 		if err != nil {
 			return errwrap.Wrapf("Error while waiting to enable private endpoint: {{err}}", err)
+		}
+	}
+
+	if len(aircs) > 0 {
+		name := containerClusterFullName(project, location, clusterName)
+		update := &container.ClusterUpdate{}
+		update.DesiredAdditionalIpRangesConfig = &container.DesiredAdditionalIPRangesConfig{
+			AdditionalIpRangesConfigs: aircs,
+		}
+
+		req := &container.UpdateClusterRequest{Update: update}
+
+		err = transport_tpg.Retry(transport_tpg.RetryOptions{
+			RetryFunc: func() error {
+				clusterUpdateCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.Update(name, req)
+				if config.UserProjectOverride {
+					clusterUpdateCall.Header().Add("X-Goog-User-Project", project)
+				}
+				op, err = clusterUpdateCall.Do()
+				return err
+			},
+		})
+		if err != nil {
+			return errwrap.Wrapf("Error updating cluster to configure additionalIpRangesConfigs: {{err}}", err)
+		}
+
+		err = ContainerOperationWait(config, op, project, location, "updating additionalIpRangesConfigs", userAgent, d.Timeout(schema.TimeoutCreate))
+		if err != nil {
+			return errwrap.Wrapf("Error while waiting on cluster update to configure additionalIpRangesConfigs: {{err}}", err)
 		}
 	}
 
@@ -3478,6 +3533,30 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		log.Printf("[INFO] GKE cluster %s's AdditionalPodRangesConfig has been updated", d.Id())
 	}
 
+	if d.HasChange("ip_allocation_policy.0.additional_ip_ranges_configs") {
+		c := d.Get("ip_allocation_policy.0.additional_ip_ranges_configs")
+		aircs, err := expandAdditionalIpRangesConfigs(c, d, config)
+		if err != nil {
+			return err
+		}
+
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredAdditionalIpRangesConfig: &container.DesiredAdditionalIPRangesConfig{
+					AdditionalIpRangesConfigs: aircs,
+				},
+			},
+		}
+
+		updateF := updateFunc(req, "updating AdditionalIpRangesConfigs")
+		// Call update serially.
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s's AdditionalIpRangesConfigs has been updated", d.Id())
+	}
+
 	if n, ok := d.GetOk("node_pool.#"); ok {
 		for i := 0; i < n.(int); i++ {
 			nodePoolInfo, err := extractNodePoolInformationFromCluster(d, config, clusterName)
@@ -4403,25 +4482,69 @@ func expandPodCidrOverprovisionConfig(configured interface{}) *container.PodCIDR
 	}
 }
 
-func expandIPAllocationPolicy(configured interface{}, networkingMode string, autopilot bool) (*container.IPAllocationPolicy, error) {
+func expandPodIpv4RangeNames(configured interface{}) []string {
+	l := configured.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil
+	}
+	var ranges []string
+	for _, rawRange := range l {
+		ranges = append(ranges, rawRange.(string))
+	}
+	return ranges
+}
+
+func expandAdditionalIpRangesConfigs(configured interface{}, d *schema.ResourceData, c *transport_tpg.Config) ([]*container.AdditionalIPRangesConfig, error) {
+	l := configured.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	additionalIpRangesConfigs := []*container.AdditionalIPRangesConfig{}
+	for _, rawConfig := range l {
+		config := rawConfig.(map[string]interface{})
+		subnetwork, err := tpgresource.ParseSubnetworkFieldValue(config["subnetwork"].(string), d, c)
+		if err != nil {
+			return nil, err
+		}
+		additionalIpRangesConfigs = append(additionalIpRangesConfigs, &container.AdditionalIPRangesConfig{
+			Subnetwork:        subnetwork.RelativeLink(),
+			PodIpv4RangeNames: expandPodIpv4RangeNames(config["pod_ipv4_range_names"]),
+			Status:            config["status"].(string),
+		})
+	}
+
+	return additionalIpRangesConfigs, nil
+}
+
+func expandIPAllocationPolicy(configured interface{}, d *schema.ResourceData, networkingMode string, autopilot bool, c *transport_tpg.Config) (*container.IPAllocationPolicy, []*container.AdditionalIPRangesConfig, error) {
 	l := configured.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		if networkingMode == "VPC_NATIVE" {
 			if autopilot {
-				return nil, nil
+				return nil, nil, nil
 			}
-			return nil, fmt.Errorf("`ip_allocation_policy` block is required for VPC_NATIVE clusters.")
+			return nil, nil, fmt.Errorf("`ip_allocation_policy` block is required for VPC_NATIVE clusters.")
 		}
 		return &container.IPAllocationPolicy{
 			UseIpAliases:    false,
 			UseRoutes:       networkingMode == "ROUTES",
 			StackType:       "IPV4",
 			ForceSendFields: []string{"UseIpAliases"},
-		}, nil
+		}, nil, nil
 	}
 
 	config := l[0].(map[string]interface{})
 	stackType := config["stack_type"].(string)
+
+	// We expand and return additional_ip_ranges_configs separately because
+	// this field is OUTPUT_ONLY for ClusterCreate RPCs. Instead, during the
+	// Terraform Create flow, we follow the CreateCluster (without
+	// additional_ip_ranges_configs populated) with an UpdateCluster (_with_
+	// additional_ip_ranges_configs populated).
+	additionalIpRangesConfigs, err := expandAdditionalIpRangesConfigs(config["additional_ip_ranges_configs"], d, c)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	return &container.IPAllocationPolicy{
 		UseIpAliases:               networkingMode == "VPC_NATIVE" || networkingMode == "",
@@ -4433,7 +4556,7 @@ func expandIPAllocationPolicy(configured interface{}, networkingMode string, aut
 		UseRoutes:                  networkingMode == "ROUTES",
 		StackType:                  stackType,
 		PodCidrOverprovisionConfig: expandPodCidrOverprovisionConfig(config["pod_cidr_overprovision_config"]),
-	}, nil
+	}, additionalIpRangesConfigs, nil
 }
 
 func expandMaintenancePolicy(d *schema.ResourceData, meta interface{}) *container.MaintenancePolicy {
@@ -5775,8 +5898,27 @@ func flattenIPAllocationPolicy(c *container.Cluster, d *schema.ResourceData, con
 			"stack_type":                    p.StackType,
 			"pod_cidr_overprovision_config": flattenPodCidrOverprovisionConfig(p.PodCidrOverprovisionConfig),
 			"additional_pod_ranges_config":  flattenAdditionalPodRangesConfig(c.IpAllocationPolicy),
+			"additional_ip_ranges_configs":  flattenAdditionalIpRangesConfigs(p.AdditionalIpRangesConfigs),
 		},
 	}, nil
+}
+
+func flattenAdditionalIpRangesConfigs(c []*container.AdditionalIPRangesConfig) []map[string]interface{} {
+	if len(c) == 0 {
+		return nil
+	}
+
+	var outRanges []map[string]interface{}
+	for _, rangeConfig := range c {
+		outRangeConfig := map[string]interface{}{
+			"subnetwork":           rangeConfig.Subnetwork,
+			"pod_ipv4_range_names": rangeConfig.PodIpv4RangeNames,
+			"status":               rangeConfig.Status,
+		}
+		outRanges = append(outRanges, outRangeConfig)
+	}
+
+	return outRanges
 }
 
 func flattenMaintenancePolicy(mp *container.MaintenancePolicy) []map[string]interface{} {
@@ -6468,4 +6610,21 @@ func containerClusterEnableK8sBetaApisCustomizeDiffFunc(d tpgresource.TerraformR
 	}
 
 	return nil
+}
+
+func DatabaseEncryptionSuppress(k, old, new string, d *schema.ResourceData) bool {
+	// The API sometimes returns ALL_OBJECTS_ENCRYPTION_ENABLED when the user sets ENCRYPTED
+	// and vice versa (depending on the cluster version and underlying resource storage).
+	//
+	// It's unclear whether this service-side change only applied to GKE 1.35 or above, or will be backported to older
+	// versions in the long term, so we suppressed the diff without checking the cluster version.
+	// This may cause some false negatives if the cluster can truly be switched between ALL_OBJECTS_ENCRYPTION_ENABLED
+	// and ENCRYPTED in the service.
+	if old == "ALL_OBJECTS_ENCRYPTION_ENABLED" && new == "ENCRYPTED" {
+		return true
+	}
+	if old == "ENCRYPTED" && new == "ALL_OBJECTS_ENCRYPTION_ENABLED" {
+		return true
+	}
+	return false
 }

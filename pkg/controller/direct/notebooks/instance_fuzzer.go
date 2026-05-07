@@ -29,8 +29,8 @@ func init() {
 
 func notebookInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Instance{},
-		NotebookInstanceSpec_FromProto, NotebookInstanceSpec_ToProto,
-		NotebookInstanceObservedState_FromProto, NotebookInstanceObservedState_ToProto,
+		NotebookInstanceSpec_v1beta1_FromProto, NotebookInstanceSpec_v1beta1_ToProto,
+		NotebookInstanceObservedState_v1beta1_FromProto, NotebookInstanceObservedState_v1beta1_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".name") // special field

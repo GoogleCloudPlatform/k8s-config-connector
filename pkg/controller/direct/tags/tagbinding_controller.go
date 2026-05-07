@@ -29,6 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/iterator"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -175,7 +176,7 @@ func (a *TagsTagBindingAdapter) Create(ctx context.Context, createOp *directbase
 	log.V(0).Info("creating TagsTagBinding")
 
 	req := &pb.CreateTagBindingRequest{
-		TagBinding: direct.ProtoClone(a.desired),
+		TagBinding: proto.CloneOf(a.desired),
 	}
 
 	op, err := a.tagBindingsClient.CreateTagBinding(ctx, req)
@@ -348,7 +349,7 @@ func (a *TagsTagBindingAdapter) Delete(ctx context.Context, deleteOp *directbase
 // TODO: Make this function generic and reuse across models.
 func (a *TagsTagBindingAdapter) changedFields(ctx context.Context) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
 	// Normalize desired state
-	desired := direct.ProtoClone(a.desired)
+	desired := proto.CloneOf(a.desired)
 	if desired.GetParent() != "" {
 		normalized, err := a.projectMapper.ReplaceProjectNumberWithIDInLink(ctx, desired.GetParent())
 		if err != nil {
@@ -361,7 +362,7 @@ func (a *TagsTagBindingAdapter) changedFields(ctx context.Context) (*structuredr
 	var actualMasked protoreflect.Message
 	{
 		// Normalize actual state
-		actual := direct.ProtoClone(a.actual)
+		actual := proto.CloneOf(a.actual)
 		if actual.GetParent() != "" {
 			normalized, err := a.projectMapper.ReplaceProjectNumberWithIDInLink(ctx, actual.GetParent())
 			if err != nil {
@@ -384,5 +385,5 @@ func (a *TagsTagBindingAdapter) changedFields(ctx context.Context) (*structuredr
 		actualMasked = specProto.ProtoReflect()
 	}
 
-	return buildDiff(ctx, desired.ProtoReflect(), actualMasked)
+	return DiffForTopLevelFields(ctx, desired.ProtoReflect(), actualMasked)
 }

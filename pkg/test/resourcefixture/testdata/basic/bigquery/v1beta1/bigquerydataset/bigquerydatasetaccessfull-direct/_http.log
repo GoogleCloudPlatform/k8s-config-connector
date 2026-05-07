@@ -264,21 +264,18 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
-        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "User ID",
         "mode": "REQUIRED",
         "name": "user_id",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
-        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -342,21 +339,18 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
-        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "User ID",
         "mode": "REQUIRED",
         "name": "user_id",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
-        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -1263,21 +1257,18 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
-        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "User ID",
         "mode": "REQUIRED",
         "name": "user_id",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
-        "policyTags": {},
         "type": "STRING"
       }
     ]

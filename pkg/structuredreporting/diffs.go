@@ -18,6 +18,7 @@ import (
 	"context"
 	"sort"
 
+	"google.golang.org/protobuf/reflect/protoreflect"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
@@ -35,7 +36,11 @@ type Diff struct {
 
 type DiffField struct {
 	// ID is the identity of the field.  Note that this might be the proto or terraform name.
-	ID  string
+	ID string
+
+	// ProtoFieldDescriptor is the proto fieldDescriptor of the field, if known.
+	ProtoFieldDescriptor protoreflect.FieldDescriptor
+
 	Old any
 	New any
 }
@@ -43,6 +48,11 @@ type DiffField struct {
 // AddField adds the data for a changed field
 func (d *Diff) AddField(id string, old any, new any) {
 	d.Fields = append(d.Fields, DiffField{ID: id, Old: old, New: new})
+}
+
+// AddProtoField adds the data for a changed field where we know the proto field descriptor.
+func (d *Diff) AddProtoField(id string, fd protoreflect.FieldDescriptor, old any, new any) {
+	d.Fields = append(d.Fields, DiffField{ID: id, ProtoFieldDescriptor: fd, Old: old, New: new})
 }
 
 // HasDiff returns true if the diff has any fields that differ.

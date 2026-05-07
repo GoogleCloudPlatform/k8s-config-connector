@@ -47,6 +47,7 @@ IMPORTANT:
 * Before creating an issue for a resource, check if an issue already exists (open or closed) to avoid duplicates.
 * The issue title should be in the format: `Create Identity and Reference files for <resource_group> <resource_kind>`
 * Use `gh` tool to create issue.
+* Append a link to this chore file (`.agents/tf2d-identity-reference-issue.md`) at the end of the issue body for traceability.
 
 ## Issue Title
 
@@ -173,6 +174,12 @@ func (r *${resource_group}${resource_name}Ref) GetGVK() schema.GroupVersionKind 
 
 6. **Validate changes**:
    - Running `make all-binary` and `make test` will ensure the new code compiles and the tests pass. Please fix any issue discovered by this compilation.
+
+7. **Create PR**:
+   - Create a Pull Request with your changes.
+   - Apply the same labels to the PR as are on this issue.
+   - Include a link to the chore file (`.agents/tf2d-identity-reference-issue.md`) in the PR description.
+   - Include `Fixes #<issue-number>` in the PR description.
 
 This issue is part of Epic #5954.
 

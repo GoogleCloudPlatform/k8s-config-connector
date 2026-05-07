@@ -65,7 +65,7 @@ func (s *SubnetsV1) List(ctx context.Context, req *pb.ListSubnetworksRequest) (*
 	response := &pb.SubnetworkList{}
 	response.Id = PtrTo("0123456789")
 	response.Kind = PtrTo("compute#subnetworkList")
-	response.SelfLink = PtrTo(buildComputeSelfLink(ctx, strings.TrimSuffix(findPrefix, "/")))
+	response.SelfLink = PtrTo(BuildComputeSelfLink(ctx, strings.TrimSuffix(findPrefix, "/")))
 
 	findKind := (&pb.Subnetwork{}).ProtoReflect().Descriptor()
 	if err := s.storage.List(ctx, findKind, storage.ListOptions{Prefix: findPrefix}, func(obj proto.Message) error {
@@ -100,7 +100,7 @@ func (s *SubnetsV1) AggregatedList(ctx context.Context, req *pb.AggregatedListSu
 	response := &pb.SubnetworkAggregatedList{}
 	response.Id = PtrTo("0123456789")
 	response.Kind = PtrTo("compute#subnetworkAggregatedList")
-	response.SelfLink = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/aggregated/subnetworks", name.Project.ID)))
+	response.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/aggregated/subnetworks", name.Project.ID)))
 	response.Items = make(map[string]*pb.SubnetworksScopedList)
 
 	// Add empty lists for all regions and zones (and global).
@@ -159,7 +159,7 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetSubnetworkResource()).(*pb.Subnetwork)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#subnetwork")
@@ -175,7 +175,7 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 	if obj.Purpose == nil {
 		obj.Purpose = PtrTo("PRIVATE")
 	}
-	obj.Region = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)))
+	obj.Region = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)))
 	if obj.StackType == nil {
 		obj.StackType = PtrTo("IPV4_ONLY")
 	}
@@ -184,7 +184,7 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 	if err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, "network %q is not valid", obj.GetNetwork())
 	}
-	obj.Network = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/%s", networkName.Project.ID, networkName.Name)))
+	obj.Network = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/%s", networkName.Project.ID, networkName.Name)))
 
 	cidrIP, _, err := net.ParseCIDR(obj.GetIpCidrRange())
 	if err != nil {

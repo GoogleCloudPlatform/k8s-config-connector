@@ -108,6 +108,7 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 	if obj.NetworkConfig.ServiceExternalIpsConfig == nil {
 		obj.NetworkConfig.ServiceExternalIpsConfig = &pb.ServiceExternalIPsConfig{}
 	}
+	obj.NetworkConfig.Subnetwork = strings.TrimPrefix(obj.NetworkConfig.Subnetwork, "https://www.googleapis.com/compute/v1/")
 
 	// On output, Network and Subnetwork show the ID instead of the full name
 	obj.Network = lastComponent(obj.Network)
@@ -153,10 +154,17 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 		return nil, err
 	}
 
+	if err := s.createMockIGM(ctx, name.Project, obj.InstanceGroupUrls, obj.CurrentNodeCount); err != nil {
+		klog.Errorf("failed to create mock IGM: %v", err)
+	}
+
 	for _, nodePool := range obj.NodePools {
 		nodePoolFqn := name.String() + "/nodePools/" + nodePool.GetName()
 		if err := s.storage.Create(ctx, nodePoolFqn, nodePool); err != nil {
 			return nil, err
+		}
+		if err := s.createMockIGM(ctx, name.Project, nodePool.InstanceGroupUrls, nodePool.InitialNodeCount); err != nil {
+			klog.Errorf("failed to create mock IGM: %v", err)
 		}
 	}
 
@@ -327,9 +335,30 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		update.DesiredEnableCiliumClusterwideNetworkPolicy = nil
 	}
 
-	// TODO: Support more updates!
+	if update.DesiredAdditionalIpRangesConfig != nil {
+		if obj.IpAllocationPolicy == nil {
+			obj.IpAllocationPolicy = &pb.IPAllocationPolicy{}
+		}
+		obj.IpAllocationPolicy.AdditionalIpRangesConfigs = update.DesiredAdditionalIpRangesConfig.AdditionalIpRangesConfigs
+		update.DesiredAdditionalIpRangesConfig = nil
+	}
+
+	if update.DesiredDatabaseEncryption != nil {
+		if obj.DatabaseEncryption == nil {
+			obj.DatabaseEncryption = &pb.DatabaseEncryption{}
+		}
+		if update.DesiredDatabaseEncryption.State != pb.DatabaseEncryption_UNKNOWN {
+			obj.DatabaseEncryption.State = update.DesiredDatabaseEncryption.State
+		}
+		if update.DesiredDatabaseEncryption.KeyName != "" {
+			obj.DatabaseEncryption.KeyName = update.DesiredDatabaseEncryption.KeyName
+		}
+		obj.DatabaseEncryption.CurrentState = nil
+		update.DesiredDatabaseEncryption = nil
+	}
 
 	if !proto.Equal(update, &pb.ClusterUpdate{}) {
+
 		return nil, status.Errorf(codes.InvalidArgument, "update was not fully implemented ClusterUpdate=%v", prototext.Format(update))
 	}
 
@@ -597,15 +626,50 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 		obj.CurrentNodeCount = 1
 	}
 
+	// If databaseEncryption field doesn't exist and databaseEncryption.state is UNKNOWN, then it should be defaulted to
+	// DECRYPTED with no key.
+	// Otherwise, UNKNOWN actually represents ALL_OBJECTS_ENCRYPTION_ENABLED (more details see the comments below), and
+	// we will update it to ENCRYPTED.
 	if obj.DatabaseEncryption == nil {
-		obj.DatabaseEncryption = &pb.DatabaseEncryption{}
+		obj.DatabaseEncryption = &pb.DatabaseEncryption{
+			State: pb.DatabaseEncryption_DECRYPTED,
+		}
+	} else {
+		// Possibly because mockgcp is using an older version of the proto,
+		// when the requested state is pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED,
+		// it's dropped in the received request, and then got parsed to pb.DatabaseEncryption_UNKNOWN.
+		//
+		// Besides, if I explicitly do `obj.DatabaseEncryption.State = pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED`
+		// here, this error shows up in the test log:
+		//   Error when reading or editing Container Cluster \"cl-dball-7anl5sn4tkp33jq\": json: cannot unmarshal number
+		//   into Go struct field DatabaseEncryption.databaseEncryption.state of type string
+		if obj.DatabaseEncryption.State == pb.DatabaseEncryption_UNKNOWN {
+			obj.DatabaseEncryption.State = pb.DatabaseEncryption_ENCRYPTED
+		}
 	}
 
-	if obj.DatabaseEncryption.State == pb.DatabaseEncryption_UNKNOWN {
-		obj.DatabaseEncryption.State = pb.DatabaseEncryption_DECRYPTED
-	}
 	if obj.DatabaseEncryption.CurrentState == nil {
-		obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_DECRYPTED)
+		switch obj.DatabaseEncryption.State {
+		case pb.DatabaseEncryption_DECRYPTED:
+			obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_DECRYPTED)
+			if obj.DatabaseEncryption.KeyName != "" {
+				obj.DatabaseEncryption.DecryptionKeys = []string{obj.DatabaseEncryption.KeyName}
+				obj.DatabaseEncryption.KeyName = ""
+			}
+		case pb.DatabaseEncryption_ENCRYPTED:
+			// The real GCP service decided to return `ALL_OBJECTS_ENCRYPTION_ENABLED` when the input is `ENCRYPTED`
+			// for the latest version (1.35 and above).
+			// However, if I explicitly do `obj.DatabaseEncryption.State = pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED`
+			// here, this error shows up in the test log:
+			//   Error when reading or editing Container Cluster \"cl-dball-7anl5sn4tkp33jq\": json: cannot unmarshal number
+			//   into Go struct field DatabaseEncryption.databaseEncryption.state of type string
+			obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_ENCRYPTED)
+		case pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED:
+			// CURRENT_STATE_ALL_OBJECTS_ENCRYPTION_ENABLED value is not yet supported in googleapis library.
+			obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_ENCRYPTED)
+		default:
+			obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_DECRYPTED)
+		}
 	}
 
 	// defaultMaxPodsConstraint

@@ -28,9 +28,10 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/memorystore/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocks"
+	"github.com/google/uuid"
 )
 
 type instanceServer struct {
@@ -106,7 +107,17 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	}
 
 	if obj.DeletionProtectionEnabled == nil {
-		obj.DeletionProtectionEnabled = mocks.PtrTo(false)
+		obj.DeletionProtectionEnabled = new(false)
+	}
+
+	if obj.EffectiveMaintenanceVersion == nil {
+		obj.EffectiveMaintenanceVersion = new("MEMORYSTORE_20260313_01_02")
+	}
+
+	if obj.EncryptionInfo == nil {
+		obj.EncryptionInfo = &pb.EncryptionInfo{
+			EncryptionType: pb.EncryptionInfo_GOOGLE_DEFAULT_ENCRYPTION,
+		}
 	}
 
 	if obj.NodeType == pb.Instance_NODE_TYPE_UNSPECIFIED {
@@ -116,6 +127,7 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	if obj.Mode == pb.Instance_MODE_UNSPECIFIED {
 		obj.Mode = pb.Instance_CLUSTER
 	}
+
 	if len(obj.PscAttachmentDetails) == 0 {
 		var types []pb.ConnectionType
 		switch obj.GetMode() {
@@ -126,17 +138,20 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 			types = append(types, pb.ConnectionType_CONNECTION_TYPE_PRIMARY)
 			types = append(types, pb.ConnectionType_CONNECTION_TYPE_READER)
 		}
+		pscProjectNumber := 11199043661                                 // This is (presumably) a project owned by memorystore
+		pscUID := strings.ReplaceAll(uuid.New().String(), "-", "")[:15] // Take a substring to get a shorter UID
 		obj.PscAttachmentDetails = []*pb.PscAttachmentDetail{
 			{
-				ServiceAttachment: fmt.Sprintf("projects/tp-%s/regions/%s/serviceAttachments/sa-%s", name.Name, name.Location, name.Name),
+				ServiceAttachment: fmt.Sprintf("projects/%d/regions/%s/serviceAttachments/gcp-memorystore-auto-j%s-psc-sa", pscProjectNumber, name.Location, pscUID),
 				ConnectionType:    types[0],
 			},
 			{
-				ServiceAttachment: fmt.Sprintf("projects/tp-%s/regions/%s/serviceAttachments/sa-%s-2", name.Name, name.Location, name.Name),
+				ServiceAttachment: fmt.Sprintf("projects/%d/regions/%s/serviceAttachments/gcp-memorystore-auto-j%s-psc-sa-2", pscProjectNumber, name.Location, pscUID),
 				ConnectionType:    types[1],
 			},
 		}
 	}
+
 	if len(obj.Endpoints) > 0 {
 		if obj.Endpoints[0] != nil && len(obj.Endpoints[0].Connections) > 0 {
 			connections := obj.Endpoints[0].Connections
@@ -163,6 +178,8 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 					}
 					autoConnection.IpAddress = fmt.Sprintf("10.128.0.%d", pscConnectionID%256)
 					autoConnection.ForwardingRule = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/sca-auto-fr-%x", network.Project.ID, name.Location, pscConnectionID)
+					autoConnection.IpAddress = fmt.Sprintf("10.128.0.%d", pscConnectionID%256)
+					autoConnection.ForwardingRule = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/sca-auto-fr-%x", network.Project.ID, name.Location, pscConnectionID)
 					autoConnection.PscConnectionId = fmt.Sprintf("%d", pscConnectionID)
 					autoConnection.ConnectionType = attachmentDetails.ConnectionType
 					autoConnection.ServiceAttachment = attachmentDetails.ServiceAttachment
@@ -182,11 +199,13 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 					userConnection.ProjectId = network.Project.ID
 					userConnection.PscConnectionStatus = pb.PscConnectionStatus_ACTIVE
 					userConnection.ConnectionType = attachmentDetails.ConnectionType
+					userConnection.PscConnectionId = fmt.Sprintf("%d", pscConnectionID)
 					if userConnection.Ports == nil && userConnection.ConnectionType != pb.ConnectionType_CONNECTION_TYPE_UNSPECIFIED {
 						userConnection.Ports = &pb.PscConnection_Port{
 							Port: 6379,
 						}
 					}
+					pscConnectionID++
 				}
 			}
 		}
@@ -224,8 +243,9 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 		obj.TransitEncryptionMode = pb.Instance_TRANSIT_ENCRYPTION_DISABLED
 	}
 	if obj.Uid == "" {
-		obj.Uid = fmt.Sprintf("instance-%s", name.Name)
+		obj.Uid = uuid.New().String()
 	}
+
 	if obj.ZoneDistributionConfig == nil {
 		obj.ZoneDistributionConfig = &pb.ZoneDistributionConfig{}
 	}
@@ -340,6 +360,8 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 
 	for _, path := range paths {
 		switch path {
+		case "authorizationMode":
+			obj.AuthorizationMode = req.Instance.AuthorizationMode
 		case "labels":
 			obj.Labels = req.Instance.Labels
 		case "replicaCount":
@@ -357,7 +379,7 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 		case "deletionProtectionEnabled":
 			obj.DeletionProtectionEnabled = req.Instance.DeletionProtectionEnabled
 		case "endpoints":
-			obj.Endpoints = req.Instance.Endpoints
+			obj.Endpoints = r.mergeEndpoints(obj.Endpoints, req.Instance.Endpoints)
 		case "maintenancePolicy":
 			if req.Instance.MaintenancePolicy != nil {
 				obj.MaintenancePolicy = req.Instance.MaintenancePolicy
@@ -378,7 +400,16 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 			if managedBackupSource := req.Instance.GetManagedBackupSource(); managedBackupSource != nil {
 				obj.ImportSources = &pb.Instance_ManagedBackupSource_{ManagedBackupSource: managedBackupSource}
 			}
+		case "mode":
+			obj.Mode = req.Instance.Mode
+		case "transitEncryptionMode":
+			obj.TransitEncryptionMode = req.Instance.TransitEncryptionMode
+		case "zoneDistributionConfig":
+			obj.ZoneDistributionConfig = req.Instance.ZoneDistributionConfig
 		default:
+			// Note: actual error is:
+			// googleapi: Error 400: unsupported path in fieldMask: mode. Allowed values are engine_version, automated_backup_config, shard_count, persistence_config.rdb_config.rdb_snapshot_period, acl_policy, auth_mode, persistence_config.aof_config.append_fsync, simulate_maintenance_event, deletion_protection_enabled, node_type, cross_instance_replication_config.primary_instance.instance, replica_count, persistence_config.rdb_config.rdb_snapshot_start_time, endpoints, cross_instance_replication_config, cross_instance_replication_config.instance_role, rotate_server_certificate, engine_configs, labels, persistence_config, maintenance_window, maintenance_policy, automated_backup_config.fixed_frequency_schedule.start_time.hours, maintenance_version, maintenance_policy.weekly_maintenance_window, automated_backup_config.fixed_frequency_schedule.start_time, cross_instance_replication_config.secondary_instances, automated_backup_config.automated_backup_mode, automated_backup_config.fixed_frequency_schedule, automated_backup_config.retention, persistence_config.mode
+
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
 		}
 	}
@@ -409,6 +440,21 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 		r.storage.Update(ctx, fqn, retObj)
 		return retObj, nil
 	})
+}
+
+func (r *instanceServer) mergeEndpoints(current, updates []*pb.Instance_InstanceEndpoint) []*pb.Instance_InstanceEndpoint {
+	var results []*pb.Instance_InstanceEndpoint
+	for _, item := range current {
+		if item != nil && len(item.Connections) > 0 && item.Connections[0].GetPscAutoConnection() != nil {
+			results = append(results, item)
+		}
+	}
+	for _, item := range updates {
+		if item != nil && len(item.Connections) > 0 && item.Connections[0].GetPscConnection() != nil {
+			results = append(results, item)
+		}
+	}
+	return results
 }
 
 func (r *instanceServer) DeleteInstance(ctx context.Context, req *pb.DeleteInstanceRequest) (*longrunning.Operation, error) {
@@ -540,6 +586,12 @@ func (r *instanceServer) BackupInstance(ctx context.Context, req *pb.BackupInsta
 		TotalSizeBytes: 141,
 		Uid:            fmt.Sprintf("backup-%s", backupID),
 	}
+
+	obj.EncryptionInfo = &pb.EncryptionInfo{
+		EncryptionType: pb.EncryptionInfo_GOOGLE_DEFAULT_ENCRYPTION,
+		LastUpdateTime: timestamppb.New(now),
+	}
+
 	if err := r.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}

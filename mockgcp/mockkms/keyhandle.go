@@ -30,7 +30,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"k8s.io/apimachinery/pkg/util/uuid"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/kms/v1"
+	pb "cloud.google.com/go/kms/apiv1/kmspb"
 )
 
 type autokeyServer struct {
@@ -72,6 +72,9 @@ func (r *autokeyServer) CreateKeyHandle(ctx context.Context, req *pb.CreateKeyHa
 	fqn := keyHandleName.String()
 
 	obj := proto.Clone(req.GetKeyHandle()).(*pb.KeyHandle)
+	if obj == nil {
+		obj = &pb.KeyHandle{}
+	}
 	project, err := r.Projects.GetProjectByID(keyHandleName.projectID)
 	if err != nil {
 		return nil, err

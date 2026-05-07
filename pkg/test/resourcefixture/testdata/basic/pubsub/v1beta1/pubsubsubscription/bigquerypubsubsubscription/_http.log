@@ -907,7 +907,6 @@ X-Xss-Protection: 0
         "description": "The data",
         "mode": "NULLABLE",
         "name": "data",
-        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -960,7 +959,6 @@ X-Xss-Protection: 0
         "description": "The data",
         "mode": "NULLABLE",
         "name": "data",
-        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -1068,7 +1066,6 @@ X-Xss-Protection: 0
         "description": "The data",
         "mode": "NULLABLE",
         "name": "data",
-        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -1121,7 +1118,6 @@ X-Xss-Protection: 0
         "description": "The data",
         "mode": "NULLABLE",
         "name": "data",
-        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -1429,7 +1425,6 @@ X-Xss-Protection: 0
         "description": "The data",
         "mode": "NULLABLE",
         "name": "data",
-        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -1498,7 +1493,6 @@ X-Xss-Protection: 0
         "description": "The data",
         "mode": "NULLABLE",
         "name": "data",
-        "policyTags": {},
         "type": "STRING"
       }
     ]

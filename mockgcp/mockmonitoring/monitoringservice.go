@@ -22,6 +22,7 @@ import (
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/v3"
@@ -68,7 +69,7 @@ func (s *serviceMonitoringService) CreateService(ctx context.Context, req *pb.Cr
 
 	fqn := name.String()
 
-	obj := ProtoClone(req.Service)
+	obj := proto.CloneOf(req.Service)
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -91,7 +92,7 @@ func (s *serviceMonitoringService) UpdateService(ctx context.Context, req *pb.Up
 		return nil, err
 	}
 
-	updated := ProtoClone(existing)
+	updated := proto.CloneOf(existing)
 	for _, path := range req.GetUpdateMask().GetPaths() {
 		switch path {
 		case "displayName":

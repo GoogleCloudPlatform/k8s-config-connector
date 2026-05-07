@@ -77,7 +77,7 @@ func (s *AccessContextManagerV1) CreateAccessPolicy(ctx context.Context, req *pb
 	name := &accessPolicyName{AccessPolicy: policyID}
 	fqn := name.String()
 
-	obj := ProtoClone(req)
+	obj := proto.CloneOf(req)
 	obj.Name = fqn
 	obj.Etag = computeEtag(obj)
 
@@ -110,7 +110,7 @@ func (s *AccessContextManagerV1) UpdateAccessPolicy(ctx context.Context, req *pb
 		return nil, status.Errorf(codes.Aborted, "etag mismatch")
 	}
 
-	updated := ProtoClone(existing)
+	updated := proto.CloneOf(existing)
 	paths := req.GetUpdateMask().GetPaths()
 	for _, path := range paths {
 		switch path {

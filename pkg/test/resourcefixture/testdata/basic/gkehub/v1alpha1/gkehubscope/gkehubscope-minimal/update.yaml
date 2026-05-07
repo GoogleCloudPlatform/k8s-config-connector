@@ -1,0 +1,10 @@
+apiVersion: gkehub.cnrm.cloud.google.com/v1alpha1
+kind: GKEHubScope
+metadata:
+  name: gkehubscope-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: global
+  namespaceLabels:
+    test-label: updated

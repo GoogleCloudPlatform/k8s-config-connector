@@ -27,6 +27,7 @@ import (
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 )
 
@@ -61,7 +62,7 @@ func (a *analyticsHubServer) CreateDataExchange(ctx context.Context, request *pb
 	}
 
 	fqn := name.String()
-	obj := ProtoClone(request.DataExchange)
+	obj := proto.CloneOf(request.DataExchange)
 	obj.Name = fqn
 
 	a.populateDataExchangeDefaults(obj, name)
@@ -168,7 +169,7 @@ func (a *analyticsHubServer) CreateListing(ctx context.Context, request *pb.Crea
 	}
 
 	fqn := name.String()
-	obj := ProtoClone(request.Listing)
+	obj := proto.CloneOf(request.Listing)
 	obj.Name = fqn
 
 	if bigqueryDataSet := obj.GetBigqueryDataset(); bigqueryDataSet != nil {

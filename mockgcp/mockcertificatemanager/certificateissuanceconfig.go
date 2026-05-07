@@ -84,6 +84,7 @@ func (s *CertificateManagerV1) CreateCertificateIssuanceConfig(ctx context.Conte
 	}
 
 	return s.operations.StartLRO(ctx, req.Parent, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.Now()
 		result := proto.Clone(obj).(*pb.CertificateIssuanceConfig)
 		return result, nil
 	})
@@ -174,6 +175,7 @@ func (s *CertificateManagerV1) DeleteCertificateIssuanceConfig(ctx context.Conte
 		Verb:       "delete",
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.Now()
 		return &emptypb.Empty{}, nil
 	})
 }

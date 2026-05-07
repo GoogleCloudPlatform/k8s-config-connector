@@ -50,7 +50,7 @@ func (s *cloudDeploy) GetTarget(ctx context.Context, req *pb.GetTargetRequest) (
 	obj := &pb.Target{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "target %q not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
@@ -126,7 +126,7 @@ func (s *cloudDeploy) UpdateTarget(ctx context.Context, req *pb.UpdateTargetRequ
 			s.defaultTarget(name, obj)
 		} else {
 			if status.Code(err) == codes.NotFound {
-				return nil, status.Errorf(codes.NotFound, "target %q not found", fqn)
+				return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 			}
 			return nil, err
 		}
@@ -211,7 +211,7 @@ func (s *cloudDeploy) DeleteTarget(ctx context.Context, req *pb.DeleteTargetRequ
 			// Return success (LRO) if not found and AllowMissing is true
 		} else {
 			if status.Code(err) == codes.NotFound {
-				return nil, status.Errorf(codes.NotFound, "target %q not found", fqn)
+				return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 			}
 			return nil, err
 		}

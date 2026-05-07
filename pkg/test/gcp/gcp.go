@@ -74,6 +74,7 @@ var (
 	TestInterconnectID                      = EnvVar{Key: "TEST_INTERCONNECT"}
 	TestKCCAlloyDBProject                   = EnvVar{Key: "KCC_ALLOYDB_TEST_PROJECT"}
 	TestKCCAlloyDBProjectNumber             = EnvVar{Key: "KCC_ALLOYDB_TEST_PROJECT_NUMBER"}
+	TestSharedReservationsProject           = EnvVar{Key: "TEST_SHARED_RESERVATIONS_PROJECT"}
 )
 
 const (

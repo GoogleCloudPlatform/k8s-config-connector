@@ -126,6 +126,15 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - tfField: ip_allocation_policy.additional_ip_ranges_configs.subnetwork
+          description: |-
+            The subnetwork path for the additional IP range. Format: projects/{project}/regions/{region}/subnetworks/{subnetwork}.
+          key: subnetworkRef
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
     - name: google_container_node_pool
       kind: ContainerNodePool
       idTemplate: "{{project}}/{{location}}/{{cluster}}/{{name}}"
@@ -170,6 +179,15 @@ spec:
             kind: ComputeNodeGroup
             version: v1beta1
             group: compute.cnrm.cloud.google.com
+        - tfField: network_config.subnetwork
+          description: |-
+            Immutable. The subnetwork path for the node pool. Format: projects/{project}/regions/{region}/subnetworks/{subnetwork}. If not set, the provider/API will choose the subnetwork (e.g. based on IP utilization) and report it here.
+          key: subnetworkRef
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
         - tfField: network_config.additional_node_network_configs.network
           description: Immutable. Name of the VPC where the additional
             interface belongs.
