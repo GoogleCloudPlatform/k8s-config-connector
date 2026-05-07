@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ spec:
   description: Basic compute reservation
   zone: us-central1-a
   specificReservation:
-    count: 2
+    count: 1
     instanceProperties:
       machineType: n1-standard-1
       minCpuPlatform: "Intel Sandy Bridge"
