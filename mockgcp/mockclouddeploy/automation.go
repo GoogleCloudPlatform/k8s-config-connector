@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 // +tool:mockgcp-support
 // proto.service: google.cloud.deploy.v1.CloudDeploy
-// proto.message: google.cloud.deploy.v1.DeliveryPipeline
+// proto.message: google.cloud.deploy.v1.Automation
 
 package mockclouddeploy
 
@@ -38,47 +38,46 @@ import (
 	"github.com/google/uuid"
 )
 
-func (s *cloudDeploy) ListDeliveryPipelines(ctx context.Context, req *pb.ListDeliveryPipelinesRequest) (*pb.ListDeliveryPipelinesResponse, error) {
-	parent, err := s.parseLocationName(req.Parent)
+func (s *cloudDeploy) ListAutomations(ctx context.Context, req *pb.ListAutomationsRequest) (*pb.ListAutomationsResponse, error) {
+	parent, err := s.parseDeliveryPipelineName(req.Parent)
 	if err != nil {
 		return nil, err
 	}
 
-	var pipelines []*pb.DeliveryPipeline
-	pipelineKind := (&pb.DeliveryPipeline{}).ProtoReflect().Descriptor()
-	if err := s.storage.List(ctx, pipelineKind, storage.ListOptions{}, func(obj proto.Message) error {
-		pipeline := obj.(*pb.DeliveryPipeline)
-		name, err := s.parseDeliveryPipelineName(pipeline.Name)
+	var automations []*pb.Automation
+	automationKind := (&pb.Automation{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, automationKind, storage.ListOptions{}, func(obj proto.Message) error {
+		automation := obj.(*pb.Automation)
+		name, err := s.parseAutomationName(automation.Name)
 		if err != nil {
 			return nil // Should not happen
 		}
 
-		if name.Project.ID == parent.Project.ID && name.Location == parent.Location {
-			// TODO: Support filtering? gcloud uses filter=serialPipeline.stages.targetId:"..."
-			pipelines = append(pipelines, pipeline)
+		if name.Project.ID == parent.Project.ID && name.Location == parent.Location && name.DeliveryPipeline == parent.DeliveryPipeline {
+			automations = append(automations, automation)
 		}
 		return nil
 	}); err != nil {
 		return nil, err
 	}
 
-	return &pb.ListDeliveryPipelinesResponse{
-		DeliveryPipelines: pipelines,
+	return &pb.ListAutomationsResponse{
+		Automations: automations,
 	}, nil
 }
 
-func (s *cloudDeploy) GetDeliveryPipeline(ctx context.Context, req *pb.GetDeliveryPipelineRequest) (*pb.DeliveryPipeline, error) {
-	name, err := s.parseDeliveryPipelineName(req.Name)
+func (s *cloudDeploy) GetAutomation(ctx context.Context, req *pb.GetAutomationRequest) (*pb.Automation, error) {
+	name, err := s.parseAutomationName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := &pb.DeliveryPipeline{}
+	obj := &pb.Automation{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "deliveryPipeline %q not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
@@ -86,26 +85,23 @@ func (s *cloudDeploy) GetDeliveryPipeline(ctx context.Context, req *pb.GetDelive
 	return obj, nil
 }
 
-func (s *cloudDeploy) CreateDeliveryPipeline(ctx context.Context, req *pb.CreateDeliveryPipelineRequest) (*longrunningpb.Operation, error) {
-	reqName := fmt.Sprintf("%s/deliveryPipelines/%s", req.Parent, req.DeliveryPipelineId)
-	name, err := s.parseDeliveryPipelineName(reqName)
+func (s *cloudDeploy) CreateAutomation(ctx context.Context, req *pb.CreateAutomationRequest) (*longrunningpb.Operation, error) {
+	reqName := fmt.Sprintf("%s/automations/%s", req.Parent, req.AutomationId)
+	name, err := s.parseAutomationName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
-	obj := proto.Clone(req.DeliveryPipeline).(*pb.DeliveryPipeline)
+	obj := proto.Clone(req.Automation).(*pb.Automation)
 	obj.Name = fqn
 
 	obj.Uid = uuid.NewString()
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())
+	obj.Etag = uuid.NewString()
 
-	if obj.Pipeline == nil {
-		obj.Pipeline = &pb.DeliveryPipeline_SerialPipeline{
-			SerialPipeline: &pb.SerialPipeline{},
-		}
-	}
+	s.populateAutomationDefaults(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -125,47 +121,65 @@ func (s *cloudDeploy) CreateDeliveryPipeline(ctx context.Context, req *pb.Create
 	})
 }
 
-func (s *cloudDeploy) UpdateDeliveryPipeline(ctx context.Context, req *pb.UpdateDeliveryPipelineRequest) (*longrunningpb.Operation, error) {
-	name, err := s.parseDeliveryPipelineName(req.DeliveryPipeline.Name)
+func (s *cloudDeploy) UpdateAutomation(ctx context.Context, req *pb.UpdateAutomationRequest) (*longrunningpb.Operation, error) {
+	name, err := s.parseAutomationName(req.Automation.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := &pb.DeliveryPipeline{}
+	obj := &pb.Automation{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound && req.AllowMissing {
-			obj = proto.Clone(req.DeliveryPipeline).(*pb.DeliveryPipeline)
+			obj = proto.Clone(req.Automation).(*pb.Automation)
 			obj.Name = fqn
 			obj.Uid = uuid.NewString()
 			obj.CreateTime = timestamppb.New(time.Now())
 			obj.UpdateTime = timestamppb.New(time.Now())
-
-			if obj.Pipeline == nil {
-				obj.Pipeline = &pb.DeliveryPipeline_SerialPipeline{
-					SerialPipeline: &pb.SerialPipeline{},
-				}
-			}
+			obj.Etag = uuid.NewString()
+			s.populateAutomationDefaults(obj)
 
 			if err := s.storage.Create(ctx, fqn, obj); err != nil {
 				return nil, err
 			}
 		} else {
+			if status.Code(err) == codes.NotFound {
+				return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+			}
 			return nil, err
 		}
 	} else {
-		req.DeliveryPipeline.Uid = obj.GetUid()
-		req.DeliveryPipeline.CreateTime = obj.GetCreateTime()
-		req.DeliveryPipeline.UpdateTime = timestamppb.New(time.Now())
+		req.Automation.Uid = obj.GetUid()
+		req.Automation.CreateTime = obj.GetCreateTime()
+		req.Automation.UpdateTime = timestamppb.New(time.Now())
+		req.Automation.Etag = obj.GetEtag()
 
 		// Apply the update mask to the object.
 		paths := req.GetUpdateMask().GetPaths()
 		if len(paths) == 0 {
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
 		}
-		if err := fields.UpdateByFieldMask(obj, req.DeliveryPipeline, req.UpdateMask.Paths); err != nil {
-			return nil, fmt.Errorf("update field_mask.paths: %w", err)
+
+		// Handle * in update mask
+		hasWildcard := false
+		for _, path := range paths {
+			if path == "*" {
+				hasWildcard = true
+				break
+			}
+		}
+
+		if hasWildcard {
+			obj = proto.Clone(req.Automation).(*pb.Automation)
+			obj.Name = fqn
+			obj.Uid = req.Automation.Uid
+			obj.CreateTime = req.Automation.CreateTime
+			s.populateAutomationDefaults(obj)
+		} else {
+			if err := fields.UpdateByFieldMask(obj, req.Automation, req.UpdateMask.Paths); err != nil {
+				return nil, fmt.Errorf("update field_mask.paths: %w", err)
+			}
 		}
 
 		if err := s.storage.Update(ctx, fqn, obj); err != nil {
@@ -186,17 +200,24 @@ func (s *cloudDeploy) UpdateDeliveryPipeline(ctx context.Context, req *pb.Update
 	})
 }
 
-func (s *cloudDeploy) DeleteDeliveryPipeline(ctx context.Context, req *pb.DeleteDeliveryPipelineRequest) (*longrunningpb.Operation, error) {
-	name, err := s.parseDeliveryPipelineName(req.Name)
+func (s *cloudDeploy) DeleteAutomation(ctx context.Context, req *pb.DeleteAutomationRequest) (*longrunningpb.Operation, error) {
+	name, err := s.parseAutomationName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	deleted := &pb.DeliveryPipeline{}
+	deleted := &pb.Automation{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
-		return nil, err
+		if status.Code(err) == codes.NotFound && req.AllowMissing {
+			// Success
+		} else {
+			if status.Code(err) == codes.NotFound {
+				return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+			}
+			return nil, err
+		}
 	}
 
 	// By default, immediately finish the LRO with success.
@@ -208,27 +229,54 @@ func (s *cloudDeploy) DeleteDeliveryPipeline(ctx context.Context, req *pb.Delete
 		ApiVersion: "v1",
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
-		lroMetadata.EndTime = timestamppb.New(time.Now())
+		lroMetadata.EndTime = timestamppb.Now()
 		return &emptypb.Empty{}, nil
 	})
 }
 
-type deliveryPipelineName struct {
+func (s *cloudDeploy) populateAutomationDefaults(obj *pb.Automation) {
+	if obj.Annotations == nil {
+		obj.Annotations = make(map[string]string)
+	}
+	if obj.Labels == nil {
+		obj.Labels = make(map[string]string)
+	}
+	if obj.Selector != nil {
+		for _, target := range obj.Selector.Targets {
+			if target.Labels == nil {
+				target.Labels = make(map[string]string)
+			}
+		}
+	}
+	for _, rule := range obj.Rules {
+		if rule.GetPromoteReleaseRule() != nil {
+			if rule.GetPromoteReleaseRule().Condition == nil {
+				rule.GetPromoteReleaseRule().Condition = &pb.AutomationRuleCondition{}
+			}
+			if rule.GetPromoteReleaseRule().Condition.TargetsPresentCondition == nil {
+				rule.GetPromoteReleaseRule().Condition.TargetsPresentCondition = &pb.TargetsPresentCondition{}
+			}
+		}
+	}
+}
+
+type automationName struct {
 	Project          *projects.ProjectData
 	Location         string
 	DeliveryPipeline string
+	Automation       string
 }
 
-func (n *deliveryPipelineName) String() string {
-	return fmt.Sprintf("projects/%s/locations/%s/deliveryPipelines/%s", n.Project.ID, n.Location, n.DeliveryPipeline)
+func (n *automationName) String() string {
+	return fmt.Sprintf("projects/%s/locations/%s/deliveryPipelines/%s/automations/%s", n.Project.ID, n.Location, n.DeliveryPipeline, n.Automation)
 }
 
-// parseDeliveryPipelineName parses a string into a deliveryPipelineName.
-// The expected form is `projects/*/locations/*/deliveryPipelines/*`.
-func (s *MockService) parseDeliveryPipelineName(name string) (*deliveryPipelineName, error) {
+// parseAutomationName parses a string into a automationName.
+// The expected form is `projects/*/locations/*/deliveryPipelines/*/automations/*`.
+func (s *MockService) parseAutomationName(name string) (*automationName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "deliveryPipelines" {
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "deliveryPipelines" && tokens[6] == "automations" {
 		for i := 1; i < len(tokens); i += 2 {
 			if tokens[i] == "" {
 				return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
@@ -240,10 +288,11 @@ func (s *MockService) parseDeliveryPipelineName(name string) (*deliveryPipelineN
 			return nil, err
 		}
 
-		name := &deliveryPipelineName{
+		name := &automationName{
 			Project:          project,
 			Location:         tokens[3],
 			DeliveryPipeline: tokens[5],
+			Automation:       tokens[7],
 		}
 
 		return name, nil
