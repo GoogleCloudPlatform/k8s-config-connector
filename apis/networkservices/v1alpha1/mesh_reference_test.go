@@ -131,7 +131,7 @@ func TestNetworkServicesMeshRef_Normalize(t *testing.T) {
 			wantErr:      false,
 		},
 		{
-			name: "resolve from fallback (spec fields)",
+			name: "resolve from fallback (metadata.name)",
 			ref: &NetworkServicesMeshRef{
 				Name: "my-mesh",
 			},
