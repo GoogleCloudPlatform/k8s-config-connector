@@ -1,0 +1,10 @@
+apiVersion: gkehub.cnrm.cloud.google.com/v1alpha1
+kind: GKEHubScopeRBACRoleBinding
+metadata:
+  name: gkehubscoperbacrolebinding-minimal-${uniqueId}
+spec:
+  scopeRef:
+    name: gkehubscoperbacrolebinding-minimal-${uniqueId}
+  user: "alice@google.com"
+  role:
+    predefinedRole: "EDIT"

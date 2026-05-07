@@ -46,7 +46,12 @@ type GKEHubScopeRBACRoleBindingSpec struct {
 	// +optional
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="rbacRoleBindingID is immutable"
 	RBACRoleBindingID *string `json:"rbacRoleBindingID,omitempty"`
+
+	/* Optional. Labels for this RBACRoleBinding. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
 }
+
 type GKEHubScopeRBACRoleBindingObservedState struct {
 	/* Output only. The time at which this rbac role binding was created. */
 	// +optional

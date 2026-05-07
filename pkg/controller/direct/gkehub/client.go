@@ -35,12 +35,13 @@ func newGCPClient(config *config.ControllerConfig) (*gcpClient, error) {
 }
 
 type gkeHubClient struct {
-	featureClientV1beta       *featureapi.ProjectsLocationsFeaturesService
-	scopeClientV1beta         *featureapi.ProjectsLocationsScopesService
-	operationClientV1beta     *featureapi.ProjectsLocationsOperationsService
-	namespaceClientV1         *gkehubv1.ProjectsLocationsScopesNamespacesService
-	membershipBindingClientV1 *gkehubv1.ProjectsLocationsMembershipsBindingsService
-	operationClientV1         *gkehubv1.ProjectsLocationsOperationsService
+	featureClientV1beta          *featureapi.ProjectsLocationsFeaturesService
+	scopeClientV1beta            *featureapi.ProjectsLocationsScopesService
+	operationClientV1beta        *featureapi.ProjectsLocationsOperationsService
+	namespaceClientV1            *gkehubv1.ProjectsLocationsScopesNamespacesService
+	membershipBindingClientV1    *gkehubv1.ProjectsLocationsMembershipsBindingsService
+	scopeRBACRoleBindingClientV1 *gkehubv1.ProjectsLocationsScopesRbacrolebindingsService
+	operationClientV1            *gkehubv1.ProjectsLocationsOperationsService
 }
 
 func (m *gcpClient) newGkeHubClient(ctx context.Context) (*gkeHubClient, error) {
@@ -57,11 +58,12 @@ func (m *gcpClient) newGkeHubClient(ctx context.Context) (*gkeHubClient, error) 
 		return nil, fmt.Errorf("building v1 service for gkehub: %w", err)
 	}
 	return &gkeHubClient{
-		featureClientV1beta:       featureapi.NewProjectsLocationsFeaturesService(serviceV1beta),
-		scopeClientV1beta:         featureapi.NewProjectsLocationsScopesService(serviceV1beta),
-		operationClientV1beta:     featureapi.NewProjectsLocationsOperationsService(serviceV1beta),
-		namespaceClientV1:         gkehubv1.NewProjectsLocationsScopesNamespacesService(serviceV1),
-		membershipBindingClientV1: gkehubv1.NewProjectsLocationsMembershipsBindingsService(serviceV1),
-		operationClientV1:         gkehubv1.NewProjectsLocationsOperationsService(serviceV1),
+		featureClientV1beta:          featureapi.NewProjectsLocationsFeaturesService(serviceV1beta),
+		scopeClientV1beta:            featureapi.NewProjectsLocationsScopesService(serviceV1beta),
+		operationClientV1beta:        featureapi.NewProjectsLocationsOperationsService(serviceV1beta),
+		namespaceClientV1:            gkehubv1.NewProjectsLocationsScopesNamespacesService(serviceV1),
+		membershipBindingClientV1:    gkehubv1.NewProjectsLocationsMembershipsBindingsService(serviceV1),
+		scopeRBACRoleBindingClientV1: gkehubv1.NewProjectsLocationsScopesRbacrolebindingsService(serviceV1),
+		operationClientV1:            gkehubv1.NewProjectsLocationsOperationsService(serviceV1),
 	}, nil
 }
