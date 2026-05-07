@@ -32,8 +32,14 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".lbRouteExtensions[].createTime", TimePlaceholder)
 	replacements.ReplacePath(".lbRouteExtensions[].updateTime", TimePlaceholder)
 
+	replacements.ReplacePath(".wasmPlugins[].createTime", TimePlaceholder)
+	replacements.ReplacePath(".wasmPlugins[].updateTime", TimePlaceholder)
+	replacements.ReplacePath(".versions.*.createTime", TimePlaceholder)
+	replacements.ReplacePath(".versions.*.updateTime", TimePlaceholder)
+
 	replacements.ReplacePath(".metadata.createTime", TimePlaceholder)
 	replacements.ReplacePath(".metadata.endTime", TimePlaceholder)
+	replacements.ReplacePath(".metadata.requestedCancellation", nil)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
