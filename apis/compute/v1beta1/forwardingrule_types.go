@@ -116,10 +116,6 @@ type Target struct {
 // for the ServiceAttachment managed by the MemorystoreInstance pointed by the MemorystoreInstanceRef.
 // +k8s:deepcopy-gen=true
 type MemorystoreInstanceServiceAttachment struct {
-	// A reference to a ServiceAttachment managed by a MemorystoreInstance resource.
-	// +optional
-	ServiceAttachmentExternal string `json:"serviceAttachmentExternal,omitempty"`
-
 	// A reference to a MemorystoreInstance resource.
 	// +required
 	MemorystoreInstanceRef *refs.MemorystoreInstanceRef `json:"memorystoreInstanceRef,omitempty"`
