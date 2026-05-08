@@ -90,6 +90,8 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".encryption_info")
 	f.Unimplemented_NotYetTriaged(".simulate_maintenance_event")
 	f.Unimplemented_NotYetTriaged(".kms_key")
-
+	f.Unimplemented_NotYetTriaged(".server_ca_pool")
+	f.Unimplemented_NotYetTriaged(".rotate_server_certificate")
+	f.Unimplemented_NotYetTriaged(".server_ca_mode")
 	return f
 }

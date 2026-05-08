@@ -75,7 +75,9 @@ func memorystoreInstanceEndpointFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".uid")
 	f.UnimplementedFields.Insert(".update_time")
 	f.UnimplementedFields.Insert(".zone_distribution_config")
-
+	f.Unimplemented_NotYetTriaged(".server_ca_pool")
+	f.Unimplemented_NotYetTriaged(".rotate_server_certificate")
+	f.Unimplemented_NotYetTriaged(".server_ca_mode")
 	f.SpecFields.Insert(".endpoints")
 
 	f.StatusFields.Insert(".endpoints")
