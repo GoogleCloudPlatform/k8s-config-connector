@@ -1,22 +1,74 @@
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&future_reservation=${futureReservationID}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "autoDeleteAutoCreatedReservations": false,
-  "description": "test future reservation",
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a
+
+{
+  "autoCreatedReservationsDuration": {
+    "nanos": 102,
+    "seconds": "86401"
+  },
+  "autoDeleteAutoCreatedReservations": true,
+  "description": "A full future reservation test",
+  "enableEmergentMaintenance": false,
   "name": "${futureReservationID}",
+  "namePrefix": "fr-full",
+  "planningStatus": "DRAFT",
+  "schedulingType": "FLEXIBLE",
+  "shareSettings": {
+    "shareType": "LOCAL"
+  },
+  "specificReservationRequired": false,
   "specificSkuProperties": {
     "instanceProperties": {
-      "machineType": "n2-standard-4"
+      "localSsds": [
+        {
+          "diskSizeGb": "375",
+          "interface": "SCSI"
+        }
+      ],
+      "machineType": "n1-standard-1",
+      "minCpuPlatform": "Intel Haswell"
     },
-    "totalCount": "10"
+    "totalCount": "1"
   },
   "timeWindow": {
-    "endTime": "2026-06-20T07:00:00Z",
-    "startTime": "2026-05-20T07:00:00Z"
+    "duration": {
+      "nanos": 101,
+      "seconds": "86400"
+    },
+    "startTime": "2026-05-10T00:00:00Z"
   }
 }
 
@@ -48,10 +100,10 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}/wait?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&operation=${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -82,10 +134,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&future_reservation=${futureReservationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -98,20 +150,29 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "autoCreatedReservationsDeleteTime": "2026-05-11T00:00:01.000000102Z",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "test future reservation",
+  "description": "A full future reservation test",
   "id": "000000000000000000000",
   "kind": "compute#futureReservation",
   "name": "${futureReservationID}",
+  "namePrefix": "fr-full",
   "planningStatus": "DRAFT",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}",
   "specificReservationRequired": false,
   "specificSkuProperties": {
     "instanceProperties": {
-      "machineType": "n2-standard-4"
+      "localSsds": [
+        {
+          "diskSizeGb": "375",
+          "interface": "SCSI"
+        }
+      ],
+      "machineType": "n1-standard-1",
+      "minCpuPlatform": "Intel Haswell"
     },
-    "totalCount": "10"
+    "totalCount": "1"
   },
   "status": {
     "existingMatchingUsageInfo": {
@@ -121,25 +182,54 @@ X-Xss-Protection: 0
     "procurementStatus": "DRAFTING"
   },
   "timeWindow": {
-    "endTime": "2026-06-20T07:00:00Z",
-    "startTime": "2026-05-20T07:00:00Z"
+    "endTime": "2026-05-11T00:00:00.000000101Z",
+    "startTime": "2026-05-10T00:00:00Z"
   },
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}?alt=json&updateMask=description
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}?updateMask=auto_created_reservations_duration%2Cdescription%2Cspecific_sku_properties.instance_properties.machine_type%2Cspecific_sku_properties.instance_properties.min_cpu_platform%2Cspecific_sku_properties.total_count%2Ctime_window.duration
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&future_reservation=${futureReservationID}
 
 {
-  "description": "test future reservation updated",
+  "autoCreatedReservationsDuration": {
+    "nanos": 103,
+    "seconds": "86402"
+  },
+  "autoDeleteAutoCreatedReservations": true,
+  "description": "A full future reservation test - updated",
+  "enableEmergentMaintenance": false,
   "name": "${futureReservationID}",
+  "namePrefix": "fr-full",
+  "planningStatus": "DRAFT",
+  "schedulingType": "FLEXIBLE",
+  "shareSettings": {
+    "shareType": "LOCAL"
+  },
+  "specificReservationRequired": false,
+  "specificSkuProperties": {
+    "instanceProperties": {
+      "localSsds": [
+        {
+          "diskSizeGb": "375",
+          "interface": "SCSI"
+        }
+      ],
+      "machineType": "n2-standard-4",
+      "minCpuPlatform": "Intel Cascade Lake"
+    },
+    "totalCount": "2"
+  },
   "timeWindow": {
-    "duration": {}
+    "duration": {
+      "nanos": 102,
+      "seconds": "86401"
+    },
+    "startTime": "2026-05-10T00:00:00Z"
   }
 }
 
@@ -171,10 +261,10 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}/wait?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&operation=${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -205,10 +295,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&future_reservation=${futureReservationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -221,20 +311,29 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "autoCreatedReservationsDeleteTime": "2026-05-11T00:00:02.000000103Z",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "test future reservation updated",
+  "description": "A full future reservation test - updated",
   "id": "000000000000000000000",
   "kind": "compute#futureReservation",
   "name": "${futureReservationID}",
+  "namePrefix": "fr-full",
   "planningStatus": "DRAFT",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}",
   "specificReservationRequired": false,
   "specificSkuProperties": {
     "instanceProperties": {
-      "machineType": "n2-standard-4"
+      "localSsds": [
+        {
+          "diskSizeGb": "375",
+          "interface": "SCSI"
+        }
+      ],
+      "machineType": "n2-standard-4",
+      "minCpuPlatform": "Intel Cascade Lake"
     },
-    "totalCount": "10"
+    "totalCount": "2"
   },
   "status": {
     "existingMatchingUsageInfo": {
@@ -244,18 +343,18 @@ X-Xss-Protection: 0
     "procurementStatus": "DRAFTING"
   },
   "timeWindow": {
-    "endTime": "2026-06-20T07:00:00Z",
-    "startTime": "2026-05-20T07:00:00Z"
+    "endTime": "2026-05-11T00:00:01.000000102Z",
+    "startTime": "2026-05-10T00:00:00Z"
   },
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&future_reservation=${futureReservationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -285,10 +384,10 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}/wait?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&operation=${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

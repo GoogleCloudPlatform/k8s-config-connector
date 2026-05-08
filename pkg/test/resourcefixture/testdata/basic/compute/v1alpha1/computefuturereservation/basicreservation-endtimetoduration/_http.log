@@ -1,22 +1,51 @@
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&future_reservation=${futureReservationID}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a
 
 {
   "autoDeleteAutoCreatedReservations": false,
-  "description": "test future reservation",
   "name": "${futureReservationID}",
   "specificSkuProperties": {
     "instanceProperties": {
-      "machineType": "n2-standard-4"
+      "machineType": "n1-standard-1"
     },
-    "totalCount": "10"
+    "totalCount": "1"
   },
   "timeWindow": {
-    "endTime": "2026-06-20T07:00:00Z",
-    "startTime": "2026-05-20T07:00:00Z"
+    "endTime": "2026-11-11T00:00:00Z",
+    "startTime": "2026-11-10T00:00:00Z"
   }
 }
 
@@ -48,98 +77,105 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}/wait?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "insert",
-  "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${futureReservationID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}",
-  "user": "user@example.com",
-  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "test future reservation",
-  "id": "000000000000000000000",
-  "kind": "compute#futureReservation",
-  "name": "${futureReservationID}",
-  "planningStatus": "DRAFT",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}",
-  "specificReservationRequired": false,
-  "specificSkuProperties": {
-    "instanceProperties": {
-      "machineType": "n2-standard-4"
-    },
-    "totalCount": "10"
-  },
-  "status": {
-    "existingMatchingUsageInfo": {
-      "count": "0",
-      "timestamp": "2024-04-01T12:34:56.123456Z"
-    },
-    "procurementStatus": "DRAFTING"
-  },
-  "timeWindow": {
-    "endTime": "2026-06-20T07:00:00Z",
-    "startTime": "2026-05-20T07:00:00Z"
-  },
-  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
-}
-
----
-
-PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}?alt=json&updateMask=description
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "description": "test future reservation updated",
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${futureReservationID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&future_reservation=${futureReservationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#futureReservation",
   "name": "${futureReservationID}",
+  "planningStatus": "DRAFT",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}",
+  "specificReservationRequired": false,
+  "specificSkuProperties": {
+    "instanceProperties": {
+      "machineType": "n1-standard-1"
+    },
+    "totalCount": "1"
+  },
+  "status": {
+    "existingMatchingUsageInfo": {
+      "count": "0",
+      "timestamp": "2024-04-01T12:34:56.123456Z"
+    },
+    "procurementStatus": "DRAFTING"
+  },
   "timeWindow": {
-    "duration": {}
+    "endTime": "2026-11-11T00:00:00Z",
+    "startTime": "2026-11-10T00:00:00Z"
+  },
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}?updateMask=specific_sku_properties.instance_properties.machine_type%2Cspecific_sku_properties.total_count%2Ctime_window.duration%2Ctime_window.start_time
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&future_reservation=${futureReservationID}
+
+{
+  "autoDeleteAutoCreatedReservations": false,
+  "name": "${futureReservationID}",
+  "specificSkuProperties": {
+    "instanceProperties": {
+      "machineType": "n2-standard-4"
+    },
+    "totalCount": "2"
+  },
+  "timeWindow": {
+    "duration": {
+      "seconds": "86401"
+    },
+    "startTime": "2026-10-10T00:00:00Z"
   }
 }
 
@@ -171,10 +207,10 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}/wait?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&operation=${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -205,10 +241,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&future_reservation=${futureReservationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -222,7 +258,7 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "test future reservation updated",
+  "description": "",
   "id": "000000000000000000000",
   "kind": "compute#futureReservation",
   "name": "${futureReservationID}",
@@ -234,7 +270,7 @@ X-Xss-Protection: 0
     "instanceProperties": {
       "machineType": "n2-standard-4"
     },
-    "totalCount": "10"
+    "totalCount": "2"
   },
   "status": {
     "existingMatchingUsageInfo": {
@@ -244,18 +280,18 @@ X-Xss-Protection: 0
     "procurementStatus": "DRAFTING"
   },
   "timeWindow": {
-    "endTime": "2026-06-20T07:00:00Z",
-    "startTime": "2026-05-20T07:00:00Z"
+    "endTime": "2026-10-11T00:00:01Z",
+    "startTime": "2026-10-10T00:00:00Z"
   },
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&future_reservation=${futureReservationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -285,10 +321,10 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}/wait?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&operation=${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
