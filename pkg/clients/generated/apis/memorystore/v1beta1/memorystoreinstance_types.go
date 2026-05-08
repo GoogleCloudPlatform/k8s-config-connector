@@ -284,6 +284,10 @@ type InstanceObservedStateStatus struct {
 	// +optional
 	CrossInstanceReplicationConfig *InstanceCrossInstanceReplicationConfigStatus `json:"crossInstanceReplicationConfig,omitempty"`
 
+	/* Output only. The current version of the maintenance schedule. */
+	// +optional
+	EffectiveMaintenanceVersion *string `json:"effectiveMaintenanceVersion,omitempty"`
+
 	/* Optional. Endpoints for the instance. */
 	// +optional
 	Endpoints []InstanceEndpointsStatus `json:"endpoints,omitempty"`
