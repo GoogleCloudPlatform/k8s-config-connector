@@ -66,75 +66,27 @@ To ensure stability and reproducibility, this task is pinned to the following re
 
 ### Phase 0: Tooling & Skill Activation
 
-1.  **Activate Skills**: This project uses specialized skills to ensure architectural consistency. Before starting, identify and activate relevant skills (e.g., `kcc-identity-reference`, `generate-sh-checker`) using the `activate_skill` tool to receive expert procedural guidance.
+1.  **Activate Skills**: This project uses specialized skills to ensure architectural consistency. Before starting, identify and activate relevant skills (e.g., `kcc-direct-types-implementer`, `kcc-identity-reference`, `kcc-agentic-journaler`) using the `activate_skill` tool to receive expert procedural guidance.
 2.  **Consult Knowledge Base**: Check the `.gemini/journals/` directory for any existing service-specific "tribal knowledge" that might apply to this resource.
 3.  **Record Versions**: Record the Google APIs and KCC SHAs (listed above) in your initial implementation notes to ensure a stable baseline.
 
 ### Phase 1: Types and CRDs
+Implement the initial KRM types for `<Kind>` using the "direct" approach.
 
-1.  **Add to generate.sh**:
-    Modify `apis/<group>/v1alpha1/generate.sh` (create if missing) to include `<Kind>`.
-    Example:
-    ```bash
-    go run . generate-types \
-      --service <proto.package.name> \
-      --api-version <group>.cnrm.cloud.google.com/v1alpha1 \
-      --resource <Kind>:<ProtoMessageName>
-    ```
-
-2.  **Generate Scaffolding**:
-    Run `apis/<group>/v1alpha1/generate.sh`. This should create `apis/<group>/v1alpha1/<kind_lowercase>_types.go`.
-
-3.  **Copyright Headers**:
-    Ensure new files have the correct header: `// Copyright 2026 Google LLC`.
-
-4.  **Labels**:
-    Ensure the following annotations are present in the types file:
-    ```go
-    // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
-    // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
-    // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
-    ```
-
-5.  **References**:
-    Map proto fields to KCC references (e.g., `ProjectRef`, `NetworkRef`) using the standard `refs.` package and `+kcc:proto` tags.
-
-6.  **Status**:
-    Ensure `status.observedGeneration` is an `*int64`.
+**Tooling**: Activate the `kcc-direct-types-implementer` skill. Follow its guidance to ensure your `_types.go` file meets KCC's metadata and field-mapping standards.
 
 ### Phase 2: IdentityV2 and Resource References
+Implement `apis/<group>/v1alpha1/<kind_lowercase>_identity.go`.
 
-1.  **Implement IdentityV2**:
-    Create `apis/<group>/v1alpha1/<kind_lowercase>_identity.go`.
-    - Use the `gcpurls.Template` pattern and the `kcc-identity-reference` skill.
-    - Ensure it implements `identity.IdentityV2` and `identity.ExternalIdentifier`.
-    - Implement `GetIdentity(ctx, reader)` on the resource struct.
-
-2.  **Identity Unit Tests**:
-    Create `apis/<group>/v1alpha1/<kind_lowercase>_identity_test.go`.
-    - Verify `FromExternal` with full GCP URLs and interface compliance.
+**Tooling**: Activate the `kcc-identity-reference` skill. It provides the canonical `gcpurls.Template` pattern and ensures interface compliance for `IdentityV2` and `ExternalIdentifier`.
 
 ### Phase 3: Final Generation and Verification
-
-1.  **Generate Mappers**:
-    Run `dev/tasks/generate-types-and-mappers`.
-2.  **Compile**:
-    Run `make all-binary` to ensure the generated code compiles. Fix any issues discovered.
+1.  **Generate Mappers**: Run `dev/tasks/generate-types-and-mappers`.
+2.  **Compile**: Run `make all-binary` to ensure the generated code compiles. Fix any issues discovered.
 
 ---
 
 ### Phase 4: Knowledge Capture & Self-Optimization
+Reflect on your implementation and record any breakthroughs or service-specific quirks.
 
-1. **Categorize Your Findings**:
-   Reflect on the implementation. Distinguish between:
-   - **General Mechanics**: Patterns applicable to *any* KCC resource (e.g., "Efficient proto-to-KRM field mapping").
-   - **Domain-Specific Best Practices**: Reusable steps for a specific implementation area (e.g., "Canonical IdentityV2 pattern").
-   - **Service-Specific Tribal Knowledge**: Quirks unique to this API (e.g., "<Kind> requires an extra field-mask check").
-
-2. **Route to the Correct Destination**:
-   - **Existing Skills**: If you have a breakthrough in an area covered by an existing skill (e.g. `kcc-identity-reference`), update that skill\'s `SKILL.md` or append to its `journal.md`.
-   - **Service Journals**: For service-specific "gotchas" or unusual field mappings, create or append to `.gemini/journals/<service>.md`. Do **not** put these in a general skill folder.
-   - **New Skill Discovery**: If you identified a complex, repeatable recipe that isn't yet documented, create a new skill directory in `.gemini/skills/` and use the `skill-creator` tool to initialize it.
-
-3. **Validation**:
-   State in your final summary exactly what new knowledge was captured and which file was modified.
+**Tooling**: Activate the `kcc-agentic-journaler` skill. Use its routing logic to ensure your learnings are stored in the correct destination (either a general skill or a service-specific journal).
