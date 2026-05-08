@@ -67,16 +67,38 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 					replacements.ReplaceStringValue(tokens[7], "${backup}")
 				}
 
-			case ".pscAttachmentDetails[].serviceAttachment":
-				tokens := strings.Split(value, "/")
+			default:
+				if strings.HasSuffix(path, ".serviceAttachment") {
+					tokens := strings.Split(value, "/")
 
-				if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "serviceAttachments" {
-					replacements.ReplaceStringValue(tokens[1], "${pscProjectNumber}")
-					//replacements.ReplaceStringValue(tokens[3], "${region}")
-					if strings.HasSuffix(tokens[5], "-2") {
-						replacements.ReplaceStringValue(tokens[5], "${pscServiceAttachment}-2")
+					if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "serviceAttachments" {
+						replacements.ReplaceStringValue(tokens[1], "${pscProjectNumber}")
+						if strings.HasSuffix(tokens[5], "-2") {
+							replacements.ReplaceStringValue(tokens[5], "${pscServiceAttachment}-2")
+						} else {
+							replacements.ReplaceStringValue(tokens[5], "${pscServiceAttachment}")
+						}
+					}
+				}
+				if strings.HasSuffix(path, ".forwardingRule") {
+					tokens := strings.Split(value, "/")
+					if len(tokens) == 11 && tokens[9] == "forwardingRules" {
+						// e.g. https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-bed6...
+						if strings.HasSuffix(tokens[10], "-2") {
+							replacements.ReplaceStringValue(tokens[10], "${forwardingRule}-2")
+						} else {
+							replacements.ReplaceStringValue(tokens[10], "${forwardingRule}")
+						}
+					}
+				}
+				if strings.HasSuffix(path, ".pscConnectionId") {
+					replacements.ReplaceStringValue(value, "${pscConnectionId}")
+				}
+				if strings.HasSuffix(path, ".ipAddress") {
+					if strings.HasSuffix(value, ".22") || strings.HasSuffix(value, ".2") {
+						replacements.ReplaceStringValue(value, "${ipAddress}-2")
 					} else {
-						replacements.ReplaceStringValue(tokens[5], "${pscServiceAttachment}")
+						replacements.ReplaceStringValue(value, "${ipAddress}")
 					}
 				}
 			}

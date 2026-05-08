@@ -649,22 +649,22 @@ X-Xss-Protection: 0
           {
             "pscAutoConnection": {
               "connectionType": "CONNECTION_TYPE_DISCOVERY",
-              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98115",
-              "ipAddress": "10.128.0.21",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+              "ipAddress": "${ipAddress}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "port": 6379,
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456789",
+              "pscConnectionId": "${pscConnectionId}",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
           {
             "pscAutoConnection": {
-              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98116",
-              "ipAddress": "10.128.0.22",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+              "ipAddress": "${ipAddress}-2",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456790",
+              "pscConnectionId": "${pscConnectionId}",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
@@ -753,22 +753,22 @@ X-Xss-Protection: 0
         {
           "pscAutoConnection": {
             "connectionType": 1,
-            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98115",
-            "ipAddress": "10.128.0.21",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+            "ipAddress": "${ipAddress}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "port": 6379,
             "projectId": "${projectId}",
-            "pscConnectionId": "1234567890123456789",
+            "pscConnectionId": "${pscConnectionId}",
             "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
           }
         },
         {
           "pscAutoConnection": {
-            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98116",
-            "ipAddress": "10.128.0.22",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+            "ipAddress": "${ipAddress}-2",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
-            "pscConnectionId": "1234567890123456790",
+            "pscConnectionId": "${pscConnectionId}",
             "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
           }
         }
@@ -947,22 +947,22 @@ X-Xss-Protection: 0
           {
             "pscAutoConnection": {
               "connectionType": "CONNECTION_TYPE_DISCOVERY",
-              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98115",
-              "ipAddress": "10.128.0.21",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+              "ipAddress": "${ipAddress}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "port": 6379,
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456789",
+              "pscConnectionId": "${pscConnectionId}",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
           {
             "pscAutoConnection": {
-              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98116",
-              "ipAddress": "10.128.0.22",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+              "ipAddress": "${ipAddress}-2",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456790",
+              "pscConnectionId": "${pscConnectionId}",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
@@ -1142,22 +1142,22 @@ X-Xss-Protection: 0
           {
             "pscAutoConnection": {
               "connectionType": "CONNECTION_TYPE_DISCOVERY",
-              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98115",
-              "ipAddress": "10.128.0.21",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+              "ipAddress": "${ipAddress}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "port": 6379,
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456789",
+              "pscConnectionId": "${pscConnectionId}",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
           {
             "pscAutoConnection": {
-              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98116",
-              "ipAddress": "10.128.0.22",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+              "ipAddress": "${ipAddress}-2",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456790",
+              "pscConnectionId": "${pscConnectionId}",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
@@ -1337,22 +1337,22 @@ X-Xss-Protection: 0
           {
             "pscAutoConnection": {
               "connectionType": "CONNECTION_TYPE_DISCOVERY",
-              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98115",
-              "ipAddress": "10.128.0.21",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+              "ipAddress": "${ipAddress}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "port": 6379,
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456789",
+              "pscConnectionId": "${pscConnectionId}",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
           {
             "pscAutoConnection": {
-              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98116",
-              "ipAddress": "10.128.0.22",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+              "ipAddress": "${ipAddress}-2",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456790",
+              "pscConnectionId": "${pscConnectionId}",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
@@ -1532,22 +1532,22 @@ X-Xss-Protection: 0
           {
             "pscAutoConnection": {
               "connectionType": "CONNECTION_TYPE_DISCOVERY",
-              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98115",
-              "ipAddress": "10.128.0.21",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+              "ipAddress": "${ipAddress}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "port": 6379,
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456789",
+              "pscConnectionId": "${pscConnectionId}",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
           {
             "pscAutoConnection": {
-              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98116",
-              "ipAddress": "10.128.0.22",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+              "ipAddress": "${ipAddress}-2",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456790",
+              "pscConnectionId": "${pscConnectionId}",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
@@ -1728,22 +1728,22 @@ X-Xss-Protection: 0
           {
             "pscAutoConnection": {
               "connectionType": "CONNECTION_TYPE_DISCOVERY",
-              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98115",
-              "ipAddress": "10.128.0.21",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+              "ipAddress": "${ipAddress}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "port": 6379,
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456789",
+              "pscConnectionId": "${pscConnectionId}",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
           {
             "pscAutoConnection": {
-              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98116",
-              "ipAddress": "10.128.0.22",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+              "ipAddress": "${ipAddress}-2",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456790",
+              "pscConnectionId": "${pscConnectionId}",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
@@ -1923,22 +1923,22 @@ X-Xss-Protection: 0
           {
             "pscAutoConnection": {
               "connectionType": "CONNECTION_TYPE_DISCOVERY",
-              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98115",
-              "ipAddress": "10.128.0.21",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+              "ipAddress": "${ipAddress}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "port": 6379,
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456789",
+              "pscConnectionId": "${pscConnectionId}",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
           {
             "pscAutoConnection": {
-              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98116",
-              "ipAddress": "10.128.0.22",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+              "ipAddress": "${ipAddress}-2",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456790",
+              "pscConnectionId": "${pscConnectionId}",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
@@ -2119,22 +2119,22 @@ X-Xss-Protection: 0
           {
             "pscAutoConnection": {
               "connectionType": "CONNECTION_TYPE_DISCOVERY",
-              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98115",
-              "ipAddress": "10.128.0.21",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+              "ipAddress": "${ipAddress}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "port": 6379,
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456789",
+              "pscConnectionId": "${pscConnectionId}",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
           {
             "pscAutoConnection": {
-              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98116",
-              "ipAddress": "10.128.0.22",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+              "ipAddress": "${ipAddress}-2",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456790",
+              "pscConnectionId": "${pscConnectionId}",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
@@ -2315,22 +2315,22 @@ X-Xss-Protection: 0
           {
             "pscAutoConnection": {
               "connectionType": "CONNECTION_TYPE_DISCOVERY",
-              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98115",
-              "ipAddress": "10.128.0.21",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+              "ipAddress": "${ipAddress}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "port": 6379,
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456789",
+              "pscConnectionId": "${pscConnectionId}",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
           {
             "pscAutoConnection": {
-              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98116",
-              "ipAddress": "10.128.0.22",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+              "ipAddress": "${ipAddress}-2",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456790",
+              "pscConnectionId": "${pscConnectionId}",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
@@ -2420,22 +2420,22 @@ X-Xss-Protection: 0
         {
           "pscAutoConnection": {
             "connectionType": 1,
-            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98115",
-            "ipAddress": "10.128.0.21",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+            "ipAddress": "${ipAddress}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "port": 6379,
             "projectId": "${projectId}",
-            "pscConnectionId": "1234567890123456789",
+            "pscConnectionId": "${pscConnectionId}",
             "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
           }
         },
         {
           "pscAutoConnection": {
-            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98116",
-            "ipAddress": "10.128.0.22",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+            "ipAddress": "${ipAddress}-2",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
-            "pscConnectionId": "1234567890123456790",
+            "pscConnectionId": "${pscConnectionId}",
             "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
           }
         }
