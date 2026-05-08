@@ -46,7 +46,7 @@ Your goal is to identify GCP resources that are missing from KCC but defined in 
 
 4.  **Task**: If no tracking issue exists, create a new issue for the resource types implementation.
     - **Title**: `ai:chore: Implement direct types for: <Kind>`
-    - **Labels**: `overseer`, `area/direct`, `priority/medium`, `step/gen-types`
+    - **Labels**: `overseer`, `area/direct`, `priority/medium`, `step/gen-types`, `greenfield`
     - **Body**: Use the **TYPES ISSUE BODY TEMPLATE** below. Append a link to this chore file (`.agents/direct-new-resource-types.md`) at the end of the issue body for traceability.
 
 ---
@@ -58,10 +58,17 @@ Your task is to implement the initial KRM types, CRD, and IdentityV2 for the `<K
 
 # Context: Implementation Versions
 To ensure stability and reproducibility, this task is pinned to the following repository versions:
+# TODO: Dynamically determine these SHAs during task generation (see PR #7946 feedback).
 - **Google APIs SHA**: `731d7f2ab6` (from `apis/git.versions`)
 - **KCC Base SHA**: `dc1dd45d0b`
 
 # Implementation Instructions
+
+### Phase 0: Tooling & Skill Activation
+
+1.  **Activate Skills**: This project uses specialized skills to ensure architectural consistency. Before starting, identify and activate relevant skills (e.g., `kcc-identity-reference`, `generate-sh-checker`) using the `activate_skill` tool to receive expert procedural guidance.
+2.  **Consult Knowledge Base**: Check the `.gemini/journals/` directory for any existing service-specific "tribal knowledge" that might apply to this resource.
+3.  **Record Versions**: Record the Google APIs and KCC SHAs (listed above) in your initial implementation notes to ensure a stable baseline.
 
 ### Phase 1: Types and CRDs
 
@@ -125,7 +132,7 @@ To ensure stability and reproducibility, this task is pinned to the following re
    - **Service-Specific Tribal Knowledge**: Quirks unique to this API (e.g., "<Kind> requires an extra field-mask check").
 
 2. **Route to the Correct Destination**:
-   - **Existing Skills**: If you have a breakthrough in an area covered by an existing skill (e.g. `kcc-identity-reference`), update that skill's `SKILL.md` or append to its `journal.md`.
+   - **Existing Skills**: If you have a breakthrough in an area covered by an existing skill (e.g. `kcc-identity-reference`), update that skill\'s `SKILL.md` or append to its `journal.md`.
    - **Service Journals**: For service-specific "gotchas" or unusual field mappings, create or append to `.gemini/journals/<service>.md`. Do **not** put these in a general skill folder.
    - **New Skill Discovery**: If you identified a complex, repeatable recipe that isn't yet documented, create a new skill directory in `.gemini/skills/` and use the `skill-creator` tool to initialize it.
 
