@@ -21,7 +21,6 @@ import (
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -84,7 +83,7 @@ func (m *modelEndpoint) AdapterForObject(ctx context.Context, op *directbase.Ada
 	if obj.Spec.InstanceRef == nil {
 		return nil, fmt.Errorf("spec.instanceRef is required")
 	}
-	id, err := obj.Spec.InstanceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+	err := obj.Spec.InstanceRef.Normalize(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, err
 	}
@@ -95,7 +94,7 @@ func (m *modelEndpoint) AdapterForObject(ctx context.Context, op *directbase.Ada
 		return nil, err
 	}
 	return &EndpointAdapter{
-		id:        id,
+		id:        obj.Spec.InstanceRef.GetExternal(),
 		gcpClient: gcpClient,
 		cmpClient: cmpClient,
 		reader:    reader,
@@ -118,7 +117,7 @@ func resolveEndpointReferences(ctx context.Context, reader client.Reader, obj *k
 }
 
 func (m *modelEndpoint) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
+	// no support for URLs - MemorystoreInstanceEndpoint is only a proxy object to MemorystoreInstance.
 	return nil, nil
 }
 
@@ -151,7 +150,14 @@ func (a *EndpointAdapter) Find(ctx context.Context) (bool, error) {
 	}
 
 	a.actual = instancepb
-	return true, nil
+	for _, endpoint := range a.actual.Endpoints {
+		for _, conn := range endpoint.Connections {
+			if pscConnection := conn.GetPscConnection(); pscConnection != nil {
+				return true, nil
+			}
+		}
+	}
+	return false, nil
 }
 
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
@@ -202,28 +208,8 @@ func (a *EndpointAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 
 // Export maps the GCP object to a Config Connector resource `spec`.
 func (a *EndpointAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
-	if a.actual == nil {
-		return nil, fmt.Errorf("Find() not called")
-	}
-	u := &unstructured.Unstructured{}
-
-	obj := &krm.MemorystoreInstanceEndpoint{}
-	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(MemorystoreInstanceEndpointSpec_FromProto(mapCtx, a.actual))
-	if mapCtx.Err() != nil {
-		return nil, mapCtx.Err()
-	}
-	obj.Spec.InstanceRef = &refs.MemorystoreInstanceRef{External: a.id}
-	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
-	if err != nil {
-		return nil, err
-	}
-
-	u.SetName(a.id)
-	u.SetGroupVersionKind(krm.MemorystoreInstanceEndpointGVK)
-
-	u.Object = uObj
-	return u, nil
+	// no support for export - MemorystoreInstanceEndpoint is only a proxy object to MemorystoreInstance.
+	return nil, nil
 }
 
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
