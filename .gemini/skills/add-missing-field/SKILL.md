@@ -36,9 +36,11 @@ This skill guides an automated agent through adding a missing field to a GCP res
    - If the new field requires a specific setup (e.g., cross-instance replication requires two instances), create a new test folder with `create.yaml` (and `dependencies.yaml` if needed).
 
 6. **Regenerate Golden Output**
-   - Run the mock compare script to generate new golden output:
-     `hack/compare-mock pkg/test/resourcefixture/testdata/basic/group/version/kind/[testname]/`
-   - Review the generated `_http.log` for correctness.
+   - Run the mock compare script to generate new golden output (you must set `WRITE_GOLDEN_OUTPUT=1`):
+     `WRITE_GOLDEN_OUTPUT=1 hack/compare-mock pkg/test/resourcefixture/testdata/basic/group/version/kind/[testname]/`
+   - Note that test paths may use the full kind name (e.g., `memorystoreinstance` instead of `instance`).
+   - Also note that the test will still report a failure if the golden files were modified (this is expected behavior to highlight the diff).
+   - Review the generated `_http.log` and `_generated_object...golden.yaml` for correctness.
 
 7. **Update mockgcp (If Needed)**
    - If the tests fail because mockgcp doesn't support the field, you might need to implement a stub in mockgcp.
