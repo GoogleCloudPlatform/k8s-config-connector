@@ -89,10 +89,12 @@ gcloud services enable \
   vpcaccess.googleapis.com \
   workstations.googleapis.com
 
-for SERVICE in "${EXTRA_GCP_SERVICES:-}"; do
-  echo "Enabling service ${SERVICE}"
-  gcloud services enable "${SERVICE}"
-done
+if [[ -n "${EXTRA_GCP_SERVICES:-}" ]]; then
+  for SERVICE in ${EXTRA_GCP_SERVICES}; do
+    echo "Enabling service ${SERVICE}"
+    gcloud services enable "${SERVICE}"
+  done
+fi
 
 # Some APIs are behind an allowlist, so we only enable them if we are specifically testing them.
 if [[ "${ONLY_TEST_APIGROUPS:-}" == "securesourcemanager.cnrm.cloud.google.com" ]]; then
