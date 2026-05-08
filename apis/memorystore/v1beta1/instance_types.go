@@ -191,6 +191,10 @@ type MemorystoreInstanceObservedState struct {
 	// Optional. The cross instance replication config for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.cross_instance_replication_config
 	CrossInstanceReplicationConfig *CrossInstanceReplicationConfigObservedState `json:"crossInstanceReplicationConfig,omitempty"`
+
+	// Output only. The current version of the maintenance schedule.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.effective_maintenance_version
+	EffectiveMaintenanceVersion *string `json:"effectiveMaintenanceVersion,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.Instance.ConnectionDetail
