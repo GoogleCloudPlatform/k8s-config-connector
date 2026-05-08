@@ -82,9 +82,9 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".uid")
 	f.StatusFields.Insert(".node_config") // NodeConfig is an output-only field in the proto, but KRM needs it for status.
 	f.StatusFields.Insert(".endpoints")
+	f.StatusFields.Insert(".effective_maintenance_version")
 
 	f.Unimplemented_NotYetTriaged(".available_maintenance_versions")
-	f.Unimplemented_NotYetTriaged(".effective_maintenance_version")
 	f.Unimplemented_NotYetTriaged(".maintenance_version")
 	f.Unimplemented_NotYetTriaged(".allow_fewer_zones_deployment")
 	f.Unimplemented_NotYetTriaged(".encryption_info")
