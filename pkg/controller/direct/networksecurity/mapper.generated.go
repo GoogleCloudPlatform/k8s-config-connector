@@ -18,6 +18,9 @@
 
 // +generated:mapper
 // krm.group: networksecurity.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.networksecurity.v1
+// krm.group: networksecurity.cnrm.cloud.google.com
 // krm.version: v1beta1
 // proto.service: google.cloud.networksecurity.v1beta1
 
@@ -25,8 +28,10 @@ package networksecurity
 
 import (
 	pb "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	pbv1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/networksecurity/v1"
 )
 
 func AuthorizationPolicy_Rule_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy_Rule) *krm.AuthorizationPolicy_Rule {
@@ -218,56 +223,115 @@ func NetworkSecurityAuthorizationPolicyStatus_ToProto(mapCtx *direct.MapContext,
 	return out
 }
 func NetworkSecurityClientTLSPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.ClientTlsPolicy) *krm.NetworkSecurityClientTLSPolicySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkSecurityClientTLSPolicySpec{}
-	// MISSING: Name
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	out.Sni = direct.LazyPtr(in.GetSni())
-	out.ClientCertificate = CertificateProvider_FromProto(mapCtx, in.GetClientCertificate())
-	// MISSING: ServerValidationCA
-	// (near miss): "ServerValidationCA" vs "ServerValidationCa"
-	return out
+        if in == nil {
+                return nil
+        }
+        out := &krm.NetworkSecurityClientTLSPolicySpec{}
+        // MISSING: Name
+        out.Description = direct.LazyPtr(in.GetDescription())
+        // MISSING: CreateTime
+        // MISSING: UpdateTime
+        // MISSING: Labels
+        out.Sni = direct.LazyPtr(in.GetSni())
+        out.ClientCertificate = CertificateProvider_FromProto(mapCtx, in.GetClientCertificate())
+        // MISSING: ServerValidationCA
+        // (near miss): "ServerValidationCA" vs "ServerValidationCa"
+        return out
 }
 func NetworkSecurityClientTLSPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSecurityClientTLSPolicySpec) *pb.ClientTlsPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ClientTlsPolicy{}
-	// MISSING: Name
-	out.Description = direct.ValueOf(in.Description)
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	out.Sni = direct.ValueOf(in.Sni)
-	out.ClientCertificate = CertificateProvider_ToProto(mapCtx, in.ClientCertificate)
-	// MISSING: ServerValidationCA
-	// (near miss): "ServerValidationCA" vs "ServerValidationCa"
-	return out
+        if in == nil {
+                return nil
+        }
+        out := &pb.ClientTlsPolicy{}
+        // MISSING: Name
+        out.Description = direct.ValueOf(in.Description)
+        // MISSING: CreateTime
+        // MISSING: UpdateTime
+        // MISSING: Labels
+        out.Sni = direct.ValueOf(in.Sni)
+        out.ClientCertificate = CertificateProvider_ToProto(mapCtx, in.ClientCertificate)
+        // MISSING: ServerValidationCA
+        // (near miss): "ServerValidationCA" vs "ServerValidationCa"
+        return out
 }
 func ValidationCA_FromProto(mapCtx *direct.MapContext, in *pb.ValidationCA) *krm.ValidationCA {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ValidationCA{}
-	out.GrpcEndpoint = GrpcEndpoint_FromProto(mapCtx, in.GetGrpcEndpoint())
-	out.CertificateProviderInstance = CertificateProviderInstance_FromProto(mapCtx, in.GetCertificateProviderInstance())
-	return out
+        if in == nil {
+                return nil
+        }
+        out := &krm.ValidationCA{}
+        out.GrpcEndpoint = GrpcEndpoint_FromProto(mapCtx, in.GetGrpcEndpoint())
+        out.CertificateProviderInstance = CertificateProviderInstance_FromProto(mapCtx, in.GetCertificateProviderInstance())
+        return out
 }
 func ValidationCA_ToProto(mapCtx *direct.MapContext, in *krm.ValidationCA) *pb.ValidationCA {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ValidationCA{}
-	if oneof := GrpcEndpoint_ToProto(mapCtx, in.GrpcEndpoint); oneof != nil {
-		out.Type = &pb.ValidationCA_GrpcEndpoint{GrpcEndpoint: oneof}
-	}
-	if oneof := CertificateProviderInstance_ToProto(mapCtx, in.CertificateProviderInstance); oneof != nil {
-		out.Type = &pb.ValidationCA_CertificateProviderInstance{CertificateProviderInstance: oneof}
-	}
-	return out
+        if in == nil {
+                return nil
+        }
+        out := &pb.ValidationCA{}
+        if oneof := GrpcEndpoint_ToProto(mapCtx, in.GrpcEndpoint); oneof != nil {
+                out.Type = &pb.ValidationCA_GrpcEndpoint{GrpcEndpoint: oneof}
+        }
+        if oneof := CertificateProviderInstance_ToProto(mapCtx, in.CertificateProviderInstance); oneof != nil {
+                out.Type = &pb.ValidationCA_CertificateProviderInstance{CertificateProviderInstance: oneof}
+        }
+        return out
+}
+
+func NetworkSecurityTLSInspectionPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pbv1.TlsInspectionPolicy) *krmv1alpha1.NetworkSecurityTLSInspectionPolicyObservedState {
+        if in == nil {
+                return nil
+        }
+        out := &krmv1alpha1.NetworkSecurityTLSInspectionPolicyObservedState{}
+        // MISSING: Name
+        out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+        out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+        return out
+}
+func NetworkSecurityTLSInspectionPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.NetworkSecurityTLSInspectionPolicyObservedState) *pbv1.TlsInspectionPolicy {
+        if in == nil {
+                return nil
+        }
+        out := &pbv1.TlsInspectionPolicy{}
+        // MISSING: Name
+        out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+        out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+        return out
+}
+func NetworkSecurityTLSInspectionPolicySpec_FromProto(mapCtx *direct.MapContext, in *pbv1.TlsInspectionPolicy) *krmv1alpha1.NetworkSecurityTLSInspectionPolicySpec {
+        if in == nil {
+                return nil
+        }
+        out := &krmv1alpha1.NetworkSecurityTLSInspectionPolicySpec{}
+        // MISSING: Name
+        out.Description = direct.LazyPtr(in.GetDescription())
+        if in.GetCaPool() != "" {
+                out.CAPoolRef = &krmv1alpha1.CaPoolRef{External: in.GetCaPool()}
+        }
+        if in.GetTrustConfig() != "" {
+                out.TrustConfigRef = &krmv1alpha1.TrustConfigRef{External: in.GetTrustConfig()}
+        }
+        out.ExcludePublicCASet = in.ExcludePublicCaSet
+        out.MinTLSVersion = direct.Enum_FromProto(mapCtx, in.GetMinTlsVersion())
+        out.TLSFeatureProfile = direct.Enum_FromProto(mapCtx, in.GetTlsFeatureProfile())
+        out.CustomTLSFeatures = in.CustomTlsFeatures
+        return out
+}
+func NetworkSecurityTLSInspectionPolicySpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.NetworkSecurityTLSInspectionPolicySpec) *pbv1.TlsInspectionPolicy {
+        if in == nil {
+                return nil
+        }
+        out := &pbv1.TlsInspectionPolicy{}
+        // MISSING: Name
+        out.Description = direct.ValueOf(in.Description)
+        if in.CAPoolRef != nil {
+                out.CaPool = in.CAPoolRef.External
+        }
+        if in.TrustConfigRef != nil {
+                out.TrustConfig = in.TrustConfigRef.External
+        }
+        out.ExcludePublicCaSet = in.ExcludePublicCASet
+        out.MinTlsVersion = direct.Enum_ToProto[pbv1.TlsInspectionPolicy_TlsVersion](mapCtx, in.MinTLSVersion)
+        out.TlsFeatureProfile = direct.Enum_ToProto[pbv1.TlsInspectionPolicy_Profile](mapCtx, in.TLSFeatureProfile)
+        out.CustomTlsFeatures = in.CustomTLSFeatures
+        return out
 }
