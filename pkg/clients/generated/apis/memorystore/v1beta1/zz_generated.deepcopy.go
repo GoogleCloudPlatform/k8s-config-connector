@@ -311,6 +311,11 @@ func (in *InstanceObservedStateStatus) DeepCopyInto(out *InstanceObservedStateSt
 		*out = new(InstanceCrossInstanceReplicationConfigStatus)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.EffectiveMaintenanceVersion != nil {
+		in, out := &in.EffectiveMaintenanceVersion, &out.EffectiveMaintenanceVersion
+		*out = new(string)
+		**out = **in
+	}
 	if in.Endpoints != nil {
 		in, out := &in.Endpoints, &out.Endpoints
 		*out = make([]InstanceEndpointsStatus, len(*in))
