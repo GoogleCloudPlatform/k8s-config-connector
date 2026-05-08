@@ -30,6 +30,7 @@ require (
 	cloud.google.com/go/logging v1.13.2
 	cloud.google.com/go/longrunning v0.9.0
 	cloud.google.com/go/managedkafka v0.8.1
+	cloud.google.com/go/memorystore v0.9.0
 	cloud.google.com/go/netapp v1.12.0
 	cloud.google.com/go/networksecurity v0.15.0
 	cloud.google.com/go/networkservices v0.6.0
