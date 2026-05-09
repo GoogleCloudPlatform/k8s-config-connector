@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//    http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,63 +17,72 @@ package v1beta1
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &AccessLevelRef{}
+var _ refsv1beta1.Ref = &AccessContextManagerAccessLevelRef{}
 
-// AccessLevelRef is a reference to a AccessLevel resource.
-type AccessLevelRef struct {
-	// A reference to an externally managed AccessLevel resource.
-	// Should be in the format "accessPolicies/{{accessPolicyID}}/accessLevels/{{accessLevel}}".
-	External *string `json:"external,omitempty"`
-
-	// The name of a AccessLevel resource.
-	Name *string `json:"name,omitempty"`
-
-	// The namespace of a AccessLevel resource.
-	Namespace *string `json:"namespace,omitempty"`
+func init() {
+	refsv1beta1.Register(&AccessContextManagerAccessLevelRef{})
 }
 
-func (r *AccessLevelRef) GetGVK() schema.GroupVersionKind {
+// AccessContextManagerAccessLevelRef is a reference to a AccessContextManagerAccessLevel resource.
+type AccessContextManagerAccessLevelRef struct {
+	// A reference to an externally managed AccessContextManagerAccessLevel resource.
+	// Should be in the format "accessPolicies/{{accessPolicy}}/accessLevels/{{accessLevel}}".
+	External string `json:"external,omitempty"`
+
+	// The name of a AccessContextManagerAccessLevel resource.
+	Name string `json:"name,omitempty"`
+
+	// The namespace of a AccessContextManagerAccessLevel resource.
+	Namespace string `json:"namespace,omitempty"`
+}
+
+func (r *AccessContextManagerAccessLevelRef) GetGVK() schema.GroupVersionKind {
 	return AccessContextManagerAccessLevelGVK
 }
 
-func (r *AccessLevelRef) GetNamespacedName() types.NamespacedName {
+func (r *AccessContextManagerAccessLevelRef) GetNamespacedName() types.NamespacedName {
 	return types.NamespacedName{
-		Name:      direct.ValueOf(r.Name),
-		Namespace: direct.ValueOf(r.Namespace),
+		Name:      r.Name,
+		Namespace: r.Namespace,
 	}
 }
 
-func (r *AccessLevelRef) GetExternal() string {
-	return direct.ValueOf(r.External)
+func (r *AccessContextManagerAccessLevelRef) GetExternal() string {
+	return r.External
 }
 
-func (r *AccessLevelRef) SetExternal(ref string) {
-	r.External = direct.LazyPtr(ref)
+func (r *AccessContextManagerAccessLevelRef) SetExternal(ref string) {
+	r.External = ref
 }
 
-func (r *AccessLevelRef) ValidateExternal(ref string) error {
-	id := &AccessLevelIdentity{}
-	if err := id.FromExternal(ref); err != nil {
-		return err
+func (r *AccessContextManagerAccessLevelRef) ValidateExternal(ref string) error {
+	id := &AccessContextManagerAccessLevelIdentity{}
+	return id.FromExternal(ref)
+}
+
+func (r *AccessContextManagerAccessLevelRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &AccessContextManagerAccessLevelIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
 	}
-	return nil
+	return id, nil
 }
 
-func (r *AccessLevelRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+func (r *AccessContextManagerAccessLevelRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		name, _, _ := unstructured.NestedString(u.Object, "status", "name")
-		if name != "" {
-			return "accesslevels/" + name
+		id, err := getIdentityFromAccessContextManagerAccessLevelSpec(ctx, reader, u)
+		if err != nil {
+			return ""
 		}
-		return ""
+		return id.String()
 	}
 	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

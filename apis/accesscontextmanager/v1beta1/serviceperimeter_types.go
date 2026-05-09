@@ -98,7 +98,7 @@ type AccessContextManagerServicePerimeterConfig struct {
 	only be accessed via GCP calls with request origins within the
 	perimeter. For Service Perimeter Bridge, must be empty. */
 	// +optional
-	AccessLevels []AccessLevelRef `json:"accessLevels,omitempty"`
+	AccessLevels []AccessContextManagerAccessLevelRef `json:"accessLevels,omitempty"`
 
 	/* List of EgressPolicies to apply to the perimeter. A perimeter may
 	have multiple EgressPolicies, each of which is evaluated separately.
@@ -256,7 +256,7 @@ type AccessContextManagerServicePerimeterIngressFrom struct {
 type AccessContextManagerServicePerimeterIngressSource struct {
 	/* (Optional) A reference to an AccessLevel resource that is allowed to ingress the perimeter. */
 	// +optional
-	AccessLevelRef *AccessLevelRef `json:"accessLevelRef,omitempty"`
+	AccessLevelRef *AccessContextManagerAccessLevelRef `json:"accessLevelRef,omitempty"`
 
 	/* (Optional) A Google Cloud resource that is allowed to ingress the
 	perimeter. Requests from these resources will be allowed to access
