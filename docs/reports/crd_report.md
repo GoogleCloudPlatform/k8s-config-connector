@@ -445,6 +445,7 @@
 | cloudtasks.cnrm.cloud.google.com              | TasksQueue                                      | True         | False       | False  | Direct     | True        |
 | tpu.cnrm.cloud.google.com                     | TPUNode                                         | True         | False       | False  | Terraform  | False       |
 | tpu.cnrm.cloud.google.com                     | TPUVirtualMachine                               | True         | False       | False  | Direct     | True        |
+| vertexai.cnrm.cloud.google.com                | VertexAIDataLabelingJob                         | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                | VertexAIDataset                                 | True         | True        | False  | Terraform  | False       |
 | vertexai.cnrm.cloud.google.com                | VertexAIEndpoint                                | True         | True        | False  | Terraform  | False       |
 | vertexai.cnrm.cloud.google.com                | VertexAIFeaturestoreEntityTypeFeature           | True         | False       | False  | Terraform  | False       |

@@ -654,8 +654,8 @@ func (in *VertexAIDataLabelingJobSpec) DeepCopyInto(out *VertexAIDataLabelingJob
 		*out = new(string)
 		**out = **in
 	}
-	if in.Datasets != nil {
-		in, out := &in.Datasets, &out.Datasets
+	if in.DatasetRefs != nil {
+		in, out := &in.DatasetRefs, &out.DatasetRefs
 		*out = make([]v1beta1.VertexAIDatasetRef, len(*in))
 		copy(*out, *in)
 	}
