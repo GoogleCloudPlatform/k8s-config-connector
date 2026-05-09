@@ -30,6 +30,10 @@ status:
     effectiveMaintenanceVersion: MEMORYSTORE_20260313_01_02
     nodeConfig:
       sizeGB: 13
+    pscAttachmentDetails:
+    - connectionType: CONNECTION_TYPE_DISCOVERY
+      serviceAttachment: projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}
+    - serviceAttachment: projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2
     state: ACTIVE
     uid: 0123456789abcdef
     updateTime: "1970-01-01T00:00:00Z"
