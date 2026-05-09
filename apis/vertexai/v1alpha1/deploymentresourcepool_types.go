@@ -31,7 +31,11 @@ type VertexAIDeploymentResourcePoolSpec struct {
 
 	// The location of this resource.
 	// +required
+<<<<<<< HEAD
 	Location *string `json:"location"`
+=======
+	Location string `json:"location"`
+>>>>>>> fbebf5550d (feat: Implement direct types for VertexAIDeploymentResourcePool)
 
 	// The VertexAIDeploymentResourcePool name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
