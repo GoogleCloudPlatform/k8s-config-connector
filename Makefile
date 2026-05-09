@@ -51,7 +51,7 @@ all: test manager operator config-connector
 
 # Run tests
 .PHONY: test
-test: generate fmt vet manifests
+test:
 	./scripts/unit-test.sh
 
 # Build config-connector binary
@@ -69,15 +69,9 @@ operator:
 manager: generate fmt vet
 	go build -o bin/manager github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager
 
-# Generate CRDs for direct controllers.
+# Generate CRDs (both legacy and direct).
 .PHONY: generate-crds
 generate-crds:
-	./dev/tasks/generate-crds
-
-# Generate manifests e.g. CRD, RBAC etc.
-.PHONY: manifests
-manifests: generate
-	make -C operator manifests
 	rm -rf config/crds/resources
 	rm -rf config/crds/tmp_resources
 	go build -o bin/generate-crds ./scripts/generate-crds && ./bin/generate-crds -output-dir=config/crds/tmp_resources
@@ -88,10 +82,11 @@ manifests: generate
 	$(KUSTOMIZE) build -o config/crds/resources
 	rm -rf config/crds/tmp_resources
 	rm kustomization.yaml
+	./dev/tasks/generate-crds
 
-	# for direct controllers
-	dev/tasks/generate-crds
-
+# Generate manifests e.g. CRD, RBAC etc.
+.PHONY: manifests
+manifests: generate-crds
 	# Generating cnrm cluster roles is dependent on the existence of directory
 	# config/crds/resources with all the freshly generated CRDs.
 	go run ./scripts/generate-cnrm-cluster-roles/main.go
@@ -99,6 +94,12 @@ manifests: generate
 	# Generating list of all supported GVKs is dependent on the existence of directory
 	# config/crds/resources with all the freshly generated CRDs.
 	go run ./scripts/generate-gvks/main.go -output-dir=pkg/gvks/supportedgvks
+
+	# Build release bundle (needed for operator manifests)
+	dev/tasks/build-release-bundle
+	cp dist/release-bundle.tar.gz .
+
+	make -C operator manifests
 
 # Format code
 .PHONY: fmt
@@ -155,9 +156,6 @@ generate-including-dcl:
 .PHONY: generate
 generate:
 	dev/tasks/generate-all
-	go generate ./pkg/apis/...
-	make -C operator generate
-	make fmt
 
 # Build the docker images
 .PHONY: docker-build
@@ -274,7 +272,7 @@ ensure:
 
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr
-ready-pr: lint lint-custom manifests generate-go-client ensure fmt
+ready-pr: lint lint-custom generate
 
 # Should run all needed commands to prepare a release.
 .PHONY: release-check

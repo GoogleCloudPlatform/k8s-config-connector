@@ -17,7 +17,12 @@ set -o nounset
 set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
-make -C operator test
+
+echo "Generating essential manifests for tests..."
+make manifests
+
+# Running operator tests directly to skip redundant generate/fmt/vet/manifests
+(cd operator && go run gotest.tools/gotestsum@latest --format testname -- -v ./pkg/... -coverprofile cover.out)
 # Env var VALIDATE_URLS needs to be unset to avoid calling URLs in TestReferenceDocConsistency under scripts/generate-google3-docs/.
 unset VALIDATE_URLS
 UNIT_TEST_PACKAGES=$(go list ./pkg/... ./cmd/... ./config/tests/...  ./scripts/resource-autogen/... ./scripts/generate-google3-docs/... ./tests/... | grep -v tests/e2e)

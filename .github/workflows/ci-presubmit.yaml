@@ -30,9 +30,6 @@ on:
   merge_group:
     types: [checks_requested]
     branches: ["master", "release-*"]
-    paths:
-      - '**'
-      - '!experiments/**'
 
 
 jobs:
@@ -118,6 +115,27 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: artifacts-license-lint
+          path: /tmp/artifacts/
+
+
+  lint-custom:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/lint-custom"
+        run: |
+          ./dev/ci/presubmits/lint-custom
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-lint-custom
           path: /tmp/artifacts/
 
 
@@ -3581,10 +3599,6 @@ jobs:
       - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
         with:
           go-version-file: 'go.mod'
-      - uses: 'google-github-actions/setup-gcloud@v2'
-        with:
-          version: '546.0.0'
-          install_components: 'alpha,beta'
       - name: "Run dev/ci/presubmits/unit-tests"
         run: |
           ./dev/ci/presubmits/unit-tests
@@ -3606,6 +3620,9 @@ jobs:
       - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
         with:
           go-version-file: 'go.mod'
+      - name: Install dependencies
+        run: |
+          python3 -m pip install PyYAML --break-system-packages
       - name: "Run dev/ci/presubmits/validate-generated-files"
         run: |
           ./dev/ci/presubmits/validate-generated-files
@@ -3616,6 +3633,52 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: artifacts-validate-generated-files
+          path: /tmp/artifacts/
+
+
+  validate-subtree:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/validate-subtree"
+        run: |
+          ./dev/ci/presubmits/validate-subtree
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-validate-subtree
+          path: /tmp/artifacts/
+
+
+  validate-untested-fields-beta:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/validate-untested-fields-beta"
+        run: |
+          ./dev/ci/presubmits/validate-untested-fields-beta
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-validate-untested-fields-beta
           path: /tmp/artifacts/
 
 

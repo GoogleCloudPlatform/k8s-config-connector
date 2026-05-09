@@ -56,9 +56,6 @@ on:
   merge_group:
     types: [checks_requested]
     branches: ["master", "release-*"]
-    paths:
-      - '**'
-      - '!experiments/**'
 
 
 jobs:
@@ -105,7 +102,7 @@ EOF
     continue
     fi
 
-    if [[ "${name}" == "license-lint" ]]; then
+    if [[ "${name}" == "license-lint" || "${name}" == "validate-subtree" || "${name}" == "validate-untested-fields-beta" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     timeout-minutes: 60
     steps:
@@ -157,12 +154,20 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 EOF
 
     # TODO: We should look at the script to see if it needs gcloud
-    if [[ "${name}" == "test-mockgcp" || "${name}" == "unit-tests" ]]; then
+    if [[ "${name}" == "test-mockgcp" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: 'google-github-actions/setup-gcloud@v2'
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
+EOF
+    fi
+
+    if [[ "${name}" == "validate-generated-files" ]]; then
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+      - name: Install dependencies
+        run: |
+          python3 -m pip install PyYAML --break-system-packages
 EOF
     fi
 
@@ -220,8 +225,6 @@ on:
   merge_group:
     types: [checks_requested]
     branches: ["master", "release-*"]
-    paths:
-      - 'config/crds/resources/**'
 
 jobs:
   crd-equivalence-check:
@@ -283,8 +286,6 @@ on:
   merge_group:
     types: [checks_requested]
     branches: ["master", "release-*"]
-    paths:
-      - 'experiments/**'
 
 jobs:
   test:

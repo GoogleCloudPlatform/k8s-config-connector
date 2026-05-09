@@ -54,6 +54,10 @@ func main() {
 	}
 
 	iamResources := findIAMResources()
+	if len(iamResources) == 0 {
+		fmt.Fprintf(os.Stderr, "Warning: No IAM resources found (googleapis protos missing or empty?), skipping generation to avoid overwriting with incomplete data.\n")
+		return
+	}
 
 	out := `// Copyright 2025 Google LLC
 //

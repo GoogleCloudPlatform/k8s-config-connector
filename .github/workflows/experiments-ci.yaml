@@ -28,8 +28,6 @@ on:
   merge_group:
     types: [checks_requested]
     branches: ["master", "release-*"]
-    paths:
-      - 'experiments/**'
 
 jobs:
   test:

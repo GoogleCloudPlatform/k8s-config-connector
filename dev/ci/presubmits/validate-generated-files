@@ -18,33 +18,28 @@ import subprocess
 import sys
 
 
-def run_and_verify_no_changes(command):
-    subprocess.run(command, check=True)
-
-    # Use subprocess.check_output which will raise an exception if the command fails.
-    diff_output = subprocess.check_output(["git", "diff", "--name-only"]).decode("utf-8").strip()
-    if diff_output:
-        print("Full diff:")
-        # Use subprocess.run to simply execute and print the output of git diff
-        subprocess.run(["git", "--no-pager", "diff"])
-        print("ERROR: Generated files out-of-date. Please run '{}' and update your PR.".format(" ".join(command)))
-        print("<hint_for_agent>Generated files out of date.  Run '{}' to regenerate, and then update your PR.</hint_for_agent>".format(" ".join(command)))
-        print("Affected files:")
-        print(diff_output)
-        sys.exit(1)
-
-
 def main():
     """Runs the validation logic."""
 
     repo_root = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).strip().decode("utf-8")
     os.chdir(repo_root)
 
-    run_and_verify_no_changes(["dev/tasks/generate-github-actions"])
-    run_and_verify_no_changes(["dev/tasks/generate-types-and-mappers"])
-    run_and_verify_no_changes(["dev/tasks/generate-crds"])
-    run_and_verify_no_changes(["dev/tasks/generate-resource-report"])
-    run_and_verify_no_changes(["dev/tasks/generate_static_config.py"])
+    print("Running 'make generate' to update all generated files...")
+    subprocess.run(["make", "generate"], check=True)
+
+    # Check for any uncommitted changes
+    diff_output = subprocess.check_output(["git", "diff", "--name-only"]).decode("utf-8").strip()
+    if diff_output:
+        print("Full diff:")
+        # Use subprocess.run to simply execute and print the output of git diff
+        subprocess.run(["git", "--no-pager", "diff"])
+        print("ERROR: Generated files out-of-date. Please run 'make generate' locally and update your PR.")
+        print("<hint_for_agent>Generated files out of date.  Run 'make generate' to regenerate, and then update your PR.</hint_for_agent>")
+        print("Affected files:")
+        print(diff_output)
+        sys.exit(1)
+    else:
+        print("Success: All generated files are up-to-date.")
 
 if __name__ == "__main__":
     main()

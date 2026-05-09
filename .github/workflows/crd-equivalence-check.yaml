@@ -26,8 +26,6 @@ on:
   merge_group:
     types: [checks_requested]
     branches: ["master", "release-*"]
-    paths:
-      - 'config/crds/resources/**'
 
 jobs:
   crd-equivalence-check:

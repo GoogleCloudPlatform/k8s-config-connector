@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "${REPO_ROOT}"
+
+# Determine the base branch for comparison
+# In GitHub Actions, GITHUB_BASE_REF is set for PRs.
+BASE_BRANCH="${GITHUB_BASE_REF:-}"
+
+# For merge_group or other events, try to derive it or default to master
+if [[ -z "${BASE_BRANCH}" ]]; then
+  # If we are in a merge_group, GITHUB_REF is refs/heads/gh-readonly-queue/master/...
+  # We can try to extract the target branch name.
+  if [[ "${GITHUB_REF:-}" == refs/heads/gh-readonly-queue/* ]]; then
+    BASE_BRANCH=$(echo "${GITHUB_REF}" | sed 's|refs/heads/gh-readonly-queue/||' | cut -d'/' -f1)
+  else
+    BASE_BRANCH="master"
+  fi
+fi
+
+# Allow overriding the comparison reference for local testing
+COMPARISON_REF="${COMPARISON_REF:-origin/${BASE_BRANCH}}"
+
+# Extract the remote name from the COMPARISON_REF (e.g., 'origin' from 'origin/master')
+REMOTE_NAME=$(echo "${COMPARISON_REF}" | cut -d'/' -f1)
+REMOTE_BRANCH=$(echo "${COMPARISON_REF}" | cut -d'/' -f2-)
+
+# Fetch the base branch to ensure it is available for comparison
+echo "Fetching ${REMOTE_NAME} ${REMOTE_BRANCH}..."
+if ! git fetch "${REMOTE_NAME}" "${REMOTE_BRANCH}" --quiet; then
+  echo "Warning: git fetch failed. Checking if ${COMPARISON_REF} exists locally..."
+  if ! git rev-parse "${COMPARISON_REF}" > /dev/null 2>&1; then
+    echo "Error: ${COMPARISON_REF} not found locally and fetch failed."
+    exit 1
+  fi
+fi
+
+# Robustly identify the merge base to get only the commits in this PR/branch
+# We prefer FETCH_HEAD if it was just updated, otherwise fallback to COMPARISON_REF.
+if git rev-parse FETCH_HEAD > /dev/null 2>&1; then
+  BASE_COMMIT=$(git merge-base FETCH_HEAD HEAD)
+else
+  BASE_COMMIT=$(git merge-base "${COMPARISON_REF}" HEAD)
+fi
+COMMIT_HEAD="HEAD"
+
+echo "Checking subtree violations for range: ${BASE_COMMIT}..${COMMIT_HEAD}"
+
+# Check if any commit contains changes both within and outside the TF Git Subtree
+SUBTREE_DIR="third_party/github.com/hashicorp/terraform-provider-google-beta/"
+if git diff --name-only "${BASE_COMMIT}..${COMMIT_HEAD}" | grep "^${SUBTREE_DIR}" > /dev/null
+then
+  COMMIT_HASHES=($(git rev-list --topo-order "${BASE_COMMIT}..${COMMIT_HEAD}"))
+
+  for COMMIT in "${COMMIT_HASHES[@]}"; do
+    echo "Inspecting commit ${COMMIT}..."
+    PARENT_COMMIT=$(git rev-parse "${COMMIT}^")
+
+    if git diff --name-only "${PARENT_COMMIT}..${COMMIT}" | grep "^${SUBTREE_DIR}" > /dev/null && git diff --name-only "${PARENT_COMMIT}..${COMMIT}" | grep -v "^${SUBTREE_DIR}" > /dev/null
+    then
+      echo -e "Error: Your commit \"${COMMIT}\" includes changes both within and outside the\n\"${SUBTREE_DIR}\" directory.\nPlease ensure that changes made within this directory are grouped and\nsubmitted as a separate, dedicated commit.\n"
+      exit 1
+    fi
+  done
+fi
+
+echo "No subtree violations found."
