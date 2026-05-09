@@ -57,8 +57,20 @@ args: [ "powertools", "change-state-into-spec", "--namespace=${projectId}", "--k
 
 ---
 
-TEST: READ-OBJECT
+# Verify that we can now update the merge object, and that state-into-spec is absent.
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucket
 metadata:
+  annotations:
+    cnrm.cloud.google.com/state-into-spec: "absent"
+  labels:
+    label-one: "value-one"
   name: storagebucket-merge-${uniqueId}
+spec:
+  versioning:
+    enabled: false
+  lifecycleRule:
+    - action:
+        type: Delete
+      condition:
+        age: 14
