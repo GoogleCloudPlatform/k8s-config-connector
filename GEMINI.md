@@ -23,6 +23,10 @@ New files should be marked "Copyright 2026 Google LLC" with the Apache 2 License
 Do not change the copyright header on existing files.
 Generated files do not need a copyright header (and it's easier not to include one because of the year problem).
 
+# Formatting
+
+Before sending a PR, you MUST run `make fmt` to ensure all code is properly formatted and passes the presubmit validations.
+
 # GCP Projects and Namespaces
 
 KCC can manage resources in multiple GCP projects.  Typically a platform team will run KCC in a central "platfrom" cluster,
