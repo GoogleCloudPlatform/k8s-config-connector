@@ -24,15 +24,11 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
-    --service google.cloud.aiplatform.v1beta1 \
-    --api-version vertexai.cnrm.cloud.google.com/v1alpha1 \
-    --resource VertexAIFeaturestore:Featurestore \
-    --resource VertexAIMetadataStore:MetadataStore \
-    --resource VertexAIDeploymentResourcePool:DeploymentResourcePool \
-    --resource VertexAIExampleStore:ExampleStore
+go run . generate-types     --service google.cloud.aiplatform.v1beta1     --api-version vertexai.cnrm.cloud.google.com/v1alpha1     --resource VertexAIFeaturestore:Featurestore \
+  --resource VertexAIMetadataStore:MetadataStore \
+  --resource VertexAIDeploymentResourcePool:DeploymentResourcePool
 
-# go run . generate-mapper     --service google.cloud.aiplatform.v1beta1     --api-version vertexai.cnrm.cloud.google.com/v1alpha1
+go run . generate-mapper     --service google.cloud.aiplatform.v1beta1     --api-version vertexai.cnrm.cloud.google.com/v1alpha1 --api-dir ${REPO_ROOT}/apis/vertexai --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai --multiversion
 
 go run . generate-types \
     --service google.cloud.aiplatform.v1 \
