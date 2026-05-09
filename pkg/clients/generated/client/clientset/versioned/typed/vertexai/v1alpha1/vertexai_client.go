@@ -31,7 +31,7 @@ import (
 
 type VertexaiV1alpha1Interface interface {
 	RESTClient() rest.Interface
-	VertexAIDataLabelingJobsGetter
+	VertexAICustomJobsGetter
 	VertexAIFeaturestoresGetter
 	VertexAIFeaturestoreEntityTypesGetter
 	VertexAIFeaturestoreEntityTypeFeaturesGetter
@@ -44,8 +44,8 @@ type VertexaiV1alpha1Client struct {
 	restClient rest.Interface
 }
 
-func (c *VertexaiV1alpha1Client) VertexAIDataLabelingJobs(namespace string) VertexAIDataLabelingJobInterface {
-	return newVertexAIDataLabelingJobs(c, namespace)
+func (c *VertexaiV1alpha1Client) VertexAICustomJobs(namespace string) VertexAICustomJobInterface {
+	return newVertexAICustomJobs(c, namespace)
 }
 
 func (c *VertexaiV1alpha1Client) VertexAIFeaturestores(namespace string) VertexAIFeaturestoreInterface {
