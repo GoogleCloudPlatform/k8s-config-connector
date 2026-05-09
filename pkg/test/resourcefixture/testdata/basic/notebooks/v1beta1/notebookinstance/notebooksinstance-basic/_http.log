@@ -114,7 +114,7 @@ OK
     "labels": {
       "goog-caip-notebook": ""
     },
-    "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+    "machineType": "n1-standard-1",
     "metadata": {
       "container": "gcr.io/deeplearning-platform-release/base-cpu",
       "disable-swap-binaries": "true",
@@ -209,7 +209,7 @@ OK
   "labels": {
     "goog-caip-notebook": ""
   },
-  "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+  "machineType": "n1-standard-1",
   "metadata": {
     "container": "gcr.io/deeplearning-platform-release/base-cpu",
     "disable-swap-binaries": "true",
@@ -264,6 +264,9 @@ GRPC /google.cloud.notebooks.v1.NotebookService/GetInstance
 OK
 
 {
+  "containerImage": {
+    "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "creator": "${creatorID}",
   "diskEncryption": "GMEK",
@@ -312,7 +315,7 @@ OK
   "labels": {
     "goog-caip-notebook": ""
   },
-  "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+  "machineType": "n1-standard-1",
   "metadata": {
     "container": "gcr.io/deeplearning-platform-release/base-cpu",
     "disable-swap-binaries": "true",
@@ -355,6 +358,9 @@ GRPC /google.cloud.notebooks.v1.NotebookService/GetInstance
 OK
 
 {
+  "containerImage": {
+    "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "creator": "${creatorID}",
   "diskEncryption": "GMEK",
@@ -403,7 +409,7 @@ OK
   "labels": {
     "goog-caip-notebook": ""
   },
-  "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+  "machineType": "n1-standard-1",
   "metadata": {
     "container": "gcr.io/deeplearning-platform-release/base-cpu",
     "disable-swap-binaries": "true",

@@ -818,13 +818,16 @@ OK
     ],
     "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}",
     "labels": {
-      "goog-caip-notebook": ""
+      "environment": "development",
+      "goog-caip-notebook": "",
+      "team": "config-connector"
     },
-    "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+    "machineType": "n1-standard-1",
     "metadata": {
       "container": "gcr.io/deeplearning-platform-release/base-cpu",
       "disable-swap-binaries": "true",
       "enable-guest-attributes": "TRUE",
+      "enable-os-config": "true",
       "notebooks-api": "PROD",
       "notebooks-api-version": "v1",
       "proxy-mode": "service_account",
@@ -841,8 +844,12 @@ OK
     "reservationAffinity": {},
     "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
     "serviceAccountScopes": [
-      "https://www.googleapis.com/auth/cloud-platform",
-      "https://www.googleapis.com/auth/userinfo.email"
+      "https://www.googleapis.com/auth/devstorage.read_only",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring.write",
+      "https://www.googleapis.com/auth/service.management.readonly",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/trace.append"
     ],
     "shieldedInstanceConfig": {
       "enableIntegrityMonitoring": true,
@@ -851,6 +858,8 @@ OK
     "state": "PROVISIONING",
     "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
     "tags": [
+      "tag1",
+      "tag2",
       "deeplearning-vm",
       "notebook-instance"
     ],
@@ -927,13 +936,16 @@ OK
   ],
   "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}",
   "labels": {
-    "goog-caip-notebook": ""
+    "environment": "development",
+    "goog-caip-notebook": "",
+    "team": "config-connector"
   },
-  "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+  "machineType": "n1-standard-1",
   "metadata": {
     "container": "gcr.io/deeplearning-platform-release/base-cpu",
     "disable-swap-binaries": "true",
     "enable-guest-attributes": "TRUE",
+    "enable-os-config": "true",
     "notebooks-api": "PROD",
     "notebooks-api-version": "v1",
     "proxy-mode": "service_account",
@@ -950,8 +962,12 @@ OK
   "reservationAffinity": {},
   "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
   "serviceAccountScopes": [
-    "https://www.googleapis.com/auth/cloud-platform",
-    "https://www.googleapis.com/auth/userinfo.email"
+    "https://www.googleapis.com/auth/devstorage.read_only",
+    "https://www.googleapis.com/auth/logging.write",
+    "https://www.googleapis.com/auth/monitoring.write",
+    "https://www.googleapis.com/auth/service.management.readonly",
+    "https://www.googleapis.com/auth/servicecontrol",
+    "https://www.googleapis.com/auth/trace.append"
   ],
   "shieldedInstanceConfig": {
     "enableIntegrityMonitoring": true,
@@ -960,6 +976,8 @@ OK
   "state": "PROVISIONING",
   "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
   "tags": [
+    "tag1",
+    "tag2",
     "deeplearning-vm",
     "notebook-instance"
   ],
@@ -1029,7 +1047,110 @@ OK
   "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.Instance",
-    "state": "STOPPED"
+    "bootDiskSizeGb": "100",
+    "bootDiskType": "PD_SSD",
+    "containerImage": {
+      "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "someone@somewhere.com",
+    "dataDiskSizeGb": "200",
+    "dataDiskType": "PD_SSD",
+    "diskEncryption": "GMEK",
+    "disks": [
+      {
+        "autoDelete": true,
+        "boot": true,
+        "deviceName": "boot",
+        "diskSizeGb": "150",
+        "guestOsFeatures": [
+          {
+            "type": "VIRTIO_SCSI_MULTIQUEUE"
+          },
+          {
+            "type": "UEFI_COMPATIBLE"
+          },
+          {
+            "type": "GVNIC"
+          }
+        ],
+        "interface": "SCSI",
+        "kind": "compute#attachedDisk",
+        "licenses": [
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-tensorflow",
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-gvnic",
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-common-container",
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-debian-11",
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-dlvm"
+        ],
+        "mode": "READ_WRITE",
+        "source": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-full-${uniqueId}-boot",
+        "type": "PERSISTENT"
+      },
+      {
+        "autoDelete": true,
+        "deviceName": "data",
+        "diskSizeGb": "100",
+        "index": "1",
+        "interface": "SCSI",
+        "kind": "compute#attachedDisk",
+        "mode": "READ_WRITE",
+        "source": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-full-${uniqueId}-data",
+        "type": "PERSISTENT"
+      }
+    ],
+    "installGpuDriver": true,
+    "instanceOwners": [
+      "${projectNumber}-compute@developer.gserviceaccount.com"
+    ],
+    "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}",
+    "labels": {
+      "environment": "development",
+      "goog-caip-notebook": "",
+      "team": "config-connector"
+    },
+    "machineType": "n1-standard-1",
+    "metadata": {
+      "container": "gcr.io/deeplearning-platform-release/base-cpu",
+      "disable-swap-binaries": "true",
+      "enable-guest-attributes": "TRUE",
+      "enable-os-config": "true",
+      "notebooks-api": "PROD",
+      "notebooks-api-version": "v1",
+      "proxy-mode": "service_account",
+      "serial-port-logging-enable": "true",
+      "shutdown-script": "/opt/deeplearning/bin/shutdown_script.sh",
+      "warmup-libraries": "matplotlib.pyplot"
+    },
+    "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}",
+    "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+    "noProxyAccess": true,
+    "noPublicIp": true,
+    "noRemoveDataDisk": true,
+    "postStartupScript": "gs://config-connector-samples/notebooks/notebook-instance.sh",
+    "reservationAffinity": {},
+    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "serviceAccountScopes": [
+      "https://www.googleapis.com/auth/devstorage.read_only",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring.write",
+      "https://www.googleapis.com/auth/service.management.readonly",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/trace.append"
+    ],
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true,
+      "enableVtpm": true
+    },
+    "state": "STOPPED",
+    "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
+    "tags": [
+      "tag1",
+      "tag2",
+      "deeplearning-vm",
+      "notebook-instance"
+    ],
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -1082,7 +1203,15 @@ OK
   "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.Instance",
+    "bootDiskSizeGb": "100",
+    "bootDiskType": "PD_SSD",
+    "containerImage": {
+      "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "someone@somewhere.com",
+    "dataDiskSizeGb": "200",
+    "dataDiskType": "PD_SSD",
     "diskEncryption": "GMEK",
     "disks": [
       {
@@ -1126,13 +1255,22 @@ OK
         "type": "PERSISTENT"
       }
     ],
+    "installGpuDriver": true,
+    "instanceOwners": [
+      "${projectNumber}-compute@developer.gserviceaccount.com"
+    ],
+    "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}",
     "labels": {
-      "goog-caip-notebook": ""
+      "environment": "development",
+      "goog-caip-notebook": "",
+      "team": "config-connector"
     },
+    "machineType": "n1-standard-1",
     "metadata": {
       "container": "gcr.io/deeplearning-platform-release/base-cpu",
       "disable-swap-binaries": "true",
       "enable-guest-attributes": "TRUE",
+      "enable-os-config": "true",
       "notebooks-api": "PROD",
       "notebooks-api-version": "v1",
       "proxy-mode": "service_account",
@@ -1140,11 +1278,21 @@ OK
       "shutdown-script": "/opt/deeplearning/bin/shutdown_script.sh",
       "warmup-libraries": "matplotlib.pyplot"
     },
+    "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}",
     "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+    "noProxyAccess": true,
+    "noPublicIp": true,
+    "noRemoveDataDisk": true,
+    "postStartupScript": "gs://config-connector-samples/notebooks/notebook-instance.sh",
+    "reservationAffinity": {},
     "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
     "serviceAccountScopes": [
-      "https://www.googleapis.com/auth/cloud-platform",
-      "https://www.googleapis.com/auth/userinfo.email"
+      "https://www.googleapis.com/auth/devstorage.read_only",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring.write",
+      "https://www.googleapis.com/auth/service.management.readonly",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/trace.append"
     ],
     "shieldedInstanceConfig": {
       "enableIntegrityMonitoring": true,
@@ -1154,9 +1302,12 @@ OK
     "state": "STOPPED",
     "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
     "tags": [
+      "tag1",
+      "tag2",
       "deeplearning-vm",
       "notebook-instance"
-    ]
+    ],
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -1204,8 +1355,16 @@ OK
   "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.Instance",
+    "bootDiskSizeGb": "100",
+    "bootDiskType": "PD_SSD",
+    "containerImage": {
+      "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "someone@somewhere.com",
+    "dataDiskSizeGb": "200",
+    "dataDiskType": "PD_SSD",
+    "diskEncryption": "GMEK",
     "disks": [
       {
         "autoDelete": true,
@@ -1248,8 +1407,58 @@ OK
         "type": "PERSISTENT"
       }
     ],
+    "installGpuDriver": true,
+    "instanceOwners": [
+      "${projectNumber}-compute@developer.gserviceaccount.com"
+    ],
+    "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}",
+    "labels": {
+      "environment": "development",
+      "goog-caip-notebook": "",
+      "team": "config-connector"
+    },
+    "machineType": "n1-standard-1",
+    "metadata": {
+      "container": "gcr.io/deeplearning-platform-release/base-cpu",
+      "disable-swap-binaries": "true",
+      "enable-guest-attributes": "TRUE",
+      "enable-os-config": "true",
+      "notebooks-api": "PROD",
+      "notebooks-api-version": "v1",
+      "proxy-mode": "service_account",
+      "serial-port-logging-enable": "true",
+      "shutdown-script": "/opt/deeplearning/bin/shutdown_script.sh",
+      "warmup-libraries": "matplotlib.pyplot"
+    },
     "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}",
+    "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+    "noProxyAccess": true,
+    "noPublicIp": true,
+    "noRemoveDataDisk": true,
+    "postStartupScript": "gs://config-connector-samples/notebooks/notebook-instance.sh",
+    "reservationAffinity": {},
+    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "serviceAccountScopes": [
+      "https://www.googleapis.com/auth/devstorage.read_only",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring.write",
+      "https://www.googleapis.com/auth/service.management.readonly",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/trace.append"
+    ],
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true,
+      "enableSecureBoot": true,
+      "enableVtpm": true
+    },
     "state": "ACTIVE",
+    "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
+    "tags": [
+      "tag1",
+      "tag2",
+      "deeplearning-vm",
+      "notebook-instance"
+    ],
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -1265,8 +1474,15 @@ GRPC /google.cloud.notebooks.v1.NotebookService/GetInstance
 OK
 
 {
+  "bootDiskSizeGb": "100",
+  "bootDiskType": "PD_SSD",
+  "containerImage": {
+    "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "creator": "${creatorID}",
+  "dataDiskSizeGb": "200",
+  "dataDiskType": "PD_SSD",
   "diskEncryption": "GMEK",
   "disks": [
     {
@@ -1310,14 +1526,22 @@ OK
       "type": "PERSISTENT"
     }
   ],
+  "installGpuDriver": true,
+  "instanceOwners": [
+    "${projectNumber}-compute@developer.gserviceaccount.com"
+  ],
+  "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}",
   "labels": {
-    "goog-caip-notebook": ""
+    "environment": "development",
+    "goog-caip-notebook": "",
+    "team": "config-connector"
   },
-  "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+  "machineType": "n1-standard-1",
   "metadata": {
     "container": "gcr.io/deeplearning-platform-release/base-cpu",
     "disable-swap-binaries": "true",
     "enable-guest-attributes": "TRUE",
+    "enable-os-config": "true",
     "notebooks-api": "PROD",
     "notebooks-api-version": "v1",
     "proxy-mode": "service_account",
@@ -1327,18 +1551,30 @@ OK
   },
   "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+  "noProxyAccess": true,
+  "noPublicIp": true,
+  "noRemoveDataDisk": true,
+  "postStartupScript": "gs://config-connector-samples/notebooks/notebook-instance.sh",
+  "reservationAffinity": {},
   "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
   "serviceAccountScopes": [
-    "https://www.googleapis.com/auth/cloud-platform",
-    "https://www.googleapis.com/auth/userinfo.email"
+    "https://www.googleapis.com/auth/devstorage.read_only",
+    "https://www.googleapis.com/auth/logging.write",
+    "https://www.googleapis.com/auth/monitoring.write",
+    "https://www.googleapis.com/auth/service.management.readonly",
+    "https://www.googleapis.com/auth/servicecontrol",
+    "https://www.googleapis.com/auth/trace.append"
   ],
   "shieldedInstanceConfig": {
     "enableIntegrityMonitoring": true,
+    "enableSecureBoot": true,
     "enableVtpm": true
   },
-  "state": "PROVISIONING",
+  "state": "ACTIVE",
   "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
   "tags": [
+    "tag1",
+    "tag2",
     "deeplearning-vm",
     "notebook-instance"
   ],
@@ -1356,8 +1592,15 @@ GRPC /google.cloud.notebooks.v1.NotebookService/GetInstance
 OK
 
 {
+  "bootDiskSizeGb": "100",
+  "bootDiskType": "PD_SSD",
+  "containerImage": {
+    "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "creator": "${creatorID}",
+  "dataDiskSizeGb": "200",
+  "dataDiskType": "PD_SSD",
   "diskEncryption": "GMEK",
   "disks": [
     {
@@ -1401,14 +1644,22 @@ OK
       "type": "PERSISTENT"
     }
   ],
+  "installGpuDriver": true,
+  "instanceOwners": [
+    "${projectNumber}-compute@developer.gserviceaccount.com"
+  ],
+  "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}",
   "labels": {
-    "goog-caip-notebook": ""
+    "environment": "development",
+    "goog-caip-notebook": "",
+    "team": "config-connector"
   },
-  "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+  "machineType": "n1-standard-1",
   "metadata": {
     "container": "gcr.io/deeplearning-platform-release/base-cpu",
     "disable-swap-binaries": "true",
     "enable-guest-attributes": "TRUE",
+    "enable-os-config": "true",
     "notebooks-api": "PROD",
     "notebooks-api-version": "v1",
     "proxy-mode": "service_account",
@@ -1418,18 +1669,30 @@ OK
   },
   "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+  "noProxyAccess": true,
+  "noPublicIp": true,
+  "noRemoveDataDisk": true,
+  "postStartupScript": "gs://config-connector-samples/notebooks/notebook-instance.sh",
+  "reservationAffinity": {},
   "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
   "serviceAccountScopes": [
-    "https://www.googleapis.com/auth/cloud-platform",
-    "https://www.googleapis.com/auth/userinfo.email"
+    "https://www.googleapis.com/auth/devstorage.read_only",
+    "https://www.googleapis.com/auth/logging.write",
+    "https://www.googleapis.com/auth/monitoring.write",
+    "https://www.googleapis.com/auth/service.management.readonly",
+    "https://www.googleapis.com/auth/servicecontrol",
+    "https://www.googleapis.com/auth/trace.append"
   ],
   "shieldedInstanceConfig": {
     "enableIntegrityMonitoring": true,
+    "enableSecureBoot": true,
     "enableVtpm": true
   },
-  "state": "PROVISIONING",
+  "state": "ACTIVE",
   "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
   "tags": [
+    "tag1",
+    "tag2",
     "deeplearning-vm",
     "notebook-instance"
   ],
