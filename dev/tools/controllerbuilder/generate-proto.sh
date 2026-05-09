@@ -92,7 +92,7 @@ protoc --include_imports --include_source_info \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/servicenetworking/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/analytics/*/*/*.proto \
-    ${THIRD_PARTY}/googleapis/google/api/*.proto \
+    ${THIRD_PARTY}/googleapis/google/actions/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/api/*.proto \
     ${THIRD_PARTY}/googleapis/google/api/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/bigtable/*/*/*.proto \
