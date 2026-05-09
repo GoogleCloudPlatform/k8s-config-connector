@@ -35,15 +35,11 @@ spec:
     maxmemory-policy: volatile-ttl
   engineVersion: VALKEY_7_2
   labels:
-    key1: val1
-    key2: val2
     keyx: valx
   location: us-central1
   mode: CLUSTER
   nodeType: STANDARD_SMALL
   persistenceConfig:
-    aofConfig:
-      appendFsync: EVERY_SEC
     mode: RDB
     rdbConfig:
       rdbSnapshotPeriod: ONE_HOUR
