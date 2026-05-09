@@ -80,6 +80,10 @@ status:
           serviceAttachment: projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2
     nodeConfig:
       sizeGB: 6.5
+    pscAttachmentDetails:
+    - connectionType: CONNECTION_TYPE_DISCOVERY
+      serviceAttachment: projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}
+    - serviceAttachment: projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2
     state: ACTIVE
     uid: 0123456789abcdef
     updateTime: "1970-01-01T00:00:00Z"
