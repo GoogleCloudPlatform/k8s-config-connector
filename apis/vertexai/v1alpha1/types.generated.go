@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,262 +16,17 @@
 // +generated:types
 // krm.group: vertexai.cnrm.cloud.google.com
 // krm.version: v1alpha1
-// proto.service: google.cloud.aiplatform.v1beta1
-// resource: VertexAIFeaturestore:Featurestore
-// resource: VertexAIMetadataStore:MetadataStore
+// proto.service: google.cloud.aiplatform.v1
 // resource: VertexAIDataLabelingJob:DataLabelingJob
-// resource: VertexAIDeploymentResourcePool:DeploymentResourcePool
-// resource: VertexAIExampleStore:ExampleStore
+// resource: VertexAICachedContent:CachedContent
 
 package v1alpha1
 
-import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 
-// +kcc:proto=google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec
-type AutoscalingMetricSpec struct {
-	// Required. The resource metric name.
-	//  Supported metrics:
-	//
-	//  * For Online Prediction:
-	//  * `aiplatform.googleapis.com/prediction/online/accelerator/duty_cycle`
-	//  * `aiplatform.googleapis.com/prediction/online/cpu/utilization`
-	//  * `aiplatform.googleapis.com/prediction/online/request_count`
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec.metric_name
-	MetricName *string `json:"metricName,omitempty"`
-
-	// The target resource utilization in percentage (1% - 100%) for the given
-	//  metric; once the real usage deviates from the target by a certain
-	//  percentage, the machine replicas change. The default value is 60
-	//  (representing 60%) if not provided.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec.target
-	Target *int32 `json:"target,omitempty"`
-
-	// Optional. The Cloud Monitoring monitored resource labels as key value pairs
-	//  used for metrics filtering. See Cloud Monitoring Labels
-	//  https://cloud.google.com/monitoring/api/v3/metric-model#generic-label-info
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec.monitored_resource_labels
-	MonitoredResourceLabels map[string]string `json:"monitoredResourceLabels,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.DedicatedResources
-type DedicatedResources struct {
-	// Required. Immutable. The specification of a single machine being used.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DedicatedResources.machine_spec
-	MachineSpec *MachineSpec `json:"machineSpec,omitempty"`
-
-	// Required. Immutable. The minimum number of machine replicas that will be
-	//  always deployed on. This value must be greater than or equal to 1.
-	//
-	//  If traffic increases, it may dynamically be deployed onto more replicas,
-	//  and as traffic decreases, some of these extra replicas may be freed.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DedicatedResources.min_replica_count
-	MinReplicaCount *int32 `json:"minReplicaCount,omitempty"`
-
-	// Immutable. The maximum number of replicas that may be deployed on when the
-	//  traffic against it increases. If the requested value is too large, the
-	//  deployment will error, but if deployment succeeds then the ability to scale
-	//  to that many replicas is guaranteed (barring service outages). If traffic
-	//  increases beyond what its replicas at maximum may handle, a portion of the
-	//  traffic will be dropped. If this value is not provided, will use
-	//  [min_replica_count][google.cloud.aiplatform.v1beta1.DedicatedResources.min_replica_count]
-	//  as the default value.
-	//
-	//  The value of this field impacts the charge against Vertex CPU and GPU
-	//  quotas. Specifically, you will be charged for (max_replica_count *
-	//  number of cores in the selected machine type) and (max_replica_count *
-	//  number of GPUs per replica in the selected machine type).
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DedicatedResources.max_replica_count
-	MaxReplicaCount *int32 `json:"maxReplicaCount,omitempty"`
-
-	// Optional. Number of required available replicas for the deployment to
-	//  succeed. This field is only needed when partial deployment/mutation is
-	//  desired. If set, the deploy/mutate operation will succeed once
-	//  available_replica_count reaches required_replica_count, and the rest of
-	//  the replicas will be retried. If not set, the default
-	//  required_replica_count will be min_replica_count.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DedicatedResources.required_replica_count
-	RequiredReplicaCount *int32 `json:"requiredReplicaCount,omitempty"`
-
-	// Immutable. The metric specifications that overrides a resource
-	//  utilization metric (CPU utilization, accelerator's duty cycle, and so on)
-	//  target value (default to 60 if not set). At most one entry is allowed per
-	//  metric.
-	//
-	//  If
-	//  [machine_spec.accelerator_count][google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_count]
-	//  is above 0, the autoscaling will be based on both CPU utilization and
-	//  accelerator's duty cycle metrics and scale up when either metrics exceeds
-	//  its target value while scale down if both metrics are under their target
-	//  value. The default target value is 60 for both metrics.
-	//
-	//  If
-	//  [machine_spec.accelerator_count][google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_count]
-	//  is 0, the autoscaling will be based on CPU utilization metric only with
-	//  default target value 60 if not explicitly set.
-	//
-	//  For example, in the case of Online Prediction, if you want to override
-	//  target CPU utilization to 80, you should set
-	//  [autoscaling_metric_specs.metric_name][google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec.metric_name]
-	//  to `aiplatform.googleapis.com/prediction/online/cpu/utilization` and
-	//  [autoscaling_metric_specs.target][google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec.target]
-	//  to `80`.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DedicatedResources.autoscaling_metric_specs
-	AutoscalingMetricSpecs []AutoscalingMetricSpec `json:"autoscalingMetricSpecs,omitempty"`
-
-	// Optional. If true, schedule the deployment workload on [spot
-	//  VMs](https://cloud.google.com/kubernetes-engine/docs/concepts/spot-vms).
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DedicatedResources.spot
-	Spot *bool `json:"spot,omitempty"`
-
-	// Optional. Immutable. If set, use DWS resource to schedule the deployment
-	//  workload. reference:
-	//  (https://cloud.google.com/blog/products/compute/introducing-dynamic-workload-scheduler)
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DedicatedResources.flex_start
-	FlexStart *FlexStart `json:"flexStart,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.Featurestore.OnlineServingConfig
-type Featurestore_OnlineServingConfig struct {
-	// The number of nodes for the online store. The number of nodes doesn't
-	//  scale automatically, but you can manually update the number of
-	//  nodes. If set to 0, the featurestore will not have an
-	//  online store and cannot be used for online serving.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Featurestore.OnlineServingConfig.fixed_node_count
-	FixedNodeCount *int32 `json:"fixedNodeCount,omitempty"`
-
-	// Online serving scaling configuration.
-	//  Only one of `fixed_node_count` and `scaling` can be set. Setting one will
-	//  reset the other.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Featurestore.OnlineServingConfig.scaling
-	Scaling *Featurestore_OnlineServingConfig_Scaling `json:"scaling,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.Featurestore.OnlineServingConfig.Scaling
-type Featurestore_OnlineServingConfig_Scaling struct {
-	// Required. The minimum number of nodes to scale down to. Must be greater
-	//  than or equal to 1.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Featurestore.OnlineServingConfig.Scaling.min_node_count
-	MinNodeCount *int32 `json:"minNodeCount,omitempty"`
-
-	// The maximum number of nodes to scale up to. Must be greater than
-	//  min_node_count, and less than or equal to 10 times of 'min_node_count'.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Featurestore.OnlineServingConfig.Scaling.max_node_count
-	MaxNodeCount *int32 `json:"maxNodeCount,omitempty"`
-
-	// Optional. The cpu utilization that the Autoscaler should be trying to
-	//  achieve. This number is on a scale from 0 (no utilization) to 100
-	//  (total utilization), and is limited between 10 and 80. When a cluster's
-	//  CPU utilization exceeds the target that you have set, Bigtable
-	//  immediately adds nodes to the cluster. When CPU utilization is
-	//  substantially lower than the target, Bigtable removes nodes. If not set
-	//  or set to 0, default to 50.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Featurestore.OnlineServingConfig.Scaling.cpu_utilization_target
-	CPUUtilizationTarget *int32 `json:"cpuUtilizationTarget,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.FlexStart
-type FlexStart struct {
-	// The max duration of the deployment is max_runtime_duration. The
-	//  deployment will be terminated after the duration. The
-	//  max_runtime_duration can be set up to 7 days.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FlexStart.max_runtime_duration
-	MaxRuntimeDuration *string `json:"maxRuntimeDuration,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.MachineSpec
-type MachineSpec struct {
-	// Immutable. The type of the machine.
-	//
-	//  See the [list of machine types supported for
-	//  prediction](https://cloud.google.com/vertex-ai/docs/predictions/configure-compute#machine-types)
-	//
-	//  See the [list of machine types supported for custom
-	//  training](https://cloud.google.com/vertex-ai/docs/training/configure-compute#machine-types).
-	//
-	//  For [DeployedModel][google.cloud.aiplatform.v1beta1.DeployedModel] this
-	//  field is optional, and the default value is `n1-standard-2`. For
-	//  [BatchPredictionJob][google.cloud.aiplatform.v1beta1.BatchPredictionJob] or
-	//  as part of [WorkerPoolSpec][google.cloud.aiplatform.v1beta1.WorkerPoolSpec]
-	//  this field is required.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MachineSpec.machine_type
-	MachineType *string `json:"machineType,omitempty"`
-
-	// Immutable. The type of accelerator(s) that may be attached to the machine
-	//  as per
-	//  [accelerator_count][google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_count].
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_type
-	AcceleratorType *string `json:"acceleratorType,omitempty"`
-
-	// The number of accelerators to attach to the machine.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_count
-	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
-
-	// Optional. Immutable. The Nvidia GPU partition size.
-	//
-	//  When specified, the requested accelerators will be partitioned into
-	//  smaller GPU partitions. For example, if the request is for 8 units of
-	//  NVIDIA A100 GPUs, and gpu_partition_size="1g.10gb", the service will
-	//  create 8 * 7 = 56 partitioned MIG instances.
-	//
-	//  The partition size must be a value supported by the requested accelerator.
-	//  Refer to
-	//  [Nvidia GPU
-	//  Partitioning](https://cloud.google.com/kubernetes-engine/docs/how-to/gpus-multi#multi-instance_gpu_partitions)
-	//  for the available partition sizes.
-	//
-	//  If set, the accelerator_count should be set to 1.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MachineSpec.gpu_partition_size
-	GpuPartitionSize *string `json:"gpuPartitionSize,omitempty"`
-
-	// Immutable. The topology of the TPUs. Corresponds to the TPU topologies
-	//  available from GKE. (Example: tpu_topology: "2x2x1").
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MachineSpec.tpu_topology
-	TpuTopology *string `json:"tpuTopology,omitempty"`
-
-	// Optional. Immutable. The number of nodes per replica for multihost GPU
-	//  deployments.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MachineSpec.multihost_gpu_node_count
-	MultihostGpuNodeCount *int32 `json:"multihostGpuNodeCount,omitempty"`
-
-	// Optional. Immutable. Configuration controlling how this resource pool
-	//  consumes reservation.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MachineSpec.reservation_affinity
-	ReservationAffinity *ReservationAffinity `json:"reservationAffinity,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.MetadataStore.DataplexConfig
-type MetadataStore_DataplexConfig struct {
-	// Optional. Whether or not Data Lineage synchronization is enabled for
-	//  Vertex Pipelines.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetadataStore.DataplexConfig.enabled_pipelines_lineage
-	EnabledPipelinesLineage *bool `json:"enabledPipelinesLineage,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.MetadataStore.MetadataStoreState
-type MetadataStore_MetadataStoreState struct {
-	// The disk utilization of the MetadataStore in bytes.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetadataStore.MetadataStoreState.disk_utilization_bytes
-	DiskUtilizationBytes *int64 `json:"diskUtilizationBytes,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ReservationAffinity
-type ReservationAffinity struct {
-	// Required. Specifies the reservation affinity type.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ReservationAffinity.reservation_affinity_type
-	ReservationAffinityType *string `json:"reservationAffinityType,omitempty"`
-
-	// Optional. Corresponds to the label key of a reservation resource. To target
-	//  a SPECIFIC_RESERVATION by name, use
-	//  `compute.googleapis.com/reservation-name` as the key and specify the name
-	//  of your reservation as its value.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ReservationAffinity.key
-	Key *string `json:"key,omitempty"`
-
-	// Optional. Corresponds to the label values of a reservation resource. This
-	//  must be the full resource name of the reservation.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ReservationAffinity.values
-	Values []string `json:"values,omitempty"`
-}
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+)
 
 // +kcc:proto=google.cloud.aiplatform.v1.ActiveLearningConfig
 type ActiveLearningConfig struct {
@@ -295,6 +50,421 @@ type ActiveLearningConfig struct {
 	TrainingConfig *TrainingConfig `json:"trainingConfig,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.Blob
+type Blob struct {
+	// Required. The IANA standard MIME type of the source data.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Blob.mime_type
+	MimeType *string `json:"mimeType,omitempty"`
+
+	// Required. Raw bytes.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Blob.data
+	Data []byte `json:"data,omitempty"`
+}
+
+/* unreachable type CachedContent
+// +kcc:proto=google.cloud.aiplatform.v1.CachedContent
+type CachedContent struct {
+	// Timestamp of when this resource is considered expired.
+	//  This is *always* provided on output, regardless of what was sent
+	//  on input.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.expire_time
+	ExpireTime *string `json:"expireTime,omitempty"`
+
+	// Input only. The TTL for this resource. The expiration time is computed:
+	//  now + TTL.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.ttl
+	TTL *string `json:"ttl,omitempty"`
+
+	// Immutable. Identifier. The server-generated resource name of the cached
+	//  content Format:
+	//  projects/{project}/locations/{location}/cachedContents/{cached_content}
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Immutable. The user-generated meaningful display name of the
+	//  cached content.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Immutable. The name of the `Model` to use for cached content. Currently,
+	//  only the published Gemini base models are supported, in form of
+	//  projects/{PROJECT}/locations/{LOCATION}/publishers/google/models/{MODEL}
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.model
+	Model *string `json:"model,omitempty"`
+
+	// Optional. Input only. Immutable. Developer set system instruction.
+	//  Currently, text only
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.system_instruction
+	SystemInstruction *Content `json:"systemInstruction,omitempty"`
+
+	// Optional. Input only. Immutable. The content to cache
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.contents
+	Contents []Content `json:"contents,omitempty"`
+
+	// Optional. Input only. Immutable. A list of `Tools` the model may use to
+	//  generate the next response
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.tools
+	Tools []Tool `json:"tools,omitempty"`
+
+	// Optional. Input only. Immutable. Tool config. This config is shared for all
+	//  tools
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.tool_config
+	ToolConfig *ToolConfig `json:"toolConfig,omitempty"`
+
+	// Input only. Immutable. Customer-managed encryption key spec for a
+	//  `CachedContent`. If set, this `CachedContent` and all its sub-resources
+	//  will be secured by this key.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.encryption_spec
+	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.aiplatform.v1.CachedContent.UsageMetadata
+type CachedContent_UsageMetadata struct {
+	// Total number of tokens that the cached content consumes.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.UsageMetadata.total_token_count
+	TotalTokenCount *int32 `json:"totalTokenCount,omitempty"`
+
+	// Number of text characters.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.UsageMetadata.text_count
+	TextCount *int32 `json:"textCount,omitempty"`
+
+	// Number of images.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.UsageMetadata.image_count
+	ImageCount *int32 `json:"imageCount,omitempty"`
+
+	// Duration of video in seconds.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.UsageMetadata.video_duration_seconds
+	VideoDurationSeconds *int32 `json:"videoDurationSeconds,omitempty"`
+
+	// Duration of audio in seconds.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.UsageMetadata.audio_duration_seconds
+	AudioDurationSeconds *int32 `json:"audioDurationSeconds,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.CodeExecutionResult
+type CodeExecutionResult struct {
+	// Required. Outcome of the code execution.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CodeExecutionResult.outcome
+	Outcome *string `json:"outcome,omitempty"`
+
+	// Optional. Contains stdout when code execution is successful, stderr or
+	//  other description otherwise.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CodeExecutionResult.output
+	Output *string `json:"output,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.Content
+type Content struct {
+	// Optional. The producer of the content. Must be either 'user' or 'model'.
+	//
+	//  Useful to set for multi-turn conversations, otherwise can be left blank
+	//  or unset.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Content.role
+	Role *string `json:"role,omitempty"`
+
+	// Required. Ordered `Parts` that constitute a single message. Parts may have
+	//  different IANA MIME types.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Content.parts
+	Parts []Part `json:"parts,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.DynamicRetrievalConfig
+type DynamicRetrievalConfig struct {
+	// The mode of the predictor to be used in dynamic retrieval.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.DynamicRetrievalConfig.mode
+	Mode *string `json:"mode,omitempty"`
+
+	// Optional. The threshold to be used in dynamic retrieval.
+	//  If not set, a system default value is used.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.DynamicRetrievalConfig.dynamic_threshold
+	DynamicThreshold *float32 `json:"dynamicThreshold,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.EnterpriseWebSearch
+type EnterpriseWebSearch struct {
+	// Optional. List of domains to be excluded from the search results.
+	//  The default limit is 2000 domains.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.EnterpriseWebSearch.exclude_domains
+	ExcludeDomains []string `json:"excludeDomains,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.ExecutableCode
+type ExecutableCode struct {
+	// Required. Programming language of the `code`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ExecutableCode.language
+	Language *string `json:"language,omitempty"`
+
+	// Required. The code to be executed.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ExecutableCode.code
+	Code *string `json:"code,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.FileData
+type FileData struct {
+	// Required. The IANA standard MIME type of the source data.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FileData.mime_type
+	MimeType *string `json:"mimeType,omitempty"`
+
+	// Required. URI.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FileData.file_uri
+	FileURI *string `json:"fileURI,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.FunctionCall
+type FunctionCall struct {
+	// Required. The name of the function to call.
+	//  Matches [FunctionDeclaration.name].
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionCall.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Required. The function parameters and values in JSON object
+	//  format. See [FunctionDeclaration.parameters] for parameter details.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionCall.args
+	Args apiextensionsv1.JSON `json:"args,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.FunctionCallingConfig
+type FunctionCallingConfig struct {
+	// Optional. Function calling mode.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionCallingConfig.mode
+	Mode *string `json:"mode,omitempty"`
+
+	// Optional. Function names to call. Only set when the Mode is ANY. Function
+	//  names should match [FunctionDeclaration.name]. With mode set to ANY, model
+	//  will predict a function call from the set of function names provided.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionCallingConfig.allowed_function_names
+	AllowedFunctionNames []string `json:"allowedFunctionNames,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.FunctionDeclaration
+type FunctionDeclaration struct {
+	// Required. The name of the function to call.
+	//  Must start with a letter or an underscore.
+	//  Must be a-z, A-Z, 0-9, or contain underscores, dots and dashes, with a
+	//  maximum length of 64.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionDeclaration.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Description and purpose of the function.
+	//  Model uses it to decide how and whether to call the function.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionDeclaration.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Describes the parameters to this function in JSON Schema Object
+	//  format. Reflects the Open API 3.03 Parameter Object. string Key: the name
+	//  of the parameter. Parameter names are case sensitive. Schema Value: the
+	//  Schema defining the type used for the parameter. For function with no
+	//  parameters, this can be left unset. Parameter names must start with a
+	//  letter or an underscore and must only contain chars a-z, A-Z, 0-9, or
+	//  underscores with a maximum length of 64. Example with 1 required and 1
+	//  optional parameter: type: OBJECT properties:
+	//   param1:
+	//     type: STRING
+	//   param2:
+	//     type: INTEGER
+	//  required:
+	//   - param1
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionDeclaration.parameters
+	Parameters *Schema `json:"parameters,omitempty"`
+
+	// Optional. Describes the parameters to the function in JSON Schema format.
+	//  The schema must describe an object where the properties are the parameters
+	//  to the function. For example:
+	//
+	//  ```
+	//  {
+	//    "type": "object",
+	//    "properties": {
+	//      "name": { "type": "string" },
+	//      "age": { "type": "integer" }
+	//    },
+	//    "additionalProperties": false,
+	//    "required": ["name", "age"],
+	//    "propertyOrdering": ["name", "age"]
+	//  }
+	//  ```
+	//
+	//  This field is mutually exclusive with `parameters`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionDeclaration.parameters_json_schema
+	ParametersJsonSchema *Value `json:"parametersJsonSchema,omitempty"`
+
+	// Optional. Describes the output from this function in JSON Schema format.
+	//  Reflects the Open API 3.03 Response Object. The Schema defines the type
+	//  used for the response value of the function.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionDeclaration.response
+	Response *Schema `json:"response,omitempty"`
+
+	// Optional. Describes the output from this function in JSON Schema format.
+	//  The value specified by the schema is the response value of the function.
+	//
+	//  This field is mutually exclusive with `response`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionDeclaration.response_json_schema
+	ResponseJsonSchema *Value `json:"responseJsonSchema,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.FunctionResponse
+type FunctionResponse struct {
+	// Required. The name of the function to call.
+	//  Matches [FunctionDeclaration.name] and [FunctionCall.name].
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionResponse.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The function response in JSON object format.
+	//  Use "output" key to specify function output and "error" key to specify
+	//  error details (if any). If "output" and "error" keys are not specified,
+	//  then whole "response" is treated as function output.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionResponse.response
+	Response apiextensionsv1.JSON `json:"response,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.GoogleMaps
+type GoogleMaps struct {
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.GoogleSearchRetrieval
+type GoogleSearchRetrieval struct {
+	// Specifies the dynamic retrieval configuration for the given source.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.GoogleSearchRetrieval.dynamic_retrieval_config
+	DynamicRetrievalConfig *DynamicRetrievalConfig `json:"dynamicRetrievalConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.Part
+type Part struct {
+	// Optional. Text part (can be code).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Part.text
+	Text *string `json:"text,omitempty"`
+
+	// Optional. Inlined bytes data.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Part.inline_data
+	InlineData *Blob `json:"inlineData,omitempty"`
+
+	// Optional. URI based data.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Part.file_data
+	FileData *FileData `json:"fileData,omitempty"`
+
+	// Optional. A predicted [FunctionCall] returned from the model that
+	//  contains a string representing the [FunctionDeclaration.name] with the
+	//  parameters and their values.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Part.function_call
+	FunctionCall *FunctionCall `json:"functionCall,omitempty"`
+
+	// Optional. The result output of a [FunctionCall] that contains a string
+	//  representing the [FunctionDeclaration.name] and a structured JSON object
+	//  containing any output from the function call. It is used as context to
+	//  the model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Part.function_response
+	FunctionResponse *FunctionResponse `json:"functionResponse,omitempty"`
+
+	// Optional. Code generated by the model that is meant to be executed.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Part.executable_code
+	ExecutableCode *ExecutableCode `json:"executableCode,omitempty"`
+
+	// Optional. Result of executing the [ExecutableCode].
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Part.code_execution_result
+	CodeExecutionResult *CodeExecutionResult `json:"codeExecutionResult,omitempty"`
+
+	// Indicates if the part is thought from the model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Part.thought
+	Thought *bool `json:"thought,omitempty"`
+
+	// An opaque signature for the thought so it can be reused in subsequent
+	//  requests.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Part.thought_signature
+	ThoughtSignature []byte `json:"thoughtSignature,omitempty"`
+
+	// Optional. Video metadata. The metadata should only be specified while the
+	//  video data is presented in inline_data or file_data.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Part.video_metadata
+	VideoMetadata *VideoMetadata `json:"videoMetadata,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.RagRetrievalConfig
+type RagRetrievalConfig struct {
+	// Optional. The number of contexts to retrieve.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RagRetrievalConfig.top_k
+	TopK *int32 `json:"topK,omitempty"`
+
+	// Optional. Config for filters.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RagRetrievalConfig.filter
+	Filter *RagRetrievalConfig_Filter `json:"filter,omitempty"`
+
+	// Optional. Config for ranking and reranking.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RagRetrievalConfig.ranking
+	Ranking *RagRetrievalConfig_Ranking `json:"ranking,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.RagRetrievalConfig.Filter
+type RagRetrievalConfig_Filter struct {
+	// Optional. Only returns contexts with vector distance smaller than the
+	//  threshold.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RagRetrievalConfig.Filter.vector_distance_threshold
+	VectorDistanceThreshold *float64 `json:"vectorDistanceThreshold,omitempty"`
+
+	// Optional. Only returns contexts with vector similarity larger than the
+	//  threshold.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RagRetrievalConfig.Filter.vector_similarity_threshold
+	VectorSimilarityThreshold *float64 `json:"vectorSimilarityThreshold,omitempty"`
+
+	// Optional. String for metadata filtering.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RagRetrievalConfig.Filter.metadata_filter
+	MetadataFilter *string `json:"metadataFilter,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.RagRetrievalConfig.Ranking
+type RagRetrievalConfig_Ranking struct {
+	// Optional. Config for Rank Service.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RagRetrievalConfig.Ranking.rank_service
+	RankService *RagRetrievalConfig_Ranking_RankService `json:"rankService,omitempty"`
+
+	// Optional. Config for LlmRanker.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RagRetrievalConfig.Ranking.llm_ranker
+	LlmRanker *RagRetrievalConfig_Ranking_LlmRanker `json:"llmRanker,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.RagRetrievalConfig.Ranking.LlmRanker
+type RagRetrievalConfig_Ranking_LlmRanker struct {
+	// Optional. The model name used for ranking.
+	//  Format: `gemini-1.5-pro`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RagRetrievalConfig.Ranking.LlmRanker.model_name
+	ModelName *string `json:"modelName,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.RagRetrievalConfig.Ranking.RankService
+type RagRetrievalConfig_Ranking_RankService struct {
+	// Optional. The model name of the rank service.
+	//  Format: `semantic-ranker-512@latest`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RagRetrievalConfig.Ranking.RankService.model_name
+	ModelName *string `json:"modelName,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.Retrieval
+type Retrieval struct {
+	// Set to use data source powered by Vertex AI Search.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Retrieval.vertex_ai_search
+	VertexAiSearch *VertexAiSearch `json:"vertexAiSearch,omitempty"`
+
+	// Set to use data source powered by Vertex RAG store.
+	//  User data is uploaded via the VertexRagDataService.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Retrieval.vertex_rag_store
+	VertexRagStore *VertexRagStore `json:"vertexRagStore,omitempty"`
+
+	// Optional. Deprecated. This option is no longer supported.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Retrieval.disable_attribution
+	DisableAttribution *bool `json:"disableAttribution,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.RetrievalConfig
+type RetrievalConfig struct {
+	// The location of the user.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RetrievalConfig.lat_lng
+	LatLng *LatLng `json:"latLng,omitempty"`
+
+	// The language code of the user.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RetrievalConfig.language_code
+	LanguageCode *string `json:"languageCode,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.SampleConfig
 type SampleConfig struct {
 	// The percentage of data needed to be labeled in the first batch.
@@ -312,12 +482,337 @@ type SampleConfig struct {
 	SampleStrategy *string `json:"sampleStrategy,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.Schema
+type Schema struct {
+	// Optional. The type of the data.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.type
+	Type *string `json:"type,omitempty"`
+
+	// Optional. The format of the data.
+	//  Supported formats:
+	//   for NUMBER type: "float", "double"
+	//   for INTEGER type: "int32", "int64"
+	//   for STRING type: "email", "byte", etc
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.format
+	Format *string `json:"format,omitempty"`
+
+	// Optional. The title of the Schema.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.title
+	Title *string `json:"title,omitempty"`
+
+	// Optional. The description of the data.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Indicates if the value may be null.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.nullable
+	Nullable *bool `json:"nullable,omitempty"`
+
+	// Optional. Default value of the data.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.default
+	Default *Value `json:"default,omitempty"`
+
+	// Optional. SCHEMA FIELDS FOR TYPE ARRAY
+	//  Schema of the elements of Type.ARRAY.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.items
+	Items *Schema `json:"items,omitempty"`
+
+	// Optional. Minimum number of the elements for Type.ARRAY.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.min_items
+	MinItems *int64 `json:"minItems,omitempty"`
+
+	// Optional. Maximum number of the elements for Type.ARRAY.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.max_items
+	MaxItems *int64 `json:"maxItems,omitempty"`
+
+	// Optional. Possible values of the element of primitive type with enum
+	//  format. Examples:
+	//  1. We can define direction as :
+	//  {type:STRING, format:enum, enum:["EAST", NORTH", "SOUTH", "WEST"]}
+	//  2. We can define apartment number as :
+	//  {type:INTEGER, format:enum, enum:["101", "201", "301"]}
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.enum
+	Enum []string `json:"enum,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+	// Optional. The order of the properties.
+	//  Not a standard field in open api spec. Only used to support the order of
+	//  the properties.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.property_ordering
+	PropertyOrdering []string `json:"propertyOrdering,omitempty"`
+
+	// Optional. Required properties of Type.OBJECT.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.required
+	Required []string `json:"required,omitempty"`
+
+	// Optional. Minimum number of the properties for Type.OBJECT.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.min_properties
+	MinProperties *int64 `json:"minProperties,omitempty"`
+
+	// Optional. Maximum number of the properties for Type.OBJECT.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.max_properties
+	MaxProperties *int64 `json:"maxProperties,omitempty"`
+
+	// Optional. SCHEMA FIELDS FOR TYPE INTEGER and NUMBER
+	//  Minimum value of the Type.INTEGER and Type.NUMBER
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.minimum
+	Minimum *float64 `json:"minimum,omitempty"`
+
+	// Optional. Maximum value of the Type.INTEGER and Type.NUMBER
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.maximum
+	Maximum *float64 `json:"maximum,omitempty"`
+
+	// Optional. SCHEMA FIELDS FOR TYPE STRING
+	//  Minimum length of the Type.STRING
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.min_length
+	MinLength *int64 `json:"minLength,omitempty"`
+
+	// Optional. Maximum length of the Type.STRING
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.max_length
+	MaxLength *int64 `json:"maxLength,omitempty"`
+
+	// Optional. Pattern of the Type.STRING to restrict a string to a regular
+	//  expression.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.pattern
+	Pattern *string `json:"pattern,omitempty"`
+
+	// Optional. Example of the object. Will only populated when the object is the
+	//  root.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.example
+	Example *Value `json:"example,omitempty"`
+
+	// Optional. The value should be validated against any (one or more) of the
+	//  subschemas in the list.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.any_of
+	AnyOf []Schema `json:"anyOf,omitempty"`
+
+	// Optional. Can either be a boolean or an object; controls the presence of
+	//  additional properties.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.additional_properties
+	AdditionalProperties *Value `json:"additionalProperties,omitempty"`
+
+	// Optional. Allows indirect references between schema nodes. The value should
+	//  be a valid reference to a child of the root `defs`.
+	//
+	//  For example, the following schema defines a reference to a schema node
+	//  named "Pet":
+	//
+	//  type: object
+	//  properties:
+	//    pet:
+	//      ref: #/defs/Pet
+	//  defs:
+	//    Pet:
+	//      type: object
+	//      properties:
+	//        name:
+	//          type: string
+	//
+	//  The value of the "pet" property is a reference to the schema node
+	//  named "Pet".
+	//  See details in
+	//  https://json-schema.org/understanding-json-schema/structuring
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.ref
+	Ref *string `json:"ref,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.Tool
+type Tool struct {
+	// Optional. Function tool type.
+	//  One or more function declarations to be passed to the model along with the
+	//  current user query. Model may decide to call a subset of these functions
+	//  by populating [FunctionCall][google.cloud.aiplatform.v1.Part.function_call]
+	//  in the response. User should provide a
+	//  [FunctionResponse][google.cloud.aiplatform.v1.Part.function_response] for
+	//  each function call in the next turn. Based on the function responses, Model
+	//  will generate the final response back to the user. Maximum 128 function
+	//  declarations can be provided.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.function_declarations
+	FunctionDeclarations []FunctionDeclaration `json:"functionDeclarations,omitempty"`
+
+	// Optional. Retrieval tool type.
+	//  System will always execute the provided retrieval tool(s) to get external
+	//  knowledge to answer the prompt. Retrieval results are presented to the
+	//  model for generation.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.retrieval
+	Retrieval *Retrieval `json:"retrieval,omitempty"`
+
+	// Optional. GoogleSearch tool type.
+	//  Tool to support Google Search in Model. Powered by Google.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.google_search
+	GoogleSearch *Tool_GoogleSearch `json:"googleSearch,omitempty"`
+
+	// Optional. GoogleSearchRetrieval tool type.
+	//  Specialized retrieval tool that is powered by Google search.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.google_search_retrieval
+	GoogleSearchRetrieval *GoogleSearchRetrieval `json:"googleSearchRetrieval,omitempty"`
+
+	// Optional. GoogleMaps tool type.
+	//  Tool to support Google Maps in Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.google_maps
+	GoogleMaps *GoogleMaps `json:"googleMaps,omitempty"`
+
+	// Optional. Tool to support searching public web data, powered by Vertex AI
+	//  Search and Sec4 compliance.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.enterprise_web_search
+	EnterpriseWebSearch *EnterpriseWebSearch `json:"enterpriseWebSearch,omitempty"`
+
+	// Optional. CodeExecution tool type.
+	//  Enables the model to execute code as part of generation.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.code_execution
+	CodeExecution *Tool_CodeExecution `json:"codeExecution,omitempty"`
+
+	// Optional. Tool to support URL context retrieval.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.url_context
+	URLContext *URLContext `json:"urlContext,omitempty"`
+
+	// Optional. Tool to support the model interacting directly with the computer.
+	//  If enabled, it automatically populates computer-use specific Function
+	//  Declarations.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.computer_use
+	ComputerUse *Tool_ComputerUse `json:"computerUse,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.Tool.CodeExecution
+type Tool_CodeExecution struct {
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.Tool.ComputerUse
+type Tool_ComputerUse struct {
+	// Required. The environment being operated.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.ComputerUse.environment
+	Environment *string `json:"environment,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.Tool.GoogleSearch
+type Tool_GoogleSearch struct {
+	// Optional. List of domains to be excluded from the search results.
+	//  The default limit is 2000 domains.
+	//  Example: ["amazon.com", "facebook.com"].
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.GoogleSearch.exclude_domains
+	ExcludeDomains []string `json:"excludeDomains,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.ToolConfig
+type ToolConfig struct {
+	// Optional. Function calling config.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ToolConfig.function_calling_config
+	FunctionCallingConfig *FunctionCallingConfig `json:"functionCallingConfig,omitempty"`
+
+	// Optional. Retrieval config.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ToolConfig.retrieval_config
+	RetrievalConfig *RetrievalConfig `json:"retrievalConfig,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.TrainingConfig
 type TrainingConfig struct {
 	// The timeout hours for the CMLE training job, expressed in milli hours
 	//  i.e. 1,000 value in this field means 1 hour.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.TrainingConfig.timeout_training_milli_hours
 	TimeoutTrainingMilliHours *int64 `json:"timeoutTrainingMilliHours,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.UrlContext
+type URLContext struct {
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.VertexAISearch
+type VertexAiSearch struct {
+	// Optional. Fully-qualified Vertex AI Search data store resource ID.
+	//  Format:
+	//  `projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAISearch.datastore
+	Datastore *string `json:"datastore,omitempty"`
+
+	// Optional. Fully-qualified Vertex AI Search engine resource ID.
+	//  Format:
+	//  `projects/{project}/locations/{location}/collections/{collection}/engines/{engine}`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAISearch.engine
+	Engine *string `json:"engine,omitempty"`
+
+	// Optional. Number of search results to return per query.
+	//  The default value is 10.
+	//  The maximumm allowed value is 10.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAISearch.max_results
+	MaxResults *int32 `json:"maxResults,omitempty"`
+
+	// Optional. Filter strings to be passed to the search API.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAISearch.filter
+	Filter *string `json:"filter,omitempty"`
+
+	// Specifications that define the specific DataStores to be searched, along
+	//  with configurations for those data stores. This is only considered for
+	//  Engines with multiple data stores.
+	//  It should only be set if engine is used.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAISearch.data_store_specs
+	DataStoreSpecs []VertexAiSearch_DataStoreSpec `json:"dataStoreSpecs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.VertexAISearch.DataStoreSpec
+type VertexAiSearch_DataStoreSpec struct {
+	// Full resource name of DataStore, such as
+	//  Format:
+	//  `projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAISearch.DataStoreSpec.data_store
+	DataStore *string `json:"dataStore,omitempty"`
+
+	// Optional. Filter specification to filter documents in the data store
+	//  specified by data_store field. For more information on filtering, see
+	//  [Filtering](https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata)
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAISearch.DataStoreSpec.filter
+	Filter *string `json:"filter,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.VertexRagStore
+type VertexRagStore struct {
+	// Optional. The representation of the rag source. It can be used to specify
+	//  corpus only or ragfiles. Currently only support one corpus or multiple
+	//  files from one corpus. In the future we may open up multiple corpora
+	//  support.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexRagStore.rag_resources
+	RagResources []VertexRagStore_RagResource `json:"ragResources,omitempty"`
+
+	// Optional. Number of top k results to return from the selected corpora.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexRagStore.similarity_top_k
+	SimilarityTopK *int32 `json:"similarityTopK,omitempty"`
+
+	// Optional. Only return results with vector distance smaller than the
+	//  threshold.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexRagStore.vector_distance_threshold
+	VectorDistanceThreshold *float64 `json:"vectorDistanceThreshold,omitempty"`
+
+	// Optional. The retrieval config for the Rag query.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexRagStore.rag_retrieval_config
+	RagRetrievalConfig *RagRetrievalConfig `json:"ragRetrievalConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.VertexRagStore.RagResource
+type VertexRagStore_RagResource struct {
+	// Optional. RagCorpora resource name.
+	//  Format:
+	//  `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexRagStore.RagResource.rag_corpus
+	RagCorpus *string `json:"ragCorpus,omitempty"`
+
+	// Optional. rag_file_id. The files should be in the same rag_corpus set in
+	//  rag_corpus field.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexRagStore.RagResource.rag_file_ids
+	RagFileIds []string `json:"ragFileIds,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.VideoMetadata
+type VideoMetadata struct {
+	// Optional. The start offset of the video.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VideoMetadata.start_offset
+	StartOffset *string `json:"startOffset,omitempty"`
+
+	// Optional. The end offset of the video.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VideoMetadata.end_offset
+	EndOffset *string `json:"endOffset,omitempty"`
 }
 
 // +kcc:proto=google.protobuf.Any
@@ -411,6 +906,17 @@ type Status struct {
 	Details []Any `json:"details,omitempty"`
 }
 
+// +kcc:proto=google.type.LatLng
+type LatLng struct {
+	// The latitude in degrees. It must be in the range [-90.0, +90.0].
+	// +kcc:proto:field=google.type.LatLng.latitude
+	Latitude *float64 `json:"latitude,omitempty"`
+
+	// The longitude in degrees. It must be in the range [-180.0, +180.0].
+	// +kcc:proto:field=google.type.LatLng.longitude
+	Longitude *float64 `json:"longitude,omitempty"`
+}
+
 // +kcc:proto=google.type.Money
 type Money struct {
 	// The three-letter currency code defined in ISO 4217.
@@ -432,47 +938,19 @@ type Money struct {
 	Nanos *int32 `json:"nanos,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ExampleStore
-type ExampleStore struct {
-	// Identifier. The resource name of the ExampleStore. This is a unique
-	//  identifier. Format:
-	//  projects/{project}/locations/{location}/exampleStores/{example_store}
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.name
-	Name *string `json:"name,omitempty"`
-
-	// Required. Display name of the ExampleStore.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Optional. Description of the ExampleStore.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.description
-	Description *string `json:"description,omitempty"`
-
-	// Required. Example Store config.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.example_store_config
-	ExampleStoreConfig *ExampleStoreConfig `json:"exampleStoreConfig,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ExampleStoreConfig
-type ExampleStoreConfig struct {
-	// Required. The embedding model to be used for vector embedding.
-	//  Immutable.
-	//  Supported models:
-	//  * "textembedding-gecko@003"
-	//  * "text-embedding-004"
-	//  * "text-embedding-005"
-	//  * "text-multilingual-embedding-002"
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStoreConfig.vertex_embedding_model
-	VertexEmbeddingModel *string `json:"vertexEmbeddingModel,omitempty"`
-}
-
-// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.ExampleStore
-type ExampleStoreObservedState struct {
-	// Output only. Timestamp when this ExampleStore was created.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.create_time
+/* unreachable type CachedContentObservedState
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.CachedContent
+type CachedContentObservedState struct {
+	// Output only. Creation time of the cache entry.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. Timestamp when this ExampleStore was most recently updated.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.update_time
+	// Output only. When the cache entry was last updated in UTC time.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Metadata on the usage of the cached content.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.usage_metadata
+	UsageMetadata *CachedContent_UsageMetadata `json:"usageMetadata,omitempty"`
 }
+*/
