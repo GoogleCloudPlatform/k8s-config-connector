@@ -143,7 +143,7 @@ spec:
   subnetworkRef:
     name: computesubnetwork-1-${uniqueId}
   target:
-    memorystoreInstanceServiceAttachmentRef:
+    memorystoreInstanceServiceAttachment:
       memorystoreInstanceRef:
         name: memorystoreinstance-1-${uniqueId}
       connectionType: CONNECTION_TYPE_DISCOVERY
@@ -167,7 +167,7 @@ spec:
   subnetworkRef:
     name: computesubnetwork-1-${uniqueId}
   target:
-    memorystoreInstanceServiceAttachmentRef:
+    memorystoreInstanceServiceAttachment:
       memorystoreInstanceRef:
         name: memorystoreinstance-1-${uniqueId}
 ---
@@ -190,7 +190,7 @@ spec:
   subnetworkRef:
     name: computesubnetwork-2-${uniqueId}
   target:
-    memorystoreInstanceServiceAttachmentRef:
+    memorystoreInstanceServiceAttachment:
       memorystoreInstanceRef:
         name: memorystoreinstance-1-${uniqueId}
       connectionType: CONNECTION_TYPE_DISCOVERY
@@ -214,6 +214,6 @@ spec:
   subnetworkRef:
     name: computesubnetwork-2-${uniqueId}
   target:
-    memorystoreInstanceServiceAttachmentRef:
+    memorystoreInstanceServiceAttachment:
       memorystoreInstanceRef:
         name: memorystoreinstance-1-${uniqueId}
