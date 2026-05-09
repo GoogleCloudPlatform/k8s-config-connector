@@ -161,6 +161,8 @@ spec:
                 description: Maintenance version.
                 type: string
               masterInstanceRef:
+                description: 'Deprecated: use SQLInstanceRef in the apis/sql/v1beta1
+                  package.'
                 oneOf:
                 - not:
                     required:
@@ -790,6 +792,9 @@ spec:
                 type: string
               dnsName:
                 description: The dns name of the instance.
+                type: string
+              externalRef:
+                description: A unique specifier for the SQLInstance resource in GCP.
                 type: string
               firstIpAddress:
                 type: string

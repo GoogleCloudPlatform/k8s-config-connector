@@ -527,6 +527,10 @@ type InstanceServerCaCertStatus struct {
 }
 
 type SQLInstanceStatus struct {
+	/* A unique specifier for the SQLInstance resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* Conditions represent the latest available observations of the
 	   SQLInstance's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`

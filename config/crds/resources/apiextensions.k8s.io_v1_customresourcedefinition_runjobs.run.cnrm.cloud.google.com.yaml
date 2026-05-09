@@ -630,6 +630,8 @@ spec:
                                     for more information on how to connect Cloud SQL
                                     and Cloud Run. Format: {project}:{location}:{instance}'
                                   items:
+                                    description: 'Deprecated: use SQLInstanceRef in
+                                      the apis/sql/v1beta1 package.'
                                     oneOf:
                                     - not:
                                         required:

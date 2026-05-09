@@ -28,7 +28,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -531,16 +530,16 @@ func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, op *directbase.
 		return nil, fmt.Errorf("converting to %T failed: %w", obj, err)
 	}
 
-	resourceID, err := refs.GetResourceID(u)
+	id, err := obj.GetIdentity(ctx, kube)
 	if err != nil {
 		return nil, err
 	}
-	obj.Spec.ResourceID = &resourceID
+	identity := id.(*krm.SQLInstanceIdentity)
 
-	projectID, ok := u.GetAnnotations()[k8s.ProjectIDAnnotation]
-	if !ok {
-		projectID = u.GetNamespace()
-	}
+	projectID := identity.Project
+	resourceID := identity.Instance
+
+	obj.Spec.ResourceID = &resourceID
 
 	gcpClient, err := newGCPClient(ctx, m.config)
 	if err != nil {

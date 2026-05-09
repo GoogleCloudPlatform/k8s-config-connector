@@ -26,6 +26,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+// Deprecated: use SQLInstanceRef in the apis/sql/v1beta1 package.
 type SQLInstanceRef struct {
 	/* The SQLInstance selfLink, when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
