@@ -19,13 +19,35 @@
 // proto.service: google.cloud.aiplatform.v1beta1
 // resource: VertexAIFeaturestore:Featurestore
 // resource: VertexAIMetadataStore:MetadataStore
-// resource: VertexAIDataLabelingJob:DataLabelingJob
 // resource: VertexAIDeploymentResourcePool:DeploymentResourcePool
 // resource: VertexAIExampleStore:ExampleStore
+// resource: VertexAIFeatureGroup:FeatureGroup
+// resource: VertexAIDataLabelingJob:DataLabelingJob
+// resource: VertexAICustomJob:CustomJob
 
 package v1alpha1
 
-import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ActiveLearningConfig
+type ActiveLearningConfig struct {
+	// Max number of human labeled DataItems.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ActiveLearningConfig.max_data_item_count
+	MaxDataItemCount *int64 `json:"maxDataItemCount,omitempty"`
+
+	// Max percent of total DataItems for human labeling.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ActiveLearningConfig.max_data_item_percentage
+	MaxDataItemPercentage *int32 `json:"maxDataItemPercentage,omitempty"`
+
+	// Active learning data sampling config. For every active learning labeling
+	//  iteration, it will select a batch of data based on the sampling strategy.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ActiveLearningConfig.sample_config
+	SampleConfig *SampleConfig `json:"sampleConfig,omitempty"`
+
+	// CMLE training config. For every active learning labeling iteration, system
+	//  will train a machine learning model on CMLE. The trained model will be used
+	//  by data sampling algorithm to select DataItems.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ActiveLearningConfig.training_config
+	TrainingConfig *TrainingConfig `json:"trainingConfig,omitempty"`
+}
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec
 type AutoscalingMetricSpec struct {
@@ -52,6 +74,72 @@ type AutoscalingMetricSpec struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec.monitored_resource_labels
 	MonitoredResourceLabels map[string]string `json:"monitoredResourceLabels,omitempty"`
 }
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.BigQuerySource
+type BigQuerySource struct {
+	// Required. BigQuery URI to a table, up to 2000 characters long.
+	//  Accepted forms:
+	//
+	//  *  BigQuery path. For example: `bq://projectId.bqDatasetId.bqTableId`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BigQuerySource.input_uri
+	InputURI *string `json:"inputURI,omitempty"`
+}
+
+/* unreachable type ContainerSpec
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ContainerSpec
+type ContainerSpec struct {
+	// Required. The URI of a container image in the Container Registry that is to
+	//  be run on each worker replica.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ContainerSpec.image_uri
+	ImageURI *string `json:"imageURI,omitempty"`
+
+	// The command to be invoked when the container is started.
+	//  It overrides the entrypoint instruction in Dockerfile when provided.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ContainerSpec.command
+	Command []string `json:"command,omitempty"`
+
+	// The arguments to be passed when starting the container.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ContainerSpec.args
+	Args []string `json:"args,omitempty"`
+
+	// Environment variables to be passed to the container.
+	//  Maximum limit is 100.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ContainerSpec.env
+	Env []EnvVar `json:"env,omitempty"`
+}
+*/
+
+/* unreachable type CustomJob
+// +kcc:proto=google.cloud.aiplatform.v1beta1.CustomJob
+type CustomJob struct {
+
+	// Required. The display name of the CustomJob.
+	//  The name can be up to 128 characters long and can consist of any UTF-8
+	//  characters.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.CustomJob.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Required. Job spec.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.CustomJob.job_spec
+	JobSpec *CustomJobSpec `json:"jobSpec,omitempty"`
+
+	// The labels with user-defined metadata to organize CustomJobs.
+	//
+	//  Label keys and values can be no longer than 64 characters
+	//  (Unicode codepoints), can only contain lowercase letters, numeric
+	//  characters, underscores and dashes. International characters are allowed.
+	//
+	//  See https://goo.gl/xmQnxf for more information and examples of labels.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.CustomJob.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Customer-managed encryption key options for a CustomJob. If this is set,
+	//  then all resources created by the CustomJob will be encrypted with the
+	//  provided encryption key.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.CustomJob.encryption_spec
+	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.DedicatedResources
 type DedicatedResources struct {
@@ -130,6 +218,125 @@ type DedicatedResources struct {
 	FlexStart *FlexStart `json:"flexStart,omitempty"`
 }
 
+/* unreachable type DiskSpec
+// +kcc:proto=google.cloud.aiplatform.v1beta1.DiskSpec
+type DiskSpec struct {
+	// Type of the boot disk. For non-A3U machines, the default value is
+	//  "pd-ssd", for A3U machines, the default value is "hyperdisk-balanced".
+	//  Valid values: "pd-ssd" (Persistent Disk Solid State Drive),
+	//  "pd-standard" (Persistent Disk Hard Disk Drive) or "hyperdisk-balanced".
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DiskSpec.boot_disk_type
+	BootDiskType *string `json:"bootDiskType,omitempty"`
+
+	// Size in GB of the boot disk (default is 100GB).
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DiskSpec.boot_disk_size_gb
+	BootDiskSizeGB *int32 `json:"bootDiskSizeGB,omitempty"`
+}
+*/
+
+/* unreachable type DNSPeeringConfig
+// +kcc:proto=google.cloud.aiplatform.v1beta1.DnsPeeringConfig
+type DNSPeeringConfig struct {
+	// Required. The DNS name suffix of the zone being peered to, e.g.,
+	//  "my-internal-domain.corp.". Must end with a dot.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DnsPeeringConfig.domain
+	Domain *string `json:"domain,omitempty"`
+
+	// Required. The project ID hosting the Cloud DNS managed zone that
+	//  contains the 'domain'. The Vertex AI Service Agent requires the
+	//  dns.peer role on this project.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DnsPeeringConfig.target_project
+	TargetProject *string `json:"targetProject,omitempty"`
+
+	// Required. The VPC network name
+	//  in the target_project where the DNS zone specified by 'domain' is
+	//  visible.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DnsPeeringConfig.target_network
+	TargetNetwork *string `json:"targetNetwork,omitempty"`
+}
+*/
+
+/* unreachable type EnvVar
+// +kcc:proto=google.cloud.aiplatform.v1beta1.EnvVar
+type EnvVar struct {
+	// Required. Name of the environment variable. Must be a valid C identifier.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.EnvVar.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Variables that reference a $(VAR_NAME) are expanded
+	//  using the previous defined environment variables in the container and
+	//  any service environment variables. If a variable cannot be resolved,
+	//  the reference in the input string will be unchanged. The $(VAR_NAME)
+	//  syntax can be escaped with a double $$, ie: $$(VAR_NAME). Escaped
+	//  references will never be expanded, regardless of whether the variable
+	//  exists or not.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.EnvVar.value
+	Value *string `json:"value,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ExampleStoreConfig
+type ExampleStoreConfig struct {
+	// Required. The embedding model to be used for vector embedding.
+	//  Immutable.
+	//  Supported models:
+	//  * "textembedding-gecko@003"
+	//  * "text-embedding-004"
+	//  * "text-embedding-005"
+	//  * "text-multilingual-embedding-002"
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStoreConfig.vertex_embedding_model
+	VertexEmbeddingModel *string `json:"vertexEmbeddingModel,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery
+type FeatureGroup_BigQuery struct {
+	// Required. Immutable. The BigQuery source URI that points to either a
+	//  BigQuery Table or View.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery.big_query_source
+	BigQuerySource *BigQuerySource `json:"bigQuerySource,omitempty"`
+
+	// Optional. Columns to construct entity_id / row keys.
+	//  If not provided defaults to `entity_id`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery.entity_id_columns
+	EntityIDColumns []string `json:"entityIDColumns,omitempty"`
+
+	// Optional. Set if the data source is not a time-series.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery.static_data_source
+	StaticDataSource *bool `json:"staticDataSource,omitempty"`
+
+	// Optional. If the source is a time-series source, this can be set to
+	//  control how downstream sources (ex:
+	//  [FeatureView][google.cloud.aiplatform.v1beta1.FeatureView] ) will treat
+	//  time-series sources. If not set, will treat the source as a time-series
+	//  source with `feature_timestamp` as timestamp column and no scan boundary.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery.time_series
+	TimeSeries *FeatureGroup_BigQuery_TimeSeries `json:"timeSeries,omitempty"`
+
+	// Optional. If set, all feature values will be fetched
+	//  from a single row per unique entityId including nulls.
+	//  If not set, will collapse all rows for each unique entityId into a singe
+	//  row with any non-null values if present, if no non-null values are
+	//  present will sync null.
+	//  ex: If source has schema
+	//  `(entity_id, feature_timestamp, f0, f1)` and the following rows:
+	//  `(e1, 2020-01-01T10:00:00.123Z, 10, 15)`
+	//  `(e1, 2020-02-01T10:00:00.123Z, 20, null)`
+	//  If dense is set, `(e1, 20, null)` is synced to online stores. If dense is
+	//  not set, `(e1, 20, 15)` is synced to online stores.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery.dense
+	Dense *bool `json:"dense,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery.TimeSeries
+type FeatureGroup_BigQuery_TimeSeries struct {
+	// Optional. Column hosting timestamp values for a time-series source.
+	//  Will be used to determine the latest `feature_values` for each entity.
+	//  Optional. If not provided, column named `feature_timestamp` of
+	//  type `TIMESTAMP` will be used.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery.TimeSeries.timestamp_column
+	TimestampColumn *string `json:"timestampColumn,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1beta1.Featurestore.OnlineServingConfig
 type Featurestore_OnlineServingConfig struct {
 	// The number of nodes for the online store. The number of nodes doesn't
@@ -177,6 +384,18 @@ type FlexStart struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FlexStart.max_runtime_duration
 	MaxRuntimeDuration *string `json:"maxRuntimeDuration,omitempty"`
 }
+
+/* unreachable type GCSDestination
+// +kcc:proto=google.cloud.aiplatform.v1beta1.GcsDestination
+type GCSDestination struct {
+	// Required. Google Cloud Storage URI to output directory. If the uri doesn't
+	//  end with
+	//  '/', a '/' will be automatically appended. The directory is created if it
+	//  doesn't exist.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.GcsDestination.output_uri_prefix
+	OutputURIPrefix *string `json:"outputURIPrefix,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.MachineSpec
 type MachineSpec struct {
@@ -254,6 +473,82 @@ type MetadataStore_MetadataStoreState struct {
 	DiskUtilizationBytes *int64 `json:"diskUtilizationBytes,omitempty"`
 }
 
+/* unreachable type NfsMount
+// +kcc:proto=google.cloud.aiplatform.v1beta1.NfsMount
+type NfsMount struct {
+	// Required. IP address of the NFS server.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NfsMount.server
+	Server *string `json:"server,omitempty"`
+
+	// Required. Source path exported from NFS server.
+	//  Has to start with '/', and combined with the ip address, it indicates
+	//  the source mount path in the form of `server:path`
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NfsMount.path
+	Path *string `json:"path,omitempty"`
+
+	// Required. Destination mount path. The NFS will be mounted for the user
+	//  under /mnt/nfs/<mount_point>
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NfsMount.mount_point
+	MountPoint *string `json:"mountPoint,omitempty"`
+}
+*/
+
+/* unreachable type PSCInterfaceConfig
+// +kcc:proto=google.cloud.aiplatform.v1beta1.PscInterfaceConfig
+type PSCInterfaceConfig struct {
+	// Optional. The name of the Compute Engine
+	//  [network
+	//  attachment](https://cloud.google.com/vpc/docs/about-network-attachments) to
+	//  attach to the resource within the region and user project.
+	//  To specify this field, you must have already [created a network attachment]
+	//  (https://cloud.google.com/vpc/docs/create-manage-network-attachments#create-network-attachments).
+	//  This field is only used for resources using PSC-I.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.PscInterfaceConfig.network_attachment
+	NetworkAttachment *string `json:"networkAttachment,omitempty"`
+
+	// Optional. DNS peering configurations. When specified, Vertex AI will
+	//  attempt to configure DNS peering zones in the tenant project VPC
+	//  to resolve the specified domains using the target network's Cloud DNS.
+	//  The user must grant the dns.peer role to the Vertex AI Service Agent
+	//  on the target project.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.PscInterfaceConfig.dns_peering_configs
+	DNSPeeringConfigs []DNSPeeringConfig `json:"dnsPeeringConfigs,omitempty"`
+}
+*/
+
+/* unreachable type PythonPackageSpec
+// +kcc:proto=google.cloud.aiplatform.v1beta1.PythonPackageSpec
+type PythonPackageSpec struct {
+	// Required. The URI of a container image in Artifact Registry that will run
+	//  the provided Python package. Vertex AI provides a wide range of executor
+	//  images with pre-installed packages to meet users' various use cases. See
+	//  the list of [pre-built containers for
+	//  training](https://cloud.google.com/vertex-ai/docs/training/pre-built-containers).
+	//  You must use an image from this list.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.PythonPackageSpec.executor_image_uri
+	ExecutorImageURI *string `json:"executorImageURI,omitempty"`
+
+	// Required. The Google Cloud Storage location of the Python package files
+	//  which are the training program and its dependent packages. The maximum
+	//  number of package URIs is 100.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.PythonPackageSpec.package_uris
+	PackageUris []string `json:"packageUris,omitempty"`
+
+	// Required. The Python module name to run after installing the packages.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.PythonPackageSpec.python_module
+	PythonModule *string `json:"pythonModule,omitempty"`
+
+	// Command line arguments to be passed to the Python task.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.PythonPackageSpec.args
+	Args []string `json:"args,omitempty"`
+
+	// Environment variables to be passed to the python module.
+	//  Maximum limit is 100.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.PythonPackageSpec.env
+	Env []EnvVar `json:"env,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.aiplatform.v1beta1.ReservationAffinity
 type ReservationAffinity struct {
 	// Required. Specifies the reservation affinity type.
@@ -273,97 +568,102 @@ type ReservationAffinity struct {
 	Values []string `json:"values,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.ActiveLearningConfig
-type ActiveLearningConfig struct {
-	// Max number of human labeled DataItems.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.max_data_item_count
-	MaxDataItemCount *int64 `json:"maxDataItemCount,omitempty"`
-
-	// Max percent of total DataItems for human labeling.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.max_data_item_percentage
-	MaxDataItemPercentage *int32 `json:"maxDataItemPercentage,omitempty"`
-
-	// Active learning data sampling config. For every active learning labeling
-	//  iteration, it will select a batch of data based on the sampling strategy.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.sample_config
-	SampleConfig *SampleConfig `json:"sampleConfig,omitempty"`
-
-	// CMLE training config. For every active learning labeling iteration, system
-	//  will train a machine learning model on CMLE. The trained model will be used
-	//  by data sampling algorithm to select DataItems.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.training_config
-	TrainingConfig *TrainingConfig `json:"trainingConfig,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1.SampleConfig
+// +kcc:proto=google.cloud.aiplatform.v1beta1.SampleConfig
 type SampleConfig struct {
 	// The percentage of data needed to be labeled in the first batch.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.SampleConfig.initial_batch_sample_percentage
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.SampleConfig.initial_batch_sample_percentage
 	InitialBatchSamplePercentage *int32 `json:"initialBatchSamplePercentage,omitempty"`
 
 	// The percentage of data needed to be labeled in each following batch
 	//  (except the first batch).
-	// +kcc:proto:field=google.cloud.aiplatform.v1.SampleConfig.following_batch_sample_percentage
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.SampleConfig.following_batch_sample_percentage
 	FollowingBatchSamplePercentage *int32 `json:"followingBatchSamplePercentage,omitempty"`
 
 	// Field to choose sampling strategy. Sampling strategy will decide which data
 	//  should be selected for human labeling in every batch.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.SampleConfig.sample_strategy
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.SampleConfig.sample_strategy
 	SampleStrategy *string `json:"sampleStrategy,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.TrainingConfig
+/* unreachable type Scheduling
+// +kcc:proto=google.cloud.aiplatform.v1beta1.Scheduling
+type Scheduling struct {
+	// The maximum job running time. The default is 7 days.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Scheduling.timeout
+	Timeout *string `json:"timeout,omitempty"`
+
+	// Restarts the entire CustomJob if a worker gets restarted.
+	//  This feature can be used by distributed training jobs that are not
+	//  resilient to workers leaving and joining a job.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Scheduling.restart_job_on_worker_restart
+	RestartJobOnWorkerRestart *bool `json:"restartJobOnWorkerRestart,omitempty"`
+
+	// Optional. This determines which type of scheduling strategy to use.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Scheduling.strategy
+	Strategy *string `json:"strategy,omitempty"`
+
+	// Optional. Indicates if the job should retry for internal errors after the
+	//  job starts running. If true, overrides
+	//  `Scheduling.restart_job_on_worker_restart` to false.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Scheduling.disable_retries
+	DisableRetries *bool `json:"disableRetries,omitempty"`
+
+	// Optional. This is the maximum duration that a job will wait for the
+	//  requested resources to be provisioned if the scheduling strategy is set to
+	//  [Strategy.DWS_FLEX_START].
+	//  If set to 0, the job will wait indefinitely. The default is 24 hours.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Scheduling.max_wait_duration
+	MaxWaitDuration *string `json:"maxWaitDuration,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.TrainingConfig
 type TrainingConfig struct {
 	// The timeout hours for the CMLE training job, expressed in milli hours
 	//  i.e. 1,000 value in this field means 1 hour.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.TrainingConfig.timeout_training_milli_hours
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.TrainingConfig.timeout_training_milli_hours
 	TimeoutTrainingMilliHours *int64 `json:"timeoutTrainingMilliHours,omitempty"`
 }
 
-// +kcc:proto=google.protobuf.Any
-type Any struct {
-	// A URL/resource name that uniquely identifies the type of the serialized
-	//  protocol buffer message. This string must contain at least
-	//  one "/" character. The last segment of the URL's path must represent
-	//  the fully qualified name of the type (as in
-	//  `path/google.protobuf.Duration`). The name should be in a canonical form
-	//  (e.g., leading "." is not accepted).
-	//
-	//  In practice, teams usually precompile into the binary all types that they
-	//  expect it to use in the context of Any. However, for URLs which use the
-	//  scheme `http`, `https`, or no scheme, one can optionally set up a type
-	//  server that maps type URLs to message definitions as follows:
-	//
-	//  * If no scheme is provided, `https` is assumed.
-	//  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-	//    value in binary format, or produce an error.
-	//  * Applications are allowed to cache lookup results based on the
-	//    URL, or have them precompiled into a binary to avoid any
-	//    lookup. Therefore, binary compatibility needs to be preserved
-	//    on changes to types. (Use versioned type names to manage
-	//    breaking changes.)
-	//
-	//  Note: this functionality is not currently available in the official
-	//  protobuf release, and it is not used for type URLs beginning with
-	//  type.googleapis.com.
-	//
-	//  Schemes other than `http`, `https` (or the empty scheme) might be
-	//  used with implementation specific semantics.
-	// +kcc:proto:field=google.protobuf.Any.type_url
-	TypeURL *string `json:"typeURL,omitempty"`
+/* unreachable type WorkerPoolSpec
+// +kcc:proto=google.cloud.aiplatform.v1beta1.WorkerPoolSpec
+type WorkerPoolSpec struct {
+	// The custom container task.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.WorkerPoolSpec.container_spec
+	ContainerSpec *ContainerSpec `json:"containerSpec,omitempty"`
 
-	// Must be a valid serialized protocol buffer of the above specified type.
-	// +kcc:proto:field=google.protobuf.Any.value
-	Value []byte `json:"value,omitempty"`
+	// The Python packaged task.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.WorkerPoolSpec.python_package_spec
+	PythonPackageSpec *PythonPackageSpec `json:"pythonPackageSpec,omitempty"`
+
+	// Optional. Immutable. The specification of a single machine.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.WorkerPoolSpec.machine_spec
+	MachineSpec *MachineSpec `json:"machineSpec,omitempty"`
+
+	// Optional. The number of worker replicas to use for this worker pool.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.WorkerPoolSpec.replica_count
+	ReplicaCount *int64 `json:"replicaCount,omitempty"`
+
+	// Optional. List of NFS mount spec.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.WorkerPoolSpec.nfs_mounts
+	NfsMounts []NfsMount `json:"nfsMounts,omitempty"`
+
+	// Disk spec.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.WorkerPoolSpec.disk_spec
+	DiskSpec *DiskSpec `json:"diskSpec,omitempty"`
 }
+*/
 
+/* unreachable type ListValue
 // +kcc:proto=google.protobuf.ListValue
 type ListValue struct {
 	// Repeated field of dynamically typed values.
 	// +kcc:proto:field=google.protobuf.ListValue.values
 	Values []Value `json:"values,omitempty"`
 }
+*/
 
+/* unreachable type Value
 // +kcc:proto=google.protobuf.Value
 type Value struct {
 	// Represents a null value.
@@ -390,26 +690,7 @@ type Value struct {
 	// +kcc:proto:field=google.protobuf.Value.list_value
 	ListValue *ListValue `json:"listValue,omitempty"`
 }
-
-// +kcc:proto=google.rpc.Status
-type Status struct {
-	// The status code, which should be an enum value of
-	//  [google.rpc.Code][google.rpc.Code].
-	// +kcc:proto:field=google.rpc.Status.code
-	Code *int32 `json:"code,omitempty"`
-
-	// A developer-facing error message, which should be in English. Any
-	//  user-facing error message should be localized and sent in the
-	//  [google.rpc.Status.details][google.rpc.Status.details] field, or localized
-	//  by the client.
-	// +kcc:proto:field=google.rpc.Status.message
-	Message *string `json:"message,omitempty"`
-
-	// A list of messages that carry the error details.  There is a common set of
-	//  message types for APIs to use.
-	// +kcc:proto:field=google.rpc.Status.details
-	Details []Any `json:"details,omitempty"`
-}
+*/
 
 // +kcc:proto=google.type.Money
 type Money struct {
@@ -432,106 +713,61 @@ type Money struct {
 	Nanos *int32 `json:"nanos,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ExampleStore
-type ExampleStore struct {
-	// Identifier. The resource name of the ExampleStore. This is a unique
-	//  identifier. Format:
-	//  projects/{project}/locations/{location}/exampleStores/{example_store}
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.name
+/* unreachable type CustomJobObservedState
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.CustomJob
+type CustomJobObservedState struct {
+	// Output only. Resource name of a CustomJob.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.CustomJob.name
 	Name *string `json:"name,omitempty"`
 
-	// Required. Display name of the ExampleStore.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.display_name
-	DisplayName *string `json:"displayName,omitempty"`
+	// Output only. The detailed state of the job.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.CustomJob.state
+	State *string `json:"state,omitempty"`
 
-	// Optional. Description of the ExampleStore.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.description
-	Description *string `json:"description,omitempty"`
-
-	// Required. Example Store config.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.example_store_config
-	ExampleStoreConfig *ExampleStoreConfig `json:"exampleStoreConfig,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ExampleStoreConfig
-type ExampleStoreConfig struct {
-	// Required. The embedding model to be used for vector embedding.
-	//  Immutable.
-	//  Supported models:
-	//  * "textembedding-gecko@003"
-	//  * "text-embedding-004"
-	//  * "text-embedding-005"
-	//  * "text-multilingual-embedding-002"
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStoreConfig.vertex_embedding_model
-	VertexEmbeddingModel *string `json:"vertexEmbeddingModel,omitempty"`
-}
-
-// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.ExampleStore
-type ExampleStoreObservedState struct {
-	// Output only. Timestamp when this ExampleStore was created.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.create_time
+	// Output only. Time when the CustomJob was created.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.CustomJob.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. Timestamp when this ExampleStore was most recently updated.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.update_time
+	// Output only. Time when the CustomJob for the first time entered the
+	//  `JOB_STATE_RUNNING` state.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.CustomJob.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Output only. Time when the CustomJob entered any of the following states:
+	//  `JOB_STATE_SUCCEEDED`, `JOB_STATE_FAILED`, `JOB_STATE_CANCELLED`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.CustomJob.end_time
+	EndTime *string `json:"endTime,omitempty"`
+
+	// Output only. Time when the CustomJob was most recently updated.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.CustomJob.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
-}
 
-// +kcc:proto=google.cloud.aiplatform.v1beta1.BigQuerySource
-type BigQuerySource struct {
-	// Required. BigQuery URI to a table, up to 2000 characters long.
-	//  Accepted forms:
+	// Output only. Only populated when job's state is `JOB_STATE_FAILED` or
+	//  `JOB_STATE_CANCELLED`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.CustomJob.error
+	Error *common.Status `json:"error,omitempty"`
+
+	// Output only. URIs for accessing [interactive
+	//  shells](https://cloud.google.com/vertex-ai/docs/training/monitor-debug-interactive-shell)
+	//  (one URI for each training node). Only available if
+	//  [job_spec.enable_web_access][google.cloud.aiplatform.v1beta1.CustomJobSpec.enable_web_access]
+	//  is `true`.
 	//
-	//  *  BigQuery path. For example: `bq://projectId.bqDatasetId.bqTableId`.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BigQuerySource.input_uri
-	InputURI *string `json:"inputURI,omitempty"`
+	//  The keys are names of each node in the training job; for example,
+	//  `workerpool0-0` for the primary node, `workerpool1-0` for the first node in
+	//  the second worker pool, and `workerpool1-1` for the second node in the
+	//  second worker pool.
+	//
+	//  The values are the URIs for each node's interactive shell.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.CustomJob.web_access_uris
+	WebAccessUris map[string]string `json:"webAccessUris,omitempty"`
+
+	// Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.CustomJob.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.CustomJob.satisfies_pzi
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
 }
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery
-type FeatureGroup_BigQuery struct {
-	// Required. Immutable. The BigQuery source URI that points to either a
-	//  BigQuery Table or View.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery.big_query_source
-	BigQuerySource *BigQuerySource `json:"bigQuerySource,omitempty"`
-
-	// Optional. Columns to construct entity_id / row keys.
-	//  If not provided defaults to `entity_id`.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery.entity_id_columns
-	EntityIDColumns []string `json:"entityIDColumns,omitempty"`
-
-	// Optional. Set if the data source is not a time-series.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery.static_data_source
-	StaticDataSource *bool `json:"staticDataSource,omitempty"`
-
-	// Optional. If the source is a time-series source, this can be set to
-	//  control how downstream sources (ex:
-	//  [FeatureView][google.cloud.aiplatform.v1beta1.FeatureView] ) will treat
-	//  time-series sources. If not set, will treat the source as a time-series
-	//  source with `feature_timestamp` as timestamp column and no scan boundary.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery.time_series
-	TimeSeries *FeatureGroup_BigQuery_TimeSeries `json:"timeSeries,omitempty"`
-
-	// Optional. If set, all feature values will be fetched
-	//  from a single row per unique entityId including nulls.
-	//  If not set, will collapse all rows for each unique entityId into a singe
-	//  row with any non-null values if present, if no non-null values are
-	//  present will sync null.
-	//  ex: If source has schema
-	//  `(entity_id, feature_timestamp, f0, f1)` and the following rows:
-	//  `(e1, 2020-01-01T10:00:00.123Z, 10, 15)`
-	//  `(e1, 2020-02-01T10:00:00.123Z, 20, null)`
-	//  If dense is set, `(e1, 20, null)` is synced to online stores. If dense is
-	//  not set, `(e1, 20, 15)` is synced to online stores.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery.dense
-	Dense *bool `json:"dense,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery.TimeSeries
-type FeatureGroup_BigQuery_TimeSeries struct {
-	// Optional. Column hosting timestamp values for a time-series source.
-	//  Will be used to determine the latest `feature_values` for each entity.
-	//  Optional. If not provided, column named `feature_timestamp` of
-	//  type `TIMESTAMP` will be used.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery.TimeSeries.timestamp_column
-	TimestampColumn *string `json:"timestampColumn,omitempty"`
-}
+*/

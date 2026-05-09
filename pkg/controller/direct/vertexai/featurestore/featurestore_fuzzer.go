@@ -16,7 +16,7 @@
 // proto.message: google.cloud.aiplatform.v1beta1.Featurestore
 // api.group: vertexai.cnrm.cloud.google.com
 
-package vertexai
+package featurestore
 
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"

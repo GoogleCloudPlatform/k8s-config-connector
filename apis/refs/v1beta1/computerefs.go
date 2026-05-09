@@ -269,3 +269,15 @@ type ComputeForwardingRuleRef struct {
 	/* The namespace field of a ComputeForwardingRule resource. */
 	Namespace string `json:"namespace,omitempty"`
 }
+
+type ComputeNetworkRef struct {
+	/* A reference to an externally managed Compute Network resource.
+	Should be of the format `projects/{{projectID}}/global/networks/{{network}}`. */
+	External string `json:"external,omitempty"`
+
+	/* The `name` of a `ComputeNetwork` resource. */
+	Name string `json:"name,omitempty"`
+
+	/* The `namespace` of a `ComputeNetwork` resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
