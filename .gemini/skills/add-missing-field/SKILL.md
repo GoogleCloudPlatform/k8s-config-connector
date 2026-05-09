@@ -18,7 +18,7 @@ This skill guides an automated agent through adding a missing field to a GCP res
 2. **Update the Fuzzer**
    - Find the fuzzer file (e.g., `pkg/controller/direct/group/resource_fuzzer.go`).
    - Remove the missing field from `f.UnimplementedFields`.
-   - Register the field as a spec or status field in the fuzzer (e.g., `f.SpecFields.Insert(".cross_instance_replication_config")`).
+   - Register the field as a spec or status field in the fuzzer (e.g., `f.SpecField(".cross_instance_replication_config")` or `f.StatusField(".psc_attachment_details")`).
    - If there are subfields you aren't implementing yet, use `f.Unimplemented_NotYetTriaged` to ignore them for now.
 
 3. **Update the Mappers**
