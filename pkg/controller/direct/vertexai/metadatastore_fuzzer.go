@@ -29,8 +29,8 @@ func init() {
 
 func vertexAIMetadataStoreFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.MetadataStore{},
-		VertexAIMetadataStoreSpec_FromProto, VertexAIMetadataStoreSpec_ToProto,
-		VertexAIMetadataStoreObservedState_FromProto, VertexAIMetadataStoreObservedState_ToProto,
+		VertexAIMetadataStoreSpec_v1beta1_FromProto, VertexAIMetadataStoreSpec_v1beta1_ToProto,
+		VertexAIMetadataStoreObservedState_v1beta1_FromProto, VertexAIMetadataStoreObservedState_v1beta1_ToProto,
 	)
 
 	f.SpecFields.Insert(".encryption_spec")
