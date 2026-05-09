@@ -24,7 +24,7 @@ require (
 	cloud.google.com/go/discoveryengine v1.22.0
 	cloud.google.com/go/edgecontainer v1.4.4
 	cloud.google.com/go/firestore v1.22.0
-	cloud.google.com/go/iam v1.7.0
+	cloud.google.com/go/iam v1.11.0
 	cloud.google.com/go/iap v1.12.0
 	cloud.google.com/go/kms v1.26.0
 	cloud.google.com/go/logging v1.13.2
