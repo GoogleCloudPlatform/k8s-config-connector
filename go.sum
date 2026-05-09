@@ -690,8 +690,8 @@ cloud.google.com/go/firestore v1.11.0/go.mod h1:b38dKhgzlmNNGTNZZwe7ZRFEuRab1Hay
 cloud.google.com/go/firestore v1.12.0/go.mod h1:b38dKhgzlmNNGTNZZwe7ZRFEuRab1Hay3/DBsIGKKy4=
 cloud.google.com/go/firestore v1.13.0/go.mod h1:QojqqOh8IntInDUSTAh0c8ZsPYAr68Ma8c5DWOy8xb8=
 cloud.google.com/go/firestore v1.14.0/go.mod h1:96MVaHLsEhbvkBEdZgfN+AS/GIkco1LRpH9Xp9YZfzQ=
-cloud.google.com/go/firestore v1.21.0 h1:BhopUsx7kh6NFx77ccRsHhrtkbJUmDAxNY3uapWdjcM=
-cloud.google.com/go/firestore v1.21.0/go.mod h1:1xH6HNcnkf/gGyR8udd6pFO4Z7GWJSwLKQMx/u6UrP4=
+cloud.google.com/go/firestore v1.22.0 h1:avooeboIq37vKXobrbPUFhFBxS/c3FqmWoX0xs8dO6E=
+cloud.google.com/go/firestore v1.22.0/go.mod h1:PaM4i7i7ruALSKmlpHXXZaPObcZw0W7ie5UOPr72iTU=
 cloud.google.com/go/functions v1.6.0/go.mod h1:3H1UA3qiIPRWD7PeZKLvHZ9SaQhR26XIJcC0A5GbvAk=
 cloud.google.com/go/functions v1.7.0/go.mod h1:+d+QBcWM+RsrgZfV9xo6KfA1GlzJfxcfZcRPEhDDfzg=
 cloud.google.com/go/functions v1.8.0/go.mod h1:RTZ4/HsQjIqIYP9a9YPbU+QFoQsAlYgrwOXJWHn1POY=
