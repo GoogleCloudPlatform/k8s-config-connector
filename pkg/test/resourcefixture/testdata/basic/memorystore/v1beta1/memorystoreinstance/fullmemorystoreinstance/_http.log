@@ -638,6 +638,10 @@ X-Xss-Protection: 0
       },
       "retention": "345600s"
     },
+    "availableMaintenanceVersions": [
+      "MEMORYSTORE_20260313_01_02",
+      "MEMORYSTORE_20260313_01_03"
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": true,
     "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
@@ -743,6 +747,10 @@ X-Xss-Protection: 0
     },
     "retention": "345600s"
   },
+  "availableMaintenanceVersions": [
+    "MEMORYSTORE_20260313_01_02",
+    "MEMORYSTORE_20260313_01_03"
+  ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": true,
   "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
@@ -938,6 +946,10 @@ X-Xss-Protection: 0
       },
       "retention": "432000s"
     },
+    "availableMaintenanceVersions": [
+      "MEMORYSTORE_20260313_01_02",
+      "MEMORYSTORE_20260313_01_03"
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": true,
     "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
@@ -1134,6 +1146,10 @@ X-Xss-Protection: 0
       },
       "retention": "432000s"
     },
+    "availableMaintenanceVersions": [
+      "MEMORYSTORE_20260313_01_02",
+      "MEMORYSTORE_20260313_01_03"
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
     "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
@@ -1330,6 +1346,10 @@ X-Xss-Protection: 0
       },
       "retention": "432000s"
     },
+    "availableMaintenanceVersions": [
+      "MEMORYSTORE_20260313_01_02",
+      "MEMORYSTORE_20260313_01_03"
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
     "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
@@ -1526,6 +1546,10 @@ X-Xss-Protection: 0
       },
       "retention": "432000s"
     },
+    "availableMaintenanceVersions": [
+      "MEMORYSTORE_20260313_01_02",
+      "MEMORYSTORE_20260313_01_03"
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
     "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
@@ -1723,6 +1747,10 @@ X-Xss-Protection: 0
       },
       "retention": "432000s"
     },
+    "availableMaintenanceVersions": [
+      "MEMORYSTORE_20260313_01_02",
+      "MEMORYSTORE_20260313_01_03"
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
     "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
@@ -1919,6 +1947,10 @@ X-Xss-Protection: 0
       },
       "retention": "432000s"
     },
+    "availableMaintenanceVersions": [
+      "MEMORYSTORE_20260313_01_02",
+      "MEMORYSTORE_20260313_01_03"
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
     "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
@@ -2114,6 +2146,10 @@ X-Xss-Protection: 0
       },
       "retention": "432000s"
     },
+    "availableMaintenanceVersions": [
+      "MEMORYSTORE_20260313_01_02",
+      "MEMORYSTORE_20260313_01_03"
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
     "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
@@ -2310,6 +2346,10 @@ X-Xss-Protection: 0
       },
       "retention": "432000s"
     },
+    "availableMaintenanceVersions": [
+      "MEMORYSTORE_20260313_01_02",
+      "MEMORYSTORE_20260313_01_03"
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
     "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
@@ -2506,6 +2546,10 @@ X-Xss-Protection: 0
       },
       "retention": "432000s"
     },
+    "availableMaintenanceVersions": [
+      "MEMORYSTORE_20260313_01_02",
+      "MEMORYSTORE_20260313_01_03"
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
     "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
@@ -2611,6 +2655,10 @@ X-Xss-Protection: 0
     },
     "retention": "432000s"
   },
+  "availableMaintenanceVersions": [
+    "MEMORYSTORE_20260313_01_02",
+    "MEMORYSTORE_20260313_01_03"
+  ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
   "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
