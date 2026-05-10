@@ -11,3 +11,4 @@
 
 - For output-only fields (fields in `observedState`), the fuzzer requires registering the field using `f.StatusField(".<field_name>")` instead of `f.SpecField`.
 - Sometimes, when a parent mapper is hand-written, the generator may have successfully generated the sub-type mapper (e.g. `PscAttachmentDetailObservedState_FromProto` in `mapper.generated.go`). Instead of manually writing `_FromProto` and `_ToProto` for the missing nested types, it's worth checking if they already exist in `mapper.generated.go` and just uncommenting or adding the call in the hand-written parent mapper.
+5. **MockGCP Support**: For output fields (like fields in `observedState`), if they are missing in the golden test files after you add them to the CRD and mappers, it is often because mockgcp does not populate them yet. You might need to add default values for these output fields in the mockgcp implementation so that the golden tests actually exercise the new field.
