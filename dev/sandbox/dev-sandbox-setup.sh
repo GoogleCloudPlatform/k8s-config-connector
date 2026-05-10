@@ -54,6 +54,12 @@ fi
 echo "Setting up envtest assets..."
 go run sigs.k8s.io/controller-runtime/tools/setup-envtest@release-0.22 use -p path
 
+# Ensure GITHUB_API_URL has a trailing slash (fix for overseer-cli)
+if [[ -n "${GITHUB_API_URL:-}" && "${GITHUB_API_URL}" != */ ]]; then
+    export GITHUB_API_URL="${GITHUB_API_URL}/"
+    echo "Added trailing slash to GITHUB_API_URL: ${GITHUB_API_URL}"
+fi
+
 echo "Setup complete!"
 echo "--------------------------------------------------------"
 echo "To start testing, please perform the following steps:"
