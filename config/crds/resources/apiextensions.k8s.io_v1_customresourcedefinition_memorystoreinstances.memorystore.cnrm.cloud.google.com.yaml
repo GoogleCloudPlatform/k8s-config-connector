@@ -420,6 +420,12 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  availableMaintenanceVersions:
+                    description: Output only. The list of available maintenance versions
+                      for the instance.
+                    items:
+                      type: string
+                    type: array
                   createTime:
                     description: Output only. Creation timestamp of the instance.
                     type: string
@@ -1011,6 +1017,12 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  availableMaintenanceVersions:
+                    description: Output only. The list of available maintenance versions
+                      for the instance.
+                    items:
+                      type: string
+                    type: array
                   createTime:
                     description: Output only. Creation timestamp of the instance.
                     type: string
