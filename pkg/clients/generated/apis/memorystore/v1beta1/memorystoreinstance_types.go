@@ -191,6 +191,10 @@ type MemorystoreInstanceSpec struct {
 	/* Immutable. */
 	Location string `json:"location"`
 
+	/* Optional. The maintenance version of the instance. */
+	// +optional
+	MaintenanceVersion *string `json:"maintenanceVersion,omitempty"`
+
 	/* Optional. The mode config for the instance. */
 	// +optional
 	Mode *string `json:"mode,omitempty"`

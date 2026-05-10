@@ -406,6 +406,8 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 			obj.TransitEncryptionMode = req.Instance.TransitEncryptionMode
 		case "zoneDistributionConfig":
 			obj.ZoneDistributionConfig = req.Instance.ZoneDistributionConfig
+		case "maintenanceVersion":
+			obj.MaintenanceVersion = req.Instance.MaintenanceVersion
 		default:
 			// Note: actual error is:
 			// googleapi: Error 400: unsupported path in fieldMask: mode. Allowed values are engine_version, automated_backup_config, shard_count, persistence_config.rdb_config.rdb_snapshot_period, acl_policy, auth_mode, persistence_config.aof_config.append_fsync, simulate_maintenance_event, deletion_protection_enabled, node_type, cross_instance_replication_config.primary_instance.instance, replica_count, persistence_config.rdb_config.rdb_snapshot_start_time, endpoints, cross_instance_replication_config, cross_instance_replication_config.instance_role, rotate_server_certificate, engine_configs, labels, persistence_config, maintenance_window, maintenance_policy, automated_backup_config.fixed_frequency_schedule.start_time.hours, maintenance_version, maintenance_policy.weekly_maintenance_window, automated_backup_config.fixed_frequency_schedule.start_time, cross_instance_replication_config.secondary_instances, automated_backup_config.automated_backup_mode, automated_backup_config.fixed_frequency_schedule, automated_backup_config.retention, persistence_config.mode

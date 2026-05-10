@@ -812,6 +812,11 @@ func (in *MemorystoreInstanceSpec) DeepCopyInto(out *MemorystoreInstanceSpec) {
 			(*out)[key] = val
 		}
 	}
+	if in.MaintenanceVersion != nil {
+		in, out := &in.MaintenanceVersion, &out.MaintenanceVersion
+		*out = new(string)
+		**out = **in
+	}
 	if in.Mode != nil {
 		in, out := &in.Mode, &out.Mode
 		*out = new(string)
