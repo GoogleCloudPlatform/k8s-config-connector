@@ -99,14 +99,14 @@ func (s *NetworkServicesServer) CreateWasmPlugin(ctx context.Context, req *pb.Cr
 	for versionID, details := range obj.Versions {
 		versionName := fqn + "/versions/" + versionID
 		version := &pb.WasmPluginVersion{
-			Name:                versionName,
-			Description:         details.Description,
-			Labels:              details.Labels,
-			ImageUri:            details.ImageUri,
-			ImageDigest:         "sha256:abcdef1234567890", // Mock digest
-			PluginConfigDigest:  "sha256:config1234567890", // Mock digest
-			CreateTime:          timestamppb.New(now),
-			UpdateTime:          timestamppb.New(now),
+			Name:               versionName,
+			Description:        details.Description,
+			Labels:             details.Labels,
+			ImageUri:           details.ImageUri,
+			ImageDigest:        "sha256:abcdef1234567890", // Mock digest
+			PluginConfigDigest: "sha256:config1234567890", // Mock digest
+			CreateTime:         timestamppb.New(now),
+			UpdateTime:         timestamppb.New(now),
 		}
 		if data := details.GetPluginConfigData(); data != nil {
 			version.PluginConfigSource = &pb.WasmPluginVersion_PluginConfigData{PluginConfigData: data}
@@ -194,14 +194,14 @@ func (s *NetworkServicesServer) UpdateWasmPlugin(ctx context.Context, req *pb.Up
 				for versionID, details := range req.GetWasmPlugin().GetVersions() {
 					versionName := fqn + "/versions/" + versionID
 					version := &pb.WasmPluginVersion{
-						Name:                versionName,
-						Description:         details.Description,
-						Labels:              details.Labels,
-						ImageUri:            details.ImageUri,
-						ImageDigest:         "sha256:abcdef1234567890",
-						PluginConfigDigest:  "sha256:config1234567890",
-						CreateTime:          timestamppb.New(now),
-						UpdateTime:          timestamppb.New(now),
+						Name:               versionName,
+						Description:        details.Description,
+						Labels:             details.Labels,
+						ImageUri:           details.ImageUri,
+						ImageDigest:        "sha256:abcdef1234567890",
+						PluginConfigDigest: "sha256:config1234567890",
+						CreateTime:         timestamppb.New(now),
+						UpdateTime:         timestamppb.New(now),
 					}
 					if data := details.GetPluginConfigData(); data != nil {
 						version.PluginConfigSource = &pb.WasmPluginVersion_PluginConfigData{PluginConfigData: data}
