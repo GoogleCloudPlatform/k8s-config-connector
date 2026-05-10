@@ -17,12 +17,13 @@ This skill guides an automated agent through adding a missing field to a GCP res
 
 2. **Update the Fuzzer**
    - Find the fuzzer file (e.g., `pkg/controller/direct/group/resource_fuzzer.go`).
-   - Remove the missing field from `f.UnimplementedFields`.
+   - Remove the missing field from `f.UnimplementedFields` or `f.Unimplemented_NotYetTriaged`.
    - Register the field as a spec or status field in the fuzzer (e.g., `f.SpecField(".cross_instance_replication_config")` or `f.StatusField(".psc_attachment_details")`).
    - If there are subfields you aren't implementing yet, use `f.Unimplemented_NotYetTriaged` to ignore them for now.
 
 3. **Update the Mappers**
-   - If the resource uses hand-written mappers (e.g., `mapper.go`), add the appropriate logic to convert between the Kubernetes resource (`KRM`) and the GCP API (`API`).
+   - If the resource uses hand-written mappers (e.g., `mapper.go`), add the appropriate logic to convert between the Kubernetes resource (`KRM`) and the GCP API (`API`). 
+   - Note that if the root `Spec` or `ObservedState` has a handwritten mapping function (e.g., `_FromProto` and `_ToProto`), you'll need to manually add the mapping for the new field there, even if it's just a top-level field.
    - Check `mapper.generated.go` for blocks starting with `/* found existing non-generated mapping function ... */`. If the generator skipped a parent mapper, it may also skip nested types and leave comments like `// MISSING: <Type>`. You will need to manually write `_FromProto` and `_ToProto` functions for these missing nested types.
    - **Important:** We almost always want to update the `ToProto` and `FromProto` methods "symmetrically", so that they round trip. If you map a field in `Spec_ToProto`, make sure to also map it in `Spec_FromProto`.
    - Again, `mapper.generated.go` can provide a good reference if `generate.sh --include-skipped-output` is used.
