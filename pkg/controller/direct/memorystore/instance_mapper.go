@@ -153,6 +153,7 @@ func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.NodeConfig = NodeConfigObservedState_FromProto(mapCtx, in.GetNodeConfig())
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_FromProto)
 	out.EffectiveMaintenanceVersion = direct.LazyPtr(in.GetEffectiveMaintenanceVersion())
+	out.AvailableMaintenanceVersions = in.AvailableMaintenanceVersions
 	out.PscAttachmentDetails = direct.Slice_FromProto(mapCtx, in.PscAttachmentDetails, PscAttachmentDetailObservedState_FromProto)
 	return out
 }
@@ -169,6 +170,7 @@ func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.NodeConfig = NodeConfigObservedState_ToProto(mapCtx, in.NodeConfig)
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_ToProto)
 	out.EffectiveMaintenanceVersion = in.EffectiveMaintenanceVersion
+	out.AvailableMaintenanceVersions = in.AvailableMaintenanceVersions
 	out.PscAttachmentDetails = direct.Slice_ToProto(mapCtx, in.PscAttachmentDetails, PscAttachmentDetailObservedState_ToProto)
 	return out
 }

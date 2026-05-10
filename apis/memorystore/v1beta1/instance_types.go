@@ -199,6 +199,10 @@ type MemorystoreInstanceObservedState struct {
 	// Output only. The current version of the maintenance schedule.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.effective_maintenance_version
 	EffectiveMaintenanceVersion *string `json:"effectiveMaintenanceVersion,omitempty"`
+
+	// Output only. The list of available maintenance versions for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.available_maintenance_versions
+	AvailableMaintenanceVersions []string `json:"availableMaintenanceVersions,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.Instance.ConnectionDetail
