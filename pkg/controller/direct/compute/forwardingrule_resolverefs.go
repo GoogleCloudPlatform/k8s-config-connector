@@ -25,6 +25,7 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -444,13 +445,18 @@ func ResolveMemorystoreInstanceServiceAttachment(ctx context.Context, reader cli
 		key.Namespace = src.GetNamespace()
 	}
 
-	instance := &krm_memorystore.MemorystoreInstance{}
-	instance.SetGroupVersionKind(krm_memorystore.MemorystoreInstanceGVK)
-	if err := reader.Get(ctx, key, instance); err != nil {
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(krm_memorystore.MemorystoreInstanceGVK)
+	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, k8s.NewReferenceNotFoundError(instance.GroupVersionKind(), key)
+			return nil, k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
-		return nil, fmt.Errorf("error reading referenced %v %v: %w", instance.Kind, key, err)
+		return nil, fmt.Errorf("error reading referenced %v %v: %w", u.GroupVersionKind().Kind, key, err)
+	}
+
+	instance := &krm_memorystore.MemorystoreInstance{}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, instance); err != nil {
+		return nil, fmt.Errorf("error converting %v %v to MemorystoreInstance: %w", u.GroupVersionKind().Kind, key, err)
 	}
 
 	// Read status.observedState.pscAttachmentDetails[MemorystoreInstanceServiceAttachmentIndex]
