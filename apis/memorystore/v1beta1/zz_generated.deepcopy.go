@@ -670,6 +670,11 @@ func (in *MemorystoreInstanceSpec) DeepCopyInto(out *MemorystoreInstanceSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.MaintenanceVersion != nil {
+		in, out := &in.MaintenanceVersion, &out.MaintenanceVersion
+		*out = new(string)
+		**out = **in
+	}
 	if in.EngineConfigs != nil {
 		in, out := &in.EngineConfigs, &out.EngineConfigs
 		*out = make(map[string]string, len(*in))
