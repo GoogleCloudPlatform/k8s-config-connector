@@ -74,7 +74,9 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".deletion_protection_enabled")
 	f.SpecFields.Insert(".endpoints")
 	f.SpecFields.Insert(".mode")
+	f.SpecFields.Insert(".maintenance_version")
 
+	// Status Fields
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
 	f.StatusFields.Insert(".state")
@@ -86,7 +88,6 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".psc_attachment_details")
 
 	f.Unimplemented_NotYetTriaged(".available_maintenance_versions")
-	f.Unimplemented_NotYetTriaged(".maintenance_version")
 	f.Unimplemented_NotYetTriaged(".allow_fewer_zones_deployment")
 	f.Unimplemented_NotYetTriaged(".encryption_info")
 	f.Unimplemented_NotYetTriaged(".simulate_maintenance_event")
