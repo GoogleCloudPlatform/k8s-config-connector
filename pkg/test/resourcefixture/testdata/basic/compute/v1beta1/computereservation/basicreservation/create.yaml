@@ -17,7 +17,7 @@ kind: ComputeReservation
 metadata:
   name: computereservation-${uniqueId}
 spec:
-  description: Reservation for 2 basic machines which will become generally available for VM instances to consume.
+  description: Basic compute reservation
   zone: us-central1-a
   specificReservation:
     count: 2

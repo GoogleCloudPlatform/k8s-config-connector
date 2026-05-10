@@ -233,6 +233,89 @@ spec:
               shareSettings:
                 description: List of Projects/Folders to share with.
                 properties:
+                  projectMap:
+                    description: A map of key(i.e. project or other shared resources)
+                      and associated project config. This is only valid when shareType's
+                      value is SPECIFIC_PROJECTS.`
+                    items:
+                      properties:
+                        keyRef:
+                          description: The resource reference that defaults to Project
+                            if Kind is not specified.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                            - kind
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                              - required:
+                                - kind
+                            required:
+                            - external
+                          properties:
+                            apiVersion:
+                              description: APIVersion of the referenced resource
+                              type: string
+                            external:
+                              description: The external name of the referenced resource
+                              type: string
+                            kind:
+                              default: Project
+                              description: Kind of the referenced resource
+                              type: string
+                            name:
+                              type: string
+                            namespace:
+                              type: string
+                          type: object
+                        value:
+                          properties:
+                            projectIDRef:
+                              description: The project ID, should be same as the key
+                                of this project config in the parent map.
+                              oneOf:
+                              - not:
+                                  required:
+                                  - external
+                                required:
+                                - name
+                              - not:
+                                  anyOf:
+                                  - required:
+                                    - name
+                                  - required:
+                                    - namespace
+                                required:
+                                - external
+                              properties:
+                                external:
+                                  description: The `projectID` field of a project,
+                                    when not managed by Config Connector.
+                                  type: string
+                                kind:
+                                  description: The kind of the Project resource; optional
+                                    but must be `Project` if provided.
+                                  type: string
+                                name:
+                                  description: The `name` field of a `Project` resource.
+                                  type: string
+                                namespace:
+                                  description: The `namespace` field of a `Project`
+                                    resource.
+                                  type: string
+                              type: object
+                          type: object
+                      required:
+                      - keyRef
+                      type: object
+                    type: array
                   shareType:
                     description: Type of sharing for this shared-reservation Check
                       the ShareType enum for the list of possible values.
@@ -504,6 +587,19 @@ spec:
                                 description: Output only. [Output Only] The previous
                                   share settings of the Future Reservation.
                                 properties:
+                                  projectMap:
+                                    additionalProperties:
+                                      properties:
+                                        projectID:
+                                          description: The project ID, should be same
+                                            as the key of this project config in the
+                                            parent map.
+                                          type: string
+                                      type: object
+                                    description: A map of project id and project config.
+                                      This is only valid when shareType's value is
+                                      SPECIFIC_PROJECTS.`
+                                    type: object
                                   shareType:
                                     description: Type of sharing for this shared-reservation
                                       Check the ShareType enum for the list of possible
