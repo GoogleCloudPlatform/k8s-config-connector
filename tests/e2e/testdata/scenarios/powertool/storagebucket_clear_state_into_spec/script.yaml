@@ -57,7 +57,7 @@ args: [ "powertools", "change-state-into-spec", "--namespace=${projectId}", "--k
 
 ---
 
-TEST: READ-OBJECT
+TEST: WAIT-FOR-OBSERVED-GENERATION
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucket
 metadata:

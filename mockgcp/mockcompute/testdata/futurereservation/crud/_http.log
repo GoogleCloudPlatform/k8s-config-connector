@@ -114,6 +114,10 @@ X-Xss-Protection: 0
     "totalCount": "10"
   },
   "status": {
+    "existingMatchingUsageInfo": {
+      "count": "0",
+      "timestamp": "2024-04-01T12:34:56.123456Z"
+    },
     "procurementStatus": "DRAFTING"
   },
   "timeWindow": {

@@ -47,6 +47,7 @@ func computeFutureReservationFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".reservation_name")
 	f.SpecFields.Insert(".scheduling_type")
 	f.SpecFields.Insert(".share_settings")
+	f.SpecFields.Insert(".share_settings.project_map")
 	f.SpecFields.Insert(".specific_reservation_required")
 	f.SpecFields.Insert(".specific_sku_properties")
 	f.SpecFields.Insert(".time_window")
@@ -58,13 +59,11 @@ func computeFutureReservationFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".self_link")
 	f.StatusFields.Insert(".self_link_with_id")
 	f.StatusFields.Insert(".status")
+	f.StatusFields.Insert(".status.last_known_good_state.future_reservation_specs.share_settings.project_map")
 	f.StatusFields.Insert(".zone")
 
 	// Name is not mapped to Spec or Status as it is the ResourceID
 	f.UnimplementedFields.Insert(".name")
-
-	f.Unimplemented_NotYetTriaged(".share_settings.project_map")
-	f.Unimplemented_NotYetTriaged(".status.last_known_good_state.future_reservation_specs.share_settings.project_map")
 
 	return f
 }

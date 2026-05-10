@@ -23,13 +23,14 @@ require (
 	cloud.google.com/go/dataproc/v2 v2.19.0
 	cloud.google.com/go/discoveryengine v1.22.0
 	cloud.google.com/go/edgecontainer v1.4.4
-	cloud.google.com/go/firestore v1.21.0
+	cloud.google.com/go/firestore v1.22.0
 	cloud.google.com/go/iam v1.7.0
 	cloud.google.com/go/iap v1.12.0
 	cloud.google.com/go/kms v1.26.0
 	cloud.google.com/go/logging v1.13.2
 	cloud.google.com/go/longrunning v0.9.0
 	cloud.google.com/go/managedkafka v0.8.1
+	cloud.google.com/go/memorystore v0.9.0
 	cloud.google.com/go/netapp v1.12.0
 	cloud.google.com/go/networksecurity v0.15.0
 	cloud.google.com/go/networkservices v0.6.0
