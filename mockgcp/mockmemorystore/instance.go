@@ -114,6 +114,10 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 		obj.EffectiveMaintenanceVersion = new("MEMORYSTORE_20260313_01_02")
 	}
 
+	if obj.AvailableMaintenanceVersions == nil {
+		obj.AvailableMaintenanceVersions = []string{"MEMORYSTORE_20260313_01_02", "MEMORYSTORE_20260313_01_03"}
+	}
+
 	if obj.EncryptionInfo == nil {
 		obj.EncryptionInfo = &pb.EncryptionInfo{
 			EncryptionType: pb.EncryptionInfo_GOOGLE_DEFAULT_ENCRYPTION,
