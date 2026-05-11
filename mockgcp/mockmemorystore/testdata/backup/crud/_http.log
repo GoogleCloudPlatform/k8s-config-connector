@@ -64,6 +64,10 @@ X-Xss-Protection: 0
     "automatedBackupConfig": {
       "automatedBackupMode": "DISABLED"
     },
+    "availableMaintenanceVersions": [
+      "MEMORYSTORE_20260313_01_02",
+      "MEMORYSTORE_20260313_01_03"
+    ],
     "backupCollection": "projects/${projectId}/locations/us-central1/backupCollections/${backupCollectionID}",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
@@ -126,6 +130,10 @@ X-Xss-Protection: 0
   "automatedBackupConfig": {
     "automatedBackupMode": "DISABLED"
   },
+  "availableMaintenanceVersions": [
+    "MEMORYSTORE_20260313_01_02",
+    "MEMORYSTORE_20260313_01_03"
+  ],
   "backupCollection": "projects/${projectId}/locations/us-central1/backupCollections/${backupCollectionID}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
