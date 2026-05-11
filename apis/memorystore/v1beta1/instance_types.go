@@ -72,6 +72,10 @@ type MemorystoreInstanceSpec struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.engine_version
 	EngineVersion *string `json:"engineVersion,omitempty"`
 
+	// Optional. The maintenance version of the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.maintenance_version
+	MaintenanceVersion *string `json:"maintenanceVersion,omitempty"`
+
 	// Optional. User-provided engine configurations for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.engine_configs
 	EngineConfigs map[string]string `json:"engineConfigs,omitempty"`
