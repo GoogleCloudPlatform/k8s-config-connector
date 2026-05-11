@@ -1118,7 +1118,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupPolicy.backupWindow%2CautomatedBackupPolicy.enabled%2CautomatedBackupPolicy.encryptionConfig.kmsKeyName%2CautomatedBackupPolicy.labels%2CautomatedBackupPolicy.timeBasedRetention.retentionPeriod%2CautomatedBackupPolicy.weeklySchedule.daysOfWeek%2CautomatedBackupPolicy.weeklySchedule.startTimes%2CcontinuousBackupConfig.enabled%2CcontinuousBackupConfig.encryptionConfig.kmsKeyName%2CcontinuousBackupConfig.recoveryWindowDays%2CdisplayName%2CinitialUser.password%2CinitialUser.user%2Clabels%2CmaintenanceUpdatePolicy.maintenanceWindows
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupPolicy%2CcontinuousBackupConfig%2CdisplayName%2CinitialUser%2Clabels%2CmaintenanceUpdatePolicy
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Falloydbcluster-${uniqueId}

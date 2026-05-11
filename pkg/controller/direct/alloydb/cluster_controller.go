@@ -17,6 +17,7 @@ package alloydb
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
 	computev1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
@@ -615,8 +616,13 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 
 	// TODO: Decide if we want to clean up default fields set in desired state.
 
+	topLevelFieldPaths := sets.New[string]()
+	for path, _ := range paths {
+		tokens := strings.Split(path, ".")
+		topLevelFieldPaths.Insert(tokens[0])
+	}
 	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(paths),
+		Paths: sets.List(topLevelFieldPaths),
 	}
 
 	updateOp.RecordUpdatingEvent()

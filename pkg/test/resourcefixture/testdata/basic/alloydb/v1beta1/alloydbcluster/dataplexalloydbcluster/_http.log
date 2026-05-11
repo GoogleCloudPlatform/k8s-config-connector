@@ -426,7 +426,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=dataplexConfig.enabled%2CinitialUser.password%2CinitialUser.user
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=dataplexConfig%2CinitialUser
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fsouthamerica-east1%2Fclusters%2Falloydbcluster${uniqueId}

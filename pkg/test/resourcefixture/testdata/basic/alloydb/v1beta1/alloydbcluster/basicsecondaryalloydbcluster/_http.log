@@ -1156,7 +1156,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupPolicy.labels
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupPolicy
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Feurope-west8%2Fclusters%2Falloydbcluster-2-${uniqueId}
