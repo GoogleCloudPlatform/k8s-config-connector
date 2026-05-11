@@ -213,3 +213,23 @@ func TestDiffInstances_UserLabelsDiff(t *testing.T) {
 		}
 	}
 }
+
+func TestDiffInstances_AvailabilityTypeCasing(t *testing.T) {
+	desired := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			AvailabilityType: "Zonal",
+		},
+	}
+
+	actual := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			AvailabilityType: "ZONAL",
+		},
+	}
+
+	diff := DiffInstances(desired, actual)
+
+	if diff.HasDiff() {
+		t.Errorf("DiffInstances() expected no diffs, but got: %v", diff.Fields)
+	}
+}
