@@ -224,7 +224,6 @@ func (r *LifecycleHandler) EnsureFinalizers(ctx context.Context, original, resou
 
 func (r *LifecycleHandler) HandleUpToDate(ctx context.Context, resource *k8s.Resource) error {
 	setCondition(resource, corev1.ConditionTrue, k8s.UpToDate, k8s.UpToDateMessage)
-	setObservedGeneration(resource, resource.GetGeneration())
 	if err := r.updateAPIServer(ctx, resource); err != nil {
 		return err
 	}
