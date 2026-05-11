@@ -75,6 +75,8 @@ type FirestoreIndexStatus struct {
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
+var FirestoreIndexGVK = GroupVersion.WithKind("FirestoreIndex")
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:path=firestoreindexes
