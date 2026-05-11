@@ -141,7 +141,7 @@ type interceptingControllerRuntimeClient struct {
 // blockedMethod is called when a write operation is attempted.
 // It returns an error, so that the write operation is not forwarded upstream.
 func (c *interceptingControllerRuntimeClient) blockedMethod(ctx context.Context, method string, args ...any) error {
-	c.parent.recorder.RecordBlockedKubeMethod(ctx, method, args...)
+	c.parent.recorder.RecordBlockedKubeMethod(ctx, c.typeStore.scheme, method, args...)
 	return fmt.Errorf("%q blocked in preview mode", method)
 }
 
@@ -150,7 +150,7 @@ func (c *interceptingControllerRuntimeClient) blockedMethod(ctx context.Context,
 // This is useful for status updates, where we want to record the GCP operation,
 // which typically happens after the status update is made.
 func (c *interceptingControllerRuntimeClient) ignoredMethod(ctx context.Context, method string, args ...any) error {
-	c.parent.recorder.RecordIgnoredKubeMethod(ctx, method, args...)
+	c.parent.recorder.RecordIgnoredKubeMethod(ctx, c.typeStore.scheme, method, args...)
 	return nil
 }
 
