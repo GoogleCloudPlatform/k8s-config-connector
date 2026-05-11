@@ -25,6 +25,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iam/v1beta1"
+	kccscheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -277,7 +278,7 @@ func TestRecordKubeAction_TypedObject(t *testing.T) {
 	}
 
 	// This should not crash
-	recorder.RecordBlockedKubeMethod(ctx, "update", obj)
+	recorder.RecordBlockedKubeMethod(ctx, kccscheme.Scheme, "update", obj)
 
 	gknn := GKNN{
 		Group:     "iam.cnrm.cloud.google.com",

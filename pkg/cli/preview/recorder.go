@@ -17,17 +17,16 @@ package preview
 import (
 	"context"
 	"fmt"
-	"reflect"
 	"strings"
 	"sync"
 
-	kccscheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	constants "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
@@ -166,13 +165,13 @@ func (l *structuredReportingListener) OnDiff(ctx context.Context, diff *structur
 }
 
 // RecordBlockedKubeMethod is called by the interceptingKubeClient when a write operation is blocked.
-func (r *Recorder) RecordBlockedKubeMethod(ctx context.Context, method string, args ...any) {
-	r.recordKubeAction(ctx, method, args, ActionBlocked)
+func (r *Recorder) RecordBlockedKubeMethod(ctx context.Context, scheme *runtime.Scheme, method string, args ...any) {
+	r.recordKubeAction(ctx, scheme, method, args, ActionBlocked)
 }
 
 // RecordIgnoredKubeMethod is called by the interceptingKubeClient when a read operation is ignored.
-func (r *Recorder) RecordIgnoredKubeMethod(ctx context.Context, method string, args ...any) {
-	r.recordKubeAction(ctx, method, args, ActionIgnored)
+func (r *Recorder) RecordIgnoredKubeMethod(ctx context.Context, scheme *runtime.Scheme, method string, args ...any) {
+	r.recordKubeAction(ctx, scheme, method, args, ActionIgnored)
 }
 
 // recordDiff captures the diff into our recorder.
@@ -249,7 +248,7 @@ func gknnFromUnstructured(u *unstructured.Unstructured) GKNN {
 }
 
 // recordKubeAction captures the kube action into our recorder.
-func (r *Recorder) recordKubeAction(ctx context.Context, method string, args []any, action Action) {
+func (r *Recorder) recordKubeAction(ctx context.Context, scheme *runtime.Scheme, method string, args []any, action Action) {
 	klog.V(1).Infof("recordKubeAction %v %v %v", method, args, action)
 	var gknn GKNN
 
@@ -271,29 +270,13 @@ func (r *Recorder) recordKubeAction(ctx context.Context, method string, args []a
 			// We could capture the object here: kubeAction.object = arg.DeepCopy()
 
 		case client.Object:
-			gvk, err := apiutil.GVKForObject(arg, kccscheme.Scheme)
+			if scheme == nil {
+				klog.V(2).Infof("scheme is nil, cannot resolve GVK for %T", arg)
+				continue
+			}
+			gvk, err := apiutil.GVKForObject(arg, scheme)
 			if err != nil {
 				klog.V(2).Infof("apiutil.GVKForObject failed: %v", err)
-			}
-			if gvk.Kind == "" {
-				gvk = arg.GetObjectKind().GroupVersionKind()
-			}
-			if gvk.Kind == "" {
-				t := reflect.TypeOf(arg)
-				if t.Kind() == reflect.Ptr {
-					t = t.Elem()
-				}
-				gvk.Kind = t.Name()
-				pkgPath := t.PkgPath()
-				if strings.Contains(pkgPath, "/apis/") {
-					parts := strings.Split(pkgPath, "/apis/")
-					if len(parts) > 1 {
-						subParts := strings.Split(parts[1], "/")
-						if len(subParts) > 0 {
-							gvk.Group = subParts[0] + "." + constants.CNRMDomain
-						}
-					}
-				}
 			}
 			gknn = GKNN{
 				Group:     gvk.Group,
