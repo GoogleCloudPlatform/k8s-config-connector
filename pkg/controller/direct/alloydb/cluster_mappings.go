@@ -94,9 +94,6 @@ func AlloyDBClusterStatus_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *
 	// MISSING: TrialMetadata
 	// MISSING: Tags
 	out.ObservedState = AlloyDBClusterObservedState_FromProto(mapCtx, in)
-	if out.ObservedState != nil {
-		out.ObservedState.DataplexConfig = Cluster_DataplexConfig_FromProto(mapCtx, in.GetDataplexConfig())
-	}
 	return out
 }
 func AlloyDBClusterStatus_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBClusterStatus) *pb.Cluster {
@@ -151,9 +148,6 @@ func AlloyDBClusterStatus_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBClus
 	// MISSING: SubscriptionType
 	// MISSING: TrialMetadata
 	// MISSING: Tags
-	if in.ObservedState != nil {
-		out.DataplexConfig = Cluster_DataplexConfig_ToProto(mapCtx, in.ObservedState.DataplexConfig)
-	}
 	return out
 }
 
@@ -317,6 +311,8 @@ func ContinuousBackupSource_ToProto(mapCtx *direct.MapContext, in *krm.RestoreCo
 	return out
 }
 
+// AlloyDBClusterSpec_FromProto is manually defined because DataplexConfig is not yet
+// available in the pinned googleapis SHA used by the mapper generator.
 func AlloyDBClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.AlloyDBClusterSpec {
 	if in == nil {
 		return nil
@@ -364,6 +360,8 @@ func AlloyDBClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *kr
 	return out
 }
 
+// AlloyDBClusterSpec_ToProto is manually defined because DataplexConfig is not yet
+// available in the pinned googleapis SHA used by the mapper generator.
 func AlloyDBClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBClusterSpec) *pb.Cluster {
 	if in == nil {
 		return nil
