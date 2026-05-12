@@ -1,16 +1,16 @@
-Gap Analysis Snapshot - 2026-05-11 23:06:30
+Gap Analysis Snapshot - 2026-05-12 07:36:22
 GoogleAPIs SHA: 731d7f2ab6
-KCC SHA:        c609e8165b
+KCC SHA:        b94e549438
 -------------------------------------------------------
 Metric                         | Value     
 -------------------------------------------------------
-Total GCP Resources            | 1725      
+Total GCP Resources            | 1728      
 Skipped (Policy)               | 43        
-Processed Resources            | 1682      
+Processed Resources            | 1685      
 Implemented in KCC             | 237       
-Missing from KCC               | 1445      
+Missing from KCC               | 1448      
 -------------------------------------------------------
-Missing Manageable             | 647       
-Missing Fully Manageable       | 517       
+Missing Manageable             | 654       
+Missing Fully Manageable       | 518       
 -------------------------------------------------------
-Current Coverage               | 14.09%
+Current Coverage               | 14.07%
