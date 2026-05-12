@@ -18,6 +18,7 @@ import (
 	"reflect"
 	"testing"
 
+	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -48,5 +49,31 @@ func TestBigtableSchemaBundleMapper(t *testing.T) {
 
 	if !reflect.DeepEqual(krmSpec2.ProtoSchema.ProtoDescriptors, protoDescriptors) {
 		t.Errorf("KRM descriptors mismatch, got %v, want %v", krmSpec2.ProtoSchema.ProtoDescriptors, protoDescriptors)
+	}
+}
+
+func TestBigtableSchemaBundleObservedStateMapper(t *testing.T) {
+	mapCtx := &direct.MapContext{}
+
+	protoObj := &pb.SchemaBundle{
+		Etag: "test-etag",
+	}
+
+	krmObj := BigtableSchemaBundleObservedState_v1alpha1_FromProto(mapCtx, protoObj)
+	if mapCtx.Err() != nil {
+		t.Fatalf("Proto to Spec failed: %v", mapCtx.Err())
+	}
+
+	if krmObj.Etag == nil || *krmObj.Etag != "test-etag" {
+		t.Errorf("Etag mismatch, got %v, want %v", krmObj.Etag, "test-etag")
+	}
+
+	protoObj2 := BigtableSchemaBundleObservedState_v1alpha1_ToProto(mapCtx, krmObj)
+	if mapCtx.Err() != nil {
+		t.Fatalf("Spec to Proto failed: %v", mapCtx.Err())
+	}
+
+	if protoObj2.Etag != "test-etag" {
+		t.Errorf("Etag mismatch, got %v, want %v", protoObj2.Etag, "test-etag")
 	}
 }

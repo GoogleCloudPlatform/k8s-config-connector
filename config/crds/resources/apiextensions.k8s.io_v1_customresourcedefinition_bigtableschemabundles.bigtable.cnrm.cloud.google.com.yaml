@@ -72,6 +72,8 @@ spec:
                       The file descriptor set must be base64 encoded.
                     format: byte
                     type: string
+                required:
+                - protoDescriptors
                 type: object
               resourceID:
                 description: The BigtableSchemaBundle name. If not given, the metadata.name
@@ -106,6 +108,7 @@ spec:
                     type: string
                 type: object
             required:
+            - protoSchema
             - tableRef
             type: object
           status:

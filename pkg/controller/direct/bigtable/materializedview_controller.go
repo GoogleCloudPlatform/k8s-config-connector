@@ -168,35 +168,30 @@ func (a *MaterializedViewAdapter) Update(ctx context.Context, updateOp *directba
 
 	if len(updateMask.Paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		if a.desired.Status.ExternalRef == nil {
-			status := &krm.BigtableMaterializedViewStatus{}
-			status.ExternalRef = direct.LazyPtr(a.id.String())
-			return updateOp.UpdateStatus(ctx, status, nil)
+	} else {
+		log.V(2).Info("fields need update", "name", a.id, "paths", updateMask.Paths)
+		structuredreporting.ReportDiff(ctx, report)
+
+		spec := a.desired.Spec
+		spec.Query = &a.actual.Query // immutable
+		if !slices.Contains(updateMask.Paths, "deletion_protection") {
+			spec.DeletionProtection = &a.actual.DeletionProtection
 		}
-		return nil
-	}
 
-	log.V(2).Info("fields need update", "name", a.id, "paths", updateMask.Paths)
-	structuredreporting.ReportDiff(ctx, report)
+		mapCtx := &direct.MapContext{}
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		mv := BigtableMaterializedViewSpec_v1alpha1_ToProto(mapCtx, &spec)
+		mv.Name = a.id.ID()
+		desiredmaterializedviewinfo := BigtableMaterializedView_ToBigtableMaterializedViewInfo(mv)
 
-	spec = a.desired.Spec
-	spec.Query = &a.actual.Query // immutable
-	if !slices.Contains(updateMask.Paths, "deletion_protection") {
-		spec.DeletionProtection = &a.actual.DeletionProtection
+		err := a.gcpClient.UpdateMaterializedView(ctx, a.id.ParentInstanceIdString(), *desiredmaterializedviewinfo)
+		if err != nil {
+			return fmt.Errorf("updating MaterializedView %s: %w", a.id, err)
+		}
+		log.V(2).Info("successfully updated MaterializedView", "name", a.id)
 	}
-
-	mapCtx := &direct.MapContext{}
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	mv := BigtableMaterializedViewSpec_v1alpha1_ToProto(mapCtx, &spec)
-	mv.Name = a.id.ID()
-	desiredmaterializedviewinfo := BigtableMaterializedView_ToBigtableMaterializedViewInfo(mv)
-
-	if err := a.gcpClient.UpdateMaterializedView(ctx, a.id.ParentInstanceIdString(), *desiredmaterializedviewinfo); err != nil {
-		return fmt.Errorf("updating MaterializedView %s: %w", a.id, err)
-	}
-	log.V(2).Info("successfully updated MaterializedView", "name", a.id)
 
 	status := &krm.BigtableMaterializedViewStatus{}
 	status.ExternalRef = direct.LazyPtr(a.id.String())

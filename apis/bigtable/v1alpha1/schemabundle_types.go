@@ -33,7 +33,7 @@ type BigtableSchemaBundleSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Optional. The protobuf schema for the table.
-	// +optional
+	// +required
 	ProtoSchema *ProtoSchema `json:"protoSchema,omitempty"`
 }
 
@@ -42,8 +42,8 @@ type ProtoSchema struct {
 	// Optional. The protobuf schema descriptor.
 	// The schema descriptor must be a file descriptor set, which can be generated using `protoc --descriptor_set_out=myschema.fd myschema.proto`.
 	// The file descriptor set must be base64 encoded.
-	// +optional
-	ProtoDescriptors []byte `json:"protoDescriptors,omitempty"`
+	// +required
+	ProtoDescriptors []byte `json:"protoDescriptors"`
 }
 
 // BigtableSchemaBundleStatus defines the config connector machine state of BigtableSchemaBundle
@@ -67,6 +67,8 @@ type BigtableSchemaBundleStatus struct {
 type BigtableSchemaBundleObservedState struct {
 	// Optional. The etag for this schema bundle.
 	Etag *string `json:"etag,omitempty"`
+
+
 }
 
 // +genclient

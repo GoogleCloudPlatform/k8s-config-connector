@@ -270,25 +270,24 @@ func (a *BigtableAppProfileAdapter) Update(ctx context.Context, updateOp *direct
 
 	if !hasChanges {
 		log.V(2).Info("no changes to update", "name", a.id)
-		if a.desired.Status.ExternalRef == nil {
-			status := &krm.BigtableAppProfileStatus{}
-			status.ExternalRef = direct.LazyPtr(a.id.String())
-			status.Name = direct.LazyPtr(a.id.String())
-			return updateOp.UpdateStatus(ctx, status, nil)
+	} else {
+		structuredreporting.ReportDiff(ctx, report)
+		err := a.gcpClient.UpdateAppProfile(ctx, a.id.ParentInstanceIdString(), a.id.ID(), fieldsToUpdate)
+		if err != nil {
+			return fmt.Errorf("updating BigtableAppProfile %s: %w", a.id, err)
 		}
-		return nil
+		log.V(2).Info("successfully updated BigtableAppProfile", "name", a.id)
 	}
-
-	structuredreporting.ReportDiff(ctx, report)
-	if err := a.gcpClient.UpdateAppProfile(ctx, a.id.ParentInstanceIdString(), a.id.ID(), fieldsToUpdate); err != nil {
-		return fmt.Errorf("updating BigtableAppProfile %s: %w", a.id, err)
-	}
-	log.V(2).Info("successfully updated BigtableAppProfile", "name", a.id)
 
 	status := &krm.BigtableAppProfileStatus{}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
 	status.Name = direct.LazyPtr(a.id.String())
+	// TODO: Add ObservedState
+	// status.ObservedState = AppProfileObservedState_FromProto(mapCtx, updated)
+	// if mapCtx.Err() != nil {
+	// 	return mapCtx.Err()
+	// }
 	return updateOp.UpdateStatus(ctx, status, nil)
+
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.

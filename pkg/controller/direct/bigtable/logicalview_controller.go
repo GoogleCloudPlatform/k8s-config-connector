@@ -223,36 +223,44 @@ func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 	if len(updateMask.Paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		if a.desired.Status.ExternalRef == nil {
-			status := &krm.BigtableLogicalViewStatus{}
-			status.ExternalRef = direct.LazyPtr(a.id.String())
-			status.Name = direct.LazyPtr(a.id.String())
-			return updateOp.UpdateStatus(ctx, status, nil)
+	} else {
+		log.V(2).Info("fields need update", "name", a.id, "paths", updateMask.Paths)
+		structuredreporting.ReportDiff(ctx, report)
+
+		mapCtx := &direct.MapContext{}
+
+		lv := BigtableLogicalViewSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
 		}
-		return nil
+		lv.Name = a.id.ID()
+		lvi := convertLogicalViewToLogicalViewInfo(lv)
+
+		log.V(2).Info("Updating logical view with desired logical view", lvi)
+
+		err := a.gcpClient.UpdateLogicalView(ctx, a.id.ParentInstanceIdString(), *lvi)
+		if err != nil {
+			return fmt.Errorf("updating LogicalView %s: %w", a.id, err)
+		}
+		log.V(2).Info("successfully updated LogicalView", "name", a.id)
+		status := &krm.BigtableLogicalViewStatus{}
+		status.Name = direct.LazyPtr(a.id.String())
+		// TODO: Add ObservedState
+		// status.ObservedState = LogicalViewObservedState_FromProto(mapCtx, updated)
+		// if mapCtx.Err() != nil {
+		// 	return mapCtx.Err()
+		// }
+		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
-	log.V(2).Info("fields need update", "name", a.id, "paths", updateMask.Paths)
-	structuredreporting.ReportDiff(ctx, report)
-
-	mapCtx := &direct.MapContext{}
-
-	lv := BigtableLogicalViewSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	lv.Name = a.id.ID()
-	lvi := convertLogicalViewToLogicalViewInfo(lv)
-
-	log.V(2).Info("Updating logical view with desired logical view", lvi)
-
-	if err := a.gcpClient.UpdateLogicalView(ctx, a.id.ParentInstanceIdString(), *lvi); err != nil {
-		return fmt.Errorf("updating LogicalView %s: %w", a.id, err)
-	}
-	log.V(2).Info("successfully updated LogicalView", "name", a.id)
 	status := &krm.BigtableLogicalViewStatus{}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	status.Name = direct.LazyPtr(a.id.String())
+	// TODO: Add ObservedState
+	// status.ObservedState = LogicalViewObservedState_FromProto(mapCtx, updated)
+	// if mapCtx.Err() != nil {
+	// 	return mapCtx.Err()
+	// }
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 

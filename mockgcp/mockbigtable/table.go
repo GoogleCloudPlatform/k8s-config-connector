@@ -241,13 +241,16 @@ func (s *tableAdminServer) UpdateSchemaBundle(ctx context.Context, req *pb.Updat
 		return nil, err
 	}
 
-	// TODO: Use updateMask
+	// Apply update mask
+	// SchemaBundle mainly updates the Type field. We can replace the fields specified in the mask.
+	// For simplicity, we just copy the Type field as it's the only one currently updated.
+	obj.Type = req.GetSchemaBundle().GetType()
 
-	if err := s.storage.Update(ctx, fqn, req.GetSchemaBundle()); err != nil {
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.operations.DoneLRO(ctx, "", nil, req.GetSchemaBundle())
+	return s.operations.DoneLRO(ctx, "", nil, obj)
 }
 
 func (s *tableAdminServer) DeleteSchemaBundle(ctx context.Context, req *pb.DeleteSchemaBundleRequest) (*emptypb.Empty, error) {
