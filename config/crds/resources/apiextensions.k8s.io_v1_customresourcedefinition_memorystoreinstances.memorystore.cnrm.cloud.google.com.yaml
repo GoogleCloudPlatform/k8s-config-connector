@@ -270,6 +270,9 @@ spec:
                 x-kubernetes-validations:
                 - message: Location field is immutable
                   rule: self == oldSelf
+              maintenanceVersion:
+                description: Optional. The maintenance version of the instance.
+                type: string
               mode:
                 description: Optional. The mode config for the instance.
                 type: string
@@ -417,6 +420,12 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  availableMaintenanceVersions:
+                    description: Output only. The list of available maintenance versions
+                      for the instance.
+                    items:
+                      type: string
+                    type: array
                   createTime:
                     description: Output only. Creation timestamp of the instance.
                     type: string
@@ -858,6 +867,9 @@ spec:
                 x-kubernetes-validations:
                 - message: Location field is immutable
                   rule: self == oldSelf
+              maintenanceVersion:
+                description: Optional. The maintenance version of the instance.
+                type: string
               mode:
                 description: Optional. The mode config for the instance.
                 type: string
@@ -1005,6 +1017,12 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  availableMaintenanceVersions:
+                    description: Output only. The list of available maintenance versions
+                      for the instance.
+                    items:
+                      type: string
+                    type: array
                   createTime:
                     description: Output only. Creation timestamp of the instance.
                     type: string
