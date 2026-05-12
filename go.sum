@@ -636,8 +636,8 @@ cloud.google.com/go/documentai v1.23.6/go.mod h1:ghzBsyVTiVdkfKaUCum/9bGBEyBjDO4
 cloud.google.com/go/documentai v1.23.7/go.mod h1:ghzBsyVTiVdkfKaUCum/9bGBEyBjDO4GfooEcYKhN+g=
 cloud.google.com/go/documentai v1.23.8/go.mod h1:Vd/y5PosxCpUHmwC+v9arZyeMfTqBR9VIwOwIqQYYfA=
 cloud.google.com/go/documentai v1.25.0/go.mod h1:ftLnzw5VcXkLItp6pw1mFic91tMRyfv6hHEY5br4KzY=
-cloud.google.com/go/documentai v1.42.0 h1:FErf7mEjf3TBGiwcXQCsLrQ3mUqryTKa09NiO1L8Y90=
-cloud.google.com/go/documentai v1.42.0/go.mod h1:CABOUzRNOuvb/QwJS2LS80Hpqbu3UW2afyRKTYuW7bo=
+cloud.google.com/go/documentai v1.48.0 h1:qodgYZJgA89EWNJeeWXWBe/5kq9C5cQhthJweI6Z6CE=
+cloud.google.com/go/documentai v1.48.0/go.mod h1:mGjfbNf0cqCHKgxMZZV7frbfoF9T2hKkU1h88QyOy3c=
 cloud.google.com/go/domains v0.6.0/go.mod h1:T9Rz3GasrpYk6mEGHh4rymIhjlnIuB4ofT1wTxDeT4Y=
 cloud.google.com/go/domains v0.7.0/go.mod h1:PtZeqS1xjnXuRPKE/88Iru/LdfoRyEHYA9nFQf4UKpg=
 cloud.google.com/go/domains v0.8.0/go.mod h1:M9i3MMDzGFXsydri9/vW+EWz9sWb4I6WyHqdlAk0idE=

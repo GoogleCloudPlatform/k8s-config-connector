@@ -22,20 +22,9 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectNumber}/locations/us/processors/${processorID}
+  externalRef: projects/${projectId}/locations/us/processors/${processorID}
   observedGeneration: 1
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    defaultProcessorVersion: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}
-    name: projects/${projectNumber}/locations/us/processors/${processorID}
-    processEndpoint: https://us-documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/${processorID}:process
-    processorVersionAliases:
-    - alias: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/pretrained
-      processorVersion: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}
-    - alias: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/pretrained-next
-      processorVersion: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}
-    - alias: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/rc
-      processorVersion: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}
-    - alias: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/stable
-      processorVersion: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}
+    name: projects/${projectId}/locations/us/processors/${processorID}
     state: ENABLED
