@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,54 +29,55 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type BackendservicesignedurlkeyKeyValue struct {
-/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-// +optional
-Value *string `json:"value,omitempty"`
+	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
+	// +optional
+	Value *string `json:"value,omitempty"`
 
-/* Source for the field's value. Cannot be used if 'value' is specified. */
-// +optional
-ValueFrom *BackendservicesignedurlkeyValueFrom `json:"valueFrom,omitempty"`
+	/* Source for the field's value. Cannot be used if 'value' is specified. */
+	// +optional
+	ValueFrom *BackendservicesignedurlkeyValueFrom `json:"valueFrom,omitempty"`
 }
 
 type BackendservicesignedurlkeyValueFrom struct {
-/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-// +optional
-SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
+	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
+	// +optional
+	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type ComputeBackendServiceSignedURLKeySpec struct {
-BackendServiceRef v1alpha1.ResourceRef `json:"backendServiceRef"`
+	BackendServiceRef v1alpha1.ResourceRef `json:"backendServiceRef"`
 
 	/* Immutable. 128-bit key value used for signing the URL. The key value must be a
 	valid RFC 4648 Section 5 base64url encoded string. */
-KeyValue BackendservicesignedurlkeyKeyValue `json:"keyValue"`
+	KeyValue BackendservicesignedurlkeyKeyValue `json:"keyValue"`
 
-/* The project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ComputeBackendServiceSignedURLKeyStatus struct {
 	/* Conditions represent the latest available observations of the
-	    ComputeBackendServiceSignedURLKey's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   ComputeBackendServiceSignedURLKey's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputebackendservicesignedurlkey;gcpcomputebackendservicesignedurlkeys
@@ -94,20 +94,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // ComputeBackendServiceSignedURLKey is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeBackendServiceSignedURLKey struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ComputeBackendServiceSignedURLKeySpec `json:"spec,omitempty"`
-  Status ComputeBackendServiceSignedURLKeyStatus `json:"status,omitempty"`
+	Spec   ComputeBackendServiceSignedURLKeySpec   `json:"spec,omitempty"`
+	Status ComputeBackendServiceSignedURLKeyStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ComputeBackendServiceSignedURLKeyList contains a list of ComputeBackendServiceSignedURLKey
- type ComputeBackendServiceSignedURLKeyList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []ComputeBackendServiceSignedURLKey `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&ComputeBackendServiceSignedURLKey{}, &ComputeBackendServiceSignedURLKeyList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ComputeBackendServiceSignedURLKeyList contains a list of ComputeBackendServiceSignedURLKey
+type ComputeBackendServiceSignedURLKeyList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeBackendServiceSignedURLKey `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ComputeBackendServiceSignedURLKey{}, &ComputeBackendServiceSignedURLKeyList{})
+}

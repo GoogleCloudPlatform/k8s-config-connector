@@ -53,25 +53,23 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	KMSCryptoKeyVersionGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(KMSCryptoKeyVersion{}).Name(),
-  	}
-  
-  	KMSKeyRingImportJobGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(KMSKeyRingImportJob{}).Name(),
-  	}
-  
-  	KMSSecretCiphertextGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(KMSSecretCiphertext{}).Name(),
-  	}
-  
+	KMSCryptoKeyVersionGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(KMSCryptoKeyVersion{}).Name(),
+	}
 
-  	kmsAPIVersion = SchemeGroupVersion.String()
+	KMSKeyRingImportJobGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(KMSKeyRingImportJob{}).Name(),
+	}
+
+	KMSSecretCiphertextGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(KMSSecretCiphertext{}).Name(),
+	}
+
+	kmsAPIVersion = SchemeGroupVersion.String()
 )

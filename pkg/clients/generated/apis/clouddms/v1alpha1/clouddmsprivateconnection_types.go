@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,99 +29,100 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type PrivateconnectionVpcPeeringConfig struct {
-/* Required. A free subnet for peering. (CIDR of /29) */
-// +optional
-Subnet *string `json:"subnet,omitempty"`
+	/* Required. A free subnet for peering. (CIDR of /29) */
+	// +optional
+	Subnet *string `json:"subnet,omitempty"`
 
-/* Required. Fully qualified name of the VPC that Database Migration Service will peer to. */
-// +optional
-VpcNameRef *v1alpha1.ResourceRef `json:"vpcNameRef,omitempty"`
+	/* Required. Fully qualified name of the VPC that Database Migration Service will peer to. */
+	// +optional
+	VpcNameRef *v1alpha1.ResourceRef `json:"vpcNameRef,omitempty"`
 }
 
 type CloudDMSPrivateConnectionSpec struct {
-/* The private connection display name. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* The private connection display name. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
 	/* The resource labels for private connections to use to annotate any related
 	underlying resources such as Compute Engine VMs. An object containing a
 	list of "key": "value" pairs.
-	
+
 	Example: `{ "name": "wrench", "mass": "1.3kg", "count": "3" }`. */
-// +optional
-Labels map[string]string `json:"labels,omitempty"`
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
 
-/* Required. The location of the application. */
-// +optional
-Location *string `json:"location,omitempty"`
+	/* Required. The location of the application. */
+	// +optional
+	Location *string `json:"location,omitempty"`
 
-/* Required. The host project of the application. */
-// +optional
-ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	/* Required. The host project of the application. */
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-/* The CloudDMSPrivateConnection name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The CloudDMSPrivateConnection name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* VPC peering configuration. */
-// +optional
-VpcPeeringConfig *PrivateconnectionVpcPeeringConfig `json:"vpcPeeringConfig,omitempty"`
+	/* VPC peering configuration. */
+	// +optional
+	VpcPeeringConfig *PrivateconnectionVpcPeeringConfig `json:"vpcPeeringConfig,omitempty"`
 }
 
 type PrivateconnectionErrorStatus struct {
-/* The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code]. */
-// +optional
-Code *int32 `json:"code,omitempty"`
+	/* The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code]. */
+	// +optional
+	Code *int32 `json:"code,omitempty"`
 
-/* A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client. */
-// +optional
-Message *string `json:"message,omitempty"`
+	/* A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client. */
+	// +optional
+	Message *string `json:"message,omitempty"`
 }
 
 type PrivateconnectionObservedStateStatus struct {
-/* Output only. The create time of the resource. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. The create time of the resource. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. The error details in case of state FAILED. */
-// +optional
-Error *PrivateconnectionErrorStatus `json:"error,omitempty"`
+	/* Output only. The error details in case of state FAILED. */
+	// +optional
+	Error *PrivateconnectionErrorStatus `json:"error,omitempty"`
 
-/* Output only. The state of the private connection. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. The state of the private connection. */
+	// +optional
+	State *string `json:"state,omitempty"`
 
-/* Output only. The last update time of the resource. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. The last update time of the resource. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type CloudDMSPrivateConnectionStatus struct {
 	/* Conditions represent the latest available observations of the
-	    CloudDMSPrivateConnection's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the CloudDMSPrivateConnection resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   CloudDMSPrivateConnection's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the CloudDMSPrivateConnection resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *PrivateconnectionObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *PrivateconnectionObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpclouddmsprivateconnection;gcpclouddmsprivateconnections
@@ -137,20 +137,22 @@ ObservedState *PrivateconnectionObservedStateStatus `json:"observedState,omitemp
 // CloudDMSPrivateConnection is the Schema for the clouddms API
 // +k8s:openapi-gen=true
 type CloudDMSPrivateConnection struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec CloudDMSPrivateConnectionSpec `json:"spec,omitempty"`
-  Status CloudDMSPrivateConnectionStatus `json:"status,omitempty"`
+	Spec   CloudDMSPrivateConnectionSpec   `json:"spec,omitempty"`
+	Status CloudDMSPrivateConnectionStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // CloudDMSPrivateConnectionList contains a list of CloudDMSPrivateConnection
- type CloudDMSPrivateConnectionList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []CloudDMSPrivateConnection `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&CloudDMSPrivateConnection{}, &CloudDMSPrivateConnectionList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// CloudDMSPrivateConnectionList contains a list of CloudDMSPrivateConnection
+type CloudDMSPrivateConnectionList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []CloudDMSPrivateConnection `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&CloudDMSPrivateConnection{}, &CloudDMSPrivateConnectionList{})
+}

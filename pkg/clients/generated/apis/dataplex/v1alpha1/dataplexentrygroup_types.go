@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,69 +29,70 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type DataplexEntryGroupSpec struct {
-/* Optional. Description of the EntryGroup. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Optional. Description of the EntryGroup. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Optional. User friendly display name. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* Optional. User friendly display name. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* The location that this resource belongs to. */
-Location string `json:"location"`
+	/* The location that this resource belongs to. */
+	Location string `json:"location"`
 
-/* The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* The DataplexEntryGroup name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The DataplexEntryGroup name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type EntrygroupObservedStateStatus struct {
-/* Output only. The time when the EntryGroup was created. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. The time when the EntryGroup was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. Denotes the transfer status of the Entry Group. It is unspecified for Entry Group created from Dataplex API. */
-// +optional
-TransferStatus *string `json:"transferStatus,omitempty"`
+	/* Output only. Denotes the transfer status of the Entry Group. It is unspecified for Entry Group created from Dataplex API. */
+	// +optional
+	TransferStatus *string `json:"transferStatus,omitempty"`
 
-/* Output only. System generated globally unique ID for the EntryGroup. If you delete and recreate the EntryGroup with the same name, this ID will be different. */
-// +optional
-Uid *string `json:"uid,omitempty"`
+	/* Output only. System generated globally unique ID for the EntryGroup. If you delete and recreate the EntryGroup with the same name, this ID will be different. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
 
-/* Output only. The time when the EntryGroup was last updated. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. The time when the EntryGroup was last updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type DataplexEntryGroupStatus struct {
 	/* Conditions represent the latest available observations of the
-	    DataplexEntryGroup's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the DataplexEntryGroup resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   DataplexEntryGroup's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the DataplexEntryGroup resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *EntrygroupObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *EntrygroupObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdataplexentrygroup;gcpdataplexentrygroups
@@ -107,20 +107,22 @@ ObservedState *EntrygroupObservedStateStatus `json:"observedState,omitempty"`
 // DataplexEntryGroup is the Schema for the dataplex API
 // +k8s:openapi-gen=true
 type DataplexEntryGroup struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec DataplexEntryGroupSpec `json:"spec,omitempty"`
-  Status DataplexEntryGroupStatus `json:"status,omitempty"`
+	Spec   DataplexEntryGroupSpec   `json:"spec,omitempty"`
+	Status DataplexEntryGroupStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // DataplexEntryGroupList contains a list of DataplexEntryGroup
- type DataplexEntryGroupList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []DataplexEntryGroup `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&DataplexEntryGroup{}, &DataplexEntryGroupList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// DataplexEntryGroupList contains a list of DataplexEntryGroup
+type DataplexEntryGroupList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DataplexEntryGroup `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&DataplexEntryGroup{}, &DataplexEntryGroupList{})
+}

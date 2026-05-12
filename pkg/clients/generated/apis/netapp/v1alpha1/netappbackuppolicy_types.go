@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,76 +29,77 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type NetAppBackupPolicySpec struct {
-/* Number of daily backups to keep. Note that the minimum daily backup limit is 2. */
-// +optional
-DailyBackupLimit *int32 `json:"dailyBackupLimit,omitempty"`
+	/* Number of daily backups to keep. Note that the minimum daily backup limit is 2. */
+	// +optional
+	DailyBackupLimit *int32 `json:"dailyBackupLimit,omitempty"`
 
-/* Description of the backup policy. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Description of the backup policy. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* If enabled, make backups automatically according to the schedules. This will be applied to all volumes that have this policy attached and enforced on volume level. If not specified, default is true. */
-// +optional
-Enabled *bool `json:"enabled,omitempty"`
+	/* If enabled, make backups automatically according to the schedules. This will be applied to all volumes that have this policy attached and enforced on volume level. If not specified, default is true. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
 
-Location string `json:"location"`
+	Location string `json:"location"`
 
-/* Number of monthly backups to keep. Note that the sum of daily, weekly and monthly backups should be greater than 1. */
-// +optional
-MonthlyBackupLimit *int32 `json:"monthlyBackupLimit,omitempty"`
+	/* Number of monthly backups to keep. Note that the sum of daily, weekly and monthly backups should be greater than 1. */
+	// +optional
+	MonthlyBackupLimit *int32 `json:"monthlyBackupLimit,omitempty"`
 
-/* The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* The GCP resource identifier. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The GCP resource identifier. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Number of weekly backups to keep. Note that the sum of daily, weekly and monthly backups should be greater than 1. */
-// +optional
-WeeklyBackupLimit *int32 `json:"weeklyBackupLimit,omitempty"`
+	/* Number of weekly backups to keep. Note that the sum of daily, weekly and monthly backups should be greater than 1. */
+	// +optional
+	WeeklyBackupLimit *int32 `json:"weeklyBackupLimit,omitempty"`
 }
 
 type BackuppolicyObservedStateStatus struct {
-/* Output only. The total number of volumes assigned by this backup policy. */
-// +optional
-AssignedVolumeCount *int32 `json:"assignedVolumeCount,omitempty"`
+	/* Output only. The total number of volumes assigned by this backup policy. */
+	// +optional
+	AssignedVolumeCount *int32 `json:"assignedVolumeCount,omitempty"`
 
-/* Output only. The time when the backup policy was created. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. The time when the backup policy was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. The backup policy state. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. The backup policy state. */
+	// +optional
+	State *string `json:"state,omitempty"`
 }
 
 type NetAppBackupPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
-	    NetAppBackupPolicy's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the NetAppBackupPolicy resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   NetAppBackupPolicy's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the NetAppBackupPolicy resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *BackuppolicyObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *BackuppolicyObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpnetappbackuppolicy;gcpnetappbackuppolicies
@@ -114,20 +114,22 @@ ObservedState *BackuppolicyObservedStateStatus `json:"observedState,omitempty"`
 // NetAppBackupPolicy is the Schema for the netapp API
 // +k8s:openapi-gen=true
 type NetAppBackupPolicy struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec NetAppBackupPolicySpec `json:"spec,omitempty"`
-  Status NetAppBackupPolicyStatus `json:"status,omitempty"`
+	Spec   NetAppBackupPolicySpec   `json:"spec,omitempty"`
+	Status NetAppBackupPolicyStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // NetAppBackupPolicyList contains a list of NetAppBackupPolicy
- type NetAppBackupPolicyList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []NetAppBackupPolicy `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&NetAppBackupPolicy{}, &NetAppBackupPolicyList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// NetAppBackupPolicyList contains a list of NetAppBackupPolicy
+type NetAppBackupPolicyList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []NetAppBackupPolicy `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&NetAppBackupPolicy{}, &NetAppBackupPolicyList{})
+}

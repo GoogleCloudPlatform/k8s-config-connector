@@ -53,19 +53,17 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	DNSResponsePolicyGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DNSResponsePolicy{}).Name(),
-  	}
-  
-  	DNSResponsePolicyRuleGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DNSResponsePolicyRule{}).Name(),
-  	}
-  
+	DNSResponsePolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DNSResponsePolicy{}).Name(),
+	}
 
-  	dnsAPIVersion = SchemeGroupVersion.String()
+	DNSResponsePolicyRuleGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DNSResponsePolicyRule{}).Name(),
+	}
+
+	dnsAPIVersion = SchemeGroupVersion.String()
 )

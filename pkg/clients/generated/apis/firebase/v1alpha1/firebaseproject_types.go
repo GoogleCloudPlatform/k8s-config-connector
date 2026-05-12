@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,40 +29,41 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type FirebaseProjectSpec struct {
-/* The project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Immutable. Optional. The project of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The project of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type FirebaseProjectStatus struct {
 	/* Conditions represent the latest available observations of the
-	    FirebaseProject's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* The GCP project display name. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	   FirebaseProject's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* The GCP project display name. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* The number of the google project that firebase is enabled on. */
-// +optional
-ProjectNumber *string `json:"projectNumber,omitempty"`
+	/* The number of the google project that firebase is enabled on. */
+	// +optional
+	ProjectNumber *string `json:"projectNumber,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpfirebaseproject;gcpfirebaseprojects
@@ -80,20 +80,22 @@ ProjectNumber *string `json:"projectNumber,omitempty"`
 // FirebaseProject is the Schema for the firebase API
 // +k8s:openapi-gen=true
 type FirebaseProject struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec FirebaseProjectSpec `json:"spec,omitempty"`
-  Status FirebaseProjectStatus `json:"status,omitempty"`
+	Spec   FirebaseProjectSpec   `json:"spec,omitempty"`
+	Status FirebaseProjectStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // FirebaseProjectList contains a list of FirebaseProject
- type FirebaseProjectList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []FirebaseProject `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&FirebaseProject{}, &FirebaseProjectList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// FirebaseProjectList contains a list of FirebaseProject
+type FirebaseProjectList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []FirebaseProject `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&FirebaseProject{}, &FirebaseProjectList{})
+}

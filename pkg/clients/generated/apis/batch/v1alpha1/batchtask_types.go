@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,101 +29,102 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type BatchTaskSpec struct {
-/* Immutable. The location where the alloydb cluster should reside. */
-Location string `json:"location"`
+	/* Immutable. The location where the alloydb cluster should reside. */
+	Location string `json:"location"`
 
-/* The project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* The BatchTask name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The BatchTask name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type TaskObservedStateStatus struct {
-/* Task Status. */
-// +optional
-Status *TaskStatusStatus `json:"status,omitempty"`
+	/* Task Status. */
+	// +optional
+	Status *TaskStatusStatus `json:"status,omitempty"`
 }
 
 type TaskStatusEventsStatus struct {
-/* Description of the event. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Description of the event. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* The time this event occurred. */
-// +optional
-EventTime *string `json:"eventTime,omitempty"`
+	/* The time this event occurred. */
+	// +optional
+	EventTime *string `json:"eventTime,omitempty"`
 
-/* Task Execution. This field is only defined for task-level status events where the task fails. */
-// +optional
-TaskExecution *TaskTaskExecutionStatus `json:"taskExecution,omitempty"`
+	/* Task Execution. This field is only defined for task-level status events where the task fails. */
+	// +optional
+	TaskExecution *TaskTaskExecutionStatus `json:"taskExecution,omitempty"`
 
-/* Task State. This field is only defined for task-level status events. */
-// +optional
-TaskState *string `json:"taskState,omitempty"`
+	/* Task State. This field is only defined for task-level status events. */
+	// +optional
+	TaskState *string `json:"taskState,omitempty"`
 
-/* Type of the event. */
-// +optional
-Type *string `json:"type,omitempty"`
+	/* Type of the event. */
+	// +optional
+	Type *string `json:"type,omitempty"`
 }
 
 type TaskStatusStatus struct {
-/* Task state. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Task state. */
+	// +optional
+	State *string `json:"state,omitempty"`
 
-/* Detailed info about why the state is reached. */
-// +optional
-StatusEvents []TaskStatusEventsStatus `json:"statusEvents,omitempty"`
+	/* Detailed info about why the state is reached. */
+	// +optional
+	StatusEvents []TaskStatusEventsStatus `json:"statusEvents,omitempty"`
 }
 
 type TaskTaskExecutionStatus struct {
 	/* The exit code of a finished task.
-	
+
 	If the task succeeded, the exit code will be 0. If the task failed but not
 	due to the following reasons, the exit code will be 50000.
-	
+
 	Otherwise, it can be from different sources:
 	* Batch known failures:
 	https://cloud.google.com/batch/docs/troubleshooting#reserved-exit-codes.
 	* Batch runnable execution failures; you can rely on Batch logs to further
 	diagnose: https://cloud.google.com/batch/docs/analyze-job-using-logs. If
 	there are multiple runnables failures, Batch only exposes the first error. */
-// +optional
-ExitCode *int32 `json:"exitCode,omitempty"`
+	// +optional
+	ExitCode *int32 `json:"exitCode,omitempty"`
 }
 
 type BatchTaskStatus struct {
 	/* Conditions represent the latest available observations of the
-	    BatchTask's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the BatchTask resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   BatchTask's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the BatchTask resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* Task name. The name is generated from the parent TaskGroup name and 'id' field. For example: "projects/123456/locations/us-west1/jobs/job01/taskGroups/group01/tasks/task01". */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* Task name. The name is generated from the parent TaskGroup name and 'id' field. For example: "projects/123456/locations/us-west1/jobs/job01/taskGroups/group01/tasks/task01". */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* BatchTaskObservedState is the state of the BatchTask resource as most recently observed in GCP. */
-// +optional
-ObservedState *TaskObservedStateStatus `json:"observedState,omitempty"`
+	/* BatchTaskObservedState is the state of the BatchTask resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *TaskObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbatchtask;gcpbatchtasks
@@ -139,20 +139,22 @@ ObservedState *TaskObservedStateStatus `json:"observedState,omitempty"`
 // BatchTask is the Schema for the batch API
 // +k8s:openapi-gen=true
 type BatchTask struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec BatchTaskSpec `json:"spec,omitempty"`
-  Status BatchTaskStatus `json:"status,omitempty"`
+	Spec   BatchTaskSpec   `json:"spec,omitempty"`
+	Status BatchTaskStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // BatchTaskList contains a list of BatchTask
- type BatchTaskList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []BatchTask `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&BatchTask{}, &BatchTaskList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// BatchTaskList contains a list of BatchTask
+type BatchTaskList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []BatchTask `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&BatchTask{}, &BatchTaskList{})
+}

@@ -53,31 +53,29 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	AccessContextManagerAccessLevelGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(AccessContextManagerAccessLevel{}).Name(),
-  	}
-  
-  	AccessContextManagerAccessPolicyGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(AccessContextManagerAccessPolicy{}).Name(),
-  	}
-  
-  	AccessContextManagerServicePerimeterGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(AccessContextManagerServicePerimeter{}).Name(),
-  	}
-  
-  	AccessContextManagerServicePerimeterResourceGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(AccessContextManagerServicePerimeterResource{}).Name(),
-  	}
-  
+	AccessContextManagerAccessLevelGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(AccessContextManagerAccessLevel{}).Name(),
+	}
 
-  	accesscontextmanagerAPIVersion = SchemeGroupVersion.String()
+	AccessContextManagerAccessPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(AccessContextManagerAccessPolicy{}).Name(),
+	}
+
+	AccessContextManagerServicePerimeterGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(AccessContextManagerServicePerimeter{}).Name(),
+	}
+
+	AccessContextManagerServicePerimeterResourceGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(AccessContextManagerServicePerimeterResource{}).Name(),
+	}
+
+	accesscontextmanagerAPIVersion = SchemeGroupVersion.String()
 )

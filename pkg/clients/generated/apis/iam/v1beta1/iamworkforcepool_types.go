@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,59 +29,60 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type IAMWorkforcePoolSpec struct {
-/* A user-specified description of the pool. Cannot exceed 256 characters. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* A user-specified description of the pool. Cannot exceed 256 characters. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Whether the pool is disabled. You cannot use a disabled pool to exchange tokens, or use existing tokens to access resources. If the pool is re-enabled, existing tokens grant access again. */
-// +optional
-Disabled *bool `json:"disabled,omitempty"`
+	/* Whether the pool is disabled. You cannot use a disabled pool to exchange tokens, or use existing tokens to access resources. If the pool is re-enabled, existing tokens grant access again. */
+	// +optional
+	Disabled *bool `json:"disabled,omitempty"`
 
-/* A user-specified display name of the pool in Google Cloud Console. Cannot exceed 32 characters. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* A user-specified display name of the pool in Google Cloud Console. Cannot exceed 32 characters. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* Immutable. The location for the resource */
-Location string `json:"location"`
+	/* Immutable. The location for the resource */
+	Location string `json:"location"`
 
-/* Immutable. The Organization that this resource belongs to. Only one of [organizationRef] may be specified. */
-OrganizationRef v1alpha1.ResourceRef `json:"organizationRef"`
+	/* Immutable. The Organization that this resource belongs to. Only one of [organizationRef] may be specified. */
+	OrganizationRef v1alpha1.ResourceRef `json:"organizationRef"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* How long the Google Cloud access tokens, console sign-in sessions, and gcloud sign-in sessions from this pool are valid. Must be greater than 15 minutes (900s) and less than 12 hours (43200s). If `session_duration` is not configured, minted credentials will have a default duration of one hour (3600s). */
-// +optional
-SessionDuration *string `json:"sessionDuration,omitempty"`
+	/* How long the Google Cloud access tokens, console sign-in sessions, and gcloud sign-in sessions from this pool are valid. Must be greater than 15 minutes (900s) and less than 12 hours (43200s). If `session_duration` is not configured, minted credentials will have a default duration of one hour (3600s). */
+	// +optional
+	SessionDuration *string `json:"sessionDuration,omitempty"`
 }
 
 type IAMWorkforcePoolStatus struct {
 	/* Conditions represent the latest available observations of the
-	    IAMWorkforcePool's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   IAMWorkforcePool's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* Output only. The resource name of the pool. Format: `locations/{location}/workforcePools/{workforce_pool_id}` */
-// +optional
-SelfLink *string `json:"selfLink,omitempty"`
+	/* Output only. The resource name of the pool. Format: `locations/{location}/workforcePools/{workforce_pool_id}` */
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 
-/* Output only. The state of the pool. Possible values: STATE_UNSPECIFIED, ACTIVE, DELETED */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. The state of the pool. Possible values: STATE_UNSPECIFIED, ACTIVE, DELETED */
+	// +optional
+	State *string `json:"state,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpiamworkforcepool;gcpiamworkforcepools
@@ -99,20 +99,22 @@ State *string `json:"state,omitempty"`
 // IAMWorkforcePool is the Schema for the iam API
 // +k8s:openapi-gen=true
 type IAMWorkforcePool struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec IAMWorkforcePoolSpec `json:"spec,omitempty"`
-  Status IAMWorkforcePoolStatus `json:"status,omitempty"`
+	Spec   IAMWorkforcePoolSpec   `json:"spec,omitempty"`
+	Status IAMWorkforcePoolStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // IAMWorkforcePoolList contains a list of IAMWorkforcePool
- type IAMWorkforcePoolList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []IAMWorkforcePool `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&IAMWorkforcePool{}, &IAMWorkforcePoolList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// IAMWorkforcePoolList contains a list of IAMWorkforcePool
+type IAMWorkforcePoolList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []IAMWorkforcePool `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&IAMWorkforcePool{}, &IAMWorkforcePoolList{})
+}

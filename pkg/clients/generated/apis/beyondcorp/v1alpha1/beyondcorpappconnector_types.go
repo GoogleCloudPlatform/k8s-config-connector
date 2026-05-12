@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,56 +29,57 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type AppconnectorPrincipalInfo struct {
-/* ServiceAccount represents a GCP service account. */
-ServiceAccount AppconnectorServiceAccount `json:"serviceAccount"`
+	/* ServiceAccount represents a GCP service account. */
+	ServiceAccount AppconnectorServiceAccount `json:"serviceAccount"`
 }
 
 type AppconnectorServiceAccount struct {
-/* Email address of the service account. */
-Email string `json:"email"`
+	/* Email address of the service account. */
+	Email string `json:"email"`
 }
 
 type BeyondCorpAppConnectorSpec struct {
-/* An arbitrary user-provided name for the AppConnector. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* An arbitrary user-provided name for the AppConnector. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* Principal information about the Identity of the AppConnector. */
-PrincipalInfo AppconnectorPrincipalInfo `json:"principalInfo"`
+	/* Principal information about the Identity of the AppConnector. */
+	PrincipalInfo AppconnectorPrincipalInfo `json:"principalInfo"`
 
-/* The project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Immutable. The region of the AppConnector. */
-Region string `json:"region"`
+	/* Immutable. The region of the AppConnector. */
+	Region string `json:"region"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type BeyondCorpAppConnectorStatus struct {
 	/* Conditions represent the latest available observations of the
-	    BeyondCorpAppConnector's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   BeyondCorpAppConnector's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* Represents the different states of a AppConnector. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Represents the different states of a AppConnector. */
+	// +optional
+	State *string `json:"state,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbeyondcorpappconnector;gcpbeyondcorpappconnectors
@@ -96,20 +96,22 @@ State *string `json:"state,omitempty"`
 // BeyondCorpAppConnector is the Schema for the beyondcorp API
 // +k8s:openapi-gen=true
 type BeyondCorpAppConnector struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec BeyondCorpAppConnectorSpec `json:"spec,omitempty"`
-  Status BeyondCorpAppConnectorStatus `json:"status,omitempty"`
+	Spec   BeyondCorpAppConnectorSpec   `json:"spec,omitempty"`
+	Status BeyondCorpAppConnectorStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // BeyondCorpAppConnectorList contains a list of BeyondCorpAppConnector
- type BeyondCorpAppConnectorList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []BeyondCorpAppConnector `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&BeyondCorpAppConnector{}, &BeyondCorpAppConnectorList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// BeyondCorpAppConnectorList contains a list of BeyondCorpAppConnector
+type BeyondCorpAppConnectorList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []BeyondCorpAppConnector `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&BeyondCorpAppConnector{}, &BeyondCorpAppConnectorList{})
+}

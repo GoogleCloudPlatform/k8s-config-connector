@@ -53,37 +53,35 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	HealthcareConsentStoreGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(HealthcareConsentStore{}).Name(),
-  	}
-  
-  	HealthcareDICOMStoreGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(HealthcareDICOMStore{}).Name(),
-  	}
-  
-  	HealthcareDatasetGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(HealthcareDataset{}).Name(),
-  	}
-  
-  	HealthcareFHIRStoreGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(HealthcareFHIRStore{}).Name(),
-  	}
-  
-  	HealthcareHL7V2StoreGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(HealthcareHL7V2Store{}).Name(),
-  	}
-  
+	HealthcareConsentStoreGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(HealthcareConsentStore{}).Name(),
+	}
 
-  	healthcareAPIVersion = SchemeGroupVersion.String()
+	HealthcareDICOMStoreGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(HealthcareDICOMStore{}).Name(),
+	}
+
+	HealthcareDatasetGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(HealthcareDataset{}).Name(),
+	}
+
+	HealthcareFHIRStoreGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(HealthcareFHIRStore{}).Name(),
+	}
+
+	HealthcareHL7V2StoreGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(HealthcareHL7V2Store{}).Name(),
+	}
+
+	healthcareAPIVersion = SchemeGroupVersion.String()
 )

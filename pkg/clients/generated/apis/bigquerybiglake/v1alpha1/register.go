@@ -53,19 +53,17 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	BigLakeCatalogGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(BigLakeCatalog{}).Name(),
-  	}
-  
-  	BigLakeDatabaseGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(BigLakeDatabase{}).Name(),
-  	}
-  
+	BigLakeCatalogGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(BigLakeCatalog{}).Name(),
+	}
 
-  	bigquerybiglakeAPIVersion = SchemeGroupVersion.String()
+	BigLakeDatabaseGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(BigLakeDatabase{}).Name(),
+	}
+
+	bigquerybiglakeAPIVersion = SchemeGroupVersion.String()
 )

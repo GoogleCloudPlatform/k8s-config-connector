@@ -53,13 +53,11 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	APIKeysKeyGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(APIKeysKey{}).Name(),
-  	}
-  
+	APIKeysKeyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(APIKeysKey{}).Name(),
+	}
 
-  	apikeysAPIVersion = SchemeGroupVersion.String()
+	apikeysAPIVersion = SchemeGroupVersion.String()
 )

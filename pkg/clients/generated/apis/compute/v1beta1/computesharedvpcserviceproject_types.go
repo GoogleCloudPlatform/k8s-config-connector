@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -42,20 +41,21 @@ var _ = apiextensionsv1.JSON{}
 type ComputeSharedVPCServiceProjectSpec struct {
 	/* The deletion policy for the shared VPC service. Setting ABANDON allows the resource
 	to be abandoned rather than deleted. Possible values are: "ABANDON". */
-// +optional
-DeletionPolicy *string `json:"deletionPolicy,omitempty"`
+	// +optional
+	DeletionPolicy *string `json:"deletionPolicy,omitempty"`
 
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 }
 
 type ComputeSharedVPCServiceProjectStatus struct {
 	/* Conditions represent the latest available observations of the
-	    ComputeSharedVPCServiceProject's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   ComputeSharedVPCServiceProject's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputesharedvpcserviceproject;gcpcomputesharedvpcserviceprojects
@@ -72,20 +72,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // ComputeSharedVPCServiceProject is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeSharedVPCServiceProject struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ComputeSharedVPCServiceProjectSpec `json:"spec,omitempty"`
-  Status ComputeSharedVPCServiceProjectStatus `json:"status,omitempty"`
+	Spec   ComputeSharedVPCServiceProjectSpec   `json:"spec,omitempty"`
+	Status ComputeSharedVPCServiceProjectStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ComputeSharedVPCServiceProjectList contains a list of ComputeSharedVPCServiceProject
- type ComputeSharedVPCServiceProjectList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []ComputeSharedVPCServiceProject `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&ComputeSharedVPCServiceProject{}, &ComputeSharedVPCServiceProjectList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ComputeSharedVPCServiceProjectList contains a list of ComputeSharedVPCServiceProject
+type ComputeSharedVPCServiceProjectList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeSharedVPCServiceProject `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ComputeSharedVPCServiceProject{}, &ComputeSharedVPCServiceProjectList{})
+}

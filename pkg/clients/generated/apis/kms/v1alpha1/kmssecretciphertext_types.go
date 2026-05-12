@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,70 +29,71 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type SecretciphertextAdditionalAuthenticatedData struct {
-/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-// +optional
-Value *string `json:"value,omitempty"`
+	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
+	// +optional
+	Value *string `json:"value,omitempty"`
 
-/* Source for the field's value. Cannot be used if 'value' is specified. */
-// +optional
-ValueFrom *SecretciphertextValueFrom `json:"valueFrom,omitempty"`
+	/* Source for the field's value. Cannot be used if 'value' is specified. */
+	// +optional
+	ValueFrom *SecretciphertextValueFrom `json:"valueFrom,omitempty"`
 }
 
 type SecretciphertextPlaintext struct {
-/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-// +optional
-Value *string `json:"value,omitempty"`
+	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
+	// +optional
+	Value *string `json:"value,omitempty"`
 
-/* Source for the field's value. Cannot be used if 'value' is specified. */
-// +optional
-ValueFrom *SecretciphertextValueFrom `json:"valueFrom,omitempty"`
+	/* Source for the field's value. Cannot be used if 'value' is specified. */
+	// +optional
+	ValueFrom *SecretciphertextValueFrom `json:"valueFrom,omitempty"`
 }
 
 type SecretciphertextValueFrom struct {
-/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-// +optional
-SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
+	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
+	// +optional
+	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type KMSSecretCiphertextSpec struct {
-/* Immutable. The additional authenticated data used for integrity checks during encryption and decryption. */
-// +optional
-AdditionalAuthenticatedData *SecretciphertextAdditionalAuthenticatedData `json:"additionalAuthenticatedData,omitempty"`
+	/* Immutable. The additional authenticated data used for integrity checks during encryption and decryption. */
+	// +optional
+	AdditionalAuthenticatedData *SecretciphertextAdditionalAuthenticatedData `json:"additionalAuthenticatedData,omitempty"`
 
 	/* Immutable. The full name of the CryptoKey that will be used to encrypt the provided plaintext.
 	Format: ''projects/{{project}}/locations/{{location}}/keyRings/{{keyRing}}/cryptoKeys/{{cryptoKey}}''. */
-CryptoKey string `json:"cryptoKey"`
+	CryptoKey string `json:"cryptoKey"`
 
-/* Immutable. The plaintext to be encrypted. */
-Plaintext SecretciphertextPlaintext `json:"plaintext"`
+	/* Immutable. The plaintext to be encrypted. */
+	Plaintext SecretciphertextPlaintext `json:"plaintext"`
 
-/* Immutable. Optional. The service-generated ciphertext of the resource. Used for acquisition only. Leave unset to create a new resource. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The service-generated ciphertext of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type KMSSecretCiphertextStatus struct {
 	/* Conditions represent the latest available observations of the
-	    KMSSecretCiphertext's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* Contains the result of encrypting the provided plaintext, encoded in base64. */
-// +optional
-Ciphertext *string `json:"ciphertext,omitempty"`
+	   KMSSecretCiphertext's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* Contains the result of encrypting the provided plaintext, encoded in base64. */
+	// +optional
+	Ciphertext *string `json:"ciphertext,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpkmssecretciphertext;gcpkmssecretciphertexts
@@ -110,20 +110,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // KMSSecretCiphertext is the Schema for the kms API
 // +k8s:openapi-gen=true
 type KMSSecretCiphertext struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec KMSSecretCiphertextSpec `json:"spec,omitempty"`
-  Status KMSSecretCiphertextStatus `json:"status,omitempty"`
+	Spec   KMSSecretCiphertextSpec   `json:"spec,omitempty"`
+	Status KMSSecretCiphertextStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // KMSSecretCiphertextList contains a list of KMSSecretCiphertext
- type KMSSecretCiphertextList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []KMSSecretCiphertext `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&KMSSecretCiphertext{}, &KMSSecretCiphertextList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// KMSSecretCiphertextList contains a list of KMSSecretCiphertext
+type KMSSecretCiphertextList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []KMSSecretCiphertext `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&KMSSecretCiphertext{}, &KMSSecretCiphertextList{})
+}

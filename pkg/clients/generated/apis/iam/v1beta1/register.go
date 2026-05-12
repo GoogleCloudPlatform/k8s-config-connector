@@ -53,79 +53,77 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	IAMAccessBoundaryPolicyGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(IAMAccessBoundaryPolicy{}).Name(),
-  	}
-  
-  	IAMAuditConfigGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(IAMAuditConfig{}).Name(),
-  	}
-  
-  	IAMCustomRoleGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(IAMCustomRole{}).Name(),
-  	}
-  
-  	IAMPartialPolicyGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(IAMPartialPolicy{}).Name(),
-  	}
-  
-  	IAMPolicyGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(IAMPolicy{}).Name(),
-  	}
-  
-  	IAMPolicyMemberGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(IAMPolicyMember{}).Name(),
-  	}
-  
-  	IAMServiceAccountGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(IAMServiceAccount{}).Name(),
-  	}
-  
-  	IAMServiceAccountKeyGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(IAMServiceAccountKey{}).Name(),
-  	}
-  
-  	IAMWorkforcePoolGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(IAMWorkforcePool{}).Name(),
-  	}
-  
-  	IAMWorkforcePoolProviderGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(IAMWorkforcePoolProvider{}).Name(),
-  	}
-  
-  	IAMWorkloadIdentityPoolGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(IAMWorkloadIdentityPool{}).Name(),
-  	}
-  
-  	IAMWorkloadIdentityPoolProviderGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(IAMWorkloadIdentityPoolProvider{}).Name(),
-  	}
-  
+	IAMAccessBoundaryPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAMAccessBoundaryPolicy{}).Name(),
+	}
 
-  	iamAPIVersion = SchemeGroupVersion.String()
+	IAMAuditConfigGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAMAuditConfig{}).Name(),
+	}
+
+	IAMCustomRoleGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAMCustomRole{}).Name(),
+	}
+
+	IAMPartialPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAMPartialPolicy{}).Name(),
+	}
+
+	IAMPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAMPolicy{}).Name(),
+	}
+
+	IAMPolicyMemberGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAMPolicyMember{}).Name(),
+	}
+
+	IAMServiceAccountGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAMServiceAccount{}).Name(),
+	}
+
+	IAMServiceAccountKeyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAMServiceAccountKey{}).Name(),
+	}
+
+	IAMWorkforcePoolGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAMWorkforcePool{}).Name(),
+	}
+
+	IAMWorkforcePoolProviderGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAMWorkforcePoolProvider{}).Name(),
+	}
+
+	IAMWorkloadIdentityPoolGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAMWorkloadIdentityPool{}).Name(),
+	}
+
+	IAMWorkloadIdentityPoolProviderGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAMWorkloadIdentityPoolProvider{}).Name(),
+	}
+
+	iamAPIVersion = SchemeGroupVersion.String()
 )

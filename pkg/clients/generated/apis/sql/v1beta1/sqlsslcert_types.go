@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,63 +29,64 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type SQLSSLCertSpec struct {
-/* Immutable. The common name to be used in the certificate to identify the client. Constrained to [a-zA-Z.-_ ]+. Changing this forces a new resource to be created. */
-CommonName string `json:"commonName"`
+	/* Immutable. The common name to be used in the certificate to identify the client. Constrained to [a-zA-Z.-_ ]+. Changing this forces a new resource to be created. */
+	CommonName string `json:"commonName"`
 
-/* The Cloud SQL instance. */
-InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
+	/* The Cloud SQL instance. */
+	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
 
-/* Immutable. Optional. The service-generated sha1Fingerprint of the resource. Used for acquisition only. Leave unset to create a new resource. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The service-generated sha1Fingerprint of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type SQLSSLCertStatus struct {
 	/* Conditions represent the latest available observations of the
-	    SQLSSLCert's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* The actual certificate data for this client certificate. */
-// +optional
-Cert *string `json:"cert,omitempty"`
+	   SQLSSLCert's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* The actual certificate data for this client certificate. */
+	// +optional
+	Cert *string `json:"cert,omitempty"`
 
-/* The serial number extracted from the certificate data. */
-// +optional
-CertSerialNumber *string `json:"certSerialNumber,omitempty"`
+	/* The serial number extracted from the certificate data. */
+	// +optional
+	CertSerialNumber *string `json:"certSerialNumber,omitempty"`
 
-/* The time when the certificate was created in RFC 3339 format, for example 2012-11-15T16:19:00.094Z. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* The time when the certificate was created in RFC 3339 format, for example 2012-11-15T16:19:00.094Z. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* The time when the certificate expires in RFC 3339 format, for example 2012-11-15T16:19:00.094Z. */
-// +optional
-ExpirationTime *string `json:"expirationTime,omitempty"`
+	/* The time when the certificate expires in RFC 3339 format, for example 2012-11-15T16:19:00.094Z. */
+	// +optional
+	ExpirationTime *string `json:"expirationTime,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* The private key associated with the client certificate. */
-// +optional
-PrivateKey *string `json:"privateKey,omitempty"`
+	/* The private key associated with the client certificate. */
+	// +optional
+	PrivateKey *string `json:"privateKey,omitempty"`
 
-/* The CA cert of the server this client cert was generated from. */
-// +optional
-ServerCaCert *string `json:"serverCaCert,omitempty"`
+	/* The CA cert of the server this client cert was generated from. */
+	// +optional
+	ServerCaCert *string `json:"serverCaCert,omitempty"`
 
-/* The SHA1 Fingerprint of the certificate. */
-// +optional
-Sha1Fingerprint *string `json:"sha1Fingerprint,omitempty"`
+	/* The SHA1 Fingerprint of the certificate. */
+	// +optional
+	Sha1Fingerprint *string `json:"sha1Fingerprint,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpsqlsslcert;gcpsqlsslcerts
@@ -103,20 +103,22 @@ Sha1Fingerprint *string `json:"sha1Fingerprint,omitempty"`
 // SQLSSLCert is the Schema for the sql API
 // +k8s:openapi-gen=true
 type SQLSSLCert struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec SQLSSLCertSpec `json:"spec,omitempty"`
-  Status SQLSSLCertStatus `json:"status,omitempty"`
+	Spec   SQLSSLCertSpec   `json:"spec,omitempty"`
+	Status SQLSSLCertStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // SQLSSLCertList contains a list of SQLSSLCert
- type SQLSSLCertList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []SQLSSLCert `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&SQLSSLCert{}, &SQLSSLCertList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// SQLSSLCertList contains a list of SQLSSLCert
+type SQLSSLCertList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []SQLSSLCert `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&SQLSSLCert{}, &SQLSSLCertList{})
+}

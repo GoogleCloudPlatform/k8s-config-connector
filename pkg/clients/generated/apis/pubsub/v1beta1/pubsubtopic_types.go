@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -46,15 +45,15 @@ type TopicMessageStoragePolicy struct {
 	of GCP altogether) will be routed for storage in one of the
 	allowed regions. An empty list means that no regions are allowed,
 	and is not a valid configuration. */
-AllowedPersistenceRegions []string `json:"allowedPersistenceRegions"`
+	AllowedPersistenceRegions []string `json:"allowedPersistenceRegions"`
 }
 
 type TopicSchemaSettings struct {
-/* The encoding of messages validated against schema. Default value: "ENCODING_UNSPECIFIED" Possible values: ["ENCODING_UNSPECIFIED", "JSON", "BINARY"]. */
-// +optional
-Encoding *string `json:"encoding,omitempty"`
+	/* The encoding of messages validated against schema. Default value: "ENCODING_UNSPECIFIED" Possible values: ["ENCODING_UNSPECIFIED", "JSON", "BINARY"]. */
+	// +optional
+	Encoding *string `json:"encoding,omitempty"`
 
-SchemaRef v1alpha1.ResourceRef `json:"schemaRef"`
+	SchemaRef v1alpha1.ResourceRef `json:"schemaRef"`
 }
 
 type PubSubTopicSpec struct {
@@ -63,8 +62,8 @@ type PubSubTopicSpec struct {
 	('service-{{PROJECT_NUMBER}}@gcp-sa-pubsub.iam.gserviceaccount.com')
 	must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
 	feature. */
-// +optional
-KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	// +optional
+	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* Indicates the minimum duration to retain a message after it is published
 	to the topic. If this field is set, messages published to the topic in
@@ -73,32 +72,33 @@ KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 	that is up to messageRetentionDuration in the past. If this field is not
 	set, message retention is controlled by settings on individual subscriptions.
 	Cannot be more than 31 days or less than 10 minutes. */
-// +optional
-MessageRetentionDuration *string `json:"messageRetentionDuration,omitempty"`
+	// +optional
+	MessageRetentionDuration *string `json:"messageRetentionDuration,omitempty"`
 
 	/* Policy constraining the set of Google Cloud Platform regions where
 	messages published to the topic may be stored. If not present, then no
 	constraints are in effect. */
-// +optional
-MessageStoragePolicy *TopicMessageStoragePolicy `json:"messageStoragePolicy,omitempty"`
+	// +optional
+	MessageStoragePolicy *TopicMessageStoragePolicy `json:"messageStoragePolicy,omitempty"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Settings for validating messages published against a schema. */
-// +optional
-SchemaSettings *TopicSchemaSettings `json:"schemaSettings,omitempty"`
+	/* Settings for validating messages published against a schema. */
+	// +optional
+	SchemaSettings *TopicSchemaSettings `json:"schemaSettings,omitempty"`
 }
 
 type PubSubTopicStatus struct {
 	/* Conditions represent the latest available observations of the
-	    PubSubTopic's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   PubSubTopic's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcppubsubtopic;gcppubsubtopics
@@ -115,20 +115,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // PubSubTopic is the Schema for the pubsub API
 // +k8s:openapi-gen=true
 type PubSubTopic struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec PubSubTopicSpec `json:"spec,omitempty"`
-  Status PubSubTopicStatus `json:"status,omitempty"`
+	Spec   PubSubTopicSpec   `json:"spec,omitempty"`
+	Status PubSubTopicStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // PubSubTopicList contains a list of PubSubTopic
- type PubSubTopicList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []PubSubTopic `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&PubSubTopic{}, &PubSubTopicList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// PubSubTopicList contains a list of PubSubTopic
+type PubSubTopicList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []PubSubTopic `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&PubSubTopic{}, &PubSubTopicList{})
+}

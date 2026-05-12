@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -42,60 +41,61 @@ var _ = apiextensionsv1.JSON{}
 type TensorboardEncryptionSpec struct {
 	/* Immutable. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource.
 	Has the form: projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key. The key needs to be in the same region as where the resource is created. */
-KmsKeyName string `json:"kmsKeyName"`
+	KmsKeyName string `json:"kmsKeyName"`
 }
 
 type VertexAITensorboardSpec struct {
-/* Description of this Tensorboard. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Description of this Tensorboard. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* User provided name of this Tensorboard. */
-DisplayName string `json:"displayName"`
+	/* User provided name of this Tensorboard. */
+	DisplayName string `json:"displayName"`
 
-/* Immutable. Customer-managed encryption key spec for a Tensorboard. If set, this Tensorboard and all sub-resources of this Tensorboard will be secured by this key. */
-// +optional
-EncryptionSpec *TensorboardEncryptionSpec `json:"encryptionSpec,omitempty"`
+	/* Immutable. Customer-managed encryption key spec for a Tensorboard. If set, this Tensorboard and all sub-resources of this Tensorboard will be secured by this key. */
+	// +optional
+	EncryptionSpec *TensorboardEncryptionSpec `json:"encryptionSpec,omitempty"`
 
-/* The project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Immutable. The region of the tensorboard. eg us-central1. */
-Region string `json:"region"`
+	/* Immutable. The region of the tensorboard. eg us-central1. */
+	Region string `json:"region"`
 
-/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type VertexAITensorboardStatus struct {
 	/* Conditions represent the latest available observations of the
-	    VertexAITensorboard's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* Consumer project Cloud Storage path prefix used to store blob data, which can either be a bucket or directory. Does not end with a '/'. */
-// +optional
-BlobStoragePathPrefix *string `json:"blobStoragePathPrefix,omitempty"`
+	   VertexAITensorboard's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* Consumer project Cloud Storage path prefix used to store blob data, which can either be a bucket or directory. Does not end with a '/'. */
+	// +optional
+	BlobStoragePathPrefix *string `json:"blobStoragePathPrefix,omitempty"`
 
-/* The timestamp of when the Tensorboard was created in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* The timestamp of when the Tensorboard was created in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Name of the Tensorboard. */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* Name of the Tensorboard. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* The number of Runs stored in this Tensorboard. */
-// +optional
-RunCount *string `json:"runCount,omitempty"`
+	/* The number of Runs stored in this Tensorboard. */
+	// +optional
+	RunCount *string `json:"runCount,omitempty"`
 
-/* The timestamp of when the Tensorboard was last updated in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* The timestamp of when the Tensorboard was last updated in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpvertexaitensorboard;gcpvertexaitensorboards
@@ -112,20 +112,22 @@ UpdateTime *string `json:"updateTime,omitempty"`
 // VertexAITensorboard is the Schema for the vertexai API
 // +k8s:openapi-gen=true
 type VertexAITensorboard struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec VertexAITensorboardSpec `json:"spec,omitempty"`
-  Status VertexAITensorboardStatus `json:"status,omitempty"`
+	Spec   VertexAITensorboardSpec   `json:"spec,omitempty"`
+	Status VertexAITensorboardStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // VertexAITensorboardList contains a list of VertexAITensorboard
- type VertexAITensorboardList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []VertexAITensorboard `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&VertexAITensorboard{}, &VertexAITensorboardList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// VertexAITensorboardList contains a list of VertexAITensorboard
+type VertexAITensorboardList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []VertexAITensorboard `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&VertexAITensorboard{}, &VertexAITensorboardList{})
+}

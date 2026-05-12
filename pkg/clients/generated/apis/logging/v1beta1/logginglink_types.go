@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,29 +29,29 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type LoggingLinkSpec struct {
 	/* Describes this link.
-	
+
 	The maximum length of the description is 8000 characters. */
-// +optional
-Description *string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Required. The LoggingLogBucket that this Link is associated with. */
-// +optional
-LoggingLogBucketRef *v1alpha1.ResourceRef `json:"loggingLogBucketRef,omitempty"`
+	/* Required. The LoggingLogBucket that this Link is associated with. */
+	// +optional
+	LoggingLogBucketRef *v1alpha1.ResourceRef `json:"loggingLogBucketRef,omitempty"`
 
-/* Immutable. The LoggingLink name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. The LoggingLink name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type LinkBigQueryDatasetStatus struct {
@@ -60,43 +59,44 @@ type LinkBigQueryDatasetStatus struct {
 	will match the ID of the link, so the link must match the naming
 	restrictions of BigQuery datasets (alphanumeric characters and underscores
 	only).
-	
+
 	The dataset will have a resource path of
 	"bigquery.googleapis.com/projects/[PROJECT_ID]/datasets/[DATASET_ID]" */
-// +optional
-DatasetID *string `json:"datasetID,omitempty"`
+	// +optional
+	DatasetID *string `json:"datasetID,omitempty"`
 }
 
 type LinkObservedStateStatus struct {
-/* The information of a BigQuery Dataset. When a link is created, a BigQuery dataset is created along with it, in the same project as the LogBucket it's linked to. This dataset will also have BigQuery Views corresponding to the LogViews in the bucket. */
-// +optional
-BigQueryDataset *LinkBigQueryDatasetStatus `json:"bigQueryDataset,omitempty"`
+	/* The information of a BigQuery Dataset. When a link is created, a BigQuery dataset is created along with it, in the same project as the LogBucket it's linked to. This dataset will also have BigQuery Views corresponding to the LogViews in the bucket. */
+	// +optional
+	BigQueryDataset *LinkBigQueryDatasetStatus `json:"bigQueryDataset,omitempty"`
 
-/* Output only. The creation timestamp of the link. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. The creation timestamp of the link. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. The resource lifecycle state. */
-// +optional
-LifecycleState *string `json:"lifecycleState,omitempty"`
+	/* Output only. The resource lifecycle state. */
+	// +optional
+	LifecycleState *string `json:"lifecycleState,omitempty"`
 }
 
 type LoggingLinkStatus struct {
 	/* Conditions represent the latest available observations of the
-	    LoggingLink's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the LoggingLink resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   LoggingLink's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the LoggingLink resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *LinkObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *LinkObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcplogginglink;gcplogginglinks
@@ -111,20 +111,22 @@ ObservedState *LinkObservedStateStatus `json:"observedState,omitempty"`
 // LoggingLink is the Schema for the logging API
 // +k8s:openapi-gen=true
 type LoggingLink struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec LoggingLinkSpec `json:"spec,omitempty"`
-  Status LoggingLinkStatus `json:"status,omitempty"`
+	Spec   LoggingLinkSpec   `json:"spec,omitempty"`
+	Status LoggingLinkStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // LoggingLinkList contains a list of LoggingLink
- type LoggingLinkList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []LoggingLink `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&LoggingLink{}, &LoggingLinkList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// LoggingLinkList contains a list of LoggingLink
+type LoggingLinkList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []LoggingLink `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&LoggingLink{}, &LoggingLinkList{})
+}
