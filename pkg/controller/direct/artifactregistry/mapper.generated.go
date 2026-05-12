@@ -25,6 +25,7 @@ package artifactregistry
 
 import (
 	pb "cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"
+	krmartifactregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -334,6 +335,40 @@ func ArtifactRegistryRepositoryVirtualRepositoryConfig_ToProto(mapCtx *direct.Ma
 	}
 	out := &pb.VirtualRepositoryConfig{}
 	out.UpstreamPolicies = direct.Slice_ToProto(mapCtx, in.UpstreamPolicies, ArtifactRegistryRepositoryUpstreamPolicy_ToProto)
+	return out
+}
+func ArtifactRegistryVPCSCConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VPCSCConfig) *krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigObservedState{}
+	// MISSING: Name
+	return out
+}
+func ArtifactRegistryVPCSCConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigObservedState) *pb.VPCSCConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VPCSCConfig{}
+	// MISSING: Name
+	return out
+}
+func ArtifactRegistryVPCSCConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.VPCSCConfig) *krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigSpec{}
+	// MISSING: Name
+	out.VpcscPolicy = direct.Enum_FromProto(mapCtx, in.GetVpcscPolicy())
+	return out
+}
+func ArtifactRegistryVPCSCConfigSpec_ToProto(mapCtx *direct.MapContext, in *krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigSpec) *pb.VPCSCConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VPCSCConfig{}
+	// MISSING: Name
+	out.VpcscPolicy = direct.Enum_ToProto[pb.VPCSCConfig_VPCSCPolicy](mapCtx, in.VpcscPolicy)
 	return out
 }
 func CleanupPolicy_FromProto(mapCtx *direct.MapContext, in *pb.CleanupPolicy) *krm.CleanupPolicy {
