@@ -53,6 +53,7 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
+<<<<<<< HEAD
 	VertexAIDataLabelingJobGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
@@ -77,6 +78,14 @@ var (
 		Kind:    reflect.TypeOf(VertexAIFeaturestore{}).Name(),
 	}
 
+=======
+	VertexAIFeaturestoreGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(VertexAIFeaturestore{}).Name(),
+	}
+
+>>>>>>> 7f9f30b902 (Address review feedback and regenerate clients)
 	VertexAIFeaturestoreEntityTypeGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
