@@ -118,15 +118,17 @@ func resolveContainerClusterNodeVersion(r *Resource, config map[string]interface
 	releaseChannelSet := found && releaseChannel != nil
 	removeDefaultNodePoolSet := removeDefaultNodePoolFound && removeDefaultNodePoolVal == "true"
 
-	fmt.Printf("DEBUG: resolveContainerClusterNodeVersion called for %s, removeDefaultNodePoolSet: %v, config has nodeVersion: %v\n", r.GetName(), removeDefaultNodePoolSet, config["nodeVersion"])
-
 	if !releaseChannelSet && !removeDefaultNodePoolSet {
 		return nil
 	}
-	if err := removeFromConfigIfNotApplied(r, config, "nodeVersion"); err != nil {
-		return fmt.Errorf("error resolving node version in config: %w", err)
+	var foundNodeVersion bool
+	_, foundNodeVersion, err = getLastAppliedValue(r, "nodeVersion")
+	if err != nil {
+		return fmt.Errorf("error finding last applied value for node version: %w", err)
 	}
-	fmt.Printf("DEBUG: after removeFromConfigIfNotApplied, config has nodeVersion: %v\n", config["nodeVersion"])
+	if !foundNodeVersion {
+		config["nodeVersion"] = nil
+	}
 	return nil
 }
 
@@ -160,15 +162,13 @@ func resolveContainerClusterNodeConfig(r *Resource, liveState *terraform.Instanc
 	nodeConfigFieldInTFState := "node_config"
 	nodeConfigFieldInKRMConfig := text.SnakeCaseToLowerCamelCase(nodeConfigFieldInTFState)
 
-	fmt.Printf("DEBUG: resolveContainerClusterNodeConfig called for %s, annotations: %v\n", r.GetName(), r.GetAnnotations())
-
 	key := k8s.FormatAnnotation(removeDefaultNodePoolDirective)
 	val, ok := k8s.GetAnnotation(key, r)
 	if !ok || val != "true" {
 		return nil
 	}
 
-	if suppressed, err := suppressDefaultNodePoolNodeConfigDiff(r, config, nodeConfigFieldInKRMConfig); err != nil {
+	if suppressed, err := suppressDefaultNodePoolNodeConfigDiff(r, liveState, config, nodeConfigFieldInKRMConfig); err != nil {
 		return err
 	} else if suppressed {
 		return nil
@@ -190,16 +190,18 @@ func resolveContainerClusterNodeConfig(r *Resource, liveState *terraform.Instanc
 }
 
 // Suppress diff loops by removing `nodeConfig` if the `remove-default-node-pool-allow-node-config` annotation is set.
-func suppressDefaultNodePoolNodeConfigDiff(r *Resource, config map[string]interface{}, nodeConfigFieldInKRMConfig string) (bool, error) {
+func suppressDefaultNodePoolNodeConfigDiff(r *Resource, liveState *terraform.InstanceState, config map[string]interface{}, nodeConfigFieldInKRMConfig string) (bool, error) {
 	allowKey := k8s.FormatAnnotation("remove-default-node-pool-allow-node-config")
 	if allowVal, ok := k8s.GetAnnotation(allowKey, r); ok && allowVal == "true" {
-		unstructured.RemoveNestedField(config, nodeConfigFieldInKRMConfig)
-		unstructured.RemoveNestedField(config, "initialNodeCount") // Also remove initialNodeCount
-		keys := []string{}
-		for k := range config {
-			keys = append(keys, k)
+		liveStateMap := InstanceStateToMap(r.TFResource, liveState)
+		if val, ok := liveStateMap["node_config"]; ok {
+			if listVal, ok := val.([]interface{}); ok && len(listVal) > 0 {
+				config[nodeConfigFieldInKRMConfig] = listVal[0]
+			}
 		}
-		fmt.Printf("DEBUG: removed nodeConfig and initialNodeCount from config, new config keys for %s: %v\n", r.GetName(), keys)
+		if val, ok := liveStateMap["initial_node_count"]; ok {
+			config["initialNodeCount"] = val
+		}
 		return true, nil
 	}
 	return false, nil

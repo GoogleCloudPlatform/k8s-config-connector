@@ -61,12 +61,19 @@ func KRMResourceToTFResourceConfigFull(r *Resource, c client.Client, smLoader *s
 		config = make(map[string]interface{})
 	}
 	if jsonSchema != nil {
-		if err := ResolveLegacyGCPManagedFields(r, liveState, config); err != nil {
-			return nil, nil, fmt.Errorf("error resolving legacy GCP-managed fields: %w", err)
+		if r.GroupVersionKind().Kind != "ContainerCluster" {
+			if err := ResolveLegacyGCPManagedFields(r, liveState, config); err != nil {
+				return nil, nil, fmt.Errorf("error resolving legacy GCP-managed fields: %w", err)
+			}
 		}
 		config, err = resolveUnmanagedFields(config, r, liveState, jsonSchema)
 		if err != nil {
 			return nil, nil, fmt.Errorf("error resolving externally-managed fields: %w", err)
+		}
+		if r.GroupVersionKind().Kind == "ContainerCluster" {
+			if err := ResolveLegacyGCPManagedFields(r, liveState, config); err != nil {
+				return nil, nil, fmt.Errorf("error resolving legacy GCP-managed fields: %w", err)
+			}
 		}
 	}
 	if err := handleUserSpecifiedID(config, r, smLoader, c); err != nil {

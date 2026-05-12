@@ -23,8 +23,9 @@ spec:
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: "Update call failed: error calculating diff: 1 error occurred:\n\t* node_version
-      can only be specified if remove_default_node_pool is not true\n\n"
+    message: 'Update call failed: cannot make changes to immutable field(s): [Field
+      Name: nodeConfig.0.Metadata.%, Got: 1, Wanted: 2 Field Name: nodeConfig.0.Metadata.Disable-Legacy-Endpoints,
+      Got: , Wanted: true]; please refer to our troubleshooting doc: https://cloud.google.com/config-connector/docs/troubleshooting'
     reason: UpdateFailed
     status: "False"
     type: Ready
