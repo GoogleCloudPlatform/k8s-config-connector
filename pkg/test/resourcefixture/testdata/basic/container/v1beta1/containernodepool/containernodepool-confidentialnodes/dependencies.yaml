@@ -25,3 +25,11 @@ spec:
   initialNodeCount: 1
   loggingService: logging.googleapis.com/kubernetes
   monitoringService: monitoring.googleapis.com/kubernetes
+  confidentialNodes:
+    enabled: true
+    confidentialInstanceType: SEV
+  nodeConfig:
+    machineType: n2d-standard-2
+    confidentialNodes:
+      enabled: true
+      confidentialInstanceType: SEV

@@ -16,8 +16,8 @@ metadata:
   namespace: ${uniqueId}
 spec:
   autoscaling:
-    maxNodeCount: 5
-    minNodeCount: 1
+    maxNodeCount: 3
+    minNodeCount: 2
   clusterRef:
     name: cluster-sample-${uniqueId}
   location: us-central1-a
@@ -28,8 +28,8 @@ spec:
     machineType: n2d-standard-2
     taint:
     - effect: NO_SCHEDULE
-      key: newKey
-      value: newValue
+      key: originalKey
+      value: originalValue
   resourceID: nodepool-sample-${uniqueId}
 status:
   conditions:

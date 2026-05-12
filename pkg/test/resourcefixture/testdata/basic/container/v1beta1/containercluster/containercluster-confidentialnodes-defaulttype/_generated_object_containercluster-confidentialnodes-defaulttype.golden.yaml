@@ -6,25 +6,132 @@ metadata:
     cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
     cnrm.cloud.google.com/observed-secret-versions: (removed)
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: absent
+    cnrm.cloud.google.com/state-into-spec: merge
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
   generation: 2
   labels:
     cnrm-test: "true"
+    updated: "true"
   name: containercluster-${uniqueId}
   namespace: ${uniqueId}
 spec:
+  addonsConfig:
+    gcePersistentDiskCsiDriverConfig:
+      enabled: true
+    networkPolicyConfig:
+      disabled: true
+  clusterAutoscaling:
+    autoscalingProfile: BALANCED
+  clusterIpv4Cidr: 10.92.0.0/14
+  clusterTelemetry:
+    type: ENABLED
   confidentialNodes:
+    confidentialInstanceType: SEV
     enabled: true
+  controlPlaneEndpointsConfig:
+    ipEndpointsConfig:
+      enabled: true
+  databaseEncryption:
+    state: DECRYPTED
+  defaultMaxPodsPerNode: 110
+  enableShieldedNodes: true
   initialNodeCount: 1
+  ipAllocationPolicy:
+    clusterIpv4CidrBlock: 10.92.0.0/14
+    podCidrOverprovisionConfig:
+      disabled: false
+    servicesIpv4CidrBlock: 34.118.224.0/20
+    stackType: IPV4
   location: us-west2
+  loggingConfig:
+    enableComponents:
+    - SYSTEM_COMPONENTS
+    - WORKLOADS
+  loggingService: logging.googleapis.com/kubernetes
+  masterAuth:
+    clientCertificateConfig:
+      issueClientCertificate: false
+    clusterCaCertificate: 1234567890abcdefghijklmn
+  monitoringConfig:
+    advancedDatapathObservabilityConfig:
+    - enableMetrics: false
+    enableComponents:
+    - SYSTEM_COMPONENTS
+    - DAEMONSET
+    - DEPLOYMENT
+    - STATEFULSET
+    - JOBSET
+    - STORAGE
+    - HPA
+    - POD
+    - CADVISOR
+    - KUBELET
+    - DCGM
+    managedPrometheus:
+      enabled: true
+  monitoringService: monitoring.googleapis.com/kubernetes
+  networkPolicy:
+    enabled: false
+    provider: PROVIDER_UNSPECIFIED
+  networkRef:
+    external: projects/${projectId}/global/networks/default
+  networkingMode: VPC_NATIVE
   nodeConfig:
     confidentialNodes:
+      confidentialInstanceType: SEV
       enabled: true
+    diskSizeGb: 100
+    diskType: pd-balanced
+    imageType: COS_CONTAINERD
+    loggingVariant: DEFAULT
     machineType: n2d-standard-2
+    metadata:
+      disable-legacy-endpoints: "true"
+    oauthScopes:
+    - https://www.googleapis.com/auth/devstorage.read_only
+    - https://www.googleapis.com/auth/logging.write
+    - https://www.googleapis.com/auth/monitoring
+    - https://www.googleapis.com/auth/service.management.readonly
+    - https://www.googleapis.com/auth/servicecontrol
+    - https://www.googleapis.com/auth/trace.append
+    resourceLabels:
+      goog-gke-node-pool-provisioning-model: on-demand
+    serviceAccountRef:
+      external: default
+    shieldedInstanceConfig:
+      enableIntegrityMonitoring: true
+  nodeLocations:
+  - us-west2
+  nodePoolDefaults:
+    nodeConfigDefaults:
+      loggingVariant: DEFAULT
+  nodeVersion: 1.30.5-gke.1014001
+  notificationConfig:
+    pubsub:
+      enabled: false
+  podSecurityPolicyConfig:
+    enabled: false
+  privateClusterConfig:
+    masterGlobalAccessConfig:
+      enabled: false
+    privateEndpoint: ${privateEndpointIPV4}
+    publicEndpoint: ${publicEndpointIPV4}
+  protectConfig:
+    workloadConfig:
+      auditMode: BASIC
+    workloadVulnerabilityMode: WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED
+  releaseChannel:
+    channel: REGULAR
   resourceID: containercluster-${uniqueId}
+  securityPostureConfig:
+    mode: BASIC
+    vulnerabilityMode: VULNERABILITY_MODE_UNSPECIFIED
+  serviceExternalIpsConfig:
+    enabled: false
+  subnetworkRef:
+    external: projects/${projectId}/regions/us-west2/subnetworks/default
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

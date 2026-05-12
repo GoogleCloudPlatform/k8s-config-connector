@@ -1270,7 +1270,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Confidential instance type for the cluster nodes. Valid values are SEV and SEV_SNP.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Confidential instance type for the cluster nodes. Valid values are SEV, SEV_SNP, and TDX.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2570,7 +2570,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Confidential instance type for the cluster nodes. Valid values are SEV and SEV_SNP.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Confidential instance type for the cluster nodes. Valid values are SEV, SEV_SNP, and TDX.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
