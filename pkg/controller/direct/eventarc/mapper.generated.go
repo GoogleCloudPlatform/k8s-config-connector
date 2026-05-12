@@ -26,6 +26,7 @@ package eventarc
 import (
 	pb "cloud.google.com/go/eventarc/apiv1/eventarcpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/eventarc/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -63,6 +64,66 @@ func EventarcChannelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Eve
 	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
 	return out
 }
+func EventarcEnrollmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Enrollment) *krm.EventarcEnrollmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EventarcEnrollmentObservedState{}
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func EventarcEnrollmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EventarcEnrollmentObservedState) *pb.Enrollment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Enrollment{}
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func EventarcEnrollmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Enrollment) *krm.EventarcEnrollmentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EventarcEnrollmentSpec{}
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.CelMatch = direct.LazyPtr(in.GetCelMatch())
+	if in.GetMessageBus() != "" {
+		out.MessageBusRef = &refs.EventarcMessageBusRef{External: in.GetMessageBus()}
+	}
+	if in.GetDestination() != "" {
+		out.DestinationRef = &refs.EventarcPipelineRef{External: in.GetDestination()}
+	}
+	return out
+}
+
+func EventarcEnrollmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcEnrollmentSpec) *pb.Enrollment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Enrollment{}
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.CelMatch = direct.ValueOf(in.CelMatch)
+	if in.MessageBusRef != nil {
+		out.MessageBus = in.MessageBusRef.External
+	}
+	if in.DestinationRef != nil {
+		out.Destination = in.DestinationRef.External
+	}
+	return out
+}
+
 func EventarcGoogleChannelConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GoogleChannelConfig) *krm.EventarcGoogleChannelConfigObservedState {
 	if in == nil {
 		return nil
