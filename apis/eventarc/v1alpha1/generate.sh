@@ -28,11 +28,8 @@ go run . generate-types \
   --api-version eventarc.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --resource EventarcChannel:Channel \
-  --resource EventarcGoogleChannelConfig:GoogleChannelConfig
-
-go run . generate-mapper \
-  --service google.cloud.eventarc.v1 \
-  --api-version eventarc.cnrm.cloud.google.com/v1alpha1
+  --resource EventarcGoogleChannelConfig:GoogleChannelConfig \
+  --resource EventarcEnrollment:Enrollment
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

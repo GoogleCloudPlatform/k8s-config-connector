@@ -1,0 +1,21 @@
+apiVersion: eventarc.cnrm.cloud.google.com/v1alpha1
+kind: EventarcMessageBus
+metadata:
+  name: eventarcmessagebus-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: "us-central1"
+---
+apiVersion: eventarc.cnrm.cloud.google.com/v1alpha1
+kind: EventarcPipeline
+metadata:
+  name: eventarcpipeline-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: "us-central1"
+  destinations:
+  - networkConfig:
+      networkAttachmentRef:
+        external: "projects/${projectId}/regions/us-central1/networkAttachments/default"
