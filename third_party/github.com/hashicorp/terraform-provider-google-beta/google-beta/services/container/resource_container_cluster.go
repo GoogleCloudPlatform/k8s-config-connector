@@ -947,7 +947,7 @@ func ResourceContainerCluster() *schema.Resource {
 								"maintenance_policy.0.recurring_window",
 							},
 							MaxItems:    1,
-							Description: `Time window specified for daily maintenance operations. Specify start_time in RFC3339 format "HH:MM”, where HH : [00-23] and MM : [00-59] GMT.`,
+							Description: `Time window specified for daily maintenance operations. Specify start_time in RFC3339 format "HH:MM", where HH : [00-23] and MM : [00-59] GMT.`,
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
 									"start_time": {
@@ -1605,6 +1605,14 @@ func ResourceContainerCluster() *schema.Resource {
 				Optional:      true,
 				Description:   `If true, deletes the default node pool upon cluster creation. If you're using google_container_node_pool resources with no default node pool, this should be set to true, alongside setting initial_node_count to at least 1.`,
 				ConflictsWith: []string{"enable_autopilot"},
+			},
+
+			"control_plane_disk_encryption_key": {
+				Type:             schema.TypeString,
+				Optional:         true,
+				ForceNew:         true,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
+				Description:      `The name of the Customer Managed Encryption Key used to encrypt the control plane's boot disk.`,
 			},
 
 			"control_plane_endpoints_config": {
@@ -2336,6 +2344,13 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		cluster.DatabaseEncryption = expandDatabaseEncryption(v)
 	}
 
+	if v, ok := d.GetOk("control_plane_disk_encryption_key"); ok {
+		if cluster.UserManagedKeysConfig == nil {
+			cluster.UserManagedKeysConfig = &container.UserManagedKeysConfig{}
+		}
+		cluster.UserManagedKeysConfig.ControlPlaneDiskEncryptionKey = v.(string)
+	}
+
 	if v, ok := d.GetOk("workload_identity_config"); ok {
 		cluster.WorkloadIdentityConfig = expandWorkloadIdentityConfig(v)
 	}
@@ -2834,6 +2849,12 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 
 	if err := d.Set("database_encryption", flattenDatabaseEncryption(cluster.DatabaseEncryption)); err != nil {
 		return err
+	}
+
+	if cluster.UserManagedKeysConfig != nil {
+		if err := d.Set("control_plane_disk_encryption_key", cluster.UserManagedKeysConfig.ControlPlaneDiskEncryptionKey); err != nil {
+			return err
+		}
 	}
 
 	if err := d.Set("pod_security_policy_config", flattenPodSecurityPolicyConfig(cluster.PodSecurityPolicyConfig)); err != nil {
