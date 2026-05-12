@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,52 +29,53 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ProjectSpec struct {
-// +optional
-BillingAccountRef *v1alpha1.ResourceRef `json:"billingAccountRef,omitempty"`
+	// +optional
+	BillingAccountRef *v1alpha1.ResourceRef `json:"billingAccountRef,omitempty"`
 
 	/* The folder that this resource belongs to. Changing this forces the
 	resource to be migrated to the newly specified folder. Only one of
 	folderRef or organizationRef may be specified. */
-// +optional
-FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+	// +optional
+	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
-/* The display name of the project. */
-Name string `json:"name"`
+	/* The display name of the project. */
+	Name string `json:"name"`
 
 	/* The organization that this resource belongs to. Changing this
 	forces the resource to be migrated to the newly specified
 	organization. Only one of folderRef or organizationRef may be
 	specified. */
-// +optional
-OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+	// +optional
+	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
-/* Immutable. Optional. The projectId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The projectId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ProjectStatus struct {
 	/* Conditions represent the latest available observations of the
-	    Project's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* The numeric identifier of the project. */
-// +optional
-Number *string `json:"number,omitempty"`
+	   Project's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* The numeric identifier of the project. */
+	// +optional
+	Number *string `json:"number,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpproject;gcpprojects
@@ -92,20 +92,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // Project is the Schema for the resourcemanager API
 // +k8s:openapi-gen=true
 type Project struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ProjectSpec `json:"spec,omitempty"`
-  Status ProjectStatus `json:"status,omitempty"`
+	Spec   ProjectSpec   `json:"spec,omitempty"`
+	Status ProjectStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ProjectList contains a list of Project
- type ProjectList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []Project `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&Project{}, &ProjectList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ProjectList contains a list of Project
+type ProjectList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []Project `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&Project{}, &ProjectList{})
+}

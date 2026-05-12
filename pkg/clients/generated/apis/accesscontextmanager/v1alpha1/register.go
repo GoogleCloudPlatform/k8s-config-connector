@@ -53,19 +53,17 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	AccessContextManagerAccessLevelConditionGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(AccessContextManagerAccessLevelCondition{}).Name(),
-  	}
-  
-  	AccessContextManagerGCPUserAccessBindingGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(AccessContextManagerGCPUserAccessBinding{}).Name(),
-  	}
-  
+	AccessContextManagerAccessLevelConditionGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(AccessContextManagerAccessLevelCondition{}).Name(),
+	}
 
-  	accesscontextmanagerAPIVersion = SchemeGroupVersion.String()
+	AccessContextManagerGCPUserAccessBindingGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(AccessContextManagerGCPUserAccessBinding{}).Name(),
+	}
+
+	accesscontextmanagerAPIVersion = SchemeGroupVersion.String()
 )

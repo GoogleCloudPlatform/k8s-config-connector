@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -42,31 +41,31 @@ var _ = apiextensionsv1.JSON{}
 type ProjectfeedCondition struct {
 	/* Description of the expression. This is a longer text which describes the expression,
 	e.g. when hovered over it in a UI. */
-// +optional
-Description *string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Textual representation of an expression in Common Expression Language syntax. */
-Expression string `json:"expression"`
+	/* Textual representation of an expression in Common Expression Language syntax. */
+	Expression string `json:"expression"`
 
 	/* String indicating the location of the expression for error reporting, e.g. a file
 	name and a position in the file. */
-// +optional
-Location *string `json:"location,omitempty"`
+	// +optional
+	Location *string `json:"location,omitempty"`
 
 	/* Title for the expression, i.e. a short string describing its purpose.
 	This can be used e.g. in UIs which allow to enter the expression. */
-// +optional
-Title *string `json:"title,omitempty"`
+	// +optional
+	Title *string `json:"title,omitempty"`
 }
 
 type ProjectfeedFeedOutputConfig struct {
-/* Destination on Cloud Pubsub. */
-PubsubDestination ProjectfeedPubsubDestination `json:"pubsubDestination"`
+	/* Destination on Cloud Pubsub. */
+	PubsubDestination ProjectfeedPubsubDestination `json:"pubsubDestination"`
 }
 
 type ProjectfeedPubsubDestination struct {
-/* Destination on Cloud Pubsub topic. */
-Topic string `json:"topic"`
+	/* Destination on Cloud Pubsub topic. */
+	Topic string `json:"topic"`
 }
 
 type CloudAssetProjectFeedSpec struct {
@@ -74,62 +73,63 @@ type CloudAssetProjectFeedSpec struct {
 	assetNames and assetTypes. Only asset updates matching specified assetNames and assetTypes are
 	exported to the feed. For example: //compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1.
 	See https://cloud.google.com/apis/design/resourceNames#fullResourceName for more info. */
-// +optional
-AssetNames []string `json:"assetNames,omitempty"`
+	// +optional
+	AssetNames []string `json:"assetNames,omitempty"`
 
 	/* A list of types of the assets to receive updates. You must specify either or both of assetNames
 	and assetTypes. Only asset updates matching specified assetNames and assetTypes are exported to
 	the feed. For example: "compute.googleapis.com/Disk"
 	See https://cloud.google.com/asset-inventory/docs/supported-asset-types for a list of all
 	supported asset types. */
-// +optional
-AssetTypes []string `json:"assetTypes,omitempty"`
+	// +optional
+	AssetTypes []string `json:"assetTypes,omitempty"`
 
 	/* Immutable. The project whose identity will be used when sending messages to the
 	destination pubsub topic. It also specifies the project for API
 	enablement check, quota, and billing. If not specified, the resource's
 	project will be used. */
-// +optional
-BillingProject *string `json:"billingProject,omitempty"`
+	// +optional
+	BillingProject *string `json:"billingProject,omitempty"`
 
 	/* A condition which determines whether an asset update should be published. If specified, an asset
 	will be returned only when the expression evaluates to true. When set, expression field
 	must be a valid CEL expression on a TemporalAsset with name temporal_asset. Example: a Feed with
 	expression "temporal_asset.deleted == true" will only publish Asset deletions. Other fields of
 	condition are optional. */
-// +optional
-Condition *ProjectfeedCondition `json:"condition,omitempty"`
+	// +optional
+	Condition *ProjectfeedCondition `json:"condition,omitempty"`
 
-/* Asset content type. If not specified, no content but the asset name and type will be returned. Possible values: ["CONTENT_TYPE_UNSPECIFIED", "RESOURCE", "IAM_POLICY", "ORG_POLICY", "OS_INVENTORY", "ACCESS_POLICY"]. */
-// +optional
-ContentType *string `json:"contentType,omitempty"`
+	/* Asset content type. If not specified, no content but the asset name and type will be returned. Possible values: ["CONTENT_TYPE_UNSPECIFIED", "RESOURCE", "IAM_POLICY", "ORG_POLICY", "OS_INVENTORY", "ACCESS_POLICY"]. */
+	// +optional
+	ContentType *string `json:"contentType,omitempty"`
 
-/* Immutable. This is the client-assigned asset feed identifier and it needs to be unique under a specific parent. */
-FeedId string `json:"feedId"`
+	/* Immutable. This is the client-assigned asset feed identifier and it needs to be unique under a specific parent. */
+	FeedId string `json:"feedId"`
 
-/* Output configuration for asset feed destination. */
-FeedOutputConfig ProjectfeedFeedOutputConfig `json:"feedOutputConfig"`
+	/* Output configuration for asset feed destination. */
+	FeedOutputConfig ProjectfeedFeedOutputConfig `json:"feedOutputConfig"`
 
-/* The project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type CloudAssetProjectFeedStatus struct {
 	/* Conditions represent the latest available observations of the
-	    CloudAssetProjectFeed's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* The format will be projects/{projectNumber}/feeds/{client-assigned_feed_identifier}. */
-// +optional
-Name *string `json:"name,omitempty"`
+	   CloudAssetProjectFeed's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* The format will be projects/{projectNumber}/feeds/{client-assigned_feed_identifier}. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcloudassetprojectfeed;gcpcloudassetprojectfeeds
@@ -146,20 +146,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // CloudAssetProjectFeed is the Schema for the cloudasset API
 // +k8s:openapi-gen=true
 type CloudAssetProjectFeed struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec CloudAssetProjectFeedSpec `json:"spec,omitempty"`
-  Status CloudAssetProjectFeedStatus `json:"status,omitempty"`
+	Spec   CloudAssetProjectFeedSpec   `json:"spec,omitempty"`
+	Status CloudAssetProjectFeedStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // CloudAssetProjectFeedList contains a list of CloudAssetProjectFeed
- type CloudAssetProjectFeedList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []CloudAssetProjectFeed `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&CloudAssetProjectFeed{}, &CloudAssetProjectFeedList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// CloudAssetProjectFeedList contains a list of CloudAssetProjectFeed
+type CloudAssetProjectFeedList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []CloudAssetProjectFeed `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&CloudAssetProjectFeed{}, &CloudAssetProjectFeedList{})
+}

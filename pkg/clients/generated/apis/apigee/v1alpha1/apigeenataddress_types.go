@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -42,29 +41,30 @@ var _ = apiextensionsv1.JSON{}
 type ApigeeNATAddressSpec struct {
 	/* Immutable. The Apigee instance associated with the Apigee environment,
 	in the format 'organizations/{{org_name}}/instances/{{instance_name}}'. */
-InstanceId string `json:"instanceId"`
+	InstanceId string `json:"instanceId"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ApigeeNATAddressStatus struct {
 	/* Conditions represent the latest available observations of the
-	    ApigeeNATAddress's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* The allocated NAT IP address. */
-// +optional
-IpAddress *string `json:"ipAddress,omitempty"`
+	   ApigeeNATAddress's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* The allocated NAT IP address. */
+	// +optional
+	IpAddress *string `json:"ipAddress,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* State of the NAT IP address. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* State of the NAT IP address. */
+	// +optional
+	State *string `json:"state,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpapigeenataddress;gcpapigeenataddresses
@@ -81,20 +81,22 @@ State *string `json:"state,omitempty"`
 // ApigeeNATAddress is the Schema for the apigee API
 // +k8s:openapi-gen=true
 type ApigeeNATAddress struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ApigeeNATAddressSpec `json:"spec,omitempty"`
-  Status ApigeeNATAddressStatus `json:"status,omitempty"`
+	Spec   ApigeeNATAddressSpec   `json:"spec,omitempty"`
+	Status ApigeeNATAddressStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ApigeeNATAddressList contains a list of ApigeeNATAddress
- type ApigeeNATAddressList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []ApigeeNATAddress `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&ApigeeNATAddress{}, &ApigeeNATAddressList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ApigeeNATAddressList contains a list of ApigeeNATAddress
+type ApigeeNATAddressList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ApigeeNATAddress `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ApigeeNATAddress{}, &ApigeeNATAddressList{})
+}

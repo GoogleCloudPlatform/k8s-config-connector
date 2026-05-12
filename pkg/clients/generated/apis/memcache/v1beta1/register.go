@@ -53,13 +53,11 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	MemcacheInstanceGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(MemcacheInstance{}).Name(),
-  	}
-  
+	MemcacheInstanceGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(MemcacheInstance{}).Name(),
+	}
 
-  	memcacheAPIVersion = SchemeGroupVersion.String()
+	memcacheAPIVersion = SchemeGroupVersion.String()
 )

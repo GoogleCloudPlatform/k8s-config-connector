@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -42,225 +41,225 @@ var _ = apiextensionsv1.JSON{}
 type FlowConditionalCases struct {
 	/* A JSON encoded list of cascading if-else conditions. Cases are mutually exclusive. The first one with a matching condition is selected, all the rest ignored.
 	See [Case](https://cloud.google.com/dialogflow/cx/docs/reference/rest/v3/Fulfillment#case) for the schema. */
-// +optional
-Cases *string `json:"cases,omitempty"`
+	// +optional
+	Cases *string `json:"cases,omitempty"`
 }
 
 type FlowConversationSuccess struct {
-/* Custom metadata. Dialogflow doesn't impose any structure on this. */
-// +optional
-Metadata *string `json:"metadata,omitempty"`
+	/* Custom metadata. Dialogflow doesn't impose any structure on this. */
+	// +optional
+	Metadata *string `json:"metadata,omitempty"`
 }
 
 type FlowEventHandlers struct {
-/* The name of the event to handle. */
-// +optional
-Event *string `json:"event,omitempty"`
+	/* The name of the event to handle. */
+	// +optional
+	Event *string `json:"event,omitempty"`
 
-/* The unique identifier of this event handler. */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* The unique identifier of this event handler. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
 	/* The target flow to transition to.
 	Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>. */
-// +optional
-TargetFlow *string `json:"targetFlow,omitempty"`
+	// +optional
+	TargetFlow *string `json:"targetFlow,omitempty"`
 
 	/* The target page to transition to.
 	Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>. */
-// +optional
-TargetPage *string `json:"targetPage,omitempty"`
+	// +optional
+	TargetPage *string `json:"targetPage,omitempty"`
 
-/* The fulfillment to call when the event occurs. Handling webhook errors with a fulfillment enabled with webhook could cause infinite loop. It is invalid to specify such fulfillment for a handler handling webhooks. */
-// +optional
-TriggerFulfillment *FlowTriggerFulfillment `json:"triggerFulfillment,omitempty"`
+	/* The fulfillment to call when the event occurs. Handling webhook errors with a fulfillment enabled with webhook could cause infinite loop. It is invalid to specify such fulfillment for a handler handling webhooks. */
+	// +optional
+	TriggerFulfillment *FlowTriggerFulfillment `json:"triggerFulfillment,omitempty"`
 }
 
 type FlowLiveAgentHandoff struct {
-/* Custom metadata. Dialogflow doesn't impose any structure on this. */
-// +optional
-Metadata *string `json:"metadata,omitempty"`
+	/* Custom metadata. Dialogflow doesn't impose any structure on this. */
+	// +optional
+	Metadata *string `json:"metadata,omitempty"`
 }
 
 type FlowMessages struct {
-/* The channel which the response is associated with. Clients can specify the channel via QueryParameters.channel, and only associated channel response will be returned. */
-// +optional
-Channel *string `json:"channel,omitempty"`
+	/* The channel which the response is associated with. Clients can specify the channel via QueryParameters.channel, and only associated channel response will be returned. */
+	// +optional
+	Channel *string `json:"channel,omitempty"`
 
 	/* Indicates that the conversation succeeded, i.e., the bot handled the issue that the customer talked to it about.
 	Dialogflow only uses this to determine which conversations should be counted as successful and doesn't process the metadata in this message in any way. Note that Dialogflow also considers conversations that get to the conversation end page as successful even if they don't return ConversationSuccess.
 	You may set this, for example:
 	* In the entryFulfillment of a Page if entering the page indicates that the conversation succeeded.
 	* In a webhook response when you determine that you handled the customer issue. */
-// +optional
-ConversationSuccess *FlowConversationSuccess `json:"conversationSuccess,omitempty"`
+	// +optional
+	ConversationSuccess *FlowConversationSuccess `json:"conversationSuccess,omitempty"`
 
 	/* Indicates that the conversation should be handed off to a live agent.
 	Dialogflow only uses this to determine which conversations were handed off to a human agent for measurement purposes. What else to do with this signal is up to you and your handoff procedures.
 	You may set this, for example:
 	* In the entryFulfillment of a Page if entering the page indicates something went extremely wrong in the conversation.
 	* In a webhook response when you determine that the customer issue can only be handled by a human. */
-// +optional
-LiveAgentHandoff *FlowLiveAgentHandoff `json:"liveAgentHandoff,omitempty"`
+	// +optional
+	LiveAgentHandoff *FlowLiveAgentHandoff `json:"liveAgentHandoff,omitempty"`
 
-/* A text or ssml response that is preferentially used for TTS output audio synthesis, as described in the comment on the ResponseMessage message. */
-// +optional
-OutputAudioText *FlowOutputAudioText `json:"outputAudioText,omitempty"`
+	/* A text or ssml response that is preferentially used for TTS output audio synthesis, as described in the comment on the ResponseMessage message. */
+	// +optional
+	OutputAudioText *FlowOutputAudioText `json:"outputAudioText,omitempty"`
 
-/* A custom, platform-specific payload. */
-// +optional
-Payload *string `json:"payload,omitempty"`
+	/* A custom, platform-specific payload. */
+	// +optional
+	Payload *string `json:"payload,omitempty"`
 
-/* Specifies an audio clip to be played by the client as part of the response. */
-// +optional
-PlayAudio *FlowPlayAudio `json:"playAudio,omitempty"`
+	/* Specifies an audio clip to be played by the client as part of the response. */
+	// +optional
+	PlayAudio *FlowPlayAudio `json:"playAudio,omitempty"`
 
-/* Represents the signal that telles the client to transfer the phone call connected to the agent to a third-party endpoint. */
-// +optional
-TelephonyTransferCall *FlowTelephonyTransferCall `json:"telephonyTransferCall,omitempty"`
+	/* Represents the signal that telles the client to transfer the phone call connected to the agent to a third-party endpoint. */
+	// +optional
+	TelephonyTransferCall *FlowTelephonyTransferCall `json:"telephonyTransferCall,omitempty"`
 
-/* The text response message. */
-// +optional
-Text *FlowText `json:"text,omitempty"`
+	/* The text response message. */
+	// +optional
+	Text *FlowText `json:"text,omitempty"`
 }
 
 type FlowNluSettings struct {
 	/* To filter out false positive results and still get variety in matched natural language inputs for your agent, you can tune the machine learning classification threshold.
 	If the returned score value is less than the threshold value, then a no-match event will be triggered. The score values range from 0.0 (completely uncertain) to 1.0 (completely certain). If set to 0.0, the default of 0.3 is used. */
-// +optional
-ClassificationThreshold *float64 `json:"classificationThreshold,omitempty"`
+	// +optional
+	ClassificationThreshold *float64 `json:"classificationThreshold,omitempty"`
 
 	/* Indicates NLU model training mode.
 	* MODEL_TRAINING_MODE_AUTOMATIC: NLU model training is automatically triggered when a flow gets modified. User can also manually trigger model training in this mode.
 	* MODEL_TRAINING_MODE_MANUAL: User needs to manually trigger NLU model training. Best for large flows whose models take long time to train. Possible values: ["MODEL_TRAINING_MODE_AUTOMATIC", "MODEL_TRAINING_MODE_MANUAL"]. */
-// +optional
-ModelTrainingMode *string `json:"modelTrainingMode,omitempty"`
+	// +optional
+	ModelTrainingMode *string `json:"modelTrainingMode,omitempty"`
 
 	/* Indicates the type of NLU model.
 	* MODEL_TYPE_STANDARD: Use standard NLU model.
 	* MODEL_TYPE_ADVANCED: Use advanced NLU model. Possible values: ["MODEL_TYPE_STANDARD", "MODEL_TYPE_ADVANCED"]. */
-// +optional
-ModelType *string `json:"modelType,omitempty"`
+	// +optional
+	ModelType *string `json:"modelType,omitempty"`
 }
 
 type FlowOutputAudioText struct {
-/* Whether the playback of this message can be interrupted by the end user's speech and the client can then starts the next Dialogflow request. */
-// +optional
-AllowPlaybackInterruption *bool `json:"allowPlaybackInterruption,omitempty"`
+	/* Whether the playback of this message can be interrupted by the end user's speech and the client can then starts the next Dialogflow request. */
+	// +optional
+	AllowPlaybackInterruption *bool `json:"allowPlaybackInterruption,omitempty"`
 
-/* The SSML text to be synthesized. For more information, see SSML. */
-// +optional
-Ssml *string `json:"ssml,omitempty"`
+	/* The SSML text to be synthesized. For more information, see SSML. */
+	// +optional
+	Ssml *string `json:"ssml,omitempty"`
 
-/* The raw text to be synthesized. */
-// +optional
-Text *string `json:"text,omitempty"`
+	/* The raw text to be synthesized. */
+	// +optional
+	Text *string `json:"text,omitempty"`
 }
 
 type FlowPlayAudio struct {
-/* Whether the playback of this message can be interrupted by the end user's speech and the client can then starts the next Dialogflow request. */
-// +optional
-AllowPlaybackInterruption *bool `json:"allowPlaybackInterruption,omitempty"`
+	/* Whether the playback of this message can be interrupted by the end user's speech and the client can then starts the next Dialogflow request. */
+	// +optional
+	AllowPlaybackInterruption *bool `json:"allowPlaybackInterruption,omitempty"`
 
-/* URI of the audio clip. Dialogflow does not impose any validation on this value. It is specific to the client that reads it. */
-AudioUri string `json:"audioUri"`
+	/* URI of the audio clip. Dialogflow does not impose any validation on this value. It is specific to the client that reads it. */
+	AudioUri string `json:"audioUri"`
 }
 
 type FlowSetParameterActions struct {
-/* Display name of the parameter. */
-// +optional
-Parameter *string `json:"parameter,omitempty"`
+	/* Display name of the parameter. */
+	// +optional
+	Parameter *string `json:"parameter,omitempty"`
 
-/* The new JSON-encoded value of the parameter. A null value clears the parameter. */
-// +optional
-Value *string `json:"value,omitempty"`
+	/* The new JSON-encoded value of the parameter. A null value clears the parameter. */
+	// +optional
+	Value *string `json:"value,omitempty"`
 }
 
 type FlowTelephonyTransferCall struct {
-/* Transfer the call to a phone number in E.164 format. */
-PhoneNumber string `json:"phoneNumber"`
+	/* Transfer the call to a phone number in E.164 format. */
+	PhoneNumber string `json:"phoneNumber"`
 }
 
 type FlowText struct {
-/* Whether the playback of this message can be interrupted by the end user's speech and the client can then starts the next Dialogflow request. */
-// +optional
-AllowPlaybackInterruption *bool `json:"allowPlaybackInterruption,omitempty"`
+	/* Whether the playback of this message can be interrupted by the end user's speech and the client can then starts the next Dialogflow request. */
+	// +optional
+	AllowPlaybackInterruption *bool `json:"allowPlaybackInterruption,omitempty"`
 
-/* A collection of text responses. */
-// +optional
-Text []FlowText `json:"text,omitempty"`
+	/* A collection of text responses. */
+	// +optional
+	Text []FlowText `json:"text,omitempty"`
 }
 
 type FlowTransitionRoutes struct {
 	/* The condition to evaluate against form parameters or session parameters.
 	At least one of intent or condition must be specified. When both intent and condition are specified, the transition can only happen when both are fulfilled. */
-// +optional
-Condition *string `json:"condition,omitempty"`
+	// +optional
+	Condition *string `json:"condition,omitempty"`
 
 	/* The unique identifier of an Intent.
 	Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>. Indicates that the transition can only happen when the given intent is matched. At least one of intent or condition must be specified. When both intent and condition are specified, the transition can only happen when both are fulfilled. */
-// +optional
-Intent *string `json:"intent,omitempty"`
+	// +optional
+	Intent *string `json:"intent,omitempty"`
 
-/* The unique identifier of this transition route. */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* The unique identifier of this transition route. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
 	/* The target flow to transition to.
 	Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>. */
-// +optional
-TargetFlow *string `json:"targetFlow,omitempty"`
+	// +optional
+	TargetFlow *string `json:"targetFlow,omitempty"`
 
 	/* The target page to transition to.
 	Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>. */
-// +optional
-TargetPage *string `json:"targetPage,omitempty"`
+	// +optional
+	TargetPage *string `json:"targetPage,omitempty"`
 
-/* The fulfillment to call when the condition is satisfied. At least one of triggerFulfillment and target must be specified. When both are defined, triggerFulfillment is executed first. */
-// +optional
-TriggerFulfillment *FlowTriggerFulfillment `json:"triggerFulfillment,omitempty"`
+	/* The fulfillment to call when the condition is satisfied. At least one of triggerFulfillment and target must be specified. When both are defined, triggerFulfillment is executed first. */
+	// +optional
+	TriggerFulfillment *FlowTriggerFulfillment `json:"triggerFulfillment,omitempty"`
 }
 
 type FlowTriggerFulfillment struct {
-/* Conditional cases for this fulfillment. */
-// +optional
-ConditionalCases []FlowConditionalCases `json:"conditionalCases,omitempty"`
+	/* Conditional cases for this fulfillment. */
+	// +optional
+	ConditionalCases []FlowConditionalCases `json:"conditionalCases,omitempty"`
 
-/* The list of rich message responses to present to the user. */
-// +optional
-Messages []FlowMessages `json:"messages,omitempty"`
+	/* The list of rich message responses to present to the user. */
+	// +optional
+	Messages []FlowMessages `json:"messages,omitempty"`
 
-/* Whether Dialogflow should return currently queued fulfillment response messages in streaming APIs. If a webhook is specified, it happens before Dialogflow invokes webhook. Warning: 1) This flag only affects streaming API. Responses are still queued and returned once in non-streaming API. 2) The flag can be enabled in any fulfillment but only the first 3 partial responses will be returned. You may only want to apply it to fulfillments that have slow webhooks. */
-// +optional
-ReturnPartialResponses *bool `json:"returnPartialResponses,omitempty"`
+	/* Whether Dialogflow should return currently queued fulfillment response messages in streaming APIs. If a webhook is specified, it happens before Dialogflow invokes webhook. Warning: 1) This flag only affects streaming API. Responses are still queued and returned once in non-streaming API. 2) The flag can be enabled in any fulfillment but only the first 3 partial responses will be returned. You may only want to apply it to fulfillments that have slow webhooks. */
+	// +optional
+	ReturnPartialResponses *bool `json:"returnPartialResponses,omitempty"`
 
-/* Set parameter values before executing the webhook. */
-// +optional
-SetParameterActions []FlowSetParameterActions `json:"setParameterActions,omitempty"`
+	/* Set parameter values before executing the webhook. */
+	// +optional
+	SetParameterActions []FlowSetParameterActions `json:"setParameterActions,omitempty"`
 
-/* The tag used by the webhook to identify which fulfillment is being called. This field is required if webhook is specified. */
-// +optional
-Tag *string `json:"tag,omitempty"`
+	/* The tag used by the webhook to identify which fulfillment is being called. This field is required if webhook is specified. */
+	// +optional
+	Tag *string `json:"tag,omitempty"`
 
-/* The webhook to call. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/webhooks/<Webhook ID>. */
-// +optional
-Webhook *string `json:"webhook,omitempty"`
+	/* The webhook to call. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/webhooks/<Webhook ID>. */
+	// +optional
+	Webhook *string `json:"webhook,omitempty"`
 }
 
 type DialogflowCXFlowSpec struct {
-/* The description of the flow. The maximum length is 500 characters. If exceeded, the request is rejected. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* The description of the flow. The maximum length is 500 characters. If exceeded, the request is rejected. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* The human-readable name of the flow. */
-DisplayName string `json:"displayName"`
+	/* The human-readable name of the flow. */
+	DisplayName string `json:"displayName"`
 
 	/* A flow's event handlers serve two purposes:
 	They are responsible for handling events (e.g. no match, webhook errors) in the flow.
 	They are inherited by every page's [event handlers][Page.event_handlers], which can be used to handle common events regardless of the current page. Event handlers defined in the page have higher priority than those defined in the flow.
 	Unlike transitionRoutes, these handlers are evaluated on a first-match basis. The first one that matches the event get executed, with the rest being ignored. */
-// +optional
-EventHandlers []FlowEventHandlers `json:"eventHandlers,omitempty"`
+	// +optional
+	EventHandlers []FlowEventHandlers `json:"eventHandlers,omitempty"`
 
 	/* Immutable. The language of the following fields in flow:
 	Flow.event_handlers.trigger_fulfillment.messages
@@ -268,54 +267,55 @@ EventHandlers []FlowEventHandlers `json:"eventHandlers,omitempty"`
 	Flow.transition_routes.trigger_fulfillment.messages
 	Flow.transition_routes.trigger_fulfillment.conditional_cases
 	If not specified, the agent's default language is used. Many languages are supported. Note: languages must be enabled in the agent before they can be used. */
-// +optional
-LanguageCode *string `json:"languageCode,omitempty"`
+	// +optional
+	LanguageCode *string `json:"languageCode,omitempty"`
 
-/* NLU related settings of the flow. */
-// +optional
-NluSettings *FlowNluSettings `json:"nluSettings,omitempty"`
+	/* NLU related settings of the flow. */
+	// +optional
+	NluSettings *FlowNluSettings `json:"nluSettings,omitempty"`
 
 	/* Immutable. The agent to create a flow for.
 	Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>. */
-// +optional
-Parent *string `json:"parent,omitempty"`
+	// +optional
+	Parent *string `json:"parent,omitempty"`
 
-/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* A flow's transition route group serve two purposes:
 	They are responsible for matching the user's first utterances in the flow.
 	They are inherited by every page's [transition route groups][Page.transition_route_groups]. Transition route groups defined in the page have higher priority than those defined in the flow.
 	Format:projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<TransitionRouteGroup ID>. */
-// +optional
-TransitionRouteGroups []string `json:"transitionRouteGroups,omitempty"`
+	// +optional
+	TransitionRouteGroups []string `json:"transitionRouteGroups,omitempty"`
 
 	/* A flow's transition routes serve two purposes:
 	They are responsible for matching the user's first utterances in the flow.
 	They are inherited by every page's [transition routes][Page.transition_routes] and can support use cases such as the user saying "help" or "can I talk to a human?", which can be handled in a common way regardless of the current page. Transition routes defined in the page have higher priority than those defined in the flow.
-	
+
 	TransitionRoutes are evalauted in the following order:
 	TransitionRoutes with intent specified.
 	TransitionRoutes with only condition specified.
 	TransitionRoutes with intent specified are inherited by pages in the flow. */
-// +optional
-TransitionRoutes []FlowTransitionRoutes `json:"transitionRoutes,omitempty"`
+	// +optional
+	TransitionRoutes []FlowTransitionRoutes `json:"transitionRoutes,omitempty"`
 }
 
 type DialogflowCXFlowStatus struct {
 	/* Conditions represent the latest available observations of the
-	    DialogflowCXFlow's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	   DialogflowCXFlow's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The unique identifier of the flow.
 	Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>. */
-// +optional
-Name *string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdialogflowcxflow;gcpdialogflowcxflows
@@ -332,20 +332,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // DialogflowCXFlow is the Schema for the dialogflowcx API
 // +k8s:openapi-gen=true
 type DialogflowCXFlow struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec DialogflowCXFlowSpec `json:"spec,omitempty"`
-  Status DialogflowCXFlowStatus `json:"status,omitempty"`
+	Spec   DialogflowCXFlowSpec   `json:"spec,omitempty"`
+	Status DialogflowCXFlowStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // DialogflowCXFlowList contains a list of DialogflowCXFlow
- type DialogflowCXFlowList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []DialogflowCXFlow `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&DialogflowCXFlow{}, &DialogflowCXFlowList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// DialogflowCXFlowList contains a list of DialogflowCXFlow
+type DialogflowCXFlowList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DialogflowCXFlow `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&DialogflowCXFlow{}, &DialogflowCXFlowList{})
+}

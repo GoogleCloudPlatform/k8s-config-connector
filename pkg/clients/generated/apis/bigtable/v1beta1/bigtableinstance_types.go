@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,90 +29,91 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type InstanceAutoscalingConfig struct {
-/* The target CPU utilization for autoscaling. Value must be between 10 and 80. */
-CpuTarget int64 `json:"cpuTarget"`
+	/* The target CPU utilization for autoscaling. Value must be between 10 and 80. */
+	CpuTarget int64 `json:"cpuTarget"`
 
-/* The maximum number of nodes for autoscaling. */
-MaxNodes int64 `json:"maxNodes"`
+	/* The maximum number of nodes for autoscaling. */
+	MaxNodes int64 `json:"maxNodes"`
 
-/* The minimum number of nodes for autoscaling. */
-MinNodes int64 `json:"minNodes"`
+	/* The minimum number of nodes for autoscaling. */
+	MinNodes int64 `json:"minNodes"`
 
-/* The target storage utilization for autoscaling, in GB, for each node in a cluster. This number is limited between 2560 (2.5TiB) and 5120 (5TiB) for a SSD cluster and between 8192 (8TiB) and 16384 (16 TiB) for an HDD cluster. If not set, whatever is already set for the cluster will not change, or if the cluster is just being created, it will use the default value of 2560 for SSD clusters and 8192 for HDD clusters. */
-// +optional
-StorageTarget *int64 `json:"storageTarget,omitempty"`
+	/* The target storage utilization for autoscaling, in GB, for each node in a cluster. This number is limited between 2560 (2.5TiB) and 5120 (5TiB) for a SSD cluster and between 8192 (8TiB) and 16384 (16 TiB) for an HDD cluster. If not set, whatever is already set for the cluster will not change, or if the cluster is just being created, it will use the default value of 2560 for SSD clusters and 8192 for HDD clusters. */
+	// +optional
+	StorageTarget *int64 `json:"storageTarget,omitempty"`
 }
 
 type InstanceCluster struct {
-/* A list of Autoscaling configurations. Only one element is used and allowed. */
-// +optional
-AutoscalingConfig *InstanceAutoscalingConfig `json:"autoscalingConfig,omitempty"`
+	/* A list of Autoscaling configurations. Only one element is used and allowed. */
+	// +optional
+	AutoscalingConfig *InstanceAutoscalingConfig `json:"autoscalingConfig,omitempty"`
 
-/* The ID of the Cloud Bigtable cluster. Must be 6-30 characters and must only contain hyphens, lowercase letters and numbers. */
-ClusterId string `json:"clusterId"`
+	/* The ID of the Cloud Bigtable cluster. Must be 6-30 characters and must only contain hyphens, lowercase letters and numbers. */
+	ClusterId string `json:"clusterId"`
 
 	/* Describes the Cloud KMS encryption key that will be used to protect the destination Bigtable
 	cluster. The requirements for this key are:
-	
+
 	1) The Cloud Bigtable service account associated with the project that contains
 	this cluster must be granted the cloudkms.cryptoKeyEncrypterDecrypter role on the CMEK key.
 	2) Only regional keys can be used and the region of the CMEK key must match the region of the cluster.
 	3) All clusters within an instance must use the same CMEK key access to this encryption key. */
-// +optional
-KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	// +optional
+	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
-/* The number of nodes in the cluster. If no value is set, Cloud Bigtable automatically allocates nodes based on your data footprint and optimized for 50% storage utilization. */
-// +optional
-NumNodes *int64 `json:"numNodes,omitempty"`
+	/* The number of nodes in the cluster. If no value is set, Cloud Bigtable automatically allocates nodes based on your data footprint and optimized for 50% storage utilization. */
+	// +optional
+	NumNodes *int64 `json:"numNodes,omitempty"`
 
-/* The storage type to use. One of "SSD" or "HDD". Defaults to "SSD". */
-// +optional
-StorageType *string `json:"storageType,omitempty"`
+	/* The storage type to use. One of "SSD" or "HDD". Defaults to "SSD". */
+	// +optional
+	StorageType *string `json:"storageType,omitempty"`
 
-/* The zone to create the Cloud Bigtable cluster in. Each cluster must have a different zone in the same region. Zones that support Bigtable instances are noted on the Cloud Bigtable locations page. */
-Zone string `json:"zone"`
+	/* The zone to create the Cloud Bigtable cluster in. Each cluster must have a different zone in the same region. Zones that support Bigtable instances are noted on the Cloud Bigtable locations page. */
+	Zone string `json:"zone"`
 }
 
 type BigtableInstanceSpec struct {
-/* A block of cluster configuration options. This can be specified at least once. */
-// +optional
-Cluster []InstanceCluster `json:"cluster,omitempty"`
+	/* A block of cluster configuration options. This can be specified at least once. */
+	// +optional
+	Cluster []InstanceCluster `json:"cluster,omitempty"`
 
-/* DEPRECATED. This field no longer serves any function and is intended to be dropped in a later version of the resource. */
-// +optional
-DeletionProtection *bool `json:"deletionProtection,omitempty"`
+	/* DEPRECATED. This field no longer serves any function and is intended to be dropped in a later version of the resource. */
+	// +optional
+	DeletionProtection *bool `json:"deletionProtection,omitempty"`
 
-/* Required. The descriptive name for this instance as it appears in UIs. Can be changed at any time, but should be kept globally unique to avoid confusion. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* Required. The descriptive name for this instance as it appears in UIs. Can be changed at any time, but should be kept globally unique to avoid confusion. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* DEPRECATED. It is recommended to leave this field unspecified since the distinction between "DEVELOPMENT" and "PRODUCTION" instances is going away, and all instances will become "PRODUCTION" instances. This means that new and existing "DEVELOPMENT" instances will be converted to "PRODUCTION" instances. It is recommended for users to use "PRODUCTION" instances in any case, since a 1-node "PRODUCTION" instance is functionally identical to a "DEVELOPMENT" instance, but without the accompanying restrictions. The instance type to create. One of "DEVELOPMENT" or "PRODUCTION". Defaults to "PRODUCTION". */
-// +optional
-InstanceType *string `json:"instanceType,omitempty"`
+	/* DEPRECATED. It is recommended to leave this field unspecified since the distinction between "DEVELOPMENT" and "PRODUCTION" instances is going away, and all instances will become "PRODUCTION" instances. This means that new and existing "DEVELOPMENT" instances will be converted to "PRODUCTION" instances. It is recommended for users to use "PRODUCTION" instances in any case, since a 1-node "PRODUCTION" instance is functionally identical to a "DEVELOPMENT" instance, but without the accompanying restrictions. The instance type to create. One of "DEVELOPMENT" or "PRODUCTION". Defaults to "PRODUCTION". */
+	// +optional
+	InstanceType *string `json:"instanceType,omitempty"`
 
-/* The Instance name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The Instance name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type BigtableInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
-	    BigtableInstance's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   BigtableInstance's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigtableinstance;gcpbigtableinstances
@@ -130,20 +130,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // BigtableInstance is the Schema for the bigtable API
 // +k8s:openapi-gen=true
 type BigtableInstance struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec BigtableInstanceSpec `json:"spec,omitempty"`
-  Status BigtableInstanceStatus `json:"status,omitempty"`
+	Spec   BigtableInstanceSpec   `json:"spec,omitempty"`
+	Status BigtableInstanceStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // BigtableInstanceList contains a list of BigtableInstance
- type BigtableInstanceList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []BigtableInstance `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&BigtableInstance{}, &BigtableInstanceList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// BigtableInstanceList contains a list of BigtableInstance
+type BigtableInstanceList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []BigtableInstance `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&BigtableInstance{}, &BigtableInstanceList{})
+}

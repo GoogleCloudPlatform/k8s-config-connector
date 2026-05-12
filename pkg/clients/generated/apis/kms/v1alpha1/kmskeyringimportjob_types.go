@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,84 +29,85 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type KMSKeyRingImportJobSpec struct {
-/* Immutable. It must be unique within a KeyRing and match the regular expression [a-zA-Z0-9_-]{1,63}. */
-ImportJobId string `json:"importJobId"`
+	/* Immutable. It must be unique within a KeyRing and match the regular expression [a-zA-Z0-9_-]{1,63}. */
+	ImportJobId string `json:"importJobId"`
 
-/* Immutable. The wrapping method to be used for incoming key material. Possible values: ["RSA_OAEP_3072_SHA1_AES_256", "RSA_OAEP_4096_SHA1_AES_256"]. */
-ImportMethod string `json:"importMethod"`
+	/* Immutable. The wrapping method to be used for incoming key material. Possible values: ["RSA_OAEP_3072_SHA1_AES_256", "RSA_OAEP_4096_SHA1_AES_256"]. */
+	ImportMethod string `json:"importMethod"`
 
 	/* Immutable. The KeyRing that this import job belongs to.
 	Format: ''projects/{{project}}/locations/{{location}}/keyRings/{{keyRing}}''. */
-KeyRing string `json:"keyRing"`
+	KeyRing string `json:"keyRing"`
 
 	/* Immutable. The protection level of the ImportJob. This must match the protectionLevel of the
 	versionTemplate on the CryptoKey you attempt to import into. Possible values: ["SOFTWARE", "HSM", "EXTERNAL"]. */
-ProtectionLevel string `json:"protectionLevel"`
+	ProtectionLevel string `json:"protectionLevel"`
 
-/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type KeyringimportjobAttestationStatus struct {
 	/* The attestation data provided by the HSM when the key operation was performed.
 	A base64-encoded string. */
-// +optional
-Content *string `json:"content,omitempty"`
+	// +optional
+	Content *string `json:"content,omitempty"`
 
-/* The format of the attestation data. */
-// +optional
-Format *string `json:"format,omitempty"`
+	/* The format of the attestation data. */
+	// +optional
+	Format *string `json:"format,omitempty"`
 }
 
 type KeyringimportjobPublicKeyStatus struct {
 	/* The public key, encoded in PEM format. For more information, see the RFC 7468 sections
 	for General Considerations and Textual Encoding of Subject Public Key Info. */
-// +optional
-Pem *string `json:"pem,omitempty"`
+	// +optional
+	Pem *string `json:"pem,omitempty"`
 }
 
 type KMSKeyRingImportJobStatus struct {
 	/* Conditions represent the latest available observations of the
-	    KMSKeyRingImportJob's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	   KMSKeyRingImportJob's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Statement that was generated and signed by the key creator (for example, an HSM) at key creation time.
 	Use this statement to verify attributes of the key as stored on the HSM, independently of Google.
 	Only present if the chosen ImportMethod is one with a protection level of HSM. */
-// +optional
-Attestation []KeyringimportjobAttestationStatus `json:"attestation,omitempty"`
+	// +optional
+	Attestation []KeyringimportjobAttestationStatus `json:"attestation,omitempty"`
 
 	/* The time at which this resource is scheduled for expiration and can no longer be used.
 	This is in RFC3339 text format. */
-// +optional
-ExpireTime *string `json:"expireTime,omitempty"`
+	// +optional
+	ExpireTime *string `json:"expireTime,omitempty"`
 
-/* The resource name for this ImportJob in the format projects/* /locations/* /keyRings/* /importJobs/*. */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* The resource name for this ImportJob in the format projects/* /locations/* /keyRings/* /importJobs/*. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* The public key with which to wrap key material prior to import. Only returned if state is 'ACTIVE'. */
-// +optional
-PublicKey []KeyringimportjobPublicKeyStatus `json:"publicKey,omitempty"`
+	/* The public key with which to wrap key material prior to import. Only returned if state is 'ACTIVE'. */
+	// +optional
+	PublicKey []KeyringimportjobPublicKeyStatus `json:"publicKey,omitempty"`
 
-/* The current state of the ImportJob, indicating if it can be used. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* The current state of the ImportJob, indicating if it can be used. */
+	// +optional
+	State *string `json:"state,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpkmskeyringimportjob;gcpkmskeyringimportjobs
@@ -124,20 +124,22 @@ State *string `json:"state,omitempty"`
 // KMSKeyRingImportJob is the Schema for the kms API
 // +k8s:openapi-gen=true
 type KMSKeyRingImportJob struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec KMSKeyRingImportJobSpec `json:"spec,omitempty"`
-  Status KMSKeyRingImportJobStatus `json:"status,omitempty"`
+	Spec   KMSKeyRingImportJobSpec   `json:"spec,omitempty"`
+	Status KMSKeyRingImportJobStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // KMSKeyRingImportJobList contains a list of KMSKeyRingImportJob
- type KMSKeyRingImportJobList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []KMSKeyRingImportJob `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&KMSKeyRingImportJob{}, &KMSKeyRingImportJobList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// KMSKeyRingImportJobList contains a list of KMSKeyRingImportJob
+type KMSKeyRingImportJobList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []KMSKeyRingImportJob `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&KMSKeyRingImportJob{}, &KMSKeyRingImportJobList{})
+}

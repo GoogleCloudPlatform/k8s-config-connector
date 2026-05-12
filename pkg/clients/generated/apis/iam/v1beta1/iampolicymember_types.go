@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,74 +29,75 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type PolicymemberCondition struct {
-// +optional
-Description *string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-Expression string `json:"expression"`
+	Expression string `json:"expression"`
 
-Title string `json:"title"`
+	Title string `json:"title"`
 }
 
 type PolicymemberMemberFrom struct {
-/* BigQueryConnectionConnection whose service account is to be bound to the role. Use the Type field to specify the connection type. For "spark" connetion, the service account is in `status.observedState.spark.serviceAccountID`. For "cloudSQL" connection, the service account is in `status.observedState.cloudSQL.serviceAccountID`. For "cloudResource" connection, the service account is in `status.observedState.cloudResource.serviceAccountID`. */
-// +optional
-BigQueryConnectionConnectionRef *v1alpha1.IAMResourceRef `json:"bigQueryConnectionConnectionRef,omitempty"`
+	/* BigQueryConnectionConnection whose service account is to be bound to the role. Use the Type field to specify the connection type. For "spark" connetion, the service account is in `status.observedState.spark.serviceAccountID`. For "cloudSQL" connection, the service account is in `status.observedState.cloudSQL.serviceAccountID`. For "cloudResource" connection, the service account is in `status.observedState.cloudResource.serviceAccountID`. */
+	// +optional
+	BigQueryConnectionConnectionRef *v1alpha1.IAMResourceRef `json:"bigQueryConnectionConnectionRef,omitempty"`
 
-/* The LoggingLogSink whose writer identity (i.e. its 'status.writerIdentity') is to be bound to the role. */
-// +optional
-LogSinkRef *v1alpha1.IAMResourceRef `json:"logSinkRef,omitempty"`
+	/* The LoggingLogSink whose writer identity (i.e. its 'status.writerIdentity') is to be bound to the role. */
+	// +optional
+	LogSinkRef *v1alpha1.IAMResourceRef `json:"logSinkRef,omitempty"`
 
-/* The IAMServiceAccount to be bound to the role. */
-// +optional
-ServiceAccountRef *v1alpha1.IAMResourceRef `json:"serviceAccountRef,omitempty"`
+	/* The IAMServiceAccount to be bound to the role. */
+	// +optional
+	ServiceAccountRef *v1alpha1.IAMResourceRef `json:"serviceAccountRef,omitempty"`
 
-/* The ServiceIdentity whose service account (i.e., its 'status.email') is to be bound to the role. */
-// +optional
-ServiceIdentityRef *v1alpha1.IAMResourceRef `json:"serviceIdentityRef,omitempty"`
+	/* The ServiceIdentity whose service account (i.e., its 'status.email') is to be bound to the role. */
+	// +optional
+	ServiceIdentityRef *v1alpha1.IAMResourceRef `json:"serviceIdentityRef,omitempty"`
 
-/* The SQLInstance whose service account (i.e. its 'status.serviceAccountEmailAddress') is to be bound to the role. */
-// +optional
-SqlInstanceRef *v1alpha1.IAMResourceRef `json:"sqlInstanceRef,omitempty"`
+	/* The SQLInstance whose service account (i.e. its 'status.serviceAccountEmailAddress') is to be bound to the role. */
+	// +optional
+	SqlInstanceRef *v1alpha1.IAMResourceRef `json:"sqlInstanceRef,omitempty"`
 }
 
 type IAMPolicyMemberSpec struct {
-/* Immutable. Optional. The condition under which the binding applies. */
-// +optional
-Condition *PolicymemberCondition `json:"condition,omitempty"`
+	/* Immutable. Optional. The condition under which the binding applies. */
+	// +optional
+	Condition *PolicymemberCondition `json:"condition,omitempty"`
 
-/* Immutable. The IAM identity to be bound to the role. Exactly one of 'member' or 'memberFrom' must be used. */
-// +optional
-Member *string `json:"member,omitempty"`
+	/* Immutable. The IAM identity to be bound to the role. Exactly one of 'member' or 'memberFrom' must be used. */
+	// +optional
+	Member *string `json:"member,omitempty"`
 
-/* Immutable. The IAM identity to be bound to the role. Exactly one of 'member' or 'memberFrom' must be used, and only one subfield within 'memberFrom' can be used. */
-// +optional
-MemberFrom *PolicymemberMemberFrom `json:"memberFrom,omitempty"`
+	/* Immutable. The IAM identity to be bound to the role. Exactly one of 'member' or 'memberFrom' must be used, and only one subfield within 'memberFrom' can be used. */
+	// +optional
+	MemberFrom *PolicymemberMemberFrom `json:"memberFrom,omitempty"`
 
-/* Immutable. Required. The GCP resource to set the IAM policy on (e.g. organization, project...) */
-ResourceRef v1alpha1.IAMResourceRef `json:"resourceRef"`
+	/* Immutable. Required. The GCP resource to set the IAM policy on (e.g. organization, project...) */
+	ResourceRef v1alpha1.IAMResourceRef `json:"resourceRef"`
 
-/* Immutable. Required. The role for which the Member will be bound. */
-Role string `json:"role"`
+	/* Immutable. Required. The role for which the Member will be bound. */
+	Role string `json:"role"`
 }
 
 type IAMPolicyMemberStatus struct {
 	/* Conditions represent the latest available observations of the
-	    IAMPolicyMember's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   IAMPolicyMember's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpiampolicymember;gcpiampolicymembers
@@ -112,20 +112,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // IAMPolicyMember is the Schema for the iam API
 // +k8s:openapi-gen=true
 type IAMPolicyMember struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec IAMPolicyMemberSpec `json:"spec,omitempty"`
-  Status IAMPolicyMemberStatus `json:"status,omitempty"`
+	Spec   IAMPolicyMemberSpec   `json:"spec,omitempty"`
+	Status IAMPolicyMemberStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // IAMPolicyMemberList contains a list of IAMPolicyMember
- type IAMPolicyMemberList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []IAMPolicyMember `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&IAMPolicyMember{}, &IAMPolicyMemberList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// IAMPolicyMemberList contains a list of IAMPolicyMember
+type IAMPolicyMemberList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []IAMPolicyMember `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&IAMPolicyMember{}, &IAMPolicyMemberList{})
+}

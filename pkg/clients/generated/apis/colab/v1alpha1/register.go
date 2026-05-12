@@ -53,19 +53,17 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	ColabRuntimeGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(ColabRuntime{}).Name(),
-  	}
-  
-  	ColabRuntimeTemplateGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(ColabRuntimeTemplate{}).Name(),
-  	}
-  
+	ColabRuntimeGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ColabRuntime{}).Name(),
+	}
 
-  	colabAPIVersion = SchemeGroupVersion.String()
+	ColabRuntimeTemplateGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ColabRuntimeTemplate{}).Name(),
+	}
+
+	colabAPIVersion = SchemeGroupVersion.String()
 )

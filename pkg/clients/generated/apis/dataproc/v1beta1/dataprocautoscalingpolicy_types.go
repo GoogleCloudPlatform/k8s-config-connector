@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -42,43 +41,43 @@ var _ = apiextensionsv1.JSON{}
 type AutoscalingpolicyBasicAlgorithm struct {
 	/* Optional. Duration between scaling events. A scaling period starts after
 	the update operation from the previous event has completed.
-	
-	Bounds: [2m, 1d]. Default: 2m. */
-// +optional
-CooldownPeriod *string `json:"cooldownPeriod,omitempty"`
 
-/* Required. YARN autoscaling configuration. */
-YarnConfig AutoscalingpolicyYarnConfig `json:"yarnConfig"`
+	Bounds: [2m, 1d]. Default: 2m. */
+	// +optional
+	CooldownPeriod *string `json:"cooldownPeriod,omitempty"`
+
+	/* Required. YARN autoscaling configuration. */
+	YarnConfig AutoscalingpolicyYarnConfig `json:"yarnConfig"`
 }
 
 type AutoscalingpolicySecondaryWorkerConfig struct {
 	/* Required. Maximum number of instances for this group. Required for primary
 	workers. Note that by default, clusters will not use secondary workers.
 	Required for secondary workers if the minimum secondary instances is set.
-	
+
 	Primary workers - Bounds: [min_instances, ).
 	Secondary workers - Bounds: [min_instances, ). Default: 0. */
-// +optional
-MaxInstances *int64 `json:"maxInstances,omitempty"`
+	// +optional
+	MaxInstances *int64 `json:"maxInstances,omitempty"`
 
 	/* Optional. Minimum number of instances for this group.
-	
+
 	Primary workers - Bounds: [2, max_instances]. Default: 2.
 	Secondary workers - Bounds: [0, max_instances]. Default: 0. */
-// +optional
-MinInstances *int64 `json:"minInstances,omitempty"`
+	// +optional
+	MinInstances *int64 `json:"minInstances,omitempty"`
 
 	/* Optional. Weight for the instance group, which is used to determine the
 	fraction of total workers in the cluster from this instance group.
 	For example, if primary workers have weight 2, and secondary workers have
 	weight 1, the cluster will have approximately 2 primary workers for each
 	secondary worker.
-	
+
 	The cluster may not reach the specified balance if constrained
 	by min/max bounds or other autoscaling settings. For example, if
 	`max_instances` for secondary workers is 0, then only primary workers will
 	be added. The cluster can also be out of balance when created.
-	
+
 	If weight is not set on any instance group, the cluster will default to
 	equal weight for all groups: the cluster will attempt to maintain an equal
 	number of workers in each group within the configured size bounds for each
@@ -86,37 +85,37 @@ MinInstances *int64 `json:"minInstances,omitempty"`
 	zero weight on the unset group. For example if weight is set only on
 	primary workers, the cluster will use primary workers only and no
 	secondary workers. */
-// +optional
-Weight *int64 `json:"weight,omitempty"`
+	// +optional
+	Weight *int64 `json:"weight,omitempty"`
 }
 
 type AutoscalingpolicyWorkerConfig struct {
 	/* Required. Maximum number of instances for this group. Required for primary
 	workers. Note that by default, clusters will not use secondary workers.
 	Required for secondary workers if the minimum secondary instances is set.
-	
+
 	Primary workers - Bounds: [min_instances, ).
 	Secondary workers - Bounds: [min_instances, ). Default: 0. */
-MaxInstances int64 `json:"maxInstances"`
+	MaxInstances int64 `json:"maxInstances"`
 
 	/* Optional. Minimum number of instances for this group.
-	
+
 	Primary workers - Bounds: [2, max_instances]. Default: 2.
 	Secondary workers - Bounds: [0, max_instances]. Default: 0. */
-// +optional
-MinInstances *int64 `json:"minInstances,omitempty"`
+	// +optional
+	MinInstances *int64 `json:"minInstances,omitempty"`
 
 	/* Optional. Weight for the instance group, which is used to determine the
 	fraction of total workers in the cluster from this instance group.
 	For example, if primary workers have weight 2, and secondary workers have
 	weight 1, the cluster will have approximately 2 primary workers for each
 	secondary worker.
-	
+
 	The cluster may not reach the specified balance if constrained
 	by min/max bounds or other autoscaling settings. For example, if
 	`max_instances` for secondary workers is 0, then only primary workers will
 	be added. The cluster can also be out of balance when created.
-	
+
 	If weight is not set on any instance group, the cluster will default to
 	equal weight for all groups: the cluster will attempt to maintain an equal
 	number of workers in each group within the configured size bounds for each
@@ -124,8 +123,8 @@ MinInstances *int64 `json:"minInstances,omitempty"`
 	zero weight on the unset group. For example if weight is set only on
 	primary workers, the cluster will use primary workers only and no
 	secondary workers. */
-// +optional
-Weight *int64 `json:"weight,omitempty"`
+	// +optional
+	Weight *int64 `json:"weight,omitempty"`
 }
 
 type AutoscalingpolicyYarnConfig struct {
@@ -133,9 +132,9 @@ type AutoscalingpolicyYarnConfig struct {
 	Specifies the duration to wait for jobs to complete before forcefully
 	removing workers (and potentially interrupting jobs). Only applicable to
 	downscaling operations.
-	
+
 	Bounds: [0s, 1d]. */
-GracefulDecommissionTimeout string `json:"gracefulDecommissionTimeout"`
+	GracefulDecommissionTimeout string `json:"gracefulDecommissionTimeout"`
 
 	/* Required. Fraction of average YARN pending memory in the last cooldown
 	period for which to remove workers. A scale-down factor of 1 will result in
@@ -145,19 +144,19 @@ GracefulDecommissionTimeout string `json:"gracefulDecommissionTimeout"`
 	See [How autoscaling
 	works](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/autoscaling#how_autoscaling_works)
 	for more information.
-	
+
 	Bounds: [0.0, 1.0]. */
-ScaleDownFactor float64 `json:"scaleDownFactor"`
+	ScaleDownFactor float64 `json:"scaleDownFactor"`
 
 	/* Optional. Minimum scale-down threshold as a fraction of total cluster size
 	before scaling occurs. For example, in a 20-worker cluster, a threshold of
 	0.1 means the autoscaler must recommend at least a 2 worker scale-down for
 	the cluster to scale. A threshold of 0 means the autoscaler will scale down
 	on any recommended change.
-	
+
 	Bounds: [0.0, 1.0]. Default: 0.0. */
-// +optional
-ScaleDownMinWorkerFraction *float64 `json:"scaleDownMinWorkerFraction,omitempty"`
+	// +optional
+	ScaleDownMinWorkerFraction *float64 `json:"scaleDownMinWorkerFraction,omitempty"`
 
 	/* Required. Fraction of average YARN pending memory in the last cooldown
 	period for which to add workers. A scale-up factor of 1.0 will result in
@@ -167,56 +166,57 @@ ScaleDownMinWorkerFraction *float64 `json:"scaleDownMinWorkerFraction,omitempty"
 	autoscaling
 	works](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/autoscaling#how_autoscaling_works)
 	for more information.
-	
+
 	Bounds: [0.0, 1.0]. */
-ScaleUpFactor float64 `json:"scaleUpFactor"`
+	ScaleUpFactor float64 `json:"scaleUpFactor"`
 
 	/* Optional. Minimum scale-up threshold as a fraction of total cluster size
 	before scaling occurs. For example, in a 20-worker cluster, a threshold of
 	0.1 means the autoscaler must recommend at least a 2-worker scale-up for
 	the cluster to scale. A threshold of 0 means the autoscaler will scale up
 	on any recommended change.
-	
+
 	Bounds: [0.0, 1.0]. Default: 0.0. */
-// +optional
-ScaleUpMinWorkerFraction *float64 `json:"scaleUpMinWorkerFraction,omitempty"`
+	// +optional
+	ScaleUpMinWorkerFraction *float64 `json:"scaleUpMinWorkerFraction,omitempty"`
 }
 
 type DataprocAutoscalingPolicySpec struct {
-/* Immutable. Required. YARN autoscaling configuration. */
-BasicAlgorithm AutoscalingpolicyBasicAlgorithm `json:"basicAlgorithm"`
+	/* Immutable. Required. YARN autoscaling configuration. */
+	BasicAlgorithm AutoscalingpolicyBasicAlgorithm `json:"basicAlgorithm"`
 
-/* Immutable. The location for the resource */
-Location string `json:"location"`
+	/* Immutable. The location for the resource */
+	Location string `json:"location"`
 
-/* Immutable. The Project that this resource belongs to. */
-// +optional
-ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	/* Immutable. The Project that this resource belongs to. */
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Immutable. Optional. Describes how the autoscaler will operate for secondary workers. */
-// +optional
-SecondaryWorkerConfig *AutoscalingpolicySecondaryWorkerConfig `json:"secondaryWorkerConfig,omitempty"`
+	/* Immutable. Optional. Describes how the autoscaler will operate for secondary workers. */
+	// +optional
+	SecondaryWorkerConfig *AutoscalingpolicySecondaryWorkerConfig `json:"secondaryWorkerConfig,omitempty"`
 
-/* Immutable. Required. Describes how the autoscaler will operate for primary workers. */
-WorkerConfig AutoscalingpolicyWorkerConfig `json:"workerConfig"`
+	/* Immutable. Required. Describes how the autoscaler will operate for primary workers. */
+	WorkerConfig AutoscalingpolicyWorkerConfig `json:"workerConfig"`
 }
 
 type DataprocAutoscalingPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
-	    DataprocAutoscalingPolicy's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the DataprocAutoscalingPolicy resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   DataprocAutoscalingPolicy's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the DataprocAutoscalingPolicy resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdataprocautoscalingpolicy;gcpdataprocautoscalingpolicies
@@ -233,20 +233,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // DataprocAutoscalingPolicy is the Schema for the dataproc API
 // +k8s:openapi-gen=true
 type DataprocAutoscalingPolicy struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec DataprocAutoscalingPolicySpec `json:"spec,omitempty"`
-  Status DataprocAutoscalingPolicyStatus `json:"status,omitempty"`
+	Spec   DataprocAutoscalingPolicySpec   `json:"spec,omitempty"`
+	Status DataprocAutoscalingPolicyStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // DataprocAutoscalingPolicyList contains a list of DataprocAutoscalingPolicy
- type DataprocAutoscalingPolicyList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []DataprocAutoscalingPolicy `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&DataprocAutoscalingPolicy{}, &DataprocAutoscalingPolicyList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// DataprocAutoscalingPolicyList contains a list of DataprocAutoscalingPolicy
+type DataprocAutoscalingPolicyList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DataprocAutoscalingPolicy `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&DataprocAutoscalingPolicy{}, &DataprocAutoscalingPolicyList{})
+}

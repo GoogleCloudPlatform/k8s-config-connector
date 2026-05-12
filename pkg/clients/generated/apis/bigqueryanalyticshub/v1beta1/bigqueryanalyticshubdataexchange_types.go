@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,69 +29,70 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type BigQueryAnalyticsHubDataExchangeSpec struct {
-/* Optional. Description of the data exchange. The description must not contain Unicode non-characters as well as C0 and C1 control codes except tabs (HT), new lines (LF), carriage returns (CR), and page breaks (FF). Default value is an empty string. Max length: 2000 bytes. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Optional. Description of the data exchange. The description must not contain Unicode non-characters as well as C0 and C1 control codes except tabs (HT), new lines (LF), carriage returns (CR), and page breaks (FF). Default value is an empty string. Max length: 2000 bytes. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Optional. Type of discovery on the discovery page for all the listings under this exchange. Updating this field also updates (overwrites) the discovery_type field for all the listings under this exchange. */
-// +optional
-DiscoveryType *string `json:"discoveryType,omitempty"`
+	/* Optional. Type of discovery on the discovery page for all the listings under this exchange. Updating this field also updates (overwrites) the discovery_type field for all the listings under this exchange. */
+	// +optional
+	DiscoveryType *string `json:"discoveryType,omitempty"`
 
-/* Required. Human-readable display name of the data exchange. The display name must contain only Unicode letters, numbers (0-9), underscores (_), dashes (-), spaces ( ), ampersands (&) and must not start or end with spaces. Default value is an empty string. Max length: 63 bytes. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* Required. Human-readable display name of the data exchange. The display name must contain only Unicode letters, numbers (0-9), underscores (_), dashes (-), spaces ( ), ampersands (&) and must not start or end with spaces. Default value is an empty string. Max length: 63 bytes. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* Optional. Documentation describing the data exchange. */
-// +optional
-Documentation *string `json:"documentation,omitempty"`
+	/* Optional. Documentation describing the data exchange. */
+	// +optional
+	Documentation *string `json:"documentation,omitempty"`
 
-/* Immutable. The name of the location this data exchange. */
-Location string `json:"location"`
+	/* Immutable. The name of the location this data exchange. */
+	Location string `json:"location"`
 
-/* Optional. Email or URL of the primary point of contact of the data exchange. Max Length: 1000 bytes. */
-// +optional
-PrimaryContact *string `json:"primaryContact,omitempty"`
+	/* Optional. Email or URL of the primary point of contact of the data exchange. Max Length: 1000 bytes. */
+	// +optional
+	PrimaryContact *string `json:"primaryContact,omitempty"`
 
-/* The project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Immutable. The BigQueryAnalyticsHubDataExchange name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. The BigQueryAnalyticsHubDataExchange name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type DataexchangeObservedStateStatus struct {
-/* Number of listings contained in the data exchange. */
-// +optional
-ListingCount *int64 `json:"listingCount,omitempty"`
+	/* Number of listings contained in the data exchange. */
+	// +optional
+	ListingCount *int64 `json:"listingCount,omitempty"`
 }
 
 type BigQueryAnalyticsHubDataExchangeStatus struct {
 	/* Conditions represent the latest available observations of the
-	    BigQueryAnalyticsHubDataExchange's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the BigQueryAnalyticsHubDataExchange resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   BigQueryAnalyticsHubDataExchange's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the BigQueryAnalyticsHubDataExchange resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *DataexchangeObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *DataexchangeObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigqueryanalyticshubdataexchange;gcpbigqueryanalyticshubdataexchanges
@@ -108,20 +108,22 @@ ObservedState *DataexchangeObservedStateStatus `json:"observedState,omitempty"`
 // BigQueryAnalyticsHubDataExchange is the Schema for the bigqueryanalyticshub API
 // +k8s:openapi-gen=true
 type BigQueryAnalyticsHubDataExchange struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec BigQueryAnalyticsHubDataExchangeSpec `json:"spec,omitempty"`
-  Status BigQueryAnalyticsHubDataExchangeStatus `json:"status,omitempty"`
+	Spec   BigQueryAnalyticsHubDataExchangeSpec   `json:"spec,omitempty"`
+	Status BigQueryAnalyticsHubDataExchangeStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // BigQueryAnalyticsHubDataExchangeList contains a list of BigQueryAnalyticsHubDataExchange
- type BigQueryAnalyticsHubDataExchangeList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []BigQueryAnalyticsHubDataExchange `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&BigQueryAnalyticsHubDataExchange{}, &BigQueryAnalyticsHubDataExchangeList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// BigQueryAnalyticsHubDataExchangeList contains a list of BigQueryAnalyticsHubDataExchange
+type BigQueryAnalyticsHubDataExchangeList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []BigQueryAnalyticsHubDataExchange `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&BigQueryAnalyticsHubDataExchange{}, &BigQueryAnalyticsHubDataExchangeList{})
+}

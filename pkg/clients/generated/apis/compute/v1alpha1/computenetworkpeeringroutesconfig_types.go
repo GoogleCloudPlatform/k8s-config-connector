@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,40 +29,41 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ComputeNetworkPeeringRoutesConfigSpec struct {
-/* Whether to export the custom routes to the peer network. */
-ExportCustomRoutes bool `json:"exportCustomRoutes"`
+	/* Whether to export the custom routes to the peer network. */
+	ExportCustomRoutes bool `json:"exportCustomRoutes"`
 
-/* Whether to import the custom routes to the peer network. */
-ImportCustomRoutes bool `json:"importCustomRoutes"`
+	/* Whether to import the custom routes to the peer network. */
+	ImportCustomRoutes bool `json:"importCustomRoutes"`
 
-NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
 
-/* The project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Immutable. Optional. The peering of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The peering of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ComputeNetworkPeeringRoutesConfigStatus struct {
 	/* Conditions represent the latest available observations of the
-	    ComputeNetworkPeeringRoutesConfig's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   ComputeNetworkPeeringRoutesConfig's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputenetworkpeeringroutesconfig;gcpcomputenetworkpeeringroutesconfigs
@@ -80,20 +80,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // ComputeNetworkPeeringRoutesConfig is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeNetworkPeeringRoutesConfig struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ComputeNetworkPeeringRoutesConfigSpec `json:"spec,omitempty"`
-  Status ComputeNetworkPeeringRoutesConfigStatus `json:"status,omitempty"`
+	Spec   ComputeNetworkPeeringRoutesConfigSpec   `json:"spec,omitempty"`
+	Status ComputeNetworkPeeringRoutesConfigStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ComputeNetworkPeeringRoutesConfigList contains a list of ComputeNetworkPeeringRoutesConfig
- type ComputeNetworkPeeringRoutesConfigList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []ComputeNetworkPeeringRoutesConfig `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&ComputeNetworkPeeringRoutesConfig{}, &ComputeNetworkPeeringRoutesConfigList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ComputeNetworkPeeringRoutesConfigList contains a list of ComputeNetworkPeeringRoutesConfig
+type ComputeNetworkPeeringRoutesConfigList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeNetworkPeeringRoutesConfig `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ComputeNetworkPeeringRoutesConfig{}, &ComputeNetworkPeeringRoutesConfigList{})
+}

@@ -53,13 +53,11 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	OrgPolicyCustomConstraintGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(OrgPolicyCustomConstraint{}).Name(),
-  	}
-  
+	OrgPolicyCustomConstraintGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(OrgPolicyCustomConstraint{}).Name(),
+	}
 
-  	orgpolicyAPIVersion = SchemeGroupVersion.String()
+	orgpolicyAPIVersion = SchemeGroupVersion.String()
 )

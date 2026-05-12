@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,48 +29,49 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type SecurityCenterSourceSpec struct {
-/* The description of the source (max of 1024 characters). */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* The description of the source (max of 1024 characters). */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
 	/* The source’s display name. A source’s display name must be unique
 	amongst its siblings, for example, two sources with the same parent
 	can't share the same display name. The display name must start and end
 	with a letter or digit, may contain letters, digits, spaces, hyphens,
 	and underscores, and can be no longer than 32 characters. */
-DisplayName string `json:"displayName"`
+	DisplayName string `json:"displayName"`
 
-/* The organization that this resource belongs to. */
-OrganizationRef v1alpha1.ResourceRef `json:"organizationRef"`
+	/* The organization that this resource belongs to. */
+	OrganizationRef v1alpha1.ResourceRef `json:"organizationRef"`
 
-/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type SecurityCenterSourceStatus struct {
 	/* Conditions represent the latest available observations of the
-	    SecurityCenterSource's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	   SecurityCenterSource's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The resource name of this source, in the format
 	'organizations/{{organization}}/sources/{{source}}'. */
-// +optional
-Name *string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpsecuritycentersource;gcpsecuritycentersources
@@ -88,20 +88,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // SecurityCenterSource is the Schema for the securitycenter API
 // +k8s:openapi-gen=true
 type SecurityCenterSource struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec SecurityCenterSourceSpec `json:"spec,omitempty"`
-  Status SecurityCenterSourceStatus `json:"status,omitempty"`
+	Spec   SecurityCenterSourceSpec   `json:"spec,omitempty"`
+	Status SecurityCenterSourceStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // SecurityCenterSourceList contains a list of SecurityCenterSource
- type SecurityCenterSourceList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []SecurityCenterSource `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&SecurityCenterSource{}, &SecurityCenterSourceList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// SecurityCenterSourceList contains a list of SecurityCenterSource
+type SecurityCenterSourceList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []SecurityCenterSource `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&SecurityCenterSource{}, &SecurityCenterSourceList{})
+}

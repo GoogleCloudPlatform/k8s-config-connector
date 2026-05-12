@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,62 +29,63 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type NetworkConnectivityHubSpec struct {
-/* An optional description of the hub. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* An optional description of the hub. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Immutable. The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* Immutable. The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type HubRoutingVpcsStatus struct {
-/* The URI of the VPC network. */
-// +optional
-Uri *string `json:"uri,omitempty"`
+	/* The URI of the VPC network. */
+	// +optional
+	Uri *string `json:"uri,omitempty"`
 }
 
 type NetworkConnectivityHubStatus struct {
 	/* Conditions represent the latest available observations of the
-	    NetworkConnectivityHub's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* Output only. The time the hub was created. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	   NetworkConnectivityHub's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* Output only. The time the hub was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* The VPC network associated with this hub's spokes. All of the VPN tunnels, VLAN attachments, and router appliance instances referenced by this hub's spokes must belong to this VPC network. This field is read-only. Network Connectivity Center automatically populates it based on the set of spokes attached to the hub. */
-// +optional
-RoutingVpcs []HubRoutingVpcsStatus `json:"routingVpcs,omitempty"`
+	/* The VPC network associated with this hub's spokes. All of the VPN tunnels, VLAN attachments, and router appliance instances referenced by this hub's spokes must belong to this VPC network. This field is read-only. Network Connectivity Center automatically populates it based on the set of spokes attached to the hub. */
+	// +optional
+	RoutingVpcs []HubRoutingVpcsStatus `json:"routingVpcs,omitempty"`
 
-/* Output only. The current lifecycle state of this hub. Possible values: STATE_UNSPECIFIED, CREATING, ACTIVE, DELETING */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. The current lifecycle state of this hub. Possible values: STATE_UNSPECIFIED, CREATING, ACTIVE, DELETING */
+	// +optional
+	State *string `json:"state,omitempty"`
 
-/* Output only. The Google-generated UUID for the hub. This value is unique across all hub resources. If a hub is deleted and another with the same name is created, the new hub is assigned a different unique_id. */
-// +optional
-UniqueId *string `json:"uniqueId,omitempty"`
+	/* Output only. The Google-generated UUID for the hub. This value is unique across all hub resources. If a hub is deleted and another with the same name is created, the new hub is assigned a different unique_id. */
+	// +optional
+	UniqueId *string `json:"uniqueId,omitempty"`
 
-/* Output only. The time the hub was last updated. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. The time the hub was last updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpnetworkconnectivityhub;gcpnetworkconnectivityhubs
@@ -102,20 +102,22 @@ UpdateTime *string `json:"updateTime,omitempty"`
 // NetworkConnectivityHub is the Schema for the networkconnectivity API
 // +k8s:openapi-gen=true
 type NetworkConnectivityHub struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec NetworkConnectivityHubSpec `json:"spec,omitempty"`
-  Status NetworkConnectivityHubStatus `json:"status,omitempty"`
+	Spec   NetworkConnectivityHubSpec   `json:"spec,omitempty"`
+	Status NetworkConnectivityHubStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // NetworkConnectivityHubList contains a list of NetworkConnectivityHub
- type NetworkConnectivityHubList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []NetworkConnectivityHub `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&NetworkConnectivityHub{}, &NetworkConnectivityHubList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// NetworkConnectivityHubList contains a list of NetworkConnectivityHub
+type NetworkConnectivityHubList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []NetworkConnectivityHub `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&NetworkConnectivityHub{}, &NetworkConnectivityHubList{})
+}
