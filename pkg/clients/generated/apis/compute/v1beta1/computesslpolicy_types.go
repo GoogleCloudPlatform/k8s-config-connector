@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -45,63 +44,64 @@ type ComputeSSLPolicySpec struct {
 	'COMPATIBLE', 'MODERN', 'RESTRICTED', or 'CUSTOM'. If using 'CUSTOM',
 	the set of SSL features to enable must be specified in the
 	'customFeatures' field.
-	
+
 	See the [official documentation](https://cloud.google.com/compute/docs/load-balancing/ssl-policies#profilefeaturesupport)
 	for which ciphers are available to use. **Note**: this argument
 	*must* be present when using the 'CUSTOM' profile. This argument
 	*must not* be present when using any other profile. */
-// +optional
-CustomFeatures []string `json:"customFeatures,omitempty"`
+	// +optional
+	CustomFeatures []string `json:"customFeatures,omitempty"`
 
-/* Immutable. An optional description of this resource. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Immutable. An optional description of this resource. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
 	/* The minimum version of SSL protocol that can be used by the clients
 	to establish a connection with the load balancer. Default value: "TLS_1_0" Possible values: ["TLS_1_0", "TLS_1_1", "TLS_1_2"]. */
-// +optional
-MinTlsVersion *string `json:"minTlsVersion,omitempty"`
+	// +optional
+	MinTlsVersion *string `json:"minTlsVersion,omitempty"`
 
 	/* Profile specifies the set of SSL features that can be used by the
 	load balancer when negotiating SSL with clients. If using 'CUSTOM',
 	the set of SSL features to enable must be specified in the
 	'customFeatures' field.
-	
+
 	See the [official documentation](https://cloud.google.com/compute/docs/load-balancing/ssl-policies#profilefeaturesupport)
 	for information on what cipher suites each profile provides. If
 	'CUSTOM' is used, the 'custom_features' attribute **must be set**. Default value: "COMPATIBLE" Possible values: ["COMPATIBLE", "MODERN", "RESTRICTED", "CUSTOM"]. */
-// +optional
-Profile *string `json:"profile,omitempty"`
+	// +optional
+	Profile *string `json:"profile,omitempty"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ComputeSSLPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
-	    ComputeSSLPolicy's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* Creation timestamp in RFC3339 text format. */
-// +optional
-CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+	   ComputeSSLPolicy's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* Creation timestamp in RFC3339 text format. */
+	// +optional
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-/* The list of features enabled in the SSL policy. */
-// +optional
-EnabledFeatures []string `json:"enabledFeatures,omitempty"`
+	/* The list of features enabled in the SSL policy. */
+	// +optional
+	EnabledFeatures []string `json:"enabledFeatures,omitempty"`
 
 	/* Fingerprint of this resource. A hash of the contents stored in this
 	object. This field is used in optimistic locking. */
-// +optional
-Fingerprint *string `json:"fingerprint,omitempty"`
+	// +optional
+	Fingerprint *string `json:"fingerprint,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-// +optional
-SelfLink *string `json:"selfLink,omitempty"`
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputesslpolicy;gcpcomputesslpolicies
@@ -118,20 +118,22 @@ SelfLink *string `json:"selfLink,omitempty"`
 // ComputeSSLPolicy is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeSSLPolicy struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ComputeSSLPolicySpec `json:"spec,omitempty"`
-  Status ComputeSSLPolicyStatus `json:"status,omitempty"`
+	Spec   ComputeSSLPolicySpec   `json:"spec,omitempty"`
+	Status ComputeSSLPolicyStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ComputeSSLPolicyList contains a list of ComputeSSLPolicy
- type ComputeSSLPolicyList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []ComputeSSLPolicy `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&ComputeSSLPolicy{}, &ComputeSSLPolicyList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ComputeSSLPolicyList contains a list of ComputeSSLPolicy
+type ComputeSSLPolicyList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeSSLPolicy `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ComputeSSLPolicy{}, &ComputeSSLPolicyList{})
+}

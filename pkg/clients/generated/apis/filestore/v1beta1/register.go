@@ -53,19 +53,17 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	FilestoreBackupGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(FilestoreBackup{}).Name(),
-  	}
-  
-  	FilestoreInstanceGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(FilestoreInstance{}).Name(),
-  	}
-  
+	FilestoreBackupGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(FilestoreBackup{}).Name(),
+	}
 
-  	filestoreAPIVersion = SchemeGroupVersion.String()
+	FilestoreInstanceGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(FilestoreInstance{}).Name(),
+	}
+
+	filestoreAPIVersion = SchemeGroupVersion.String()
 )

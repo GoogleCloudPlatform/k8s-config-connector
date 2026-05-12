@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,57 +29,58 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type IndexFields struct {
-/* Immutable. Indicates that this field supports operations on arrayValues. Only one of 'order' and 'arrayConfig' can be specified. Possible values: ["CONTAINS"]. */
-// +optional
-ArrayConfig *string `json:"arrayConfig,omitempty"`
+	/* Immutable. Indicates that this field supports operations on arrayValues. Only one of 'order' and 'arrayConfig' can be specified. Possible values: ["CONTAINS"]. */
+	// +optional
+	ArrayConfig *string `json:"arrayConfig,omitempty"`
 
-/* Immutable. Name of the field. */
-// +optional
-FieldPath *string `json:"fieldPath,omitempty"`
+	/* Immutable. Name of the field. */
+	// +optional
+	FieldPath *string `json:"fieldPath,omitempty"`
 
-/* Immutable. Indicates that this field supports ordering by the specified order or comparing using =, <, <=, >, >=. Only one of 'order' and 'arrayConfig' can be specified. Possible values: ["ASCENDING", "DESCENDING"]. */
-// +optional
-Order *string `json:"order,omitempty"`
+	/* Immutable. Indicates that this field supports ordering by the specified order or comparing using =, <, <=, >, >=. Only one of 'order' and 'arrayConfig' can be specified. Possible values: ["ASCENDING", "DESCENDING"]. */
+	// +optional
+	Order *string `json:"order,omitempty"`
 }
 
 type FirestoreIndexSpec struct {
-/* Immutable. The collection being indexed. */
-Collection string `json:"collection"`
+	/* Immutable. The collection being indexed. */
+	Collection string `json:"collection"`
 
-/* Immutable. The Firestore database id. Defaults to '"(default)"'. */
-// +optional
-Database *string `json:"database,omitempty"`
+	/* Immutable. The Firestore database id. Defaults to '"(default)"'. */
+	// +optional
+	Database *string `json:"database,omitempty"`
 
-/* Immutable. The fields supported by this index. The last field entry is always for the field path '__name__'. If, on creation, '__name__' was not specified as the last field, it will be added automatically with the same direction as that of the last field defined. If the final field in a composite index is not directional, the '__name__' will be ordered '"ASCENDING"' (unless explicitly specified otherwise). */
-Fields []IndexFields `json:"fields"`
+	/* Immutable. The fields supported by this index. The last field entry is always for the field path '__name__'. If, on creation, '__name__' was not specified as the last field, it will be added automatically with the same direction as that of the last field defined. If the final field in a composite index is not directional, the '__name__' will be ordered '"ASCENDING"' (unless explicitly specified otherwise). */
+	Fields []IndexFields `json:"fields"`
 
-/* Immutable. The scope at which a query is run. Default value: "COLLECTION" Possible values: ["COLLECTION", "COLLECTION_GROUP"]. */
-// +optional
-QueryScope *string `json:"queryScope,omitempty"`
+	/* Immutable. The scope at which a query is run. Default value: "COLLECTION" Possible values: ["COLLECTION", "COLLECTION_GROUP"]. */
+	// +optional
+	QueryScope *string `json:"queryScope,omitempty"`
 }
 
 type FirestoreIndexStatus struct {
 	/* Conditions represent the latest available observations of the
-	    FirestoreIndex's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A server defined name for this index. Format: 'projects/{{project}}/databases/{{database}}/collectionGroups/{{collection}}/indexes/{{server_generated_id}}'. */
-// +optional
-Name *string `json:"name,omitempty"`
+	   FirestoreIndex's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A server defined name for this index. Format: 'projects/{{project}}/databases/{{database}}/collectionGroups/{{collection}}/indexes/{{server_generated_id}}'. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpfirestoreindex;gcpfirestoreindexes
@@ -97,20 +97,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // FirestoreIndex is the Schema for the firestore API
 // +k8s:openapi-gen=true
 type FirestoreIndex struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec FirestoreIndexSpec `json:"spec,omitempty"`
-  Status FirestoreIndexStatus `json:"status,omitempty"`
+	Spec   FirestoreIndexSpec   `json:"spec,omitempty"`
+	Status FirestoreIndexStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // FirestoreIndexList contains a list of FirestoreIndex
- type FirestoreIndexList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []FirestoreIndex `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&FirestoreIndex{}, &FirestoreIndexList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// FirestoreIndexList contains a list of FirestoreIndex
+type FirestoreIndexList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []FirestoreIndex `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&FirestoreIndex{}, &FirestoreIndexList{})
+}

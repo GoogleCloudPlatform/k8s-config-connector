@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,120 +29,121 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type KeyAllowedApplications struct {
-/* The package name of the application. */
-// +optional
-PackageName *string `json:"packageName,omitempty"`
+	/* The package name of the application. */
+	// +optional
+	PackageName *string `json:"packageName,omitempty"`
 
-/* The SHA1 fingerprint of the application. For example, both sha1 formats are acceptable : DA:39:A3:EE:5E:6B:4B:0D:32:55:BF:EF:95:60:18:90:AF:D8:07:09 or DA39A3EE5E6B4B0D3255BFEF95601890AFD80709. Output format is the latter. */
-// +optional
-Sha1Fingerprint *string `json:"sha1Fingerprint,omitempty"`
+	/* The SHA1 fingerprint of the application. For example, both sha1 formats are acceptable : DA:39:A3:EE:5E:6B:4B:0D:32:55:BF:EF:95:60:18:90:AF:D8:07:09 or DA39A3EE5E6B4B0D3255BFEF95601890AFD80709. Output format is the latter. */
+	// +optional
+	Sha1Fingerprint *string `json:"sha1Fingerprint,omitempty"`
 }
 
 type KeyAndroidKeyRestrictions struct {
-/* A list of Android applications that are allowed to make API calls with this key. */
-// +optional
-AllowedApplications []KeyAllowedApplications `json:"allowedApplications,omitempty"`
+	/* A list of Android applications that are allowed to make API calls with this key. */
+	// +optional
+	AllowedApplications []KeyAllowedApplications `json:"allowedApplications,omitempty"`
 }
 
 type KeyApiTargets struct {
-/* Optional. List of one or more methods that can be called. If empty, all methods for the service are allowed. A wildcard (*) can be used as the last symbol. Valid examples: `google.cloud.translate.v2.TranslateService.GetSupportedLanguage` `TranslateText` `Get*` `translate.googleapis.com.Get*` */
-// +optional
-Methods []string `json:"methods,omitempty"`
+	/* Optional. List of one or more methods that can be called. If empty, all methods for the service are allowed. A wildcard (*) can be used as the last symbol. Valid examples: `google.cloud.translate.v2.TranslateService.GetSupportedLanguage` `TranslateText` `Get*` `translate.googleapis.com.Get*` */
+	// +optional
+	Methods []string `json:"methods,omitempty"`
 
-/* The service for this restriction. It should be the canonical service name, for example: `translate.googleapis.com`. You can use [`gcloud services list`](/sdk/gcloud/reference/services/list) to get a list of services that are enabled in the project. */
-// +optional
-Service *string `json:"service,omitempty"`
+	/* The service for this restriction. It should be the canonical service name, for example: `translate.googleapis.com`. You can use [`gcloud services list`](/sdk/gcloud/reference/services/list) to get a list of services that are enabled in the project. */
+	// +optional
+	Service *string `json:"service,omitempty"`
 }
 
 type KeyBrowserKeyRestrictions struct {
-/* A list of regular expressions for the referrer URLs that are allowed to make API calls with this key. */
-// +optional
-AllowedReferrers []string `json:"allowedReferrers,omitempty"`
+	/* A list of regular expressions for the referrer URLs that are allowed to make API calls with this key. */
+	// +optional
+	AllowedReferrers []string `json:"allowedReferrers,omitempty"`
 }
 
 type KeyIosKeyRestrictions struct {
-/* A list of bundle IDs that are allowed when making API calls with this key. */
-// +optional
-AllowedBundleIds []string `json:"allowedBundleIds,omitempty"`
+	/* A list of bundle IDs that are allowed when making API calls with this key. */
+	// +optional
+	AllowedBundleIds []string `json:"allowedBundleIds,omitempty"`
 }
 
 type KeyRestrictions struct {
-/* The Android apps that are allowed to use the key. */
-// +optional
-AndroidKeyRestrictions *KeyAndroidKeyRestrictions `json:"androidKeyRestrictions,omitempty"`
+	/* The Android apps that are allowed to use the key. */
+	// +optional
+	AndroidKeyRestrictions *KeyAndroidKeyRestrictions `json:"androidKeyRestrictions,omitempty"`
 
-/* A restriction for a specific service and optionally one or more specific methods. Requests are allowed if they match any of these restrictions. If no restrictions are specified, all targets are allowed. */
-// +optional
-ApiTargets []KeyApiTargets `json:"apiTargets,omitempty"`
+	/* A restriction for a specific service and optionally one or more specific methods. Requests are allowed if they match any of these restrictions. If no restrictions are specified, all targets are allowed. */
+	// +optional
+	ApiTargets []KeyApiTargets `json:"apiTargets,omitempty"`
 
-/* The HTTP referrers (websites) that are allowed to use the key. */
-// +optional
-BrowserKeyRestrictions *KeyBrowserKeyRestrictions `json:"browserKeyRestrictions,omitempty"`
+	/* The HTTP referrers (websites) that are allowed to use the key. */
+	// +optional
+	BrowserKeyRestrictions *KeyBrowserKeyRestrictions `json:"browserKeyRestrictions,omitempty"`
 
-/* The iOS apps that are allowed to use the key. */
-// +optional
-IosKeyRestrictions *KeyIosKeyRestrictions `json:"iosKeyRestrictions,omitempty"`
+	/* The iOS apps that are allowed to use the key. */
+	// +optional
+	IosKeyRestrictions *KeyIosKeyRestrictions `json:"iosKeyRestrictions,omitempty"`
 
-/* The IP addresses of callers that are allowed to use the key. */
-// +optional
-ServerKeyRestrictions *KeyServerKeyRestrictions `json:"serverKeyRestrictions,omitempty"`
+	/* The IP addresses of callers that are allowed to use the key. */
+	// +optional
+	ServerKeyRestrictions *KeyServerKeyRestrictions `json:"serverKeyRestrictions,omitempty"`
 }
 
 type KeyServerKeyRestrictions struct {
-/* A list of the caller IP addresses that are allowed to make API calls with this key. */
-// +optional
-AllowedIps []string `json:"allowedIps,omitempty"`
+	/* A list of the caller IP addresses that are allowed to make API calls with this key. */
+	// +optional
+	AllowedIps []string `json:"allowedIps,omitempty"`
 }
 
 type APIKeysKeySpec struct {
-/* Human-readable display name of this key that you can modify. The maximum length is 63 characters. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* Human-readable display name of this key that you can modify. The maximum length is 63 characters. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* Immutable. The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* Immutable. The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Key restrictions. */
-// +optional
-Restrictions *KeyRestrictions `json:"restrictions,omitempty"`
+	/* Key restrictions. */
+	// +optional
+	Restrictions *KeyRestrictions `json:"restrictions,omitempty"`
 }
 
 type KeyObservedStateStatus struct {
-/* Output only. Unique id in UUID4 format. */
-// +optional
-Uid *string `json:"uid,omitempty"`
+	/* Output only. Unique id in UUID4 format. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
 }
 
 type APIKeysKeyStatus struct {
 	/* Conditions represent the latest available observations of the
-	    APIKeysKey's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the APIKeysKey resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   APIKeysKey's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the APIKeysKey resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *KeyObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *KeyObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpapikeyskey;gcpapikeyskeys
@@ -160,20 +160,22 @@ ObservedState *KeyObservedStateStatus `json:"observedState,omitempty"`
 // APIKeysKey is the Schema for the apikeys API
 // +k8s:openapi-gen=true
 type APIKeysKey struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec APIKeysKeySpec `json:"spec,omitempty"`
-  Status APIKeysKeyStatus `json:"status,omitempty"`
+	Spec   APIKeysKeySpec   `json:"spec,omitempty"`
+	Status APIKeysKeyStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // APIKeysKeyList contains a list of APIKeysKey
- type APIKeysKeyList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []APIKeysKey `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&APIKeysKey{}, &APIKeysKeyList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// APIKeysKeyList contains a list of APIKeysKey
+type APIKeysKeyList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []APIKeysKey `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&APIKeysKey{}, &APIKeysKeyList{})
+}

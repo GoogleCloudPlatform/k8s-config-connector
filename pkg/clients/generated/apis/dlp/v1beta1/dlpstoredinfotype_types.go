@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,141 +29,142 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type StoredinfotypeBigQueryField struct {
-/* Designated field in the BigQuery table. */
-// +optional
-Field *StoredinfotypeField `json:"field,omitempty"`
+	/* Designated field in the BigQuery table. */
+	// +optional
+	Field *StoredinfotypeField `json:"field,omitempty"`
 
-/* Source table of the field. */
-// +optional
-Table *StoredinfotypeTable `json:"table,omitempty"`
+	/* Source table of the field. */
+	// +optional
+	Table *StoredinfotypeTable `json:"table,omitempty"`
 }
 
 type StoredinfotypeCloudStorageFileSet struct {
-/* The url, in the format `gs:///`. Trailing wildcard in the path is allowed. */
-Url string `json:"url"`
+	/* The url, in the format `gs:///`. Trailing wildcard in the path is allowed. */
+	Url string `json:"url"`
 }
 
 type StoredinfotypeCloudStoragePath struct {
-/* A url representing a file or path (no wildcards) in Cloud Storage. Example: gs://[BUCKET_NAME]/dictionary.txt */
-Path string `json:"path"`
+	/* A url representing a file or path (no wildcards) in Cloud Storage. Example: gs://[BUCKET_NAME]/dictionary.txt */
+	Path string `json:"path"`
 }
 
 type StoredinfotypeDictionary struct {
-/* Newline-delimited file of words in Cloud Storage. Only a single file is accepted. */
-// +optional
-CloudStoragePath *StoredinfotypeCloudStoragePath `json:"cloudStoragePath,omitempty"`
+	/* Newline-delimited file of words in Cloud Storage. Only a single file is accepted. */
+	// +optional
+	CloudStoragePath *StoredinfotypeCloudStoragePath `json:"cloudStoragePath,omitempty"`
 
-/* List of words or phrases to search for. */
-// +optional
-WordList *StoredinfotypeWordList `json:"wordList,omitempty"`
+	/* List of words or phrases to search for. */
+	// +optional
+	WordList *StoredinfotypeWordList `json:"wordList,omitempty"`
 }
 
 type StoredinfotypeField struct {
-/* Name describing the field. */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* Name describing the field. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 }
 
 type StoredinfotypeLargeCustomDictionary struct {
-/* Field in a BigQuery table where each cell represents a dictionary phrase. */
-// +optional
-BigQueryField *StoredinfotypeBigQueryField `json:"bigQueryField,omitempty"`
+	/* Field in a BigQuery table where each cell represents a dictionary phrase. */
+	// +optional
+	BigQueryField *StoredinfotypeBigQueryField `json:"bigQueryField,omitempty"`
 
-/* Set of files containing newline-delimited lists of dictionary phrases. */
-// +optional
-CloudStorageFileSet *StoredinfotypeCloudStorageFileSet `json:"cloudStorageFileSet,omitempty"`
+	/* Set of files containing newline-delimited lists of dictionary phrases. */
+	// +optional
+	CloudStorageFileSet *StoredinfotypeCloudStorageFileSet `json:"cloudStorageFileSet,omitempty"`
 
-/* Location to store dictionary artifacts in Google Cloud Storage. These files will only be accessible by project owners and the DLP API. If any of these artifacts are modified, the dictionary is considered invalid and can no longer be used. */
-// +optional
-OutputPath *StoredinfotypeOutputPath `json:"outputPath,omitempty"`
+	/* Location to store dictionary artifacts in Google Cloud Storage. These files will only be accessible by project owners and the DLP API. If any of these artifacts are modified, the dictionary is considered invalid and can no longer be used. */
+	// +optional
+	OutputPath *StoredinfotypeOutputPath `json:"outputPath,omitempty"`
 }
 
 type StoredinfotypeOutputPath struct {
-/* A url representing a file or path (no wildcards) in Cloud Storage. Example: gs://[BUCKET_NAME]/dictionary.txt */
-Path string `json:"path"`
+	/* A url representing a file or path (no wildcards) in Cloud Storage. Example: gs://[BUCKET_NAME]/dictionary.txt */
+	Path string `json:"path"`
 }
 
 type StoredinfotypeRegex struct {
-/* The index of the submatch to extract as findings. When not specified, the entire match is returned. No more than 3 may be included. */
-// +optional
-GroupIndexes []int64 `json:"groupIndexes,omitempty"`
+	/* The index of the submatch to extract as findings. When not specified, the entire match is returned. No more than 3 may be included. */
+	// +optional
+	GroupIndexes []int64 `json:"groupIndexes,omitempty"`
 
-/* Pattern defining the regular expression. Its syntax (https://github.com/google/re2/wiki/Syntax) can be found under the google/re2 repository on GitHub. */
-Pattern string `json:"pattern"`
+	/* Pattern defining the regular expression. Its syntax (https://github.com/google/re2/wiki/Syntax) can be found under the google/re2 repository on GitHub. */
+	Pattern string `json:"pattern"`
 }
 
 type StoredinfotypeTable struct {
-// +optional
-DatasetRef *v1alpha1.ResourceRef `json:"datasetRef,omitempty"`
+	// +optional
+	DatasetRef *v1alpha1.ResourceRef `json:"datasetRef,omitempty"`
 
-// +optional
-ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-// +optional
-TableRef *v1alpha1.ResourceRef `json:"tableRef,omitempty"`
+	// +optional
+	TableRef *v1alpha1.ResourceRef `json:"tableRef,omitempty"`
 }
 
 type StoredinfotypeWordList struct {
-/* Words or phrases defining the dictionary. The dictionary must contain at least one phrase and every phrase must contain at least 2 characters that are letters or digits. [required] */
-Words []string `json:"words"`
+	/* Words or phrases defining the dictionary. The dictionary must contain at least one phrase and every phrase must contain at least 2 characters that are letters or digits. [required] */
+	Words []string `json:"words"`
 }
 
 type DLPStoredInfoTypeSpec struct {
-/* Description of the StoredInfoType (max 256 characters). */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Description of the StoredInfoType (max 256 characters). */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Store dictionary-based CustomInfoType. */
-// +optional
-Dictionary *StoredinfotypeDictionary `json:"dictionary,omitempty"`
+	/* Store dictionary-based CustomInfoType. */
+	// +optional
+	Dictionary *StoredinfotypeDictionary `json:"dictionary,omitempty"`
 
-/* Display name of the StoredInfoType (max 256 characters). */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* Display name of the StoredInfoType (max 256 characters). */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* StoredInfoType where findings are defined by a dictionary of phrases. */
-// +optional
-LargeCustomDictionary *StoredinfotypeLargeCustomDictionary `json:"largeCustomDictionary,omitempty"`
+	/* StoredInfoType where findings are defined by a dictionary of phrases. */
+	// +optional
+	LargeCustomDictionary *StoredinfotypeLargeCustomDictionary `json:"largeCustomDictionary,omitempty"`
 
-/* Immutable. The location of the resource */
-// +optional
-Location *string `json:"location,omitempty"`
+	/* Immutable. The location of the resource */
+	// +optional
+	Location *string `json:"location,omitempty"`
 
-/* Immutable. The Organization that this resource belongs to. Only one of [organizationRef, projectRef] may be specified. */
-// +optional
-OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+	/* Immutable. The Organization that this resource belongs to. Only one of [organizationRef, projectRef] may be specified. */
+	// +optional
+	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
-/* Immutable. The Project that this resource belongs to. Only one of [organizationRef, projectRef] may be specified. */
-// +optional
-ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	/* Immutable. The Project that this resource belongs to. Only one of [organizationRef, projectRef] may be specified. */
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-/* Store regular expression-based StoredInfoType. */
-// +optional
-Regex *StoredinfotypeRegex `json:"regex,omitempty"`
+	/* Store regular expression-based StoredInfoType. */
+	// +optional
+	Regex *StoredinfotypeRegex `json:"regex,omitempty"`
 
-/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type DLPStoredInfoTypeStatus struct {
 	/* Conditions represent the latest available observations of the
-	    DLPStoredInfoType's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   DLPStoredInfoType's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdlpstoredinfotype;gcpdlpstoredinfotypes
@@ -181,20 +181,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // DLPStoredInfoType is the Schema for the dlp API
 // +k8s:openapi-gen=true
 type DLPStoredInfoType struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec DLPStoredInfoTypeSpec `json:"spec,omitempty"`
-  Status DLPStoredInfoTypeStatus `json:"status,omitempty"`
+	Spec   DLPStoredInfoTypeSpec   `json:"spec,omitempty"`
+	Status DLPStoredInfoTypeStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // DLPStoredInfoTypeList contains a list of DLPStoredInfoType
- type DLPStoredInfoTypeList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []DLPStoredInfoType `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&DLPStoredInfoType{}, &DLPStoredInfoTypeList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// DLPStoredInfoTypeList contains a list of DLPStoredInfoType
+type DLPStoredInfoTypeList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DLPStoredInfoType `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&DLPStoredInfoType{}, &DLPStoredInfoTypeList{})
+}

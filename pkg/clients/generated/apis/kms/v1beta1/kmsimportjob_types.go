@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,110 +29,111 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type KMSImportJobSpec struct {
-/* Required. Immutable. The wrapping method to be used for incoming key material. */
-ImportMethod string `json:"importMethod"`
+	/* Required. Immutable. The wrapping method to be used for incoming key material. */
+	ImportMethod string `json:"importMethod"`
 
-/* KMSKeyRingRef defines the resource reference to KMSKeyRing, which "External" field holds the GCP identifier for the KRM object. */
-KmsKeyRingRef v1alpha1.ResourceRef `json:"kmsKeyRingRef"`
+	/* KMSKeyRingRef defines the resource reference to KMSKeyRing, which "External" field holds the GCP identifier for the KRM object. */
+	KmsKeyRingRef v1alpha1.ResourceRef `json:"kmsKeyRingRef"`
 
-/* Required. Immutable. The protection level of the [ImportJob][google.cloud.kms.v1.ImportJob]. This must match the [protection_level][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level] of the [version_template][google.cloud.kms.v1.CryptoKey.version_template] on the [CryptoKey][google.cloud.kms.v1.CryptoKey] you attempt to import into. */
-ProtectionLevel string `json:"protectionLevel"`
+	/* Required. Immutable. The protection level of the [ImportJob][google.cloud.kms.v1.ImportJob]. This must match the [protection_level][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level] of the [version_template][google.cloud.kms.v1.CryptoKey.version_template] on the [CryptoKey][google.cloud.kms.v1.CryptoKey] you attempt to import into. */
+	ProtectionLevel string `json:"protectionLevel"`
 
-/* The KMSImportJob name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The KMSImportJob name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ImportjobAttestationStatus struct {
-/* Output only. The certificate chains needed to validate the attestation */
-// +optional
-CertChains *ImportjobCertChainsStatus `json:"certChains,omitempty"`
+	/* Output only. The certificate chains needed to validate the attestation */
+	// +optional
+	CertChains *ImportjobCertChainsStatus `json:"certChains,omitempty"`
 
-/* Output only. The attestation data provided by the HSM when the key operation was performed. */
-// +optional
-Content *string `json:"content,omitempty"`
+	/* Output only. The attestation data provided by the HSM when the key operation was performed. */
+	// +optional
+	Content *string `json:"content,omitempty"`
 
-/* Output only. The format of the attestation data. */
-// +optional
-Format *string `json:"format,omitempty"`
+	/* Output only. The format of the attestation data. */
+	// +optional
+	Format *string `json:"format,omitempty"`
 }
 
 type ImportjobCertChainsStatus struct {
-/* Cavium certificate chain corresponding to the attestation. */
-// +optional
-CaviumCerts []string `json:"caviumCerts,omitempty"`
+	/* Cavium certificate chain corresponding to the attestation. */
+	// +optional
+	CaviumCerts []string `json:"caviumCerts,omitempty"`
 
-/* Google card certificate chain corresponding to the attestation. */
-// +optional
-GoogleCardCerts []string `json:"googleCardCerts,omitempty"`
+	/* Google card certificate chain corresponding to the attestation. */
+	// +optional
+	GoogleCardCerts []string `json:"googleCardCerts,omitempty"`
 
-/* Google partition certificate chain corresponding to the attestation. */
-// +optional
-GooglePartitionCerts []string `json:"googlePartitionCerts,omitempty"`
+	/* Google partition certificate chain corresponding to the attestation. */
+	// +optional
+	GooglePartitionCerts []string `json:"googlePartitionCerts,omitempty"`
 }
 
 type ImportjobObservedStateStatus struct {
-/* Output only. Statement that was generated and signed by the key creator (for example, an HSM) at key creation time. Use this statement to verify attributes of the key as stored on the HSM, independently of Google. Only present if the chosen [ImportMethod][google.cloud.kms.v1.ImportJob.ImportMethod] is one with a protection level of [HSM][google.cloud.kms.v1.ProtectionLevel.HSM]. */
-// +optional
-Attestation *ImportjobAttestationStatus `json:"attestation,omitempty"`
+	/* Output only. Statement that was generated and signed by the key creator (for example, an HSM) at key creation time. Use this statement to verify attributes of the key as stored on the HSM, independently of Google. Only present if the chosen [ImportMethod][google.cloud.kms.v1.ImportJob.ImportMethod] is one with a protection level of [HSM][google.cloud.kms.v1.ProtectionLevel.HSM]. */
+	// +optional
+	Attestation *ImportjobAttestationStatus `json:"attestation,omitempty"`
 
-/* Output only. The time at which this [ImportJob][google.cloud.kms.v1.ImportJob] was created. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. The time at which this [ImportJob][google.cloud.kms.v1.ImportJob] was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. The time this [ImportJob][google.cloud.kms.v1.ImportJob] expired. Only present if [state][google.cloud.kms.v1.ImportJob.state] is [EXPIRED][google.cloud.kms.v1.ImportJob.ImportJobState.EXPIRED]. */
-// +optional
-ExpireEventTime *string `json:"expireEventTime,omitempty"`
+	/* Output only. The time this [ImportJob][google.cloud.kms.v1.ImportJob] expired. Only present if [state][google.cloud.kms.v1.ImportJob.state] is [EXPIRED][google.cloud.kms.v1.ImportJob.ImportJobState.EXPIRED]. */
+	// +optional
+	ExpireEventTime *string `json:"expireEventTime,omitempty"`
 
-/* Output only. The time at which this [ImportJob][google.cloud.kms.v1.ImportJob] is scheduled for expiration and can no longer be used to import key material. */
-// +optional
-ExpireTime *string `json:"expireTime,omitempty"`
+	/* Output only. The time at which this [ImportJob][google.cloud.kms.v1.ImportJob] is scheduled for expiration and can no longer be used to import key material. */
+	// +optional
+	ExpireTime *string `json:"expireTime,omitempty"`
 
-/* Output only. The time this [ImportJob][google.cloud.kms.v1.ImportJob]'s key material was generated. */
-// +optional
-GenerateTime *string `json:"generateTime,omitempty"`
+	/* Output only. The time this [ImportJob][google.cloud.kms.v1.ImportJob]'s key material was generated. */
+	// +optional
+	GenerateTime *string `json:"generateTime,omitempty"`
 
-/* Output only. The public key with which to wrap key material prior to import. Only returned if [state][google.cloud.kms.v1.ImportJob.state] is [ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE]. */
-// +optional
-PublicKey *ImportjobPublicKeyStatus `json:"publicKey,omitempty"`
+	/* Output only. The public key with which to wrap key material prior to import. Only returned if [state][google.cloud.kms.v1.ImportJob.state] is [ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE]. */
+	// +optional
+	PublicKey *ImportjobPublicKeyStatus `json:"publicKey,omitempty"`
 
-/* Output only. The current state of the [ImportJob][google.cloud.kms.v1.ImportJob], indicating if it can be used. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. The current state of the [ImportJob][google.cloud.kms.v1.ImportJob], indicating if it can be used. */
+	// +optional
+	State *string `json:"state,omitempty"`
 }
 
 type ImportjobPublicKeyStatus struct {
-/* The public key, encoded in PEM format. For more information, see the [RFC 7468](https://tools.ietf.org/html/rfc7468) sections for [General Considerations](https://tools.ietf.org/html/rfc7468#section-2) and [Textual Encoding of Subject Public Key Info] (https://tools.ietf.org/html/rfc7468#section-13). */
-// +optional
-Pem *string `json:"pem,omitempty"`
+	/* The public key, encoded in PEM format. For more information, see the [RFC 7468](https://tools.ietf.org/html/rfc7468) sections for [General Considerations](https://tools.ietf.org/html/rfc7468#section-2) and [Textual Encoding of Subject Public Key Info] (https://tools.ietf.org/html/rfc7468#section-13). */
+	// +optional
+	Pem *string `json:"pem,omitempty"`
 }
 
 type KMSImportJobStatus struct {
 	/* Conditions represent the latest available observations of the
-	    KMSImportJob's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the KMSImportJob resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   KMSImportJob's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the KMSImportJob resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *ImportjobObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *ImportjobObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpkmsimportjob;gcpkmsimportjobs
@@ -148,20 +148,22 @@ ObservedState *ImportjobObservedStateStatus `json:"observedState,omitempty"`
 // KMSImportJob is the Schema for the kms API
 // +k8s:openapi-gen=true
 type KMSImportJob struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec KMSImportJobSpec `json:"spec,omitempty"`
-  Status KMSImportJobStatus `json:"status,omitempty"`
+	Spec   KMSImportJobSpec   `json:"spec,omitempty"`
+	Status KMSImportJobStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // KMSImportJobList contains a list of KMSImportJob
- type KMSImportJobList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []KMSImportJob `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&KMSImportJob{}, &KMSImportJobList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// KMSImportJobList contains a list of KMSImportJob
+type KMSImportJobList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []KMSImportJob `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&KMSImportJob{}, &KMSImportJobList{})
+}

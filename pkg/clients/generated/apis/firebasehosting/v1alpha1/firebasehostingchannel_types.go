@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -43,41 +42,42 @@ type FirebaseHostingChannelSpec struct {
 	/* The time at which the channel will be automatically deleted. If null, the channel
 	will not be automatically deleted. This field is present in the output whether it's
 	set directly or via the 'ttl' field. */
-// +optional
-ExpireTime *string `json:"expireTime,omitempty"`
+	// +optional
+	ExpireTime *string `json:"expireTime,omitempty"`
 
-/* Immutable. Optional. The channelId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The channelId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* The number of previous releases to retain on the channel for rollback or other
 	purposes. Must be a number between 1-100. Defaults to 10 for new channels. */
-// +optional
-RetainedReleaseCount *int64 `json:"retainedReleaseCount,omitempty"`
+	// +optional
+	RetainedReleaseCount *int64 `json:"retainedReleaseCount,omitempty"`
 
-/* Immutable. Required. The ID of the site in which to create this channel. */
-SiteId string `json:"siteId"`
+	/* Immutable. Required. The ID of the site in which to create this channel. */
+	SiteId string `json:"siteId"`
 
 	/* Immutable. Input only. A time-to-live for this channel. Sets 'expire_time' to the provided
 	duration past the time of the request. A duration in seconds with up to nine fractional
 	digits, terminated by 's'. Example: "86400s" (one day). */
-// +optional
-Ttl *string `json:"ttl,omitempty"`
+	// +optional
+	Ttl *string `json:"ttl,omitempty"`
 }
 
 type FirebaseHostingChannelStatus struct {
 	/* Conditions represent the latest available observations of the
-	    FirebaseHostingChannel's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	   FirebaseHostingChannel's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The fully-qualified resource name for the channel, in the format:
 	sites/SITE_ID/channels/CHANNEL_ID. */
-// +optional
-Name *string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpfirebasehostingchannel;gcpfirebasehostingchannels
@@ -94,20 +94,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // FirebaseHostingChannel is the Schema for the firebasehosting API
 // +k8s:openapi-gen=true
 type FirebaseHostingChannel struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec FirebaseHostingChannelSpec `json:"spec,omitempty"`
-  Status FirebaseHostingChannelStatus `json:"status,omitempty"`
+	Spec   FirebaseHostingChannelSpec   `json:"spec,omitempty"`
+	Status FirebaseHostingChannelStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // FirebaseHostingChannelList contains a list of FirebaseHostingChannel
- type FirebaseHostingChannelList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []FirebaseHostingChannel `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&FirebaseHostingChannel{}, &FirebaseHostingChannelList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// FirebaseHostingChannelList contains a list of FirebaseHostingChannel
+type FirebaseHostingChannelList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []FirebaseHostingChannel `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&FirebaseHostingChannel{}, &FirebaseHostingChannelList{})
+}

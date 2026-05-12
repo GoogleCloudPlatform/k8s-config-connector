@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,93 +29,94 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type EnvironmentContainerImage struct {
-/* Required. The path to the container image repository. For example: `gcr.io/{project_id}/{image_name}` */
-// +optional
-Repository *string `json:"repository,omitempty"`
+	/* Required. The path to the container image repository. For example: `gcr.io/{project_id}/{image_name}` */
+	// +optional
+	Repository *string `json:"repository,omitempty"`
 
-/* The tag of the container image. If not specified, this defaults to the latest tag. */
-// +optional
-Tag *string `json:"tag,omitempty"`
+	/* The tag of the container image. If not specified, this defaults to the latest tag. */
+	// +optional
+	Tag *string `json:"tag,omitempty"`
 }
 
 type EnvironmentVmImage struct {
-/* Use this VM image family to find the image; the newest image in this family will be used. */
-// +optional
-ImageFamily *string `json:"imageFamily,omitempty"`
+	/* Use this VM image family to find the image; the newest image in this family will be used. */
+	// +optional
+	ImageFamily *string `json:"imageFamily,omitempty"`
 
-/* Use VM image name to find the image. */
-// +optional
-ImageName *string `json:"imageName,omitempty"`
+	/* Use VM image name to find the image. */
+	// +optional
+	ImageName *string `json:"imageName,omitempty"`
 
-/* Required. The name of the Google Cloud project that this VM image belongs to. Format: `{project_id}` */
-// +optional
-Project *string `json:"project,omitempty"`
+	/* Required. The name of the Google Cloud project that this VM image belongs to. Format: `{project_id}` */
+	// +optional
+	Project *string `json:"project,omitempty"`
 }
 
 type NotebooksEnvironmentSpec struct {
-/* Use a container image to start the notebook instance. */
-// +optional
-ContainerImage *EnvironmentContainerImage `json:"containerImage,omitempty"`
+	/* Use a container image to start the notebook instance. */
+	// +optional
+	ContainerImage *EnvironmentContainerImage `json:"containerImage,omitempty"`
 
-/* A brief description of this environment. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* A brief description of this environment. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Display name of this environment for the UI. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* Display name of this environment for the UI. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* The location for the resource. */
-Location string `json:"location"`
+	/* The location for the resource. */
+	Location string `json:"location"`
 
-/* Path to a Bash script that automatically runs after a notebook instance fully boots up. The path must be a URL or Cloud Storage path. Example: `"gs://path-to-file/file-name"` */
-// +optional
-PostStartupScript *string `json:"postStartupScript,omitempty"`
+	/* Path to a Bash script that automatically runs after a notebook instance fully boots up. The path must be a URL or Cloud Storage path. Example: `"gs://path-to-file/file-name"` */
+	// +optional
+	PostStartupScript *string `json:"postStartupScript,omitempty"`
 
-/* The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* The NotebooksEnvironment name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The NotebooksEnvironment name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Use a Compute Engine VM image to start the notebook instance. */
-// +optional
-VmImage *EnvironmentVmImage `json:"vmImage,omitempty"`
+	/* Use a Compute Engine VM image to start the notebook instance. */
+	// +optional
+	VmImage *EnvironmentVmImage `json:"vmImage,omitempty"`
 }
 
 type EnvironmentObservedStateStatus struct {
-/* Output only. The time at which this environment was created. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. The time at which this environment was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 }
 
 type NotebooksEnvironmentStatus struct {
 	/* Conditions represent the latest available observations of the
-	    NotebooksEnvironment's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the NotebooksEnvironment resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   NotebooksEnvironment's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the NotebooksEnvironment resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *EnvironmentObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *EnvironmentObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpnotebooksenvironment;gcpnotebooksenvironments
@@ -131,20 +131,22 @@ ObservedState *EnvironmentObservedStateStatus `json:"observedState,omitempty"`
 // NotebooksEnvironment is the Schema for the notebooks API
 // +k8s:openapi-gen=true
 type NotebooksEnvironment struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec NotebooksEnvironmentSpec `json:"spec,omitempty"`
-  Status NotebooksEnvironmentStatus `json:"status,omitempty"`
+	Spec   NotebooksEnvironmentSpec   `json:"spec,omitempty"`
+	Status NotebooksEnvironmentStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // NotebooksEnvironmentList contains a list of NotebooksEnvironment
- type NotebooksEnvironmentList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []NotebooksEnvironment `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&NotebooksEnvironment{}, &NotebooksEnvironmentList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// NotebooksEnvironmentList contains a list of NotebooksEnvironment
+type NotebooksEnvironmentList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []NotebooksEnvironment `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&NotebooksEnvironment{}, &NotebooksEnvironmentList{})
+}

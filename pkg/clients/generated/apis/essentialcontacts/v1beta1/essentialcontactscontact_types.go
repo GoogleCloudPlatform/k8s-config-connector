@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,68 +29,69 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type EssentialContactsContactSpec struct {
-/* Required. The email address to send notifications to. The email address does not need to be a Google Account. */
-Email string `json:"email"`
+	/* Required. The email address to send notifications to. The email address does not need to be a Google Account. */
+	Email string `json:"email"`
 
-/* FolderRef represents the Folder that this resource belongs to. */
-// +optional
-FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+	/* FolderRef represents the Folder that this resource belongs to. */
+	// +optional
+	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
-/* Required. The preferred language for notifications, as a ISO 639-1 language code. See [Supported languages](https://cloud.google.com/resource-manager/docs/managing-notification-contacts#supported-languages) for a list of supported languages. */
-LanguageTag string `json:"languageTag"`
+	/* Required. The preferred language for notifications, as a ISO 639-1 language code. See [Supported languages](https://cloud.google.com/resource-manager/docs/managing-notification-contacts#supported-languages) for a list of supported languages. */
+	LanguageTag string `json:"languageTag"`
 
-/* Required. The categories of notifications that the contact will receive communications for. */
-NotificationCategorySubscriptions []string `json:"notificationCategorySubscriptions"`
+	/* Required. The categories of notifications that the contact will receive communications for. */
+	NotificationCategorySubscriptions []string `json:"notificationCategorySubscriptions"`
 
-/* OrganizationRef represents the Organization that this resource belongs to. */
-// +optional
-OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+	/* OrganizationRef represents the Organization that this resource belongs to. */
+	// +optional
+	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
-/* The Project that this resource belongs to. */
-// +optional
-ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	/* The Project that this resource belongs to. */
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ContactObservedStateStatus struct {
-/* The last time the validation_state was updated, either manually or automatically. A contact is considered stale if its validation state was updated more than 1 year ago. */
-// +optional
-ValidateTime *string `json:"validateTime,omitempty"`
+	/* The last time the validation_state was updated, either manually or automatically. A contact is considered stale if its validation state was updated more than 1 year ago. */
+	// +optional
+	ValidateTime *string `json:"validateTime,omitempty"`
 
-/* Output only. The validity of the contact. A contact is considered valid if it is the correct recipient for notifications for a particular resource. */
-// +optional
-ValidationState *string `json:"validationState,omitempty"`
+	/* Output only. The validity of the contact. A contact is considered valid if it is the correct recipient for notifications for a particular resource. */
+	// +optional
+	ValidationState *string `json:"validationState,omitempty"`
 }
 
 type EssentialContactsContactStatus struct {
 	/* Conditions represent the latest available observations of the
-	    EssentialContactsContact's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the EssentialContactsContact resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   EssentialContactsContact's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the EssentialContactsContact resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *ContactObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *ContactObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpessentialcontactscontact;gcpessentialcontactscontacts
@@ -106,20 +106,22 @@ ObservedState *ContactObservedStateStatus `json:"observedState,omitempty"`
 // EssentialContactsContact is the Schema for the essentialcontacts API
 // +k8s:openapi-gen=true
 type EssentialContactsContact struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec EssentialContactsContactSpec `json:"spec,omitempty"`
-  Status EssentialContactsContactStatus `json:"status,omitempty"`
+	Spec   EssentialContactsContactSpec   `json:"spec,omitempty"`
+	Status EssentialContactsContactStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // EssentialContactsContactList contains a list of EssentialContactsContact
- type EssentialContactsContactList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []EssentialContactsContact `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&EssentialContactsContact{}, &EssentialContactsContactList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// EssentialContactsContactList contains a list of EssentialContactsContact
+type EssentialContactsContactList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []EssentialContactsContact `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&EssentialContactsContact{}, &EssentialContactsContactList{})
+}

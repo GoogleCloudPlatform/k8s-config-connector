@@ -53,13 +53,11 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	VPCAccessConnectorGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(VPCAccessConnector{}).Name(),
-  	}
-  
+	VPCAccessConnectorGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(VPCAccessConnector{}).Name(),
+	}
 
-  	vpcaccessAPIVersion = SchemeGroupVersion.String()
+	vpcaccessAPIVersion = SchemeGroupVersion.String()
 )

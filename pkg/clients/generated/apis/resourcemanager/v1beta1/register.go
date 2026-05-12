@@ -53,31 +53,29 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	FolderGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(Folder{}).Name(),
-  	}
-  
-  	ProjectGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(Project{}).Name(),
-  	}
-  
-  	ResourceManagerLienGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(ResourceManagerLien{}).Name(),
-  	}
-  
-  	ResourceManagerPolicyGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(ResourceManagerPolicy{}).Name(),
-  	}
-  
+	FolderGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(Folder{}).Name(),
+	}
 
-  	resourcemanagerAPIVersion = SchemeGroupVersion.String()
+	ProjectGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(Project{}).Name(),
+	}
+
+	ResourceManagerLienGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ResourceManagerLien{}).Name(),
+	}
+
+	ResourceManagerPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ResourceManagerPolicy{}).Name(),
+	}
+
+	resourcemanagerAPIVersion = SchemeGroupVersion.String()
 )

@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,105 +29,106 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type PrivateconnectionVpcPeeringConfig struct {
-/* Required. Fully qualified name of the VPC that Datastream will peer to. Format: `projects/{project}/global/{networks}/{name}` */
-// +optional
-NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	/* Required. Fully qualified name of the VPC that Datastream will peer to. Format: `projects/{project}/global/{networks}/{name}` */
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
-/* Required. A free subnet for peering. (CIDR of /29) */
-// +optional
-Subnet *string `json:"subnet,omitempty"`
+	/* Required. A free subnet for peering. (CIDR of /29) */
+	// +optional
+	Subnet *string `json:"subnet,omitempty"`
 }
 
 type DatastreamPrivateConnectionSpec struct {
-/* Required. Display name. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* Required. Display name. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* Labels. */
-// +optional
-Labels map[string]string `json:"labels,omitempty"`
+	/* Labels. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
 
-/* Immutable. */
-Location string `json:"location"`
+	/* Immutable. */
+	Location string `json:"location"`
 
-/* The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* The DatastreamPrivateConnection name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The DatastreamPrivateConnection name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* VPC Peering Config. */
-// +optional
-VpcPeeringConfig *PrivateconnectionVpcPeeringConfig `json:"vpcPeeringConfig,omitempty"`
+	/* VPC Peering Config. */
+	// +optional
+	VpcPeeringConfig *PrivateconnectionVpcPeeringConfig `json:"vpcPeeringConfig,omitempty"`
 }
 
 type PrivateconnectionErrorStatus struct {
-/* Additional information about the error. */
-// +optional
-Details map[string]string `json:"details,omitempty"`
+	/* Additional information about the error. */
+	// +optional
+	Details map[string]string `json:"details,omitempty"`
 
-/* The time when the error occurred. */
-// +optional
-ErrorTime *string `json:"errorTime,omitempty"`
+	/* The time when the error occurred. */
+	// +optional
+	ErrorTime *string `json:"errorTime,omitempty"`
 
-/* A unique identifier for this specific error, allowing it to be traced throughout the system in logs and API responses. */
-// +optional
-ErrorUUID *string `json:"errorUUID,omitempty"`
+	/* A unique identifier for this specific error, allowing it to be traced throughout the system in logs and API responses. */
+	// +optional
+	ErrorUUID *string `json:"errorUUID,omitempty"`
 
-/* A message containing more information about the error that occurred. */
-// +optional
-Message *string `json:"message,omitempty"`
+	/* A message containing more information about the error that occurred. */
+	// +optional
+	Message *string `json:"message,omitempty"`
 
-/* A title that explains the reason for the error. */
-// +optional
-Reason *string `json:"reason,omitempty"`
+	/* A title that explains the reason for the error. */
+	// +optional
+	Reason *string `json:"reason,omitempty"`
 }
 
 type PrivateconnectionObservedStateStatus struct {
-/* Output only. The create time of the resource. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. The create time of the resource. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. In case of error, the details of the error in a user-friendly format. */
-// +optional
-Error *PrivateconnectionErrorStatus `json:"error,omitempty"`
+	/* Output only. In case of error, the details of the error in a user-friendly format. */
+	// +optional
+	Error *PrivateconnectionErrorStatus `json:"error,omitempty"`
 
-/* Output only. The state of the Private Connection. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. The state of the Private Connection. */
+	// +optional
+	State *string `json:"state,omitempty"`
 
-/* Output only. The update time of the resource. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. The update time of the resource. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type DatastreamPrivateConnectionStatus struct {
 	/* Conditions represent the latest available observations of the
-	    DatastreamPrivateConnection's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the DatastreamPrivateConnection resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   DatastreamPrivateConnection's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the DatastreamPrivateConnection resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *PrivateconnectionObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *PrivateconnectionObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdatastreamprivateconnection;gcpdatastreamprivateconnections
@@ -143,20 +143,22 @@ ObservedState *PrivateconnectionObservedStateStatus `json:"observedState,omitemp
 // DatastreamPrivateConnection is the Schema for the datastream API
 // +k8s:openapi-gen=true
 type DatastreamPrivateConnection struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec DatastreamPrivateConnectionSpec `json:"spec,omitempty"`
-  Status DatastreamPrivateConnectionStatus `json:"status,omitempty"`
+	Spec   DatastreamPrivateConnectionSpec   `json:"spec,omitempty"`
+	Status DatastreamPrivateConnectionStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // DatastreamPrivateConnectionList contains a list of DatastreamPrivateConnection
- type DatastreamPrivateConnectionList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []DatastreamPrivateConnection `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&DatastreamPrivateConnection{}, &DatastreamPrivateConnectionList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// DatastreamPrivateConnectionList contains a list of DatastreamPrivateConnection
+type DatastreamPrivateConnectionList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DatastreamPrivateConnection `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&DatastreamPrivateConnection{}, &DatastreamPrivateConnectionList{})
+}

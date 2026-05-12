@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -45,43 +44,44 @@ type SQLDatabaseSpec struct {
 	and Postgres' [Character Set Support](https://www.postgresql.org/docs/9.6/static/multibyte.html)
 	for more details and supported values. Postgres databases only support
 	a value of 'UTF8' at creation time. */
-// +optional
-Charset *string `json:"charset,omitempty"`
+	// +optional
+	Charset *string `json:"charset,omitempty"`
 
 	/* The collation value. See MySQL's
 	[Supported Character Sets and Collations](https://dev.mysql.com/doc/refman/5.7/en/charset-charsets.html)
 	and Postgres' [Collation Support](https://www.postgresql.org/docs/9.6/static/collation.html)
 	for more details and supported values. Postgres databases only support
 	a value of 'en_US.UTF8' at creation time. */
-// +optional
-Collation *string `json:"collation,omitempty"`
+	// +optional
+	Collation *string `json:"collation,omitempty"`
 
 	/* The deletion policy for the database. Setting ABANDON allows the resource
 	to be abandoned rather than deleted. This is useful for Postgres, where databases cannot be
 	deleted from the API if there are users other than cloudsqlsuperuser with access. Possible
 	values are: "ABANDON", "DELETE". Defaults to "DELETE". */
-// +optional
-DeletionPolicy *string `json:"deletionPolicy,omitempty"`
+	// +optional
+	DeletionPolicy *string `json:"deletionPolicy,omitempty"`
 
-/* The Cloud SQL instance. */
-InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
+	/* The Cloud SQL instance. */
+	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type SQLDatabaseStatus struct {
 	/* Conditions represent the latest available observations of the
-	    SQLDatabase's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   SQLDatabase's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-// +optional
-SelfLink *string `json:"selfLink,omitempty"`
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpsqldatabase;gcpsqldatabases
@@ -98,20 +98,22 @@ SelfLink *string `json:"selfLink,omitempty"`
 // SQLDatabase is the Schema for the sql API
 // +k8s:openapi-gen=true
 type SQLDatabase struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec SQLDatabaseSpec `json:"spec,omitempty"`
-  Status SQLDatabaseStatus `json:"status,omitempty"`
+	Spec   SQLDatabaseSpec   `json:"spec,omitempty"`
+	Status SQLDatabaseStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // SQLDatabaseList contains a list of SQLDatabase
- type SQLDatabaseList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []SQLDatabase `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&SQLDatabase{}, &SQLDatabaseList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// SQLDatabaseList contains a list of SQLDatabase
+type SQLDatabaseList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []SQLDatabase `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&SQLDatabase{}, &SQLDatabaseList{})
+}

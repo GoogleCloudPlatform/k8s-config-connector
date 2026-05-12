@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,215 +29,216 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ResourcepolicyDailySchedule struct {
-/* Immutable. Defines a schedule with units measured in days. The value determines how many days pass between the start of each cycle. Days in cycle for snapshot schedule policy must be 1. */
-DaysInCycle int64 `json:"daysInCycle"`
+	/* Immutable. Defines a schedule with units measured in days. The value determines how many days pass between the start of each cycle. Days in cycle for snapshot schedule policy must be 1. */
+	DaysInCycle int64 `json:"daysInCycle"`
 
-/* Immutable. This must be in UTC format that resolves to one of 00:00, 04:00, 08:00, 12:00, 16:00, or 20:00. For example, both 13:00-5 and 08:00 are valid. */
-StartTime string `json:"startTime"`
+	/* Immutable. This must be in UTC format that resolves to one of 00:00, 04:00, 08:00, 12:00, 16:00, or 20:00. For example, both 13:00-5 and 08:00 are valid. */
+	StartTime string `json:"startTime"`
 }
 
 type ResourcepolicyDayOfWeeks struct {
-/* Immutable. The day of the week to create the snapshot. e.g. MONDAY Possible values: ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]. */
-Day string `json:"day"`
+	/* Immutable. The day of the week to create the snapshot. e.g. MONDAY Possible values: ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]. */
+	Day string `json:"day"`
 
-/* Immutable. Time within the window to start the operations. It must be in format "HH:MM", where HH : [00-23] and MM : [00-00] GMT. */
-StartTime string `json:"startTime"`
+	/* Immutable. Time within the window to start the operations. It must be in format "HH:MM", where HH : [00-23] and MM : [00-00] GMT. */
+	StartTime string `json:"startTime"`
 }
 
 type ResourcepolicyDiskConsistencyGroupPolicy struct {
-/* Immutable. Enable disk consistency on the resource policy. */
-Enabled bool `json:"enabled"`
+	/* Immutable. Enable disk consistency on the resource policy. */
+	Enabled bool `json:"enabled"`
 }
 
 type ResourcepolicyGroupPlacementPolicy struct {
-/* Immutable. The number of availability domains instances will be spread across. If two instances are in different availability domain, they will not be put in the same low latency network. */
-// +optional
-AvailabilityDomainCount *int64 `json:"availabilityDomainCount,omitempty"`
+	/* Immutable. The number of availability domains instances will be spread across. If two instances are in different availability domain, they will not be put in the same low latency network. */
+	// +optional
+	AvailabilityDomainCount *int64 `json:"availabilityDomainCount,omitempty"`
 
-/* Immutable. Collocation specifies whether to place VMs inside the same availability domain on the same low-latency network. Specify 'COLLOCATED' to enable collocation. Can only be specified with 'vm_count'. If compute instances are created with a COLLOCATED policy, then exactly 'vm_count' instances must be created at the same time with the resource policy attached. Possible values: ["COLLOCATED"]. */
-// +optional
-Collocation *string `json:"collocation,omitempty"`
+	/* Immutable. Collocation specifies whether to place VMs inside the same availability domain on the same low-latency network. Specify 'COLLOCATED' to enable collocation. Can only be specified with 'vm_count'. If compute instances are created with a COLLOCATED policy, then exactly 'vm_count' instances must be created at the same time with the resource policy attached. Possible values: ["COLLOCATED"]. */
+	// +optional
+	Collocation *string `json:"collocation,omitempty"`
 
-/* Immutable. Specifies the number of max logical switches. */
-// +optional
-MaxDistance *int64 `json:"maxDistance,omitempty"`
+	/* Immutable. Specifies the number of max logical switches. */
+	// +optional
+	MaxDistance *int64 `json:"maxDistance,omitempty"`
 
-/* Immutable. Number of VMs in this placement group. Google does not recommend that you use this field unless you use a compact policy and you want your policy to work only if it contains this exact number of VMs. */
-// +optional
-VmCount *int64 `json:"vmCount,omitempty"`
+	/* Immutable. Number of VMs in this placement group. Google does not recommend that you use this field unless you use a compact policy and you want your policy to work only if it contains this exact number of VMs. */
+	// +optional
+	VmCount *int64 `json:"vmCount,omitempty"`
 }
 
 type ResourcepolicyHourlySchedule struct {
-/* Immutable. The number of hours between snapshots. */
-HoursInCycle int64 `json:"hoursInCycle"`
+	/* Immutable. The number of hours between snapshots. */
+	HoursInCycle int64 `json:"hoursInCycle"`
 
-/* Immutable. Time within the window to start the operations. It must be in an hourly format "HH:MM", where HH : [00-23] and MM : [00] GMT. eg: 21:00. */
-StartTime string `json:"startTime"`
+	/* Immutable. Time within the window to start the operations. It must be in an hourly format "HH:MM", where HH : [00-23] and MM : [00] GMT. eg: 21:00. */
+	StartTime string `json:"startTime"`
 }
 
 type ResourcepolicyInstanceSchedulePolicy struct {
-/* Immutable. The expiration time of the schedule. The timestamp is an RFC3339 string. */
-// +optional
-ExpirationTime *string `json:"expirationTime,omitempty"`
+	/* Immutable. The expiration time of the schedule. The timestamp is an RFC3339 string. */
+	// +optional
+	ExpirationTime *string `json:"expirationTime,omitempty"`
 
-/* Immutable. The start time of the schedule. The timestamp is an RFC3339 string. */
-// +optional
-StartTime *string `json:"startTime,omitempty"`
+	/* Immutable. The start time of the schedule. The timestamp is an RFC3339 string. */
+	// +optional
+	StartTime *string `json:"startTime,omitempty"`
 
-/* Immutable. Specifies the time zone to be used in interpreting the schedule. The value of this field must be a time zone name from the tz database: http://en.wikipedia.org/wiki/Tz_database. */
-TimeZone string `json:"timeZone"`
+	/* Immutable. Specifies the time zone to be used in interpreting the schedule. The value of this field must be a time zone name from the tz database: http://en.wikipedia.org/wiki/Tz_database. */
+	TimeZone string `json:"timeZone"`
 
-/* Immutable. Specifies the schedule for starting instances. */
-// +optional
-VmStartSchedule *ResourcepolicyVmStartSchedule `json:"vmStartSchedule,omitempty"`
+	/* Immutable. Specifies the schedule for starting instances. */
+	// +optional
+	VmStartSchedule *ResourcepolicyVmStartSchedule `json:"vmStartSchedule,omitempty"`
 
-/* Immutable. Specifies the schedule for stopping instances. */
-// +optional
-VmStopSchedule *ResourcepolicyVmStopSchedule `json:"vmStopSchedule,omitempty"`
+	/* Immutable. Specifies the schedule for stopping instances. */
+	// +optional
+	VmStopSchedule *ResourcepolicyVmStopSchedule `json:"vmStopSchedule,omitempty"`
 }
 
 type ResourcepolicyRetentionPolicy struct {
-/* Immutable. Maximum age of the snapshot that is allowed to be kept. */
-MaxRetentionDays int64 `json:"maxRetentionDays"`
+	/* Immutable. Maximum age of the snapshot that is allowed to be kept. */
+	MaxRetentionDays int64 `json:"maxRetentionDays"`
 
-/* Immutable. Specifies the behavior to apply to scheduled snapshots when the source disk is deleted. Default value: "KEEP_AUTO_SNAPSHOTS" Possible values: ["KEEP_AUTO_SNAPSHOTS", "APPLY_RETENTION_POLICY"]. */
-// +optional
-OnSourceDiskDelete *string `json:"onSourceDiskDelete,omitempty"`
+	/* Immutable. Specifies the behavior to apply to scheduled snapshots when the source disk is deleted. Default value: "KEEP_AUTO_SNAPSHOTS" Possible values: ["KEEP_AUTO_SNAPSHOTS", "APPLY_RETENTION_POLICY"]. */
+	// +optional
+	OnSourceDiskDelete *string `json:"onSourceDiskDelete,omitempty"`
 }
 
 type ResourcepolicySchedule struct {
-/* Immutable. The policy will execute every nth day at the specified time. */
-// +optional
-DailySchedule *ResourcepolicyDailySchedule `json:"dailySchedule,omitempty"`
+	/* Immutable. The policy will execute every nth day at the specified time. */
+	// +optional
+	DailySchedule *ResourcepolicyDailySchedule `json:"dailySchedule,omitempty"`
 
-/* Immutable. The policy will execute every nth hour starting at the specified time. */
-// +optional
-HourlySchedule *ResourcepolicyHourlySchedule `json:"hourlySchedule,omitempty"`
+	/* Immutable. The policy will execute every nth hour starting at the specified time. */
+	// +optional
+	HourlySchedule *ResourcepolicyHourlySchedule `json:"hourlySchedule,omitempty"`
 
-/* Immutable. Allows specifying a snapshot time for each day of the week. */
-// +optional
-WeeklySchedule *ResourcepolicyWeeklySchedule `json:"weeklySchedule,omitempty"`
+	/* Immutable. Allows specifying a snapshot time for each day of the week. */
+	// +optional
+	WeeklySchedule *ResourcepolicyWeeklySchedule `json:"weeklySchedule,omitempty"`
 }
 
 type ResourcepolicySnapshotProperties struct {
-/* Immutable. Chain name that the snapshot is created in. */
-// +optional
-ChainName *string `json:"chainName,omitempty"`
+	/* Immutable. Chain name that the snapshot is created in. */
+	// +optional
+	ChainName *string `json:"chainName,omitempty"`
 
-/* Immutable. Whether to perform a 'guest aware' snapshot. */
-// +optional
-GuestFlush *bool `json:"guestFlush,omitempty"`
+	/* Immutable. Whether to perform a 'guest aware' snapshot. */
+	// +optional
+	GuestFlush *bool `json:"guestFlush,omitempty"`
 
-/* Immutable. A set of key-value pairs. */
-// +optional
-Labels map[string]string `json:"labels,omitempty"`
+	/* Immutable. A set of key-value pairs. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
 
-/* Immutable. Cloud Storage bucket location to store the auto snapshot (regional or multi-regional). */
-// +optional
-StorageLocations []string `json:"storageLocations,omitempty"`
+	/* Immutable. Cloud Storage bucket location to store the auto snapshot (regional or multi-regional). */
+	// +optional
+	StorageLocations []string `json:"storageLocations,omitempty"`
 }
 
 type ResourcepolicySnapshotSchedulePolicy struct {
-/* Immutable. Retention policy applied to snapshots created by this resource policy. */
-// +optional
-RetentionPolicy *ResourcepolicyRetentionPolicy `json:"retentionPolicy,omitempty"`
+	/* Immutable. Retention policy applied to snapshots created by this resource policy. */
+	// +optional
+	RetentionPolicy *ResourcepolicyRetentionPolicy `json:"retentionPolicy,omitempty"`
 
-/* Immutable. Contains one of an 'hourlySchedule', 'dailySchedule', or 'weeklySchedule'. */
-Schedule ResourcepolicySchedule `json:"schedule"`
+	/* Immutable. Contains one of an 'hourlySchedule', 'dailySchedule', or 'weeklySchedule'. */
+	Schedule ResourcepolicySchedule `json:"schedule"`
 
-/* Immutable. Properties with which the snapshots are created, such as labels. */
-// +optional
-SnapshotProperties *ResourcepolicySnapshotProperties `json:"snapshotProperties,omitempty"`
+	/* Immutable. Properties with which the snapshots are created, such as labels. */
+	// +optional
+	SnapshotProperties *ResourcepolicySnapshotProperties `json:"snapshotProperties,omitempty"`
 }
 
 type ResourcepolicyVmStartSchedule struct {
-/* Immutable. Specifies the frequency for the operation, using the unix-cron format. */
-Schedule string `json:"schedule"`
+	/* Immutable. Specifies the frequency for the operation, using the unix-cron format. */
+	Schedule string `json:"schedule"`
 }
 
 type ResourcepolicyVmStopSchedule struct {
-/* Immutable. Specifies the frequency for the operation, using the unix-cron format. */
-Schedule string `json:"schedule"`
+	/* Immutable. Specifies the frequency for the operation, using the unix-cron format. */
+	Schedule string `json:"schedule"`
 }
 
 type ResourcepolicyWeeklySchedule struct {
-/* Immutable. May contain up to seven (one for each day of the week) snapshot times. */
-DayOfWeeks []ResourcepolicyDayOfWeeks `json:"dayOfWeeks"`
+	/* Immutable. May contain up to seven (one for each day of the week) snapshot times. */
+	DayOfWeeks []ResourcepolicyDayOfWeeks `json:"dayOfWeeks"`
 }
 
 type ComputeResourcePolicySpec struct {
-/* Immutable. An optional description of this resource. Provide this property when you create the resource. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Immutable. An optional description of this resource. Provide this property when you create the resource. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Immutable. Replication consistency group for asynchronous disk replication. */
-// +optional
-DiskConsistencyGroupPolicy *ResourcepolicyDiskConsistencyGroupPolicy `json:"diskConsistencyGroupPolicy,omitempty"`
+	/* Immutable. Replication consistency group for asynchronous disk replication. */
+	// +optional
+	DiskConsistencyGroupPolicy *ResourcepolicyDiskConsistencyGroupPolicy `json:"diskConsistencyGroupPolicy,omitempty"`
 
-/* Immutable. Resource policy for instances used for placement configuration. */
-// +optional
-GroupPlacementPolicy *ResourcepolicyGroupPlacementPolicy `json:"groupPlacementPolicy,omitempty"`
+	/* Immutable. Resource policy for instances used for placement configuration. */
+	// +optional
+	GroupPlacementPolicy *ResourcepolicyGroupPlacementPolicy `json:"groupPlacementPolicy,omitempty"`
 
-/* Immutable. Resource policy for scheduling instance operations. */
-// +optional
-InstanceSchedulePolicy *ResourcepolicyInstanceSchedulePolicy `json:"instanceSchedulePolicy,omitempty"`
+	/* Immutable. Resource policy for scheduling instance operations. */
+	// +optional
+	InstanceSchedulePolicy *ResourcepolicyInstanceSchedulePolicy `json:"instanceSchedulePolicy,omitempty"`
 
-/* Immutable. Region where resource policy resides. */
-Region string `json:"region"`
+	/* Immutable. Region where resource policy resides. */
+	Region string `json:"region"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Immutable. Policy for creating snapshots of persistent disks. */
-// +optional
-SnapshotSchedulePolicy *ResourcepolicySnapshotSchedulePolicy `json:"snapshotSchedulePolicy,omitempty"`
+	/* Immutable. Policy for creating snapshots of persistent disks. */
+	// +optional
+	SnapshotSchedulePolicy *ResourcepolicySnapshotSchedulePolicy `json:"snapshotSchedulePolicy,omitempty"`
 }
 
 type ResourcepolicyObservedStateStatus struct {
-/* [Output Only] Creation timestamp in RFC3339 text format. */
-// +optional
-CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+	/* [Output Only] Creation timestamp in RFC3339 text format. */
+	// +optional
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-/* [Output Only] The unique identifier for the resource. This identifier is defined by the server. */
-// +optional
-Id *int64 `json:"id,omitempty"`
+	/* [Output Only] The unique identifier for the resource. This identifier is defined by the server. */
+	// +optional
+	Id *int64 `json:"id,omitempty"`
 
-/* [Output Only] The status of resource policy creation. */
-// +optional
-Status *string `json:"status,omitempty"`
+	/* [Output Only] The status of resource policy creation. */
+	// +optional
+	Status *string `json:"status,omitempty"`
 }
 
 type ComputeResourcePolicyStatus struct {
 	/* Conditions represent the latest available observations of the
-	    ComputeResourcePolicy's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the ComputeResourcePolicy resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   ComputeResourcePolicy's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the ComputeResourcePolicy resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *ResourcepolicyObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *ResourcepolicyObservedStateStatus `json:"observedState,omitempty"`
 
-/* The server-defined URL of this resource. */
-// +optional
-SelfLink *string `json:"selfLink,omitempty"`
+	/* The server-defined URL of this resource. */
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputeresourcepolicy;gcpcomputeresourcepolicies
@@ -255,20 +255,22 @@ SelfLink *string `json:"selfLink,omitempty"`
 // ComputeResourcePolicy is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeResourcePolicy struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ComputeResourcePolicySpec `json:"spec,omitempty"`
-  Status ComputeResourcePolicyStatus `json:"status,omitempty"`
+	Spec   ComputeResourcePolicySpec   `json:"spec,omitempty"`
+	Status ComputeResourcePolicyStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ComputeResourcePolicyList contains a list of ComputeResourcePolicy
- type ComputeResourcePolicyList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []ComputeResourcePolicy `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&ComputeResourcePolicy{}, &ComputeResourcePolicyList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ComputeResourcePolicyList contains a list of ComputeResourcePolicy
+type ComputeResourcePolicyList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeResourcePolicy `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ComputeResourcePolicy{}, &ComputeResourcePolicyList{})
+}

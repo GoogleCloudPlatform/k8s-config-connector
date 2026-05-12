@@ -34,10 +34,10 @@ var FirestoreIndexIdentityFormat = gcpurls.Template[FirestoreIndexIdentity]("fir
 
 // +k8s:deepcopy-gen=false
 type FirestoreIndexIdentity struct {
-	Project         string
-	Database        string
+	Project    string
+	Database   string
 	CollectionGroup string
-	Index           string
+	Index      string
 }
 
 func (i *FirestoreIndexIdentity) String() string {
@@ -63,16 +63,16 @@ func (i *FirestoreIndexIdentity) Host() string {
 
 func (i *FirestoreIndexIdentity) Parent() *FirestoreCollectionGroupIdentity {
 	return &FirestoreCollectionGroupIdentity{
-		Project:         i.Project,
-		Database:        i.Database,
+		Project:    i.Project,
+		Database:   i.Database,
 		CollectionGroup: i.CollectionGroup,
 	}
 }
 
 // +k8s:deepcopy-gen=false
 type FirestoreCollectionGroupIdentity struct {
-	Project         string
-	Database        string
+	Project    string
+	Database   string
 	CollectionGroup string
 }
 
@@ -101,10 +101,10 @@ func getIdentityFromFirestoreIndexSpec(ctx context.Context, reader client.Reader
 	}
 
 	identity := &FirestoreIndexIdentity{
-		Project:         projectID,
-		Database:        database,
+		Project:    projectID,
+		Database:   database,
 		CollectionGroup: collection,
-		Index:           "", // Will be populated from status or creation
+		Index:      "", // Will be populated from status or creation
 	}
 
 	return identity, nil

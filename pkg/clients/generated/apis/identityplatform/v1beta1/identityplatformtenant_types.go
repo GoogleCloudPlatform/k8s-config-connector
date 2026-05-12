@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,67 +29,68 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type TenantMfaConfig struct {
-/* A list of usable second factors for this project. */
-// +optional
-EnabledProviders []string `json:"enabledProviders,omitempty"`
+	/* A list of usable second factors for this project. */
+	// +optional
+	EnabledProviders []string `json:"enabledProviders,omitempty"`
 
-/* Whether MultiFactor Authentication has been enabled for this project. Possible values: STATE_UNSPECIFIED, DISABLED, ENABLED, MANDATORY */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Whether MultiFactor Authentication has been enabled for this project. Possible values: STATE_UNSPECIFIED, DISABLED, ENABLED, MANDATORY */
+	// +optional
+	State *string `json:"state,omitempty"`
 }
 
 type IdentityPlatformTenantSpec struct {
-/* Whether to allow email/password user authentication. */
-// +optional
-AllowPasswordSignup *bool `json:"allowPasswordSignup,omitempty"`
+	/* Whether to allow email/password user authentication. */
+	// +optional
+	AllowPasswordSignup *bool `json:"allowPasswordSignup,omitempty"`
 
-/* Whether authentication is disabled for the tenant. If true, the users under the disabled tenant are not allowed to sign-in. Admins of the disabled tenant are not able to manage its users. */
-// +optional
-DisableAuth *bool `json:"disableAuth,omitempty"`
+	/* Whether authentication is disabled for the tenant. If true, the users under the disabled tenant are not allowed to sign-in. Admins of the disabled tenant are not able to manage its users. */
+	// +optional
+	DisableAuth *bool `json:"disableAuth,omitempty"`
 
-/* Display name of the tenant. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* Display name of the tenant. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* Whether to enable anonymous user authentication. */
-// +optional
-EnableAnonymousUser *bool `json:"enableAnonymousUser,omitempty"`
+	/* Whether to enable anonymous user authentication. */
+	// +optional
+	EnableAnonymousUser *bool `json:"enableAnonymousUser,omitempty"`
 
-/* Whether to enable email link user authentication. */
-// +optional
-EnableEmailLinkSignin *bool `json:"enableEmailLinkSignin,omitempty"`
+	/* Whether to enable email link user authentication. */
+	// +optional
+	EnableEmailLinkSignin *bool `json:"enableEmailLinkSignin,omitempty"`
 
-/* The tenant-level configuration of MFA options. */
-// +optional
-MfaConfig *TenantMfaConfig `json:"mfaConfig,omitempty"`
+	/* The tenant-level configuration of MFA options. */
+	// +optional
+	MfaConfig *TenantMfaConfig `json:"mfaConfig,omitempty"`
 
-/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* A map of <test phone number, fake code> pairs that can be used for MFA. The phone number should be in E.164 format (https://www.itu.int/rec/T-REC-E.164/) and a maximum of 10 pairs can be added (error will be thrown once exceeded). */
-// +optional
-TestPhoneNumbers map[string]string `json:"testPhoneNumbers,omitempty"`
+	/* A map of <test phone number, fake code> pairs that can be used for MFA. The phone number should be in E.164 format (https://www.itu.int/rec/T-REC-E.164/) and a maximum of 10 pairs can be added (error will be thrown once exceeded). */
+	// +optional
+	TestPhoneNumbers map[string]string `json:"testPhoneNumbers,omitempty"`
 }
 
 type IdentityPlatformTenantStatus struct {
 	/* Conditions represent the latest available observations of the
-	    IdentityPlatformTenant's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   IdentityPlatformTenant's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpidentityplatformtenant;gcpidentityplatformtenants
@@ -107,20 +107,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // IdentityPlatformTenant is the Schema for the identityplatform API
 // +k8s:openapi-gen=true
 type IdentityPlatformTenant struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec IdentityPlatformTenantSpec `json:"spec,omitempty"`
-  Status IdentityPlatformTenantStatus `json:"status,omitempty"`
+	Spec   IdentityPlatformTenantSpec   `json:"spec,omitempty"`
+	Status IdentityPlatformTenantStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // IdentityPlatformTenantList contains a list of IdentityPlatformTenant
- type IdentityPlatformTenantList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []IdentityPlatformTenant `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&IdentityPlatformTenant{}, &IdentityPlatformTenantList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// IdentityPlatformTenantList contains a list of IdentityPlatformTenant
+type IdentityPlatformTenantList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []IdentityPlatformTenant `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&IdentityPlatformTenant{}, &IdentityPlatformTenantList{})
+}

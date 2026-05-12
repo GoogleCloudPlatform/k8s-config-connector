@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -43,83 +42,84 @@ type EdgecachekeysetPublicKey struct {
 	/* The ID of the public key. The ID must be 1-63 characters long, and comply with RFC1035.
 	The name must be 1-64 characters long, and match the regular expression [a-zA-Z][a-zA-Z0-9_-]*
 	which means the first character must be a letter, and all following characters must be a dash, underscore, letter or digit. */
-Id string `json:"id"`
+	Id string `json:"id"`
 
-/* Set to true to have the CDN automatically manage this public key value. */
-// +optional
-Managed *bool `json:"managed,omitempty"`
+	/* Set to true to have the CDN automatically manage this public key value. */
+	// +optional
+	Managed *bool `json:"managed,omitempty"`
 
 	/* The base64-encoded value of the Ed25519 public key. The base64 encoding can be padded (44 bytes) or unpadded (43 bytes).
 	Representations or encodings of the public key other than this will be rejected with an error. */
-// +optional
-Value *EdgecachekeysetValue `json:"value,omitempty"`
+	// +optional
+	Value *EdgecachekeysetValue `json:"value,omitempty"`
 }
 
 type EdgecachekeysetValidationSharedKeys struct {
 	/* The name of the secret version in Secret Manager.
-	
+
 	The resource name of the secret version must be in the format 'projects/* /secrets/* /versions/*' where the '*' values are replaced by the secrets themselves.
 	The secrets must be at least 16 bytes large.  The recommended secret size depends on the signature algorithm you are using.
 	* If you are using HMAC-SHA1, we suggest 20-byte secrets.
 	* If you are using HMAC-SHA256, we suggest 32-byte secrets.
 	See RFC 2104, Section 3 for more details on these recommendations. */
-SecretVersion string `json:"secretVersion"`
+	SecretVersion string `json:"secretVersion"`
 }
 
 type EdgecachekeysetValue struct {
-/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-// +optional
-Value *string `json:"value,omitempty"`
+	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
+	// +optional
+	Value *string `json:"value,omitempty"`
 
-/* Source for the field's value. Cannot be used if 'value' is specified. */
-// +optional
-ValueFrom *EdgecachekeysetValueFrom `json:"valueFrom,omitempty"`
+	/* Source for the field's value. Cannot be used if 'value' is specified. */
+	// +optional
+	ValueFrom *EdgecachekeysetValueFrom `json:"valueFrom,omitempty"`
 }
 
 type EdgecachekeysetValueFrom struct {
-/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-// +optional
-SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
+	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
+	// +optional
+	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type NetworkServicesEdgeCacheKeysetSpec struct {
-/* A human-readable description of the resource. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* A human-readable description of the resource. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* The project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* An ordered list of Ed25519 public keys to use for validating signed requests.
 	You must specify 'public_keys' or 'validation_shared_keys' (or both). The keys in 'public_keys' are checked first.
 	You may specify no more than one Google-managed public key.
 	If you specify 'public_keys', you must specify at least one (1) key and may specify up to three (3) keys.
-	
+
 	Ed25519 public keys are not secret, and only allow Google to validate a request was signed by your corresponding private key.
 	Ensure that the private key is kept secret, and that only authorized users can add public keys to a keyset. */
-// +optional
-PublicKey []EdgecachekeysetPublicKey `json:"publicKey,omitempty"`
+	// +optional
+	PublicKey []EdgecachekeysetPublicKey `json:"publicKey,omitempty"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* An ordered list of shared keys to use for validating signed requests.
 	Shared keys are secret.  Ensure that only authorized users can add 'validation_shared_keys' to a keyset.
 	You can rotate keys by appending (pushing) a new key to the list of 'validation_shared_keys' and removing any superseded keys.
 	You must specify 'public_keys' or 'validation_shared_keys' (or both). The keys in 'public_keys' are checked first. */
-// +optional
-ValidationSharedKeys []EdgecachekeysetValidationSharedKeys `json:"validationSharedKeys,omitempty"`
+	// +optional
+	ValidationSharedKeys []EdgecachekeysetValidationSharedKeys `json:"validationSharedKeys,omitempty"`
 }
 
 type NetworkServicesEdgeCacheKeysetStatus struct {
 	/* Conditions represent the latest available observations of the
-	    NetworkServicesEdgeCacheKeyset's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   NetworkServicesEdgeCacheKeyset's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpnetworkservicesedgecachekeyset;gcpnetworkservicesedgecachekeysets
@@ -136,20 +136,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // NetworkServicesEdgeCacheKeyset is the Schema for the networkservices API
 // +k8s:openapi-gen=true
 type NetworkServicesEdgeCacheKeyset struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec NetworkServicesEdgeCacheKeysetSpec `json:"spec,omitempty"`
-  Status NetworkServicesEdgeCacheKeysetStatus `json:"status,omitempty"`
+	Spec   NetworkServicesEdgeCacheKeysetSpec   `json:"spec,omitempty"`
+	Status NetworkServicesEdgeCacheKeysetStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // NetworkServicesEdgeCacheKeysetList contains a list of NetworkServicesEdgeCacheKeyset
- type NetworkServicesEdgeCacheKeysetList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []NetworkServicesEdgeCacheKeyset `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&NetworkServicesEdgeCacheKeyset{}, &NetworkServicesEdgeCacheKeysetList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// NetworkServicesEdgeCacheKeysetList contains a list of NetworkServicesEdgeCacheKeyset
+type NetworkServicesEdgeCacheKeysetList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []NetworkServicesEdgeCacheKeyset `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&NetworkServicesEdgeCacheKeyset{}, &NetworkServicesEdgeCacheKeysetList{})
+}

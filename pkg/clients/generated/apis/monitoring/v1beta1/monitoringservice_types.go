@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,46 +29,47 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ServiceTelemetry struct {
-/* The full name of the resource that defines this service. Formatted as described in https://cloud.google.com/apis/design/resource_names. */
-// +optional
-ResourceName *string `json:"resourceName,omitempty"`
+	/* The full name of the resource that defines this service. Formatted as described in https://cloud.google.com/apis/design/resource_names. */
+	// +optional
+	ResourceName *string `json:"resourceName,omitempty"`
 }
 
 type MonitoringServiceSpec struct {
-/* Name used for UI elements listing this Service. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* Name used for UI elements listing this Service. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* Immutable. The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* Immutable. The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Configuration for how to query telemetry on a Service. */
-// +optional
-Telemetry *ServiceTelemetry `json:"telemetry,omitempty"`
+	/* Configuration for how to query telemetry on a Service. */
+	// +optional
+	Telemetry *ServiceTelemetry `json:"telemetry,omitempty"`
 }
 
 type MonitoringServiceStatus struct {
 	/* Conditions represent the latest available observations of the
-	    MonitoringService's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   MonitoringService's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpmonitoringservice;gcpmonitoringservices
@@ -86,20 +86,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // MonitoringService is the Schema for the monitoring API
 // +k8s:openapi-gen=true
 type MonitoringService struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec MonitoringServiceSpec `json:"spec,omitempty"`
-  Status MonitoringServiceStatus `json:"status,omitempty"`
+	Spec   MonitoringServiceSpec   `json:"spec,omitempty"`
+	Status MonitoringServiceStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // MonitoringServiceList contains a list of MonitoringService
- type MonitoringServiceList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []MonitoringService `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&MonitoringService{}, &MonitoringServiceList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// MonitoringServiceList contains a list of MonitoringService
+type MonitoringServiceList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []MonitoringService `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&MonitoringService{}, &MonitoringServiceList{})
+}

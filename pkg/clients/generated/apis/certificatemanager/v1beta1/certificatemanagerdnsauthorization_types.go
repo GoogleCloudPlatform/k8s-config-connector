@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,65 +29,66 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type CertificateManagerDNSAuthorizationSpec struct {
-/* A human-readable description of the resource. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* A human-readable description of the resource. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Immutable. A domain which is being authorized. A DnsAuthorization resource covers a single domain and its wildcard, e.g. authorization for "example.com" can be used to issue certificates for "example.com" and "*.example.com". */
-Domain string `json:"domain"`
+	/* Immutable. A domain which is being authorized. A DnsAuthorization resource covers a single domain and its wildcard, e.g. authorization for "example.com" can be used to issue certificates for "example.com" and "*.example.com". */
+	Domain string `json:"domain"`
 
-/* Immutable. Optional. Location represents the geographical location of the DnsAuthorization. If not specified, "global" is used. */
-// +optional
-Location *string `json:"location,omitempty"`
+	/* Immutable. Optional. Location represents the geographical location of the DnsAuthorization. If not specified, "global" is used. */
+	// +optional
+	Location *string `json:"location,omitempty"`
 
-/* The project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type DnsauthorizationDnsResourceRecordStatus struct {
-/* Output only. Data of the DNS Resource Record. */
-// +optional
-Data *string `json:"data,omitempty"`
+	/* Output only. Data of the DNS Resource Record. */
+	// +optional
+	Data *string `json:"data,omitempty"`
 
-/* Output only. Fully qualified name of the DNS Resource Record. e.g. `_acme-challenge.example.com` */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* Output only. Fully qualified name of the DNS Resource Record. e.g. `_acme-challenge.example.com` */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* Output only. Type of the DNS Resource Record. Currently always set to "CNAME". */
-// +optional
-Type *string `json:"type,omitempty"`
+	/* Output only. Type of the DNS Resource Record. Currently always set to "CNAME". */
+	// +optional
+	Type *string `json:"type,omitempty"`
 }
 
 type CertificateManagerDNSAuthorizationStatus struct {
 	/* Conditions represent the latest available observations of the
-	    CertificateManagerDNSAuthorization's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* The structure describing the DNS Resource Record that needs to be added to DNS configuration for the authorization to be usable by certificate. */
-// +optional
-DnsResourceRecord []DnsauthorizationDnsResourceRecordStatus `json:"dnsResourceRecord,omitempty"`
+	   CertificateManagerDNSAuthorization's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* The structure describing the DNS Resource Record that needs to be added to DNS configuration for the authorization to be usable by certificate. */
+	// +optional
+	DnsResourceRecord []DnsauthorizationDnsResourceRecordStatus `json:"dnsResourceRecord,omitempty"`
 
-/* A unique specifier for the CertificateManagerDNSAuthorization resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	/* A unique specifier for the CertificateManagerDNSAuthorization resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcertificatemanagerdnsauthorization;gcpcertificatemanagerdnsauthorizations
@@ -104,20 +104,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // CertificateManagerDNSAuthorization is the Schema for the certificatemanager API
 // +k8s:openapi-gen=true
 type CertificateManagerDNSAuthorization struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec CertificateManagerDNSAuthorizationSpec `json:"spec,omitempty"`
-  Status CertificateManagerDNSAuthorizationStatus `json:"status,omitempty"`
+	Spec   CertificateManagerDNSAuthorizationSpec   `json:"spec,omitempty"`
+	Status CertificateManagerDNSAuthorizationStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // CertificateManagerDNSAuthorizationList contains a list of CertificateManagerDNSAuthorization
- type CertificateManagerDNSAuthorizationList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []CertificateManagerDNSAuthorization `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&CertificateManagerDNSAuthorization{}, &CertificateManagerDNSAuthorizationList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// CertificateManagerDNSAuthorizationList contains a list of CertificateManagerDNSAuthorization
+type CertificateManagerDNSAuthorizationList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []CertificateManagerDNSAuthorization `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&CertificateManagerDNSAuthorization{}, &CertificateManagerDNSAuthorizationList{})
+}

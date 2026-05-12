@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,30 +29,30 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type BigtableLogicalViewSpec struct {
-/* Optional. Set to true to make the LogicalView protected against deletion. */
-// +optional
-DeletionProtection *bool `json:"deletionProtection,omitempty"`
+	/* Optional. Set to true to make the LogicalView protected against deletion. */
+	// +optional
+	DeletionProtection *bool `json:"deletionProtection,omitempty"`
 
-/* InstanceRef defines the resource reference to BigtableInstance, which "External" field holds the GCP identifier for the KRM object. */
-InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
+	/* InstanceRef defines the resource reference to BigtableInstance, which "External" field holds the GCP identifier for the KRM object. */
+	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
 
-/* The BigtableLogicalView's select query. */
-// +optional
-Query *string `json:"query,omitempty"`
+	/* The BigtableLogicalView's select query. */
+	// +optional
+	Query *string `json:"query,omitempty"`
 
-/* The BigtableLogicalView ID. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The BigtableLogicalView ID. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type LogicalviewObservedStateStatus struct {
@@ -61,24 +60,25 @@ type LogicalviewObservedStateStatus struct {
 
 type BigtableLogicalViewStatus struct {
 	/* Conditions represent the latest available observations of the
-	    BigtableLogicalView's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the BigtableLogicalView resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   BigtableLogicalView's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the BigtableLogicalView resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* The unique name of the BigtableLogicalView. Values are of the form `projects/{project}/instances/{instance}/logicalViews/{logicalViewID}`. */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* The unique name of the BigtableLogicalView. Values are of the form `projects/{project}/instances/{instance}/logicalViews/{logicalViewID}`. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *LogicalviewObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *LogicalviewObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigtablelogicalview;gcpbigtablelogicalviews
@@ -93,20 +93,22 @@ ObservedState *LogicalviewObservedStateStatus `json:"observedState,omitempty"`
 // BigtableLogicalView is the Schema for the bigtable API
 // +k8s:openapi-gen=true
 type BigtableLogicalView struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec BigtableLogicalViewSpec `json:"spec,omitempty"`
-  Status BigtableLogicalViewStatus `json:"status,omitempty"`
+	Spec   BigtableLogicalViewSpec   `json:"spec,omitempty"`
+	Status BigtableLogicalViewStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // BigtableLogicalViewList contains a list of BigtableLogicalView
- type BigtableLogicalViewList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []BigtableLogicalView `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&BigtableLogicalView{}, &BigtableLogicalViewList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// BigtableLogicalViewList contains a list of BigtableLogicalView
+type BigtableLogicalViewList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []BigtableLogicalView `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&BigtableLogicalView{}, &BigtableLogicalViewList{})
+}
