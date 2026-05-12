@@ -2192,6 +2192,28 @@
 [missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.specialistPools[]" is not set in unstructured objects
+[missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.autoscalingMetricSpecs[].metricName" is not set in unstructured objects
+[missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.autoscalingMetricSpecs[].monitoredResourceLabels" is not set in unstructured objects
+[missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.autoscalingMetricSpecs[].target" is not set in unstructured objects
+[missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.flexStart.maxRuntimeDuration" is not set in unstructured objects
+[missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.machineSpec.acceleratorCount" is not set in unstructured objects
+[missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.machineSpec.acceleratorType" is not set in unstructured objects
+[missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.machineSpec.gpuPartitionSize" is not set in unstructured objects
+[missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.machineSpec.machineType" is not set in unstructured objects
+[missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.machineSpec.multihostGpuNodeCount" is not set in unstructured objects
+[missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.machineSpec.reservationAffinity.key" is not set in unstructured objects
+[missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.machineSpec.reservationAffinity.reservationAffinityType" is not set in unstructured objects
+[missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.machineSpec.reservationAffinity.values[]" is not set in unstructured objects
+[missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.machineSpec.tpuTopology" is not set in unstructured objects
+[missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.maxReplicaCount" is not set in unstructured objects
+[missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.minReplicaCount" is not set in unstructured objects
+[missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.requiredReplicaCount" is not set in unstructured objects
+[missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.spot" is not set in unstructured objects
+[missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.disableContainerLogging" is not set in unstructured objects
+[missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaifeaturestoreentitytypefeatures.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=vertexaifeaturestoreentitytypefeatures.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.entitytype" is not set in unstructured objects
 [missing_field] crd=vertexaifeaturestoreentitytypefeatures.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.valueType" is not set in unstructured objects
