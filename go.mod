@@ -142,6 +142,7 @@ require (
 require go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 
 require (
+	cloud.google.com/go/binaryauthorization v1.15.0 // indirect
 	cloud.google.com/go/osconfig v1.16.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.31.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.54.0 // indirect
