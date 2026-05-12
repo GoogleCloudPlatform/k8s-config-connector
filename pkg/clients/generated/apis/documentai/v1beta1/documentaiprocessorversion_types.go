@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,186 +29,186 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ProcessorversionDeprecationInfo struct {
-/* The time at which this processor version will be deprecated. */
-// +optional
-DeprecationTime *string `json:"deprecationTime,omitempty"`
+	/* The time at which this processor version will be deprecated. */
+	// +optional
+	DeprecationTime *string `json:"deprecationTime,omitempty"`
 
-/* If set, the processor version that will be used as a replacement. */
-// +optional
-ReplacementProcessorVersion *string `json:"replacementProcessorVersion,omitempty"`
+	/* If set, the processor version that will be used as a replacement. */
+	// +optional
+	ReplacementProcessorVersion *string `json:"replacementProcessorVersion,omitempty"`
 }
 
 type DocumentAIProcessorVersionSpec struct {
-/* If set, information about the eventual deprecation of this version. */
-// +optional
-DeprecationInfo *ProcessorversionDeprecationInfo `json:"deprecationInfo,omitempty"`
+	/* If set, information about the eventual deprecation of this version. */
+	// +optional
+	DeprecationInfo *ProcessorversionDeprecationInfo `json:"deprecationInfo,omitempty"`
 
-/* The display name of the processor version. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* The display name of the processor version. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* The KMS key name used for encryption. */
-// +optional
-KmsKeyNameRef *v1alpha1.ResourceRef `json:"kmsKeyNameRef,omitempty"`
+	/* The KMS key name used for encryption. */
+	// +optional
+	KmsKeyNameRef *v1alpha1.ResourceRef `json:"kmsKeyNameRef,omitempty"`
 
-/* The KMS key version with which data is encrypted. */
-// +optional
-KmsKeyVersionNameRef *v1alpha1.ResourceRef `json:"kmsKeyVersionNameRef,omitempty"`
+	/* The KMS key version with which data is encrypted. */
+	// +optional
+	KmsKeyVersionNameRef *v1alpha1.ResourceRef `json:"kmsKeyVersionNameRef,omitempty"`
 
-/* ProcessorRef defines the resource reference to DocumentAIProcessor, which "External" field holds the GCP identifier for the KRM object. */
-ProcessorRef v1alpha1.ResourceRef `json:"processorRef"`
+	/* ProcessorRef defines the resource reference to DocumentAIProcessor, which "External" field holds the GCP identifier for the KRM object. */
+	ProcessorRef v1alpha1.ResourceRef `json:"processorRef"`
 
-/* The DocumentAIProcessorVersion name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The DocumentAIProcessorVersion name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ProcessorversionAggregateMetricsExactStatus struct {
-/* The calculated f1 score. */
-// +optional
-F1Score *float64 `json:"f1Score,omitempty"`
+	/* The calculated f1 score. */
+	// +optional
+	F1Score *float64 `json:"f1Score,omitempty"`
 
-/* The amount of false negatives. */
-// +optional
-FalseNegativesCount *int32 `json:"falseNegativesCount,omitempty"`
+	/* The amount of false negatives. */
+	// +optional
+	FalseNegativesCount *int32 `json:"falseNegativesCount,omitempty"`
 
-/* The amount of false positives. */
-// +optional
-FalsePositivesCount *int32 `json:"falsePositivesCount,omitempty"`
+	/* The amount of false positives. */
+	// +optional
+	FalsePositivesCount *int32 `json:"falsePositivesCount,omitempty"`
 
-/* The amount of documents with a ground truth occurrence. */
-// +optional
-GroundTruthDocumentCount *int32 `json:"groundTruthDocumentCount,omitempty"`
+	/* The amount of documents with a ground truth occurrence. */
+	// +optional
+	GroundTruthDocumentCount *int32 `json:"groundTruthDocumentCount,omitempty"`
 
-/* The amount of occurrences in ground truth documents. */
-// +optional
-GroundTruthOccurrencesCount *int32 `json:"groundTruthOccurrencesCount,omitempty"`
+	/* The amount of occurrences in ground truth documents. */
+	// +optional
+	GroundTruthOccurrencesCount *int32 `json:"groundTruthOccurrencesCount,omitempty"`
 
-/* The calculated precision. */
-// +optional
-Precision *float64 `json:"precision,omitempty"`
+	/* The calculated precision. */
+	// +optional
+	Precision *float64 `json:"precision,omitempty"`
 
-/* The amount of documents with a predicted occurrence. */
-// +optional
-PredictedDocumentCount *int32 `json:"predictedDocumentCount,omitempty"`
+	/* The amount of documents with a predicted occurrence. */
+	// +optional
+	PredictedDocumentCount *int32 `json:"predictedDocumentCount,omitempty"`
 
-/* The amount of occurrences in predicted documents. */
-// +optional
-PredictedOccurrencesCount *int32 `json:"predictedOccurrencesCount,omitempty"`
+	/* The amount of occurrences in predicted documents. */
+	// +optional
+	PredictedOccurrencesCount *int32 `json:"predictedOccurrencesCount,omitempty"`
 
-/* The calculated recall. */
-// +optional
-Recall *float64 `json:"recall,omitempty"`
+	/* The calculated recall. */
+	// +optional
+	Recall *float64 `json:"recall,omitempty"`
 
-/* The amount of documents that had an occurrence of this label. */
-// +optional
-TotalDocumentsCount *int32 `json:"totalDocumentsCount,omitempty"`
+	/* The amount of documents that had an occurrence of this label. */
+	// +optional
+	TotalDocumentsCount *int32 `json:"totalDocumentsCount,omitempty"`
 
-/* The amount of true positives. */
-// +optional
-TruePositivesCount *int32 `json:"truePositivesCount,omitempty"`
+	/* The amount of true positives. */
+	// +optional
+	TruePositivesCount *int32 `json:"truePositivesCount,omitempty"`
 }
 
 type ProcessorversionAggregateMetricsStatus struct {
-/* The calculated f1 score. */
-// +optional
-F1Score *float64 `json:"f1Score,omitempty"`
+	/* The calculated f1 score. */
+	// +optional
+	F1Score *float64 `json:"f1Score,omitempty"`
 
-/* The amount of false negatives. */
-// +optional
-FalseNegativesCount *int32 `json:"falseNegativesCount,omitempty"`
+	/* The amount of false negatives. */
+	// +optional
+	FalseNegativesCount *int32 `json:"falseNegativesCount,omitempty"`
 
-/* The amount of false positives. */
-// +optional
-FalsePositivesCount *int32 `json:"falsePositivesCount,omitempty"`
+	/* The amount of false positives. */
+	// +optional
+	FalsePositivesCount *int32 `json:"falsePositivesCount,omitempty"`
 
-/* The amount of documents with a ground truth occurrence. */
-// +optional
-GroundTruthDocumentCount *int32 `json:"groundTruthDocumentCount,omitempty"`
+	/* The amount of documents with a ground truth occurrence. */
+	// +optional
+	GroundTruthDocumentCount *int32 `json:"groundTruthDocumentCount,omitempty"`
 
-/* The amount of occurrences in ground truth documents. */
-// +optional
-GroundTruthOccurrencesCount *int32 `json:"groundTruthOccurrencesCount,omitempty"`
+	/* The amount of occurrences in ground truth documents. */
+	// +optional
+	GroundTruthOccurrencesCount *int32 `json:"groundTruthOccurrencesCount,omitempty"`
 
-/* The calculated precision. */
-// +optional
-Precision *float64 `json:"precision,omitempty"`
+	/* The calculated precision. */
+	// +optional
+	Precision *float64 `json:"precision,omitempty"`
 
-/* The amount of documents with a predicted occurrence. */
-// +optional
-PredictedDocumentCount *int32 `json:"predictedDocumentCount,omitempty"`
+	/* The amount of documents with a predicted occurrence. */
+	// +optional
+	PredictedDocumentCount *int32 `json:"predictedDocumentCount,omitempty"`
 
-/* The amount of occurrences in predicted documents. */
-// +optional
-PredictedOccurrencesCount *int32 `json:"predictedOccurrencesCount,omitempty"`
+	/* The amount of occurrences in predicted documents. */
+	// +optional
+	PredictedOccurrencesCount *int32 `json:"predictedOccurrencesCount,omitempty"`
 
-/* The calculated recall. */
-// +optional
-Recall *float64 `json:"recall,omitempty"`
+	/* The calculated recall. */
+	// +optional
+	Recall *float64 `json:"recall,omitempty"`
 
-/* The amount of documents that had an occurrence of this label. */
-// +optional
-TotalDocumentsCount *int32 `json:"totalDocumentsCount,omitempty"`
+	/* The amount of documents that had an occurrence of this label. */
+	// +optional
+	TotalDocumentsCount *int32 `json:"totalDocumentsCount,omitempty"`
 
-/* The amount of true positives. */
-// +optional
-TruePositivesCount *int32 `json:"truePositivesCount,omitempty"`
+	/* The amount of true positives. */
+	// +optional
+	TruePositivesCount *int32 `json:"truePositivesCount,omitempty"`
 }
 
 type ProcessorversionCustomGenAiModelInfoStatus struct {
-/* The base processor version ID for the custom model. */
-// +optional
-BaseProcessorVersionID *string `json:"baseProcessorVersionID,omitempty"`
+	/* The base processor version ID for the custom model. */
+	// +optional
+	BaseProcessorVersionID *string `json:"baseProcessorVersionID,omitempty"`
 
-/* The type of custom model created by the user. */
-// +optional
-CustomModelType *string `json:"customModelType,omitempty"`
+	/* The type of custom model created by the user. */
+	// +optional
+	CustomModelType *string `json:"customModelType,omitempty"`
 }
 
 type ProcessorversionDocument_schemaStatus struct {
-/* Description of the schema. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Description of the schema. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Display name to show to users. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* Display name to show to users. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* Entity types of the schema. */
-// +optional
-EntityTypes []ProcessorversionEntityTypesStatus `json:"entityTypes,omitempty"`
+	/* Entity types of the schema. */
+	// +optional
+	EntityTypes []ProcessorversionEntityTypesStatus `json:"entityTypes,omitempty"`
 
-/* Metadata of the schema. */
-// +optional
-Metadata *ProcessorversionMetadataStatus `json:"metadata,omitempty"`
+	/* Metadata of the schema. */
+	// +optional
+	Metadata *ProcessorversionMetadataStatus `json:"metadata,omitempty"`
 }
 
 type ProcessorversionEntityTypesStatus struct {
-/* The entity type that this type is derived from.  For now, one and only one should be set. */
-// +optional
-BaseTypes []string `json:"baseTypes,omitempty"`
+	/* The entity type that this type is derived from.  For now, one and only one should be set. */
+	// +optional
+	BaseTypes []string `json:"baseTypes,omitempty"`
 
-/* User defined name for the type. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* User defined name for the type. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* If specified, lists all the possible values for this entity.  This should not be more than a handful of values.  If the number of values is >10 or could change frequently use the `EntityType.value_ontology` field and specify a list of all possible values in a value ontology file. */
-// +optional
-EnumValues *ProcessorversionEnumValuesStatus `json:"enumValues,omitempty"`
+	/* If specified, lists all the possible values for this entity.  This should not be more than a handful of values.  If the number of values is >10 or could change frequently use the `EntityType.value_ontology` field and specify a list of all possible values in a value ontology file. */
+	// +optional
+	EnumValues *ProcessorversionEnumValuesStatus `json:"enumValues,omitempty"`
 
 	/* Name of the type. It must be unique within the schema file and
 	cannot be a "Common Type".  The following naming conventions are used:
-	
+
 	- Use `snake_casing`.
 	- Name matching is case-sensitive.
 	- Maximum 64 characters.
@@ -220,152 +219,153 @@ EnumValues *ProcessorversionEnumValuesStatus `json:"enumValues,omitempty"`
 	- The `/` is sometimes used to denote a property of a type.  For example
 	`line_item/amount`.  This convention is deprecated, but will still be
 	honored for backward compatibility. */
-// +optional
-Name *string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* Description the nested structure, or composition of an entity. */
-// +optional
-Properties []ProcessorversionPropertiesStatus `json:"properties,omitempty"`
+	/* Description the nested structure, or composition of an entity. */
+	// +optional
+	Properties []ProcessorversionPropertiesStatus `json:"properties,omitempty"`
 }
 
 type ProcessorversionEnumValuesStatus struct {
-/* The individual values that this enum values type can include. */
-// +optional
-Values []string `json:"values,omitempty"`
+	/* The individual values that this enum values type can include. */
+	// +optional
+	Values []string `json:"values,omitempty"`
 }
 
 type ProcessorversionFoundationGenAiModelInfoStatus struct {
-/* Whether finetuning is allowed for this base processor version. */
-// +optional
-FinetuningAllowed *bool `json:"finetuningAllowed,omitempty"`
+	/* Whether finetuning is allowed for this base processor version. */
+	// +optional
+	FinetuningAllowed *bool `json:"finetuningAllowed,omitempty"`
 
-/* The minimum number of labeled documents in the training dataset required for finetuning. */
-// +optional
-MinTrainLabeledDocuments *int32 `json:"minTrainLabeledDocuments,omitempty"`
+	/* The minimum number of labeled documents in the training dataset required for finetuning. */
+	// +optional
+	MinTrainLabeledDocuments *int32 `json:"minTrainLabeledDocuments,omitempty"`
 }
 
 type ProcessorversionGen_ai_model_infoStatus struct {
-/* Information for a custom Generative AI model created by the user. */
-// +optional
-CustomGenAiModelInfo *ProcessorversionCustomGenAiModelInfoStatus `json:"customGenAiModelInfo,omitempty"`
+	/* Information for a custom Generative AI model created by the user. */
+	// +optional
+	CustomGenAiModelInfo *ProcessorversionCustomGenAiModelInfoStatus `json:"customGenAiModelInfo,omitempty"`
 
-/* Information for a pretrained Google-managed foundation model. */
-// +optional
-FoundationGenAiModelInfo *ProcessorversionFoundationGenAiModelInfoStatus `json:"foundationGenAiModelInfo,omitempty"`
+	/* Information for a pretrained Google-managed foundation model. */
+	// +optional
+	FoundationGenAiModelInfo *ProcessorversionFoundationGenAiModelInfoStatus `json:"foundationGenAiModelInfo,omitempty"`
 }
 
 type ProcessorversionLatest_evaluationStatus struct {
-/* An aggregate of the statistics for the evaluation with fuzzy matching on. */
-// +optional
-AggregateMetrics *ProcessorversionAggregateMetricsStatus `json:"aggregateMetrics,omitempty"`
+	/* An aggregate of the statistics for the evaluation with fuzzy matching on. */
+	// +optional
+	AggregateMetrics *ProcessorversionAggregateMetricsStatus `json:"aggregateMetrics,omitempty"`
 
-/* An aggregate of the statistics for the evaluation with fuzzy matching off. */
-// +optional
-AggregateMetricsExact *ProcessorversionAggregateMetricsExactStatus `json:"aggregateMetricsExact,omitempty"`
+	/* An aggregate of the statistics for the evaluation with fuzzy matching off. */
+	// +optional
+	AggregateMetricsExact *ProcessorversionAggregateMetricsExactStatus `json:"aggregateMetricsExact,omitempty"`
 
-/* The resource name of the evaluation. */
-// +optional
-Evaluation *string `json:"evaluation,omitempty"`
+	/* The resource name of the evaluation. */
+	// +optional
+	Evaluation *string `json:"evaluation,omitempty"`
 
-/* The resource name of the Long Running Operation for the evaluation. */
-// +optional
-Operation *string `json:"operation,omitempty"`
+	/* The resource name of the Long Running Operation for the evaluation. */
+	// +optional
+	Operation *string `json:"operation,omitempty"`
 }
 
 type ProcessorversionMetadataStatus struct {
-/* If true, on a given page, there can be multiple `document` annotations covering it. */
-// +optional
-DocumentAllowMultipleLabels *bool `json:"documentAllowMultipleLabels,omitempty"`
+	/* If true, on a given page, there can be multiple `document` annotations covering it. */
+	// +optional
+	DocumentAllowMultipleLabels *bool `json:"documentAllowMultipleLabels,omitempty"`
 
-/* If true, a `document` entity type can be applied to subdocument (splitting). Otherwise, it can only be applied to the entire document (classification). */
-// +optional
-DocumentSplitter *bool `json:"documentSplitter,omitempty"`
+	/* If true, a `document` entity type can be applied to subdocument (splitting). Otherwise, it can only be applied to the entire document (classification). */
+	// +optional
+	DocumentSplitter *bool `json:"documentSplitter,omitempty"`
 
-/* If set, all the nested entities must be prefixed with the parents. */
-// +optional
-PrefixedNamingOnProperties *bool `json:"prefixedNamingOnProperties,omitempty"`
+	/* If set, all the nested entities must be prefixed with the parents. */
+	// +optional
+	PrefixedNamingOnProperties *bool `json:"prefixedNamingOnProperties,omitempty"`
 
-/* If set, we will skip the naming format validation in the schema. So the string values in `DocumentSchema.EntityType.name` and `DocumentSchema.EntityType.Property.name` will not be checked. */
-// +optional
-SkipNamingValidation *bool `json:"skipNamingValidation,omitempty"`
+	/* If set, we will skip the naming format validation in the schema. So the string values in `DocumentSchema.EntityType.name` and `DocumentSchema.EntityType.Property.name` will not be checked. */
+	// +optional
+	SkipNamingValidation *bool `json:"skipNamingValidation,omitempty"`
 }
 
 type ProcessorversionObservedStateStatus struct {
-/* The time the processor version was created. */
-// +optional
-Create_time *string `json:"create_time,omitempty"`
+	/* The time the processor version was created. */
+	// +optional
+	Create_time *string `json:"create_time,omitempty"`
 
-/* The schema of the processor version. Describes the output. */
-// +optional
-Document_schema *ProcessorversionDocument_schemaStatus `json:"document_schema,omitempty"`
+	/* The schema of the processor version. Describes the output. */
+	// +optional
+	Document_schema *ProcessorversionDocument_schemaStatus `json:"document_schema,omitempty"`
 
-/* Output only. Information about Generative AI model-based processor versions. */
-// +optional
-Gen_ai_model_info *ProcessorversionGen_ai_model_infoStatus `json:"gen_ai_model_info,omitempty"`
+	/* Output only. Information about Generative AI model-based processor versions. */
+	// +optional
+	Gen_ai_model_info *ProcessorversionGen_ai_model_infoStatus `json:"gen_ai_model_info,omitempty"`
 
-/* Output only. Denotes that this `ProcessorVersion` is managed by Google. */
-// +optional
-Google_managed *bool `json:"google_managed,omitempty"`
+	/* Output only. Denotes that this `ProcessorVersion` is managed by Google. */
+	// +optional
+	Google_managed *bool `json:"google_managed,omitempty"`
 
-/* The most recently invoked evaluation for the processor version. */
-// +optional
-Latest_evaluation *ProcessorversionLatest_evaluationStatus `json:"latest_evaluation,omitempty"`
+	/* The most recently invoked evaluation for the processor version. */
+	// +optional
+	Latest_evaluation *ProcessorversionLatest_evaluationStatus `json:"latest_evaluation,omitempty"`
 
-/* Output only. The model type of this processor version. */
-// +optional
-Model_type *string `json:"model_type,omitempty"`
+	/* Output only. The model type of this processor version. */
+	// +optional
+	Model_type *string `json:"model_type,omitempty"`
 
-/* Output only. Reserved for future use. */
-// +optional
-Satisfies_pzi *bool `json:"satisfies_pzi,omitempty"`
+	/* Output only. Reserved for future use. */
+	// +optional
+	Satisfies_pzi *bool `json:"satisfies_pzi,omitempty"`
 
-/* Output only. Reserved for future use. */
-// +optional
-Satisfies_pzs *bool `json:"satisfies_pzs,omitempty"`
+	/* Output only. Reserved for future use. */
+	// +optional
+	Satisfies_pzs *bool `json:"satisfies_pzs,omitempty"`
 
-/* Output only. The state of the processor version. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. The state of the processor version. */
+	// +optional
+	State *string `json:"state,omitempty"`
 }
 
 type ProcessorversionPropertiesStatus struct {
-/* User defined name for the property. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* User defined name for the property. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* Specifies how the entity's value is obtained. */
-// +optional
-Method *string `json:"method,omitempty"`
+	/* Specifies how the entity's value is obtained. */
+	// +optional
+	Method *string `json:"method,omitempty"`
 
-/* The name of the property.  Follows the same guidelines as the EntityType name. */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* The name of the property.  Follows the same guidelines as the EntityType name. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* Occurrence type limits the number of instances an entity type appears in the document. */
-// +optional
-OccurrenceType *string `json:"occurrenceType,omitempty"`
+	/* Occurrence type limits the number of instances an entity type appears in the document. */
+	// +optional
+	OccurrenceType *string `json:"occurrenceType,omitempty"`
 
-/* A reference to the value type of the property.  This type is subject to the same conventions as the `Entity.base_types` field. */
-// +optional
-ValueType *string `json:"valueType,omitempty"`
+	/* A reference to the value type of the property.  This type is subject to the same conventions as the `Entity.base_types` field. */
+	// +optional
+	ValueType *string `json:"valueType,omitempty"`
 }
 
 type DocumentAIProcessorVersionStatus struct {
 	/* Conditions represent the latest available observations of the
-	    DocumentAIProcessorVersion's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the DocumentAI resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   DocumentAIProcessorVersion's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the DocumentAI resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *ProcessorversionObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *ProcessorversionObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdocumentaiprocessorversion;gcpdocumentaiprocessorversions
@@ -380,20 +380,22 @@ ObservedState *ProcessorversionObservedStateStatus `json:"observedState,omitempt
 // DocumentAIProcessorVersion is the Schema for the documentai API
 // +k8s:openapi-gen=true
 type DocumentAIProcessorVersion struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec DocumentAIProcessorVersionSpec `json:"spec,omitempty"`
-  Status DocumentAIProcessorVersionStatus `json:"status,omitempty"`
+	Spec   DocumentAIProcessorVersionSpec   `json:"spec,omitempty"`
+	Status DocumentAIProcessorVersionStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // DocumentAIProcessorVersionList contains a list of DocumentAIProcessorVersion
- type DocumentAIProcessorVersionList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []DocumentAIProcessorVersion `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&DocumentAIProcessorVersion{}, &DocumentAIProcessorVersionList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// DocumentAIProcessorVersionList contains a list of DocumentAIProcessorVersion
+type DocumentAIProcessorVersionList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DocumentAIProcessorVersion `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&DocumentAIProcessorVersion{}, &DocumentAIProcessorVersionList{})
+}

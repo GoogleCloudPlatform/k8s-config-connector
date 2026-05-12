@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,36 +29,37 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type KMSKeyRingSpec struct {
-/* Immutable. The location for the KeyRing. A full list of valid locations can be found by running 'gcloud kms locations list'. */
-Location string `json:"location"`
+	/* Immutable. The location for the KeyRing. A full list of valid locations can be found by running 'gcloud kms locations list'. */
+	Location string `json:"location"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type KMSKeyRingStatus struct {
 	/* Conditions represent the latest available observations of the
-	    KMSKeyRing's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   KMSKeyRing's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* The self link of the created KeyRing in the format projects/{project}/locations/{location}/keyRings/{name}. */
-// +optional
-SelfLink *string `json:"selfLink,omitempty"`
+	/* The self link of the created KeyRing in the format projects/{project}/locations/{location}/keyRings/{name}. */
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpkmskeyring;gcpkmskeyrings
@@ -76,20 +76,22 @@ SelfLink *string `json:"selfLink,omitempty"`
 // KMSKeyRing is the Schema for the kms API
 // +k8s:openapi-gen=true
 type KMSKeyRing struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec KMSKeyRingSpec `json:"spec,omitempty"`
-  Status KMSKeyRingStatus `json:"status,omitempty"`
+	Spec   KMSKeyRingSpec   `json:"spec,omitempty"`
+	Status KMSKeyRingStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // KMSKeyRingList contains a list of KMSKeyRing
- type KMSKeyRingList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []KMSKeyRing `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&KMSKeyRing{}, &KMSKeyRingList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// KMSKeyRingList contains a list of KMSKeyRing
+type KMSKeyRingList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []KMSKeyRing `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&KMSKeyRing{}, &KMSKeyRingList{})
+}

@@ -53,31 +53,29 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	DataCatalogEntryGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DataCatalogEntry{}).Name(),
-  	}
-  
-  	DataCatalogEntryGroupGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DataCatalogEntryGroup{}).Name(),
-  	}
-  
-  	DataCatalogTagGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DataCatalogTag{}).Name(),
-  	}
-  
-  	DataCatalogTagTemplateGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DataCatalogTagTemplate{}).Name(),
-  	}
-  
+	DataCatalogEntryGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DataCatalogEntry{}).Name(),
+	}
 
-  	datacatalogAPIVersion = SchemeGroupVersion.String()
+	DataCatalogEntryGroupGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DataCatalogEntryGroup{}).Name(),
+	}
+
+	DataCatalogTagGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DataCatalogTag{}).Name(),
+	}
+
+	DataCatalogTagTemplateGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DataCatalogTagTemplate{}).Name(),
+	}
+
+	datacatalogAPIVersion = SchemeGroupVersion.String()
 )

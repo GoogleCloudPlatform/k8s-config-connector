@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -43,59 +42,60 @@ type FirebaseAndroidAppSpec struct {
 	/* The globally unique, Google-assigned identifier (UID) for the Firebase API key associated with the AndroidApp.
 	If apiKeyId is not set during creation, then Firebase automatically associates an apiKeyId with the AndroidApp.
 	This auto-associated key may be an existing valid key or, if no valid key exists, a new one will be provisioned. */
-// +optional
-ApiKeyId *string `json:"apiKeyId,omitempty"`
+	// +optional
+	ApiKeyId *string `json:"apiKeyId,omitempty"`
 
-// +optional
-DeletionPolicy *string `json:"deletionPolicy,omitempty"`
+	// +optional
+	DeletionPolicy *string `json:"deletionPolicy,omitempty"`
 
-/* The user-assigned display name of the AndroidApp. */
-DisplayName string `json:"displayName"`
+	/* The user-assigned display name of the AndroidApp. */
+	DisplayName string `json:"displayName"`
 
 	/* Immutable. The canonical package name of the Android app as would appear in the Google Play
 	Developer Console. */
-// +optional
-PackageName *string `json:"packageName,omitempty"`
+	// +optional
+	PackageName *string `json:"packageName,omitempty"`
 
-/* The project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Immutable. Optional. The service-generated appId of the resource. Used for acquisition only. Leave unset to create a new resource. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The service-generated appId of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* The SHA1 certificate hashes for the AndroidApp. */
-// +optional
-Sha1Hashes []string `json:"sha1Hashes,omitempty"`
+	/* The SHA1 certificate hashes for the AndroidApp. */
+	// +optional
+	Sha1Hashes []string `json:"sha1Hashes,omitempty"`
 
-/* The SHA256 certificate hashes for the AndroidApp. */
-// +optional
-Sha256Hashes []string `json:"sha256Hashes,omitempty"`
+	/* The SHA256 certificate hashes for the AndroidApp. */
+	// +optional
+	Sha256Hashes []string `json:"sha256Hashes,omitempty"`
 }
 
 type FirebaseAndroidAppStatus struct {
 	/* Conditions represent the latest available observations of the
-	    FirebaseAndroidApp's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	   FirebaseAndroidApp's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The globally unique, Firebase-assigned identifier of the AndroidApp.
 	This identifier should be treated as an opaque token, as the data format is not specified. */
-// +optional
-AppId *string `json:"appId,omitempty"`
+	// +optional
+	AppId *string `json:"appId,omitempty"`
 
 	/* This checksum is computed by the server based on the value of other fields, and it may be sent
 	with update requests to ensure the client has an up-to-date value before proceeding. */
-// +optional
-Etag *string `json:"etag,omitempty"`
+	// +optional
+	Etag *string `json:"etag,omitempty"`
 
 	/* The fully qualified resource name of the AndroidApp, for example:
 	projects/projectId/androidApps/appId. */
-// +optional
-Name *string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpfirebaseandroidapp;gcpfirebaseandroidapps
@@ -112,20 +112,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // FirebaseAndroidApp is the Schema for the firebase API
 // +k8s:openapi-gen=true
 type FirebaseAndroidApp struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec FirebaseAndroidAppSpec `json:"spec,omitempty"`
-  Status FirebaseAndroidAppStatus `json:"status,omitempty"`
+	Spec   FirebaseAndroidAppSpec   `json:"spec,omitempty"`
+	Status FirebaseAndroidAppStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // FirebaseAndroidAppList contains a list of FirebaseAndroidApp
- type FirebaseAndroidAppList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []FirebaseAndroidApp `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&FirebaseAndroidApp{}, &FirebaseAndroidAppList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// FirebaseAndroidAppList contains a list of FirebaseAndroidApp
+type FirebaseAndroidAppList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []FirebaseAndroidApp `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&FirebaseAndroidApp{}, &FirebaseAndroidAppList{})
+}

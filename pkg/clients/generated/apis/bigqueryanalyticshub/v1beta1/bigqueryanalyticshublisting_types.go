@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,148 +29,149 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ListingBigQueryDatasetSource struct {
-/* Resource name of the dataset source for this listing. e.g. `projects/myproject/datasets/123` */
-DatasetRef v1alpha1.ResourceRef `json:"datasetRef"`
+	/* Resource name of the dataset source for this listing. e.g. `projects/myproject/datasets/123` */
+	DatasetRef v1alpha1.ResourceRef `json:"datasetRef"`
 
-/* Optional. If set, restricted export policy will be propagated and enforced on the linked dataset. */
-// +optional
-RestrictedExportPolicy *ListingRestrictedExportPolicy `json:"restrictedExportPolicy,omitempty"`
+	/* Optional. If set, restricted export policy will be propagated and enforced on the linked dataset. */
+	// +optional
+	RestrictedExportPolicy *ListingRestrictedExportPolicy `json:"restrictedExportPolicy,omitempty"`
 
-/* Optional. Resources in this dataset that are selectively shared. If this field is empty, then the entire dataset (all resources) are shared. This field is only valid for data clean room exchanges. */
-// +optional
-SelectedResources []ListingSelectedResources `json:"selectedResources,omitempty"`
+	/* Optional. Resources in this dataset that are selectively shared. If this field is empty, then the entire dataset (all resources) are shared. This field is only valid for data clean room exchanges. */
+	// +optional
+	SelectedResources []ListingSelectedResources `json:"selectedResources,omitempty"`
 }
 
 type ListingDataProvider struct {
-/* Optional. Name of the data provider. */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* Optional. Name of the data provider. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* Optional. Email or URL of the data provider. Max Length: 1000 bytes. */
-// +optional
-PrimaryContact *string `json:"primaryContact,omitempty"`
+	/* Optional. Email or URL of the data provider. Max Length: 1000 bytes. */
+	// +optional
+	PrimaryContact *string `json:"primaryContact,omitempty"`
 }
 
 type ListingPublisher struct {
-/* Optional. Name of the listing publisher. */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* Optional. Name of the listing publisher. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* Optional. Email or URL of the listing publisher. Max Length: 1000 bytes. */
-// +optional
-PrimaryContact *string `json:"primaryContact,omitempty"`
+	/* Optional. Email or URL of the listing publisher. Max Length: 1000 bytes. */
+	// +optional
+	PrimaryContact *string `json:"primaryContact,omitempty"`
 }
 
 type ListingRestrictedExportPolicy struct {
-/* Optional. If true, enable restricted export. */
-// +optional
-Enabled *bool `json:"enabled,omitempty"`
+	/* Optional. If true, enable restricted export. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
 
-/* Optional. If true, restrict direct table access (read api/tabledata.list) on linked table. */
-// +optional
-RestrictDirectTableAccess *bool `json:"restrictDirectTableAccess,omitempty"`
+	/* Optional. If true, restrict direct table access (read api/tabledata.list) on linked table. */
+	// +optional
+	RestrictDirectTableAccess *bool `json:"restrictDirectTableAccess,omitempty"`
 
-/* Optional. If true, restrict export of query result derived from restricted linked dataset table. */
-// +optional
-RestrictQueryResult *bool `json:"restrictQueryResult,omitempty"`
+	/* Optional. If true, restrict export of query result derived from restricted linked dataset table. */
+	// +optional
+	RestrictQueryResult *bool `json:"restrictQueryResult,omitempty"`
 }
 
 type ListingSelectedResources struct {
-/* Optional. A reference to a BigQueryTable. Format: `projects/{projectId}/datasets/{datasetId}/tables/{tableId}` Example:"projects/test_project/datasets/test_dataset/tables/test_table" */
-// +optional
-TableRef *v1alpha1.ResourceRef `json:"tableRef,omitempty"`
+	/* Optional. A reference to a BigQueryTable. Format: `projects/{projectId}/datasets/{datasetId}/tables/{tableId}` Example:"projects/test_project/datasets/test_dataset/tables/test_table" */
+	// +optional
+	TableRef *v1alpha1.ResourceRef `json:"tableRef,omitempty"`
 }
 
 type ListingSource struct {
-/* One of the following fields must be set. */
-// +optional
-BigQueryDatasetSource *ListingBigQueryDatasetSource `json:"bigQueryDatasetSource,omitempty"`
+	/* One of the following fields must be set. */
+	// +optional
+	BigQueryDatasetSource *ListingBigQueryDatasetSource `json:"bigQueryDatasetSource,omitempty"`
 }
 
 type BigQueryAnalyticsHubListingSpec struct {
-/* Optional. Categories of the listing. Up to two categories are allowed. */
-// +optional
-Categories []string `json:"categories,omitempty"`
+	/* Optional. Categories of the listing. Up to two categories are allowed. */
+	// +optional
+	Categories []string `json:"categories,omitempty"`
 
-/* BigQueryAnalyticsHubDataExchangeRef defines the resource reference to BigQueryAnalyticsHubDataExchange, which "External" field holds the GCP identifier for the KRM object. */
-DataExchangeRef v1alpha1.ResourceRef `json:"dataExchangeRef"`
+	/* BigQueryAnalyticsHubDataExchangeRef defines the resource reference to BigQueryAnalyticsHubDataExchange, which "External" field holds the GCP identifier for the KRM object. */
+	DataExchangeRef v1alpha1.ResourceRef `json:"dataExchangeRef"`
 
-/* Optional. Details of the data provider who owns the source data. */
-// +optional
-DataProvider *ListingDataProvider `json:"dataProvider,omitempty"`
+	/* Optional. Details of the data provider who owns the source data. */
+	// +optional
+	DataProvider *ListingDataProvider `json:"dataProvider,omitempty"`
 
-/* Optional. Short description of the listing. The description must contain only Unicode characters or tabs  (HT), new lines (LF), carriage returns (CR), and page breaks (FF). Default value is an empty string. Max length: 2000 bytes. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Optional. Short description of the listing. The description must contain only Unicode characters or tabs  (HT), new lines (LF), carriage returns (CR), and page breaks (FF). Default value is an empty string. Max length: 2000 bytes. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Optional. Type of discovery of the listing on the discovery page. */
-// +optional
-DiscoveryType *string `json:"discoveryType,omitempty"`
+	/* Optional. Type of discovery of the listing on the discovery page. */
+	// +optional
+	DiscoveryType *string `json:"discoveryType,omitempty"`
 
-/* Required. Human-readable display name of the listing. The display name must contain only Unicode letters, numbers (0-9), underscores (_), dashes (-), spaces ( ), ampersands (&) and can't start or end with spaces. Default value is an empty string. Max length: 63 bytes. */
-DisplayName string `json:"displayName"`
+	/* Required. Human-readable display name of the listing. The display name must contain only Unicode letters, numbers (0-9), underscores (_), dashes (-), spaces ( ), ampersands (&) and can't start or end with spaces. Default value is an empty string. Max length: 63 bytes. */
+	DisplayName string `json:"displayName"`
 
-/* Optional. Documentation describing the listing. */
-// +optional
-Documentation *string `json:"documentation,omitempty"`
+	/* Optional. Documentation describing the listing. */
+	// +optional
+	Documentation *string `json:"documentation,omitempty"`
 
-/* Immutable. The name of the location this data exchange. */
-Location string `json:"location"`
+	/* Immutable. The name of the location this data exchange. */
+	Location string `json:"location"`
 
-/* Optional. Email or URL of the primary point of contact of the listing. Max Length: 1000 bytes. */
-// +optional
-PrimaryContact *string `json:"primaryContact,omitempty"`
+	/* Optional. Email or URL of the primary point of contact of the listing. Max Length: 1000 bytes. */
+	// +optional
+	PrimaryContact *string `json:"primaryContact,omitempty"`
 
-/* The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Optional. Details of the publisher who owns the listing and who can share the source data. */
-// +optional
-Publisher *ListingPublisher `json:"publisher,omitempty"`
+	/* Optional. Details of the publisher who owns the listing and who can share the source data. */
+	// +optional
+	Publisher *ListingPublisher `json:"publisher,omitempty"`
 
-/* Optional. Email or URL of the request access of the listing. Subscribers can use this reference to request access. Max Length: 1000 bytes. */
-// +optional
-RequestAccess *string `json:"requestAccess,omitempty"`
+	/* Optional. Email or URL of the request access of the listing. Subscribers can use this reference to request access. Max Length: 1000 bytes. */
+	// +optional
+	RequestAccess *string `json:"requestAccess,omitempty"`
 
-/* Immutable. The BigQueryAnalyticsHubDataExchangeListing name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. The BigQueryAnalyticsHubDataExchangeListing name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-Source ListingSource `json:"source"`
+	Source ListingSource `json:"source"`
 }
 
 type ListingObservedStateStatus struct {
-/* Output only. Current state of the listing. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. Current state of the listing. */
+	// +optional
+	State *string `json:"state,omitempty"`
 }
 
 type BigQueryAnalyticsHubListingStatus struct {
 	/* Conditions represent the latest available observations of the
-	    BigQueryAnalyticsHubListing's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the BigQueryAnalyticsHubDataExchangeListing resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   BigQueryAnalyticsHubListing's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the BigQueryAnalyticsHubDataExchangeListing resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *ListingObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *ListingObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigqueryanalyticshublisting;gcpbigqueryanalyticshublistings
@@ -186,20 +186,22 @@ ObservedState *ListingObservedStateStatus `json:"observedState,omitempty"`
 // BigQueryAnalyticsHubListing is the Schema for the bigqueryanalyticshub API
 // +k8s:openapi-gen=true
 type BigQueryAnalyticsHubListing struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec BigQueryAnalyticsHubListingSpec `json:"spec,omitempty"`
-  Status BigQueryAnalyticsHubListingStatus `json:"status,omitempty"`
+	Spec   BigQueryAnalyticsHubListingSpec   `json:"spec,omitempty"`
+	Status BigQueryAnalyticsHubListingStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // BigQueryAnalyticsHubListingList contains a list of BigQueryAnalyticsHubListing
- type BigQueryAnalyticsHubListingList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []BigQueryAnalyticsHubListing `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&BigQueryAnalyticsHubListing{}, &BigQueryAnalyticsHubListingList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// BigQueryAnalyticsHubListingList contains a list of BigQueryAnalyticsHubListing
+type BigQueryAnalyticsHubListingList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []BigQueryAnalyticsHubListing `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&BigQueryAnalyticsHubListing{}, &BigQueryAnalyticsHubListingList{})
+}

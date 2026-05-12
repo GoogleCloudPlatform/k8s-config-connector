@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,95 +29,96 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type WebhookGenericWebService struct {
-/* Specifies a list of allowed custom CA certificates (in DER format) for HTTPS verification. */
-// +optional
-AllowedCaCerts []string `json:"allowedCaCerts,omitempty"`
+	/* Specifies a list of allowed custom CA certificates (in DER format) for HTTPS verification. */
+	// +optional
+	AllowedCaCerts []string `json:"allowedCaCerts,omitempty"`
 
-/* Immutable. The HTTP request headers to send together with webhook requests. */
-// +optional
-RequestHeaders map[string]string `json:"requestHeaders,omitempty"`
+	/* Immutable. The HTTP request headers to send together with webhook requests. */
+	// +optional
+	RequestHeaders map[string]string `json:"requestHeaders,omitempty"`
 
-/* Whether to use speech adaptation for speech recognition. */
-Uri string `json:"uri"`
+	/* Whether to use speech adaptation for speech recognition. */
+	Uri string `json:"uri"`
 }
 
 type WebhookServiceDirectory struct {
-/* The name of Service Directory service. */
-GenericWebService WebhookGenericWebService `json:"genericWebService"`
+	/* The name of Service Directory service. */
+	GenericWebService WebhookGenericWebService `json:"genericWebService"`
 
-/* The name of Service Directory service. */
-Service string `json:"service"`
+	/* The name of Service Directory service. */
+	Service string `json:"service"`
 }
 
 type DialogflowCXWebhookSpec struct {
-/* Indicates whether the webhook is disabled. */
-// +optional
-Disabled *bool `json:"disabled,omitempty"`
+	/* Indicates whether the webhook is disabled. */
+	// +optional
+	Disabled *bool `json:"disabled,omitempty"`
 
-/* The human-readable name of the webhook, unique within the agent. */
-DisplayName string `json:"displayName"`
+	/* The human-readable name of the webhook, unique within the agent. */
+	DisplayName string `json:"displayName"`
 
-/* Indicates if automatic spell correction is enabled in detect intent requests. */
-// +optional
-EnableSpellCorrection *bool `json:"enableSpellCorrection,omitempty"`
+	/* Indicates if automatic spell correction is enabled in detect intent requests. */
+	// +optional
+	EnableSpellCorrection *bool `json:"enableSpellCorrection,omitempty"`
 
-/* Determines whether this agent should log conversation queries. */
-// +optional
-EnableStackdriverLogging *bool `json:"enableStackdriverLogging,omitempty"`
+	/* Determines whether this agent should log conversation queries. */
+	// +optional
+	EnableStackdriverLogging *bool `json:"enableStackdriverLogging,omitempty"`
 
-/* Configuration for a generic web service. */
-// +optional
-GenericWebService *WebhookGenericWebService `json:"genericWebService,omitempty"`
+	/* Configuration for a generic web service. */
+	// +optional
+	GenericWebService *WebhookGenericWebService `json:"genericWebService,omitempty"`
 
 	/* Immutable. The agent to create a webhook for.
 	Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>. */
-// +optional
-Parent *string `json:"parent,omitempty"`
+	// +optional
+	Parent *string `json:"parent,omitempty"`
 
-/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Name of the SecuritySettings reference for the agent. Format: projects/<Project ID>/locations/<Location ID>/securitySettings/<Security Settings ID>. */
-// +optional
-SecuritySettings *string `json:"securitySettings,omitempty"`
+	/* Name of the SecuritySettings reference for the agent. Format: projects/<Project ID>/locations/<Location ID>/securitySettings/<Security Settings ID>. */
+	// +optional
+	SecuritySettings *string `json:"securitySettings,omitempty"`
 
-/* Configuration for a Service Directory service. */
-// +optional
-ServiceDirectory *WebhookServiceDirectory `json:"serviceDirectory,omitempty"`
+	/* Configuration for a Service Directory service. */
+	// +optional
+	ServiceDirectory *WebhookServiceDirectory `json:"serviceDirectory,omitempty"`
 
-/* Webhook execution timeout. */
-// +optional
-Timeout *string `json:"timeout,omitempty"`
+	/* Webhook execution timeout. */
+	// +optional
+	Timeout *string `json:"timeout,omitempty"`
 }
 
 type DialogflowCXWebhookStatus struct {
 	/* Conditions represent the latest available observations of the
-	    DialogflowCXWebhook's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	   DialogflowCXWebhook's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The unique identifier of the webhook.
 	Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/webhooks/<Webhook ID>. */
-// +optional
-Name *string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* Name of the start flow in this agent. A start flow will be automatically created when the agent is created, and can only be deleted by deleting the agent. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>. */
-// +optional
-StartFlow *string `json:"startFlow,omitempty"`
+	/* Name of the start flow in this agent. A start flow will be automatically created when the agent is created, and can only be deleted by deleting the agent. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>. */
+	// +optional
+	StartFlow *string `json:"startFlow,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdialogflowcxwebhook;gcpdialogflowcxwebhooks
@@ -135,20 +135,22 @@ StartFlow *string `json:"startFlow,omitempty"`
 // DialogflowCXWebhook is the Schema for the dialogflowcx API
 // +k8s:openapi-gen=true
 type DialogflowCXWebhook struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec DialogflowCXWebhookSpec `json:"spec,omitempty"`
-  Status DialogflowCXWebhookStatus `json:"status,omitempty"`
+	Spec   DialogflowCXWebhookSpec   `json:"spec,omitempty"`
+	Status DialogflowCXWebhookStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // DialogflowCXWebhookList contains a list of DialogflowCXWebhook
- type DialogflowCXWebhookList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []DialogflowCXWebhook `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&DialogflowCXWebhook{}, &DialogflowCXWebhookList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// DialogflowCXWebhookList contains a list of DialogflowCXWebhook
+type DialogflowCXWebhookList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DialogflowCXWebhook `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&DialogflowCXWebhook{}, &DialogflowCXWebhookList{})
+}

@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,69 +29,70 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type StorageFolderSpec struct {
-/* Required. The host project of the application. */
-// +optional
-ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	/* Required. The host project of the application. */
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-/* The StorageFolder name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The StorageFolder name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Required. The storage bucket where the folder will be created in. */
-// +optional
-StoragebucketRef *v1alpha1.ResourceRef `json:"storagebucketRef,omitempty"`
+	/* Required. The storage bucket where the folder will be created in. */
+	// +optional
+	StoragebucketRef *v1alpha1.ResourceRef `json:"storagebucketRef,omitempty"`
 }
 
 type FolderObservedStateStatus struct {
-/* Output only. The creation time of the folder. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. The creation time of the folder. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. The version of the metadata for this folder. Used for preconditions and for detecting changes in metadata. */
-// +optional
-Metageneration *int64 `json:"metageneration,omitempty"`
+	/* Output only. The version of the metadata for this folder. Used for preconditions and for detecting changes in metadata. */
+	// +optional
+	Metageneration *int64 `json:"metageneration,omitempty"`
 
-/* Output only. Only present if the folder is part of an ongoing RenameFolder operation. Contains information which can be used to query the operation status. The presence of this field also indicates all write operations are blocked for this folder, including folder, managed folder, and object operations. */
-// +optional
-PendingRenameInfo *FolderPendingRenameInfoStatus `json:"pendingRenameInfo,omitempty"`
+	/* Output only. Only present if the folder is part of an ongoing RenameFolder operation. Contains information which can be used to query the operation status. The presence of this field also indicates all write operations are blocked for this folder, including folder, managed folder, and object operations. */
+	// +optional
+	PendingRenameInfo *FolderPendingRenameInfoStatus `json:"pendingRenameInfo,omitempty"`
 
-/* Output only. The modification time of the folder. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. The modification time of the folder. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type FolderPendingRenameInfoStatus struct {
-/* Output only. The name of the rename operation. */
-// +optional
-Operation *string `json:"operation,omitempty"`
+	/* Output only. The name of the rename operation. */
+	// +optional
+	Operation *string `json:"operation,omitempty"`
 }
 
 type StorageFolderStatus struct {
 	/* Conditions represent the latest available observations of the
-	    StorageFolder's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the StorageFolder resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   StorageFolder's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the StorageFolder resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *FolderObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *FolderObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpstoragefolder;gcpstoragefolders
@@ -107,20 +107,22 @@ ObservedState *FolderObservedStateStatus `json:"observedState,omitempty"`
 // StorageFolder is the Schema for the storage API
 // +k8s:openapi-gen=true
 type StorageFolder struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec StorageFolderSpec `json:"spec,omitempty"`
-  Status StorageFolderStatus `json:"status,omitempty"`
+	Spec   StorageFolderSpec   `json:"spec,omitempty"`
+	Status StorageFolderStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // StorageFolderList contains a list of StorageFolder
- type StorageFolderList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []StorageFolder `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&StorageFolder{}, &StorageFolderList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// StorageFolderList contains a list of StorageFolder
+type StorageFolderList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []StorageFolder `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&StorageFolder{}, &StorageFolderList{})
+}

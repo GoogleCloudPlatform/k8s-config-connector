@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,112 +29,113 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type NetworkpolicyExternalIP struct {
-/* True if the service is enabled; false otherwise. */
-// +optional
-Enabled *bool `json:"enabled,omitempty"`
+	/* True if the service is enabled; false otherwise. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 type NetworkpolicyInternetAccess struct {
-/* True if the service is enabled; false otherwise. */
-// +optional
-Enabled *bool `json:"enabled,omitempty"`
+	/* True if the service is enabled; false otherwise. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 type VMwareEngineNetworkPolicySpec struct {
-/* Optional. User-provided description for this network policy. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Optional. User-provided description for this network policy. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Required. IP address range in CIDR notation used to create internet access and external IP access. An RFC 1918 CIDR block, with a "/26" prefix, is required. The range cannot overlap with any prefixes either in the consumer VPC network or in use by the private clouds attached to that VPC network. */
-EdgeServicesCIDR string `json:"edgeServicesCIDR"`
+	/* Required. IP address range in CIDR notation used to create internet access and external IP access. An RFC 1918 CIDR block, with a "/26" prefix, is required. The range cannot overlap with any prefixes either in the consumer VPC network or in use by the private clouds attached to that VPC network. */
+	EdgeServicesCIDR string `json:"edgeServicesCIDR"`
 
-/* Network service that allows External IP addresses to be assigned to VMware workloads. This service can only be enabled when `internet_access` is also enabled. */
-// +optional
-ExternalIP *NetworkpolicyExternalIP `json:"externalIP,omitempty"`
+	/* Network service that allows External IP addresses to be assigned to VMware workloads. This service can only be enabled when `internet_access` is also enabled. */
+	// +optional
+	ExternalIP *NetworkpolicyExternalIP `json:"externalIP,omitempty"`
 
-/* Network service that allows VMware workloads to access the internet. */
-// +optional
-InternetAccess *NetworkpolicyInternetAccess `json:"internetAccess,omitempty"`
+	/* Network service that allows VMware workloads to access the internet. */
+	// +optional
+	InternetAccess *NetworkpolicyInternetAccess `json:"internetAccess,omitempty"`
 
-/* Immutable. */
-Location string `json:"location"`
+	/* Immutable. */
+	Location string `json:"location"`
 
-/* The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* The VMwareEngineNetworkPolicy name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The VMwareEngineNetworkPolicy name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Optional. The relative resource name of the VMware Engine network. */
-// +optional
-VmwareEngineNetworkRef *v1alpha1.ResourceRef `json:"vmwareEngineNetworkRef,omitempty"`
+	/* Optional. The relative resource name of the VMware Engine network. */
+	// +optional
+	VmwareEngineNetworkRef *v1alpha1.ResourceRef `json:"vmwareEngineNetworkRef,omitempty"`
 }
 
 type NetworkpolicyExternalIPStatus struct {
-/* Output only. State of the service. New values may be added to this enum when appropriate. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. State of the service. New values may be added to this enum when appropriate. */
+	// +optional
+	State *string `json:"state,omitempty"`
 }
 
 type NetworkpolicyInternetAccessStatus struct {
-/* Output only. State of the service. New values may be added to this enum when appropriate. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. State of the service. New values may be added to this enum when appropriate. */
+	// +optional
+	State *string `json:"state,omitempty"`
 }
 
 type NetworkpolicyObservedStateStatus struct {
-/* Output only. Creation time of this resource. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. Creation time of this resource. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Network service that allows External IP addresses to be assigned to VMware workloads. This service can only be enabled when `internet_access` is also enabled. */
-// +optional
-ExternalIP *NetworkpolicyExternalIPStatus `json:"externalIP,omitempty"`
+	/* Network service that allows External IP addresses to be assigned to VMware workloads. This service can only be enabled when `internet_access` is also enabled. */
+	// +optional
+	ExternalIP *NetworkpolicyExternalIPStatus `json:"externalIP,omitempty"`
 
-/* Network service that allows VMware workloads to access the internet. */
-// +optional
-InternetAccess *NetworkpolicyInternetAccessStatus `json:"internetAccess,omitempty"`
+	/* Network service that allows VMware workloads to access the internet. */
+	// +optional
+	InternetAccess *NetworkpolicyInternetAccessStatus `json:"internetAccess,omitempty"`
 
-/* Output only. System-generated unique identifier for the resource. */
-// +optional
-Uid *string `json:"uid,omitempty"`
+	/* Output only. System-generated unique identifier for the resource. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
 
-/* Output only. Last update time of this resource. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. Last update time of this resource. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 
-/* Output only. The canonical name of the VMware Engine network in the form: `projects/{project_number}/locations/{location}/vmwareEngineNetworks/{vmware_engine_network_id}` */
-// +optional
-VmwareEngineNetworkCanonical *string `json:"vmwareEngineNetworkCanonical,omitempty"`
+	/* Output only. The canonical name of the VMware Engine network in the form: `projects/{project_number}/locations/{location}/vmwareEngineNetworks/{vmware_engine_network_id}` */
+	// +optional
+	VmwareEngineNetworkCanonical *string `json:"vmwareEngineNetworkCanonical,omitempty"`
 }
 
 type VMwareEngineNetworkPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
-	    VMwareEngineNetworkPolicy's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the VMwareEngineNetworkPolicy resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   VMwareEngineNetworkPolicy's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the VMwareEngineNetworkPolicy resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *NetworkpolicyObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *NetworkpolicyObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpvmwareenginenetworkpolicy;gcpvmwareenginenetworkpolicies
@@ -150,20 +150,22 @@ ObservedState *NetworkpolicyObservedStateStatus `json:"observedState,omitempty"`
 // VMwareEngineNetworkPolicy is the Schema for the vmwareengine API
 // +k8s:openapi-gen=true
 type VMwareEngineNetworkPolicy struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec VMwareEngineNetworkPolicySpec `json:"spec,omitempty"`
-  Status VMwareEngineNetworkPolicyStatus `json:"status,omitempty"`
+	Spec   VMwareEngineNetworkPolicySpec   `json:"spec,omitempty"`
+	Status VMwareEngineNetworkPolicyStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // VMwareEngineNetworkPolicyList contains a list of VMwareEngineNetworkPolicy
- type VMwareEngineNetworkPolicyList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []VMwareEngineNetworkPolicy `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&VMwareEngineNetworkPolicy{}, &VMwareEngineNetworkPolicyList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// VMwareEngineNetworkPolicyList contains a list of VMwareEngineNetworkPolicy
+type VMwareEngineNetworkPolicyList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []VMwareEngineNetworkPolicy `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&VMwareEngineNetworkPolicy{}, &VMwareEngineNetworkPolicyList{})
+}

@@ -53,43 +53,41 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	DialogflowCXAgentGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DialogflowCXAgent{}).Name(),
-  	}
-  
-  	DialogflowCXEntityTypeGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DialogflowCXEntityType{}).Name(),
-  	}
-  
-  	DialogflowCXFlowGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DialogflowCXFlow{}).Name(),
-  	}
-  
-  	DialogflowCXIntentGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DialogflowCXIntent{}).Name(),
-  	}
-  
-  	DialogflowCXPageGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DialogflowCXPage{}).Name(),
-  	}
-  
-  	DialogflowCXWebhookGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DialogflowCXWebhook{}).Name(),
-  	}
-  
+	DialogflowCXAgentGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DialogflowCXAgent{}).Name(),
+	}
 
-  	dialogflowcxAPIVersion = SchemeGroupVersion.String()
+	DialogflowCXEntityTypeGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DialogflowCXEntityType{}).Name(),
+	}
+
+	DialogflowCXFlowGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DialogflowCXFlow{}).Name(),
+	}
+
+	DialogflowCXIntentGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DialogflowCXIntent{}).Name(),
+	}
+
+	DialogflowCXPageGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DialogflowCXPage{}).Name(),
+	}
+
+	DialogflowCXWebhookGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DialogflowCXWebhook{}).Name(),
+	}
+
+	dialogflowcxAPIVersion = SchemeGroupVersion.String()
 )

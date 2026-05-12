@@ -53,31 +53,29 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	DatastreamConnectionProfileGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DatastreamConnectionProfile{}).Name(),
-  	}
-  
-  	DatastreamPrivateConnectionGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DatastreamPrivateConnection{}).Name(),
-  	}
-  
-  	DatastreamRouteGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DatastreamRoute{}).Name(),
-  	}
-  
-  	DatastreamStreamGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DatastreamStream{}).Name(),
-  	}
-  
+	DatastreamConnectionProfileGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DatastreamConnectionProfile{}).Name(),
+	}
 
-  	datastreamAPIVersion = SchemeGroupVersion.String()
+	DatastreamPrivateConnectionGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DatastreamPrivateConnection{}).Name(),
+	}
+
+	DatastreamRouteGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DatastreamRoute{}).Name(),
+	}
+
+	DatastreamStreamGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DatastreamStream{}).Name(),
+	}
+
+	datastreamAPIVersion = SchemeGroupVersion.String()
 )

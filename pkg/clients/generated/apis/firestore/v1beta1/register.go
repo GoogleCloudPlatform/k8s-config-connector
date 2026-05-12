@@ -53,19 +53,17 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	FirestoreDatabaseGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(FirestoreDatabase{}).Name(),
-  	}
-  
-  	FirestoreIndexGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(FirestoreIndex{}).Name(),
-  	}
-  
+	FirestoreDatabaseGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(FirestoreDatabase{}).Name(),
+	}
 
-  	firestoreAPIVersion = SchemeGroupVersion.String()
+	FirestoreIndexGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(FirestoreIndex{}).Name(),
+	}
+
+	firestoreAPIVersion = SchemeGroupVersion.String()
 )

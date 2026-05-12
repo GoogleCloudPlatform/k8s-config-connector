@@ -53,19 +53,17 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	ParameterManagerParameterGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(ParameterManagerParameter{}).Name(),
-  	}
-  
-  	ParameterManagerParameterVersionGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(ParameterManagerParameterVersion{}).Name(),
-  	}
-  
+	ParameterManagerParameterGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ParameterManagerParameter{}).Name(),
+	}
 
-  	parametermanagerAPIVersion = SchemeGroupVersion.String()
+	ParameterManagerParameterVersionGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ParameterManagerParameterVersion{}).Name(),
+	}
+
+	parametermanagerAPIVersion = SchemeGroupVersion.String()
 )

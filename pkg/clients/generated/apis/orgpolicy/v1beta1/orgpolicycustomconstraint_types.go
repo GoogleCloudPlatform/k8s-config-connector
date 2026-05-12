@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,77 +29,78 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type OrgPolicyCustomConstraintSpec struct {
-/* Allow or deny type. */
-// +optional
-ActionType *string `json:"actionType,omitempty"`
+	/* Allow or deny type. */
+	// +optional
+	ActionType *string `json:"actionType,omitempty"`
 
 	/* Org policy condition/expression. For example:
 	`resource.instanceName.matches("[production|test]_.*_(\d)+")` or,
 	`resource.management.auto_upgrade == true`
-	
+
 	The max length of the condition is 1000 characters. */
-// +optional
-Condition *string `json:"condition,omitempty"`
+	// +optional
+	Condition *string `json:"condition,omitempty"`
 
-/* Detailed information about this custom policy constraint. The max length of the description is 2000 characters. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Detailed information about this custom policy constraint. The max length of the description is 2000 characters. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* One line display name for the UI. The max length of the display_name is 200 characters. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* One line display name for the UI. The max length of the display_name is 200 characters. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* All the operations being applied for this constraint. */
-// +optional
-MethodTypes []string `json:"methodTypes,omitempty"`
+	/* All the operations being applied for this constraint. */
+	// +optional
+	MethodTypes []string `json:"methodTypes,omitempty"`
 
-/* The Organization that this resource belongs to. */
-OrganizationRef v1alpha1.ResourceRef `json:"organizationRef"`
+	/* The Organization that this resource belongs to. */
+	OrganizationRef v1alpha1.ResourceRef `json:"organizationRef"`
 
-/* The OrgPolicyCustomConstraint name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The OrgPolicyCustomConstraint name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Immutable. The resource instance type on which this policy applies. Format
 	will be of the form : `<canonical service name>/<type>` Example:
-	
+
 	* `compute.googleapis.com/Instance`. */
-// +optional
-ResourceTypes []string `json:"resourceTypes,omitempty"`
+	// +optional
+	ResourceTypes []string `json:"resourceTypes,omitempty"`
 }
 
 type CustomconstraintObservedStateStatus struct {
-/* Output only. The last time this custom constraint was updated. This represents the last time that the `CreateCustomConstraint` or `UpdateCustomConstraint` RPC was called */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. The last time this custom constraint was updated. This represents the last time that the `CreateCustomConstraint` or `UpdateCustomConstraint` RPC was called */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type OrgPolicyCustomConstraintStatus struct {
 	/* Conditions represent the latest available observations of the
-	    OrgPolicyCustomConstraint's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the OrgPolicyCustomConstraint resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   OrgPolicyCustomConstraint's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the OrgPolicyCustomConstraint resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *CustomconstraintObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *CustomconstraintObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcporgpolicycustomconstraint;gcporgpolicycustomconstraints
@@ -115,20 +115,22 @@ ObservedState *CustomconstraintObservedStateStatus `json:"observedState,omitempt
 // OrgPolicyCustomConstraint is the Schema for the orgpolicy API
 // +k8s:openapi-gen=true
 type OrgPolicyCustomConstraint struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec OrgPolicyCustomConstraintSpec `json:"spec,omitempty"`
-  Status OrgPolicyCustomConstraintStatus `json:"status,omitempty"`
+	Spec   OrgPolicyCustomConstraintSpec   `json:"spec,omitempty"`
+	Status OrgPolicyCustomConstraintStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // OrgPolicyCustomConstraintList contains a list of OrgPolicyCustomConstraint
- type OrgPolicyCustomConstraintList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []OrgPolicyCustomConstraint `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&OrgPolicyCustomConstraint{}, &OrgPolicyCustomConstraintList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// OrgPolicyCustomConstraintList contains a list of OrgPolicyCustomConstraint
+type OrgPolicyCustomConstraintList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []OrgPolicyCustomConstraint `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&OrgPolicyCustomConstraint{}, &OrgPolicyCustomConstraintList{})
+}

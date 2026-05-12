@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -42,53 +41,53 @@ var _ = apiextensionsv1.JSON{}
 type AccesslevelconditionDevicePolicy struct {
 	/* Immutable. A list of allowed device management levels.
 	An empty list allows all management levels. Possible values: ["MANAGEMENT_UNSPECIFIED", "NONE", "BASIC", "COMPLETE"]. */
-// +optional
-AllowedDeviceManagementLevels []string `json:"allowedDeviceManagementLevels,omitempty"`
+	// +optional
+	AllowedDeviceManagementLevels []string `json:"allowedDeviceManagementLevels,omitempty"`
 
 	/* Immutable. A list of allowed encryptions statuses.
 	An empty list allows all statuses. Possible values: ["ENCRYPTION_UNSPECIFIED", "ENCRYPTION_UNSUPPORTED", "UNENCRYPTED", "ENCRYPTED"]. */
-// +optional
-AllowedEncryptionStatuses []string `json:"allowedEncryptionStatuses,omitempty"`
+	// +optional
+	AllowedEncryptionStatuses []string `json:"allowedEncryptionStatuses,omitempty"`
 
 	/* Immutable. A list of allowed OS versions.
 	An empty list allows all types and all versions. */
-// +optional
-OsConstraints []AccesslevelconditionOsConstraints `json:"osConstraints,omitempty"`
+	// +optional
+	OsConstraints []AccesslevelconditionOsConstraints `json:"osConstraints,omitempty"`
 
-/* Immutable. Whether the device needs to be approved by the customer admin. */
-// +optional
-RequireAdminApproval *bool `json:"requireAdminApproval,omitempty"`
+	/* Immutable. Whether the device needs to be approved by the customer admin. */
+	// +optional
+	RequireAdminApproval *bool `json:"requireAdminApproval,omitempty"`
 
-/* Immutable. Whether the device needs to be corp owned. */
-// +optional
-RequireCorpOwned *bool `json:"requireCorpOwned,omitempty"`
+	/* Immutable. Whether the device needs to be corp owned. */
+	// +optional
+	RequireCorpOwned *bool `json:"requireCorpOwned,omitempty"`
 
 	/* Immutable. Whether or not screenlock is required for the DevicePolicy
 	to be true. Defaults to false. */
-// +optional
-RequireScreenLock *bool `json:"requireScreenLock,omitempty"`
+	// +optional
+	RequireScreenLock *bool `json:"requireScreenLock,omitempty"`
 }
 
 type AccesslevelconditionOsConstraints struct {
 	/* Immutable. The minimum allowed OS version. If not set, any version
 	of this OS satisfies the constraint.
 	Format: "major.minor.patch" such as "10.5.301", "9.2.1". */
-// +optional
-MinimumVersion *string `json:"minimumVersion,omitempty"`
+	// +optional
+	MinimumVersion *string `json:"minimumVersion,omitempty"`
 
-/* Immutable. The operating system type of the device. Possible values: ["OS_UNSPECIFIED", "DESKTOP_MAC", "DESKTOP_WINDOWS", "DESKTOP_LINUX", "DESKTOP_CHROME_OS", "ANDROID", "IOS"]. */
-OsType string `json:"osType"`
+	/* Immutable. The operating system type of the device. Possible values: ["OS_UNSPECIFIED", "DESKTOP_MAC", "DESKTOP_WINDOWS", "DESKTOP_LINUX", "DESKTOP_CHROME_OS", "ANDROID", "IOS"]. */
+	OsType string `json:"osType"`
 }
 
 type AccessContextManagerAccessLevelConditionSpec struct {
-// +optional
-AccessLevelRef *v1alpha1.ResourceRef `json:"accessLevelRef,omitempty"`
+	// +optional
+	AccessLevelRef *v1alpha1.ResourceRef `json:"accessLevelRef,omitempty"`
 
 	/* Immutable. Device specific restrictions, all restrictions must hold for
 	the Condition to be true. If not specified, all devices are
 	allowed. */
-// +optional
-DevicePolicy *AccesslevelconditionDevicePolicy `json:"devicePolicy,omitempty"`
+	// +optional
+	DevicePolicy *AccesslevelconditionDevicePolicy `json:"devicePolicy,omitempty"`
 
 	/* Immutable. A list of CIDR block IP subnetwork specification. May be IPv4
 	or IPv6.
@@ -100,53 +99,54 @@ DevicePolicy *AccesslevelconditionDevicePolicy `json:"devicePolicy,omitempty"`
 	is not. The originating IP of a request must be in one of the
 	listed subnets in order for this Condition to be true.
 	If empty, all IP addresses are allowed. */
-// +optional
-IpSubnetworks []string `json:"ipSubnetworks,omitempty"`
+	// +optional
+	IpSubnetworks []string `json:"ipSubnetworks,omitempty"`
 
 	/* Immutable. An allowed list of members (users, service accounts).
 	Using groups is not supported yet.
-	
+
 	The signed-in user originating the request must be a part of one
 	of the provided members. If not specified, a request may come
 	from any user (logged in/not logged in, not present in any
 	groups, etc.).
 	Formats: 'user:{emailid}', 'serviceAccount:{emailid}'. */
-// +optional
-Members []string `json:"members,omitempty"`
+	// +optional
+	Members []string `json:"members,omitempty"`
 
 	/* Immutable. Whether to negate the Condition. If true, the Condition becomes
 	a NAND over its non-empty fields, each field must be false for
 	the Condition overall to be satisfied. Defaults to false. */
-// +optional
-Negate *bool `json:"negate,omitempty"`
+	// +optional
+	Negate *bool `json:"negate,omitempty"`
 
 	/* Immutable. The request must originate from one of the provided
 	countries/regions.
 	Format: A valid ISO 3166-1 alpha-2 code. */
-// +optional
-Regions []string `json:"regions,omitempty"`
+	// +optional
+	Regions []string `json:"regions,omitempty"`
 
 	/* Immutable. A list of other access levels defined in the same Policy,
 	referenced by resource name. Referencing an AccessLevel which
 	does not exist is an error. All access levels listed must be
 	granted for the Condition to be true.
 	Format: accessPolicies/{policy_id}/accessLevels/{short_name}. */
-// +optional
-RequiredAccessLevels []string `json:"requiredAccessLevels,omitempty"`
+	// +optional
+	RequiredAccessLevels []string `json:"requiredAccessLevels,omitempty"`
 
-/* Immutable. Optional. The accessLevel of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The accessLevel of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type AccessContextManagerAccessLevelConditionStatus struct {
 	/* Conditions represent the latest available observations of the
-	    AccessContextManagerAccessLevelCondition's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   AccessContextManagerAccessLevelCondition's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpaccesscontextmanageraccesslevelcondition;gcpaccesscontextmanageraccesslevelconditions
@@ -163,20 +163,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // AccessContextManagerAccessLevelCondition is the Schema for the accesscontextmanager API
 // +k8s:openapi-gen=true
 type AccessContextManagerAccessLevelCondition struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec AccessContextManagerAccessLevelConditionSpec `json:"spec,omitempty"`
-  Status AccessContextManagerAccessLevelConditionStatus `json:"status,omitempty"`
+	Spec   AccessContextManagerAccessLevelConditionSpec   `json:"spec,omitempty"`
+	Status AccessContextManagerAccessLevelConditionStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // AccessContextManagerAccessLevelConditionList contains a list of AccessContextManagerAccessLevelCondition
- type AccessContextManagerAccessLevelConditionList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []AccessContextManagerAccessLevelCondition `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&AccessContextManagerAccessLevelCondition{}, &AccessContextManagerAccessLevelConditionList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// AccessContextManagerAccessLevelConditionList contains a list of AccessContextManagerAccessLevelCondition
+type AccessContextManagerAccessLevelConditionList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []AccessContextManagerAccessLevelCondition `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&AccessContextManagerAccessLevelCondition{}, &AccessContextManagerAccessLevelConditionList{})
+}

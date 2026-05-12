@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,28 +29,28 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ComputeTargetGRPCProxySpec struct {
-/* An optional description of this resource. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* An optional description of this resource. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* The UrlMap resource that defines the mapping from URL to the BackendService.
 	The protocol field in the BackendService must be set to GRPC. */
-// +optional
-UrlMapRef *v1alpha1.ResourceRef `json:"urlMapRef,omitempty"`
+	// +optional
+	UrlMapRef *v1alpha1.ResourceRef `json:"urlMapRef,omitempty"`
 
 	/* Immutable. If true, indicates that the BackendServices referenced by
 	the urlMap may be accessed by gRPC applications without using
@@ -63,17 +62,17 @@ UrlMapRef *v1alpha1.ResourceRef `json:"urlMapRef,omitempty"`
 	applications via a sidecar proxy. In this case, a gRPC application
 	must not use "xds:///" scheme in the target URI of the service
 	it is connecting to. */
-// +optional
-ValidateForProxyless *bool `json:"validateForProxyless,omitempty"`
+	// +optional
+	ValidateForProxyless *bool `json:"validateForProxyless,omitempty"`
 }
 
 type ComputeTargetGRPCProxyStatus struct {
 	/* Conditions represent the latest available observations of the
-	    ComputeTargetGRPCProxy's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* Creation timestamp in RFC3339 text format. */
-// +optional
-CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+	   ComputeTargetGRPCProxy's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* Creation timestamp in RFC3339 text format. */
+	// +optional
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
 	/* Fingerprint of this resource. A hash of the contents stored in
 	this object. This field is used in optimistic locking. This field
@@ -82,20 +81,21 @@ CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 	TargetGrpcProxy; otherwise, the request will fail with error
 	412 conditionNotMet. To see the latest fingerprint, make a get()
 	request to retrieve the TargetGrpcProxy. A base64-encoded string. */
-// +optional
-Fingerprint *string `json:"fingerprint,omitempty"`
+	// +optional
+	Fingerprint *string `json:"fingerprint,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-// +optional
-SelfLink *string `json:"selfLink,omitempty"`
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 
-/* Server-defined URL with id for the resource. */
-// +optional
-SelfLinkWithId *string `json:"selfLinkWithId,omitempty"`
+	/* Server-defined URL with id for the resource. */
+	// +optional
+	SelfLinkWithId *string `json:"selfLinkWithId,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputetargetgrpcproxy;gcpcomputetargetgrpcproxies
@@ -112,20 +112,22 @@ SelfLinkWithId *string `json:"selfLinkWithId,omitempty"`
 // ComputeTargetGRPCProxy is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeTargetGRPCProxy struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ComputeTargetGRPCProxySpec `json:"spec,omitempty"`
-  Status ComputeTargetGRPCProxyStatus `json:"status,omitempty"`
+	Spec   ComputeTargetGRPCProxySpec   `json:"spec,omitempty"`
+	Status ComputeTargetGRPCProxyStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ComputeTargetGRPCProxyList contains a list of ComputeTargetGRPCProxy
- type ComputeTargetGRPCProxyList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []ComputeTargetGRPCProxy `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&ComputeTargetGRPCProxy{}, &ComputeTargetGRPCProxyList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ComputeTargetGRPCProxyList contains a list of ComputeTargetGRPCProxy
+type ComputeTargetGRPCProxyList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeTargetGRPCProxy `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ComputeTargetGRPCProxy{}, &ComputeTargetGRPCProxyList{})
+}

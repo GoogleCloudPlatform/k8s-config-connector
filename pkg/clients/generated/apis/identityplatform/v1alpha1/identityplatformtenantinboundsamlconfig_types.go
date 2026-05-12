@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,88 +29,89 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type TenantinboundsamlconfigIdpCertificates struct {
-/* The x509 certificate. */
-// +optional
-X509Certificate *string `json:"x509Certificate,omitempty"`
+	/* The x509 certificate. */
+	// +optional
+	X509Certificate *string `json:"x509Certificate,omitempty"`
 }
 
 type TenantinboundsamlconfigIdpConfig struct {
-/* The IDP's certificate data to verify the signature in the SAMLResponse issued by the IDP. */
-IdpCertificates []TenantinboundsamlconfigIdpCertificates `json:"idpCertificates"`
+	/* The IDP's certificate data to verify the signature in the SAMLResponse issued by the IDP. */
+	IdpCertificates []TenantinboundsamlconfigIdpCertificates `json:"idpCertificates"`
 
-/* Unique identifier for all SAML entities. */
-IdpEntityId string `json:"idpEntityId"`
+	/* Unique identifier for all SAML entities. */
+	IdpEntityId string `json:"idpEntityId"`
 
-/* Indicates if outbounding SAMLRequest should be signed. */
-// +optional
-SignRequest *bool `json:"signRequest,omitempty"`
+	/* Indicates if outbounding SAMLRequest should be signed. */
+	// +optional
+	SignRequest *bool `json:"signRequest,omitempty"`
 
-/* URL to send Authentication request to. */
-SsoUrl string `json:"ssoUrl"`
+	/* URL to send Authentication request to. */
+	SsoUrl string `json:"ssoUrl"`
 }
 
 type TenantinboundsamlconfigSpCertificates struct {
-/* The x509 certificate. */
-// +optional
-X509Certificate *string `json:"x509Certificate,omitempty"`
+	/* The x509 certificate. */
+	// +optional
+	X509Certificate *string `json:"x509Certificate,omitempty"`
 }
 
 type TenantinboundsamlconfigSpConfig struct {
-/* Callback URI where responses from IDP are handled. Must start with 'https://'. */
-CallbackUri string `json:"callbackUri"`
+	/* Callback URI where responses from IDP are handled. Must start with 'https://'. */
+	CallbackUri string `json:"callbackUri"`
 
-/* The IDP's certificate data to verify the signature in the SAMLResponse issued by the IDP. */
-// +optional
-SpCertificates []TenantinboundsamlconfigSpCertificates `json:"spCertificates,omitempty"`
+	/* The IDP's certificate data to verify the signature in the SAMLResponse issued by the IDP. */
+	// +optional
+	SpCertificates []TenantinboundsamlconfigSpCertificates `json:"spCertificates,omitempty"`
 
-/* Unique identifier for all SAML entities. */
-SpEntityId string `json:"spEntityId"`
+	/* Unique identifier for all SAML entities. */
+	SpEntityId string `json:"spEntityId"`
 }
 
 type IdentityPlatformTenantInboundSAMLConfigSpec struct {
-/* Human friendly display name. */
-DisplayName string `json:"displayName"`
+	/* Human friendly display name. */
+	DisplayName string `json:"displayName"`
 
-/* If this config allows users to sign in with the provider. */
-// +optional
-Enabled *bool `json:"enabled,omitempty"`
+	/* If this config allows users to sign in with the provider. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
 
-/* SAML IdP configuration when the project acts as the relying party. */
-IdpConfig TenantinboundsamlconfigIdpConfig `json:"idpConfig"`
+	/* SAML IdP configuration when the project acts as the relying party. */
+	IdpConfig TenantinboundsamlconfigIdpConfig `json:"idpConfig"`
 
-/* The project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* SAML SP (Service Provider) configuration when the project acts as the relying party to receive
 	and accept an authentication assertion issued by a SAML identity provider. */
-SpConfig TenantinboundsamlconfigSpConfig `json:"spConfig"`
+	SpConfig TenantinboundsamlconfigSpConfig `json:"spConfig"`
 
-/* Immutable. The name of the tenant where this inbound SAML config resource exists. */
-Tenant string `json:"tenant"`
+	/* Immutable. The name of the tenant where this inbound SAML config resource exists. */
+	Tenant string `json:"tenant"`
 }
 
 type IdentityPlatformTenantInboundSAMLConfigStatus struct {
 	/* Conditions represent the latest available observations of the
-	    IdentityPlatformTenantInboundSAMLConfig's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   IdentityPlatformTenantInboundSAMLConfig's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpidentityplatformtenantinboundsamlconfig;gcpidentityplatformtenantinboundsamlconfigs
@@ -128,20 +128,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // IdentityPlatformTenantInboundSAMLConfig is the Schema for the identityplatform API
 // +k8s:openapi-gen=true
 type IdentityPlatformTenantInboundSAMLConfig struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec IdentityPlatformTenantInboundSAMLConfigSpec `json:"spec,omitempty"`
-  Status IdentityPlatformTenantInboundSAMLConfigStatus `json:"status,omitempty"`
+	Spec   IdentityPlatformTenantInboundSAMLConfigSpec   `json:"spec,omitempty"`
+	Status IdentityPlatformTenantInboundSAMLConfigStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // IdentityPlatformTenantInboundSAMLConfigList contains a list of IdentityPlatformTenantInboundSAMLConfig
- type IdentityPlatformTenantInboundSAMLConfigList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []IdentityPlatformTenantInboundSAMLConfig `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&IdentityPlatformTenantInboundSAMLConfig{}, &IdentityPlatformTenantInboundSAMLConfigList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// IdentityPlatformTenantInboundSAMLConfigList contains a list of IdentityPlatformTenantInboundSAMLConfig
+type IdentityPlatformTenantInboundSAMLConfigList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []IdentityPlatformTenantInboundSAMLConfig `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&IdentityPlatformTenantInboundSAMLConfig{}, &IdentityPlatformTenantInboundSAMLConfigList{})
+}
