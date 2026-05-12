@@ -1236,7 +1236,7 @@ func ResourceContainerCluster() *schema.Resource {
 							Optional:    true,
 							Computed:    true,
 							ForceNew:    true,
-							Description: `Confidential instance type for the cluster nodes. Valid values are SEV and SEV_SNP.`,
+							Description: `Confidential instance type for the cluster nodes. Valid values are SEV, SEV_SNP, and TDX.`,
 						},
 					},
 				},

@@ -653,7 +653,7 @@ func schemaNodeConfig() *schema.Schema {
 								Optional:    true,
 								Computed:    true,
 								ForceNew:    true,
-								Description: `Confidential instance type for the nodes in the pool. Valid values are SEV and SEV_SNP.`,
+								Description: `Confidential instance type for the nodes in the pool. Valid values are SEV, SEV_SNP, and TDX.`,
 							},
 						},
 					},
