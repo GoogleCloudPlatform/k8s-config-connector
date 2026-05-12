@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package vertexai
+package cachedcontent
 
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
@@ -20,19 +20,30 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	latlng "google.golang.org/genproto/googleapis/type/latlng"
 	structpb "google.golang.org/protobuf/types/known/structpb"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
-func Value_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *krm.Value {
-	return nil
+func Value_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *apiextensionsv1.JSON {
+	if in == nil {
+		return nil
+	}
+	b, err := in.MarshalJSON()
+	if err != nil {
+		mapCtx.Errorf("marshaling structpb.Value to JSON: %v", err)
+		return nil
+	}
+	return &apiextensionsv1.JSON{Raw: b}
 }
-func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *structpb.Value {
-	return nil
-}
-func ListValue_FromProto(mapCtx *direct.MapContext, in *structpb.ListValue) *krm.ListValue {
-	return nil
-}
-func ListValue_ToProto(mapCtx *direct.MapContext, in *krm.ListValue) *structpb.ListValue {
-	return nil
+func Value_ToProto(mapCtx *direct.MapContext, in *apiextensionsv1.JSON) *structpb.Value {
+	if in == nil {
+		return nil
+	}
+	out := &structpb.Value{}
+	if err := out.UnmarshalJSON(in.Raw); err != nil {
+		mapCtx.Errorf("unmarshaling JSON to structpb.Value: %v", err)
+		return nil
+	}
+	return out
 }
 
 func Blob_FromProto(mapCtx *direct.MapContext, in *pb.Blob) *krm.Blob {

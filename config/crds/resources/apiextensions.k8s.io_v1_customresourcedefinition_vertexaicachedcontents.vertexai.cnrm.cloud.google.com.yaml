@@ -464,32 +464,7 @@ spec:
                               additionalProperties:
                                 description: Optional. Can either be a boolean or
                                   an object; controls the presence of additional properties.
-                                properties:
-                                  boolValue:
-                                    description: Represents a boolean value.
-                                    type: boolean
-                                  listValue:
-                                    description: Represents a repeated `Value`.
-                                    properties:
-                                      values:
-                                        description: Repeated field of dynamically
-                                          typed values.
-                                        items: {}
-                                        type: array
-                                    type: object
-                                  nullValue:
-                                    description: Represents a null value.
-                                    type: string
-                                  numberValue:
-                                    description: Represents a double value.
-                                    type: number
-                                  stringValue:
-                                    description: Represents a string value.
-                                    type: string
-                                  structValue:
-                                    description: Represents a structured value.
-                                    x-kubernetes-preserve-unknown-fields: true
-                                type: object
+                                x-kubernetes-preserve-unknown-fields: true
                               anyOf:
                                 description: Optional. The value should be validated
                                   against any (one or more) of the subschemas in the
@@ -498,32 +473,7 @@ spec:
                                 type: array
                               default:
                                 description: Optional. Default value of the data.
-                                properties:
-                                  boolValue:
-                                    description: Represents a boolean value.
-                                    type: boolean
-                                  listValue:
-                                    description: Represents a repeated `Value`.
-                                    properties:
-                                      values:
-                                        description: Repeated field of dynamically
-                                          typed values.
-                                        items: {}
-                                        type: array
-                                    type: object
-                                  nullValue:
-                                    description: Represents a null value.
-                                    type: string
-                                  numberValue:
-                                    description: Represents a double value.
-                                    type: number
-                                  stringValue:
-                                    description: Represents a string value.
-                                    type: string
-                                  structValue:
-                                    description: Represents a structured value.
-                                    x-kubernetes-preserve-unknown-fields: true
-                                type: object
+                                x-kubernetes-preserve-unknown-fields: true
                               description:
                                 description: Optional. The description of the data.
                                 type: string
@@ -540,32 +490,7 @@ spec:
                               example:
                                 description: Optional. Example of the object. Will
                                   only populated when the object is the root.
-                                properties:
-                                  boolValue:
-                                    description: Represents a boolean value.
-                                    type: boolean
-                                  listValue:
-                                    description: Represents a repeated `Value`.
-                                    properties:
-                                      values:
-                                        description: Repeated field of dynamically
-                                          typed values.
-                                        items: {}
-                                        type: array
-                                    type: object
-                                  nullValue:
-                                    description: Represents a null value.
-                                    type: string
-                                  numberValue:
-                                    description: Represents a double value.
-                                    type: number
-                                  stringValue:
-                                    description: Represents a string value.
-                                    type: string
-                                  structValue:
-                                    description: Represents a structured value.
-                                    x-kubernetes-preserve-unknown-fields: true
-                                type: object
+                                x-kubernetes-preserve-unknown-fields: true
                               format:
                                 description: 'Optional. The format of the data. Supported
                                   formats: for NUMBER type: "float", "double" for
@@ -684,32 +609,7 @@ spec:
                                ```
 
                                This field is mutually exclusive with `parameters`.
-                            properties:
-                              boolValue:
-                                description: Represents a boolean value.
-                                type: boolean
-                              listValue:
-                                description: Represents a repeated `Value`.
-                                properties:
-                                  values:
-                                    description: Repeated field of dynamically typed
-                                      values.
-                                    items: {}
-                                    type: array
-                                type: object
-                              nullValue:
-                                description: Represents a null value.
-                                type: string
-                              numberValue:
-                                description: Represents a double value.
-                                type: number
-                              stringValue:
-                                description: Represents a string value.
-                                type: string
-                              structValue:
-                                description: Represents a structured value.
-                                x-kubernetes-preserve-unknown-fields: true
-                            type: object
+                            x-kubernetes-preserve-unknown-fields: true
                           response:
                             description: Optional. Describes the output from this
                               function in JSON Schema format. Reflects the Open API
@@ -719,32 +619,7 @@ spec:
                               additionalProperties:
                                 description: Optional. Can either be a boolean or
                                   an object; controls the presence of additional properties.
-                                properties:
-                                  boolValue:
-                                    description: Represents a boolean value.
-                                    type: boolean
-                                  listValue:
-                                    description: Represents a repeated `Value`.
-                                    properties:
-                                      values:
-                                        description: Repeated field of dynamically
-                                          typed values.
-                                        items: {}
-                                        type: array
-                                    type: object
-                                  nullValue:
-                                    description: Represents a null value.
-                                    type: string
-                                  numberValue:
-                                    description: Represents a double value.
-                                    type: number
-                                  stringValue:
-                                    description: Represents a string value.
-                                    type: string
-                                  structValue:
-                                    description: Represents a structured value.
-                                    x-kubernetes-preserve-unknown-fields: true
-                                type: object
+                                x-kubernetes-preserve-unknown-fields: true
                               anyOf:
                                 description: Optional. The value should be validated
                                   against any (one or more) of the subschemas in the
@@ -753,32 +628,7 @@ spec:
                                 type: array
                               default:
                                 description: Optional. Default value of the data.
-                                properties:
-                                  boolValue:
-                                    description: Represents a boolean value.
-                                    type: boolean
-                                  listValue:
-                                    description: Represents a repeated `Value`.
-                                    properties:
-                                      values:
-                                        description: Repeated field of dynamically
-                                          typed values.
-                                        items: {}
-                                        type: array
-                                    type: object
-                                  nullValue:
-                                    description: Represents a null value.
-                                    type: string
-                                  numberValue:
-                                    description: Represents a double value.
-                                    type: number
-                                  stringValue:
-                                    description: Represents a string value.
-                                    type: string
-                                  structValue:
-                                    description: Represents a structured value.
-                                    x-kubernetes-preserve-unknown-fields: true
-                                type: object
+                                x-kubernetes-preserve-unknown-fields: true
                               description:
                                 description: Optional. The description of the data.
                                 type: string
@@ -795,32 +645,7 @@ spec:
                               example:
                                 description: Optional. Example of the object. Will
                                   only populated when the object is the root.
-                                properties:
-                                  boolValue:
-                                    description: Represents a boolean value.
-                                    type: boolean
-                                  listValue:
-                                    description: Represents a repeated `Value`.
-                                    properties:
-                                      values:
-                                        description: Repeated field of dynamically
-                                          typed values.
-                                        items: {}
-                                        type: array
-                                    type: object
-                                  nullValue:
-                                    description: Represents a null value.
-                                    type: string
-                                  numberValue:
-                                    description: Represents a double value.
-                                    type: number
-                                  stringValue:
-                                    description: Represents a string value.
-                                    type: string
-                                  structValue:
-                                    description: Represents a structured value.
-                                    x-kubernetes-preserve-unknown-fields: true
-                                type: object
+                                x-kubernetes-preserve-unknown-fields: true
                               format:
                                 description: 'Optional. The format of the data. Supported
                                   formats: for NUMBER type: "float", "double" for
@@ -925,32 +750,7 @@ spec:
                                The value specified by the schema is the response value of the function.
 
                                This field is mutually exclusive with `response`.
-                            properties:
-                              boolValue:
-                                description: Represents a boolean value.
-                                type: boolean
-                              listValue:
-                                description: Represents a repeated `Value`.
-                                properties:
-                                  values:
-                                    description: Repeated field of dynamically typed
-                                      values.
-                                    items: {}
-                                    type: array
-                                type: object
-                              nullValue:
-                                description: Represents a null value.
-                                type: string
-                              numberValue:
-                                description: Represents a double value.
-                                type: number
-                              stringValue:
-                                description: Represents a string value.
-                                type: string
-                              structValue:
-                                description: Represents a structured value.
-                                x-kubernetes-preserve-unknown-fields: true
-                            type: object
+                            x-kubernetes-preserve-unknown-fields: true
                         type: object
                       type: array
                     googleMaps:
