@@ -53,13 +53,11 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	AnalyticsAccountGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(AnalyticsAccount{}).Name(),
-  	}
-  
+	AnalyticsAccountGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(AnalyticsAccount{}).Name(),
+	}
 
-  	analyticsAPIVersion = SchemeGroupVersion.String()
+	analyticsAPIVersion = SchemeGroupVersion.String()
 )

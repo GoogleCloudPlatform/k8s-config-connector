@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,57 +29,58 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ConfigDeliveryResourceBundleSpec struct {
-/* Optional. Human readable description of the `ResourceBundle`. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Optional. Human readable description of the `ResourceBundle`. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* The location that this resource belongs to. */
-Location string `json:"location"`
+	/* The location that this resource belongs to. */
+	Location string `json:"location"`
 
-/* The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* The ConfigDeliveryResourceBundle name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The ConfigDeliveryResourceBundle name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ResourcebundleObservedStateStatus struct {
-/* Output only. Time `ResourceBundle` was created. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. Time `ResourceBundle` was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. Time `ResourceBundle` was last updated. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. Time `ResourceBundle` was last updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type ConfigDeliveryResourceBundleStatus struct {
 	/* Conditions represent the latest available observations of the
-	    ConfigDeliveryResourceBundle's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the ConfigDeliveryResourceBundle resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   ConfigDeliveryResourceBundle's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the ConfigDeliveryResourceBundle resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *ResourcebundleObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *ResourcebundleObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpconfigdeliveryresourcebundle;gcpconfigdeliveryresourcebundles
@@ -95,20 +95,22 @@ ObservedState *ResourcebundleObservedStateStatus `json:"observedState,omitempty"
 // ConfigDeliveryResourceBundle is the Schema for the configdelivery API
 // +k8s:openapi-gen=true
 type ConfigDeliveryResourceBundle struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ConfigDeliveryResourceBundleSpec `json:"spec,omitempty"`
-  Status ConfigDeliveryResourceBundleStatus `json:"status,omitempty"`
+	Spec   ConfigDeliveryResourceBundleSpec   `json:"spec,omitempty"`
+	Status ConfigDeliveryResourceBundleStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ConfigDeliveryResourceBundleList contains a list of ConfigDeliveryResourceBundle
- type ConfigDeliveryResourceBundleList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []ConfigDeliveryResourceBundle `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&ConfigDeliveryResourceBundle{}, &ConfigDeliveryResourceBundleList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ConfigDeliveryResourceBundleList contains a list of ConfigDeliveryResourceBundle
+type ConfigDeliveryResourceBundleList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ConfigDeliveryResourceBundle `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ConfigDeliveryResourceBundle{}, &ConfigDeliveryResourceBundleList{})
+}

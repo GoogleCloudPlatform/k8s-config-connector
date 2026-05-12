@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -43,55 +42,56 @@ type DatasetEncryptionSpec struct {
 	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource.
 	Has the form: projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key.
 	The key needs to be in the same region as where the compute resource is created. */
-// +optional
-KmsKeyNameRef *v1alpha1.ResourceRef `json:"kmsKeyNameRef,omitempty"`
+	// +optional
+	KmsKeyNameRef *v1alpha1.ResourceRef `json:"kmsKeyNameRef,omitempty"`
 }
 
 type VertexAIDatasetSpec struct {
-/* The user-defined name of the Dataset. The name can be up to 128 characters long and can be consist of any UTF-8 characters. */
-DisplayName string `json:"displayName"`
+	/* The user-defined name of the Dataset. The name can be up to 128 characters long and can be consist of any UTF-8 characters. */
+	DisplayName string `json:"displayName"`
 
-/* Immutable. Customer-managed encryption key spec for a Dataset. If set, this Dataset and all sub-resources of this Dataset will be secured by this key. */
-// +optional
-EncryptionSpec *DatasetEncryptionSpec `json:"encryptionSpec,omitempty"`
+	/* Immutable. Customer-managed encryption key spec for a Dataset. If set, this Dataset and all sub-resources of this Dataset will be secured by this key. */
+	// +optional
+	EncryptionSpec *DatasetEncryptionSpec `json:"encryptionSpec,omitempty"`
 
-/* Immutable. Points to a YAML file stored on Google Cloud Storage describing additional information about the Dataset. The schema is defined as an OpenAPI 3.0.2 Schema Object. The schema files that can be used here are found in gs://google-cloud-aiplatform/schema/dataset/metadata/. */
-MetadataSchemaUri string `json:"metadataSchemaUri"`
+	/* Immutable. Points to a YAML file stored on Google Cloud Storage describing additional information about the Dataset. The schema is defined as an OpenAPI 3.0.2 Schema Object. The schema files that can be used here are found in gs://google-cloud-aiplatform/schema/dataset/metadata/. */
+	MetadataSchemaUri string `json:"metadataSchemaUri"`
 
-/* The project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Immutable. The region of the dataset. eg us-central1. */
-// +optional
-Region *string `json:"region,omitempty"`
+	/* Immutable. The region of the dataset. eg us-central1. */
+	// +optional
+	Region *string `json:"region,omitempty"`
 
-/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type DatasetObservedStateStatus struct {
-/* The timestamp of when the dataset was created in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* The timestamp of when the dataset was created in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* The resource name of the Dataset. This value is set by Google. */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* The resource name of the Dataset. This value is set by Google. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 }
 
 type VertexAIDatasetStatus struct {
 	/* Conditions represent the latest available observations of the
-	    VertexAIDataset's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   VertexAIDataset's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* The observed state of the underlying GCP resource. */
-// +optional
-ObservedState *DatasetObservedStateStatus `json:"observedState,omitempty"`
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *DatasetObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpvertexaidataset;gcpvertexaidatasets
@@ -108,20 +108,22 @@ ObservedState *DatasetObservedStateStatus `json:"observedState,omitempty"`
 // VertexAIDataset is the Schema for the vertexai API
 // +k8s:openapi-gen=true
 type VertexAIDataset struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec VertexAIDatasetSpec `json:"spec,omitempty"`
-  Status VertexAIDatasetStatus `json:"status,omitempty"`
+	Spec   VertexAIDatasetSpec   `json:"spec,omitempty"`
+	Status VertexAIDatasetStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // VertexAIDatasetList contains a list of VertexAIDataset
- type VertexAIDatasetList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []VertexAIDataset `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&VertexAIDataset{}, &VertexAIDatasetList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// VertexAIDatasetList contains a list of VertexAIDataset
+type VertexAIDatasetList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []VertexAIDataset `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&VertexAIDataset{}, &VertexAIDatasetList{})
+}

@@ -53,25 +53,23 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	IAPBrandGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(IAPBrand{}).Name(),
-  	}
-  
-  	IAPIdentityAwareProxyClientGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(IAPIdentityAwareProxyClient{}).Name(),
-  	}
-  
-  	IAPSettingsGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(IAPSettings{}).Name(),
-  	}
-  
+	IAPBrandGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAPBrand{}).Name(),
+	}
 
-  	iapAPIVersion = SchemeGroupVersion.String()
+	IAPIdentityAwareProxyClientGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAPIdentityAwareProxyClient{}).Name(),
+	}
+
+	IAPSettingsGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAPSettings{}).Name(),
+	}
+
+	iapAPIVersion = SchemeGroupVersion.String()
 )

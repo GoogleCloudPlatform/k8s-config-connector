@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,90 +29,91 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type DocumentAIProcessorSpec struct {
-/* The display name of the processor. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* The display name of the processor. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* The [KMS key](https://cloud.google.com/security-key-management) used for encryption and decryption in CMEK scenarios. */
-// +optional
-KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	/* The [KMS key](https://cloud.google.com/security-key-management) used for encryption and decryption in CMEK scenarios. */
+	// +optional
+	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
-Location string `json:"location"`
+	Location string `json:"location"`
 
-/* The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* The GCP resource identifier. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The GCP resource identifier. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* The processor type, such as: `OCR_PROCESSOR`, `INVOICE_PROCESSOR`. To get a list of processor types, see [FetchProcessorTypes][google.cloud.documentai.v1.DocumentProcessorService.FetchProcessorTypes]. */
-// +optional
-Type *string `json:"type,omitempty"`
+	/* The processor type, such as: `OCR_PROCESSOR`, `INVOICE_PROCESSOR`. To get a list of processor types, see [FetchProcessorTypes][google.cloud.documentai.v1.DocumentProcessorService.FetchProcessorTypes]. */
+	// +optional
+	Type *string `json:"type,omitempty"`
 }
 
 type ProcessorObservedStateStatus struct {
-/* The time the processor was created. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* The time the processor was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* The default processor version. */
-// +optional
-DefaultProcessorVersion *string `json:"defaultProcessorVersion,omitempty"`
+	/* The default processor version. */
+	// +optional
+	DefaultProcessorVersion *string `json:"defaultProcessorVersion,omitempty"`
 
-/* Output only. Immutable. The resource name of the processor. Format: `projects/{project}/locations/{location}/processors/{processor}` */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* Output only. Immutable. The resource name of the processor. Format: `projects/{project}/locations/{location}/processors/{processor}` */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* Output only. Immutable. The http endpoint that can be called to invoke processing. */
-// +optional
-ProcessEndpoint *string `json:"processEndpoint,omitempty"`
+	/* Output only. Immutable. The http endpoint that can be called to invoke processing. */
+	// +optional
+	ProcessEndpoint *string `json:"processEndpoint,omitempty"`
 
-/* Output only. The processor version aliases. */
-// +optional
-ProcessorVersionAliases []ProcessorProcessorVersionAliasesStatus `json:"processorVersionAliases,omitempty"`
+	/* Output only. The processor version aliases. */
+	// +optional
+	ProcessorVersionAliases []ProcessorProcessorVersionAliasesStatus `json:"processorVersionAliases,omitempty"`
 
-/* Output only. The state of the processor. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. The state of the processor. */
+	// +optional
+	State *string `json:"state,omitempty"`
 }
 
 type ProcessorProcessorVersionAliasesStatus struct {
-/* The alias in the form of `processor_version` resource name. */
-// +optional
-Alias *string `json:"alias,omitempty"`
+	/* The alias in the form of `processor_version` resource name. */
+	// +optional
+	Alias *string `json:"alias,omitempty"`
 
-/* The resource name of aliased processor version. */
-// +optional
-ProcessorVersion *string `json:"processorVersion,omitempty"`
+	/* The resource name of aliased processor version. */
+	// +optional
+	ProcessorVersion *string `json:"processorVersion,omitempty"`
 }
 
 type DocumentAIProcessorStatus struct {
 	/* Conditions represent the latest available observations of the
-	    DocumentAIProcessor's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the DocumentAIProcessor resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   DocumentAIProcessor's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the DocumentAIProcessor resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *ProcessorObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *ProcessorObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdocumentaiprocessor;gcpdocumentaiprocessors
@@ -128,20 +128,22 @@ ObservedState *ProcessorObservedStateStatus `json:"observedState,omitempty"`
 // DocumentAIProcessor is the Schema for the documentai API
 // +k8s:openapi-gen=true
 type DocumentAIProcessor struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec DocumentAIProcessorSpec `json:"spec,omitempty"`
-  Status DocumentAIProcessorStatus `json:"status,omitempty"`
+	Spec   DocumentAIProcessorSpec   `json:"spec,omitempty"`
+	Status DocumentAIProcessorStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // DocumentAIProcessorList contains a list of DocumentAIProcessor
- type DocumentAIProcessorList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []DocumentAIProcessor `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&DocumentAIProcessor{}, &DocumentAIProcessorList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// DocumentAIProcessorList contains a list of DocumentAIProcessor
+type DocumentAIProcessorList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DocumentAIProcessor `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&DocumentAIProcessor{}, &DocumentAIProcessorList{})
+}

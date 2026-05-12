@@ -53,37 +53,35 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	BigtableAuthorizedViewGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(BigtableAuthorizedView{}).Name(),
-  	}
-  
-  	BigtableBackupGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(BigtableBackup{}).Name(),
-  	}
-  
-  	BigtableClusterGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(BigtableCluster{}).Name(),
-  	}
-  
-  	BigtableLogicalViewGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(BigtableLogicalView{}).Name(),
-  	}
-  
-  	BigtableMaterializedViewGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(BigtableMaterializedView{}).Name(),
-  	}
-  
+	BigtableAuthorizedViewGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(BigtableAuthorizedView{}).Name(),
+	}
 
-  	bigtableAPIVersion = SchemeGroupVersion.String()
+	BigtableBackupGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(BigtableBackup{}).Name(),
+	}
+
+	BigtableClusterGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(BigtableCluster{}).Name(),
+	}
+
+	BigtableLogicalViewGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(BigtableLogicalView{}).Name(),
+	}
+
+	BigtableMaterializedViewGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(BigtableMaterializedView{}).Name(),
+	}
+
+	bigtableAPIVersion = SchemeGroupVersion.String()
 )

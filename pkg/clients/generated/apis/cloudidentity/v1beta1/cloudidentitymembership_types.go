@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,129 +29,130 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type MembershipExpiryDetail struct {
-/* The time at which the `MembershipRole` will expire. */
-// +optional
-ExpireTime *string `json:"expireTime,omitempty"`
+	/* The time at which the `MembershipRole` will expire. */
+	// +optional
+	ExpireTime *string `json:"expireTime,omitempty"`
 }
 
 type MembershipMemberKey struct {
-/* Immutable. The ID of the entity. For Google-managed entities, the `id` must be the email address of an existing group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`. */
-Id string `json:"id"`
+	/* Immutable. The ID of the entity. For Google-managed entities, the `id` must be the email address of an existing group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`. */
+	Id string `json:"id"`
 
-/* Immutable. The namespace in which the entity exists. If not specified, the `EntityKey` represents a Google-managed entity such as a Google user or a Google Group. If specified, the `EntityKey` represents an external-identity-mapped group. The namespace must correspond to an identity source created in Admin Console and must be in the form of `identitysources/{identity_source_id}`. */
-// +optional
-Namespace *string `json:"namespace,omitempty"`
+	/* Immutable. The namespace in which the entity exists. If not specified, the `EntityKey` represents a Google-managed entity such as a Google user or a Google Group. If specified, the `EntityKey` represents an external-identity-mapped group. The namespace must correspond to an identity source created in Admin Console and must be in the form of `identitysources/{identity_source_id}`. */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type MembershipMemberRestrictionEvaluation struct {
-/* Output only. The current state of the restriction */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. The current state of the restriction */
+	// +optional
+	State *string `json:"state,omitempty"`
 }
 
 type MembershipPreferredMemberKey struct {
-/* Immutable. The ID of the entity. For Google-managed entities, the `id` must be the email address of an existing group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`. */
-Id string `json:"id"`
+	/* Immutable. The ID of the entity. For Google-managed entities, the `id` must be the email address of an existing group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`. */
+	Id string `json:"id"`
 
-/* Immutable. The namespace in which the entity exists. If not specified, the `EntityKey` represents a Google-managed entity such as a Google user or a Google Group. If specified, the `EntityKey` represents an external-identity-mapped group. The namespace must correspond to an identity source created in Admin Console and must be in the form of `identitysources/{identity_source_id}`. */
-// +optional
-Namespace *string `json:"namespace,omitempty"`
+	/* Immutable. The namespace in which the entity exists. If not specified, the `EntityKey` represents a Google-managed entity such as a Google user or a Google Group. If specified, the `EntityKey` represents an external-identity-mapped group. The namespace must correspond to an identity source created in Admin Console and must be in the form of `identitysources/{identity_source_id}`. */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type MembershipRestrictionEvaluations struct {
-/* Evaluation of the member restriction applied to this membership. Empty if the user lacks permission to view the restriction evaluation. */
-// +optional
-MemberRestrictionEvaluation *MembershipMemberRestrictionEvaluation `json:"memberRestrictionEvaluation,omitempty"`
+	/* Evaluation of the member restriction applied to this membership. Empty if the user lacks permission to view the restriction evaluation. */
+	// +optional
+	MemberRestrictionEvaluation *MembershipMemberRestrictionEvaluation `json:"memberRestrictionEvaluation,omitempty"`
 }
 
 type MembershipRoles struct {
-/* The expiry details of the `MembershipRole`. Expiry details are only supported for `MEMBER` `MembershipRoles`. May be set if `name` is `MEMBER`. Must not be set if `name` is any other value. */
-// +optional
-ExpiryDetail *MembershipExpiryDetail `json:"expiryDetail,omitempty"`
+	/* The expiry details of the `MembershipRole`. Expiry details are only supported for `MEMBER` `MembershipRoles`. May be set if `name` is `MEMBER`. Must not be set if `name` is any other value. */
+	// +optional
+	ExpiryDetail *MembershipExpiryDetail `json:"expiryDetail,omitempty"`
 
-/* The name of the `MembershipRole`. Must be one of `OWNER`, `MANAGER`, `MEMBER`. */
-Name string `json:"name"`
+	/* The name of the `MembershipRole`. Must be one of `OWNER`, `MANAGER`, `MEMBER`. */
+	Name string `json:"name"`
 
-/* Evaluations of restrictions applied to parent group on this membership. */
-// +optional
-RestrictionEvaluations *MembershipRestrictionEvaluations `json:"restrictionEvaluations,omitempty"`
+	/* Evaluations of restrictions applied to parent group on this membership. */
+	// +optional
+	RestrictionEvaluations *MembershipRestrictionEvaluations `json:"restrictionEvaluations,omitempty"`
 }
 
 type CloudIdentityMembershipSpec struct {
-/* Immutable. */
-GroupRef v1alpha1.ResourceRef `json:"groupRef"`
+	/* Immutable. */
+	GroupRef v1alpha1.ResourceRef `json:"groupRef"`
 
-/* Immutable. The `EntityKey` of the member. Either `member_key` or `preferred_member_key` must be set when calling MembershipsService.CreateMembership but not both; both shall be set when returned. Do not set. This is a legacy OUTPUT-ONLY field. */
-// +optional
-MemberKey *MembershipMemberKey `json:"memberKey,omitempty"`
+	/* Immutable. The `EntityKey` of the member. Either `member_key` or `preferred_member_key` must be set when calling MembershipsService.CreateMembership but not both; both shall be set when returned. Do not set. This is a legacy OUTPUT-ONLY field. */
+	// +optional
+	MemberKey *MembershipMemberKey `json:"memberKey,omitempty"`
 
-/* Required. Immutable. The `EntityKey` of the member. Either `member_key` or `preferred_member_key` must be set when calling MembershipsService.CreateMembership but not both; both shall be set when returned. */
-PreferredMemberKey MembershipPreferredMemberKey `json:"preferredMemberKey"`
+	/* Required. Immutable. The `EntityKey` of the member. Either `member_key` or `preferred_member_key` must be set when calling MembershipsService.CreateMembership but not both; both shall be set when returned. */
+	PreferredMemberKey MembershipPreferredMemberKey `json:"preferredMemberKey"`
 
-/* Immutable. Optional. The service-generated name of the resource. Format: {membershipID}. Used for acquisition only. Leave unset to create a new resource. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The service-generated name of the resource. Format: {membershipID}. Used for acquisition only. Leave unset to create a new resource. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* The `MembershipRole`s that apply to the `Membership`. If unspecified, defaults to a single `MembershipRole` with `name` `MEMBER`. Must not contain duplicate `MembershipRole`s with the same `name`. */
-Roles []MembershipRoles `json:"roles"`
+	/* The `MembershipRole`s that apply to the `Membership`. If unspecified, defaults to a single `MembershipRole` with `name` `MEMBER`. Must not contain duplicate `MembershipRole`s with the same `name`. */
+	Roles []MembershipRoles `json:"roles"`
 }
 
 type MembershipDisplayNameStatus struct {
-/* Output only. Member's family name */
-// +optional
-FamilyName *string `json:"familyName,omitempty"`
+	/* Output only. Member's family name */
+	// +optional
+	FamilyName *string `json:"familyName,omitempty"`
 
-/* Output only. Localized UTF-16 full name for the member. Localization is done based on the language in the request and the language of the stored display name. */
-// +optional
-FullName *string `json:"fullName,omitempty"`
+	/* Output only. Localized UTF-16 full name for the member. Localization is done based on the language in the request and the language of the stored display name. */
+	// +optional
+	FullName *string `json:"fullName,omitempty"`
 
-/* Output only. Member's given name */
-// +optional
-GivenName *string `json:"givenName,omitempty"`
+	/* Output only. Member's given name */
+	// +optional
+	GivenName *string `json:"givenName,omitempty"`
 }
 
 type CloudIdentityMembershipStatus struct {
 	/* Conditions represent the latest available observations of the
-	    CloudIdentityMembership's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* Output only. The time when the `Membership` was created. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	   CloudIdentityMembership's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* Output only. The time when the `Membership` was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. Delivery setting associated with the membership. Possible values: DELIVERY_SETTING_UNSPECIFIED, ALL_MAIL, DIGEST, DAILY, NONE, DISABLED */
-// +optional
-DeliverySetting *string `json:"deliverySetting,omitempty"`
+	/* Output only. Delivery setting associated with the membership. Possible values: DELIVERY_SETTING_UNSPECIFIED, ALL_MAIL, DIGEST, DAILY, NONE, DISABLED */
+	// +optional
+	DeliverySetting *string `json:"deliverySetting,omitempty"`
 
-/* Output only. The display name of this member, if available */
-// +optional
-DisplayName *MembershipDisplayNameStatus `json:"displayName,omitempty"`
+	/* Output only. The display name of this member, if available */
+	// +optional
+	DisplayName *MembershipDisplayNameStatus `json:"displayName,omitempty"`
 
-/* A unique Config Connector specifier for the resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	/* A unique Config Connector specifier for the resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* Output only. The type of the membership. Possible values: OWNER_TYPE_UNSPECIFIED, OWNER_TYPE_CUSTOMER, OWNER_TYPE_PARTNER */
-// +optional
-Type *string `json:"type,omitempty"`
+	/* Output only. The type of the membership. Possible values: OWNER_TYPE_UNSPECIFIED, OWNER_TYPE_CUSTOMER, OWNER_TYPE_PARTNER */
+	// +optional
+	Type *string `json:"type,omitempty"`
 
-/* Output only. The time when the `Membership` was last updated. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. The time when the `Membership` was last updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcloudidentitymembership;gcpcloudidentitymemberships
@@ -168,20 +168,22 @@ UpdateTime *string `json:"updateTime,omitempty"`
 // CloudIdentityMembership is the Schema for the cloudidentity API
 // +k8s:openapi-gen=true
 type CloudIdentityMembership struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec CloudIdentityMembershipSpec `json:"spec,omitempty"`
-  Status CloudIdentityMembershipStatus `json:"status,omitempty"`
+	Spec   CloudIdentityMembershipSpec   `json:"spec,omitempty"`
+	Status CloudIdentityMembershipStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // CloudIdentityMembershipList contains a list of CloudIdentityMembership
- type CloudIdentityMembershipList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []CloudIdentityMembership `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&CloudIdentityMembership{}, &CloudIdentityMembershipList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// CloudIdentityMembershipList contains a list of CloudIdentityMembership
+type CloudIdentityMembershipList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []CloudIdentityMembership `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&CloudIdentityMembership{}, &CloudIdentityMembershipList{})
+}

@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,249 +29,250 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type VirtualmachineAcceleratorConfig struct {
-/* Required. Topology of TPU in chips. */
-// +optional
-Topology *string `json:"topology,omitempty"`
+	/* Required. Topology of TPU in chips. */
+	// +optional
+	Topology *string `json:"topology,omitempty"`
 
-/* Required. Type of TPU. */
-// +optional
-Type *string `json:"type,omitempty"`
+	/* Required. Type of TPU. */
+	// +optional
+	Type *string `json:"type,omitempty"`
 }
 
 type VirtualmachineDataDisks struct {
-/* The mode in which to attach this disk. If not specified, the default is READ_WRITE mode. Only applicable to data_disks. */
-// +optional
-Mode *string `json:"mode,omitempty"`
+	/* The mode in which to attach this disk. If not specified, the default is READ_WRITE mode. Only applicable to data_disks. */
+	// +optional
+	Mode *string `json:"mode,omitempty"`
 
-/* Specifies the full path to an existing disk. For example: "projects/my-project/zones/us-central1-c/disks/my-disk". */
-// +optional
-SourceDisk *string `json:"sourceDisk,omitempty"`
+	/* Specifies the full path to an existing disk. For example: "projects/my-project/zones/us-central1-c/disks/my-disk". */
+	// +optional
+	SourceDisk *string `json:"sourceDisk,omitempty"`
 }
 
 type VirtualmachineNetworkConfig struct {
-/* Allows the TPU node to send and receive packets with non-matching destination or source IPs. This is required if you plan to use the TPU workers to forward routes. */
-// +optional
-CanIPForward *bool `json:"canIPForward,omitempty"`
+	/* Allows the TPU node to send and receive packets with non-matching destination or source IPs. This is required if you plan to use the TPU workers to forward routes. */
+	// +optional
+	CanIPForward *bool `json:"canIPForward,omitempty"`
 
-/* Indicates that external IP addresses would be associated with the TPU workers. If set to false, the specified subnetwork or network should have Private Google Access enabled. */
-// +optional
-EnableExternalIPs *bool `json:"enableExternalIPs,omitempty"`
+	/* Indicates that external IP addresses would be associated with the TPU workers. If set to false, the specified subnetwork or network should have Private Google Access enabled. */
+	// +optional
+	EnableExternalIPs *bool `json:"enableExternalIPs,omitempty"`
 
-/* The network for the TPU node. It must be a preexisting Google Compute Engine network. If none is provided, "default" will be used. */
-// +optional
-NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	/* The network for the TPU node. It must be a preexisting Google Compute Engine network. If none is provided, "default" will be used. */
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
-/* Optional. Specifies networking queue count for TPU VM instance's network interface. */
-// +optional
-QueueCount *int32 `json:"queueCount,omitempty"`
+	/* Optional. Specifies networking queue count for TPU VM instance's network interface. */
+	// +optional
+	QueueCount *int32 `json:"queueCount,omitempty"`
 
-/* The subnetwork for the TPU node. It must be a preexisting Google Compute Engine subnetwork. If none is provided, "default" will be used. */
-// +optional
-SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	/* The subnetwork for the TPU node. It must be a preexisting Google Compute Engine subnetwork. If none is provided, "default" will be used. */
+	// +optional
+	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type VirtualmachineNetworkConfigs struct {
-/* Allows the TPU node to send and receive packets with non-matching destination or source IPs. This is required if you plan to use the TPU workers to forward routes. */
-// +optional
-CanIPForward *bool `json:"canIPForward,omitempty"`
+	/* Allows the TPU node to send and receive packets with non-matching destination or source IPs. This is required if you plan to use the TPU workers to forward routes. */
+	// +optional
+	CanIPForward *bool `json:"canIPForward,omitempty"`
 
-/* Indicates that external IP addresses would be associated with the TPU workers. If set to false, the specified subnetwork or network should have Private Google Access enabled. */
-// +optional
-EnableExternalIPs *bool `json:"enableExternalIPs,omitempty"`
+	/* Indicates that external IP addresses would be associated with the TPU workers. If set to false, the specified subnetwork or network should have Private Google Access enabled. */
+	// +optional
+	EnableExternalIPs *bool `json:"enableExternalIPs,omitempty"`
 
-/* The network for the TPU node. It must be a preexisting Google Compute Engine network. If none is provided, "default" will be used. */
-// +optional
-NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	/* The network for the TPU node. It must be a preexisting Google Compute Engine network. If none is provided, "default" will be used. */
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
-/* Optional. Specifies networking queue count for TPU VM instance's network interface. */
-// +optional
-QueueCount *int32 `json:"queueCount,omitempty"`
+	/* Optional. Specifies networking queue count for TPU VM instance's network interface. */
+	// +optional
+	QueueCount *int32 `json:"queueCount,omitempty"`
 
-/* The subnetwork for the TPU node. It must be a preexisting Google Compute Engine subnetwork. If none is provided, "default" will be used. */
-// +optional
-SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	/* The subnetwork for the TPU node. It must be a preexisting Google Compute Engine subnetwork. If none is provided, "default" will be used. */
+	// +optional
+	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type VirtualmachineSchedulingConfig struct {
-/* Defines whether the node is preemptible. */
-// +optional
-Preemptible *bool `json:"preemptible,omitempty"`
+	/* Defines whether the node is preemptible. */
+	// +optional
+	Preemptible *bool `json:"preemptible,omitempty"`
 
-/* Whether the node is created under a reservation. */
-// +optional
-Reserved *bool `json:"reserved,omitempty"`
+	/* Whether the node is created under a reservation. */
+	// +optional
+	Reserved *bool `json:"reserved,omitempty"`
 
-/* Optional. Defines whether the node is Spot VM. */
-// +optional
-Spot *bool `json:"spot,omitempty"`
+	/* Optional. Defines whether the node is Spot VM. */
+	// +optional
+	Spot *bool `json:"spot,omitempty"`
 }
 
 type VirtualmachineServiceAccount struct {
-/* The list of scopes to be made available for this service account. If empty, access to all Cloud APIs will be allowed. */
-// +optional
-Scope []string `json:"scope,omitempty"`
+	/* The list of scopes to be made available for this service account. If empty, access to all Cloud APIs will be allowed. */
+	// +optional
+	Scope []string `json:"scope,omitempty"`
 
-/* The service account to be used. If empty, the default Compute service account will be used. */
-// +optional
-ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	/* The service account to be used. If empty, the default Compute service account will be used. */
+	// +optional
+	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type VirtualmachineShieldedInstanceConfig struct {
-/* Defines whether the instance has Secure Boot enabled. */
-// +optional
-EnableSecureBoot *bool `json:"enableSecureBoot,omitempty"`
+	/* Defines whether the instance has Secure Boot enabled. */
+	// +optional
+	EnableSecureBoot *bool `json:"enableSecureBoot,omitempty"`
 }
 
 type TPUVirtualMachineSpec struct {
-/* The AccleratorConfig for the TPU Node. */
-// +optional
-AcceleratorConfig *VirtualmachineAcceleratorConfig `json:"acceleratorConfig,omitempty"`
+	/* The AccleratorConfig for the TPU Node. */
+	// +optional
+	AcceleratorConfig *VirtualmachineAcceleratorConfig `json:"acceleratorConfig,omitempty"`
 
-/* Optional. The type of hardware accelerators associated with this node. */
-// +optional
-AcceleratorType *string `json:"acceleratorType,omitempty"`
+	/* Optional. The type of hardware accelerators associated with this node. */
+	// +optional
+	AcceleratorType *string `json:"acceleratorType,omitempty"`
 
-/* The CIDR block that the TPU node will use when selecting an IP address. This CIDR block must be a /29 block; the Compute Engine networks API forbids a smaller block, and using a larger block would be wasteful (a node can only consume one IP address). Errors will occur if the CIDR block has already been used for a currently existing TPU node, the CIDR block conflicts with any subnetworks in the user's provided network, or the provided network is peered with another network that is using that CIDR block. */
-// +optional
-CidrBlock *string `json:"cidrBlock,omitempty"`
+	/* The CIDR block that the TPU node will use when selecting an IP address. This CIDR block must be a /29 block; the Compute Engine networks API forbids a smaller block, and using a larger block would be wasteful (a node can only consume one IP address). Errors will occur if the CIDR block has already been used for a currently existing TPU node, the CIDR block conflicts with any subnetworks in the user's provided network, or the provided network is peered with another network that is using that CIDR block. */
+	// +optional
+	CidrBlock *string `json:"cidrBlock,omitempty"`
 
-/* The additional data disks for the Node. */
-// +optional
-DataDisks []VirtualmachineDataDisks `json:"dataDisks,omitempty"`
+	/* The additional data disks for the Node. */
+	// +optional
+	DataDisks []VirtualmachineDataDisks `json:"dataDisks,omitempty"`
 
-/* The user-supplied description of the TPU. Maximum of 512 characters. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* The user-supplied description of the TPU. Maximum of 512 characters. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Immutable. The location where the TPU virtual machine should reside. */
-Location string `json:"location"`
+	/* Immutable. The location where the TPU virtual machine should reside. */
+	Location string `json:"location"`
 
-/* Custom metadata to apply to the TPU Node. Can set startup-script and shutdown-script */
-// +optional
-Metadata map[string]string `json:"metadata,omitempty"`
+	/* Custom metadata to apply to the TPU Node. Can set startup-script and shutdown-script */
+	// +optional
+	Metadata map[string]string `json:"metadata,omitempty"`
 
-/* Network configurations for the TPU node. network_config and network_configs are mutually exclusive, you can only specify one of them. If both are specified, an error will be returned. */
-// +optional
-NetworkConfig *VirtualmachineNetworkConfig `json:"networkConfig,omitempty"`
+	/* Network configurations for the TPU node. network_config and network_configs are mutually exclusive, you can only specify one of them. If both are specified, an error will be returned. */
+	// +optional
+	NetworkConfig *VirtualmachineNetworkConfig `json:"networkConfig,omitempty"`
 
-/* Optional. Repeated network configurations for the TPU node. This field is used to specify multiple networks configs for the TPU node. network_config and network_configs are mutually exclusive, you can only specify one of them. If both are specified, an error will be returned. */
-// +optional
-NetworkConfigs []VirtualmachineNetworkConfigs `json:"networkConfigs,omitempty"`
+	/* Optional. Repeated network configurations for the TPU node. This field is used to specify multiple networks configs for the TPU node. network_config and network_configs are mutually exclusive, you can only specify one of them. If both are specified, an error will be returned. */
+	// +optional
+	NetworkConfigs []VirtualmachineNetworkConfigs `json:"networkConfigs,omitempty"`
 
-/* The project that the TPU virtual machine belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The project that the TPU virtual machine belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* The TPUVirtualMachine name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The TPUVirtualMachine name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Required. The runtime version running in the Node. */
-// +optional
-RuntimeVersion *string `json:"runtimeVersion,omitempty"`
+	/* Required. The runtime version running in the Node. */
+	// +optional
+	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
 
-/* The scheduling options for this node. */
-// +optional
-SchedulingConfig *VirtualmachineSchedulingConfig `json:"schedulingConfig,omitempty"`
+	/* The scheduling options for this node. */
+	// +optional
+	SchedulingConfig *VirtualmachineSchedulingConfig `json:"schedulingConfig,omitempty"`
 
-/* The Google Cloud Platform Service Account to be used by the TPU node VMs. If None is specified, the default compute service account will be used. */
-// +optional
-ServiceAccount *VirtualmachineServiceAccount `json:"serviceAccount,omitempty"`
+	/* The Google Cloud Platform Service Account to be used by the TPU node VMs. If None is specified, the default compute service account will be used. */
+	// +optional
+	ServiceAccount *VirtualmachineServiceAccount `json:"serviceAccount,omitempty"`
 
-/* Shielded Instance options. */
-// +optional
-ShieldedInstanceConfig *VirtualmachineShieldedInstanceConfig `json:"shieldedInstanceConfig,omitempty"`
+	/* Shielded Instance options. */
+	// +optional
+	ShieldedInstanceConfig *VirtualmachineShieldedInstanceConfig `json:"shieldedInstanceConfig,omitempty"`
 
-/* Tags to apply to the TPU Node. Tags are used to identify valid sources or targets for network firewalls. */
-// +optional
-Tags []string `json:"tags,omitempty"`
+	/* Tags to apply to the TPU Node. Tags are used to identify valid sources or targets for network firewalls. */
+	// +optional
+	Tags []string `json:"tags,omitempty"`
 }
 
 type VirtualmachineAccessConfigStatus struct {
-/* Output only. An external IP address associated with the TPU worker. */
-// +optional
-ExternalIP *string `json:"externalIP,omitempty"`
+	/* Output only. An external IP address associated with the TPU worker. */
+	// +optional
+	ExternalIP *string `json:"externalIP,omitempty"`
 }
 
 type VirtualmachineNetworkEndpointsStatus struct {
-/* The access config for the TPU worker. */
-// +optional
-AccessConfig *VirtualmachineAccessConfigStatus `json:"accessConfig,omitempty"`
+	/* The access config for the TPU worker. */
+	// +optional
+	AccessConfig *VirtualmachineAccessConfigStatus `json:"accessConfig,omitempty"`
 }
 
 type VirtualmachineObservedStateStatus struct {
-/* The health status of the TPU node. */
-// +optional
-Health *string `json:"health,omitempty"`
+	/* The health status of the TPU node. */
+	// +optional
+	Health *string `json:"health,omitempty"`
 
-/* Output only. If this field is populated, it contains a description of why the TPU Node is unhealthy. */
-// +optional
-HealthDescription *string `json:"healthDescription,omitempty"`
+	/* Output only. If this field is populated, it contains a description of why the TPU Node is unhealthy. */
+	// +optional
+	HealthDescription *string `json:"healthDescription,omitempty"`
 
-/* Output only. Whether the Node belongs to a Multislice group. */
-// +optional
-MultisliceNode *bool `json:"multisliceNode,omitempty"`
+	/* Output only. Whether the Node belongs to a Multislice group. */
+	// +optional
+	MultisliceNode *bool `json:"multisliceNode,omitempty"`
 
-/* Output only. The network endpoints where TPU workers can be accessed and sent work. It is recommended that runtime clients of the node reach out to the 0th entry in this map first. */
-// +optional
-NetworkEndpoints []VirtualmachineNetworkEndpointsStatus `json:"networkEndpoints,omitempty"`
+	/* Output only. The network endpoints where TPU workers can be accessed and sent work. It is recommended that runtime clients of the node reach out to the 0th entry in this map first. */
+	// +optional
+	NetworkEndpoints []VirtualmachineNetworkEndpointsStatus `json:"networkEndpoints,omitempty"`
 
-/* Output only. The qualified name of the QueuedResource that requested this Node. */
-// +optional
-QueuedResource *string `json:"queuedResource,omitempty"`
+	/* Output only. The qualified name of the QueuedResource that requested this Node. */
+	// +optional
+	QueuedResource *string `json:"queuedResource,omitempty"`
 
-/* Output only. The current state for the TPU Node. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. The current state for the TPU Node. */
+	// +optional
+	State *string `json:"state,omitempty"`
 
-/* Output only. The Symptoms that have occurred to the TPU Node. */
-// +optional
-Symptoms []VirtualmachineSymptomsStatus `json:"symptoms,omitempty"`
+	/* Output only. The Symptoms that have occurred to the TPU Node. */
+	// +optional
+	Symptoms []VirtualmachineSymptomsStatus `json:"symptoms,omitempty"`
 }
 
 type VirtualmachineSymptomsStatus struct {
-/* Timestamp when the Symptom is created. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Timestamp when the Symptom is created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Detailed information of the current Symptom. */
-// +optional
-Details *string `json:"details,omitempty"`
+	/* Detailed information of the current Symptom. */
+	// +optional
+	Details *string `json:"details,omitempty"`
 
-/* Type of the Symptom. */
-// +optional
-SymptomType *string `json:"symptomType,omitempty"`
+	/* Type of the Symptom. */
+	// +optional
+	SymptomType *string `json:"symptomType,omitempty"`
 
-/* A string used to uniquely distinguish a worker within a TPU node. */
-// +optional
-WorkerID *string `json:"workerID,omitempty"`
+	/* A string used to uniquely distinguish a worker within a TPU node. */
+	// +optional
+	WorkerID *string `json:"workerID,omitempty"`
 }
 
 type TPUVirtualMachineStatus struct {
 	/* Conditions represent the latest available observations of the
-	    TPUVirtualMachine's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the TPUVirtualMachine resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   TPUVirtualMachine's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the TPUVirtualMachine resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *VirtualmachineObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *VirtualmachineObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcptpuvirtualmachine;gcptpuvirtualmachines
@@ -287,20 +287,22 @@ ObservedState *VirtualmachineObservedStateStatus `json:"observedState,omitempty"
 // TPUVirtualMachine is the Schema for the tpu API
 // +k8s:openapi-gen=true
 type TPUVirtualMachine struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec TPUVirtualMachineSpec `json:"spec,omitempty"`
-  Status TPUVirtualMachineStatus `json:"status,omitempty"`
+	Spec   TPUVirtualMachineSpec   `json:"spec,omitempty"`
+	Status TPUVirtualMachineStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // TPUVirtualMachineList contains a list of TPUVirtualMachine
- type TPUVirtualMachineList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []TPUVirtualMachine `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&TPUVirtualMachine{}, &TPUVirtualMachineList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// TPUVirtualMachineList contains a list of TPUVirtualMachine
+type TPUVirtualMachineList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []TPUVirtualMachine `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&TPUVirtualMachine{}, &TPUVirtualMachineList{})
+}

@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,138 +29,139 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type InstanceNetworkConfig struct {
-/* Immutable. The IP range in CIDR notation to use for the managed Data Fusion instance nodes. This range must not overlap with any other ranges used in the customer network. */
-// +optional
-IpAllocation *string `json:"ipAllocation,omitempty"`
+	/* Immutable. The IP range in CIDR notation to use for the managed Data Fusion instance nodes. This range must not overlap with any other ranges used in the customer network. */
+	// +optional
+	IpAllocation *string `json:"ipAllocation,omitempty"`
 
-/* Immutable. */
-// +optional
-NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	/* Immutable. */
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 }
 
 type DataFusionInstanceSpec struct {
-// +optional
-DataprocServiceAccountRef *v1alpha1.ResourceRef `json:"dataprocServiceAccountRef,omitempty"`
+	// +optional
+	DataprocServiceAccountRef *v1alpha1.ResourceRef `json:"dataprocServiceAccountRef,omitempty"`
 
-/* Immutable. A description of this instance. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Immutable. A description of this instance. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Immutable. Display name for an instance. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* Immutable. Display name for an instance. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* Option to enable Stackdriver Logging. */
-// +optional
-EnableStackdriverLogging *bool `json:"enableStackdriverLogging,omitempty"`
+	/* Option to enable Stackdriver Logging. */
+	// +optional
+	EnableStackdriverLogging *bool `json:"enableStackdriverLogging,omitempty"`
 
-/* Option to enable Stackdriver Monitoring. */
-// +optional
-EnableStackdriverMonitoring *bool `json:"enableStackdriverMonitoring,omitempty"`
+	/* Option to enable Stackdriver Monitoring. */
+	// +optional
+	EnableStackdriverMonitoring *bool `json:"enableStackdriverMonitoring,omitempty"`
 
-/* Immutable. The location for the resource */
-Location string `json:"location"`
+	/* Immutable. The location for the resource */
+	Location string `json:"location"`
 
-/* Immutable. Network configuration options. These are required when a private Data Fusion instance is to be created. */
-// +optional
-NetworkConfig *InstanceNetworkConfig `json:"networkConfig,omitempty"`
+	/* Immutable. Network configuration options. These are required when a private Data Fusion instance is to be created. */
+	// +optional
+	NetworkConfig *InstanceNetworkConfig `json:"networkConfig,omitempty"`
 
-/* Immutable. Map of additional options used to configure the behavior of Data Fusion instance. */
-// +optional
-Options map[string]string `json:"options,omitempty"`
+	/* Immutable. Map of additional options used to configure the behavior of Data Fusion instance. */
+	// +optional
+	Options map[string]string `json:"options,omitempty"`
 
-/* Immutable. Specifies whether the Data Fusion instance should be private. If set to true, all Data Fusion nodes will have private IP addresses and will not be able to access the public internet. */
-// +optional
-PrivateInstance *bool `json:"privateInstance,omitempty"`
+	/* Immutable. Specifies whether the Data Fusion instance should be private. If set to true, all Data Fusion nodes will have private IP addresses and will not be able to access the public internet. */
+	// +optional
+	PrivateInstance *bool `json:"privateInstance,omitempty"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Immutable. Required. Instance type. Possible values: TYPE_UNSPECIFIED, BASIC, ENTERPRISE, DEVELOPER */
-Type string `json:"type"`
+	/* Immutable. Required. Instance type. Possible values: TYPE_UNSPECIFIED, BASIC, ENTERPRISE, DEVELOPER */
+	Type string `json:"type"`
 
-/* Current version of the Data Fusion. */
-// +optional
-Version *string `json:"version,omitempty"`
+	/* Current version of the Data Fusion. */
+	// +optional
+	Version *string `json:"version,omitempty"`
 
-/* Immutable. Name of the zone in which the Data Fusion instance will be created. Only DEVELOPER instances use this field. */
-// +optional
-Zone *string `json:"zone,omitempty"`
+	/* Immutable. Name of the zone in which the Data Fusion instance will be created. Only DEVELOPER instances use this field. */
+	// +optional
+	Zone *string `json:"zone,omitempty"`
 }
 
 type InstanceAvailableVersionStatus struct {
-/* Represents a list of available feature names for a given version. */
-// +optional
-AvailableFeatures []string `json:"availableFeatures,omitempty"`
+	/* Represents a list of available feature names for a given version. */
+	// +optional
+	AvailableFeatures []string `json:"availableFeatures,omitempty"`
 
-/* Whether this is currently the default version for Cloud Data Fusion */
-// +optional
-DefaultVersion *bool `json:"defaultVersion,omitempty"`
+	/* Whether this is currently the default version for Cloud Data Fusion */
+	// +optional
+	DefaultVersion *bool `json:"defaultVersion,omitempty"`
 
-/* The version number of the Data Fusion instance, such as '6.0.1.0'. */
-// +optional
-VersionNumber *string `json:"versionNumber,omitempty"`
+	/* The version number of the Data Fusion instance, such as '6.0.1.0'. */
+	// +optional
+	VersionNumber *string `json:"versionNumber,omitempty"`
 }
 
 type DataFusionInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
-	    DataFusionInstance's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* Output only. Endpoint on which the REST APIs is accessible. */
-// +optional
-ApiEndpoint *string `json:"apiEndpoint,omitempty"`
+	   DataFusionInstance's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* Output only. Endpoint on which the REST APIs is accessible. */
+	// +optional
+	ApiEndpoint *string `json:"apiEndpoint,omitempty"`
 
-/* Available versions that the instance can be upgraded to. */
-// +optional
-AvailableVersion []InstanceAvailableVersionStatus `json:"availableVersion,omitempty"`
+	/* Available versions that the instance can be upgraded to. */
+	// +optional
+	AvailableVersion []InstanceAvailableVersionStatus `json:"availableVersion,omitempty"`
 
-/* Output only. The time the instance was created. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. The time the instance was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. Cloud Storage bucket generated by Data Fusion in the customer project. */
-// +optional
-GcsBucket *string `json:"gcsBucket,omitempty"`
+	/* Output only. Cloud Storage bucket generated by Data Fusion in the customer project. */
+	// +optional
+	GcsBucket *string `json:"gcsBucket,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* Output only. P4 service account for the customer project. */
-// +optional
-P4ServiceAccount *string `json:"p4ServiceAccount,omitempty"`
+	/* Output only. P4 service account for the customer project. */
+	// +optional
+	P4ServiceAccount *string `json:"p4ServiceAccount,omitempty"`
 
-/* Output only. Endpoint on which the Data Fusion UI is accessible. */
-// +optional
-ServiceEndpoint *string `json:"serviceEndpoint,omitempty"`
+	/* Output only. Endpoint on which the Data Fusion UI is accessible. */
+	// +optional
+	ServiceEndpoint *string `json:"serviceEndpoint,omitempty"`
 
-/* Output only. The current state of this Data Fusion instance. Possible values: STATE_UNSPECIFIED, ENABLED, DISABLED, UNKNOWN */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. The current state of this Data Fusion instance. Possible values: STATE_UNSPECIFIED, ENABLED, DISABLED, UNKNOWN */
+	// +optional
+	State *string `json:"state,omitempty"`
 
-/* Output only. Additional information about the current state of this Data Fusion instance if available. */
-// +optional
-StateMessage *string `json:"stateMessage,omitempty"`
+	/* Output only. Additional information about the current state of this Data Fusion instance if available. */
+	// +optional
+	StateMessage *string `json:"stateMessage,omitempty"`
 
-/* Output only. The name of the tenant project. */
-// +optional
-TenantProjectId *string `json:"tenantProjectId,omitempty"`
+	/* Output only. The name of the tenant project. */
+	// +optional
+	TenantProjectId *string `json:"tenantProjectId,omitempty"`
 
-/* Output only. The time the instance was last updated. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. The time the instance was last updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdatafusioninstance;gcpdatafusioninstances
@@ -178,20 +178,22 @@ UpdateTime *string `json:"updateTime,omitempty"`
 // DataFusionInstance is the Schema for the datafusion API
 // +k8s:openapi-gen=true
 type DataFusionInstance struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec DataFusionInstanceSpec `json:"spec,omitempty"`
-  Status DataFusionInstanceStatus `json:"status,omitempty"`
+	Spec   DataFusionInstanceSpec   `json:"spec,omitempty"`
+	Status DataFusionInstanceStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // DataFusionInstanceList contains a list of DataFusionInstance
- type DataFusionInstanceList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []DataFusionInstance `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&DataFusionInstance{}, &DataFusionInstanceList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// DataFusionInstanceList contains a list of DataFusionInstance
+type DataFusionInstanceList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DataFusionInstance `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&DataFusionInstance{}, &DataFusionInstanceList{})
+}

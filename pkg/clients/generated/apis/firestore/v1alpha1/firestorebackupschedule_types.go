@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -44,71 +43,72 @@ type BackupscheduleDailyRecurrence struct {
 
 type BackupscheduleWeeklyRecurrence struct {
 	/* The day of week to run.
-	
+
 	DAY_OF_WEEK_UNSPECIFIED is not allowed. */
-// +optional
-Day *string `json:"day,omitempty"`
+	// +optional
+	Day *string `json:"day,omitempty"`
 }
 
 type FirestoreBackupScheduleSpec struct {
-/* For a schedule that runs daily. */
-// +optional
-DailyRecurrence *BackupscheduleDailyRecurrence `json:"dailyRecurrence,omitempty"`
+	/* For a schedule that runs daily. */
+	// +optional
+	DailyRecurrence *BackupscheduleDailyRecurrence `json:"dailyRecurrence,omitempty"`
 
-/* The database that this resource belongs to. */
-DatabaseRef v1alpha1.ResourceRef `json:"databaseRef"`
+	/* The database that this resource belongs to. */
+	DatabaseRef v1alpha1.ResourceRef `json:"databaseRef"`
 
 	/* At what relative time in the future, compared to its creation time,
 	the backup should be deleted, e.g. keep backups for 7 days.
-	
-	The maximum supported retention period is 14 weeks. */
-// +optional
-Retention *string `json:"retention,omitempty"`
 
-/* For a schedule that runs weekly on a specific day. */
-// +optional
-WeeklyRecurrence *BackupscheduleWeeklyRecurrence `json:"weeklyRecurrence,omitempty"`
+	The maximum supported retention period is 14 weeks. */
+	// +optional
+	Retention *string `json:"retention,omitempty"`
+
+	/* For a schedule that runs weekly on a specific day. */
+	// +optional
+	WeeklyRecurrence *BackupscheduleWeeklyRecurrence `json:"weeklyRecurrence,omitempty"`
 }
 
 type BackupscheduleObservedStateStatus struct {
 	/* Output only. The timestamp at which this backup schedule was created and
 	effective since.
-	
+
 	No backups will be created for this schedule before this time. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
 	/* Output only. The unique backup schedule identifier across all locations and
 	databases for the given project.
-	
+
 	This will be auto-assigned.
-	
+
 	Format is
 	`projects/{project}/databases/{database}/backupSchedules/{backup_schedule}` */
-// +optional
-Name *string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* Output only. The timestamp at which this backup schedule was most recently updated. When a backup schedule is first created, this is the same as create_time. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. The timestamp at which this backup schedule was most recently updated. When a backup schedule is first created, this is the same as create_time. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type FirestoreBackupScheduleStatus struct {
 	/* Conditions represent the latest available observations of the
-	    FirestoreBackupSchedule's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the FirestoreBackupSchedule resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   FirestoreBackupSchedule's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the FirestoreBackupSchedule resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *BackupscheduleObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *BackupscheduleObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpfirestorebackupschedule;gcpfirestorebackupschedules
@@ -123,20 +123,22 @@ ObservedState *BackupscheduleObservedStateStatus `json:"observedState,omitempty"
 // FirestoreBackupSchedule is the Schema for the firestore API
 // +k8s:openapi-gen=true
 type FirestoreBackupSchedule struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec FirestoreBackupScheduleSpec `json:"spec,omitempty"`
-  Status FirestoreBackupScheduleStatus `json:"status,omitempty"`
+	Spec   FirestoreBackupScheduleSpec   `json:"spec,omitempty"`
+	Status FirestoreBackupScheduleStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // FirestoreBackupScheduleList contains a list of FirestoreBackupSchedule
- type FirestoreBackupScheduleList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []FirestoreBackupSchedule `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&FirestoreBackupSchedule{}, &FirestoreBackupScheduleList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// FirestoreBackupScheduleList contains a list of FirestoreBackupSchedule
+type FirestoreBackupScheduleList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []FirestoreBackupSchedule `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&FirestoreBackupSchedule{}, &FirestoreBackupScheduleList{})
+}

@@ -53,13 +53,11 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	BigQueryDataTransferConfigGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(BigQueryDataTransferConfig{}).Name(),
-  	}
-  
+	BigQueryDataTransferConfigGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(BigQueryDataTransferConfig{}).Name(),
+	}
 
-  	bigquerydatatransferAPIVersion = SchemeGroupVersion.String()
+	bigquerydatatransferAPIVersion = SchemeGroupVersion.String()
 )

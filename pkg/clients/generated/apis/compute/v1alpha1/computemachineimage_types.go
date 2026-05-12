@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,79 +29,80 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type MachineimageMachineImageEncryptionKey struct {
-/* Immutable. The name of the encryption key that is stored in Google Cloud KMS. */
-// +optional
-KmsKeyName *string `json:"kmsKeyName,omitempty"`
+	/* Immutable. The name of the encryption key that is stored in Google Cloud KMS. */
+	// +optional
+	KmsKeyName *string `json:"kmsKeyName,omitempty"`
 
 	/* Immutable. The service account used for the encryption request for the given KMS key.
 	If absent, the Compute Engine Service Agent service account is used. */
-// +optional
-KmsKeyServiceAccount *string `json:"kmsKeyServiceAccount,omitempty"`
+	// +optional
+	KmsKeyServiceAccount *string `json:"kmsKeyServiceAccount,omitempty"`
 
 	/* Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
 	RFC 4648 base64 to either encrypt or decrypt this resource. */
-// +optional
-RawKey *string `json:"rawKey,omitempty"`
+	// +optional
+	RawKey *string `json:"rawKey,omitempty"`
 
 	/* The RFC 4648 base64 encoded SHA-256 hash of the
 	customer-supplied encryption key that protects this resource. */
-// +optional
-Sha256 *string `json:"sha256,omitempty"`
+	// +optional
+	Sha256 *string `json:"sha256,omitempty"`
 }
 
 type ComputeMachineImageSpec struct {
-/* Immutable. A text description of the resource. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Immutable. A text description of the resource. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
 	/* Immutable. Specify this to create an application consistent machine image by informing the OS to prepare for the snapshot process.
 	Currently only supported on Windows instances using the Volume Shadow Copy Service (VSS). */
-// +optional
-GuestFlush *bool `json:"guestFlush,omitempty"`
+	// +optional
+	GuestFlush *bool `json:"guestFlush,omitempty"`
 
 	/* Immutable. Encrypts the machine image using a customer-supplied encryption key.
-	
+
 	After you encrypt a machine image with a customer-supplied key, you must
 	provide the same key if you use the machine image later (e.g. to create a
 	instance from the image). */
-// +optional
-MachineImageEncryptionKey *MachineimageMachineImageEncryptionKey `json:"machineImageEncryptionKey,omitempty"`
+	// +optional
+	MachineImageEncryptionKey *MachineimageMachineImageEncryptionKey `json:"machineImageEncryptionKey,omitempty"`
 
-/* The project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-SourceInstanceRef v1alpha1.ResourceRef `json:"sourceInstanceRef"`
+	SourceInstanceRef v1alpha1.ResourceRef `json:"sourceInstanceRef"`
 }
 
 type ComputeMachineImageStatus struct {
 	/* Conditions represent the latest available observations of the
-	    ComputeMachineImage's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   ComputeMachineImage's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-// +optional
-SelfLink *string `json:"selfLink,omitempty"`
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 
-/* The regional or multi-regional Cloud Storage bucket location where the machine image is stored. */
-// +optional
-StorageLocations []string `json:"storageLocations,omitempty"`
+	/* The regional or multi-regional Cloud Storage bucket location where the machine image is stored. */
+	// +optional
+	StorageLocations []string `json:"storageLocations,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputemachineimage;gcpcomputemachineimages
@@ -119,20 +119,22 @@ StorageLocations []string `json:"storageLocations,omitempty"`
 // ComputeMachineImage is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeMachineImage struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ComputeMachineImageSpec `json:"spec,omitempty"`
-  Status ComputeMachineImageStatus `json:"status,omitempty"`
+	Spec   ComputeMachineImageSpec   `json:"spec,omitempty"`
+	Status ComputeMachineImageStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ComputeMachineImageList contains a list of ComputeMachineImage
- type ComputeMachineImageList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []ComputeMachineImage `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&ComputeMachineImage{}, &ComputeMachineImageList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ComputeMachineImageList contains a list of ComputeMachineImage
+type ComputeMachineImageList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeMachineImage `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ComputeMachineImage{}, &ComputeMachineImageList{})
+}

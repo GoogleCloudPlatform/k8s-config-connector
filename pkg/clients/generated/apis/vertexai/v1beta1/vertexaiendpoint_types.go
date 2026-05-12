@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -43,61 +42,62 @@ type EndpointEncryptionSpec struct {
 	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource.
 	Has the form: projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key.
 	The key needs to be in the same region as where the compute resource is created. */
-KmsKeyNameRef v1alpha1.ResourceRef `json:"kmsKeyNameRef"`
+	KmsKeyNameRef v1alpha1.ResourceRef `json:"kmsKeyNameRef"`
 }
 
 type VertexAIEndpointSpec struct {
-/* The description of the Endpoint. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* The description of the Endpoint. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Required. The display name of the Endpoint. The name can be up to 128 characters long and can consist of any UTF-8 characters. */
-DisplayName string `json:"displayName"`
+	/* Required. The display name of the Endpoint. The name can be up to 128 characters long and can consist of any UTF-8 characters. */
+	DisplayName string `json:"displayName"`
 
-/* Immutable. Customer-managed encryption key spec for an Endpoint. If set, this Endpoint and all sub-resources of this Endpoint will be secured by this key. */
-// +optional
-EncryptionSpec *EndpointEncryptionSpec `json:"encryptionSpec,omitempty"`
+	/* Immutable. Customer-managed encryption key spec for an Endpoint. If set, this Endpoint and all sub-resources of this Endpoint will be secured by this key. */
+	// +optional
+	EncryptionSpec *EndpointEncryptionSpec `json:"encryptionSpec,omitempty"`
 
 	/* Optional. The full name of the Google Compute Engine network to which the Endpoint should be peered.
 	Private services access must already be configured for the network. If left unspecified, the Endpoint is not peered with any network.
 	Only one of the fields, network or enablePrivateServiceConnect, can be set.
 	Format: projects/{project_id}/global/networks/{network_name}. */
-// +optional
-NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
-/* The project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Immutable. The region for the resource. */
-Region string `json:"region"`
+	/* Immutable. The region for the resource. */
+	Region string `json:"region"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type EndpointObservedStateStatus struct {
-/* Output only. Timestamp when this Endpoint was created. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. Timestamp when this Endpoint was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. Resource name of the Model Monitoring job associated with this Endpoint if monitoring is enabled by CreateModelDeploymentMonitoringJob. Format: 'projects/{project}/locations/{location}/modelDeploymentMonitoringJobs/{model_deployment_monitoring_job}'. */
-// +optional
-ModelDeploymentMonitoringJob *string `json:"modelDeploymentMonitoringJob,omitempty"`
+	/* Output only. Resource name of the Model Monitoring job associated with this Endpoint if monitoring is enabled by CreateModelDeploymentMonitoringJob. Format: 'projects/{project}/locations/{location}/modelDeploymentMonitoringJobs/{model_deployment_monitoring_job}'. */
+	// +optional
+	ModelDeploymentMonitoringJob *string `json:"modelDeploymentMonitoringJob,omitempty"`
 }
 
 type VertexAIEndpointStatus struct {
 	/* Conditions represent the latest available observations of the
-	    VertexAIEndpoint's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   VertexAIEndpoint's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* The observed state of the underlying GCP resource. */
-// +optional
-ObservedState *EndpointObservedStateStatus `json:"observedState,omitempty"`
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *EndpointObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpvertexaiendpoint;gcpvertexaiendpoints
@@ -114,20 +114,22 @@ ObservedState *EndpointObservedStateStatus `json:"observedState,omitempty"`
 // VertexAIEndpoint is the Schema for the vertexai API
 // +k8s:openapi-gen=true
 type VertexAIEndpoint struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec VertexAIEndpointSpec `json:"spec,omitempty"`
-  Status VertexAIEndpointStatus `json:"status,omitempty"`
+	Spec   VertexAIEndpointSpec   `json:"spec,omitempty"`
+	Status VertexAIEndpointStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // VertexAIEndpointList contains a list of VertexAIEndpoint
- type VertexAIEndpointList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []VertexAIEndpoint `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&VertexAIEndpoint{}, &VertexAIEndpointList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// VertexAIEndpointList contains a list of VertexAIEndpoint
+type VertexAIEndpointList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []VertexAIEndpoint `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&VertexAIEndpoint{}, &VertexAIEndpointList{})
+}

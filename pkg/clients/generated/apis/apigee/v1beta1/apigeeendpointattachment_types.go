@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,62 +29,63 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ApigeeEndpointAttachmentSpec struct {
-/* Required. Location of the endpoint attachment. */
-// +optional
-Location *string `json:"location,omitempty"`
+	/* Required. Location of the endpoint attachment. */
+	// +optional
+	Location *string `json:"location,omitempty"`
 
-/* Reference to parent Apigee Organization. */
-OrganizationRef v1alpha1.ResourceRef `json:"organizationRef"`
+	/* Reference to parent Apigee Organization. */
+	OrganizationRef v1alpha1.ResourceRef `json:"organizationRef"`
 
-/* The ApigeeEndpointAttachment name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The ApigeeEndpointAttachment name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Reference to the ServiceAttachment for the EndpointAttachment. */
-// +optional
-ServiceAttachmentRef *v1alpha1.ResourceRef `json:"serviceAttachmentRef,omitempty"`
+	/* Reference to the ServiceAttachment for the EndpointAttachment. */
+	// +optional
+	ServiceAttachmentRef *v1alpha1.ResourceRef `json:"serviceAttachmentRef,omitempty"`
 }
 
 type EndpointattachmentObservedStateStatus struct {
-/* Output only. State of the endpoint attachment connection to the service attachment. */
-// +optional
-ConnectionState *string `json:"connectionState,omitempty"`
+	/* Output only. State of the endpoint attachment connection to the service attachment. */
+	// +optional
+	ConnectionState *string `json:"connectionState,omitempty"`
 
-/* Output only. Host that can be used in either the HTTP target endpoint directly or as the host in target server. */
-// +optional
-Host *string `json:"host,omitempty"`
+	/* Output only. Host that can be used in either the HTTP target endpoint directly or as the host in target server. */
+	// +optional
+	Host *string `json:"host,omitempty"`
 
-/* Output only. State of the endpoint attachment. Values other than `ACTIVE` mean the resource is not ready to use. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. State of the endpoint attachment. Values other than `ACTIVE` mean the resource is not ready to use. */
+	// +optional
+	State *string `json:"state,omitempty"`
 }
 
 type ApigeeEndpointAttachmentStatus struct {
 	/* Conditions represent the latest available observations of the
-	    ApigeeEndpointAttachment's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the ApigeeEndpointAttachment resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   ApigeeEndpointAttachment's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the ApigeeEndpointAttachment resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *EndpointattachmentObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *EndpointattachmentObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpapigeeendpointattachment;gcpapigeeendpointattachments
@@ -100,20 +100,22 @@ ObservedState *EndpointattachmentObservedStateStatus `json:"observedState,omitem
 // ApigeeEndpointAttachment is the Schema for the apigee API
 // +k8s:openapi-gen=true
 type ApigeeEndpointAttachment struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ApigeeEndpointAttachmentSpec `json:"spec,omitempty"`
-  Status ApigeeEndpointAttachmentStatus `json:"status,omitempty"`
+	Spec   ApigeeEndpointAttachmentSpec   `json:"spec,omitempty"`
+	Status ApigeeEndpointAttachmentStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ApigeeEndpointAttachmentList contains a list of ApigeeEndpointAttachment
- type ApigeeEndpointAttachmentList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []ApigeeEndpointAttachment `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&ApigeeEndpointAttachment{}, &ApigeeEndpointAttachmentList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ApigeeEndpointAttachmentList contains a list of ApigeeEndpointAttachment
+type ApigeeEndpointAttachmentList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ApigeeEndpointAttachment `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ApigeeEndpointAttachment{}, &ApigeeEndpointAttachmentList{})
+}

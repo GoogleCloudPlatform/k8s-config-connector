@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,105 +29,106 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type DataCatalogTaxonomySpec struct {
-/* A list of policy types that are activated for this taxonomy. If not set, defaults to an empty list. Possible values: ["POLICY_TYPE_UNSPECIFIED", "FINE_GRAINED_ACCESS_CONTROL"]. */
-// +optional
-ActivatedPolicyTypes []string `json:"activatedPolicyTypes,omitempty"`
+	/* A list of policy types that are activated for this taxonomy. If not set, defaults to an empty list. Possible values: ["POLICY_TYPE_UNSPECIFIED", "FINE_GRAINED_ACCESS_CONTROL"]. */
+	// +optional
+	ActivatedPolicyTypes []string `json:"activatedPolicyTypes,omitempty"`
 
-/* Description of this taxonomy. It must: contain only unicode characters, tabs, newlines, carriage returns and page breaks; and be at most 2000 bytes long when encoded in UTF-8. If not set, defaults to an empty description. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Description of this taxonomy. It must: contain only unicode characters, tabs, newlines, carriage returns and page breaks; and be at most 2000 bytes long when encoded in UTF-8. If not set, defaults to an empty description. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* User defined name of this taxonomy. It must: contain only unicode letters, numbers, underscores, dashes and spaces; not start or end with spaces; and be at most 200 bytes long when encoded in UTF-8. */
-DisplayName string `json:"displayName"`
+	/* User defined name of this taxonomy. It must: contain only unicode letters, numbers, underscores, dashes and spaces; not start or end with spaces; and be at most 200 bytes long when encoded in UTF-8. */
+	DisplayName string `json:"displayName"`
 
-/* The project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Immutable. Taxonomy location region. */
-// +optional
-Region *string `json:"region,omitempty"`
+	/* Immutable. Taxonomy location region. */
+	// +optional
+	Region *string `json:"region,omitempty"`
 
-/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type TaxonomyObservedStateStatus struct {
-/* Output only. Number of policy tags in this taxonomy. */
-// +optional
-PolicyTagCount *int32 `json:"policyTagCount,omitempty"`
+	/* Output only. Number of policy tags in this taxonomy. */
+	// +optional
+	PolicyTagCount *int32 `json:"policyTagCount,omitempty"`
 
-/* Output only. Identity of the service which owns the Taxonomy. This field is only populated when the taxonomy is created by a Google Cloud service. Currently only 'DATAPLEX' is supported. */
-// +optional
-Service *TaxonomyServiceStatus `json:"service,omitempty"`
+	/* Output only. Identity of the service which owns the Taxonomy. This field is only populated when the taxonomy is created by a Google Cloud service. Currently only 'DATAPLEX' is supported. */
+	// +optional
+	Service *TaxonomyServiceStatus `json:"service,omitempty"`
 
-/* Output only. Creation and modification timestamps of this taxonomy. */
-// +optional
-TaxonomyTimestamps *TaxonomyTaxonomyTimestampsStatus `json:"taxonomyTimestamps,omitempty"`
+	/* Output only. Creation and modification timestamps of this taxonomy. */
+	// +optional
+	TaxonomyTimestamps *TaxonomyTaxonomyTimestampsStatus `json:"taxonomyTimestamps,omitempty"`
 }
 
 type TaxonomyServiceStatus struct {
-/* The service agent for the service. */
-// +optional
-Identity *string `json:"identity,omitempty"`
+	/* The service agent for the service. */
+	// +optional
+	Identity *string `json:"identity,omitempty"`
 
-/* The Google Cloud service name. */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* The Google Cloud service name. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 }
 
 type TaxonomyTaxonomyTimestampsStatus struct {
-/* Creation timestamp of the resource within the given system. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Creation timestamp of the resource within the given system. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
 	/* Output only. Expiration timestamp of the resource within the given system.
-	
+
 	Currently only applicable to BigQuery resources. */
-// +optional
-ExpiredTime *string `json:"expiredTime,omitempty"`
+	// +optional
+	ExpiredTime *string `json:"expiredTime,omitempty"`
 
 	/* Timestamp of the last modification of the resource or its metadata within
 	a given system.
-	
+
 	Note: Depending on the source system, not every modification updates this
 	timestamp.
 	For example, BigQuery timestamps every metadata modification but not data
 	or permission changes. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type DataCatalogTaxonomyStatus struct {
 	/* Conditions represent the latest available observations of the
-	    DataCatalogTaxonomy's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the DataCatalogTaxonomy resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   DataCatalogTaxonomy's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the DataCatalogTaxonomy resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* Resource name of this taxonomy, whose format is: "projects/{project}/locations/{region}/taxonomies/{taxonomy}". */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* Resource name of this taxonomy, whose format is: "projects/{project}/locations/{region}/taxonomies/{taxonomy}". */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *TaxonomyObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *TaxonomyObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdatacatalogtaxonomy;gcpdatacatalogtaxonomies
@@ -145,20 +145,22 @@ ObservedState *TaxonomyObservedStateStatus `json:"observedState,omitempty"`
 // DataCatalogTaxonomy is the Schema for the datacatalog API
 // +k8s:openapi-gen=true
 type DataCatalogTaxonomy struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec DataCatalogTaxonomySpec `json:"spec,omitempty"`
-  Status DataCatalogTaxonomyStatus `json:"status,omitempty"`
+	Spec   DataCatalogTaxonomySpec   `json:"spec,omitempty"`
+	Status DataCatalogTaxonomyStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // DataCatalogTaxonomyList contains a list of DataCatalogTaxonomy
- type DataCatalogTaxonomyList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []DataCatalogTaxonomy `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&DataCatalogTaxonomy{}, &DataCatalogTaxonomyList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// DataCatalogTaxonomyList contains a list of DataCatalogTaxonomy
+type DataCatalogTaxonomyList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DataCatalogTaxonomy `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&DataCatalogTaxonomy{}, &DataCatalogTaxonomyList{})
+}

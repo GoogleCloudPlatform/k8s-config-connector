@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,123 +29,124 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type LakeMetastore struct {
-/* Optional. A relative reference to the Dataproc Metastore (https://cloud.google.com/dataproc-metastore/docs) service associated with the lake: `projects/{project_id}/locations/{location_id}/services/{service_id}` */
-// +optional
-ServiceRef *v1alpha1.ResourceRef `json:"serviceRef,omitempty"`
+	/* Optional. A relative reference to the Dataproc Metastore (https://cloud.google.com/dataproc-metastore/docs) service associated with the lake: `projects/{project_id}/locations/{location_id}/services/{service_id}` */
+	// +optional
+	ServiceRef *v1alpha1.ResourceRef `json:"serviceRef,omitempty"`
 }
 
 type DataplexLakeSpec struct {
-/* Optional. Description of the lake. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Optional. Description of the lake. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Optional. User friendly display name. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* Optional. User friendly display name. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* The location that this resource belongs to. */
-Location string `json:"location"`
+	/* The location that this resource belongs to. */
+	Location string `json:"location"`
 
-/* Optional. Settings to manage lake and Dataproc Metastore service instance association. */
-// +optional
-Metastore *LakeMetastore `json:"metastore,omitempty"`
+	/* Optional. Settings to manage lake and Dataproc Metastore service instance association. */
+	// +optional
+	Metastore *LakeMetastore `json:"metastore,omitempty"`
 
-/* The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* The DataplexLake name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The DataplexLake name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type LakeAssetStatusStatus struct {
-/* Number of active assets. */
-// +optional
-ActiveAssets *int32 `json:"activeAssets,omitempty"`
+	/* Number of active assets. */
+	// +optional
+	ActiveAssets *int32 `json:"activeAssets,omitempty"`
 
-/* Number of assets that are in process of updating the security policy on attached resources. */
-// +optional
-SecurityPolicyApplyingAssets *int32 `json:"securityPolicyApplyingAssets,omitempty"`
+	/* Number of assets that are in process of updating the security policy on attached resources. */
+	// +optional
+	SecurityPolicyApplyingAssets *int32 `json:"securityPolicyApplyingAssets,omitempty"`
 
-/* Last update time of the status. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Last update time of the status. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type LakeMetastoreStatusStatus struct {
-/* The URI of the endpoint used to access the Metastore service. */
-// +optional
-Endpoint *string `json:"endpoint,omitempty"`
+	/* The URI of the endpoint used to access the Metastore service. */
+	// +optional
+	Endpoint *string `json:"endpoint,omitempty"`
 
-/* Additional information about the current status. */
-// +optional
-Message *string `json:"message,omitempty"`
+	/* Additional information about the current status. */
+	// +optional
+	Message *string `json:"message,omitempty"`
 
-/* Current state of association. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Current state of association. */
+	// +optional
+	State *string `json:"state,omitempty"`
 
-/* Last update time of the metastore status of the lake. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Last update time of the metastore status of the lake. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type LakeObservedStateStatus struct {
-/* Output only. Aggregated status of the underlying assets of the lake. */
-// +optional
-AssetStatus *LakeAssetStatusStatus `json:"assetStatus,omitempty"`
+	/* Output only. Aggregated status of the underlying assets of the lake. */
+	// +optional
+	AssetStatus *LakeAssetStatusStatus `json:"assetStatus,omitempty"`
 
-/* Output only. The time when the lake was created. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. The time when the lake was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. Metastore status of the lake. */
-// +optional
-MetastoreStatus *LakeMetastoreStatusStatus `json:"metastoreStatus,omitempty"`
+	/* Output only. Metastore status of the lake. */
+	// +optional
+	MetastoreStatus *LakeMetastoreStatusStatus `json:"metastoreStatus,omitempty"`
 
-/* Output only. Service account associated with this lake. This service account must be authorized to access or operate on resources managed by the lake. */
-// +optional
-ServiceAccount *string `json:"serviceAccount,omitempty"`
+	/* Output only. Service account associated with this lake. This service account must be authorized to access or operate on resources managed by the lake. */
+	// +optional
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
 
-/* Output only. Current state of the lake. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. Current state of the lake. */
+	// +optional
+	State *string `json:"state,omitempty"`
 
-/* Output only. System generated globally unique ID for the lake. This ID will be different if the lake is deleted and re-created with the same name. */
-// +optional
-Uid *string `json:"uid,omitempty"`
+	/* Output only. System generated globally unique ID for the lake. This ID will be different if the lake is deleted and re-created with the same name. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
 
-/* Output only. The time when the lake was last updated. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. The time when the lake was last updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type DataplexLakeStatus struct {
 	/* Conditions represent the latest available observations of the
-	    DataplexLake's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the DataplexLake resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   DataplexLake's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the DataplexLake resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *LakeObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *LakeObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdataplexlake;gcpdataplexlakes
@@ -161,20 +161,22 @@ ObservedState *LakeObservedStateStatus `json:"observedState,omitempty"`
 // DataplexLake is the Schema for the dataplex API
 // +k8s:openapi-gen=true
 type DataplexLake struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec DataplexLakeSpec `json:"spec,omitempty"`
-  Status DataplexLakeStatus `json:"status,omitempty"`
+	Spec   DataplexLakeSpec   `json:"spec,omitempty"`
+	Status DataplexLakeStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // DataplexLakeList contains a list of DataplexLake
- type DataplexLakeList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []DataplexLake `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&DataplexLake{}, &DataplexLakeList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// DataplexLakeList contains a list of DataplexLake
+type DataplexLakeList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DataplexLake `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&DataplexLake{}, &DataplexLakeList{})
+}

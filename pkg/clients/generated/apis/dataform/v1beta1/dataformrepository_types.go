@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,87 +29,87 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type RepositoryGitRemoteSettings struct {
-/* The name of the Secret Manager secret version to use as an authentication token for Git operations. Must be in the format projects/* /secrets/* /versions/*. */
-// +optional
-AuthenticationTokenSecretVersionRef *v1alpha1.ResourceRef `json:"authenticationTokenSecretVersionRef,omitempty"`
+	/* The name of the Secret Manager secret version to use as an authentication token for Git operations. Must be in the format projects/* /secrets/* /versions/*. */
+	// +optional
+	AuthenticationTokenSecretVersionRef *v1alpha1.ResourceRef `json:"authenticationTokenSecretVersionRef,omitempty"`
 
-/* The Git remote's default branch name. */
-DefaultBranch string `json:"defaultBranch"`
+	/* The Git remote's default branch name. */
+	DefaultBranch string `json:"defaultBranch"`
 
-/* Authentication fields for remote uris using SSH protocol. */
-// +optional
-SshAuthenticationConfig *RepositorySshAuthenticationConfig `json:"sshAuthenticationConfig,omitempty"`
+	/* Authentication fields for remote uris using SSH protocol. */
+	// +optional
+	SshAuthenticationConfig *RepositorySshAuthenticationConfig `json:"sshAuthenticationConfig,omitempty"`
 
-/* The Git remote's URL. */
-Url string `json:"url"`
+	/* The Git remote's URL. */
+	Url string `json:"url"`
 }
 
 type RepositorySshAuthenticationConfig struct {
-/* Content of a public SSH key to verify an identity of a remote Git host. */
-HostPublicKey string `json:"hostPublicKey"`
+	/* Content of a public SSH key to verify an identity of a remote Git host. */
+	HostPublicKey string `json:"hostPublicKey"`
 
-/* The name of the Secret Manager secret version to use as a ssh private key for Git operations. Must be in the format projects/* /secrets/* /versions/* . */
-UserPrivateKeySecretVersionRef v1alpha1.ResourceRef `json:"userPrivateKeySecretVersionRef"`
+	/* The name of the Secret Manager secret version to use as a ssh private key for Git operations. Must be in the format projects/* /secrets/* /versions/* . */
+	UserPrivateKeySecretVersionRef v1alpha1.ResourceRef `json:"userPrivateKeySecretVersionRef"`
 }
 
 type RepositoryWorkspaceCompilationOverrides struct {
-/* Optional. The default database (Google Cloud project ID). */
-// +optional
-DefaultDatabase *string `json:"defaultDatabase,omitempty"`
+	/* Optional. The default database (Google Cloud project ID). */
+	// +optional
+	DefaultDatabase *string `json:"defaultDatabase,omitempty"`
 
-/* Optional. The suffix that should be appended to all schema (BigQuery dataset ID) names. */
-// +optional
-SchemaSuffix *string `json:"schemaSuffix,omitempty"`
+	/* Optional. The suffix that should be appended to all schema (BigQuery dataset ID) names. */
+	// +optional
+	SchemaSuffix *string `json:"schemaSuffix,omitempty"`
 
-/* Optional. The prefix that should be prepended to all table names. */
-// +optional
-TablePrefix *string `json:"tablePrefix,omitempty"`
+	/* Optional. The prefix that should be prepended to all table names. */
+	// +optional
+	TablePrefix *string `json:"tablePrefix,omitempty"`
 }
 
 type DataformRepositorySpec struct {
-/* Optional. The repository's user-friendly name. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* Optional. The repository's user-friendly name. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* Optional. If set, configures this repository to be linked to a Git remote. */
-// +optional
-GitRemoteSettings *RepositoryGitRemoteSettings `json:"gitRemoteSettings,omitempty"`
+	/* Optional. If set, configures this repository to be linked to a Git remote. */
+	// +optional
+	GitRemoteSettings *RepositoryGitRemoteSettings `json:"gitRemoteSettings,omitempty"`
 
-/* Optional. The name of the Secret Manager secret version to be used to interpolate variables into the .npmrc file for package installation operations. */
-// +optional
-NpmrcEnvironmentVariablesSecretVersionRef *v1alpha1.ResourceRef `json:"npmrcEnvironmentVariablesSecretVersionRef,omitempty"`
+	/* Optional. The name of the Secret Manager secret version to be used to interpolate variables into the .npmrc file for package installation operations. */
+	// +optional
+	NpmrcEnvironmentVariablesSecretVersionRef *v1alpha1.ResourceRef `json:"npmrcEnvironmentVariablesSecretVersionRef,omitempty"`
 
-/* The project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Immutable. A reference to the region. */
-Region string `json:"region"`
+	/* Immutable. A reference to the region. */
+	Region string `json:"region"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Optional. The service account reference to run workflow invocations under. */
-// +optional
-ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	/* Optional. The service account reference to run workflow invocations under. */
+	// +optional
+	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
-/* Optional. Input only. If set to true, the authenticated user will be granted the roles/dataform.admin role on the created repository. */
-// +optional
-SetAuthenticatedUserAdmin *bool `json:"setAuthenticatedUserAdmin,omitempty"`
+	/* Optional. Input only. If set to true, the authenticated user will be granted the roles/dataform.admin role on the created repository. */
+	// +optional
+	SetAuthenticatedUserAdmin *bool `json:"setAuthenticatedUserAdmin,omitempty"`
 
-/* Optional. If set, fields of workspaceCompilationOverrides override the default compilation settings that are specified in dataform.json when creating workspace-scoped compilation results. */
-// +optional
-WorkspaceCompilationOverrides *RepositoryWorkspaceCompilationOverrides `json:"workspaceCompilationOverrides,omitempty"`
+	/* Optional. If set, fields of workspaceCompilationOverrides override the default compilation settings that are specified in dataform.json when creating workspace-scoped compilation results. */
+	// +optional
+	WorkspaceCompilationOverrides *RepositoryWorkspaceCompilationOverrides `json:"workspaceCompilationOverrides,omitempty"`
 }
 
 type RepositoryObservedStateStatus struct {
@@ -118,20 +117,21 @@ type RepositoryObservedStateStatus struct {
 
 type DataformRepositoryStatus struct {
 	/* Conditions represent the latest available observations of the
-	    DataformRepository's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the DataformReposity resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   DataformRepository's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the DataformReposity resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *RepositoryObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *RepositoryObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdataformrepository;gcpdataformrepositories
@@ -147,20 +147,22 @@ ObservedState *RepositoryObservedStateStatus `json:"observedState,omitempty"`
 // DataformRepository is the Schema for the dataform API
 // +k8s:openapi-gen=true
 type DataformRepository struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec DataformRepositorySpec `json:"spec,omitempty"`
-  Status DataformRepositoryStatus `json:"status,omitempty"`
+	Spec   DataformRepositorySpec   `json:"spec,omitempty"`
+	Status DataformRepositoryStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // DataformRepositoryList contains a list of DataformRepository
- type DataformRepositoryList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []DataformRepository `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&DataformRepository{}, &DataformRepositoryList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// DataformRepositoryList contains a list of DataformRepository
+type DataformRepositoryList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DataformRepository `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&DataformRepository{}, &DataformRepositoryList{})
+}

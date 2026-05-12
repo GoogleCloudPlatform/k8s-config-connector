@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,66 +29,67 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type AssignmentAssignee struct {
-/* Exactly one of ProjectRef or FolderRef or OrganizationRef must be specified. */
-// +optional
-FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+	/* Exactly one of ProjectRef or FolderRef or OrganizationRef must be specified. */
+	// +optional
+	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
-/* Exactly one of ProjectRef or FolderRef or OrganizationRef must be specified. */
-// +optional
-OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+	/* Exactly one of ProjectRef or FolderRef or OrganizationRef must be specified. */
+	// +optional
+	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
-/* Exactly one of ProjectRef or FolderRef or OrganizationRef must be specified. */
-// +optional
-ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	/* Exactly one of ProjectRef or FolderRef or OrganizationRef must be specified. */
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 }
 
 type BigQueryReservationAssignmentSpec struct {
-/* Immutable. Required. The resource which will use the reservation. E.g. `projects/myproject`, `folders/123`, or `organizations/456`. */
-Assignee AssignmentAssignee `json:"assignee"`
+	/* Immutable. Required. The resource which will use the reservation. E.g. `projects/myproject`, `folders/123`, or `organizations/456`. */
+	Assignee AssignmentAssignee `json:"assignee"`
 
-/* Immutable. Which type of jobs will use the reservation. */
-JobType string `json:"jobType"`
+	/* Immutable. Which type of jobs will use the reservation. */
+	JobType string `json:"jobType"`
 
-/* The name of reservation to create a new assignment in, or to move the assignment to. */
-ReservationRef v1alpha1.ResourceRef `json:"reservationRef"`
+	/* The name of reservation to create a new assignment in, or to move the assignment to. */
+	ReservationRef v1alpha1.ResourceRef `json:"reservationRef"`
 
-/* Immutable. Optional. The BigQueryReservationAssignment ID used for resource creation or acquisition. Service-generated.Can be set only if resource acquisition . For acquisition: This field must be provided to identify the Reservation resource to acquire. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The BigQueryReservationAssignment ID used for resource creation or acquisition. Service-generated.Can be set only if resource acquisition . For acquisition: This field must be provided to identify the Reservation resource to acquire. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type AssignmentObservedStateStatus struct {
-/* State of the assignment. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* State of the assignment. */
+	// +optional
+	State *string `json:"state,omitempty"`
 }
 
 type BigQueryReservationAssignmentStatus struct {
 	/* Conditions represent the latest available observations of the
-	    BigQueryReservationAssignment's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the BigqueryReservationAssignment resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   BigQueryReservationAssignment's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the BigqueryReservationAssignment resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *AssignmentObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *AssignmentObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigqueryreservationassignment;gcpbigqueryreservationassignments
@@ -104,20 +104,22 @@ ObservedState *AssignmentObservedStateStatus `json:"observedState,omitempty"`
 // BigQueryReservationAssignment is the Schema for the bigqueryreservation API
 // +k8s:openapi-gen=true
 type BigQueryReservationAssignment struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec BigQueryReservationAssignmentSpec `json:"spec,omitempty"`
-  Status BigQueryReservationAssignmentStatus `json:"status,omitempty"`
+	Spec   BigQueryReservationAssignmentSpec   `json:"spec,omitempty"`
+	Status BigQueryReservationAssignmentStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // BigQueryReservationAssignmentList contains a list of BigQueryReservationAssignment
- type BigQueryReservationAssignmentList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []BigQueryReservationAssignment `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&BigQueryReservationAssignment{}, &BigQueryReservationAssignmentList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// BigQueryReservationAssignmentList contains a list of BigQueryReservationAssignment
+type BigQueryReservationAssignmentList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []BigQueryReservationAssignment `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&BigQueryReservationAssignment{}, &BigQueryReservationAssignmentList{})
+}
