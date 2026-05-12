@@ -31,7 +31,7 @@ var _ refs.Ref = &FirestoreIndexRef{}
 // holds the GCP identifier for the KRM object.
 type FirestoreIndexRef struct {
 	// A reference to an externally managed FirestoreIndex resource.
-	// Should be in the format "projects/{{projectID}}/databases/{{database}}/collectionGroups/{{collection}}/indexes/{{index}}".
+	// Should be in the format "projects/{{projectID}}/databases/{{database}}/collectionGroups/{{collectionGroup}}/indexes/{{index}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a FirestoreIndex resource.

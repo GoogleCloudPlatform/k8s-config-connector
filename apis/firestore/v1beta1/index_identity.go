@@ -30,13 +30,13 @@ var (
 	_ identity.Resource   = &FirestoreIndex{}
 )
 
-var FirestoreIndexIdentityFormat = gcpurls.Template[FirestoreIndexIdentity]("firestore.googleapis.com", "projects/{project}/databases/{database}/collectionGroups/{collection}/indexes/{index}")
+var FirestoreIndexIdentityFormat = gcpurls.Template[FirestoreIndexIdentity]("firestore.googleapis.com", "projects/{project}/databases/{database}/collectionGroups/{collectionGroup}/indexes/{index}")
 
 // +k8s:deepcopy-gen=false
 type FirestoreIndexIdentity struct {
 	Project    string
 	Database   string
-	Collection string
+	CollectionGroup string
 	Index      string
 }
 
@@ -65,7 +65,7 @@ func (i *FirestoreIndexIdentity) Parent() *FirestoreCollectionGroupIdentity {
 	return &FirestoreCollectionGroupIdentity{
 		Project:    i.Project,
 		Database:   i.Database,
-		Collection: i.Collection,
+		CollectionGroup: i.CollectionGroup,
 	}
 }
 
@@ -73,10 +73,10 @@ func (i *FirestoreIndexIdentity) Parent() *FirestoreCollectionGroupIdentity {
 type FirestoreCollectionGroupIdentity struct {
 	Project    string
 	Database   string
-	Collection string
+	CollectionGroup string
 }
 
-var FirestoreCollectionGroupIdentityFormat = gcpurls.Template[FirestoreCollectionGroupIdentity]("firestore.googleapis.com", "projects/{project}/databases/{database}/collectionGroups/{collection}")
+var FirestoreCollectionGroupIdentityFormat = gcpurls.Template[FirestoreCollectionGroupIdentity]("firestore.googleapis.com", "projects/{project}/databases/{database}/collectionGroups/{collectionGroup}")
 
 func (i *FirestoreCollectionGroupIdentity) String() string {
 	return FirestoreCollectionGroupIdentityFormat.ToString(*i)
@@ -103,7 +103,7 @@ func getIdentityFromFirestoreIndexSpec(ctx context.Context, reader client.Reader
 	identity := &FirestoreIndexIdentity{
 		Project:    projectID,
 		Database:   database,
-		Collection: collection,
+		CollectionGroup: collection,
 		Index:      "", // Will be populated from status or creation
 	}
 
@@ -123,7 +123,7 @@ func (obj *FirestoreIndex) GetIdentity(ctx context.Context, reader client.Reader
 			return nil, err
 		}
 
-		if statusIdentity.Project != specIdentity.Project || statusIdentity.Database != specIdentity.Database || statusIdentity.Collection != specIdentity.Collection {
+		if statusIdentity.Project != specIdentity.Project || statusIdentity.Database != specIdentity.Database || statusIdentity.CollectionGroup != specIdentity.CollectionGroup {
 			return nil, fmt.Errorf("cannot change FirestoreIndex identity (old=%q, new parent=%q)", externalRef, specIdentity.Parent().String())
 		}
 
