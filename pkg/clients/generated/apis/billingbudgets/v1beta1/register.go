@@ -53,11 +53,13 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	BillingBudgetsBudgetGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(BillingBudgetsBudget{}).Name(),
-	}
+	
+  	BillingBudgetsBudgetGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(BillingBudgetsBudget{}).Name(),
+  	}
+  
 
-	billingbudgetsAPIVersion = SchemeGroupVersion.String()
+  	billingbudgetsAPIVersion = SchemeGroupVersion.String()
 )

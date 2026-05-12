@@ -53,17 +53,19 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	CloudIOTDeviceGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(CloudIOTDevice{}).Name(),
-	}
+	
+  	CloudIOTDeviceGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(CloudIOTDevice{}).Name(),
+  	}
+  
+  	CloudIOTDeviceRegistryGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(CloudIOTDeviceRegistry{}).Name(),
+  	}
+  
 
-	CloudIOTDeviceRegistryGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(CloudIOTDeviceRegistry{}).Name(),
-	}
-
-	cloudiotAPIVersion = SchemeGroupVersion.String()
+  	cloudiotAPIVersion = SchemeGroupVersion.String()
 )

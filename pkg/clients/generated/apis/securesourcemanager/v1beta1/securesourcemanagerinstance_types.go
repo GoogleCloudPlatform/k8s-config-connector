@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,120 +30,119 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type InstancePrivateConfig struct {
-	/* Required. Immutable. CA pool resource, resource must in the format of `projects/{project}/locations/{location}/caPools/{ca_pool}`. */
-	// +optional
-	CaPoolRef *v1alpha1.ResourceRef `json:"caPoolRef,omitempty"`
+/* Required. Immutable. CA pool resource, resource must in the format of `projects/{project}/locations/{location}/caPools/{ca_pool}`. */
+// +optional
+CaPoolRef *v1alpha1.ResourceRef `json:"caPoolRef,omitempty"`
 
-	/* Required. Immutable. Indicate if it's private instance. */
-	// +optional
-	IsPrivate *bool `json:"isPrivate,omitempty"`
+/* Required. Immutable. Indicate if it's private instance. */
+// +optional
+IsPrivate *bool `json:"isPrivate,omitempty"`
 }
 
 type SecureSourceManagerInstanceSpec struct {
-	/* Optional. Immutable. Customer-managed encryption key name. */
-	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+/* Optional. Immutable. Customer-managed encryption key name. */
+// +optional
+KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
-	/* Optional. Labels as key value pairs. */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
+/* Optional. Labels as key value pairs. */
+// +optional
+Labels map[string]string `json:"labels,omitempty"`
 
-	/* Immutable. Location of the instance. */
-	Location string `json:"location"`
+/* Immutable. Location of the instance. */
+Location string `json:"location"`
 
-	/* Optional. PrivateConfig includes settings for private instance. */
-	// +optional
-	PrivateConfig *InstancePrivateConfig `json:"privateConfig,omitempty"`
+/* Optional. PrivateConfig includes settings for private instance. */
+// +optional
+PrivateConfig *InstancePrivateConfig `json:"privateConfig,omitempty"`
 
-	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* Immutable. The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type InstanceHostConfigStatus struct {
-	/* Output only. API hostname. */
-	// +optional
-	Api *string `json:"api,omitempty"`
+/* Output only. API hostname. */
+// +optional
+Api *string `json:"api,omitempty"`
 
-	/* Output only. Git HTTP hostname. */
-	// +optional
-	GitHTTP *string `json:"gitHTTP,omitempty"`
+/* Output only. Git HTTP hostname. */
+// +optional
+GitHTTP *string `json:"gitHTTP,omitempty"`
 
-	/* Output only. Git SSH hostname. */
-	// +optional
-	GitSSH *string `json:"gitSSH,omitempty"`
+/* Output only. Git SSH hostname. */
+// +optional
+GitSSH *string `json:"gitSSH,omitempty"`
 
-	/* Output only. HTML hostname. */
-	// +optional
-	Html *string `json:"html,omitempty"`
+/* Output only. HTML hostname. */
+// +optional
+Html *string `json:"html,omitempty"`
 }
 
 type InstanceObservedStateStatus struct {
-	/* Output only. Create timestamp. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. Create timestamp. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. A list of hostnames for this instance. */
-	// +optional
-	HostConfig *InstanceHostConfigStatus `json:"hostConfig,omitempty"`
+/* Output only. A list of hostnames for this instance. */
+// +optional
+HostConfig *InstanceHostConfigStatus `json:"hostConfig,omitempty"`
 
-	/* Optional. PrivateConfig includes settings for private instance. */
-	// +optional
-	PrivateConfig *InstancePrivateConfigStatus `json:"privateConfig,omitempty"`
+/* Optional. PrivateConfig includes settings for private instance. */
+// +optional
+PrivateConfig *InstancePrivateConfigStatus `json:"privateConfig,omitempty"`
 
-	/* Output only. Current state of the instance. */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* Output only. Current state of the instance. */
+// +optional
+State *string `json:"state,omitempty"`
 
-	/* Output only. An optional field providing information about the current instance state. */
-	// +optional
-	StateNote *string `json:"stateNote,omitempty"`
+/* Output only. An optional field providing information about the current instance state. */
+// +optional
+StateNote *string `json:"stateNote,omitempty"`
 
-	/* Output only. Update timestamp. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. Update timestamp. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type InstancePrivateConfigStatus struct {
-	/* Output only. Service Attachment for HTTP, resource is in the format of `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`. */
-	// +optional
-	HttpServiceAttachment *string `json:"httpServiceAttachment,omitempty"`
+/* Output only. Service Attachment for HTTP, resource is in the format of `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`. */
+// +optional
+HttpServiceAttachment *string `json:"httpServiceAttachment,omitempty"`
 
-	/* Output only. Service Attachment for SSH, resource is in the format of `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`. */
-	// +optional
-	SshServiceAttachment *string `json:"sshServiceAttachment,omitempty"`
+/* Output only. Service Attachment for SSH, resource is in the format of `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`. */
+// +optional
+SshServiceAttachment *string `json:"sshServiceAttachment,omitempty"`
 }
 
 type SecureSourceManagerInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
-	   SecureSourceManagerInstance's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the SecureSourceManagerInstance resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    SecureSourceManagerInstance's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the SecureSourceManagerInstance resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *InstanceObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *InstanceObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpsecuresourcemanagerinstance;gcpsecuresourcemanagerinstances
@@ -157,22 +157,20 @@ type SecureSourceManagerInstanceStatus struct {
 // SecureSourceManagerInstance is the Schema for the securesourcemanager API
 // +k8s:openapi-gen=true
 type SecureSourceManagerInstance struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   SecureSourceManagerInstanceSpec   `json:"spec,omitempty"`
-	Status SecureSourceManagerInstanceStatus `json:"status,omitempty"`
+  Spec SecureSourceManagerInstanceSpec `json:"spec,omitempty"`
+  Status SecureSourceManagerInstanceStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// SecureSourceManagerInstanceList contains a list of SecureSourceManagerInstance
-type SecureSourceManagerInstanceList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []SecureSourceManagerInstance `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&SecureSourceManagerInstance{}, &SecureSourceManagerInstanceList{})
-}
+ // SecureSourceManagerInstanceList contains a list of SecureSourceManagerInstance
+ type SecureSourceManagerInstanceList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []SecureSourceManagerInstance `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&SecureSourceManagerInstance{}, &SecureSourceManagerInstanceList{})
+ }

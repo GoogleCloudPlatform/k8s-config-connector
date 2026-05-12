@@ -31,7 +31,7 @@
 // Package v1alpha1 contains API Schema definitions for the vertexai v1alpha1 API group.
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=package,register
-// +k8s:conversion-gen=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/pkg/apis/vertexai
+// +k8s:conversion-gen=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai
 // +k8s:defaulter-gen=TypeMeta
 // +groupName=vertexai.cnrm.cloud.google.com
 package v1alpha1

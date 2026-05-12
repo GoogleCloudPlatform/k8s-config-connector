@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +30,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -41,106 +42,105 @@ var _ = apiextensionsv1.JSON{}
 type DialogflowIntentSpec struct {
 	/* The name of the action associated with the intent.
 	Note: The action name must not contain whitespaces. */
-	// +optional
-	Action *string `json:"action,omitempty"`
+// +optional
+Action *string `json:"action,omitempty"`
 
 	/* The list of platforms for which the first responses will be copied from the messages in PLATFORM_UNSPECIFIED
 	(i.e. default platform). Possible values: ["FACEBOOK", "SLACK", "TELEGRAM", "KIK", "SKYPE", "LINE", "VIBER", "ACTIONS_ON_GOOGLE", "GOOGLE_HANGOUTS"]. */
-	// +optional
-	DefaultResponsePlatforms []string `json:"defaultResponsePlatforms,omitempty"`
+// +optional
+DefaultResponsePlatforms []string `json:"defaultResponsePlatforms,omitempty"`
 
-	/* The name of this intent to be displayed on the console. */
-	DisplayName string `json:"displayName"`
+/* The name of this intent to be displayed on the console. */
+DisplayName string `json:"displayName"`
 
 	/* The collection of event names that trigger the intent. If the collection of input contexts is not empty, all of
 	the contexts must be present in the active user session for an event to trigger this intent. See the
 	[events reference](https://cloud.google.com/dialogflow/docs/events-overview) for more details. */
-	// +optional
-	Events []string `json:"events,omitempty"`
+// +optional
+Events []string `json:"events,omitempty"`
 
 	/* The list of context names required for this intent to be triggered.
 	Format: projects/<Project ID>/agent/sessions/-/contexts/<Context ID>. */
-	// +optional
-	InputContextNames []string `json:"inputContextNames,omitempty"`
+// +optional
+InputContextNames []string `json:"inputContextNames,omitempty"`
 
-	/* Indicates whether this is a fallback intent. */
-	// +optional
-	IsFallback *bool `json:"isFallback,omitempty"`
+/* Indicates whether this is a fallback intent. */
+// +optional
+IsFallback *bool `json:"isFallback,omitempty"`
 
 	/* Indicates whether Machine Learning is disabled for the intent.
 	Note: If mlDisabled setting is set to true, then this intent is not taken into account during inference in ML
 	ONLY match mode. Also, auto-markup in the UI is turned off. */
-	// +optional
-	MlDisabled *bool `json:"mlDisabled,omitempty"`
+// +optional
+MlDisabled *bool `json:"mlDisabled,omitempty"`
 
 	/* Immutable. The unique identifier of the parent intent in the chain of followup intents.
 	Format: projects/<Project ID>/agent/intents/<Intent ID>. */
-	// +optional
-	ParentFollowupIntentName *string `json:"parentFollowupIntentName,omitempty"`
+// +optional
+ParentFollowupIntentName *string `json:"parentFollowupIntentName,omitempty"`
 
 	/* The priority of this intent. Higher numbers represent higher priorities.
 	- If the supplied value is unspecified or 0, the service translates the value to 500,000, which corresponds
 	to the Normal priority in the console.
 	- If the supplied value is negative, the intent is ignored in runtime detect intent requests. */
-	// +optional
-	Priority *int64 `json:"priority,omitempty"`
+// +optional
+Priority *int64 `json:"priority,omitempty"`
 
-	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Indicates whether to delete all contexts in the current session when this intent is matched. */
-	// +optional
-	ResetContexts *bool `json:"resetContexts,omitempty"`
+/* Indicates whether to delete all contexts in the current session when this intent is matched. */
+// +optional
+ResetContexts *bool `json:"resetContexts,omitempty"`
 
-	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Indicates whether webhooks are enabled for the intent.
 	* WEBHOOK_STATE_ENABLED: Webhook is enabled in the agent and in the intent.
 	* WEBHOOK_STATE_ENABLED_FOR_SLOT_FILLING: Webhook is enabled in the agent and in the intent. Also, each slot
 	filling prompt is forwarded to the webhook. Possible values: ["WEBHOOK_STATE_ENABLED", "WEBHOOK_STATE_ENABLED_FOR_SLOT_FILLING"]. */
-	// +optional
-	WebhookState *string `json:"webhookState,omitempty"`
+// +optional
+WebhookState *string `json:"webhookState,omitempty"`
 }
 
 type IntentFollowupIntentInfoStatus struct {
 	/* The unique identifier of the followup intent.
 	Format: projects/<Project ID>/agent/intents/<Intent ID>. */
-	// +optional
-	FollowupIntentName *string `json:"followupIntentName,omitempty"`
+// +optional
+FollowupIntentName *string `json:"followupIntentName,omitempty"`
 
 	/* The unique identifier of the followup intent's parent.
 	Format: projects/<Project ID>/agent/intents/<Intent ID>. */
-	// +optional
-	ParentFollowupIntentName *string `json:"parentFollowupIntentName,omitempty"`
+// +optional
+ParentFollowupIntentName *string `json:"parentFollowupIntentName,omitempty"`
 }
 
 type DialogflowIntentStatus struct {
 	/* Conditions represent the latest available observations of the
-	   DialogflowIntent's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	    DialogflowIntent's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Information about all followup intents that have this intent as a direct or indirect parent. We populate this field
 	only in the output. */
-	// +optional
-	FollowupIntentInfo []IntentFollowupIntentInfoStatus `json:"followupIntentInfo,omitempty"`
+// +optional
+FollowupIntentInfo []IntentFollowupIntentInfoStatus `json:"followupIntentInfo,omitempty"`
 
 	/* The unique identifier of this intent.
 	Format: projects/<Project ID>/agent/intents/<Intent ID>. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+// +optional
+Name *string `json:"name,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The unique identifier of the root intent in the chain of followup intents. It identifies the correct followup
 	intents chain for this intent.
 	Format: projects/<Project ID>/agent/intents/<Intent ID>. */
-	// +optional
-	RootFollowupIntentName *string `json:"rootFollowupIntentName,omitempty"`
+// +optional
+RootFollowupIntentName *string `json:"rootFollowupIntentName,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdialogflowintent;gcpdialogflowintents
@@ -157,22 +157,20 @@ type DialogflowIntentStatus struct {
 // DialogflowIntent is the Schema for the dialogflow API
 // +k8s:openapi-gen=true
 type DialogflowIntent struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   DialogflowIntentSpec   `json:"spec,omitempty"`
-	Status DialogflowIntentStatus `json:"status,omitempty"`
+  Spec DialogflowIntentSpec `json:"spec,omitempty"`
+  Status DialogflowIntentStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// DialogflowIntentList contains a list of DialogflowIntent
-type DialogflowIntentList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []DialogflowIntent `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&DialogflowIntent{}, &DialogflowIntentList{})
-}
+ // DialogflowIntentList contains a list of DialogflowIntent
+ type DialogflowIntentList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []DialogflowIntent `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&DialogflowIntent{}, &DialogflowIntentList{})
+ }

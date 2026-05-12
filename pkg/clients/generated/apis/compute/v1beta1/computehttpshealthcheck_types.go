@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +30,11 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -41,67 +42,66 @@ var _ = apiextensionsv1.JSON{}
 type ComputeHTTPSHealthCheckSpec struct {
 	/* How often (in seconds) to send a health check. The default value is 5
 	seconds. */
-	// +optional
-	CheckIntervalSec *int64 `json:"checkIntervalSec,omitempty"`
+// +optional
+CheckIntervalSec *int64 `json:"checkIntervalSec,omitempty"`
 
 	/* An optional description of this resource. Provide this property when
 	you create the resource. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+// +optional
+Description *string `json:"description,omitempty"`
 
 	/* A so-far unhealthy instance will be marked healthy after this many
 	consecutive successes. The default value is 2. */
-	// +optional
-	HealthyThreshold *int64 `json:"healthyThreshold,omitempty"`
+// +optional
+HealthyThreshold *int64 `json:"healthyThreshold,omitempty"`
 
 	/* The value of the host header in the HTTPS health check request. If
 	left empty (default value), the public IP on behalf of which this
 	health check is performed will be used. */
-	// +optional
-	Host *string `json:"host,omitempty"`
+// +optional
+Host *string `json:"host,omitempty"`
 
 	/* The TCP port number for the HTTPS health check request.
 	The default value is 443. */
-	// +optional
-	Port *int64 `json:"port,omitempty"`
+// +optional
+Port *int64 `json:"port,omitempty"`
 
 	/* The request path of the HTTPS health check request.
 	The default value is /. */
-	// +optional
-	RequestPath *string `json:"requestPath,omitempty"`
+// +optional
+RequestPath *string `json:"requestPath,omitempty"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
 	/* How long (in seconds) to wait before claiming failure.
 	The default value is 5 seconds.  It is invalid for timeoutSec to have
 	greater value than checkIntervalSec. */
-	// +optional
-	TimeoutSec *int64 `json:"timeoutSec,omitempty"`
+// +optional
+TimeoutSec *int64 `json:"timeoutSec,omitempty"`
 
 	/* A so-far healthy instance will be marked unhealthy after this many
 	consecutive failures. The default value is 2. */
-	// +optional
-	UnhealthyThreshold *int64 `json:"unhealthyThreshold,omitempty"`
+// +optional
+UnhealthyThreshold *int64 `json:"unhealthyThreshold,omitempty"`
 }
 
 type ComputeHTTPSHealthCheckStatus struct {
 	/* Conditions represent the latest available observations of the
-	   ComputeHTTPSHealthCheck's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Creation timestamp in RFC3339 text format. */
-	// +optional
-	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+	    ComputeHTTPSHealthCheck's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* Creation timestamp in RFC3339 text format. */
+// +optional
+CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// +optional
-	SelfLink *string `json:"selfLink,omitempty"`
+// +optional
+SelfLink *string `json:"selfLink,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputehttpshealthcheck;gcpcomputehttpshealthchecks
@@ -118,22 +118,20 @@ type ComputeHTTPSHealthCheckStatus struct {
 // ComputeHTTPSHealthCheck is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeHTTPSHealthCheck struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ComputeHTTPSHealthCheckSpec   `json:"spec,omitempty"`
-	Status ComputeHTTPSHealthCheckStatus `json:"status,omitempty"`
+  Spec ComputeHTTPSHealthCheckSpec `json:"spec,omitempty"`
+  Status ComputeHTTPSHealthCheckStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// ComputeHTTPSHealthCheckList contains a list of ComputeHTTPSHealthCheck
-type ComputeHTTPSHealthCheckList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ComputeHTTPSHealthCheck `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&ComputeHTTPSHealthCheck{}, &ComputeHTTPSHealthCheckList{})
-}
+ // ComputeHTTPSHealthCheckList contains a list of ComputeHTTPSHealthCheck
+ type ComputeHTTPSHealthCheckList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []ComputeHTTPSHealthCheck `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&ComputeHTTPSHealthCheck{}, &ComputeHTTPSHealthCheckList{})
+ }

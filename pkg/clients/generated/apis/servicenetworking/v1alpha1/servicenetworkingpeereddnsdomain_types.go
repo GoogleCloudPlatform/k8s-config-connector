@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,26 +30,26 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ServiceNetworkingPeeredDNSDomainSpec struct {
-	/* The DNS domain name suffix e.g. `example.com.`. Cloud DNS requires that a DNS suffix ends with a trailing dot. */
-	// +optional
-	DnsSuffix *string `json:"dnsSuffix,omitempty"`
+/* The DNS domain name suffix e.g. `example.com.`. Cloud DNS requires that a DNS suffix ends with a trailing dot. */
+// +optional
+DnsSuffix *string `json:"dnsSuffix,omitempty"`
 
-	/* The network that this resource belongs to. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+/* The network that this resource belongs to. */
+NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
 
-	/* The ServiceNetworkingPeeredDNSDomain name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The ServiceNetworkingPeeredDNSDomain name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type PeereddnsdomainObservedStateStatus struct {
@@ -56,21 +57,20 @@ type PeereddnsdomainObservedStateStatus struct {
 
 type ServiceNetworkingPeeredDNSDomainStatus struct {
 	/* Conditions represent the latest available observations of the
-	   ServiceNetworkingPeeredDNSDomain's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the ServiceNetworkingPeeredDNSDomain resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    ServiceNetworkingPeeredDNSDomain's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the ServiceNetworkingPeeredDNSDomain resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *PeereddnsdomainObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *PeereddnsdomainObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpservicenetworkingpeereddnsdomain;gcpservicenetworkingpeereddnsdomains
@@ -85,22 +85,20 @@ type ServiceNetworkingPeeredDNSDomainStatus struct {
 // ServiceNetworkingPeeredDNSDomain is the Schema for the servicenetworking API
 // +k8s:openapi-gen=true
 type ServiceNetworkingPeeredDNSDomain struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ServiceNetworkingPeeredDNSDomainSpec   `json:"spec,omitempty"`
-	Status ServiceNetworkingPeeredDNSDomainStatus `json:"status,omitempty"`
+  Spec ServiceNetworkingPeeredDNSDomainSpec `json:"spec,omitempty"`
+  Status ServiceNetworkingPeeredDNSDomainStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// ServiceNetworkingPeeredDNSDomainList contains a list of ServiceNetworkingPeeredDNSDomain
-type ServiceNetworkingPeeredDNSDomainList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ServiceNetworkingPeeredDNSDomain `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&ServiceNetworkingPeeredDNSDomain{}, &ServiceNetworkingPeeredDNSDomainList{})
-}
+ // ServiceNetworkingPeeredDNSDomainList contains a list of ServiceNetworkingPeeredDNSDomain
+ type ServiceNetworkingPeeredDNSDomainList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []ServiceNetworkingPeeredDNSDomain `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&ServiceNetworkingPeeredDNSDomain{}, &ServiceNetworkingPeeredDNSDomainList{})
+ }

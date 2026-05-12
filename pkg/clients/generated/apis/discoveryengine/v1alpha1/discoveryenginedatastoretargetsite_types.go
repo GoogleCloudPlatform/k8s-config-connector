@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,98 +30,97 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type DiscoveryEngineDataStoreTargetSiteSpec struct {
-	/* The DataStore this target site should be part of. */
-	// +optional
-	DataStoreRef *v1alpha1.ResourceRef `json:"dataStoreRef,omitempty"`
+/* The DataStore this target site should be part of. */
+// +optional
+DataStoreRef *v1alpha1.ResourceRef `json:"dataStoreRef,omitempty"`
 
-	/* Input only. If set to false, a uri_pattern is generated to include all pages whose address contains the provided_uri_pattern. If set to true, an uri_pattern is generated to try to be an exact match of the provided_uri_pattern or just the specific page if the provided_uri_pattern is a specific one. provided_uri_pattern is always normalized to generate the URI pattern to be used by the search engine. */
-	// +optional
-	ExactMatch *bool `json:"exactMatch,omitempty"`
+/* Input only. If set to false, a uri_pattern is generated to include all pages whose address contains the provided_uri_pattern. If set to true, an uri_pattern is generated to try to be an exact match of the provided_uri_pattern or just the specific page if the provided_uri_pattern is a specific one. provided_uri_pattern is always normalized to generate the URI pattern to be used by the search engine. */
+// +optional
+ExactMatch *bool `json:"exactMatch,omitempty"`
 
-	/* Required. Input only. The user provided URI pattern from which the `generated_uri_pattern` is generated. */
-	// +optional
-	ProvidedURIPattern *string `json:"providedURIPattern,omitempty"`
+/* Required. Input only. The user provided URI pattern from which the `generated_uri_pattern` is generated. */
+// +optional
+ProvidedURIPattern *string `json:"providedURIPattern,omitempty"`
 
-	/* The type of the target site, e.g., whether the site is to be included or excluded. */
-	// +optional
-	Type *string `json:"type,omitempty"`
+/* The type of the target site, e.g., whether the site is to be included or excluded. */
+// +optional
+Type *string `json:"type,omitempty"`
 }
 
 type DatastoretargetsiteFailureReasonStatus struct {
-	/* Failed due to insufficient quota. */
-	// +optional
-	QuotaFailure *DatastoretargetsiteQuotaFailureStatus `json:"quotaFailure,omitempty"`
+/* Failed due to insufficient quota. */
+// +optional
+QuotaFailure *DatastoretargetsiteQuotaFailureStatus `json:"quotaFailure,omitempty"`
 }
 
 type DatastoretargetsiteObservedStateStatus struct {
-	/* Output only. Failure reason. */
-	// +optional
-	FailureReason *DatastoretargetsiteFailureReasonStatus `json:"failureReason,omitempty"`
+/* Output only. Failure reason. */
+// +optional
+FailureReason *DatastoretargetsiteFailureReasonStatus `json:"failureReason,omitempty"`
 
-	/* Output only. This is system-generated based on the provided_uri. */
-	// +optional
-	GeneratedURIPattern *string `json:"generatedURIPattern,omitempty"`
+/* Output only. This is system-generated based on the provided_uri. */
+// +optional
+GeneratedURIPattern *string `json:"generatedURIPattern,omitempty"`
 
-	/* Output only. Indexing status. */
-	// +optional
-	IndexingStatus *string `json:"indexingStatus,omitempty"`
+/* Output only. Indexing status. */
+// +optional
+IndexingStatus *string `json:"indexingStatus,omitempty"`
 
-	/* Output only. Root domain of the provided_uri. */
-	// +optional
-	RootDomainURI *string `json:"rootDomainURI,omitempty"`
+/* Output only. Root domain of the provided_uri. */
+// +optional
+RootDomainURI *string `json:"rootDomainURI,omitempty"`
 
-	/* Output only. Site ownership and validity verification status. */
-	// +optional
-	SiteVerificationInfo *DatastoretargetsiteSiteVerificationInfoStatus `json:"siteVerificationInfo,omitempty"`
+/* Output only. Site ownership and validity verification status. */
+// +optional
+SiteVerificationInfo *DatastoretargetsiteSiteVerificationInfoStatus `json:"siteVerificationInfo,omitempty"`
 
-	/* Output only. The target site's last updated time. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. The target site's last updated time. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type DatastoretargetsiteQuotaFailureStatus struct {
-	/* This number is an estimation on how much total quota this project needs to successfully complete indexing. */
-	// +optional
-	TotalRequiredQuota *int64 `json:"totalRequiredQuota,omitempty"`
+/* This number is an estimation on how much total quota this project needs to successfully complete indexing. */
+// +optional
+TotalRequiredQuota *int64 `json:"totalRequiredQuota,omitempty"`
 }
 
 type DatastoretargetsiteSiteVerificationInfoStatus struct {
-	/* Site verification state indicating the ownership and validity. */
-	// +optional
-	SiteVerificationState *string `json:"siteVerificationState,omitempty"`
+/* Site verification state indicating the ownership and validity. */
+// +optional
+SiteVerificationState *string `json:"siteVerificationState,omitempty"`
 
-	/* Latest site verification time. */
-	// +optional
-	VerifyTime *string `json:"verifyTime,omitempty"`
+/* Latest site verification time. */
+// +optional
+VerifyTime *string `json:"verifyTime,omitempty"`
 }
 
 type DiscoveryEngineDataStoreTargetSiteStatus struct {
 	/* Conditions represent the latest available observations of the
-	   DiscoveryEngineDataStoreTargetSite's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the DiscoveryEngineDataStoreTargetSite resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    DiscoveryEngineDataStoreTargetSite's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the DiscoveryEngineDataStoreTargetSite resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *DatastoretargetsiteObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *DatastoretargetsiteObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdiscoveryenginedatastoretargetsite;gcpdiscoveryenginedatastoretargetsites
@@ -135,22 +135,20 @@ type DiscoveryEngineDataStoreTargetSiteStatus struct {
 // DiscoveryEngineDataStoreTargetSite is the Schema for the discoveryengine API
 // +k8s:openapi-gen=true
 type DiscoveryEngineDataStoreTargetSite struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   DiscoveryEngineDataStoreTargetSiteSpec   `json:"spec,omitempty"`
-	Status DiscoveryEngineDataStoreTargetSiteStatus `json:"status,omitempty"`
+  Spec DiscoveryEngineDataStoreTargetSiteSpec `json:"spec,omitempty"`
+  Status DiscoveryEngineDataStoreTargetSiteStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// DiscoveryEngineDataStoreTargetSiteList contains a list of DiscoveryEngineDataStoreTargetSite
-type DiscoveryEngineDataStoreTargetSiteList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []DiscoveryEngineDataStoreTargetSite `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&DiscoveryEngineDataStoreTargetSite{}, &DiscoveryEngineDataStoreTargetSiteList{})
-}
+ // DiscoveryEngineDataStoreTargetSiteList contains a list of DiscoveryEngineDataStoreTargetSite
+ type DiscoveryEngineDataStoreTargetSiteList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []DiscoveryEngineDataStoreTargetSite `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&DiscoveryEngineDataStoreTargetSite{}, &DiscoveryEngineDataStoreTargetSiteList{})
+ }

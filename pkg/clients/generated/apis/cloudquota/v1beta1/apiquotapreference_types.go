@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,142 +30,141 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ApiquotapreferenceQuotaConfig struct {
-	/* Optional. The annotations map for clients to store small amounts of arbitrary data. Do not put PII or other sensitive information here. See https://google.aip.dev/128#annotations */
-	// +optional
-	Annotations map[string]string `json:"annotations,omitempty"`
+/* Optional. The annotations map for clients to store small amounts of arbitrary data. Do not put PII or other sensitive information here. See https://google.aip.dev/128#annotations */
+// +optional
+Annotations map[string]string `json:"annotations,omitempty"`
 
-	/* Required. The preferred value. Must be greater than or equal to -1. If set to -1, it means the value is "unlimited". */
-	// +optional
-	PreferredValue *int64 `json:"preferredValue,omitempty"`
+/* Required. The preferred value. Must be greater than or equal to -1. If set to -1, it means the value is "unlimited". */
+// +optional
+PreferredValue *int64 `json:"preferredValue,omitempty"`
 }
 
 type APIQuotaPreferenceSpec struct {
 	/* Input only. An email address that can be used to contact the the user, in
 	case Google Cloud needs more information to make a decision before
 	additional quota can be granted.
-
+	
 	When requesting a quota increase, the email address is required.
 	When requesting a quota decrease, the email address is optional.
 	For example, the email address is optional when the
 	`QuotaConfig.preferred_value` is smaller than the
 	`QuotaDetails.reset_value`. */
-	// +optional
-	ContactEmail *string `json:"contactEmail,omitempty"`
+// +optional
+ContactEmail *string `json:"contactEmail,omitempty"`
 
 	/* Immutable. The dimensions that this quota preference applies to. The key of
 	the map entry is the name of a dimension, such as "region", "zone",
 	"network_id", and the value of the map entry is the dimension value.
-
+	
 	If a dimension is missing from the map of dimensions, the quota preference
 	applies to all the dimension values except for those that have other quota
 	preferences configured for the specific value.
-
+	
 	NOTE: QuotaPreferences can only be applied across all values of "user" and
 	"resource" dimension. Do not set values for "user" or "resource" in the
 	dimension map.
-
+	
 	Example: {"provider", "Foo Inc"} where "provider" is a service specific
 	dimension. */
-	// +optional
-	Dimensions map[string]string `json:"dimensions,omitempty"`
+// +optional
+Dimensions map[string]string `json:"dimensions,omitempty"`
 
-	/* FolderRef represents the Folder that this resource belongs to. */
-	// +optional
-	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+/* FolderRef represents the Folder that this resource belongs to. */
+// +optional
+FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
-	/* The reason / justification for this quota preference. */
-	// +optional
-	Justification *string `json:"justification,omitempty"`
+/* The reason / justification for this quota preference. */
+// +optional
+Justification *string `json:"justification,omitempty"`
 
-	/* OrganizationRef represents the Organization that this resource belongs to. */
-	// +optional
-	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+/* OrganizationRef represents the Organization that this resource belongs to. */
+// +optional
+OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
-	/* The Project that this resource belongs to. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+/* The Project that this resource belongs to. */
+// +optional
+ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/* Required. Preferred quota configuration. */
-	QuotaConfig ApiquotapreferenceQuotaConfig `json:"quotaConfig"`
+/* Required. Preferred quota configuration. */
+QuotaConfig ApiquotapreferenceQuotaConfig `json:"quotaConfig"`
 
-	/* Required. The id of the quota to which the quota preference is applied. A quota name is unique in the service. Example: `CpusPerProjectPerRegion` */
-	QuotaID string `json:"quotaID"`
+/* Required. The id of the quota to which the quota preference is applied. A quota name is unique in the service. Example: `CpusPerProjectPerRegion` */
+QuotaID string `json:"quotaID"`
 
-	/* The APIQuotaPreference name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The APIQuotaPreference name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Required. The name of the service to which the quota preference is applied. */
-	Service string `json:"service"`
+/* Required. The name of the service to which the quota preference is applied. */
+Service string `json:"service"`
 }
 
 type ApiquotapreferenceObservedStateStatus struct {
-	/* Output only. Create time stamp */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. Create time stamp */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Optional. The current etag of the quota preference. If an etag is provided on update and does not match the current server's etag of the quota preference, the request will be blocked and an ABORTED error will be returned. See https://google.aip.dev/134#etags for more details on etags. */
-	// +optional
-	Etag *string `json:"etag,omitempty"`
+/* Optional. The current etag of the quota preference. If an etag is provided on update and does not match the current server's etag of the quota preference, the request will be blocked and an ABORTED error will be returned. See https://google.aip.dev/134#etags for more details on etags. */
+// +optional
+Etag *string `json:"etag,omitempty"`
 
-	/* Required. Preferred quota configuration. */
-	// +optional
-	QuotaConfig *ApiquotapreferenceQuotaConfigStatus `json:"quotaConfig,omitempty"`
+/* Required. Preferred quota configuration. */
+// +optional
+QuotaConfig *ApiquotapreferenceQuotaConfigStatus `json:"quotaConfig,omitempty"`
 
-	/* Output only. Is the quota preference pending Google Cloud approval and fulfillment. */
-	// +optional
-	Reconciling *bool `json:"reconciling,omitempty"`
+/* Output only. Is the quota preference pending Google Cloud approval and fulfillment. */
+// +optional
+Reconciling *bool `json:"reconciling,omitempty"`
 
-	/* Output only. Update time stamp */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. Update time stamp */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type ApiquotapreferenceQuotaConfigStatus struct {
-	/* Output only. Granted quota value. */
-	// +optional
-	GrantedValue *int64 `json:"grantedValue,omitempty"`
+/* Output only. Granted quota value. */
+// +optional
+GrantedValue *int64 `json:"grantedValue,omitempty"`
 
-	/* Output only. The origin of the quota preference request. */
-	// +optional
-	RequestOrigin *string `json:"requestOrigin,omitempty"`
+/* Output only. The origin of the quota preference request. */
+// +optional
+RequestOrigin *string `json:"requestOrigin,omitempty"`
 
-	/* Output only. Optional details about the state of this quota preference. */
-	// +optional
-	StateDetail *string `json:"stateDetail,omitempty"`
+/* Output only. Optional details about the state of this quota preference. */
+// +optional
+StateDetail *string `json:"stateDetail,omitempty"`
 
-	/* Output only. The trace id that the Google Cloud uses to provision the requested quota. This trace id may be used by the client to contact Cloud support to track the state of a quota preference request. The trace id is only produced for increase requests and is unique for each request. The quota decrease requests do not have a trace id. */
-	// +optional
-	TraceID *string `json:"traceID,omitempty"`
+/* Output only. The trace id that the Google Cloud uses to provision the requested quota. This trace id may be used by the client to contact Cloud support to track the state of a quota preference request. The trace id is only produced for increase requests and is unique for each request. The quota decrease requests do not have a trace id. */
+// +optional
+TraceID *string `json:"traceID,omitempty"`
 }
 
 type APIQuotaPreferenceStatus struct {
 	/* Conditions represent the latest available observations of the
-	   APIQuotaPreference's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the APIQuotaPreference resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    APIQuotaPreference's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the APIQuotaPreference resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *ApiquotapreferenceObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *ApiquotapreferenceObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpapiquotapreference;gcpapiquotapreferences
@@ -179,22 +179,20 @@ type APIQuotaPreferenceStatus struct {
 // APIQuotaPreference is the Schema for the cloudquota API
 // +k8s:openapi-gen=true
 type APIQuotaPreference struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   APIQuotaPreferenceSpec   `json:"spec,omitempty"`
-	Status APIQuotaPreferenceStatus `json:"status,omitempty"`
+  Spec APIQuotaPreferenceSpec `json:"spec,omitempty"`
+  Status APIQuotaPreferenceStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// APIQuotaPreferenceList contains a list of APIQuotaPreference
-type APIQuotaPreferenceList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []APIQuotaPreference `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&APIQuotaPreference{}, &APIQuotaPreferenceList{})
-}
+ // APIQuotaPreferenceList contains a list of APIQuotaPreference
+ type APIQuotaPreferenceList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []APIQuotaPreference `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&APIQuotaPreference{}, &APIQuotaPreferenceList{})
+ }

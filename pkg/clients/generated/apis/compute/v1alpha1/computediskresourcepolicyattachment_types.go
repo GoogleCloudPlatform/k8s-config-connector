@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,38 +30,37 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ComputeDiskResourcePolicyAttachmentSpec struct {
-	DiskRef v1alpha1.ResourceRef `json:"diskRef"`
+DiskRef v1alpha1.ResourceRef `json:"diskRef"`
 
-	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. A reference to the zone where the disk resides. */
-	Zone string `json:"zone"`
+/* Immutable. A reference to the zone where the disk resides. */
+Zone string `json:"zone"`
 }
 
 type ComputeDiskResourcePolicyAttachmentStatus struct {
 	/* Conditions represent the latest available observations of the
-	   ComputeDiskResourcePolicyAttachment's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	    ComputeDiskResourcePolicyAttachment's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputediskresourcepolicyattachment;gcpcomputediskresourcepolicyattachments
@@ -77,22 +77,20 @@ type ComputeDiskResourcePolicyAttachmentStatus struct {
 // ComputeDiskResourcePolicyAttachment is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeDiskResourcePolicyAttachment struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ComputeDiskResourcePolicyAttachmentSpec   `json:"spec,omitempty"`
-	Status ComputeDiskResourcePolicyAttachmentStatus `json:"status,omitempty"`
+  Spec ComputeDiskResourcePolicyAttachmentSpec `json:"spec,omitempty"`
+  Status ComputeDiskResourcePolicyAttachmentStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// ComputeDiskResourcePolicyAttachmentList contains a list of ComputeDiskResourcePolicyAttachment
-type ComputeDiskResourcePolicyAttachmentList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ComputeDiskResourcePolicyAttachment `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&ComputeDiskResourcePolicyAttachment{}, &ComputeDiskResourcePolicyAttachmentList{})
-}
+ // ComputeDiskResourcePolicyAttachmentList contains a list of ComputeDiskResourcePolicyAttachment
+ type ComputeDiskResourcePolicyAttachmentList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []ComputeDiskResourcePolicyAttachment `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&ComputeDiskResourcePolicyAttachment{}, &ComputeDiskResourcePolicyAttachmentList{})
+ }

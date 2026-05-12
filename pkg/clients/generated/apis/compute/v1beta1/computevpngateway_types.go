@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,69 +30,68 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type VpngatewayVpnInterfaces struct {
-	/* Immutable. The numeric ID of this VPN gateway interface. */
-	// +optional
-	Id *int64 `json:"id,omitempty"`
+/* Immutable. The numeric ID of this VPN gateway interface. */
+// +optional
+Id *int64 `json:"id,omitempty"`
 
 	/* Immutable. When this value is present, the VPN Gateway will be used
 	for IPsec-encrypted Cloud Interconnect; all Egress or Ingress
 	traffic for this VPN Gateway interface will go through the specified
 	interconnect attachment resource. Not currently available publicly. */
-	// +optional
-	InterconnectAttachmentRef *v1alpha1.ResourceRef `json:"interconnectAttachmentRef,omitempty"`
+// +optional
+InterconnectAttachmentRef *v1alpha1.ResourceRef `json:"interconnectAttachmentRef,omitempty"`
 
-	/* The external IP address for this VPN gateway interface. */
-	// +optional
-	IpAddress *string `json:"ipAddress,omitempty"`
+/* The external IP address for this VPN gateway interface. */
+// +optional
+IpAddress *string `json:"ipAddress,omitempty"`
 }
 
 type ComputeVPNGatewaySpec struct {
-	/* Immutable. An optional description of this resource. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* Immutable. An optional description of this resource. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* The network this VPN gateway is accepting traffic for. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+/* The network this VPN gateway is accepting traffic for. */
+NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
 
-	/* Immutable. The region this gateway should sit in. */
-	Region string `json:"region"`
+/* Immutable. The region this gateway should sit in. */
+Region string `json:"region"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Immutable. The stack type for this VPN gateway to identify the IP protocols that are enabled.
 	If not specified, IPV4_ONLY will be used. Default value: "IPV4_ONLY" Possible values: ["IPV4_ONLY", "IPV4_IPV6"]. */
-	// +optional
-	StackType *string `json:"stackType,omitempty"`
+// +optional
+StackType *string `json:"stackType,omitempty"`
 
-	/* Immutable. A list of interfaces on this VPN gateway. */
-	// +optional
-	VpnInterfaces []VpngatewayVpnInterfaces `json:"vpnInterfaces,omitempty"`
+/* Immutable. A list of interfaces on this VPN gateway. */
+// +optional
+VpnInterfaces []VpngatewayVpnInterfaces `json:"vpnInterfaces,omitempty"`
 }
 
 type ComputeVPNGatewayStatus struct {
 	/* Conditions represent the latest available observations of the
-	   ComputeVPNGateway's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	    ComputeVPNGateway's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// +optional
-	SelfLink *string `json:"selfLink,omitempty"`
+// +optional
+SelfLink *string `json:"selfLink,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputevpngateway;gcpcomputevpngateways
@@ -108,22 +108,20 @@ type ComputeVPNGatewayStatus struct {
 // ComputeVPNGateway is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeVPNGateway struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ComputeVPNGatewaySpec   `json:"spec,omitempty"`
-	Status ComputeVPNGatewayStatus `json:"status,omitempty"`
+  Spec ComputeVPNGatewaySpec `json:"spec,omitempty"`
+  Status ComputeVPNGatewayStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// ComputeVPNGatewayList contains a list of ComputeVPNGateway
-type ComputeVPNGatewayList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ComputeVPNGateway `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&ComputeVPNGateway{}, &ComputeVPNGatewayList{})
-}
+ // ComputeVPNGatewayList contains a list of ComputeVPNGateway
+ type ComputeVPNGatewayList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []ComputeVPNGateway `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&ComputeVPNGateway{}, &ComputeVPNGatewayList{})
+ }

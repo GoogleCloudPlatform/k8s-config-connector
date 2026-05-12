@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,52 +30,51 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type IAMCustomRoleSpec struct {
-	/* A human-readable description for the role. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* A human-readable description for the role. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* The names of the permissions this role grants when bound in an IAM policy. At least one permission must be specified. */
-	Permissions []string `json:"permissions"`
+/* The names of the permissions this role grants when bound in an IAM policy. At least one permission must be specified. */
+Permissions []string `json:"permissions"`
 
-	/* Immutable. Optional. The roleId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The roleId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* The current launch stage of the role. Defaults to GA. */
-	// +optional
-	Stage *string `json:"stage,omitempty"`
+/* The current launch stage of the role. Defaults to GA. */
+// +optional
+Stage *string `json:"stage,omitempty"`
 
-	/* A human-readable title for the role. */
-	Title string `json:"title"`
+/* A human-readable title for the role. */
+Title string `json:"title"`
 }
 
 type IAMCustomRoleStatus struct {
 	/* Conditions represent the latest available observations of the
-	   IAMCustomRole's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The current deleted state of the role. */
-	// +optional
-	Deleted *bool `json:"deleted,omitempty"`
+	    IAMCustomRole's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* The current deleted state of the role. */
+// +optional
+Deleted *bool `json:"deleted,omitempty"`
 
-	/* The full name of the role. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+/* The full name of the role. */
+// +optional
+Name *string `json:"name,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpiamcustomrole;gcpiamcustomroles
@@ -91,22 +91,20 @@ type IAMCustomRoleStatus struct {
 // IAMCustomRole is the Schema for the iam API
 // +k8s:openapi-gen=true
 type IAMCustomRole struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   IAMCustomRoleSpec   `json:"spec,omitempty"`
-	Status IAMCustomRoleStatus `json:"status,omitempty"`
+  Spec IAMCustomRoleSpec `json:"spec,omitempty"`
+  Status IAMCustomRoleStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// IAMCustomRoleList contains a list of IAMCustomRole
-type IAMCustomRoleList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []IAMCustomRole `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&IAMCustomRole{}, &IAMCustomRoleList{})
-}
+ // IAMCustomRoleList contains a list of IAMCustomRole
+ type IAMCustomRoleList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []IAMCustomRole `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&IAMCustomRole{}, &IAMCustomRoleList{})
+ }

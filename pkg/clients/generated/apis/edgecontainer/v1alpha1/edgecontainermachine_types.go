@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,83 +30,82 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type EdgeContainerMachineSpec struct {
-	/* Labels associated with this resource. */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
+/* Labels associated with this resource. */
+// +optional
+Labels map[string]string `json:"labels,omitempty"`
 
-	/* Required. The location of the machine. */
-	// +optional
-	Location *string `json:"location,omitempty"`
+/* Required. The location of the machine. */
+// +optional
+Location *string `json:"location,omitempty"`
 
-	/* Required. The host project of the machine. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+/* Required. The host project of the machine. */
+// +optional
+ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/* The EdgeContainerMachine name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The EdgeContainerMachine name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* The Google Distributed Cloud Edge zone of this machine. */
-	// +optional
-	Zone *string `json:"zone,omitempty"`
+/* The Google Distributed Cloud Edge zone of this machine. */
+// +optional
+Zone *string `json:"zone,omitempty"`
 }
 
 type MachineObservedStateStatus struct {
-	/* Output only. The time when the node pool was created. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. The time when the node pool was created. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. Whether the machine is disabled. If disabled, the machine is unable to enter service. */
-	// +optional
-	Disabled *bool `json:"disabled,omitempty"`
+/* Output only. Whether the machine is disabled. If disabled, the machine is unable to enter service. */
+// +optional
+Disabled *bool `json:"disabled,omitempty"`
 
 	/* Canonical resource name of the node that this machine is responsible for
 	hosting e.g.
 	projects/{project}/locations/{location}/clusters/{cluster_id}/nodePools/{pool_id}/{node},
 	Or empty if the machine is not assigned to assume the role of a node.
-
+	
 	For control plane nodes hosted on edge machines, this will return
 	the following format:
 	"projects/{project}/locations/{location}/clusters/{cluster_id}/controlPlaneNodes/{node}". */
-	// +optional
-	HostedNode *string `json:"hostedNode,omitempty"`
+// +optional
+HostedNode *string `json:"hostedNode,omitempty"`
 
-	/* Output only. The time when the node pool was last updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. The time when the node pool was last updated. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 
-	/* Output only. The software version of the machine. */
-	// +optional
-	Version *string `json:"version,omitempty"`
+/* Output only. The software version of the machine. */
+// +optional
+Version *string `json:"version,omitempty"`
 }
 
 type EdgeContainerMachineStatus struct {
 	/* Conditions represent the latest available observations of the
-	   EdgeContainerMachine's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the EdgeContainerMachine resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    EdgeContainerMachine's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the EdgeContainerMachine resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *MachineObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *MachineObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpedgecontainermachine;gcpedgecontainermachines
@@ -120,22 +120,20 @@ type EdgeContainerMachineStatus struct {
 // EdgeContainerMachine is the Schema for the edgecontainer API
 // +k8s:openapi-gen=true
 type EdgeContainerMachine struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   EdgeContainerMachineSpec   `json:"spec,omitempty"`
-	Status EdgeContainerMachineStatus `json:"status,omitempty"`
+  Spec EdgeContainerMachineSpec `json:"spec,omitempty"`
+  Status EdgeContainerMachineStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// EdgeContainerMachineList contains a list of EdgeContainerMachine
-type EdgeContainerMachineList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []EdgeContainerMachine `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&EdgeContainerMachine{}, &EdgeContainerMachineList{})
-}
+ // EdgeContainerMachineList contains a list of EdgeContainerMachine
+ type EdgeContainerMachineList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []EdgeContainerMachine `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&EdgeContainerMachine{}, &EdgeContainerMachineList{})
+ }
