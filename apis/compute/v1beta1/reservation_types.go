@@ -41,7 +41,7 @@ type ComputeReservationSpec struct {
 	// +kcc:proto:field=google.cloud.compute.v1.Reservation.specific_reservation_required
 	SpecificReservationRequired *bool `json:"specificReservationRequired,omitempty"`
 
-	// Immutable. The share setting for this reservation.
+	// The share setting for this reservation.
 	// +kcc:proto:field=google.cloud.compute.v1.Reservation.share_settings
 	ShareSettings *ReservationShareSettings `json:"shareSettings,omitempty"`
 
@@ -123,11 +123,12 @@ type ReservationShareSettings struct {
 }
 
 type ReservationProjectMap struct {
-	// The key of this project config in the parent map.
-	IdRef *refsv1beta1.ProjectRef `json:"idRef,omitempty"`
+	// The project that this reservation is shared with.
+	KeyRef *refsv1beta1.ProjectRef `json:"keyRef,omitempty"`
 
-	// The project id/number should be the same as the key of this project config in the project map.
-	ProjectIdRef *refsv1beta1.ProjectRef `json:"projectIdRef,omitempty"`
+	// The project ID, should be same as the key of this project config in the parent map.
+	// +kcc:proto:field=google.cloud.compute.v1.ShareSettingsProjectConfig.project_id
+	ProjectIDRef *refsv1beta1.ProjectRef `json:"projectIDRef,omitempty"`
 }
 
 // ComputeReservationStatus defines the config connector machine state of ComputeReservation

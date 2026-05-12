@@ -17,6 +17,7 @@ package compute
 import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -443,6 +444,18 @@ func ReservationShareSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *p
 	}
 	out := &krm.ReservationShareSettings{}
 	out.ShareType = in.ShareType
+	if in.ProjectMap != nil {
+		for k, v := range in.ProjectMap {
+			out.ProjectMap = append(out.ProjectMap, krm.ReservationProjectMap{
+				KeyRef: &refsv1beta1.ProjectRef{
+					External: k,
+				},
+				ProjectIDRef: &refsv1beta1.ProjectRef{
+					External: v.GetProjectId(),
+				},
+			})
+		}
+	}
 	return out
 }
 
@@ -452,5 +465,23 @@ func ReservationShareSettings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 	}
 	out := &pb.ShareSettings{}
 	out.ShareType = in.ShareType
+	if in.ProjectMap != nil {
+		out.ProjectMap = make(map[string]*pb.ShareSettingsProjectConfig)
+		for _, entry := range in.ProjectMap {
+			var key string
+			if entry.KeyRef != nil {
+				key = entry.KeyRef.External
+			}
+			if key == "" {
+				mapCtx.Errorf("project keyRef.external was not pre-resolved")
+				continue
+			}
+			projectConfig := &pb.ShareSettingsProjectConfig{}
+			if entry.ProjectIDRef != nil {
+				projectConfig.ProjectId = &entry.ProjectIDRef.External
+			}
+			out.ProjectMap[key] = projectConfig
+		}
+	}
 	return out
 }

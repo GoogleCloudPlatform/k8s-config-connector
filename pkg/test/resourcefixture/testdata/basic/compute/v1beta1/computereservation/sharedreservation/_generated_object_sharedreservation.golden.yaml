@@ -17,9 +17,9 @@ spec:
   resourceID: ${reservationID}
   shareSettings:
     projectMap:
-    - idRef:
+    - keyRef:
         external: ${projectId}
-      projectIdRef:
+      projectIDRef:
         external: ${projectId}
     shareType: SPECIFIC_PROJECTS
   specificReservation:

@@ -72,16 +72,16 @@ spec:
                   is used as the default.
                 type: string
               shareSettings:
-                description: Immutable. The share setting for this reservation.
+                description: The share setting for this reservation.
                 properties:
                   projectMap:
                     description: A map of project id and project config. This is only
                       valid when shareType's value is SPECIFIC_PROJECTS.
                     items:
                       properties:
-                        idRef:
-                          description: The key of this project config in the parent
-                            map.
+                        keyRef:
+                          description: The project that this reservation is shared
+                            with.
                           oneOf:
                           - not:
                               required:
@@ -112,9 +112,9 @@ spec:
                               description: The `namespace` field of a `Project` resource.
                               type: string
                           type: object
-                        projectIdRef:
-                          description: The project id/number should be the same as
-                            the key of this project config in the project map.
+                        projectIDRef:
+                          description: The project ID, should be same as the key of
+                            this project config in the parent map.
                           oneOf:
                           - not:
                               required:
