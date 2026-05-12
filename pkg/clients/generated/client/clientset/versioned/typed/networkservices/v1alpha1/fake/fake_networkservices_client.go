@@ -47,6 +47,10 @@ func (c *FakeNetworkservicesV1alpha1) NetworkServicesLBRouteExtensions(namespace
 	return newFakeNetworkServicesLBRouteExtensions(c, namespace)
 }
 
+func (c *FakeNetworkservicesV1alpha1) NetworkServicesLBRouteExtensions(namespace string) v1alpha1.NetworkServicesLBRouteExtensionInterface {
+	return &FakeNetworkServicesLBRouteExtensions{c, namespace}
+}
+
 func (c *FakeNetworkservicesV1alpha1) NetworkServicesServiceBindings(namespace string) v1alpha1.NetworkServicesServiceBindingInterface {
 	return newFakeNetworkServicesServiceBindings(c, namespace)
 }
