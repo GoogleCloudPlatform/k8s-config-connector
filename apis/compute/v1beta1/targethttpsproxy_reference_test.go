@@ -23,31 +23,31 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
-func TestComputeSSLCertificateRef_ValidateExternal(t *testing.T) {
+func TestComputeTargetHTTPSProxyRef_ValidateExternal(t *testing.T) {
 	tests := []struct {
 		name    string
 		ref     string
 		wantErr bool
 	}{
 		{
-			name:    "valid external reference (projects/)",
-			ref:     "projects/my-project/global/sslCertificates/my-cert",
+			name:    "valid global external reference",
+			ref:     "projects/my-project/global/targetHttpsProxies/my-proxy",
 			wantErr: false,
 		},
 		{
-			name:    "valid external reference (https://)",
-			ref:     "https://www.googleapis.com/compute/v1/projects/my-project/global/sslCertificates/my-cert",
+			name:    "valid regional external reference",
+			ref:     "projects/my-project/regions/us-central1/targetHttpsProxies/my-proxy",
 			wantErr: false,
 		},
 		{
 			name:    "invalid external reference",
-			ref:     "my-cert",
+			ref:     "my-proxy",
 			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			r := &ComputeSSLCertificateRef{}
+			r := &ComputeTargetHTTPSProxyRef{}
 			if err := r.ValidateExternal(tt.ref); (err != nil) != tt.wantErr {
 				t.Errorf("ValidateExternal() error = %v, wantErr %v", err, tt.wantErr)
 			}
@@ -55,53 +55,65 @@ func TestComputeSSLCertificateRef_ValidateExternal(t *testing.T) {
 	}
 }
 
-func TestComputeSSLCertificateRef_Normalize(t *testing.T) {
+func TestComputeTargetHTTPSProxyRef_Normalize(t *testing.T) {
 	s := runtime.NewScheme()
 	_ = AddToScheme(s)
 
-	cert := &unstructured.Unstructured{}
-	cert.SetGroupVersionKind(ComputeSSLCertificateGVK)
-	cert.SetName("my-cert")
-	cert.SetNamespace("my-ns")
-	cert.Object["status"] = map[string]interface{}{
-		"selfLink": "https://www.googleapis.com/compute/v1/projects/my-project/global/sslCertificates/my-cert",
+	proxy := &unstructured.Unstructured{}
+	proxy.SetGroupVersionKind(ComputeTargetHTTPSProxyGVK)
+	proxy.SetName("my-proxy")
+	proxy.SetNamespace("my-ns")
+	proxy.Object["spec"] = map[string]interface{}{
+		"resourceID": "my-proxy-id",
+		"location":   "global",
+	}
+	policy := &unstructured.Unstructured{}
+	policy.SetGroupVersionKind(ComputeTargetHTTPSProxyGVK)
+	policy.SetName("my-proxy")
+	policy.SetNamespace("my-ns")
+	policy.SetAnnotations(map[string]string{
+		"cnrm.cloud.google.com/project-id": "my-project",
+	})
+	policy.Object["spec"] = map[string]interface{}{
+		"resourceID": "my-proxy-id",
+		"location":   "global",
 	}
 
-	reader := fake.NewClientBuilder().WithScheme(s).WithObjects(cert).Build()
+	reader := fake.NewClientBuilder().WithScheme(s).WithObjects(policy).Build()
 
 	tests := []struct {
 		name             string
-		ref              *ComputeSSLCertificateRef
+		ref              *ComputeTargetHTTPSProxyRef
 		defaultNamespace string
 		want             string
 		wantErr          bool
 	}{
 		{
 			name: "external reference",
-			ref: &ComputeSSLCertificateRef{
-				External: "projects/my-project/global/sslCertificates/my-cert",
+			ref: &ComputeTargetHTTPSProxyRef{
+				External: "projects/my-project/global/targetHttpsProxies/my-proxy",
 			},
-			want: "projects/my-project/global/sslCertificates/my-cert",
+			want: "projects/my-project/global/targetHttpsProxies/my-proxy",
 		},
 		{
 			name: "internal reference",
-			ref: &ComputeSSLCertificateRef{
-				Name:      "my-cert",
+			ref: &ComputeTargetHTTPSProxyRef{
+				Name:      "my-proxy",
 				Namespace: "my-ns",
 			},
-			want: "https://www.googleapis.com/compute/v1/projects/my-project/global/sslCertificates/my-cert",
+			want: "projects/my-project/global/targetHttpsProxies/my-proxy-id",
 		},
 		{
 			name: "internal reference with default namespace",
-			ref: &ComputeSSLCertificateRef{
-				Name: "my-cert",
+			ref: &ComputeTargetHTTPSProxyRef{
+				Name: "my-proxy",
 			},
 			defaultNamespace: "my-ns",
-			want:             "https://www.googleapis.com/compute/v1/projects/my-project/global/sslCertificates/my-cert",
+			want:             "projects/my-project/global/targetHttpsProxies/my-proxy-id",
 		},
 		{
 			name: "internal reference not found",
-			ref: &ComputeSSLCertificateRef{
+			ref: &ComputeTargetHTTPSProxyRef{
 				Name:      "non-existent",
 				Namespace: "my-ns",
 			},

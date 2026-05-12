@@ -38,13 +38,13 @@ var CertificateManagerCertificateGVK = schema.GroupVersionKind{
 
 // A reference to a CertificateManagerCertificate resource.
 type CertificateManagerCertificateRef struct {
-	// Allowed value: The format `//certificatemanager.googleapis.com/projects/{{project}}/locations/{{location}}/certificates/{{name}}`.
+	// Allowed value: The format `projects/{{project}}/locations/{{location}}/certificates/{{name}}` or `//certificatemanager.googleapis.com/projects/{{project}}/locations/{{location}}/certificates/{{name}}`.
 	External string `json:"external,omitempty"`
 
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+	// The name of a CertificateManagerCertificate resource.
 	Name string `json:"name,omitempty"`
 
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+	// The namespace of a CertificateManagerCertificate resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
@@ -68,8 +68,8 @@ func (r *CertificateManagerCertificateRef) SetExternal(ref string) {
 }
 
 func (r *CertificateManagerCertificateRef) ValidateExternal(ref string) error {
-	if !strings.HasPrefix(ref, "//certificatemanager.googleapis.com/projects/") {
-		return fmt.Errorf("external reference format %q is not known; expected //certificatemanager.googleapis.com/projects/<project>/locations/<location>/certificates/<name>", ref)
+	if !strings.HasPrefix(ref, "projects/") && !strings.HasPrefix(ref, "//certificatemanager.googleapis.com/projects/") {
+		return fmt.Errorf("external reference format %q is not known; expected projects/<project>/locations/<location>/certificates/<name> or //certificatemanager.googleapis.com/projects/<project>/locations/<location>/certificates/<name>", ref)
 	}
 	return nil
 }
@@ -124,5 +124,5 @@ func certificateLegacyExternalRef(ctx context.Context, reader client.Reader, u *
 		return "", err
 	}
 
-	return fmt.Sprintf("//certificatemanager.googleapis.com/projects/%s/locations/%s/certificates/%s", projectID, location, resourceID), nil
+	return fmt.Sprintf("projects/%s/locations/%s/certificates/%s", projectID, location, resourceID), nil
 }

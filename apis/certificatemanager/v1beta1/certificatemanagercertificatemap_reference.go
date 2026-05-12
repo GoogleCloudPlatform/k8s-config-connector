@@ -41,10 +41,10 @@ type CertificateManagerCertificateMapRef struct {
 	// Allowed value: string of the format `//certificatemanager.googleapis.com/projects/{{project}}/locations/global/certificateMaps/{{value}}`, where {{value}} is the `name` field of a `CertificateManagerCertificateMap` resource.
 	External string `json:"external,omitempty"`
 
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+	// The name of a CertificateManagerCertificateMap resource.
 	Name string `json:"name,omitempty"`
 
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+	// The namespace of a CertificateManagerCertificateMap resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

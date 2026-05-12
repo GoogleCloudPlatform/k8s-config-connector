@@ -41,10 +41,10 @@ type ComputeURLMapRef struct {
 	// Allowed value: The `selfLink` field of a `ComputeURLMap` resource.
 	External string `json:"external,omitempty"`
 
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+	// The name of a ComputeURLMap resource.
 	Name string `json:"name,omitempty"`
 
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+	// The namespace of a ComputeURLMap resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

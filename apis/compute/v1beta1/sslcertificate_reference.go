@@ -41,10 +41,10 @@ type ComputeSSLCertificateRef struct {
 	// Allowed value: string of the format `projects/{{project}}/global/sslCertificates/{{value}}` or `projects/{{project}}/regions/{{region}}/sslCertificates/{{value}}`, where {{value}} is the `name` field of a `ComputeSSLCertificate` resource.
 	External string `json:"external,omitempty"`
 
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+	// The name of a ComputeSSLCertificate resource.
 	Name string `json:"name,omitempty"`
 
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+	// The namespace of a ComputeSSLCertificate resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

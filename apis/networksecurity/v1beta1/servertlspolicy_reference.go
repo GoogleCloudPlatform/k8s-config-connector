@@ -41,10 +41,10 @@ type NetworkSecurityServerTLSPolicyRef struct {
 	// Allowed value: string of the format `projects/{{project}}/locations/{{location}}/serverTlsPolicies/{{value}}`, where {{value}} is the `name` field of a `NetworkSecurityServerTLSPolicy` resource.
 	External string `json:"external,omitempty"`
 
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+	// The name of a NetworkSecurityServerTLSPolicy resource.
 	Name string `json:"name,omitempty"`
 
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+	// The namespace of a NetworkSecurityServerTLSPolicy resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

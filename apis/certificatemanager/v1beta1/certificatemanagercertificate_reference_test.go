@@ -31,12 +31,17 @@ func TestCertificateManagerCertificateRef_ValidateExternal(t *testing.T) {
 	}{
 		{
 			name:    "valid external reference",
+			ref:     "projects/my-project/locations/global/certificates/my-cert",
+			wantErr: false,
+		},
+		{
+			name:    "valid external reference with domain prefix",
 			ref:     "//certificatemanager.googleapis.com/projects/my-project/locations/global/certificates/my-cert",
 			wantErr: false,
 		},
 		{
 			name:    "invalid external reference",
-			ref:     "projects/my-project/locations/global/certificates/my-cert",
+			ref:     "https://www.googleapis.com/projects/my-project/locations/global/certificates/my-cert",
 			wantErr: true,
 		},
 	}
@@ -78,9 +83,9 @@ func TestCertificateManagerCertificateRef_Normalize(t *testing.T) {
 		{
 			name: "external reference",
 			ref: &CertificateManagerCertificateRef{
-				External: "//certificatemanager.googleapis.com/projects/my-project/locations/global/certificates/my-cert",
+				External: "projects/my-project/locations/global/certificates/my-cert",
 			},
-			want: "//certificatemanager.googleapis.com/projects/my-project/locations/global/certificates/my-cert",
+			want: "projects/my-project/locations/global/certificates/my-cert",
 		},
 		{
 			name: "internal reference",
@@ -88,7 +93,7 @@ func TestCertificateManagerCertificateRef_Normalize(t *testing.T) {
 				Name:      "my-cert",
 				Namespace: "my-ns",
 			},
-			want: "//certificatemanager.googleapis.com/projects/my-project/locations/global/certificates/my-cert-id",
+			want: "projects/my-project/locations/global/certificates/my-cert-id",
 		},
 		{
 			name: "internal reference with default namespace",
@@ -96,7 +101,15 @@ func TestCertificateManagerCertificateRef_Normalize(t *testing.T) {
 				Name: "my-cert",
 			},
 			defaultNamespace: "my-ns",
-			want:             "//certificatemanager.googleapis.com/projects/my-project/locations/global/certificates/my-cert-id",
+			want:             "projects/my-project/locations/global/certificates/my-cert-id",
+		},
+		{
+			name: "internal reference not found",
+			ref: &CertificateManagerCertificateRef{
+				Name:      "non-existent",
+				Namespace: "my-ns",
+			},
+			wantErr: true,
 		},
 	}
 	for _, tt := range tests {

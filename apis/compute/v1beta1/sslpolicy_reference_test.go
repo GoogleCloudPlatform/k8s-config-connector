@@ -23,31 +23,21 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
-func TestComputeSSLCertificateRef_ValidateExternal(t *testing.T) {
+func TestComputeSSLPolicyRef_ValidateExternal(t *testing.T) {
 	tests := []struct {
 		name    string
 		ref     string
 		wantErr bool
 	}{
 		{
-			name:    "valid external reference (projects/)",
-			ref:     "projects/my-project/global/sslCertificates/my-cert",
+			name:    "valid external reference",
+			ref:     "projects/my-project/global/sslPolicies/my-policy",
 			wantErr: false,
-		},
-		{
-			name:    "valid external reference (https://)",
-			ref:     "https://www.googleapis.com/compute/v1/projects/my-project/global/sslCertificates/my-cert",
-			wantErr: false,
-		},
-		{
-			name:    "invalid external reference",
-			ref:     "my-cert",
-			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			r := &ComputeSSLCertificateRef{}
+			r := &ComputeSSLPolicyRef{}
 			if err := r.ValidateExternal(tt.ref); (err != nil) != tt.wantErr {
 				t.Errorf("ValidateExternal() error = %v, wantErr %v", err, tt.wantErr)
 			}
@@ -55,53 +45,53 @@ func TestComputeSSLCertificateRef_ValidateExternal(t *testing.T) {
 	}
 }
 
-func TestComputeSSLCertificateRef_Normalize(t *testing.T) {
+func TestComputeSSLPolicyRef_Normalize(t *testing.T) {
 	s := runtime.NewScheme()
 	_ = AddToScheme(s)
 
-	cert := &unstructured.Unstructured{}
-	cert.SetGroupVersionKind(ComputeSSLCertificateGVK)
-	cert.SetName("my-cert")
-	cert.SetNamespace("my-ns")
-	cert.Object["status"] = map[string]interface{}{
-		"selfLink": "https://www.googleapis.com/compute/v1/projects/my-project/global/sslCertificates/my-cert",
+	policy := &unstructured.Unstructured{}
+	policy.SetGroupVersionKind(ComputeSSLPolicyGVK)
+	policy.SetName("my-policy")
+	policy.SetNamespace("my-ns")
+	policy.Object["status"] = map[string]interface{}{
+		"selfLink": "https://www.googleapis.com/compute/v1/projects/my-project/global/sslPolicies/my-policy",
 	}
 
-	reader := fake.NewClientBuilder().WithScheme(s).WithObjects(cert).Build()
+	reader := fake.NewClientBuilder().WithScheme(s).WithObjects(policy).Build()
 
 	tests := []struct {
 		name             string
-		ref              *ComputeSSLCertificateRef
+		ref              *ComputeSSLPolicyRef
 		defaultNamespace string
 		want             string
 		wantErr          bool
 	}{
 		{
 			name: "external reference",
-			ref: &ComputeSSLCertificateRef{
-				External: "projects/my-project/global/sslCertificates/my-cert",
+			ref: &ComputeSSLPolicyRef{
+				External: "projects/my-project/global/sslPolicies/my-policy",
 			},
-			want: "projects/my-project/global/sslCertificates/my-cert",
+			want: "projects/my-project/global/sslPolicies/my-policy",
 		},
 		{
 			name: "internal reference",
-			ref: &ComputeSSLCertificateRef{
-				Name:      "my-cert",
+			ref: &ComputeSSLPolicyRef{
+				Name:      "my-policy",
 				Namespace: "my-ns",
 			},
-			want: "https://www.googleapis.com/compute/v1/projects/my-project/global/sslCertificates/my-cert",
+			want: "https://www.googleapis.com/compute/v1/projects/my-project/global/sslPolicies/my-policy",
 		},
 		{
 			name: "internal reference with default namespace",
-			ref: &ComputeSSLCertificateRef{
-				Name: "my-cert",
+			ref: &ComputeSSLPolicyRef{
+				Name: "my-policy",
 			},
 			defaultNamespace: "my-ns",
-			want:             "https://www.googleapis.com/compute/v1/projects/my-project/global/sslCertificates/my-cert",
+			want:             "https://www.googleapis.com/compute/v1/projects/my-project/global/sslPolicies/my-policy",
 		},
 		{
 			name: "internal reference not found",
-			ref: &ComputeSSLCertificateRef{
+			ref: &ComputeSSLPolicyRef{
 				Name:      "non-existent",
 				Namespace: "my-ns",
 			},

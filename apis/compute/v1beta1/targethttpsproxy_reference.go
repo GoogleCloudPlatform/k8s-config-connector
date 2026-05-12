@@ -18,6 +18,7 @@ import (
 	"context"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -29,10 +30,10 @@ type ComputeTargetHTTPSProxyRef struct {
 	// Allowed value: string of the format `projects/{{project}}/global/targetHttpsProxies/{{value}}` or `projects/{{project}}/regions/{{region}}/targetHttpsProxies/{{value}}`, where {{value}} is the `name` field of a `ComputeTargetHTTPSProxy` resource.
 	External string `json:"external,omitempty"`
 
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+	// The name of a ComputeTargetHTTPSProxy resource.
 	Name string `json:"name,omitempty"`
 
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+	// The namespace of a ComputeTargetHTTPSProxy resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
@@ -64,5 +65,12 @@ func (r *ComputeTargetHTTPSProxyRef) ValidateExternal(ref string) error {
 }
 
 func (r *ComputeTargetHTTPSProxyRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
+	fallback := func(u *unstructured.Unstructured) string {
+		identity, err := getIdentityFromComputeTargetHTTPSProxySpec(ctx, reader, u)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
+	}
+	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

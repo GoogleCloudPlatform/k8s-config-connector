@@ -40,10 +40,10 @@ type ComputeSSLPolicyRef struct {
 	// Allowed value: The `selfLink` field of a `ComputeSSLPolicy` resource.
 	External string `json:"external,omitempty"`
 
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+	// The name of a ComputeSSLPolicy resource.
 	Name string `json:"name,omitempty"`
 
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+	// The namespace of a ComputeSSLPolicy resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

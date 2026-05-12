@@ -57,7 +57,11 @@ func ComputeTargetHTTPSProxySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	for _, ref := range in.CertificateManagerCertificates {
 		// CertificateManagerCertificates are stored in the same SslCertificates field in the proto
 		// but they have a specific format.
-		out.SslCertificates = append(out.SslCertificates, ref.External)
+		external := ref.External
+		if !strings.HasPrefix(external, "//certificatemanager.googleapis.com/") {
+			external = "//certificatemanager.googleapis.com/" + external
+		}
+		out.SslCertificates = append(out.SslCertificates, external)
 	}
 
 	return out
@@ -94,8 +98,9 @@ func ComputeTargetHTTPSProxySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in
 		// based on the format.
 		// Classic: projects/{{project}}/global/sslCertificates/{{name}}
 		// CertManager: //certificatemanager.googleapis.com/projects/{{project}}/locations/{{location}}/certificates/{{name}}
-		if cert != "" && strings.HasPrefix(cert, "//certificatemanager.googleapis.com") {
-			out.CertificateManagerCertificates = append(out.CertificateManagerCertificates, certificatemanagerv1beta1.CertificateManagerCertificateRef{External: cert})
+		if cert != "" && strings.HasPrefix(cert, "//certificatemanager.googleapis.com/") {
+			external := strings.TrimPrefix(cert, "//certificatemanager.googleapis.com/")
+			out.CertificateManagerCertificates = append(out.CertificateManagerCertificates, certificatemanagerv1beta1.CertificateManagerCertificateRef{External: external})
 		} else {
 			out.SslCertificates = append(out.SslCertificates, krm.ComputeSSLCertificateRef{External: cert})
 		}

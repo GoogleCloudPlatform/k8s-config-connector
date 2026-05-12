@@ -23,7 +23,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
-func TestComputeSSLCertificateRef_ValidateExternal(t *testing.T) {
+func TestComputeURLMapRef_ValidateExternal(t *testing.T) {
 	tests := []struct {
 		name    string
 		ref     string
@@ -31,23 +31,23 @@ func TestComputeSSLCertificateRef_ValidateExternal(t *testing.T) {
 	}{
 		{
 			name:    "valid external reference (projects/)",
-			ref:     "projects/my-project/global/sslCertificates/my-cert",
+			ref:     "projects/my-project/global/urlMaps/my-urlmap",
 			wantErr: false,
 		},
 		{
 			name:    "valid external reference (https://)",
-			ref:     "https://www.googleapis.com/compute/v1/projects/my-project/global/sslCertificates/my-cert",
+			ref:     "https://www.googleapis.com/compute/v1/projects/my-project/global/urlMaps/my-urlmap",
 			wantErr: false,
 		},
 		{
 			name:    "invalid external reference",
-			ref:     "my-cert",
+			ref:     "my-urlmap",
 			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			r := &ComputeSSLCertificateRef{}
+			r := &ComputeURLMapRef{}
 			if err := r.ValidateExternal(tt.ref); (err != nil) != tt.wantErr {
 				t.Errorf("ValidateExternal() error = %v, wantErr %v", err, tt.wantErr)
 			}
@@ -55,53 +55,53 @@ func TestComputeSSLCertificateRef_ValidateExternal(t *testing.T) {
 	}
 }
 
-func TestComputeSSLCertificateRef_Normalize(t *testing.T) {
+func TestComputeURLMapRef_Normalize(t *testing.T) {
 	s := runtime.NewScheme()
 	_ = AddToScheme(s)
 
-	cert := &unstructured.Unstructured{}
-	cert.SetGroupVersionKind(ComputeSSLCertificateGVK)
-	cert.SetName("my-cert")
-	cert.SetNamespace("my-ns")
-	cert.Object["status"] = map[string]interface{}{
-		"selfLink": "https://www.googleapis.com/compute/v1/projects/my-project/global/sslCertificates/my-cert",
+	urlmap := &unstructured.Unstructured{}
+	urlmap.SetGroupVersionKind(ComputeURLMapGVK)
+	urlmap.SetName("my-urlmap")
+	urlmap.SetNamespace("my-ns")
+	urlmap.Object["status"] = map[string]interface{}{
+		"selfLink": "https://www.googleapis.com/compute/v1/projects/my-project/global/urlMaps/my-urlmap",
 	}
 
-	reader := fake.NewClientBuilder().WithScheme(s).WithObjects(cert).Build()
+	reader := fake.NewClientBuilder().WithScheme(s).WithObjects(urlmap).Build()
 
 	tests := []struct {
 		name             string
-		ref              *ComputeSSLCertificateRef
+		ref              *ComputeURLMapRef
 		defaultNamespace string
 		want             string
 		wantErr          bool
 	}{
 		{
 			name: "external reference",
-			ref: &ComputeSSLCertificateRef{
-				External: "projects/my-project/global/sslCertificates/my-cert",
+			ref: &ComputeURLMapRef{
+				External: "projects/my-project/global/urlMaps/my-urlmap",
 			},
-			want: "projects/my-project/global/sslCertificates/my-cert",
+			want: "projects/my-project/global/urlMaps/my-urlmap",
 		},
 		{
 			name: "internal reference",
-			ref: &ComputeSSLCertificateRef{
-				Name:      "my-cert",
+			ref: &ComputeURLMapRef{
+				Name:      "my-urlmap",
 				Namespace: "my-ns",
 			},
-			want: "https://www.googleapis.com/compute/v1/projects/my-project/global/sslCertificates/my-cert",
+			want: "https://www.googleapis.com/compute/v1/projects/my-project/global/urlMaps/my-urlmap",
 		},
 		{
 			name: "internal reference with default namespace",
-			ref: &ComputeSSLCertificateRef{
-				Name: "my-cert",
+			ref: &ComputeURLMapRef{
+				Name: "my-urlmap",
 			},
 			defaultNamespace: "my-ns",
-			want:             "https://www.googleapis.com/compute/v1/projects/my-project/global/sslCertificates/my-cert",
+			want:             "https://www.googleapis.com/compute/v1/projects/my-project/global/urlMaps/my-urlmap",
 		},
 		{
 			name: "internal reference not found",
-			ref: &ComputeSSLCertificateRef{
+			ref: &ComputeURLMapRef{
 				Name:      "non-existent",
 				Namespace: "my-ns",
 			},
