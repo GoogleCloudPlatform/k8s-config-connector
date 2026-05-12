@@ -67,8 +67,6 @@ type BigtableSchemaBundleStatus struct {
 type BigtableSchemaBundleObservedState struct {
 	// Optional. The etag for this schema bundle.
 	Etag *string `json:"etag,omitempty"`
-
-
 }
 
 // +genclient
