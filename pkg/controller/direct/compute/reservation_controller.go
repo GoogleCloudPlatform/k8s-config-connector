@@ -120,20 +120,11 @@ func (a *ReservationAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-func (a *ReservationAdapter) normalizeReferences(ctx context.Context) error {
-	// No explicit references in Spec that require fetching from cluster based on the Spec.
-	return nil
-}
-
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *ReservationAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Reservation", "name", a.id)
 	mapCtx := &direct.MapContext{}
-
-	if err := a.normalizeReferences(ctx); err != nil {
-		return err
-	}
 
 	desired := a.desired.DeepCopy()
 	resource := ComputeReservationSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
@@ -164,7 +155,7 @@ func (a *ReservationAdapter) Create(ctx context.Context, createOp *directbase.Cr
 		return fmt.Errorf("getting Reservation %s: %w", a.id, err)
 	}
 
-	status := a.statusFromProto(created)
+	status := ComputeReservationStatus_v1beta1_FromProto(mapCtx, created)
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
@@ -173,10 +164,6 @@ func (a *ReservationAdapter) Create(ctx context.Context, createOp *directbase.Cr
 func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Reservation", "name", a.id)
-
-	if err := a.normalizeReferences(ctx); err != nil {
-		return err
-	}
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
@@ -194,7 +181,7 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		if a.desired.Status.ExternalRef == nil {
-			status := a.statusFromProto(a.actual)
+			status := ComputeReservationStatus_v1beta1_FromProto(mapCtx, a.actual)
 			status.ExternalRef = direct.LazyPtr(a.id.String())
 			return updateOp.UpdateStatus(ctx, status, nil)
 		}
@@ -237,7 +224,7 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return fmt.Errorf("getting ComputeReservation %s: %w", a.id, err)
 	}
 
-	status := a.statusFromProto(updated)
+	status := ComputeReservationStatus_v1beta1_FromProto(mapCtx, updated)
 	if a.desired.Status.ExternalRef == nil {
 		status.ExternalRef = direct.LazyPtr(a.id.String())
 	}
@@ -307,21 +294,4 @@ func (a *ReservationAdapter) get(ctx context.Context) (*computepb.Reservation, e
 		return nil, fmt.Errorf("getting ComputeReservation %s: %w", a.id, err)
 	}
 	return resource, nil
-}
-
-func (a *ReservationAdapter) statusFromProto(in *computepb.Reservation) *krm.ComputeReservationStatus {
-	status := &krm.ComputeReservationStatus{}
-	if in.Commitment != nil {
-		status.Commitment = in.Commitment
-	}
-	if in.CreationTimestamp != nil {
-		status.CreationTimestamp = in.CreationTimestamp
-	}
-	if in.SelfLink != nil {
-		status.SelfLink = in.SelfLink
-	}
-	if in.Status != nil {
-		status.Status = in.Status
-	}
-	return status
 }
