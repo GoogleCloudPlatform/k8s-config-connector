@@ -1,5 +1,5 @@
 .PHONY: all
-all: tools generate-protos-from-openapi generate-grpc-for-google-protos gen-proto
+all: tools sync-repo generate-protos-from-openapi fixup-proto generate-grpc-for-google-protos gen-proto-no-fixup
 
 .PHONY: tools
 tools:
@@ -24,17 +24,18 @@ sync-repo:
 	@echo "Syncing to commit $(GOOGLEAPI_VERSION)...";
 	cd third_party/googleapis && (git cat-file -e $(GOOGLEAPI_VERSION)^{commit} 2> /dev/null || git fetch origin $(GOOGLEAPI_VERSION)) && git reset --hard $(GOOGLEAPI_VERSION) && git clean -df . && git status
 
-.PHONY: gen-proto
-gen-proto: tools sync-repo
-	mkdir -p ./generated
-
+.PHONY: fixup-proto
+fixup-proto:
 	./apply-proto-patches.sh
 	./fixup-third-party.sh
 
+.PHONY: gen-proto
+gen-proto: tools sync-repo generate-protos-from-openapi fixup-proto
 	make gen-proto-no-fixup
 
 .PHONY: gen-proto-no-fixup
 gen-proto-no-fixup:
+	mkdir -p ./generated
 	PATH=bin/:${PATH} bin/protoc/bin/protoc \
 		-I ./third_party/googleapis \
 		-I ./apis \
@@ -184,13 +185,7 @@ gen-proto-no-fixup:
 
 
 .PHONY: generate-grpc-for-google-protos
-generate-grpc-for-google-protos:
-	mkdir -p third_party
-	if [ ! -d "third_party/googleapis" ]; then \
-			echo "Cloning googleapis repository..."; \
-			git clone --depth 1 https://github.com/googleapis/googleapis.git third_party/googleapis; \
-	fi
-	cd third_party/googleapis && (git cat-file -e $(GOOGLEAPI_VERSION)^{commit} 2> /dev/null || git fetch origin $(GOOGLEAPI_VERSION)) && git reset --hard $(GOOGLEAPI_VERSION) && git clean -df . && git status
+generate-grpc-for-google-protos: fixup-proto
 	mkdir -p ./generated
 
 	PATH=bin/:${PATH} bin/protoc/bin/protoc \
@@ -201,23 +196,21 @@ generate-grpc-for-google-protos:
 		--grpc-gateway_opt logtostderr=true \
 		--grpc-gateway_opt paths=source_relative \
 		--grpc-gateway_opt standalone=true \
-		./third_party/googleapis/google/cloud/discoveryengine/v1/data_store_service.proto \
-		./third_party/googleapis/google/cloud/discoveryengine/v1/engine_service.proto \
-		./third_party/googleapis/google/bigtable/admin/v2/*.proto \
-		./third_party/googleapis/google/cloud/dataproc/v1/*.proto \
-		./third_party/googleapis/google/cloud/aiplatform/v1/model_garden_service.proto \
-		./third_party/googleapis/google/storage/control/v2/*.proto \
-		./third_party/googleapis/google/cloud/batch/v1/*.proto \
-		./third_party/googleapis/google/cloud/apigateway/v1/apigateway_service.proto \
-		./third_party/googleapis/google/cloud/networksecurity/v1beta1/*.proto \
-		./third_party/googleapis/google/cloud/networkservices/v1/*.proto \
-		./third_party/googleapis/google/cloud/dataplex/v1/*.proto \
-		./third_party/googleapis/google/cloud/clouddms/v1/*.proto \
-		./third_party/googleapis/google/cloud/notebooks/v1/*.proto \
-		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto \
-		./third_party/googleapis/google/iam/v2/*.proto \
-		./third_party/googleapis/google/logging/v2/*.proto \
-		./third_party/googleapis/google/analytics/admin/v1alpha/*.proto
+		./third_party/googleapis/mockgcp/cloud/discoveryengine/v1/data_store_service.proto \
+		./third_party/googleapis/mockgcp/cloud/discoveryengine/v1/engine_service.proto \
+		./third_party/googleapis/mockgcp/bigtable/admin/v2/*.proto \
+		./third_party/googleapis/mockgcp/cloud/dataproc/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1/model_garden_service.proto \
+		./third_party/googleapis/mockgcp/storage/control/v2/*.proto \
+		./third_party/googleapis/mockgcp/cloud/batch/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/apigateway/v1/apigateway_service.proto \
+		./third_party/googleapis/mockgcp/cloud/networksecurity/v1beta1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/networkservices/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/clouddms/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/notebooks/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/recaptchaenterprise/v1/*.proto \
+		./third_party/googleapis/mockgcp/iam/v2/*.proto \
+		./third_party/googleapis/mockgcp/logging/v2/*.proto
 
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:
@@ -247,10 +240,10 @@ generate-protos-from-openapi:
 	mkdir -p apis/mockgcp/cloud/ids/v1/
 	cd tools/gapic; go run . --proto-version=2 --proto-package mockgcp.cloud.ids.v1 ../../temp/ids-api-v1.json > ../../apis/mockgcp/cloud/ids/v1/service.proto
 
-
 	wget -O temp/apigee-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/refs/heads/main/apigee/v1/apigee-api.json
 	mkdir -p apis/mockgcp/cloud/apigee/v1/
 	cd tools/gapic; go run . --proto-package mockgcp.cloud.apigee.v1 ../../temp/apigee-v1.json > ../../apis/mockgcp/cloud/apigee/v1/service.proto
+	sed -i 's/post: \"\/v1\/{project=projects\/\*}\:provisionOrganization\"/post: \"\/v1\/{name=projects\/\*}\:provisionOrganization\"/' apis/mockgcp/cloud/apigee/v1/service.proto
 
 	wget -O temp/cloudidentity-api.json https://raw.githubusercontent.com/googleapis/google-api-go-client/refs/heads/main/cloudidentity/v1beta1/cloudidentity-api.json
 	mkdir -p apis/google/apps/cloudidentity/v1beta1/
