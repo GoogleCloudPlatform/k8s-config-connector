@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,65 +30,64 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type IAMServiceAccountKeySpec struct {
-	/* Immutable. The algorithm used to generate the key, used only on create. KEY_ALG_RSA_2048 is the default algorithm. Valid values are: "KEY_ALG_RSA_1024", "KEY_ALG_RSA_2048". */
-	// +optional
-	KeyAlgorithm *string `json:"keyAlgorithm,omitempty"`
+/* Immutable. The algorithm used to generate the key, used only on create. KEY_ALG_RSA_2048 is the default algorithm. Valid values are: "KEY_ALG_RSA_1024", "KEY_ALG_RSA_2048". */
+// +optional
+KeyAlgorithm *string `json:"keyAlgorithm,omitempty"`
 
-	/* Immutable. The output format of the private key. TYPE_GOOGLE_CREDENTIALS_FILE is the default output format. */
-	// +optional
-	PrivateKeyType *string `json:"privateKeyType,omitempty"`
+/* Immutable. The output format of the private key. TYPE_GOOGLE_CREDENTIALS_FILE is the default output format. */
+// +optional
+PrivateKeyType *string `json:"privateKeyType,omitempty"`
 
-	/* Immutable. A field that allows clients to upload their own public key. If set, use this public key data to create a service account key for given service account. Please note, the expected format for this field is a base64 encoded X509_PEM. */
-	// +optional
-	PublicKeyData *string `json:"publicKeyData,omitempty"`
+/* Immutable. A field that allows clients to upload their own public key. If set, use this public key data to create a service account key for given service account. Please note, the expected format for this field is a base64 encoded X509_PEM. */
+// +optional
+PublicKeyData *string `json:"publicKeyData,omitempty"`
 
-	/* Immutable. The output format for the public key. TYPE_NONE is the default for public key output. */
-	// +optional
-	PublicKeyType *string `json:"publicKeyType,omitempty"`
+/* Immutable. The output format for the public key. TYPE_NONE is the default for public key output. */
+// +optional
+PublicKeyType *string `json:"publicKeyType,omitempty"`
 
-	/* Immutable. The Service Account to create a key for. */
-	ServiceAccountRef v1alpha1.ResourceRef `json:"serviceAccountRef"`
+/* Immutable. The Service Account to create a key for. */
+ServiceAccountRef v1alpha1.ResourceRef `json:"serviceAccountRef"`
 }
 
 type IAMServiceAccountKeyStatus struct {
 	/* Conditions represent the latest available observations of the
-	   IAMServiceAccountKey's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Immutable. The name used for this key pair. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+	    IAMServiceAccountKey's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* Immutable. The name used for this key pair. */
+// +optional
+Name *string `json:"name,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* The private key in JSON format, base64 encoded. This is what you normally get as a file when creating service account keys through the CLI or web console. This is only populated when creating a new key. */
-	// +optional
-	PrivateKey *string `json:"privateKey,omitempty"`
+/* The private key in JSON format, base64 encoded. This is what you normally get as a file when creating service account keys through the CLI or web console. This is only populated when creating a new key. */
+// +optional
+PrivateKey *string `json:"privateKey,omitempty"`
 
-	/* Immutable. The public key, base64 encoded. */
-	// +optional
-	PublicKey *string `json:"publicKey,omitempty"`
+/* Immutable. The public key, base64 encoded. */
+// +optional
+PublicKey *string `json:"publicKey,omitempty"`
 
-	/* The key can be used after this timestamp. A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z". */
-	// +optional
-	ValidAfter *string `json:"validAfter,omitempty"`
+/* The key can be used after this timestamp. A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z". */
+// +optional
+ValidAfter *string `json:"validAfter,omitempty"`
 
-	/* The key can be used before this timestamp. A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z". */
-	// +optional
-	ValidBefore *string `json:"validBefore,omitempty"`
+/* The key can be used before this timestamp. A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z". */
+// +optional
+ValidBefore *string `json:"validBefore,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpiamserviceaccountkey;gcpiamserviceaccountkeys
@@ -104,22 +104,20 @@ type IAMServiceAccountKeyStatus struct {
 // IAMServiceAccountKey is the Schema for the iam API
 // +k8s:openapi-gen=true
 type IAMServiceAccountKey struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   IAMServiceAccountKeySpec   `json:"spec,omitempty"`
-	Status IAMServiceAccountKeyStatus `json:"status,omitempty"`
+  Spec IAMServiceAccountKeySpec `json:"spec,omitempty"`
+  Status IAMServiceAccountKeyStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// IAMServiceAccountKeyList contains a list of IAMServiceAccountKey
-type IAMServiceAccountKeyList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []IAMServiceAccountKey `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&IAMServiceAccountKey{}, &IAMServiceAccountKeyList{})
-}
+ // IAMServiceAccountKeyList contains a list of IAMServiceAccountKey
+ type IAMServiceAccountKeyList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []IAMServiceAccountKey `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&IAMServiceAccountKey{}, &IAMServiceAccountKeyList{})
+ }

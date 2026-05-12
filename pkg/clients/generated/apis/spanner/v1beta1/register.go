@@ -53,23 +53,25 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	SpannerBackupScheduleGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(SpannerBackupSchedule{}).Name(),
-	}
+	
+  	SpannerBackupScheduleGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(SpannerBackupSchedule{}).Name(),
+  	}
+  
+  	SpannerDatabaseGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(SpannerDatabase{}).Name(),
+  	}
+  
+  	SpannerInstanceGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(SpannerInstance{}).Name(),
+  	}
+  
 
-	SpannerDatabaseGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(SpannerDatabase{}).Name(),
-	}
-
-	SpannerInstanceGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(SpannerInstance{}).Name(),
-	}
-
-	spannerAPIVersion = SchemeGroupVersion.String()
+  	spannerAPIVersion = SchemeGroupVersion.String()
 )

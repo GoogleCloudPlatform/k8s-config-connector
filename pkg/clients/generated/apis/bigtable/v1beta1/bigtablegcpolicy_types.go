@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,72 +30,71 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type GcpolicyMaxAge struct {
-	/* DEPRECATED. Deprecated in favor of duration. Immutable. Number of days before applying GC policy. */
-	// +optional
-	Days *int64 `json:"days,omitempty"`
+/* DEPRECATED. Deprecated in favor of duration. Immutable. Number of days before applying GC policy. */
+// +optional
+Days *int64 `json:"days,omitempty"`
 
-	/* Immutable. Duration before applying GC policy. */
-	// +optional
-	Duration *string `json:"duration,omitempty"`
+/* Immutable. Duration before applying GC policy. */
+// +optional
+Duration *string `json:"duration,omitempty"`
 }
 
 type GcpolicyMaxVersion struct {
-	/* Immutable. Number of version before applying the GC policy. */
-	Number int64 `json:"number"`
+/* Immutable. Number of version before applying the GC policy. */
+Number int64 `json:"number"`
 }
 
 type BigtableGCPolicySpec struct {
-	/* Immutable. The name of the column family. */
-	ColumnFamily string `json:"columnFamily"`
+/* Immutable. The name of the column family. */
+ColumnFamily string `json:"columnFamily"`
 
 	/* The deletion policy for the GC policy. Setting ABANDON allows the resource
 	to be abandoned rather than deleted. This is useful for GC policy as it cannot be deleted
 	in a replicated instance. Possible values are: "ABANDON". */
-	// +optional
-	DeletionPolicy *string `json:"deletionPolicy,omitempty"`
+// +optional
+DeletionPolicy *string `json:"deletionPolicy,omitempty"`
 
-	/* Serialized JSON string for garbage collection policy. Conflicts with "mode", "max_age" and "max_version". */
-	// +optional
-	GcRules *string `json:"gcRules,omitempty"`
+/* Serialized JSON string for garbage collection policy. Conflicts with "mode", "max_age" and "max_version". */
+// +optional
+GcRules *string `json:"gcRules,omitempty"`
 
-	/* The name of the Bigtable instance. */
-	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
+/* The name of the Bigtable instance. */
+InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
 
-	/* Immutable. NOTE: 'gc_rules' is more flexible, and should be preferred over this field for new resources. This field may be deprecated in the future. GC policy that applies to all cells older than the given age. */
-	// +optional
-	MaxAge []GcpolicyMaxAge `json:"maxAge,omitempty"`
+/* Immutable. NOTE: 'gc_rules' is more flexible, and should be preferred over this field for new resources. This field may be deprecated in the future. GC policy that applies to all cells older than the given age. */
+// +optional
+MaxAge []GcpolicyMaxAge `json:"maxAge,omitempty"`
 
-	/* Immutable. NOTE: 'gc_rules' is more flexible, and should be preferred over this field for new resources. This field may be deprecated in the future. GC policy that applies to all versions of a cell except for the most recent. */
-	// +optional
-	MaxVersion []GcpolicyMaxVersion `json:"maxVersion,omitempty"`
+/* Immutable. NOTE: 'gc_rules' is more flexible, and should be preferred over this field for new resources. This field may be deprecated in the future. GC policy that applies to all versions of a cell except for the most recent. */
+// +optional
+MaxVersion []GcpolicyMaxVersion `json:"maxVersion,omitempty"`
 
-	/* Immutable. NOTE: 'gc_rules' is more flexible, and should be preferred over this field for new resources. This field may be deprecated in the future. If multiple policies are set, you should choose between UNION OR INTERSECTION. */
-	// +optional
-	Mode *string `json:"mode,omitempty"`
+/* Immutable. NOTE: 'gc_rules' is more flexible, and should be preferred over this field for new resources. This field may be deprecated in the future. If multiple policies are set, you should choose between UNION OR INTERSECTION. */
+// +optional
+Mode *string `json:"mode,omitempty"`
 
-	/* The name of the table. */
-	TableRef v1alpha1.ResourceRef `json:"tableRef"`
+/* The name of the table. */
+TableRef v1alpha1.ResourceRef `json:"tableRef"`
 }
 
 type BigtableGCPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
-	   BigtableGCPolicy's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	    BigtableGCPolicy's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigtablegcpolicy;gcpbigtablegcpolicies
@@ -111,22 +111,20 @@ type BigtableGCPolicyStatus struct {
 // BigtableGCPolicy is the Schema for the bigtable API
 // +k8s:openapi-gen=true
 type BigtableGCPolicy struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   BigtableGCPolicySpec   `json:"spec,omitempty"`
-	Status BigtableGCPolicyStatus `json:"status,omitempty"`
+  Spec BigtableGCPolicySpec `json:"spec,omitempty"`
+  Status BigtableGCPolicyStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// BigtableGCPolicyList contains a list of BigtableGCPolicy
-type BigtableGCPolicyList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []BigtableGCPolicy `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&BigtableGCPolicy{}, &BigtableGCPolicyList{})
-}
+ // BigtableGCPolicyList contains a list of BigtableGCPolicy
+ type BigtableGCPolicyList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []BigtableGCPolicy `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&BigtableGCPolicy{}, &BigtableGCPolicyList{})
+ }

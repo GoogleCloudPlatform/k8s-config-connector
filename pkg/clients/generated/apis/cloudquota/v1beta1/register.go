@@ -53,17 +53,19 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	APIQuotaAdjusterSettingsGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(APIQuotaAdjusterSettings{}).Name(),
-	}
+	
+  	APIQuotaAdjusterSettingsGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(APIQuotaAdjusterSettings{}).Name(),
+  	}
+  
+  	APIQuotaPreferenceGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(APIQuotaPreference{}).Name(),
+  	}
+  
 
-	APIQuotaPreferenceGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(APIQuotaPreference{}).Name(),
-	}
-
-	cloudquotaAPIVersion = SchemeGroupVersion.String()
+  	cloudquotaAPIVersion = SchemeGroupVersion.String()
 )

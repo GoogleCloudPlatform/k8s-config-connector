@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,87 +30,87 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type SavedqueryAccessSelector struct {
-	/* Optional. The permissions to appear in result. */
-	// +optional
-	Permissions []string `json:"permissions,omitempty"`
+/* Optional. The permissions to appear in result. */
+// +optional
+Permissions []string `json:"permissions,omitempty"`
 
-	/* Optional. The roles to appear in result. */
-	// +optional
-	Roles []string `json:"roles,omitempty"`
+/* Optional. The roles to appear in result. */
+// +optional
+Roles []string `json:"roles,omitempty"`
 }
 
 type SavedqueryConditionContext struct {
-	/* The hypothetical access timestamp to evaluate IAM conditions. Note that this value must not be earlier than the current time; otherwise, an INVALID_ARGUMENT error will be returned. */
-	// +optional
-	AccessTime *string `json:"accessTime,omitempty"`
+/* The hypothetical access timestamp to evaluate IAM conditions. Note that this value must not be earlier than the current time; otherwise, an INVALID_ARGUMENT error will be returned. */
+// +optional
+AccessTime *string `json:"accessTime,omitempty"`
 }
 
 type SavedqueryContent struct {
-	/* An IAM Policy Analysis query, which could be used in the [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy] RPC or the [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning] RPC. */
-	// +optional
-	IamPolicyAnalysisQuery *SavedqueryIamPolicyAnalysisQuery `json:"iamPolicyAnalysisQuery,omitempty"`
+/* An IAM Policy Analysis query, which could be used in the [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy] RPC or the [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning] RPC. */
+// +optional
+IamPolicyAnalysisQuery *SavedqueryIamPolicyAnalysisQuery `json:"iamPolicyAnalysisQuery,omitempty"`
 }
 
 type SavedqueryIamPolicyAnalysisQuery struct {
-	/* Optional. Specifies roles or permissions for analysis. This is optional. */
-	// +optional
-	AccessSelector *SavedqueryAccessSelector `json:"accessSelector,omitempty"`
+/* Optional. Specifies roles or permissions for analysis. This is optional. */
+// +optional
+AccessSelector *SavedqueryAccessSelector `json:"accessSelector,omitempty"`
 
-	/* Optional. The hypothetical context for IAM conditions evaluation. */
-	// +optional
-	ConditionContext *SavedqueryConditionContext `json:"conditionContext,omitempty"`
+/* Optional. The hypothetical context for IAM conditions evaluation. */
+// +optional
+ConditionContext *SavedqueryConditionContext `json:"conditionContext,omitempty"`
 
-	/* Optional. Specifies an identity for analysis. */
-	// +optional
-	IdentitySelector *SavedqueryIdentitySelector `json:"identitySelector,omitempty"`
+/* Optional. Specifies an identity for analysis. */
+// +optional
+IdentitySelector *SavedqueryIdentitySelector `json:"identitySelector,omitempty"`
 
-	/* Optional. The query options. */
-	// +optional
-	Options *SavedqueryOptions `json:"options,omitempty"`
+/* Optional. The query options. */
+// +optional
+Options *SavedqueryOptions `json:"options,omitempty"`
 
-	/* Optional. Specifies a resource for analysis. */
-	// +optional
-	ResourceSelector *SavedqueryResourceSelector `json:"resourceSelector,omitempty"`
+/* Optional. Specifies a resource for analysis. */
+// +optional
+ResourceSelector *SavedqueryResourceSelector `json:"resourceSelector,omitempty"`
 
 	/* Required. The relative name of the root asset. Only resources and IAM
 	policies within the scope will be analyzed.
-
+	
 	This can only be an organization number (such as "organizations/123"), a
 	folder number (such as "folders/123"), a project ID (such as
 	"projects/my-project-id"), or a project number (such as "projects/12345").
-
+	
 	To know how to get organization ID, visit [here
 	](https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id).
-
+	
 	To know how to get folder or project ID, visit [here
 	](https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects). */
-	Scope string `json:"scope"`
+Scope string `json:"scope"`
 }
 
 type SavedqueryIdentitySelector struct {
 	/* Required. The identity appear in the form of principals in
 	[IAM policy
 	binding](https://cloud.google.com/iam/reference/rest/v1/Binding).
-
+	
 	The examples of supported forms are:
 	"user:mike@example.com",
 	"group:admins@example.com",
 	"domain:google.com",
 	"serviceAccount:my-project-id@appspot.gserviceaccount.com".
-
+	
 	Notice that wildcard characters (such as * and ?) are not supported.
 	You must give a specific identity. */
-	Identity string `json:"identity"`
+Identity string `json:"identity"`
 }
 
 type SavedqueryOptions struct {
@@ -119,7 +120,7 @@ type SavedqueryOptions struct {
 	highly recommend you use
 	[AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning]
 	RPC instead.
-
+	
 	For example, if the request analyzes for which resources user A has
 	permission P, and there's an IAM policy states user A has
 	iam.serviceAccounts.getAccessToken permission to a service account SA,
@@ -128,7 +129,7 @@ type SavedqueryOptions struct {
 	Google Cloud folder F. And those advanced analysis results will be
 	included in
 	[AnalyzeIamPolicyResponse.service_account_impersonation_analysis][google.cloud.asset.v1.AnalyzeIamPolicyResponse.service_account_impersonation_analysis].
-
+	
 	Another example, if the request analyzes for who has
 	permission P to a Google Cloud folder F, and there's an IAM policy states
 	user A has iam.serviceAccounts.actAs permission to a service account SA,
@@ -137,156 +138,155 @@ type SavedqueryOptions struct {
 	Google Cloud folder F. And those advanced analysis results will be
 	included in
 	[AnalyzeIamPolicyResponse.service_account_impersonation_analysis][google.cloud.asset.v1.AnalyzeIamPolicyResponse.service_account_impersonation_analysis].
-
+	
 	Only the following permissions are considered in this analysis:
-
+	
 	* `iam.serviceAccounts.actAs`
 	* `iam.serviceAccounts.signBlob`
 	* `iam.serviceAccounts.signJwt`
 	* `iam.serviceAccounts.getAccessToken`
 	* `iam.serviceAccounts.getOpenIdToken`
 	* `iam.serviceAccounts.implicitDelegation`
-
+	
 	Default is false. */
-	// +optional
-	AnalyzeServiceAccountImpersonation *bool `json:"analyzeServiceAccountImpersonation,omitempty"`
+// +optional
+AnalyzeServiceAccountImpersonation *bool `json:"analyzeServiceAccountImpersonation,omitempty"`
 
 	/* Optional. If true, the identities section of the result will expand any
 	Google groups appearing in an IAM policy binding.
-
+	
 	If
 	[IamPolicyAnalysisQuery.identity_selector][google.cloud.asset.v1.IamPolicyAnalysisQuery.identity_selector]
 	is specified, the identity in the result will be determined by the
 	selector, and this flag is not allowed to set.
-
+	
 	If true, the default max expansion per group is 1000 for
 	AssetService.AnalyzeIamPolicy][].
-
+	
 	Default is false. */
-	// +optional
-	ExpandGroups *bool `json:"expandGroups,omitempty"`
+// +optional
+ExpandGroups *bool `json:"expandGroups,omitempty"`
 
 	/* Optional. If true and
 	[IamPolicyAnalysisQuery.resource_selector][google.cloud.asset.v1.IamPolicyAnalysisQuery.resource_selector]
 	is not specified, the resource section of the result will expand any
 	resource attached to an IAM policy to include resources lower in the
 	resource hierarchy.
-
+	
 	For example, if the request analyzes for which resources user A has
 	permission P, and the results include an IAM policy with P on a Google
 	Cloud folder, the results will also include resources in that folder with
 	permission P.
-
+	
 	If true and
 	[IamPolicyAnalysisQuery.resource_selector][google.cloud.asset.v1.IamPolicyAnalysisQuery.resource_selector]
 	is specified, the resource section of the result will expand the
 	specified resource to include resources lower in the resource hierarchy.
 	Only project or lower resources are supported. Folder and organization
 	resources cannot be used together with this option.
-
+	
 	For example, if the request analyzes for which users have permission P on
 	a Google Cloud project with this option enabled, the results will include
 	all users who have permission P on that project or any lower resource.
-
+	
 	If true, the default max expansion per resource is 1000 for
 	AssetService.AnalyzeIamPolicy][] and 100000 for
 	AssetService.AnalyzeIamPolicyLongrunning][].
-
+	
 	Default is false. */
-	// +optional
-	ExpandResources *bool `json:"expandResources,omitempty"`
+// +optional
+ExpandResources *bool `json:"expandResources,omitempty"`
 
 	/* Optional. If true, the access section of result will expand any roles
 	appearing in IAM policy bindings to include their permissions.
-
+	
 	If
 	[IamPolicyAnalysisQuery.access_selector][google.cloud.asset.v1.IamPolicyAnalysisQuery.access_selector]
 	is specified, the access section of the result will be determined by the
 	selector, and this flag is not allowed to set.
-
+	
 	Default is false. */
-	// +optional
-	ExpandRoles *bool `json:"expandRoles,omitempty"`
+// +optional
+ExpandRoles *bool `json:"expandRoles,omitempty"`
 
-	/* Optional. If true, the result will output the relevant membership relationships between groups and other groups, and between groups and principals. Default is false. */
-	// +optional
-	OutputGroupEdges *bool `json:"outputGroupEdges,omitempty"`
+/* Optional. If true, the result will output the relevant membership relationships between groups and other groups, and between groups and principals. Default is false. */
+// +optional
+OutputGroupEdges *bool `json:"outputGroupEdges,omitempty"`
 
-	/* Optional. If true, the result will output the relevant parent/child relationships between resources. Default is false. */
-	// +optional
-	OutputResourceEdges *bool `json:"outputResourceEdges,omitempty"`
+/* Optional. If true, the result will output the relevant parent/child relationships between resources. Default is false. */
+// +optional
+OutputResourceEdges *bool `json:"outputResourceEdges,omitempty"`
 }
 
 type SavedqueryResourceSelector struct {
-	/* Required. The [full resource name] (https://cloud.google.com/asset-inventory/docs/resource-name-format) of a resource of [supported resource types](https://cloud.google.com/asset-inventory/docs/supported-asset-types#analyzable_asset_types). */
-	FullResourceName string `json:"fullResourceName"`
+/* Required. The [full resource name] (https://cloud.google.com/asset-inventory/docs/resource-name-format) of a resource of [supported resource types](https://cloud.google.com/asset-inventory/docs/supported-asset-types#analyzable_asset_types). */
+FullResourceName string `json:"fullResourceName"`
 }
 
 type AssetSavedQuerySpec struct {
-	/* The query content. */
-	// +optional
-	Content *SavedqueryContent `json:"content,omitempty"`
+/* The query content. */
+// +optional
+Content *SavedqueryContent `json:"content,omitempty"`
 
-	/* The description of this saved query. This value should be fewer than 255 characters. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* The description of this saved query. This value should be fewer than 255 characters. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* FolderRef represents the Folder that this resource belongs to. */
-	// +optional
-	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+/* FolderRef represents the Folder that this resource belongs to. */
+// +optional
+FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
-	/* Labels applied on the resource. This value should not contain more than 10 entries. The key and value of each entry must be non-empty and fewer than 64 characters. */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
+/* Labels applied on the resource. This value should not contain more than 10 entries. The key and value of each entry must be non-empty and fewer than 64 characters. */
+// +optional
+Labels map[string]string `json:"labels,omitempty"`
 
-	/* OrganizationRef represents the Organization that this resource belongs to. */
-	// +optional
-	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+/* OrganizationRef represents the Organization that this resource belongs to. */
+// +optional
+OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
-	/* The Project that this resource belongs to. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+/* The Project that this resource belongs to. */
+// +optional
+ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/* The AssetSavedQuery name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The AssetSavedQuery name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type SavedqueryObservedStateStatus struct {
-	/* Output only. The create time of this saved query. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. The create time of this saved query. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. The account's email address who has created this saved query. */
-	// +optional
-	Creator *string `json:"creator,omitempty"`
+/* Output only. The account's email address who has created this saved query. */
+// +optional
+Creator *string `json:"creator,omitempty"`
 
-	/* Output only. The last update time of this saved query. */
-	// +optional
-	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
+/* Output only. The last update time of this saved query. */
+// +optional
+LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
 
-	/* Output only. The account's email address who has updated this saved query most recently. */
-	// +optional
-	LastUpdater *string `json:"lastUpdater,omitempty"`
+/* Output only. The account's email address who has updated this saved query most recently. */
+// +optional
+LastUpdater *string `json:"lastUpdater,omitempty"`
 }
 
 type AssetSavedQueryStatus struct {
 	/* Conditions represent the latest available observations of the
-	   AssetSavedQuery's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the AssetSavedQuery resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    AssetSavedQuery's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the AssetSavedQuery resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *SavedqueryObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *SavedqueryObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpassetsavedquery;gcpassetsavedqueries
@@ -301,22 +301,20 @@ type AssetSavedQueryStatus struct {
 // AssetSavedQuery is the Schema for the asset API
 // +k8s:openapi-gen=true
 type AssetSavedQuery struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   AssetSavedQuerySpec   `json:"spec,omitempty"`
-	Status AssetSavedQueryStatus `json:"status,omitempty"`
+  Spec AssetSavedQuerySpec `json:"spec,omitempty"`
+  Status AssetSavedQueryStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// AssetSavedQueryList contains a list of AssetSavedQuery
-type AssetSavedQueryList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []AssetSavedQuery `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&AssetSavedQuery{}, &AssetSavedQueryList{})
-}
+ // AssetSavedQueryList contains a list of AssetSavedQuery
+ type AssetSavedQueryList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []AssetSavedQuery `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&AssetSavedQuery{}, &AssetSavedQueryList{})
+ }

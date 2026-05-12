@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,18 +30,18 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type StorageBucketAccessControlSpec struct {
-	/* Reference to the bucket. */
-	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
+/* Reference to the bucket. */
+BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
 
 	/* Immutable. The entity holding the permission, in one of the following forms:
 	user-userId
@@ -57,30 +58,29 @@ type StorageBucketAccessControlSpec struct {
 	group-example@googlegroups.com.
 	To refer to all members of the Google Apps for Business domain
 	example.com, the entity would be domain-example.com. */
-	Entity string `json:"entity"`
+Entity string `json:"entity"`
 
-	/* The access permission for the entity. Possible values: ["OWNER", "READER", "WRITER"]. */
-	// +optional
-	Role *string `json:"role,omitempty"`
+/* The access permission for the entity. Possible values: ["OWNER", "READER", "WRITER"]. */
+// +optional
+Role *string `json:"role,omitempty"`
 }
 
 type StorageBucketAccessControlStatus struct {
 	/* Conditions represent the latest available observations of the
-	   StorageBucketAccessControl's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The domain associated with the entity. */
-	// +optional
-	Domain *string `json:"domain,omitempty"`
+	    StorageBucketAccessControl's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* The domain associated with the entity. */
+// +optional
+Domain *string `json:"domain,omitempty"`
 
-	/* The email address associated with the entity. */
-	// +optional
-	Email *string `json:"email,omitempty"`
+/* The email address associated with the entity. */
+// +optional
+Email *string `json:"email,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpstoragebucketaccesscontrol;gcpstoragebucketaccesscontrols
@@ -97,22 +97,20 @@ type StorageBucketAccessControlStatus struct {
 // StorageBucketAccessControl is the Schema for the storage API
 // +k8s:openapi-gen=true
 type StorageBucketAccessControl struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   StorageBucketAccessControlSpec   `json:"spec,omitempty"`
-	Status StorageBucketAccessControlStatus `json:"status,omitempty"`
+  Spec StorageBucketAccessControlSpec `json:"spec,omitempty"`
+  Status StorageBucketAccessControlStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// StorageBucketAccessControlList contains a list of StorageBucketAccessControl
-type StorageBucketAccessControlList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []StorageBucketAccessControl `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&StorageBucketAccessControl{}, &StorageBucketAccessControlList{})
-}
+ // StorageBucketAccessControlList contains a list of StorageBucketAccessControl
+ type StorageBucketAccessControlList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []StorageBucketAccessControl `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&StorageBucketAccessControl{}, &StorageBucketAccessControlList{})
+ }

@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,67 +30,66 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type FirestoreDocumentSpec struct {
-	/* Collection is the identity of the firestore collection in which to create the document. */
-	// +optional
-	Collection *string `json:"collection,omitempty"`
+/* Collection is the identity of the firestore collection in which to create the document. */
+// +optional
+Collection *string `json:"collection,omitempty"`
 
-	/* DatabaseRef references the FirestoreDatabase in which to create the document. */
-	DatabaseRef v1alpha1.ResourceRef `json:"databaseRef"`
+/* DatabaseRef references the FirestoreDatabase in which to create the document. */
+DatabaseRef v1alpha1.ResourceRef `json:"databaseRef"`
 
-	/* Fields holds the field values; values follow JSON typing conventions. */
-	// +optional
-	Fields map[string]apiextensionsv1.JSON `json:"fields,omitempty"`
+/* Fields holds the field values; values follow JSON typing conventions. */
+// +optional
+Fields map[string]apiextensionsv1.JSON `json:"fields,omitempty"`
 
-	/* The FirestoreDocument name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The FirestoreDocument name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type DocumentObservedStateStatus struct {
 	/* Output only. The time at which the document was created.
-
+	
 	This value increases monotonically when a document is deleted then
 	recreated. It can also be compared to values from other documents and
 	the `read_time` of a query. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
 	/* Output only. The time at which the document was last changed.
-
+	
 	This value is initially set to the `create_time` then increases
 	monotonically with each change to the document. It can also be
 	compared to values from other documents and the `read_time` of a query. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type FirestoreDocumentStatus struct {
 	/* Conditions represent the latest available observations of the
-	   FirestoreDocument's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the FirestoreDocument resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    FirestoreDocument's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the FirestoreDocument resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *DocumentObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *DocumentObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpfirestoredocument;gcpfirestoredocuments
@@ -104,22 +104,20 @@ type FirestoreDocumentStatus struct {
 // FirestoreDocument is the Schema for the firestore API
 // +k8s:openapi-gen=true
 type FirestoreDocument struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   FirestoreDocumentSpec   `json:"spec,omitempty"`
-	Status FirestoreDocumentStatus `json:"status,omitempty"`
+  Spec FirestoreDocumentSpec `json:"spec,omitempty"`
+  Status FirestoreDocumentStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// FirestoreDocumentList contains a list of FirestoreDocument
-type FirestoreDocumentList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []FirestoreDocument `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&FirestoreDocument{}, &FirestoreDocumentList{})
-}
+ // FirestoreDocumentList contains a list of FirestoreDocument
+ type FirestoreDocumentList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []FirestoreDocument `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&FirestoreDocument{}, &FirestoreDocumentList{})
+ }

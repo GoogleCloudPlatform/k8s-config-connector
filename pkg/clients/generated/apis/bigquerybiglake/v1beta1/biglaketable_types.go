@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,105 +30,104 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type BiglaketableHiveOptions struct {
-	/* Stores user supplied Hive table parameters. */
-	// +optional
-	Parameters map[string]string `json:"parameters,omitempty"`
+/* Stores user supplied Hive table parameters. */
+// +optional
+Parameters map[string]string `json:"parameters,omitempty"`
 
-	/* Stores physical storage information of the data. */
-	// +optional
-	StorageDescriptor *BiglaketableStorageDescriptor `json:"storageDescriptor,omitempty"`
+/* Stores physical storage information of the data. */
+// +optional
+StorageDescriptor *BiglaketableStorageDescriptor `json:"storageDescriptor,omitempty"`
 
-	/* Hive table type. For example, MANAGED_TABLE, EXTERNAL_TABLE. */
-	// +optional
-	TableType *string `json:"tableType,omitempty"`
+/* Hive table type. For example, MANAGED_TABLE, EXTERNAL_TABLE. */
+// +optional
+TableType *string `json:"tableType,omitempty"`
 }
 
 type BiglaketableSerdeInfo struct {
-	/* The fully qualified Java class name of the serialization library. */
-	// +optional
-	SerializationLib *string `json:"serializationLib,omitempty"`
+/* The fully qualified Java class name of the serialization library. */
+// +optional
+SerializationLib *string `json:"serializationLib,omitempty"`
 }
 
 type BiglaketableStorageDescriptor struct {
-	/* The fully qualified Java class name of the input format. */
-	// +optional
-	InputFormat *string `json:"inputFormat,omitempty"`
+/* The fully qualified Java class name of the input format. */
+// +optional
+InputFormat *string `json:"inputFormat,omitempty"`
 
-	/* Cloud Storage folder URI where the table data is stored, starting with "gs://". */
-	// +optional
-	LocationURI *string `json:"locationURI,omitempty"`
+/* Cloud Storage folder URI where the table data is stored, starting with "gs://". */
+// +optional
+LocationURI *string `json:"locationURI,omitempty"`
 
-	/* The fully qualified Java class name of the output format. */
-	// +optional
-	OutputFormat *string `json:"outputFormat,omitempty"`
+/* The fully qualified Java class name of the output format. */
+// +optional
+OutputFormat *string `json:"outputFormat,omitempty"`
 
-	/* Serializer and deserializer information. */
-	// +optional
-	SerdeInfo *BiglaketableSerdeInfo `json:"serdeInfo,omitempty"`
+/* Serializer and deserializer information. */
+// +optional
+SerdeInfo *BiglaketableSerdeInfo `json:"serdeInfo,omitempty"`
 }
 
 type BigLakeTableSpec struct {
-	/* Options of a Hive table. */
-	// +optional
-	HiveOptions *BiglaketableHiveOptions `json:"hiveOptions,omitempty"`
+/* Options of a Hive table. */
+// +optional
+HiveOptions *BiglaketableHiveOptions `json:"hiveOptions,omitempty"`
 
-	/* Required. The parent resource where this table will be created. Format: projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id} */
-	ParentDatabaseRef v1alpha1.ResourceRef `json:"parentDatabaseRef"`
+/* Required. The parent resource where this table will be created. Format: projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id} */
+ParentDatabaseRef v1alpha1.ResourceRef `json:"parentDatabaseRef"`
 
-	/* The BigLake Table ID. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The BigLake Table ID. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* The table type. */
-	// +optional
-	Type *string `json:"type,omitempty"`
+/* The table type. */
+// +optional
+Type *string `json:"type,omitempty"`
 }
 
 type BiglaketableObservedStateStatus struct {
-	/* Output only. The creation time of the table. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. The creation time of the table. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. The deletion time of the table. Only set after the table is deleted. */
-	// +optional
-	DeleteTime *string `json:"deleteTime,omitempty"`
+/* Output only. The deletion time of the table. Only set after the table is deleted. */
+// +optional
+DeleteTime *string `json:"deleteTime,omitempty"`
 
-	/* Output only. The time when this table is considered expired. Only set after the table is deleted. */
-	// +optional
-	ExpireTime *string `json:"expireTime,omitempty"`
+/* Output only. The time when this table is considered expired. Only set after the table is deleted. */
+// +optional
+ExpireTime *string `json:"expireTime,omitempty"`
 
-	/* Output only. The last modification time of the table. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. The last modification time of the table. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type BigLakeTableStatus struct {
 	/* Conditions represent the latest available observations of the
-	   BigLakeTable's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the BigLakeTable resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    BigLakeTable's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the BigLakeTable resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *BiglaketableObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *BiglaketableObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbiglaketable;gcpbiglaketables
@@ -143,22 +143,20 @@ type BigLakeTableStatus struct {
 // BigLakeTable is the Schema for the bigquerybiglake API
 // +k8s:openapi-gen=true
 type BigLakeTable struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   BigLakeTableSpec   `json:"spec,omitempty"`
-	Status BigLakeTableStatus `json:"status,omitempty"`
+  Spec BigLakeTableSpec `json:"spec,omitempty"`
+  Status BigLakeTableStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// BigLakeTableList contains a list of BigLakeTable
-type BigLakeTableList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []BigLakeTable `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&BigLakeTable{}, &BigLakeTableList{})
-}
+ // BigLakeTableList contains a list of BigLakeTable
+ type BigLakeTableList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []BigLakeTable `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&BigLakeTable{}, &BigLakeTableList{})
+ }

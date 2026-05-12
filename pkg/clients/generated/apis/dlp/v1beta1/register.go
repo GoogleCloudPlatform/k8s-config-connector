@@ -53,29 +53,31 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	DLPDeidentifyTemplateGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DLPDeidentifyTemplate{}).Name(),
-	}
+	
+  	DLPDeidentifyTemplateGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(DLPDeidentifyTemplate{}).Name(),
+  	}
+  
+  	DLPInspectTemplateGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(DLPInspectTemplate{}).Name(),
+  	}
+  
+  	DLPJobTriggerGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(DLPJobTrigger{}).Name(),
+  	}
+  
+  	DLPStoredInfoTypeGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(DLPStoredInfoType{}).Name(),
+  	}
+  
 
-	DLPInspectTemplateGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DLPInspectTemplate{}).Name(),
-	}
-
-	DLPJobTriggerGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DLPJobTrigger{}).Name(),
-	}
-
-	DLPStoredInfoTypeGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DLPStoredInfoType{}).Name(),
-	}
-
-	dlpAPIVersion = SchemeGroupVersion.String()
+  	dlpAPIVersion = SchemeGroupVersion.String()
 )

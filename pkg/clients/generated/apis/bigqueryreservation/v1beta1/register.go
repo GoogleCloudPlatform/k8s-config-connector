@@ -53,17 +53,19 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	BigQueryReservationAssignmentGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(BigQueryReservationAssignment{}).Name(),
-	}
+	
+  	BigQueryReservationAssignmentGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(BigQueryReservationAssignment{}).Name(),
+  	}
+  
+  	BigQueryReservationReservationGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(BigQueryReservationReservation{}).Name(),
+  	}
+  
 
-	BigQueryReservationReservationGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(BigQueryReservationReservation{}).Name(),
-	}
-
-	bigqueryreservationAPIVersion = SchemeGroupVersion.String()
+  	bigqueryreservationAPIVersion = SchemeGroupVersion.String()
 )

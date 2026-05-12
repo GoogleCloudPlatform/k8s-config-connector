@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,36 +30,36 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type AuthorizedviewSubsetView struct {
-	/* Row prefixes to be included in the AuthorizedView. To provide access to all rows, include the empty string as a prefix (""). */
-	// +optional
-	RowPrefixes []string `json:"rowPrefixes,omitempty"`
+/* Row prefixes to be included in the AuthorizedView. To provide access to all rows, include the empty string as a prefix (""). */
+// +optional
+RowPrefixes []string `json:"rowPrefixes,omitempty"`
 }
 
 type BigtableAuthorizedViewSpec struct {
-	/* Set to true to make the AuthorizedView protected against deletion. The parent Table and containing Instance cannot be deleted if an AuthorizedView has this bit set. */
-	// +optional
-	DeletionProtection *bool `json:"deletionProtection,omitempty"`
+/* Set to true to make the AuthorizedView protected against deletion. The parent Table and containing Instance cannot be deleted if an AuthorizedView has this bit set. */
+// +optional
+DeletionProtection *bool `json:"deletionProtection,omitempty"`
 
-	/* The BigtableAuthorizedView name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The BigtableAuthorizedView name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* An AuthorizedView permitting access to an explicit subset of a Table. */
-	// +optional
-	SubsetView *AuthorizedviewSubsetView `json:"subsetView,omitempty"`
+/* An AuthorizedView permitting access to an explicit subset of a Table. */
+// +optional
+SubsetView *AuthorizedviewSubsetView `json:"subsetView,omitempty"`
 
-	/* TableRef defines the resource reference to BigtableTable, which "External" field holds the GCP identifier for the KRM object. */
-	TableRef v1alpha1.ResourceRef `json:"tableRef"`
+/* TableRef defines the resource reference to BigtableTable, which "External" field holds the GCP identifier for the KRM object. */
+TableRef v1alpha1.ResourceRef `json:"tableRef"`
 }
 
 type AuthorizedviewObservedStateStatus struct {
@@ -66,21 +67,20 @@ type AuthorizedviewObservedStateStatus struct {
 
 type BigtableAuthorizedViewStatus struct {
 	/* Conditions represent the latest available observations of the
-	   BigtableAuthorizedView's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the BigtableAuthorizedView resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    BigtableAuthorizedView's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the BigtableAuthorizedView resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *AuthorizedviewObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *AuthorizedviewObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigtableauthorizedview;gcpbigtableauthorizedviews
@@ -95,22 +95,20 @@ type BigtableAuthorizedViewStatus struct {
 // BigtableAuthorizedView is the Schema for the bigtable API
 // +k8s:openapi-gen=true
 type BigtableAuthorizedView struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   BigtableAuthorizedViewSpec   `json:"spec,omitempty"`
-	Status BigtableAuthorizedViewStatus `json:"status,omitempty"`
+  Spec BigtableAuthorizedViewSpec `json:"spec,omitempty"`
+  Status BigtableAuthorizedViewStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// BigtableAuthorizedViewList contains a list of BigtableAuthorizedView
-type BigtableAuthorizedViewList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []BigtableAuthorizedView `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&BigtableAuthorizedView{}, &BigtableAuthorizedViewList{})
-}
+ // BigtableAuthorizedViewList contains a list of BigtableAuthorizedView
+ type BigtableAuthorizedViewList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []BigtableAuthorizedView `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&BigtableAuthorizedView{}, &BigtableAuthorizedViewList{})
+ }

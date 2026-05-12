@@ -53,47 +53,49 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	ApigeeEndpointAttachmentGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ApigeeEndpointAttachment{}).Name(),
-	}
+	
+  	ApigeeEndpointAttachmentGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ApigeeEndpointAttachment{}).Name(),
+  	}
+  
+  	ApigeeEnvgroupGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ApigeeEnvgroup{}).Name(),
+  	}
+  
+  	ApigeeEnvgroupAttachmentGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ApigeeEnvgroupAttachment{}).Name(),
+  	}
+  
+  	ApigeeEnvironmentGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ApigeeEnvironment{}).Name(),
+  	}
+  
+  	ApigeeInstanceGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ApigeeInstance{}).Name(),
+  	}
+  
+  	ApigeeInstanceAttachmentGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ApigeeInstanceAttachment{}).Name(),
+  	}
+  
+  	ApigeeOrganizationGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ApigeeOrganization{}).Name(),
+  	}
+  
 
-	ApigeeEnvgroupGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ApigeeEnvgroup{}).Name(),
-	}
-
-	ApigeeEnvgroupAttachmentGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ApigeeEnvgroupAttachment{}).Name(),
-	}
-
-	ApigeeEnvironmentGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ApigeeEnvironment{}).Name(),
-	}
-
-	ApigeeInstanceGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ApigeeInstance{}).Name(),
-	}
-
-	ApigeeInstanceAttachmentGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ApigeeInstanceAttachment{}).Name(),
-	}
-
-	ApigeeOrganizationGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ApigeeOrganization{}).Name(),
-	}
-
-	apigeeAPIVersion = SchemeGroupVersion.String()
+  	apigeeAPIVersion = SchemeGroupVersion.String()
 )

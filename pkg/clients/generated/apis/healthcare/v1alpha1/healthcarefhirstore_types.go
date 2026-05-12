@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,30 +30,30 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type FhirstoreBigqueryDestination struct {
-	/* BigQuery URI to a dataset, up to 2000 characters long, in the format bq://projectId.bqDatasetId. */
-	DatasetUri string `json:"datasetUri"`
+/* BigQuery URI to a dataset, up to 2000 characters long, in the format bq://projectId.bqDatasetId. */
+DatasetUri string `json:"datasetUri"`
 
-	/* The configuration for the exported BigQuery schema. */
-	SchemaConfig FhirstoreSchemaConfig `json:"schemaConfig"`
+/* The configuration for the exported BigQuery schema. */
+SchemaConfig FhirstoreSchemaConfig `json:"schemaConfig"`
 }
 
 type FhirstoreLastUpdatedPartitionConfig struct {
-	/* Number of milliseconds for which to keep the storage for a partition. */
-	// +optional
-	ExpirationMs *string `json:"expirationMs,omitempty"`
+/* Number of milliseconds for which to keep the storage for a partition. */
+// +optional
+ExpirationMs *string `json:"expirationMs,omitempty"`
 
-	/* Type of partitioning. Possible values: ["PARTITION_TYPE_UNSPECIFIED", "HOUR", "DAY", "MONTH", "YEAR"]. */
-	Type string `json:"type"`
+/* Type of partitioning. Possible values: ["PARTITION_TYPE_UNSPECIFIED", "HOUR", "DAY", "MONTH", "YEAR"]. */
+Type string `json:"type"`
 }
 
 type FhirstoreNotificationConfig struct {
@@ -62,7 +63,7 @@ type FhirstoreNotificationConfig struct {
 	was published. Notifications are only sent if the topic is non-empty. Topic names must be scoped to a
 	project. service-PROJECT_NUMBER@gcp-sa-healthcare.iam.gserviceaccount.com must have publisher permissions on the given
 	Cloud Pub/Sub topic. Not having adequate permissions will cause the calls that send notifications to fail. */
-	PubsubTopic string `json:"pubsubTopic"`
+PubsubTopic string `json:"pubsubTopic"`
 }
 
 type FhirstoreNotificationConfigs struct {
@@ -72,43 +73,43 @@ type FhirstoreNotificationConfigs struct {
 	was published. Notifications are only sent if the topic is non-empty. Topic names must be scoped to a
 	project. service-PROJECT_NUMBER@gcp-sa-healthcare.iam.gserviceaccount.com must have publisher permissions on the given
 	Cloud Pub/Sub topic. Not having adequate permissions will cause the calls that send notifications to fail. */
-	PubsubTopic string `json:"pubsubTopic"`
+PubsubTopic string `json:"pubsubTopic"`
 
 	/* Whether to send full FHIR resource to this Pub/Sub topic for Create and Update operation.
 	Note that setting this to true does not guarantee that all resources will be sent in the format of
 	full FHIR resource. When a resource change is too large or during heavy traffic, only the resource name will be
 	sent. Clients should always check the "payloadType" label from a Pub/Sub message to determine whether
 	it needs to fetch the full resource as a separate operation. */
-	// +optional
-	SendFullResource *bool `json:"sendFullResource,omitempty"`
+// +optional
+SendFullResource *bool `json:"sendFullResource,omitempty"`
 
 	/* Whether to send full FHIR resource to this Pub/Sub topic for deleting FHIR resource. Note that setting this to
 	true does not guarantee that all previous resources will be sent in the format of full FHIR resource. When a
 	resource change is too large or during heavy traffic, only the resource name will be sent. Clients should always
 	check the "payloadType" label from a Pub/Sub message to determine whether it needs to fetch the full previous
 	resource as a separate operation. */
-	// +optional
-	SendPreviousResourceOnDelete *bool `json:"sendPreviousResourceOnDelete,omitempty"`
+// +optional
+SendPreviousResourceOnDelete *bool `json:"sendPreviousResourceOnDelete,omitempty"`
 }
 
 type FhirstoreSchemaConfig struct {
-	/* The configuration for exported BigQuery tables to be partitioned by FHIR resource's last updated time column. */
-	// +optional
-	LastUpdatedPartitionConfig *FhirstoreLastUpdatedPartitionConfig `json:"lastUpdatedPartitionConfig,omitempty"`
+/* The configuration for exported BigQuery tables to be partitioned by FHIR resource's last updated time column. */
+// +optional
+LastUpdatedPartitionConfig *FhirstoreLastUpdatedPartitionConfig `json:"lastUpdatedPartitionConfig,omitempty"`
 
 	/* The depth for all recursive structures in the output analytics schema. For example, concept in the CodeSystem
 	resource is a recursive structure; when the depth is 2, the CodeSystem table will have a column called
 	concept.concept but not concept.concept.concept. If not specified or set to 0, the server will use the default
 	value 2. The maximum depth allowed is 5. */
-	RecursiveStructureDepth int64 `json:"recursiveStructureDepth"`
+RecursiveStructureDepth int64 `json:"recursiveStructureDepth"`
 
 	/* Specifies the output schema type.
 	* ANALYTICS: Analytics schema defined by the FHIR community.
 	See https://github.com/FHIR/sql-on-fhir/blob/master/sql-on-fhir.md.
 	* ANALYTICS_V2: Analytics V2, similar to schema defined by the FHIR community, with added support for extensions with one or more occurrences and contained resources in stringified JSON.
 	* LOSSLESS: A data-driven schema generated from the fields present in the FHIR data being exported, with no additional simplification. Default value: "ANALYTICS" Possible values: ["ANALYTICS", "ANALYTICS_V2", "LOSSLESS"]. */
-	// +optional
-	SchemaType *string `json:"schemaType,omitempty"`
+// +optional
+SchemaType *string `json:"schemaType,omitempty"`
 }
 
 type FhirstoreStreamConfigs struct {
@@ -117,60 +118,60 @@ type FhirstoreStreamConfigs struct {
 	are named after the resource types, e.g. "Patient", "Observation". When there is no existing table for a given
 	resource type, the server attempts to create one.
 	See the [streaming config reference](https://cloud.google.com/healthcare/docs/reference/rest/v1beta1/projects.locations.datasets.fhirStores#streamconfig) for more details. */
-	BigqueryDestination FhirstoreBigqueryDestination `json:"bigqueryDestination"`
+BigqueryDestination FhirstoreBigqueryDestination `json:"bigqueryDestination"`
 
 	/* Supply a FHIR resource type (such as "Patient" or "Observation"). See
 	https://www.hl7.org/fhir/valueset-resource-types.html for a list of all FHIR resource types. The server treats
 	an empty list as an intent to stream all the supported resource types in this FHIR store. */
-	// +optional
-	ResourceTypes []string `json:"resourceTypes,omitempty"`
+// +optional
+ResourceTypes []string `json:"resourceTypes,omitempty"`
 }
 
 type HealthcareFHIRStoreSpec struct {
-	/* Enable parsing of references within complex FHIR data types such as Extensions. If this value is set to ENABLED, then features like referential integrity and Bundle reference rewriting apply to all references. If this flag has not been specified the behavior of the FHIR store will not change, references in complex data types will not be parsed. New stores will have this value set to ENABLED by default after a notification period. Warning: turning on this flag causes processing existing resources to fail if they contain references to non-existent resources. Possible values: ["COMPLEX_DATA_TYPE_REFERENCE_PARSING_UNSPECIFIED", "DISABLED", "ENABLED"]. */
-	// +optional
-	ComplexDataTypeReferenceParsing *string `json:"complexDataTypeReferenceParsing,omitempty"`
+/* Enable parsing of references within complex FHIR data types such as Extensions. If this value is set to ENABLED, then features like referential integrity and Bundle reference rewriting apply to all references. If this flag has not been specified the behavior of the FHIR store will not change, references in complex data types will not be parsed. New stores will have this value set to ENABLED by default after a notification period. Warning: turning on this flag causes processing existing resources to fail if they contain references to non-existent resources. Possible values: ["COMPLEX_DATA_TYPE_REFERENCE_PARSING_UNSPECIFIED", "DISABLED", "ENABLED"]. */
+// +optional
+ComplexDataTypeReferenceParsing *string `json:"complexDataTypeReferenceParsing,omitempty"`
 
 	/* Immutable. Identifies the dataset addressed by this request. Must be in the format
 	'projects/{project}/locations/{location}/datasets/{dataset}'. */
-	Dataset string `json:"dataset"`
+Dataset string `json:"dataset"`
 
 	/* If true, overrides the default search behavior for this FHIR store to handling=strict which returns an error for unrecognized search parameters.
 	If false, uses the FHIR specification default handling=lenient which ignores unrecognized search parameters.
 	The handling can always be changed from the default on an individual API call by setting the HTTP header Prefer: handling=strict or Prefer: handling=lenient. */
-	// +optional
-	DefaultSearchHandlingStrict *bool `json:"defaultSearchHandlingStrict,omitempty"`
+// +optional
+DefaultSearchHandlingStrict *bool `json:"defaultSearchHandlingStrict,omitempty"`
 
 	/* Immutable. Whether to disable referential integrity in this FHIR store. This field is immutable after FHIR store
 	creation. The default value is false, meaning that the API will enforce referential integrity and fail the
 	requests that will result in inconsistent state in the FHIR store. When this field is set to true, the API
 	will skip referential integrity check. Consequently, operations that rely on references, such as
 	Patient.get$everything, will not return all the results if broken references exist.
-
+	
 	** Changing this property may recreate the FHIR store (removing all data) **. */
-	// +optional
-	DisableReferentialIntegrity *bool `json:"disableReferentialIntegrity,omitempty"`
+// +optional
+DisableReferentialIntegrity *bool `json:"disableReferentialIntegrity,omitempty"`
 
 	/* Immutable. Whether to disable resource versioning for this FHIR store. This field can not be changed after the creation
 	of FHIR store. If set to false, which is the default behavior, all write operations will cause historical
 	versions to be recorded automatically. The historical versions can be fetched through the history APIs, but
 	cannot be updated. If set to true, no historical versions will be kept. The server will send back errors for
 	attempts to read the historical versions.
-
+	
 	** Changing this property may recreate the FHIR store (removing all data) **. */
-	// +optional
-	DisableResourceVersioning *bool `json:"disableResourceVersioning,omitempty"`
+// +optional
+DisableResourceVersioning *bool `json:"disableResourceVersioning,omitempty"`
 
 	/* Immutable. Whether to allow the bulk import API to accept history bundles and directly insert historical resource
 	versions into the FHIR store. Importing resource histories creates resource interactions that appear to have
 	occurred in the past, which clients may not want to allow. If set to false, history bundles within an import
 	will fail with an error.
-
+	
 	** Changing this property may recreate the FHIR store (removing all data) **
-
+	
 	** This property can be changed manually in the Google Cloud Healthcare admin console without recreating the FHIR store **. */
-	// +optional
-	EnableHistoryImport *bool `json:"enableHistoryImport,omitempty"`
+// +optional
+EnableHistoryImport *bool `json:"enableHistoryImport,omitempty"`
 
 	/* Whether this FHIR store has the updateCreate capability. This determines if the client can use an Update
 	operation to create a new resource with a client-specified ID. If false, all IDs are server-assigned through
@@ -178,20 +179,20 @@ type HealthcareFHIRStoreSpec struct {
 	logs with appropriate levels of care if client-specified resource IDs contain sensitive data such as patient
 	identifiers, those IDs will be part of the FHIR resource path recorded in Cloud audit logs and Cloud Pub/Sub
 	notifications. */
-	// +optional
-	EnableUpdateCreate *bool `json:"enableUpdateCreate,omitempty"`
+// +optional
+EnableUpdateCreate *bool `json:"enableUpdateCreate,omitempty"`
 
-	/* A nested object resource. */
-	// +optional
-	NotificationConfig *FhirstoreNotificationConfig `json:"notificationConfig,omitempty"`
+/* A nested object resource. */
+// +optional
+NotificationConfig *FhirstoreNotificationConfig `json:"notificationConfig,omitempty"`
 
-	/* A list of notifcation configs that configure the notification for every resource mutation in this FHIR store. */
-	// +optional
-	NotificationConfigs []FhirstoreNotificationConfigs `json:"notificationConfigs,omitempty"`
+/* A list of notifcation configs that configure the notification for every resource mutation in this FHIR store. */
+// +optional
+NotificationConfigs []FhirstoreNotificationConfigs `json:"notificationConfigs,omitempty"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
 	/* A list of streaming configs that configure the destinations of streaming export for every resource mutation in
 	this FHIR store. Each store is allowed to have up to 10 streaming configs. After a new config is added, the next
@@ -199,27 +200,26 @@ type HealthcareFHIRStoreSpec struct {
 	from the list, the server stops streaming to that location. Before adding a new config, you must add the required
 	bigquery.dataEditor role to your project's Cloud Healthcare Service Agent service account. Some lag (typically on
 	the order of dozens of seconds) is expected before the results show up in the streaming destination. */
-	// +optional
-	StreamConfigs []FhirstoreStreamConfigs `json:"streamConfigs,omitempty"`
+// +optional
+StreamConfigs []FhirstoreStreamConfigs `json:"streamConfigs,omitempty"`
 
-	/* Immutable. The FHIR specification version. Default value: "STU3" Possible values: ["DSTU2", "STU3", "R4"]. */
-	// +optional
-	Version *string `json:"version,omitempty"`
+/* Immutable. The FHIR specification version. Default value: "STU3" Possible values: ["DSTU2", "STU3", "R4"]. */
+// +optional
+Version *string `json:"version,omitempty"`
 }
 
 type HealthcareFHIRStoreStatus struct {
 	/* Conditions represent the latest available observations of the
-	   HealthcareFHIRStore's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	    HealthcareFHIRStore's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* The fully qualified name of this dataset. */
-	// +optional
-	SelfLink *string `json:"selfLink,omitempty"`
+/* The fully qualified name of this dataset. */
+// +optional
+SelfLink *string `json:"selfLink,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcphealthcarefhirstore;gcphealthcarefhirstores
@@ -236,22 +236,20 @@ type HealthcareFHIRStoreStatus struct {
 // HealthcareFHIRStore is the Schema for the healthcare API
 // +k8s:openapi-gen=true
 type HealthcareFHIRStore struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   HealthcareFHIRStoreSpec   `json:"spec,omitempty"`
-	Status HealthcareFHIRStoreStatus `json:"status,omitempty"`
+  Spec HealthcareFHIRStoreSpec `json:"spec,omitempty"`
+  Status HealthcareFHIRStoreStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// HealthcareFHIRStoreList contains a list of HealthcareFHIRStore
-type HealthcareFHIRStoreList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []HealthcareFHIRStore `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&HealthcareFHIRStore{}, &HealthcareFHIRStoreList{})
-}
+ // HealthcareFHIRStoreList contains a list of HealthcareFHIRStore
+ type HealthcareFHIRStoreList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []HealthcareFHIRStore `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&HealthcareFHIRStore{}, &HealthcareFHIRStoreList{})
+ }

@@ -53,29 +53,31 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	BigQueryDatasetGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(BigQueryDataset{}).Name(),
-	}
+	
+  	BigQueryDatasetGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(BigQueryDataset{}).Name(),
+  	}
+  
+  	BigQueryJobGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(BigQueryJob{}).Name(),
+  	}
+  
+  	BigQueryRoutineGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(BigQueryRoutine{}).Name(),
+  	}
+  
+  	BigQueryTableGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(BigQueryTable{}).Name(),
+  	}
+  
 
-	BigQueryJobGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(BigQueryJob{}).Name(),
-	}
-
-	BigQueryRoutineGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(BigQueryRoutine{}).Name(),
-	}
-
-	BigQueryTableGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(BigQueryTable{}).Name(),
-	}
-
-	bigqueryAPIVersion = SchemeGroupVersion.String()
+  	bigqueryAPIVersion = SchemeGroupVersion.String()
 )

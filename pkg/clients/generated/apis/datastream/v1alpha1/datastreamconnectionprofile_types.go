@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +30,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -42,260 +43,259 @@ type ConnectionprofileBigQueryProfile struct {
 }
 
 type ConnectionprofileForwardSSHConnectivity struct {
-	/* Required. Hostname for the SSH tunnel. */
-	Hostname string `json:"hostname"`
+/* Required. Hostname for the SSH tunnel. */
+Hostname string `json:"hostname"`
 
-	/* Port for the SSH tunnel, default value is 22. */
-	// +optional
-	Port *int32 `json:"port,omitempty"`
+/* Port for the SSH tunnel, default value is 22. */
+// +optional
+Port *int32 `json:"port,omitempty"`
 
-	/* Input only. SSH private key. */
-	// +optional
-	PrivateKey *string `json:"privateKey,omitempty"`
+/* Input only. SSH private key. */
+// +optional
+PrivateKey *string `json:"privateKey,omitempty"`
 
-	/* The Kubernetes Secret object that stores the "username" and "password" information for the SSH tunnel. The Secret type has to be `kubernetes.io/basic-auth`. */
-	SecretRef v1alpha1.ResourceRef `json:"secretRef"`
+/* The Kubernetes Secret object that stores the "username" and "password" information for the SSH tunnel. The Secret type has to be `kubernetes.io/basic-auth`. */
+SecretRef v1alpha1.ResourceRef `json:"secretRef"`
 }
 
 type ConnectionprofileGcsProfile struct {
-	/* Required. The Cloud Storage bucket name. */
-	Bucket string `json:"bucket"`
+/* Required. The Cloud Storage bucket name. */
+Bucket string `json:"bucket"`
 
-	/* The root path inside the Cloud Storage bucket. */
-	// +optional
-	RootPath *string `json:"rootPath,omitempty"`
+/* The root path inside the Cloud Storage bucket. */
+// +optional
+RootPath *string `json:"rootPath,omitempty"`
 }
 
 type ConnectionprofileMySQLProfile struct {
-	/* Required. Hostname for the MySQL connection. */
-	Hostname string `json:"hostname"`
+/* Required. Hostname for the MySQL connection. */
+Hostname string `json:"hostname"`
 
-	/* Port for the MySQL connection, default value is 3306. */
-	// +optional
-	Port *int32 `json:"port,omitempty"`
+/* Port for the MySQL connection, default value is 3306. */
+// +optional
+Port *int32 `json:"port,omitempty"`
 
-	/* The Kubernetes Secret object that stores the "username" and "password" information for the MySQL connection. The Secret type has to be `kubernetes.io/basic-auth`. */
-	SecretRef v1alpha1.ResourceRef `json:"secretRef"`
+/* The Kubernetes Secret object that stores the "username" and "password" information for the MySQL connection. The Secret type has to be `kubernetes.io/basic-auth`. */
+SecretRef v1alpha1.ResourceRef `json:"secretRef"`
 
-	/* SSL configuration for the MySQL connection. */
-	// +optional
-	SslConfig *ConnectionprofileSslConfig `json:"sslConfig,omitempty"`
+/* SSL configuration for the MySQL connection. */
+// +optional
+SslConfig *ConnectionprofileSslConfig `json:"sslConfig,omitempty"`
 }
 
 type ConnectionprofileOracleASMConfig struct {
-	/* Required. ASM service name for the Oracle ASM connection. */
-	AsmService string `json:"asmService"`
+/* Required. ASM service name for the Oracle ASM connection. */
+AsmService string `json:"asmService"`
 
-	/* Optional. Connection string attributes */
-	// +optional
-	ConnectionAttributes map[string]string `json:"connectionAttributes,omitempty"`
+/* Optional. Connection string attributes */
+// +optional
+ConnectionAttributes map[string]string `json:"connectionAttributes,omitempty"`
 
-	/* Required. Hostname for the Oracle ASM connection. */
-	Hostname string `json:"hostname"`
+/* Required. Hostname for the Oracle ASM connection. */
+Hostname string `json:"hostname"`
 
-	/* Optional. SSL configuration for the Oracle connection. */
-	// +optional
-	OracleSSLConfig *ConnectionprofileOracleSSLConfig `json:"oracleSSLConfig,omitempty"`
+/* Optional. SSL configuration for the Oracle connection. */
+// +optional
+OracleSSLConfig *ConnectionprofileOracleSSLConfig `json:"oracleSSLConfig,omitempty"`
 
-	/* Required. Port for the Oracle ASM connection. */
-	Port int32 `json:"port"`
+/* Required. Port for the Oracle ASM connection. */
+Port int32 `json:"port"`
 
-	/* The Kubernetes Secret object that stores the "username" and "password" information for the Oracle ASM connection. The Secret type has to be `kubernetes.io/basic-auth`. */
-	SecretRef v1alpha1.ResourceRef `json:"secretRef"`
+/* The Kubernetes Secret object that stores the "username" and "password" information for the Oracle ASM connection. The Secret type has to be `kubernetes.io/basic-auth`. */
+SecretRef v1alpha1.ResourceRef `json:"secretRef"`
 }
 
 type ConnectionprofileOracleProfile struct {
-	/* Connection string attributes */
-	// +optional
-	ConnectionAttributes map[string]string `json:"connectionAttributes,omitempty"`
+/* Connection string attributes */
+// +optional
+ConnectionAttributes map[string]string `json:"connectionAttributes,omitempty"`
 
-	/* Required. Database for the Oracle connection. */
-	DatabaseService string `json:"databaseService"`
+/* Required. Database for the Oracle connection. */
+DatabaseService string `json:"databaseService"`
 
-	/* Required. Hostname for the Oracle connection. */
-	Hostname string `json:"hostname"`
+/* Required. Hostname for the Oracle connection. */
+Hostname string `json:"hostname"`
 
-	/* Optional. Configuration for Oracle ASM connection. */
-	// +optional
-	OracleASMConfig *ConnectionprofileOracleASMConfig `json:"oracleASMConfig,omitempty"`
+/* Optional. Configuration for Oracle ASM connection. */
+// +optional
+OracleASMConfig *ConnectionprofileOracleASMConfig `json:"oracleASMConfig,omitempty"`
 
-	/* Optional. SSL configuration for the Oracle connection. */
-	// +optional
-	OracleSSLConfig *ConnectionprofileOracleSSLConfig `json:"oracleSSLConfig,omitempty"`
+/* Optional. SSL configuration for the Oracle connection. */
+// +optional
+OracleSSLConfig *ConnectionprofileOracleSSLConfig `json:"oracleSSLConfig,omitempty"`
 
-	/* Port for the Oracle connection, default value is 1521. */
-	// +optional
-	Port *int32 `json:"port,omitempty"`
+/* Port for the Oracle connection, default value is 1521. */
+// +optional
+Port *int32 `json:"port,omitempty"`
 
-	/* Optional. A reference to a Secret Manager resource name storing the Oracle connection password. Mutually exclusive with the `secretRef` field. */
-	// +optional
-	SecretManagerSecretRef *v1alpha1.ResourceRef `json:"secretManagerSecretRef,omitempty"`
+/* Optional. A reference to a Secret Manager resource name storing the Oracle connection password. Mutually exclusive with the `secretRef` field. */
+// +optional
+SecretManagerSecretRef *v1alpha1.ResourceRef `json:"secretManagerSecretRef,omitempty"`
 
-	/* The Kubernetes Secret object that stores the "username" and "password" information for the Oracle connection. The Secret type has to be `kubernetes.io/basic-auth`. */
-	SecretRef v1alpha1.ResourceRef `json:"secretRef"`
+/* The Kubernetes Secret object that stores the "username" and "password" information for the Oracle connection. The Secret type has to be `kubernetes.io/basic-auth`. */
+SecretRef v1alpha1.ResourceRef `json:"secretRef"`
 }
 
 type ConnectionprofileOracleSSLConfig struct {
-	/* Input only. PEM-encoded certificate of the CA that signed the source database server's certificate. */
-	// +optional
-	CaCertificate *string `json:"caCertificate,omitempty"`
+/* Input only. PEM-encoded certificate of the CA that signed the source database server's certificate. */
+// +optional
+CaCertificate *string `json:"caCertificate,omitempty"`
 }
 
 type ConnectionprofilePrivateConnectivity struct {
-	/* Required. A reference to a private connection resource. */
-	PrivateConnectionRef v1alpha1.ResourceRef `json:"privateConnectionRef"`
+/* Required. A reference to a private connection resource. */
+PrivateConnectionRef v1alpha1.ResourceRef `json:"privateConnectionRef"`
 }
 
 type ConnectionprofileSqlServerProfile struct {
-	/* Required. Database for the SQLServer connection. */
-	Database string `json:"database"`
+/* Required. Database for the SQLServer connection. */
+Database string `json:"database"`
 
-	/* Required. Hostname for the SQLServer connection. */
-	Hostname string `json:"hostname"`
+/* Required. Hostname for the SQLServer connection. */
+Hostname string `json:"hostname"`
 
-	/* Port for the SQLServer connection, default value is 1433. */
-	// +optional
-	Port *int32 `json:"port,omitempty"`
+/* Port for the SQLServer connection, default value is 1433. */
+// +optional
+Port *int32 `json:"port,omitempty"`
 
-	/* The Kubernetes Secret object that stores the "username" and "password" information for the SQLServer connection. The Secret type has to be `kubernetes.io/basic-auth`. */
-	SecretRef v1alpha1.ResourceRef `json:"secretRef"`
+/* The Kubernetes Secret object that stores the "username" and "password" information for the SQLServer connection. The Secret type has to be `kubernetes.io/basic-auth`. */
+SecretRef v1alpha1.ResourceRef `json:"secretRef"`
 }
 
 type ConnectionprofileSslConfig struct {
-	/* Input only. PEM-encoded certificate of the CA that signed the source database server's certificate. */
-	// +optional
-	CaCertificate *string `json:"caCertificate,omitempty"`
+/* Input only. PEM-encoded certificate of the CA that signed the source database server's certificate. */
+// +optional
+CaCertificate *string `json:"caCertificate,omitempty"`
 
-	/* Input only. PEM-encoded certificate that will be used by the replica to authenticate against the source database server. If this field is used then the 'client_key' and the 'ca_certificate' fields are mandatory. */
-	// +optional
-	ClientCertificate *string `json:"clientCertificate,omitempty"`
+/* Input only. PEM-encoded certificate that will be used by the replica to authenticate against the source database server. If this field is used then the 'client_key' and the 'ca_certificate' fields are mandatory. */
+// +optional
+ClientCertificate *string `json:"clientCertificate,omitempty"`
 
-	/* Input only. PEM-encoded private key associated with the Client Certificate. If this field is used then the 'client_certificate' and the 'ca_certificate' fields are mandatory. */
-	// +optional
-	ClientKey *string `json:"clientKey,omitempty"`
+/* Input only. PEM-encoded private key associated with the Client Certificate. If this field is used then the 'client_certificate' and the 'ca_certificate' fields are mandatory. */
+// +optional
+ClientKey *string `json:"clientKey,omitempty"`
 }
 
 type ConnectionprofileStaticServiceIPConnectivity struct {
 }
 
 type DatastreamConnectionProfileSpec struct {
-	/* BigQuery Connection Profile configuration. */
-	// +optional
-	BigQueryProfile *ConnectionprofileBigQueryProfile `json:"bigQueryProfile,omitempty"`
+/* BigQuery Connection Profile configuration. */
+// +optional
+BigQueryProfile *ConnectionprofileBigQueryProfile `json:"bigQueryProfile,omitempty"`
 
-	/* Required. Display name. */
-	DisplayName string `json:"displayName"`
+/* Required. Display name. */
+DisplayName string `json:"displayName"`
 
-	/* Forward SSH tunnel connectivity. */
-	// +optional
-	ForwardSSHConnectivity *ConnectionprofileForwardSSHConnectivity `json:"forwardSSHConnectivity,omitempty"`
+/* Forward SSH tunnel connectivity. */
+// +optional
+ForwardSSHConnectivity *ConnectionprofileForwardSSHConnectivity `json:"forwardSSHConnectivity,omitempty"`
 
-	/* Cloud Storage ConnectionProfile configuration. */
-	// +optional
-	GcsProfile *ConnectionprofileGcsProfile `json:"gcsProfile,omitempty"`
+/* Cloud Storage ConnectionProfile configuration. */
+// +optional
+GcsProfile *ConnectionprofileGcsProfile `json:"gcsProfile,omitempty"`
 
-	/* Labels. */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
+/* Labels. */
+// +optional
+Labels map[string]string `json:"labels,omitempty"`
 
-	/* Immutable. */
-	Location string `json:"location"`
+/* Immutable. */
+Location string `json:"location"`
 
-	/* MySQL ConnectionProfile configuration. */
-	// +optional
-	MySQLProfile *ConnectionprofileMySQLProfile `json:"mySQLProfile,omitempty"`
+/* MySQL ConnectionProfile configuration. */
+// +optional
+MySQLProfile *ConnectionprofileMySQLProfile `json:"mySQLProfile,omitempty"`
 
-	/* Oracle ConnectionProfile configuration. */
-	// +optional
-	OracleProfile *ConnectionprofileOracleProfile `json:"oracleProfile,omitempty"`
+/* Oracle ConnectionProfile configuration. */
+// +optional
+OracleProfile *ConnectionprofileOracleProfile `json:"oracleProfile,omitempty"`
 
-	/* Private connectivity. */
-	// +optional
-	PrivateConnectivity *ConnectionprofilePrivateConnectivity `json:"privateConnectivity,omitempty"`
+/* Private connectivity. */
+// +optional
+PrivateConnectivity *ConnectionprofilePrivateConnectivity `json:"privateConnectivity,omitempty"`
 
-	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The DatastreamConnectionProfile name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The DatastreamConnectionProfile name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* SQLServer Connection Profile configuration. */
-	// +optional
-	SqlServerProfile *ConnectionprofileSqlServerProfile `json:"sqlServerProfile,omitempty"`
+/* SQLServer Connection Profile configuration. */
+// +optional
+SqlServerProfile *ConnectionprofileSqlServerProfile `json:"sqlServerProfile,omitempty"`
 
-	/* Static Service IP connectivity. */
-	// +optional
-	StaticServiceIPConnectivity *ConnectionprofileStaticServiceIPConnectivity `json:"staticServiceIPConnectivity,omitempty"`
+/* Static Service IP connectivity. */
+// +optional
+StaticServiceIPConnectivity *ConnectionprofileStaticServiceIPConnectivity `json:"staticServiceIPConnectivity,omitempty"`
 }
 
 type ConnectionprofileMySQLProfileStatus struct {
-	/* SSL configuration for the MySQL connection. */
-	// +optional
-	SslConfig *ConnectionprofileSslConfigStatus `json:"sslConfig,omitempty"`
+/* SSL configuration for the MySQL connection. */
+// +optional
+SslConfig *ConnectionprofileSslConfigStatus `json:"sslConfig,omitempty"`
 }
 
 type ConnectionprofileObservedStateStatus struct {
-	/* Output only. The create time of the resource. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. The create time of the resource. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* MySQL ConnectionProfile configuration. */
-	// +optional
-	MySQLProfile *ConnectionprofileMySQLProfileStatus `json:"mySQLProfile,omitempty"`
+/* MySQL ConnectionProfile configuration. */
+// +optional
+MySQLProfile *ConnectionprofileMySQLProfileStatus `json:"mySQLProfile,omitempty"`
 
-	/* Oracle ConnectionProfile configuration. */
-	// +optional
-	OracleProfile *ConnectionprofileOracleProfileStatus `json:"oracleProfile,omitempty"`
+/* Oracle ConnectionProfile configuration. */
+// +optional
+OracleProfile *ConnectionprofileOracleProfileStatus `json:"oracleProfile,omitempty"`
 
-	/* Output only. The update time of the resource. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. The update time of the resource. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type ConnectionprofileOracleProfileStatus struct {
-	/* Optional. SSL configuration for the Oracle connection. */
-	// +optional
-	OracleSSLConfig *ConnectionprofileOracleSSLConfigStatus `json:"oracleSSLConfig,omitempty"`
+/* Optional. SSL configuration for the Oracle connection. */
+// +optional
+OracleSSLConfig *ConnectionprofileOracleSSLConfigStatus `json:"oracleSSLConfig,omitempty"`
 }
 
 type ConnectionprofileOracleSSLConfigStatus struct {
-	/* Output only. Indicates whether the ca_certificate field has been set for this Connection-Profile. */
-	// +optional
-	CaCertificateSet *bool `json:"caCertificateSet,omitempty"`
+/* Output only. Indicates whether the ca_certificate field has been set for this Connection-Profile. */
+// +optional
+CaCertificateSet *bool `json:"caCertificateSet,omitempty"`
 }
 
 type ConnectionprofileSslConfigStatus struct {
-	/* Output only. Indicates whether the ca_certificate field is set. */
-	// +optional
-	CaCertificateSet *bool `json:"caCertificateSet,omitempty"`
+/* Output only. Indicates whether the ca_certificate field is set. */
+// +optional
+CaCertificateSet *bool `json:"caCertificateSet,omitempty"`
 
-	/* Output only. Indicates whether the client_certificate field is set. */
-	// +optional
-	ClientCertificateSet *bool `json:"clientCertificateSet,omitempty"`
+/* Output only. Indicates whether the client_certificate field is set. */
+// +optional
+ClientCertificateSet *bool `json:"clientCertificateSet,omitempty"`
 
-	/* Output only. Indicates whether the client_key field is set. */
-	// +optional
-	ClientKeySet *bool `json:"clientKeySet,omitempty"`
+/* Output only. Indicates whether the client_key field is set. */
+// +optional
+ClientKeySet *bool `json:"clientKeySet,omitempty"`
 }
 
 type DatastreamConnectionProfileStatus struct {
 	/* Conditions represent the latest available observations of the
-	   DatastreamConnectionProfile's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the DatastreamConnectionProfile resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    DatastreamConnectionProfile's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the DatastreamConnectionProfile resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *ConnectionprofileObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *ConnectionprofileObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdatastreamconnectionprofile;gcpdatastreamconnectionprofiles
@@ -310,22 +310,20 @@ type DatastreamConnectionProfileStatus struct {
 // DatastreamConnectionProfile is the Schema for the datastream API
 // +k8s:openapi-gen=true
 type DatastreamConnectionProfile struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   DatastreamConnectionProfileSpec   `json:"spec,omitempty"`
-	Status DatastreamConnectionProfileStatus `json:"status,omitempty"`
+  Spec DatastreamConnectionProfileSpec `json:"spec,omitempty"`
+  Status DatastreamConnectionProfileStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// DatastreamConnectionProfileList contains a list of DatastreamConnectionProfile
-type DatastreamConnectionProfileList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []DatastreamConnectionProfile `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&DatastreamConnectionProfile{}, &DatastreamConnectionProfileList{})
-}
+ // DatastreamConnectionProfileList contains a list of DatastreamConnectionProfile
+ type DatastreamConnectionProfileList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []DatastreamConnectionProfile `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&DatastreamConnectionProfile{}, &DatastreamConnectionProfileList{})
+ }

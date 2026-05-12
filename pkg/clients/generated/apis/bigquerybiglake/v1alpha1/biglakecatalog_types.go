@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,54 +30,53 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type BigLakeCatalogSpec struct {
-	/* The location that this resource belongs to. */
-	Location string `json:"location"`
+/* The location that this resource belongs to. */
+Location string `json:"location"`
 
-	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The BigLakeCatalog name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The BigLakeCatalog name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type BiglakecatalogObservedStateStatus struct {
-	/* Output only. The creation time of the catalog. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. The creation time of the catalog. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. The last modification time of the catalog. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. The last modification time of the catalog. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type BigLakeCatalogStatus struct {
 	/* Conditions represent the latest available observations of the
-	   BigLakeCatalog's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the BigLakeCatalog resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    BigLakeCatalog's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the BigLakeCatalog resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *BiglakecatalogObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *BiglakecatalogObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbiglakecatalog;gcpbiglakecatalogs
@@ -91,22 +91,20 @@ type BigLakeCatalogStatus struct {
 // BigLakeCatalog is the Schema for the bigquerybiglake API
 // +k8s:openapi-gen=true
 type BigLakeCatalog struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   BigLakeCatalogSpec   `json:"spec,omitempty"`
-	Status BigLakeCatalogStatus `json:"status,omitempty"`
+  Spec BigLakeCatalogSpec `json:"spec,omitempty"`
+  Status BigLakeCatalogStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// BigLakeCatalogList contains a list of BigLakeCatalog
-type BigLakeCatalogList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []BigLakeCatalog `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&BigLakeCatalog{}, &BigLakeCatalogList{})
-}
+ // BigLakeCatalogList contains a list of BigLakeCatalog
+ type BigLakeCatalogList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []BigLakeCatalog `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&BigLakeCatalog{}, &BigLakeCatalogList{})
+ }

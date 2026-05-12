@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,34 +30,34 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ApigeeEnvironmentSpec struct {
-	/* Reference to parent Apigee Organization. */
-	ApigeeOrganizationRef v1alpha1.ResourceRef `json:"apigeeOrganizationRef"`
+/* Reference to parent Apigee Organization. */
+ApigeeOrganizationRef v1alpha1.ResourceRef `json:"apigeeOrganizationRef"`
 
-	/* Optional. Description of the environment. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* Optional. Description of the environment. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Optional. Display name for this environment. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+/* Optional. Display name for this environment. */
+// +optional
+DisplayName *string `json:"displayName,omitempty"`
 
-	/* Optional. Key-value pairs that may be used for customizing the environment. */
-	// +optional
-	Properties map[string]string `json:"properties,omitempty"`
+/* Optional. Key-value pairs that may be used for customizing the environment. */
+// +optional
+Properties map[string]string `json:"properties,omitempty"`
 
-	/* The ApigeeEnvironment name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The ApigeeEnvironment name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type EnvironmentObservedStateStatus struct {
@@ -64,33 +65,32 @@ type EnvironmentObservedStateStatus struct {
 
 type ApigeeEnvironmentStatus struct {
 	/* Conditions represent the latest available observations of the
-	   ApigeeEnvironment's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Output only. Creation time of this environment as milliseconds since epoch. */
-	// +optional
-	CreatedAt *int64 `json:"createdAt,omitempty"`
+	    ApigeeEnvironment's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* Output only. Creation time of this environment as milliseconds since epoch. */
+// +optional
+CreatedAt *int64 `json:"createdAt,omitempty"`
 
-	/* A unique specifier for the ApigeeEnvironment resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+/* A unique specifier for the ApigeeEnvironment resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* Output only. Last modification time of this environment as milliseconds since epoch. */
-	// +optional
-	LastModifiedAt *int64 `json:"lastModifiedAt,omitempty"`
+/* Output only. Last modification time of this environment as milliseconds since epoch. */
+// +optional
+LastModifiedAt *int64 `json:"lastModifiedAt,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *EnvironmentObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *EnvironmentObservedStateStatus `json:"observedState,omitempty"`
 
-	/* Output only. State of the environment. Values other than ACTIVE means the resource is not ready to use. */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* Output only. State of the environment. Values other than ACTIVE means the resource is not ready to use. */
+// +optional
+State *string `json:"state,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpapigeeenvironment;gcpapigeeenvironments
@@ -106,22 +106,20 @@ type ApigeeEnvironmentStatus struct {
 // ApigeeEnvironment is the Schema for the apigee API
 // +k8s:openapi-gen=true
 type ApigeeEnvironment struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ApigeeEnvironmentSpec   `json:"spec,omitempty"`
-	Status ApigeeEnvironmentStatus `json:"status,omitempty"`
+  Spec ApigeeEnvironmentSpec `json:"spec,omitempty"`
+  Status ApigeeEnvironmentStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// ApigeeEnvironmentList contains a list of ApigeeEnvironment
-type ApigeeEnvironmentList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ApigeeEnvironment `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&ApigeeEnvironment{}, &ApigeeEnvironmentList{})
-}
+ // ApigeeEnvironmentList contains a list of ApigeeEnvironment
+ type ApigeeEnvironmentList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []ApigeeEnvironment `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&ApigeeEnvironment{}, &ApigeeEnvironmentList{})
+ }
