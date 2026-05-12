@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,57 +29,57 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type BackupplanBackupConfig struct {
-/* If True, include all namespaced resources */
-// +optional
-AllNamespaces *bool `json:"allNamespaces,omitempty"`
+	/* If True, include all namespaced resources */
+	// +optional
+	AllNamespaces *bool `json:"allNamespaces,omitempty"`
 
 	/* Optional. This defines a customer managed encryption key that will be
 	used to encrypt the "config" portion (the Kubernetes resources) of
 	Backups created via this plan.
-	
+
 	Default (empty): Config backup artifacts will not be encrypted. */
-// +optional
-EncryptionKey *BackupplanEncryptionKey `json:"encryptionKey,omitempty"`
+	// +optional
+	EncryptionKey *BackupplanEncryptionKey `json:"encryptionKey,omitempty"`
 
 	/* Optional. This flag specifies whether Kubernetes Secret resources should
 	be included when they fall into the scope of Backups.
-	
+
 	Default: False */
-// +optional
-IncludeSecrets *bool `json:"includeSecrets,omitempty"`
+	// +optional
+	IncludeSecrets *bool `json:"includeSecrets,omitempty"`
 
 	/* Optional. This flag specifies whether volume data should be backed up
 	when PVCs are included in the scope of a Backup.
-	
+
 	Default: False */
-// +optional
-IncludeVolumeData *bool `json:"includeVolumeData,omitempty"`
+	// +optional
+	IncludeVolumeData *bool `json:"includeVolumeData,omitempty"`
 
 	/* Optional. If false, Backups will fail when Backup for GKE detects
 	Kubernetes configuration that is non-standard or
 	requires additional setup to restore.
-	
+
 	Default: False */
-// +optional
-PermissiveMode *bool `json:"permissiveMode,omitempty"`
+	// +optional
+	PermissiveMode *bool `json:"permissiveMode,omitempty"`
 
-/* If set, include just the resources referenced by the listed ProtectedApplications. */
-// +optional
-SelectedApplications *BackupplanSelectedApplications `json:"selectedApplications,omitempty"`
+	/* If set, include just the resources referenced by the listed ProtectedApplications. */
+	// +optional
+	SelectedApplications *BackupplanSelectedApplications `json:"selectedApplications,omitempty"`
 
-/* If set, include just the resources in the listed namespaces. */
-// +optional
-SelectedNamespaces *BackupplanSelectedNamespaces `json:"selectedNamespaces,omitempty"`
+	/* If set, include just the resources in the listed namespaces. */
+	// +optional
+	SelectedNamespaces *BackupplanSelectedNamespaces `json:"selectedNamespaces,omitempty"`
 }
 
 type BackupplanBackupSchedule struct {
@@ -92,17 +91,17 @@ type BackupplanBackupSchedule struct {
 	is defined, then
 	[backup_retain_days][google.cloud.gkebackup.v1.BackupPlan.RetentionPolicy.backup_retain_days]
 	must also be defined.
-	
+
 	Default (empty): no automatic backup creation will occur. */
-// +optional
-CronSchedule *string `json:"cronSchedule,omitempty"`
+	// +optional
+	CronSchedule *string `json:"cronSchedule,omitempty"`
 
 	/* Optional. This flag denotes whether automatic Backup creation is paused
 	for this BackupPlan.
-	
+
 	Default: False */
-// +optional
-Paused *bool `json:"paused,omitempty"`
+	// +optional
+	Paused *bool `json:"paused,omitempty"`
 
 	/* Optional. Defines the RPO schedule configuration for this BackupPlan.
 	This is mutually exclusive with the
@@ -111,52 +110,52 @@ Paused *bool `json:"paused,omitempty"`
 	is defined, then
 	[backup_retain_days][google.cloud.gkebackup.v1.BackupPlan.RetentionPolicy.backup_retain_days]
 	must also be defined.
-	
+
 	Default (empty): no automatic backup creation will occur. */
-// +optional
-RpoConfig *BackupplanRpoConfig `json:"rpoConfig,omitempty"`
+	// +optional
+	RpoConfig *BackupplanRpoConfig `json:"rpoConfig,omitempty"`
 }
 
 type BackupplanDaysOfWeek struct {
-/* Optional. A list of days of week. */
-// +optional
-DaysOfWeek []BackupplanDaysOfWeek `json:"daysOfWeek,omitempty"`
+	/* Optional. A list of days of week. */
+	// +optional
+	DaysOfWeek []BackupplanDaysOfWeek `json:"daysOfWeek,omitempty"`
 }
 
 type BackupplanEncryptionKey struct {
-/* Optional. Google Cloud KMS encryption key. */
-// +optional
-KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	/* Optional. Google Cloud KMS encryption key. */
+	// +optional
+	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
 type BackupplanExclusionWindows struct {
-/* The exclusion window occurs every day if set to "True". Specifying this field to "False" is an error. */
-// +optional
-Daily *bool `json:"daily,omitempty"`
+	/* The exclusion window occurs every day if set to "True". Specifying this field to "False" is an error. */
+	// +optional
+	Daily *bool `json:"daily,omitempty"`
 
-/* The exclusion window occurs on these days of each week in UTC. */
-// +optional
-DaysOfWeek *BackupplanDaysOfWeek `json:"daysOfWeek,omitempty"`
+	/* The exclusion window occurs on these days of each week in UTC. */
+	// +optional
+	DaysOfWeek *BackupplanDaysOfWeek `json:"daysOfWeek,omitempty"`
 
-/* Required. Specifies duration of the window. Duration must be >= 5 minutes and < (target RPO - 20 minutes). Additional restrictions based on the recurrence type to allow some time for backup to happen: - single_occurrence_date:  no restriction, but UI may warn about this when duration >= target RPO - daily window: duration < 24 hours - weekly window: - days of week includes all seven days of a week: duration < 24 hours - all other weekly window: duration < 168 hours (i.e., 24 * 7 hours) */
-Duration string `json:"duration"`
+	/* Required. Specifies duration of the window. Duration must be >= 5 minutes and < (target RPO - 20 minutes). Additional restrictions based on the recurrence type to allow some time for backup to happen: - single_occurrence_date:  no restriction, but UI may warn about this when duration >= target RPO - daily window: duration < 24 hours - weekly window: - days of week includes all seven days of a week: duration < 24 hours - all other weekly window: duration < 168 hours (i.e., 24 * 7 hours) */
+	Duration string `json:"duration"`
 
-/* No recurrence. The exclusion window occurs only once and on this date in UTC. */
-// +optional
-SingleOccurrenceDate *BackupplanSingleOccurrenceDate `json:"singleOccurrenceDate,omitempty"`
+	/* No recurrence. The exclusion window occurs only once and on this date in UTC. */
+	// +optional
+	SingleOccurrenceDate *BackupplanSingleOccurrenceDate `json:"singleOccurrenceDate,omitempty"`
 
-/* Required. Specifies the start time of the window using time of the day in UTC. */
-StartTime BackupplanStartTime `json:"startTime"`
+	/* Required. Specifies the start time of the window using time of the day in UTC. */
+	StartTime BackupplanStartTime `json:"startTime"`
 }
 
 type BackupplanNamespacedNames struct {
-/* Optional. The name of the Kubernetes resource. */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* Optional. The name of the Kubernetes resource. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* Optional. The Namespace of the Kubernetes resource. */
-// +optional
-Namespace *string `json:"namespace,omitempty"`
+	/* Optional. The Namespace of the Kubernetes resource. */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type BackupplanRetentionPolicy struct {
@@ -167,10 +166,10 @@ type BackupplanRetentionPolicy struct {
 	Updating this field of a BackupPlan does NOT affect existing Backups
 	under it. Backups created AFTER a successful update will inherit
 	the new value.
-	
+
 	Default: 0 (no delete blocking) */
-// +optional
-BackupDeleteLockDays *int32 `json:"backupDeleteLockDays,omitempty"`
+	// +optional
+	BackupDeleteLockDays *int32 `json:"backupDeleteLockDays,omitempty"`
 
 	/* Optional. The default maximum age of a Backup created via this
 	BackupPlan. This field MUST be an integer value >= 0 and <= 365. If
@@ -189,183 +188,184 @@ BackupDeleteLockDays *int32 `json:"backupDeleteLockDays,omitempty"`
 	defined, then this must be
 	<= 360 * [target_rpo_minutes][Schedule.rpo_config.target_rpo_minutes] /
 	(1440minutes/day).
-	
+
 	Default: 0 (no automatic deletion) */
-// +optional
-BackupRetainDays *int32 `json:"backupRetainDays,omitempty"`
+	// +optional
+	BackupRetainDays *int32 `json:"backupRetainDays,omitempty"`
 
 	/* Optional. This flag denotes whether the retention policy of this
 	BackupPlan is locked.  If set to True, no further update is allowed on
 	this policy, including the `locked` field itself.
-	
+
 	Default: False */
-// +optional
-Locked *bool `json:"locked,omitempty"`
+	// +optional
+	Locked *bool `json:"locked,omitempty"`
 }
 
 type BackupplanRpoConfig struct {
-/* Optional. User specified time windows during which backup can NOT happen for this BackupPlan - backups should start and finish outside of any given exclusion window. Note: backup jobs will be scheduled to start and finish outside the duration of the window as much as possible, but running jobs will not get canceled when it runs into the window. All the time and date values in exclusion_windows entry in the API are in UTC. We only allow <=1 recurrence (daily or weekly) exclusion window for a BackupPlan while no restriction on number of single occurrence windows. */
-// +optional
-ExclusionWindows []BackupplanExclusionWindows `json:"exclusionWindows,omitempty"`
+	/* Optional. User specified time windows during which backup can NOT happen for this BackupPlan - backups should start and finish outside of any given exclusion window. Note: backup jobs will be scheduled to start and finish outside the duration of the window as much as possible, but running jobs will not get canceled when it runs into the window. All the time and date values in exclusion_windows entry in the API are in UTC. We only allow <=1 recurrence (daily or weekly) exclusion window for a BackupPlan while no restriction on number of single occurrence windows. */
+	// +optional
+	ExclusionWindows []BackupplanExclusionWindows `json:"exclusionWindows,omitempty"`
 
-/* Required. Defines the target RPO for the BackupPlan in minutes, which means the target maximum data loss in time that is acceptable for this BackupPlan. This must be at least 60, i.e., 1 hour, and at most 86400, i.e., 60 days. */
-// +optional
-TargetRPOMinutes *int32 `json:"targetRPOMinutes,omitempty"`
+	/* Required. Defines the target RPO for the BackupPlan in minutes, which means the target maximum data loss in time that is acceptable for this BackupPlan. This must be at least 60, i.e., 1 hour, and at most 86400, i.e., 60 days. */
+	// +optional
+	TargetRPOMinutes *int32 `json:"targetRPOMinutes,omitempty"`
 }
 
 type BackupplanSelectedApplications struct {
-/* Optional. A list of namespaced Kubernetes resources. */
-// +optional
-NamespacedNames []BackupplanNamespacedNames `json:"namespacedNames,omitempty"`
+	/* Optional. A list of namespaced Kubernetes resources. */
+	// +optional
+	NamespacedNames []BackupplanNamespacedNames `json:"namespacedNames,omitempty"`
 }
 
 type BackupplanSelectedNamespaces struct {
-/* Optional. A list of Kubernetes Namespaces */
-// +optional
-Namespaces []string `json:"namespaces,omitempty"`
+	/* Optional. A list of Kubernetes Namespaces */
+	// +optional
+	Namespaces []string `json:"namespaces,omitempty"`
 }
 
 type BackupplanSingleOccurrenceDate struct {
-/* Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant. */
-// +optional
-Day *int32 `json:"day,omitempty"`
+	/* Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant. */
+	// +optional
+	Day *int32 `json:"day,omitempty"`
 
-/* Month of a year. Must be from 1 to 12, or 0 to specify a year without a month and day. */
-// +optional
-Month *int32 `json:"month,omitempty"`
+	/* Month of a year. Must be from 1 to 12, or 0 to specify a year without a month and day. */
+	// +optional
+	Month *int32 `json:"month,omitempty"`
 
-/* Year of the date. Must be from 1 to 9999, or 0 to specify a date without a year. */
-// +optional
-Year *int32 `json:"year,omitempty"`
+	/* Year of the date. Must be from 1 to 9999, or 0 to specify a date without a year. */
+	// +optional
+	Year *int32 `json:"year,omitempty"`
 }
 
 type BackupplanStartTime struct {
-/* Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time. */
-// +optional
-Hours *int32 `json:"hours,omitempty"`
+	/* Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time. */
+	// +optional
+	Hours *int32 `json:"hours,omitempty"`
 
-/* Minutes of hour of day. Must be from 0 to 59. */
-// +optional
-Minutes *int32 `json:"minutes,omitempty"`
+	/* Minutes of hour of day. Must be from 0 to 59. */
+	// +optional
+	Minutes *int32 `json:"minutes,omitempty"`
 
-/* Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999. */
-// +optional
-Nanos *int32 `json:"nanos,omitempty"`
+	/* Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999. */
+	// +optional
+	Nanos *int32 `json:"nanos,omitempty"`
 
-/* Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds. */
-// +optional
-Seconds *int32 `json:"seconds,omitempty"`
+	/* Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds. */
+	// +optional
+	Seconds *int32 `json:"seconds,omitempty"`
 }
 
 type GKEBackupBackupPlanSpec struct {
-/* Optional. Defines the configuration of Backups created via this BackupPlan. */
-// +optional
-BackupConfig *BackupplanBackupConfig `json:"backupConfig,omitempty"`
+	/* Optional. Defines the configuration of Backups created via this BackupPlan. */
+	// +optional
+	BackupConfig *BackupplanBackupConfig `json:"backupConfig,omitempty"`
 
-/* Optional. Defines a schedule for automatic Backup creation via this BackupPlan. */
-// +optional
-BackupSchedule *BackupplanBackupSchedule `json:"backupSchedule,omitempty"`
+	/* Optional. Defines a schedule for automatic Backup creation via this BackupPlan. */
+	// +optional
+	BackupSchedule *BackupplanBackupSchedule `json:"backupSchedule,omitempty"`
 
-/* Required. Immutable. The source cluster from which Backups will be created via this BackupPlan. */
-ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
+	/* Required. Immutable. The source cluster from which Backups will be created via this BackupPlan. */
+	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
 
 	/* Optional. This flag indicates whether this BackupPlan has been deactivated.
 	Setting this field to True locks the BackupPlan such that no further
 	updates will be allowed (except deletes), including the deactivated field
 	itself. It also prevents any new Backups from being created via this
 	BackupPlan (including scheduled Backups).
-	
+
 	Default: False */
-// +optional
-Deactivated *bool `json:"deactivated,omitempty"`
+	// +optional
+	Deactivated *bool `json:"deactivated,omitempty"`
 
-/* Optional. User specified descriptive string for this BackupPlan. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Optional. User specified descriptive string for this BackupPlan. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Optional. A set of custom labels supplied by user. */
-// +optional
-Labels map[string]string `json:"labels,omitempty"`
+	/* Optional. A set of custom labels supplied by user. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
 
-/* Immutable. */
-Location string `json:"location"`
+	/* Immutable. */
+	Location string `json:"location"`
 
-/* The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* The GKEBackupBackupPlan name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The GKEBackupBackupPlan name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Optional. RetentionPolicy governs lifecycle of Backups created under this plan. */
-// +optional
-RetentionPolicy *BackupplanRetentionPolicy `json:"retentionPolicy,omitempty"`
+	/* Optional. RetentionPolicy governs lifecycle of Backups created under this plan. */
+	// +optional
+	RetentionPolicy *BackupplanRetentionPolicy `json:"retentionPolicy,omitempty"`
 }
 
 type BackupplanBackupScheduleStatus struct {
-/* Output only. Start time of next scheduled backup under this BackupPlan by either cron_schedule or rpo config. */
-// +optional
-NextScheduledBackupTime *string `json:"nextScheduledBackupTime,omitempty"`
+	/* Output only. Start time of next scheduled backup under this BackupPlan by either cron_schedule or rpo config. */
+	// +optional
+	NextScheduledBackupTime *string `json:"nextScheduledBackupTime,omitempty"`
 }
 
 type BackupplanObservedStateStatus struct {
-/* Optional. Defines a schedule for automatic Backup creation via this BackupPlan. */
-// +optional
-BackupSchedule *BackupplanBackupScheduleStatus `json:"backupSchedule,omitempty"`
+	/* Optional. Defines a schedule for automatic Backup creation via this BackupPlan. */
+	// +optional
+	BackupSchedule *BackupplanBackupScheduleStatus `json:"backupSchedule,omitempty"`
 
-/* Output only. The timestamp when this BackupPlan resource was created. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. The timestamp when this BackupPlan resource was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. `etag` is used for optimistic concurrency control as a way to help prevent simultaneous updates of a backup plan from overwriting each other. It is strongly suggested that systems make use of the 'etag' in the read-modify-write cycle to perform BackupPlan updates in order to avoid race conditions: An `etag` is returned in the response to `GetBackupPlan`, and systems are expected to put that etag in the request to `UpdateBackupPlan` or `DeleteBackupPlan` to ensure that their change will be applied to the same version of the resource. */
-// +optional
-Etag *string `json:"etag,omitempty"`
+	/* Output only. `etag` is used for optimistic concurrency control as a way to help prevent simultaneous updates of a backup plan from overwriting each other. It is strongly suggested that systems make use of the 'etag' in the read-modify-write cycle to perform BackupPlan updates in order to avoid race conditions: An `etag` is returned in the response to `GetBackupPlan`, and systems are expected to put that etag in the request to `UpdateBackupPlan` or `DeleteBackupPlan` to ensure that their change will be applied to the same version of the resource. */
+	// +optional
+	Etag *string `json:"etag,omitempty"`
 
-/* Output only. The number of Kubernetes Pods backed up in the last successful Backup created via this BackupPlan. */
-// +optional
-ProtectedPodCount *int32 `json:"protectedPodCount,omitempty"`
+	/* Output only. The number of Kubernetes Pods backed up in the last successful Backup created via this BackupPlan. */
+	// +optional
+	ProtectedPodCount *int32 `json:"protectedPodCount,omitempty"`
 
-/* Output only. A number that represents the current risk level of this BackupPlan from RPO perspective with 1 being no risk and 5 being highest risk. */
-// +optional
-RpoRiskLevel *int32 `json:"rpoRiskLevel,omitempty"`
+	/* Output only. A number that represents the current risk level of this BackupPlan from RPO perspective with 1 being no risk and 5 being highest risk. */
+	// +optional
+	RpoRiskLevel *int32 `json:"rpoRiskLevel,omitempty"`
 
-/* Output only. Human-readable description of why the BackupPlan is in the current rpo_risk_level and action items if any. */
-// +optional
-RpoRiskReason *string `json:"rpoRiskReason,omitempty"`
+	/* Output only. Human-readable description of why the BackupPlan is in the current rpo_risk_level and action items if any. */
+	// +optional
+	RpoRiskReason *string `json:"rpoRiskReason,omitempty"`
 
-/* Output only. State of the BackupPlan. This State field reflects the various stages a BackupPlan can be in during the Create operation. It will be set to "DEACTIVATED" if the BackupPlan is deactivated on an Update */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. State of the BackupPlan. This State field reflects the various stages a BackupPlan can be in during the Create operation. It will be set to "DEACTIVATED" if the BackupPlan is deactivated on an Update */
+	// +optional
+	State *string `json:"state,omitempty"`
 
-/* Output only. Human-readable description of why BackupPlan is in the current `state` */
-// +optional
-StateReason *string `json:"stateReason,omitempty"`
+	/* Output only. Human-readable description of why BackupPlan is in the current `state` */
+	// +optional
+	StateReason *string `json:"stateReason,omitempty"`
 
-/* Output only. Server generated global unique identifier of [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) format. */
-// +optional
-Uid *string `json:"uid,omitempty"`
+	/* Output only. Server generated global unique identifier of [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) format. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
 
-/* Output only. The timestamp when this BackupPlan resource was last updated. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. The timestamp when this BackupPlan resource was last updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type GKEBackupBackupPlanStatus struct {
 	/* Conditions represent the latest available observations of the
-	    GKEBackupBackupPlan's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the GKEBackupBackupPlan resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   GKEBackupBackupPlan's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the GKEBackupBackupPlan resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *BackupplanObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *BackupplanObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpgkebackupbackupplan;gcpgkebackupbackupplans
@@ -380,20 +380,22 @@ ObservedState *BackupplanObservedStateStatus `json:"observedState,omitempty"`
 // GKEBackupBackupPlan is the Schema for the gkebackup API
 // +k8s:openapi-gen=true
 type GKEBackupBackupPlan struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec GKEBackupBackupPlanSpec `json:"spec,omitempty"`
-  Status GKEBackupBackupPlanStatus `json:"status,omitempty"`
+	Spec   GKEBackupBackupPlanSpec   `json:"spec,omitempty"`
+	Status GKEBackupBackupPlanStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // GKEBackupBackupPlanList contains a list of GKEBackupBackupPlan
- type GKEBackupBackupPlanList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []GKEBackupBackupPlan `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&GKEBackupBackupPlan{}, &GKEBackupBackupPlanList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// GKEBackupBackupPlanList contains a list of GKEBackupBackupPlan
+type GKEBackupBackupPlanList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []GKEBackupBackupPlan `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&GKEBackupBackupPlan{}, &GKEBackupBackupPlanList{})
+}

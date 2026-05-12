@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,82 +29,83 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type VMwareEngineNetworkSpec struct {
-/* User-provided description for this VMware Engine network. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* User-provided description for this VMware Engine network. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Immutable. */
-Location string `json:"location"`
+	/* Immutable. */
+	Location string `json:"location"`
 
-/* The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* The VMwareEngineNetwork name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The VMwareEngineNetwork name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Required. VMware Engine network type. */
-Type string `json:"type"`
+	/* Required. VMware Engine network type. */
+	Type string `json:"type"`
 }
 
 type NetworkObservedStateStatus struct {
-/* Output only. Creation time of this resource. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. Creation time of this resource. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. State of the VMware Engine network. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. State of the VMware Engine network. */
+	// +optional
+	State *string `json:"state,omitempty"`
 
-/* Output only. System-generated unique identifier for the resource. */
-// +optional
-Uid *string `json:"uid,omitempty"`
+	/* Output only. System-generated unique identifier for the resource. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
 
-/* Output only. Last update time of this resource. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. Last update time of this resource. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 
-/* Output only. VMware Engine service VPC networks that provide connectivity from a private cloud to customer projects, the internet, and other Google Cloud services. */
-// +optional
-VpcNetworks []NetworkVpcNetworksStatus `json:"vpcNetworks,omitempty"`
+	/* Output only. VMware Engine service VPC networks that provide connectivity from a private cloud to customer projects, the internet, and other Google Cloud services. */
+	// +optional
+	VpcNetworks []NetworkVpcNetworksStatus `json:"vpcNetworks,omitempty"`
 }
 
 type NetworkVpcNetworksStatus struct {
-/* Output only. The relative resource name of the service VPC network this VMware Engine network is attached to. For example: `projects/123123/global/networks/my-network` */
-// +optional
-Network *string `json:"network,omitempty"`
+	/* Output only. The relative resource name of the service VPC network this VMware Engine network is attached to. For example: `projects/123123/global/networks/my-network` */
+	// +optional
+	Network *string `json:"network,omitempty"`
 
-/* Output only. Type of VPC network (INTRANET, INTERNET, or GOOGLE_CLOUD) */
-// +optional
-Type *string `json:"type,omitempty"`
+	/* Output only. Type of VPC network (INTRANET, INTERNET, or GOOGLE_CLOUD) */
+	// +optional
+	Type *string `json:"type,omitempty"`
 }
 
 type VMwareEngineNetworkStatus struct {
 	/* Conditions represent the latest available observations of the
-	    VMwareEngineNetwork's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the VMwareEngineNetwork resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   VMwareEngineNetwork's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the VMwareEngineNetwork resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *NetworkObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *NetworkObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpvmwareenginenetwork;gcpvmwareenginenetworks
@@ -120,20 +120,22 @@ ObservedState *NetworkObservedStateStatus `json:"observedState,omitempty"`
 // VMwareEngineNetwork is the Schema for the vmwareengine API
 // +k8s:openapi-gen=true
 type VMwareEngineNetwork struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec VMwareEngineNetworkSpec `json:"spec,omitempty"`
-  Status VMwareEngineNetworkStatus `json:"status,omitempty"`
+	Spec   VMwareEngineNetworkSpec   `json:"spec,omitempty"`
+	Status VMwareEngineNetworkStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // VMwareEngineNetworkList contains a list of VMwareEngineNetwork
- type VMwareEngineNetworkList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []VMwareEngineNetwork `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&VMwareEngineNetwork{}, &VMwareEngineNetworkList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// VMwareEngineNetworkList contains a list of VMwareEngineNetwork
+type VMwareEngineNetworkList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []VMwareEngineNetwork `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&VMwareEngineNetwork{}, &VMwareEngineNetworkList{})
+}

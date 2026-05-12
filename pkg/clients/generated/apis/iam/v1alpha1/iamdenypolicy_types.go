@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,139 +29,139 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type DenypolicyDenialCondition struct {
-/* Optional. Description of the expression. This is a longer text which describes the expression, e.g. when hovered over it in a UI. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Optional. Description of the expression. This is a longer text which describes the expression, e.g. when hovered over it in a UI. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Textual representation of an expression in Common Expression Language syntax. */
-// +optional
-Expression *string `json:"expression,omitempty"`
+	/* Textual representation of an expression in Common Expression Language syntax. */
+	// +optional
+	Expression *string `json:"expression,omitempty"`
 
-/* Optional. String indicating the location of the expression for error reporting, e.g. a file name and a position in the file. */
-// +optional
-Location *string `json:"location,omitempty"`
+	/* Optional. String indicating the location of the expression for error reporting, e.g. a file name and a position in the file. */
+	// +optional
+	Location *string `json:"location,omitempty"`
 
-/* Optional. Title for the expression, i.e. a short string describing its purpose. This can be used e.g. in UIs which allow to enter the expression. */
-// +optional
-Title *string `json:"title,omitempty"`
+	/* Optional. Title for the expression, i.e. a short string describing its purpose. This can be used e.g. in UIs which allow to enter the expression. */
+	// +optional
+	Title *string `json:"title,omitempty"`
 }
 
 type DenypolicyDenyRule struct {
 	/* The condition that determines whether this deny rule applies to a request.
 	If the condition expression evaluates to `true`, then the deny rule is
 	applied; otherwise, the deny rule is not applied.
-	
+
 	Each deny rule is evaluated independently. If this deny rule does not apply
 	to a request, other deny rules might still apply.
-	
+
 	The condition can use CEL functions that evaluate
 	[resource
 	tags](https://cloud.google.com/iam/help/conditions/resource-tags). Other
 	functions and operators are not supported. */
-// +optional
-DenialCondition *DenypolicyDenialCondition `json:"denialCondition,omitempty"`
+	// +optional
+	DenialCondition *DenypolicyDenialCondition `json:"denialCondition,omitempty"`
 
-/* The permissions that are explicitly denied by this rule. Each permission uses the format `{service_fqdn}/{resource}.{verb}`, where `{service_fqdn}` is the fully qualified domain name for the service. For example, `iam.googleapis.com/roles.list`. */
-// +optional
-DeniedPermissions []string `json:"deniedPermissions,omitempty"`
+	/* The permissions that are explicitly denied by this rule. Each permission uses the format `{service_fqdn}/{resource}.{verb}`, where `{service_fqdn}` is the fully qualified domain name for the service. For example, `iam.googleapis.com/roles.list`. */
+	// +optional
+	DeniedPermissions []string `json:"deniedPermissions,omitempty"`
 
 	/* The identities that are prevented from using one or more permissions on
 	Google Cloud resources. This field can contain the following values:
-	
+
 	* `principalSet://goog/public:all`: A special identifier that represents
 	any principal that is on the internet, even if they do not have a Google
 	Account or are not logged in.
-	
+
 	* `principal://goog/subject/{email_id}`: A specific Google Account.
 	Includes Gmail, Cloud Identity, and Google Workspace user accounts. For
 	example, `principal://goog/subject/alice@example.com`.
-	
+
 	* `deleted:principal://goog/subject/{email_id}?uid={uid}`: A specific
 	Google Account that was deleted recently. For example,
 	`deleted:principal://goog/subject/alice@example.com?uid=1234567890`. If
 	the Google Account is recovered, this identifier reverts to the standard
 	identifier for a Google Account.
-	
+
 	* `principalSet://goog/group/{group_id}`: A Google group. For example,
 	`principalSet://goog/group/admins@example.com`.
-	
+
 	* `deleted:principalSet://goog/group/{group_id}?uid={uid}`: A Google group
 	that was deleted recently. For example,
 	`deleted:principalSet://goog/group/admins@example.com?uid=1234567890`. If
 	the Google group is restored, this identifier reverts to the standard
 	identifier for a Google group.
-	
+
 	* `principal://iam.googleapis.com/projects/-/serviceAccounts/{service_account_id}`:
 	A Google Cloud service account. For example,
 	`principal://iam.googleapis.com/projects/-/serviceAccounts/my-service-account@iam.gserviceaccount.com`.
-	
+
 	* `deleted:principal://iam.googleapis.com/projects/-/serviceAccounts/{service_account_id}?uid={uid}`:
 	A Google Cloud service account that was deleted recently. For example,
 	`deleted:principal://iam.googleapis.com/projects/-/serviceAccounts/my-service-account@iam.gserviceaccount.com?uid=1234567890`.
 	If the service account is undeleted, this identifier reverts to the
 	standard identifier for a service account.
-	
+
 	* `principalSet://goog/cloudIdentityCustomerId/{customer_id}`: All of the
 	principals associated with the specified Google Workspace or Cloud
 	Identity customer ID. For example,
 	`principalSet://goog/cloudIdentityCustomerId/C01Abc35`. */
-// +optional
-DeniedPrincipals []string `json:"deniedPrincipals,omitempty"`
+	// +optional
+	DeniedPrincipals []string `json:"deniedPrincipals,omitempty"`
 
 	/* Specifies the permissions that this rule excludes from the set of denied
 	permissions given by `denied_permissions`. If a permission appears in
 	`denied_permissions` _and_ in `exception_permissions` then it will _not_ be
 	denied.
-	
+
 	The excluded permissions can be specified using the same syntax as
 	`denied_permissions`. */
-// +optional
-ExceptionPermissions []string `json:"exceptionPermissions,omitempty"`
+	// +optional
+	ExceptionPermissions []string `json:"exceptionPermissions,omitempty"`
 
 	/* The identities that are excluded from the deny rule, even if they are
 	listed in the `denied_principals`. For example, you could add a Google
 	group to the `denied_principals`, then exclude specific users who belong to
 	that group.
-	
+
 	This field can contain the same values as the `denied_principals` field,
 	excluding `principalSet://goog/public:all`, which represents all users on
 	the internet. */
-// +optional
-ExceptionPrincipals []string `json:"exceptionPrincipals,omitempty"`
+	// +optional
+	ExceptionPrincipals []string `json:"exceptionPrincipals,omitempty"`
 }
 
 type DenypolicyRules struct {
-/* A rule for a deny policy. */
-// +optional
-DenyRule *DenypolicyDenyRule `json:"denyRule,omitempty"`
+	/* A rule for a deny policy. */
+	// +optional
+	DenyRule *DenypolicyDenyRule `json:"denyRule,omitempty"`
 
-/* A user-specified description of the rule. This value can be up to 256 characters. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* A user-specified description of the rule. This value can be up to 256 characters. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 }
 
 type IAMDenyPolicySpec struct {
-/* A user-specified description of the `Policy`. This value can be up to 63 characters. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* A user-specified description of the `Policy`. This value can be up to 63 characters. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* The IAMDenyPolicy name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The IAMDenyPolicy name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* A list of rules that specify the behavior of the `Policy`. All of the rules should be of the `kind` specified in the `Policy`. */
-// +optional
-Rules []DenypolicyRules `json:"rules,omitempty"`
+	/* A list of rules that specify the behavior of the `Policy`. All of the rules should be of the `kind` specified in the `Policy`. */
+	// +optional
+	Rules []DenypolicyRules `json:"rules,omitempty"`
 }
 
 type DenypolicyObservedStateStatus struct {
@@ -170,20 +169,21 @@ type DenypolicyObservedStateStatus struct {
 
 type IAMDenyPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
-	    IAMDenyPolicy's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the IAMDenyPolicy resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   IAMDenyPolicy's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the IAMDenyPolicy resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *DenypolicyObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *DenypolicyObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpiamdenypolicy;gcpiamdenypolicies
@@ -198,20 +198,22 @@ ObservedState *DenypolicyObservedStateStatus `json:"observedState,omitempty"`
 // IAMDenyPolicy is the Schema for the iam API
 // +k8s:openapi-gen=true
 type IAMDenyPolicy struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec IAMDenyPolicySpec `json:"spec,omitempty"`
-  Status IAMDenyPolicyStatus `json:"status,omitempty"`
+	Spec   IAMDenyPolicySpec   `json:"spec,omitempty"`
+	Status IAMDenyPolicyStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // IAMDenyPolicyList contains a list of IAMDenyPolicy
- type IAMDenyPolicyList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []IAMDenyPolicy `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&IAMDenyPolicy{}, &IAMDenyPolicyList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// IAMDenyPolicyList contains a list of IAMDenyPolicy
+type IAMDenyPolicyList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []IAMDenyPolicy `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&IAMDenyPolicy{}, &IAMDenyPolicyList{})
+}

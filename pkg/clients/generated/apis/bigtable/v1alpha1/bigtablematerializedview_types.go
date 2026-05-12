@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,31 +29,31 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type BigtableMaterializedViewSpec struct {
-/* Optional. Set to true to make the MaterializedView protected against deletion. */
-// +optional
-DeletionProtection *bool `json:"deletionProtection,omitempty"`
+	/* Optional. Set to true to make the MaterializedView protected against deletion. */
+	// +optional
+	DeletionProtection *bool `json:"deletionProtection,omitempty"`
 
-/* InstanceRef defines the resource reference to BigtableInstance, which "External" field holds the GCP identifier for the KRM object. */
-// +optional
-InstanceRef *v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
+	/* InstanceRef defines the resource reference to BigtableInstance, which "External" field holds the GCP identifier for the KRM object. */
+	// +optional
+	InstanceRef *v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
 
-/* Immutable. MaterializedView's select query. */
-// +optional
-Query *string `json:"query,omitempty"`
+	/* Immutable. MaterializedView's select query. */
+	// +optional
+	Query *string `json:"query,omitempty"`
 
-/* The BigtableMaterializedView name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The BigtableMaterializedView name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type MaterializedviewObservedStateStatus struct {
@@ -62,24 +61,25 @@ type MaterializedviewObservedStateStatus struct {
 
 type BigtableMaterializedViewStatus struct {
 	/* Conditions represent the latest available observations of the
-	    BigtableMaterializedView's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the BigtableMaterializedView resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   BigtableMaterializedView's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the BigtableMaterializedView resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* The unique name of the BigtableMaterializedView. Values are of the form `projects/{project}/instances/{instance}/materializedViews/{materializedViewID}`. */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* The unique name of the BigtableMaterializedView. Values are of the form `projects/{project}/instances/{instance}/materializedViews/{materializedViewID}`. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *MaterializedviewObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *MaterializedviewObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigtablematerializedview;gcpbigtablematerializedviews
@@ -94,20 +94,22 @@ ObservedState *MaterializedviewObservedStateStatus `json:"observedState,omitempt
 // BigtableMaterializedView is the Schema for the bigtable API
 // +k8s:openapi-gen=true
 type BigtableMaterializedView struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec BigtableMaterializedViewSpec `json:"spec,omitempty"`
-  Status BigtableMaterializedViewStatus `json:"status,omitempty"`
+	Spec   BigtableMaterializedViewSpec   `json:"spec,omitempty"`
+	Status BigtableMaterializedViewStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // BigtableMaterializedViewList contains a list of BigtableMaterializedView
- type BigtableMaterializedViewList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []BigtableMaterializedView `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&BigtableMaterializedView{}, &BigtableMaterializedViewList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// BigtableMaterializedViewList contains a list of BigtableMaterializedView
+type BigtableMaterializedViewList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []BigtableMaterializedView `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&BigtableMaterializedView{}, &BigtableMaterializedViewList{})
+}

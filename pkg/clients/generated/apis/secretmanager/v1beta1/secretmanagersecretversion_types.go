@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,175 +29,176 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type SecretversionSecretData struct {
-/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-// +optional
-Value *string `json:"value,omitempty"`
+	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
+	// +optional
+	Value *string `json:"value,omitempty"`
 
-/* Source for the field's value. Cannot be used if 'value' is specified. */
-// +optional
-ValueFrom *SecretversionValueFrom `json:"valueFrom,omitempty"`
+	/* Source for the field's value. Cannot be used if 'value' is specified. */
+	// +optional
+	ValueFrom *SecretversionValueFrom `json:"valueFrom,omitempty"`
 }
 
 type SecretversionValueFrom struct {
-/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-// +optional
-SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
+	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
+	// +optional
+	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type SecretManagerSecretVersionSpec struct {
-/* DEPRECATED. You do not need to set this field in direct reconciler mode. Use delete-policy annotation instead. https://cloud.google.com/config-connector/docs/how-to/managing-deleting-resources#keeping_resources_after_deletion The deletion policy for the secret version. Setting 'ABANDON' allows the resource to be abandoned rather than deleted. Setting 'DISABLE' allows the resource to be disabled rather than deleted. Default is 'DELETE'. Possible values are: * DELETE * DISABLE * ABANDON. */
-// +optional
-DeletionPolicy *string `json:"deletionPolicy,omitempty"`
+	/* DEPRECATED. You do not need to set this field in direct reconciler mode. Use delete-policy annotation instead. https://cloud.google.com/config-connector/docs/how-to/managing-deleting-resources#keeping_resources_after_deletion The deletion policy for the secret version. Setting 'ABANDON' allows the resource to be abandoned rather than deleted. Setting 'DISABLE' allows the resource to be disabled rather than deleted. Default is 'DELETE'. Possible values are: * DELETE * DISABLE * ABANDON. */
+	// +optional
+	DeletionPolicy *string `json:"deletionPolicy,omitempty"`
 
-/* Should enable or disable the current SecretVersion. - Enabled version can be accessed and described. - Disabled version cannot be accessed, but the secret's contents still exist */
-// +optional
-Enabled *bool `json:"enabled,omitempty"`
+	/* Should enable or disable the current SecretVersion. - Enabled version can be accessed and described. - Disabled version cannot be accessed, but the secret's contents still exist */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
 
-/* DEPRECATED. You do not need to set this field in direct reconciler mode. */
-// +optional
-IsSecretDataBase64 *bool `json:"isSecretDataBase64,omitempty"`
+	/* DEPRECATED. You do not need to set this field in direct reconciler mode. */
+	// +optional
+	IsSecretDataBase64 *bool `json:"isSecretDataBase64,omitempty"`
 
-/* The service-generated SecretVersion number. If given, Config Connector acquires the resource from the Secret Manager service. If not given, Config Connector adds a new secret version to the GCP service, and you can find out the version number from `status.observedState.version` */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The service-generated SecretVersion number. If given, Config Connector acquires the resource from the Secret Manager service. If not given, Config Connector adds a new secret version to the GCP service, and you can find out the version number from `status.observedState.version` */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* The actual secret data. Config Connector supports secret data stored in Kubernetes secret or plain data (base64) */
-// +optional
-SecretData *SecretversionSecretData `json:"secretData,omitempty"`
+	/* The actual secret data. Config Connector supports secret data stored in Kubernetes secret or plain data (base64) */
+	// +optional
+	SecretData *SecretversionSecretData `json:"secretData,omitempty"`
 
-/* The resource name of the [Secret][google.cloud.secretmanager.v1.Secret] to create a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] for. */
-// +optional
-SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
+	/* The resource name of the [Secret][google.cloud.secretmanager.v1.Secret] to create a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] for. */
+	// +optional
+	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
 }
 
 type SecretversionAutomaticStatus struct {
-/* Output only. The customer-managed encryption status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. Only populated if customer-managed encryption is used. */
-// +optional
-CustomerManagedEncryption *SecretversionCustomerManagedEncryptionStatus `json:"customerManagedEncryption,omitempty"`
+	/* Output only. The customer-managed encryption status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. Only populated if customer-managed encryption is used. */
+	// +optional
+	CustomerManagedEncryption *SecretversionCustomerManagedEncryptionStatus `json:"customerManagedEncryption,omitempty"`
 }
 
 type SecretversionCustomerManagedEncryptionStatus struct {
-/* Required. The resource name of the Cloud KMS CryptoKeyVersion used to encrypt the secret payload, in the following format: `projects/* /locations/* /keyRings/* /cryptoKeys/* /versions/*`. */
-// +optional
-KmsKeyVersionName *string `json:"kmsKeyVersionName,omitempty"`
+	/* Required. The resource name of the Cloud KMS CryptoKeyVersion used to encrypt the secret payload, in the following format: `projects/* /locations/* /keyRings/* /cryptoKeys/* /versions/*`. */
+	// +optional
+	KmsKeyVersionName *string `json:"kmsKeyVersionName,omitempty"`
 }
 
 type SecretversionObservedStateStatus struct {
-/* Output only. True if payload checksum specified in [SecretPayload][google.cloud.secretmanager.v1.SecretPayload] object has been received by [SecretManagerService][google.cloud.secretmanager.v1.SecretManagerService] on [SecretManagerService.AddSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AddSecretVersion]. */
-// +optional
-ClientSpecifiedPayloadChecksum *bool `json:"clientSpecifiedPayloadChecksum,omitempty"`
+	/* Output only. True if payload checksum specified in [SecretPayload][google.cloud.secretmanager.v1.SecretPayload] object has been received by [SecretManagerService][google.cloud.secretmanager.v1.SecretManagerService] on [SecretManagerService.AddSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AddSecretVersion]. */
+	// +optional
+	ClientSpecifiedPayloadChecksum *bool `json:"clientSpecifiedPayloadChecksum,omitempty"`
 
-/* Output only. The time at which the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] was created. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. The time at which the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. The customer-managed encryption status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. Only populated if customer-managed encryption is used and [Secret][google.cloud.secretmanager.v1.Secret] is a Regionalised Secret. */
-// +optional
-CustomerManagedEncryption *SecretversionCustomerManagedEncryptionStatus `json:"customerManagedEncryption,omitempty"`
+	/* Output only. The customer-managed encryption status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. Only populated if customer-managed encryption is used and [Secret][google.cloud.secretmanager.v1.Secret] is a Regionalised Secret. */
+	// +optional
+	CustomerManagedEncryption *SecretversionCustomerManagedEncryptionStatus `json:"customerManagedEncryption,omitempty"`
 
-/* Output only. The time this [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] was destroyed. Only present if [state][google.cloud.secretmanager.v1.SecretVersion.state] is [DESTROYED][google.cloud.secretmanager.v1.SecretVersion.State.DESTROYED]. */
-// +optional
-DestroyTime *string `json:"destroyTime,omitempty"`
+	/* Output only. The time this [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] was destroyed. Only present if [state][google.cloud.secretmanager.v1.SecretVersion.state] is [DESTROYED][google.cloud.secretmanager.v1.SecretVersion.State.DESTROYED]. */
+	// +optional
+	DestroyTime *string `json:"destroyTime,omitempty"`
 
 	/* Output only. The resource name of the
 	[SecretVersion][google.cloud.secretmanager.v1.SecretVersion] in the
 	format `projects/* /secrets/* /versions/*`.
-	
+
 	[SecretVersion][google.cloud.secretmanager.v1.SecretVersion] IDs in a
 	[Secret][google.cloud.secretmanager.v1.Secret] start at 1 and are
 	incremented for each subsequent version of the secret. */
-// +optional
-Name *string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* The replication status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. */
-// +optional
-ReplicationStatus *SecretversionReplicationStatusStatus `json:"replicationStatus,omitempty"`
+	/* The replication status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. */
+	// +optional
+	ReplicationStatus *SecretversionReplicationStatusStatus `json:"replicationStatus,omitempty"`
 
-/* Optional. Output only. Scheduled destroy time for secret version. This is a part of the Delayed secret version destroy feature. For a Secret with a valid version destroy TTL, when a secert version is destroyed, the version is moved to disabled state and it is scheduled for destruction. The version is destroyed only after the `scheduled_destroy_time`. */
-// +optional
-ScheduledDestroyTime *string `json:"scheduledDestroyTime,omitempty"`
+	/* Optional. Output only. Scheduled destroy time for secret version. This is a part of the Delayed secret version destroy feature. For a Secret with a valid version destroy TTL, when a secert version is destroyed, the version is moved to disabled state and it is scheduled for destruction. The version is destroyed only after the `scheduled_destroy_time`. */
+	// +optional
+	ScheduledDestroyTime *string `json:"scheduledDestroyTime,omitempty"`
 }
 
 type SecretversionReplicasStatus struct {
-/* Output only. The customer-managed encryption status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. Only populated if customer-managed encryption is used. */
-// +optional
-CustomerManagedEncryption *SecretversionCustomerManagedEncryptionStatus `json:"customerManagedEncryption,omitempty"`
+	/* Output only. The customer-managed encryption status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. Only populated if customer-managed encryption is used. */
+	// +optional
+	CustomerManagedEncryption *SecretversionCustomerManagedEncryptionStatus `json:"customerManagedEncryption,omitempty"`
 
-/* Output only. The canonical ID of the replica location. For example: `"us-east1"`. */
-// +optional
-Location *string `json:"location,omitempty"`
+	/* Output only. The canonical ID of the replica location. For example: `"us-east1"`. */
+	// +optional
+	Location *string `json:"location,omitempty"`
 }
 
 type SecretversionReplicationStatusStatus struct {
 	/* Describes the replication status of a
 	[SecretVersion][google.cloud.secretmanager.v1.SecretVersion] with
 	automatic replication.
-	
+
 	Only populated if the parent
 	[Secret][google.cloud.secretmanager.v1.Secret] has an automatic
 	replication policy. */
-// +optional
-Automatic *SecretversionAutomaticStatus `json:"automatic,omitempty"`
+	// +optional
+	Automatic *SecretversionAutomaticStatus `json:"automatic,omitempty"`
 
 	/* Describes the replication status of a
 	[SecretVersion][google.cloud.secretmanager.v1.SecretVersion] with
 	user-managed replication.
-	
+
 	Only populated if the parent
 	[Secret][google.cloud.secretmanager.v1.Secret] has a user-managed
 	replication policy. */
-// +optional
-UserManaged *SecretversionUserManagedStatus `json:"userManaged,omitempty"`
+	// +optional
+	UserManaged *SecretversionUserManagedStatus `json:"userManaged,omitempty"`
 }
 
 type SecretversionUserManagedStatus struct {
-/* Output only. The list of replica statuses for the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. */
-// +optional
-Replicas []SecretversionReplicasStatus `json:"replicas,omitempty"`
+	/* Output only. The list of replica statuses for the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. */
+	// +optional
+	Replicas []SecretversionReplicasStatus `json:"replicas,omitempty"`
 }
 
 type SecretManagerSecretVersionStatus struct {
 	/* Conditions represent the latest available observations of the
-	    SecretManagerSecretVersion's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* DEPRECATING NOTE: Please use status.observedState.createTime instead. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	   SecretManagerSecretVersion's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* DEPRECATING NOTE: Please use status.observedState.createTime instead. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* DEPRECATING NOTE: Please use status.observedState.destroyTime instead. */
-// +optional
-DestroyTime *string `json:"destroyTime,omitempty"`
+	/* DEPRECATING NOTE: Please use status.observedState.destroyTime instead. */
+	// +optional
+	DestroyTime *string `json:"destroyTime,omitempty"`
 
-/* A unique specifier for the SecretManagerSecretVersion resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	/* A unique specifier for the SecretManagerSecretVersion resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* DEPRECATING NOTE: Please use status.observedState.name instead. */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* DEPRECATING NOTE: Please use status.observedState.name instead. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *SecretversionObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *SecretversionObservedStateStatus `json:"observedState,omitempty"`
 
-/* DEPRECATED. */
-// +optional
-Version *string `json:"version,omitempty"`
+	/* DEPRECATED. */
+	// +optional
+	Version *string `json:"version,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpsecretmanagersecretversion;gcpsecretmanagersecretversions
@@ -215,20 +215,22 @@ Version *string `json:"version,omitempty"`
 // SecretManagerSecretVersion is the Schema for the secretmanager API
 // +k8s:openapi-gen=true
 type SecretManagerSecretVersion struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec SecretManagerSecretVersionSpec `json:"spec,omitempty"`
-  Status SecretManagerSecretVersionStatus `json:"status,omitempty"`
+	Spec   SecretManagerSecretVersionSpec   `json:"spec,omitempty"`
+	Status SecretManagerSecretVersionStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // SecretManagerSecretVersionList contains a list of SecretManagerSecretVersion
- type SecretManagerSecretVersionList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []SecretManagerSecretVersion `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&SecretManagerSecretVersion{}, &SecretManagerSecretVersionList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// SecretManagerSecretVersionList contains a list of SecretManagerSecretVersion
+type SecretManagerSecretVersionList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []SecretManagerSecretVersion `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&SecretManagerSecretVersion{}, &SecretManagerSecretVersionList{})
+}

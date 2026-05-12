@@ -53,25 +53,23 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	EdgeContainerClusterGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(EdgeContainerCluster{}).Name(),
-  	}
-  
-  	EdgeContainerNodePoolGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(EdgeContainerNodePool{}).Name(),
-  	}
-  
-  	EdgeContainerVpnConnectionGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(EdgeContainerVpnConnection{}).Name(),
-  	}
-  
+	EdgeContainerClusterGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(EdgeContainerCluster{}).Name(),
+	}
 
-  	edgecontainerAPIVersion = SchemeGroupVersion.String()
+	EdgeContainerNodePoolGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(EdgeContainerNodePool{}).Name(),
+	}
+
+	EdgeContainerVpnConnectionGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(EdgeContainerVpnConnection{}).Name(),
+	}
+
+	edgecontainerAPIVersion = SchemeGroupVersion.String()
 )

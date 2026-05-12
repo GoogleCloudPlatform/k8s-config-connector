@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,163 +29,164 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ZoneCsvOptions struct {
-/* Optional. The delimiter being used to separate values. This defaults to ','. */
-// +optional
-Delimiter *string `json:"delimiter,omitempty"`
+	/* Optional. The delimiter being used to separate values. This defaults to ','. */
+	// +optional
+	Delimiter *string `json:"delimiter,omitempty"`
 
-/* Optional. Whether to disable the inference of data type for CSV data. If true, all columns will be registered as strings. */
-// +optional
-DisableTypeInference *bool `json:"disableTypeInference,omitempty"`
+	/* Optional. Whether to disable the inference of data type for CSV data. If true, all columns will be registered as strings. */
+	// +optional
+	DisableTypeInference *bool `json:"disableTypeInference,omitempty"`
 
-/* Optional. The character encoding of the data. The default is UTF-8. */
-// +optional
-Encoding *string `json:"encoding,omitempty"`
+	/* Optional. The character encoding of the data. The default is UTF-8. */
+	// +optional
+	Encoding *string `json:"encoding,omitempty"`
 
-/* Optional. The number of rows to interpret as header rows that should be skipped when reading data rows. */
-// +optional
-HeaderRows *int32 `json:"headerRows,omitempty"`
+	/* Optional. The number of rows to interpret as header rows that should be skipped when reading data rows. */
+	// +optional
+	HeaderRows *int32 `json:"headerRows,omitempty"`
 }
 
 type ZoneDiscoverySpec struct {
-/* Optional. Configuration for CSV data. */
-// +optional
-CsvOptions *ZoneCsvOptions `json:"csvOptions,omitempty"`
+	/* Optional. Configuration for CSV data. */
+	// +optional
+	CsvOptions *ZoneCsvOptions `json:"csvOptions,omitempty"`
 
-/* Required. Whether discovery is enabled. */
-// +optional
-Enabled *bool `json:"enabled,omitempty"`
+	/* Required. Whether discovery is enabled. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
 
-/* Optional. The list of patterns to apply for selecting data to exclude during discovery.  For Cloud Storage bucket assets, these are interpreted as glob patterns used to match object names. For BigQuery dataset assets, these are interpreted as patterns to match table names. */
-// +optional
-ExcludePatterns []string `json:"excludePatterns,omitempty"`
+	/* Optional. The list of patterns to apply for selecting data to exclude during discovery.  For Cloud Storage bucket assets, these are interpreted as glob patterns used to match object names. For BigQuery dataset assets, these are interpreted as patterns to match table names. */
+	// +optional
+	ExcludePatterns []string `json:"excludePatterns,omitempty"`
 
-/* Optional. The list of patterns to apply for selecting data to include during discovery if only a subset of the data should considered. For Cloud Storage bucket assets, these are interpreted as glob patterns used to match object names. For BigQuery dataset assets, these are interpreted as patterns to match table names. */
-// +optional
-IncludePatterns []string `json:"includePatterns,omitempty"`
+	/* Optional. The list of patterns to apply for selecting data to include during discovery if only a subset of the data should considered. For Cloud Storage bucket assets, these are interpreted as glob patterns used to match object names. For BigQuery dataset assets, these are interpreted as patterns to match table names. */
+	// +optional
+	IncludePatterns []string `json:"includePatterns,omitempty"`
 
-/* Optional. Configuration for Json data. */
-// +optional
-JsonOptions *ZoneJsonOptions `json:"jsonOptions,omitempty"`
+	/* Optional. Configuration for Json data. */
+	// +optional
+	JsonOptions *ZoneJsonOptions `json:"jsonOptions,omitempty"`
 
 	/* Optional. Cron schedule (https://en.wikipedia.org/wiki/Cron) for
 	running discovery periodically. Successive discovery runs must be
 	scheduled at least 60 minutes apart. The default value is to run
 	discovery every 60 minutes.
-	
+
 	To explicitly set a timezone to the cron tab, apply a prefix in the
 	cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or TZ=${IANA_TIME_ZONE}".
 	The ${IANA_TIME_ZONE} may only be a valid string from IANA time zone
 	database. For example, `CRON_TZ=America/New_York 1 * * * *`, or
 	`TZ=America/New_York 1 * * * *`. */
-// +optional
-Schedule *string `json:"schedule,omitempty"`
+	// +optional
+	Schedule *string `json:"schedule,omitempty"`
 }
 
 type ZoneJsonOptions struct {
-/* Optional. Whether to disable the inference of data type for Json data. If true, all columns will be registered as their primitive types (strings, number or boolean). */
-// +optional
-DisableTypeInference *bool `json:"disableTypeInference,omitempty"`
+	/* Optional. Whether to disable the inference of data type for Json data. If true, all columns will be registered as their primitive types (strings, number or boolean). */
+	// +optional
+	DisableTypeInference *bool `json:"disableTypeInference,omitempty"`
 
-/* Optional. The character encoding of the data. The default is UTF-8. */
-// +optional
-Encoding *string `json:"encoding,omitempty"`
+	/* Optional. The character encoding of the data. The default is UTF-8. */
+	// +optional
+	Encoding *string `json:"encoding,omitempty"`
 }
 
 type ZoneResourceSpec struct {
-/* Required. Immutable. The location type of the resources that are allowed to be attached to the assets within this zone. */
-// +optional
-LocationType *string `json:"locationType,omitempty"`
+	/* Required. Immutable. The location type of the resources that are allowed to be attached to the assets within this zone. */
+	// +optional
+	LocationType *string `json:"locationType,omitempty"`
 }
 
 type DataplexZoneSpec struct {
-/* Optional. Description of the zone. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Optional. Description of the zone. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Optional. Specification of the discovery feature applied to data in this zone. */
-// +optional
-DiscoverySpec *ZoneDiscoverySpec `json:"discoverySpec,omitempty"`
+	/* Optional. Specification of the discovery feature applied to data in this zone. */
+	// +optional
+	DiscoverySpec *ZoneDiscoverySpec `json:"discoverySpec,omitempty"`
 
-/* Optional. User friendly display name. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* Optional. User friendly display name. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* Reference to the parent DataplexLake that owns this Zone. */
-LakeRef v1alpha1.ResourceRef `json:"lakeRef"`
+	/* Reference to the parent DataplexLake that owns this Zone. */
+	LakeRef v1alpha1.ResourceRef `json:"lakeRef"`
 
-/* The DataplexZone name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The DataplexZone name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Required. Specification of the resources that are referenced by the assets within this zone. */
-ResourceSpec ZoneResourceSpec `json:"resourceSpec"`
+	/* Required. Specification of the resources that are referenced by the assets within this zone. */
+	ResourceSpec ZoneResourceSpec `json:"resourceSpec"`
 
-/* Required. Immutable. The type of the zone. */
-Type string `json:"type"`
+	/* Required. Immutable. The type of the zone. */
+	Type string `json:"type"`
 }
 
 type ZoneAssetStatusStatus struct {
-/* Number of active assets. */
-// +optional
-ActiveAssets *int32 `json:"activeAssets,omitempty"`
+	/* Number of active assets. */
+	// +optional
+	ActiveAssets *int32 `json:"activeAssets,omitempty"`
 
-/* Number of assets that are in process of updating the security policy on attached resources. */
-// +optional
-SecurityPolicyApplyingAssets *int32 `json:"securityPolicyApplyingAssets,omitempty"`
+	/* Number of assets that are in process of updating the security policy on attached resources. */
+	// +optional
+	SecurityPolicyApplyingAssets *int32 `json:"securityPolicyApplyingAssets,omitempty"`
 
-/* Last update time of the status. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Last update time of the status. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type ZoneObservedStateStatus struct {
-/* Output only. Aggregated status of the underlying assets of the zone. */
-// +optional
-AssetStatus *ZoneAssetStatusStatus `json:"assetStatus,omitempty"`
+	/* Output only. Aggregated status of the underlying assets of the zone. */
+	// +optional
+	AssetStatus *ZoneAssetStatusStatus `json:"assetStatus,omitempty"`
 
-/* Output only. The time when the zone was created. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. The time when the zone was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. Current state of the zone. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. Current state of the zone. */
+	// +optional
+	State *string `json:"state,omitempty"`
 
-/* Output only. System generated globally unique ID for the zone. This ID will be different if the zone is deleted and re-created with the same name. */
-// +optional
-Uid *string `json:"uid,omitempty"`
+	/* Output only. System generated globally unique ID for the zone. This ID will be different if the zone is deleted and re-created with the same name. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
 
-/* Output only. The time when the zone was last updated. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. The time when the zone was last updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type DataplexZoneStatus struct {
 	/* Conditions represent the latest available observations of the
-	    DataplexZone's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the DataplexZone resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   DataplexZone's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the DataplexZone resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *ZoneObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *ZoneObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdataplexzone;gcpdataplexzones
@@ -201,20 +201,22 @@ ObservedState *ZoneObservedStateStatus `json:"observedState,omitempty"`
 // DataplexZone is the Schema for the dataplex API
 // +k8s:openapi-gen=true
 type DataplexZone struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec DataplexZoneSpec `json:"spec,omitempty"`
-  Status DataplexZoneStatus `json:"status,omitempty"`
+	Spec   DataplexZoneSpec   `json:"spec,omitempty"`
+	Status DataplexZoneStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // DataplexZoneList contains a list of DataplexZone
- type DataplexZoneList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []DataplexZone `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&DataplexZone{}, &DataplexZoneList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// DataplexZoneList contains a list of DataplexZone
+type DataplexZoneList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DataplexZone `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&DataplexZone{}, &DataplexZoneList{})
+}

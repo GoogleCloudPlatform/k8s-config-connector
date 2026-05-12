@@ -53,13 +53,11 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	FirebaseStorageBucketGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(FirebaseStorageBucket{}).Name(),
-  	}
-  
+	FirebaseStorageBucketGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(FirebaseStorageBucket{}).Name(),
+	}
 
-  	firebasestorageAPIVersion = SchemeGroupVersion.String()
+	firebasestorageAPIVersion = SchemeGroupVersion.String()
 )

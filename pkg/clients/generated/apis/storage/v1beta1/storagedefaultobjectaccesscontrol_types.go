@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,18 +29,18 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type StorageDefaultObjectAccessControlSpec struct {
-/* Reference to the bucket. */
-BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
+	/* Reference to the bucket. */
+	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
 
 	/* The entity holding the permission, in one of the following forms:
 	* user-{{userId}}
@@ -52,54 +51,55 @@ BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
 	* project-team-{{projectId}}
 	* allUsers
 	* allAuthenticatedUsers. */
-Entity string `json:"entity"`
+	Entity string `json:"entity"`
 
-/* The name of the object, if applied to an object. */
-// +optional
-Object *string `json:"object,omitempty"`
+	/* The name of the object, if applied to an object. */
+	// +optional
+	Object *string `json:"object,omitempty"`
 
-/* The access permission for the entity. Possible values: ["OWNER", "READER"]. */
-Role string `json:"role"`
+	/* The access permission for the entity. Possible values: ["OWNER", "READER"]. */
+	Role string `json:"role"`
 }
 
 type DefaultobjectaccesscontrolProjectTeamStatus struct {
-/* The project team associated with the entity. */
-// +optional
-ProjectNumber *string `json:"projectNumber,omitempty"`
+	/* The project team associated with the entity. */
+	// +optional
+	ProjectNumber *string `json:"projectNumber,omitempty"`
 
-/* The team. Possible values: ["editors", "owners", "viewers"]. */
-// +optional
-Team *string `json:"team,omitempty"`
+	/* The team. Possible values: ["editors", "owners", "viewers"]. */
+	// +optional
+	Team *string `json:"team,omitempty"`
 }
 
 type StorageDefaultObjectAccessControlStatus struct {
 	/* Conditions represent the latest available observations of the
-	    StorageDefaultObjectAccessControl's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* The domain associated with the entity. */
-// +optional
-Domain *string `json:"domain,omitempty"`
+	   StorageDefaultObjectAccessControl's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* The domain associated with the entity. */
+	// +optional
+	Domain *string `json:"domain,omitempty"`
 
-/* The email address associated with the entity. */
-// +optional
-Email *string `json:"email,omitempty"`
+	/* The email address associated with the entity. */
+	// +optional
+	Email *string `json:"email,omitempty"`
 
-/* The ID for the entity. */
-// +optional
-EntityId *string `json:"entityId,omitempty"`
+	/* The ID for the entity. */
+	// +optional
+	EntityId *string `json:"entityId,omitempty"`
 
-/* The content generation of the object, if applied to an object. */
-// +optional
-Generation *int64 `json:"generation,omitempty"`
+	/* The content generation of the object, if applied to an object. */
+	// +optional
+	Generation *int64 `json:"generation,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* The project team associated with the entity. */
-// +optional
-ProjectTeam *DefaultobjectaccesscontrolProjectTeamStatus `json:"projectTeam,omitempty"`
+	/* The project team associated with the entity. */
+	// +optional
+	ProjectTeam *DefaultobjectaccesscontrolProjectTeamStatus `json:"projectTeam,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpstoragedefaultobjectaccesscontrol;gcpstoragedefaultobjectaccesscontrols
@@ -116,20 +116,22 @@ ProjectTeam *DefaultobjectaccesscontrolProjectTeamStatus `json:"projectTeam,omit
 // StorageDefaultObjectAccessControl is the Schema for the storage API
 // +k8s:openapi-gen=true
 type StorageDefaultObjectAccessControl struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec StorageDefaultObjectAccessControlSpec `json:"spec,omitempty"`
-  Status StorageDefaultObjectAccessControlStatus `json:"status,omitempty"`
+	Spec   StorageDefaultObjectAccessControlSpec   `json:"spec,omitempty"`
+	Status StorageDefaultObjectAccessControlStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // StorageDefaultObjectAccessControlList contains a list of StorageDefaultObjectAccessControl
- type StorageDefaultObjectAccessControlList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []StorageDefaultObjectAccessControl `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&StorageDefaultObjectAccessControl{}, &StorageDefaultObjectAccessControlList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// StorageDefaultObjectAccessControlList contains a list of StorageDefaultObjectAccessControl
+type StorageDefaultObjectAccessControlList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []StorageDefaultObjectAccessControl `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&StorageDefaultObjectAccessControl{}, &StorageDefaultObjectAccessControlList{})
+}

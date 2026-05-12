@@ -53,19 +53,17 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	DataflowFlexTemplateJobGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DataflowFlexTemplateJob{}).Name(),
-  	}
-  
-  	DataflowJobGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DataflowJob{}).Name(),
-  	}
-  
+	DataflowFlexTemplateJobGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DataflowFlexTemplateJob{}).Name(),
+	}
 
-  	dataflowAPIVersion = SchemeGroupVersion.String()
+	DataflowJobGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DataflowJob{}).Name(),
+	}
+
+	dataflowAPIVersion = SchemeGroupVersion.String()
 )

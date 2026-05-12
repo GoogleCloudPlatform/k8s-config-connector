@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,49 +29,50 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type IdentityPlatformTenantDefaultSupportedIDPConfigSpec struct {
-/* OAuth client ID. */
-ClientId string `json:"clientId"`
+	/* OAuth client ID. */
+	ClientId string `json:"clientId"`
 
-/* OAuth client secret. */
-ClientSecret string `json:"clientSecret"`
+	/* OAuth client secret. */
+	ClientSecret string `json:"clientSecret"`
 
-/* If this IDP allows the user to sign in. */
-// +optional
-Enabled *bool `json:"enabled,omitempty"`
+	/* If this IDP allows the user to sign in. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
 
-/* The project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Immutable. Optional. The idpId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The idpId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Immutable. The name of the tenant where this DefaultSupportedIdpConfig resource exists. */
-Tenant string `json:"tenant"`
+	/* Immutable. The name of the tenant where this DefaultSupportedIdpConfig resource exists. */
+	Tenant string `json:"tenant"`
 }
 
 type IdentityPlatformTenantDefaultSupportedIDPConfigStatus struct {
 	/* Conditions represent the latest available observations of the
-	    IdentityPlatformTenantDefaultSupportedIDPConfig's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* The name of the default supported IDP config resource. */
-// +optional
-Name *string `json:"name,omitempty"`
+	   IdentityPlatformTenantDefaultSupportedIDPConfig's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* The name of the default supported IDP config resource. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpidentityplatformtenantdefaultsupportedidpconfig;gcpidentityplatformtenantdefaultsupportedidpconfigs
@@ -89,20 +89,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // IdentityPlatformTenantDefaultSupportedIDPConfig is the Schema for the identityplatform API
 // +k8s:openapi-gen=true
 type IdentityPlatformTenantDefaultSupportedIDPConfig struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec IdentityPlatformTenantDefaultSupportedIDPConfigSpec `json:"spec,omitempty"`
-  Status IdentityPlatformTenantDefaultSupportedIDPConfigStatus `json:"status,omitempty"`
+	Spec   IdentityPlatformTenantDefaultSupportedIDPConfigSpec   `json:"spec,omitempty"`
+	Status IdentityPlatformTenantDefaultSupportedIDPConfigStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // IdentityPlatformTenantDefaultSupportedIDPConfigList contains a list of IdentityPlatformTenantDefaultSupportedIDPConfig
- type IdentityPlatformTenantDefaultSupportedIDPConfigList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []IdentityPlatformTenantDefaultSupportedIDPConfig `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&IdentityPlatformTenantDefaultSupportedIDPConfig{}, &IdentityPlatformTenantDefaultSupportedIDPConfigList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// IdentityPlatformTenantDefaultSupportedIDPConfigList contains a list of IdentityPlatformTenantDefaultSupportedIDPConfig
+type IdentityPlatformTenantDefaultSupportedIDPConfigList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []IdentityPlatformTenantDefaultSupportedIDPConfig `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&IdentityPlatformTenantDefaultSupportedIDPConfig{}, &IdentityPlatformTenantDefaultSupportedIDPConfigList{})
+}

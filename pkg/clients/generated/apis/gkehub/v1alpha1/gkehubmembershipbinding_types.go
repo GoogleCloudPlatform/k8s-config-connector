@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,75 +29,76 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type GKEHubMembershipBindingSpec struct {
-/* Optional. Labels for this MembershipBinding. */
-// +optional
-Labels map[string]string `json:"labels,omitempty"`
+	/* Optional. Labels for this MembershipBinding. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
 
-/* Immutable. The membership that this binding belongs to. */
-MembershipRef v1alpha1.ResourceRef `json:"membershipRef"`
+	/* Immutable. The membership that this binding belongs to. */
+	MembershipRef v1alpha1.ResourceRef `json:"membershipRef"`
 
-/* Immutable. Optional. The resourceID of the resource; if not provided, the name of the resource will be used as the resourceID. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The resourceID of the resource; if not provided, the name of the resource will be used as the resourceID. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Immutable. The scope that this binding is bound to. */
-ScopeRef v1alpha1.ResourceRef `json:"scopeRef"`
+	/* Immutable. The scope that this binding is bound to. */
+	ScopeRef v1alpha1.ResourceRef `json:"scopeRef"`
 }
 
 type MembershipbindingObservedStateStatus struct {
-/* Output only. The time at which this binding was created. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. The time at which this binding was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. The time at which this binding was deleted. */
-// +optional
-DeleteTime *string `json:"deleteTime,omitempty"`
+	/* Output only. The time at which this binding was deleted. */
+	// +optional
+	DeleteTime *string `json:"deleteTime,omitempty"`
 
-/* Output only. State of the membershipbinding resource. */
-// +optional
-State *MembershipbindingStateStatus `json:"state,omitempty"`
+	/* Output only. State of the membershipbinding resource. */
+	// +optional
+	State *MembershipbindingStateStatus `json:"state,omitempty"`
 
-/* Output only. Google-generated UUID for this resource. This is unique across all membershipbinding resources. If a membershipbinding resource is deleted and another with the same name is created, it will have a different uid. */
-// +optional
-Uid *string `json:"uid,omitempty"`
+	/* Output only. Google-generated UUID for this resource. This is unique across all membershipbinding resources. If a membershipbinding resource is deleted and another with the same name is created, it will have a different uid. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
 
-/* Output only. The time at which this binding was last updated. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. The time at which this binding was last updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type MembershipbindingStateStatus struct {
-/* Output only. Code describes the state of a MembershipBinding resource. Possible values: CODE_UNSPECIFIED, CREATING, READY, DELETING, UPDATING */
-// +optional
-Code *string `json:"code,omitempty"`
+	/* Output only. Code describes the state of a MembershipBinding resource. Possible values: CODE_UNSPECIFIED, CREATING, READY, DELETING, UPDATING */
+	// +optional
+	Code *string `json:"code,omitempty"`
 }
 
 type GKEHubMembershipBindingStatus struct {
 	/* Conditions represent the latest available observations of the
-	    GKEHubMembershipBinding's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the GKEHubMembershipBinding resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   GKEHubMembershipBinding's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the GKEHubMembershipBinding resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *MembershipbindingObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *MembershipbindingObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpgkehubmembershipbinding;gcpgkehubmembershipbindings
@@ -113,20 +113,22 @@ ObservedState *MembershipbindingObservedStateStatus `json:"observedState,omitemp
 // GKEHubMembershipBinding is the Schema for the gkehub API
 // +k8s:openapi-gen=true
 type GKEHubMembershipBinding struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec GKEHubMembershipBindingSpec `json:"spec,omitempty"`
-  Status GKEHubMembershipBindingStatus `json:"status,omitempty"`
+	Spec   GKEHubMembershipBindingSpec   `json:"spec,omitempty"`
+	Status GKEHubMembershipBindingStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // GKEHubMembershipBindingList contains a list of GKEHubMembershipBinding
- type GKEHubMembershipBindingList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []GKEHubMembershipBinding `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&GKEHubMembershipBinding{}, &GKEHubMembershipBindingList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// GKEHubMembershipBindingList contains a list of GKEHubMembershipBinding
+type GKEHubMembershipBindingList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []GKEHubMembershipBinding `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&GKEHubMembershipBinding{}, &GKEHubMembershipBindingList{})
+}

@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,28 +29,29 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ComputeProjectMetadataSpec struct {
-/* A series of key value pairs. */
-Metadata map[string]string `json:"metadata"`
+	/* A series of key value pairs. */
+	Metadata map[string]string `json:"metadata"`
 }
 
 type ComputeProjectMetadataStatus struct {
 	/* Conditions represent the latest available observations of the
-	    ComputeProjectMetadata's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   ComputeProjectMetadata's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputeprojectmetadata;gcpcomputeprojectmetadatas
@@ -68,20 +68,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // ComputeProjectMetadata is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeProjectMetadata struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ComputeProjectMetadataSpec `json:"spec,omitempty"`
-  Status ComputeProjectMetadataStatus `json:"status,omitempty"`
+	Spec   ComputeProjectMetadataSpec   `json:"spec,omitempty"`
+	Status ComputeProjectMetadataStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ComputeProjectMetadataList contains a list of ComputeProjectMetadata
- type ComputeProjectMetadataList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []ComputeProjectMetadata `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&ComputeProjectMetadata{}, &ComputeProjectMetadataList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ComputeProjectMetadataList contains a list of ComputeProjectMetadata
+type ComputeProjectMetadataList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeProjectMetadata `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ComputeProjectMetadata{}, &ComputeProjectMetadataList{})
+}

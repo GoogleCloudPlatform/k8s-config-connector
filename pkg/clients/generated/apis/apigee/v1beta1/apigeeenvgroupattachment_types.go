@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,50 +29,51 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ApigeeEnvgroupAttachmentSpec struct {
-/* Reference to parent Environment Group */
-EnvgroupRef v1alpha1.ResourceRef `json:"envgroupRef"`
+	/* Reference to parent Environment Group */
+	EnvgroupRef v1alpha1.ResourceRef `json:"envgroupRef"`
 
-/* Required. ID of the attached environment. */
-// +optional
-EnvironmentRef *v1alpha1.ResourceRef `json:"environmentRef,omitempty"`
+	/* Required. ID of the attached environment. */
+	// +optional
+	EnvironmentRef *v1alpha1.ResourceRef `json:"environmentRef,omitempty"`
 
-/* The ApigeeEnvgroupAttachment name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The ApigeeEnvgroupAttachment name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type EnvgroupattachmentObservedStateStatus struct {
-/* Output only. The time at which the environment group attachment was created as milliseconds since epoch. */
-// +optional
-CreatedAt *string `json:"createdAt,omitempty"`
+	/* Output only. The time at which the environment group attachment was created as milliseconds since epoch. */
+	// +optional
+	CreatedAt *string `json:"createdAt,omitempty"`
 }
 
 type ApigeeEnvgroupAttachmentStatus struct {
 	/* Conditions represent the latest available observations of the
-	    ApigeeEnvgroupAttachment's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the ApigeeEnvgroupAttachment resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   ApigeeEnvgroupAttachment's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the ApigeeEnvgroupAttachment resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *EnvgroupattachmentObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *EnvgroupattachmentObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpapigeeenvgroupattachment;gcpapigeeenvgroupattachments
@@ -88,20 +88,22 @@ ObservedState *EnvgroupattachmentObservedStateStatus `json:"observedState,omitem
 // ApigeeEnvgroupAttachment is the Schema for the apigee API
 // +k8s:openapi-gen=true
 type ApigeeEnvgroupAttachment struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ApigeeEnvgroupAttachmentSpec `json:"spec,omitempty"`
-  Status ApigeeEnvgroupAttachmentStatus `json:"status,omitempty"`
+	Spec   ApigeeEnvgroupAttachmentSpec   `json:"spec,omitempty"`
+	Status ApigeeEnvgroupAttachmentStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ApigeeEnvgroupAttachmentList contains a list of ApigeeEnvgroupAttachment
- type ApigeeEnvgroupAttachmentList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []ApigeeEnvgroupAttachment `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&ApigeeEnvgroupAttachment{}, &ApigeeEnvgroupAttachmentList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ApigeeEnvgroupAttachmentList contains a list of ApigeeEnvgroupAttachment
+type ApigeeEnvgroupAttachmentList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ApigeeEnvgroupAttachment `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ApigeeEnvgroupAttachment{}, &ApigeeEnvgroupAttachmentList{})
+}

@@ -53,25 +53,23 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	BeyondCorpAppConnectionGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(BeyondCorpAppConnection{}).Name(),
-  	}
-  
-  	BeyondCorpAppConnectorGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(BeyondCorpAppConnector{}).Name(),
-  	}
-  
-  	BeyondCorpAppGatewayGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(BeyondCorpAppGateway{}).Name(),
-  	}
-  
+	BeyondCorpAppConnectionGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(BeyondCorpAppConnection{}).Name(),
+	}
 
-  	beyondcorpAPIVersion = SchemeGroupVersion.String()
+	BeyondCorpAppConnectorGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(BeyondCorpAppConnector{}).Name(),
+	}
+
+	BeyondCorpAppGatewayGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(BeyondCorpAppGateway{}).Name(),
+	}
+
+	beyondcorpAPIVersion = SchemeGroupVersion.String()
 )

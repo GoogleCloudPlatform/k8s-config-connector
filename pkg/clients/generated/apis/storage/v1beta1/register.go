@@ -53,37 +53,35 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	StorageAnywhereCacheGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(StorageAnywhereCache{}).Name(),
-  	}
-  
-  	StorageBucketGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(StorageBucket{}).Name(),
-  	}
-  
-  	StorageBucketAccessControlGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(StorageBucketAccessControl{}).Name(),
-  	}
-  
-  	StorageDefaultObjectAccessControlGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(StorageDefaultObjectAccessControl{}).Name(),
-  	}
-  
-  	StorageNotificationGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(StorageNotification{}).Name(),
-  	}
-  
+	StorageAnywhereCacheGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(StorageAnywhereCache{}).Name(),
+	}
 
-  	storageAPIVersion = SchemeGroupVersion.String()
+	StorageBucketGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(StorageBucket{}).Name(),
+	}
+
+	StorageBucketAccessControlGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(StorageBucketAccessControl{}).Name(),
+	}
+
+	StorageDefaultObjectAccessControlGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(StorageDefaultObjectAccessControl{}).Name(),
+	}
+
+	StorageNotificationGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(StorageNotification{}).Name(),
+	}
+
+	storageAPIVersion = SchemeGroupVersion.String()
 )

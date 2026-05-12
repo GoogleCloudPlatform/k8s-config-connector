@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,403 +29,404 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type FeaturemembershipAdmission struct {
-/* Container resource requirements. */
-// +optional
-ContainerResources *FeaturemembershipContainerResources `json:"containerResources,omitempty"`
+	/* Container resource requirements. */
+	// +optional
+	ContainerResources *FeaturemembershipContainerResources `json:"containerResources,omitempty"`
 
-/* Pod affinity configuration. */
-// +optional
-PodAffinity *string `json:"podAffinity,omitempty"`
+	/* Pod affinity configuration. */
+	// +optional
+	PodAffinity *string `json:"podAffinity,omitempty"`
 
-/* Pod tolerations of node taints. */
-// +optional
-PodTolerations []FeaturemembershipPodTolerations `json:"podTolerations,omitempty"`
+	/* Pod tolerations of node taints. */
+	// +optional
+	PodTolerations []FeaturemembershipPodTolerations `json:"podTolerations,omitempty"`
 
-/* Pod replica count. */
-// +optional
-ReplicaCount *int64 `json:"replicaCount,omitempty"`
+	/* Pod replica count. */
+	// +optional
+	ReplicaCount *int64 `json:"replicaCount,omitempty"`
 }
 
 type FeaturemembershipAudit struct {
-/* Container resource requirements. */
-// +optional
-ContainerResources *FeaturemembershipContainerResources `json:"containerResources,omitempty"`
+	/* Container resource requirements. */
+	// +optional
+	ContainerResources *FeaturemembershipContainerResources `json:"containerResources,omitempty"`
 
-/* Pod affinity configuration. */
-// +optional
-PodAffinity *string `json:"podAffinity,omitempty"`
+	/* Pod affinity configuration. */
+	// +optional
+	PodAffinity *string `json:"podAffinity,omitempty"`
 
-/* Pod tolerations of node taints. */
-// +optional
-PodTolerations []FeaturemembershipPodTolerations `json:"podTolerations,omitempty"`
+	/* Pod tolerations of node taints. */
+	// +optional
+	PodTolerations []FeaturemembershipPodTolerations `json:"podTolerations,omitempty"`
 
-/* Pod replica count. */
-// +optional
-ReplicaCount *int64 `json:"replicaCount,omitempty"`
+	/* Pod replica count. */
+	// +optional
+	ReplicaCount *int64 `json:"replicaCount,omitempty"`
 }
 
 type FeaturemembershipBinauthz struct {
-/* Whether binauthz is enabled in this cluster. */
-// +optional
-Enabled *bool `json:"enabled,omitempty"`
+	/* Whether binauthz is enabled in this cluster. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 type FeaturemembershipConfigSync struct {
-// +optional
-Git *FeaturemembershipGit `json:"git,omitempty"`
+	// +optional
+	Git *FeaturemembershipGit `json:"git,omitempty"`
 
-// +optional
-MetricsGcpServiceAccountRef *v1alpha1.ResourceRef `json:"metricsGcpServiceAccountRef,omitempty"`
+	// +optional
+	MetricsGcpServiceAccountRef *v1alpha1.ResourceRef `json:"metricsGcpServiceAccountRef,omitempty"`
 
-// +optional
-Oci *FeaturemembershipOci `json:"oci,omitempty"`
+	// +optional
+	Oci *FeaturemembershipOci `json:"oci,omitempty"`
 
-/* Set to true to enable the Config Sync admission webhook to prevent drifts. If set to `false`, disables the Config Sync admission webhook and does not prevent drifts. */
-// +optional
-PreventDrift *bool `json:"preventDrift,omitempty"`
+	/* Set to true to enable the Config Sync admission webhook to prevent drifts. If set to `false`, disables the Config Sync admission webhook and does not prevent drifts. */
+	// +optional
+	PreventDrift *bool `json:"preventDrift,omitempty"`
 
-/* Specifies whether the Config Sync Repo is in "hierarchical" or "unstructured" mode. */
-// +optional
-SourceFormat *string `json:"sourceFormat,omitempty"`
+	/* Specifies whether the Config Sync Repo is in "hierarchical" or "unstructured" mode. */
+	// +optional
+	SourceFormat *string `json:"sourceFormat,omitempty"`
 
-/* Set to true to stop syncing configurations for a single cluster. This field is only available on clusters using Config Sync auto-upgrades or on Config Sync version 1.20.0 or later. Defaults: false. */
-// +optional
-StopSyncing *bool `json:"stopSyncing,omitempty"`
+	/* Set to true to stop syncing configurations for a single cluster. This field is only available on clusters using Config Sync auto-upgrades or on Config Sync version 1.20.0 or later. Defaults: false. */
+	// +optional
+	StopSyncing *bool `json:"stopSyncing,omitempty"`
 }
 
 type FeaturemembershipConfigmanagement struct {
-/* **DEPRECATED** Binauthz configuration for the cluster. This field will be ignored and should not be set. */
-// +optional
-Binauthz *FeaturemembershipBinauthz `json:"binauthz,omitempty"`
+	/* **DEPRECATED** Binauthz configuration for the cluster. This field will be ignored and should not be set. */
+	// +optional
+	Binauthz *FeaturemembershipBinauthz `json:"binauthz,omitempty"`
 
-/* Config Sync configuration for the cluster. */
-// +optional
-ConfigSync *FeaturemembershipConfigSync `json:"configSync,omitempty"`
+	/* Config Sync configuration for the cluster. */
+	// +optional
+	ConfigSync *FeaturemembershipConfigSync `json:"configSync,omitempty"`
 
-/* Hierarchy Controller is no longer available. Use https://github.com/kubernetes-sigs/hierarchical-namespaces instead. */
-// +optional
-HierarchyController *FeaturemembershipHierarchyController `json:"hierarchyController,omitempty"`
+	/* Hierarchy Controller is no longer available. Use https://github.com/kubernetes-sigs/hierarchical-namespaces instead. */
+	// +optional
+	HierarchyController *FeaturemembershipHierarchyController `json:"hierarchyController,omitempty"`
 
-/* Optional. Whether to automatically manage the configmanagement Feature. There are 3 accepted values. MANAGEMENT_UNSPECIFIED means that the mamangement mode is unspecified. MANAGEMENT_AUTOMATIC means that Google manages the Feature for the cluster. MANAGEMENT_MANUAL means that users should manage the Feature for the cluster. */
-// +optional
-Management *string `json:"management,omitempty"`
+	/* Optional. Whether to automatically manage the configmanagement Feature. There are 3 accepted values. MANAGEMENT_UNSPECIFIED means that the mamangement mode is unspecified. MANAGEMENT_AUTOMATIC means that Google manages the Feature for the cluster. MANAGEMENT_MANUAL means that users should manage the Feature for the cluster. */
+	// +optional
+	Management *string `json:"management,omitempty"`
 
-/* **DEPRECATED** Configuring Policy Controller through the configmanagement feature is no longer recommended. Use the policycontroller feature instead. */
-// +optional
-PolicyController *FeaturemembershipPolicyController `json:"policyController,omitempty"`
+	/* **DEPRECATED** Configuring Policy Controller through the configmanagement feature is no longer recommended. Use the policycontroller feature instead. */
+	// +optional
+	PolicyController *FeaturemembershipPolicyController `json:"policyController,omitempty"`
 
-/* Optional. Version of ACM to install. Defaults to the latest version. */
-// +optional
-Version *string `json:"version,omitempty"`
+	/* Optional. Version of ACM to install. Defaults to the latest version. */
+	// +optional
+	Version *string `json:"version,omitempty"`
 }
 
 type FeaturemembershipContainerResources struct {
-/* Limits describes the maximum amount of compute resources allowed for use by the running container. */
-// +optional
-Limits *FeaturemembershipLimits `json:"limits,omitempty"`
+	/* Limits describes the maximum amount of compute resources allowed for use by the running container. */
+	// +optional
+	Limits *FeaturemembershipLimits `json:"limits,omitempty"`
 
-/* Requests describes the amount of compute resources reserved for the container by the kube-scheduler. */
-// +optional
-Requests *FeaturemembershipRequests `json:"requests,omitempty"`
+	/* Requests describes the amount of compute resources reserved for the container by the kube-scheduler. */
+	// +optional
+	Requests *FeaturemembershipRequests `json:"requests,omitempty"`
 }
 
 type FeaturemembershipDeploymentConfigs struct {
-// +optional
-Admission *FeaturemembershipAdmission `json:"admission,omitempty"`
+	// +optional
+	Admission *FeaturemembershipAdmission `json:"admission,omitempty"`
 
-// +optional
-Audit *FeaturemembershipAudit `json:"audit,omitempty"`
+	// +optional
+	Audit *FeaturemembershipAudit `json:"audit,omitempty"`
 
-// +optional
-Mutation *FeaturemembershipMutation `json:"mutation,omitempty"`
+	// +optional
+	Mutation *FeaturemembershipMutation `json:"mutation,omitempty"`
 }
 
 type FeaturemembershipGit struct {
-// +optional
-GcpServiceAccountRef *v1alpha1.ResourceRef `json:"gcpServiceAccountRef,omitempty"`
+	// +optional
+	GcpServiceAccountRef *v1alpha1.ResourceRef `json:"gcpServiceAccountRef,omitempty"`
 
-/* URL for the HTTPS proxy to be used when communicating with the Git repo. */
-// +optional
-HttpsProxy *string `json:"httpsProxy,omitempty"`
+	/* URL for the HTTPS proxy to be used when communicating with the Git repo. */
+	// +optional
+	HttpsProxy *string `json:"httpsProxy,omitempty"`
 
-/* The path within the Git repository that represents the top level of the repo to sync. Default: the root directory of the repository. */
-// +optional
-PolicyDir *string `json:"policyDir,omitempty"`
+	/* The path within the Git repository that represents the top level of the repo to sync. Default: the root directory of the repository. */
+	// +optional
+	PolicyDir *string `json:"policyDir,omitempty"`
 
-/* Type of secret configured for access to the Git repo. Must be one of ssh, cookiefile, gcenode, token, gcpserviceaccount or none. The validation of this is case-sensitive. */
-// +optional
-SecretType *string `json:"secretType,omitempty"`
+	/* Type of secret configured for access to the Git repo. Must be one of ssh, cookiefile, gcenode, token, gcpserviceaccount or none. The validation of this is case-sensitive. */
+	// +optional
+	SecretType *string `json:"secretType,omitempty"`
 
-/* The branch of the repository to sync from. Default: master. */
-// +optional
-SyncBranch *string `json:"syncBranch,omitempty"`
+	/* The branch of the repository to sync from. Default: master. */
+	// +optional
+	SyncBranch *string `json:"syncBranch,omitempty"`
 
-/* The URL of the Git repository to use as the source of truth. */
-// +optional
-SyncRepo *string `json:"syncRepo,omitempty"`
+	/* The URL of the Git repository to use as the source of truth. */
+	// +optional
+	SyncRepo *string `json:"syncRepo,omitempty"`
 
-/* Git revision (tag or hash) to check out. Default HEAD. */
-// +optional
-SyncRev *string `json:"syncRev,omitempty"`
+	/* Git revision (tag or hash) to check out. Default HEAD. */
+	// +optional
+	SyncRev *string `json:"syncRev,omitempty"`
 
-/* Period in seconds between consecutive syncs. Default: 15. */
-// +optional
-SyncWaitSecs *string `json:"syncWaitSecs,omitempty"`
+	/* Period in seconds between consecutive syncs. Default: 15. */
+	// +optional
+	SyncWaitSecs *string `json:"syncWaitSecs,omitempty"`
 }
 
 type FeaturemembershipHierarchyController struct {
-/* Whether hierarchical resource quota is enabled in this cluster. */
-// +optional
-EnableHierarchicalResourceQuota *bool `json:"enableHierarchicalResourceQuota,omitempty"`
+	/* Whether hierarchical resource quota is enabled in this cluster. */
+	// +optional
+	EnableHierarchicalResourceQuota *bool `json:"enableHierarchicalResourceQuota,omitempty"`
 
-/* Whether pod tree labels are enabled in this cluster. */
-// +optional
-EnablePodTreeLabels *bool `json:"enablePodTreeLabels,omitempty"`
+	/* Whether pod tree labels are enabled in this cluster. */
+	// +optional
+	EnablePodTreeLabels *bool `json:"enablePodTreeLabels,omitempty"`
 
-/* Whether Hierarchy Controller is enabled in this cluster. */
-// +optional
-Enabled *bool `json:"enabled,omitempty"`
+	/* Whether Hierarchy Controller is enabled in this cluster. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 type FeaturemembershipLimits struct {
-/* CPU requirement expressed in Kubernetes resource units. */
-// +optional
-Cpu *string `json:"cpu,omitempty"`
+	/* CPU requirement expressed in Kubernetes resource units. */
+	// +optional
+	Cpu *string `json:"cpu,omitempty"`
 
-/* Memory requirement expressed in Kubernetes resource units. */
-// +optional
-Memory *string `json:"memory,omitempty"`
+	/* Memory requirement expressed in Kubernetes resource units. */
+	// +optional
+	Memory *string `json:"memory,omitempty"`
 }
 
 type FeaturemembershipMesh struct {
-/* **DEPRECATED** Whether to automatically manage Service Mesh control planes. Possible values: CONTROL_PLANE_MANAGEMENT_UNSPECIFIED, AUTOMATIC, MANUAL */
-// +optional
-ControlPlane *string `json:"controlPlane,omitempty"`
+	/* **DEPRECATED** Whether to automatically manage Service Mesh control planes. Possible values: CONTROL_PLANE_MANAGEMENT_UNSPECIFIED, AUTOMATIC, MANUAL */
+	// +optional
+	ControlPlane *string `json:"controlPlane,omitempty"`
 
-/* Whether to automatically manage Service Mesh. Possible values: MANAGEMENT_UNSPECIFIED, MANAGEMENT_AUTOMATIC, MANAGEMENT_MANUAL */
-// +optional
-Management *string `json:"management,omitempty"`
+	/* Whether to automatically manage Service Mesh. Possible values: MANAGEMENT_UNSPECIFIED, MANAGEMENT_AUTOMATIC, MANAGEMENT_MANUAL */
+	// +optional
+	Management *string `json:"management,omitempty"`
 }
 
 type FeaturemembershipMonitoring struct {
-/* Specifies the list of backends Policy Controller will export to. Specifying an empty value `[]` disables metrics export. */
-// +optional
-Backends []string `json:"backends,omitempty"`
+	/* Specifies the list of backends Policy Controller will export to. Specifying an empty value `[]` disables metrics export. */
+	// +optional
+	Backends []string `json:"backends,omitempty"`
 }
 
 type FeaturemembershipMutation struct {
-/* Container resource requirements. */
-// +optional
-ContainerResources *FeaturemembershipContainerResources `json:"containerResources,omitempty"`
+	/* Container resource requirements. */
+	// +optional
+	ContainerResources *FeaturemembershipContainerResources `json:"containerResources,omitempty"`
 
-/* Pod affinity configuration. */
-// +optional
-PodAffinity *string `json:"podAffinity,omitempty"`
+	/* Pod affinity configuration. */
+	// +optional
+	PodAffinity *string `json:"podAffinity,omitempty"`
 
-/* Pod tolerations of node taints. */
-// +optional
-PodTolerations []FeaturemembershipPodTolerations `json:"podTolerations,omitempty"`
+	/* Pod tolerations of node taints. */
+	// +optional
+	PodTolerations []FeaturemembershipPodTolerations `json:"podTolerations,omitempty"`
 
-/* Pod replica count. */
-// +optional
-ReplicaCount *int64 `json:"replicaCount,omitempty"`
+	/* Pod replica count. */
+	// +optional
+	ReplicaCount *int64 `json:"replicaCount,omitempty"`
 }
 
 type FeaturemembershipOci struct {
-// +optional
-GcpServiceAccountRef *v1alpha1.ResourceRef `json:"gcpServiceAccountRef,omitempty"`
+	// +optional
+	GcpServiceAccountRef *v1alpha1.ResourceRef `json:"gcpServiceAccountRef,omitempty"`
 
-/* The absolute path of the directory that contains the local resources. Default: the root directory of the image. */
-// +optional
-PolicyDir *string `json:"policyDir,omitempty"`
+	/* The absolute path of the directory that contains the local resources. Default: the root directory of the image. */
+	// +optional
+	PolicyDir *string `json:"policyDir,omitempty"`
 
-/* Type of secret configured for access to the OCI Image. Must be one of gcenode, gcpserviceaccount or none. The validation of this is case-sensitive. */
-// +optional
-SecretType *string `json:"secretType,omitempty"`
+	/* Type of secret configured for access to the OCI Image. Must be one of gcenode, gcpserviceaccount or none. The validation of this is case-sensitive. */
+	// +optional
+	SecretType *string `json:"secretType,omitempty"`
 
-/* The OCI image repository URL for the package to sync from. e.g. LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY_NAME/PACKAGE_NAME. */
-// +optional
-SyncRepo *string `json:"syncRepo,omitempty"`
+	/* The OCI image repository URL for the package to sync from. e.g. LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY_NAME/PACKAGE_NAME. */
+	// +optional
+	SyncRepo *string `json:"syncRepo,omitempty"`
 
-/* Period in seconds(int64 format) between consecutive syncs. Default: 15. */
-// +optional
-SyncWaitSecs *string `json:"syncWaitSecs,omitempty"`
+	/* Period in seconds(int64 format) between consecutive syncs. Default: 15. */
+	// +optional
+	SyncWaitSecs *string `json:"syncWaitSecs,omitempty"`
 }
 
 type FeaturemembershipPodTolerations struct {
-/* Matches a taint effect. */
-// +optional
-Effect *string `json:"effect,omitempty"`
+	/* Matches a taint effect. */
+	// +optional
+	Effect *string `json:"effect,omitempty"`
 
-/* Matches a taint key (not necessarily unique). */
-// +optional
-Key *string `json:"key,omitempty"`
+	/* Matches a taint key (not necessarily unique). */
+	// +optional
+	Key *string `json:"key,omitempty"`
 
-/* Matches a taint operator. */
-// +optional
-Operator *string `json:"operator,omitempty"`
+	/* Matches a taint operator. */
+	// +optional
+	Operator *string `json:"operator,omitempty"`
 
-/* Matches a taint value. */
-// +optional
-Value *string `json:"value,omitempty"`
+	/* Matches a taint value. */
+	// +optional
+	Value *string `json:"value,omitempty"`
 }
 
 type FeaturemembershipPolicyContent struct {
-/* Configures the installation of the Template Library. */
-// +optional
-TemplateLibrary *FeaturemembershipTemplateLibrary `json:"templateLibrary,omitempty"`
+	/* Configures the installation of the Template Library. */
+	// +optional
+	TemplateLibrary *FeaturemembershipTemplateLibrary `json:"templateLibrary,omitempty"`
 }
 
 type FeaturemembershipPolicyController struct {
-/* Sets the interval for Policy Controller Audit Scans (in seconds). When set to 0, this disables audit functionality altogether. */
-// +optional
-AuditIntervalSeconds *string `json:"auditIntervalSeconds,omitempty"`
+	/* Sets the interval for Policy Controller Audit Scans (in seconds). When set to 0, this disables audit functionality altogether. */
+	// +optional
+	AuditIntervalSeconds *string `json:"auditIntervalSeconds,omitempty"`
 
-/* Enables the installation of Policy Controller. If false, the rest of PolicyController fields take no effect. */
-// +optional
-Enabled *bool `json:"enabled,omitempty"`
+	/* Enables the installation of Policy Controller. If false, the rest of PolicyController fields take no effect. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
 
-/* The set of namespaces that are excluded from Policy Controller checks. Namespaces do not need to currently exist on the cluster. */
-// +optional
-ExemptableNamespaces []string `json:"exemptableNamespaces,omitempty"`
+	/* The set of namespaces that are excluded from Policy Controller checks. Namespaces do not need to currently exist on the cluster. */
+	// +optional
+	ExemptableNamespaces []string `json:"exemptableNamespaces,omitempty"`
 
-/* Logs all denies and dry run failures. */
-// +optional
-LogDeniesEnabled *bool `json:"logDeniesEnabled,omitempty"`
+	/* Logs all denies and dry run failures. */
+	// +optional
+	LogDeniesEnabled *bool `json:"logDeniesEnabled,omitempty"`
 
-/* Specifies the backends Policy Controller should export metrics to. For example, to specify metrics should be exported to Cloud Monitoring and Prometheus, specify backends: ["cloudmonitoring", "prometheus"]. Default: ["cloudmonitoring", "prometheus"] */
-// +optional
-Monitoring *FeaturemembershipMonitoring `json:"monitoring,omitempty"`
+	/* Specifies the backends Policy Controller should export metrics to. For example, to specify metrics should be exported to Cloud Monitoring and Prometheus, specify backends: ["cloudmonitoring", "prometheus"]. Default: ["cloudmonitoring", "prometheus"] */
+	// +optional
+	Monitoring *FeaturemembershipMonitoring `json:"monitoring,omitempty"`
 
-/* Enable or disable mutation in policy controller. If true, mutation CRDs, webhook and controller deployment will be deployed to the cluster. */
-// +optional
-MutationEnabled *bool `json:"mutationEnabled,omitempty"`
+	/* Enable or disable mutation in policy controller. If true, mutation CRDs, webhook and controller deployment will be deployed to the cluster. */
+	// +optional
+	MutationEnabled *bool `json:"mutationEnabled,omitempty"`
 
-/* Enables the ability to use Constraint Templates that reference to objects other than the object currently being evaluated. */
-// +optional
-ReferentialRulesEnabled *bool `json:"referentialRulesEnabled,omitempty"`
+	/* Enables the ability to use Constraint Templates that reference to objects other than the object currently being evaluated. */
+	// +optional
+	ReferentialRulesEnabled *bool `json:"referentialRulesEnabled,omitempty"`
 
-/* Installs the default template library along with Policy Controller. */
-// +optional
-TemplateLibraryInstalled *bool `json:"templateLibraryInstalled,omitempty"`
+	/* Installs the default template library along with Policy Controller. */
+	// +optional
+	TemplateLibraryInstalled *bool `json:"templateLibraryInstalled,omitempty"`
 }
 
 type FeaturemembershipPolicyControllerHubConfig struct {
-/* Sets the interval for Policy Controller Audit Scans (in seconds). When set to 0, this disables audit functionality altogether. */
-// +optional
-AuditIntervalSeconds *int64 `json:"auditIntervalSeconds,omitempty"`
+	/* Sets the interval for Policy Controller Audit Scans (in seconds). When set to 0, this disables audit functionality altogether. */
+	// +optional
+	AuditIntervalSeconds *int64 `json:"auditIntervalSeconds,omitempty"`
 
-/* The maximum number of audit violations to be stored in a constraint. If not set, the internal default of 20 will be used. */
-// +optional
-ConstraintViolationLimit *int64 `json:"constraintViolationLimit,omitempty"`
+	/* The maximum number of audit violations to be stored in a constraint. If not set, the internal default of 20 will be used. */
+	// +optional
+	ConstraintViolationLimit *int64 `json:"constraintViolationLimit,omitempty"`
 
-/* Map of deployment configs to deployments (“admission”, “audit”, “mutation”). */
-// +optional
-DeploymentConfigs *FeaturemembershipDeploymentConfigs `json:"deploymentConfigs,omitempty"`
+	/* Map of deployment configs to deployments (“admission”, “audit”, “mutation”). */
+	// +optional
+	DeploymentConfigs *FeaturemembershipDeploymentConfigs `json:"deploymentConfigs,omitempty"`
 
-/* The set of namespaces that are excluded from Policy Controller checks. Namespaces do not need to currently exist on the cluster. */
-// +optional
-ExemptableNamespaces []string `json:"exemptableNamespaces,omitempty"`
+	/* The set of namespaces that are excluded from Policy Controller checks. Namespaces do not need to currently exist on the cluster. */
+	// +optional
+	ExemptableNamespaces []string `json:"exemptableNamespaces,omitempty"`
 
-/* Configures the mode of the Policy Controller installation. Possible values: INSTALL_SPEC_UNSPECIFIED, INSTALL_SPEC_NOT_INSTALLED, INSTALL_SPEC_ENABLED, INSTALL_SPEC_SUSPENDED, INSTALL_SPEC_DETACHED */
-// +optional
-InstallSpec *string `json:"installSpec,omitempty"`
+	/* Configures the mode of the Policy Controller installation. Possible values: INSTALL_SPEC_UNSPECIFIED, INSTALL_SPEC_NOT_INSTALLED, INSTALL_SPEC_ENABLED, INSTALL_SPEC_SUSPENDED, INSTALL_SPEC_DETACHED */
+	// +optional
+	InstallSpec *string `json:"installSpec,omitempty"`
 
-/* Logs all denies and dry run failures. */
-// +optional
-LogDeniesEnabled *bool `json:"logDeniesEnabled,omitempty"`
+	/* Logs all denies and dry run failures. */
+	// +optional
+	LogDeniesEnabled *bool `json:"logDeniesEnabled,omitempty"`
 
-/* Specifies the backends Policy Controller should export metrics to. For example, to specify metrics should be exported to Cloud Monitoring and Prometheus, specify backends: ["cloudmonitoring", "prometheus"]. Default: ["cloudmonitoring", "prometheus"] */
-// +optional
-Monitoring *FeaturemembershipMonitoring `json:"monitoring,omitempty"`
+	/* Specifies the backends Policy Controller should export metrics to. For example, to specify metrics should be exported to Cloud Monitoring and Prometheus, specify backends: ["cloudmonitoring", "prometheus"]. Default: ["cloudmonitoring", "prometheus"] */
+	// +optional
+	Monitoring *FeaturemembershipMonitoring `json:"monitoring,omitempty"`
 
-/* Enables the ability to mutate resources using Policy Controller. */
-// +optional
-MutationEnabled *bool `json:"mutationEnabled,omitempty"`
+	/* Enables the ability to mutate resources using Policy Controller. */
+	// +optional
+	MutationEnabled *bool `json:"mutationEnabled,omitempty"`
 
-/* Specifies the desired policy content on the cluster. */
-// +optional
-PolicyContent *FeaturemembershipPolicyContent `json:"policyContent,omitempty"`
+	/* Specifies the desired policy content on the cluster. */
+	// +optional
+	PolicyContent *FeaturemembershipPolicyContent `json:"policyContent,omitempty"`
 
-/* Enables the ability to use Constraint Templates that reference to objects other than the object currently being evaluated. */
-// +optional
-ReferentialRulesEnabled *bool `json:"referentialRulesEnabled,omitempty"`
+	/* Enables the ability to use Constraint Templates that reference to objects other than the object currently being evaluated. */
+	// +optional
+	ReferentialRulesEnabled *bool `json:"referentialRulesEnabled,omitempty"`
 }
 
 type FeaturemembershipPolicycontroller struct {
-/* Policy Controller configuration for the cluster. */
-// +optional
-PolicyControllerHubConfig *FeaturemembershipPolicyControllerHubConfig `json:"policyControllerHubConfig,omitempty"`
+	/* Policy Controller configuration for the cluster. */
+	// +optional
+	PolicyControllerHubConfig *FeaturemembershipPolicyControllerHubConfig `json:"policyControllerHubConfig,omitempty"`
 
-/* Optional. Version of Policy Controller to install. Defaults to the latest version. */
-// +optional
-Version *string `json:"version,omitempty"`
+	/* Optional. Version of Policy Controller to install. Defaults to the latest version. */
+	// +optional
+	Version *string `json:"version,omitempty"`
 }
 
 type FeaturemembershipRequests struct {
-/* CPU requirement expressed in Kubernetes resource units. */
-// +optional
-Cpu *string `json:"cpu,omitempty"`
+	/* CPU requirement expressed in Kubernetes resource units. */
+	// +optional
+	Cpu *string `json:"cpu,omitempty"`
 
-/* Memory requirement expressed in Kubernetes resource units. */
-// +optional
-Memory *string `json:"memory,omitempty"`
+	/* Memory requirement expressed in Kubernetes resource units. */
+	// +optional
+	Memory *string `json:"memory,omitempty"`
 }
 
 type FeaturemembershipTemplateLibrary struct {
-/* Configures the manner in which the template library is installed on the cluster. Possible values: INSTALLATION_UNSPECIFIED, NOT_INSTALLED, ALL */
-// +optional
-Installation *string `json:"installation,omitempty"`
+	/* Configures the manner in which the template library is installed on the cluster. Possible values: INSTALLATION_UNSPECIFIED, NOT_INSTALLED, ALL */
+	// +optional
+	Installation *string `json:"installation,omitempty"`
 }
 
 type GKEHubFeatureMembershipSpec struct {
-/* Config Management-specific spec. */
-// +optional
-Configmanagement *FeaturemembershipConfigmanagement `json:"configmanagement,omitempty"`
+	/* Config Management-specific spec. */
+	// +optional
+	Configmanagement *FeaturemembershipConfigmanagement `json:"configmanagement,omitempty"`
 
-/* Immutable. */
-FeatureRef v1alpha1.ResourceRef `json:"featureRef"`
+	/* Immutable. */
+	FeatureRef v1alpha1.ResourceRef `json:"featureRef"`
 
-/* Immutable. The location of the feature */
-Location string `json:"location"`
+	/* Immutable. The location of the feature */
+	Location string `json:"location"`
 
-/* Immutable. The location of the membership */
-// +optional
-MembershipLocation *string `json:"membershipLocation,omitempty"`
+	/* Immutable. The location of the membership */
+	// +optional
+	MembershipLocation *string `json:"membershipLocation,omitempty"`
 
-/* Immutable. */
-MembershipRef v1alpha1.ResourceRef `json:"membershipRef"`
+	/* Immutable. */
+	MembershipRef v1alpha1.ResourceRef `json:"membershipRef"`
 
-/* Manage Mesh Features */
-// +optional
-Mesh *FeaturemembershipMesh `json:"mesh,omitempty"`
+	/* Manage Mesh Features */
+	// +optional
+	Mesh *FeaturemembershipMesh `json:"mesh,omitempty"`
 
-/* Policy Controller-specific spec. */
-// +optional
-Policycontroller *FeaturemembershipPolicycontroller `json:"policycontroller,omitempty"`
+	/* Policy Controller-specific spec. */
+	// +optional
+	Policycontroller *FeaturemembershipPolicycontroller `json:"policycontroller,omitempty"`
 
-/* Immutable. The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* Immutable. The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 }
 
 type GKEHubFeatureMembershipStatus struct {
 	/* Conditions represent the latest available observations of the
-	    GKEHubFeatureMembership's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   GKEHubFeatureMembership's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpgkehubfeaturemembership;gcpgkehubfeaturememberships
@@ -442,20 +442,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // GKEHubFeatureMembership is the Schema for the gkehub API
 // +k8s:openapi-gen=true
 type GKEHubFeatureMembership struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec GKEHubFeatureMembershipSpec `json:"spec,omitempty"`
-  Status GKEHubFeatureMembershipStatus `json:"status,omitempty"`
+	Spec   GKEHubFeatureMembershipSpec   `json:"spec,omitempty"`
+	Status GKEHubFeatureMembershipStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // GKEHubFeatureMembershipList contains a list of GKEHubFeatureMembership
- type GKEHubFeatureMembershipList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []GKEHubFeatureMembership `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&GKEHubFeatureMembership{}, &GKEHubFeatureMembershipList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// GKEHubFeatureMembershipList contains a list of GKEHubFeatureMembership
+type GKEHubFeatureMembershipList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []GKEHubFeatureMembership `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&GKEHubFeatureMembership{}, &GKEHubFeatureMembershipList{})
+}
