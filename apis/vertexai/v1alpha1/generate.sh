@@ -28,7 +28,7 @@ go run . generate-types     --service google.cloud.aiplatform.v1beta1     --api-
   --resource VertexAIMetadataStore:MetadataStore \
   --resource VertexAIDeploymentResourcePool:DeploymentResourcePool
 
-go run . generate-mapper     --service google.cloud.aiplatform.v1beta1     --api-version vertexai.cnrm.cloud.google.com/v1alpha1 --api-dir ${REPO_ROOT}/apis/vertexai --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai --multiversion
+# go run . generate-mapper     --service google.cloud.aiplatform.v1beta1     --api-version vertexai.cnrm.cloud.google.com/v1alpha1
 
 go run . generate-types \
     --service google.cloud.aiplatform.v1 \
