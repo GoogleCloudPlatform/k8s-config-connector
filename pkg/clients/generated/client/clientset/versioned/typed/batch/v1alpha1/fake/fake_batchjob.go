@@ -22,123 +22,32 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/batch/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	batchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/batch/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeBatchJobs implements BatchJobInterface
-type FakeBatchJobs struct {
+// fakeBatchJobs implements BatchJobInterface
+type fakeBatchJobs struct {
+	*gentype.FakeClientWithList[*v1alpha1.BatchJob, *v1alpha1.BatchJobList]
 	Fake *FakeBatchV1alpha1
-	ns   string
 }
 
-var batchjobsResource = v1alpha1.SchemeGroupVersion.WithResource("batchjobs")
-
-var batchjobsKind = v1alpha1.SchemeGroupVersion.WithKind("BatchJob")
-
-// Get takes name of the batchJob, and returns the corresponding batchJob object, and an error if there is any.
-func (c *FakeBatchJobs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.BatchJob, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(batchjobsResource, c.ns, name), &v1alpha1.BatchJob{})
-
-	if obj == nil {
-		return nil, err
+func newFakeBatchJobs(fake *FakeBatchV1alpha1, namespace string) batchv1alpha1.BatchJobInterface {
+	return &fakeBatchJobs{
+		gentype.NewFakeClientWithList[*v1alpha1.BatchJob, *v1alpha1.BatchJobList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("batchjobs"),
+			v1alpha1.SchemeGroupVersion.WithKind("BatchJob"),
+			func() *v1alpha1.BatchJob { return &v1alpha1.BatchJob{} },
+			func() *v1alpha1.BatchJobList { return &v1alpha1.BatchJobList{} },
+			func(dst, src *v1alpha1.BatchJobList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.BatchJobList) []*v1alpha1.BatchJob { return gentype.ToPointerSlice(list.Items) },
+			func(list *v1alpha1.BatchJobList, items []*v1alpha1.BatchJob) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.BatchJob), err
-}
-
-// List takes label and field selectors, and returns the list of BatchJobs that match those selectors.
-func (c *FakeBatchJobs) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.BatchJobList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(batchjobsResource, batchjobsKind, c.ns, opts), &v1alpha1.BatchJobList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.BatchJobList{ListMeta: obj.(*v1alpha1.BatchJobList).ListMeta}
-	for _, item := range obj.(*v1alpha1.BatchJobList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested batchJobs.
-func (c *FakeBatchJobs) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(batchjobsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a batchJob and creates it.  Returns the server's representation of the batchJob, and an error, if there is any.
-func (c *FakeBatchJobs) Create(ctx context.Context, batchJob *v1alpha1.BatchJob, opts v1.CreateOptions) (result *v1alpha1.BatchJob, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(batchjobsResource, c.ns, batchJob), &v1alpha1.BatchJob{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BatchJob), err
-}
-
-// Update takes the representation of a batchJob and updates it. Returns the server's representation of the batchJob, and an error, if there is any.
-func (c *FakeBatchJobs) Update(ctx context.Context, batchJob *v1alpha1.BatchJob, opts v1.UpdateOptions) (result *v1alpha1.BatchJob, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(batchjobsResource, c.ns, batchJob), &v1alpha1.BatchJob{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BatchJob), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeBatchJobs) UpdateStatus(ctx context.Context, batchJob *v1alpha1.BatchJob, opts v1.UpdateOptions) (*v1alpha1.BatchJob, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(batchjobsResource, "status", c.ns, batchJob), &v1alpha1.BatchJob{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BatchJob), err
-}
-
-// Delete takes name of the batchJob and deletes it. Returns an error if one occurs.
-func (c *FakeBatchJobs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(batchjobsResource, c.ns, name, opts), &v1alpha1.BatchJob{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeBatchJobs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(batchjobsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.BatchJobList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched batchJob.
-func (c *FakeBatchJobs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.BatchJob, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(batchjobsResource, c.ns, name, pt, data, subresources...), &v1alpha1.BatchJob{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BatchJob), err
 }

@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigee/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	apigeev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeApigeeSyncAuthorizations implements ApigeeSyncAuthorizationInterface
-type FakeApigeeSyncAuthorizations struct {
+// fakeApigeeSyncAuthorizations implements ApigeeSyncAuthorizationInterface
+type fakeApigeeSyncAuthorizations struct {
+	*gentype.FakeClientWithList[*v1alpha1.ApigeeSyncAuthorization, *v1alpha1.ApigeeSyncAuthorizationList]
 	Fake *FakeApigeeV1alpha1
-	ns   string
 }
 
-var apigeesyncauthorizationsResource = v1alpha1.SchemeGroupVersion.WithResource("apigeesyncauthorizations")
-
-var apigeesyncauthorizationsKind = v1alpha1.SchemeGroupVersion.WithKind("ApigeeSyncAuthorization")
-
-// Get takes name of the apigeeSyncAuthorization, and returns the corresponding apigeeSyncAuthorization object, and an error if there is any.
-func (c *FakeApigeeSyncAuthorizations) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ApigeeSyncAuthorization, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(apigeesyncauthorizationsResource, c.ns, name), &v1alpha1.ApigeeSyncAuthorization{})
-
-	if obj == nil {
-		return nil, err
+func newFakeApigeeSyncAuthorizations(fake *FakeApigeeV1alpha1, namespace string) apigeev1alpha1.ApigeeSyncAuthorizationInterface {
+	return &fakeApigeeSyncAuthorizations{
+		gentype.NewFakeClientWithList[*v1alpha1.ApigeeSyncAuthorization, *v1alpha1.ApigeeSyncAuthorizationList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("apigeesyncauthorizations"),
+			v1alpha1.SchemeGroupVersion.WithKind("ApigeeSyncAuthorization"),
+			func() *v1alpha1.ApigeeSyncAuthorization { return &v1alpha1.ApigeeSyncAuthorization{} },
+			func() *v1alpha1.ApigeeSyncAuthorizationList { return &v1alpha1.ApigeeSyncAuthorizationList{} },
+			func(dst, src *v1alpha1.ApigeeSyncAuthorizationList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.ApigeeSyncAuthorizationList) []*v1alpha1.ApigeeSyncAuthorization {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.ApigeeSyncAuthorizationList, items []*v1alpha1.ApigeeSyncAuthorization) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.ApigeeSyncAuthorization), err
-}
-
-// List takes label and field selectors, and returns the list of ApigeeSyncAuthorizations that match those selectors.
-func (c *FakeApigeeSyncAuthorizations) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ApigeeSyncAuthorizationList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(apigeesyncauthorizationsResource, apigeesyncauthorizationsKind, c.ns, opts), &v1alpha1.ApigeeSyncAuthorizationList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.ApigeeSyncAuthorizationList{ListMeta: obj.(*v1alpha1.ApigeeSyncAuthorizationList).ListMeta}
-	for _, item := range obj.(*v1alpha1.ApigeeSyncAuthorizationList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested apigeeSyncAuthorizations.
-func (c *FakeApigeeSyncAuthorizations) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(apigeesyncauthorizationsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a apigeeSyncAuthorization and creates it.  Returns the server's representation of the apigeeSyncAuthorization, and an error, if there is any.
-func (c *FakeApigeeSyncAuthorizations) Create(ctx context.Context, apigeeSyncAuthorization *v1alpha1.ApigeeSyncAuthorization, opts v1.CreateOptions) (result *v1alpha1.ApigeeSyncAuthorization, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(apigeesyncauthorizationsResource, c.ns, apigeeSyncAuthorization), &v1alpha1.ApigeeSyncAuthorization{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ApigeeSyncAuthorization), err
-}
-
-// Update takes the representation of a apigeeSyncAuthorization and updates it. Returns the server's representation of the apigeeSyncAuthorization, and an error, if there is any.
-func (c *FakeApigeeSyncAuthorizations) Update(ctx context.Context, apigeeSyncAuthorization *v1alpha1.ApigeeSyncAuthorization, opts v1.UpdateOptions) (result *v1alpha1.ApigeeSyncAuthorization, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(apigeesyncauthorizationsResource, c.ns, apigeeSyncAuthorization), &v1alpha1.ApigeeSyncAuthorization{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ApigeeSyncAuthorization), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeApigeeSyncAuthorizations) UpdateStatus(ctx context.Context, apigeeSyncAuthorization *v1alpha1.ApigeeSyncAuthorization, opts v1.UpdateOptions) (*v1alpha1.ApigeeSyncAuthorization, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(apigeesyncauthorizationsResource, "status", c.ns, apigeeSyncAuthorization), &v1alpha1.ApigeeSyncAuthorization{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ApigeeSyncAuthorization), err
-}
-
-// Delete takes name of the apigeeSyncAuthorization and deletes it. Returns an error if one occurs.
-func (c *FakeApigeeSyncAuthorizations) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(apigeesyncauthorizationsResource, c.ns, name, opts), &v1alpha1.ApigeeSyncAuthorization{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeApigeeSyncAuthorizations) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(apigeesyncauthorizationsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.ApigeeSyncAuthorizationList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched apigeeSyncAuthorization.
-func (c *FakeApigeeSyncAuthorizations) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ApigeeSyncAuthorization, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(apigeesyncauthorizationsResource, c.ns, name, pt, data, subresources...), &v1alpha1.ApigeeSyncAuthorization{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ApigeeSyncAuthorization), err
 }

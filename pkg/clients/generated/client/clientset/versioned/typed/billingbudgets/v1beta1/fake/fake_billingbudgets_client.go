@@ -32,7 +32,7 @@ type FakeBillingbudgetsV1beta1 struct {
 }
 
 func (c *FakeBillingbudgetsV1beta1) BillingBudgetsBudgets(namespace string) v1beta1.BillingBudgetsBudgetInterface {
-	return &FakeBillingBudgetsBudgets{c, namespace}
+	return newFakeBillingBudgetsBudgets(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigee/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeApigeeEnvironments implements ApigeeEnvironmentInterface
-type FakeApigeeEnvironments struct {
+// fakeApigeeEnvironments implements ApigeeEnvironmentInterface
+type fakeApigeeEnvironments struct {
+	*gentype.FakeClientWithList[*v1beta1.ApigeeEnvironment, *v1beta1.ApigeeEnvironmentList]
 	Fake *FakeApigeeV1beta1
-	ns   string
 }
 
-var apigeeenvironmentsResource = v1beta1.SchemeGroupVersion.WithResource("apigeeenvironments")
-
-var apigeeenvironmentsKind = v1beta1.SchemeGroupVersion.WithKind("ApigeeEnvironment")
-
-// Get takes name of the apigeeEnvironment, and returns the corresponding apigeeEnvironment object, and an error if there is any.
-func (c *FakeApigeeEnvironments) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ApigeeEnvironment, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(apigeeenvironmentsResource, c.ns, name), &v1beta1.ApigeeEnvironment{})
-
-	if obj == nil {
-		return nil, err
+func newFakeApigeeEnvironments(fake *FakeApigeeV1beta1, namespace string) apigeev1beta1.ApigeeEnvironmentInterface {
+	return &fakeApigeeEnvironments{
+		gentype.NewFakeClientWithList[*v1beta1.ApigeeEnvironment, *v1beta1.ApigeeEnvironmentList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("apigeeenvironments"),
+			v1beta1.SchemeGroupVersion.WithKind("ApigeeEnvironment"),
+			func() *v1beta1.ApigeeEnvironment { return &v1beta1.ApigeeEnvironment{} },
+			func() *v1beta1.ApigeeEnvironmentList { return &v1beta1.ApigeeEnvironmentList{} },
+			func(dst, src *v1beta1.ApigeeEnvironmentList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.ApigeeEnvironmentList) []*v1beta1.ApigeeEnvironment {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.ApigeeEnvironmentList, items []*v1beta1.ApigeeEnvironment) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.ApigeeEnvironment), err
-}
-
-// List takes label and field selectors, and returns the list of ApigeeEnvironments that match those selectors.
-func (c *FakeApigeeEnvironments) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ApigeeEnvironmentList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(apigeeenvironmentsResource, apigeeenvironmentsKind, c.ns, opts), &v1beta1.ApigeeEnvironmentList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.ApigeeEnvironmentList{ListMeta: obj.(*v1beta1.ApigeeEnvironmentList).ListMeta}
-	for _, item := range obj.(*v1beta1.ApigeeEnvironmentList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested apigeeEnvironments.
-func (c *FakeApigeeEnvironments) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(apigeeenvironmentsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a apigeeEnvironment and creates it.  Returns the server's representation of the apigeeEnvironment, and an error, if there is any.
-func (c *FakeApigeeEnvironments) Create(ctx context.Context, apigeeEnvironment *v1beta1.ApigeeEnvironment, opts v1.CreateOptions) (result *v1beta1.ApigeeEnvironment, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(apigeeenvironmentsResource, c.ns, apigeeEnvironment), &v1beta1.ApigeeEnvironment{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ApigeeEnvironment), err
-}
-
-// Update takes the representation of a apigeeEnvironment and updates it. Returns the server's representation of the apigeeEnvironment, and an error, if there is any.
-func (c *FakeApigeeEnvironments) Update(ctx context.Context, apigeeEnvironment *v1beta1.ApigeeEnvironment, opts v1.UpdateOptions) (result *v1beta1.ApigeeEnvironment, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(apigeeenvironmentsResource, c.ns, apigeeEnvironment), &v1beta1.ApigeeEnvironment{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ApigeeEnvironment), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeApigeeEnvironments) UpdateStatus(ctx context.Context, apigeeEnvironment *v1beta1.ApigeeEnvironment, opts v1.UpdateOptions) (*v1beta1.ApigeeEnvironment, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(apigeeenvironmentsResource, "status", c.ns, apigeeEnvironment), &v1beta1.ApigeeEnvironment{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ApigeeEnvironment), err
-}
-
-// Delete takes name of the apigeeEnvironment and deletes it. Returns an error if one occurs.
-func (c *FakeApigeeEnvironments) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(apigeeenvironmentsResource, c.ns, name, opts), &v1beta1.ApigeeEnvironment{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeApigeeEnvironments) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(apigeeenvironmentsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.ApigeeEnvironmentList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched apigeeEnvironment.
-func (c *FakeApigeeEnvironments) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ApigeeEnvironment, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(apigeeenvironmentsResource, c.ns, name, pt, data, subresources...), &v1beta1.ApigeeEnvironment{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ApigeeEnvironment), err
 }

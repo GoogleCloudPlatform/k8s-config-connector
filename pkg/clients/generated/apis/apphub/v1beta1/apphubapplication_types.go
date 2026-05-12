@@ -121,11 +121,11 @@ type AppHubApplicationSpec struct {
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
-	/* Required. The location of the application. */
+	/* Required. Defines the parent path of the resource. */
 	// +optional
 	Location *string `json:"location,omitempty"`
 
-	/* Required. The host project of the application. */
+	/* Required. The host project of the resource. */
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 

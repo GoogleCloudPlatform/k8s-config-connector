@@ -83,5 +83,11 @@ var (
 		Kind:    reflect.TypeOf(NetworkServicesServiceBinding{}).Name(),
 	}
 
+	NetworkServicesWasmPluginGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkServicesWasmPlugin{}).Name(),
+	}
+
 	networkservicesAPIVersion = SchemeGroupVersion.String()
 )

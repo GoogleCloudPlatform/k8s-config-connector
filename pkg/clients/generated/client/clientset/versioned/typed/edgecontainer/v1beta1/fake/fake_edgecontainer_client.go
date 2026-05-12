@@ -32,15 +32,15 @@ type FakeEdgecontainerV1beta1 struct {
 }
 
 func (c *FakeEdgecontainerV1beta1) EdgeContainerClusters(namespace string) v1beta1.EdgeContainerClusterInterface {
-	return &FakeEdgeContainerClusters{c, namespace}
+	return newFakeEdgeContainerClusters(c, namespace)
 }
 
 func (c *FakeEdgecontainerV1beta1) EdgeContainerNodePools(namespace string) v1beta1.EdgeContainerNodePoolInterface {
-	return &FakeEdgeContainerNodePools{c, namespace}
+	return newFakeEdgeContainerNodePools(c, namespace)
 }
 
 func (c *FakeEdgecontainerV1beta1) EdgeContainerVpnConnections(namespace string) v1beta1.EdgeContainerVpnConnectionInterface {
-	return &FakeEdgeContainerVpnConnections{c, namespace}
+	return newFakeEdgeContainerVpnConnections(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

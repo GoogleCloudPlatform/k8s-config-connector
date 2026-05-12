@@ -32,7 +32,7 @@ type FakeApikeysV1alpha1 struct {
 }
 
 func (c *FakeApikeysV1alpha1) APIKeysKeys(namespace string) v1alpha1.APIKeysKeyInterface {
-	return &FakeAPIKeysKeys{c, namespace}
+	return newFakeAPIKeysKeys(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate
