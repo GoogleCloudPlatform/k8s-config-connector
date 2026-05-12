@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +30,11 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -42,232 +43,231 @@ type CertificateAuthorizationAttemptInfo struct {
 	/* Human readable explanation for reaching the state. Provided to help
 	address the configuration issues.
 	Not guaranteed to be stable. For programmatic access use 'failure_reason' field. */
-	// +optional
-	Details *string `json:"details,omitempty"`
+// +optional
+Details *string `json:"details,omitempty"`
 
-	/* Domain name of the authorization attempt. */
-	// +optional
-	Domain *string `json:"domain,omitempty"`
+/* Domain name of the authorization attempt. */
+// +optional
+Domain *string `json:"domain,omitempty"`
 
-	/* Reason for failure of the authorization attempt for the domain. */
-	// +optional
-	FailureReason *string `json:"failureReason,omitempty"`
+/* Reason for failure of the authorization attempt for the domain. */
+// +optional
+FailureReason *string `json:"failureReason,omitempty"`
 
-	/* State of the domain for managed certificate issuance. */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* State of the domain for managed certificate issuance. */
+// +optional
+State *string `json:"state,omitempty"`
 }
 
 type CertificateCertificatePem struct {
-	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	// +optional
-	Value *string `json:"value,omitempty"`
+/* Value of the field. Cannot be used if 'valueFrom' is specified. */
+// +optional
+Value *string `json:"value,omitempty"`
 
-	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	// +optional
-	ValueFrom *CertificateValueFrom `json:"valueFrom,omitempty"`
+/* Source for the field's value. Cannot be used if 'value' is specified. */
+// +optional
+ValueFrom *CertificateValueFrom `json:"valueFrom,omitempty"`
 }
 
 type CertificateManaged struct {
 	/* Detailed state of the latest authorization attempt for each domain
 	specified for this Managed Certificate. */
-	// +optional
-	AuthorizationAttemptInfo []CertificateAuthorizationAttemptInfo `json:"authorizationAttemptInfo,omitempty"`
+// +optional
+AuthorizationAttemptInfo []CertificateAuthorizationAttemptInfo `json:"authorizationAttemptInfo,omitempty"`
 
-	// +optional
-	DnsAuthorizationsRefs []v1alpha1.ResourceRef `json:"dnsAuthorizationsRefs,omitempty"`
+// +optional
+DnsAuthorizationsRefs []v1alpha1.ResourceRef `json:"dnsAuthorizationsRefs,omitempty"`
 
 	/* Immutable. The domains for which a managed SSL certificate will be generated.
 	Wildcard domains are only supported with DNS challenge resolution. */
-	// +optional
-	Domains []string `json:"domains,omitempty"`
+// +optional
+Domains []string `json:"domains,omitempty"`
 
 	/* Only the `external` field is supported to configure the reference.
-
+	
 	Immutable. The resource name for a CertificateIssuanceConfig used to configure private PKI certificates in the format projects/* /locations/* /certificateIssuanceConfigs/*.
 	If this field is not set, the certificates will instead be publicly signed as documented at https://cloud.google.com/load-balancing/docs/ssl-certificates/google-managed-certs#caa.
 	Either issuanceConfig or dnsAuthorizations should be specified, but not both. */
-	// +optional
-	IssuanceConfigRef *v1alpha1.ResourceRef `json:"issuanceConfigRef,omitempty"`
+// +optional
+IssuanceConfigRef *v1alpha1.ResourceRef `json:"issuanceConfigRef,omitempty"`
 
-	/* Information about issues with provisioning this Managed Certificate. */
-	// +optional
-	ProvisioningIssue []CertificateProvisioningIssue `json:"provisioningIssue,omitempty"`
+/* Information about issues with provisioning this Managed Certificate. */
+// +optional
+ProvisioningIssue []CertificateProvisioningIssue `json:"provisioningIssue,omitempty"`
 
-	/* A state of this Managed Certificate. */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* A state of this Managed Certificate. */
+// +optional
+State *string `json:"state,omitempty"`
 }
 
 type CertificatePemPrivateKey struct {
-	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	// +optional
-	Value *string `json:"value,omitempty"`
+/* Value of the field. Cannot be used if 'valueFrom' is specified. */
+// +optional
+Value *string `json:"value,omitempty"`
 
-	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	// +optional
-	ValueFrom *CertificateValueFrom `json:"valueFrom,omitempty"`
+/* Source for the field's value. Cannot be used if 'value' is specified. */
+// +optional
+ValueFrom *CertificateValueFrom `json:"valueFrom,omitempty"`
 }
 
 type CertificatePrivateKeyPem struct {
-	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	// +optional
-	Value *string `json:"value,omitempty"`
+/* Value of the field. Cannot be used if 'valueFrom' is specified. */
+// +optional
+Value *string `json:"value,omitempty"`
 
-	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	// +optional
-	ValueFrom *CertificateValueFrom `json:"valueFrom,omitempty"`
+/* Source for the field's value. Cannot be used if 'value' is specified. */
+// +optional
+ValueFrom *CertificateValueFrom `json:"valueFrom,omitempty"`
 }
 
 type CertificateProvisioningIssue struct {
 	/* Human readable explanation about the issue. Provided to help address
 	the configuration issues.
 	Not guaranteed to be stable. For programmatic access use 'reason' field. */
-	// +optional
-	Details *string `json:"details,omitempty"`
+// +optional
+Details *string `json:"details,omitempty"`
 
-	/* Reason for provisioning failures. */
-	// +optional
-	Reason *string `json:"reason,omitempty"`
+/* Reason for provisioning failures. */
+// +optional
+Reason *string `json:"reason,omitempty"`
 }
 
 type CertificateSelfManaged struct {
 	/* DEPRECATED. `certificate_pem` is deprecated. Use `pem_certificate` instead. Immutable. The certificate chain in PEM-encoded form.
-
+	
 	Leaf certificate comes first, followed by intermediate ones if any. */
-	// +optional
-	CertificatePem *CertificateCertificatePem `json:"certificatePem,omitempty"`
+// +optional
+CertificatePem *CertificateCertificatePem `json:"certificatePem,omitempty"`
 
 	/* Immutable. The certificate chain in PEM-encoded form.
-
+	
 	Leaf certificate comes first, followed by intermediate ones if any. */
-	// +optional
-	PemCertificate *string `json:"pemCertificate,omitempty"`
+// +optional
+PemCertificate *string `json:"pemCertificate,omitempty"`
 
-	/* Immutable. The private key of the leaf certificate in PEM-encoded form. */
-	// +optional
-	PemPrivateKey *CertificatePemPrivateKey `json:"pemPrivateKey,omitempty"`
+/* Immutable. The private key of the leaf certificate in PEM-encoded form. */
+// +optional
+PemPrivateKey *CertificatePemPrivateKey `json:"pemPrivateKey,omitempty"`
 
-	/* DEPRECATED. `private_key_pem` is deprecated. Use `pem_private_key` instead. Immutable. The private key of the leaf certificate in PEM-encoded form. */
-	// +optional
-	PrivateKeyPem *CertificatePrivateKeyPem `json:"privateKeyPem,omitempty"`
+/* DEPRECATED. `private_key_pem` is deprecated. Use `pem_private_key` instead. Immutable. The private key of the leaf certificate in PEM-encoded form. */
+// +optional
+PrivateKeyPem *CertificatePrivateKeyPem `json:"privateKeyPem,omitempty"`
 }
 
 type CertificateValueFrom struct {
-	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-	// +optional
-	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
+/* Reference to a value with the given key in the given Secret in the resource's namespace. */
+// +optional
+SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type CertificateManagerCertificateSpec struct {
-	/* A human-readable description of the resource. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* A human-readable description of the resource. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Immutable. The Certificate Manager location. If not specified, "global" is used. */
-	Location string `json:"location"`
+/* Immutable. The Certificate Manager location. If not specified, "global" is used. */
+Location string `json:"location"`
 
 	/* Immutable. Configuration and state of a Managed Certificate.
 	Certificate Manager provisions and renews Managed Certificates
 	automatically, for as long as it's authorized to do so. */
-	// +optional
-	Managed *CertificateManaged `json:"managed,omitempty"`
+// +optional
+Managed *CertificateManaged `json:"managed,omitempty"`
 
-	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Immutable. The scope of the certificate.
-
+	
 	DEFAULT: Certificates with default scope are served from core Google data centers.
 	If unsure, choose this option.
-
+	
 	EDGE_CACHE: Certificates with scope EDGE_CACHE are special-purposed certificates,
 	served from non-core Google data centers.
-
+	
 	ALL_REGIONS: Certificates with ALL_REGIONS scope are served from all GCP regions (You can only use ALL_REGIONS with global certs).
 	see https://cloud.google.com/compute/docs/regions-zones. */
-	// +optional
-	Scope *string `json:"scope,omitempty"`
+// +optional
+Scope *string `json:"scope,omitempty"`
 
 	/* Immutable. Certificate data for a SelfManaged Certificate.
 	SelfManaged Certificates are uploaded by the user. Updating such
 	certificates before they expire remains the user's responsibility. */
-	// +optional
-	SelfManaged *CertificateSelfManaged `json:"selfManaged,omitempty"`
+// +optional
+SelfManaged *CertificateSelfManaged `json:"selfManaged,omitempty"`
 }
 
 type CertificateAuthorizationAttemptInfoStatus struct {
 	/* Human readable explanation for reaching the state. Provided to help
 	address the configuration issues.
 	Not guaranteed to be stable. For programmatic access use 'failure_reason' field. */
-	// +optional
-	Details *string `json:"details,omitempty"`
+// +optional
+Details *string `json:"details,omitempty"`
 
-	/* Domain name of the authorization attempt. */
-	// +optional
-	Domain *string `json:"domain,omitempty"`
+/* Domain name of the authorization attempt. */
+// +optional
+Domain *string `json:"domain,omitempty"`
 
-	/* Reason for failure of the authorization attempt for the domain. */
-	// +optional
-	FailureReason *string `json:"failureReason,omitempty"`
+/* Reason for failure of the authorization attempt for the domain. */
+// +optional
+FailureReason *string `json:"failureReason,omitempty"`
 
-	/* State of the domain for managed certificate issuance. */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* State of the domain for managed certificate issuance. */
+// +optional
+State *string `json:"state,omitempty"`
 }
 
 type CertificateManagedStatus struct {
 	/* Detailed state of the latest authorization attempt for each domain
 	specified for this Managed Certificate. */
-	// +optional
-	AuthorizationAttemptInfo []CertificateAuthorizationAttemptInfoStatus `json:"authorizationAttemptInfo,omitempty"`
+// +optional
+AuthorizationAttemptInfo []CertificateAuthorizationAttemptInfoStatus `json:"authorizationAttemptInfo,omitempty"`
 
-	/* Information about issues with provisioning this Managed Certificate. */
-	// +optional
-	ProvisioningIssue []CertificateProvisioningIssueStatus `json:"provisioningIssue,omitempty"`
+/* Information about issues with provisioning this Managed Certificate. */
+// +optional
+ProvisioningIssue []CertificateProvisioningIssueStatus `json:"provisioningIssue,omitempty"`
 
-	/* A state of this Managed Certificate. */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* A state of this Managed Certificate. */
+// +optional
+State *string `json:"state,omitempty"`
 }
 
 type CertificateObservedStateStatus struct {
 	/* Immutable. Configuration and state of a Managed Certificate.
 	Certificate Manager provisions and renews Managed Certificates
 	automatically, for as long as it's authorized to do so. */
-	// +optional
-	Managed *CertificateManagedStatus `json:"managed,omitempty"`
+// +optional
+Managed *CertificateManagedStatus `json:"managed,omitempty"`
 }
 
 type CertificateProvisioningIssueStatus struct {
 	/* Human readable explanation about the issue. Provided to help address
 	the configuration issues.
 	Not guaranteed to be stable. For programmatic access use 'reason' field. */
-	// +optional
-	Details *string `json:"details,omitempty"`
+// +optional
+Details *string `json:"details,omitempty"`
 
-	/* Reason for provisioning failures. */
-	// +optional
-	Reason *string `json:"reason,omitempty"`
+/* Reason for provisioning failures. */
+// +optional
+Reason *string `json:"reason,omitempty"`
 }
 
 type CertificateManagerCertificateStatus struct {
 	/* Conditions represent the latest available observations of the
-	   CertificateManagerCertificate's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	    CertificateManagerCertificate's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* The observed state of the underlying GCP resource. */
-	// +optional
-	ObservedState *CertificateObservedStateStatus `json:"observedState,omitempty"`
+/* The observed state of the underlying GCP resource. */
+// +optional
+ObservedState *CertificateObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcertificatemanagercertificate;gcpcertificatemanagercertificates
@@ -284,22 +284,20 @@ type CertificateManagerCertificateStatus struct {
 // CertificateManagerCertificate is the Schema for the certificatemanager API
 // +k8s:openapi-gen=true
 type CertificateManagerCertificate struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   CertificateManagerCertificateSpec   `json:"spec,omitempty"`
-	Status CertificateManagerCertificateStatus `json:"status,omitempty"`
+  Spec CertificateManagerCertificateSpec `json:"spec,omitempty"`
+  Status CertificateManagerCertificateStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// CertificateManagerCertificateList contains a list of CertificateManagerCertificate
-type CertificateManagerCertificateList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []CertificateManagerCertificate `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&CertificateManagerCertificate{}, &CertificateManagerCertificateList{})
-}
+ // CertificateManagerCertificateList contains a list of CertificateManagerCertificate
+ type CertificateManagerCertificateList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []CertificateManagerCertificate `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&CertificateManagerCertificate{}, &CertificateManagerCertificateList{})
+ }

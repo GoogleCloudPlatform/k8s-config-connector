@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,70 +30,69 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type FilestoreBackupSpec struct {
-	/* A description of the backup with 2048 characters or less. Requests with longer descriptions will be rejected. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* A description of the backup with 2048 characters or less. Requests with longer descriptions will be rejected. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Immutable. The location for the resource */
-	Location string `json:"location"`
+/* Immutable. The location for the resource */
+Location string `json:"location"`
 
-	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* Immutable. The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. Name of the file share in the source Cloud Filestore instance that the backup is created from. */
-	SourceFileShare string `json:"sourceFileShare"`
+/* Immutable. Name of the file share in the source Cloud Filestore instance that the backup is created from. */
+SourceFileShare string `json:"sourceFileShare"`
 
-	/* Immutable. */
-	SourceInstanceRef v1alpha1.ResourceRef `json:"sourceInstanceRef"`
+/* Immutable. */
+SourceInstanceRef v1alpha1.ResourceRef `json:"sourceInstanceRef"`
 }
 
 type FilestoreBackupStatus struct {
 	/* Conditions represent the latest available observations of the
-	   FilestoreBackup's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Output only. Capacity of the source file share when the backup was created. */
-	// +optional
-	CapacityGb *int64 `json:"capacityGb,omitempty"`
+	    FilestoreBackup's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* Output only. Capacity of the source file share when the backup was created. */
+// +optional
+CapacityGb *int64 `json:"capacityGb,omitempty"`
 
-	/* Output only. The time when the backup was created. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. The time when the backup was created. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. Amount of bytes that will be downloaded if the backup is restored. This may be different than storage bytes, since sequential backups of the same disk will share storage. */
-	// +optional
-	DownloadBytes *int64 `json:"downloadBytes,omitempty"`
+/* Output only. Amount of bytes that will be downloaded if the backup is restored. This may be different than storage bytes, since sequential backups of the same disk will share storage. */
+// +optional
+DownloadBytes *int64 `json:"downloadBytes,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* Output only. The service tier of the source Cloud Filestore instance that this backup is created from. Possible values: TIER_UNSPECIFIED, STANDARD, PREMIUM, BASIC_HDD, BASIC_SSD, HIGH_SCALE_SSD */
-	// +optional
-	SourceInstanceTier *string `json:"sourceInstanceTier,omitempty"`
+/* Output only. The service tier of the source Cloud Filestore instance that this backup is created from. Possible values: TIER_UNSPECIFIED, STANDARD, PREMIUM, BASIC_HDD, BASIC_SSD, HIGH_SCALE_SSD */
+// +optional
+SourceInstanceTier *string `json:"sourceInstanceTier,omitempty"`
 
-	/* Output only. The backup state. Possible values: STATE_UNSPECIFIED, CREATING, READY, REPAIRING, DELETING, ERROR, RESTORING */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* Output only. The backup state. Possible values: STATE_UNSPECIFIED, CREATING, READY, REPAIRING, DELETING, ERROR, RESTORING */
+// +optional
+State *string `json:"state,omitempty"`
 
-	/* Output only. The size of the storage used by the backup. As backups share storage, this number is expected to change with backup creation/deletion. */
-	// +optional
-	StorageBytes *int64 `json:"storageBytes,omitempty"`
+/* Output only. The size of the storage used by the backup. As backups share storage, this number is expected to change with backup creation/deletion. */
+// +optional
+StorageBytes *int64 `json:"storageBytes,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpfilestorebackup;gcpfilestorebackups
@@ -109,22 +109,20 @@ type FilestoreBackupStatus struct {
 // FilestoreBackup is the Schema for the filestore API
 // +k8s:openapi-gen=true
 type FilestoreBackup struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   FilestoreBackupSpec   `json:"spec,omitempty"`
-	Status FilestoreBackupStatus `json:"status,omitempty"`
+  Spec FilestoreBackupSpec `json:"spec,omitempty"`
+  Status FilestoreBackupStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// FilestoreBackupList contains a list of FilestoreBackup
-type FilestoreBackupList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []FilestoreBackup `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&FilestoreBackup{}, &FilestoreBackupList{})
-}
+ // FilestoreBackupList contains a list of FilestoreBackup
+ type FilestoreBackupList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []FilestoreBackup `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&FilestoreBackup{}, &FilestoreBackupList{})
+ }

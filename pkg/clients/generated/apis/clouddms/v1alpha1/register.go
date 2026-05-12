@@ -53,23 +53,25 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	CloudDMSConversionWorkspaceGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(CloudDMSConversionWorkspace{}).Name(),
-	}
+	
+  	CloudDMSConversionWorkspaceGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(CloudDMSConversionWorkspace{}).Name(),
+  	}
+  
+  	CloudDMSMigrationJobGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(CloudDMSMigrationJob{}).Name(),
+  	}
+  
+  	CloudDMSPrivateConnectionGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(CloudDMSPrivateConnection{}).Name(),
+  	}
+  
 
-	CloudDMSMigrationJobGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(CloudDMSMigrationJob{}).Name(),
-	}
-
-	CloudDMSPrivateConnectionGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(CloudDMSPrivateConnection{}).Name(),
-	}
-
-	clouddmsAPIVersion = SchemeGroupVersion.String()
+  	clouddmsAPIVersion = SchemeGroupVersion.String()
 )

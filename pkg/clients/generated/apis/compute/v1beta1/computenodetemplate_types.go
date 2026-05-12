@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,34 +30,34 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type NodetemplateNodeTypeFlexibility struct {
-	/* Immutable. Number of virtual CPUs to use. */
-	// +optional
-	Cpus *string `json:"cpus,omitempty"`
+/* Immutable. Number of virtual CPUs to use. */
+// +optional
+Cpus *string `json:"cpus,omitempty"`
 
-	/* Use local SSD. */
-	// +optional
-	LocalSsd *string `json:"localSsd,omitempty"`
+/* Use local SSD. */
+// +optional
+LocalSsd *string `json:"localSsd,omitempty"`
 
-	/* Immutable. Physical memory available to the node, defined in MB. */
-	// +optional
-	Memory *string `json:"memory,omitempty"`
+/* Immutable. Physical memory available to the node, defined in MB. */
+// +optional
+Memory *string `json:"memory,omitempty"`
 }
 
 type NodetemplateServerBinding struct {
 	/* Immutable. Type of server binding policy. If 'RESTART_NODE_ON_ANY_SERVER',
 	nodes using this template will restart on any physical server
 	following a maintenance event.
-
+	
 	If 'RESTART_NODE_ON_MINIMAL_SERVER', nodes using this template
 	will restart on the same physical server following a maintenance
 	event, instead of being live migrated to or restarted on a new
@@ -65,59 +66,58 @@ type NodetemplateServerBinding struct {
 	such as physical sockets or cores, to avoid the need for
 	additional licenses when maintenance occurs. However, VMs on such
 	nodes will experience outages while maintenance is applied. Possible values: ["RESTART_NODE_ON_ANY_SERVER", "RESTART_NODE_ON_MINIMAL_SERVERS"]. */
-	Type string `json:"type"`
+Type string `json:"type"`
 }
 
 type ComputeNodeTemplateSpec struct {
-	/* Immutable. CPU overcommit. Default value: "NONE" Possible values: ["ENABLED", "NONE"]. */
-	// +optional
-	CpuOvercommitType *string `json:"cpuOvercommitType,omitempty"`
+/* Immutable. CPU overcommit. Default value: "NONE" Possible values: ["ENABLED", "NONE"]. */
+// +optional
+CpuOvercommitType *string `json:"cpuOvercommitType,omitempty"`
 
-	/* Immutable. An optional textual description of the resource. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* Immutable. An optional textual description of the resource. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Immutable. Node type to use for nodes group that are created from this template. Only one of nodeTypeFlexibility and nodeType can be specified. */
-	// +optional
-	NodeType *string `json:"nodeType,omitempty"`
+/* Immutable. Node type to use for nodes group that are created from this template. Only one of nodeTypeFlexibility and nodeType can be specified. */
+// +optional
+NodeType *string `json:"nodeType,omitempty"`
 
-	/* Immutable. Flexible properties for the desired node type. Node groups that use this node template will create nodes of a type that matches these properties. Only one of nodeTypeFlexibility and nodeType can be specified. */
-	// +optional
-	NodeTypeFlexibility *NodetemplateNodeTypeFlexibility `json:"nodeTypeFlexibility,omitempty"`
+/* Immutable. Flexible properties for the desired node type. Node groups that use this node template will create nodes of a type that matches these properties. Only one of nodeTypeFlexibility and nodeType can be specified. */
+// +optional
+NodeTypeFlexibility *NodetemplateNodeTypeFlexibility `json:"nodeTypeFlexibility,omitempty"`
 
-	/* Immutable. Region where nodes using the node template will be created. */
-	Region string `json:"region"`
+/* Immutable. Region where nodes using the node template will be created. */
+Region string `json:"region"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. The server binding policy for nodes using this template. Determines where the nodes should restart following a maintenance event. */
-	// +optional
-	ServerBinding *NodetemplateServerBinding `json:"serverBinding,omitempty"`
+/* Immutable. The server binding policy for nodes using this template. Determines where the nodes should restart following a maintenance event. */
+// +optional
+ServerBinding *NodetemplateServerBinding `json:"serverBinding,omitempty"`
 }
 
 type ComputeNodeTemplateStatus struct {
 	/* Conditions represent the latest available observations of the
-	   ComputeNodeTemplate's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Creation timestamp in RFC3339 text format. */
-	// +optional
-	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+	    ComputeNodeTemplate's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* Creation timestamp in RFC3339 text format. */
+// +optional
+CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-	/* A unique specifier for the ComputeNodeTemplate resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+/* A unique specifier for the ComputeNodeTemplate resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* Server-defined URL for the resource. */
-	// +optional
-	SelfLink *string `json:"selfLink,omitempty"`
+/* Server-defined URL for the resource. */
+// +optional
+SelfLink *string `json:"selfLink,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputenodetemplate;gcpcomputenodetemplates
@@ -134,22 +134,20 @@ type ComputeNodeTemplateStatus struct {
 // ComputeNodeTemplate is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeNodeTemplate struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ComputeNodeTemplateSpec   `json:"spec,omitempty"`
-	Status ComputeNodeTemplateStatus `json:"status,omitempty"`
+  Spec ComputeNodeTemplateSpec `json:"spec,omitempty"`
+  Status ComputeNodeTemplateStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// ComputeNodeTemplateList contains a list of ComputeNodeTemplate
-type ComputeNodeTemplateList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ComputeNodeTemplate `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&ComputeNodeTemplate{}, &ComputeNodeTemplateList{})
-}
+ // ComputeNodeTemplateList contains a list of ComputeNodeTemplate
+ type ComputeNodeTemplateList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []ComputeNodeTemplate `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&ComputeNodeTemplate{}, &ComputeNodeTemplateList{})
+ }

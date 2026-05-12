@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +30,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -41,40 +42,39 @@ var _ = apiextensionsv1.JSON{}
 type APIGatewayGatewaySpec struct {
 	/* Resource name of the API Config for this Gateway. Format: projects/{project}/locations/global/apis/{api}/configs/{apiConfig}.
 	When changing api configs please ensure the new config is a new resource and the lifecycle rule 'create_before_destroy' is set. */
-	ApiConfig string `json:"apiConfig"`
+ApiConfig string `json:"apiConfig"`
 
-	/* A user-visible name for the API. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+/* A user-visible name for the API. */
+// +optional
+DisplayName *string `json:"displayName,omitempty"`
 
-	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. The region of the gateway for the API. */
-	Region string `json:"region"`
+/* Immutable. The region of the gateway for the API. */
+Region string `json:"region"`
 
-	/* Immutable. Optional. The gatewayId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The gatewayId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type APIGatewayGatewayStatus struct {
 	/* Conditions represent the latest available observations of the
-	   APIGatewayGateway's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The default API Gateway host name of the form {gatewayId}-{hash}.{region_code}.gateway.dev. */
-	// +optional
-	DefaultHostname *string `json:"defaultHostname,omitempty"`
+	    APIGatewayGateway's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* The default API Gateway host name of the form {gatewayId}-{hash}.{region_code}.gateway.dev. */
+// +optional
+DefaultHostname *string `json:"defaultHostname,omitempty"`
 
-	/* Resource name of the Gateway. Format: projects/{project}/locations/{region}/gateways/{gateway}. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+/* Resource name of the Gateway. Format: projects/{project}/locations/{region}/gateways/{gateway}. */
+// +optional
+Name *string `json:"name,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpapigatewaygateway;gcpapigatewaygateways
@@ -91,22 +91,20 @@ type APIGatewayGatewayStatus struct {
 // APIGatewayGateway is the Schema for the apigateway API
 // +k8s:openapi-gen=true
 type APIGatewayGateway struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   APIGatewayGatewaySpec   `json:"spec,omitempty"`
-	Status APIGatewayGatewayStatus `json:"status,omitempty"`
+  Spec APIGatewayGatewaySpec `json:"spec,omitempty"`
+  Status APIGatewayGatewayStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// APIGatewayGatewayList contains a list of APIGatewayGateway
-type APIGatewayGatewayList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []APIGatewayGateway `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&APIGatewayGateway{}, &APIGatewayGatewayList{})
-}
+ // APIGatewayGatewayList contains a list of APIGatewayGateway
+ type APIGatewayGatewayList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []APIGatewayGateway `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&APIGatewayGateway{}, &APIGatewayGatewayList{})
+ }

@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,76 +30,75 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type AppHubDiscoveredServiceSpec struct {
-	/* Required. The location of the resource. */
-	// +optional
-	Location *string `json:"location,omitempty"`
+/* Required. The location of the resource. */
+// +optional
+Location *string `json:"location,omitempty"`
 
-	/* Required. The host project of the resource. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+/* Required. The host project of the resource. */
+// +optional
+ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/* The AppHubDiscoveredService name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The AppHubDiscoveredService name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type DiscoveredserviceObservedStateStatus struct {
-	/* Output only. Properties of an underlying compute resource that can comprise a Service. These are immutable. */
-	// +optional
-	ServiceProperties *DiscoveredserviceServicePropertiesStatus `json:"serviceProperties,omitempty"`
+/* Output only. Properties of an underlying compute resource that can comprise a Service. These are immutable. */
+// +optional
+ServiceProperties *DiscoveredserviceServicePropertiesStatus `json:"serviceProperties,omitempty"`
 
-	/* Output only. Reference to an underlying networking resource that can comprise a Service. These are immutable. */
-	// +optional
-	ServiceReference *DiscoveredserviceServiceReferenceStatus `json:"serviceReference,omitempty"`
+/* Output only. Reference to an underlying networking resource that can comprise a Service. These are immutable. */
+// +optional
+ServiceReference *DiscoveredserviceServiceReferenceStatus `json:"serviceReference,omitempty"`
 }
 
 type DiscoveredserviceServicePropertiesStatus struct {
-	/* Output only. The service project identifier that the underlying cloud resource resides in. */
-	// +optional
-	GcpProject *string `json:"gcpProject,omitempty"`
+/* Output only. The service project identifier that the underlying cloud resource resides in. */
+// +optional
+GcpProject *string `json:"gcpProject,omitempty"`
 
-	/* Output only. The location that the underlying resource resides in, for example, us-west1. */
-	// +optional
-	Location *string `json:"location,omitempty"`
+/* Output only. The location that the underlying resource resides in, for example, us-west1. */
+// +optional
+Location *string `json:"location,omitempty"`
 
-	/* Output only. The location that the underlying resource resides in if it is zonal, for example, us-west1-a). */
-	// +optional
-	Zone *string `json:"zone,omitempty"`
+/* Output only. The location that the underlying resource resides in if it is zonal, for example, us-west1-a). */
+// +optional
+Zone *string `json:"zone,omitempty"`
 }
 
 type DiscoveredserviceServiceReferenceStatus struct {
-	/* Output only. The underlying resource URI (For example, URI of Forwarding Rule, URL Map, and Backend Service). */
-	// +optional
-	Uri *string `json:"uri,omitempty"`
+/* Output only. The underlying resource URI (For example, URI of Forwarding Rule, URL Map, and Backend Service). */
+// +optional
+Uri *string `json:"uri,omitempty"`
 }
 
 type AppHubDiscoveredServiceStatus struct {
 	/* Conditions represent the latest available observations of the
-	   AppHubDiscoveredService's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the AppHubDiscoveredService resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    AppHubDiscoveredService's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the AppHubDiscoveredService resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *DiscoveredserviceObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *DiscoveredserviceObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpapphubdiscoveredservice;gcpapphubdiscoveredservices
@@ -113,22 +113,20 @@ type AppHubDiscoveredServiceStatus struct {
 // AppHubDiscoveredService is the Schema for the apphub API
 // +k8s:openapi-gen=true
 type AppHubDiscoveredService struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   AppHubDiscoveredServiceSpec   `json:"spec,omitempty"`
-	Status AppHubDiscoveredServiceStatus `json:"status,omitempty"`
+  Spec AppHubDiscoveredServiceSpec `json:"spec,omitempty"`
+  Status AppHubDiscoveredServiceStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// AppHubDiscoveredServiceList contains a list of AppHubDiscoveredService
-type AppHubDiscoveredServiceList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []AppHubDiscoveredService `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&AppHubDiscoveredService{}, &AppHubDiscoveredServiceList{})
-}
+ // AppHubDiscoveredServiceList contains a list of AppHubDiscoveredService
+ type AppHubDiscoveredServiceList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []AppHubDiscoveredService `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&AppHubDiscoveredService{}, &AppHubDiscoveredServiceList{})
+ }

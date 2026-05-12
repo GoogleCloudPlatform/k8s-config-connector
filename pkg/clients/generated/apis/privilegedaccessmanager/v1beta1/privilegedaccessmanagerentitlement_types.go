@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,71 +30,71 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type EntitlementAdditionalNotificationTargets struct {
-	/* Optional. Additional email addresses to be notified when a principal (requester) is granted access. */
-	// +optional
-	AdminEmailRecipients []string `json:"adminEmailRecipients,omitempty"`
+/* Optional. Additional email addresses to be notified when a principal (requester) is granted access. */
+// +optional
+AdminEmailRecipients []string `json:"adminEmailRecipients,omitempty"`
 
-	/* Optional. Additional email address to be notified about an eligible entitlement. */
-	// +optional
-	RequesterEmailRecipients []string `json:"requesterEmailRecipients,omitempty"`
+/* Optional. Additional email address to be notified about an eligible entitlement. */
+// +optional
+RequesterEmailRecipients []string `json:"requesterEmailRecipients,omitempty"`
 }
 
 type EntitlementApprovalWorkflow struct {
-	/* An approval workflow where users designated as approvers review and act on the grants. */
-	ManualApprovals EntitlementManualApprovals `json:"manualApprovals"`
+/* An approval workflow where users designated as approvers review and act on the grants. */
+ManualApprovals EntitlementManualApprovals `json:"manualApprovals"`
 }
 
 type EntitlementApprovers struct {
-	/* Optional. Users who are allowed for the operation. Each entry should be a valid v1 IAM principal identifier. The format for these is documented at: https://cloud.google.com/iam/docs/principal-identifiers#v1 */
-	Principals []string `json:"principals"`
+/* Optional. Users who are allowed for the operation. Each entry should be a valid v1 IAM principal identifier. The format for these is documented at: https://cloud.google.com/iam/docs/principal-identifiers#v1 */
+Principals []string `json:"principals"`
 }
 
 type EntitlementEligibleUsers struct {
-	/* Optional. Users who are allowed for the operation. Each entry should be a valid v1 IAM principal identifier. The format for these is documented at: https://cloud.google.com/iam/docs/principal-identifiers#v1 */
-	Principals []string `json:"principals"`
+/* Optional. Users who are allowed for the operation. Each entry should be a valid v1 IAM principal identifier. The format for these is documented at: https://cloud.google.com/iam/docs/principal-identifiers#v1 */
+Principals []string `json:"principals"`
 }
 
 type EntitlementGcpIAMAccess struct {
-	/* Required. Role bindings that are created on successful grant. */
-	RoleBindings []EntitlementRoleBindings `json:"roleBindings"`
+/* Required. Role bindings that are created on successful grant. */
+RoleBindings []EntitlementRoleBindings `json:"roleBindings"`
 }
 
 type EntitlementManualApprovals struct {
-	/* Optional. Whether the approvers need to provide a justification for their actions. */
-	// +optional
-	RequireApproverJustification *bool `json:"requireApproverJustification,omitempty"`
+/* Optional. Whether the approvers need to provide a justification for their actions. */
+// +optional
+RequireApproverJustification *bool `json:"requireApproverJustification,omitempty"`
 
-	/* Optional. List of approval steps in this workflow. These steps are followed in the specified order sequentially. Only 1 step is supported. */
-	// +optional
-	Steps []EntitlementSteps `json:"steps,omitempty"`
+/* Optional. List of approval steps in this workflow. These steps are followed in the specified order sequentially. Only 1 step is supported. */
+// +optional
+Steps []EntitlementSteps `json:"steps,omitempty"`
 }
 
 type EntitlementNotMandatory struct {
 }
 
 type EntitlementPrivilegedAccess struct {
-	/* Access to a Google Cloud resource through IAM. */
-	GcpIAMAccess EntitlementGcpIAMAccess `json:"gcpIAMAccess"`
+/* Access to a Google Cloud resource through IAM. */
+GcpIAMAccess EntitlementGcpIAMAccess `json:"gcpIAMAccess"`
 }
 
 type EntitlementRequesterJustificationConfig struct {
-	/* NotMandatory justification type means the justification isn't required and can be provided in any of the supported formats. The user must explicitly opt out using this field if a justification from the requester isn't mandatory. The only accepted value is `{}` (empty struct). Either 'notMandatory' or 'unstructured' field must be set. */
-	// +optional
-	NotMandatory *EntitlementNotMandatory `json:"notMandatory,omitempty"`
+/* NotMandatory justification type means the justification isn't required and can be provided in any of the supported formats. The user must explicitly opt out using this field if a justification from the requester isn't mandatory. The only accepted value is `{}` (empty struct). Either 'notMandatory' or 'unstructured' field must be set. */
+// +optional
+NotMandatory *EntitlementNotMandatory `json:"notMandatory,omitempty"`
 
-	/* Unstructured justification type means the justification is in the format of a string. If this is set, the server allows the requester to provide a justification but doesn't validate it. The only accepted value is `{}` (empty struct). Either 'notMandatory' or 'unstructured' field must be set. */
-	// +optional
-	Unstructured *EntitlementUnstructured `json:"unstructured,omitempty"`
+/* Unstructured justification type means the justification is in the format of a string. If this is set, the server allows the requester to provide a justification but doesn't validate it. The only accepted value is `{}` (empty struct). Either 'notMandatory' or 'unstructured' field must be set. */
+// +optional
+Unstructured *EntitlementUnstructured `json:"unstructured,omitempty"`
 }
 
 type EntitlementRoleBindings struct {
@@ -101,109 +102,108 @@ type EntitlementRoleBindings struct {
 	with the role. If specified, a user with an active grant for this
 	entitlement is able to access the resource only if this condition
 	evaluates to true for their request.
-
+	
 	This field uses the same CEL format as IAM and supports all attributes
 	that IAM supports, except tags. More details can be found at
 	https://cloud.google.com/iam/docs/conditions-overview#attributes. */
-	// +optional
-	ConditionExpression *string `json:"conditionExpression,omitempty"`
+// +optional
+ConditionExpression *string `json:"conditionExpression,omitempty"`
 
-	/* Required. IAM role to be granted. More details can be found at https://cloud.google.com/iam/docs/roles-overview. */
-	Role string `json:"role"`
+/* Required. IAM role to be granted. More details can be found at https://cloud.google.com/iam/docs/roles-overview. */
+Role string `json:"role"`
 }
 
 type EntitlementSteps struct {
-	/* Required. How many users from the above list need to approve. If there aren't enough distinct users in the list, then the workflow indefinitely blocks. Should always be greater than 0. 1 is the only supported value. */
-	ApprovalsNeeded int32 `json:"approvalsNeeded"`
+/* Required. How many users from the above list need to approve. If there aren't enough distinct users in the list, then the workflow indefinitely blocks. Should always be greater than 0. 1 is the only supported value. */
+ApprovalsNeeded int32 `json:"approvalsNeeded"`
 
-	/* Optional. Additional email addresses to be notified when a grant is pending approval. */
-	// +optional
-	ApproverEmailRecipients []string `json:"approverEmailRecipients,omitempty"`
+/* Optional. Additional email addresses to be notified when a grant is pending approval. */
+// +optional
+ApproverEmailRecipients []string `json:"approverEmailRecipients,omitempty"`
 
-	/* Optional. The potential set of approvers in this step. This list must contain at most one entry. */
-	// +optional
-	Approvers []EntitlementApprovers `json:"approvers,omitempty"`
+/* Optional. The potential set of approvers in this step. This list must contain at most one entry. */
+// +optional
+Approvers []EntitlementApprovers `json:"approvers,omitempty"`
 }
 
 type EntitlementUnstructured struct {
 }
 
 type PrivilegedAccessManagerEntitlementSpec struct {
-	/* Optional. Additional email addresses to be notified based on actions taken. */
-	// +optional
-	AdditionalNotificationTargets *EntitlementAdditionalNotificationTargets `json:"additionalNotificationTargets,omitempty"`
+/* Optional. Additional email addresses to be notified based on actions taken. */
+// +optional
+AdditionalNotificationTargets *EntitlementAdditionalNotificationTargets `json:"additionalNotificationTargets,omitempty"`
 
-	/* Optional. The approvals needed before access are granted to a requester. No approvals are needed if this field is null. */
-	// +optional
-	ApprovalWorkflow *EntitlementApprovalWorkflow `json:"approvalWorkflow,omitempty"`
+/* Optional. The approvals needed before access are granted to a requester. No approvals are needed if this field is null. */
+// +optional
+ApprovalWorkflow *EntitlementApprovalWorkflow `json:"approvalWorkflow,omitempty"`
 
-	/* Who can create grants using this entitlement. This list should contain at most one entry. */
-	EligibleUsers []EntitlementEligibleUsers `json:"eligibleUsers"`
+/* Who can create grants using this entitlement. This list should contain at most one entry. */
+EligibleUsers []EntitlementEligibleUsers `json:"eligibleUsers"`
 
-	/* Immutable. The Folder that this resource belongs to. One and only one of 'projectRef', 'folderRef', or 'organizationRef' must be set. */
-	// +optional
-	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+/* Immutable. The Folder that this resource belongs to. One and only one of 'projectRef', 'folderRef', or 'organizationRef' must be set. */
+// +optional
+FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
-	/* Immutable. Location of the resource. */
-	Location string `json:"location"`
+/* Immutable. Location of the resource. */
+Location string `json:"location"`
 
-	/* Required. The maximum amount of time that access is granted for a request. A requester can ask for a duration less than this, but never more. */
-	MaxRequestDuration string `json:"maxRequestDuration"`
+/* Required. The maximum amount of time that access is granted for a request. A requester can ask for a duration less than this, but never more. */
+MaxRequestDuration string `json:"maxRequestDuration"`
 
-	/* Immutable. The Organization that this resource belongs to. One and only one of 'projectRef', 'folderRef', or 'organizationRef' must be set. */
-	// +optional
-	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+/* Immutable. The Organization that this resource belongs to. One and only one of 'projectRef', 'folderRef', or 'organizationRef' must be set. */
+// +optional
+OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
-	/* The access granted to a requester on successful approval. */
-	PrivilegedAccess EntitlementPrivilegedAccess `json:"privilegedAccess"`
+/* The access granted to a requester on successful approval. */
+PrivilegedAccess EntitlementPrivilegedAccess `json:"privilegedAccess"`
 
-	/* Immutable. The Project that this resource belongs to. One and only one of 'projectRef', 'folderRef', or 'organizationRef' must be set. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+/* Immutable. The Project that this resource belongs to. One and only one of 'projectRef', 'folderRef', or 'organizationRef' must be set. */
+// +optional
+ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/* Required. The manner in which the requester should provide a justification for requesting access. */
-	RequesterJustificationConfig EntitlementRequesterJustificationConfig `json:"requesterJustificationConfig"`
+/* Required. The manner in which the requester should provide a justification for requesting access. */
+RequesterJustificationConfig EntitlementRequesterJustificationConfig `json:"requesterJustificationConfig"`
 
-	/* Immutable. The PrivilegedAccessManagerEntitlement name. If not given, the 'metadata.name' will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. The PrivilegedAccessManagerEntitlement name. If not given, the 'metadata.name' will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type EntitlementObservedStateStatus struct {
-	/* Output only. Create time stamp. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. Create time stamp. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* An 'etag' is used for optimistic concurrency control as a way to prevent simultaneous updates to the same entitlement. An 'etag' is returned in the response to 'GetEntitlement' and the caller should put the 'etag' in the request to 'UpdateEntitlement' so that their change is applied on the same version. If this field is omitted or if there is a mismatch while updating an entitlement, then the server rejects the request. */
-	// +optional
-	Etag *string `json:"etag,omitempty"`
+/* An 'etag' is used for optimistic concurrency control as a way to prevent simultaneous updates to the same entitlement. An 'etag' is returned in the response to 'GetEntitlement' and the caller should put the 'etag' in the request to 'UpdateEntitlement' so that their change is applied on the same version. If this field is omitted or if there is a mismatch while updating an entitlement, then the server rejects the request. */
+// +optional
+Etag *string `json:"etag,omitempty"`
 
-	/* Output only. Current state of this entitlement. */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* Output only. Current state of this entitlement. */
+// +optional
+State *string `json:"state,omitempty"`
 
-	/* Output only. Update time stamp. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. Update time stamp. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type PrivilegedAccessManagerEntitlementStatus struct {
 	/* Conditions represent the latest available observations of the
-	   PrivilegedAccessManagerEntitlement's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the PrivilegedAccessManagerEntitlement resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    PrivilegedAccessManagerEntitlement's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the PrivilegedAccessManagerEntitlement resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to 'metadata.generation', then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to 'metadata.generation', then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *EntitlementObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *EntitlementObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpprivilegedaccessmanagerentitlement;gcpprivilegedaccessmanagerentitlements
@@ -218,22 +218,20 @@ type PrivilegedAccessManagerEntitlementStatus struct {
 // PrivilegedAccessManagerEntitlement is the Schema for the privilegedaccessmanager API
 // +k8s:openapi-gen=true
 type PrivilegedAccessManagerEntitlement struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   PrivilegedAccessManagerEntitlementSpec   `json:"spec,omitempty"`
-	Status PrivilegedAccessManagerEntitlementStatus `json:"status,omitempty"`
+  Spec PrivilegedAccessManagerEntitlementSpec `json:"spec,omitempty"`
+  Status PrivilegedAccessManagerEntitlementStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// PrivilegedAccessManagerEntitlementList contains a list of PrivilegedAccessManagerEntitlement
-type PrivilegedAccessManagerEntitlementList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []PrivilegedAccessManagerEntitlement `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&PrivilegedAccessManagerEntitlement{}, &PrivilegedAccessManagerEntitlementList{})
-}
+ // PrivilegedAccessManagerEntitlementList contains a list of PrivilegedAccessManagerEntitlement
+ type PrivilegedAccessManagerEntitlementList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []PrivilegedAccessManagerEntitlement `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&PrivilegedAccessManagerEntitlement{}, &PrivilegedAccessManagerEntitlementList{})
+ }

@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,102 +30,101 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ConversionworkspaceDestination struct {
-	/* Required. Engine type. */
-	// +optional
-	Engine *string `json:"engine,omitempty"`
+/* Required. Engine type. */
+// +optional
+Engine *string `json:"engine,omitempty"`
 
-	/* Required. Engine named version, for example 12.c.1. */
-	// +optional
-	Version *string `json:"version,omitempty"`
+/* Required. Engine named version, for example 12.c.1. */
+// +optional
+Version *string `json:"version,omitempty"`
 }
 
 type ConversionworkspaceSource struct {
-	/* Required. Engine type. */
-	// +optional
-	Engine *string `json:"engine,omitempty"`
+/* Required. Engine type. */
+// +optional
+Engine *string `json:"engine,omitempty"`
 
-	/* Required. Engine named version, for example 12.c.1. */
-	// +optional
-	Version *string `json:"version,omitempty"`
+/* Required. Engine named version, for example 12.c.1. */
+// +optional
+Version *string `json:"version,omitempty"`
 }
 
 type CloudDMSConversionWorkspaceSpec struct {
-	/* Required. The destination engine details. */
-	// +optional
-	Destination *ConversionworkspaceDestination `json:"destination,omitempty"`
+/* Required. The destination engine details. */
+// +optional
+Destination *ConversionworkspaceDestination `json:"destination,omitempty"`
 
-	/* Optional. The display name for the workspace. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+/* Optional. The display name for the workspace. */
+// +optional
+DisplayName *string `json:"displayName,omitempty"`
 
-	/* Optional. A generic list of settings for the workspace. The settings are database pair dependant and can indicate default behavior for the mapping rules engine or turn on or off specific features. Such examples can be: convert_foreign_key_to_interleave=true, skip_triggers=false, ignore_non_table_synonyms=true */
-	// +optional
-	GlobalSettings map[string]string `json:"globalSettings,omitempty"`
+/* Optional. A generic list of settings for the workspace. The settings are database pair dependant and can indicate default behavior for the mapping rules engine or turn on or off specific features. Such examples can be: convert_foreign_key_to_interleave=true, skip_triggers=false, ignore_non_table_synonyms=true */
+// +optional
+GlobalSettings map[string]string `json:"globalSettings,omitempty"`
 
-	/* Immutable. The location where the alloydb cluster should reside. */
-	Location string `json:"location"`
+/* Immutable. The location where the alloydb cluster should reside. */
+Location string `json:"location"`
 
-	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The CloudDMSConversionWorkspace name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The CloudDMSConversionWorkspace name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Required. The source engine details. */
-	// +optional
-	Source *ConversionworkspaceSource `json:"source,omitempty"`
+/* Required. The source engine details. */
+// +optional
+Source *ConversionworkspaceSource `json:"source,omitempty"`
 }
 
 type ConversionworkspaceObservedStateStatus struct {
-	/* Output only. The timestamp when the workspace resource was created. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. The timestamp when the workspace resource was created. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. Whether the workspace has uncommitted changes (changes which were made after the workspace was committed). */
-	// +optional
-	HasUncommittedChanges *bool `json:"hasUncommittedChanges,omitempty"`
+/* Output only. Whether the workspace has uncommitted changes (changes which were made after the workspace was committed). */
+// +optional
+HasUncommittedChanges *bool `json:"hasUncommittedChanges,omitempty"`
 
-	/* Output only. The latest commit ID. */
-	// +optional
-	LatestCommitID *string `json:"latestCommitID,omitempty"`
+/* Output only. The latest commit ID. */
+// +optional
+LatestCommitID *string `json:"latestCommitID,omitempty"`
 
-	/* Output only. The timestamp when the workspace was committed. */
-	// +optional
-	LatestCommitTime *string `json:"latestCommitTime,omitempty"`
+/* Output only. The timestamp when the workspace was committed. */
+// +optional
+LatestCommitTime *string `json:"latestCommitTime,omitempty"`
 
-	/* Output only. The timestamp when the workspace resource was last updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. The timestamp when the workspace resource was last updated. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type CloudDMSConversionWorkspaceStatus struct {
 	/* Conditions represent the latest available observations of the
-	   CloudDMSConversionWorkspace's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the CloudDMSConversionWorkspace resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    CloudDMSConversionWorkspace's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the CloudDMSConversionWorkspace resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *ConversionworkspaceObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *ConversionworkspaceObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpclouddmsconversionworkspace;gcpclouddmsconversionworkspaces
@@ -139,22 +139,20 @@ type CloudDMSConversionWorkspaceStatus struct {
 // CloudDMSConversionWorkspace is the Schema for the clouddms API
 // +k8s:openapi-gen=true
 type CloudDMSConversionWorkspace struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   CloudDMSConversionWorkspaceSpec   `json:"spec,omitempty"`
-	Status CloudDMSConversionWorkspaceStatus `json:"status,omitempty"`
+  Spec CloudDMSConversionWorkspaceSpec `json:"spec,omitempty"`
+  Status CloudDMSConversionWorkspaceStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// CloudDMSConversionWorkspaceList contains a list of CloudDMSConversionWorkspace
-type CloudDMSConversionWorkspaceList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []CloudDMSConversionWorkspace `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&CloudDMSConversionWorkspace{}, &CloudDMSConversionWorkspaceList{})
-}
+ // CloudDMSConversionWorkspaceList contains a list of CloudDMSConversionWorkspace
+ type CloudDMSConversionWorkspaceList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []CloudDMSConversionWorkspace `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&CloudDMSConversionWorkspace{}, &CloudDMSConversionWorkspaceList{})
+ }

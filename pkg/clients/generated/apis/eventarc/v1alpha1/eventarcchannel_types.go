@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +30,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -41,73 +42,72 @@ var _ = apiextensionsv1.JSON{}
 type EventarcChannelSpec struct {
 	/* Resource name of a KMS crypto key (managed by the user) used to
 	encrypt/decrypt their event data.
-
+	
 	It must match the pattern
 	`projects/* /locations/* /keyRings/* /cryptoKeys/*`. */
-	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+// +optional
+KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
-	Location string `json:"location"`
+Location string `json:"location"`
 
-	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The name of the event provider (e.g. Eventarc SaaS partner) associated with the channel. This provider will be granted permissions to publish events to the channel. */
-	// +optional
-	ProviderRef *v1alpha1.ResourceRef `json:"providerRef,omitempty"`
+/* The name of the event provider (e.g. Eventarc SaaS partner) associated with the channel. This provider will be granted permissions to publish events to the channel. */
+// +optional
+ProviderRef *v1alpha1.ResourceRef `json:"providerRef,omitempty"`
 
-	/* The EventarcChannel name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The EventarcChannel name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ChannelObservedStateStatus struct {
-	/* Output only. The activation token for the channel. The token must be used by the provider to register the channel for publishing. */
-	// +optional
-	ActivationToken *string `json:"activationToken,omitempty"`
+/* Output only. The activation token for the channel. The token must be used by the provider to register the channel for publishing. */
+// +optional
+ActivationToken *string `json:"activationToken,omitempty"`
 
-	/* Output only. The creation time. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. The creation time. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. The name of the Pub/Sub topic created and managed by Eventarc system as a transport for the event delivery. Format: `projects/{project}/topics/{topic_id}`. */
-	// +optional
-	PubsubTopic *string `json:"pubsubTopic,omitempty"`
+/* Output only. The name of the Pub/Sub topic created and managed by Eventarc system as a transport for the event delivery. Format: `projects/{project}/topics/{topic_id}`. */
+// +optional
+PubsubTopic *string `json:"pubsubTopic,omitempty"`
 
-	/* Output only. Whether or not this Channel satisfies the requirements of physical zone separation */
-	// +optional
-	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+/* Output only. Whether or not this Channel satisfies the requirements of physical zone separation */
+// +optional
+SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
 
-	/* Output only. The state of a Channel. */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* Output only. The state of a Channel. */
+// +optional
+State *string `json:"state,omitempty"`
 
-	/* Output only. Server assigned unique identifier for the channel. The value is a UUID4 string and guaranteed to remain unchanged until the resource is deleted. */
-	// +optional
-	Uid *string `json:"uid,omitempty"`
+/* Output only. Server assigned unique identifier for the channel. The value is a UUID4 string and guaranteed to remain unchanged until the resource is deleted. */
+// +optional
+Uid *string `json:"uid,omitempty"`
 
-	/* Output only. The last-modified time. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. The last-modified time. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type EventarcChannelStatus struct {
 	/* Conditions represent the latest available observations of the
-	   EventarcChannel's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the EventarcChannel resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    EventarcChannel's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the EventarcChannel resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *ChannelObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *ChannelObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpeventarcchannel;gcpeventarcchannels
@@ -122,22 +122,20 @@ type EventarcChannelStatus struct {
 // EventarcChannel is the Schema for the eventarc API
 // +k8s:openapi-gen=true
 type EventarcChannel struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   EventarcChannelSpec   `json:"spec,omitempty"`
-	Status EventarcChannelStatus `json:"status,omitempty"`
+  Spec EventarcChannelSpec `json:"spec,omitempty"`
+  Status EventarcChannelStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// EventarcChannelList contains a list of EventarcChannel
-type EventarcChannelList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []EventarcChannel `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&EventarcChannel{}, &EventarcChannelList{})
-}
+ // EventarcChannelList contains a list of EventarcChannel
+ type EventarcChannelList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []EventarcChannel `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&EventarcChannel{}, &EventarcChannelList{})
+ }

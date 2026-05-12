@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +30,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -41,14 +42,14 @@ var _ = apiextensionsv1.JSON{}
 type OccurrenceAttestation struct {
 	/* The serialized payload that is verified by one or
 	more signatures. A base64-encoded string. */
-	SerializedPayload string `json:"serializedPayload"`
+SerializedPayload string `json:"serializedPayload"`
 
 	/* One or more signatures over serializedPayload.
 	Verifier implementations should consider this attestation
 	message verified if at least one signature verifies
 	serializedPayload. See Signature in common.proto for more
 	details on signature structure and verification. */
-	Signatures []OccurrenceSignatures `json:"signatures"`
+Signatures []OccurrenceSignatures `json:"signatures"`
 }
 
 type OccurrenceSignatures struct {
@@ -57,13 +58,13 @@ type OccurrenceSignatures struct {
 	URI. * When possible, the key id should be an
 	immutable reference, such as a cryptographic digest.
 	Examples of valid values:
-
+	
 	* OpenPGP V4 public key fingerprint. See https://www.iana.org/assignments/uri-schemes/prov/openpgp4fpr
 	for more details on this scheme.
 	* 'openpgp4fpr:74FAF3B861BDA0870C7B6DEF607E48D2A663AEEA'
 	* RFC6920 digest-named SubjectPublicKeyInfo (digest of the DER serialization):
 	* "ni:///sha-256;cD9o9Cq6LG3jD0iKXqEi_vdjJGecm_iXkbqVoScViaU". */
-	PublicKeyId string `json:"publicKeyId"`
+PublicKeyId string `json:"publicKeyId"`
 
 	/* The content of the signature, an opaque bytestring.
 	The payload that this signature verifies MUST be
@@ -72,8 +73,8 @@ type OccurrenceSignatures struct {
 	payload explicitly. Alternatively, a message might
 	have a canonical serialization that can always be
 	unambiguously computed to derive the payload. */
-	// +optional
-	Signature *string `json:"signature,omitempty"`
+// +optional
+Signature *string `json:"signature,omitempty"`
 }
 
 type ContainerAnalysisOccurrenceSpec struct {
@@ -85,57 +86,56 @@ type ContainerAnalysisOccurrenceSpec struct {
 	useful for lookup (how to find this attestation if you already
 	know the authority and artifact to be verified) and intent (for
 	which authority this attestation was intended to sign. */
-	Attestation OccurrenceAttestation `json:"attestation"`
+Attestation OccurrenceAttestation `json:"attestation"`
 
 	/* Immutable. The analysis note associated with this occurrence, in the form of
 	projects/[PROJECT]/notes/[NOTE_ID]. This field can be used as a
 	filter in list requests. */
-	NoteName string `json:"noteName"`
+NoteName string `json:"noteName"`
 
-	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* A description of actions that can be taken to remedy the note. */
-	// +optional
-	Remediation *string `json:"remediation,omitempty"`
+/* A description of actions that can be taken to remedy the note. */
+// +optional
+Remediation *string `json:"remediation,omitempty"`
 
-	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Immutable. Required. Immutable. A URI that represents the resource for which
 	the occurrence applies. For example,
 	https://gcr.io/project/image@sha256:123abc for a Docker image. */
-	ResourceUri string `json:"resourceUri"`
+ResourceUri string `json:"resourceUri"`
 }
 
 type ContainerAnalysisOccurrenceStatus struct {
 	/* Conditions represent the latest available observations of the
-	   ContainerAnalysisOccurrence's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The time when the repository was created. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+	    ContainerAnalysisOccurrence's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* The time when the repository was created. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
 	/* The note kind which explicitly denotes which of the occurrence
 	details are specified. This field can be used as a filter in list
 	requests. */
-	// +optional
-	Kind *string `json:"kind,omitempty"`
+// +optional
+Kind *string `json:"kind,omitempty"`
 
-	/* The name of the occurrence. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+/* The name of the occurrence. */
+// +optional
+Name *string `json:"name,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* The time when the repository was last updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* The time when the repository was last updated. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcontaineranalysisoccurrence;gcpcontaineranalysisoccurrences
@@ -152,22 +152,20 @@ type ContainerAnalysisOccurrenceStatus struct {
 // ContainerAnalysisOccurrence is the Schema for the containeranalysis API
 // +k8s:openapi-gen=true
 type ContainerAnalysisOccurrence struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ContainerAnalysisOccurrenceSpec   `json:"spec,omitempty"`
-	Status ContainerAnalysisOccurrenceStatus `json:"status,omitempty"`
+  Spec ContainerAnalysisOccurrenceSpec `json:"spec,omitempty"`
+  Status ContainerAnalysisOccurrenceStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// ContainerAnalysisOccurrenceList contains a list of ContainerAnalysisOccurrence
-type ContainerAnalysisOccurrenceList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ContainerAnalysisOccurrence `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&ContainerAnalysisOccurrence{}, &ContainerAnalysisOccurrenceList{})
-}
+ // ContainerAnalysisOccurrenceList contains a list of ContainerAnalysisOccurrence
+ type ContainerAnalysisOccurrenceList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []ContainerAnalysisOccurrence `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&ContainerAnalysisOccurrence{}, &ContainerAnalysisOccurrenceList{})
+ }

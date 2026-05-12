@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,35 +30,34 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type AccessContextManagerServicePerimeterResourceSpec struct {
 	/* Only the `external` field is supported to configure the reference.
-
+	
 	The name of the Service Perimeter to add this resource to.
 	Referencing a resource name leads to recursive reference and Config Connector does not support the feature for now. */
-	PerimeterNameRef v1alpha1.ResourceRef `json:"perimeterNameRef"`
+PerimeterNameRef v1alpha1.ResourceRef `json:"perimeterNameRef"`
 
-	/* A GCP resource that is inside of the service perimeter. */
-	ResourceRef v1alpha1.ResourceRef `json:"resourceRef"`
+/* A GCP resource that is inside of the service perimeter. */
+ResourceRef v1alpha1.ResourceRef `json:"resourceRef"`
 }
 
 type AccessContextManagerServicePerimeterResourceStatus struct {
 	/* Conditions represent the latest available observations of the
-	   AccessContextManagerServicePerimeterResource's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	    AccessContextManagerServicePerimeterResource's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpaccesscontextmanagerserviceperimeterresource;gcpaccesscontextmanagerserviceperimeterresources
@@ -74,22 +74,20 @@ type AccessContextManagerServicePerimeterResourceStatus struct {
 // AccessContextManagerServicePerimeterResource is the Schema for the accesscontextmanager API
 // +k8s:openapi-gen=true
 type AccessContextManagerServicePerimeterResource struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   AccessContextManagerServicePerimeterResourceSpec   `json:"spec,omitempty"`
-	Status AccessContextManagerServicePerimeterResourceStatus `json:"status,omitempty"`
+  Spec AccessContextManagerServicePerimeterResourceSpec `json:"spec,omitempty"`
+  Status AccessContextManagerServicePerimeterResourceStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// AccessContextManagerServicePerimeterResourceList contains a list of AccessContextManagerServicePerimeterResource
-type AccessContextManagerServicePerimeterResourceList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []AccessContextManagerServicePerimeterResource `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&AccessContextManagerServicePerimeterResource{}, &AccessContextManagerServicePerimeterResourceList{})
-}
+ // AccessContextManagerServicePerimeterResourceList contains a list of AccessContextManagerServicePerimeterResource
+ type AccessContextManagerServicePerimeterResourceList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []AccessContextManagerServicePerimeterResource `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&AccessContextManagerServicePerimeterResource{}, &AccessContextManagerServicePerimeterResourceList{})
+ }

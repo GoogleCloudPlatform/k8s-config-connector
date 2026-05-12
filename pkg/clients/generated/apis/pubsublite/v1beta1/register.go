@@ -53,11 +53,13 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	PubSubLiteReservationGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(PubSubLiteReservation{}).Name(),
-	}
+	
+  	PubSubLiteReservationGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(PubSubLiteReservation{}).Name(),
+  	}
+  
 
-	pubsubliteAPIVersion = SchemeGroupVersion.String()
+  	pubsubliteAPIVersion = SchemeGroupVersion.String()
 )

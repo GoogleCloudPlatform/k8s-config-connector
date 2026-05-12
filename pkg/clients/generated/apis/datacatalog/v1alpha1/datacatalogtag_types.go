@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,107 +30,106 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type TagEnumValue struct {
-	/* The display name of the enum value. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+/* The display name of the enum value. */
+// +optional
+DisplayName *string `json:"displayName,omitempty"`
 }
 
 type TagFields struct {
-	/* The value of a tag field with a boolean type. */
-	// +optional
-	BoolValue *bool `json:"boolValue,omitempty"`
+/* The value of a tag field with a boolean type. */
+// +optional
+BoolValue *bool `json:"boolValue,omitempty"`
 
-	/* The value of a tag field with a double type. */
-	// +optional
-	DoubleValue *float64 `json:"doubleValue,omitempty"`
+/* The value of a tag field with a double type. */
+// +optional
+DoubleValue *float64 `json:"doubleValue,omitempty"`
 
 	/* The value of a tag field with an enum type.
-
+	
 	This value must be one of the allowed values listed in this enum. */
-	// +optional
-	EnumValue *TagEnumValue `json:"enumValue,omitempty"`
+// +optional
+EnumValue *TagEnumValue `json:"enumValue,omitempty"`
 
 	/* The value of a tag field with a rich text type.
-
+	
 	The maximum length is 10 MiB as this value holds HTML descriptions
 	including encoded images. The maximum length of the text without images
 	is 100 KiB. */
-	// +optional
-	RichtextValue *string `json:"richtextValue,omitempty"`
+// +optional
+RichtextValue *string `json:"richtextValue,omitempty"`
 
 	/* The value of a tag field with a string type.
-
+	
 	The maximum length is 2000 UTF-8 characters. */
-	// +optional
-	StringValue *string `json:"stringValue,omitempty"`
+// +optional
+StringValue *string `json:"stringValue,omitempty"`
 
-	/* The value of a tag field with a timestamp type. */
-	// +optional
-	TimestampValue *string `json:"timestampValue,omitempty"`
+/* The value of a tag field with a timestamp type. */
+// +optional
+TimestampValue *string `json:"timestampValue,omitempty"`
 }
 
 type DataCatalogTagSpec struct {
 	/* Resources like entry can have schemas associated with them. This scope
 	allows you to attach tags to an individual column based on that schema.
-
+	
 	To attach a tag to a nested column, separate column names with a dot
 	(`.`). Example: `column.nested_column`. */
-	// +optional
-	Column *string `json:"column,omitempty"`
+// +optional
+Column *string `json:"column,omitempty"`
 
-	/* Required. Reference to the DataCatalogEntry that owns this Tag. The entry must be in the same project and location as the tag. */
-	EntryRef v1alpha1.ResourceRef `json:"entryRef"`
+/* Required. Reference to the DataCatalogEntry that owns this Tag. The entry must be in the same project and location as the tag. */
+EntryRef v1alpha1.ResourceRef `json:"entryRef"`
 
-	// +optional
-	Fields map[string]TagFields `json:"fields,omitempty"`
+// +optional
+Fields map[string]TagFields `json:"fields,omitempty"`
 
-	/* The DataCatalogTag name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The DataCatalogTag name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Required. The resource name of the tag template this tag uses.
-
+	
 	This field cannot be modified after creation. */
-	TemplateRef v1alpha1.ResourceRef `json:"templateRef"`
+TemplateRef v1alpha1.ResourceRef `json:"templateRef"`
 }
 
 type TagObservedStateStatus struct {
-	/* Output only. Denotes the transfer status of the Tag Template. */
-	// +optional
-	DataplexTransferStatus *string `json:"dataplexTransferStatus,omitempty"`
+/* Output only. Denotes the transfer status of the Tag Template. */
+// +optional
+DataplexTransferStatus *string `json:"dataplexTransferStatus,omitempty"`
 
-	/* Output only. The display name of the tag template. */
-	// +optional
-	TemplateDisplayName *string `json:"templateDisplayName,omitempty"`
+/* Output only. The display name of the tag template. */
+// +optional
+TemplateDisplayName *string `json:"templateDisplayName,omitempty"`
 }
 
 type DataCatalogTagStatus struct {
 	/* Conditions represent the latest available observations of the
-	   DataCatalogTag's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the DataCatalogTag resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    DataCatalogTag's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the DataCatalogTag resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *TagObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *TagObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdatacatalogtag;gcpdatacatalogtags
@@ -144,22 +144,20 @@ type DataCatalogTagStatus struct {
 // DataCatalogTag is the Schema for the datacatalog API
 // +k8s:openapi-gen=true
 type DataCatalogTag struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   DataCatalogTagSpec   `json:"spec,omitempty"`
-	Status DataCatalogTagStatus `json:"status,omitempty"`
+  Spec DataCatalogTagSpec `json:"spec,omitempty"`
+  Status DataCatalogTagStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// DataCatalogTagList contains a list of DataCatalogTag
-type DataCatalogTagList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []DataCatalogTag `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&DataCatalogTag{}, &DataCatalogTagList{})
-}
+ // DataCatalogTagList contains a list of DataCatalogTag
+ type DataCatalogTagList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []DataCatalogTag `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&DataCatalogTag{}, &DataCatalogTagList{})
+ }
