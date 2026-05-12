@@ -53,11 +53,13 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	MemorystoreInstanceEndpointGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(MemorystoreInstanceEndpoint{}).Name(),
-	}
+	
+  	MemorystoreInstanceEndpointGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(MemorystoreInstanceEndpoint{}).Name(),
+  	}
+  
 
-	memorystoreAPIVersion = SchemeGroupVersion.String()
+  	memorystoreAPIVersion = SchemeGroupVersion.String()
 )

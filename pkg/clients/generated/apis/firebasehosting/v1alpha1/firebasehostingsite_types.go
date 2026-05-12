@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +30,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -41,24 +42,24 @@ var _ = apiextensionsv1.JSON{}
 type FirebaseHostingSiteSpec struct {
 	/* Optional. The [ID of a Web App](https://firebase.google.com/docs/reference/firebase-management/rest/v1beta1/projects.webApps#WebApp.FIELDS.app_id)
 	associated with the Hosting site. */
-	// +optional
-	AppId *string `json:"appId,omitempty"`
+// +optional
+AppId *string `json:"appId,omitempty"`
 
-	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The siteId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The siteId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type FirebaseHostingSiteStatus struct {
 	/* Conditions represent the latest available observations of the
-	   FirebaseHostingSite's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The default URL for the site in the form of https://{name}.web.app. */
-	// +optional
-	DefaultUrl *string `json:"defaultUrl,omitempty"`
+	    FirebaseHostingSite's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* The default URL for the site in the form of https://{name}.web.app. */
+// +optional
+DefaultUrl *string `json:"defaultUrl,omitempty"`
 
 	/* Output only. The fully-qualified resource name of the Hosting site, in the
 	format: projects/PROJECT_IDENTIFIER/sites/SITE_ID PROJECT_IDENTIFIER: the
@@ -67,14 +68,13 @@ type FirebaseHostingSiteStatus struct {
 	['ProjectId'](https://firebase.google.com/docs/reference/firebase-management/rest/v1beta1/projects#FirebaseProject.FIELDS.project_id).
 	Learn more about using project identifiers in Google's
 	[AIP 2510 standard](https://google.aip.dev/cloud/2510). */
-	// +optional
-	Name *string `json:"name,omitempty"`
+// +optional
+Name *string `json:"name,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpfirebasehostingsite;gcpfirebasehostingsites
@@ -91,22 +91,20 @@ type FirebaseHostingSiteStatus struct {
 // FirebaseHostingSite is the Schema for the firebasehosting API
 // +k8s:openapi-gen=true
 type FirebaseHostingSite struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   FirebaseHostingSiteSpec   `json:"spec,omitempty"`
-	Status FirebaseHostingSiteStatus `json:"status,omitempty"`
+  Spec FirebaseHostingSiteSpec `json:"spec,omitempty"`
+  Status FirebaseHostingSiteStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// FirebaseHostingSiteList contains a list of FirebaseHostingSite
-type FirebaseHostingSiteList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []FirebaseHostingSite `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&FirebaseHostingSite{}, &FirebaseHostingSiteList{})
-}
+ // FirebaseHostingSiteList contains a list of FirebaseHostingSite
+ type FirebaseHostingSiteList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []FirebaseHostingSite `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&FirebaseHostingSite{}, &FirebaseHostingSiteList{})
+ }

@@ -53,17 +53,19 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	CloudBuildTriggerGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(CloudBuildTrigger{}).Name(),
-	}
+	
+  	CloudBuildTriggerGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(CloudBuildTrigger{}).Name(),
+  	}
+  
+  	CloudBuildWorkerPoolGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(CloudBuildWorkerPool{}).Name(),
+  	}
+  
 
-	CloudBuildWorkerPoolGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(CloudBuildWorkerPool{}).Name(),
-	}
-
-	cloudbuildAPIVersion = SchemeGroupVersion.String()
+  	cloudbuildAPIVersion = SchemeGroupVersion.String()
 )

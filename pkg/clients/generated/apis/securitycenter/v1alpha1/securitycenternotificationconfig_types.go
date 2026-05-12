@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +30,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -44,71 +45,70 @@ type NotificationconfigStreamingConfig struct {
 	expression is a list of zero or more restrictions combined via
 	logical operators AND and OR. Parentheses are supported, and OR
 	has higher precedence than AND.
-
+	
 	Restrictions have the form <field> <operator> <value> and may have
 	a - character in front of them to indicate negation. The fields
 	map to those defined in the corresponding resource.
-
+	
 	The supported operators are:
-
+	
 	* = for all value types.
 	* >, <, >=, <= for integer values.
 	* :, meaning substring matching, for strings.
-
+	
 	The supported value types are:
-
+	
 	* string literals in quotes.
 	* integer literals without quotes.
 	* boolean literals true and false without quotes.
-
+	
 	See
 	[Filtering notifications](https://cloud.google.com/security-command-center/docs/how-to-api-filter-notifications)
 	for information on how to write a filter. */
-	Filter string `json:"filter"`
+Filter string `json:"filter"`
 }
 
 type SecurityCenterNotificationConfigSpec struct {
-	/* Immutable. This must be unique within the organization. */
-	ConfigId string `json:"configId"`
+/* Immutable. This must be unique within the organization. */
+ConfigId string `json:"configId"`
 
-	/* The description of the notification config (max of 1024 characters). */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* The description of the notification config (max of 1024 characters). */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* The organization that this resource belongs to. */
-	OrganizationRef v1alpha1.ResourceRef `json:"organizationRef"`
+/* The organization that this resource belongs to. */
+OrganizationRef v1alpha1.ResourceRef `json:"organizationRef"`
 
 	/* The Pub/Sub topic to send notifications to. Its format is
 	"projects/[project_id]/topics/[topic]". */
-	PubsubTopic string `json:"pubsubTopic"`
+PubsubTopic string `json:"pubsubTopic"`
 
-	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* The config for triggering streaming-based notifications. */
-	StreamingConfig NotificationconfigStreamingConfig `json:"streamingConfig"`
+/* The config for triggering streaming-based notifications. */
+StreamingConfig NotificationconfigStreamingConfig `json:"streamingConfig"`
 }
 
 type SecurityCenterNotificationConfigStatus struct {
 	/* Conditions represent the latest available observations of the
-	   SecurityCenterNotificationConfig's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	    SecurityCenterNotificationConfig's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The resource name of this notification config, in the format
 	'organizations/{{organization}}/notificationConfigs/{{config_id}}'. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+// +optional
+Name *string `json:"name,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The service account that needs "pubsub.topics.publish" permission to
 	publish to the Pub/Sub topic. */
-	// +optional
-	ServiceAccount *string `json:"serviceAccount,omitempty"`
+// +optional
+ServiceAccount *string `json:"serviceAccount,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpsecuritycenternotificationconfig;gcpsecuritycenternotificationconfigs
@@ -125,22 +125,20 @@ type SecurityCenterNotificationConfigStatus struct {
 // SecurityCenterNotificationConfig is the Schema for the securitycenter API
 // +k8s:openapi-gen=true
 type SecurityCenterNotificationConfig struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   SecurityCenterNotificationConfigSpec   `json:"spec,omitempty"`
-	Status SecurityCenterNotificationConfigStatus `json:"status,omitempty"`
+  Spec SecurityCenterNotificationConfigSpec `json:"spec,omitempty"`
+  Status SecurityCenterNotificationConfigStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// SecurityCenterNotificationConfigList contains a list of SecurityCenterNotificationConfig
-type SecurityCenterNotificationConfigList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []SecurityCenterNotificationConfig `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&SecurityCenterNotificationConfig{}, &SecurityCenterNotificationConfigList{})
-}
+ // SecurityCenterNotificationConfigList contains a list of SecurityCenterNotificationConfig
+ type SecurityCenterNotificationConfigList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []SecurityCenterNotificationConfig `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&SecurityCenterNotificationConfig{}, &SecurityCenterNotificationConfigList{})
+ }

@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,69 +30,68 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type LoggingLogViewSpec struct {
-	/* Immutable. The BillingAccount that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
-	// +optional
-	BillingAccountRef *v1alpha1.ResourceRef `json:"billingAccountRef,omitempty"`
+/* Immutable. The BillingAccount that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
+// +optional
+BillingAccountRef *v1alpha1.ResourceRef `json:"billingAccountRef,omitempty"`
 
-	/* Immutable. */
-	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
+/* Immutable. */
+BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
 
-	/* Describes this view. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* Describes this view. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Filter that restricts which log entries in a bucket are visible in this view. Filters are restricted to be a logical AND of ==/!= of any of the following: - originating project/folder/organization/billing account. - resource type - log id For example: SOURCE("projects/myproject") AND resource.type = "gce_instance" AND LOG_ID("stdout") */
-	// +optional
-	Filter *string `json:"filter,omitempty"`
+/* Filter that restricts which log entries in a bucket are visible in this view. Filters are restricted to be a logical AND of ==/!= of any of the following: - originating project/folder/organization/billing account. - resource type - log id For example: SOURCE("projects/myproject") AND resource.type = "gce_instance" AND LOG_ID("stdout") */
+// +optional
+Filter *string `json:"filter,omitempty"`
 
-	/* Immutable. The Folder that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
-	// +optional
-	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+/* Immutable. The Folder that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
+// +optional
+FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
-	/* Immutable. The location of the resource. The supported locations are: global, us-central1, us-east1, us-west1, asia-east1, europe-west1. */
-	// +optional
-	Location *string `json:"location,omitempty"`
+/* Immutable. The location of the resource. The supported locations are: global, us-central1, us-east1, us-west1, asia-east1, europe-west1. */
+// +optional
+Location *string `json:"location,omitempty"`
 
-	/* Immutable. The Organization that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
-	// +optional
-	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+/* Immutable. The Organization that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
+// +optional
+OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
-	/* Immutable. The Project that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+/* Immutable. The Project that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
+// +optional
+ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type LoggingLogViewStatus struct {
 	/* Conditions represent the latest available observations of the
-	   LoggingLogView's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Output only. The creation timestamp of the view. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+	    LoggingLogView's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* Output only. The creation timestamp of the view. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* Output only. The last update timestamp of the view. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. The last update timestamp of the view. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcplogginglogview;gcplogginglogviews
@@ -108,22 +108,20 @@ type LoggingLogViewStatus struct {
 // LoggingLogView is the Schema for the logging API
 // +k8s:openapi-gen=true
 type LoggingLogView struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   LoggingLogViewSpec   `json:"spec,omitempty"`
-	Status LoggingLogViewStatus `json:"status,omitempty"`
+  Spec LoggingLogViewSpec `json:"spec,omitempty"`
+  Status LoggingLogViewStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// LoggingLogViewList contains a list of LoggingLogView
-type LoggingLogViewList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []LoggingLogView `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&LoggingLogView{}, &LoggingLogViewList{})
-}
+ // LoggingLogViewList contains a list of LoggingLogView
+ type LoggingLogViewList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []LoggingLogView `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&LoggingLogView{}, &LoggingLogViewList{})
+ }

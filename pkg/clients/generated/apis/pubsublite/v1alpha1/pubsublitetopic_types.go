@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,89 +30,88 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type TopicCapacity struct {
-	/* Subscribe throughput capacity per partition in MiB/s. Must be >= 4 and <= 16. */
-	PublishMibPerSec int64 `json:"publishMibPerSec"`
+/* Subscribe throughput capacity per partition in MiB/s. Must be >= 4 and <= 16. */
+PublishMibPerSec int64 `json:"publishMibPerSec"`
 
-	/* Publish throughput capacity per partition in MiB/s. Must be >= 4 and <= 16. */
-	SubscribeMibPerSec int64 `json:"subscribeMibPerSec"`
+/* Publish throughput capacity per partition in MiB/s. Must be >= 4 and <= 16. */
+SubscribeMibPerSec int64 `json:"subscribeMibPerSec"`
 }
 
 type TopicPartitionConfig struct {
-	/* The capacity configuration. */
-	// +optional
-	Capacity *TopicCapacity `json:"capacity,omitempty"`
+/* The capacity configuration. */
+// +optional
+Capacity *TopicCapacity `json:"capacity,omitempty"`
 
-	/* The number of partitions in the topic. Must be at least 1. */
-	Count int64 `json:"count"`
+/* The number of partitions in the topic. Must be at least 1. */
+Count int64 `json:"count"`
 }
 
 type TopicReservationConfig struct {
-	/* The Reservation to use for this topic's throughput capacity. */
-	// +optional
-	ThroughputReservation *string `json:"throughputReservation,omitempty"`
+/* The Reservation to use for this topic's throughput capacity. */
+// +optional
+ThroughputReservation *string `json:"throughputReservation,omitempty"`
 }
 
 type TopicRetentionConfig struct {
 	/* The provisioned storage, in bytes, per partition. If the number of bytes stored
 	in any of the topic's partitions grows beyond this value, older messages will be
 	dropped to make room for newer ones, regardless of the value of period. */
-	PerPartitionBytes string `json:"perPartitionBytes"`
+PerPartitionBytes string `json:"perPartitionBytes"`
 
 	/* How long a published message is retained. If unset, messages will be retained as
 	long as the bytes retained for each partition is below perPartitionBytes. A
 	duration in seconds with up to nine fractional digits, terminated by 's'.
 	Example: "3.5s". */
-	// +optional
-	Period *string `json:"period,omitempty"`
+// +optional
+Period *string `json:"period,omitempty"`
 }
 
 type PubSubLiteTopicSpec struct {
-	/* The settings for this topic's partitions. */
-	// +optional
-	PartitionConfig *TopicPartitionConfig `json:"partitionConfig,omitempty"`
+/* The settings for this topic's partitions. */
+// +optional
+PartitionConfig *TopicPartitionConfig `json:"partitionConfig,omitempty"`
 
-	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The region of the pubsub lite topic. */
-	// +optional
-	Region *string `json:"region,omitempty"`
+/* The region of the pubsub lite topic. */
+// +optional
+Region *string `json:"region,omitempty"`
 
-	/* The settings for this topic's Reservation usage. */
-	// +optional
-	ReservationConfig *TopicReservationConfig `json:"reservationConfig,omitempty"`
+/* The settings for this topic's Reservation usage. */
+// +optional
+ReservationConfig *TopicReservationConfig `json:"reservationConfig,omitempty"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* The settings for a topic's message retention. */
-	// +optional
-	RetentionConfig *TopicRetentionConfig `json:"retentionConfig,omitempty"`
+/* The settings for a topic's message retention. */
+// +optional
+RetentionConfig *TopicRetentionConfig `json:"retentionConfig,omitempty"`
 
-	/* The zone of the pubsub lite topic. */
-	Zone string `json:"zone"`
+/* The zone of the pubsub lite topic. */
+Zone string `json:"zone"`
 }
 
 type PubSubLiteTopicStatus struct {
 	/* Conditions represent the latest available observations of the
-	   PubSubLiteTopic's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	    PubSubLiteTopic's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcppubsublitetopic;gcppubsublitetopics
@@ -128,22 +128,20 @@ type PubSubLiteTopicStatus struct {
 // PubSubLiteTopic is the Schema for the pubsublite API
 // +k8s:openapi-gen=true
 type PubSubLiteTopic struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   PubSubLiteTopicSpec   `json:"spec,omitempty"`
-	Status PubSubLiteTopicStatus `json:"status,omitempty"`
+  Spec PubSubLiteTopicSpec `json:"spec,omitempty"`
+  Status PubSubLiteTopicStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// PubSubLiteTopicList contains a list of PubSubLiteTopic
-type PubSubLiteTopicList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []PubSubLiteTopic `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&PubSubLiteTopic{}, &PubSubLiteTopicList{})
-}
+ // PubSubLiteTopicList contains a list of PubSubLiteTopic
+ type PubSubLiteTopicList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []PubSubLiteTopic `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&PubSubLiteTopic{}, &PubSubLiteTopicList{})
+ }

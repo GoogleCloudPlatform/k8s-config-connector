@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,40 +30,39 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ComputeOrganizationSecurityPolicyAssociationSpec struct {
-	/* Immutable. The resource that the security policy is attached to. */
-	AttachmentId string `json:"attachmentId"`
+/* Immutable. The resource that the security policy is attached to. */
+AttachmentId string `json:"attachmentId"`
 
-	/* Immutable. The security policy ID of the association. */
-	PolicyId string `json:"policyId"`
+/* Immutable. The security policy ID of the association. */
+PolicyId string `json:"policyId"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ComputeOrganizationSecurityPolicyAssociationStatus struct {
 	/* Conditions represent the latest available observations of the
-	   ComputeOrganizationSecurityPolicyAssociation's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The display name of the security policy of the association. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+	    ComputeOrganizationSecurityPolicyAssociation's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* The display name of the security policy of the association. */
+// +optional
+DisplayName *string `json:"displayName,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputeorganizationsecuritypolicyassociation;gcpcomputeorganizationsecuritypolicyassociations
@@ -79,22 +79,20 @@ type ComputeOrganizationSecurityPolicyAssociationStatus struct {
 // ComputeOrganizationSecurityPolicyAssociation is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeOrganizationSecurityPolicyAssociation struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ComputeOrganizationSecurityPolicyAssociationSpec   `json:"spec,omitempty"`
-	Status ComputeOrganizationSecurityPolicyAssociationStatus `json:"status,omitempty"`
+  Spec ComputeOrganizationSecurityPolicyAssociationSpec `json:"spec,omitempty"`
+  Status ComputeOrganizationSecurityPolicyAssociationStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// ComputeOrganizationSecurityPolicyAssociationList contains a list of ComputeOrganizationSecurityPolicyAssociation
-type ComputeOrganizationSecurityPolicyAssociationList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ComputeOrganizationSecurityPolicyAssociation `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&ComputeOrganizationSecurityPolicyAssociation{}, &ComputeOrganizationSecurityPolicyAssociationList{})
-}
+ // ComputeOrganizationSecurityPolicyAssociationList contains a list of ComputeOrganizationSecurityPolicyAssociation
+ type ComputeOrganizationSecurityPolicyAssociationList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []ComputeOrganizationSecurityPolicyAssociation `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&ComputeOrganizationSecurityPolicyAssociation{}, &ComputeOrganizationSecurityPolicyAssociationList{})
+ }

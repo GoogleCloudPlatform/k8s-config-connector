@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,96 +30,95 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ServertlspolicyCertificateProviderInstance struct {
-	/* Required. Plugin instance name, used to locate and load CertificateProvider instance configuration. Set to "google_cloud_private_spiffe" to use Certificate Authority Service certificate provider instance. */
-	PluginInstance string `json:"pluginInstance"`
+/* Required. Plugin instance name, used to locate and load CertificateProvider instance configuration. Set to "google_cloud_private_spiffe" to use Certificate Authority Service certificate provider instance. */
+PluginInstance string `json:"pluginInstance"`
 }
 
 type ServertlspolicyClientValidationCa struct {
-	/* The certificate provider instance specification that will be passed to the data plane, which will be used to load necessary credential information. */
-	// +optional
-	CertificateProviderInstance *ServertlspolicyCertificateProviderInstance `json:"certificateProviderInstance,omitempty"`
+/* The certificate provider instance specification that will be passed to the data plane, which will be used to load necessary credential information. */
+// +optional
+CertificateProviderInstance *ServertlspolicyCertificateProviderInstance `json:"certificateProviderInstance,omitempty"`
 
-	/* gRPC specific configuration to access the gRPC server to obtain the CA certificate. */
-	// +optional
-	GrpcEndpoint *ServertlspolicyGrpcEndpoint `json:"grpcEndpoint,omitempty"`
+/* gRPC specific configuration to access the gRPC server to obtain the CA certificate. */
+// +optional
+GrpcEndpoint *ServertlspolicyGrpcEndpoint `json:"grpcEndpoint,omitempty"`
 }
 
 type ServertlspolicyGrpcEndpoint struct {
-	/* Required. The target URI of the gRPC endpoint. Only UDS path is supported, and should start with “unix:”. */
-	TargetUri string `json:"targetUri"`
+/* Required. The target URI of the gRPC endpoint. Only UDS path is supported, and should start with “unix:”. */
+TargetUri string `json:"targetUri"`
 }
 
 type ServertlspolicyMtlsPolicy struct {
-	/* Required. Defines the mechanism to obtain the Certificate Authority certificate to validate the client certificate. */
-	ClientValidationCa []ServertlspolicyClientValidationCa `json:"clientValidationCa"`
+/* Required. Defines the mechanism to obtain the Certificate Authority certificate to validate the client certificate. */
+ClientValidationCa []ServertlspolicyClientValidationCa `json:"clientValidationCa"`
 }
 
 type ServertlspolicyServerCertificate struct {
-	/* The certificate provider instance specification that will be passed to the data plane, which will be used to load necessary credential information. */
-	// +optional
-	CertificateProviderInstance *ServertlspolicyCertificateProviderInstance `json:"certificateProviderInstance,omitempty"`
+/* The certificate provider instance specification that will be passed to the data plane, which will be used to load necessary credential information. */
+// +optional
+CertificateProviderInstance *ServertlspolicyCertificateProviderInstance `json:"certificateProviderInstance,omitempty"`
 
-	/* gRPC specific configuration to access the gRPC server to obtain the cert and private key. */
-	// +optional
-	GrpcEndpoint *ServertlspolicyGrpcEndpoint `json:"grpcEndpoint,omitempty"`
+/* gRPC specific configuration to access the gRPC server to obtain the cert and private key. */
+// +optional
+GrpcEndpoint *ServertlspolicyGrpcEndpoint `json:"grpcEndpoint,omitempty"`
 }
 
 type NetworkSecurityServerTLSPolicySpec struct {
-	/* Optional. Determines if server allows plaintext connections. If set to true, server allows plain text connections. By default, it is set to false. This setting is not exclusive of other encryption modes. For example, if allow_open and mtls_policy are set, server allows both plain text and mTLS connections. See documentation of other encryption modes to confirm compatibility. */
-	// +optional
-	AllowOpen *bool `json:"allowOpen,omitempty"`
+/* Optional. Determines if server allows plaintext connections. If set to true, server allows plain text connections. By default, it is set to false. This setting is not exclusive of other encryption modes. For example, if allow_open and mtls_policy are set, server allows both plain text and mTLS connections. See documentation of other encryption modes to confirm compatibility. */
+// +optional
+AllowOpen *bool `json:"allowOpen,omitempty"`
 
-	/* Optional. Free-text description of the resource. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* Optional. Free-text description of the resource. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Immutable. The location for the resource */
-	Location string `json:"location"`
+/* Immutable. The location for the resource */
+Location string `json:"location"`
 
-	/* Optional. Defines a mechanism to provision peer validation certificates for peer to peer authentication (Mutual TLS - mTLS). If not specified, client certificate will not be requested. The connection is treated as TLS and not mTLS. If allow_open and mtls_policy are set, server allows both plain text and mTLS connections. */
-	// +optional
-	MtlsPolicy *ServertlspolicyMtlsPolicy `json:"mtlsPolicy,omitempty"`
+/* Optional. Defines a mechanism to provision peer validation certificates for peer to peer authentication (Mutual TLS - mTLS). If not specified, client certificate will not be requested. The connection is treated as TLS and not mTLS. If allow_open and mtls_policy are set, server allows both plain text and mTLS connections. */
+// +optional
+MtlsPolicy *ServertlspolicyMtlsPolicy `json:"mtlsPolicy,omitempty"`
 
-	/* Immutable. The Project that this resource belongs to. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+/* Immutable. The Project that this resource belongs to. */
+// +optional
+ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Optional. Defines a mechanism to provision server identity (public and private keys). Cannot be combined with allow_open as a permissive mode that allows both plain text and TLS is not supported. */
-	// +optional
-	ServerCertificate *ServertlspolicyServerCertificate `json:"serverCertificate,omitempty"`
+/* Optional. Defines a mechanism to provision server identity (public and private keys). Cannot be combined with allow_open as a permissive mode that allows both plain text and TLS is not supported. */
+// +optional
+ServerCertificate *ServertlspolicyServerCertificate `json:"serverCertificate,omitempty"`
 }
 
 type NetworkSecurityServerTLSPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
-	   NetworkSecurityServerTLSPolicy's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Output only. The timestamp when the resource was created. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+	    NetworkSecurityServerTLSPolicy's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* Output only. The timestamp when the resource was created. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* Output only. The timestamp when the resource was updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. The timestamp when the resource was updated. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpnetworksecurityservertlspolicy;gcpnetworksecurityservertlspolicies
@@ -135,22 +135,20 @@ type NetworkSecurityServerTLSPolicyStatus struct {
 // NetworkSecurityServerTLSPolicy is the Schema for the networksecurity API
 // +k8s:openapi-gen=true
 type NetworkSecurityServerTLSPolicy struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   NetworkSecurityServerTLSPolicySpec   `json:"spec,omitempty"`
-	Status NetworkSecurityServerTLSPolicyStatus `json:"status,omitempty"`
+  Spec NetworkSecurityServerTLSPolicySpec `json:"spec,omitempty"`
+  Status NetworkSecurityServerTLSPolicyStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// NetworkSecurityServerTLSPolicyList contains a list of NetworkSecurityServerTLSPolicy
-type NetworkSecurityServerTLSPolicyList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []NetworkSecurityServerTLSPolicy `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&NetworkSecurityServerTLSPolicy{}, &NetworkSecurityServerTLSPolicyList{})
-}
+ // NetworkSecurityServerTLSPolicyList contains a list of NetworkSecurityServerTLSPolicy
+ type NetworkSecurityServerTLSPolicyList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []NetworkSecurityServerTLSPolicy `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&NetworkSecurityServerTLSPolicy{}, &NetworkSecurityServerTLSPolicyList{})
+ }

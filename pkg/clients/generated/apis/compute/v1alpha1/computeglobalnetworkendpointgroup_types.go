@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +30,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -41,37 +42,36 @@ var _ = apiextensionsv1.JSON{}
 type ComputeGlobalNetworkEndpointGroupSpec struct {
 	/* Immutable. The default port used if the port number is not specified in the
 	network endpoint. */
-	// +optional
-	DefaultPort *int64 `json:"defaultPort,omitempty"`
+// +optional
+DefaultPort *int64 `json:"defaultPort,omitempty"`
 
 	/* Immutable. An optional description of this resource. Provide this property when
 	you create the resource. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Immutable. Type of network endpoints in this network endpoint group. Possible values: ["INTERNET_IP_PORT", "INTERNET_FQDN_PORT"]. */
-	NetworkEndpointType string `json:"networkEndpointType"`
+/* Immutable. Type of network endpoints in this network endpoint group. Possible values: ["INTERNET_IP_PORT", "INTERNET_FQDN_PORT"]. */
+NetworkEndpointType string `json:"networkEndpointType"`
 
-	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ComputeGlobalNetworkEndpointGroupStatus struct {
 	/* Conditions represent the latest available observations of the
-	   ComputeGlobalNetworkEndpointGroup's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	    ComputeGlobalNetworkEndpointGroup's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// +optional
-	SelfLink *string `json:"selfLink,omitempty"`
+// +optional
+SelfLink *string `json:"selfLink,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputeglobalnetworkendpointgroup;gcpcomputeglobalnetworkendpointgroups
@@ -88,22 +88,20 @@ type ComputeGlobalNetworkEndpointGroupStatus struct {
 // ComputeGlobalNetworkEndpointGroup is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeGlobalNetworkEndpointGroup struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ComputeGlobalNetworkEndpointGroupSpec   `json:"spec,omitempty"`
-	Status ComputeGlobalNetworkEndpointGroupStatus `json:"status,omitempty"`
+  Spec ComputeGlobalNetworkEndpointGroupSpec `json:"spec,omitempty"`
+  Status ComputeGlobalNetworkEndpointGroupStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// ComputeGlobalNetworkEndpointGroupList contains a list of ComputeGlobalNetworkEndpointGroup
-type ComputeGlobalNetworkEndpointGroupList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ComputeGlobalNetworkEndpointGroup `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&ComputeGlobalNetworkEndpointGroup{}, &ComputeGlobalNetworkEndpointGroupList{})
-}
+ // ComputeGlobalNetworkEndpointGroupList contains a list of ComputeGlobalNetworkEndpointGroup
+ type ComputeGlobalNetworkEndpointGroupList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []ComputeGlobalNetworkEndpointGroup `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&ComputeGlobalNetworkEndpointGroup{}, &ComputeGlobalNetworkEndpointGroupList{})
+ }

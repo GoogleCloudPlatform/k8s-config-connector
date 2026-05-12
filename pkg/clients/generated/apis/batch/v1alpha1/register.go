@@ -53,17 +53,19 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	BatchJobGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(BatchJob{}).Name(),
-	}
+	
+  	BatchJobGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(BatchJob{}).Name(),
+  	}
+  
+  	BatchTaskGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(BatchTask{}).Name(),
+  	}
+  
 
-	BatchTaskGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(BatchTask{}).Name(),
-	}
-
-	batchAPIVersion = SchemeGroupVersion.String()
+  	batchAPIVersion = SchemeGroupVersion.String()
 )

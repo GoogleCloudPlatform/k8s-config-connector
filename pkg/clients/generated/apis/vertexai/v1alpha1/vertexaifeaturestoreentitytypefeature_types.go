@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,56 +30,55 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type VertexAIFeaturestoreEntityTypeFeatureSpec struct {
-	/* Description of the feature. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* Description of the feature. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Immutable. The name of the Featurestore to use, in the format projects/{project}/locations/{location}/featurestores/{featurestore}/entityTypes/{entitytype}. */
-	Entitytype string `json:"entitytype"`
+/* Immutable. The name of the Featurestore to use, in the format projects/{project}/locations/{location}/featurestores/{featurestore}/entityTypes/{entitytype}. */
+Entitytype string `json:"entitytype"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. Type of Feature value. Immutable. https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.featurestores.entityTypes.features#ValueType. */
-	ValueType string `json:"valueType"`
+/* Immutable. Type of Feature value. Immutable. https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.featurestores.entityTypes.features#ValueType. */
+ValueType string `json:"valueType"`
 }
 
 type VertexAIFeaturestoreEntityTypeFeatureStatus struct {
 	/* Conditions represent the latest available observations of the
-	   VertexAIFeaturestoreEntityTypeFeature's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The timestamp of when the entity type was created in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+	    VertexAIFeaturestoreEntityTypeFeature's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* The timestamp of when the entity type was created in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Used to perform consistent read-modify-write updates. */
-	// +optional
-	Etag *string `json:"etag,omitempty"`
+/* Used to perform consistent read-modify-write updates. */
+// +optional
+Etag *string `json:"etag,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* The region of the feature. */
-	// +optional
-	Region *string `json:"region,omitempty"`
+/* The region of the feature. */
+// +optional
+Region *string `json:"region,omitempty"`
 
-	/* The timestamp when the entity type was most recently updated in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* The timestamp when the entity type was most recently updated in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpvertexaifeaturestoreentitytypefeature;gcpvertexaifeaturestoreentitytypefeatures
@@ -95,22 +95,20 @@ type VertexAIFeaturestoreEntityTypeFeatureStatus struct {
 // VertexAIFeaturestoreEntityTypeFeature is the Schema for the vertexai API
 // +k8s:openapi-gen=true
 type VertexAIFeaturestoreEntityTypeFeature struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   VertexAIFeaturestoreEntityTypeFeatureSpec   `json:"spec,omitempty"`
-	Status VertexAIFeaturestoreEntityTypeFeatureStatus `json:"status,omitempty"`
+  Spec VertexAIFeaturestoreEntityTypeFeatureSpec `json:"spec,omitempty"`
+  Status VertexAIFeaturestoreEntityTypeFeatureStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// VertexAIFeaturestoreEntityTypeFeatureList contains a list of VertexAIFeaturestoreEntityTypeFeature
-type VertexAIFeaturestoreEntityTypeFeatureList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []VertexAIFeaturestoreEntityTypeFeature `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&VertexAIFeaturestoreEntityTypeFeature{}, &VertexAIFeaturestoreEntityTypeFeatureList{})
-}
+ // VertexAIFeaturestoreEntityTypeFeatureList contains a list of VertexAIFeaturestoreEntityTypeFeature
+ type VertexAIFeaturestoreEntityTypeFeatureList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []VertexAIFeaturestoreEntityTypeFeature `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&VertexAIFeaturestoreEntityTypeFeature{}, &VertexAIFeaturestoreEntityTypeFeatureList{})
+ }

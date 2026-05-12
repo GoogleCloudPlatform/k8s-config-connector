@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,112 +30,111 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ClusterAccessConfig struct {
-	/* Required. Virtual Private Cloud (VPC) networks that must be granted direct access to the Kafka cluster. Minimum of 1 network is required. Maximum 10 networks can be specified. */
-	NetworkConfigs []ClusterNetworkConfigs `json:"networkConfigs"`
+/* Required. Virtual Private Cloud (VPC) networks that must be granted direct access to the Kafka cluster. Minimum of 1 network is required. Maximum 10 networks can be specified. */
+NetworkConfigs []ClusterNetworkConfigs `json:"networkConfigs"`
 }
 
 type ClusterCapacityConfig struct {
-	/* Required. The memory to provision for the cluster in bytes. The CPU:memory ratio (vCPU:GiB) must be between 1:1 and 1:8. Minimum: 3221225472 (3 GiB). */
-	MemoryBytes int64 `json:"memoryBytes"`
+/* Required. The memory to provision for the cluster in bytes. The CPU:memory ratio (vCPU:GiB) must be between 1:1 and 1:8. Minimum: 3221225472 (3 GiB). */
+MemoryBytes int64 `json:"memoryBytes"`
 
-	/* Required. The number of vCPUs to provision for the cluster. Minimum: 3. */
-	VcpuCount int64 `json:"vcpuCount"`
+/* Required. The number of vCPUs to provision for the cluster. Minimum: 3. */
+VcpuCount int64 `json:"vcpuCount"`
 }
 
 type ClusterGcpConfig struct {
-	/* Required. Access configuration for the Kafka cluster. */
-	AccessConfig ClusterAccessConfig `json:"accessConfig"`
+/* Required. Access configuration for the Kafka cluster. */
+AccessConfig ClusterAccessConfig `json:"accessConfig"`
 
-	/* Optional. Immutable. The Cloud KMS Key name to use for encryption. The key must be located in the same region as the cluster and cannot be changed. */
-	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+/* Optional. Immutable. The Cloud KMS Key name to use for encryption. The key must be located in the same region as the cluster and cannot be changed. */
+// +optional
+KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
 type ClusterNetworkConfigs struct {
 	/* Required. Reference to the VPC subnet in which to create Private Service Connect
 	(PSC) endpoints for the Kafka brokers and bootstrap address.
-
+	
 	The subnet must be located in the same region as the Kafka cluster. The
 	project may differ. Multiple subnets from the same parent network must not
 	be specified.
-
+	
 	The CIDR range of the subnet must be within the IPv4 address ranges for
 	private networks, as specified in RFC 1918. */
-	SubnetworkRef v1alpha1.ResourceRef `json:"subnetworkRef"`
+SubnetworkRef v1alpha1.ResourceRef `json:"subnetworkRef"`
 }
 
 type ClusterRebalanceConfig struct {
-	/* Optional. The rebalance behavior for the cluster. When not specified, defaults to `NO_REBALANCE`. */
-	// +optional
-	Mode *string `json:"mode,omitempty"`
+/* Optional. The rebalance behavior for the cluster. When not specified, defaults to `NO_REBALANCE`. */
+// +optional
+Mode *string `json:"mode,omitempty"`
 }
 
 type ManagedKafkaClusterSpec struct {
-	/* Required. Capacity configuration for the Kafka cluster. */
-	CapacityConfig ClusterCapacityConfig `json:"capacityConfig"`
+/* Required. Capacity configuration for the Kafka cluster. */
+CapacityConfig ClusterCapacityConfig `json:"capacityConfig"`
 
-	/* Required. Configuration properties for a Kafka cluster deployed to Google Cloud Platform. */
-	GcpConfig ClusterGcpConfig `json:"gcpConfig"`
+/* Required. Configuration properties for a Kafka cluster deployed to Google Cloud Platform. */
+GcpConfig ClusterGcpConfig `json:"gcpConfig"`
 
-	/* Optional. Labels as key value pairs. */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
+/* Optional. Labels as key value pairs. */
+// +optional
+Labels map[string]string `json:"labels,omitempty"`
 
-	Location string `json:"location"`
+Location string `json:"location"`
 
-	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Optional. Rebalance configuration for the Kafka cluster. */
-	// +optional
-	RebalanceConfig *ClusterRebalanceConfig `json:"rebalanceConfig,omitempty"`
+/* Optional. Rebalance configuration for the Kafka cluster. */
+// +optional
+RebalanceConfig *ClusterRebalanceConfig `json:"rebalanceConfig,omitempty"`
 
-	/* The GCP resource identifier. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The GCP resource identifier. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ClusterObservedStateStatus struct {
-	/* Output only. The time when the cluster was created. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. The time when the cluster was created. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. The current state of the cluster. */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* Output only. The current state of the cluster. */
+// +optional
+State *string `json:"state,omitempty"`
 
-	/* Output only. The time when the cluster was last updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. The time when the cluster was last updated. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type ManagedKafkaClusterStatus struct {
 	/* Conditions represent the latest available observations of the
-	   ManagedKafkaCluster's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the ManagedKafkaCluster resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    ManagedKafkaCluster's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the ManagedKafkaCluster resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *ClusterObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *ClusterObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpmanagedkafkacluster;gcpmanagedkafkaclusters
@@ -149,22 +149,20 @@ type ManagedKafkaClusterStatus struct {
 // ManagedKafkaCluster is the Schema for the managedkafka API
 // +k8s:openapi-gen=true
 type ManagedKafkaCluster struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ManagedKafkaClusterSpec   `json:"spec,omitempty"`
-	Status ManagedKafkaClusterStatus `json:"status,omitempty"`
+  Spec ManagedKafkaClusterSpec `json:"spec,omitempty"`
+  Status ManagedKafkaClusterStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// ManagedKafkaClusterList contains a list of ManagedKafkaCluster
-type ManagedKafkaClusterList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ManagedKafkaCluster `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&ManagedKafkaCluster{}, &ManagedKafkaClusterList{})
-}
+ // ManagedKafkaClusterList contains a list of ManagedKafkaCluster
+ type ManagedKafkaClusterList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []ManagedKafkaCluster `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&ManagedKafkaCluster{}, &ManagedKafkaClusterList{})
+ }

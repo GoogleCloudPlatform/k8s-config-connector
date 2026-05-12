@@ -53,143 +53,145 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	ComputeAutoscalerGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeAutoscaler{}).Name(),
-	}
+	
+  	ComputeAutoscalerGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ComputeAutoscaler{}).Name(),
+  	}
+  
+  	ComputeBackendBucketSignedURLKeyGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ComputeBackendBucketSignedURLKey{}).Name(),
+  	}
+  
+  	ComputeBackendServiceSignedURLKeyGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ComputeBackendServiceSignedURLKey{}).Name(),
+  	}
+  
+  	ComputeDiskResourcePolicyAttachmentGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ComputeDiskResourcePolicyAttachment{}).Name(),
+  	}
+  
+  	ComputeFutureReservationGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ComputeFutureReservation{}).Name(),
+  	}
+  
+  	ComputeGlobalNetworkEndpointGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ComputeGlobalNetworkEndpoint{}).Name(),
+  	}
+  
+  	ComputeGlobalNetworkEndpointGroupGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ComputeGlobalNetworkEndpointGroup{}).Name(),
+  	}
+  
+  	ComputeInstanceGroupNamedPortGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ComputeInstanceGroupNamedPort{}).Name(),
+  	}
+  
+  	ComputeInterconnectGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ComputeInterconnect{}).Name(),
+  	}
+  
+  	ComputeMachineImageGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ComputeMachineImage{}).Name(),
+  	}
+  
+  	ComputeNetworkAttachmentGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ComputeNetworkAttachment{}).Name(),
+  	}
+  
+  	ComputeNetworkEdgeSecurityServiceGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ComputeNetworkEdgeSecurityService{}).Name(),
+  	}
+  
+  	ComputeNetworkEndpointGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ComputeNetworkEndpoint{}).Name(),
+  	}
+  
+  	ComputeNetworkFirewallPolicyRuleGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ComputeNetworkFirewallPolicyRule{}).Name(),
+  	}
+  
+  	ComputeNetworkPeeringRoutesConfigGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ComputeNetworkPeeringRoutesConfig{}).Name(),
+  	}
+  
+  	ComputeOrganizationSecurityPolicyGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ComputeOrganizationSecurityPolicy{}).Name(),
+  	}
+  
+  	ComputeOrganizationSecurityPolicyAssociationGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ComputeOrganizationSecurityPolicyAssociation{}).Name(),
+  	}
+  
+  	ComputeOrganizationSecurityPolicyRuleGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ComputeOrganizationSecurityPolicyRule{}).Name(),
+  	}
+  
+  	ComputePerInstanceConfigGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ComputePerInstanceConfig{}).Name(),
+  	}
+  
+  	ComputeRegionAutoscalerGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ComputeRegionAutoscaler{}).Name(),
+  	}
+  
+  	ComputeRegionDiskResourcePolicyAttachmentGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ComputeRegionDiskResourcePolicyAttachment{}).Name(),
+  	}
+  
+  	ComputeRegionPerInstanceConfigGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ComputeRegionPerInstanceConfig{}).Name(),
+  	}
+  
+  	ComputeRegionSSLPolicyGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ComputeRegionSSLPolicy{}).Name(),
+  	}
+  
 
-	ComputeBackendBucketSignedURLKeyGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeBackendBucketSignedURLKey{}).Name(),
-	}
-
-	ComputeBackendServiceSignedURLKeyGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeBackendServiceSignedURLKey{}).Name(),
-	}
-
-	ComputeDiskResourcePolicyAttachmentGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeDiskResourcePolicyAttachment{}).Name(),
-	}
-
-	ComputeFutureReservationGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeFutureReservation{}).Name(),
-	}
-
-	ComputeGlobalNetworkEndpointGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeGlobalNetworkEndpoint{}).Name(),
-	}
-
-	ComputeGlobalNetworkEndpointGroupGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeGlobalNetworkEndpointGroup{}).Name(),
-	}
-
-	ComputeInstanceGroupNamedPortGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeInstanceGroupNamedPort{}).Name(),
-	}
-
-	ComputeInterconnectGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeInterconnect{}).Name(),
-	}
-
-	ComputeMachineImageGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeMachineImage{}).Name(),
-	}
-
-	ComputeNetworkAttachmentGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeNetworkAttachment{}).Name(),
-	}
-
-	ComputeNetworkEdgeSecurityServiceGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeNetworkEdgeSecurityService{}).Name(),
-	}
-
-	ComputeNetworkEndpointGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeNetworkEndpoint{}).Name(),
-	}
-
-	ComputeNetworkFirewallPolicyRuleGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeNetworkFirewallPolicyRule{}).Name(),
-	}
-
-	ComputeNetworkPeeringRoutesConfigGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeNetworkPeeringRoutesConfig{}).Name(),
-	}
-
-	ComputeOrganizationSecurityPolicyGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeOrganizationSecurityPolicy{}).Name(),
-	}
-
-	ComputeOrganizationSecurityPolicyAssociationGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeOrganizationSecurityPolicyAssociation{}).Name(),
-	}
-
-	ComputeOrganizationSecurityPolicyRuleGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeOrganizationSecurityPolicyRule{}).Name(),
-	}
-
-	ComputePerInstanceConfigGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputePerInstanceConfig{}).Name(),
-	}
-
-	ComputeRegionAutoscalerGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeRegionAutoscaler{}).Name(),
-	}
-
-	ComputeRegionDiskResourcePolicyAttachmentGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeRegionDiskResourcePolicyAttachment{}).Name(),
-	}
-
-	ComputeRegionPerInstanceConfigGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeRegionPerInstanceConfig{}).Name(),
-	}
-
-	ComputeRegionSSLPolicyGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeRegionSSLPolicy{}).Name(),
-	}
-
-	computeAPIVersion = SchemeGroupVersion.String()
+  	computeAPIVersion = SchemeGroupVersion.String()
 )

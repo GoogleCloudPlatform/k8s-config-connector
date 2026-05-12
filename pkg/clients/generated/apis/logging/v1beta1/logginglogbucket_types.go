@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,77 +30,76 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type LoggingLogBucketSpec struct {
-	/* Immutable. The BillingAccount that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
-	// +optional
-	BillingAccountRef *v1alpha1.ResourceRef `json:"billingAccountRef,omitempty"`
+/* Immutable. The BillingAccount that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
+// +optional
+BillingAccountRef *v1alpha1.ResourceRef `json:"billingAccountRef,omitempty"`
 
-	/* Describes this bucket. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* Describes this bucket. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Whether or not Log Analytics is enabled. Logs for buckets with Log Analytics enabled can be queried in the Log Analytics page using SQL queries. Cannot be disabled once enabled. */
-	// +optional
-	EnableAnalytics *bool `json:"enableAnalytics,omitempty"`
+/* Whether or not Log Analytics is enabled. Logs for buckets with Log Analytics enabled can be queried in the Log Analytics page using SQL queries. Cannot be disabled once enabled. */
+// +optional
+EnableAnalytics *bool `json:"enableAnalytics,omitempty"`
 
-	/* Immutable. The Folder that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
-	// +optional
-	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+/* Immutable. The Folder that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
+// +optional
+FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
-	/* Immutable. The location of the resource. The supported locations are: global, us-central1, us-east1, us-west1, asia-east1, europe-west1. */
-	Location string `json:"location"`
+/* Immutable. The location of the resource. The supported locations are: global, us-central1, us-east1, us-west1, asia-east1, europe-west1. */
+Location string `json:"location"`
 
-	/* Whether the bucket has been locked. The retention period on a locked bucket may not be changed. Locked buckets may only be deleted if they are empty. */
-	// +optional
-	Locked *bool `json:"locked,omitempty"`
+/* Whether the bucket has been locked. The retention period on a locked bucket may not be changed. Locked buckets may only be deleted if they are empty. */
+// +optional
+Locked *bool `json:"locked,omitempty"`
 
-	/* Immutable. The Organization that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
-	// +optional
-	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+/* Immutable. The Organization that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
+// +optional
+OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
-	/* Immutable. The Project that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+/* Immutable. The Project that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
+// +optional
+ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Logs will be retained by default for this amount of time, after which they will automatically be deleted. The minimum retention period is 1 day. If this value is set to zero at bucket creation time, the default time of 30 days will be used. */
-	// +optional
-	RetentionDays *int64 `json:"retentionDays,omitempty"`
+/* Logs will be retained by default for this amount of time, after which they will automatically be deleted. The minimum retention period is 1 day. If this value is set to zero at bucket creation time, the default time of 30 days will be used. */
+// +optional
+RetentionDays *int64 `json:"retentionDays,omitempty"`
 }
 
 type LoggingLogBucketStatus struct {
 	/* Conditions represent the latest available observations of the
-	   LoggingLogBucket's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Output only. The creation timestamp of the bucket. This is not set for any of the default buckets. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+	    LoggingLogBucket's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* Output only. The creation timestamp of the bucket. This is not set for any of the default buckets. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. The bucket lifecycle state. Possible values: LIFECYCLE_STATE_UNSPECIFIED, ACTIVE, DELETE_REQUESTED */
-	// +optional
-	LifecycleState *string `json:"lifecycleState,omitempty"`
+/* Output only. The bucket lifecycle state. Possible values: LIFECYCLE_STATE_UNSPECIFIED, ACTIVE, DELETE_REQUESTED */
+// +optional
+LifecycleState *string `json:"lifecycleState,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* Output only. The last update timestamp of the bucket. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. The last update timestamp of the bucket. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcplogginglogbucket;gcplogginglogbuckets
@@ -116,22 +116,20 @@ type LoggingLogBucketStatus struct {
 // LoggingLogBucket is the Schema for the logging API
 // +k8s:openapi-gen=true
 type LoggingLogBucket struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   LoggingLogBucketSpec   `json:"spec,omitempty"`
-	Status LoggingLogBucketStatus `json:"status,omitempty"`
+  Spec LoggingLogBucketSpec `json:"spec,omitempty"`
+  Status LoggingLogBucketStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// LoggingLogBucketList contains a list of LoggingLogBucket
-type LoggingLogBucketList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []LoggingLogBucket `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&LoggingLogBucket{}, &LoggingLogBucketList{})
-}
+ // LoggingLogBucketList contains a list of LoggingLogBucket
+ type LoggingLogBucketList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []LoggingLogBucket `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&LoggingLogBucket{}, &LoggingLogBucketList{})
+ }

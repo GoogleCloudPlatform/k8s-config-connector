@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +30,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -44,67 +45,67 @@ type RegionperinstanceconfigDisk struct {
 	'NEVER' - detach the disk when the VM is deleted, but do not delete the disk.
 	'ON_PERMANENT_INSTANCE_DELETION' will delete the stateful disk when the VM is permanently
 	deleted from the instance group. Default value: "NEVER" Possible values: ["NEVER", "ON_PERMANENT_INSTANCE_DELETION"]. */
-	// +optional
-	DeleteRule *string `json:"deleteRule,omitempty"`
+// +optional
+DeleteRule *string `json:"deleteRule,omitempty"`
 
-	/* A unique device name that is reflected into the /dev/ tree of a Linux operating system running within the instance. */
-	DeviceName string `json:"deviceName"`
+/* A unique device name that is reflected into the /dev/ tree of a Linux operating system running within the instance. */
+DeviceName string `json:"deviceName"`
 
-	/* The mode of the disk. Default value: "READ_WRITE" Possible values: ["READ_ONLY", "READ_WRITE"]. */
-	// +optional
-	Mode *string `json:"mode,omitempty"`
+/* The mode of the disk. Default value: "READ_WRITE" Possible values: ["READ_ONLY", "READ_WRITE"]. */
+// +optional
+Mode *string `json:"mode,omitempty"`
 
 	/* The URI of an existing persistent disk to attach under the specified device-name in the format
 	'projects/project-id/zones/zone/disks/disk-name'. */
-	Source string `json:"source"`
+Source string `json:"source"`
 }
 
 type RegionperinstanceconfigExternalIp struct {
-	/* These stateful IPs will never be released during autohealing, update or VM instance recreate operations. This flag is used to configure if the IP reservation should be deleted after it is no longer used by the group, e.g. when the given instance or the whole group is deleted. Default value: "NEVER" Possible values: ["NEVER", "ON_PERMANENT_INSTANCE_DELETION"]. */
-	// +optional
-	AutoDelete *string `json:"autoDelete,omitempty"`
+/* These stateful IPs will never be released during autohealing, update or VM instance recreate operations. This flag is used to configure if the IP reservation should be deleted after it is no longer used by the group, e.g. when the given instance or the whole group is deleted. Default value: "NEVER" Possible values: ["NEVER", "ON_PERMANENT_INSTANCE_DELETION"]. */
+// +optional
+AutoDelete *string `json:"autoDelete,omitempty"`
 
-	InterfaceName string `json:"interfaceName"`
+InterfaceName string `json:"interfaceName"`
 
-	/* Ip address representation. */
-	// +optional
-	IpAddress *RegionperinstanceconfigIpAddress `json:"ipAddress,omitempty"`
+/* Ip address representation. */
+// +optional
+IpAddress *RegionperinstanceconfigIpAddress `json:"ipAddress,omitempty"`
 }
 
 type RegionperinstanceconfigInternalIp struct {
-	/* These stateful IPs will never be released during autohealing, update or VM instance recreate operations. This flag is used to configure if the IP reservation should be deleted after it is no longer used by the group, e.g. when the given instance or the whole group is deleted. Default value: "NEVER" Possible values: ["NEVER", "ON_PERMANENT_INSTANCE_DELETION"]. */
-	// +optional
-	AutoDelete *string `json:"autoDelete,omitempty"`
+/* These stateful IPs will never be released during autohealing, update or VM instance recreate operations. This flag is used to configure if the IP reservation should be deleted after it is no longer used by the group, e.g. when the given instance or the whole group is deleted. Default value: "NEVER" Possible values: ["NEVER", "ON_PERMANENT_INSTANCE_DELETION"]. */
+// +optional
+AutoDelete *string `json:"autoDelete,omitempty"`
 
-	InterfaceName string `json:"interfaceName"`
+InterfaceName string `json:"interfaceName"`
 
-	/* Ip address representation. */
-	// +optional
-	IpAddress *RegionperinstanceconfigIpAddress `json:"ipAddress,omitempty"`
+/* Ip address representation. */
+// +optional
+IpAddress *RegionperinstanceconfigIpAddress `json:"ipAddress,omitempty"`
 }
 
 type RegionperinstanceconfigIpAddress struct {
-	/* The URL of the reservation for this IP address. */
-	// +optional
-	Address *string `json:"address,omitempty"`
+/* The URL of the reservation for this IP address. */
+// +optional
+Address *string `json:"address,omitempty"`
 }
 
 type RegionperinstanceconfigPreservedState struct {
-	/* Stateful disks for the instance. */
-	// +optional
-	Disk []RegionperinstanceconfigDisk `json:"disk,omitempty"`
+/* Stateful disks for the instance. */
+// +optional
+Disk []RegionperinstanceconfigDisk `json:"disk,omitempty"`
 
-	/* Preserved external IPs defined for this instance. This map is keyed with the name of the network interface. */
-	// +optional
-	ExternalIp []RegionperinstanceconfigExternalIp `json:"externalIp,omitempty"`
+/* Preserved external IPs defined for this instance. This map is keyed with the name of the network interface. */
+// +optional
+ExternalIp []RegionperinstanceconfigExternalIp `json:"externalIp,omitempty"`
 
-	/* Preserved internal IPs defined for this instance. This map is keyed with the name of the network interface. */
-	// +optional
-	InternalIp []RegionperinstanceconfigInternalIp `json:"internalIp,omitempty"`
+/* Preserved internal IPs defined for this instance. This map is keyed with the name of the network interface. */
+// +optional
+InternalIp []RegionperinstanceconfigInternalIp `json:"internalIp,omitempty"`
 
-	/* Preserved metadata defined for this instance. This is a list of key->value pairs. */
-	// +optional
-	Metadata map[string]string `json:"metadata,omitempty"`
+/* Preserved metadata defined for this instance. This is a list of key->value pairs. */
+// +optional
+Metadata map[string]string `json:"metadata,omitempty"`
 }
 
 type ComputeRegionPerInstanceConfigSpec struct {
@@ -114,8 +115,8 @@ type ComputeRegionPerInstanceConfigSpec struct {
 	* RESTART
 	* REFRESH
 	* NONE. */
-	// +optional
-	MinimalAction *string `json:"minimalAction,omitempty"`
+// +optional
+MinimalAction *string `json:"minimalAction,omitempty"`
 
 	/* The most disruptive action to perform on the instance during an update.
 	Default is 'REPLACE'. Possible values are:
@@ -123,41 +124,40 @@ type ComputeRegionPerInstanceConfigSpec struct {
 	* RESTART
 	* REFRESH
 	* NONE. */
-	// +optional
-	MostDisruptiveAllowedAction *string `json:"mostDisruptiveAllowedAction,omitempty"`
+// +optional
+MostDisruptiveAllowedAction *string `json:"mostDisruptiveAllowedAction,omitempty"`
 
-	/* The preserved state for this instance. */
-	// +optional
-	PreservedState *RegionperinstanceconfigPreservedState `json:"preservedState,omitempty"`
+/* The preserved state for this instance. */
+// +optional
+PreservedState *RegionperinstanceconfigPreservedState `json:"preservedState,omitempty"`
 
-	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Region where the containing instance group manager is located. */
-	Region string `json:"region"`
+/* Immutable. Region where the containing instance group manager is located. */
+Region string `json:"region"`
 
-	RegionInstanceGroupManagerRef v1alpha1.ResourceRef `json:"regionInstanceGroupManagerRef"`
+RegionInstanceGroupManagerRef v1alpha1.ResourceRef `json:"regionInstanceGroupManagerRef"`
 
 	/* When true, deleting this config will immediately remove any specified state from the underlying instance.
 	When false, deleting this config will *not* immediately remove any state from the underlying instance.
 	State will be removed on the next instance recreation or update. */
-	// +optional
-	RemoveInstanceStateOnDestroy *bool `json:"removeInstanceStateOnDestroy,omitempty"`
+// +optional
+RemoveInstanceStateOnDestroy *bool `json:"removeInstanceStateOnDestroy,omitempty"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ComputeRegionPerInstanceConfigStatus struct {
 	/* Conditions represent the latest available observations of the
-	   ComputeRegionPerInstanceConfig's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	    ComputeRegionPerInstanceConfig's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputeregionperinstanceconfig;gcpcomputeregionperinstanceconfigs
@@ -174,22 +174,20 @@ type ComputeRegionPerInstanceConfigStatus struct {
 // ComputeRegionPerInstanceConfig is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeRegionPerInstanceConfig struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ComputeRegionPerInstanceConfigSpec   `json:"spec,omitempty"`
-	Status ComputeRegionPerInstanceConfigStatus `json:"status,omitempty"`
+  Spec ComputeRegionPerInstanceConfigSpec `json:"spec,omitempty"`
+  Status ComputeRegionPerInstanceConfigStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// ComputeRegionPerInstanceConfigList contains a list of ComputeRegionPerInstanceConfig
-type ComputeRegionPerInstanceConfigList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ComputeRegionPerInstanceConfig `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&ComputeRegionPerInstanceConfig{}, &ComputeRegionPerInstanceConfigList{})
-}
+ // ComputeRegionPerInstanceConfigList contains a list of ComputeRegionPerInstanceConfig
+ type ComputeRegionPerInstanceConfigList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []ComputeRegionPerInstanceConfig `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&ComputeRegionPerInstanceConfig{}, &ComputeRegionPerInstanceConfigList{})
+ }

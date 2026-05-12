@@ -53,17 +53,19 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	FirebaseHostingChannelGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(FirebaseHostingChannel{}).Name(),
-	}
+	
+  	FirebaseHostingChannelGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(FirebaseHostingChannel{}).Name(),
+  	}
+  
+  	FirebaseHostingSiteGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(FirebaseHostingSite{}).Name(),
+  	}
+  
 
-	FirebaseHostingSiteGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(FirebaseHostingSite{}).Name(),
-	}
-
-	firebasehostingAPIVersion = SchemeGroupVersion.String()
+  	firebasehostingAPIVersion = SchemeGroupVersion.String()
 )

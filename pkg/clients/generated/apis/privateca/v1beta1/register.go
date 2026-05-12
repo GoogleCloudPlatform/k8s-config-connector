@@ -53,29 +53,31 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	PrivateCACAPoolGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(PrivateCACAPool{}).Name(),
-	}
+	
+  	PrivateCACAPoolGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(PrivateCACAPool{}).Name(),
+  	}
+  
+  	PrivateCACertificateGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(PrivateCACertificate{}).Name(),
+  	}
+  
+  	PrivateCACertificateAuthorityGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(PrivateCACertificateAuthority{}).Name(),
+  	}
+  
+  	PrivateCACertificateTemplateGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(PrivateCACertificateTemplate{}).Name(),
+  	}
+  
 
-	PrivateCACertificateGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(PrivateCACertificate{}).Name(),
-	}
-
-	PrivateCACertificateAuthorityGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(PrivateCACertificateAuthority{}).Name(),
-	}
-
-	PrivateCACertificateTemplateGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(PrivateCACertificateTemplate{}).Name(),
-	}
-
-	privatecaAPIVersion = SchemeGroupVersion.String()
+  	privatecaAPIVersion = SchemeGroupVersion.String()
 )

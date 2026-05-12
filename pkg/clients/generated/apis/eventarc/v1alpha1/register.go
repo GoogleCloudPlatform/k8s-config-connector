@@ -53,17 +53,19 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	EventarcChannelGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(EventarcChannel{}).Name(),
-	}
+	
+  	EventarcChannelGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(EventarcChannel{}).Name(),
+  	}
+  
+  	EventarcGoogleChannelConfigGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(EventarcGoogleChannelConfig{}).Name(),
+  	}
+  
 
-	EventarcGoogleChannelConfigGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(EventarcGoogleChannelConfig{}).Name(),
-	}
-
-	eventarcAPIVersion = SchemeGroupVersion.String()
+  	eventarcAPIVersion = SchemeGroupVersion.String()
 )

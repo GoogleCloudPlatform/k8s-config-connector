@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,90 +30,89 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type NodepoolLocalDiskEncryption struct {
-	/* The Cloud KMS CryptoKeyVersion currently in use for protecting node local disks. Only applicable if kmsKey is set. */
-	// +optional
-	KmsKeyActiveVersion *string `json:"kmsKeyActiveVersion,omitempty"`
+/* The Cloud KMS CryptoKeyVersion currently in use for protecting node local disks. Only applicable if kmsKey is set. */
+// +optional
+KmsKeyActiveVersion *string `json:"kmsKeyActiveVersion,omitempty"`
 
-	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+// +optional
+KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* Availability of the Cloud KMS CryptoKey. If not KEY_AVAILABLE, then nodes may go offline as they cannot access their local data.
 	This can be caused by a lack of permissions to use the key, or if the key is disabled or deleted. */
-	// +optional
-	KmsKeyState *string `json:"kmsKeyState,omitempty"`
+// +optional
+KmsKeyState *string `json:"kmsKeyState,omitempty"`
 }
 
 type NodepoolNodeConfig struct {
-	/* "The Kubernetes node labels". */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
+/* "The Kubernetes node labels". */
+// +optional
+Labels map[string]string `json:"labels,omitempty"`
 }
 
 type EdgeContainerNodePoolSpec struct {
-	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
+ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
 
-	/* Local disk encryption options. This field is only used when enabling CMEK support. */
-	// +optional
-	LocalDiskEncryption *NodepoolLocalDiskEncryption `json:"localDiskEncryption,omitempty"`
+/* Local disk encryption options. This field is only used when enabling CMEK support. */
+// +optional
+LocalDiskEncryption *NodepoolLocalDiskEncryption `json:"localDiskEncryption,omitempty"`
 
-	/* Immutable. The location of the resource. */
-	Location string `json:"location"`
+/* Immutable. The location of the resource. */
+Location string `json:"location"`
 
 	/* Only machines matching this filter will be allowed to join the node pool.
 	The filtering language accepts strings like "name=<name>", and is
 	documented in more detail in [AIP-160](https://google.aip.dev/160). */
-	// +optional
-	MachineFilter *string `json:"machineFilter,omitempty"`
+// +optional
+MachineFilter *string `json:"machineFilter,omitempty"`
 
-	/* Configuration for each node in the NodePool. */
-	// +optional
-	NodeConfig *NodepoolNodeConfig `json:"nodeConfig,omitempty"`
+/* Configuration for each node in the NodePool. */
+// +optional
+NodeConfig *NodepoolNodeConfig `json:"nodeConfig,omitempty"`
 
-	/* The number of nodes in the pool. */
-	NodeCount int64 `json:"nodeCount"`
+/* The number of nodes in the pool. */
+NodeCount int64 `json:"nodeCount"`
 
-	/* Immutable. Name of the Google Distributed Cloud Edge zone where this node pool will be created. For example: 'us-central1-edge-customer-a'. */
-	NodeLocation string `json:"nodeLocation"`
+/* Immutable. Name of the Google Distributed Cloud Edge zone where this node pool will be created. For example: 'us-central1-edge-customer-a'. */
+NodeLocation string `json:"nodeLocation"`
 
-	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type EdgeContainerNodePoolStatus struct {
 	/* Conditions represent the latest available observations of the
-	   EdgeContainerNodePool's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The time when the node pool was created. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+	    EdgeContainerNodePool's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* The time when the node pool was created. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* The lowest release version among all worker nodes. */
-	// +optional
-	NodeVersion *string `json:"nodeVersion,omitempty"`
+/* The lowest release version among all worker nodes. */
+// +optional
+NodeVersion *string `json:"nodeVersion,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* The time when the node pool was last updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* The time when the node pool was last updated. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpedgecontainernodepool;gcpedgecontainernodepools
@@ -129,22 +129,20 @@ type EdgeContainerNodePoolStatus struct {
 // EdgeContainerNodePool is the Schema for the edgecontainer API
 // +k8s:openapi-gen=true
 type EdgeContainerNodePool struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   EdgeContainerNodePoolSpec   `json:"spec,omitempty"`
-	Status EdgeContainerNodePoolStatus `json:"status,omitempty"`
+  Spec EdgeContainerNodePoolSpec `json:"spec,omitempty"`
+  Status EdgeContainerNodePoolStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// EdgeContainerNodePoolList contains a list of EdgeContainerNodePool
-type EdgeContainerNodePoolList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []EdgeContainerNodePool `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&EdgeContainerNodePool{}, &EdgeContainerNodePoolList{})
-}
+ // EdgeContainerNodePoolList contains a list of EdgeContainerNodePool
+ type EdgeContainerNodePoolList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []EdgeContainerNodePool `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&EdgeContainerNodePool{}, &EdgeContainerNodePoolList{})
+ }

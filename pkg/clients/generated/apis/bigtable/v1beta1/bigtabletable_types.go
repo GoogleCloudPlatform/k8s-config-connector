@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,66 +30,65 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type TableColumnFamily struct {
-	/* The name of the column family. */
-	Family string `json:"family"`
+/* The name of the column family. */
+Family string `json:"family"`
 }
 
 type BigtableTableSpec struct {
-	/* Duration to retain change stream data for the table. Set to 0 to disable. Must be between 1 and 7 days.. */
-	// +optional
-	ChangeStreamRetention *string `json:"changeStreamRetention,omitempty"`
+/* Duration to retain change stream data for the table. Set to 0 to disable. Must be between 1 and 7 days.. */
+// +optional
+ChangeStreamRetention *string `json:"changeStreamRetention,omitempty"`
 
-	/* The names of the column families that should be created immediately upon table creation, specified by name. The values that may be set are specified here. At least one column family must be specified. */
-	// +optional
-	ColumnFamily []TableColumnFamily `json:"columnFamily,omitempty"`
+/* The names of the column families that should be created immediately upon table creation, specified by name. The values that may be set are specified here. At least one column family must be specified. */
+// +optional
+ColumnFamily []TableColumnFamily `json:"columnFamily,omitempty"`
 
 	/* NOTE: DeletionProtection proto field is changed from string (1.38) to bool (1.40) in cloud.google.com/go/bigtable/admin/apiv2/adminpb
 	Set to true to make the table protected against data loss. i.e. deleting
 	the following resources through Admin APIs are prohibited:
-
+	
 	* The table.
 	* The column families in the table.
 	* The instance containing the table.
-
+	
 	Note one can still delete the data stored in the table through Data APIs. */
-	// +optional
-	DeletionProtection *string `json:"deletionProtection,omitempty"`
+// +optional
+DeletionProtection *string `json:"deletionProtection,omitempty"`
 
-	/* Immutable. The instance to create the table in. */
-	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
+/* Immutable. The instance to create the table in. */
+InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
 
-	/* The BigtableTable name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The BigtableTable name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* A list of predefined keys to split the table on. */
-	// +optional
-	SplitKeys []string `json:"splitKeys,omitempty"`
+/* A list of predefined keys to split the table on. */
+// +optional
+SplitKeys []string `json:"splitKeys,omitempty"`
 }
 
 type BigtableTableStatus struct {
 	/* Conditions represent the latest available observations of the
-	   BigtableTable's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the BigtableTable resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    BigtableTable's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the BigtableTable resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigtabletable;gcpbigtabletables
@@ -105,22 +105,20 @@ type BigtableTableStatus struct {
 // BigtableTable is the Schema for the bigtable API
 // +k8s:openapi-gen=true
 type BigtableTable struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   BigtableTableSpec   `json:"spec,omitempty"`
-	Status BigtableTableStatus `json:"status,omitempty"`
+  Spec BigtableTableSpec `json:"spec,omitempty"`
+  Status BigtableTableStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// BigtableTableList contains a list of BigtableTable
-type BigtableTableList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []BigtableTable `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&BigtableTable{}, &BigtableTableList{})
-}
+ // BigtableTableList contains a list of BigtableTable
+ type BigtableTableList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []BigtableTable `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&BigtableTable{}, &BigtableTableList{})
+ }

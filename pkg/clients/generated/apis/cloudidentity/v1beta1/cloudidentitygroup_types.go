@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,95 +30,94 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type GroupGroupKey struct {
-	/* Immutable. The ID of the entity. For Google-managed entities, the `id` must be the email address of an existing group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`. */
-	Id string `json:"id"`
+/* Immutable. The ID of the entity. For Google-managed entities, the `id` must be the email address of an existing group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`. */
+Id string `json:"id"`
 
-	/* Immutable. The namespace in which the entity exists. If not specified, the `EntityKey` represents a Google-managed entity such as a Google user or a Google Group. If specified, the `EntityKey` represents an external-identity-mapped group. The namespace must correspond to an identity source created in Admin Console and must be in the form of `identitysources/{identity_source_id}`. */
-	// +optional
-	Namespace *string `json:"namespace,omitempty"`
+/* Immutable. The namespace in which the entity exists. If not specified, the `EntityKey` represents a Google-managed entity such as a Google user or a Google Group. If specified, the `EntityKey` represents an external-identity-mapped group. The namespace must correspond to an identity source created in Admin Console and must be in the form of `identitysources/{identity_source_id}`. */
+// +optional
+Namespace *string `json:"namespace,omitempty"`
 }
 
 type CloudIdentityGroupSpec struct {
-	/* An extended description to help users determine the purpose of a `Group`. Must not be longer than 4,096 characters. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* An extended description to help users determine the purpose of a `Group`. Must not be longer than 4,096 characters. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* The display name of the `Group`. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+/* The display name of the `Group`. */
+// +optional
+DisplayName *string `json:"displayName,omitempty"`
 
-	/* Immutable. EntityKey of the Group. */
-	GroupKey GroupGroupKey `json:"groupKey"`
+/* Immutable. EntityKey of the Group. */
+GroupKey GroupGroupKey `json:"groupKey"`
 
-	/* Immutable. The initial configuration options for creating a Group. See the [API reference](https://cloud.google.com/identity/docs/reference/rest/v1beta1/groups/create#initialgroupconfig) for possible values. Default value: "EMPTY" Possible values: ["INITIAL_GROUP_CONFIG_UNSPECIFIED", "WITH_INITIAL_OWNER", "EMPTY"]. */
-	// +optional
-	InitialGroupConfig *string `json:"initialGroupConfig,omitempty"`
+/* Immutable. The initial configuration options for creating a Group. See the [API reference](https://cloud.google.com/identity/docs/reference/rest/v1beta1/groups/create#initialgroupconfig) for possible values. Default value: "EMPTY" Possible values: ["INITIAL_GROUP_CONFIG_UNSPECIFIED", "WITH_INITIAL_OWNER", "EMPTY"]. */
+// +optional
+InitialGroupConfig *string `json:"initialGroupConfig,omitempty"`
 
-	/* One or more label entries that apply to the Group. Currently supported labels contain a key with an empty value. Google Groups are the default type of group and have a label with a key of cloudidentity.googleapis.com/groups.discussion_forum and an empty value. Existing Google Groups can have an additional label with a key of cloudidentity.googleapis.com/groups.security and an empty value added to them. This is an immutable change and the security label cannot be removed once added. Dynamic groups have a label with a key of cloudidentity.googleapis.com/groups.dynamic. Identity-mapped groups for Cloud Search have a label with a key of system/groups/external and an empty value. */
-	Labels map[string]string `json:"labels"`
+/* One or more label entries that apply to the Group. Currently supported labels contain a key with an empty value. Google Groups are the default type of group and have a label with a key of cloudidentity.googleapis.com/groups.discussion_forum and an empty value. Existing Google Groups can have an additional label with a key of cloudidentity.googleapis.com/groups.security and an empty value added to them. This is an immutable change and the security label cannot be removed once added. Dynamic groups have a label with a key of cloudidentity.googleapis.com/groups.dynamic. Identity-mapped groups for Cloud Search have a label with a key of system/groups/external and an empty value. */
+Labels map[string]string `json:"labels"`
 
-	/* Immutable. The resource name of the entity under which this `Group` resides in the Cloud Identity resource hierarchy. Must be of the form `identitysources/{identity_source}` for external [identity-mapped groups](https://support.google.com/a/answer/9039510) or `customers/{customer_id}` for Google Groups. The `customer_id` must begin with "C" (for example, 'C046psxkn'). [Find your customer ID.] (https://support.google.com/cloudidentity/answer/10070793) */
-	Parent string `json:"parent"`
+/* Immutable. The resource name of the entity under which this `Group` resides in the Cloud Identity resource hierarchy. Must be of the form `identitysources/{identity_source}` for external [identity-mapped groups](https://support.google.com/a/answer/9039510) or `customers/{customer_id}` for Google Groups. The `customer_id` must begin with "C" (for example, 'C046psxkn'). [Find your customer ID.] (https://support.google.com/cloudidentity/answer/10070793) */
+Parent string `json:"parent"`
 
-	/* Immutable. Optional. The service-generated name of the resource. Format: groups/{groupID} or {groupID}. Used for acquisition only. Leave unset to create a new resource. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The service-generated name of the resource. Format: groups/{groupID} or {groupID}. Used for acquisition only. Leave unset to create a new resource. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type GroupAdditionalGroupKeysStatus struct {
-	/* Immutable. The ID of the entity. For Google-managed entities, the `id` must be the email address of an existing group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`. */
-	Id string `json:"id"`
+/* Immutable. The ID of the entity. For Google-managed entities, the `id` must be the email address of an existing group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`. */
+Id string `json:"id"`
 
-	/* Immutable. The namespace in which the entity exists. If not specified, the `EntityKey` represents a Google-managed entity such as a Google user or a Google Group. If specified, the `EntityKey` represents an external-identity-mapped group. The namespace must correspond to an identity source created in Admin Console and must be in the form of `identitysources/{identity_source_id}`. */
-	// +optional
-	Namespace *string `json:"namespace,omitempty"`
+/* Immutable. The namespace in which the entity exists. If not specified, the `EntityKey` represents a Google-managed entity such as a Google user or a Google Group. If specified, the `EntityKey` represents an external-identity-mapped group. The namespace must correspond to an identity source created in Admin Console and must be in the form of `identitysources/{identity_source_id}`. */
+// +optional
+Namespace *string `json:"namespace,omitempty"`
 }
 
 type GroupObservedStateStatus struct {
-	/* Additional group keys associated with the Group. */
-	// +optional
-	AdditionalGroupKeys []GroupAdditionalGroupKeysStatus `json:"additionalGroupKeys,omitempty"`
+/* Additional group keys associated with the Group. */
+// +optional
+AdditionalGroupKeys []GroupAdditionalGroupKeysStatus `json:"additionalGroupKeys,omitempty"`
 }
 
 type CloudIdentityGroupStatus struct {
 	/* Conditions represent the latest available observations of the
-	   CloudIdentityGroup's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The time when the `Group` was created. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+	    CloudIdentityGroup's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* The time when the `Group` was created. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* A unique Config Connector specifier for the resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+/* A unique Config Connector specifier for the resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* The [resource name](https://cloud.google.com/apis/design/resource_names) of the `Group`. Shall be of the form `groups/{group_id}`. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+/* The [resource name](https://cloud.google.com/apis/design/resource_names) of the `Group`. Shall be of the form `groups/{group_id}`. */
+// +optional
+Name *string `json:"name,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *GroupObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *GroupObservedStateStatus `json:"observedState,omitempty"`
 
-	/* The time when the `Group` was last updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* The time when the `Group` was last updated. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcloudidentitygroup;gcpcloudidentitygroups
@@ -133,22 +133,20 @@ type CloudIdentityGroupStatus struct {
 // CloudIdentityGroup is the Schema for the cloudidentity API
 // +k8s:openapi-gen=true
 type CloudIdentityGroup struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   CloudIdentityGroupSpec   `json:"spec,omitempty"`
-	Status CloudIdentityGroupStatus `json:"status,omitempty"`
+  Spec CloudIdentityGroupSpec `json:"spec,omitempty"`
+  Status CloudIdentityGroupStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// CloudIdentityGroupList contains a list of CloudIdentityGroup
-type CloudIdentityGroupList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []CloudIdentityGroup `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&CloudIdentityGroup{}, &CloudIdentityGroupList{})
-}
+ // CloudIdentityGroupList contains a list of CloudIdentityGroup
+ type CloudIdentityGroupList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []CloudIdentityGroup `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&CloudIdentityGroup{}, &CloudIdentityGroupList{})
+ }
