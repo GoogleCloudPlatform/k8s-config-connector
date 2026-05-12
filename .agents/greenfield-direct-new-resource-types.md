@@ -46,7 +46,7 @@ Your goal is to identify GCP resources that are missing from KCC but defined in 
 
 4.  **Task**: If no tracking issue exists, create a new issue for the resource types implementation.
     - **Title**: `ai:chore: Implement direct types for: <Kind>`
-    - **Labels**: `overseer`, `area/direct`, `priority/medium`, `step/gen-types`, `greenfield`
+    - **Labels**: `overseer`, `area/direct`, `priority/medium`, `step/gen-types`, `greenfield`, `chore/ai`
     - **Body**: Use the **TYPES ISSUE BODY TEMPLATE** below. Append a link to this chore file (`.agents/direct-new-resource-types.md`) at the end of the issue body for traceability.
 
 ---
@@ -64,29 +64,20 @@ To ensure stability and reproducibility, this task is pinned to the following re
 
 # Implementation Instructions
 
-### Phase 0: Tooling & Skill Activation
+1. **Scaffold types**: Use skill `.gemini/skills/kcc-direct-resource-scaffolder/SKILL.md` with:
+   - service: <proto.package.name>
+   - resource: <Kind>:<ProtoMessageName>
+   - api_version: <group>.cnrm.cloud.google.com/v1alpha1
 
-1.  **Activate Skills**: This project uses specialized skills to ensure architectural consistency. Before starting, identify and activate relevant skills (e.g., `kcc-direct-types-implementer`, `kcc-identity-reference`, `kcc-agentic-journaler`) using the `activate_skill` tool to receive expert procedural guidance.
-2.  **Consult Knowledge Base**: Check the `.gemini/journals/` directory for any existing service-specific "tribal knowledge" that might apply to this resource.
-3.  **Record Versions**: Record the Google APIs and KCC SHAs (listed above) in your initial implementation notes to ensure a stable baseline.
+2. **Implement Identity**: Use skill `.gemini/skills/kcc-direct-identity-implementer/SKILL.md` with:
+   - resource_kind: <Kind>
+   - template: <GCP_URL_Template> (e.g. projects/{project}/locations/{location}/<plural>/{<resource>})
 
-### Phase 1: Types and CRDs
-Implement the initial KRM types for `<Kind>` using the "direct" approach.
+3. **Implement Controller**: Use skill `.gemini/skills/kcc-direct-controller-implementer/SKILL.md` with:
+   - resource_kind: <Kind>
+   - package_path: pkg/controller/direct/<group_short>/<kind_lowercase>/
+   - proto_package: <proto.package.name>
 
-**Tooling**: Activate the `kcc-direct-types-implementer` skill. Follow its guidance to ensure your `_types.go` file meets KCC's metadata and field-mapping standards.
-
-### Phase 2: IdentityV2 and Resource References
-Implement `apis/<group>/v1alpha1/<kind_lowercase>_identity.go`.
-
-**Tooling**: Activate the `kcc-identity-reference` skill. It provides the canonical `gcpurls.Template` pattern and ensures interface compliance for `IdentityV2` and `ExternalIdentifier`.
-
-### Phase 3: Final Generation and Verification
-1.  **Generate Mappers**: Run `dev/tasks/generate-types-and-mappers`.
-2.  **Compile**: Run `make all-binary` to ensure the generated code compiles. Fix any issues discovered.
+4. **Journal Findings**: Use skill `.gemini/skills/kcc-agentic-journaler/SKILL.md` to capture quirks and update knowledge.
 
 ---
-
-### Phase 4: Knowledge Capture & Self-Optimization
-Reflect on your implementation and record any breakthroughs or service-specific quirks.
-
-**Tooling**: Activate the `kcc-agentic-journaler` skill. Use its routing logic to ensure your learnings are stored in the correct destination (either a general skill or a service-specific journal).
