@@ -32,7 +32,6 @@ import (
 	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/klog/v2"
 )
 
 func init() {
@@ -101,8 +100,6 @@ type BigtableSchemaBundleAdapter struct {
 var _ directbase.Adapter = &BigtableSchemaBundleAdapter{}
 
 func (a *BigtableSchemaBundleAdapter) Find(ctx context.Context) (bool, error) {
-	log := klog.FromContext(ctx)
-	log.V(2).Info("getting BigtableSchemaBundle", "name", a.id)
 
 	bigtableschemabundleinfo, err := a.gcpClient.GetSchemaBundle(ctx, a.id.TableID, a.id.ID())
 	if err != nil {
@@ -117,8 +114,6 @@ func (a *BigtableSchemaBundleAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *BigtableSchemaBundleAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	log := klog.FromContext(ctx)
-	log.V(2).Info("creating BigtableSchemaBundle", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -139,7 +134,6 @@ func (a *BigtableSchemaBundleAdapter) Create(ctx context.Context, createOp *dire
 	if err != nil {
 		return fmt.Errorf("creating BigtableSchemaBundle %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully created BigtableSchemaBundle", "name", a.id)
 
 	// Get the created resource to get the etag/status
 	created, err := a.gcpClient.GetSchemaBundle(ctx, a.id.TableID, a.id.ID())
@@ -176,8 +170,6 @@ func (a *BigtableSchemaBundleAdapter) Create(ctx context.Context, createOp *dire
 }
 
 func (a *BigtableSchemaBundleAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	log := klog.FromContext(ctx)
-	log.V(2).Info("updating BigtableSchemaBundle", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -198,7 +190,6 @@ func (a *BigtableSchemaBundleAdapter) Update(ctx context.Context, updateOp *dire
 	}
 
 	if !needsUpdate {
-		log.V(2).Info("no field needs update", "name", a.id)
 		if a.desired.Status.ExternalRef == nil || a.desired.Status.ObservedState == nil {
 			status := &krm.BigtableSchemaBundleStatus{}
 			pbActual := &bigtablepb.SchemaBundle{
@@ -237,7 +228,6 @@ func (a *BigtableSchemaBundleAdapter) Update(ctx context.Context, updateOp *dire
 	if err != nil {
 		return fmt.Errorf("updating BigtableSchemaBundle %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully updated BigtableSchemaBundle", "name", a.id)
 
 	// Get the updated resource
 	updated, err := a.gcpClient.GetSchemaBundle(ctx, a.id.TableID, a.id.ID())
@@ -305,19 +295,15 @@ func (a *BigtableSchemaBundleAdapter) Export(ctx context.Context) (*unstructured
 }
 
 func (a *BigtableSchemaBundleAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting BigtableSchemaBundle", "name", a.id)
 
 	err := a.gcpClient.DeleteSchemaBundle(ctx, a.id.TableID, a.id.ID())
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent BigtableSchemaBundle, assuming it was already deleted", "name", a.id)
 			return true, nil
 		}
 		return false, fmt.Errorf("deleting BigtableSchemaBundle %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully deleted BigtableSchemaBundle", "name", a.id)
 
 	return true, nil
 }
