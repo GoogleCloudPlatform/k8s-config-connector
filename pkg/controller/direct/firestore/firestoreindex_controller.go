@@ -72,6 +72,11 @@ func (m *firestoreIndexModel) AdapterForObject(ctx context.Context, op *directba
 		return nil, mapCtx.Err()
 	}
 
+	// queryScope defaults to collection (and must be specified)
+	if desired.QueryScope == pb.Index_QUERY_SCOPE_UNSPECIFIED {
+		desired.QueryScope = pb.Index_COLLECTION
+	}
+
 	return &firestoreIndexAdapter{
 		id:                   id.(*krm.FirestoreIndexIdentity),
 		firestoreAdminClient: firestoreAdminClient,
@@ -194,7 +199,7 @@ func (a *firestoreIndexAdapter) Export(ctx context.Context) (*unstructured.Unstr
 
 	obj.SetGroupVersionKind(krm.FirestoreIndexGVK)
 	obj.Name = a.id.Index
-	obj.Spec.Collection = a.id.Collection
+	obj.Spec.Collection = a.id.CollectionGroup
 	if a.id.Database != "(default)" {
 		obj.Spec.Database = direct.PtrTo(a.id.Database)
 	}
