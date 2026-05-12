@@ -132,7 +132,7 @@ func (a *TopicAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := ManagedKafkaTopicSpec_ToProto(mapCtx, &desired.Spec)
+	resource := ManagedKafkaTopicSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -159,13 +159,13 @@ func (a *TopicAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	log.V(2).Info("updating Topic", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desiredPb := ManagedKafkaTopicSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	desiredPb := ManagedKafkaTopicSpec_v1beta1_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
 	// Set the name field to ensure the GCP API can identity the resource during UpdateTopic().
-	// This also prevents incorrect diffs, as the name field is not populated by ManagedKafkaTopicSpec_ToProto.
+	// This also prevents incorrect diffs, as the name field is not populated by ManagedKafkaTopicSpec_v1beta1_ToProto.
 	desiredPb.Name = a.id.String()
 
 	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
@@ -209,7 +209,7 @@ func (a *TopicAdapter) Export(ctx context.Context) (*unstructured.Unstructured, 
 
 	obj := &krm.ManagedKafkaTopic{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(ManagedKafkaTopicSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(ManagedKafkaTopicSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
