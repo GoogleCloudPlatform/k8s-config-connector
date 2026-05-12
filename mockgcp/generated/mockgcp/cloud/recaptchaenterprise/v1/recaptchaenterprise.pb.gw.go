@@ -13,6 +13,7 @@ import (
 	"io"
 	"net/http"
 
+	extRecaptchaenterprisepb "cloud.google.com/go/recaptchaenterprise/v2/apiv1/recaptchaenterprisepb"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
 	"google.golang.org/grpc"
@@ -31,8 +32,8 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
-func request_RecaptchaEnterpriseService_CreateAssessment_0(ctx context.Context, marshaler runtime.Marshaler, client RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CreateAssessmentRequest
+func request_RecaptchaEnterpriseService_CreateAssessment_0(ctx context.Context, marshaler runtime.Marshaler, client extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.CreateAssessmentRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -65,8 +66,8 @@ func request_RecaptchaEnterpriseService_CreateAssessment_0(ctx context.Context, 
 
 }
 
-func local_request_RecaptchaEnterpriseService_CreateAssessment_0(ctx context.Context, marshaler runtime.Marshaler, server RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CreateAssessmentRequest
+func local_request_RecaptchaEnterpriseService_CreateAssessment_0(ctx context.Context, marshaler runtime.Marshaler, server extRecaptchaenterprisepb.RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.CreateAssessmentRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -99,8 +100,8 @@ func local_request_RecaptchaEnterpriseService_CreateAssessment_0(ctx context.Con
 
 }
 
-func request_RecaptchaEnterpriseService_AnnotateAssessment_0(ctx context.Context, marshaler runtime.Marshaler, client RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq AnnotateAssessmentRequest
+func request_RecaptchaEnterpriseService_AnnotateAssessment_0(ctx context.Context, marshaler runtime.Marshaler, client extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.AnnotateAssessmentRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -133,8 +134,8 @@ func request_RecaptchaEnterpriseService_AnnotateAssessment_0(ctx context.Context
 
 }
 
-func local_request_RecaptchaEnterpriseService_AnnotateAssessment_0(ctx context.Context, marshaler runtime.Marshaler, server RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq AnnotateAssessmentRequest
+func local_request_RecaptchaEnterpriseService_AnnotateAssessment_0(ctx context.Context, marshaler runtime.Marshaler, server extRecaptchaenterprisepb.RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.AnnotateAssessmentRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -167,8 +168,8 @@ func local_request_RecaptchaEnterpriseService_AnnotateAssessment_0(ctx context.C
 
 }
 
-func request_RecaptchaEnterpriseService_CreateKey_0(ctx context.Context, marshaler runtime.Marshaler, client RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CreateKeyRequest
+func request_RecaptchaEnterpriseService_CreateKey_0(ctx context.Context, marshaler runtime.Marshaler, client extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.CreateKeyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -201,8 +202,8 @@ func request_RecaptchaEnterpriseService_CreateKey_0(ctx context.Context, marshal
 
 }
 
-func local_request_RecaptchaEnterpriseService_CreateKey_0(ctx context.Context, marshaler runtime.Marshaler, server RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CreateKeyRequest
+func local_request_RecaptchaEnterpriseService_CreateKey_0(ctx context.Context, marshaler runtime.Marshaler, server extRecaptchaenterprisepb.RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.CreateKeyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -239,8 +240,8 @@ var (
 	filter_RecaptchaEnterpriseService_ListKeys_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_RecaptchaEnterpriseService_ListKeys_0(ctx context.Context, marshaler runtime.Marshaler, client RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListKeysRequest
+func request_RecaptchaEnterpriseService_ListKeys_0(ctx context.Context, marshaler runtime.Marshaler, client extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.ListKeysRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -272,8 +273,8 @@ func request_RecaptchaEnterpriseService_ListKeys_0(ctx context.Context, marshale
 
 }
 
-func local_request_RecaptchaEnterpriseService_ListKeys_0(ctx context.Context, marshaler runtime.Marshaler, server RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListKeysRequest
+func local_request_RecaptchaEnterpriseService_ListKeys_0(ctx context.Context, marshaler runtime.Marshaler, server extRecaptchaenterprisepb.RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.ListKeysRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -305,8 +306,8 @@ func local_request_RecaptchaEnterpriseService_ListKeys_0(ctx context.Context, ma
 
 }
 
-func request_RecaptchaEnterpriseService_RetrieveLegacySecretKey_0(ctx context.Context, marshaler runtime.Marshaler, client RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq RetrieveLegacySecretKeyRequest
+func request_RecaptchaEnterpriseService_RetrieveLegacySecretKey_0(ctx context.Context, marshaler runtime.Marshaler, client extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.RetrieveLegacySecretKeyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -331,8 +332,8 @@ func request_RecaptchaEnterpriseService_RetrieveLegacySecretKey_0(ctx context.Co
 
 }
 
-func local_request_RecaptchaEnterpriseService_RetrieveLegacySecretKey_0(ctx context.Context, marshaler runtime.Marshaler, server RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq RetrieveLegacySecretKeyRequest
+func local_request_RecaptchaEnterpriseService_RetrieveLegacySecretKey_0(ctx context.Context, marshaler runtime.Marshaler, server extRecaptchaenterprisepb.RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.RetrieveLegacySecretKeyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -357,8 +358,8 @@ func local_request_RecaptchaEnterpriseService_RetrieveLegacySecretKey_0(ctx cont
 
 }
 
-func request_RecaptchaEnterpriseService_GetKey_0(ctx context.Context, marshaler runtime.Marshaler, client RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetKeyRequest
+func request_RecaptchaEnterpriseService_GetKey_0(ctx context.Context, marshaler runtime.Marshaler, client extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.GetKeyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -383,8 +384,8 @@ func request_RecaptchaEnterpriseService_GetKey_0(ctx context.Context, marshaler 
 
 }
 
-func local_request_RecaptchaEnterpriseService_GetKey_0(ctx context.Context, marshaler runtime.Marshaler, server RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetKeyRequest
+func local_request_RecaptchaEnterpriseService_GetKey_0(ctx context.Context, marshaler runtime.Marshaler, server extRecaptchaenterprisepb.RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.GetKeyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -413,8 +414,8 @@ var (
 	filter_RecaptchaEnterpriseService_UpdateKey_0 = &utilities.DoubleArray{Encoding: map[string]int{"key": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_RecaptchaEnterpriseService_UpdateKey_0(ctx context.Context, marshaler runtime.Marshaler, client RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UpdateKeyRequest
+func request_RecaptchaEnterpriseService_UpdateKey_0(ctx context.Context, marshaler runtime.Marshaler, client extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.UpdateKeyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -461,8 +462,8 @@ func request_RecaptchaEnterpriseService_UpdateKey_0(ctx context.Context, marshal
 
 }
 
-func local_request_RecaptchaEnterpriseService_UpdateKey_0(ctx context.Context, marshaler runtime.Marshaler, server RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UpdateKeyRequest
+func local_request_RecaptchaEnterpriseService_UpdateKey_0(ctx context.Context, marshaler runtime.Marshaler, server extRecaptchaenterprisepb.RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.UpdateKeyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -509,8 +510,8 @@ func local_request_RecaptchaEnterpriseService_UpdateKey_0(ctx context.Context, m
 
 }
 
-func request_RecaptchaEnterpriseService_DeleteKey_0(ctx context.Context, marshaler runtime.Marshaler, client RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq DeleteKeyRequest
+func request_RecaptchaEnterpriseService_DeleteKey_0(ctx context.Context, marshaler runtime.Marshaler, client extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.DeleteKeyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -535,8 +536,8 @@ func request_RecaptchaEnterpriseService_DeleteKey_0(ctx context.Context, marshal
 
 }
 
-func local_request_RecaptchaEnterpriseService_DeleteKey_0(ctx context.Context, marshaler runtime.Marshaler, server RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq DeleteKeyRequest
+func local_request_RecaptchaEnterpriseService_DeleteKey_0(ctx context.Context, marshaler runtime.Marshaler, server extRecaptchaenterprisepb.RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.DeleteKeyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -561,8 +562,8 @@ func local_request_RecaptchaEnterpriseService_DeleteKey_0(ctx context.Context, m
 
 }
 
-func request_RecaptchaEnterpriseService_MigrateKey_0(ctx context.Context, marshaler runtime.Marshaler, client RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq MigrateKeyRequest
+func request_RecaptchaEnterpriseService_MigrateKey_0(ctx context.Context, marshaler runtime.Marshaler, client extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.MigrateKeyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -595,8 +596,8 @@ func request_RecaptchaEnterpriseService_MigrateKey_0(ctx context.Context, marsha
 
 }
 
-func local_request_RecaptchaEnterpriseService_MigrateKey_0(ctx context.Context, marshaler runtime.Marshaler, server RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq MigrateKeyRequest
+func local_request_RecaptchaEnterpriseService_MigrateKey_0(ctx context.Context, marshaler runtime.Marshaler, server extRecaptchaenterprisepb.RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.MigrateKeyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -629,8 +630,8 @@ func local_request_RecaptchaEnterpriseService_MigrateKey_0(ctx context.Context, 
 
 }
 
-func request_RecaptchaEnterpriseService_AddIpOverride_0(ctx context.Context, marshaler runtime.Marshaler, client RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq AddIpOverrideRequest
+func request_RecaptchaEnterpriseService_AddIpOverride_0(ctx context.Context, marshaler runtime.Marshaler, client extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.AddIpOverrideRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -663,8 +664,8 @@ func request_RecaptchaEnterpriseService_AddIpOverride_0(ctx context.Context, mar
 
 }
 
-func local_request_RecaptchaEnterpriseService_AddIpOverride_0(ctx context.Context, marshaler runtime.Marshaler, server RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq AddIpOverrideRequest
+func local_request_RecaptchaEnterpriseService_AddIpOverride_0(ctx context.Context, marshaler runtime.Marshaler, server extRecaptchaenterprisepb.RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.AddIpOverrideRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -697,8 +698,8 @@ func local_request_RecaptchaEnterpriseService_AddIpOverride_0(ctx context.Contex
 
 }
 
-func request_RecaptchaEnterpriseService_RemoveIpOverride_0(ctx context.Context, marshaler runtime.Marshaler, client RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq RemoveIpOverrideRequest
+func request_RecaptchaEnterpriseService_RemoveIpOverride_0(ctx context.Context, marshaler runtime.Marshaler, client extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.RemoveIpOverrideRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -731,8 +732,8 @@ func request_RecaptchaEnterpriseService_RemoveIpOverride_0(ctx context.Context, 
 
 }
 
-func local_request_RecaptchaEnterpriseService_RemoveIpOverride_0(ctx context.Context, marshaler runtime.Marshaler, server RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq RemoveIpOverrideRequest
+func local_request_RecaptchaEnterpriseService_RemoveIpOverride_0(ctx context.Context, marshaler runtime.Marshaler, server extRecaptchaenterprisepb.RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.RemoveIpOverrideRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -769,8 +770,8 @@ var (
 	filter_RecaptchaEnterpriseService_ListIpOverrides_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_RecaptchaEnterpriseService_ListIpOverrides_0(ctx context.Context, marshaler runtime.Marshaler, client RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListIpOverridesRequest
+func request_RecaptchaEnterpriseService_ListIpOverrides_0(ctx context.Context, marshaler runtime.Marshaler, client extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.ListIpOverridesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -802,8 +803,8 @@ func request_RecaptchaEnterpriseService_ListIpOverrides_0(ctx context.Context, m
 
 }
 
-func local_request_RecaptchaEnterpriseService_ListIpOverrides_0(ctx context.Context, marshaler runtime.Marshaler, server RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListIpOverridesRequest
+func local_request_RecaptchaEnterpriseService_ListIpOverrides_0(ctx context.Context, marshaler runtime.Marshaler, server extRecaptchaenterprisepb.RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.ListIpOverridesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -835,8 +836,8 @@ func local_request_RecaptchaEnterpriseService_ListIpOverrides_0(ctx context.Cont
 
 }
 
-func request_RecaptchaEnterpriseService_GetMetrics_0(ctx context.Context, marshaler runtime.Marshaler, client RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetMetricsRequest
+func request_RecaptchaEnterpriseService_GetMetrics_0(ctx context.Context, marshaler runtime.Marshaler, client extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.GetMetricsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -861,8 +862,8 @@ func request_RecaptchaEnterpriseService_GetMetrics_0(ctx context.Context, marsha
 
 }
 
-func local_request_RecaptchaEnterpriseService_GetMetrics_0(ctx context.Context, marshaler runtime.Marshaler, server RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetMetricsRequest
+func local_request_RecaptchaEnterpriseService_GetMetrics_0(ctx context.Context, marshaler runtime.Marshaler, server extRecaptchaenterprisepb.RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.GetMetricsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -887,8 +888,8 @@ func local_request_RecaptchaEnterpriseService_GetMetrics_0(ctx context.Context, 
 
 }
 
-func request_RecaptchaEnterpriseService_CreateFirewallPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CreateFirewallPolicyRequest
+func request_RecaptchaEnterpriseService_CreateFirewallPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.CreateFirewallPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -921,8 +922,8 @@ func request_RecaptchaEnterpriseService_CreateFirewallPolicy_0(ctx context.Conte
 
 }
 
-func local_request_RecaptchaEnterpriseService_CreateFirewallPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CreateFirewallPolicyRequest
+func local_request_RecaptchaEnterpriseService_CreateFirewallPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extRecaptchaenterprisepb.RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.CreateFirewallPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -959,8 +960,8 @@ var (
 	filter_RecaptchaEnterpriseService_ListFirewallPolicies_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_RecaptchaEnterpriseService_ListFirewallPolicies_0(ctx context.Context, marshaler runtime.Marshaler, client RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListFirewallPoliciesRequest
+func request_RecaptchaEnterpriseService_ListFirewallPolicies_0(ctx context.Context, marshaler runtime.Marshaler, client extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.ListFirewallPoliciesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -992,8 +993,8 @@ func request_RecaptchaEnterpriseService_ListFirewallPolicies_0(ctx context.Conte
 
 }
 
-func local_request_RecaptchaEnterpriseService_ListFirewallPolicies_0(ctx context.Context, marshaler runtime.Marshaler, server RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListFirewallPoliciesRequest
+func local_request_RecaptchaEnterpriseService_ListFirewallPolicies_0(ctx context.Context, marshaler runtime.Marshaler, server extRecaptchaenterprisepb.RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.ListFirewallPoliciesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1025,8 +1026,8 @@ func local_request_RecaptchaEnterpriseService_ListFirewallPolicies_0(ctx context
 
 }
 
-func request_RecaptchaEnterpriseService_GetFirewallPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetFirewallPolicyRequest
+func request_RecaptchaEnterpriseService_GetFirewallPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.GetFirewallPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1051,8 +1052,8 @@ func request_RecaptchaEnterpriseService_GetFirewallPolicy_0(ctx context.Context,
 
 }
 
-func local_request_RecaptchaEnterpriseService_GetFirewallPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetFirewallPolicyRequest
+func local_request_RecaptchaEnterpriseService_GetFirewallPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extRecaptchaenterprisepb.RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.GetFirewallPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1081,8 +1082,8 @@ var (
 	filter_RecaptchaEnterpriseService_UpdateFirewallPolicy_0 = &utilities.DoubleArray{Encoding: map[string]int{"firewall_policy": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_RecaptchaEnterpriseService_UpdateFirewallPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UpdateFirewallPolicyRequest
+func request_RecaptchaEnterpriseService_UpdateFirewallPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.UpdateFirewallPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1129,8 +1130,8 @@ func request_RecaptchaEnterpriseService_UpdateFirewallPolicy_0(ctx context.Conte
 
 }
 
-func local_request_RecaptchaEnterpriseService_UpdateFirewallPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UpdateFirewallPolicyRequest
+func local_request_RecaptchaEnterpriseService_UpdateFirewallPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extRecaptchaenterprisepb.RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.UpdateFirewallPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1177,8 +1178,8 @@ func local_request_RecaptchaEnterpriseService_UpdateFirewallPolicy_0(ctx context
 
 }
 
-func request_RecaptchaEnterpriseService_DeleteFirewallPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq DeleteFirewallPolicyRequest
+func request_RecaptchaEnterpriseService_DeleteFirewallPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.DeleteFirewallPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1203,8 +1204,8 @@ func request_RecaptchaEnterpriseService_DeleteFirewallPolicy_0(ctx context.Conte
 
 }
 
-func local_request_RecaptchaEnterpriseService_DeleteFirewallPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq DeleteFirewallPolicyRequest
+func local_request_RecaptchaEnterpriseService_DeleteFirewallPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extRecaptchaenterprisepb.RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.DeleteFirewallPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1229,8 +1230,8 @@ func local_request_RecaptchaEnterpriseService_DeleteFirewallPolicy_0(ctx context
 
 }
 
-func request_RecaptchaEnterpriseService_ReorderFirewallPolicies_0(ctx context.Context, marshaler runtime.Marshaler, client RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ReorderFirewallPoliciesRequest
+func request_RecaptchaEnterpriseService_ReorderFirewallPolicies_0(ctx context.Context, marshaler runtime.Marshaler, client extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.ReorderFirewallPoliciesRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1263,8 +1264,8 @@ func request_RecaptchaEnterpriseService_ReorderFirewallPolicies_0(ctx context.Co
 
 }
 
-func local_request_RecaptchaEnterpriseService_ReorderFirewallPolicies_0(ctx context.Context, marshaler runtime.Marshaler, server RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ReorderFirewallPoliciesRequest
+func local_request_RecaptchaEnterpriseService_ReorderFirewallPolicies_0(ctx context.Context, marshaler runtime.Marshaler, server extRecaptchaenterprisepb.RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.ReorderFirewallPoliciesRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1301,8 +1302,8 @@ var (
 	filter_RecaptchaEnterpriseService_ListRelatedAccountGroups_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_RecaptchaEnterpriseService_ListRelatedAccountGroups_0(ctx context.Context, marshaler runtime.Marshaler, client RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListRelatedAccountGroupsRequest
+func request_RecaptchaEnterpriseService_ListRelatedAccountGroups_0(ctx context.Context, marshaler runtime.Marshaler, client extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.ListRelatedAccountGroupsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1334,8 +1335,8 @@ func request_RecaptchaEnterpriseService_ListRelatedAccountGroups_0(ctx context.C
 
 }
 
-func local_request_RecaptchaEnterpriseService_ListRelatedAccountGroups_0(ctx context.Context, marshaler runtime.Marshaler, server RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListRelatedAccountGroupsRequest
+func local_request_RecaptchaEnterpriseService_ListRelatedAccountGroups_0(ctx context.Context, marshaler runtime.Marshaler, server extRecaptchaenterprisepb.RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.ListRelatedAccountGroupsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1371,8 +1372,8 @@ var (
 	filter_RecaptchaEnterpriseService_ListRelatedAccountGroupMemberships_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_RecaptchaEnterpriseService_ListRelatedAccountGroupMemberships_0(ctx context.Context, marshaler runtime.Marshaler, client RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListRelatedAccountGroupMembershipsRequest
+func request_RecaptchaEnterpriseService_ListRelatedAccountGroupMemberships_0(ctx context.Context, marshaler runtime.Marshaler, client extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.ListRelatedAccountGroupMembershipsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1404,8 +1405,8 @@ func request_RecaptchaEnterpriseService_ListRelatedAccountGroupMemberships_0(ctx
 
 }
 
-func local_request_RecaptchaEnterpriseService_ListRelatedAccountGroupMemberships_0(ctx context.Context, marshaler runtime.Marshaler, server RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListRelatedAccountGroupMembershipsRequest
+func local_request_RecaptchaEnterpriseService_ListRelatedAccountGroupMemberships_0(ctx context.Context, marshaler runtime.Marshaler, server extRecaptchaenterprisepb.RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.ListRelatedAccountGroupMembershipsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1437,8 +1438,8 @@ func local_request_RecaptchaEnterpriseService_ListRelatedAccountGroupMemberships
 
 }
 
-func request_RecaptchaEnterpriseService_SearchRelatedAccountGroupMemberships_0(ctx context.Context, marshaler runtime.Marshaler, client RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq SearchRelatedAccountGroupMembershipsRequest
+func request_RecaptchaEnterpriseService_SearchRelatedAccountGroupMemberships_0(ctx context.Context, marshaler runtime.Marshaler, client extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.SearchRelatedAccountGroupMembershipsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1471,8 +1472,8 @@ func request_RecaptchaEnterpriseService_SearchRelatedAccountGroupMemberships_0(c
 
 }
 
-func local_request_RecaptchaEnterpriseService_SearchRelatedAccountGroupMemberships_0(ctx context.Context, marshaler runtime.Marshaler, server RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq SearchRelatedAccountGroupMembershipsRequest
+func local_request_RecaptchaEnterpriseService_SearchRelatedAccountGroupMemberships_0(ctx context.Context, marshaler runtime.Marshaler, server extRecaptchaenterprisepb.RecaptchaEnterpriseServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extRecaptchaenterprisepb.SearchRelatedAccountGroupMembershipsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1509,7 +1510,7 @@ func local_request_RecaptchaEnterpriseService_SearchRelatedAccountGroupMembershi
 // UnaryRPC     :call RecaptchaEnterpriseServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterRecaptchaEnterpriseServiceHandlerFromEndpoint instead.
-func RegisterRecaptchaEnterpriseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server RecaptchaEnterpriseServiceServer) error {
+func RegisterRecaptchaEnterpriseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server extRecaptchaenterprisepb.RecaptchaEnterpriseServiceServer) error {
 
 	mux.Handle("POST", pattern_RecaptchaEnterpriseService_CreateAssessment_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -2092,15 +2093,15 @@ func RegisterRecaptchaEnterpriseServiceHandlerFromEndpoint(ctx context.Context, 
 // RegisterRecaptchaEnterpriseServiceHandler registers the http handlers for service RecaptchaEnterpriseService to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
 func RegisterRecaptchaEnterpriseServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterRecaptchaEnterpriseServiceHandlerClient(ctx, mux, NewRecaptchaEnterpriseServiceClient(conn))
+	return RegisterRecaptchaEnterpriseServiceHandlerClient(ctx, mux, extRecaptchaenterprisepb.NewRecaptchaEnterpriseServiceClient(conn))
 }
 
 // RegisterRecaptchaEnterpriseServiceHandlerClient registers the http handlers for service RecaptchaEnterpriseService
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "RecaptchaEnterpriseServiceClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "RecaptchaEnterpriseServiceClient"
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "RecaptchaEnterpriseServiceClient" to call the correct interceptors.
-func RegisterRecaptchaEnterpriseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client RecaptchaEnterpriseServiceClient) error {
+// "extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient" to call the correct interceptors.
+func RegisterRecaptchaEnterpriseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client extRecaptchaenterprisepb.RecaptchaEnterpriseServiceClient) error {
 
 	mux.Handle("POST", pattern_RecaptchaEnterpriseService_CreateAssessment_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
