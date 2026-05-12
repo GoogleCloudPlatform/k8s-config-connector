@@ -40,10 +40,34 @@ type ComputeReservationSpec struct {
 	// +kcc:proto:field=google.cloud.compute.v1.Reservation.specific_reservation_required
 	SpecificReservationRequired *bool `json:"specificReservationRequired,omitempty"`
 
+	// The share setting for reservations.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.share_settings
+	ShareSettings *ShareSettings `json:"shareSettings,omitempty"`
+
 	// Immutable. The zone where the reservation is made.
 	// +required
 	// +kcc:proto:field=google.cloud.compute.v1.Reservation.zone
 	Zone *string `json:"zone"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.ShareSettings
+type ShareSettings struct {
+	// A map of project number and project config. This is only valid when share_type's value is SPECIFIC_PROJECTS.
+	// +kcc:proto:field=google.cloud.compute.v1.ShareSettings.project_map
+	ProjectMap []ReservationProjectMap `json:"projectMap,omitempty"`
+
+	// Type of sharing for this shared-reservation
+	//  Check the ShareType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ShareSettings.share_type
+	ShareType *string `json:"shareType,omitempty"`
+}
+
+type ReservationProjectMap struct {
+	// The project ID or number.
+	ID *string `json:"id,omitempty"`
+
+	// The project ID or number, should be same as the ID.
+	ProjectID *string `json:"projectID,omitempty"`
 }
 
 // +kcc:proto=google.cloud.compute.v1.AllocationSpecificSKUReservation

@@ -413,7 +413,7 @@ func ComputeReservationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: SatisfiesPzs
 	// MISSING: SchedulingType
 	// MISSING: SelfLink
-	// MISSING: ShareSettings
+	out.ShareSettings = ShareSettings_v1beta1_FromProto(mapCtx, in.GetShareSettings())
 	out.SpecificReservation = ReservationSpecificReservation_v1beta1_FromProto(mapCtx, in.GetSpecificReservation())
 	out.SpecificReservationRequired = in.SpecificReservationRequired
 	// MISSING: Status
@@ -444,7 +444,7 @@ func ComputeReservationSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.C
 	// MISSING: SatisfiesPzs
 	// MISSING: SchedulingType
 	// MISSING: SelfLink
-	// MISSING: ShareSettings
+	out.ShareSettings = ShareSettings_v1beta1_ToProto(mapCtx, in.ShareSettings)
 	out.SpecificReservation = ReservationSpecificReservation_v1beta1_ToProto(mapCtx, in.SpecificReservation)
 	out.SpecificReservationRequired = in.SpecificReservationRequired
 	// MISSING: Status
@@ -1608,7 +1608,7 @@ func ShareSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSett
 		return nil
 	}
 	out := &krm.ShareSettings{}
-	// MISSING: ProjectMap
+	// TODO: map type string message for field ProjectMap
 	out.ShareType = in.ShareType
 	return out
 }
@@ -1617,7 +1617,7 @@ func ShareSettings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ShareSetti
 		return nil
 	}
 	out := &pb.ShareSettings{}
-	// MISSING: ProjectMap
+	// TODO: map type string message for field ProjectMap
 	out.ShareType = in.ShareType
 	return out
 }
