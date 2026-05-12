@@ -33,7 +33,6 @@ type VertexaiV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	VertexAIDataLabelingJobsGetter
 	VertexAIDeploymentResourcePoolsGetter
-	VertexAIExampleStoresGetter
 	VertexAIFeaturestoresGetter
 	VertexAIFeaturestoreEntityTypesGetter
 	VertexAIFeaturestoreEntityTypeFeaturesGetter
@@ -52,10 +51,6 @@ func (c *VertexaiV1alpha1Client) VertexAIDataLabelingJobs(namespace string) Vert
 
 func (c *VertexaiV1alpha1Client) VertexAIDeploymentResourcePools(namespace string) VertexAIDeploymentResourcePoolInterface {
 	return newVertexAIDeploymentResourcePools(c, namespace)
-}
-
-func (c *VertexaiV1alpha1Client) VertexAIExampleStores(namespace string) VertexAIExampleStoreInterface {
-	return newVertexAIExampleStores(c, namespace)
 }
 
 func (c *VertexaiV1alpha1Client) VertexAIFeaturestores(namespace string) VertexAIFeaturestoreInterface {
