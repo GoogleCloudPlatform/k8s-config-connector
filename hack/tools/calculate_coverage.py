@@ -16,6 +16,8 @@ import os
 import subprocess
 import re
 import sys
+import json
+from datetime import datetime
 
 def run_shell(cmd, cwd=None):
     result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=cwd)
@@ -23,10 +25,7 @@ def run_shell(cmd, cwd=None):
 
 def get_gcp_resources(googleapis_dir):
     resources = {} 
-    
-    # Even more robust regex to find type and pattern
-    # We'll search for 'type: "' and 'pattern: "' inside the same file
-    # and try to group them by the resource block.
+    service_rpcs = {} # Map service to its RPCs
     
     for root, _, files in os.walk(googleapis_dir):
         if "third_party" in root: continue
@@ -36,6 +35,16 @@ def get_gcp_resources(googleapis_dir):
             with open(path, 'r', errors='ignore') as f:
                 content = f.read()
                 
+                # Identify service from package
+                pkg_match = re.search(r'package\s+([a-z0-9.]+);', content)
+                service_pkg = pkg_match.group(1) if pkg_match else "unknown"
+                if service_pkg not in service_rpcs:
+                    service_rpcs[service_pkg] = set()
+                
+                # Extract RPCs in this file
+                rpc_matches = re.findall(r'rpc\s+([A-Za-z0-9]+)', content)
+                service_rpcs[service_pkg].update(rpc_matches)
+
                 # Split by possible resource markers to isolate blocks
                 blocks = re.split(r'google\.api\.resource', content)
                 for block in blocks:
@@ -45,9 +54,10 @@ def get_gcp_resources(googleapis_dir):
                         if "/" not in rtype: continue
                         
                         if rtype not in resources:
-                            service, name = rtype.split('/')
+                            service_name, name = rtype.split('/')
                             resources[rtype] = {
-                                'service': service.split('.')[0],
+                                'service': service_name.split('.')[0],
+                                'pkg': service_pkg,
                                 'name': name,
                                 'ops': set(),
                                 'patterns': []
@@ -56,18 +66,13 @@ def get_gcp_resources(googleapis_dir):
                         p_matches = re.findall(r'pattern:\s*"([^"]+)"', block)
                         resources[rtype]['patterns'].extend(p_matches)
 
-    # 2. Get all RPCs
-    cmd_rpcs = f"grep -r '^[[:space:]]*rpc ' {googleapis_dir} --include='*.proto'"
-    res_rpcs = run_shell(cmd_rpcs)
-    all_rpcs = set()
-    for line in res_rpcs.stdout.splitlines():
-        rpc_match = re.search(r'rpc\s+([A-Za-z0-9]+)', line)
-        if rpc_match:
-            all_rpcs.add(rpc_match.group(1))
-
-    # 3. Match ops to resources
+    # 3. Match ops to resources within their service package
     for rtype, info in resources.items():
         name = info['name']
+        pkg = info['pkg']
+        if pkg not in service_rpcs: continue
+        
+        all_rpcs = service_rpcs[pkg]
         create_variants = [f"Create{name}", f"Upsert{name}", f"BatchCreate{name}"]
         for v in create_variants:
             if v in all_rpcs:
@@ -190,29 +195,91 @@ def main():
         prepare_repo("https://github.com/GoogleCloudPlatform/k8s-config-connector.git", kcc_dir, kcc_sha)
 
     gcp_resources = get_gcp_resources(googleapis_dir)
+    all_gcp_raw_count = len(gcp_resources)
+
+    # Apply Skip List
+    skip_file = os.path.join(os.path.dirname(__file__), "coverage_skip.json")
+    skipped_count = 0
+    if os.path.exists(skip_file):
+        with open(skip_file, 'r') as f:
+            skip_data = json.load(f)
+            patterns = [re.compile(s['pattern']) for s in skip_data.get('skips', [])]
+            
+            filtered_gcp = {}
+            for rtype, info in gcp_resources.items():
+                is_skipped = False
+                for p in patterns:
+                    if p.match(rtype):
+                        is_skipped = True
+                        skipped_count += 1
+                        break
+                if not is_skipped:
+                    filtered_gcp[rtype] = info
+            gcp_resources = filtered_gcp
+
     kcc_resources = get_kcc_resources(kcc_dir)
     covered = match_resources(gcp_resources, kcc_resources)
     
+    # Categorization
     all_gcp = set(gcp_resources.keys())
     missing = all_gcp - covered
     
-    create_delete_gcp = {rtype for rtype, info in gcp_resources.items() if 'CREATE' in info['ops'] and 'DELETE' in info['ops']}
-    missing_lifecycle = create_delete_gcp - covered
-    missing_leaves = {rtype for rtype in missing_lifecycle if is_leaf(gcp_resources[rtype]['patterns'])}
+    # Manageable = Has Create OR Delete
+    manageable_gcp = {rtype for rtype, info in gcp_resources.items() if 'CREATE' in info['ops'] or 'DELETE' in info['ops']}
+    missing_manageable = manageable_gcp - covered
+
+    # Fully Manageable = Has Create AND Delete
+    fully_manageable_gcp = {rtype for rtype, info in gcp_resources.items() if 'CREATE' in info['ops'] and 'DELETE' in info['ops']}
+    missing_fully_manageable = fully_manageable_gcp - covered
+
+    # Easy = Fully Manageable AND Leaf pattern
+    missing_easy = {rtype for rtype in missing_fully_manageable if is_leaf(gcp_resources[rtype]['patterns'])}
     
+    # Generate Gap Analysis Table for tracking
+    gap_file = os.path.join(os.path.dirname(__file__), "gap_analysis.txt")
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    analysis_lines = [
+        f"Gap Analysis Snapshot - {now}",
+        f"GoogleAPIs SHA: {googleapis_sha}",
+        f"KCC SHA:        {kcc_sha}",
+        "-" * 55,
+        f"{'Metric':<30} | {'Value':<10}",
+        "-" * 55,
+        f"{'Total GCP Resources':<30} | {all_gcp_raw_count:<10}",
+        f"{'Skipped (Policy)':<30} | {skipped_count:<10}",
+        f"{'Processed Resources':<30} | {len(all_gcp):<10}",
+        f"{'Implemented in KCC':<30} | {len(covered):<10}",
+        f"{'Missing from KCC':<30} | {len(missing):<10}",
+        "-" * 55,
+        f"{'Missing Manageable':<30} | {len(missing_manageable):<10}",
+        f"{'Missing Fully Manageable':<30} | {len(missing_fully_manageable):<10}",
+        "-" * 55,
+        f"{'Current Coverage':<30} | {len(covered)/max(1, len(all_gcp)):.2%}",
+        ""
+    ]
+    
+    with open(gap_file, 'w') as f:
+        f.write("\n".join(analysis_lines))
+
     print("\n--- Coverage Summary ---")
-    print(f"Total GCP Resources:      {len(all_gcp)}")
-    print(f"  Implemented in KCC:     {len(covered)}")
-    print(f"  Missing from KCC:       {len(all_gcp - covered)}")
-    print(f"  Coverage:               {len(covered)/max(1, len(all_gcp)):.2%}")
+    print(f"Total GCP Resources:      {all_gcp_raw_count}")
+    print(f"  - Skipped (Policy):     {skipped_count}")
+    print(f"  - Processed:            {len(all_gcp)}")
+    print(f"  - Implemented in KCC:   {len(covered)}")
+    print(f"  - Missing from KCC:     {len(missing)}")
+    print(f"  - Coverage:             {len(covered)/max(1, len(all_gcp)):.2%}")
     
-    print("\n--- Full Lifecycle Missing ---")
-    print(f"Total Manageable Missing: {len(missing_lifecycle)}")
-    print(f"  Leaf (Easy) Missing:    {len(missing_leaves)}")
+    print("\n--- Gap Breakdown (Missing Resources) ---")
+    print(f"Total Missing:            {len(missing)}")
+    print(f"  - Manageable:           {len(missing_manageable)} (Has Create OR Delete)")
+    print(f"  - Fully Manageable:     {len(missing_fully_manageable)} (Has Create AND Delete)")
+    print(f"  - Easy Targets:         {len(missing_easy)} (Fully Manageable + Leaf Pattern)")
+    print(f"\n[SAVED] Gap analysis snapshot written to {gap_file}")
 
     print(f"\n--- Next {k} Easiest Resources to Implement ---")
-    print("(Criteria: Full Lifecycle + Project/Folder/Org/Location parent)")
-    for m in sorted(list(missing_leaves))[:k]:
+    print("(Criteria: Easy Targets)")
+    for m in sorted(list(missing_easy))[:k]:
         patterns = ", ".join(gcp_resources[m]['patterns'])
         print(f"  - {m}")
         print(f"    Patterns: {patterns}")

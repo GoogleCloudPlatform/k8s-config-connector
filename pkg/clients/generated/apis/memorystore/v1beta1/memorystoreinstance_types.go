@@ -191,6 +191,10 @@ type MemorystoreInstanceSpec struct {
 	/* Immutable. */
 	Location string `json:"location"`
 
+	/* Optional. The maintenance version of the instance. */
+	// +optional
+	MaintenanceVersion *string `json:"maintenanceVersion,omitempty"`
+
 	/* Optional. The mode config for the instance. */
 	// +optional
 	Mode *string `json:"mode,omitempty"`
@@ -276,6 +280,10 @@ type InstanceNodeConfigStatus struct {
 }
 
 type InstanceObservedStateStatus struct {
+	/* Output only. The list of available maintenance versions for the instance. */
+	// +optional
+	AvailableMaintenanceVersions []string `json:"availableMaintenanceVersions,omitempty"`
+
 	/* Output only. Creation timestamp of the instance. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
