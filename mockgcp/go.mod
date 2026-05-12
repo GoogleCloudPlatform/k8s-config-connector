@@ -29,7 +29,7 @@ require (
 	cloud.google.com/go/kms v1.26.0
 	cloud.google.com/go/logging v1.13.2
 	cloud.google.com/go/longrunning v0.9.0
-	cloud.google.com/go/managedkafka v0.8.1
+	cloud.google.com/go/managedkafka v0.12.0
 	cloud.google.com/go/memorystore v0.9.0
 	cloud.google.com/go/netapp v1.12.0
 	cloud.google.com/go/networksecurity v0.15.0
