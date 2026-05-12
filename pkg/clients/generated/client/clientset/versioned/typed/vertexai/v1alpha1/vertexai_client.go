@@ -31,6 +31,7 @@ import (
 
 type VertexaiV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	VertexAIDataLabelingJobsGetter
 	VertexAIFeaturestoresGetter
 	VertexAIFeaturestoreEntityTypesGetter
 	VertexAIFeaturestoreEntityTypeFeaturesGetter
@@ -41,6 +42,10 @@ type VertexaiV1alpha1Interface interface {
 // VertexaiV1alpha1Client is used to interact with features provided by the vertexai.cnrm.cloud.google.com group.
 type VertexaiV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *VertexaiV1alpha1Client) VertexAIDataLabelingJobs(namespace string) VertexAIDataLabelingJobInterface {
+	return newVertexAIDataLabelingJobs(c, namespace)
 }
 
 func (c *VertexaiV1alpha1Client) VertexAIFeaturestores(namespace string) VertexAIFeaturestoreInterface {
