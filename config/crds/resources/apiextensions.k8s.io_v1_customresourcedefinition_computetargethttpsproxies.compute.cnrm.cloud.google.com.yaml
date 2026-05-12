@@ -86,13 +86,15 @@ spec:
                     - external
                   properties:
                     external:
-                      description: 'Allowed value: The format `//certificatemanager.googleapis.com/projects/{{project}}/locations/{{location}}/certificates/{{name}}`.'
+                      description: 'Allowed value: The format `projects/{{project}}/locations/{{location}}/certificates/{{name}}`
+                        or `//certificatemanager.googleapis.com/projects/{{project}}/locations/{{location}}/certificates/{{name}}`.'
                       type: string
                     name:
-                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                      description: The name of a CertificateManagerCertificate resource.
                       type: string
                     namespace:
-                      description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                      description: The namespace of a CertificateManagerCertificate
+                        resource.
                       type: string
                   type: object
                 type: array
@@ -124,10 +126,11 @@ spec:
                       resource.'
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The name of a CertificateManagerCertificateMap resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The namespace of a CertificateManagerCertificateMap
+                      resource.
                     type: string
                 type: object
               description:
@@ -195,10 +198,11 @@ spec:
                       resource.'
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The name of a NetworkSecurityServerTLSPolicy resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The namespace of a NetworkSecurityServerTLSPolicy
+                      resource.
                     type: string
                 type: object
               sslCertificates:
@@ -229,10 +233,10 @@ spec:
                         resource.'
                       type: string
                     name:
-                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                      description: The name of a ComputeSSLCertificate resource.
                       type: string
                     namespace:
-                      description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                      description: The namespace of a ComputeSSLCertificate resource.
                       type: string
                   type: object
                 type: array
@@ -261,10 +265,10 @@ spec:
                       resource.'
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The name of a ComputeSSLPolicy resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The namespace of a ComputeSSLPolicy resource.
                     type: string
                 type: object
               urlMapRef:
@@ -290,10 +294,10 @@ spec:
                       resource.'
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The name of a ComputeURLMap resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The namespace of a ComputeURLMap resource.
                     type: string
                 type: object
             required:
