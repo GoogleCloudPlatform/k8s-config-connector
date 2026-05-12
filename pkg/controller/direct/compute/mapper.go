@@ -436,3 +436,21 @@ func Uint64_ToProto(in *int64) *uint64 {
 	out := uint64(*in)
 	return &out
 }
+
+func ReservationShareSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettings) *krm.ReservationShareSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReservationShareSettings{}
+	out.ShareType = in.ShareType
+	return out
+}
+
+func ReservationShareSettings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ReservationShareSettings) *pb.ShareSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ShareSettings{}
+	out.ShareType = in.ShareType
+	return out
+}

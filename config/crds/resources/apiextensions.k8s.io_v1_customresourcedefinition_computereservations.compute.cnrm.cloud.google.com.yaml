@@ -71,6 +71,88 @@ spec:
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
+              shareSettings:
+                description: Immutable. The share setting for this reservation.
+                properties:
+                  projectMap:
+                    description: A map of project id and project config. This is only
+                      valid when shareType's value is SPECIFIC_PROJECTS.
+                    items:
+                      properties:
+                        idRef:
+                          description: The key of this project config in the parent
+                            map.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: The `projectID` field of a project, when
+                                not managed by Config Connector.
+                              type: string
+                            kind:
+                              description: The kind of the Project resource; optional
+                                but must be `Project` if provided.
+                              type: string
+                            name:
+                              description: The `name` field of a `Project` resource.
+                              type: string
+                            namespace:
+                              description: The `namespace` field of a `Project` resource.
+                              type: string
+                          type: object
+                        projectIdRef:
+                          description: The project id/number should be the same as
+                            the key of this project config in the project map.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: The `projectID` field of a project, when
+                                not managed by Config Connector.
+                              type: string
+                            kind:
+                              description: The kind of the Project resource; optional
+                                but must be `Project` if provided.
+                              type: string
+                            name:
+                              description: The `name` field of a `Project` resource.
+                              type: string
+                            namespace:
+                              description: The `namespace` field of a `Project` resource.
+                              type: string
+                          type: object
+                      type: object
+                    type: array
+                  shareType:
+                    description: 'Type of sharing for this shared-reservation. Possible
+                      values: ["SHARE_TYPE_UNSPECIFIED", "LOCAL", "SPECIFIC_PROJECTS",
+                      "ORGANIZATION"].'
+                    type: string
+                type: object
               specificReservation:
                 description: Reservation for instances with specific machine shapes.
                 properties:

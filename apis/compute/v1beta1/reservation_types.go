@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -39,6 +40,10 @@ type ComputeReservationSpec struct {
 	// Immutable. When set to true, only VMs that target this reservation by name can consume this reservation. Otherwise, it can be consumed by VMs with affinity for any reservation. Defaults to false.
 	// +kcc:proto:field=google.cloud.compute.v1.Reservation.specific_reservation_required
 	SpecificReservationRequired *bool `json:"specificReservationRequired,omitempty"`
+
+	// Immutable. The share setting for this reservation.
+	// +kcc:proto:field=google.cloud.compute.v1.Reservation.share_settings
+	ShareSettings *ReservationShareSettings `json:"shareSettings,omitempty"`
 
 	// Immutable. The zone where the reservation is made.
 	// +required
@@ -106,6 +111,23 @@ type ReservationLocalSsds struct {
 	// Immutable. The disk interface to use for attaching this disk. Default value: "SCSI" Possible values: ["SCSI", "NVME"].
 	// +kcc:proto:field=google.cloud.compute.v1.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk.interface
 	Interface *string `json:"interface,omitempty"`
+}
+
+type ReservationShareSettings struct {
+	// Type of sharing for this shared-reservation. Possible values: ["SHARE_TYPE_UNSPECIFIED", "LOCAL", "SPECIFIC_PROJECTS", "ORGANIZATION"].
+	// +kcc:proto:field=google.cloud.compute.v1.ShareSettings.share_type
+	ShareType *string `json:"shareType,omitempty"`
+
+	// A map of project id and project config. This is only valid when shareType's value is SPECIFIC_PROJECTS.
+	ProjectMap []ReservationProjectMap `json:"projectMap,omitempty"`
+}
+
+type ReservationProjectMap struct {
+	// The key of this project config in the parent map.
+	IdRef *refsv1beta1.ProjectRef `json:"idRef,omitempty"`
+
+	// The project id/number should be the same as the key of this project config in the project map.
+	ProjectIdRef *refsv1beta1.ProjectRef `json:"projectIdRef,omitempty"`
 }
 
 // ComputeReservationStatus defines the config connector machine state of ComputeReservation

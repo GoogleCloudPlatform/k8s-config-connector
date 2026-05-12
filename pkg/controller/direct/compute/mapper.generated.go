@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -413,7 +413,7 @@ func ComputeReservationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: SatisfiesPzs
 	// MISSING: SchedulingType
 	// MISSING: SelfLink
-	// MISSING: ShareSettings
+	out.ShareSettings = ReservationShareSettings_v1beta1_FromProto(mapCtx, in.GetShareSettings())
 	out.SpecificReservation = ReservationSpecificReservation_v1beta1_FromProto(mapCtx, in.GetSpecificReservation())
 	out.SpecificReservationRequired = in.SpecificReservationRequired
 	// MISSING: Status
@@ -444,7 +444,7 @@ func ComputeReservationSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.C
 	// MISSING: SatisfiesPzs
 	// MISSING: SchedulingType
 	// MISSING: SelfLink
-	// MISSING: ShareSettings
+	out.ShareSettings = ReservationShareSettings_v1beta1_ToProto(mapCtx, in.ShareSettings)
 	out.SpecificReservation = ReservationSpecificReservation_v1beta1_ToProto(mapCtx, in.SpecificReservation)
 	out.SpecificReservationRequired = in.SpecificReservationRequired
 	// MISSING: Status
