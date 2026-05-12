@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,87 +30,86 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type AccessboundarypolicyAccessBoundaryRule struct {
-	/* The availability condition further constrains the access allowed by the access boundary rule. */
-	// +optional
-	AvailabilityCondition *AccessboundarypolicyAvailabilityCondition `json:"availabilityCondition,omitempty"`
+/* The availability condition further constrains the access allowed by the access boundary rule. */
+// +optional
+AvailabilityCondition *AccessboundarypolicyAvailabilityCondition `json:"availabilityCondition,omitempty"`
 
-	/* A list of permissions that may be allowed for use on the specified resource. */
-	// +optional
-	AvailablePermissions []string `json:"availablePermissions,omitempty"`
+/* A list of permissions that may be allowed for use on the specified resource. */
+// +optional
+AvailablePermissions []string `json:"availablePermissions,omitempty"`
 
-	/* The full resource name of a Google Cloud resource entity. */
-	// +optional
-	AvailableResource *string `json:"availableResource,omitempty"`
+/* The full resource name of a Google Cloud resource entity. */
+// +optional
+AvailableResource *string `json:"availableResource,omitempty"`
 }
 
 type AccessboundarypolicyAvailabilityCondition struct {
 	/* Description of the expression. This is a longer text which describes the expression,
 	e.g. when hovered over it in a UI. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Textual representation of an expression in Common Expression Language syntax. */
-	Expression string `json:"expression"`
+/* Textual representation of an expression in Common Expression Language syntax. */
+Expression string `json:"expression"`
 
 	/* String indicating the location of the expression for error reporting,
 	e.g. a file name and a position in the file. */
-	// +optional
-	Location *string `json:"location,omitempty"`
+// +optional
+Location *string `json:"location,omitempty"`
 
 	/* Title for the expression, i.e. a short string describing its purpose.
 	This can be used e.g. in UIs which allow to enter the expression. */
-	// +optional
-	Title *string `json:"title,omitempty"`
+// +optional
+Title *string `json:"title,omitempty"`
 }
 
 type AccessboundarypolicyRules struct {
-	/* An access boundary rule in an IAM policy. */
-	// +optional
-	AccessBoundaryRule *AccessboundarypolicyAccessBoundaryRule `json:"accessBoundaryRule,omitempty"`
+/* An access boundary rule in an IAM policy. */
+// +optional
+AccessBoundaryRule *AccessboundarypolicyAccessBoundaryRule `json:"accessBoundaryRule,omitempty"`
 
-	/* The description of the rule. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* The description of the rule. */
+// +optional
+Description *string `json:"description,omitempty"`
 }
 
 type IAMAccessBoundaryPolicySpec struct {
-	/* The display name of the rule. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+/* The display name of the rule. */
+// +optional
+DisplayName *string `json:"displayName,omitempty"`
 
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Rules to be applied. */
-	Rules []AccessboundarypolicyRules `json:"rules"`
+/* Rules to be applied. */
+Rules []AccessboundarypolicyRules `json:"rules"`
 }
 
 type IAMAccessBoundaryPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
-	   IAMAccessBoundaryPolicy's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The hash of the resource. Used internally during updates. */
-	// +optional
-	Etag *string `json:"etag,omitempty"`
+	    IAMAccessBoundaryPolicy's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* The hash of the resource. Used internally during updates. */
+// +optional
+Etag *string `json:"etag,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpiamaccessboundarypolicy;gcpiamaccessboundarypolicies
@@ -126,22 +126,20 @@ type IAMAccessBoundaryPolicyStatus struct {
 // IAMAccessBoundaryPolicy is the Schema for the iam API
 // +k8s:openapi-gen=true
 type IAMAccessBoundaryPolicy struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   IAMAccessBoundaryPolicySpec   `json:"spec,omitempty"`
-	Status IAMAccessBoundaryPolicyStatus `json:"status,omitempty"`
+  Spec IAMAccessBoundaryPolicySpec `json:"spec,omitempty"`
+  Status IAMAccessBoundaryPolicyStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// IAMAccessBoundaryPolicyList contains a list of IAMAccessBoundaryPolicy
-type IAMAccessBoundaryPolicyList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []IAMAccessBoundaryPolicy `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&IAMAccessBoundaryPolicy{}, &IAMAccessBoundaryPolicyList{})
-}
+ // IAMAccessBoundaryPolicyList contains a list of IAMAccessBoundaryPolicy
+ type IAMAccessBoundaryPolicyList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []IAMAccessBoundaryPolicy `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&IAMAccessBoundaryPolicy{}, &IAMAccessBoundaryPolicyList{})
+ }

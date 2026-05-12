@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,53 +30,53 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type TableAvroOptions struct {
-	/* If sourceFormat is set to "AVRO", indicates whether to interpret logical types as the corresponding BigQuery data type (for example, TIMESTAMP), instead of using the raw type (for example, INTEGER). */
-	UseAvroLogicalTypes bool `json:"useAvroLogicalTypes"`
+/* If sourceFormat is set to "AVRO", indicates whether to interpret logical types as the corresponding BigQuery data type (for example, TIMESTAMP), instead of using the raw type (for example, INTEGER). */
+UseAvroLogicalTypes bool `json:"useAvroLogicalTypes"`
 }
 
 type TableColumnReferences struct {
-	/* Required. The column in the primary key that are referenced by the referencing_column. */
-	ReferencedColumn string `json:"referencedColumn"`
+/* Required. The column in the primary key that are referenced by the referencing_column. */
+ReferencedColumn string `json:"referencedColumn"`
 
-	/* Required. The column that composes the foreign key. */
-	ReferencingColumn string `json:"referencingColumn"`
+/* Required. The column that composes the foreign key. */
+ReferencingColumn string `json:"referencingColumn"`
 }
 
 type TableCsvOptions struct {
-	/* Indicates if BigQuery should accept rows that are missing trailing optional columns. If true, BigQuery treats missing trailing columns as null values. If false, records with missing trailing columns are treated as bad records, and if there are too many bad records, an invalid error is returned in the job result. The default value is false. */
-	// +optional
-	AllowJaggedRows *bool `json:"allowJaggedRows,omitempty"`
+/* Indicates if BigQuery should accept rows that are missing trailing optional columns. If true, BigQuery treats missing trailing columns as null values. If false, records with missing trailing columns are treated as bad records, and if there are too many bad records, an invalid error is returned in the job result. The default value is false. */
+// +optional
+AllowJaggedRows *bool `json:"allowJaggedRows,omitempty"`
 
-	/* Indicates if BigQuery should allow quoted data sections that contain newline characters in a CSV file. The default value is false. */
-	// +optional
-	AllowQuotedNewlines *bool `json:"allowQuotedNewlines,omitempty"`
+/* Indicates if BigQuery should allow quoted data sections that contain newline characters in a CSV file. The default value is false. */
+// +optional
+AllowQuotedNewlines *bool `json:"allowQuotedNewlines,omitempty"`
 
-	/* The character encoding of the data. The supported values are UTF-8, ISO-8859-1, UTF-16BE, UTF-16LE, UTF-32BE, and UTF-32LE.  The default value is UTF-8. BigQuery decodes the data after the raw, binary data has been split using the values of the quote and fieldDelimiter properties. */
-	// +optional
-	Encoding *string `json:"encoding,omitempty"`
+/* The character encoding of the data. The supported values are UTF-8, ISO-8859-1, UTF-16BE, UTF-16LE, UTF-32BE, and UTF-32LE.  The default value is UTF-8. BigQuery decodes the data after the raw, binary data has been split using the values of the quote and fieldDelimiter properties. */
+// +optional
+Encoding *string `json:"encoding,omitempty"`
 
-	/* The separator character for fields in a CSV file. The separator is interpreted as a single byte. For files encoded in ISO-8859-1, any single character can be used as a separator. For files encoded in UTF-8, characters represented in decimal range 1-127 (U+0001-U+007F) can be used without any modification. UTF-8 characters encoded with multiple bytes (i.e. U+0080 and above) will have only the first byte used for separating fields. The remaining bytes will be treated as a part of the field. BigQuery also supports the escape sequence "\t" (U+0009) to specify a tab separator. The default value is comma (",", U+002C). */
-	// +optional
-	FieldDelimiter *string `json:"fieldDelimiter,omitempty"`
+/* The separator character for fields in a CSV file. The separator is interpreted as a single byte. For files encoded in ISO-8859-1, any single character can be used as a separator. For files encoded in UTF-8, characters represented in decimal range 1-127 (U+0001-U+007F) can be used without any modification. UTF-8 characters encoded with multiple bytes (i.e. U+0080 and above) will have only the first byte used for separating fields. The remaining bytes will be treated as a part of the field. BigQuery also supports the escape sequence "\t" (U+0009) to specify a tab separator. The default value is comma (",", U+002C). */
+// +optional
+FieldDelimiter *string `json:"fieldDelimiter,omitempty"`
 
-	/* The value that is used to quote data sections in a CSV file. BigQuery converts the string to ISO-8859-1 encoding, and then uses the first byte of the encoded string to split the data in its raw, binary state. The default value is a double-quote ("). If your data does not contain quoted sections, set the property value to an empty string. If your data contains quoted newline characters, you must also set the allowQuotedNewlines property to true. To include the specific quote character within a quoted value, precede it with an additional matching quote character. For example, if you want to escape the default character  ' " ', use ' "" '. */
-	Quote string `json:"quote"`
+/* The value that is used to quote data sections in a CSV file. BigQuery converts the string to ISO-8859-1 encoding, and then uses the first byte of the encoded string to split the data in its raw, binary state. The default value is a double-quote ("). If your data does not contain quoted sections, set the property value to an empty string. If your data contains quoted newline characters, you must also set the allowQuotedNewlines property to true. To include the specific quote character within a quoted value, precede it with an additional matching quote character. For example, if you want to escape the default character  ' " ', use ' "" '. */
+Quote string `json:"quote"`
 
 	/* The number of rows at the top of a CSV file that BigQuery will
 	skip when reading the data. The default value is 0. This property is
 	useful if you have header rows in the file that should be skipped.
 	When autodetect is on, the behavior is the following:
-
+	
 	* skipLeadingRows unspecified - Autodetect tries to detect headers in the
 	first row. If they are not detected, the row is read as data. Otherwise
 	data is read starting from the second row.
@@ -84,349 +85,349 @@ type TableCsvOptions struct {
 	* skipLeadingRows = N > 0 - Autodetect skips N-1 rows and tries to detect
 	headers in row N. If headers are not detected, row N is just skipped.
 	Otherwise row N is used to extract column names for the detected schema. */
-	// +optional
-	SkipLeadingRows *int64 `json:"skipLeadingRows,omitempty"`
+// +optional
+SkipLeadingRows *int64 `json:"skipLeadingRows,omitempty"`
 }
 
 type TableEncryptionConfiguration struct {
-	/* Describes the Cloud KMS encryption key that will be used to protect destination BigQuery table. The BigQuery Service Account associated with your project requires access to this encryption key. */
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
+/* Describes the Cloud KMS encryption key that will be used to protect destination BigQuery table. The BigQuery Service Account associated with your project requires access to this encryption key. */
+KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
 
-	/* DEPRECATED. // The table will be encrypted with the primary version of Cloud KMS encryption key. // The self link or full name of the kms key version used to encrypt this table. */
-	// +optional
-	KmsKeyVersion *string `json:"kmsKeyVersion,omitempty"`
+/* DEPRECATED. // The table will be encrypted with the primary version of Cloud KMS encryption key. // The self link or full name of the kms key version used to encrypt this table. */
+// +optional
+KmsKeyVersion *string `json:"kmsKeyVersion,omitempty"`
 }
 
 type TableExternalDataConfiguration struct {
-	/* Try to detect schema and format options automatically. Any option specified explicitly will be honored. */
-	Autodetect bool `json:"autodetect"`
+/* Try to detect schema and format options automatically. Any option specified explicitly will be honored. */
+Autodetect bool `json:"autodetect"`
 
-	/* Additional properties to set if sourceFormat is set to AVRO. */
-	// +optional
-	AvroOptions *TableAvroOptions `json:"avroOptions,omitempty"`
+/* Additional properties to set if sourceFormat is set to AVRO. */
+// +optional
+AvroOptions *TableAvroOptions `json:"avroOptions,omitempty"`
 
-	/* The compression type of the data source. Possible values include GZIP and NONE. The default value is NONE. This setting is ignored for Google Cloud Bigtable, Google Cloud Datastore backups, Avro, ORC and Parquet formats. An empty string is an invalid value. */
-	// +optional
-	Compression *string `json:"compression,omitempty"`
+/* The compression type of the data source. Possible values include GZIP and NONE. The default value is NONE. This setting is ignored for Google Cloud Bigtable, Google Cloud Datastore backups, Avro, ORC and Parquet formats. An empty string is an invalid value. */
+// +optional
+Compression *string `json:"compression,omitempty"`
 
-	/* The connection specifying the credentials to be used to read external storage, such as Azure Blob, Cloud Storage, or S3. The connection_id can have the form `{project_id}.{location_id};{connection_id}` or `projects/{project_id}/locations/{location_id}/connections/{connection_id}`. */
-	// +optional
-	ConnectionId *string `json:"connectionId,omitempty"`
+/* The connection specifying the credentials to be used to read external storage, such as Azure Blob, Cloud Storage, or S3. The connection_id can have the form `{project_id}.{location_id};{connection_id}` or `projects/{project_id}/locations/{location_id}/connections/{connection_id}`. */
+// +optional
+ConnectionId *string `json:"connectionId,omitempty"`
 
-	/* Additional properties to set if sourceFormat is set to CSV. */
-	// +optional
-	CsvOptions *TableCsvOptions `json:"csvOptions,omitempty"`
+/* Additional properties to set if sourceFormat is set to CSV. */
+// +optional
+CsvOptions *TableCsvOptions `json:"csvOptions,omitempty"`
 
-	/* Specifies how source URIs are interpreted for constructing the file set to load.  By default source URIs are expanded against the underlying storage.  Other options include specifying manifest files. Only applicable to object storage systems. */
-	// +optional
-	FileSetSpecType *string `json:"fileSetSpecType,omitempty"`
+/* Specifies how source URIs are interpreted for constructing the file set to load.  By default source URIs are expanded against the underlying storage.  Other options include specifying manifest files. Only applicable to object storage systems. */
+// +optional
+FileSetSpecType *string `json:"fileSetSpecType,omitempty"`
 
-	/* Additional options if sourceFormat is set to GOOGLE_SHEETS. */
-	// +optional
-	GoogleSheetsOptions *TableGoogleSheetsOptions `json:"googleSheetsOptions,omitempty"`
+/* Additional options if sourceFormat is set to GOOGLE_SHEETS. */
+// +optional
+GoogleSheetsOptions *TableGoogleSheetsOptions `json:"googleSheetsOptions,omitempty"`
 
-	/* When set, configures hive partitioning support. Not all storage formats support hive partitioning -- requesting hive partitioning on an unsupported format will lead to an error, as will providing an invalid specification. */
-	// +optional
-	HivePartitioningOptions *TableHivePartitioningOptions `json:"hivePartitioningOptions,omitempty"`
+/* When set, configures hive partitioning support. Not all storage formats support hive partitioning -- requesting hive partitioning on an unsupported format will lead to an error, as will providing an invalid specification. */
+// +optional
+HivePartitioningOptions *TableHivePartitioningOptions `json:"hivePartitioningOptions,omitempty"`
 
-	/* Indicates if BigQuery should allow extra values that are not represented in the table schema. If true, the extra values are ignored. If false, records with extra columns are treated as bad records, and if there are too many bad records, an invalid error is returned in the job result. The default value is false. The sourceFormat property determines what BigQuery treats as an extra value: CSV: Trailing columns JSON: Named values that don't match any column names Google Cloud Bigtable: This setting is ignored. Google Cloud Datastore backups: This setting is ignored. Avro: This setting is ignored. ORC: This setting is ignored. Parquet: This setting is ignored. */
-	// +optional
-	IgnoreUnknownValues *bool `json:"ignoreUnknownValues,omitempty"`
+/* Indicates if BigQuery should allow extra values that are not represented in the table schema. If true, the extra values are ignored. If false, records with extra columns are treated as bad records, and if there are too many bad records, an invalid error is returned in the job result. The default value is false. The sourceFormat property determines what BigQuery treats as an extra value: CSV: Trailing columns JSON: Named values that don't match any column names Google Cloud Bigtable: This setting is ignored. Google Cloud Datastore backups: This setting is ignored. Avro: This setting is ignored. ORC: This setting is ignored. Parquet: This setting is ignored. */
+// +optional
+IgnoreUnknownValues *bool `json:"ignoreUnknownValues,omitempty"`
 
-	/* Additional properties to set if sourceFormat is set to JSON. */
-	// +optional
-	JsonOptions *TableJsonOptions `json:"jsonOptions,omitempty"`
+/* Additional properties to set if sourceFormat is set to JSON. */
+// +optional
+JsonOptions *TableJsonOptions `json:"jsonOptions,omitempty"`
 
-	/* The maximum number of bad records that BigQuery can ignore when reading data. If the number of bad records exceeds this value, an invalid error is returned in the job result. The default value is 0, which requires that all records are valid. This setting is ignored for Google Cloud Bigtable, Google Cloud Datastore backups, Avro, ORC and Parquet formats. */
-	// +optional
-	MaxBadRecords *int64 `json:"maxBadRecords,omitempty"`
+/* The maximum number of bad records that BigQuery can ignore when reading data. If the number of bad records exceeds this value, an invalid error is returned in the job result. The default value is 0, which requires that all records are valid. This setting is ignored for Google Cloud Bigtable, Google Cloud Datastore backups, Avro, ORC and Parquet formats. */
+// +optional
+MaxBadRecords *int64 `json:"maxBadRecords,omitempty"`
 
-	/* Metadata Cache Mode for the table. Set this to enable caching of metadata from external data source. */
-	// +optional
-	MetadataCacheMode *string `json:"metadataCacheMode,omitempty"`
+/* Metadata Cache Mode for the table. Set this to enable caching of metadata from external data source. */
+// +optional
+MetadataCacheMode *string `json:"metadataCacheMode,omitempty"`
 
 	/* ObjectMetadata is used to create Object Tables. Object Tables
 	contain a listing of objects (with their metadata) found at the
 	source_uris. If ObjectMetadata is set, source_format should be omitted.
-
+	
 	Currently SIMPLE is the only supported Object Metadata type. */
-	// +optional
-	ObjectMetadata *string `json:"objectMetadata,omitempty"`
+// +optional
+ObjectMetadata *string `json:"objectMetadata,omitempty"`
 
-	/* Additional properties to set if sourceFormat is set to PARQUET. */
-	// +optional
-	ParquetOptions *TableParquetOptions `json:"parquetOptions,omitempty"`
+/* Additional properties to set if sourceFormat is set to PARQUET. */
+// +optional
+ParquetOptions *TableParquetOptions `json:"parquetOptions,omitempty"`
 
-	/* When creating an external table, the user can provide a reference file with the table schema. This is enabled for the following formats: AVRO, PARQUET, ORC. */
-	// +optional
-	ReferenceFileSchemaUri *string `json:"referenceFileSchemaUri,omitempty"`
+/* When creating an external table, the user can provide a reference file with the table schema. This is enabled for the following formats: AVRO, PARQUET, ORC. */
+// +optional
+ReferenceFileSchemaUri *string `json:"referenceFileSchemaUri,omitempty"`
 
-	/* The schema for the data. Schema is required for CSV and JSON formats if autodetect is not on. Schema is disallowed for Google Cloud Bigtable, Cloud Datastore backups, Avro, ORC and Parquet formats. */
-	// +optional
-	Schema *string `json:"schema,omitempty"`
+/* The schema for the data. Schema is required for CSV and JSON formats if autodetect is not on. Schema is disallowed for Google Cloud Bigtable, Cloud Datastore backups, Avro, ORC and Parquet formats. */
+// +optional
+Schema *string `json:"schema,omitempty"`
 
-	/* Please see sourceFormat under ExternalDataConfiguration in Bigquery's public API documentation (https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externaldataconfiguration) for supported formats. To use "GOOGLE_SHEETS" the scopes must include "googleapis.com/auth/drive.readonly". */
-	// +optional
-	SourceFormat *string `json:"sourceFormat,omitempty"`
+/* Please see sourceFormat under ExternalDataConfiguration in Bigquery's public API documentation (https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externaldataconfiguration) for supported formats. To use "GOOGLE_SHEETS" the scopes must include "googleapis.com/auth/drive.readonly". */
+// +optional
+SourceFormat *string `json:"sourceFormat,omitempty"`
 
-	/* A list of the fully-qualified URIs that point to	your data in Google Cloud. */
-	SourceUris []string `json:"sourceUris"`
+/* A list of the fully-qualified URIs that point to	your data in Google Cloud. */
+SourceUris []string `json:"sourceUris"`
 }
 
 type TableForeignKeys struct {
-	/* Required. The columns that compose the foreign key. */
-	ColumnReferences TableColumnReferences `json:"columnReferences"`
+/* Required. The columns that compose the foreign key. */
+ColumnReferences TableColumnReferences `json:"columnReferences"`
 
-	/* Optional. Set only if the foreign key constraint is named. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+/* Optional. Set only if the foreign key constraint is named. */
+// +optional
+Name *string `json:"name,omitempty"`
 
-	/* Required. The table that holds the primary key and is referenced by this foreign key. */
-	ReferencedTable TableReferencedTable `json:"referencedTable"`
+/* Required. The table that holds the primary key and is referenced by this foreign key. */
+ReferencedTable TableReferencedTable `json:"referencedTable"`
 }
 
 type TableGoogleSheetsOptions struct {
-	/* Range of a sheet to query from. Only used when non-empty. Typical format: sheet_name!top_left_cell_id:bottom_right_cell_id For example: sheet1!A1:B20 */
-	// +optional
-	Range *string `json:"range,omitempty"`
+/* Range of a sheet to query from. Only used when non-empty. Typical format: sheet_name!top_left_cell_id:bottom_right_cell_id For example: sheet1!A1:B20 */
+// +optional
+Range *string `json:"range,omitempty"`
 
-	/* The number of rows at the top of a sheet that BigQuery will skip when reading the data. The default value is 0. This property is useful if you have header rows that should be skipped. When autodetect is on, the behavior is the following: * skipLeadingRows unspecified - Autodetect tries to detect headers in the first row. If they are not detected, the row is read as data. Otherwise data is read starting from the second row. * skipLeadingRows is 0 - Instructs autodetect that there are no headers and data should be read starting from the first row. * skipLeadingRows = N > 0 - Autodetect skips N-1 rows and tries to detect headers in row N. If headers are not detected, row N is just skipped. Otherwise row N is used to extract column names for the detected schema. */
-	// +optional
-	SkipLeadingRows *int64 `json:"skipLeadingRows,omitempty"`
+/* The number of rows at the top of a sheet that BigQuery will skip when reading the data. The default value is 0. This property is useful if you have header rows that should be skipped. When autodetect is on, the behavior is the following: * skipLeadingRows unspecified - Autodetect tries to detect headers in the first row. If they are not detected, the row is read as data. Otherwise data is read starting from the second row. * skipLeadingRows is 0 - Instructs autodetect that there are no headers and data should be read starting from the first row. * skipLeadingRows = N > 0 - Autodetect skips N-1 rows and tries to detect headers in row N. If headers are not detected, row N is just skipped. Otherwise row N is used to extract column names for the detected schema. */
+// +optional
+SkipLeadingRows *int64 `json:"skipLeadingRows,omitempty"`
 }
 
 type TableHivePartitioningOptions struct {
 	/* When set, what mode of hive partitioning to use when reading
 	data.  The following modes are supported:
-
+	
 	* AUTO: automatically infer partition key name(s) and type(s).
-
+	
 	* STRINGS: automatically infer partition key name(s).  All types are
 	strings.
-
+	
 	* CUSTOM: partition key schema is encoded in the source URI prefix.
-
+	
 	Not all storage formats support hive partitioning. Requesting hive
 	partitioning on an unsupported format will lead to an error.
 	Currently supported formats are: JSON, CSV, ORC, Avro and Parquet. */
-	// +optional
-	Mode *string `json:"mode,omitempty"`
+// +optional
+Mode *string `json:"mode,omitempty"`
 
 	/* If set to true, queries over this table require a partition
 	filter that can be used for partition elimination to be specified.
-
+	
 	Note that this field should only be true when creating a permanent
 	external table or querying a temporary external table.
-
+	
 	Hive-partitioned loads with require_partition_filter explicitly set to
 	true will fail. */
-	// +optional
-	RequirePartitionFilter *bool `json:"requirePartitionFilter,omitempty"`
+// +optional
+RequirePartitionFilter *bool `json:"requirePartitionFilter,omitempty"`
 
 	/* When hive partition detection is requested, a common prefix for
 	all source uris must be required.  The prefix must end immediately before
 	the partition key encoding begins. For example, consider files following
 	this data layout:
-
+	
 	gs://bucket/path_to_table/dt=2019-06-01/country=USA/id=7/file.avro
-
+	
 	gs://bucket/path_to_table/dt=2019-05-31/country=CA/id=3/file.avro
-
+	
 	When hive partitioning is requested with either AUTO or STRINGS detection,
 	the common prefix can be either of gs://bucket/path_to_table or
 	gs://bucket/path_to_table/.
-
+	
 	CUSTOM detection requires encoding the partitioning schema immediately
 	after the common prefix.  For CUSTOM, any of
-
+	
 	* gs://bucket/path_to_table/{dt:DATE}/{country:STRING}/{id:INTEGER}
-
+	
 	* gs://bucket/path_to_table/{dt:STRING}/{country:STRING}/{id:INTEGER}
-
+	
 	* gs://bucket/path_to_table/{dt:DATE}/{country:STRING}/{id:STRING}
-
+	
 	would all be valid source URI prefixes. */
-	// +optional
-	SourceUriPrefix *string `json:"sourceUriPrefix,omitempty"`
+// +optional
+SourceUriPrefix *string `json:"sourceUriPrefix,omitempty"`
 }
 
 type TableJsonOptions struct {
-	/* The character encoding of the data. The supported values are UTF-8, UTF-16BE, UTF-16LE, UTF-32BE, and UTF-32LE.  The default value is UTF-8. */
-	// +optional
-	Encoding *string `json:"encoding,omitempty"`
+/* The character encoding of the data. The supported values are UTF-8, UTF-16BE, UTF-16LE, UTF-32BE, and UTF-32LE.  The default value is UTF-8. */
+// +optional
+Encoding *string `json:"encoding,omitempty"`
 }
 
 type TableMaterializedView struct {
-	/* This option declares the intention to construct a materialized view that isn't refreshed incrementally. */
-	// +optional
-	AllowNonIncrementalDefinition *bool `json:"allowNonIncrementalDefinition,omitempty"`
+/* This option declares the intention to construct a materialized view that isn't refreshed incrementally. */
+// +optional
+AllowNonIncrementalDefinition *bool `json:"allowNonIncrementalDefinition,omitempty"`
 
-	/* Enable automatic refresh of the materialized view when the base table is updated. The default value is "true". */
-	// +optional
-	EnableRefresh *bool `json:"enableRefresh,omitempty"`
+/* Enable automatic refresh of the materialized view when the base table is updated. The default value is "true". */
+// +optional
+EnableRefresh *bool `json:"enableRefresh,omitempty"`
 
-	/* Required. A query whose results are persisted. */
-	Query string `json:"query"`
+/* Required. A query whose results are persisted. */
+Query string `json:"query"`
 
-	/* The maximum frequency at which this materialized view will be refreshed. The default value is "1800000" (30 minutes). */
-	// +optional
-	RefreshIntervalMs *int64 `json:"refreshIntervalMs,omitempty"`
+/* The maximum frequency at which this materialized view will be refreshed. The default value is "1800000" (30 minutes). */
+// +optional
+RefreshIntervalMs *int64 `json:"refreshIntervalMs,omitempty"`
 }
 
 type TableParquetOptions struct {
-	/* Indicates whether to use schema inference specifically for Parquet LIST logical type. */
-	// +optional
-	EnableListInference *bool `json:"enableListInference,omitempty"`
+/* Indicates whether to use schema inference specifically for Parquet LIST logical type. */
+// +optional
+EnableListInference *bool `json:"enableListInference,omitempty"`
 
-	/* Indicates whether to infer Parquet ENUM logical type as STRING instead of BYTES by default. */
-	// +optional
-	EnumAsString *bool `json:"enumAsString,omitempty"`
+/* Indicates whether to infer Parquet ENUM logical type as STRING instead of BYTES by default. */
+// +optional
+EnumAsString *bool `json:"enumAsString,omitempty"`
 }
 
 type TablePrimaryKey struct {
-	/* Required. The columns that are composed of the primary key constraint. */
-	Columns []string `json:"columns"`
+/* Required. The columns that are composed of the primary key constraint. */
+Columns []string `json:"columns"`
 }
 
 type TableRange struct {
-	/* Required. The end of range partitioning, exclusive. */
-	End int64 `json:"end"`
+/* Required. The end of range partitioning, exclusive. */
+End int64 `json:"end"`
 
-	/* Required. The width of each interval. */
-	Interval int64 `json:"interval"`
+/* Required. The width of each interval. */
+Interval int64 `json:"interval"`
 
-	/* Immutable. The start of range partitioning, inclusive. */
-	Start int64 `json:"start"`
+/* Immutable. The start of range partitioning, inclusive. */
+Start int64 `json:"start"`
 }
 
 type TableRangePartitioning struct {
-	/* Required. The name of the column to partition the table on. It must be a top-level, INT64 column whose mode is NULLABLE or REQUIRED. */
-	Field string `json:"field"`
+/* Required. The name of the column to partition the table on. It must be a top-level, INT64 column whose mode is NULLABLE or REQUIRED. */
+Field string `json:"field"`
 
-	/* Defines the ranges for range partitioning. */
-	Range TableRange `json:"range"`
+/* Defines the ranges for range partitioning. */
+Range TableRange `json:"range"`
 }
 
 type TableReferencedTable struct {
-	/* The ID of the dataset containing this table. */
-	DatasetId string `json:"datasetId"`
+/* The ID of the dataset containing this table. */
+DatasetId string `json:"datasetId"`
 
-	/* The ID of the project containing this table. */
-	ProjectId string `json:"projectId"`
+/* The ID of the project containing this table. */
+ProjectId string `json:"projectId"`
 
-	/* The Id of the table. The Id can contain Unicode characters in category L (letter), M (mark), N (number), Pc (connector, including underscore), Pd (dash), and Zs (space). For more information, see [General Category](https://wikipedia.org/wiki/Unicode_character_property#General_Category). The maximum length is 1,024 characters.  Certain operations allow suffixing of the table Id with a partition decorator, such as `sample_table$20190123`. */
-	TableId string `json:"tableId"`
+/* The Id of the table. The Id can contain Unicode characters in category L (letter), M (mark), N (number), Pc (connector, including underscore), Pd (dash), and Zs (space). For more information, see [General Category](https://wikipedia.org/wiki/Unicode_character_property#General_Category). The maximum length is 1,024 characters.  Certain operations allow suffixing of the table Id with a partition decorator, such as `sample_table$20190123`. */
+TableId string `json:"tableId"`
 }
 
 type TableTableConstraints struct {
-	/* Present only if the table has a foreign key. The foreign key is not enforced. */
-	// +optional
-	ForeignKeys []TableForeignKeys `json:"foreignKeys,omitempty"`
+/* Present only if the table has a foreign key. The foreign key is not enforced. */
+// +optional
+ForeignKeys []TableForeignKeys `json:"foreignKeys,omitempty"`
 
-	/* Represents a primary key constraint on a table's columns. Present only if the table has a primary key. The primary key is not enforced. */
-	// +optional
-	PrimaryKey *TablePrimaryKey `json:"primaryKey,omitempty"`
+/* Represents a primary key constraint on a table's columns. Present only if the table has a primary key. The primary key is not enforced. */
+// +optional
+PrimaryKey *TablePrimaryKey `json:"primaryKey,omitempty"`
 }
 
 type TableTimePartitioning struct {
-	/* Number of milliseconds for which to keep the storage for a partition. A wrapper is used here because 0 is an invalid value. */
-	// +optional
-	ExpirationMs *int64 `json:"expirationMs,omitempty"`
+/* Number of milliseconds for which to keep the storage for a partition. A wrapper is used here because 0 is an invalid value. */
+// +optional
+ExpirationMs *int64 `json:"expirationMs,omitempty"`
 
-	/* Optional. Immutable. If not set, the table is partitioned by pseudo column '_PARTITIONTIME'; if set, the table is partitioned by this field. The field must be a top-level TIMESTAMP or DATE field. Its mode must be NULLABLE or REQUIRED. A wrapper is used here because an empty string is an invalid value. */
-	// +optional
-	Field *string `json:"field,omitempty"`
+/* Optional. Immutable. If not set, the table is partitioned by pseudo column '_PARTITIONTIME'; if set, the table is partitioned by this field. The field must be a top-level TIMESTAMP or DATE field. Its mode must be NULLABLE or REQUIRED. A wrapper is used here because an empty string is an invalid value. */
+// +optional
+Field *string `json:"field,omitempty"`
 
-	/* DEPRECATED. This field is deprecated; please use the top level field with the same name instead. If set to true, queries over this table require a partition filter that can be used for partition elimination to be specified. */
-	// +optional
-	RequirePartitionFilter *bool `json:"requirePartitionFilter,omitempty"`
+/* DEPRECATED. This field is deprecated; please use the top level field with the same name instead. If set to true, queries over this table require a partition filter that can be used for partition elimination to be specified. */
+// +optional
+RequirePartitionFilter *bool `json:"requirePartitionFilter,omitempty"`
 
-	/* Required. The supported types are DAY, HOUR, MONTH, and YEAR, which will generate one partition per day, hour, month, and year, respectively. */
-	Type string `json:"type"`
+/* Required. The supported types are DAY, HOUR, MONTH, and YEAR, which will generate one partition per day, hour, month, and year, respectively. */
+Type string `json:"type"`
 }
 
 type TableView struct {
-	/* Required. A query that BigQuery executes when the view is referenced. */
-	Query string `json:"query"`
+/* Required. A query that BigQuery executes when the view is referenced. */
+Query string `json:"query"`
 
 	/* Specifies whether to use BigQuery's legacy SQL for this view.
 	The default value is true. If set to false, the view will use
 	BigQuery's GoogleSQL:
 	https://cloud.google.com/bigquery/sql-reference/
-
+	
 	Queries and views that reference this view must use the same flag value.
 	A wrapper is used here because the default value is True. */
-	// +optional
-	UseLegacySql *bool `json:"useLegacySql,omitempty"`
+// +optional
+UseLegacySql *bool `json:"useLegacySql,omitempty"`
 }
 
 type BigQueryTableSpec struct {
-	/* Clustering specification for the table. Must be specified with time-based partitioning, data in the table will be first partitioned and subsequently clustered. */
-	// +optional
-	Clustering []string `json:"clustering,omitempty"`
+/* Clustering specification for the table. Must be specified with time-based partitioning, data in the table will be first partitioned and subsequently clustered. */
+// +optional
+Clustering []string `json:"clustering,omitempty"`
 
-	/* DatasetRef defines the resource reference to BigQueryDataset, which "External" field holds the GCP identifier for the KRM object. */
-	DatasetRef v1alpha1.ResourceRef `json:"datasetRef"`
+/* DatasetRef defines the resource reference to BigQueryDataset, which "External" field holds the GCP identifier for the KRM object. */
+DatasetRef v1alpha1.ResourceRef `json:"datasetRef"`
 
-	/* A user-friendly description of this table. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* A user-friendly description of this table. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Custom encryption configuration (e.g., Cloud KMS keys). */
-	// +optional
-	EncryptionConfiguration *TableEncryptionConfiguration `json:"encryptionConfiguration,omitempty"`
+/* Custom encryption configuration (e.g., Cloud KMS keys). */
+// +optional
+EncryptionConfiguration *TableEncryptionConfiguration `json:"encryptionConfiguration,omitempty"`
 
-	/* The time when this table expires, in milliseconds since the epoch. If not present, the table will persist indefinitely. Expired tables will be deleted and their storage reclaimed.  The defaultTableExpirationMs property of the encapsulating dataset can be used to set a default expirationTime on newly created tables. */
-	// +optional
-	ExpirationTime *int64 `json:"expirationTime,omitempty"`
+/* The time when this table expires, in milliseconds since the epoch. If not present, the table will persist indefinitely. Expired tables will be deleted and their storage reclaimed.  The defaultTableExpirationMs property of the encapsulating dataset can be used to set a default expirationTime on newly created tables. */
+// +optional
+ExpirationTime *int64 `json:"expirationTime,omitempty"`
 
-	/* Describes the data format, location, and other properties of a table stored outside of BigQuery. By defining these properties, the data source can then be queried as if it were a standard BigQuery table. */
-	// +optional
-	ExternalDataConfiguration *TableExternalDataConfiguration `json:"externalDataConfiguration,omitempty"`
+/* Describes the data format, location, and other properties of a table stored outside of BigQuery. By defining these properties, the data source can then be queried as if it were a standard BigQuery table. */
+// +optional
+ExternalDataConfiguration *TableExternalDataConfiguration `json:"externalDataConfiguration,omitempty"`
 
-	/* A descriptive name for this table. */
-	// +optional
-	FriendlyName *string `json:"friendlyName,omitempty"`
+/* A descriptive name for this table. */
+// +optional
+FriendlyName *string `json:"friendlyName,omitempty"`
 
-	/* When using `alpha.cnrm.cloud.google.com/reconciler:direct` annotion, use labels field to set the labels for this resource on GCP. Otherwise, use .metadata.labels. Please refer to https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/4274 for context. The labels associated with this table. You can use these to organize and group your tables. Label keys and values can be no longer than 63 characters, can only contain lowercase letters, numeric characters, underscores and dashes. International characters are allowed. Label values are optional. Label keys must start with a letter and each label in the list must have a different key. */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
+/* When using `alpha.cnrm.cloud.google.com/reconciler:direct` annotion, use labels field to set the labels for this resource on GCP. Otherwise, use .metadata.labels. Please refer to https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/4274 for context. The labels associated with this table. You can use these to organize and group your tables. Label keys and values can be no longer than 63 characters, can only contain lowercase letters, numeric characters, underscores and dashes. International characters are allowed. Label values are optional. Label keys must start with a letter and each label in the list must have a different key. */
+// +optional
+Labels map[string]string `json:"labels,omitempty"`
 
-	/* The materialized view definition. */
-	// +optional
-	MaterializedView *TableMaterializedView `json:"materializedView,omitempty"`
+/* The materialized view definition. */
+// +optional
+MaterializedView *TableMaterializedView `json:"materializedView,omitempty"`
 
-	/* The maximum staleness of data that could be returned when the table (or stale MV) is queried. Staleness encoded as a string encoding of sql IntervalValue type. */
-	// +optional
-	MaxStaleness *string `json:"maxStaleness,omitempty"`
+/* The maximum staleness of data that could be returned when the table (or stale MV) is queried. Staleness encoded as a string encoding of sql IntervalValue type. */
+// +optional
+MaxStaleness *string `json:"maxStaleness,omitempty"`
 
-	/* If specified, configures range partitioning for this table. */
-	// +optional
-	RangePartitioning *TableRangePartitioning `json:"rangePartitioning,omitempty"`
+/* If specified, configures range partitioning for this table. */
+// +optional
+RangePartitioning *TableRangePartitioning `json:"rangePartitioning,omitempty"`
 
-	/* If set to true, queries over this table require a partition filter that can be used for partition elimination to be specified. */
-	// +optional
-	RequirePartitionFilter *bool `json:"requirePartitionFilter,omitempty"`
+/* If set to true, queries over this table require a partition filter that can be used for partition elimination to be specified. */
+// +optional
+RequirePartitionFilter *bool `json:"requirePartitionFilter,omitempty"`
 
-	/* The BigQueryTable name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The BigQueryTable name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Describes the schema of this table. */
-	// +optional
-	Schema *string `json:"schema,omitempty"`
+/* Describes the schema of this table. */
+// +optional
+Schema *string `json:"schema,omitempty"`
 
-	/* Tables Primary Key and Foreign Key information */
-	// +optional
-	TableConstraints *TableTableConstraints `json:"tableConstraints,omitempty"`
+/* Tables Primary Key and Foreign Key information */
+// +optional
+TableConstraints *TableTableConstraints `json:"tableConstraints,omitempty"`
 
-	/* If specified, configures time-based partitioning for this table. */
-	// +optional
-	TimePartitioning *TableTimePartitioning `json:"timePartitioning,omitempty"`
+/* If specified, configures time-based partitioning for this table. */
+// +optional
+TimePartitioning *TableTimePartitioning `json:"timePartitioning,omitempty"`
 
-	/* The view definition. */
-	// +optional
-	View *TableView `json:"view,omitempty"`
+/* The view definition. */
+// +optional
+View *TableView `json:"view,omitempty"`
 }
 
 type TableObservedStateStatus struct {
@@ -434,54 +435,54 @@ type TableObservedStateStatus struct {
 
 type BigQueryTableStatus struct {
 	/* Conditions represent the latest available observations of the
-	   BigQueryTable's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Output only. The time when this table was created, in milliseconds since the epoch. */
-	// +optional
-	CreationTime *int64 `json:"creationTime,omitempty"`
+	    BigQueryTable's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* Output only. The time when this table was created, in milliseconds since the epoch. */
+// +optional
+CreationTime *int64 `json:"creationTime,omitempty"`
 
-	/* Output only. A hash of this resource. */
-	// +optional
-	Etag *string `json:"etag,omitempty"`
+/* Output only. A hash of this resource. */
+// +optional
+Etag *string `json:"etag,omitempty"`
 
-	/* A unique specifier for the BigQueryTable resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+/* A unique specifier for the BigQueryTable resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* Output only. The time when this table was last modified, in milliseconds since the epoch. */
-	// +optional
-	LastModifiedTime *int64 `json:"lastModifiedTime,omitempty"`
+/* Output only. The time when this table was last modified, in milliseconds since the epoch. */
+// +optional
+LastModifiedTime *int64 `json:"lastModifiedTime,omitempty"`
 
-	/* Output only. The geographic location where the table resides. This value is inherited from the dataset. */
-	// +optional
-	Location *string `json:"location,omitempty"`
+/* Output only. The geographic location where the table resides. This value is inherited from the dataset. */
+// +optional
+Location *string `json:"location,omitempty"`
 
-	/* Output only. The size of this table in logical bytes, excluding any data in the streaming buffer. */
-	// +optional
-	NumBytes *int64 `json:"numBytes,omitempty"`
+/* Output only. The size of this table in logical bytes, excluding any data in the streaming buffer. */
+// +optional
+NumBytes *int64 `json:"numBytes,omitempty"`
 
-	/* Output only. The number of logical bytes in the table that are considered "long-term storage". */
-	// +optional
-	NumLongTermBytes *int64 `json:"numLongTermBytes,omitempty"`
+/* Output only. The number of logical bytes in the table that are considered "long-term storage". */
+// +optional
+NumLongTermBytes *int64 `json:"numLongTermBytes,omitempty"`
 
-	/* Output only. The number of rows of data in this table, excluding any data in the streaming buffer. */
-	// +optional
-	NumRows *int64 `json:"numRows,omitempty"`
+/* Output only. The number of rows of data in this table, excluding any data in the streaming buffer. */
+// +optional
+NumRows *int64 `json:"numRows,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *TableObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *TableObservedStateStatus `json:"observedState,omitempty"`
 
-	/* Output only. A URL that can be used to access this resource again. */
-	// +optional
-	SelfLink *string `json:"selfLink,omitempty"`
+/* Output only. A URL that can be used to access this resource again. */
+// +optional
+SelfLink *string `json:"selfLink,omitempty"`
 
 	/* Output only. Describes the table type. The following values are supported:
-
+	
 	* `TABLE`: A normal BigQuery table.
 	* `VIEW`: A virtual table defined by a SQL query.
 	* `EXTERNAL`: A table that references data stored in an external storage
@@ -491,12 +492,11 @@ type BigQueryTableStatus struct {
 	base table at a particular time. See additional information on
 	[table
 	snapshots](https://cloud.google.com/bigquery/docs/table-snapshots-intro).
-
+	
 	The default value is `TABLE`. */
-	// +optional
-	Type *string `json:"type,omitempty"`
+// +optional
+Type *string `json:"type,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigquerytable;gcpbigquerytables
@@ -512,22 +512,20 @@ type BigQueryTableStatus struct {
 // BigQueryTable is the Schema for the bigquery API
 // +k8s:openapi-gen=true
 type BigQueryTable struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   BigQueryTableSpec   `json:"spec,omitempty"`
-	Status BigQueryTableStatus `json:"status,omitempty"`
+  Spec BigQueryTableSpec `json:"spec,omitempty"`
+  Status BigQueryTableStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// BigQueryTableList contains a list of BigQueryTable
-type BigQueryTableList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []BigQueryTable `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&BigQueryTable{}, &BigQueryTableList{})
-}
+ // BigQueryTableList contains a list of BigQueryTable
+ type BigQueryTableList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []BigQueryTable `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&BigQueryTable{}, &BigQueryTableList{})
+ }

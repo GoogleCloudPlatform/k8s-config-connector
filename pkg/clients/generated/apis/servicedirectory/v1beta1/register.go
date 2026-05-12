@@ -53,23 +53,25 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	ServiceDirectoryEndpointGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ServiceDirectoryEndpoint{}).Name(),
-	}
+	
+  	ServiceDirectoryEndpointGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ServiceDirectoryEndpoint{}).Name(),
+  	}
+  
+  	ServiceDirectoryNamespaceGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ServiceDirectoryNamespace{}).Name(),
+  	}
+  
+  	ServiceDirectoryServiceGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ServiceDirectoryService{}).Name(),
+  	}
+  
 
-	ServiceDirectoryNamespaceGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ServiceDirectoryNamespace{}).Name(),
-	}
-
-	ServiceDirectoryServiceGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ServiceDirectoryService{}).Name(),
-	}
-
-	servicedirectoryAPIVersion = SchemeGroupVersion.String()
+  	servicedirectoryAPIVersion = SchemeGroupVersion.String()
 )

@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,64 +30,63 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type UserPassword struct {
-	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	// +optional
-	Value *string `json:"value,omitempty"`
+/* Value of the field. Cannot be used if 'valueFrom' is specified. */
+// +optional
+Value *string `json:"value,omitempty"`
 
-	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	// +optional
-	ValueFrom *UserValueFrom `json:"valueFrom,omitempty"`
+/* Source for the field's value. Cannot be used if 'value' is specified. */
+// +optional
+ValueFrom *UserValueFrom `json:"valueFrom,omitempty"`
 }
 
 type UserValueFrom struct {
-	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-	// +optional
-	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
+/* Reference to a value with the given key in the given Secret in the resource's namespace. */
+// +optional
+SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type AlloyDBUserSpec struct {
-	/* Immutable. */
-	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
+/* Immutable. */
+ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
 
-	/* List of database roles this database user has. */
-	// +optional
-	DatabaseRoles []string `json:"databaseRoles,omitempty"`
+/* List of database roles this database user has. */
+// +optional
+DatabaseRoles []string `json:"databaseRoles,omitempty"`
 
-	/* Password for this database user. */
-	// +optional
-	Password *UserPassword `json:"password,omitempty"`
+/* Password for this database user. */
+// +optional
+Password *UserPassword `json:"password,omitempty"`
 
-	/* Immutable. Optional. The userId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The userId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. The type of this user. Possible values: ["ALLOYDB_BUILT_IN", "ALLOYDB_IAM_USER"]. */
-	UserType string `json:"userType"`
+/* Immutable. The type of this user. Possible values: ["ALLOYDB_BUILT_IN", "ALLOYDB_IAM_USER"]. */
+UserType string `json:"userType"`
 }
 
 type AlloyDBUserStatus struct {
 	/* Conditions represent the latest available observations of the
-	   AlloyDBUser's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Name of the resource in the form of projects/{project}/locations/{location}/clusters/{cluster}/users/{user}. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+	    AlloyDBUser's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* Name of the resource in the form of projects/{project}/locations/{location}/clusters/{cluster}/users/{user}. */
+// +optional
+Name *string `json:"name,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpalloydbuser;gcpalloydbusers
@@ -103,22 +103,20 @@ type AlloyDBUserStatus struct {
 // AlloyDBUser is the Schema for the alloydb API
 // +k8s:openapi-gen=true
 type AlloyDBUser struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   AlloyDBUserSpec   `json:"spec,omitempty"`
-	Status AlloyDBUserStatus `json:"status,omitempty"`
+  Spec AlloyDBUserSpec `json:"spec,omitempty"`
+  Status AlloyDBUserStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// AlloyDBUserList contains a list of AlloyDBUser
-type AlloyDBUserList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []AlloyDBUser `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&AlloyDBUser{}, &AlloyDBUserList{})
-}
+ // AlloyDBUserList contains a list of AlloyDBUser
+ type AlloyDBUserList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []AlloyDBUser `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&AlloyDBUser{}, &AlloyDBUserList{})
+ }

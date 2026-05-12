@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +30,11 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -42,63 +43,63 @@ type InstanceMaintenancePolicy struct {
 	/* Output only. The time when the policy was created.
 	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
 	resolution and up to nine fractional digits. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
 	/* Optional. Description of what this policy is for.
 	Create/Update methods return INVALID_ARGUMENT if the
 	length is greater than 512. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+// +optional
+Description *string `json:"description,omitempty"`
 
 	/* Output only. The time when the policy was updated.
 	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
 	resolution and up to nine fractional digits. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 
 	/* Required. Maintenance window that is applied to resources covered by this policy.
 	Minimum 1. For the current version, the maximum number of weekly_maintenance_windows
 	is expected to be one. */
-	WeeklyMaintenanceWindow []InstanceWeeklyMaintenanceWindow `json:"weeklyMaintenanceWindow"`
+WeeklyMaintenanceWindow []InstanceWeeklyMaintenanceWindow `json:"weeklyMaintenanceWindow"`
 }
 
 type InstanceMemcacheParameters struct {
-	/* This is a unique ID associated with this set of parameters. */
-	// +optional
-	Id *string `json:"id,omitempty"`
+/* This is a unique ID associated with this set of parameters. */
+// +optional
+Id *string `json:"id,omitempty"`
 
-	/* User-defined set of parameters to use in the memcache process. */
-	// +optional
-	Params map[string]string `json:"params,omitempty"`
+/* User-defined set of parameters to use in the memcache process. */
+// +optional
+Params map[string]string `json:"params,omitempty"`
 }
 
 type InstanceNodeConfig struct {
-	/* Number of CPUs per node. */
-	CpuCount int64 `json:"cpuCount"`
+/* Number of CPUs per node. */
+CpuCount int64 `json:"cpuCount"`
 
-	/* Memory size in Mebibytes for each memcache node. */
-	MemorySizeMb int64 `json:"memorySizeMb"`
+/* Memory size in Mebibytes for each memcache node. */
+MemorySizeMb int64 `json:"memorySizeMb"`
 }
 
 type InstanceStartTime struct {
 	/* Hours of day in 24 hour format. Should be from 0 to 23.
 	An API may choose to allow the value "24:00:00" for scenarios like business closing time. */
-	// +optional
-	Hours *int64 `json:"hours,omitempty"`
+// +optional
+Hours *int64 `json:"hours,omitempty"`
 
-	/* Minutes of hour of day. Must be from 0 to 59. */
-	// +optional
-	Minutes *int64 `json:"minutes,omitempty"`
+/* Minutes of hour of day. Must be from 0 to 59. */
+// +optional
+Minutes *int64 `json:"minutes,omitempty"`
 
-	/* Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999. */
-	// +optional
-	Nanos *int64 `json:"nanos,omitempty"`
+/* Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999. */
+// +optional
+Nanos *int64 `json:"nanos,omitempty"`
 
 	/* Seconds of minutes of the time. Must normally be from 0 to 59.
 	An API may allow the value 60 if it allows leap-seconds. */
-	// +optional
-	Seconds *int64 `json:"seconds,omitempty"`
+// +optional
+Seconds *int64 `json:"seconds,omitempty"`
 }
 
 type InstanceWeeklyMaintenanceWindow struct {
@@ -111,131 +112,130 @@ type InstanceWeeklyMaintenanceWindow struct {
 	- FRIDAY: Friday
 	- SATURDAY: Saturday
 	- SUNDAY: Sunday Possible values: ["DAY_OF_WEEK_UNSPECIFIED", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]. */
-	Day string `json:"day"`
+Day string `json:"day"`
 
 	/* Required. The length of the maintenance window, ranging from 3 hours to 8 hours.
 	A duration in seconds with up to nine fractional digits,
 	terminated by 's'. Example: "3.5s". */
-	Duration string `json:"duration"`
+Duration string `json:"duration"`
 
-	/* Required. Start time of the window in UTC time. */
-	StartTime InstanceStartTime `json:"startTime"`
+/* Required. Start time of the window in UTC time. */
+StartTime InstanceStartTime `json:"startTime"`
 }
 
 type MemcacheInstanceSpec struct {
-	/* A user-visible name for the instance. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+/* A user-visible name for the instance. */
+// +optional
+DisplayName *string `json:"displayName,omitempty"`
 
-	/* Maintenance policy for an instance. */
-	// +optional
-	MaintenancePolicy *InstanceMaintenancePolicy `json:"maintenancePolicy,omitempty"`
+/* Maintenance policy for an instance. */
+// +optional
+MaintenancePolicy *InstanceMaintenancePolicy `json:"maintenancePolicy,omitempty"`
 
-	/* Immutable. User-specified parameters for this memcache instance. */
-	// +optional
-	MemcacheParameters *InstanceMemcacheParameters `json:"memcacheParameters,omitempty"`
+/* Immutable. User-specified parameters for this memcache instance. */
+// +optional
+MemcacheParameters *InstanceMemcacheParameters `json:"memcacheParameters,omitempty"`
 
 	/* The major version of Memcached software. If not provided, latest supported version will be used.
 	Currently the latest supported major version is MEMCACHE_1_5. The minor version will be automatically
 	determined by our system based on the latest supported minor version. Default value: "MEMCACHE_1_5" Possible values: ["MEMCACHE_1_5"]. */
-	// +optional
-	MemcacheVersion *string `json:"memcacheVersion,omitempty"`
+// +optional
+MemcacheVersion *string `json:"memcacheVersion,omitempty"`
 
-	/* The full name of the network to connect the instance to. */
-	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+/* The full name of the network to connect the instance to. */
+// +optional
+NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
-	/* Immutable. Configuration for memcache nodes. */
-	NodeConfig InstanceNodeConfig `json:"nodeConfig"`
+/* Immutable. Configuration for memcache nodes. */
+NodeConfig InstanceNodeConfig `json:"nodeConfig"`
 
-	/* Number of nodes in the memcache instance. */
-	NodeCount int64 `json:"nodeCount"`
+/* Number of nodes in the memcache instance. */
+NodeCount int64 `json:"nodeCount"`
 
-	/* Immutable. The region of the Memcache instance. If it is not provided, the provider region is used. */
-	Region string `json:"region"`
+/* Immutable. The region of the Memcache instance. If it is not provided, the provider region is used. */
+Region string `json:"region"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Immutable. Zones where memcache nodes should be provisioned.  If not
 	provided, all zones will be used. */
-	// +optional
-	Zones []string `json:"zones,omitempty"`
+// +optional
+Zones []string `json:"zones,omitempty"`
 }
 
 type InstanceMaintenanceScheduleStatus struct {
 	/* Output only. The end time of any upcoming scheduled maintenance for this instance.
 	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
 	resolution and up to nine fractional digits. */
-	// +optional
-	EndTime *string `json:"endTime,omitempty"`
+// +optional
+EndTime *string `json:"endTime,omitempty"`
 
 	/* Output only. The deadline that the maintenance schedule start time
 	can not go beyond, including reschedule.
 	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
 	resolution and up to nine fractional digits. */
-	// +optional
-	ScheduleDeadlineTime *string `json:"scheduleDeadlineTime,omitempty"`
+// +optional
+ScheduleDeadlineTime *string `json:"scheduleDeadlineTime,omitempty"`
 
 	/* Output only. The start time of any upcoming scheduled maintenance for this instance.
 	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
 	resolution and up to nine fractional digits. */
-	// +optional
-	StartTime *string `json:"startTime,omitempty"`
+// +optional
+StartTime *string `json:"startTime,omitempty"`
 }
 
 type InstanceMemcacheNodesStatus struct {
-	/* Hostname or IP address of the Memcached node used by the clients to connect to the Memcached server on this node. */
-	// +optional
-	Host *string `json:"host,omitempty"`
+/* Hostname or IP address of the Memcached node used by the clients to connect to the Memcached server on this node. */
+// +optional
+Host *string `json:"host,omitempty"`
 
-	/* Identifier of the Memcached node. The node id does not include project or location like the Memcached instance name. */
-	// +optional
-	NodeId *string `json:"nodeId,omitempty"`
+/* Identifier of the Memcached node. The node id does not include project or location like the Memcached instance name. */
+// +optional
+NodeId *string `json:"nodeId,omitempty"`
 
-	/* The port number of the Memcached server on this node. */
-	// +optional
-	Port *int64 `json:"port,omitempty"`
+/* The port number of the Memcached server on this node. */
+// +optional
+Port *int64 `json:"port,omitempty"`
 
-	/* Current state of the Memcached node. */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* Current state of the Memcached node. */
+// +optional
+State *string `json:"state,omitempty"`
 
-	/* Location (GCP Zone) for the Memcached node. */
-	// +optional
-	Zone *string `json:"zone,omitempty"`
+/* Location (GCP Zone) for the Memcached node. */
+// +optional
+Zone *string `json:"zone,omitempty"`
 }
 
 type MemcacheInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
-	   MemcacheInstance's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Creation timestamp in RFC3339 text format. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+	    MemcacheInstance's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* Creation timestamp in RFC3339 text format. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Endpoint for Discovery API. */
-	// +optional
-	DiscoveryEndpoint *string `json:"discoveryEndpoint,omitempty"`
+/* Endpoint for Discovery API. */
+// +optional
+DiscoveryEndpoint *string `json:"discoveryEndpoint,omitempty"`
 
-	/* Output only. Published maintenance schedule. */
-	// +optional
-	MaintenanceSchedule []InstanceMaintenanceScheduleStatus `json:"maintenanceSchedule,omitempty"`
+/* Output only. Published maintenance schedule. */
+// +optional
+MaintenanceSchedule []InstanceMaintenanceScheduleStatus `json:"maintenanceSchedule,omitempty"`
 
-	/* The full version of memcached server running on this instance. */
-	// +optional
-	MemcacheFullVersion *string `json:"memcacheFullVersion,omitempty"`
+/* The full version of memcached server running on this instance. */
+// +optional
+MemcacheFullVersion *string `json:"memcacheFullVersion,omitempty"`
 
-	/* Additional information about the instance state, if available. */
-	// +optional
-	MemcacheNodes []InstanceMemcacheNodesStatus `json:"memcacheNodes,omitempty"`
+/* Additional information about the instance state, if available. */
+// +optional
+MemcacheNodes []InstanceMemcacheNodesStatus `json:"memcacheNodes,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpmemcacheinstance;gcpmemcacheinstances
@@ -252,22 +252,20 @@ type MemcacheInstanceStatus struct {
 // MemcacheInstance is the Schema for the memcache API
 // +k8s:openapi-gen=true
 type MemcacheInstance struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   MemcacheInstanceSpec   `json:"spec,omitempty"`
-	Status MemcacheInstanceStatus `json:"status,omitempty"`
+  Spec MemcacheInstanceSpec `json:"spec,omitempty"`
+  Status MemcacheInstanceStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// MemcacheInstanceList contains a list of MemcacheInstance
-type MemcacheInstanceList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []MemcacheInstance `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&MemcacheInstance{}, &MemcacheInstanceList{})
-}
+ // MemcacheInstanceList contains a list of MemcacheInstance
+ type MemcacheInstanceList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []MemcacheInstance `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&MemcacheInstance{}, &MemcacheInstanceList{})
+ }

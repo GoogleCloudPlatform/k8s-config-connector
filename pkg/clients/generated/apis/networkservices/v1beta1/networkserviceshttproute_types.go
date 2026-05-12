@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,374 +30,373 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type HttprouteAbort struct {
-	/* The HTTP status code used to abort the request. The value must be between 200 and 599 inclusive. */
-	// +optional
-	HttpStatus *int64 `json:"httpStatus,omitempty"`
+/* The HTTP status code used to abort the request. The value must be between 200 and 599 inclusive. */
+// +optional
+HttpStatus *int64 `json:"httpStatus,omitempty"`
 
-	/* The percentage of traffic which will be aborted. The value must be between [0, 100] */
-	// +optional
-	Percentage *int64 `json:"percentage,omitempty"`
+/* The percentage of traffic which will be aborted. The value must be between [0, 100] */
+// +optional
+Percentage *int64 `json:"percentage,omitempty"`
 }
 
 type HttprouteAction struct {
-	/* The specification for allowing client side cross-origin requests. */
-	// +optional
-	CorsPolicy *HttprouteCorsPolicy `json:"corsPolicy,omitempty"`
+/* The specification for allowing client side cross-origin requests. */
+// +optional
+CorsPolicy *HttprouteCorsPolicy `json:"corsPolicy,omitempty"`
 
-	/* The destination to which traffic should be forwarded. */
-	// +optional
-	Destinations []HttprouteDestinations `json:"destinations,omitempty"`
+/* The destination to which traffic should be forwarded. */
+// +optional
+Destinations []HttprouteDestinations `json:"destinations,omitempty"`
 
-	/* The specification for fault injection introduced into traffic to test the resiliency of clients to backend service failure. As part of fault injection, when clients send requests to a backend service, delays can be introduced on a percentage of requests before sending those requests to the backend service. Similarly requests from clients can be aborted for a percentage of requests. timeout and retry_policy will be ignored by clients that are configured with a fault_injection_policy */
-	// +optional
-	FaultInjectionPolicy *HttprouteFaultInjectionPolicy `json:"faultInjectionPolicy,omitempty"`
+/* The specification for fault injection introduced into traffic to test the resiliency of clients to backend service failure. As part of fault injection, when clients send requests to a backend service, delays can be introduced on a percentage of requests before sending those requests to the backend service. Similarly requests from clients can be aborted for a percentage of requests. timeout and retry_policy will be ignored by clients that are configured with a fault_injection_policy */
+// +optional
+FaultInjectionPolicy *HttprouteFaultInjectionPolicy `json:"faultInjectionPolicy,omitempty"`
 
-	/* If set, the request is directed as configured by this field. */
-	// +optional
-	Redirect *HttprouteRedirect `json:"redirect,omitempty"`
+/* If set, the request is directed as configured by this field. */
+// +optional
+Redirect *HttprouteRedirect `json:"redirect,omitempty"`
 
-	/* The specification for modifying the headers of a matching request prior to delivery of the request to the destination. */
-	// +optional
-	RequestHeaderModifier *HttprouteRequestHeaderModifier `json:"requestHeaderModifier,omitempty"`
+/* The specification for modifying the headers of a matching request prior to delivery of the request to the destination. */
+// +optional
+RequestHeaderModifier *HttprouteRequestHeaderModifier `json:"requestHeaderModifier,omitempty"`
 
-	/* Specifies the policy on how requests intended for the routes destination are shadowed to a separate mirrored destination. Proxy will not wait for the shadow destination to respond before returning the response. Prior to sending traffic to the shadow service, the host/authority header is suffixed with -shadow. */
-	// +optional
-	RequestMirrorPolicy *HttprouteRequestMirrorPolicy `json:"requestMirrorPolicy,omitempty"`
+/* Specifies the policy on how requests intended for the routes destination are shadowed to a separate mirrored destination. Proxy will not wait for the shadow destination to respond before returning the response. Prior to sending traffic to the shadow service, the host/authority header is suffixed with -shadow. */
+// +optional
+RequestMirrorPolicy *HttprouteRequestMirrorPolicy `json:"requestMirrorPolicy,omitempty"`
 
-	/* The specification for modifying the headers of a response prior to sending the response back to the client. */
-	// +optional
-	ResponseHeaderModifier *HttprouteResponseHeaderModifier `json:"responseHeaderModifier,omitempty"`
+/* The specification for modifying the headers of a response prior to sending the response back to the client. */
+// +optional
+ResponseHeaderModifier *HttprouteResponseHeaderModifier `json:"responseHeaderModifier,omitempty"`
 
-	/* Specifies the retry policy associated with this route. */
-	// +optional
-	RetryPolicy *HttprouteRetryPolicy `json:"retryPolicy,omitempty"`
+/* Specifies the retry policy associated with this route. */
+// +optional
+RetryPolicy *HttprouteRetryPolicy `json:"retryPolicy,omitempty"`
 
-	/* Specifies the timeout for selected route. Timeout is computed from the time the request has been fully processed (i.e. end of stream) up until the response has been completely processed. Timeout includes all retries. */
-	// +optional
-	Timeout *string `json:"timeout,omitempty"`
+/* Specifies the timeout for selected route. Timeout is computed from the time the request has been fully processed (i.e. end of stream) up until the response has been completely processed. Timeout includes all retries. */
+// +optional
+Timeout *string `json:"timeout,omitempty"`
 
-	/* The specification for rewrite URL before forwarding requests to the destination. */
-	// +optional
-	UrlRewrite *HttprouteUrlRewrite `json:"urlRewrite,omitempty"`
+/* The specification for rewrite URL before forwarding requests to the destination. */
+// +optional
+UrlRewrite *HttprouteUrlRewrite `json:"urlRewrite,omitempty"`
 }
 
 type HttprouteCorsPolicy struct {
-	/* In response to a preflight request, setting this to true indicates that the actual request can include user credentials. This translates to the Access-Control-Allow-Credentials header. Default value is false. */
-	// +optional
-	AllowCredentials *bool `json:"allowCredentials,omitempty"`
+/* In response to a preflight request, setting this to true indicates that the actual request can include user credentials. This translates to the Access-Control-Allow-Credentials header. Default value is false. */
+// +optional
+AllowCredentials *bool `json:"allowCredentials,omitempty"`
 
-	/* Specifies the content for Access-Control-Allow-Headers header. */
-	// +optional
-	AllowHeaders []string `json:"allowHeaders,omitempty"`
+/* Specifies the content for Access-Control-Allow-Headers header. */
+// +optional
+AllowHeaders []string `json:"allowHeaders,omitempty"`
 
-	/* Specifies the content for Access-Control-Allow-Methods header. */
-	// +optional
-	AllowMethods []string `json:"allowMethods,omitempty"`
+/* Specifies the content for Access-Control-Allow-Methods header. */
+// +optional
+AllowMethods []string `json:"allowMethods,omitempty"`
 
-	/* Specifies the regular expression patterns that match allowed origins. For regular expression grammar, please see https://github.com/google/re2/wiki/Syntax. */
-	// +optional
-	AllowOriginRegexes []string `json:"allowOriginRegexes,omitempty"`
+/* Specifies the regular expression patterns that match allowed origins. For regular expression grammar, please see https://github.com/google/re2/wiki/Syntax. */
+// +optional
+AllowOriginRegexes []string `json:"allowOriginRegexes,omitempty"`
 
-	/* Specifies the list of origins that will be allowed to do CORS requests. An origin is allowed if it matches either an item in allow_origins or an item in allow_origin_regexes. */
-	// +optional
-	AllowOrigins []string `json:"allowOrigins,omitempty"`
+/* Specifies the list of origins that will be allowed to do CORS requests. An origin is allowed if it matches either an item in allow_origins or an item in allow_origin_regexes. */
+// +optional
+AllowOrigins []string `json:"allowOrigins,omitempty"`
 
-	/* If true, the CORS policy is disabled. The default value is false, which indicates that the CORS policy is in effect. */
-	// +optional
-	Disabled *bool `json:"disabled,omitempty"`
+/* If true, the CORS policy is disabled. The default value is false, which indicates that the CORS policy is in effect. */
+// +optional
+Disabled *bool `json:"disabled,omitempty"`
 
-	/* Specifies the content for Access-Control-Expose-Headers header. */
-	// +optional
-	ExposeHeaders []string `json:"exposeHeaders,omitempty"`
+/* Specifies the content for Access-Control-Expose-Headers header. */
+// +optional
+ExposeHeaders []string `json:"exposeHeaders,omitempty"`
 
-	/* Specifies how long result of a preflight request can be cached in seconds. This translates to the Access-Control-Max-Age header. */
-	// +optional
-	MaxAge *string `json:"maxAge,omitempty"`
+/* Specifies how long result of a preflight request can be cached in seconds. This translates to the Access-Control-Max-Age header. */
+// +optional
+MaxAge *string `json:"maxAge,omitempty"`
 }
 
 type HttprouteDelay struct {
-	/* Specify a fixed delay before forwarding the request. */
-	// +optional
-	FixedDelay *string `json:"fixedDelay,omitempty"`
+/* Specify a fixed delay before forwarding the request. */
+// +optional
+FixedDelay *string `json:"fixedDelay,omitempty"`
 
-	/* The percentage of traffic on which delay will be injected. The value must be between [0, 100] */
-	// +optional
-	Percentage *int64 `json:"percentage,omitempty"`
+/* The percentage of traffic on which delay will be injected. The value must be between [0, 100] */
+// +optional
+Percentage *int64 `json:"percentage,omitempty"`
 }
 
 type HttprouteDestination struct {
-	// +optional
-	ServiceRef *v1alpha1.ResourceRef `json:"serviceRef,omitempty"`
+// +optional
+ServiceRef *v1alpha1.ResourceRef `json:"serviceRef,omitempty"`
 
-	/* Specifies the proportion of requests forwarded to the backend referenced by the serviceName field. This is computed as: weight/Sum(weights in this destination list). For non-zero values, there may be some epsilon from the exact proportion defined here depending on the precision an implementation supports. If only one serviceName is specified and it has a weight greater than 0, 100% of the traffic is forwarded to that backend. If weights are specified for any one service name, they need to be specified for all of them. If weights are unspecified for all services, then, traffic is distributed in equal proportions to all of them. */
-	// +optional
-	Weight *int64 `json:"weight,omitempty"`
+/* Specifies the proportion of requests forwarded to the backend referenced by the serviceName field. This is computed as: weight/Sum(weights in this destination list). For non-zero values, there may be some epsilon from the exact proportion defined here depending on the precision an implementation supports. If only one serviceName is specified and it has a weight greater than 0, 100% of the traffic is forwarded to that backend. If weights are specified for any one service name, they need to be specified for all of them. If weights are unspecified for all services, then, traffic is distributed in equal proportions to all of them. */
+// +optional
+Weight *int64 `json:"weight,omitempty"`
 }
 
 type HttprouteDestinations struct {
-	// +optional
-	ServiceRef *v1alpha1.ResourceRef `json:"serviceRef,omitempty"`
+// +optional
+ServiceRef *v1alpha1.ResourceRef `json:"serviceRef,omitempty"`
 
-	/* Specifies the proportion of requests forwarded to the backend referenced by the serviceName field. This is computed as: weight/Sum(weights in this destination list). For non-zero values, there may be some epsilon from the exact proportion defined here depending on the precision an implementation supports. If only one serviceName is specified and it has a weight greater than 0, 100% of the traffic is forwarded to that backend. If weights are specified for any one service name, they need to be specified for all of them. If weights are unspecified for all services, then, traffic is distributed in equal proportions to all of them. */
-	// +optional
-	Weight *int64 `json:"weight,omitempty"`
+/* Specifies the proportion of requests forwarded to the backend referenced by the serviceName field. This is computed as: weight/Sum(weights in this destination list). For non-zero values, there may be some epsilon from the exact proportion defined here depending on the precision an implementation supports. If only one serviceName is specified and it has a weight greater than 0, 100% of the traffic is forwarded to that backend. If weights are specified for any one service name, they need to be specified for all of them. If weights are unspecified for all services, then, traffic is distributed in equal proportions to all of them. */
+// +optional
+Weight *int64 `json:"weight,omitempty"`
 }
 
 type HttprouteFaultInjectionPolicy struct {
-	/* The specification for aborting to client requests. */
-	// +optional
-	Abort *HttprouteAbort `json:"abort,omitempty"`
+/* The specification for aborting to client requests. */
+// +optional
+Abort *HttprouteAbort `json:"abort,omitempty"`
 
-	/* The specification for injecting delay to client requests. */
-	// +optional
-	Delay *HttprouteDelay `json:"delay,omitempty"`
+/* The specification for injecting delay to client requests. */
+// +optional
+Delay *HttprouteDelay `json:"delay,omitempty"`
 }
 
 type HttprouteHeaders struct {
-	/* The value of the header should match exactly the content of exact_match. */
-	// +optional
-	ExactMatch *string `json:"exactMatch,omitempty"`
+/* The value of the header should match exactly the content of exact_match. */
+// +optional
+ExactMatch *string `json:"exactMatch,omitempty"`
 
-	/* The name of the HTTP header to match against. */
-	// +optional
-	Header *string `json:"header,omitempty"`
+/* The name of the HTTP header to match against. */
+// +optional
+Header *string `json:"header,omitempty"`
 
-	/* If specified, the match result will be inverted before checking. Default value is set to false. */
-	// +optional
-	InvertMatch *bool `json:"invertMatch,omitempty"`
+/* If specified, the match result will be inverted before checking. Default value is set to false. */
+// +optional
+InvertMatch *bool `json:"invertMatch,omitempty"`
 
-	/* The value of the header must start with the contents of prefix_match. */
-	// +optional
-	PrefixMatch *string `json:"prefixMatch,omitempty"`
+/* The value of the header must start with the contents of prefix_match. */
+// +optional
+PrefixMatch *string `json:"prefixMatch,omitempty"`
 
-	/* A header with header_name must exist. The match takes place whether or not the header has a value. */
-	// +optional
-	PresentMatch *bool `json:"presentMatch,omitempty"`
+/* A header with header_name must exist. The match takes place whether or not the header has a value. */
+// +optional
+PresentMatch *bool `json:"presentMatch,omitempty"`
 
-	/* If specified, the rule will match if the request header value is within the range. */
-	// +optional
-	RangeMatch *HttprouteRangeMatch `json:"rangeMatch,omitempty"`
+/* If specified, the rule will match if the request header value is within the range. */
+// +optional
+RangeMatch *HttprouteRangeMatch `json:"rangeMatch,omitempty"`
 
-	/* The value of the header must match the regular expression specified in regex_match. For regular expression grammar, please see: https://github.com/google/re2/wiki/Syntax */
-	// +optional
-	RegexMatch *string `json:"regexMatch,omitempty"`
+/* The value of the header must match the regular expression specified in regex_match. For regular expression grammar, please see: https://github.com/google/re2/wiki/Syntax */
+// +optional
+RegexMatch *string `json:"regexMatch,omitempty"`
 
-	/* The value of the header must end with the contents of suffix_match. */
-	// +optional
-	SuffixMatch *string `json:"suffixMatch,omitempty"`
+/* The value of the header must end with the contents of suffix_match. */
+// +optional
+SuffixMatch *string `json:"suffixMatch,omitempty"`
 }
 
 type HttprouteMatches struct {
-	/* The HTTP request path value should exactly match this value. Only one of full_path_match, prefix_match, or regex_match should be used. */
-	// +optional
-	FullPathMatch *string `json:"fullPathMatch,omitempty"`
+/* The HTTP request path value should exactly match this value. Only one of full_path_match, prefix_match, or regex_match should be used. */
+// +optional
+FullPathMatch *string `json:"fullPathMatch,omitempty"`
 
-	/* Specifies a list of HTTP request headers to match against. ALL of the supplied headers must be matched. */
-	// +optional
-	Headers []HttprouteHeaders `json:"headers,omitempty"`
+/* Specifies a list of HTTP request headers to match against. ALL of the supplied headers must be matched. */
+// +optional
+Headers []HttprouteHeaders `json:"headers,omitempty"`
 
-	/* Specifies if prefix_match and full_path_match matches are case sensitive. The default value is false. */
-	// +optional
-	IgnoreCase *bool `json:"ignoreCase,omitempty"`
+/* Specifies if prefix_match and full_path_match matches are case sensitive. The default value is false. */
+// +optional
+IgnoreCase *bool `json:"ignoreCase,omitempty"`
 
-	/* The HTTP request path value must begin with specified prefix_match. prefix_match must begin with a /. Only one of full_path_match, prefix_match, or regex_match should be used. */
-	// +optional
-	PrefixMatch *string `json:"prefixMatch,omitempty"`
+/* The HTTP request path value must begin with specified prefix_match. prefix_match must begin with a /. Only one of full_path_match, prefix_match, or regex_match should be used. */
+// +optional
+PrefixMatch *string `json:"prefixMatch,omitempty"`
 
-	/* Specifies a list of query parameters to match against. ALL of the query parameters must be matched. */
-	// +optional
-	QueryParameters []HttprouteQueryParameters `json:"queryParameters,omitempty"`
+/* Specifies a list of query parameters to match against. ALL of the query parameters must be matched. */
+// +optional
+QueryParameters []HttprouteQueryParameters `json:"queryParameters,omitempty"`
 
-	/* The HTTP request path value must satisfy the regular expression specified by regex_match after removing any query parameters and anchor supplied with the original URL. For regular expression grammar, please see https://github.com/google/re2/wiki/Syntax Only one of full_path_match, prefix_match, or regex_match should be used. */
-	// +optional
-	RegexMatch *string `json:"regexMatch,omitempty"`
+/* The HTTP request path value must satisfy the regular expression specified by regex_match after removing any query parameters and anchor supplied with the original URL. For regular expression grammar, please see https://github.com/google/re2/wiki/Syntax Only one of full_path_match, prefix_match, or regex_match should be used. */
+// +optional
+RegexMatch *string `json:"regexMatch,omitempty"`
 }
 
 type HttprouteQueryParameters struct {
-	/* The value of the query parameter must exactly match the contents of exact_match. Only one of exact_match, regex_match, or present_match must be set. */
-	// +optional
-	ExactMatch *string `json:"exactMatch,omitempty"`
+/* The value of the query parameter must exactly match the contents of exact_match. Only one of exact_match, regex_match, or present_match must be set. */
+// +optional
+ExactMatch *string `json:"exactMatch,omitempty"`
 
-	/* Specifies that the QueryParameterMatcher matches if request contains query parameter, irrespective of whether the parameter has a value or not. Only one of exact_match, regex_match, or present_match must be set. */
-	// +optional
-	PresentMatch *bool `json:"presentMatch,omitempty"`
+/* Specifies that the QueryParameterMatcher matches if request contains query parameter, irrespective of whether the parameter has a value or not. Only one of exact_match, regex_match, or present_match must be set. */
+// +optional
+PresentMatch *bool `json:"presentMatch,omitempty"`
 
-	/* The name of the query parameter to match. */
-	// +optional
-	QueryParameter *string `json:"queryParameter,omitempty"`
+/* The name of the query parameter to match. */
+// +optional
+QueryParameter *string `json:"queryParameter,omitempty"`
 
-	/* The value of the query parameter must match the regular expression specified by regex_match. For regular expression grammar, please see https://github.com/google/re2/wiki/Syntax Only one of exact_match, regex_match, or present_match must be set. */
-	// +optional
-	RegexMatch *string `json:"regexMatch,omitempty"`
+/* The value of the query parameter must match the regular expression specified by regex_match. For regular expression grammar, please see https://github.com/google/re2/wiki/Syntax Only one of exact_match, regex_match, or present_match must be set. */
+// +optional
+RegexMatch *string `json:"regexMatch,omitempty"`
 }
 
 type HttprouteRangeMatch struct {
-	/* End of the range (exclusive) */
-	// +optional
-	End *int64 `json:"end,omitempty"`
+/* End of the range (exclusive) */
+// +optional
+End *int64 `json:"end,omitempty"`
 
-	/* Start of the range (inclusive) */
-	// +optional
-	Start *int64 `json:"start,omitempty"`
+/* Start of the range (inclusive) */
+// +optional
+Start *int64 `json:"start,omitempty"`
 }
 
 type HttprouteRedirect struct {
-	/* The host that will be used in the redirect response instead of the one that was supplied in the request. */
-	// +optional
-	HostRedirect *string `json:"hostRedirect,omitempty"`
+/* The host that will be used in the redirect response instead of the one that was supplied in the request. */
+// +optional
+HostRedirect *string `json:"hostRedirect,omitempty"`
 
-	/* If set to true, the URL scheme in the redirected request is set to https. If set to false, the URL scheme of the redirected request will remain the same as that of the request. The default is set to false. */
-	// +optional
-	HttpsRedirect *bool `json:"httpsRedirect,omitempty"`
+/* If set to true, the URL scheme in the redirected request is set to https. If set to false, the URL scheme of the redirected request will remain the same as that of the request. The default is set to false. */
+// +optional
+HttpsRedirect *bool `json:"httpsRedirect,omitempty"`
 
-	/* The path that will be used in the redirect response instead of the one that was supplied in the request. path_redirect can not be supplied together with prefix_redirect. Supply one alone or neither. If neither is supplied, the path of the original request will be used for the redirect. */
-	// +optional
-	PathRedirect *string `json:"pathRedirect,omitempty"`
+/* The path that will be used in the redirect response instead of the one that was supplied in the request. path_redirect can not be supplied together with prefix_redirect. Supply one alone or neither. If neither is supplied, the path of the original request will be used for the redirect. */
+// +optional
+PathRedirect *string `json:"pathRedirect,omitempty"`
 
-	/* The port that will be used in the redirected request instead of the one that was supplied in the request. */
-	// +optional
-	PortRedirect *int64 `json:"portRedirect,omitempty"`
+/* The port that will be used in the redirected request instead of the one that was supplied in the request. */
+// +optional
+PortRedirect *int64 `json:"portRedirect,omitempty"`
 
-	/* Indicates that during redirection, the matched prefix (or path) should be swapped with this value. This option allows URLs be dynamically created based on the request. */
-	// +optional
-	PrefixRewrite *string `json:"prefixRewrite,omitempty"`
+/* Indicates that during redirection, the matched prefix (or path) should be swapped with this value. This option allows URLs be dynamically created based on the request. */
+// +optional
+PrefixRewrite *string `json:"prefixRewrite,omitempty"`
 
-	/* The HTTP Status code to use for the redirect. Possible values: MOVED_PERMANENTLY_DEFAULT, FOUND, SEE_OTHER, TEMPORARY_REDIRECT, PERMANENT_REDIRECT */
-	// +optional
-	ResponseCode *string `json:"responseCode,omitempty"`
+/* The HTTP Status code to use for the redirect. Possible values: MOVED_PERMANENTLY_DEFAULT, FOUND, SEE_OTHER, TEMPORARY_REDIRECT, PERMANENT_REDIRECT */
+// +optional
+ResponseCode *string `json:"responseCode,omitempty"`
 
-	/* if set to true, any accompanying query portion of the original URL is removed prior to redirecting the request. If set to false, the query portion of the original URL is retained. The default is set to false. */
-	// +optional
-	StripQuery *bool `json:"stripQuery,omitempty"`
+/* if set to true, any accompanying query portion of the original URL is removed prior to redirecting the request. If set to false, the query portion of the original URL is retained. The default is set to false. */
+// +optional
+StripQuery *bool `json:"stripQuery,omitempty"`
 }
 
 type HttprouteRequestHeaderModifier struct {
-	/* Add the headers with given map where key is the name of the header, value is the value of the header. */
-	// +optional
-	Add map[string]string `json:"add,omitempty"`
+/* Add the headers with given map where key is the name of the header, value is the value of the header. */
+// +optional
+Add map[string]string `json:"add,omitempty"`
 
-	/* Remove headers (matching by header names) specified in the list. */
-	// +optional
-	Remove []string `json:"remove,omitempty"`
+/* Remove headers (matching by header names) specified in the list. */
+// +optional
+Remove []string `json:"remove,omitempty"`
 
-	/* Completely overwrite/replace the headers with given map where key is the name of the header, value is the value of the header. */
-	// +optional
-	Set map[string]string `json:"set,omitempty"`
+/* Completely overwrite/replace the headers with given map where key is the name of the header, value is the value of the header. */
+// +optional
+Set map[string]string `json:"set,omitempty"`
 }
 
 type HttprouteRequestMirrorPolicy struct {
-	/* The destination the requests will be mirrored to. The weight of the destination will be ignored. */
-	// +optional
-	Destination *HttprouteDestination `json:"destination,omitempty"`
+/* The destination the requests will be mirrored to. The weight of the destination will be ignored. */
+// +optional
+Destination *HttprouteDestination `json:"destination,omitempty"`
 }
 
 type HttprouteResponseHeaderModifier struct {
-	/* Add the headers with given map where key is the name of the header, value is the value of the header. */
-	// +optional
-	Add map[string]string `json:"add,omitempty"`
+/* Add the headers with given map where key is the name of the header, value is the value of the header. */
+// +optional
+Add map[string]string `json:"add,omitempty"`
 
-	/* Remove headers (matching by header names) specified in the list. */
-	// +optional
-	Remove []string `json:"remove,omitempty"`
+/* Remove headers (matching by header names) specified in the list. */
+// +optional
+Remove []string `json:"remove,omitempty"`
 
-	/* Completely overwrite/replace the headers with given map where key is the name of the header, value is the value of the header. */
-	// +optional
-	Set map[string]string `json:"set,omitempty"`
+/* Completely overwrite/replace the headers with given map where key is the name of the header, value is the value of the header. */
+// +optional
+Set map[string]string `json:"set,omitempty"`
 }
 
 type HttprouteRetryPolicy struct {
-	/* Specifies the allowed number of retries. This number must be > 0. If not specified, default to 1. */
-	// +optional
-	NumRetries *int64 `json:"numRetries,omitempty"`
+/* Specifies the allowed number of retries. This number must be > 0. If not specified, default to 1. */
+// +optional
+NumRetries *int64 `json:"numRetries,omitempty"`
 
-	/* Specifies a non-zero timeout per retry attempt. */
-	// +optional
-	PerTryTimeout *string `json:"perTryTimeout,omitempty"`
+/* Specifies a non-zero timeout per retry attempt. */
+// +optional
+PerTryTimeout *string `json:"perTryTimeout,omitempty"`
 
-	/* Specifies one or more conditions when this retry policy applies. Valid values are: 5xx: Proxy will attempt a retry if the destination service responds with any 5xx response code, of if the destination service does not respond at all, example: disconnect, reset, read timeout, connection failure and refused streams. gateway-error: Similar to 5xx, but only applies to response codes 502, 503, 504. reset: Proxy will attempt a retry if the destination service does not respond at all (disconnect/reset/read timeout) connect-failure: Proxy will retry on failures connecting to destination for example due to connection timeouts. retriable-4xx: Proxy will retry fro retriable 4xx response codes. Currently the only retriable error supported is 409. refused-stream: Proxy will retry if the destination resets the stream with a REFUSED_STREAM error code. This reset type indicates that it is safe to retry. */
-	// +optional
-	RetryConditions []string `json:"retryConditions,omitempty"`
+/* Specifies one or more conditions when this retry policy applies. Valid values are: 5xx: Proxy will attempt a retry if the destination service responds with any 5xx response code, of if the destination service does not respond at all, example: disconnect, reset, read timeout, connection failure and refused streams. gateway-error: Similar to 5xx, but only applies to response codes 502, 503, 504. reset: Proxy will attempt a retry if the destination service does not respond at all (disconnect/reset/read timeout) connect-failure: Proxy will retry on failures connecting to destination for example due to connection timeouts. retriable-4xx: Proxy will retry fro retriable 4xx response codes. Currently the only retriable error supported is 409. refused-stream: Proxy will retry if the destination resets the stream with a REFUSED_STREAM error code. This reset type indicates that it is safe to retry. */
+// +optional
+RetryConditions []string `json:"retryConditions,omitempty"`
 }
 
 type HttprouteRules struct {
-	/* The detailed rule defining how to route matched traffic. */
-	// +optional
-	Action *HttprouteAction `json:"action,omitempty"`
+/* The detailed rule defining how to route matched traffic. */
+// +optional
+Action *HttprouteAction `json:"action,omitempty"`
 
-	/* A list of matches define conditions used for matching the rule against incoming HTTP requests. Each match is independent, i.e. this rule will be matched if ANY one of the matches is satisfied. */
-	// +optional
-	Matches []HttprouteMatches `json:"matches,omitempty"`
+/* A list of matches define conditions used for matching the rule against incoming HTTP requests. Each match is independent, i.e. this rule will be matched if ANY one of the matches is satisfied. */
+// +optional
+Matches []HttprouteMatches `json:"matches,omitempty"`
 }
 
 type HttprouteUrlRewrite struct {
-	/* Prior to forwarding the request to the selected destination, the requests host header is replaced by this value. */
-	// +optional
-	HostRewrite *string `json:"hostRewrite,omitempty"`
+/* Prior to forwarding the request to the selected destination, the requests host header is replaced by this value. */
+// +optional
+HostRewrite *string `json:"hostRewrite,omitempty"`
 
-	/* Prior to forwarding the request to the selected destination, the matching portion of the requests path is replaced by this value. */
-	// +optional
-	PathPrefixRewrite *string `json:"pathPrefixRewrite,omitempty"`
+/* Prior to forwarding the request to the selected destination, the matching portion of the requests path is replaced by this value. */
+// +optional
+PathPrefixRewrite *string `json:"pathPrefixRewrite,omitempty"`
 }
 
 type NetworkServicesHTTPRouteSpec struct {
-	/* Optional. A free-text description of the resource. Max length 1024 characters. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* Optional. A free-text description of the resource. Max length 1024 characters. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	// +optional
-	Gateways []v1alpha1.ResourceRef `json:"gateways,omitempty"`
+// +optional
+Gateways []v1alpha1.ResourceRef `json:"gateways,omitempty"`
 
-	/* Required. Hostnames define a set of hosts that should match against the HTTP host header to select a HttpRoute to process the request. Hostname is the fully qualified domain name of a network host, as defined by RFC 1123 with the exception that ip addresses are not allowed. Wildcard hosts are supported as "*" (no prefix or suffix allowed). */
-	Hostnames []string `json:"hostnames"`
+/* Required. Hostnames define a set of hosts that should match against the HTTP host header to select a HttpRoute to process the request. Hostname is the fully qualified domain name of a network host, as defined by RFC 1123 with the exception that ip addresses are not allowed. Wildcard hosts are supported as "*" (no prefix or suffix allowed). */
+Hostnames []string `json:"hostnames"`
 
-	/* Immutable. The location for the resource */
-	Location string `json:"location"`
+/* Immutable. The location for the resource */
+Location string `json:"location"`
 
-	// +optional
-	Meshes []v1alpha1.ResourceRef `json:"meshes,omitempty"`
+// +optional
+Meshes []v1alpha1.ResourceRef `json:"meshes,omitempty"`
 
-	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* Immutable. The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Required. Rules that define how traffic is routed and handled. */
-	Rules []HttprouteRules `json:"rules"`
+/* Required. Rules that define how traffic is routed and handled. */
+Rules []HttprouteRules `json:"rules"`
 }
 
 type NetworkServicesHTTPRouteStatus struct {
 	/* Conditions represent the latest available observations of the
-	   NetworkServicesHTTPRoute's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Output only. The timestamp when the resource was created. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+	    NetworkServicesHTTPRoute's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* Output only. The timestamp when the resource was created. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* Output only. Server-defined URL of this resource */
-	// +optional
-	SelfLink *string `json:"selfLink,omitempty"`
+/* Output only. Server-defined URL of this resource */
+// +optional
+SelfLink *string `json:"selfLink,omitempty"`
 
-	/* Output only. The timestamp when the resource was updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. The timestamp when the resource was updated. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpnetworkserviceshttproute;gcpnetworkserviceshttproutes
@@ -413,22 +413,20 @@ type NetworkServicesHTTPRouteStatus struct {
 // NetworkServicesHTTPRoute is the Schema for the networkservices API
 // +k8s:openapi-gen=true
 type NetworkServicesHTTPRoute struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   NetworkServicesHTTPRouteSpec   `json:"spec,omitempty"`
-	Status NetworkServicesHTTPRouteStatus `json:"status,omitempty"`
+  Spec NetworkServicesHTTPRouteSpec `json:"spec,omitempty"`
+  Status NetworkServicesHTTPRouteStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// NetworkServicesHTTPRouteList contains a list of NetworkServicesHTTPRoute
-type NetworkServicesHTTPRouteList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []NetworkServicesHTTPRoute `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&NetworkServicesHTTPRoute{}, &NetworkServicesHTTPRouteList{})
-}
+ // NetworkServicesHTTPRouteList contains a list of NetworkServicesHTTPRoute
+ type NetworkServicesHTTPRouteList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []NetworkServicesHTTPRoute `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&NetworkServicesHTTPRoute{}, &NetworkServicesHTTPRouteList{})
+ }

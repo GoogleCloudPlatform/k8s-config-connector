@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +30,11 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -45,112 +46,111 @@ type FlextemplatejobTransformNameMapping struct {
 }
 
 type DataflowFlexTemplateJobSpec struct {
-	/* Additional experiment flags for the job. */
-	// +optional
-	AdditionalExperiments []string `json:"additionalExperiments,omitempty"`
+/* Additional experiment flags for the job. */
+// +optional
+AdditionalExperiments []string `json:"additionalExperiments,omitempty"`
 
-	/* The algorithm to use for autoscaling */
-	// +optional
-	AutoscalingAlgorithm *string `json:"autoscalingAlgorithm,omitempty"`
+/* The algorithm to use for autoscaling */
+// +optional
+AutoscalingAlgorithm *string `json:"autoscalingAlgorithm,omitempty"`
 
-	/* Cloud Storage path to a file with json serialized ContainerSpec as content. */
-	ContainerSpecGcsPath string `json:"containerSpecGcsPath"`
+/* Cloud Storage path to a file with json serialized ContainerSpec as content. */
+ContainerSpecGcsPath string `json:"containerSpecGcsPath"`
 
-	/* Whether to enable Streaming Engine for the job. */
-	// +optional
-	EnableStreamingEngine *bool `json:"enableStreamingEngine,omitempty"`
+/* Whether to enable Streaming Engine for the job. */
+// +optional
+EnableStreamingEngine *bool `json:"enableStreamingEngine,omitempty"`
 
-	/* Configuration for VM IPs. */
-	// +optional
-	IpConfiguration *string `json:"ipConfiguration,omitempty"`
+/* Configuration for VM IPs. */
+// +optional
+IpConfiguration *string `json:"ipConfiguration,omitempty"`
 
-	/* The Cloud KMS key for the job. */
-	// +optional
-	KmsKeyNameRef *v1alpha1.ResourceRef `json:"kmsKeyNameRef,omitempty"`
+/* The Cloud KMS key for the job. */
+// +optional
+KmsKeyNameRef *v1alpha1.ResourceRef `json:"kmsKeyNameRef,omitempty"`
 
-	/* The machine type to use for launching the job. The default is n1-standard-1. */
-	// +optional
-	LauncherMachineType *string `json:"launcherMachineType,omitempty"`
+/* The machine type to use for launching the job. The default is n1-standard-1. */
+// +optional
+LauncherMachineType *string `json:"launcherMachineType,omitempty"`
 
-	/* The machine type to use for the job. Defaults to the value from the template if not specified. */
-	// +optional
-	MachineType *string `json:"machineType,omitempty"`
+/* The machine type to use for the job. Defaults to the value from the template if not specified. */
+// +optional
+MachineType *string `json:"machineType,omitempty"`
 
-	/* The maximum number of Google Compute Engine instances to be made available to your pipeline during execution, from 1 to 1000. */
-	// +optional
-	MaxWorkers *int32 `json:"maxWorkers,omitempty"`
+/* The maximum number of Google Compute Engine instances to be made available to your pipeline during execution, from 1 to 1000. */
+// +optional
+MaxWorkers *int32 `json:"maxWorkers,omitempty"`
 
-	/* Network to which VMs will be assigned.  If empty or unspecified, the service will use the network "default". */
-	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+/* Network to which VMs will be assigned.  If empty or unspecified, the service will use the network "default". */
+// +optional
+NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
-	/* The initial number of Google Compute Engine instances for the job. */
-	// +optional
-	NumWorkers *int32 `json:"numWorkers,omitempty"`
+/* The initial number of Google Compute Engine instances for the job. */
+// +optional
+NumWorkers *int32 `json:"numWorkers,omitempty"`
 
-	/* The parameters for FlexTemplate. Ex. {"num_workers":"5"} */
-	// +optional
-	Parameters *FlextemplatejobParameters `json:"parameters,omitempty"`
+/* The parameters for FlexTemplate. Ex. {"num_workers":"5"} */
+// +optional
+Parameters *FlextemplatejobParameters `json:"parameters,omitempty"`
 
-	/* Immutable. The region in which the created job should run. */
-	// +optional
-	Region *string `json:"region,omitempty"`
+/* Immutable. The region in which the created job should run. */
+// +optional
+Region *string `json:"region,omitempty"`
 
-	/* Docker registry location of container image to use for the 'worker harness. Default is the container for the version of the SDK. Note this field is only valid for portable pipelines. */
-	// +optional
-	SdkContainerImage *string `json:"sdkContainerImage,omitempty"`
+/* Docker registry location of container image to use for the 'worker harness. Default is the container for the version of the SDK. Note this field is only valid for portable pipelines. */
+// +optional
+SdkContainerImage *string `json:"sdkContainerImage,omitempty"`
 
-	/* The email address of the service account to run the job as. */
-	// +optional
-	ServiceAccountEmailRef *v1alpha1.ResourceRef `json:"serviceAccountEmailRef,omitempty"`
+/* The email address of the service account to run the job as. */
+// +optional
+ServiceAccountEmailRef *v1alpha1.ResourceRef `json:"serviceAccountEmailRef,omitempty"`
 
-	/* The Cloud Storage path for staging local files. Must be a valid Cloud Storage URL, beginning with `gs://`. */
-	// +optional
-	StagingLocation *string `json:"stagingLocation,omitempty"`
+/* The Cloud Storage path for staging local files. Must be a valid Cloud Storage URL, beginning with `gs://`. */
+// +optional
+StagingLocation *string `json:"stagingLocation,omitempty"`
 
-	/* Subnetwork to which VMs will be assigned, if desired. You can specify a subnetwork using either a complete URL or an abbreviated path. Expected to be of the form "https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK" or "regions/REGION/subnetworks/SUBNETWORK". If the subnetwork is located in a Shared VPC network, you must use the complete URL. */
-	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+/* Subnetwork to which VMs will be assigned, if desired. You can specify a subnetwork using either a complete URL or an abbreviated path. Expected to be of the form "https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK" or "regions/REGION/subnetworks/SUBNETWORK". If the subnetwork is located in a Shared VPC network, you must use the complete URL. */
+// +optional
+SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
-	/* The Cloud Storage path to use for temporary files. Must be a valid Cloud Storage URL, beginning with `gs://`. */
-	// +optional
-	TempLocation *string `json:"tempLocation,omitempty"`
+/* The Cloud Storage path to use for temporary files. Must be a valid Cloud Storage URL, beginning with `gs://`. */
+// +optional
+TempLocation *string `json:"tempLocation,omitempty"`
 
-	/* Map of transform name prefixes of the job to be replaced with the corresponding name prefixes of the new job. Only applicable when updating a pipeline. */
-	// +optional
-	TransformNameMapping *FlextemplatejobTransformNameMapping `json:"transformNameMapping,omitempty"`
+/* Map of transform name prefixes of the job to be replaced with the corresponding name prefixes of the new job. Only applicable when updating a pipeline. */
+// +optional
+TransformNameMapping *FlextemplatejobTransformNameMapping `json:"transformNameMapping,omitempty"`
 }
 
 type DataflowFlexTemplateJobStatus struct {
 	/* Conditions represent the latest available observations of the
-	   DataflowFlexTemplateJob's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	// +optional
-	JobId *string `json:"jobId,omitempty"`
+	    DataflowFlexTemplateJob's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+// +optional
+JobId *string `json:"jobId,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The current state of the job.
-
+	
 	Jobs are created in the `JOB_STATE_STOPPED` state unless otherwise
 	specified.
-
+	
 	A job in the `JOB_STATE_RUNNING` state may asynchronously enter a
 	terminal state. After a job has reached a terminal state, no
 	further state updates may be made.
-
+	
 	This field may be mutated by the Cloud Dataflow service;
 	callers cannot mutate it. */
-	// +optional
-	State *string `json:"state,omitempty"`
+// +optional
+State *string `json:"state,omitempty"`
 
-	/* The type of Cloud Dataflow job. */
-	// +optional
-	Type *string `json:"type,omitempty"`
+/* The type of Cloud Dataflow job. */
+// +optional
+Type *string `json:"type,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdataflowflextemplatejob;gcpdataflowflextemplatejobs
@@ -167,22 +167,20 @@ type DataflowFlexTemplateJobStatus struct {
 // DataflowFlexTemplateJob is the Schema for the dataflow API
 // +k8s:openapi-gen=true
 type DataflowFlexTemplateJob struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   DataflowFlexTemplateJobSpec   `json:"spec,omitempty"`
-	Status DataflowFlexTemplateJobStatus `json:"status,omitempty"`
+  Spec DataflowFlexTemplateJobSpec `json:"spec,omitempty"`
+  Status DataflowFlexTemplateJobStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// DataflowFlexTemplateJobList contains a list of DataflowFlexTemplateJob
-type DataflowFlexTemplateJobList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []DataflowFlexTemplateJob `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&DataflowFlexTemplateJob{}, &DataflowFlexTemplateJobList{})
-}
+ // DataflowFlexTemplateJobList contains a list of DataflowFlexTemplateJob
+ type DataflowFlexTemplateJobList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []DataflowFlexTemplateJob `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&DataflowFlexTemplateJob{}, &DataflowFlexTemplateJobList{})
+ }

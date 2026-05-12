@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,155 +30,155 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type JobBinaryAuthorization struct {
-	/* Optional. If present, indicates to use Breakglass using this justification. If use_default is False, then it must be empty. For more information on breakglass, see https://cloud.google.com/binary-authorization/docs/using-breakglass */
-	// +optional
-	BreakglassJustification *string `json:"breakglassJustification,omitempty"`
+/* Optional. If present, indicates to use Breakglass using this justification. If use_default is False, then it must be empty. For more information on breakglass, see https://cloud.google.com/binary-authorization/docs/using-breakglass */
+// +optional
+BreakglassJustification *string `json:"breakglassJustification,omitempty"`
 
-	/* Optional. If True, indicates to use the default project's binary authorization policy. If False, binary authorization will be disabled. */
-	// +optional
-	UseDefault *bool `json:"useDefault,omitempty"`
+/* Optional. If True, indicates to use the default project's binary authorization policy. If False, binary authorization will be disabled. */
+// +optional
+UseDefault *bool `json:"useDefault,omitempty"`
 }
 
 type JobCloudSqlInstance struct {
-	/* The Cloud SQL instance connection names, as can be found in https://console.cloud.google.com/sql/instances. Visit https://cloud.google.com/sql/docs/mysql/connect-run for more information on how to connect Cloud SQL and Cloud Run. Format: {project}:{location}:{instance} */
-	// +optional
-	InstanceRefs []v1alpha1.ResourceRef `json:"instanceRefs,omitempty"`
+/* The Cloud SQL instance connection names, as can be found in https://console.cloud.google.com/sql/instances. Visit https://cloud.google.com/sql/docs/mysql/connect-run for more information on how to connect Cloud SQL and Cloud Run. Format: {project}:{location}:{instance} */
+// +optional
+InstanceRefs []v1alpha1.ResourceRef `json:"instanceRefs,omitempty"`
 }
 
 type JobContainers struct {
-	/* Arguments to the entrypoint. The docker image's CMD is used if this is not provided. */
-	// +optional
-	Args []string `json:"args,omitempty"`
+/* Arguments to the entrypoint. The docker image's CMD is used if this is not provided. */
+// +optional
+Args []string `json:"args,omitempty"`
 
-	/* Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if this is not provided. */
-	// +optional
-	Command []string `json:"command,omitempty"`
+/* Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if this is not provided. */
+// +optional
+Command []string `json:"command,omitempty"`
 
-	/* Names of the containers that must start before this container. */
-	// +optional
-	DependsOn []string `json:"dependsOn,omitempty"`
+/* Names of the containers that must start before this container. */
+// +optional
+DependsOn []string `json:"dependsOn,omitempty"`
 
-	/* List of environment variables to set in the container. */
-	// +optional
-	Env []JobEnv `json:"env,omitempty"`
+/* List of environment variables to set in the container. */
+// +optional
+Env []JobEnv `json:"env,omitempty"`
 
-	/* Required. Name of the container image in Dockerhub, Google Artifact Registry, or Google Container Registry. If the host is not provided, Dockerhub is assumed. */
-	// +optional
-	Image *string `json:"image,omitempty"`
+/* Required. Name of the container image in Dockerhub, Google Artifact Registry, or Google Container Registry. If the host is not provided, Dockerhub is assumed. */
+// +optional
+Image *string `json:"image,omitempty"`
 
-	/* Periodic probe of container liveness. Container will be restarted if the probe fails. */
-	// +optional
-	LivenessProbe *JobLivenessProbe `json:"livenessProbe,omitempty"`
+/* Periodic probe of container liveness. Container will be restarted if the probe fails. */
+// +optional
+LivenessProbe *JobLivenessProbe `json:"livenessProbe,omitempty"`
 
-	/* Name of the container specified as a DNS_LABEL (RFC 1123). */
-	// +optional
-	Name *string `json:"name,omitempty"`
+/* Name of the container specified as a DNS_LABEL (RFC 1123). */
+// +optional
+Name *string `json:"name,omitempty"`
 
 	/* List of ports to expose from the container. Only a single port can be
 	specified. The specified ports must be listening on all interfaces
 	(0.0.0.0) within the container to be accessible.
-
+	
 	If omitted, a port number will be chosen and passed to the container
 	through the PORT environment variable for the container to listen on. */
-	// +optional
-	Ports []JobPorts `json:"ports,omitempty"`
+// +optional
+Ports []JobPorts `json:"ports,omitempty"`
 
-	/* Compute Resource requirements by this container. */
-	// +optional
-	Resources *JobResources `json:"resources,omitempty"`
+/* Compute Resource requirements by this container. */
+// +optional
+Resources *JobResources `json:"resources,omitempty"`
 
-	/* Startup probe of application within the container. All other probes are disabled if a startup probe is provided, until it succeeds. Container will not be added to service endpoints if the probe fails. */
-	// +optional
-	StartupProbe *JobStartupProbe `json:"startupProbe,omitempty"`
+/* Startup probe of application within the container. All other probes are disabled if a startup probe is provided, until it succeeds. Container will not be added to service endpoints if the probe fails. */
+// +optional
+StartupProbe *JobStartupProbe `json:"startupProbe,omitempty"`
 
-	/* Volume to mount into the container's filesystem. */
-	// +optional
-	VolumeMounts []JobVolumeMounts `json:"volumeMounts,omitempty"`
+/* Volume to mount into the container's filesystem. */
+// +optional
+VolumeMounts []JobVolumeMounts `json:"volumeMounts,omitempty"`
 
-	/* Container's working directory. If not specified, the container runtime's default will be used, which might be configured in the container image. */
-	// +optional
-	WorkingDir *string `json:"workingDir,omitempty"`
+/* Container's working directory. If not specified, the container runtime's default will be used, which might be configured in the container image. */
+// +optional
+WorkingDir *string `json:"workingDir,omitempty"`
 }
 
 type JobEmptyDir struct {
-	/* The medium on which the data is stored. Acceptable values today is only MEMORY or none. When none, the default will currently be backed by memory but could change over time. +optional */
-	// +optional
-	Medium *string `json:"medium,omitempty"`
+/* The medium on which the data is stored. Acceptable values today is only MEMORY or none. When none, the default will currently be backed by memory but could change over time. +optional */
+// +optional
+Medium *string `json:"medium,omitempty"`
 
-	/* Limit on the storage usable by this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers. The default is nil which means that the limit is undefined. More info: https://cloud.google.com/run/docs/configuring/in-memory-volumes#configure-volume. Info in Kubernetes: https://kubernetes.io/docs/concepts/storage/volumes/#emptydir */
-	// +optional
-	SizeLimit *string `json:"sizeLimit,omitempty"`
+/* Limit on the storage usable by this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers. The default is nil which means that the limit is undefined. More info: https://cloud.google.com/run/docs/configuring/in-memory-volumes#configure-volume. Info in Kubernetes: https://kubernetes.io/docs/concepts/storage/volumes/#emptydir */
+// +optional
+SizeLimit *string `json:"sizeLimit,omitempty"`
 }
 
 type JobEnv struct {
-	/* Required. Name of the environment variable. Must not exceed 32768 characters. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+/* Required. Name of the environment variable. Must not exceed 32768 characters. */
+// +optional
+Name *string `json:"name,omitempty"`
 
-	/* Literal value of the environment variable. Defaults to "", and the maximum length is 32768 bytes. Variable references are not supported in Cloud Run. */
-	// +optional
-	Value *string `json:"value,omitempty"`
+/* Literal value of the environment variable. Defaults to "", and the maximum length is 32768 bytes. Variable references are not supported in Cloud Run. */
+// +optional
+Value *string `json:"value,omitempty"`
 
-	/* Source for the environment variable's value. */
-	// +optional
-	ValueSource *JobValueSource `json:"valueSource,omitempty"`
+/* Source for the environment variable's value. */
+// +optional
+ValueSource *JobValueSource `json:"valueSource,omitempty"`
 }
 
 type JobGcs struct {
-	/* Cloud Storage Bucket name. */
-	// +optional
-	BucketRef *v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
+/* Cloud Storage Bucket name. */
+// +optional
+BucketRef *v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
 
-	/* A list of additional flags to pass to the gcsfuse CLI. Options should be specified without the leading "--". */
-	// +optional
-	MountOptions []string `json:"mountOptions,omitempty"`
+/* A list of additional flags to pass to the gcsfuse CLI. Options should be specified without the leading "--". */
+// +optional
+MountOptions []string `json:"mountOptions,omitempty"`
 
-	/* If true, the volume will be mounted as read only for all mounts. */
-	// +optional
-	ReadOnly *bool `json:"readOnly,omitempty"`
+/* If true, the volume will be mounted as read only for all mounts. */
+// +optional
+ReadOnly *bool `json:"readOnly,omitempty"`
 }
 
 type JobHttpGet struct {
-	/* Optional. Custom headers to set in the request. HTTP allows repeated headers. */
-	// +optional
-	HttpHeaders []JobHttpHeaders `json:"httpHeaders,omitempty"`
+/* Optional. Custom headers to set in the request. HTTP allows repeated headers. */
+// +optional
+HttpHeaders []JobHttpHeaders `json:"httpHeaders,omitempty"`
 
-	/* Optional. Path to access on the HTTP server. Defaults to '/'. */
-	// +optional
-	Path *string `json:"path,omitempty"`
+/* Optional. Path to access on the HTTP server. Defaults to '/'. */
+// +optional
+Path *string `json:"path,omitempty"`
 
-	/* Optional. Port number to access on the container. Must be in the range 1 to 65535. If not specified, defaults to the exposed port of the container, which is the value of container.ports[0].containerPort. */
-	// +optional
-	Port *int32 `json:"port,omitempty"`
+/* Optional. Port number to access on the container. Must be in the range 1 to 65535. If not specified, defaults to the exposed port of the container, which is the value of container.ports[0].containerPort. */
+// +optional
+Port *int32 `json:"port,omitempty"`
 }
 
 type JobHttpHeaders struct {
-	/* Required. The header field name */
-	// +optional
-	Name *string `json:"name,omitempty"`
+/* Required. The header field name */
+// +optional
+Name *string `json:"name,omitempty"`
 
-	/* Optional. The header field value */
-	// +optional
-	Value *string `json:"value,omitempty"`
+/* Optional. The header field value */
+// +optional
+Value *string `json:"value,omitempty"`
 }
 
 type JobItems struct {
 	/* Integer octal mode bits to use on this file, must be a value between
 	01 and 0777 (octal). If 0 or not set, the Volume's default mode will be
 	used.
-
+	
 	Notes
-
+	
 	* Internally, a umask of 0222 will be applied to any non-zero value.
 	* This is an integer representation of the mode bits. So, the octal
 	integer value should look exactly as the chmod numeric notation with a
@@ -186,102 +187,102 @@ type JobItems struct {
 	493 (base-10).
 	* This might be in conflict with other options that affect the
 	file mode, like fsGroup, and the result can be other mode bits set. */
-	// +optional
-	Mode *int32 `json:"mode,omitempty"`
+// +optional
+Mode *int32 `json:"mode,omitempty"`
 
-	/* Required. The relative path of the secret in the container. */
-	// +optional
-	Path *string `json:"path,omitempty"`
+/* Required. The relative path of the secret in the container. */
+// +optional
+Path *string `json:"path,omitempty"`
 
-	/* The Cloud Secret Manager secret version. Can be 'latest' for the latest value, or an integer or a secret alias for a specific version. */
-	// +optional
-	VersionRef *v1alpha1.ResourceRef `json:"versionRef,omitempty"`
+/* The Cloud Secret Manager secret version. Can be 'latest' for the latest value, or an integer or a secret alias for a specific version. */
+// +optional
+VersionRef *v1alpha1.ResourceRef `json:"versionRef,omitempty"`
 }
 
 type JobLivenessProbe struct {
-	/* Optional. Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1. */
-	// +optional
-	FailureThreshold *int32 `json:"failureThreshold,omitempty"`
+/* Optional. Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1. */
+// +optional
+FailureThreshold *int32 `json:"failureThreshold,omitempty"`
 
-	/* Optional. HTTPGet specifies the http request to perform. Exactly one of httpGet, tcpSocket, or grpc must be specified. */
-	// +optional
-	HttpGet *JobHttpGet `json:"httpGet,omitempty"`
+/* Optional. HTTPGet specifies the http request to perform. Exactly one of httpGet, tcpSocket, or grpc must be specified. */
+// +optional
+HttpGet *JobHttpGet `json:"httpGet,omitempty"`
 
-	/* Optional. Number of seconds after the container has started before the probe is initiated. Defaults to 0 seconds. Minimum value is 0. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. */
-	// +optional
-	InitialDelaySeconds *int32 `json:"initialDelaySeconds,omitempty"`
+/* Optional. Number of seconds after the container has started before the probe is initiated. Defaults to 0 seconds. Minimum value is 0. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. */
+// +optional
+InitialDelaySeconds *int32 `json:"initialDelaySeconds,omitempty"`
 
-	/* Optional. How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. Must be greater or equal than timeout_seconds. */
-	// +optional
-	PeriodSeconds *int32 `json:"periodSeconds,omitempty"`
+/* Optional. How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. Must be greater or equal than timeout_seconds. */
+// +optional
+PeriodSeconds *int32 `json:"periodSeconds,omitempty"`
 
-	/* Optional. TCPSocket specifies an action involving a TCP port. Exactly one of httpGet, tcpSocket, or grpc must be specified. */
-	// +optional
-	TcpSocket *JobTcpSocket `json:"tcpSocket,omitempty"`
+/* Optional. TCPSocket specifies an action involving a TCP port. Exactly one of httpGet, tcpSocket, or grpc must be specified. */
+// +optional
+TcpSocket *JobTcpSocket `json:"tcpSocket,omitempty"`
 
-	/* Optional. Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. Maximum value is 3600. Must be smaller than period_seconds. */
-	// +optional
-	TimeoutSeconds *int32 `json:"timeoutSeconds,omitempty"`
+/* Optional. Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. Maximum value is 3600. Must be smaller than period_seconds. */
+// +optional
+TimeoutSeconds *int32 `json:"timeoutSeconds,omitempty"`
 }
 
 type JobNetworkInterfaces struct {
-	/* Optional. The VPC network that the Cloud Run resource will be able to send traffic to. At least one of network or subnetwork must be specified. If both network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If network is not specified, it will be looked up from the subnetwork. */
-	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+/* Optional. The VPC network that the Cloud Run resource will be able to send traffic to. At least one of network or subnetwork must be specified. If both network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If network is not specified, it will be looked up from the subnetwork. */
+// +optional
+NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
-	/* Optional. The VPC subnetwork that the Cloud Run resource will get IPs from. At least one of network or subnetwork must be specified. If both network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If subnetwork is not specified, the subnetwork with the same name with the network will be used. */
-	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+/* Optional. The VPC subnetwork that the Cloud Run resource will get IPs from. At least one of network or subnetwork must be specified. If both network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If subnetwork is not specified, the subnetwork with the same name with the network will be used. */
+// +optional
+SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
-	/* Optional. Network tags applied to this Cloud Run resource. */
-	// +optional
-	Tags []string `json:"tags,omitempty"`
+/* Optional. Network tags applied to this Cloud Run resource. */
+// +optional
+Tags []string `json:"tags,omitempty"`
 }
 
 type JobNfs struct {
-	/* Path that is exported by the NFS server. */
-	// +optional
-	Path *string `json:"path,omitempty"`
+/* Path that is exported by the NFS server. */
+// +optional
+Path *string `json:"path,omitempty"`
 
-	/* If true, the volume will be mounted as read only for all mounts. */
-	// +optional
-	ReadOnly *bool `json:"readOnly,omitempty"`
+/* If true, the volume will be mounted as read only for all mounts. */
+// +optional
+ReadOnly *bool `json:"readOnly,omitempty"`
 
-	/* Hostname or IP address of the NFS server */
-	// +optional
-	Server *string `json:"server,omitempty"`
+/* Hostname or IP address of the NFS server */
+// +optional
+Server *string `json:"server,omitempty"`
 }
 
 type JobPorts struct {
-	/* Port number the container listens on. This must be a valid TCP port number, 0 < container_port < 65536. */
-	// +optional
-	ContainerPort *int32 `json:"containerPort,omitempty"`
+/* Port number the container listens on. This must be a valid TCP port number, 0 < container_port < 65536. */
+// +optional
+ContainerPort *int32 `json:"containerPort,omitempty"`
 
-	/* If specified, used to specify which protocol to use. Allowed values are "http1" and "h2c". */
-	// +optional
-	Name *string `json:"name,omitempty"`
+/* If specified, used to specify which protocol to use. Allowed values are "http1" and "h2c". */
+// +optional
+Name *string `json:"name,omitempty"`
 }
 
 type JobResources struct {
 	/* Only `memory` and `cpu` keys in the map are supported.
-
+	
 	<p>Notes:
 	* The only supported values for CPU are '1', '2', '4', and '8'. Setting 4
 	CPU requires at least 2Gi of memory. For more information, go to
 	https://cloud.google.com/run/docs/configuring/cpu.
 	* For supported 'memory' values and syntax, go to
 	https://cloud.google.com/run/docs/configuring/memory-limits */
-	// +optional
-	Limits map[string]string `json:"limits,omitempty"`
+// +optional
+Limits map[string]string `json:"limits,omitempty"`
 }
 
 type JobSecret struct {
 	/* Integer representation of mode bits to use on created files by default.
 	Must be a value between 0000 and 0777 (octal), defaulting to 0444.
 	Directories within the path are not affected by  this setting.
-
+	
 	Notes
-
+	
 	* Internally, a umask of 0222 will be applied to any non-zero value.
 	* This is an integer representation of the mode bits. So, the octal
 	integer value should look exactly as the chmod numeric notation with a
@@ -290,297 +291,297 @@ type JobSecret struct {
 	493 (base-10).
 	* This might be in conflict with other options that affect the
 	file mode, like fsGroup, and the result can be other mode bits set.
-
+	
 	This might be in conflict with other options that affect the
 	file mode, like fsGroup, and as a result, other mode bits could be set. */
-	// +optional
-	DefaultMode *int32 `json:"defaultMode,omitempty"`
+// +optional
+DefaultMode *int32 `json:"defaultMode,omitempty"`
 
-	/* If unspecified, the volume will expose a file whose name is the secret, relative to VolumeMount.mount_path. If specified, the key will be used as the version to fetch from Cloud Secret Manager and the path will be the name of the file exposed in the volume. When items are defined, they must specify a path and a version. */
-	// +optional
-	Items []JobItems `json:"items,omitempty"`
+/* If unspecified, the volume will expose a file whose name is the secret, relative to VolumeMount.mount_path. If specified, the key will be used as the version to fetch from Cloud Secret Manager and the path will be the name of the file exposed in the volume. When items are defined, they must specify a path and a version. */
+// +optional
+Items []JobItems `json:"items,omitempty"`
 
-	/* Required. The name of the secret in Cloud Secret Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project. */
-	// +optional
-	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
+/* Required. The name of the secret in Cloud Secret Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project. */
+// +optional
+SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
 }
 
 type JobSecretKeyRef struct {
-	/* Required. The name of the secret in Cloud Secret  Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} */
-	// +optional
-	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
+/* Required. The name of the secret in Cloud Secret  Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} */
+// +optional
+SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
 
-	/* The Cloud Secret Manager secret version. Can be 'latest' for the latest version, an integer for a specific version, or a version alias. */
-	// +optional
-	VersionRef *v1alpha1.ResourceRef `json:"versionRef,omitempty"`
+/* The Cloud Secret Manager secret version. Can be 'latest' for the latest version, an integer for a specific version, or a version alias. */
+// +optional
+VersionRef *v1alpha1.ResourceRef `json:"versionRef,omitempty"`
 }
 
 type JobStartupProbe struct {
-	/* Optional. Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1. */
-	// +optional
-	FailureThreshold *int32 `json:"failureThreshold,omitempty"`
+/* Optional. Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1. */
+// +optional
+FailureThreshold *int32 `json:"failureThreshold,omitempty"`
 
-	/* Optional. HTTPGet specifies the http request to perform. Exactly one of httpGet, tcpSocket, or grpc must be specified. */
-	// +optional
-	HttpGet *JobHttpGet `json:"httpGet,omitempty"`
+/* Optional. HTTPGet specifies the http request to perform. Exactly one of httpGet, tcpSocket, or grpc must be specified. */
+// +optional
+HttpGet *JobHttpGet `json:"httpGet,omitempty"`
 
-	/* Optional. Number of seconds after the container has started before the probe is initiated. Defaults to 0 seconds. Minimum value is 0. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. */
-	// +optional
-	InitialDelaySeconds *int32 `json:"initialDelaySeconds,omitempty"`
+/* Optional. Number of seconds after the container has started before the probe is initiated. Defaults to 0 seconds. Minimum value is 0. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. */
+// +optional
+InitialDelaySeconds *int32 `json:"initialDelaySeconds,omitempty"`
 
-	/* Optional. How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. Must be greater or equal than timeout_seconds. */
-	// +optional
-	PeriodSeconds *int32 `json:"periodSeconds,omitempty"`
+/* Optional. How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. Must be greater or equal than timeout_seconds. */
+// +optional
+PeriodSeconds *int32 `json:"periodSeconds,omitempty"`
 
-	/* Optional. TCPSocket specifies an action involving a TCP port. Exactly one of httpGet, tcpSocket, or grpc must be specified. */
-	// +optional
-	TcpSocket *JobTcpSocket `json:"tcpSocket,omitempty"`
+/* Optional. TCPSocket specifies an action involving a TCP port. Exactly one of httpGet, tcpSocket, or grpc must be specified. */
+// +optional
+TcpSocket *JobTcpSocket `json:"tcpSocket,omitempty"`
 
-	/* Optional. Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. Maximum value is 3600. Must be smaller than period_seconds. */
-	// +optional
-	TimeoutSeconds *int32 `json:"timeoutSeconds,omitempty"`
+/* Optional. Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. Maximum value is 3600. Must be smaller than period_seconds. */
+// +optional
+TimeoutSeconds *int32 `json:"timeoutSeconds,omitempty"`
 }
 
 type JobTcpSocket struct {
-	/* Optional. Port number to access on the container. Must be in the range 1 to 65535. If not specified, defaults to the exposed port of the container, which is the value of container.ports[0].containerPort. */
-	// +optional
-	Port *int32 `json:"port,omitempty"`
+/* Optional. Port number to access on the container. Must be in the range 1 to 65535. If not specified, defaults to the exposed port of the container, which is the value of container.ports[0].containerPort. */
+// +optional
+Port *int32 `json:"port,omitempty"`
 }
 
 type JobTemplate struct {
-	/* Holds the single container that defines the unit of execution for this task. */
-	// +optional
-	Containers []JobContainers `json:"containers,omitempty"`
+/* Holds the single container that defines the unit of execution for this task. */
+// +optional
+Containers []JobContainers `json:"containers,omitempty"`
 
-	/* A reference to a customer managed encryption key (CMEK) to use to encrypt this container image. For more information, go to https://cloud.google.com/run/docs/securing/using-cmek */
-	// +optional
-	EncryptionKeyRef *v1alpha1.ResourceRef `json:"encryptionKeyRef,omitempty"`
+/* A reference to a customer managed encryption key (CMEK) to use to encrypt this container image. For more information, go to https://cloud.google.com/run/docs/securing/using-cmek */
+// +optional
+EncryptionKeyRef *v1alpha1.ResourceRef `json:"encryptionKeyRef,omitempty"`
 
-	/* Optional. The execution environment being used to host this Task. */
-	// +optional
-	ExecutionEnvironment *string `json:"executionEnvironment,omitempty"`
+/* Optional. The execution environment being used to host this Task. */
+// +optional
+ExecutionEnvironment *string `json:"executionEnvironment,omitempty"`
 
-	/* Number of retries allowed per Task, before marking this Task failed. Defaults to 3. */
-	// +optional
-	MaxRetries *int32 `json:"maxRetries,omitempty"`
+/* Number of retries allowed per Task, before marking this Task failed. Defaults to 3. */
+// +optional
+MaxRetries *int32 `json:"maxRetries,omitempty"`
 
-	/* Optional. Email address of the IAM service account associated with the Task of a Job. The service account represents the identity of the running task, and determines what permissions the task has. If not provided, the task will use the project's default service account. */
-	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+/* Optional. Email address of the IAM service account associated with the Task of a Job. The service account represents the identity of the running task, and determines what permissions the task has. If not provided, the task will use the project's default service account. */
+// +optional
+ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
-	/* Optional. Max allowed time duration the Task may be active before the system will actively try to mark it failed and kill associated containers. This applies per attempt of a task, meaning each retry can run for the full timeout. Defaults to 600 seconds. */
-	// +optional
-	Timeout *string `json:"timeout,omitempty"`
+/* Optional. Max allowed time duration the Task may be active before the system will actively try to mark it failed and kill associated containers. This applies per attempt of a task, meaning each retry can run for the full timeout. Defaults to 600 seconds. */
+// +optional
+Timeout *string `json:"timeout,omitempty"`
 
-	/* Optional. A list of Volumes to make available to containers. */
-	// +optional
-	Volumes []JobVolumes `json:"volumes,omitempty"`
+/* Optional. A list of Volumes to make available to containers. */
+// +optional
+Volumes []JobVolumes `json:"volumes,omitempty"`
 
-	/* Optional. VPC Access configuration to use for this Task. For more information, visit https://cloud.google.com/run/docs/configuring/connecting-vpc. */
-	// +optional
-	VpcAccess *JobVpcAccess `json:"vpcAccess,omitempty"`
+/* Optional. VPC Access configuration to use for this Task. For more information, visit https://cloud.google.com/run/docs/configuring/connecting-vpc. */
+// +optional
+VpcAccess *JobVpcAccess `json:"vpcAccess,omitempty"`
 }
 
 type JobValueSource struct {
-	/* Selects a secret and a specific version from Cloud Secret Manager. */
-	// +optional
-	SecretKeyRef *JobSecretKeyRef `json:"secretKeyRef,omitempty"`
+/* Selects a secret and a specific version from Cloud Secret Manager. */
+// +optional
+SecretKeyRef *JobSecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type JobVolumeMounts struct {
-	/* Required. Path within the container at which the volume should be mounted. Must not contain ':'. For Cloud SQL volumes, it can be left empty, or must otherwise be `/cloudsql`. All instances defined in the Volume will be available as `/cloudsql/[instance]`. For more information on Cloud SQL volumes, visit https://cloud.google.com/sql/docs/mysql/connect-run */
-	// +optional
-	MountPath *string `json:"mountPath,omitempty"`
+/* Required. Path within the container at which the volume should be mounted. Must not contain ':'. For Cloud SQL volumes, it can be left empty, or must otherwise be `/cloudsql`. All instances defined in the Volume will be available as `/cloudsql/[instance]`. For more information on Cloud SQL volumes, visit https://cloud.google.com/sql/docs/mysql/connect-run */
+// +optional
+MountPath *string `json:"mountPath,omitempty"`
 
-	/* Required. This must match the Name of a Volume. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+/* Required. This must match the Name of a Volume. */
+// +optional
+Name *string `json:"name,omitempty"`
 }
 
 type JobVolumes struct {
-	/* For Cloud SQL volumes, contains the specific instances that should be mounted. Visit https://cloud.google.com/sql/docs/mysql/connect-run for more information on how to connect Cloud SQL and Cloud Run. */
-	// +optional
-	CloudSqlInstance *JobCloudSqlInstance `json:"cloudSqlInstance,omitempty"`
+/* For Cloud SQL volumes, contains the specific instances that should be mounted. Visit https://cloud.google.com/sql/docs/mysql/connect-run for more information on how to connect Cloud SQL and Cloud Run. */
+// +optional
+CloudSqlInstance *JobCloudSqlInstance `json:"cloudSqlInstance,omitempty"`
 
-	/* Ephemeral storage used as a shared volume. */
-	// +optional
-	EmptyDir *JobEmptyDir `json:"emptyDir,omitempty"`
+/* Ephemeral storage used as a shared volume. */
+// +optional
+EmptyDir *JobEmptyDir `json:"emptyDir,omitempty"`
 
-	/* Persistent storage backed by a Google Cloud Storage bucket. */
-	// +optional
-	Gcs *JobGcs `json:"gcs,omitempty"`
+/* Persistent storage backed by a Google Cloud Storage bucket. */
+// +optional
+Gcs *JobGcs `json:"gcs,omitempty"`
 
-	/* Required. Volume's name. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+/* Required. Volume's name. */
+// +optional
+Name *string `json:"name,omitempty"`
 
-	/* For Nfs Volumes, contains the path to the nfs Volume */
-	// +optional
-	Nfs *JobNfs `json:"nfs,omitempty"`
+/* For Nfs Volumes, contains the path to the nfs Volume */
+// +optional
+Nfs *JobNfs `json:"nfs,omitempty"`
 
-	/* Secret represents a secret that should populate this volume. */
-	// +optional
-	Secret *JobSecret `json:"secret,omitempty"`
+/* Secret represents a secret that should populate this volume. */
+// +optional
+Secret *JobSecret `json:"secret,omitempty"`
 }
 
 type JobVpcAccess struct {
-	/* VPC Access connector name. Format: `projects/{project}/locations/{location}/connectors/{connector}`, where `{project}` can be project id or number. For more information on sending traffic to a VPC network via a connector, visit https://cloud.google.com/run/docs/configuring/vpc-connectors. */
-	// +optional
-	ConnectorRef *v1alpha1.ResourceRef `json:"connectorRef,omitempty"`
+/* VPC Access connector name. Format: `projects/{project}/locations/{location}/connectors/{connector}`, where `{project}` can be project id or number. For more information on sending traffic to a VPC network via a connector, visit https://cloud.google.com/run/docs/configuring/vpc-connectors. */
+// +optional
+ConnectorRef *v1alpha1.ResourceRef `json:"connectorRef,omitempty"`
 
-	/* Optional. Traffic VPC egress settings. If not provided, it defaults to PRIVATE_RANGES_ONLY. */
-	// +optional
-	Egress *string `json:"egress,omitempty"`
+/* Optional. Traffic VPC egress settings. If not provided, it defaults to PRIVATE_RANGES_ONLY. */
+// +optional
+Egress *string `json:"egress,omitempty"`
 
-	/* Optional. Direct VPC egress settings. Currently only single network interface is supported. */
-	// +optional
-	NetworkInterfaces []JobNetworkInterfaces `json:"networkInterfaces,omitempty"`
+/* Optional. Direct VPC egress settings. Currently only single network interface is supported. */
+// +optional
+NetworkInterfaces []JobNetworkInterfaces `json:"networkInterfaces,omitempty"`
 }
 
 type RunJobSpec struct {
-	/* Optional. User-provided annotations, which are stored in GCP. */
-	// +optional
-	Annotations map[string]string `json:"annotations,omitempty"`
+/* Optional. User-provided annotations, which are stored in GCP. */
+// +optional
+Annotations map[string]string `json:"annotations,omitempty"`
 
-	/* Optional. Settings for Binary Authorization feature. */
-	// +optional
-	BinaryAuthorization *JobBinaryAuthorization `json:"binaryAuthorization,omitempty"`
+/* Optional. Settings for Binary Authorization feature. */
+// +optional
+BinaryAuthorization *JobBinaryAuthorization `json:"binaryAuthorization,omitempty"`
 
-	/* Optional. Arbitrary identifier for the API client. */
-	// +optional
-	Client *string `json:"client,omitempty"`
+/* Optional. Arbitrary identifier for the API client. */
+// +optional
+Client *string `json:"client,omitempty"`
 
-	/* Optional. Arbitrary version identifier for the API client. */
-	// +optional
-	ClientVersion *string `json:"clientVersion,omitempty"`
+/* Optional. Arbitrary version identifier for the API client. */
+// +optional
+ClientVersion *string `json:"clientVersion,omitempty"`
 
-	/* Optional. The launch stage of the job. Possible values are `LAUNCH_STAGE_UNSPECIFIED`, `UNIMPLEMENTED`, `PRELAUNCH`, `EARLY_ACCESS`, `ALPHA`, `BETA`, `GA`, `DEPRECATED`. */
-	// +optional
-	LaunchStage *string `json:"launchStage,omitempty"`
+/* Optional. The launch stage of the job. Possible values are `LAUNCH_STAGE_UNSPECIFIED`, `UNIMPLEMENTED`, `PRELAUNCH`, `EARLY_ACCESS`, `ALPHA`, `BETA`, `GA`, `DEPRECATED`. */
+// +optional
+LaunchStage *string `json:"launchStage,omitempty"`
 
-	/* The location of the cloud run job */
-	// +optional
-	Location *string `json:"location,omitempty"`
+/* The location of the cloud run job */
+// +optional
+Location *string `json:"location,omitempty"`
 
-	/* The project that this resource belongs to. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+/* The project that this resource belongs to. */
+// +optional
+ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/* The RunJob name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The RunJob name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Required. The template used to create executions for this Job. */
-	Template JobTemplate `json:"template"`
+/* Required. The template used to create executions for this Job. */
+Template JobTemplate `json:"template"`
 }
 
 type JobLatestCreatedExecutionStatus struct {
-	/* Status for the execution completion. */
-	// +optional
-	CompletionStatus *string `json:"completionStatus,omitempty"`
+/* Status for the execution completion. */
+// +optional
+CompletionStatus *string `json:"completionStatus,omitempty"`
 
-	/* Creation timestamp of the execution. */
-	// +optional
-	CompletionTime *string `json:"completionTime,omitempty"`
+/* Creation timestamp of the execution. */
+// +optional
+CompletionTime *string `json:"completionTime,omitempty"`
 
-	/* Creation timestamp of the execution. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Creation timestamp of the execution. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* The deletion time of the execution. It is only populated as a response to a Delete request. */
-	// +optional
-	DeleteTime *string `json:"deleteTime,omitempty"`
+/* The deletion time of the execution. It is only populated as a response to a Delete request. */
+// +optional
+DeleteTime *string `json:"deleteTime,omitempty"`
 
-	/* Name of the execution. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+/* Name of the execution. */
+// +optional
+Name *string `json:"name,omitempty"`
 }
 
 type JobTerminalConditionStatus struct {
-	/* A reason for the execution condition. */
-	// +optional
-	ExecutionReason *string `json:"executionReason,omitempty"`
+/* A reason for the execution condition. */
+// +optional
+ExecutionReason *string `json:"executionReason,omitempty"`
 
-	/* Last time the condition transitioned from one status to another. */
-	// +optional
-	LastTransitionTime *string `json:"lastTransitionTime,omitempty"`
+/* Last time the condition transitioned from one status to another. */
+// +optional
+LastTransitionTime *string `json:"lastTransitionTime,omitempty"`
 
-	/* Human readable message indicating details about the current status. */
-	// +optional
-	Message *string `json:"message,omitempty"`
+/* Human readable message indicating details about the current status. */
+// +optional
+Message *string `json:"message,omitempty"`
 
-	/* A common (service-level) reason for this condition. */
-	// +optional
-	Reason *string `json:"reason,omitempty"`
+/* A common (service-level) reason for this condition. */
+// +optional
+Reason *string `json:"reason,omitempty"`
 
-	/* A reason for the revision condition. */
-	// +optional
-	RevisionReason *string `json:"revisionReason,omitempty"`
+/* A reason for the revision condition. */
+// +optional
+RevisionReason *string `json:"revisionReason,omitempty"`
 
-	/* How to interpret failures of this condition, one of Error, Warning, Info */
-	// +optional
-	Severity *string `json:"severity,omitempty"`
+/* How to interpret failures of this condition, one of Error, Warning, Info */
+// +optional
+Severity *string `json:"severity,omitempty"`
 
-	/* State of the condition. */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* State of the condition. */
+// +optional
+State *string `json:"state,omitempty"`
 
-	/* type is used to communicate the status of the reconciliation process. See also: https://github.com/knative/serving/blob/main/docs/spec/errors.md#error-conditions-and-reporting Types common to all resources include: * "Ready": True when the Resource is ready. */
-	// +optional
-	Type *string `json:"type,omitempty"`
+/* type is used to communicate the status of the reconciliation process. See also: https://github.com/knative/serving/blob/main/docs/spec/errors.md#error-conditions-and-reporting Types common to all resources include: * "Ready": True when the Resource is ready. */
+// +optional
+Type *string `json:"type,omitempty"`
 }
 
 type RunJobStatus struct {
 	/* Conditions represent the latest available observations of the
-	   RunJob's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Output only. The creation time. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+	    RunJob's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* Output only. The creation time. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. Email address of the authenticated creator. */
-	// +optional
-	Creator *string `json:"creator,omitempty"`
+/* Output only. Email address of the authenticated creator. */
+// +optional
+Creator *string `json:"creator,omitempty"`
 
-	/* Output only. The deletion time. It is only populated as a response to a Delete request. */
-	// +optional
-	DeleteTime *string `json:"deleteTime,omitempty"`
+/* Output only. The deletion time. It is only populated as a response to a Delete request. */
+// +optional
+DeleteTime *string `json:"deleteTime,omitempty"`
 
-	/* Output only. A system-generated fingerprint for this version of the resource. May be used to detect modification conflict during updates. */
-	// +optional
-	Etag *string `json:"etag,omitempty"`
+/* Output only. A system-generated fingerprint for this version of the resource. May be used to detect modification conflict during updates. */
+// +optional
+Etag *string `json:"etag,omitempty"`
 
-	/* Output only. Number of executions created for this job. */
-	// +optional
-	ExecutionCount *int32 `json:"executionCount,omitempty"`
+/* Output only. Number of executions created for this job. */
+// +optional
+ExecutionCount *int32 `json:"executionCount,omitempty"`
 
-	/* Output only. For a deleted resource, the time after which it will be permanently deleted. */
-	// +optional
-	ExpireTime *string `json:"expireTime,omitempty"`
+/* Output only. For a deleted resource, the time after which it will be permanently deleted. */
+// +optional
+ExpireTime *string `json:"expireTime,omitempty"`
 
-	/* A unique specifier for the RunJob resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+/* A unique specifier for the RunJob resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* LastModifiedCookie contains hashes of the last applied spec and the last observed GCP state. The format is "<spec-hash>/<gcp-hash>". This is used by the controller to detect if the user's desired state has changed or if the GCP resource has drifted. */
-	// +optional
-	LastModifiedCookie *string `json:"lastModifiedCookie,omitempty"`
+/* LastModifiedCookie contains hashes of the last applied spec and the last observed GCP state. The format is "<spec-hash>/<gcp-hash>". This is used by the controller to detect if the user's desired state has changed or if the GCP resource has drifted. */
+// +optional
+LastModifiedCookie *string `json:"lastModifiedCookie,omitempty"`
 
-	/* Output only. Email address of the last authenticated modifier. */
-	// +optional
-	LastModifier *string `json:"lastModifier,omitempty"`
+/* Output only. Email address of the last authenticated modifier. */
+// +optional
+LastModifier *string `json:"lastModifier,omitempty"`
 
-	/* Output only. Name of the last created execution. */
-	// +optional
-	LatestCreatedExecution []JobLatestCreatedExecutionStatus `json:"latestCreatedExecution,omitempty"`
+/* Output only. Name of the last created execution. */
+// +optional
+LatestCreatedExecution []JobLatestCreatedExecutionStatus `json:"latestCreatedExecution,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. Returns true if the Job is currently being acted upon by the
 	system to bring it into the desired state.
-
+	
 	When a new Job is created, or an existing one is updated, Cloud Run
 	will asynchronously perform all necessary steps to bring the Job to the
 	desired state. This process is called reconciliation.
@@ -590,31 +591,30 @@ type RunJobStatus struct {
 	false), there are two possible outcomes: reconciliation succeeded and the
 	state matches the Job, or there was an error,  and reconciliation failed.
 	This state can be found in `terminal_condition.state`.
-
+	
 	If reconciliation succeeded, the following fields will match:
 	`observed_generation` and `generation`, `latest_succeeded_execution` and
 	`latest_created_execution`.
-
+	
 	If reconciliation failed, `observed_generation` and
 	`latest_succeeded_execution` will have the state of the last succeeded
 	execution or empty for newly created Job. Additional information on the
 	failure can be found in `terminal_condition` and `conditions`. */
-	// +optional
-	Reconciling *bool `json:"reconciling,omitempty"`
+// +optional
+Reconciling *bool `json:"reconciling,omitempty"`
 
-	/* Output only. The Condition of this Job, containing its readiness status, and detailed error information in case it did not reach the desired state. */
-	// +optional
-	TerminalCondition []JobTerminalConditionStatus `json:"terminalCondition,omitempty"`
+/* Output only. The Condition of this Job, containing its readiness status, and detailed error information in case it did not reach the desired state. */
+// +optional
+TerminalCondition []JobTerminalConditionStatus `json:"terminalCondition,omitempty"`
 
-	/* Output only. Server assigned unique identifier for the Execution. The value is a UUID4 string and guaranteed to remain unchanged until the resource is deleted. */
-	// +optional
-	Uid *string `json:"uid,omitempty"`
+/* Output only. Server assigned unique identifier for the Execution. The value is a UUID4 string and guaranteed to remain unchanged until the resource is deleted. */
+// +optional
+Uid *string `json:"uid,omitempty"`
 
-	/* Output only. The last-modified time. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. The last-modified time. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcprunjob;gcprunjobs
@@ -631,22 +631,20 @@ type RunJobStatus struct {
 // RunJob is the Schema for the run API
 // +k8s:openapi-gen=true
 type RunJob struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   RunJobSpec   `json:"spec,omitempty"`
-	Status RunJobStatus `json:"status,omitempty"`
+  Spec RunJobSpec `json:"spec,omitempty"`
+  Status RunJobStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// RunJobList contains a list of RunJob
-type RunJobList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []RunJob `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&RunJob{}, &RunJobList{})
-}
+ // RunJobList contains a list of RunJob
+ type RunJobList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []RunJob `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&RunJob{}, &RunJobList{})
+ }

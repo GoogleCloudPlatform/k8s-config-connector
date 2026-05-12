@@ -53,11 +53,13 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	BigQueryReservationCapacityCommitmentGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(BigQueryReservationCapacityCommitment{}).Name(),
-	}
+	
+  	BigQueryReservationCapacityCommitmentGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(BigQueryReservationCapacityCommitment{}).Name(),
+  	}
+  
 
-	bigqueryreservationAPIVersion = SchemeGroupVersion.String()
+  	bigqueryreservationAPIVersion = SchemeGroupVersion.String()
 )

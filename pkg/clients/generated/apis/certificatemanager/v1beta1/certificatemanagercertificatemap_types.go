@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,81 +30,80 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type CertificateManagerCertificateMapSpec struct {
-	/* A human-readable description of the resource. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* A human-readable description of the resource. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type CertificatemapGclbTargetsStatus struct {
-	/* An IP configuration where this Certificate Map is serving. */
-	// +optional
-	IpConfigs []CertificatemapIpConfigsStatus `json:"ipConfigs,omitempty"`
+/* An IP configuration where this Certificate Map is serving. */
+// +optional
+IpConfigs []CertificatemapIpConfigsStatus `json:"ipConfigs,omitempty"`
 
 	/* Proxy name must be in the format projects/* /locations/* /targetHttpsProxies/*.
 	This field is part of a union field 'target_proxy': Only one of 'targetHttpsProxy' or
 	'targetSslProxy' may be set. */
-	// +optional
-	TargetHttpsProxy *string `json:"targetHttpsProxy,omitempty"`
+// +optional
+TargetHttpsProxy *string `json:"targetHttpsProxy,omitempty"`
 
 	/* Proxy name must be in the format projects/* /locations/* /targetSslProxies/*.
 	This field is part of a union field 'target_proxy': Only one of 'targetHttpsProxy' or
 	'targetSslProxy' may be set. */
-	// +optional
-	TargetSslProxy *string `json:"targetSslProxy,omitempty"`
+// +optional
+TargetSslProxy *string `json:"targetSslProxy,omitempty"`
 }
 
 type CertificatemapIpConfigsStatus struct {
-	/* An external IP address. */
-	// +optional
-	IpAddress *string `json:"ipAddress,omitempty"`
+/* An external IP address. */
+// +optional
+IpAddress *string `json:"ipAddress,omitempty"`
 
-	/* A list of ports. */
-	// +optional
-	Ports []int64 `json:"ports,omitempty"`
+/* A list of ports. */
+// +optional
+Ports []int64 `json:"ports,omitempty"`
 }
 
 type CertificateManagerCertificateMapStatus struct {
 	/* Conditions represent the latest available observations of the
-	   CertificateManagerCertificateMap's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	    CertificateManagerCertificateMap's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp of a Certificate Map. Timestamp is in RFC3339 UTC "Zulu" format,
 	accurate to nanoseconds with up to nine fractional digits.
 	Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z". */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* A list of target proxies that use this Certificate Map. */
-	// +optional
-	GclbTargets []CertificatemapGclbTargetsStatus `json:"gclbTargets,omitempty"`
+/* A list of target proxies that use this Certificate Map. */
+// +optional
+GclbTargets []CertificatemapGclbTargetsStatus `json:"gclbTargets,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Update timestamp of a Certificate Map. Timestamp is in RFC3339 UTC "Zulu" format,
 	accurate to nanoseconds with up to nine fractional digits.
 	Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z". */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcertificatemanagercertificatemap;gcpcertificatemanagercertificatemaps
@@ -120,22 +120,20 @@ type CertificateManagerCertificateMapStatus struct {
 // CertificateManagerCertificateMap is the Schema for the certificatemanager API
 // +k8s:openapi-gen=true
 type CertificateManagerCertificateMap struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   CertificateManagerCertificateMapSpec   `json:"spec,omitempty"`
-	Status CertificateManagerCertificateMapStatus `json:"status,omitempty"`
+  Spec CertificateManagerCertificateMapSpec `json:"spec,omitempty"`
+  Status CertificateManagerCertificateMapStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// CertificateManagerCertificateMapList contains a list of CertificateManagerCertificateMap
-type CertificateManagerCertificateMapList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []CertificateManagerCertificateMap `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&CertificateManagerCertificateMap{}, &CertificateManagerCertificateMapList{})
-}
+ // CertificateManagerCertificateMapList contains a list of CertificateManagerCertificateMap
+ type CertificateManagerCertificateMapList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []CertificateManagerCertificateMap `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&CertificateManagerCertificateMap{}, &CertificateManagerCertificateMapList{})
+ }

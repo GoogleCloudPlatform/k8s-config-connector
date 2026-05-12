@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,103 +30,102 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type AuthorizationpolicyDestinations struct {
-	/* Required. List of host names to match. Matched against the ":authority" header in http requests. At least one host should match. Each host can be an exact match, or a prefix match (example "mydomain.*") or a suffix match (example "*.myorg.com") or a presence (any) match "*". */
-	Hosts []string `json:"hosts"`
+/* Required. List of host names to match. Matched against the ":authority" header in http requests. At least one host should match. Each host can be an exact match, or a prefix match (example "mydomain.*") or a suffix match (example "*.myorg.com") or a presence (any) match "*". */
+Hosts []string `json:"hosts"`
 
-	/* Optional. Match against key:value pair in http header. Provides a flexible match based on HTTP headers, for potentially advanced use cases. At least one header should match. Avoid using header matches to make authorization decisions unless there is a strong guarantee that requests arrive through a trusted client or proxy. */
-	// +optional
-	HttpHeaderMatch *AuthorizationpolicyHttpHeaderMatch `json:"httpHeaderMatch,omitempty"`
+/* Optional. Match against key:value pair in http header. Provides a flexible match based on HTTP headers, for potentially advanced use cases. At least one header should match. Avoid using header matches to make authorization decisions unless there is a strong guarantee that requests arrive through a trusted client or proxy. */
+// +optional
+HttpHeaderMatch *AuthorizationpolicyHttpHeaderMatch `json:"httpHeaderMatch,omitempty"`
 
-	/* Optional. A list of HTTP methods to match. At least one method should match. Should not be set for gRPC services. */
-	// +optional
-	Methods []string `json:"methods,omitempty"`
+/* Optional. A list of HTTP methods to match. At least one method should match. Should not be set for gRPC services. */
+// +optional
+Methods []string `json:"methods,omitempty"`
 
-	/* Required. List of destination ports to match. At least one port should match. */
-	Ports []int64 `json:"ports"`
+/* Required. List of destination ports to match. At least one port should match. */
+Ports []int64 `json:"ports"`
 }
 
 type AuthorizationpolicyHttpHeaderMatch struct {
-	/* Required. The name of the HTTP header to match. For matching against the HTTP request's authority, use a headerMatch with the header name ":authority". For matching a request's method, use the headerName ":method". */
-	HeaderName string `json:"headerName"`
+/* Required. The name of the HTTP header to match. For matching against the HTTP request's authority, use a headerMatch with the header name ":authority". For matching a request's method, use the headerName ":method". */
+HeaderName string `json:"headerName"`
 
-	/* Required. The value of the header must match the regular expression specified in regexMatch. For regular expression grammar, please see: en.cppreference.com/w/cpp/regex/ecmascript For matching against a port specified in the HTTP request, use a headerMatch with headerName set to Host and a regular expression that satisfies the RFC2616 Host header's port specifier. */
-	RegexMatch string `json:"regexMatch"`
+/* Required. The value of the header must match the regular expression specified in regexMatch. For regular expression grammar, please see: en.cppreference.com/w/cpp/regex/ecmascript For matching against a port specified in the HTTP request, use a headerMatch with headerName set to Host and a regular expression that satisfies the RFC2616 Host header's port specifier. */
+RegexMatch string `json:"regexMatch"`
 }
 
 type AuthorizationpolicyRules struct {
-	/* Optional. List of attributes for the traffic destination. All of the destinations must match. A destination is a match if a request matches all the specified hosts, ports, methods and headers. If not set, the action specified in the 'action' field will be applied without any rule checks for the destination. */
-	// +optional
-	Destinations []AuthorizationpolicyDestinations `json:"destinations,omitempty"`
+/* Optional. List of attributes for the traffic destination. All of the destinations must match. A destination is a match if a request matches all the specified hosts, ports, methods and headers. If not set, the action specified in the 'action' field will be applied without any rule checks for the destination. */
+// +optional
+Destinations []AuthorizationpolicyDestinations `json:"destinations,omitempty"`
 
-	/* Optional. List of attributes for the traffic source. All of the sources must match. A source is a match if both principals and ip_blocks match. If not set, the action specified in the 'action' field will be applied without any rule checks for the source. */
-	// +optional
-	Sources []AuthorizationpolicySources `json:"sources,omitempty"`
+/* Optional. List of attributes for the traffic source. All of the sources must match. A source is a match if both principals and ip_blocks match. If not set, the action specified in the 'action' field will be applied without any rule checks for the source. */
+// +optional
+Sources []AuthorizationpolicySources `json:"sources,omitempty"`
 }
 
 type AuthorizationpolicySources struct {
-	/* Optional. List of CIDR ranges to match based on source IP address. At least one IP block should match. Single IP (e.g., "1.2.3.4") and CIDR (e.g., "1.2.3.0/24") are supported. Authorization based on source IP alone should be avoided. The IP addresses of any load balancers or proxies should be considered untrusted. */
-	// +optional
-	IpBlocks []string `json:"ipBlocks,omitempty"`
+/* Optional. List of CIDR ranges to match based on source IP address. At least one IP block should match. Single IP (e.g., "1.2.3.4") and CIDR (e.g., "1.2.3.0/24") are supported. Authorization based on source IP alone should be avoided. The IP addresses of any load balancers or proxies should be considered untrusted. */
+// +optional
+IpBlocks []string `json:"ipBlocks,omitempty"`
 
-	/* Optional. List of peer identities to match for authorization. At least one principal should match. Each peer can be an exact match, or a prefix match (example, "namespace/*") or a suffix match (example, "* /service-account") or a presence match "*". Authorization based on the principal name without certificate validation (configured by ServerTlsPolicy resource) is considered insecure. */
-	// +optional
-	Principals []string `json:"principals,omitempty"`
+/* Optional. List of peer identities to match for authorization. At least one principal should match. Each peer can be an exact match, or a prefix match (example, "namespace/*") or a suffix match (example, "* /service-account") or a presence match "*". Authorization based on the principal name without certificate validation (configured by ServerTlsPolicy resource) is considered insecure. */
+// +optional
+Principals []string `json:"principals,omitempty"`
 }
 
 type NetworkSecurityAuthorizationPolicySpec struct {
-	/* Required. The action to take when a rule match is found. Possible values are "ALLOW" or "DENY". */
-	Action string `json:"action"`
+/* Required. The action to take when a rule match is found. Possible values are "ALLOW" or "DENY". */
+Action string `json:"action"`
 
-	/* Optional. Free-text description of the resource. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* Optional. Free-text description of the resource. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Immutable. */
-	Location string `json:"location"`
+/* Immutable. */
+Location string `json:"location"`
 
-	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The NetworkSecurityAuthorizationPolicy name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The NetworkSecurityAuthorizationPolicy name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Optional. List of rules to match. Note that at least one of the rules must match in order for the action specified in the 'action' field to be taken. A rule is a match if there is a matching source and destination. If left blank, the action specified in the `action` field will be applied on every request. */
-	// +optional
-	Rules []AuthorizationpolicyRules `json:"rules,omitempty"`
+/* Optional. List of rules to match. Note that at least one of the rules must match in order for the action specified in the 'action' field to be taken. A rule is a match if there is a matching source and destination. If left blank, the action specified in the `action` field will be applied on every request. */
+// +optional
+Rules []AuthorizationpolicyRules `json:"rules,omitempty"`
 }
 
 type NetworkSecurityAuthorizationPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
-	   NetworkSecurityAuthorizationPolicy's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Output only. The timestamp when the resource was created. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+	    NetworkSecurityAuthorizationPolicy's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* Output only. The timestamp when the resource was created. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* A unique specifier for the NetworkSecurityAuthorizationPolicy resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+/* A unique specifier for the NetworkSecurityAuthorizationPolicy resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* Output only. The timestamp when the resource was updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. The timestamp when the resource was updated. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpnetworksecurityauthorizationpolicy;gcpnetworksecurityauthorizationpolicies
@@ -142,22 +142,20 @@ type NetworkSecurityAuthorizationPolicyStatus struct {
 // NetworkSecurityAuthorizationPolicy is the Schema for the networksecurity API
 // +k8s:openapi-gen=true
 type NetworkSecurityAuthorizationPolicy struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   NetworkSecurityAuthorizationPolicySpec   `json:"spec,omitempty"`
-	Status NetworkSecurityAuthorizationPolicyStatus `json:"status,omitempty"`
+  Spec NetworkSecurityAuthorizationPolicySpec `json:"spec,omitempty"`
+  Status NetworkSecurityAuthorizationPolicyStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// NetworkSecurityAuthorizationPolicyList contains a list of NetworkSecurityAuthorizationPolicy
-type NetworkSecurityAuthorizationPolicyList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []NetworkSecurityAuthorizationPolicy `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&NetworkSecurityAuthorizationPolicy{}, &NetworkSecurityAuthorizationPolicyList{})
-}
+ // NetworkSecurityAuthorizationPolicyList contains a list of NetworkSecurityAuthorizationPolicy
+ type NetworkSecurityAuthorizationPolicyList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []NetworkSecurityAuthorizationPolicy `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&NetworkSecurityAuthorizationPolicy{}, &NetworkSecurityAuthorizationPolicyList{})
+ }

@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,44 +30,43 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ApigeeSyncAuthorizationSpec struct {
 	/* Array of service accounts to grant access to control plane resources, each specified using the following format: 'serviceAccount:service-account-name'.
-
+	
 	The 'service-account-name' is formatted like an email address. For example: my-synchronizer-manager-serviceAccount@my_project_id.iam.gserviceaccount.com
-
+	
 	You might specify multiple service accounts, for example, if you have multiple environments and wish to assign a unique service account to each one.
-
+	
 	The service accounts must have **Apigee Synchronizer Manager** role. See also [Create service accounts](https://cloud.google.com/apigee/docs/hybrid/v1.8/sa-about#create-the-service-accounts). */
-	Identities []string `json:"identities"`
+Identities []string `json:"identities"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ApigeeSyncAuthorizationStatus struct {
 	/* Conditions represent the latest available observations of the
-	   ApigeeSyncAuthorization's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	    ApigeeSyncAuthorization's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Entity tag (ETag) used for optimistic concurrency control as a way to help prevent simultaneous updates from overwriting each other.
 	Used internally during updates. */
-	// +optional
-	Etag *string `json:"etag,omitempty"`
+// +optional
+Etag *string `json:"etag,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpapigeesyncauthorization;gcpapigeesyncauthorizations
@@ -83,22 +83,20 @@ type ApigeeSyncAuthorizationStatus struct {
 // ApigeeSyncAuthorization is the Schema for the apigee API
 // +k8s:openapi-gen=true
 type ApigeeSyncAuthorization struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ApigeeSyncAuthorizationSpec   `json:"spec,omitempty"`
-	Status ApigeeSyncAuthorizationStatus `json:"status,omitempty"`
+  Spec ApigeeSyncAuthorizationSpec `json:"spec,omitempty"`
+  Status ApigeeSyncAuthorizationStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// ApigeeSyncAuthorizationList contains a list of ApigeeSyncAuthorization
-type ApigeeSyncAuthorizationList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ApigeeSyncAuthorization `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&ApigeeSyncAuthorization{}, &ApigeeSyncAuthorizationList{})
-}
+ // ApigeeSyncAuthorizationList contains a list of ApigeeSyncAuthorization
+ type ApigeeSyncAuthorizationList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []ApigeeSyncAuthorization `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&ApigeeSyncAuthorization{}, &ApigeeSyncAuthorizationList{})
+ }

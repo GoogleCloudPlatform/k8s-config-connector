@@ -53,23 +53,25 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	SpeechCustomClassGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(SpeechCustomClass{}).Name(),
-	}
+	
+  	SpeechCustomClassGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(SpeechCustomClass{}).Name(),
+  	}
+  
+  	SpeechPhraseSetGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(SpeechPhraseSet{}).Name(),
+  	}
+  
+  	SpeechRecognizerGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(SpeechRecognizer{}).Name(),
+  	}
+  
 
-	SpeechPhraseSetGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(SpeechPhraseSet{}).Name(),
-	}
-
-	SpeechRecognizerGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(SpeechRecognizer{}).Name(),
-	}
-
-	speechAPIVersion = SchemeGroupVersion.String()
+  	speechAPIVersion = SchemeGroupVersion.String()
 )

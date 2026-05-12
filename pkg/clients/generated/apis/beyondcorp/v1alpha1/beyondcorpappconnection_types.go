@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,84 +30,83 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type AppconnectionApplicationEndpoint struct {
-	/* Hostname or IP address of the remote application endpoint. */
-	Host string `json:"host"`
+/* Hostname or IP address of the remote application endpoint. */
+Host string `json:"host"`
 
-	/* Port of the remote application endpoint. */
-	Port int64 `json:"port"`
+/* Port of the remote application endpoint. */
+Port int64 `json:"port"`
 }
 
 type AppconnectionGateway struct {
-	/* AppGateway name in following format: projects/{project_id}/locations/{locationId}/appgateways/{gateway_id}. */
-	AppGateway string `json:"appGateway"`
+/* AppGateway name in following format: projects/{project_id}/locations/{locationId}/appgateways/{gateway_id}. */
+AppGateway string `json:"appGateway"`
 
-	/* Ingress port reserved on the gateways for this AppConnection, if not specified or zero, the default port is 19443. */
-	// +optional
-	IngressPort *int64 `json:"ingressPort,omitempty"`
+/* Ingress port reserved on the gateways for this AppConnection, if not specified or zero, the default port is 19443. */
+// +optional
+IngressPort *int64 `json:"ingressPort,omitempty"`
 
 	/* The type of hosting used by the gateway. Refer to
 	https://cloud.google.com/beyondcorp/docs/reference/rest/v1/projects.locations.appConnections#Type_1
 	for a list of possible values. */
-	// +optional
-	Type *string `json:"type,omitempty"`
+// +optional
+Type *string `json:"type,omitempty"`
 
-	/* Server-defined URI for this resource. */
-	// +optional
-	Uri *string `json:"uri,omitempty"`
+/* Server-defined URI for this resource. */
+// +optional
+Uri *string `json:"uri,omitempty"`
 }
 
 type BeyondCorpAppConnectionSpec struct {
-	/* Address of the remote application endpoint for the BeyondCorp AppConnection. */
-	ApplicationEndpoint AppconnectionApplicationEndpoint `json:"applicationEndpoint"`
+/* Address of the remote application endpoint for the BeyondCorp AppConnection. */
+ApplicationEndpoint AppconnectionApplicationEndpoint `json:"applicationEndpoint"`
 
-	/* List of AppConnectors that are authorised to be associated with this AppConnection. */
-	// +optional
-	Connectors []string `json:"connectors,omitempty"`
+/* List of AppConnectors that are authorised to be associated with this AppConnection. */
+// +optional
+Connectors []string `json:"connectors,omitempty"`
 
-	/* An arbitrary user-provided name for the AppConnection. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+/* An arbitrary user-provided name for the AppConnection. */
+// +optional
+DisplayName *string `json:"displayName,omitempty"`
 
-	/* Gateway used by the AppConnection. */
-	// +optional
-	Gateway *AppconnectionGateway `json:"gateway,omitempty"`
+/* Gateway used by the AppConnection. */
+// +optional
+Gateway *AppconnectionGateway `json:"gateway,omitempty"`
 
-	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. The region of the AppConnection. */
-	Region string `json:"region"`
+/* Immutable. The region of the AppConnection. */
+Region string `json:"region"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Immutable. The type of network connectivity used by the AppConnection. Refer to
 	https://cloud.google.com/beyondcorp/docs/reference/rest/v1/projects.locations.appConnections#type
 	for a list of possible values. */
-	// +optional
-	Type *string `json:"type,omitempty"`
+// +optional
+Type *string `json:"type,omitempty"`
 }
 
 type BeyondCorpAppConnectionStatus struct {
 	/* Conditions represent the latest available observations of the
-	   BeyondCorpAppConnection's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	    BeyondCorpAppConnection's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbeyondcorpappconnection;gcpbeyondcorpappconnections
@@ -123,22 +123,20 @@ type BeyondCorpAppConnectionStatus struct {
 // BeyondCorpAppConnection is the Schema for the beyondcorp API
 // +k8s:openapi-gen=true
 type BeyondCorpAppConnection struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   BeyondCorpAppConnectionSpec   `json:"spec,omitempty"`
-	Status BeyondCorpAppConnectionStatus `json:"status,omitempty"`
+  Spec BeyondCorpAppConnectionSpec `json:"spec,omitempty"`
+  Status BeyondCorpAppConnectionStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// BeyondCorpAppConnectionList contains a list of BeyondCorpAppConnection
-type BeyondCorpAppConnectionList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []BeyondCorpAppConnection `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&BeyondCorpAppConnection{}, &BeyondCorpAppConnectionList{})
-}
+ // BeyondCorpAppConnectionList contains a list of BeyondCorpAppConnection
+ type BeyondCorpAppConnectionList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []BeyondCorpAppConnection `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&BeyondCorpAppConnection{}, &BeyondCorpAppConnectionList{})
+ }
