@@ -110,8 +110,8 @@ cloud.google.com/go/analytics v0.21.5/go.mod h1:BQtOBHWTlJ96axpPPnw5CvGJ6i3Ve/qX
 cloud.google.com/go/analytics v0.21.6/go.mod h1:eiROFQKosh4hMaNhF85Oc9WO97Cpa7RggD40e/RBy8w=
 cloud.google.com/go/analytics v0.22.0/go.mod h1:eiROFQKosh4hMaNhF85Oc9WO97Cpa7RggD40e/RBy8w=
 cloud.google.com/go/analytics v0.23.0/go.mod h1:YPd7Bvik3WS95KBok2gPXDqQPHy08TsCQG6CdUCb+u0=
-cloud.google.com/go/analytics v0.30.1 h1:souLxu9tQHzF+0NDpKoIw4pl2WQ9K2JfkdPPs36BfXw=
-cloud.google.com/go/analytics v0.30.1/go.mod h1:V/FnINU5kMOsttZnKPnXfKi6clJUHTEXUKQjHxcNK8A=
+cloud.google.com/go/analytics v0.35.0 h1:GuwmzJHIaQRvtko6g4wW1ngQ7rpDvDLZ8M3iP3kiflU=
+cloud.google.com/go/analytics v0.35.0/go.mod h1:V9Qef2N0y8GDqQ9FTlmM2XpDEMYonZJRPSUNGZlPCcc=
 cloud.google.com/go/apigateway v1.3.0/go.mod h1:89Z8Bhpmxu6AmUxuVRg/ECRGReEdiP3vQtk4Z1J9rJk=
 cloud.google.com/go/apigateway v1.4.0/go.mod h1:pHVY9MKGaH9PQ3pJ4YLzoj6U5FUDeDFBllIz7WmzJoc=
 cloud.google.com/go/apigateway v1.5.0/go.mod h1:GpnZR3Q4rR7LVu5951qfXPJCHquZt02jf7xQx7kpqN8=
@@ -523,8 +523,8 @@ cloud.google.com/go/dataplex v1.13.0/go.mod h1:mHJYQQ2VEJHsyoC0OdNyy988DvEbPhqFs
 cloud.google.com/go/dataplex v1.14.0/go.mod h1:mHJYQQ2VEJHsyoC0OdNyy988DvEbPhqFs5OOLffLX0c=
 cloud.google.com/go/dataplex v1.14.1/go.mod h1:bWxQAbg6Smg+sca2+Ex7s8D9a5qU6xfXtwmq4BVReps=
 cloud.google.com/go/dataplex v1.14.2/go.mod h1:0oGOSFlEKef1cQeAHXy4GZPB/Ife0fz/PxBf+ZymA2U=
-cloud.google.com/go/dataplex v1.28.0 h1:rROI3iqMVI9nXT701ULoFRETQVAOAPC3mPSWFDxXFl0=
-cloud.google.com/go/dataplex v1.28.0/go.mod h1:VB+xlYJiJ5kreonXsa2cHPj0A3CfPh/mgiHG4JFhbUA=
+cloud.google.com/go/dataplex v1.34.0 h1:WXf+qC/Qhrq6B91HoXYcZJEv1nrLkFpM0HV+JX2SdPs=
+cloud.google.com/go/dataplex v1.34.0/go.mod h1:sOazL+Bs/PTxiMHQ5yBboBvEW9qPrpGogx3+RAgfIt8=
 cloud.google.com/go/dataproc v1.7.0/go.mod h1:CKAlMjII9H90RXaMpSxQ8EU6dQx6iAYNPcYPOkSbi8s=
 cloud.google.com/go/dataproc v1.8.0/go.mod h1:5OW+zNAH0pMpw14JVrPONsxMQYMBqJuzORhIBfBn9uI=
 cloud.google.com/go/dataproc v1.12.0/go.mod h1:zrF3aX0uV3ikkMz6z4uBbIKyhRITnxvr4i3IjKsKrw4=

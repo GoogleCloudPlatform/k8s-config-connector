@@ -180,8 +180,9 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/gkebackup/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/run/v2/*.proto \
 		./third_party/googleapis/mockgcp/cloud/speech/v2/*.proto \
+		./third_party/googleapis/mockgcp/cloud/dataplex/v1/*.proto \
+		./third_party/googleapis/mockgcp/analytics/admin/v1alpha/*.proto \
 		./third_party/googleapis/mockgcp/devtools/sourcerepo/v1/*.proto
-
 
 .PHONY: generate-grpc-for-google-protos
 generate-grpc-for-google-protos:
@@ -211,14 +212,11 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/apigateway/v1/apigateway_service.proto \
 		./third_party/googleapis/google/cloud/networksecurity/v1beta1/*.proto \
 		./third_party/googleapis/google/cloud/networkservices/v1/*.proto \
-		./third_party/googleapis/google/cloud/dataplex/v1/*.proto \
 		./third_party/googleapis/google/cloud/clouddms/v1/*.proto \
 		./third_party/googleapis/google/cloud/notebooks/v1/*.proto \
 		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto \
 		./third_party/googleapis/google/iam/v2/*.proto \
-		./third_party/googleapis/google/logging/v2/*.proto \
-		./third_party/googleapis/google/analytics/admin/v1alpha/*.proto
-
+		./third_party/googleapis/google/logging/v2/*.proto
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:
 	mkdir -p temp/

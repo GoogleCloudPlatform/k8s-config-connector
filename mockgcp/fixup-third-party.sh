@@ -39,6 +39,7 @@ mv google/pubsub/ mockgcp/
 mv google/spanner/ mockgcp/
 mv google/storage/ mockgcp/
 mv google/monitoring/ mockgcp/
+mv google/analytics/ mockgcp/
 
 mv google/api/apikeys/ mockgcp/api/
 mv google/api/serviceusage/ mockgcp/api/
@@ -70,6 +71,8 @@ find . -type f -print0 | xargs -0 sed -i \
   -e "s@google\.pubsub@mockgcp.pubsub@g" \
   -e "s@google/monitoring/@mockgcp/monitoring/@g" \
   -e "s@google\.monitoring@mockgcp.monitoring@g" \
+  -e "s@google/analytics/@mockgcp/analytics/@g" \
+  -e "s@google\.analytics@mockgcp.analytics@g" \
   -e "s@google/storage/@mockgcp/storage/@g" \
   -e "s@google\.storage@mockgcp.storage@g" \
   -e "s@google/spanner/@mockgcp/spanner/@g" \

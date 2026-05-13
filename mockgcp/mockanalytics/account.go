@@ -31,8 +31,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
-	pb "cloud.google.com/go/analytics/admin/apiv1alpha/adminpb"
+	// Note: we use the "mockgcp" proto (not the real one), because the client uses GRPC.
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/analytics/admin/v1alpha"
 )
 
 func (s *analyticsAdminServer) GetAccount(ctx context.Context, req *pb.GetAccountRequest) (*pb.Account, error) {

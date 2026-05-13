@@ -25,10 +25,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
-	grpcpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/analytics/admin/v1alpha"
-
-	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
-	pb "cloud.google.com/go/analytics/admin/apiv1alpha/adminpb"
+	// Note: we use the "mockgcp" proto (not the real one), because the client uses GRPC.
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/analytics/admin/v1alpha"
 )
 
 func init() {
@@ -68,7 +66,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		grpcpb.RegisterAnalyticsAdminServiceHandler)
+		pb.RegisterAnalyticsAdminServiceHandler)
 	if err != nil {
 		return nil, err
 	}
