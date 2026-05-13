@@ -2620,6 +2620,16 @@
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].substitute.path" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.condition" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.path" is not set in unstructured objects
+[missing_field] crd=secretmanagerregionalsecrets.secretmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
+[missing_field] crd=secretmanagerregionalsecrets.secretmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.customerManagedEncryption.kmsKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=secretmanagerregionalsecrets.secretmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.expireTime" is not set in unstructured objects
+[missing_field] crd=secretmanagerregionalsecrets.secretmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=secretmanagerregionalsecrets.secretmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=secretmanagerregionalsecrets.secretmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.rotation.nextRotationTime" is not set in unstructured objects
+[missing_field] crd=secretmanagerregionalsecrets.secretmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.rotation.rotationPeriod" is not set in unstructured objects
+[missing_field] crd=secretmanagerregionalsecrets.secretmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.topics[].pubsubTopicRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=secretmanagerregionalsecrets.secretmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.ttl" is not set in unstructured objects
+[missing_field] crd=secretmanagerregionalsecrets.secretmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.versionAliases" is not set in unstructured objects
 [missing_field] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.configId" is not set in unstructured objects
 [missing_field] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set

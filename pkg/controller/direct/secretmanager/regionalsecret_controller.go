@@ -88,27 +88,28 @@ func (m *regionalSecretModel) AdapterForObject(ctx context.Context, op *directba
 
 	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
-	        return nil, err
+		return nil, err
 	}
 	typedID, ok := id.(*krm.SecretManagerRegionalSecretIdentity)
 	if !ok {
-	        return nil, fmt.Errorf("expected *krm.SecretManagerRegionalSecretIdentity, got %T", id)
+		return nil, fmt.Errorf("expected *krm.SecretManagerRegionalSecretIdentity, got %T", id)
 	}
 
 	if err = regionalNormalizeExternal(ctx, reader, copied, obj); err != nil {
-	        return nil, err
+		return nil, err
 	}
 
 	// Get secretmanager GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
-	        return nil, err
+		return nil, err
 	}
 	return &RegionalSecretAdapter{
-	        id:        typedID,
-	        gcpClient: gcpClient,
-	        desired:   obj,
-	}, nil}
+		id:        typedID,
+		gcpClient: gcpClient,
+		desired:   obj,
+	}, nil
+}
 
 func (m *regionalSecretModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	// TODO: Support URLs
@@ -125,25 +126,25 @@ type RegionalSecretAdapter struct {
 var _ directbase.Adapter = &RegionalSecretAdapter{}
 
 func regionalNormalizeExternal(ctx context.Context, reader client.Reader, src client.Object, secret *krm.SecretManagerRegionalSecret) error {
-        if secret.Spec.CustomerManagedEncryption != nil {
-                kmsKeyRef := secret.Spec.CustomerManagedEncryption.KmsKeyRef
-                kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, src, kmsKeyRef)
-                if err != nil {
-                        return err
-                }
-                secret.Spec.CustomerManagedEncryption.KmsKeyRef = kmsKeyRef
-        }
-        if len(secret.Spec.TopicRefs) != 0 {
-                for _, topicRef := range secret.Spec.TopicRefs {
-                        if topicRef.PubSubTopicRef != nil {
-                                _, err := topicRef.PubSubTopicRef.NormalizedExternal(ctx, reader, src.GetNamespace())
-                                if err != nil {
-                                        return err
-                                }
-                        }
-                }
-        }
-        return nil
+	if secret.Spec.CustomerManagedEncryption != nil {
+		kmsKeyRef := secret.Spec.CustomerManagedEncryption.KmsKeyRef
+		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, src, kmsKeyRef)
+		if err != nil {
+			return err
+		}
+		secret.Spec.CustomerManagedEncryption.KmsKeyRef = kmsKeyRef
+	}
+	if len(secret.Spec.TopicRefs) != 0 {
+		for _, topicRef := range secret.Spec.TopicRefs {
+			if topicRef.PubSubTopicRef != nil {
+				_, err := topicRef.PubSubTopicRef.NormalizedExternal(ctx, reader, src.GetNamespace())
+				if err != nil {
+					return err
+				}
+			}
+		}
+	}
+	return nil
 }
 func (a *RegionalSecretAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
@@ -209,9 +210,9 @@ func (a *RegionalSecretAdapter) Create(ctx context.Context, op *directbase.Creat
 	// GCP service does not allow setting version aliases during Secret creation.
 	resource.VersionAliases = nil
 	req := &secretmanagerpb.CreateSecretRequest{
-	        Parent:   "projects/" + a.id.Project + "/locations/" + a.id.Location,
-	        SecretId: a.id.Secret,
-	        Secret:   resource,
+		Parent:   "projects/" + a.id.Project + "/locations/" + a.id.Location,
+		SecretId: a.id.Secret,
+		Secret:   resource,
 	}
 	created, err := a.gcpClient.CreateSecret(ctx, req)
 	if err != nil {
