@@ -554,6 +554,14 @@ func PtrInt64ToPtrUint64(in *int64) *uint64 {
 	return &out
 }
 
+func PtrInt32ToPtrInt64(in *int32) *int64 {
+	if in == nil {
+		return nil
+	}
+	out := int64(*in)
+	return &out
+}
+
 func PtrInt64ToPtrInt32(in *int64) *int32 {
 	if in == nil {
 		return nil
