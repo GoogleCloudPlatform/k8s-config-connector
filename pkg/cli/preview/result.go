@@ -239,7 +239,9 @@ func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, al
 			altCtrl = string(pair.alt.ControllerType)
 			altStatus = formatReconciledStatus(pair.alt)
 			altDiffs = FormatFieldIDs(pair.alt.Diffs)
-			if pair.def == nil || pair.alt.ControllerType != pair.def.ControllerType {
+
+			// Only log alternative results if there is a difference from the default result
+			if pair.def == nil || altStatus != defStatus || altDiffs != defDiffs {
 				klog.V(0).Info("\"PreviewResult\" ", pair.alt.FormatGKNNReconciledResult())
 			}
 		} else {
