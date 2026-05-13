@@ -12,19 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1beta1
-
-type VertexAITensorboardRef struct {
-	/* A reference to an externally managed Vertex AI Tensorboard resource.
-	Should be of the format `projects/{{projectID}}/locations/{{location}}/tensorboards/{{tensorboardID}}`. */
-	External string `json:"external,omitempty"`
-
-	/* The `name` of a `VertexAITensorboard` resource. */
-	Name string `json:"name,omitempty"`
-
-	/* The `namespace` of a `VertexAITensorboard` resource. */
-	Namespace string `json:"namespace,omitempty"`
-}
+package v1alpha1
 
 type VertexAIPersistentResourceRef struct {
 	/* A reference to an externally managed Vertex AI PersistentResource resource.

@@ -22,7 +22,6 @@ package customjob
 
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -209,62 +208,6 @@ func CustomJobScheduling_ToProto(mapCtx *direct.MapContext, in *krm.CustomJobSch
 	out.Strategy = direct.Enum_ToProto[pb.Scheduling_Strategy](mapCtx, in.Strategy)
 	// MISSING: DisableRetries
 	// MISSING: MaxWaitDuration
-	return out
-}
-func CustomJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomJobSpec) *krm.CustomJobSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CustomJobSpec{}
-	// MISSING: PersistentResourceID
-	// MISSING: WorkerPoolSpecs
-	// MISSING: Scheduling
-	if in.GetServiceAccount() != "" {
-		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
-	}
-	if in.GetNetwork() != "" {
-		out.NetworkRef = &refsv1beta1.ComputeNetworkRef{External: in.GetNetwork()}
-	}
-	out.ReservedIPRanges = in.ReservedIpRanges
-	// MISSING: PSCInterfaceConfig
-	out.BaseOutputDirectory = CustomJobGcsDestination_FromProto(mapCtx, in.GetBaseOutputDirectory())
-	out.ProtectedArtifactLocationID = direct.LazyPtr(in.GetProtectedArtifactLocationId())
-	if in.GetTensorboard() != "" {
-		out.TensorboardRef = &refsv1beta1.VertexAITensorboardRef{External: in.GetTensorboard()}
-	}
-	out.EnableWebAccess = direct.LazyPtr(in.GetEnableWebAccess())
-	out.EnableDashboardAccess = direct.LazyPtr(in.GetEnableDashboardAccess())
-	// MISSING: Experiment
-	// MISSING: ExperimentRun
-	// MISSING: Models
-	return out
-}
-func CustomJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.CustomJobSpec) *pb.CustomJobSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomJobSpec{}
-	// MISSING: PersistentResourceID
-	// MISSING: WorkerPoolSpecs
-	// MISSING: Scheduling
-	if in.ServiceAccountRef != nil {
-		out.ServiceAccount = in.ServiceAccountRef.External
-	}
-	if in.NetworkRef != nil {
-		out.Network = in.NetworkRef.External
-	}
-	out.ReservedIpRanges = in.ReservedIPRanges
-	// MISSING: PSCInterfaceConfig
-	out.BaseOutputDirectory = CustomJobGcsDestination_ToProto(mapCtx, in.BaseOutputDirectory)
-	out.ProtectedArtifactLocationId = direct.ValueOf(in.ProtectedArtifactLocationID)
-	if in.TensorboardRef != nil {
-		out.Tensorboard = in.TensorboardRef.External
-	}
-	out.EnableWebAccess = direct.ValueOf(in.EnableWebAccess)
-	out.EnableDashboardAccess = direct.ValueOf(in.EnableDashboardAccess)
-	// MISSING: Experiment
-	// MISSING: ExperimentRun
-	// MISSING: Models
 	return out
 }
 func CustomJobWorkerPoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.WorkerPoolSpec) *krm.CustomJobWorkerPoolSpec {

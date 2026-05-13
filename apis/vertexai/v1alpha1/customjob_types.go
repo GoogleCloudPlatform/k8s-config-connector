@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -38,11 +39,13 @@ type VertexAICustomJobSpec struct {
 	// The name can be up to 128 characters long and can consist of any UTF-8
 	// characters.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.display_name
-	DisplayName *string `json:"displayName,omitempty"`
+	// +kubebuilder:validation:Required
+	DisplayName *string `json:"displayName"`
 
 	// Required. Job spec.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.job_spec
-	JobSpec *CustomJobSpec `json:"jobSpec,omitempty"`
+	// +kubebuilder:validation:Required
+	JobSpec *CustomJobSpec `json:"jobSpec"`
 
 	// Customer-managed encryption key options for a CustomJob. If this is set,
 	// then all resources created by the CustomJob will be encrypted with the
@@ -60,7 +63,8 @@ type CustomJobEncryptionSpec struct {
 	// Required. The Cloud KMS resource identifier of the customer managed
 	// encryption key used to protect a resource.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.EncryptionSpec.kms_key_name
-	KMSKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	// +kubebuilder:validation:Required
+	KMSKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef"`
 }
 
 // Represents the spec of a CustomJob.
@@ -69,13 +73,15 @@ type CustomJobSpec struct {
 	// Optional. The ID of the PersistentResource in the same Project and Location
 	// which to run
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.persistent_resource_id
-	PersistentResourceRef *refsv1beta1.VertexAIPersistentResourceRef `json:"persistentResourceRef,omitempty"`
+	// +optional
+	PersistentResourceRef *VertexAIPersistentResourceRef `json:"persistentResourceRef,omitempty"`
 
 	// Required. The spec of the worker pools including machine type and Docker
 	// image. All worker pools except the first one are optional and can be
 	// skipped by providing an empty value.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.worker_pool_specs
-	CustomJobWorkerPoolSpecs []CustomJobWorkerPoolSpec `json:"workerPoolSpecs,omitempty"`
+	// +kubebuilder:validation:Required
+	CustomJobWorkerPoolSpecs []CustomJobWorkerPoolSpec `json:"workerPoolSpecs"`
 
 	// CustomJobScheduling options for a CustomJob.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.scheduling
@@ -88,12 +94,14 @@ type CustomJobSpec struct {
 	// Optional. The full name of the Compute Engine
 	// network to which the Job should be peered.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.network
-	NetworkRef *refsv1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+	// +optional
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Optional. A list of names for the reserved ip ranges under the VPC network
 	// that can be used for this job.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.reserved_ip_ranges
-	ReservedIPRanges []string `json:"reservedIpRanges,omitempty"`
+	// +optional
+	ReservedIPRanges []string `json:"reservedIPRanges,omitempty"`
 
 	// The Cloud Storage location to store the output of this CustomJob or
 	// HyperparameterTuningJob.
@@ -102,20 +110,23 @@ type CustomJobSpec struct {
 
 	// The ID of the location to store protected artifacts. e.g. us-central1.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.protected_artifact_location_id
-	ProtectedArtifactLocationID *string `json:"protectedArtifactLocationId,omitempty"`
+	ProtectedArtifactLocationID *string `json:"protectedArtifactLocationID,omitempty"`
 
 	// Optional. The name of a Vertex AI Tensorboard resource to which this CustomJob will upload Tensorboard logs.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.tensorboard
-	TensorboardRef *refsv1beta1.VertexAITensorboardRef `json:"tensorboardRef,omitempty"`
+	// +optional
+	TensorboardRef *VertexAITensorboardRef `json:"tensorboardRef,omitempty"`
 
 	// Optional. Whether you want Vertex AI to enable interactive shell
 	// access to training containers.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.enable_web_access
+	// +optional
 	EnableWebAccess *bool `json:"enableWebAccess,omitempty"`
 
 	// Optional. Whether you want Vertex AI to enable access to the customized
 	// dashboard in training chief container.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.enable_dashboard_access
+	// +optional
 	EnableDashboardAccess *bool `json:"enableDashboardAccess,omitempty"`
 }
 
@@ -131,14 +142,17 @@ type CustomJobWorkerPoolSpec struct {
 
 	// Optional. Immutable. The specification of a single machine.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.WorkerPoolSpec.machine_spec
+	// +optional
 	CustomJobMachineSpec *CustomJobMachineSpec `json:"machineSpec,omitempty"`
 
 	// Optional. The number of worker replicas to use for this worker pool.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.WorkerPoolSpec.replica_count
+	// +optional
 	ReplicaCount *int64 `json:"replicaCount,omitempty"`
 
 	// Optional. List of NFS mount spec.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.WorkerPoolSpec.nfs_mounts
+	// +optional
 	CustomJobNfsMounts []CustomJobNfsMount `json:"nfsMounts,omitempty"`
 
 	// Disk spec.
@@ -151,7 +165,8 @@ type CustomJobContainerSpec struct {
 	// Required. The URI of a container image in the Container Registry that is to
 	// be run on each worker replica.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ContainerSpec.image_uri
-	ImageURI *string `json:"imageUri,omitempty"`
+	// +kubebuilder:validation:Required
+	ImageURI *string `json:"imageURI"`
 
 	// The command to be invoked when the container is started.
 	// It overrides the entrypoint instruction in Dockerfile when provided.
@@ -173,16 +188,19 @@ type CustomJobPythonPackageSpec struct {
 	// Required. The URI of a container image in Artifact Registry that will run
 	// the provided Python package.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.PythonPackageSpec.executor_image_uri
-	ExecutorImageURI *string `json:"executorImageURI,omitempty"`
+	// +kubebuilder:validation:Required
+	ExecutorImageURI *string `json:"executorImageURI"`
 
 	// Required. The Google Cloud Storage location of the Python package files
 	// which are the training program and its dependent packages.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.PythonPackageSpec.package_uris
-	PackageURIs []string `json:"packageURIs,omitempty"`
+	// +kubebuilder:validation:Required
+	PackageURIs []string `json:"packageURIs"`
 
 	// Required. The Python module name to run after installing the packages.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.PythonPackageSpec.python_module
-	PythonModule *string `json:"pythonModule,omitempty"`
+	// +kubebuilder:validation:Required
+	PythonModule *string `json:"pythonModule"`
 
 	// Command line arguments to be passed to the Python task.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.PythonPackageSpec.args
@@ -203,6 +221,7 @@ type CustomJobMachineSpec struct {
 	// Immutable. The type of accelerator(s) that may be attached to the machine as per
 	// accelerator_count.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.accelerator_type
+	// +kubebuilder:validation:Enum=ACCELERATOR_TYPE_UNSPECIFIED;NVIDIA_TESLA_K80;NVIDIA_TESLA_P100;NVIDIA_TESLA_V100;NVIDIA_TESLA_P4;NVIDIA_TESLA_T4;NVIDIA_TESLA_A100;NVIDIA_A100_80GB;NVIDIA_L4;NVIDIA_H100_80GB;NVIDIA_H100_MEGA_80GB;TPU_V2;TPU_V3;TPU_V4_POD;TPU_V5_LITEPOD
 	AcceleratorType *string `json:"acceleratorType,omitempty"`
 
 	// The number of accelerators to attach to the machine.
@@ -214,15 +233,18 @@ type CustomJobMachineSpec struct {
 type CustomJobNfsMount struct {
 	// Required. IP address of the NFS server.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NfsMount.server
-	Server *string `json:"server,omitempty"`
+	// +kubebuilder:validation:Required
+	Server *string `json:"server"`
 
 	// Required. Source path exported from NFS server.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NfsMount.path
-	Path *string `json:"path,omitempty"`
+	// +kubebuilder:validation:Required
+	Path *string `json:"path"`
 
 	// Required. Destination mount path.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NfsMount.mount_point
-	MountPoint *string `json:"mountPoint,omitempty"`
+	// +kubebuilder:validation:Required
+	MountPoint *string `json:"mountPoint"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.DiskSpec
@@ -240,13 +262,15 @@ type CustomJobDiskSpec struct {
 type CustomJobEnvVar struct {
 	// Required. Name of the environment variable.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.EnvVar.name
-	Name *string `json:"name,omitempty"`
+	// +kubebuilder:validation:Required
+	Name *string `json:"name"`
 
 	// Required. Variables that reference a $(VAR_NAME) are expanded
 	// using the previous defined environment variables in the container and
 	// any service environment variables.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.EnvVar.value
-	Value *string `json:"value,omitempty"`
+	// +kubebuilder:validation:Required
+	Value *string `json:"value"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.Scheduling
@@ -261,6 +285,7 @@ type CustomJobScheduling struct {
 
 	// Optional. This determines which type of scheduling strategy to use.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Scheduling.strategy
+	// +optional
 	Strategy *string `json:"strategy,omitempty"`
 }
 
@@ -268,7 +293,8 @@ type CustomJobScheduling struct {
 type CustomJobGcsDestination struct {
 	// Required. URI of the Cloud Storage directory.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.GcsDestination.output_uri_prefix
-	OutputURIPrefix *string `json:"outputURIPrefix,omitempty"`
+	// +kubebuilder:validation:Required
+	OutputURIPrefix *string `json:"outputURIPrefix"`
 }
 
 // VertexAICustomJobStatus defines the config connector machine state of VertexAICustomJob

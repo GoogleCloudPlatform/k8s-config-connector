@@ -100,6 +100,8 @@ spec:
                         description: The `namespace` of a `KMSCryptoKey` resource.
                         type: string
                     type: object
+                required:
+                - kmsKeyRef
                 type: object
               jobSpec:
                 description: Required. Job spec.
@@ -111,6 +113,8 @@ spec:
                       outputURIPrefix:
                         description: Required. URI of the Cloud Storage directory.
                         type: string
+                    required:
+                    - outputURIPrefix
                     type: object
                   enableDashboardAccess:
                     description: Optional. Whether you want Vertex AI to enable access
@@ -139,14 +143,15 @@ spec:
                       - external
                     properties:
                       external:
-                        description: A reference to an externally managed Compute
-                          Network resource. Should be of the format `projects/{{projectID}}/global/networks/{{network}}`.
+                        description: The value of an externally managed ComputeNetwork
+                          resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}"
+                          or "projects/{{projectId}}/global/networks/{{networkId}}"
                         type: string
                       name:
-                        description: The `name` of a `ComputeNetwork` resource.
+                        description: The name of a ComputeNetwork resource.
                         type: string
                       namespace:
-                        description: The `namespace` of a `ComputeNetwork` resource.
+                        description: The namespace of a ComputeNetwork resource.
                         type: string
                     type: object
                   persistentResourceRef:
@@ -180,11 +185,11 @@ spec:
                           resource.
                         type: string
                     type: object
-                  protectedArtifactLocationId:
+                  protectedArtifactLocationID:
                     description: The ID of the location to store protected artifacts.
                       e.g. us-central1.
                     type: string
-                  reservedIpRanges:
+                  reservedIPRanges:
                     description: Optional. A list of names for the reserved ip ranges
                       under the VPC network that can be used for this job.
                     items:
@@ -299,13 +304,18 @@ spec:
                                       defined environment variables in the container
                                       and any service environment variables.
                                     type: string
+                                required:
+                                - name
+                                - value
                                 type: object
                               type: array
-                            imageUri:
+                            imageURI:
                               description: Required. The URI of a container image
                                 in the Container Registry that is to be run on each
                                 worker replica.
                               type: string
+                          required:
+                          - imageURI
                           type: object
                         diskSpec:
                           description: Disk spec.
@@ -331,6 +341,22 @@ spec:
                             acceleratorType:
                               description: Immutable. The type of accelerator(s) that
                                 may be attached to the machine as per accelerator_count.
+                              enum:
+                              - ACCELERATOR_TYPE_UNSPECIFIED
+                              - NVIDIA_TESLA_K80
+                              - NVIDIA_TESLA_P100
+                              - NVIDIA_TESLA_V100
+                              - NVIDIA_TESLA_P4
+                              - NVIDIA_TESLA_T4
+                              - NVIDIA_TESLA_A100
+                              - NVIDIA_A100_80GB
+                              - NVIDIA_L4
+                              - NVIDIA_H100_80GB
+                              - NVIDIA_H100_MEGA_80GB
+                              - TPU_V2
+                              - TPU_V3
+                              - TPU_V4_POD
+                              - TPU_V5_LITEPOD
                               type: string
                             machineType:
                               description: Immutable. The type of the machine.
@@ -350,6 +376,10 @@ spec:
                               server:
                                 description: Required. IP address of the NFS server.
                                 type: string
+                            required:
+                            - mountPoint
+                            - path
+                            - server
                             type: object
                           type: array
                         pythonPackageSpec:
@@ -376,6 +406,9 @@ spec:
                                       defined environment variables in the container
                                       and any service environment variables.
                                     type: string
+                                required:
+                                - name
+                                - value
                                 type: object
                               type: array
                             executorImageURI:
@@ -394,6 +427,10 @@ spec:
                               description: Required. The Python module name to run
                                 after installing the packages.
                               type: string
+                          required:
+                          - executorImageURI
+                          - packageURIs
+                          - pythonModule
                           type: object
                         replicaCount:
                           description: Optional. The number of worker replicas to
@@ -402,6 +439,8 @@ spec:
                           type: integer
                       type: object
                     type: array
+                required:
+                - workerPoolSpecs
                 type: object
               labels:
                 additionalProperties:
@@ -448,6 +487,8 @@ spec:
                   will be used.
                 type: string
             required:
+            - displayName
+            - jobSpec
             - location
             - projectRef
             type: object
