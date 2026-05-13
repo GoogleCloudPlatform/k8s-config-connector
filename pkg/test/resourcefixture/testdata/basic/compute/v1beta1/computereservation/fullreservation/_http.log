@@ -55,12 +55,11 @@ X-Goog-Request-Params: project=${projectId}&zone=us-central1-a
           "interface": "NVME"
         }
       ],
-      "machineType": "n1-highmem-8",
-      "minCpuPlatform": "Intel Skylake"
+      "machineType": "n1-highmem-8"
     }
   },
   "specificReservationRequired": true,
-  "zone": "projects/${projectId}/global/zones/us-central1-a"
+  "zone": "us-central1-a"
 }
 
 200 OK
@@ -170,8 +169,7 @@ X-Xss-Protection: 0
           "interface": "NVME"
         }
       ],
-      "machineType": "n1-highmem-8",
-      "minCpuPlatform": "Intel Skylake"
+      "machineType": "n1-highmem-8"
     }
   },
   "specificReservationRequired": true,
@@ -297,8 +295,7 @@ X-Xss-Protection: 0
           "interface": "NVME"
         }
       ],
-      "machineType": "n1-highmem-8",
-      "minCpuPlatform": "Intel Skylake"
+      "machineType": "n1-highmem-8"
     }
   },
   "specificReservationRequired": true,
