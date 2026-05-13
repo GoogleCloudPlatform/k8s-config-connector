@@ -15,7 +15,6 @@
 package projects
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -78,20 +77,3 @@ func ParseProjectIDOrNumber(s string) (*ProjectName, error) {
 	return name, nil
 }
 
-// ReplaceProjectWithProjectNumberTemplate replaces the project identifier (ID or Number)
-// inside a GCP resource link with the literal string "${projectNumber}".
-// For example: "projects/my-project/zones/z" -> "projects/${projectNumber}/zones/z"
-func ReplaceProjectWithProjectNumberTemplate(s string) (string, error) {
-	prefix := "projects/"
-	before, after, found := strings.Cut(s, prefix)
-	if !found {
-		return "", fmt.Errorf("project identifier prefix %q not found in string: %q", prefix, s)
-	}
-
-	_, suffix, foundSuffix := strings.Cut(after, "/")
-	if foundSuffix {
-		suffix = "/" + suffix
-	}
-
-	return fmt.Sprintf("%s%s${projectNumber}%s", before, prefix, suffix), nil
-}
