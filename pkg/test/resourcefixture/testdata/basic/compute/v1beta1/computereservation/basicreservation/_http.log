@@ -40,11 +40,10 @@ X-Goog-Request-Params: project=${projectId}&zone=us-central1-a
   "specificReservation": {
     "count": "2",
     "instanceProperties": {
-      "machineType": "n1-standard-1",
-      "minCpuPlatform": "Intel Sandy Bridge"
+      "machineType": "n1-standard-1"
     }
   },
-  "zone": "projects/${projectId}/global/zones/us-central1-a"
+  "zone": "us-central1-a"
 }
 
 200 OK
@@ -145,8 +144,7 @@ X-Xss-Protection: 0
     "count": "2",
     "inUseCount": "0",
     "instanceProperties": {
-      "machineType": "n1-standard-1",
-      "minCpuPlatform": "Intel Sandy Bridge"
+      "machineType": "n1-standard-1"
     }
   },
   "specificReservationRequired": false,
@@ -260,8 +258,7 @@ X-Xss-Protection: 0
     "count": "1",
     "inUseCount": "0",
     "instanceProperties": {
-      "machineType": "n1-standard-1",
-      "minCpuPlatform": "Intel Sandy Bridge"
+      "machineType": "n1-standard-1"
     }
   },
   "specificReservationRequired": false,
