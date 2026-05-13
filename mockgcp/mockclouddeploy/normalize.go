@@ -15,12 +15,17 @@
 package mockclouddeploy
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "clouddeploy.googleapis.com") {
+		return
+	}
 	// Use standard placeholders to avoid conflicts with global normalizers
 	const (
 		PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
