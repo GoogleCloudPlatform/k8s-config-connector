@@ -62,7 +62,7 @@ type NetworkConfig struct {
 	//  private networks, as specified in RFC 1918.
 	// +kcc:proto:field=google.cloud.managedkafka.v1.NetworkConfig.subnet
 	// +required
-	SubnetworkRef *refs.ComputeSubnetworkRef `json:"subnetworkRef"`
+	SubnetRef *refs.ComputeSubnetworkRef `json:"subnetworkRef"`
 }
 
 // +kcc:proto=google.cloud.managedkafka.v1.GcpConfig
@@ -75,7 +75,7 @@ type GcpConfig struct {
 	// Optional. Immutable. The Cloud KMS Key name to use for encryption. The key
 	//  must be located in the same region as the cluster and cannot be changed.
 	// +kcc:proto:field=google.cloud.managedkafka.v1.GcpConfig.kms_key
-	KmsKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KMSKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
 // ManagedKafkaClusterSpec defines the desired state of ManagedKafkaCluster

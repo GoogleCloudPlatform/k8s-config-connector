@@ -21,45 +21,45 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func GcpConfig_FromProto(mapCtx *direct.MapContext, in *pb.GcpConfig) *krm.GcpConfig {
+func GcpConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GcpConfig) *krm.GcpConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krm.GcpConfig{}
-	out.AccessConfig = AccessConfig_FromProto(mapCtx, in.GetAccessConfig())
+	out.AccessConfig = AccessConfig_v1beta1_FromProto(mapCtx, in.GetAccessConfig())
 	if in.GetKmsKey() != "" {
-		out.KmsKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKey()}
+		out.KMSKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKey()}
 	}
 	return out
 }
-func GcpConfig_ToProto(mapCtx *direct.MapContext, in *krm.GcpConfig) *pb.GcpConfig {
+func GcpConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.GcpConfig) *pb.GcpConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.GcpConfig{}
-	out.AccessConfig = AccessConfig_ToProto(mapCtx, in.AccessConfig)
-	if in.KmsKeyRef != nil {
-		out.KmsKey = in.KmsKeyRef.External
+	out.AccessConfig = AccessConfig_v1beta1_ToProto(mapCtx, in.AccessConfig)
+	if in.KMSKeyRef != nil {
+		out.KmsKey = in.KMSKeyRef.External
 	}
 	return out
 }
-func NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfig {
+func NetworkConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krm.NetworkConfig{}
 	if in.GetSubnet() != "" {
-		out.SubnetworkRef = &refs.ComputeSubnetworkRef{External: in.GetSubnet()}
+		out.SubnetRef = &refs.ComputeSubnetworkRef{External: in.GetSubnet()}
 	}
 	return out
 }
-func NetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfig) *pb.NetworkConfig {
+func NetworkConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfig) *pb.NetworkConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.NetworkConfig{}
-	if in.SubnetworkRef != nil {
-		out.Subnet = in.SubnetworkRef.External
+	if in.SubnetRef != nil {
+		out.Subnet = in.SubnetRef.External
 	}
 	return out
 }

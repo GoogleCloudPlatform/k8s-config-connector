@@ -29,8 +29,8 @@ func init() {
 
 func managedKafkaConsumerGroupFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.ConsumerGroup{},
-		ManagedKafkaConsumerGroupSpec_FromProto, ManagedKafkaConsumerGroupSpec_ToProto,
-		ManagedKafkaConsumerGroupObservedState_FromProto, ManagedKafkaConsumerGroupObservedState_ToProto,
+		ManagedKafkaConsumerGroupSpec_v1alpha1_FromProto, ManagedKafkaConsumerGroupSpec_v1alpha1_ToProto,
+		ManagedKafkaConsumerGroupObservedState_v1alpha1_FromProto, ManagedKafkaConsumerGroupObservedState_v1alpha1_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".name") // special field, managed by KCC infrastructure
