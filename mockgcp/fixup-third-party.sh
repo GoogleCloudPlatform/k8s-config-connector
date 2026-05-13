@@ -50,6 +50,8 @@ mv google/devtools/sourcerepo mockgcp/devtools
 rm -rf mockgrafeas/
 mv grafeas mockgrafeas
 
+rm -rf mockgcp/cloud/workflows/
+
 cd mockgcp
 
 # Rewrite import paths: google.cloud. -> mockgcp.cloud. etc

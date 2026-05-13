@@ -30,7 +30,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	// Note we use "real" protos (not mockgcp) ones as it's GRPC API.
-	executionspb "cloud.google.com/go/workflows/executions/apiv1/executionspb"
+	executionspb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/workflows/executions/v1"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
