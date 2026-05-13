@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package apigeeapiproduct
+package apigee
 
 import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1alpha1"

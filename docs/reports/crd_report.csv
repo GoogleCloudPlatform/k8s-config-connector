@@ -16,6 +16,7 @@ apigateway.cnrm.cloud.google.com,APIGatewayAPIConfig,True,False,False,Terraform,
 apigateway.cnrm.cloud.google.com,APIGatewayAPI,True,True,False,Direct,True
 apigateway.cnrm.cloud.google.com,APIGatewayGateway,True,False,False,Terraform,False
 apigee.cnrm.cloud.google.com,ApigeeAddonsConfig,True,False,False,Terraform,False
+apigee.cnrm.cloud.google.com,ApigeeApiProduct,True,False,False,Direct,True
 apigee.cnrm.cloud.google.com,ApigeeEndpointAttachment,True,True,False,Direct,True
 apigee.cnrm.cloud.google.com,ApigeeEnvgroupAttachment,True,True,False,Direct,True
 apigee.cnrm.cloud.google.com,ApigeeEnvgroup,True,True,False,Direct,True
