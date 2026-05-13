@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,308 +30,307 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type AutomationAdvanceRolloutRule struct {
-	/* Required. ID of the rule. */
-	Id string `json:"id"`
+/* Required. ID of the rule. */
+Id string `json:"id"`
 
-	/* Optional. Proceeds only after phase name matched any one in the list. */
-	// +optional
-	SourcePhases []string `json:"sourcePhases,omitempty"`
+/* Optional. Proceeds only after phase name matched any one in the list. */
+// +optional
+SourcePhases []string `json:"sourcePhases,omitempty"`
 
-	/* Optional. How long to wait after a rollout is finished. */
-	// +optional
-	Wait *string `json:"wait,omitempty"`
+/* Optional. How long to wait after a rollout is finished. */
+// +optional
+Wait *string `json:"wait,omitempty"`
 }
 
 type AutomationPromoteReleaseRule struct {
-	/* Optional. The starting phase of the rollout created by this operation. Default to the first phase. */
-	// +optional
-	DestinationPhase *string `json:"destinationPhase,omitempty"`
+/* Optional. The starting phase of the rollout created by this operation. Default to the first phase. */
+// +optional
+DestinationPhase *string `json:"destinationPhase,omitempty"`
 
-	/* Optional. The ID of the stage in the pipeline to which this `Release` is deploying. */
-	// +optional
-	DestinationTargetRef *v1alpha1.ResourceRef `json:"destinationTargetRef,omitempty"`
+/* Optional. The ID of the stage in the pipeline to which this `Release` is deploying. */
+// +optional
+DestinationTargetRef *v1alpha1.ResourceRef `json:"destinationTargetRef,omitempty"`
 
-	/* Required. ID of the rule. */
-	Id string `json:"id"`
+/* Required. ID of the rule. */
+Id string `json:"id"`
 
-	/* Optional. How long the release need to be paused until being promoted to the next target. */
-	// +optional
-	Wait *string `json:"wait,omitempty"`
+/* Optional. How long the release need to be paused until being promoted to the next target. */
+// +optional
+Wait *string `json:"wait,omitempty"`
 }
 
 type AutomationRepairPhases struct {
-	/* Optional. Retries a failed job. */
-	// +optional
-	Retry *AutomationRetry `json:"retry,omitempty"`
+/* Optional. Retries a failed job. */
+// +optional
+Retry *AutomationRetry `json:"retry,omitempty"`
 
-	/* Optional. Rolls back a `Rollout`. */
-	// +optional
-	Rollback *AutomationRollback `json:"rollback,omitempty"`
+/* Optional. Rolls back a `Rollout`. */
+// +optional
+Rollback *AutomationRollback `json:"rollback,omitempty"`
 }
 
 type AutomationRepairRolloutRule struct {
-	/* Required. ID of the rule. */
-	Id string `json:"id"`
+/* Required. ID of the rule. */
+Id string `json:"id"`
 
-	/* Optional. Jobs to repair. */
-	// +optional
-	Jobs []string `json:"jobs,omitempty"`
+/* Optional. Jobs to repair. */
+// +optional
+Jobs []string `json:"jobs,omitempty"`
 
-	/* Optional. Phases within which jobs are subject to automatic repair actions on failure. */
-	// +optional
-	Phases []string `json:"phases,omitempty"`
+/* Optional. Phases within which jobs are subject to automatic repair actions on failure. */
+// +optional
+Phases []string `json:"phases,omitempty"`
 
-	/* Required. Defines the types of automatic repair phases for failed jobs. */
-	RepairPhases []AutomationRepairPhases `json:"repairPhases"`
+/* Required. Defines the types of automatic repair phases for failed jobs. */
+RepairPhases []AutomationRepairPhases `json:"repairPhases"`
 }
 
 type AutomationRetry struct {
-	/* Required. Total number of retries. */
-	Attempts int64 `json:"attempts"`
+/* Required. Total number of retries. */
+Attempts int64 `json:"attempts"`
 
-	/* Optional. The pattern of how wait time will be increased. */
-	// +optional
-	BackoffMode *string `json:"backoffMode,omitempty"`
+/* Optional. The pattern of how wait time will be increased. */
+// +optional
+BackoffMode *string `json:"backoffMode,omitempty"`
 
-	/* Optional. How long to wait for the first retry. */
-	// +optional
-	Wait *string `json:"wait,omitempty"`
+/* Optional. How long to wait for the first retry. */
+// +optional
+Wait *string `json:"wait,omitempty"`
 }
 
 type AutomationRollback struct {
-	/* Optional. The starting phase ID for the `Rollout`. */
-	// +optional
-	DestinationPhase *string `json:"destinationPhase,omitempty"`
+/* Optional. The starting phase ID for the `Rollout`. */
+// +optional
+DestinationPhase *string `json:"destinationPhase,omitempty"`
 
-	/* Optional. If pending rollout exists on the target, the rollback operation will be aborted. */
-	// +optional
-	DisableRollbackIfRolloutPending *bool `json:"disableRollbackIfRolloutPending,omitempty"`
+/* Optional. If pending rollout exists on the target, the rollback operation will be aborted. */
+// +optional
+DisableRollbackIfRolloutPending *bool `json:"disableRollbackIfRolloutPending,omitempty"`
 }
 
 type AutomationRules struct {
-	/* Optional. The `AdvanceRolloutRule` will automatically advance a successful Rollout. */
-	// +optional
-	AdvanceRolloutRule *AutomationAdvanceRolloutRule `json:"advanceRolloutRule,omitempty"`
+/* Optional. The `AdvanceRolloutRule` will automatically advance a successful Rollout. */
+// +optional
+AdvanceRolloutRule *AutomationAdvanceRolloutRule `json:"advanceRolloutRule,omitempty"`
 
-	/* Optional. `PromoteReleaseRule` will automatically promote a release from the current target to a specified target. */
-	// +optional
-	PromoteReleaseRule *AutomationPromoteReleaseRule `json:"promoteReleaseRule,omitempty"`
+/* Optional. `PromoteReleaseRule` will automatically promote a release from the current target to a specified target. */
+// +optional
+PromoteReleaseRule *AutomationPromoteReleaseRule `json:"promoteReleaseRule,omitempty"`
 
-	/* Optional. The `RepairRolloutRule` will automatically repair a failed rollout. */
-	// +optional
-	RepairRolloutRule *AutomationRepairRolloutRule `json:"repairRolloutRule,omitempty"`
+/* Optional. The `RepairRolloutRule` will automatically repair a failed rollout. */
+// +optional
+RepairRolloutRule *AutomationRepairRolloutRule `json:"repairRolloutRule,omitempty"`
 
-	/* Optional. The `TimedPromoteReleaseRule` will automatically promote a release from the current target(s) to the specified target(s) on a configured schedule. */
-	// +optional
-	TimedPromoteReleaseRule *AutomationTimedPromoteReleaseRule `json:"timedPromoteReleaseRule,omitempty"`
+/* Optional. The `TimedPromoteReleaseRule` will automatically promote a release from the current target(s) to the specified target(s) on a configured schedule. */
+// +optional
+TimedPromoteReleaseRule *AutomationTimedPromoteReleaseRule `json:"timedPromoteReleaseRule,omitempty"`
 }
 
 type AutomationSelector struct {
-	/* Optional. Contains attributes about a target. */
-	// +optional
-	Targets []AutomationTargets `json:"targets,omitempty"`
+/* Optional. Contains attributes about a target. */
+// +optional
+Targets []AutomationTargets `json:"targets,omitempty"`
 }
 
 type AutomationTargets struct {
-	/* Target labels. */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
+/* Target labels. */
+// +optional
+Labels map[string]string `json:"labels,omitempty"`
 
-	/* Optional. The Target to which the rule applies. */
-	// +optional
-	TargetRef *v1alpha1.ResourceRef `json:"targetRef,omitempty"`
+/* Optional. The Target to which the rule applies. */
+// +optional
+TargetRef *v1alpha1.ResourceRef `json:"targetRef,omitempty"`
 }
 
 type AutomationTimedPromoteReleaseRule struct {
-	/* Optional. The starting phase of the rollout created by this rule. */
-	// +optional
-	DestinationPhase *string `json:"destinationPhase,omitempty"`
+/* Optional. The starting phase of the rollout created by this rule. */
+// +optional
+DestinationPhase *string `json:"destinationPhase,omitempty"`
 
-	/* Optional. The ID of the stage in the pipeline to which this `Release` is deploying. */
-	// +optional
-	DestinationTargetRef *v1alpha1.ResourceRef `json:"destinationTargetRef,omitempty"`
+/* Optional. The ID of the stage in the pipeline to which this `Release` is deploying. */
+// +optional
+DestinationTargetRef *v1alpha1.ResourceRef `json:"destinationTargetRef,omitempty"`
 
-	/* Required. ID of the rule. */
-	Id string `json:"id"`
+/* Required. ID of the rule. */
+Id string `json:"id"`
 
-	/* Required. Schedule in crontab format. */
-	Schedule string `json:"schedule"`
+/* Required. Schedule in crontab format. */
+Schedule string `json:"schedule"`
 
-	/* Required. The time zone in IANA format. */
-	TimeZone string `json:"timeZone"`
+/* Required. The time zone in IANA format. */
+TimeZone string `json:"timeZone"`
 }
 
 type CloudDeployAutomationSpec struct {
-	/* Optional. User annotations. These attributes can only be set and used by the user, and not by Cloud Deploy. See https://google.aip.dev/128#annotations for more details such as format and size limitations. */
-	// +optional
-	Annotations map[string]string `json:"annotations,omitempty"`
+/* Optional. User annotations. These attributes can only be set and used by the user, and not by Cloud Deploy. See https://google.aip.dev/128#annotations for more details such as format and size limitations. */
+// +optional
+Annotations map[string]string `json:"annotations,omitempty"`
 
-	/* Immutable. Required. The DeliveryPipeline that this automation belongs to. */
-	DeliveryPipelineRef v1alpha1.ResourceRef `json:"deliveryPipelineRef"`
+/* Immutable. Required. The DeliveryPipeline that this automation belongs to. */
+DeliveryPipelineRef v1alpha1.ResourceRef `json:"deliveryPipelineRef"`
 
-	/* Optional. Description of the `Automation`. Max length is 255 characters. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* Optional. Description of the `Automation`. Max length is 255 characters. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Immutable. The location of this resource. */
-	Location string `json:"location"`
+/* Immutable. The location of this resource. */
+Location string `json:"location"`
 
-	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The GCP resource identifier. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The GCP resource identifier. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Required. List of Automation rules associated with the Automation resource. */
-	Rules []AutomationRules `json:"rules"`
+/* Required. List of Automation rules associated with the Automation resource. */
+Rules []AutomationRules `json:"rules"`
 
-	/* Required. Selected resources to which the automation will be applied. */
-	Selector AutomationSelector `json:"selector"`
+/* Required. Selected resources to which the automation will be applied. */
+Selector AutomationSelector `json:"selector"`
 
-	/* Required. Email address of the user-managed IAM service account that creates Cloud Deploy release and rollout resources. */
-	ServiceAccountRef v1alpha1.ResourceRef `json:"serviceAccountRef"`
+/* Required. Email address of the user-managed IAM service account that creates Cloud Deploy release and rollout resources. */
+ServiceAccountRef v1alpha1.ResourceRef `json:"serviceAccountRef"`
 
-	/* Optional. When Suspended, automation is deactivated from execution. */
-	// +optional
-	Suspended *bool `json:"suspended,omitempty"`
+/* Optional. When Suspended, automation is deactivated from execution. */
+// +optional
+Suspended *bool `json:"suspended,omitempty"`
 }
 
 type AutomationAdvanceRolloutRuleStatus struct {
-	/* Output only. Information around the state of the Automation rule. */
-	// +optional
-	Condition *AutomationConditionStatus `json:"condition,omitempty"`
+/* Output only. Information around the state of the Automation rule. */
+// +optional
+Condition *AutomationConditionStatus `json:"condition,omitempty"`
 }
 
 type AutomationConditionStatus struct {
-	/* Optional. Details around targets enumerated in the rule. */
-	// +optional
-	TargetsPresentCondition *AutomationTargetsPresentConditionStatus `json:"targetsPresentCondition,omitempty"`
+/* Optional. Details around targets enumerated in the rule. */
+// +optional
+TargetsPresentCondition *AutomationTargetsPresentConditionStatus `json:"targetsPresentCondition,omitempty"`
 
-	/* Optional. TimedPromoteReleaseCondition contains rule conditions specific to a an Automation with a timed promote release rule defined. */
-	// +optional
-	TimedPromoteReleaseCondition *AutomationTimedPromoteReleaseConditionStatus `json:"timedPromoteReleaseCondition,omitempty"`
+/* Optional. TimedPromoteReleaseCondition contains rule conditions specific to a an Automation with a timed promote release rule defined. */
+// +optional
+TimedPromoteReleaseCondition *AutomationTimedPromoteReleaseConditionStatus `json:"timedPromoteReleaseCondition,omitempty"`
 }
 
 type AutomationObservedStateStatus struct {
-	/* Output only. Time at which the automation was created. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. Time at which the automation was created. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Optional. The weak etag of the `Automation` resource. */
-	// +optional
-	Etag *string `json:"etag,omitempty"`
+/* Optional. The weak etag of the `Automation` resource. */
+// +optional
+Etag *string `json:"etag,omitempty"`
 
-	/* Required. List of Automation rules associated with the Automation resource. */
-	// +optional
-	Rules []AutomationRulesStatus `json:"rules,omitempty"`
+/* Required. List of Automation rules associated with the Automation resource. */
+// +optional
+Rules []AutomationRulesStatus `json:"rules,omitempty"`
 
-	/* Output only. Unique identifier of the `Automation`. */
-	// +optional
-	Uid *string `json:"uid,omitempty"`
+/* Output only. Unique identifier of the `Automation`. */
+// +optional
+Uid *string `json:"uid,omitempty"`
 
-	/* Output only. Time at which the automation was updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. Time at which the automation was updated. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type AutomationPromoteReleaseRuleStatus struct {
-	/* Output only. Information around the state of the Automation rule. */
-	// +optional
-	Condition *AutomationConditionStatus `json:"condition,omitempty"`
+/* Output only. Information around the state of the Automation rule. */
+// +optional
+Condition *AutomationConditionStatus `json:"condition,omitempty"`
 }
 
 type AutomationRepairRolloutRuleStatus struct {
-	/* Output only. Information around the state of the 'Automation' rule. */
-	// +optional
-	Condition *AutomationConditionStatus `json:"condition,omitempty"`
+/* Output only. Information around the state of the 'Automation' rule. */
+// +optional
+Condition *AutomationConditionStatus `json:"condition,omitempty"`
 }
 
 type AutomationRulesStatus struct {
-	/* Optional. The `AdvanceRolloutRule` will automatically advance a successful Rollout. */
-	// +optional
-	AdvanceRolloutRule *AutomationAdvanceRolloutRuleStatus `json:"advanceRolloutRule,omitempty"`
+/* Optional. The `AdvanceRolloutRule` will automatically advance a successful Rollout. */
+// +optional
+AdvanceRolloutRule *AutomationAdvanceRolloutRuleStatus `json:"advanceRolloutRule,omitempty"`
 
-	/* Optional. `PromoteReleaseRule` will automatically promote a release from the current target to a specified target. */
-	// +optional
-	PromoteReleaseRule *AutomationPromoteReleaseRuleStatus `json:"promoteReleaseRule,omitempty"`
+/* Optional. `PromoteReleaseRule` will automatically promote a release from the current target to a specified target. */
+// +optional
+PromoteReleaseRule *AutomationPromoteReleaseRuleStatus `json:"promoteReleaseRule,omitempty"`
 
-	/* Optional. The `RepairRolloutRule` will automatically repair a failed rollout. */
-	// +optional
-	RepairRolloutRule *AutomationRepairRolloutRuleStatus `json:"repairRolloutRule,omitempty"`
+/* Optional. The `RepairRolloutRule` will automatically repair a failed rollout. */
+// +optional
+RepairRolloutRule *AutomationRepairRolloutRuleStatus `json:"repairRolloutRule,omitempty"`
 
-	/* Optional. The `TimedPromoteReleaseRule` will automatically promote a release from the current target(s) to the specified target(s) on a configured schedule. */
-	// +optional
-	TimedPromoteReleaseRule *AutomationTimedPromoteReleaseRuleStatus `json:"timedPromoteReleaseRule,omitempty"`
+/* Optional. The `TimedPromoteReleaseRule` will automatically promote a release from the current target(s) to the specified target(s) on a configured schedule. */
+// +optional
+TimedPromoteReleaseRule *AutomationTimedPromoteReleaseRuleStatus `json:"timedPromoteReleaseRule,omitempty"`
 }
 
 type AutomationTargetsListStatus struct {
-	/* Optional. The destination target ID. */
-	// +optional
-	DestinationTargetID *string `json:"destinationTargetID,omitempty"`
+/* Optional. The destination target ID. */
+// +optional
+DestinationTargetID *string `json:"destinationTargetID,omitempty"`
 
-	/* Optional. The source target ID. */
-	// +optional
-	SourceTargetID *string `json:"sourceTargetID,omitempty"`
+/* Optional. The source target ID. */
+// +optional
+SourceTargetID *string `json:"sourceTargetID,omitempty"`
 }
 
 type AutomationTargetsPresentConditionStatus struct {
-	/* The list of Target names that do not exist. */
-	// +optional
-	MissingTargets []string `json:"missingTargets,omitempty"`
+/* The list of Target names that do not exist. */
+// +optional
+MissingTargets []string `json:"missingTargets,omitempty"`
 
-	/* True if there aren't any missing Targets. */
-	// +optional
-	Status *bool `json:"status,omitempty"`
+/* True if there aren't any missing Targets. */
+// +optional
+Status *bool `json:"status,omitempty"`
 
-	/* Last time the condition was updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Last time the condition was updated. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type AutomationTimedPromoteReleaseConditionStatus struct {
-	/* Output only. When the next scheduled promotion(s) will occur. */
-	// +optional
-	NextPromotionTime *string `json:"nextPromotionTime,omitempty"`
+/* Output only. When the next scheduled promotion(s) will occur. */
+// +optional
+NextPromotionTime *string `json:"nextPromotionTime,omitempty"`
 
-	/* Output only. A list of targets involved in the upcoming timed promotion(s). */
-	// +optional
-	TargetsList []AutomationTargetsListStatus `json:"targetsList,omitempty"`
+/* Output only. A list of targets involved in the upcoming timed promotion(s). */
+// +optional
+TargetsList []AutomationTargetsListStatus `json:"targetsList,omitempty"`
 }
 
 type AutomationTimedPromoteReleaseRuleStatus struct {
-	/* Output only. Information around the state of the Automation rule. */
-	// +optional
-	Condition *AutomationConditionStatus `json:"condition,omitempty"`
+/* Output only. Information around the state of the Automation rule. */
+// +optional
+Condition *AutomationConditionStatus `json:"condition,omitempty"`
 }
 
 type CloudDeployAutomationStatus struct {
 	/* Conditions represent the latest available observations of the
-	   CloudDeployAutomation's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the CloudDeployAutomation resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    CloudDeployAutomation's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the CloudDeployAutomation resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *AutomationObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *AutomationObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpclouddeployautomation;gcpclouddeployautomations
@@ -345,22 +345,20 @@ type CloudDeployAutomationStatus struct {
 // CloudDeployAutomation is the Schema for the clouddeploy API
 // +k8s:openapi-gen=true
 type CloudDeployAutomation struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   CloudDeployAutomationSpec   `json:"spec,omitempty"`
-	Status CloudDeployAutomationStatus `json:"status,omitempty"`
+  Spec CloudDeployAutomationSpec `json:"spec,omitempty"`
+  Status CloudDeployAutomationStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// CloudDeployAutomationList contains a list of CloudDeployAutomation
-type CloudDeployAutomationList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []CloudDeployAutomation `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&CloudDeployAutomation{}, &CloudDeployAutomationList{})
-}
+ // CloudDeployAutomationList contains a list of CloudDeployAutomation
+ type CloudDeployAutomationList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []CloudDeployAutomation `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&CloudDeployAutomation{}, &CloudDeployAutomationList{})
+ }

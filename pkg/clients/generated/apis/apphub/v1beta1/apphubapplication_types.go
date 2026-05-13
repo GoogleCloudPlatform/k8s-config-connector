@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,150 +30,149 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ApplicationAttributes struct {
-	/* Optional. Business team that ensures user needs are met and value is delivered */
-	// +optional
-	BusinessOwners []ApplicationBusinessOwners `json:"businessOwners,omitempty"`
+/* Optional. Business team that ensures user needs are met and value is delivered */
+// +optional
+BusinessOwners []ApplicationBusinessOwners `json:"businessOwners,omitempty"`
 
-	/* Optional. User-defined criticality information. */
-	// +optional
-	Criticality *ApplicationCriticality `json:"criticality,omitempty"`
+/* Optional. User-defined criticality information. */
+// +optional
+Criticality *ApplicationCriticality `json:"criticality,omitempty"`
 
-	/* Optional. Developer team that owns development and coding. */
-	// +optional
-	DeveloperOwners []ApplicationDeveloperOwners `json:"developerOwners,omitempty"`
+/* Optional. Developer team that owns development and coding. */
+// +optional
+DeveloperOwners []ApplicationDeveloperOwners `json:"developerOwners,omitempty"`
 
-	/* Optional. User-defined environment information. */
-	// +optional
-	Environment *ApplicationEnvironment `json:"environment,omitempty"`
+/* Optional. User-defined environment information. */
+// +optional
+Environment *ApplicationEnvironment `json:"environment,omitempty"`
 
-	/* Optional. Operator team that ensures runtime and operations. */
-	// +optional
-	OperatorOwners []ApplicationOperatorOwners `json:"operatorOwners,omitempty"`
+/* Optional. Operator team that ensures runtime and operations. */
+// +optional
+OperatorOwners []ApplicationOperatorOwners `json:"operatorOwners,omitempty"`
 }
 
 type ApplicationBusinessOwners struct {
-	/* Optional. Contact's name. Can have a maximum length of 63 characters. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+/* Optional. Contact's name. Can have a maximum length of 63 characters. */
+// +optional
+DisplayName *string `json:"displayName,omitempty"`
 
-	/* Required. Email address of the contacts. */
-	// +optional
-	Email *string `json:"email,omitempty"`
+/* Required. Email address of the contacts. */
+// +optional
+Email *string `json:"email,omitempty"`
 }
 
 type ApplicationCriticality struct {
-	/* Required. Criticality Type. */
-	// +optional
-	Type *string `json:"type,omitempty"`
+/* Required. Criticality Type. */
+// +optional
+Type *string `json:"type,omitempty"`
 }
 
 type ApplicationDeveloperOwners struct {
-	/* Optional. Contact's name. Can have a maximum length of 63 characters. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+/* Optional. Contact's name. Can have a maximum length of 63 characters. */
+// +optional
+DisplayName *string `json:"displayName,omitempty"`
 
-	/* Required. Email address of the contacts. */
-	// +optional
-	Email *string `json:"email,omitempty"`
+/* Required. Email address of the contacts. */
+// +optional
+Email *string `json:"email,omitempty"`
 }
 
 type ApplicationEnvironment struct {
-	/* Required. Environment Type. */
-	// +optional
-	Type *string `json:"type,omitempty"`
+/* Required. Environment Type. */
+// +optional
+Type *string `json:"type,omitempty"`
 }
 
 type ApplicationOperatorOwners struct {
-	/* Optional. Contact's name. Can have a maximum length of 63 characters. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+/* Optional. Contact's name. Can have a maximum length of 63 characters. */
+// +optional
+DisplayName *string `json:"displayName,omitempty"`
 
-	/* Required. Email address of the contacts. */
-	// +optional
-	Email *string `json:"email,omitempty"`
+/* Required. Email address of the contacts. */
+// +optional
+Email *string `json:"email,omitempty"`
 }
 
 type ApplicationScope struct {
-	/* Required. Scope Type. */
-	// +optional
-	Type *string `json:"type,omitempty"`
+/* Required. Scope Type. */
+// +optional
+Type *string `json:"type,omitempty"`
 }
 
 type AppHubApplicationSpec struct {
-	/* Optional. Consumer provided attributes. */
-	// +optional
-	Attributes *ApplicationAttributes `json:"attributes,omitempty"`
+/* Optional. Consumer provided attributes. */
+// +optional
+Attributes *ApplicationAttributes `json:"attributes,omitempty"`
 
-	/* Optional. User-defined description of an Application. Can have a maximum length of 2048 characters. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* Optional. User-defined description of an Application. Can have a maximum length of 2048 characters. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Optional. User-defined name for the Application. Can have a maximum length of 63 characters. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+/* Optional. User-defined name for the Application. Can have a maximum length of 63 characters. */
+// +optional
+DisplayName *string `json:"displayName,omitempty"`
 
-	/* Required. Defines the parent path of the resource. */
-	// +optional
-	Location *string `json:"location,omitempty"`
+/* Required. Defines the parent path of the resource. */
+// +optional
+Location *string `json:"location,omitempty"`
 
-	/* Required. The host project of the resource. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+/* Required. The host project of the resource. */
+// +optional
+ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/* The AppHubApplication name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The AppHubApplication name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Required. Immutable. Defines what data can be included into this Application. Limits which Services and Workloads can be registered. */
-	// +optional
-	Scope *ApplicationScope `json:"scope,omitempty"`
+/* Required. Immutable. Defines what data can be included into this Application. Limits which Services and Workloads can be registered. */
+// +optional
+Scope *ApplicationScope `json:"scope,omitempty"`
 }
 
 type ApplicationObservedStateStatus struct {
-	/* Output only. Create time. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. Create time. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. Application state. */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* Output only. Application state. */
+// +optional
+State *string `json:"state,omitempty"`
 
-	/* Output only. A universally unique identifier (in UUID4 format) for the `Application`. */
-	// +optional
-	Uid *string `json:"uid,omitempty"`
+/* Output only. A universally unique identifier (in UUID4 format) for the `Application`. */
+// +optional
+Uid *string `json:"uid,omitempty"`
 
-	/* Output only. Update time. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. Update time. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type AppHubApplicationStatus struct {
 	/* Conditions represent the latest available observations of the
-	   AppHubApplication's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the AppHubApplication resource in Google Cloud . */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    AppHubApplication's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the AppHubApplication resource in Google Cloud . */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in {{gcp_name_short}}. */
-	// +optional
-	ObservedState *ApplicationObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in {{gcp_name_short}}. */
+// +optional
+ObservedState *ApplicationObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpapphubapplication;gcpapphubapplications
@@ -187,22 +187,20 @@ type AppHubApplicationStatus struct {
 // AppHubApplication is the Schema for the apphub API
 // +k8s:openapi-gen=true
 type AppHubApplication struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   AppHubApplicationSpec   `json:"spec,omitempty"`
-	Status AppHubApplicationStatus `json:"status,omitempty"`
+  Spec AppHubApplicationSpec `json:"spec,omitempty"`
+  Status AppHubApplicationStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// AppHubApplicationList contains a list of AppHubApplication
-type AppHubApplicationList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []AppHubApplication `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&AppHubApplication{}, &AppHubApplicationList{})
-}
+ // AppHubApplicationList contains a list of AppHubApplication
+ type AppHubApplicationList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []AppHubApplication `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&AppHubApplication{}, &AppHubApplicationList{})
+ }

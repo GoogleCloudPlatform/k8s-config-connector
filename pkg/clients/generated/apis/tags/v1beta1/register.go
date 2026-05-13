@@ -53,29 +53,31 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	TagsLocationTagBindingGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(TagsLocationTagBinding{}).Name(),
-	}
+	
+  	TagsLocationTagBindingGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(TagsLocationTagBinding{}).Name(),
+  	}
+  
+  	TagsTagBindingGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(TagsTagBinding{}).Name(),
+  	}
+  
+  	TagsTagKeyGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(TagsTagKey{}).Name(),
+  	}
+  
+  	TagsTagValueGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(TagsTagValue{}).Name(),
+  	}
+  
 
-	TagsTagBindingGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(TagsTagBinding{}).Name(),
-	}
-
-	TagsTagKeyGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(TagsTagKey{}).Name(),
-	}
-
-	TagsTagValueGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(TagsTagValue{}).Name(),
-	}
-
-	tagsAPIVersion = SchemeGroupVersion.String()
+  	tagsAPIVersion = SchemeGroupVersion.String()
 )

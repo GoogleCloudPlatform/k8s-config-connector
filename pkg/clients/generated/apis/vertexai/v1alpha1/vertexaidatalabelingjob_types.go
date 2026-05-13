@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,133 +30,133 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type DatalabelingjobActiveLearningConfig struct {
-	/* Max number of human labeled DataItems. */
-	// +optional
-	MaxDataItemCount *int64 `json:"maxDataItemCount,omitempty"`
+/* Max number of human labeled DataItems. */
+// +optional
+MaxDataItemCount *int64 `json:"maxDataItemCount,omitempty"`
 
-	/* Max percent of total DataItems for human labeling. */
-	// +optional
-	MaxDataItemPercentage *int32 `json:"maxDataItemPercentage,omitempty"`
+/* Max percent of total DataItems for human labeling. */
+// +optional
+MaxDataItemPercentage *int32 `json:"maxDataItemPercentage,omitempty"`
 
-	/* Active learning data sampling config. For every active learning labeling iteration, it will select a batch of data based on the sampling strategy. */
-	// +optional
-	SampleConfig *DatalabelingjobSampleConfig `json:"sampleConfig,omitempty"`
+/* Active learning data sampling config. For every active learning labeling iteration, it will select a batch of data based on the sampling strategy. */
+// +optional
+SampleConfig *DatalabelingjobSampleConfig `json:"sampleConfig,omitempty"`
 
-	/* CMLE training config. For every active learning labeling iteration, system will train a machine learning model on CMLE. The trained model will be used by data sampling algorithm to select DataItems. */
-	// +optional
-	TrainingConfig *DatalabelingjobTrainingConfig `json:"trainingConfig,omitempty"`
+/* CMLE training config. For every active learning labeling iteration, system will train a machine learning model on CMLE. The trained model will be used by data sampling algorithm to select DataItems. */
+// +optional
+TrainingConfig *DatalabelingjobTrainingConfig `json:"trainingConfig,omitempty"`
 }
 
 type DatalabelingjobEncryptionSpec struct {
-	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. The key needs to be in the same region as where the compute resource is created. */
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
+/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. The key needs to be in the same region as where the compute resource is created. */
+KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
 }
 
 type DatalabelingjobSampleConfig struct {
-	/* The percentage of data needed to be labeled in each following batch (except the first batch). */
-	// +optional
-	FollowingBatchSamplePercentage *int32 `json:"followingBatchSamplePercentage,omitempty"`
+/* The percentage of data needed to be labeled in each following batch (except the first batch). */
+// +optional
+FollowingBatchSamplePercentage *int32 `json:"followingBatchSamplePercentage,omitempty"`
 
-	/* The percentage of data needed to be labeled in the first batch. */
-	// +optional
-	InitialBatchSamplePercentage *int32 `json:"initialBatchSamplePercentage,omitempty"`
+/* The percentage of data needed to be labeled in the first batch. */
+// +optional
+InitialBatchSamplePercentage *int32 `json:"initialBatchSamplePercentage,omitempty"`
 
-	/* Field to choose sampling strategy. Sampling strategy will decide which data should be selected for human labeling in every batch. */
-	// +optional
-	SampleStrategy *string `json:"sampleStrategy,omitempty"`
+/* Field to choose sampling strategy. Sampling strategy will decide which data should be selected for human labeling in every batch. */
+// +optional
+SampleStrategy *string `json:"sampleStrategy,omitempty"`
 }
 
 type DatalabelingjobTrainingConfig struct {
-	/* The timeout hours for the CMLE training job, expressed in milli hours i.e. 1,000 value in this field means 1 hour. */
-	// +optional
-	TimeoutTrainingMilliHours *int64 `json:"timeoutTrainingMilliHours,omitempty"`
+/* The timeout hours for the CMLE training job, expressed in milli hours i.e. 1,000 value in this field means 1 hour. */
+// +optional
+TimeoutTrainingMilliHours *int64 `json:"timeoutTrainingMilliHours,omitempty"`
 }
 
 type VertexAIDataLabelingJobSpec struct {
-	/* Parameters that configure the active learning pipeline. Active learning will label the data incrementally via several iterations. For every iteration, it will select a batch of data based on the sampling strategy. */
-	// +optional
-	ActiveLearningConfig *DatalabelingjobActiveLearningConfig `json:"activeLearningConfig,omitempty"`
+/* Parameters that configure the active learning pipeline. Active learning will label the data incrementally via several iterations. For every iteration, it will select a batch of data based on the sampling strategy. */
+// +optional
+ActiveLearningConfig *DatalabelingjobActiveLearningConfig `json:"activeLearningConfig,omitempty"`
 
 	/* Labels to assign to annotations generated by this DataLabelingJob.
-
+	
 	Label keys and values can be no longer than 64 characters
 	(Unicode codepoints), can only contain lowercase letters, numeric
 	characters, underscores and dashes. International characters are allowed.
 	See https://goo.gl/xmQnxf for more information and examples of labels.
 	System reserved label keys are prefixed with "aiplatform.googleapis.com/"
 	and are immutable. */
-	// +optional
-	AnnotationLabels map[string]string `json:"annotationLabels,omitempty"`
+// +optional
+AnnotationLabels map[string]string `json:"annotationLabels,omitempty"`
 
-	/* Required. Dataset resource names. Right now we only support labeling from a single Dataset. Format: projects/{project}/locations/{location}/datasets/{dataset} */
-	// +optional
-	DatasetRefs []v1alpha1.ResourceRef `json:"datasetRefs,omitempty"`
+/* Required. Dataset resource names. Right now we only support labeling from a single Dataset. Format: projects/{project}/locations/{location}/datasets/{dataset} */
+// +optional
+DatasetRefs []v1alpha1.ResourceRef `json:"datasetRefs,omitempty"`
 
-	/* Required. The user-defined name of the DataLabelingJob. The name can be up to 128 characters long and can consist of any UTF-8 characters. Display name of a DataLabelingJob. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+/* Required. The user-defined name of the DataLabelingJob. The name can be up to 128 characters long and can consist of any UTF-8 characters. Display name of a DataLabelingJob. */
+// +optional
+DisplayName *string `json:"displayName,omitempty"`
 
-	/* Customer-managed encryption key spec for a DataLabelingJob. If set, this DataLabelingJob will be secured by this key. */
-	// +optional
-	EncryptionSpec *DatalabelingjobEncryptionSpec `json:"encryptionSpec,omitempty"`
+/* Customer-managed encryption key spec for a DataLabelingJob. If set, this DataLabelingJob will be secured by this key. */
+// +optional
+EncryptionSpec *DatalabelingjobEncryptionSpec `json:"encryptionSpec,omitempty"`
 
-	/* Required. Input config parameters for the DataLabelingJob. */
-	// +optional
-	Inputs apiextensionsv1.JSON `json:"inputs,omitempty"`
+/* Required. Input config parameters for the DataLabelingJob. */
+// +optional
+Inputs apiextensionsv1.JSON `json:"inputs,omitempty"`
 
-	/* Required. Points to a YAML file stored on Google Cloud Storage describing the config for a specific type of DataLabelingJob. The schema files that can be used here are found in the https://storage.googleapis.com/google-cloud-aiplatform bucket in the /schema/datalabelingjob/inputs/ folder. */
-	// +optional
-	InputsSchemaURI *string `json:"inputsSchemaURI,omitempty"`
+/* Required. Points to a YAML file stored on Google Cloud Storage describing the config for a specific type of DataLabelingJob. The schema files that can be used here are found in the https://storage.googleapis.com/google-cloud-aiplatform bucket in the /schema/datalabelingjob/inputs/ folder. */
+// +optional
+InputsSchemaURI *string `json:"inputsSchemaURI,omitempty"`
 
-	/* Required. The Google Cloud Storage location of the instruction pdf. This pdf is shared with labelers, and provides detailed description on how to label DataItems in Datasets. */
-	// +optional
-	InstructionURI *string `json:"instructionURI,omitempty"`
+/* Required. The Google Cloud Storage location of the instruction pdf. This pdf is shared with labelers, and provides detailed description on how to label DataItems in Datasets. */
+// +optional
+InstructionURI *string `json:"instructionURI,omitempty"`
 
-	/* Required. Number of labelers to work on each DataItem. */
-	// +optional
-	LabelerCount *int32 `json:"labelerCount,omitempty"`
+/* Required. Number of labelers to work on each DataItem. */
+// +optional
+LabelerCount *int32 `json:"labelerCount,omitempty"`
 
-	/* The labels with user-defined metadata to organize your DataLabelingJobs. */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
+/* The labels with user-defined metadata to organize your DataLabelingJobs. */
+// +optional
+Labels map[string]string `json:"labels,omitempty"`
 
-	/* The location of this resource. */
-	Location string `json:"location"`
+/* The location of this resource. */
+Location string `json:"location"`
 
-	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The VertexAIDataLabelingJob name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The VertexAIDataLabelingJob name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* The SpecialistPools' resource names associated with this job. */
-	// +optional
-	SpecialistPools []string `json:"specialistPools,omitempty"`
+/* The SpecialistPools' resource names associated with this job. */
+// +optional
+SpecialistPools []string `json:"specialistPools,omitempty"`
 }
 
 type DatalabelingjobCurrentSpendStatus struct {
-	/* The three-letter currency code defined in ISO 4217. */
-	// +optional
-	CurrencyCode *string `json:"currencyCode,omitempty"`
+/* The three-letter currency code defined in ISO 4217. */
+// +optional
+CurrencyCode *string `json:"currencyCode,omitempty"`
 
-	/* Number of nano (10^-9) units of the amount. The value must be between -999,999,999 and +999,999,999 inclusive. If `units` is positive, `nanos` must be positive or zero. If `units` is zero, `nanos` can be positive, zero, or negative. If `units` is negative, `nanos` must be negative or zero. For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000. */
-	// +optional
-	Nanos *int32 `json:"nanos,omitempty"`
+/* Number of nano (10^-9) units of the amount. The value must be between -999,999,999 and +999,999,999 inclusive. If `units` is positive, `nanos` must be positive or zero. If `units` is zero, `nanos` can be positive, zero, or negative. If `units` is negative, `nanos` must be negative or zero. For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000. */
+// +optional
+Nanos *int32 `json:"nanos,omitempty"`
 
-	/* The whole units of the amount. For example if `currencyCode` is `"USD"`, then 1 unit is one US dollar. */
-	// +optional
-	Units *int64 `json:"units,omitempty"`
+/* The whole units of the amount. For example if `currencyCode` is `"USD"`, then 1 unit is one US dollar. */
+// +optional
+Units *int64 `json:"units,omitempty"`
 }
 
 type DatalabelingjobDetailsStatus struct {
@@ -165,12 +166,12 @@ type DatalabelingjobDetailsStatus struct {
 	the fully qualified name of the type (as in
 	`path/google.protobuf.Duration`). The name should be in a canonical form
 	(e.g., leading "." is not accepted).
-
+	
 	In practice, teams usually precompile into the binary all types that they
 	expect it to use in the context of Any. However, for URLs which use the
 	scheme `http`, `https`, or no scheme, one can optionally set up a type
 	server that maps type URLs to message definitions as follows:
-
+	
 	* If no scheme is provided, `https` is assumed.
 	* An HTTP GET on the URL must yield a [google.protobuf.Type][]
 	value in binary format, or produce an error.
@@ -179,82 +180,81 @@ type DatalabelingjobDetailsStatus struct {
 	lookup. Therefore, binary compatibility needs to be preserved
 	on changes to types. (Use versioned type names to manage
 	breaking changes.)
-
+	
 	Note: this functionality is not currently available in the official
 	protobuf release, and it is not used for type URLs beginning with
 	type.googleapis.com.
-
+	
 	Schemes other than `http`, `https` (or the empty scheme) might be
 	used with implementation specific semantics. */
-	// +optional
-	TypeURL *string `json:"typeURL,omitempty"`
+// +optional
+TypeURL *string `json:"typeURL,omitempty"`
 
-	/* Must be a valid serialized protocol buffer of the above specified type. */
-	// +optional
-	Value *string `json:"value,omitempty"`
+/* Must be a valid serialized protocol buffer of the above specified type. */
+// +optional
+Value *string `json:"value,omitempty"`
 }
 
 type DatalabelingjobErrorStatus struct {
-	/* The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code]. */
-	// +optional
-	Code *int32 `json:"code,omitempty"`
+/* The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code]. */
+// +optional
+Code *int32 `json:"code,omitempty"`
 
-	/* A list of messages that carry the error details.  There is a common set of message types for APIs to use. */
-	// +optional
-	Details []DatalabelingjobDetailsStatus `json:"details,omitempty"`
+/* A list of messages that carry the error details.  There is a common set of message types for APIs to use. */
+// +optional
+Details []DatalabelingjobDetailsStatus `json:"details,omitempty"`
 
-	/* A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client. */
-	// +optional
-	Message *string `json:"message,omitempty"`
+/* A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client. */
+// +optional
+Message *string `json:"message,omitempty"`
 }
 
 type DatalabelingjobObservedStateStatus struct {
-	/* Output only. Timestamp when this DataLabelingJob was created. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. Timestamp when this DataLabelingJob was created. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. Estimated cost(in US dollars) that the DataLabelingJob has incurred to date. */
-	// +optional
-	CurrentSpend *DatalabelingjobCurrentSpendStatus `json:"currentSpend,omitempty"`
+/* Output only. Estimated cost(in US dollars) that the DataLabelingJob has incurred to date. */
+// +optional
+CurrentSpend *DatalabelingjobCurrentSpendStatus `json:"currentSpend,omitempty"`
 
-	/* Output only. DataLabelingJob errors. It is only populated when job's state is `JOB_STATE_FAILED` or `JOB_STATE_CANCELLED`. */
-	// +optional
-	Error *DatalabelingjobErrorStatus `json:"error,omitempty"`
+/* Output only. DataLabelingJob errors. It is only populated when job's state is `JOB_STATE_FAILED` or `JOB_STATE_CANCELLED`. */
+// +optional
+Error *DatalabelingjobErrorStatus `json:"error,omitempty"`
 
-	/* Output only. Current labeling job progress percentage scaled in interval [0, 100], indicating the percentage of DataItems that has been finished. */
-	// +optional
-	LabelingProgress *int32 `json:"labelingProgress,omitempty"`
+/* Output only. Current labeling job progress percentage scaled in interval [0, 100], indicating the percentage of DataItems that has been finished. */
+// +optional
+LabelingProgress *int32 `json:"labelingProgress,omitempty"`
 
-	/* Output only. Resource name of the DataLabelingJob. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+/* Output only. Resource name of the DataLabelingJob. */
+// +optional
+Name *string `json:"name,omitempty"`
 
-	/* Output only. The detailed state of the job. */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* Output only. The detailed state of the job. */
+// +optional
+State *string `json:"state,omitempty"`
 
-	/* Output only. Timestamp when this DataLabelingJob was updated most recently. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. Timestamp when this DataLabelingJob was updated most recently. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type VertexAIDataLabelingJobStatus struct {
 	/* Conditions represent the latest available observations of the
-	   VertexAIDataLabelingJob's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the VertexAIDataLabelingJob resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    VertexAIDataLabelingJob's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the VertexAIDataLabelingJob resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *DatalabelingjobObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *DatalabelingjobObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpvertexaidatalabelingjob;gcpvertexaidatalabelingjobs
@@ -270,22 +270,20 @@ type VertexAIDataLabelingJobStatus struct {
 // VertexAIDataLabelingJob is the Schema for the vertexai API
 // +k8s:openapi-gen=true
 type VertexAIDataLabelingJob struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   VertexAIDataLabelingJobSpec   `json:"spec,omitempty"`
-	Status VertexAIDataLabelingJobStatus `json:"status,omitempty"`
+  Spec VertexAIDataLabelingJobSpec `json:"spec,omitempty"`
+  Status VertexAIDataLabelingJobStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// VertexAIDataLabelingJobList contains a list of VertexAIDataLabelingJob
-type VertexAIDataLabelingJobList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []VertexAIDataLabelingJob `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&VertexAIDataLabelingJob{}, &VertexAIDataLabelingJobList{})
-}
+ // VertexAIDataLabelingJobList contains a list of VertexAIDataLabelingJob
+ type VertexAIDataLabelingJobList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []VertexAIDataLabelingJob `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&VertexAIDataLabelingJob{}, &VertexAIDataLabelingJobList{})
+ }

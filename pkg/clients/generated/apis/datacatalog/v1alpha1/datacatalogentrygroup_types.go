@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,76 +30,75 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type DataCatalogEntryGroupSpec struct {
-	/* Entry group description. Can consist of several sentences or paragraphs that describe the entry group contents. Default value is an empty string. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* Entry group description. Can consist of several sentences or paragraphs that describe the entry group contents. Default value is an empty string. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* A short name to identify the entry group, for example, "analytics data - jan 2011". Default value is an empty string. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+/* A short name to identify the entry group, for example, "analytics data - jan 2011". Default value is an empty string. */
+// +optional
+DisplayName *string `json:"displayName,omitempty"`
 
-	Location string `json:"location"`
+Location string `json:"location"`
 
-	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The DataCatalogEntryGroup name. If not given, the metadata.name will be used. */
-	ResourceID string `json:"resourceID"`
+/* The DataCatalogEntryGroup name. If not given, the metadata.name will be used. */
+ResourceID string `json:"resourceID"`
 
-	/* Optional. When set to [true], it means DataCatalog EntryGroup was transferred to Dataplex Catalog Service. It makes EntryGroup and its Entries to be read-only in DataCatalog. However, new Tags on EntryGroup and its Entries can be created. After setting the flag to [true] it cannot be unset. */
-	// +optional
-	TransferredToDataplex *bool `json:"transferredToDataplex,omitempty"`
+/* Optional. When set to [true], it means DataCatalog EntryGroup was transferred to Dataplex Catalog Service. It makes EntryGroup and its Entries to be read-only in DataCatalog. However, new Tags on EntryGroup and its Entries can be created. After setting the flag to [true] it cannot be unset. */
+// +optional
+TransferredToDataplex *bool `json:"transferredToDataplex,omitempty"`
 }
 
 type EntrygroupDataCatalogTimestampsStatus struct {
-	/* Creation timestamp of the resource within the given system. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Creation timestamp of the resource within the given system. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
 	/* Timestamp of the last modification of the resource or its metadata within
 	a given system.
-
+	
 	Note: Depending on the source system, not every modification updates this
 	timestamp.
 	For example, BigQuery timestamps every metadata modification but not data
 	or permission changes. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type EntrygroupObservedStateStatus struct {
-	/* Output only. Timestamps of the entry group. Default value is empty. */
-	// +optional
-	DataCatalogTimestamps *EntrygroupDataCatalogTimestampsStatus `json:"dataCatalogTimestamps,omitempty"`
+/* Output only. Timestamps of the entry group. Default value is empty. */
+// +optional
+DataCatalogTimestamps *EntrygroupDataCatalogTimestampsStatus `json:"dataCatalogTimestamps,omitempty"`
 }
 
 type DataCatalogEntryGroupStatus struct {
 	/* Conditions represent the latest available observations of the
-	   DataCatalogEntryGroup's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the DataCatalogEntryGroup resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    DataCatalogEntryGroup's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the DataCatalogEntryGroup resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *EntrygroupObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *EntrygroupObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdatacatalogentrygroup;gcpdatacatalogentrygroups
@@ -113,22 +113,20 @@ type DataCatalogEntryGroupStatus struct {
 // DataCatalogEntryGroup is the Schema for the datacatalog API
 // +k8s:openapi-gen=true
 type DataCatalogEntryGroup struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   DataCatalogEntryGroupSpec   `json:"spec,omitempty"`
-	Status DataCatalogEntryGroupStatus `json:"status,omitempty"`
+  Spec DataCatalogEntryGroupSpec `json:"spec,omitempty"`
+  Status DataCatalogEntryGroupStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// DataCatalogEntryGroupList contains a list of DataCatalogEntryGroup
-type DataCatalogEntryGroupList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []DataCatalogEntryGroup `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&DataCatalogEntryGroup{}, &DataCatalogEntryGroupList{})
-}
+ // DataCatalogEntryGroupList contains a list of DataCatalogEntryGroup
+ type DataCatalogEntryGroupList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []DataCatalogEntryGroup `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&DataCatalogEntryGroup{}, &DataCatalogEntryGroupList{})
+ }

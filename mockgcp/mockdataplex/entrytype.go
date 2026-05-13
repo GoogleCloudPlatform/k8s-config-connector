@@ -35,8 +35,7 @@ import (
 	"github.com/google/uuid"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 
-	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
-	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataplex/v1"
 )
 
 func (s *CatalogService) GetEntryType(ctx context.Context, req *pb.GetEntryTypeRequest) (*pb.EntryType, error) {

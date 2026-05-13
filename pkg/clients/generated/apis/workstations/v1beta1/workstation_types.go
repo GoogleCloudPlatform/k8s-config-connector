@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,107 +30,106 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type WorkstationAnnotations struct {
-	/* Key for the annotation. */
-	// +optional
-	Key *string `json:"key,omitempty"`
+/* Key for the annotation. */
+// +optional
+Key *string `json:"key,omitempty"`
 
-	/* Value for the annotation. */
-	// +optional
-	Value *string `json:"value,omitempty"`
+/* Value for the annotation. */
+// +optional
+Value *string `json:"value,omitempty"`
 }
 
 type WorkstationLabels struct {
-	/* Key for the label. */
-	// +optional
-	Key *string `json:"key,omitempty"`
+/* Key for the label. */
+// +optional
+Key *string `json:"key,omitempty"`
 
-	/* Value for the label. */
-	// +optional
-	Value *string `json:"value,omitempty"`
+/* Value for the label. */
+// +optional
+Value *string `json:"value,omitempty"`
 }
 
 type WorkstationSpec struct {
-	/* Optional. Client-specified annotations. */
-	// +optional
-	Annotations []WorkstationAnnotations `json:"annotations,omitempty"`
+/* Optional. Client-specified annotations. */
+// +optional
+Annotations []WorkstationAnnotations `json:"annotations,omitempty"`
 
-	/* Optional. Human-readable name for this workstation. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+/* Optional. Human-readable name for this workstation. */
+// +optional
+DisplayName *string `json:"displayName,omitempty"`
 
-	/* Optional. [Labels](https://cloud.google.com/workstations/docs/label-resources) that are applied to the workstation and that are also propagated to the underlying Compute Engine resources. */
-	// +optional
-	Labels []WorkstationLabels `json:"labels,omitempty"`
+/* Optional. [Labels](https://cloud.google.com/workstations/docs/label-resources) that are applied to the workstation and that are also propagated to the underlying Compute Engine resources. */
+// +optional
+Labels []WorkstationLabels `json:"labels,omitempty"`
 
-	/* Parent is a reference to the parent WorkstationConfig for this Workstation. */
-	ParentRef v1alpha1.ResourceRef `json:"parentRef"`
+/* Parent is a reference to the parent WorkstationConfig for this Workstation. */
+ParentRef v1alpha1.ResourceRef `json:"parentRef"`
 
-	/* The Workstation name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The Workstation name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type WorkstationObservedStateStatus struct {
-	/* Output only. Time when this workstation was created. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. Time when this workstation was created. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. Time when this workstation was soft-deleted. */
-	// +optional
-	DeleteTime *string `json:"deleteTime,omitempty"`
+/* Output only. Time when this workstation was soft-deleted. */
+// +optional
+DeleteTime *string `json:"deleteTime,omitempty"`
 
-	/* Output only. Checksum computed by the server. May be sent on update and delete requests to make sure that the client has an up-to-date value before proceeding. */
-	// +optional
-	Etag *string `json:"etag,omitempty"`
+/* Output only. Checksum computed by the server. May be sent on update and delete requests to make sure that the client has an up-to-date value before proceeding. */
+// +optional
+Etag *string `json:"etag,omitempty"`
 
-	/* Output only. Host to which clients can send HTTPS traffic that will be received by the workstation. Authorized traffic will be received to the workstation as HTTP on port 80. To send traffic to a different port, clients may prefix the host with the destination port in the format `{port}-{host}`. */
-	// +optional
-	Host *string `json:"host,omitempty"`
+/* Output only. Host to which clients can send HTTPS traffic that will be received by the workstation. Authorized traffic will be received to the workstation as HTTP on port 80. To send traffic to a different port, clients may prefix the host with the destination port in the format `{port}-{host}`. */
+// +optional
+Host *string `json:"host,omitempty"`
 
-	/* Output only. Time when this workstation was most recently successfully started, regardless of the workstation's initial state. */
-	// +optional
-	StartTime *string `json:"startTime,omitempty"`
+/* Output only. Time when this workstation was most recently successfully started, regardless of the workstation's initial state. */
+// +optional
+StartTime *string `json:"startTime,omitempty"`
 
-	/* Output only. Current state of the workstation. */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* Output only. Current state of the workstation. */
+// +optional
+State *string `json:"state,omitempty"`
 
-	/* Output only. A system-assigned unique identifier for this workstation. */
-	// +optional
-	Uid *string `json:"uid,omitempty"`
+/* Output only. A system-assigned unique identifier for this workstation. */
+// +optional
+Uid *string `json:"uid,omitempty"`
 
-	/* Output only. Time when this workstation was most recently updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. Time when this workstation was most recently updated. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type WorkstationStatus struct {
 	/* Conditions represent the latest available observations of the
-	   Workstation's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the Workstation resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    Workstation's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the Workstation resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *WorkstationObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *WorkstationObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpworkstation;gcpworkstations
@@ -144,22 +144,20 @@ type WorkstationStatus struct {
 // Workstation is the Schema for the workstations API
 // +k8s:openapi-gen=true
 type Workstation struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   WorkstationSpec   `json:"spec,omitempty"`
-	Status WorkstationStatus `json:"status,omitempty"`
+  Spec WorkstationSpec `json:"spec,omitempty"`
+  Status WorkstationStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// WorkstationList contains a list of Workstation
-type WorkstationList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []Workstation `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&Workstation{}, &WorkstationList{})
-}
+ // WorkstationList contains a list of Workstation
+ type WorkstationList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []Workstation `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&Workstation{}, &WorkstationList{})
+ }

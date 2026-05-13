@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,158 +30,158 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type MigrationjobConversionWorkspace struct {
-	/* The commit ID of the conversion workspace. */
-	// +optional
-	CommitID *string `json:"commitID,omitempty"`
+/* The commit ID of the conversion workspace. */
+// +optional
+CommitID *string `json:"commitID,omitempty"`
 
-	/* The resource name (URI) of the conversion workspace. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+/* The resource name (URI) of the conversion workspace. */
+// +optional
+Name *string `json:"name,omitempty"`
 }
 
 type MigrationjobDestinationDatabase struct {
-	/* The database engine. */
-	// +optional
-	Engine *string `json:"engine,omitempty"`
+/* The database engine. */
+// +optional
+Engine *string `json:"engine,omitempty"`
 
-	/* The database provider. */
-	// +optional
-	Provider *string `json:"provider,omitempty"`
+/* The database provider. */
+// +optional
+Provider *string `json:"provider,omitempty"`
 }
 
 type MigrationjobDumpFlags struct {
-	/* The name of the flag */
-	// +optional
-	Name *string `json:"name,omitempty"`
+/* The name of the flag */
+// +optional
+Name *string `json:"name,omitempty"`
 
-	/* The value of the flag. */
-	// +optional
-	Value *string `json:"value,omitempty"`
+/* The value of the flag. */
+// +optional
+Value *string `json:"value,omitempty"`
 }
 
 type MigrationjobPerformanceConfig struct {
-	/* Initial dump parallelism level. */
-	// +optional
-	DumpParallelLevel *string `json:"dumpParallelLevel,omitempty"`
+/* Initial dump parallelism level. */
+// +optional
+DumpParallelLevel *string `json:"dumpParallelLevel,omitempty"`
 }
 
 type MigrationjobReverseSSHConnectivity struct {
-	/* Required. The IP of the virtual machine (Compute Engine) used as the bastion server for the SSH tunnel. */
-	// +optional
-	VmIP *string `json:"vmIP,omitempty"`
+/* Required. The IP of the virtual machine (Compute Engine) used as the bastion server for the SSH tunnel. */
+// +optional
+VmIP *string `json:"vmIP,omitempty"`
 
-	/* Required. The forwarding port of the virtual machine (Compute Engine) used as the bastion server for the SSH tunnel. */
-	// +optional
-	VmPort *int32 `json:"vmPort,omitempty"`
+/* Required. The forwarding port of the virtual machine (Compute Engine) used as the bastion server for the SSH tunnel. */
+// +optional
+VmPort *int32 `json:"vmPort,omitempty"`
 
-	/* The name of the virtual machine (Compute Engine) used as the bastion server for the SSH tunnel. */
-	// +optional
-	VmRef *v1alpha1.ResourceRef `json:"vmRef,omitempty"`
+/* The name of the virtual machine (Compute Engine) used as the bastion server for the SSH tunnel. */
+// +optional
+VmRef *v1alpha1.ResourceRef `json:"vmRef,omitempty"`
 
-	/* The name of the VPC to peer with the Cloud SQL private network. */
-	// +optional
-	VpcRef *v1alpha1.ResourceRef `json:"vpcRef,omitempty"`
+/* The name of the VPC to peer with the Cloud SQL private network. */
+// +optional
+VpcRef *v1alpha1.ResourceRef `json:"vpcRef,omitempty"`
 }
 
 type MigrationjobSourceDatabase struct {
-	/* The database engine. */
-	// +optional
-	Engine *string `json:"engine,omitempty"`
+/* The database engine. */
+// +optional
+Engine *string `json:"engine,omitempty"`
 
-	/* The database provider. */
-	// +optional
-	Provider *string `json:"provider,omitempty"`
+/* The database provider. */
+// +optional
+Provider *string `json:"provider,omitempty"`
 }
 
 type MigrationjobStaticIPConnectivity struct {
 }
 
 type MigrationjobVpcPeeringConnectivity struct {
-	/* The name of the VPC network to peer with the Cloud SQL private network. */
-	// +optional
-	VpcRef *v1alpha1.ResourceRef `json:"vpcRef,omitempty"`
+/* The name of the VPC network to peer with the Cloud SQL private network. */
+// +optional
+VpcRef *v1alpha1.ResourceRef `json:"vpcRef,omitempty"`
 }
 
 type CloudDMSMigrationJobSpec struct {
-	/* The CMEK (customer-managed encryption key) fully qualified key name used for the migration job. This field supports all migration jobs types except for: * Mysql to Mysql (use the cmek field in the cloudsql connection profile instead). * PostrgeSQL to PostgreSQL (use the cmek field in the cloudsql connection profile instead). * PostgreSQL to AlloyDB (use the kms_key_name field in the alloydb connection profile instead). Each Cloud CMEK key has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME] */
-	// +optional
-	CmekKeyNameRef *v1alpha1.ResourceRef `json:"cmekKeyNameRef,omitempty"`
+/* The CMEK (customer-managed encryption key) fully qualified key name used for the migration job. This field supports all migration jobs types except for: * Mysql to Mysql (use the cmek field in the cloudsql connection profile instead). * PostrgeSQL to PostgreSQL (use the cmek field in the cloudsql connection profile instead). * PostgreSQL to AlloyDB (use the kms_key_name field in the alloydb connection profile instead). Each Cloud CMEK key has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME] */
+// +optional
+CmekKeyNameRef *v1alpha1.ResourceRef `json:"cmekKeyNameRef,omitempty"`
 
-	/* The conversion workspace used by the migration. */
-	// +optional
-	ConversionWorkspace *MigrationjobConversionWorkspace `json:"conversionWorkspace,omitempty"`
+/* The conversion workspace used by the migration. */
+// +optional
+ConversionWorkspace *MigrationjobConversionWorkspace `json:"conversionWorkspace,omitempty"`
 
-	/* The database engine type and provider of the destination. */
-	// +optional
-	DestinationDatabase *MigrationjobDestinationDatabase `json:"destinationDatabase,omitempty"`
+/* The database engine type and provider of the destination. */
+// +optional
+DestinationDatabase *MigrationjobDestinationDatabase `json:"destinationDatabase,omitempty"`
 
-	/* Required. The Connection Profile of the destination connection profile. */
-	// +optional
-	DestinationRef *v1alpha1.ResourceRef `json:"destinationRef,omitempty"`
+/* Required. The Connection Profile of the destination connection profile. */
+// +optional
+DestinationRef *v1alpha1.ResourceRef `json:"destinationRef,omitempty"`
 
-	/* The migration job display name. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+/* The migration job display name. */
+// +optional
+DisplayName *string `json:"displayName,omitempty"`
 
-	/* The initial dump flags. This field and the "dump_path" field are mutually exclusive. */
-	// +optional
-	DumpFlags *MigrationjobDumpFlags `json:"dumpFlags,omitempty"`
+/* The initial dump flags. This field and the "dump_path" field are mutually exclusive. */
+// +optional
+DumpFlags *MigrationjobDumpFlags `json:"dumpFlags,omitempty"`
 
-	/* The path to the dump file in Google Cloud Storage, in the format: (gs://[BUCKET_NAME]/[OBJECT_NAME]). This field and the "dump_flags" field are mutually exclusive. */
-	// +optional
-	DumpPath *string `json:"dumpPath,omitempty"`
+/* The path to the dump file in Google Cloud Storage, in the format: (gs://[BUCKET_NAME]/[OBJECT_NAME]). This field and the "dump_flags" field are mutually exclusive. */
+// +optional
+DumpPath *string `json:"dumpPath,omitempty"`
 
-	/* This field can be used to select the entities to migrate as part of the migration job. It uses AIP-160 notation to select a subset of the entities configured on the associated conversion-workspace. This field should not be set on migration-jobs that are not associated with a conversion workspace. */
-	// +optional
-	Filter *string `json:"filter,omitempty"`
+/* This field can be used to select the entities to migrate as part of the migration job. It uses AIP-160 notation to select a subset of the entities configured on the associated conversion-workspace. This field should not be set on migration-jobs that are not associated with a conversion workspace. */
+// +optional
+Filter *string `json:"filter,omitempty"`
 
-	/* The location that this resource belongs to. */
-	Location string `json:"location"`
+/* The location that this resource belongs to. */
+Location string `json:"location"`
 
-	/* Optional. Data dump parallelism settings used by the migration. Currently applicable only for MySQL to Cloud SQL for MySQL migrations only. */
-	// +optional
-	PerformanceConfig *MigrationjobPerformanceConfig `json:"performanceConfig,omitempty"`
+/* Optional. Data dump parallelism settings used by the migration. Currently applicable only for MySQL to Cloud SQL for MySQL migrations only. */
+// +optional
+PerformanceConfig *MigrationjobPerformanceConfig `json:"performanceConfig,omitempty"`
 
-	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The CloudDMSMigrationJob name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The CloudDMSMigrationJob name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* The details needed to communicate to the source over Reverse SSH tunnel connectivity. */
-	// +optional
-	ReverseSSHConnectivity *MigrationjobReverseSSHConnectivity `json:"reverseSSHConnectivity,omitempty"`
+/* The details needed to communicate to the source over Reverse SSH tunnel connectivity. */
+// +optional
+ReverseSSHConnectivity *MigrationjobReverseSSHConnectivity `json:"reverseSSHConnectivity,omitempty"`
 
-	/* The database engine type and provider of the source. */
-	// +optional
-	SourceDatabase *MigrationjobSourceDatabase `json:"sourceDatabase,omitempty"`
+/* The database engine type and provider of the source. */
+// +optional
+SourceDatabase *MigrationjobSourceDatabase `json:"sourceDatabase,omitempty"`
 
-	/* Required. The Connection Profile resource of the source connection profile. */
-	// +optional
-	SourceRef *v1alpha1.ResourceRef `json:"sourceRef,omitempty"`
+/* Required. The Connection Profile resource of the source connection profile. */
+// +optional
+SourceRef *v1alpha1.ResourceRef `json:"sourceRef,omitempty"`
 
-	/* static ip connectivity data (default, no additional details needed). */
-	// +optional
-	StaticIPConnectivity *MigrationjobStaticIPConnectivity `json:"staticIPConnectivity,omitempty"`
+/* static ip connectivity data (default, no additional details needed). */
+// +optional
+StaticIPConnectivity *MigrationjobStaticIPConnectivity `json:"staticIPConnectivity,omitempty"`
 
-	/* Required. The migration job type. */
-	// +optional
-	Type *string `json:"type,omitempty"`
+/* Required. The migration job type. */
+// +optional
+Type *string `json:"type,omitempty"`
 
-	/* The details of the VPC network that the source database is located in. */
-	// +optional
-	VpcPeeringConnectivity *MigrationjobVpcPeeringConnectivity `json:"vpcPeeringConnectivity,omitempty"`
+/* The details of the VPC network that the source database is located in. */
+// +optional
+VpcPeeringConnectivity *MigrationjobVpcPeeringConnectivity `json:"vpcPeeringConnectivity,omitempty"`
 }
 
 type MigrationjobObservedStateStatus struct {
@@ -188,21 +189,20 @@ type MigrationjobObservedStateStatus struct {
 
 type CloudDMSMigrationJobStatus struct {
 	/* Conditions represent the latest available observations of the
-	   CloudDMSMigrationJob's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the CloudDMSMigrationJob resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    CloudDMSMigrationJob's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the CloudDMSMigrationJob resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *MigrationjobObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *MigrationjobObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpclouddmsmigrationjob;gcpclouddmsmigrationjobs
@@ -217,22 +217,20 @@ type CloudDMSMigrationJobStatus struct {
 // CloudDMSMigrationJob is the Schema for the clouddms API
 // +k8s:openapi-gen=true
 type CloudDMSMigrationJob struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   CloudDMSMigrationJobSpec   `json:"spec,omitempty"`
-	Status CloudDMSMigrationJobStatus `json:"status,omitempty"`
+  Spec CloudDMSMigrationJobSpec `json:"spec,omitempty"`
+  Status CloudDMSMigrationJobStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// CloudDMSMigrationJobList contains a list of CloudDMSMigrationJob
-type CloudDMSMigrationJobList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []CloudDMSMigrationJob `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&CloudDMSMigrationJob{}, &CloudDMSMigrationJobList{})
-}
+ // CloudDMSMigrationJobList contains a list of CloudDMSMigrationJob
+ type CloudDMSMigrationJobList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []CloudDMSMigrationJob `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&CloudDMSMigrationJob{}, &CloudDMSMigrationJobList{})
+ }

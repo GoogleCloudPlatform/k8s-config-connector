@@ -53,23 +53,25 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	ApigeeAddonsConfigGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ApigeeAddonsConfig{}).Name(),
-	}
+	
+  	ApigeeAddonsConfigGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ApigeeAddonsConfig{}).Name(),
+  	}
+  
+  	ApigeeNATAddressGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ApigeeNATAddress{}).Name(),
+  	}
+  
+  	ApigeeSyncAuthorizationGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(ApigeeSyncAuthorization{}).Name(),
+  	}
+  
 
-	ApigeeNATAddressGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ApigeeNATAddress{}).Name(),
-	}
-
-	ApigeeSyncAuthorizationGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ApigeeSyncAuthorization{}).Name(),
-	}
-
-	apigeeAPIVersion = SchemeGroupVersion.String()
+  	apigeeAPIVersion = SchemeGroupVersion.String()
 )

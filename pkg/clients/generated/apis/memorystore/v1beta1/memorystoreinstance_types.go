@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,395 +30,394 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type InstanceAofConfig struct {
-	/* Optional. The fsync mode. */
-	// +optional
-	AppendFsync *string `json:"appendFsync,omitempty"`
+/* Optional. The fsync mode. */
+// +optional
+AppendFsync *string `json:"appendFsync,omitempty"`
 }
 
 type InstanceAutomatedBackupConfig struct {
-	/* Optional. The automated backup mode. If the mode is disabled, the other fields will be ignored. */
-	// +optional
-	AutomatedBackupMode *string `json:"automatedBackupMode,omitempty"`
+/* Optional. The automated backup mode. If the mode is disabled, the other fields will be ignored. */
+// +optional
+AutomatedBackupMode *string `json:"automatedBackupMode,omitempty"`
 
-	/* Optional. Trigger automated backups at a fixed frequency. */
-	// +optional
-	FixedFrequencySchedule *InstanceFixedFrequencySchedule `json:"fixedFrequencySchedule,omitempty"`
+/* Optional. Trigger automated backups at a fixed frequency. */
+// +optional
+FixedFrequencySchedule *InstanceFixedFrequencySchedule `json:"fixedFrequencySchedule,omitempty"`
 
-	/* Optional. How long to keep automated backups before the backups are deleted. The value should be between 1 day and 365 days. If not specified, the default value is 35 days. */
-	// +optional
-	Retention *string `json:"retention,omitempty"`
+/* Optional. How long to keep automated backups before the backups are deleted. The value should be between 1 day and 365 days. If not specified, the default value is 35 days. */
+// +optional
+Retention *string `json:"retention,omitempty"`
 }
 
 type InstanceConnections struct {
-	/* Detailed information of a PSC connection that is created through service connectivity automation. */
-	// +optional
-	PscAutoConnection *InstancePscAutoConnection `json:"pscAutoConnection,omitempty"`
+/* Detailed information of a PSC connection that is created through service connectivity automation. */
+// +optional
+PscAutoConnection *InstancePscAutoConnection `json:"pscAutoConnection,omitempty"`
 }
 
 type InstanceCrossInstanceReplicationConfig struct {
-	/* Required. The role of the instance in cross instance replication. */
-	// +optional
-	InstanceRole *string `json:"instanceRole,omitempty"`
+/* Required. The role of the instance in cross instance replication. */
+// +optional
+InstanceRole *string `json:"instanceRole,omitempty"`
 
 	/* Optional. Details of the primary instance that is used as the replication
 	source for this secondary instance.
-
+	
 	This field is only set for a secondary instance. */
-	// +optional
-	PrimaryInstance *InstancePrimaryInstance `json:"primaryInstance,omitempty"`
+// +optional
+PrimaryInstance *InstancePrimaryInstance `json:"primaryInstance,omitempty"`
 }
 
 type InstanceEndpoints struct {
-	/* Optional. A group of PSC connections. They are created in the same VPC network, one for each service attachment in the cluster. */
-	// +optional
-	Connections []InstanceConnections `json:"connections,omitempty"`
+/* Optional. A group of PSC connections. They are created in the same VPC network, one for each service attachment in the cluster. */
+// +optional
+Connections []InstanceConnections `json:"connections,omitempty"`
 }
 
 type InstanceFixedFrequencySchedule struct {
-	/* Required. The start time of every automated backup in UTC. It must be set to the start of an hour. This field is required. */
-	// +optional
-	StartTime *InstanceStartTime `json:"startTime,omitempty"`
+/* Required. The start time of every automated backup in UTC. It must be set to the start of an hour. This field is required. */
+// +optional
+StartTime *InstanceStartTime `json:"startTime,omitempty"`
 }
 
 type InstancePersistenceConfig struct {
-	/* Optional. AOF configuration. This field will be ignored if mode is not AOF. */
-	// +optional
-	AofConfig *InstanceAofConfig `json:"aofConfig,omitempty"`
+/* Optional. AOF configuration. This field will be ignored if mode is not AOF. */
+// +optional
+AofConfig *InstanceAofConfig `json:"aofConfig,omitempty"`
 
-	/* Optional. Current persistence mode. */
-	// +optional
-	Mode *string `json:"mode,omitempty"`
+/* Optional. Current persistence mode. */
+// +optional
+Mode *string `json:"mode,omitempty"`
 
-	/* Optional. RDB configuration. This field will be ignored if mode is not RDB. */
-	// +optional
-	RdbConfig *InstanceRdbConfig `json:"rdbConfig,omitempty"`
+/* Optional. RDB configuration. This field will be ignored if mode is not RDB. */
+// +optional
+RdbConfig *InstanceRdbConfig `json:"rdbConfig,omitempty"`
 }
 
 type InstancePrimaryInstance struct {
-	/* Optional. The full resource path of the remote instance. */
-	// +optional
-	InstanceRef *v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
+/* Optional. The full resource path of the remote instance. */
+// +optional
+InstanceRef *v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
 }
 
 type InstancePscAutoConnection struct {
-	/* Required. The network where the PSC endpoints are created, in the form of projects/{project_id}/global/networks/{network_id}. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+/* Required. The network where the PSC endpoints are created, in the form of projects/{project_id}/global/networks/{network_id}. */
+NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
 
-	/* Required. The consumer project_id where PSC connections are established. This should be the same project_id that the instance is being created in. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* Required. The consumer project_id where PSC connections are established. This should be the same project_id that the instance is being created in. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 }
 
 type InstanceRdbConfig struct {
-	/* Optional. Period between RDB snapshots. */
-	// +optional
-	RdbSnapshotPeriod *string `json:"rdbSnapshotPeriod,omitempty"`
+/* Optional. Period between RDB snapshots. */
+// +optional
+RdbSnapshotPeriod *string `json:"rdbSnapshotPeriod,omitempty"`
 
-	/* Optional. Time that the first snapshot was/will be attempted, and to which future snapshots will be aligned. If not provided, the current time will be used. */
-	// +optional
-	RdbSnapshotStartTime *string `json:"rdbSnapshotStartTime,omitempty"`
+/* Optional. Time that the first snapshot was/will be attempted, and to which future snapshots will be aligned. If not provided, the current time will be used. */
+// +optional
+RdbSnapshotStartTime *string `json:"rdbSnapshotStartTime,omitempty"`
 }
 
 type InstanceStartTime struct {
-	/* Hours of a day in 24 hour format. Must be greater than or equal to 0 and typically must be less than or equal to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time. */
-	// +optional
-	Hours *int32 `json:"hours,omitempty"`
+/* Hours of a day in 24 hour format. Must be greater than or equal to 0 and typically must be less than or equal to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time. */
+// +optional
+Hours *int32 `json:"hours,omitempty"`
 
-	/* Minutes of an hour. Must be greater than or equal to 0 and less than or equal to 59. */
-	// +optional
-	Minutes *int32 `json:"minutes,omitempty"`
+/* Minutes of an hour. Must be greater than or equal to 0 and less than or equal to 59. */
+// +optional
+Minutes *int32 `json:"minutes,omitempty"`
 
-	/* Fractions of seconds, in nanoseconds. Must be greater than or equal to 0 and less than or equal to 999,999,999. */
-	// +optional
-	Nanos *int32 `json:"nanos,omitempty"`
+/* Fractions of seconds, in nanoseconds. Must be greater than or equal to 0 and less than or equal to 999,999,999. */
+// +optional
+Nanos *int32 `json:"nanos,omitempty"`
 
-	/* Seconds of a minute. Must be greater than or equal to 0 and typically must be less than or equal to 59. An API may allow the value 60 if it allows leap-seconds. */
-	// +optional
-	Seconds *int32 `json:"seconds,omitempty"`
+/* Seconds of a minute. Must be greater than or equal to 0 and typically must be less than or equal to 59. An API may allow the value 60 if it allows leap-seconds. */
+// +optional
+Seconds *int32 `json:"seconds,omitempty"`
 }
 
 type InstanceZoneDistributionConfig struct {
-	/* Optional. Current zone distribution mode. Defaults to MULTI_ZONE. */
-	// +optional
-	Mode *string `json:"mode,omitempty"`
+/* Optional. Current zone distribution mode. Defaults to MULTI_ZONE. */
+// +optional
+Mode *string `json:"mode,omitempty"`
 
-	/* Optional. Defines zone where all resources will be allocated with SINGLE_ZONE mode. Ignored for MULTI_ZONE mode. */
-	// +optional
-	Zone *string `json:"zone,omitempty"`
+/* Optional. Defines zone where all resources will be allocated with SINGLE_ZONE mode. Ignored for MULTI_ZONE mode. */
+// +optional
+Zone *string `json:"zone,omitempty"`
 }
 
 type MemorystoreInstanceSpec struct {
-	/* Optional. Immutable. Authorization mode of the instance. */
-	// +optional
-	AuthorizationMode *string `json:"authorizationMode,omitempty"`
+/* Optional. Immutable. Authorization mode of the instance. */
+// +optional
+AuthorizationMode *string `json:"authorizationMode,omitempty"`
 
-	/* Optional. The automated backup config for the instance. */
-	// +optional
-	AutomatedBackupConfig *InstanceAutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
+/* Optional. The automated backup config for the instance. */
+// +optional
+AutomatedBackupConfig *InstanceAutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
 
-	/* Optional. The cross instance replication config for the instance. */
-	// +optional
-	CrossInstanceReplicationConfig *InstanceCrossInstanceReplicationConfig `json:"crossInstanceReplicationConfig,omitempty"`
+/* Optional. The cross instance replication config for the instance. */
+// +optional
+CrossInstanceReplicationConfig *InstanceCrossInstanceReplicationConfig `json:"crossInstanceReplicationConfig,omitempty"`
 
-	/* Optional. If set to true deletion of the instance will fail. */
-	// +optional
-	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
+/* Optional. If set to true deletion of the instance will fail. */
+// +optional
+DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
 
-	/* Optional. Endpoints for the instance. */
-	// +optional
-	Endpoints []InstanceEndpoints `json:"endpoints,omitempty"`
+/* Optional. Endpoints for the instance. */
+// +optional
+Endpoints []InstanceEndpoints `json:"endpoints,omitempty"`
 
-	/* Optional. User-provided engine configurations for the instance. */
-	// +optional
-	EngineConfigs map[string]string `json:"engineConfigs,omitempty"`
+/* Optional. User-provided engine configurations for the instance. */
+// +optional
+EngineConfigs map[string]string `json:"engineConfigs,omitempty"`
 
-	/* Optional. Immutable. Engine version of the instance. */
-	// +optional
-	EngineVersion *string `json:"engineVersion,omitempty"`
+/* Optional. Immutable. Engine version of the instance. */
+// +optional
+EngineVersion *string `json:"engineVersion,omitempty"`
 
-	/* Optional. Labels to represent user-provided metadata. */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
+/* Optional. Labels to represent user-provided metadata. */
+// +optional
+Labels map[string]string `json:"labels,omitempty"`
 
-	/* Immutable. */
-	Location string `json:"location"`
+/* Immutable. */
+Location string `json:"location"`
 
-	/* Optional. The maintenance version of the instance. */
-	// +optional
-	MaintenanceVersion *string `json:"maintenanceVersion,omitempty"`
+/* Optional. The maintenance version of the instance. */
+// +optional
+MaintenanceVersion *string `json:"maintenanceVersion,omitempty"`
 
-	/* Optional. The mode config for the instance. */
-	// +optional
-	Mode *string `json:"mode,omitempty"`
+/* Optional. The mode config for the instance. */
+// +optional
+Mode *string `json:"mode,omitempty"`
 
-	/* Optional. Immutable. Machine type for individual nodes of the instance. */
-	// +optional
-	NodeType *string `json:"nodeType,omitempty"`
+/* Optional. Immutable. Machine type for individual nodes of the instance. */
+// +optional
+NodeType *string `json:"nodeType,omitempty"`
 
-	/* Optional. Persistence configuration of the instance. */
-	// +optional
-	PersistenceConfig *InstancePersistenceConfig `json:"persistenceConfig,omitempty"`
+/* Optional. Persistence configuration of the instance. */
+// +optional
+PersistenceConfig *InstancePersistenceConfig `json:"persistenceConfig,omitempty"`
 
-	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Optional. Number of replica nodes per shard. If omitted the default is 0 replicas. */
-	// +optional
-	ReplicaCount *int32 `json:"replicaCount,omitempty"`
+/* Optional. Number of replica nodes per shard. If omitted the default is 0 replicas. */
+// +optional
+ReplicaCount *int32 `json:"replicaCount,omitempty"`
 
-	/* The MemorystoreInstance name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The MemorystoreInstance name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Optional. Number of shards for the instance. */
-	// +optional
-	ShardCount *int32 `json:"shardCount,omitempty"`
+/* Optional. Number of shards for the instance. */
+// +optional
+ShardCount *int32 `json:"shardCount,omitempty"`
 
-	/* Optional. Immutable. In-transit encryption mode of the instance. */
-	// +optional
-	TransitEncryptionMode *string `json:"transitEncryptionMode,omitempty"`
+/* Optional. Immutable. In-transit encryption mode of the instance. */
+// +optional
+TransitEncryptionMode *string `json:"transitEncryptionMode,omitempty"`
 
-	/* Optional. Immutable. Zone distribution configuration of the instance for node allocation. */
-	// +optional
-	ZoneDistributionConfig *InstanceZoneDistributionConfig `json:"zoneDistributionConfig,omitempty"`
+/* Optional. Immutable. Zone distribution configuration of the instance for node allocation. */
+// +optional
+ZoneDistributionConfig *InstanceZoneDistributionConfig `json:"zoneDistributionConfig,omitempty"`
 }
 
 type InstanceConnectionsStatus struct {
-	/* Detailed information of a PSC connection that is created through service connectivity automation. */
-	// +optional
-	PscAutoConnection *InstancePscAutoConnectionStatus `json:"pscAutoConnection,omitempty"`
+/* Detailed information of a PSC connection that is created through service connectivity automation. */
+// +optional
+PscAutoConnection *InstancePscAutoConnectionStatus `json:"pscAutoConnection,omitempty"`
 }
 
 type InstanceCrossInstanceReplicationConfigStatus struct {
-	/* Output only. An output only view of all the member instances participating in the cross instance replication. This view will be provided by every member instance irrespective of its instance role(primary or secondary). */
-	// +optional
-	Membership *InstanceMembershipStatus `json:"membership,omitempty"`
+/* Output only. An output only view of all the member instances participating in the cross instance replication. This view will be provided by every member instance irrespective of its instance role(primary or secondary). */
+// +optional
+Membership *InstanceMembershipStatus `json:"membership,omitempty"`
 
 	/* Optional. Details of the primary instance that is used as the replication
 	source for this secondary instance.
-
+	
 	This field is only set for a secondary instance. */
-	// +optional
-	PrimaryInstance *InstancePrimaryInstanceStatus `json:"primaryInstance,omitempty"`
+// +optional
+PrimaryInstance *InstancePrimaryInstanceStatus `json:"primaryInstance,omitempty"`
 
 	/* Optional. List of secondary instances that are replicating from this
 	primary instance.
-
+	
 	This field is only set for a primary instance. */
-	// +optional
-	SecondaryInstances []InstanceSecondaryInstancesStatus `json:"secondaryInstances,omitempty"`
+// +optional
+SecondaryInstances []InstanceSecondaryInstancesStatus `json:"secondaryInstances,omitempty"`
 }
 
 type InstanceEndpointsStatus struct {
-	/* Optional. A group of PSC connections. They are created in the same VPC network, one for each service attachment in the cluster. */
-	// +optional
-	Connections []InstanceConnectionsStatus `json:"connections,omitempty"`
+/* Optional. A group of PSC connections. They are created in the same VPC network, one for each service attachment in the cluster. */
+// +optional
+Connections []InstanceConnectionsStatus `json:"connections,omitempty"`
 }
 
 type InstanceMembershipStatus struct {
-	/* Output only. The primary instance that acts as the source of replication for the secondary instances. */
-	// +optional
-	PrimaryInstance *InstancePrimaryInstanceStatus `json:"primaryInstance,omitempty"`
+/* Output only. The primary instance that acts as the source of replication for the secondary instances. */
+// +optional
+PrimaryInstance *InstancePrimaryInstanceStatus `json:"primaryInstance,omitempty"`
 
-	/* Output only. The list of secondary instances replicating from the primary instance. */
-	// +optional
-	SecondaryInstances []InstanceSecondaryInstancesStatus `json:"secondaryInstances,omitempty"`
+/* Output only. The list of secondary instances replicating from the primary instance. */
+// +optional
+SecondaryInstances []InstanceSecondaryInstancesStatus `json:"secondaryInstances,omitempty"`
 }
 
 type InstanceNodeConfigStatus struct {
-	/* Output only. Memory size in GB of the node. */
-	// +optional
-	SizeGB *float64 `json:"sizeGB,omitempty"`
+/* Output only. Memory size in GB of the node. */
+// +optional
+SizeGB *float64 `json:"sizeGB,omitempty"`
 }
 
 type InstanceObservedStateStatus struct {
-	/* Output only. The list of available maintenance versions for the instance. */
-	// +optional
-	AvailableMaintenanceVersions []string `json:"availableMaintenanceVersions,omitempty"`
+/* Output only. The list of available maintenance versions for the instance. */
+// +optional
+AvailableMaintenanceVersions []string `json:"availableMaintenanceVersions,omitempty"`
 
-	/* Output only. Creation timestamp of the instance. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. Creation timestamp of the instance. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Optional. The cross instance replication config for the instance. */
-	// +optional
-	CrossInstanceReplicationConfig *InstanceCrossInstanceReplicationConfigStatus `json:"crossInstanceReplicationConfig,omitempty"`
+/* Optional. The cross instance replication config for the instance. */
+// +optional
+CrossInstanceReplicationConfig *InstanceCrossInstanceReplicationConfigStatus `json:"crossInstanceReplicationConfig,omitempty"`
 
-	/* Output only. The current version of the maintenance schedule. */
-	// +optional
-	EffectiveMaintenanceVersion *string `json:"effectiveMaintenanceVersion,omitempty"`
+/* Output only. The current version of the maintenance schedule. */
+// +optional
+EffectiveMaintenanceVersion *string `json:"effectiveMaintenanceVersion,omitempty"`
 
-	/* Optional. Endpoints for the instance. */
-	// +optional
-	Endpoints []InstanceEndpointsStatus `json:"endpoints,omitempty"`
+/* Optional. Endpoints for the instance. */
+// +optional
+Endpoints []InstanceEndpointsStatus `json:"endpoints,omitempty"`
 
-	/* Output only. Configuration of individual nodes of the instance. */
-	// +optional
-	NodeConfig *InstanceNodeConfigStatus `json:"nodeConfig,omitempty"`
+/* Output only. Configuration of individual nodes of the instance. */
+// +optional
+NodeConfig *InstanceNodeConfigStatus `json:"nodeConfig,omitempty"`
 
-	/* Output only. List of PSC connections for the instance. */
-	// +optional
-	PscAttachmentDetails []InstancePscAttachmentDetailsStatus `json:"pscAttachmentDetails,omitempty"`
+/* Output only. List of PSC connections for the instance. */
+// +optional
+PscAttachmentDetails []InstancePscAttachmentDetailsStatus `json:"pscAttachmentDetails,omitempty"`
 
-	/* Output only. Current state of the instance. */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* Output only. Current state of the instance. */
+// +optional
+State *string `json:"state,omitempty"`
 
-	/* Output only. Additional information about the state of the instance. */
-	// +optional
-	StateInfo *InstanceStateInfoStatus `json:"stateInfo,omitempty"`
+/* Output only. Additional information about the state of the instance. */
+// +optional
+StateInfo *InstanceStateInfoStatus `json:"stateInfo,omitempty"`
 
-	/* Output only. System assigned, unique identifier for the instance. */
-	// +optional
-	Uid *string `json:"uid,omitempty"`
+/* Output only. System assigned, unique identifier for the instance. */
+// +optional
+Uid *string `json:"uid,omitempty"`
 
-	/* Output only. Latest update timestamp of the instance. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. Latest update timestamp of the instance. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type InstancePrimaryInstanceStatus struct {
-	/* Optional. The full resource path of the remote instance. */
-	// +optional
-	Instance *string `json:"instance,omitempty"`
+/* Optional. The full resource path of the remote instance. */
+// +optional
+Instance *string `json:"instance,omitempty"`
 
-	/* Output only. The unique identifier of the remote instance. */
-	// +optional
-	Uid *string `json:"uid,omitempty"`
+/* Output only. The unique identifier of the remote instance. */
+// +optional
+Uid *string `json:"uid,omitempty"`
 }
 
 type InstancePscAttachmentDetailsStatus struct {
-	/* Output only. Type of Psc endpoint. */
-	// +optional
-	ConnectionType *string `json:"connectionType,omitempty"`
+/* Output only. Type of Psc endpoint. */
+// +optional
+ConnectionType *string `json:"connectionType,omitempty"`
 
-	/* Output only. Service attachment URI which your self-created PscConnection should use as target. */
-	// +optional
-	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
+/* Output only. Service attachment URI which your self-created PscConnection should use as target. */
+// +optional
+ServiceAttachment *string `json:"serviceAttachment,omitempty"`
 }
 
 type InstancePscAutoConnectionStatus struct {
-	/* Output only. Type of the PSC connection. */
-	// +optional
-	ConnectionType *string `json:"connectionType,omitempty"`
+/* Output only. Type of the PSC connection. */
+// +optional
+ConnectionType *string `json:"connectionType,omitempty"`
 
-	/* Output only. The URI of the consumer side forwarding rule. Format: projects/{project}/regions/{region}/forwardingRules/{forwarding_rule} */
-	// +optional
-	ForwardingRule *string `json:"forwardingRule,omitempty"`
+/* Output only. The URI of the consumer side forwarding rule. Format: projects/{project}/regions/{region}/forwardingRules/{forwarding_rule} */
+// +optional
+ForwardingRule *string `json:"forwardingRule,omitempty"`
 
-	/* Output only. The IP allocated on the consumer network for the PSC forwarding rule. */
-	// +optional
-	IpAddress *string `json:"ipAddress,omitempty"`
+/* Output only. The IP allocated on the consumer network for the PSC forwarding rule. */
+// +optional
+IpAddress *string `json:"ipAddress,omitempty"`
 
-	/* Optional. Output only. port will only be set for Primary/Reader or Discovery endpoint. */
-	// +optional
-	Port *int32 `json:"port,omitempty"`
+/* Optional. Output only. port will only be set for Primary/Reader or Discovery endpoint. */
+// +optional
+Port *int32 `json:"port,omitempty"`
 
-	/* Output only. The PSC connection id of the forwarding rule connected to the service attachment. */
-	// +optional
-	PscConnectionID *string `json:"pscConnectionID,omitempty"`
+/* Output only. The PSC connection id of the forwarding rule connected to the service attachment. */
+// +optional
+PscConnectionID *string `json:"pscConnectionID,omitempty"`
 
-	/* Output only. The status of the PSC connection: whether a connection exists and ACTIVE or it no longer exists. Please note that this value is updated periodically. Please use Private Service Connect APIs for the latest status. */
-	// +optional
-	PscConnectionStatus *string `json:"pscConnectionStatus,omitempty"`
+/* Output only. The status of the PSC connection: whether a connection exists and ACTIVE or it no longer exists. Please note that this value is updated periodically. Please use Private Service Connect APIs for the latest status. */
+// +optional
+PscConnectionStatus *string `json:"pscConnectionStatus,omitempty"`
 
-	/* Output only. The service attachment which is the target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}. */
-	// +optional
-	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
+/* Output only. The service attachment which is the target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}. */
+// +optional
+ServiceAttachment *string `json:"serviceAttachment,omitempty"`
 }
 
 type InstanceSecondaryInstancesStatus struct {
-	/* Optional. The full resource path of the remote instance. */
-	// +optional
-	Instance *string `json:"instance,omitempty"`
+/* Optional. The full resource path of the remote instance. */
+// +optional
+Instance *string `json:"instance,omitempty"`
 
-	/* Output only. The unique identifier of the remote instance. */
-	// +optional
-	Uid *string `json:"uid,omitempty"`
+/* Output only. The unique identifier of the remote instance. */
+// +optional
+Uid *string `json:"uid,omitempty"`
 }
 
 type InstanceStateInfoStatus struct {
-	/* Output only. Describes ongoing update when instance state is UPDATING. */
-	// +optional
-	UpdateInfo *InstanceUpdateInfoStatus `json:"updateInfo,omitempty"`
+/* Output only. Describes ongoing update when instance state is UPDATING. */
+// +optional
+UpdateInfo *InstanceUpdateInfoStatus `json:"updateInfo,omitempty"`
 }
 
 type InstanceUpdateInfoStatus struct {
-	/* Output only. Target number of replica nodes per shard for the instance. */
-	// +optional
-	TargetReplicaCount *int32 `json:"targetReplicaCount,omitempty"`
+/* Output only. Target number of replica nodes per shard for the instance. */
+// +optional
+TargetReplicaCount *int32 `json:"targetReplicaCount,omitempty"`
 
-	/* Output only. Target number of shards for the instance. */
-	// +optional
-	TargetShardCount *int32 `json:"targetShardCount,omitempty"`
+/* Output only. Target number of shards for the instance. */
+// +optional
+TargetShardCount *int32 `json:"targetShardCount,omitempty"`
 }
 
 type MemorystoreInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
-	   MemorystoreInstance's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the MemorystoreInstance resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    MemorystoreInstance's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the MemorystoreInstance resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *InstanceObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *InstanceObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpmemorystoreinstance;gcpmemorystoreinstances
@@ -432,22 +432,20 @@ type MemorystoreInstanceStatus struct {
 // MemorystoreInstance is the Schema for the memorystore API
 // +k8s:openapi-gen=true
 type MemorystoreInstance struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   MemorystoreInstanceSpec   `json:"spec,omitempty"`
-	Status MemorystoreInstanceStatus `json:"status,omitempty"`
+  Spec MemorystoreInstanceSpec `json:"spec,omitempty"`
+  Status MemorystoreInstanceStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// MemorystoreInstanceList contains a list of MemorystoreInstance
-type MemorystoreInstanceList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []MemorystoreInstance `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&MemorystoreInstance{}, &MemorystoreInstanceList{})
-}
+ // MemorystoreInstanceList contains a list of MemorystoreInstance
+ type MemorystoreInstanceList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []MemorystoreInstance `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&MemorystoreInstance{}, &MemorystoreInstanceList{})
+ }

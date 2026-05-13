@@ -53,17 +53,19 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	BigQueryDataPolicyGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(BigQueryDataPolicy{}).Name(),
-	}
+	
+  	BigQueryDataPolicyGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(BigQueryDataPolicy{}).Name(),
+  	}
+  
+  	BigQueryDataPolicyDataPolicyGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(BigQueryDataPolicyDataPolicy{}).Name(),
+  	}
+  
 
-	BigQueryDataPolicyDataPolicyGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(BigQueryDataPolicyDataPolicy{}).Name(),
-	}
-
-	bigquerydatapolicyAPIVersion = SchemeGroupVersion.String()
+  	bigquerydatapolicyAPIVersion = SchemeGroupVersion.String()
 )

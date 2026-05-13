@@ -53,17 +53,19 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	TPUNodeGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(TPUNode{}).Name(),
-	}
+	
+  	TPUNodeGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(TPUNode{}).Name(),
+  	}
+  
+  	TPUVirtualMachineGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(TPUVirtualMachine{}).Name(),
+  	}
+  
 
-	TPUVirtualMachineGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(TPUVirtualMachine{}).Name(),
-	}
-
-	tpuAPIVersion = SchemeGroupVersion.String()
+  	tpuAPIVersion = SchemeGroupVersion.String()
 )

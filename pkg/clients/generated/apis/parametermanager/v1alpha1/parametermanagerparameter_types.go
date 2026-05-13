@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,51 +30,51 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ParameterManagerParameterSpec struct {
-	/* Optional. Specifies the format of a Parameter. */
-	// +optional
-	Format *string `json:"format,omitempty"`
+/* Optional. Specifies the format of a Parameter. */
+// +optional
+Format *string `json:"format,omitempty"`
 
-	/* Optional. Customer managed encryption key (CMEK) to use for encrypting the Parameter Versions. If not set, the default Google-managed encryption key will be used. Cloud KMS CryptoKeys must reside in the same location as the Parameter. The expected format is `projects/* /locations/* /keyRings/* /cryptoKeys/*`. */
-	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+/* Optional. Customer managed encryption key (CMEK) to use for encrypting the Parameter Versions. If not set, the default Google-managed encryption key will be used. Cloud KMS CryptoKeys must reside in the same location as the Parameter. The expected format is `projects/* /locations/* /keyRings/* /cryptoKeys/*`. */
+// +optional
+KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
-	/* The location that this resource belongs to. */
-	Location string `json:"location"`
+/* The location that this resource belongs to. */
+Location string `json:"location"`
 
-	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The ParameterManagerParameter name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The ParameterManagerParameter name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ParameterObservedStateStatus struct {
-	/* Output only. [Output only] Create time stamp */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. [Output only] Create time stamp */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Identifier. [Output only] The resource name of the Parameter in the format `projects/* /locations/* /parameters/*` */
-	// +optional
-	Name *string `json:"name,omitempty"`
+/* Identifier. [Output only] The resource name of the Parameter in the format `projects/* /locations/* /parameters/*` */
+// +optional
+Name *string `json:"name,omitempty"`
 
-	/* Output only. [Output-only] policy member strings of a Google Cloud resource. */
-	// +optional
-	PolicyMember *ParameterPolicyMemberStatus `json:"policyMember,omitempty"`
+/* Output only. [Output-only] policy member strings of a Google Cloud resource. */
+// +optional
+PolicyMember *ParameterPolicyMemberStatus `json:"policyMember,omitempty"`
 
-	/* Output only. [Output only] Update time stamp */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. [Output only] Update time stamp */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type ParameterPolicyMemberStatus struct {
@@ -81,40 +82,39 @@ type ParameterPolicyMemberStatus struct {
 	user-assigned name (https://google.aip.dev/122). If a resource is deleted
 	and recreated with the same name, the binding will be applicable to the new
 	resource.
-
+	
 	Example:
 	`principal://parametermanager.googleapis.com/projects/12345/name/locations/us-central1-a/parameters/my-parameter` */
-	// +optional
-	IamPolicyNamePrincipal *string `json:"iamPolicyNamePrincipal,omitempty"`
+// +optional
+IamPolicyNamePrincipal *string `json:"iamPolicyNamePrincipal,omitempty"`
 
 	/* IAM policy binding member referring to a Google Cloud resource by
 	system-assigned unique identifier (https://google.aip.dev/148#uid). If a
 	resource is deleted and recreated with the same name, the binding will not
 	be applicable to the new resource
-
+	
 	Example:
 	`principal://parametermanager.googleapis.com/projects/12345/uid/locations/us-central1-a/parameters/a918fed5` */
-	// +optional
-	IamPolicyUidPrincipal *string `json:"iamPolicyUidPrincipal,omitempty"`
+// +optional
+IamPolicyUidPrincipal *string `json:"iamPolicyUidPrincipal,omitempty"`
 }
 
 type ParameterManagerParameterStatus struct {
 	/* Conditions represent the latest available observations of the
-	   ParameterManagerParameter's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the ParameterManagerParameter resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    ParameterManagerParameter's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the ParameterManagerParameter resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *ParameterObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *ParameterObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpparametermanagerparameter;gcpparametermanagerparameters
@@ -129,22 +129,20 @@ type ParameterManagerParameterStatus struct {
 // ParameterManagerParameter is the Schema for the parametermanager API
 // +k8s:openapi-gen=true
 type ParameterManagerParameter struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ParameterManagerParameterSpec   `json:"spec,omitempty"`
-	Status ParameterManagerParameterStatus `json:"status,omitempty"`
+  Spec ParameterManagerParameterSpec `json:"spec,omitempty"`
+  Status ParameterManagerParameterStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// ParameterManagerParameterList contains a list of ParameterManagerParameter
-type ParameterManagerParameterList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ParameterManagerParameter `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&ParameterManagerParameter{}, &ParameterManagerParameterList{})
-}
+ // ParameterManagerParameterList contains a list of ParameterManagerParameter
+ type ParameterManagerParameterList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []ParameterManagerParameter `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&ParameterManagerParameter{}, &ParameterManagerParameterList{})
+ }

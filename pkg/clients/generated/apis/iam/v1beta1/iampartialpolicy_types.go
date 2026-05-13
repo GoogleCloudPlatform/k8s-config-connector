@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,130 +30,129 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type PartialpolicyBindings struct {
-	/* Optional. The condition under which the binding applies. */
-	// +optional
-	Condition *PartialpolicyCondition `json:"condition,omitempty"`
+/* Optional. The condition under which the binding applies. */
+// +optional
+Condition *PartialpolicyCondition `json:"condition,omitempty"`
 
-	/* Optional. The list of IAM users to be bound to the role. */
-	// +optional
-	Members []PartialpolicyMembers `json:"members,omitempty"`
+/* Optional. The list of IAM users to be bound to the role. */
+// +optional
+Members []PartialpolicyMembers `json:"members,omitempty"`
 
-	/* Required. The role to bind the users to. */
-	Role string `json:"role"`
+/* Required. The role to bind the users to. */
+Role string `json:"role"`
 }
 
 type PartialpolicyCondition struct {
-	// +optional
-	Description *string `json:"description,omitempty"`
+// +optional
+Description *string `json:"description,omitempty"`
 
-	Expression string `json:"expression"`
+Expression string `json:"expression"`
 
-	Title string `json:"title"`
+Title string `json:"title"`
 }
 
 type PartialpolicyMemberFrom struct {
-	/* BigQueryConnectionConnection whose service account is to be bound to the role. Use the Type field to specify the connection type. For "spark" connetion, the service account is in `status.observedState.spark.serviceAccountID`. For "cloudSQL" connection, the service account is in `status.observedState.cloudSQL.serviceAccountID`. For "cloudResource" connection, the service account is in `status.observedState.cloudResource.serviceAccountID`. */
-	// +optional
-	BigQueryConnectionConnectionRef *v1alpha1.IAMResourceRef `json:"bigQueryConnectionConnectionRef,omitempty"`
+/* BigQueryConnectionConnection whose service account is to be bound to the role. Use the Type field to specify the connection type. For "spark" connetion, the service account is in `status.observedState.spark.serviceAccountID`. For "cloudSQL" connection, the service account is in `status.observedState.cloudSQL.serviceAccountID`. For "cloudResource" connection, the service account is in `status.observedState.cloudResource.serviceAccountID`. */
+// +optional
+BigQueryConnectionConnectionRef *v1alpha1.IAMResourceRef `json:"bigQueryConnectionConnectionRef,omitempty"`
 
-	/* The LoggingLogSink whose writer identity (i.e. its 'status.writerIdentity') is to be bound to the role. */
-	// +optional
-	LogSinkRef *v1alpha1.IAMResourceRef `json:"logSinkRef,omitempty"`
+/* The LoggingLogSink whose writer identity (i.e. its 'status.writerIdentity') is to be bound to the role. */
+// +optional
+LogSinkRef *v1alpha1.IAMResourceRef `json:"logSinkRef,omitempty"`
 
-	/* The IAMServiceAccount to be bound to the role. */
-	// +optional
-	ServiceAccountRef *v1alpha1.IAMResourceRef `json:"serviceAccountRef,omitempty"`
+/* The IAMServiceAccount to be bound to the role. */
+// +optional
+ServiceAccountRef *v1alpha1.IAMResourceRef `json:"serviceAccountRef,omitempty"`
 
-	/* The ServiceIdentity whose service account (i.e., its 'status.email') is to be bound to the role. */
-	// +optional
-	ServiceIdentityRef *v1alpha1.IAMResourceRef `json:"serviceIdentityRef,omitempty"`
+/* The ServiceIdentity whose service account (i.e., its 'status.email') is to be bound to the role. */
+// +optional
+ServiceIdentityRef *v1alpha1.IAMResourceRef `json:"serviceIdentityRef,omitempty"`
 
-	/* The SQLInstance whose service account (i.e. its 'status.serviceAccountEmailAddress') is to be bound to the role. */
-	// +optional
-	SqlInstanceRef *v1alpha1.IAMResourceRef `json:"sqlInstanceRef,omitempty"`
+/* The SQLInstance whose service account (i.e. its 'status.serviceAccountEmailAddress') is to be bound to the role. */
+// +optional
+SqlInstanceRef *v1alpha1.IAMResourceRef `json:"sqlInstanceRef,omitempty"`
 }
 
 type PartialpolicyMembers struct {
-	/* The IAM identity to be bound to the role. Exactly one of 'member' or 'memberFrom' must be used. */
-	// +optional
-	Member *string `json:"member,omitempty"`
+/* The IAM identity to be bound to the role. Exactly one of 'member' or 'memberFrom' must be used. */
+// +optional
+Member *string `json:"member,omitempty"`
 
-	/* The IAM identity to be bound to the role. Exactly one of 'member' or 'memberFrom' must be used, and only one subfield within 'memberFrom' can be used. */
-	// +optional
-	MemberFrom *PartialpolicyMemberFrom `json:"memberFrom,omitempty"`
+/* The IAM identity to be bound to the role. Exactly one of 'member' or 'memberFrom' must be used, and only one subfield within 'memberFrom' can be used. */
+// +optional
+MemberFrom *PartialpolicyMemberFrom `json:"memberFrom,omitempty"`
 }
 
 type IAMPartialPolicySpec struct {
-	/* Optional. The list of IAM bindings managed by Config Connector. */
-	// +optional
-	Bindings []PartialpolicyBindings `json:"bindings,omitempty"`
+/* Optional. The list of IAM bindings managed by Config Connector. */
+// +optional
+Bindings []PartialpolicyBindings `json:"bindings,omitempty"`
 
-	/* Immutable. Required. The GCP resource to set the IAM policy on (e.g. organization, project...) */
-	ResourceRef v1alpha1.IAMResourceRef `json:"resourceRef"`
+/* Immutable. Required. The GCP resource to set the IAM policy on (e.g. organization, project...) */
+ResourceRef v1alpha1.IAMResourceRef `json:"resourceRef"`
 }
 
 type PartialpolicyAllBindingsStatus struct {
-	/* Optional. The condition under which the binding applies. */
-	// +optional
-	Condition *PartialpolicyConditionStatus `json:"condition,omitempty"`
+/* Optional. The condition under which the binding applies. */
+// +optional
+Condition *PartialpolicyConditionStatus `json:"condition,omitempty"`
 
-	/* Optional. The list of IAM users to be bound to the role. */
-	// +optional
-	Members []string `json:"members,omitempty"`
+/* Optional. The list of IAM users to be bound to the role. */
+// +optional
+Members []string `json:"members,omitempty"`
 
-	/* Required. The role to bind the users to. */
-	Role string `json:"role"`
+/* Required. The role to bind the users to. */
+Role string `json:"role"`
 }
 
 type PartialpolicyConditionStatus struct {
-	// +optional
-	Description *string `json:"description,omitempty"`
+// +optional
+Description *string `json:"description,omitempty"`
 
-	Expression string `json:"expression"`
+Expression string `json:"expression"`
 
-	Title string `json:"title"`
+Title string `json:"title"`
 }
 
 type PartialpolicyLastAppliedBindingsStatus struct {
-	/* Optional. The condition under which the binding applies. */
-	// +optional
-	Condition *PartialpolicyConditionStatus `json:"condition,omitempty"`
+/* Optional. The condition under which the binding applies. */
+// +optional
+Condition *PartialpolicyConditionStatus `json:"condition,omitempty"`
 
-	/* Optional. The list of IAM users to be bound to the role. */
-	// +optional
-	Members []string `json:"members,omitempty"`
+/* Optional. The list of IAM users to be bound to the role. */
+// +optional
+Members []string `json:"members,omitempty"`
 
-	/* Required. The role to bind the users to. */
-	Role string `json:"role"`
+/* Required. The role to bind the users to. */
+Role string `json:"role"`
 }
 
 type IAMPartialPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
-	   IAMPartialPolicy's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* AllBindings surfaces all IAM bindings for the referenced resource. */
-	// +optional
-	AllBindings []PartialpolicyAllBindingsStatus `json:"allBindings,omitempty"`
+	    IAMPartialPolicy's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* AllBindings surfaces all IAM bindings for the referenced resource. */
+// +optional
+AllBindings []PartialpolicyAllBindingsStatus `json:"allBindings,omitempty"`
 
-	/* LastAppliedBindings is the list of IAM bindings that were most recently applied by Config Connector. */
-	// +optional
-	LastAppliedBindings []PartialpolicyLastAppliedBindingsStatus `json:"lastAppliedBindings,omitempty"`
+/* LastAppliedBindings is the list of IAM bindings that were most recently applied by Config Connector. */
+// +optional
+LastAppliedBindings []PartialpolicyLastAppliedBindingsStatus `json:"lastAppliedBindings,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpiampartialpolicy;gcpiampartialpolicies
@@ -167,22 +167,20 @@ type IAMPartialPolicyStatus struct {
 // IAMPartialPolicy is the Schema for the iam API
 // +k8s:openapi-gen=true
 type IAMPartialPolicy struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   IAMPartialPolicySpec   `json:"spec,omitempty"`
-	Status IAMPartialPolicyStatus `json:"status,omitempty"`
+  Spec IAMPartialPolicySpec `json:"spec,omitempty"`
+  Status IAMPartialPolicyStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// IAMPartialPolicyList contains a list of IAMPartialPolicy
-type IAMPartialPolicyList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []IAMPartialPolicy `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&IAMPartialPolicy{}, &IAMPartialPolicyList{})
-}
+ // IAMPartialPolicyList contains a list of IAMPartialPolicy
+ type IAMPartialPolicyList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []IAMPartialPolicy `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&IAMPartialPolicy{}, &IAMPartialPolicyList{})
+ }
