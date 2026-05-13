@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,8 +23,18 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types --config ${REPO_ROOT}/apis/managedkafka/v1beta1/generatetypes.yaml
-# go run . generate-mapper --config ${REPO_ROOT}/apis/managedkafka/v1beta1/generatetypes.yaml
+go run . generate-types \
+  --service google.cloud.managedkafka.v1 \
+  --api-version managedkafka.cnrm.cloud.google.com/v1beta1 \
+  --include-skipped-output \
+  --resource ManagedKafkaCluster:Cluster \
+  --resource ManagedKafkaTopic:Topic
+
+go run . generate-mapper \
+  --service google.cloud.managedkafka.v1 \
+  --api-version managedkafka.cnrm.cloud.google.com/v1beta1 \
+  --include-skipped-output \
+  --multiversion
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

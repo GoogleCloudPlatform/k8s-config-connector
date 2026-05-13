@@ -139,7 +139,7 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
-	resource := ManagedKafkaClusterSpec_ToProto(mapCtx, &desired.Spec)
+	resource := ManagedKafkaClusterSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -160,7 +160,7 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 	log.V(2).Info("successfully created Cluster", "name", a.id)
 
 	status := &krm.ManagedKafkaClusterStatus{}
-	status.ObservedState = ManagedKafkaClusterObservedState_FromProto(mapCtx, created)
+	status.ObservedState = ManagedKafkaClusterObservedState_v1beta1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -178,13 +178,13 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	}
 
 	mapCtx := &direct.MapContext{}
-	desiredPb := ManagedKafkaClusterSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	desiredPb := ManagedKafkaClusterSpec_v1beta1_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
 	// Set the name field to ensure the GCP API can identity the resource during UpdateCluster().
-	// This also prevents incorrect diffs, as the name field is not populated by ManagedKafkaClusterSpec_ToProto.
+	// This also prevents incorrect diffs, as the name field is not populated by ManagedKafkaClusterSpec_v1beta1_ToProto.
 	desiredPb.Name = a.id.String()
 
 	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
@@ -195,7 +195,7 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.String())
 		status := &krm.ManagedKafkaClusterStatus{}
-		status.ObservedState = ManagedKafkaClusterObservedState_FromProto(mapCtx, a.actual)
+		status.ObservedState = ManagedKafkaClusterObservedState_v1beta1_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
@@ -225,7 +225,7 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 
 	status := &krm.ManagedKafkaClusterStatus{}
 	status.ExternalRef = direct.LazyPtr(updated.Name)
-	status.ObservedState = ManagedKafkaClusterObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = ManagedKafkaClusterObservedState_v1beta1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -241,7 +241,7 @@ func (a *ClusterAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 
 	obj := &krm.ManagedKafkaCluster{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(ManagedKafkaClusterSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(ManagedKafkaClusterSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -285,23 +285,23 @@ func (a *ClusterAdapter) normalizeReference(ctx context.Context) error {
 	if obj.Spec.GcpConfig != nil && obj.Spec.GcpConfig.AccessConfig != nil && obj.Spec.GcpConfig.AccessConfig.NetworkConfigs != nil {
 		for i := range obj.Spec.GcpConfig.AccessConfig.NetworkConfigs {
 			networkConfig := &obj.Spec.GcpConfig.AccessConfig.NetworkConfigs[i]
-			if networkConfig.SubnetworkRef != nil {
-				subnet, err := refs.ResolveComputeSubnetwork(ctx, a.reader, obj, networkConfig.SubnetworkRef)
+			if networkConfig.SubnetRef != nil {
+				subnet, err := refs.ResolveComputeSubnetwork(ctx, a.reader, obj, networkConfig.SubnetRef)
 				if err != nil {
 					return err
 				}
-				networkConfig.SubnetworkRef = subnet
+				networkConfig.SubnetRef = subnet
 			}
 		}
 	}
 
 	// Normalize the kmsKeyRef in the gcpConfig
-	if obj.Spec.GcpConfig != nil && obj.Spec.GcpConfig.KmsKeyRef != nil {
-		kmsKey, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.GcpConfig.KmsKeyRef)
+	if obj.Spec.GcpConfig != nil && obj.Spec.GcpConfig.KMSKeyRef != nil {
+		kmsKey, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.GcpConfig.KMSKeyRef)
 		if err != nil {
 			return err
 		}
-		obj.Spec.GcpConfig.KmsKeyRef = kmsKey
+		obj.Spec.GcpConfig.KMSKeyRef = kmsKey
 	}
 
 	return nil

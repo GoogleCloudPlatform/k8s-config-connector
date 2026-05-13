@@ -22,7 +22,7 @@ import (
 
 // Placeholder functions until the real ones are generated or implemented
 // Based on the KRM struct definitions and proto, there are no fields to map between Spec/Status and the Proto.
-func ManagedKafkaConsumerGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.ConsumerGroup) *krm.ManagedKafkaConsumerGroupSpec {
+func ManagedKafkaConsumerGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ConsumerGroup) *krm.ManagedKafkaConsumerGroupSpec {
 	if in == nil {
 		return nil
 	}
@@ -31,7 +31,7 @@ func ManagedKafkaConsumerGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.C
 	return out
 }
 
-func ManagedKafkaConsumerGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.ManagedKafkaConsumerGroupSpec) *pb.ConsumerGroup {
+func ManagedKafkaConsumerGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.ManagedKafkaConsumerGroupSpec) *pb.ConsumerGroup {
 	if in == nil {
 		return nil
 	}
@@ -40,31 +40,31 @@ func ManagedKafkaConsumerGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.Ma
 	return out
 }
 
-func ManagedKafkaConsumerGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConsumerGroup) *krm.ManagedKafkaConsumerGroupObservedState {
+func ManagedKafkaConsumerGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ConsumerGroup) *krm.ManagedKafkaConsumerGroupObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ManagedKafkaConsumerGroupObservedState{}
 	out.Topics = make(map[string]*krm.ConsumerTopicMetadata)
 	for k, v := range in.GetTopics() {
-		out.Topics[k] = ConsumerTopicMetadata_FromProto(mapCtx, v)
+		out.Topics[k] = ConsumerTopicMetadata_v1alpha1_FromProto(mapCtx, v)
 	}
 	return out
 }
 
-func ManagedKafkaConsumerGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ManagedKafkaConsumerGroupObservedState) *pb.ConsumerGroup {
+func ManagedKafkaConsumerGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.ManagedKafkaConsumerGroupObservedState) *pb.ConsumerGroup {
 	if in == nil {
 		return nil
 	}
 	out := &pb.ConsumerGroup{}
 	out.Topics = make(map[string]*pb.ConsumerTopicMetadata)
 	for k, v := range in.Topics {
-		out.Topics[k] = ConsumerTopicMetadata_ToProto(mapCtx, v)
+		out.Topics[k] = ConsumerTopicMetadata_v1alpha1_ToProto(mapCtx, v)
 	}
 	return out
 }
 
-func ConsumerTopicMetadata_FromProto(mapCtx *direct.MapContext, in *pb.ConsumerTopicMetadata) *krm.ConsumerTopicMetadata {
+func ConsumerTopicMetadata_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ConsumerTopicMetadata) *krm.ConsumerTopicMetadata {
 	if in == nil {
 		return nil
 	}
@@ -80,7 +80,7 @@ func ConsumerTopicMetadata_FromProto(mapCtx *direct.MapContext, in *pb.ConsumerT
 	return out
 }
 
-func ConsumerTopicMetadata_ToProto(mapCtx *direct.MapContext, in *krm.ConsumerTopicMetadata) *pb.ConsumerTopicMetadata {
+func ConsumerTopicMetadata_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.ConsumerTopicMetadata) *pb.ConsumerTopicMetadata {
 	if in == nil {
 		return nil
 	}
