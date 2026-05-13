@@ -873,8 +873,8 @@ cloud.google.com/go/managedidentities v1.6.2/go.mod h1:5c2VG66eCa0WIq6IylRk3TBW8
 cloud.google.com/go/managedidentities v1.6.3/go.mod h1:tewiat9WLyFN0Fi7q1fDD5+0N4VUoL0SCX0OTCthZq4=
 cloud.google.com/go/managedidentities v1.6.4/go.mod h1:WgyaECfHmF00t/1Uk8Oun3CQ2PGUtjc3e9Alh79wyiM=
 cloud.google.com/go/managedidentities v1.6.5/go.mod h1:fkFI2PwwyRQbjLxlm5bQ8SjtObFMW3ChBGNqaMcgZjI=
-cloud.google.com/go/managedkafka v0.8.1 h1:Bd5KPCg/TkknTyHYh/tYqGhmSJmINDBK0QGL/CoBZfg=
-cloud.google.com/go/managedkafka v0.8.1/go.mod h1:avX/DyZA0vPVlhJjt0wQ4q36kh6Ex/zEpScKyWBJdhg=
+cloud.google.com/go/managedkafka v0.12.0 h1:mOCK8aI23PHHhgzzXj+dQH6oKv2oVBMNPCDppdbDqaQ=
+cloud.google.com/go/managedkafka v0.12.0/go.mod h1:Phh9R6RQhGCNq36Uifsi+HHFIOlRFUE8Z3Xl2fYelBo=
 cloud.google.com/go/maps v0.1.0/go.mod h1:BQM97WGyfw9FWEmQMpZ5T6cpovXXSd1cGmFma94eubI=
 cloud.google.com/go/maps v0.6.0/go.mod h1:o6DAMMfb+aINHz/p/jbcY+mYeXBoZoxTfdSQ8VAJaCw=
 cloud.google.com/go/maps v0.7.0/go.mod h1:3GnvVl3cqeSvgMcpRlQidXsPYuDGQ8naBis7MVzpXsY=

@@ -21,29 +21,29 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func GcpConfig_FromProto(mapCtx *direct.MapContext, in *pb.GcpConfig) *krm.GcpConfig {
+func GcpConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GcpConfig) *krm.GcpConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krm.GcpConfig{}
-	out.AccessConfig = AccessConfig_FromProto(mapCtx, in.GetAccessConfig())
+	out.AccessConfig = AccessConfig_v1beta1_FromProto(mapCtx, in.GetAccessConfig())
 	if in.GetKmsKey() != "" {
 		out.KmsKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKey()}
 	}
 	return out
 }
-func GcpConfig_ToProto(mapCtx *direct.MapContext, in *krm.GcpConfig) *pb.GcpConfig {
+func GcpConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.GcpConfig) *pb.GcpConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.GcpConfig{}
-	out.AccessConfig = AccessConfig_ToProto(mapCtx, in.AccessConfig)
+	out.AccessConfig = AccessConfig_v1beta1_ToProto(mapCtx, in.AccessConfig)
 	if in.KmsKeyRef != nil {
 		out.KmsKey = in.KmsKeyRef.External
 	}
 	return out
 }
-func NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfig {
+func NetworkConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfig {
 	if in == nil {
 		return nil
 	}
@@ -53,7 +53,7 @@ func NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *k
 	}
 	return out
 }
-func NetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfig) *pb.NetworkConfig {
+func NetworkConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfig) *pb.NetworkConfig {
 	if in == nil {
 		return nil
 	}
