@@ -6,9 +6,12 @@ Content-Type: application/json
 
 {
   "cmekConfig": {},
+  "concurrencyMode": "CONCURRENCY_MODE_UNSPECIFIED",
   "databaseEdition": "STANDARD",
   "deleteProtectionState": "DELETE_PROTECTION_DISABLED",
+  "firestoreDataAccessMode": "DATA_ACCESS_MODE_UNSPECIFIED",
   "locationId": "us-central1",
+  "mongodbCompatibleDataAccessMode": "DATA_ACCESS_MODE_UNSPECIFIED",
   "pointInTimeRecoveryEnablement": "POINT_IN_TIME_RECOVERY_ENABLEMENT_UNSPECIFIED",
   "type": "FIRESTORE_NATIVE"
 }
@@ -29,7 +32,7 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/databases/test-db-${uniqueId}/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.firestore.admin.v1.Database",
+    "@type": "type.googleapis.com/mockgcp.firestore.admin.v1.Database",
     "appEngineIntegrationMode": "DISABLED",
     "concurrencyMode": "PESSIMISTIC",
     "createTime": "2024-04-01T12:34:56.123456Z",
@@ -433,7 +436,7 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/databases/test-db-${uniqueId}/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.firestore.admin.v1.Database",
+    "@type": "type.googleapis.com/mockgcp.firestore.admin.v1.Database",
     "appEngineIntegrationMode": "DISABLED",
     "concurrencyMode": "PESSIMISTIC",
     "createTime": "2024-04-01T12:34:56.123456Z",

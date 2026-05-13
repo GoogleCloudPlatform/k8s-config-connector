@@ -17,11 +17,14 @@ package httptogrpc
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/reflect/protoregistry"
 	"k8s.io/klog/v2"
 )
 
@@ -111,7 +114,9 @@ func (c *httpMethodCall) SendResponse(response proto.Message, responseOptions Re
 
 	c.parent.addGCPHeaders(ctx, c.w, response)
 
-	marshalOptions := protojson.MarshalOptions{}
+	marshalOptions := protojson.MarshalOptions{
+		Resolver: &mockResolver{registry: protoregistry.GlobalTypes},
+	}
 	responseOptions.populateMarshalOptions(&marshalOptions)
 
 	if c.grpcMethod != nil {
@@ -132,4 +137,37 @@ func (c *httpMethodCall) SendResponse(response proto.Message, responseOptions Re
 		klog.Errorf("failed to write error: %v", err)
 	}
 	klog.Infof("sent response %v with body %v", httpCode, string(body))
+}
+
+type mockResolver struct {
+	registry interface {
+		protoregistry.MessageTypeResolver
+		protoregistry.ExtensionTypeResolver
+	}
+}
+
+func (r *mockResolver) FindMessageByName(message protoreflect.FullName) (protoreflect.MessageType, error) {
+	mt, err := r.registry.FindMessageByName(message)
+	if err != nil && strings.HasPrefix(string(message), "google.") {
+		mockName := "mockgcp." + strings.TrimPrefix(string(message), "google.")
+		mt, err = r.registry.FindMessageByName(protoreflect.FullName(mockName))
+	}
+	return mt, err
+}
+
+func (r *mockResolver) FindMessageByURL(url string) (protoreflect.MessageType, error) {
+	mt, err := r.registry.FindMessageByURL(url)
+	if err != nil && strings.HasPrefix(url, "type.googleapis.com/google.") {
+		mockURL := "type.googleapis.com/mockgcp." + strings.TrimPrefix(url, "type.googleapis.com/google.")
+		mt, err = r.registry.FindMessageByURL(mockURL)
+	}
+	return mt, err
+}
+
+func (r *mockResolver) FindExtensionByName(field protoreflect.FullName) (protoreflect.ExtensionType, error) {
+	return r.registry.FindExtensionByName(field)
+}
+
+func (r *mockResolver) FindExtensionByNumber(message protoreflect.FullName, field protoreflect.FieldNumber) (protoreflect.ExtensionType, error) {
+	return r.registry.FindExtensionByNumber(message, field)
 }
