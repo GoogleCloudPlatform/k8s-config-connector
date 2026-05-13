@@ -25,6 +25,10 @@ const TimePlaceholder = "2024-04-01T12:34:56.123456Z"
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "networkservices.googleapis.com") {
+		return
+	}
+
 	replacements.ReplacePath(".createTime", TimePlaceholder)
 	replacements.ReplacePath(".updateTime", TimePlaceholder)
 	replacements.ReplacePath(".endTime", TimePlaceholder)
