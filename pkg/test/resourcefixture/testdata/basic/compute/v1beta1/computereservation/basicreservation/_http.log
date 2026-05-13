@@ -1,6 +1,7 @@
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/${reservationID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/${reservationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&reservation=${reservationID}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -28,21 +29,21 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a
 
 {
   "description": "Basic compute reservation",
   "name": "${reservationID}",
   "specificReservation": {
-    "count": 2,
+    "count": "2",
     "instanceProperties": {
-      "machineType": "n1-standard-1",
-      "minCpuPlatform": "Intel Sandy Bridge"
+      "machineType": "n1-standard-1"
     }
   },
-  "zone": "projects/${projectId}/global/zones/us-central1-a"
+  "zone": "us-central1-a"
 }
 
 200 OK
@@ -73,8 +74,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&operation=${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -105,9 +108,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/${reservationID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/${reservationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&reservation=${reservationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -137,8 +141,7 @@ X-Xss-Protection: 0
     "count": "2",
     "inUseCount": "0",
     "instanceProperties": {
-      "machineType": "n1-standard-1",
-      "minCpuPlatform": "Intel Sandy Bridge"
+      "machineType": "n1-standard-1"
     }
   },
   "specificReservationRequired": false,
@@ -148,12 +151,13 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/${reservationID}/resize?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/${reservationID}/resize
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&reservation=${reservationID}
 
 {
-  "specificSkuCount": 1
+  "specificSkuCount": "1"
 }
 
 200 OK
@@ -184,8 +188,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&operation=${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -216,9 +222,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/${reservationID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/${reservationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&reservation=${reservationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -248,8 +255,7 @@ X-Xss-Protection: 0
     "count": "1",
     "inUseCount": "0",
     "instanceProperties": {
-      "machineType": "n1-standard-1",
-      "minCpuPlatform": "Intel Sandy Bridge"
+      "machineType": "n1-standard-1"
     }
   },
   "specificReservationRequired": false,
@@ -259,9 +265,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/${reservationID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/${reservationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&reservation=${reservationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -291,8 +298,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&operation=${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

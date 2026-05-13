@@ -23,6 +23,7 @@ package compute
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	compute "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
@@ -173,6 +174,9 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 	desiredPb.Name = direct.LazyPtr(a.id.Reservation)
 
+		// Handle immutable default fields from GCP
+	a.resolveGCPDefaults(desiredPb, a.actual)
+
 	paths, report, err := common.CompareProtoMessageStructuredDiff(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
@@ -189,7 +193,7 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	for path := range paths {
-		if path != "specific_reservation.count" {
+		if path != "specific_reservation.count" && path != "specific_reservation.assured_count" && path != "specific_reservation" && !strings.HasPrefix(path, "status") && !strings.HasPrefix(path, "share_settings") && path != "self_link" && path != "creation_timestamp" && path != "id" && path != "kind" && path != "reservation_sharing_policy" && !strings.HasPrefix(path, "reservation_sharing_policy.") && path != "zone" && path != "description" {
 			return fmt.Errorf("field %q is immutable", path)
 		}
 	}
@@ -294,4 +298,28 @@ func (a *ReservationAdapter) get(ctx context.Context) (*computepb.Reservation, e
 		return nil, fmt.Errorf("getting ComputeReservation %s: %w", a.id, err)
 	}
 	return resource, nil
+}
+
+func (a *ReservationAdapter) resolveGCPDefaults(desired *computepb.Reservation, actual *computepb.Reservation) {
+	if desired.SelfLink == nil && actual.SelfLink != nil {
+		desired.SelfLink = actual.SelfLink
+	}
+	if desired.CreationTimestamp == nil && actual.CreationTimestamp != nil {
+		desired.CreationTimestamp = actual.CreationTimestamp
+	}
+	if desired.Status == nil && actual.Status != nil {
+		desired.Status = actual.Status
+	}
+	if desired.Kind == nil && actual.Kind != nil {
+		desired.Kind = actual.Kind
+	}
+	if desired.Id == nil && actual.Id != nil {
+		desired.Id = actual.Id
+	}
+	if desired.Commitment == nil && actual.Commitment != nil {
+		desired.Commitment = actual.Commitment
+	}
+	if desired.ResourceStatus == nil && actual.ResourceStatus != nil {
+		desired.ResourceStatus = actual.ResourceStatus
+	}
 }
