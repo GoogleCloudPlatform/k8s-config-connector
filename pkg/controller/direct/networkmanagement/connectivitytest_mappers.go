@@ -23,7 +23,6 @@ import (
 	run "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/genproto/googleapis/rpc/status"
-	"google.golang.org/protobuf/types/known/anypb"
 )
 
 func EndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint) *krm.EndpointObservedState {
@@ -93,23 +92,6 @@ func StatusObservedState_FromProto(mapCtx *direct.MapContext, in *status.Status)
 		Code:    direct.LazyPtr(in.Code),
 		Message: direct.LazyPtr(in.Message),
 	}
-	if len(in.Details) == 0 {
-		return out
-	}
-	detailsOut := make([]krm.Any, 0)
-	for _, d := range in.Details {
-		if d == nil {
-			continue
-		}
-		dOut := krm.Any{
-			TypeURL: direct.LazyPtr(d.TypeUrl),
-			Value:   direct.ByteSliceToStringPtr(mapCtx, d.Value),
-		}
-		detailsOut = append(detailsOut, dOut)
-	}
-	if len(detailsOut) > 0 {
-		out.Details = detailsOut
-	}
 	return out
 }
 func StatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StatusObservedState) *status.Status {
@@ -120,20 +102,6 @@ func StatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StatusObserv
 	out := &status.Status{
 		Code:    direct.ValueOf(in.Code),
 		Message: direct.ValueOf(in.Message),
-	}
-	if len(in.Details) == 0 {
-		return out
-	}
-	detailsOut := make([]*anypb.Any, 0)
-	for _, d := range in.Details {
-		dOut := &anypb.Any{
-			TypeUrl: direct.ValueOf(d.TypeURL),
-			Value:   direct.StringPtrToByteSlice(mapCtx, d.Value),
-		}
-		detailsOut = append(detailsOut, dOut)
-	}
-	if len(detailsOut) > 0 {
-		out.Details = detailsOut
 	}
 	return out
 }
