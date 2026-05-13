@@ -133,12 +133,6 @@ func (r *Recorder) GenerateRecorderReconciledResults() *RecorderReconciledResult
 
 func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, altResult *RecorderReconciledResults, altExpectedMap map[schema.GroupKind]k8s.ReconcilerType) error {
 	var combinedBadResult []*GKNNReconciledResult
-	if len(r.badResult) > 0 {
-		combinedBadResult = append(combinedBadResult, r.badResult...)
-	}
-	if altResult != nil && len(altResult.badResult) > 0 {
-		combinedBadResult = append(combinedBadResult, altResult.badResult...)
-	}
 
 	f, err := os.Create(summaryFile)
 	if err != nil {
@@ -226,6 +220,9 @@ func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, al
 			defStatus = formatReconciledStatus(pair.def)
 			defDiffs = FormatFieldIDs(pair.def.Diffs)
 			klog.V(0).Info("\"PreviewResult\" ", pair.def.FormatGKNNReconciledResult())
+			if pair.def.ReconcileStatus == ReconcileStatusUnhealthy {
+				combinedBadResult = append(combinedBadResult, pair.def)
+			}
 		}
 
 		// Evaluate alternative results logic.
@@ -243,6 +240,9 @@ func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, al
 			// Only log alternative results if there is a difference from the default result
 			if pair.def == nil || altStatus != defStatus || altDiffs != defDiffs {
 				klog.V(0).Info("\"PreviewResult\" ", pair.alt.FormatGKNNReconciledResult())
+				if pair.alt.ReconcileStatus == ReconcileStatusUnhealthy {
+					combinedBadResult = append(combinedBadResult, pair.alt)
+				}
 			}
 		} else {
 			altCtrl = string(altExpected)
