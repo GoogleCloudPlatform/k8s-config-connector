@@ -826,47 +826,6 @@ spec:
                               value of [google.rpc.Code][google.rpc.Code].
                             format: int32
                             type: integer
-                          details:
-                            description: A list of messages that carry the error details.  There
-                              is a common set of message types for APIs to use.
-                            items:
-                              properties:
-                                typeURL:
-                                  description: |-
-                                    A URL/resource name that uniquely identifies the type of the serialized
-                                     protocol buffer message. This string must contain at least
-                                     one "/" character. The last segment of the URL's path must represent
-                                     the fully qualified name of the type (as in
-                                     `path/google.protobuf.Duration`). The name should be in a canonical form
-                                     (e.g., leading "." is not accepted).
-
-                                     In practice, teams usually precompile into the binary all types that they
-                                     expect it to use in the context of Any. However, for URLs which use the
-                                     scheme `http`, `https`, or no scheme, one can optionally set up a type
-                                     server that maps type URLs to message definitions as follows:
-
-                                     * If no scheme is provided, `https` is assumed.
-                                     * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-                                       value in binary format, or produce an error.
-                                     * Applications are allowed to cache lookup results based on the
-                                       URL, or have them precompiled into a binary to avoid any
-                                       lookup. Therefore, binary compatibility needs to be preserved
-                                       on changes to types. (Use versioned type names to manage
-                                       breaking changes.)
-
-                                     Note: this functionality is not currently available in the official
-                                     protobuf release, and it is not used for type URLs beginning with
-                                     type.googleapis.com.
-
-                                     Schemes other than `http`, `https` (or the empty scheme) might be
-                                     used with implementation specific semantics.
-                                  type: string
-                                value:
-                                  description: Must be a valid serialized protocol
-                                    buffer of the above specified type.
-                                  type: string
-                              type: object
-                            type: array
                           message:
                             description: A developer-facing error message, which should
                               be in English. Any user-facing error message should
@@ -928,47 +887,6 @@ spec:
                               value of [google.rpc.Code][google.rpc.Code].
                             format: int32
                             type: integer
-                          details:
-                            description: A list of messages that carry the error details.  There
-                              is a common set of message types for APIs to use.
-                            items:
-                              properties:
-                                typeURL:
-                                  description: |-
-                                    A URL/resource name that uniquely identifies the type of the serialized
-                                     protocol buffer message. This string must contain at least
-                                     one "/" character. The last segment of the URL's path must represent
-                                     the fully qualified name of the type (as in
-                                     `path/google.protobuf.Duration`). The name should be in a canonical form
-                                     (e.g., leading "." is not accepted).
-
-                                     In practice, teams usually precompile into the binary all types that they
-                                     expect it to use in the context of Any. However, for URLs which use the
-                                     scheme `http`, `https`, or no scheme, one can optionally set up a type
-                                     server that maps type URLs to message definitions as follows:
-
-                                     * If no scheme is provided, `https` is assumed.
-                                     * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-                                       value in binary format, or produce an error.
-                                     * Applications are allowed to cache lookup results based on the
-                                       URL, or have them precompiled into a binary to avoid any
-                                       lookup. Therefore, binary compatibility needs to be preserved
-                                       on changes to types. (Use versioned type names to manage
-                                       breaking changes.)
-
-                                     Note: this functionality is not currently available in the official
-                                     protobuf release, and it is not used for type URLs beginning with
-                                     type.googleapis.com.
-
-                                     Schemes other than `http`, `https` (or the empty scheme) might be
-                                     used with implementation specific semantics.
-                                  type: string
-                                value:
-                                  description: Must be a valid serialized protocol
-                                    buffer of the above specified type.
-                                  type: string
-                              type: object
-                            type: array
                           message:
                             description: A developer-facing error message, which should
                               be in English. Any user-facing error message should
@@ -1184,6 +1102,28 @@ spec:
                                     description: A description of the step. Usually
                                       this is a summary of the state.
                                     type: string
+                                  directVPCEgressConnection:
+                                    description: Display information of a serverless
+                                      direct VPC egress connection.
+                                    properties:
+                                      networkURI:
+                                        description: URI of direct access network.
+                                        type: string
+                                      region:
+                                        description: Region in which the Direct VPC
+                                          egress is deployed.
+                                        type: string
+                                      selectedIPAddress:
+                                        description: Selected starting IP address,
+                                          from the selected IP range.
+                                        type: string
+                                      selectedIPRange:
+                                        description: Selected IP range.
+                                        type: string
+                                      subnetworkURI:
+                                        description: URI of direct access subnetwork.
+                                        type: string
+                                    type: object
                                   drop:
                                     description: Display information of the final
                                       state "drop" and reason.
@@ -1708,8 +1648,8 @@ spec:
                                           Redis Cluster is defined. For example, "us-central1".
                                         type: string
                                       networkURI:
-                                        description: URI of a Redis Cluster network
-                                          in format "projects/{project_id}/global/networks/{network_id}".
+                                        description: URI of the network containing
+                                          the Redis Cluster endpoints in format "projects/{project_id}/global/networks/{network_id}".
                                         type: string
                                       secondaryEndpointIPAddress:
                                         description: Secondary endpoint IP address
@@ -1751,15 +1691,16 @@ spec:
                                       Engine route.
                                     properties:
                                       advertisedRouteNextHopURI:
-                                        description: For advertised routes, the URI
+                                        description: For ADVERTISED routes, the URI
                                           of their next hop, i.e. the URI of the hybrid
                                           endpoint (VPN tunnel, Interconnect attachment,
                                           NCC router appliance) the advertised prefix
                                           is advertised through, or URI of the source
-                                          peered network.
+                                          peered network. Deprecated in favor of the
+                                          next_hop_uri field, not used in new tests.
                                         type: string
                                       advertisedRouteSourceRouterURI:
-                                        description: For advertised dynamic routes,
+                                        description: For ADVERTISED dynamic routes,
                                           the URI of the Cloud Router that advertised
                                           the corresponding IP prefix.
                                         type: string
@@ -1768,7 +1709,7 @@ spec:
                                         type: string
                                       destPortRanges:
                                         description: Destination port ranges of the
-                                          route. Policy based routes only.
+                                          route. POLICY_BASED routes only.
                                         items:
                                           type: string
                                         type: array
@@ -1780,55 +1721,100 @@ spec:
                                         items:
                                           type: string
                                         type: array
+                                      nccHubRouteURI:
+                                        description: For PEERING_SUBNET and PEERING_DYNAMIC
+                                          routes that are advertised by NCC Hub, the
+                                          URI of the corresponding route in NCC Hub's
+                                          routing table.
+                                        type: string
                                       nccHubURI:
-                                        description: URI of a NCC Hub. NCC_HUB routes
-                                          only.
+                                        description: URI of the NCC Hub the route
+                                          is advertised by. PEERING_SUBNET and PEERING_DYNAMIC
+                                          routes that are advertised by NCC Hub only.
                                         type: string
                                       nccSpokeURI:
-                                        description: URI of a NCC Spoke. NCC_HUB routes
-                                          only.
+                                        description: URI of the destination NCC Spoke.
+                                          PEERING_SUBNET and PEERING_DYNAMIC routes
+                                          that are advertised by NCC Hub only.
                                         type: string
                                       networkURI:
-                                        description: URI of a Compute Engine network.
-                                          NETWORK routes only.
+                                        description: URI of a VPC network where route
+                                          is located.
                                         type: string
                                       nextHop:
-                                        description: Next hop of the route.
+                                        description: String type of the next hop of
+                                          the route (for example, "VPN tunnel"). Deprecated
+                                          in favor of the next_hop_type and next_hop_uri
+                                          fields, not used in new tests.
+                                        type: string
+                                      nextHopNetworkURI:
+                                        description: URI of a VPC network where the
+                                          next hop resource is located.
                                         type: string
                                       nextHopType:
                                         description: Type of next hop.
+                                        type: string
+                                      nextHopURI:
+                                        description: URI of the next hop resource.
+                                        type: string
+                                      originatingRouteDisplayName:
+                                        description: For PEERING_SUBNET, PEERING_STATIC
+                                          and PEERING_DYNAMIC routes, the name of
+                                          the originating SUBNET/STATIC/DYNAMIC route.
+                                        type: string
+                                      originatingRouteURI:
+                                        description: For PEERING_SUBNET and PEERING_STATIC
+                                          routes, the URI of the originating SUBNET/STATIC
+                                          route.
                                         type: string
                                       priority:
                                         description: Priority of the route.
                                         format: int32
                                         type: integer
                                       protocols:
-                                        description: Protocols of the route. Policy
-                                          based routes only.
+                                        description: Protocols of the route. POLICY_BASED
+                                          routes only.
                                         items:
                                           type: string
                                         type: array
                                       region:
-                                        description: Region of the route (if applicable).
+                                        description: Region of the route. DYNAMIC,
+                                          PEERING_DYNAMIC, POLICY_BASED and ADVERTISED
+                                          routes only. If set for POLICY_BASED route,
+                                          this is a region of VLAN attachments for
+                                          Cloud Interconnect the route applies to.
                                         type: string
                                       routeScope:
                                         description: Indicates where route is applicable.
+                                          Deprecated, routes with NCC_HUB scope are
+                                          not included in the trace in new tests.
                                         type: string
                                       routeType:
                                         description: Type of route.
                                         type: string
                                       srcIPRange:
                                         description: Source IP address range of the
-                                          route. Policy based routes only.
+                                          route. POLICY_BASED routes only.
                                         type: string
                                       srcPortRanges:
                                         description: Source port ranges of the route.
-                                          Policy based routes only.
+                                          POLICY_BASED routes only.
                                         items:
                                           type: string
                                         type: array
                                       uri:
-                                        description: URI of a route (if applicable).
+                                        description: URI of a route. SUBNET, STATIC,
+                                          PEERING_SUBNET (only for peering network)
+                                          and POLICY_BASED routes only.
+                                        type: string
+                                    type: object
+                                  serverlessExternalConnection:
+                                    description: Display information of a serverless
+                                      public (external) connection.
+                                    properties:
+                                      selectedIPAddress:
+                                        description: Selected starting IP address,
+                                          from the Google dynamic address pool.
                                         type: string
                                     type: object
                                   serverlessNeg:
@@ -1955,47 +1941,6 @@ spec:
                               value of [google.rpc.Code][google.rpc.Code].
                             format: int32
                             type: integer
-                          details:
-                            description: A list of messages that carry the error details.  There
-                              is a common set of message types for APIs to use.
-                            items:
-                              properties:
-                                typeURL:
-                                  description: |-
-                                    A URL/resource name that uniquely identifies the type of the serialized
-                                     protocol buffer message. This string must contain at least
-                                     one "/" character. The last segment of the URL's path must represent
-                                     the fully qualified name of the type (as in
-                                     `path/google.protobuf.Duration`). The name should be in a canonical form
-                                     (e.g., leading "." is not accepted).
-
-                                     In practice, teams usually precompile into the binary all types that they
-                                     expect it to use in the context of Any. However, for URLs which use the
-                                     scheme `http`, `https`, or no scheme, one can optionally set up a type
-                                     server that maps type URLs to message definitions as follows:
-
-                                     * If no scheme is provided, `https` is assumed.
-                                     * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-                                       value in binary format, or produce an error.
-                                     * Applications are allowed to cache lookup results based on the
-                                       URL, or have them precompiled into a binary to avoid any
-                                       lookup. Therefore, binary compatibility needs to be preserved
-                                       on changes to types. (Use versioned type names to manage
-                                       breaking changes.)
-
-                                     Note: this functionality is not currently available in the official
-                                     protobuf release, and it is not used for type URLs beginning with
-                                     type.googleapis.com.
-
-                                     Schemes other than `http`, `https` (or the empty scheme) might be
-                                     used with implementation specific semantics.
-                                  type: string
-                                value:
-                                  description: Must be a valid serialized protocol
-                                    buffer of the above specified type.
-                                  type: string
-                              type: object
-                            type: array
                           message:
                             description: A developer-facing error message, which should
                               be in English. Any user-facing error message should
@@ -2211,6 +2156,28 @@ spec:
                                     description: A description of the step. Usually
                                       this is a summary of the state.
                                     type: string
+                                  directVPCEgressConnection:
+                                    description: Display information of a serverless
+                                      direct VPC egress connection.
+                                    properties:
+                                      networkURI:
+                                        description: URI of direct access network.
+                                        type: string
+                                      region:
+                                        description: Region in which the Direct VPC
+                                          egress is deployed.
+                                        type: string
+                                      selectedIPAddress:
+                                        description: Selected starting IP address,
+                                          from the selected IP range.
+                                        type: string
+                                      selectedIPRange:
+                                        description: Selected IP range.
+                                        type: string
+                                      subnetworkURI:
+                                        description: URI of direct access subnetwork.
+                                        type: string
+                                    type: object
                                   drop:
                                     description: Display information of the final
                                       state "drop" and reason.
@@ -2735,8 +2702,8 @@ spec:
                                           Redis Cluster is defined. For example, "us-central1".
                                         type: string
                                       networkURI:
-                                        description: URI of a Redis Cluster network
-                                          in format "projects/{project_id}/global/networks/{network_id}".
+                                        description: URI of the network containing
+                                          the Redis Cluster endpoints in format "projects/{project_id}/global/networks/{network_id}".
                                         type: string
                                       secondaryEndpointIPAddress:
                                         description: Secondary endpoint IP address
@@ -2778,15 +2745,16 @@ spec:
                                       Engine route.
                                     properties:
                                       advertisedRouteNextHopURI:
-                                        description: For advertised routes, the URI
+                                        description: For ADVERTISED routes, the URI
                                           of their next hop, i.e. the URI of the hybrid
                                           endpoint (VPN tunnel, Interconnect attachment,
                                           NCC router appliance) the advertised prefix
                                           is advertised through, or URI of the source
-                                          peered network.
+                                          peered network. Deprecated in favor of the
+                                          next_hop_uri field, not used in new tests.
                                         type: string
                                       advertisedRouteSourceRouterURI:
-                                        description: For advertised dynamic routes,
+                                        description: For ADVERTISED dynamic routes,
                                           the URI of the Cloud Router that advertised
                                           the corresponding IP prefix.
                                         type: string
@@ -2795,7 +2763,7 @@ spec:
                                         type: string
                                       destPortRanges:
                                         description: Destination port ranges of the
-                                          route. Policy based routes only.
+                                          route. POLICY_BASED routes only.
                                         items:
                                           type: string
                                         type: array
@@ -2807,55 +2775,100 @@ spec:
                                         items:
                                           type: string
                                         type: array
+                                      nccHubRouteURI:
+                                        description: For PEERING_SUBNET and PEERING_DYNAMIC
+                                          routes that are advertised by NCC Hub, the
+                                          URI of the corresponding route in NCC Hub's
+                                          routing table.
+                                        type: string
                                       nccHubURI:
-                                        description: URI of a NCC Hub. NCC_HUB routes
-                                          only.
+                                        description: URI of the NCC Hub the route
+                                          is advertised by. PEERING_SUBNET and PEERING_DYNAMIC
+                                          routes that are advertised by NCC Hub only.
                                         type: string
                                       nccSpokeURI:
-                                        description: URI of a NCC Spoke. NCC_HUB routes
-                                          only.
+                                        description: URI of the destination NCC Spoke.
+                                          PEERING_SUBNET and PEERING_DYNAMIC routes
+                                          that are advertised by NCC Hub only.
                                         type: string
                                       networkURI:
-                                        description: URI of a Compute Engine network.
-                                          NETWORK routes only.
+                                        description: URI of a VPC network where route
+                                          is located.
                                         type: string
                                       nextHop:
-                                        description: Next hop of the route.
+                                        description: String type of the next hop of
+                                          the route (for example, "VPN tunnel"). Deprecated
+                                          in favor of the next_hop_type and next_hop_uri
+                                          fields, not used in new tests.
+                                        type: string
+                                      nextHopNetworkURI:
+                                        description: URI of a VPC network where the
+                                          next hop resource is located.
                                         type: string
                                       nextHopType:
                                         description: Type of next hop.
+                                        type: string
+                                      nextHopURI:
+                                        description: URI of the next hop resource.
+                                        type: string
+                                      originatingRouteDisplayName:
+                                        description: For PEERING_SUBNET, PEERING_STATIC
+                                          and PEERING_DYNAMIC routes, the name of
+                                          the originating SUBNET/STATIC/DYNAMIC route.
+                                        type: string
+                                      originatingRouteURI:
+                                        description: For PEERING_SUBNET and PEERING_STATIC
+                                          routes, the URI of the originating SUBNET/STATIC
+                                          route.
                                         type: string
                                       priority:
                                         description: Priority of the route.
                                         format: int32
                                         type: integer
                                       protocols:
-                                        description: Protocols of the route. Policy
-                                          based routes only.
+                                        description: Protocols of the route. POLICY_BASED
+                                          routes only.
                                         items:
                                           type: string
                                         type: array
                                       region:
-                                        description: Region of the route (if applicable).
+                                        description: Region of the route. DYNAMIC,
+                                          PEERING_DYNAMIC, POLICY_BASED and ADVERTISED
+                                          routes only. If set for POLICY_BASED route,
+                                          this is a region of VLAN attachments for
+                                          Cloud Interconnect the route applies to.
                                         type: string
                                       routeScope:
                                         description: Indicates where route is applicable.
+                                          Deprecated, routes with NCC_HUB scope are
+                                          not included in the trace in new tests.
                                         type: string
                                       routeType:
                                         description: Type of route.
                                         type: string
                                       srcIPRange:
                                         description: Source IP address range of the
-                                          route. Policy based routes only.
+                                          route. POLICY_BASED routes only.
                                         type: string
                                       srcPortRanges:
                                         description: Source port ranges of the route.
-                                          Policy based routes only.
+                                          POLICY_BASED routes only.
                                         items:
                                           type: string
                                         type: array
                                       uri:
-                                        description: URI of a route (if applicable).
+                                        description: URI of a route. SUBNET, STATIC,
+                                          PEERING_SUBNET (only for peering network)
+                                          and POLICY_BASED routes only.
+                                        type: string
+                                    type: object
+                                  serverlessExternalConnection:
+                                    description: Display information of a serverless
+                                      public (external) connection.
+                                    properties:
+                                      selectedIPAddress:
+                                        description: Selected starting IP address,
+                                          from the Google dynamic address pool.
                                         type: string
                                     type: object
                                   serverlessNeg:
