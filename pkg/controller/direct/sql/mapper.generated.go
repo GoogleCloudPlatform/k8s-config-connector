@@ -102,6 +102,7 @@ func BackupConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.BackupConfi
 	out.TransactionLogRetentionDays = Int32Value_FromProto(mapCtx, in.GetTransactionLogRetentionDays())
 	out.BackupRetentionSettings = BackupRetentionSettings_FromProto(mapCtx, in.GetBackupRetentionSettings())
 	// MISSING: TransactionalLogStorageState
+	// MISSING: BackupTier
 	return out
 }
 func BackupConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.BackupConfiguration) *pb.BackupConfiguration {
@@ -119,6 +120,7 @@ func BackupConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.BackupConfig
 	out.TransactionLogRetentionDays = Int32Value_ToProto(mapCtx, in.TransactionLogRetentionDays)
 	out.BackupRetentionSettings = BackupRetentionSettings_ToProto(mapCtx, in.BackupRetentionSettings)
 	// MISSING: TransactionalLogStorageState
+	// MISSING: BackupTier
 	return out
 }
 func BackupConfigurationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupConfiguration) *krm.BackupConfigurationObservedState {
@@ -136,6 +138,7 @@ func BackupConfigurationObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	// MISSING: TransactionLogRetentionDays
 	// MISSING: BackupRetentionSettings
 	out.TransactionalLogStorageState = direct.Enum_FromProto(mapCtx, in.GetTransactionalLogStorageState())
+	out.BackupTier = direct.Enum_FromProto(mapCtx, in.GetBackupTier())
 	return out
 }
 func BackupConfigurationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupConfigurationObservedState) *pb.BackupConfiguration {
@@ -155,6 +158,9 @@ func BackupConfigurationObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	if oneof := BackupConfigurationObservedState_TransactionalLogStorageState_ToProto(mapCtx, in.TransactionalLogStorageState); oneof != nil {
 		out.TransactionalLogStorageState = oneof
 	}
+	if oneof := BackupConfigurationObservedState_BackupTier_ToProto(mapCtx, in.BackupTier); oneof != nil {
+		out.BackupTier = oneof
+	}
 	return out
 }
 func BackupRetentionSettings_FromProto(mapCtx *direct.MapContext, in *pb.BackupRetentionSettings) *krm.BackupRetentionSettings {
@@ -173,6 +179,108 @@ func BackupRetentionSettings_ToProto(mapCtx *direct.MapContext, in *krm.BackupRe
 	out := &pb.BackupRetentionSettings{}
 	out.RetentionUnit = direct.Enum_ToProto[pb.BackupRetentionSettings_RetentionUnit](mapCtx, in.RetentionUnit)
 	out.RetainedBackups = Int32Value_ToProto(mapCtx, in.RetainedBackups)
+	return out
+}
+func ConnectionPoolConfig_FromProto(mapCtx *direct.MapContext, in *pb.ConnectionPoolConfig) *krm.ConnectionPoolConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConnectionPoolConfig{}
+	out.ConnectionPoolingEnabled = in.ConnectionPoolingEnabled
+	out.Flags = direct.Slice_FromProto(mapCtx, in.Flags, ConnectionPoolFlags_FromProto)
+	// MISSING: PoolerCount
+	return out
+}
+func ConnectionPoolConfig_ToProto(mapCtx *direct.MapContext, in *krm.ConnectionPoolConfig) *pb.ConnectionPoolConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConnectionPoolConfig{}
+	out.ConnectionPoolingEnabled = in.ConnectionPoolingEnabled
+	out.Flags = direct.Slice_ToProto(mapCtx, in.Flags, ConnectionPoolFlags_ToProto)
+	// MISSING: PoolerCount
+	return out
+}
+func ConnectionPoolConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConnectionPoolConfig) *krm.ConnectionPoolConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConnectionPoolConfigObservedState{}
+	// MISSING: ConnectionPoolingEnabled
+	// MISSING: Flags
+	out.PoolerCount = in.PoolerCount
+	return out
+}
+func ConnectionPoolConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ConnectionPoolConfigObservedState) *pb.ConnectionPoolConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConnectionPoolConfig{}
+	// MISSING: ConnectionPoolingEnabled
+	// MISSING: Flags
+	out.PoolerCount = in.PoolerCount
+	return out
+}
+func ConnectionPoolFlags_FromProto(mapCtx *direct.MapContext, in *pb.ConnectionPoolFlags) *krm.ConnectionPoolFlags {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConnectionPoolFlags{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Value = direct.LazyPtr(in.GetValue())
+	return out
+}
+func ConnectionPoolFlags_ToProto(mapCtx *direct.MapContext, in *krm.ConnectionPoolFlags) *pb.ConnectionPoolFlags {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConnectionPoolFlags{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Value = direct.ValueOf(in.Value)
+	return out
+}
+func DNSNameMapping_FromProto(mapCtx *direct.MapContext, in *pb.DnsNameMapping) *krm.DNSNameMapping {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DNSNameMapping{}
+	// MISSING: Name
+	// MISSING: ConnectionType
+	// MISSING: DNSScope
+	// MISSING: RecordManager
+	return out
+}
+func DNSNameMapping_ToProto(mapCtx *direct.MapContext, in *krm.DNSNameMapping) *pb.DnsNameMapping {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DnsNameMapping{}
+	// MISSING: Name
+	// MISSING: ConnectionType
+	// MISSING: DNSScope
+	// MISSING: RecordManager
+	return out
+}
+func DNSNameMappingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DnsNameMapping) *krm.DNSNameMappingObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DNSNameMappingObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.ConnectionType = direct.Enum_FromProto(mapCtx, in.GetConnectionType())
+	out.DNSScope = direct.Enum_FromProto(mapCtx, in.GetDnsScope())
+	out.RecordManager = direct.Enum_FromProto(mapCtx, in.GetRecordManager())
+	return out
+}
+func DNSNameMappingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DNSNameMappingObservedState) *pb.DnsNameMapping {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DnsNameMapping{}
+	out.Name = direct.ValueOf(in.Name)
+	out.ConnectionType = direct.Enum_ToProto[pb.DnsNameMapping_ConnectionType](mapCtx, in.ConnectionType)
+	out.DnsScope = direct.Enum_ToProto[pb.DnsNameMapping_DnsScope](mapCtx, in.DNSScope)
+	out.RecordManager = direct.Enum_ToProto[pb.DnsNameMapping_RecordManager](mapCtx, in.RecordManager)
 	return out
 }
 func DataCacheConfig_FromProto(mapCtx *direct.MapContext, in *pb.DataCacheConfig) *krm.DataCacheConfig {
@@ -258,6 +366,13 @@ func DatabaseInstance_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseInstan
 	// MISSING: WriteEndpoint
 	out.ReplicationCluster = ReplicationCluster_FromProto(mapCtx, in.GetReplicationCluster())
 	out.GeminiConfig = GeminiInstanceConfig_FromProto(mapCtx, in.GetGeminiConfig())
+	// MISSING: SatisfiesPzi
+	out.SwitchTransactionLogsToCloudStorageEnabled = direct.BoolValue_FromProto(mapCtx, in.GetSwitchTransactionLogsToCloudStorageEnabled())
+	out.IncludeReplicasForMajorVersionUpgrade = direct.BoolValue_FromProto(mapCtx, in.GetIncludeReplicasForMajorVersionUpgrade())
+	out.Tags = in.Tags
+	out.NodeCount = in.NodeCount
+	// MISSING: Nodes
+	// MISSING: DNSNames
 	return out
 }
 func DatabaseInstance_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseInstance) *pb.DatabaseInstance {
@@ -311,6 +426,13 @@ func DatabaseInstance_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseInstanc
 	// MISSING: WriteEndpoint
 	out.ReplicationCluster = ReplicationCluster_ToProto(mapCtx, in.ReplicationCluster)
 	out.GeminiConfig = GeminiInstanceConfig_ToProto(mapCtx, in.GeminiConfig)
+	// MISSING: SatisfiesPzi
+	out.SwitchTransactionLogsToCloudStorageEnabled = direct.BoolValue_ToProto(mapCtx, in.SwitchTransactionLogsToCloudStorageEnabled)
+	out.IncludeReplicasForMajorVersionUpgrade = direct.BoolValue_ToProto(mapCtx, in.IncludeReplicasForMajorVersionUpgrade)
+	out.Tags = in.Tags
+	out.NodeCount = in.NodeCount
+	// MISSING: Nodes
+	// MISSING: DNSNames
 	return out
 }
 func DatabaseInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseInstance) *krm.DatabaseInstanceObservedState {
@@ -362,6 +484,13 @@ func DatabaseInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.D
 	out.WriteEndpoint = in.WriteEndpoint
 	out.ReplicationCluster = ReplicationClusterObservedState_FromProto(mapCtx, in.GetReplicationCluster())
 	out.GeminiConfig = GeminiInstanceConfigObservedState_FromProto(mapCtx, in.GetGeminiConfig())
+	out.SatisfiesPzi = direct.BoolValue_FromProto(mapCtx, in.GetSatisfiesPzi())
+	// MISSING: SwitchTransactionLogsToCloudStorageEnabled
+	// MISSING: IncludeReplicasForMajorVersionUpgrade
+	// MISSING: Tags
+	// MISSING: NodeCount
+	out.Nodes = direct.Slice_FromProto(mapCtx, in.Nodes, DatabaseInstance_PoolNodeConfig_FromProto)
+	out.DNSNames = direct.Slice_FromProto(mapCtx, in.DnsNames, DNSNameMapping_FromProto)
 	return out
 }
 func DatabaseInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseInstanceObservedState) *pb.DatabaseInstance {
@@ -413,6 +542,75 @@ func DatabaseInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Da
 	out.WriteEndpoint = in.WriteEndpoint
 	out.ReplicationCluster = ReplicationClusterObservedState_ToProto(mapCtx, in.ReplicationCluster)
 	out.GeminiConfig = GeminiInstanceConfigObservedState_ToProto(mapCtx, in.GeminiConfig)
+	out.SatisfiesPzi = direct.BoolValue_ToProto(mapCtx, in.SatisfiesPzi)
+	// MISSING: SwitchTransactionLogsToCloudStorageEnabled
+	// MISSING: IncludeReplicasForMajorVersionUpgrade
+	// MISSING: Tags
+	// MISSING: NodeCount
+	out.Nodes = direct.Slice_ToProto(mapCtx, in.Nodes, DatabaseInstance_PoolNodeConfig_ToProto)
+	out.DnsNames = direct.Slice_ToProto(mapCtx, in.DNSNames, DNSNameMapping_ToProto)
+	return out
+}
+func DatabaseInstance_PoolNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseInstance_PoolNodeConfig) *krm.DatabaseInstance_PoolNodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DatabaseInstance_PoolNodeConfig{}
+	// MISSING: Name
+	// MISSING: GCEZone
+	// MISSING: IPAddresses
+	// MISSING: DNSName
+	// MISSING: State
+	// MISSING: DNSNames
+	// MISSING: PSCServiceAttachmentLink
+	// MISSING: PSCAutoConnections
+	return out
+}
+func DatabaseInstance_PoolNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseInstance_PoolNodeConfig) *pb.DatabaseInstance_PoolNodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DatabaseInstance_PoolNodeConfig{}
+	// MISSING: Name
+	// MISSING: GCEZone
+	// MISSING: IPAddresses
+	// MISSING: DNSName
+	// MISSING: State
+	// MISSING: DNSNames
+	// MISSING: PSCServiceAttachmentLink
+	// MISSING: PSCAutoConnections
+	return out
+}
+func DatabaseInstance_PoolNodeConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseInstance_PoolNodeConfig) *krm.DatabaseInstance_PoolNodeConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DatabaseInstance_PoolNodeConfigObservedState{}
+	out.Name = in.Name
+	out.GCEZone = in.GceZone
+	out.IPAddresses = direct.Slice_FromProto(mapCtx, in.IpAddresses, IPMapping_FromProto)
+	out.DNSName = in.DnsName
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.DNSNames = direct.Slice_FromProto(mapCtx, in.DnsNames, DNSNameMapping_FromProto)
+	out.PSCServiceAttachmentLink = in.PscServiceAttachmentLink
+	out.PSCAutoConnections = direct.Slice_FromProto(mapCtx, in.PscAutoConnections, PSCAutoConnectionConfig_FromProto)
+	return out
+}
+func DatabaseInstance_PoolNodeConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseInstance_PoolNodeConfigObservedState) *pb.DatabaseInstance_PoolNodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DatabaseInstance_PoolNodeConfig{}
+	out.Name = in.Name
+	out.GceZone = in.GCEZone
+	out.IpAddresses = direct.Slice_ToProto(mapCtx, in.IPAddresses, IPMapping_ToProto)
+	out.DnsName = in.DNSName
+	if oneof := DatabaseInstance_PoolNodeConfigObservedState_State_ToProto(mapCtx, in.State); oneof != nil {
+		out.State = oneof
+	}
+	out.DnsNames = direct.Slice_ToProto(mapCtx, in.DNSNames, DNSNameMapping_ToProto)
+	out.PscServiceAttachmentLink = in.PSCServiceAttachmentLink
+	out.PscAutoConnections = direct.Slice_ToProto(mapCtx, in.PSCAutoConnections, PSCAutoConnectionConfig_ToProto)
 	return out
 }
 func DatabaseInstance_SQLFailoverReplica_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseInstance_SqlFailoverReplica) *krm.DatabaseInstance_SQLFailoverReplica {
@@ -531,6 +729,24 @@ func DiskEncryptionStatus_ToProto(mapCtx *direct.MapContext, in *krm.DiskEncrypt
 	out.Kind = direct.ValueOf(in.Kind)
 	return out
 }
+func FinalBackupConfig_FromProto(mapCtx *direct.MapContext, in *pb.FinalBackupConfig) *krm.FinalBackupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FinalBackupConfig{}
+	out.Enabled = in.Enabled
+	out.RetentionDays = in.RetentionDays
+	return out
+}
+func FinalBackupConfig_ToProto(mapCtx *direct.MapContext, in *krm.FinalBackupConfig) *pb.FinalBackupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FinalBackupConfig{}
+	out.Enabled = in.Enabled
+	out.RetentionDays = in.RetentionDays
+	return out
+}
 func GeminiInstanceConfig_FromProto(mapCtx *direct.MapContext, in *pb.GeminiInstanceConfig) *krm.GeminiInstanceConfig {
 	if in == nil {
 		return nil
@@ -596,6 +812,10 @@ func IPConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.IpConfiguration
 	out.EnablePrivatePathForGoogleCloudServices = direct.BoolValue_FromProto(mapCtx, in.GetEnablePrivatePathForGoogleCloudServices())
 	out.SSLMode = direct.Enum_FromProto(mapCtx, in.GetSslMode())
 	out.PSCConfig = PSCConfig_FromProto(mapCtx, in.GetPscConfig())
+	out.ServerCAMode = direct.Enum_FromProto(mapCtx, in.GetServerCaMode())
+	out.CustomSubjectAlternativeNames = in.CustomSubjectAlternativeNames
+	out.ServerCAPool = in.ServerCaPool
+	out.ServerCertificateRotationMode = direct.Enum_FromProto(mapCtx, in.GetServerCertificateRotationMode())
 	return out
 }
 func IPConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.IPConfiguration) *pb.IpConfiguration {
@@ -611,6 +831,14 @@ func IPConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.IPConfiguration)
 	out.EnablePrivatePathForGoogleCloudServices = direct.BoolValue_ToProto(mapCtx, in.EnablePrivatePathForGoogleCloudServices)
 	out.SslMode = direct.Enum_ToProto[pb.IpConfiguration_SslMode](mapCtx, in.SSLMode)
 	out.PscConfig = PSCConfig_ToProto(mapCtx, in.PSCConfig)
+	if oneof := IPConfiguration_ServerCaMode_ToProto(mapCtx, in.ServerCAMode); oneof != nil {
+		out.ServerCaMode = oneof
+	}
+	out.CustomSubjectAlternativeNames = in.CustomSubjectAlternativeNames
+	out.ServerCaPool = in.ServerCAPool
+	if oneof := IPConfiguration_ServerCertificateRotationMode_ToProto(mapCtx, in.ServerCertificateRotationMode); oneof != nil {
+		out.ServerCertificateRotationMode = oneof
+	}
 	return out
 }
 func IPMapping_FromProto(mapCtx *direct.MapContext, in *pb.IpMapping) *krm.IPMapping {
@@ -643,6 +871,7 @@ func InsightsConfig_FromProto(mapCtx *direct.MapContext, in *pb.InsightsConfig) 
 	out.RecordApplicationTags = direct.LazyPtr(in.GetRecordApplicationTags())
 	out.QueryStringLength = Int32Value_FromProto(mapCtx, in.GetQueryStringLength())
 	out.QueryPlansPerMinute = Int32Value_FromProto(mapCtx, in.GetQueryPlansPerMinute())
+	out.EnhancedQueryInsightsEnabled = direct.BoolValue_FromProto(mapCtx, in.GetEnhancedQueryInsightsEnabled())
 	return out
 }
 func InsightsConfig_ToProto(mapCtx *direct.MapContext, in *krm.InsightsConfig) *pb.InsightsConfig {
@@ -655,6 +884,7 @@ func InsightsConfig_ToProto(mapCtx *direct.MapContext, in *krm.InsightsConfig) *
 	out.RecordApplicationTags = direct.ValueOf(in.RecordApplicationTags)
 	out.QueryStringLength = Int32Value_ToProto(mapCtx, in.QueryStringLength)
 	out.QueryPlansPerMinute = Int32Value_ToProto(mapCtx, in.QueryPlansPerMinute)
+	out.EnhancedQueryInsightsEnabled = direct.BoolValue_ToProto(mapCtx, in.EnhancedQueryInsightsEnabled)
 	return out
 }
 func InstanceReference_FromProto(mapCtx *direct.MapContext, in *pb.InstanceReference) *krm.InstanceReference {
@@ -771,6 +1001,8 @@ func OnPremisesConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.OnPremi
 	out.ClientKey = direct.LazyPtr(in.GetClientKey())
 	out.DumpFilePath = direct.LazyPtr(in.GetDumpFilePath())
 	out.SourceInstance = InstanceReference_FromProto(mapCtx, in.GetSourceInstance())
+	out.SelectedObjects = direct.Slice_FromProto(mapCtx, in.SelectedObjects, SelectedObjects_FromProto)
+	out.SSLOption = direct.Enum_FromProto(mapCtx, in.GetSslOption())
 	return out
 }
 func OnPremisesConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.OnPremisesConfiguration) *pb.OnPremisesConfiguration {
@@ -787,6 +1019,32 @@ func OnPremisesConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.OnPremis
 	out.ClientKey = direct.ValueOf(in.ClientKey)
 	out.DumpFilePath = direct.ValueOf(in.DumpFilePath)
 	out.SourceInstance = InstanceReference_ToProto(mapCtx, in.SourceInstance)
+	out.SelectedObjects = direct.Slice_ToProto(mapCtx, in.SelectedObjects, SelectedObjects_ToProto)
+	out.SslOption = direct.Enum_ToProto[pb.OnPremisesConfiguration_SslOption](mapCtx, in.SSLOption)
+	return out
+}
+func PSCAutoConnectionConfig_FromProto(mapCtx *direct.MapContext, in *pb.PscAutoConnectionConfig) *krm.PSCAutoConnectionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PSCAutoConnectionConfig{}
+	out.ConsumerProject = direct.LazyPtr(in.GetConsumerProject())
+	out.ConsumerNetwork = direct.LazyPtr(in.GetConsumerNetwork())
+	out.IPAddress = in.IpAddress
+	out.Status = in.Status
+	out.ConsumerNetworkStatus = in.ConsumerNetworkStatus
+	return out
+}
+func PSCAutoConnectionConfig_ToProto(mapCtx *direct.MapContext, in *krm.PSCAutoConnectionConfig) *pb.PscAutoConnectionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PscAutoConnectionConfig{}
+	out.ConsumerProject = direct.ValueOf(in.ConsumerProject)
+	out.ConsumerNetwork = direct.ValueOf(in.ConsumerNetwork)
+	out.IpAddress = in.IPAddress
+	out.Status = in.Status
+	out.ConsumerNetworkStatus = in.ConsumerNetworkStatus
 	return out
 }
 func PSCConfig_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.PSCConfig {
@@ -796,6 +1054,8 @@ func PSCConfig_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.PSCCo
 	out := &krm.PSCConfig{}
 	out.PSCEnabled = in.PscEnabled
 	out.AllowedConsumerProjects = in.AllowedConsumerProjects
+	out.PSCAutoConnections = direct.Slice_FromProto(mapCtx, in.PscAutoConnections, PSCAutoConnectionConfig_FromProto)
+	out.NetworkAttachmentURI = direct.LazyPtr(in.GetNetworkAttachmentUri())
 	return out
 }
 func PSCConfig_ToProto(mapCtx *direct.MapContext, in *krm.PSCConfig) *pb.PscConfig {
@@ -805,6 +1065,8 @@ func PSCConfig_ToProto(mapCtx *direct.MapContext, in *krm.PSCConfig) *pb.PscConf
 	out := &pb.PscConfig{}
 	out.PscEnabled = in.PSCEnabled
 	out.AllowedConsumerProjects = in.AllowedConsumerProjects
+	out.PscAutoConnections = direct.Slice_ToProto(mapCtx, in.PSCAutoConnections, PSCAutoConnectionConfig_ToProto)
+	out.NetworkAttachmentUri = direct.ValueOf(in.NetworkAttachmentURI)
 	return out
 }
 func PasswordValidationPolicy_FromProto(mapCtx *direct.MapContext, in *pb.PasswordValidationPolicy) *krm.PasswordValidationPolicy {
@@ -833,6 +1095,78 @@ func PasswordValidationPolicy_ToProto(mapCtx *direct.MapContext, in *krm.Passwor
 	out.PasswordChangeInterval = direct.StringDuration_ToProto(mapCtx, in.PasswordChangeInterval)
 	out.EnablePasswordPolicy = direct.BoolValue_ToProto(mapCtx, in.EnablePasswordPolicy)
 	out.DisallowCompromisedCredentials = direct.BoolValue_ToProto(mapCtx, in.DisallowCompromisedCredentials)
+	return out
+}
+func PerformanceCaptureConfig_FromProto(mapCtx *direct.MapContext, in *pb.PerformanceCaptureConfig) *krm.PerformanceCaptureConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PerformanceCaptureConfig{}
+	out.Enabled = in.Enabled
+	out.ProbingIntervalSeconds = in.ProbingIntervalSeconds
+	out.ProbeThreshold = in.ProbeThreshold
+	out.RunningThreadsThreshold = in.RunningThreadsThreshold
+	out.SecondsBehindSourceThreshold = in.SecondsBehindSourceThreshold
+	out.TransactionDurationThreshold = in.TransactionDurationThreshold
+	return out
+}
+func PerformanceCaptureConfig_ToProto(mapCtx *direct.MapContext, in *krm.PerformanceCaptureConfig) *pb.PerformanceCaptureConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PerformanceCaptureConfig{}
+	out.Enabled = in.Enabled
+	out.ProbingIntervalSeconds = in.ProbingIntervalSeconds
+	out.ProbeThreshold = in.ProbeThreshold
+	out.RunningThreadsThreshold = in.RunningThreadsThreshold
+	out.SecondsBehindSourceThreshold = in.SecondsBehindSourceThreshold
+	out.TransactionDurationThreshold = in.TransactionDurationThreshold
+	return out
+}
+func ReadPoolAutoScaleConfig_FromProto(mapCtx *direct.MapContext, in *pb.ReadPoolAutoScaleConfig) *krm.ReadPoolAutoScaleConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReadPoolAutoScaleConfig{}
+	out.Enabled = in.Enabled
+	out.MinNodeCount = in.MinNodeCount
+	out.MaxNodeCount = in.MaxNodeCount
+	out.TargetMetrics = direct.Slice_FromProto(mapCtx, in.TargetMetrics, ReadPoolAutoScaleConfig_TargetMetric_FromProto)
+	out.DisableScaleIn = in.DisableScaleIn
+	out.ScaleInCooldownSeconds = in.ScaleInCooldownSeconds
+	out.ScaleOutCooldownSeconds = in.ScaleOutCooldownSeconds
+	return out
+}
+func ReadPoolAutoScaleConfig_ToProto(mapCtx *direct.MapContext, in *krm.ReadPoolAutoScaleConfig) *pb.ReadPoolAutoScaleConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReadPoolAutoScaleConfig{}
+	out.Enabled = in.Enabled
+	out.MinNodeCount = in.MinNodeCount
+	out.MaxNodeCount = in.MaxNodeCount
+	out.TargetMetrics = direct.Slice_ToProto(mapCtx, in.TargetMetrics, ReadPoolAutoScaleConfig_TargetMetric_ToProto)
+	out.DisableScaleIn = in.DisableScaleIn
+	out.ScaleInCooldownSeconds = in.ScaleInCooldownSeconds
+	out.ScaleOutCooldownSeconds = in.ScaleOutCooldownSeconds
+	return out
+}
+func ReadPoolAutoScaleConfig_TargetMetric_FromProto(mapCtx *direct.MapContext, in *pb.ReadPoolAutoScaleConfig_TargetMetric) *krm.ReadPoolAutoScaleConfig_TargetMetric {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReadPoolAutoScaleConfig_TargetMetric{}
+	out.Metric = in.Metric
+	out.TargetValue = in.TargetValue
+	return out
+}
+func ReadPoolAutoScaleConfig_TargetMetric_ToProto(mapCtx *direct.MapContext, in *krm.ReadPoolAutoScaleConfig_TargetMetric) *pb.ReadPoolAutoScaleConfig_TargetMetric {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReadPoolAutoScaleConfig_TargetMetric{}
+	out.Metric = in.Metric
+	out.TargetValue = in.TargetValue
 	return out
 }
 func ReplicaConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.ReplicaConfiguration) *krm.ReplicaConfiguration {
@@ -892,6 +1226,10 @@ func SQLActiveDirectoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.SqlAct
 	out := &krm.SQLActiveDirectoryConfig{}
 	out.Kind = direct.LazyPtr(in.GetKind())
 	out.Domain = direct.LazyPtr(in.GetDomain())
+	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	out.DNSServers = in.DnsServers
+	out.AdminCredentialSecretName = direct.LazyPtr(in.GetAdminCredentialSecretName())
+	out.OrganizationalUnit = direct.LazyPtr(in.GetOrganizationalUnit())
 	return out
 }
 func SQLActiveDirectoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.SQLActiveDirectoryConfig) *pb.SqlActiveDirectoryConfig {
@@ -901,6 +1239,10 @@ func SQLActiveDirectoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.SQLActi
 	out := &pb.SqlActiveDirectoryConfig{}
 	out.Kind = direct.ValueOf(in.Kind)
 	out.Domain = direct.ValueOf(in.Domain)
+	out.Mode = direct.Enum_ToProto[pb.SqlActiveDirectoryConfig_ActiveDirectoryMode](mapCtx, in.Mode)
+	out.DnsServers = in.DNSServers
+	out.AdminCredentialSecretName = direct.ValueOf(in.AdminCredentialSecretName)
+	out.OrganizationalUnit = direct.ValueOf(in.OrganizationalUnit)
 	return out
 }
 func SQLServerAuditConfig_FromProto(mapCtx *direct.MapContext, in *pb.SqlServerAuditConfig) *krm.SQLServerAuditConfig {
@@ -923,6 +1265,46 @@ func SQLServerAuditConfig_ToProto(mapCtx *direct.MapContext, in *krm.SQLServerAu
 	out.Bucket = direct.ValueOf(in.Bucket)
 	out.RetentionInterval = direct.StringDuration_ToProto(mapCtx, in.RetentionInterval)
 	out.UploadInterval = direct.StringDuration_ToProto(mapCtx, in.UploadInterval)
+	return out
+}
+func SQLServerEntraIDConfig_FromProto(mapCtx *direct.MapContext, in *pb.SqlServerEntraIdConfig) *krm.SQLServerEntraIDConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SQLServerEntraIDConfig{}
+	// MISSING: Kind
+	out.TenantID = direct.LazyPtr(in.GetTenantId())
+	out.ApplicationID = direct.LazyPtr(in.GetApplicationId())
+	return out
+}
+func SQLServerEntraIDConfig_ToProto(mapCtx *direct.MapContext, in *krm.SQLServerEntraIDConfig) *pb.SqlServerEntraIdConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SqlServerEntraIdConfig{}
+	// MISSING: Kind
+	out.TenantId = direct.ValueOf(in.TenantID)
+	out.ApplicationId = direct.ValueOf(in.ApplicationID)
+	return out
+}
+func SQLServerEntraIDConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SqlServerEntraIdConfig) *krm.SQLServerEntraIDConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SQLServerEntraIDConfigObservedState{}
+	out.Kind = direct.LazyPtr(in.GetKind())
+	// MISSING: TenantID
+	// MISSING: ApplicationID
+	return out
+}
+func SQLServerEntraIDConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SQLServerEntraIDConfigObservedState) *pb.SqlServerEntraIdConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SqlServerEntraIdConfig{}
+	out.Kind = direct.ValueOf(in.Kind)
+	// MISSING: TenantID
+	// MISSING: ApplicationID
 	return out
 }
 func SSLCert_FromProto(mapCtx *direct.MapContext, in *pb.SslCert) *krm.SSLCert {
@@ -955,6 +1337,22 @@ func SSLCert_ToProto(mapCtx *direct.MapContext, in *krm.SSLCert) *pb.SslCert {
 	out.Sha1Fingerprint = direct.ValueOf(in.Sha1Fingerprint)
 	out.Instance = direct.ValueOf(in.Instance)
 	out.SelfLink = direct.ValueOf(in.SelfLink)
+	return out
+}
+func SelectedObjects_FromProto(mapCtx *direct.MapContext, in *pb.SelectedObjects) *krm.SelectedObjects {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SelectedObjects{}
+	out.Database = direct.LazyPtr(in.GetDatabase())
+	return out
+}
+func SelectedObjects_ToProto(mapCtx *direct.MapContext, in *krm.SelectedObjects) *pb.SelectedObjects {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SelectedObjects{}
+	out.Database = direct.ValueOf(in.Database)
 	return out
 }
 func Settings_FromProto(mapCtx *direct.MapContext, in *pb.Settings) *krm.Settings {
@@ -994,8 +1392,19 @@ func Settings_FromProto(mapCtx *direct.MapContext, in *pb.Settings) *krm.Setting
 	out.TimeZone = direct.LazyPtr(in.GetTimeZone())
 	out.AdvancedMachineFeatures = AdvancedMachineFeatures_FromProto(mapCtx, in.GetAdvancedMachineFeatures())
 	out.DataCacheConfig = DataCacheConfig_FromProto(mapCtx, in.GetDataCacheConfig())
+	out.ReplicationLagMaxSeconds = Int32Value_FromProto(mapCtx, in.GetReplicationLagMaxSeconds())
 	out.EnableGoogleMlIntegration = direct.BoolValue_FromProto(mapCtx, in.GetEnableGoogleMlIntegration())
 	out.EnableDataplexIntegration = direct.BoolValue_FromProto(mapCtx, in.GetEnableDataplexIntegration())
+	out.RetainBackupsOnDelete = direct.BoolValue_FromProto(mapCtx, in.GetRetainBackupsOnDelete())
+	out.DataDiskProvisionedIops = in.DataDiskProvisionedIops
+	out.DataDiskProvisionedThroughput = in.DataDiskProvisionedThroughput
+	out.ConnectionPoolConfig = ConnectionPoolConfig_FromProto(mapCtx, in.GetConnectionPoolConfig())
+	out.FinalBackupConfig = FinalBackupConfig_FromProto(mapCtx, in.GetFinalBackupConfig())
+	out.ReadPoolAutoScaleConfig = ReadPoolAutoScaleConfig_FromProto(mapCtx, in.GetReadPoolAutoScaleConfig())
+	out.AutoUpgradeEnabled = in.AutoUpgradeEnabled
+	out.EntraidConfig = SQLServerEntraIDConfig_FromProto(mapCtx, in.GetEntraidConfig())
+	out.DataAPIAccess = direct.Enum_FromProto(mapCtx, in.GetDataApiAccess())
+	out.PerformanceCaptureConfig = PerformanceCaptureConfig_FromProto(mapCtx, in.GetPerformanceCaptureConfig())
 	return out
 }
 func Settings_ToProto(mapCtx *direct.MapContext, in *krm.Settings) *pb.Settings {
@@ -1035,8 +1444,21 @@ func Settings_ToProto(mapCtx *direct.MapContext, in *krm.Settings) *pb.Settings 
 	out.TimeZone = direct.ValueOf(in.TimeZone)
 	out.AdvancedMachineFeatures = AdvancedMachineFeatures_ToProto(mapCtx, in.AdvancedMachineFeatures)
 	out.DataCacheConfig = DataCacheConfig_ToProto(mapCtx, in.DataCacheConfig)
+	out.ReplicationLagMaxSeconds = Int32Value_ToProto(mapCtx, in.ReplicationLagMaxSeconds)
 	out.EnableGoogleMlIntegration = direct.BoolValue_ToProto(mapCtx, in.EnableGoogleMlIntegration)
 	out.EnableDataplexIntegration = direct.BoolValue_ToProto(mapCtx, in.EnableDataplexIntegration)
+	out.RetainBackupsOnDelete = direct.BoolValue_ToProto(mapCtx, in.RetainBackupsOnDelete)
+	out.DataDiskProvisionedIops = in.DataDiskProvisionedIops
+	out.DataDiskProvisionedThroughput = in.DataDiskProvisionedThroughput
+	out.ConnectionPoolConfig = ConnectionPoolConfig_ToProto(mapCtx, in.ConnectionPoolConfig)
+	out.FinalBackupConfig = FinalBackupConfig_ToProto(mapCtx, in.FinalBackupConfig)
+	out.ReadPoolAutoScaleConfig = ReadPoolAutoScaleConfig_ToProto(mapCtx, in.ReadPoolAutoScaleConfig)
+	out.AutoUpgradeEnabled = in.AutoUpgradeEnabled
+	out.EntraidConfig = SQLServerEntraIDConfig_ToProto(mapCtx, in.EntraidConfig)
+	if oneof := Settings_DataApiAccess_ToProto(mapCtx, in.DataAPIAccess); oneof != nil {
+		out.DataApiAccess = oneof
+	}
+	out.PerformanceCaptureConfig = PerformanceCaptureConfig_ToProto(mapCtx, in.PerformanceCaptureConfig)
 	return out
 }
 func SettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Settings) *krm.SettingsObservedState {
@@ -1076,8 +1498,19 @@ func SettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Settings)
 	// MISSING: TimeZone
 	// MISSING: AdvancedMachineFeatures
 	// MISSING: DataCacheConfig
+	// MISSING: ReplicationLagMaxSeconds
 	// MISSING: EnableGoogleMlIntegration
 	// MISSING: EnableDataplexIntegration
+	// MISSING: RetainBackupsOnDelete
+	// MISSING: DataDiskProvisionedIops
+	// MISSING: DataDiskProvisionedThroughput
+	out.ConnectionPoolConfig = ConnectionPoolConfigObservedState_FromProto(mapCtx, in.GetConnectionPoolConfig())
+	// MISSING: FinalBackupConfig
+	// MISSING: ReadPoolAutoScaleConfig
+	// MISSING: AutoUpgradeEnabled
+	out.EntraidConfig = SQLServerEntraIDConfigObservedState_FromProto(mapCtx, in.GetEntraidConfig())
+	// MISSING: DataAPIAccess
+	// MISSING: PerformanceCaptureConfig
 	return out
 }
 func SettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SettingsObservedState) *pb.Settings {
@@ -1117,7 +1550,18 @@ func SettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SettingsOb
 	// MISSING: TimeZone
 	// MISSING: AdvancedMachineFeatures
 	// MISSING: DataCacheConfig
+	// MISSING: ReplicationLagMaxSeconds
 	// MISSING: EnableGoogleMlIntegration
 	// MISSING: EnableDataplexIntegration
+	// MISSING: RetainBackupsOnDelete
+	// MISSING: DataDiskProvisionedIops
+	// MISSING: DataDiskProvisionedThroughput
+	out.ConnectionPoolConfig = ConnectionPoolConfigObservedState_ToProto(mapCtx, in.ConnectionPoolConfig)
+	// MISSING: FinalBackupConfig
+	// MISSING: ReadPoolAutoScaleConfig
+	// MISSING: AutoUpgradeEnabled
+	out.EntraidConfig = SQLServerEntraIDConfigObservedState_ToProto(mapCtx, in.EntraidConfig)
+	// MISSING: DataAPIAccess
+	// MISSING: PerformanceCaptureConfig
 	return out
 }
