@@ -15,9 +15,9 @@
 package firestore
 
 import (
-	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/firestore/admin/v1"
 )
 
 func FirestoreDatabaseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Database) *krm.FirestoreDatabaseObservedState {

@@ -13,7 +13,6 @@ import (
 	"io"
 	"net/http"
 
-	extDataplexpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataplex/v1"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
 	"google.golang.org/grpc"
@@ -36,8 +35,8 @@ var (
 	filter_CatalogService_CreateEntryType_0 = &utilities.DoubleArray{Encoding: map[string]int{"entry_type": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_CatalogService_CreateEntryType_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateEntryTypeRequest
+func request_CatalogService_CreateEntryType_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateEntryTypeRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -77,8 +76,8 @@ func request_CatalogService_CreateEntryType_0(ctx context.Context, marshaler run
 
 }
 
-func local_request_CatalogService_CreateEntryType_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateEntryTypeRequest
+func local_request_CatalogService_CreateEntryType_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateEntryTypeRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -122,8 +121,8 @@ var (
 	filter_CatalogService_UpdateEntryType_0 = &utilities.DoubleArray{Encoding: map[string]int{"entry_type": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_CatalogService_UpdateEntryType_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateEntryTypeRequest
+func request_CatalogService_UpdateEntryType_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateEntryTypeRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -170,8 +169,8 @@ func request_CatalogService_UpdateEntryType_0(ctx context.Context, marshaler run
 
 }
 
-func local_request_CatalogService_UpdateEntryType_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateEntryTypeRequest
+func local_request_CatalogService_UpdateEntryType_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateEntryTypeRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -222,8 +221,8 @@ var (
 	filter_CatalogService_DeleteEntryType_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_CatalogService_DeleteEntryType_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteEntryTypeRequest
+func request_CatalogService_DeleteEntryType_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteEntryTypeRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -255,8 +254,8 @@ func request_CatalogService_DeleteEntryType_0(ctx context.Context, marshaler run
 
 }
 
-func local_request_CatalogService_DeleteEntryType_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteEntryTypeRequest
+func local_request_CatalogService_DeleteEntryType_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteEntryTypeRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -292,8 +291,8 @@ var (
 	filter_CatalogService_ListEntryTypes_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_CatalogService_ListEntryTypes_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListEntryTypesRequest
+func request_CatalogService_ListEntryTypes_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListEntryTypesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -325,8 +324,8 @@ func request_CatalogService_ListEntryTypes_0(ctx context.Context, marshaler runt
 
 }
 
-func local_request_CatalogService_ListEntryTypes_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListEntryTypesRequest
+func local_request_CatalogService_ListEntryTypes_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListEntryTypesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -358,8 +357,8 @@ func local_request_CatalogService_ListEntryTypes_0(ctx context.Context, marshale
 
 }
 
-func request_CatalogService_GetEntryType_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetEntryTypeRequest
+func request_CatalogService_GetEntryType_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetEntryTypeRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -384,8 +383,8 @@ func request_CatalogService_GetEntryType_0(ctx context.Context, marshaler runtim
 
 }
 
-func local_request_CatalogService_GetEntryType_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetEntryTypeRequest
+func local_request_CatalogService_GetEntryType_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetEntryTypeRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -414,8 +413,8 @@ var (
 	filter_CatalogService_CreateAspectType_0 = &utilities.DoubleArray{Encoding: map[string]int{"aspect_type": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_CatalogService_CreateAspectType_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateAspectTypeRequest
+func request_CatalogService_CreateAspectType_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateAspectTypeRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -455,8 +454,8 @@ func request_CatalogService_CreateAspectType_0(ctx context.Context, marshaler ru
 
 }
 
-func local_request_CatalogService_CreateAspectType_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateAspectTypeRequest
+func local_request_CatalogService_CreateAspectType_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateAspectTypeRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -500,8 +499,8 @@ var (
 	filter_CatalogService_UpdateAspectType_0 = &utilities.DoubleArray{Encoding: map[string]int{"aspect_type": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_CatalogService_UpdateAspectType_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateAspectTypeRequest
+func request_CatalogService_UpdateAspectType_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateAspectTypeRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -548,8 +547,8 @@ func request_CatalogService_UpdateAspectType_0(ctx context.Context, marshaler ru
 
 }
 
-func local_request_CatalogService_UpdateAspectType_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateAspectTypeRequest
+func local_request_CatalogService_UpdateAspectType_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateAspectTypeRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -600,8 +599,8 @@ var (
 	filter_CatalogService_DeleteAspectType_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_CatalogService_DeleteAspectType_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteAspectTypeRequest
+func request_CatalogService_DeleteAspectType_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteAspectTypeRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -633,8 +632,8 @@ func request_CatalogService_DeleteAspectType_0(ctx context.Context, marshaler ru
 
 }
 
-func local_request_CatalogService_DeleteAspectType_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteAspectTypeRequest
+func local_request_CatalogService_DeleteAspectType_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteAspectTypeRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -670,8 +669,8 @@ var (
 	filter_CatalogService_ListAspectTypes_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_CatalogService_ListAspectTypes_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListAspectTypesRequest
+func request_CatalogService_ListAspectTypes_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListAspectTypesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -703,8 +702,8 @@ func request_CatalogService_ListAspectTypes_0(ctx context.Context, marshaler run
 
 }
 
-func local_request_CatalogService_ListAspectTypes_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListAspectTypesRequest
+func local_request_CatalogService_ListAspectTypes_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListAspectTypesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -736,8 +735,8 @@ func local_request_CatalogService_ListAspectTypes_0(ctx context.Context, marshal
 
 }
 
-func request_CatalogService_GetAspectType_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetAspectTypeRequest
+func request_CatalogService_GetAspectType_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetAspectTypeRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -762,8 +761,8 @@ func request_CatalogService_GetAspectType_0(ctx context.Context, marshaler runti
 
 }
 
-func local_request_CatalogService_GetAspectType_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetAspectTypeRequest
+func local_request_CatalogService_GetAspectType_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetAspectTypeRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -792,8 +791,8 @@ var (
 	filter_CatalogService_CreateEntryGroup_0 = &utilities.DoubleArray{Encoding: map[string]int{"entry_group": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_CatalogService_CreateEntryGroup_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateEntryGroupRequest
+func request_CatalogService_CreateEntryGroup_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateEntryGroupRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -833,8 +832,8 @@ func request_CatalogService_CreateEntryGroup_0(ctx context.Context, marshaler ru
 
 }
 
-func local_request_CatalogService_CreateEntryGroup_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateEntryGroupRequest
+func local_request_CatalogService_CreateEntryGroup_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateEntryGroupRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -878,8 +877,8 @@ var (
 	filter_CatalogService_UpdateEntryGroup_0 = &utilities.DoubleArray{Encoding: map[string]int{"entry_group": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_CatalogService_UpdateEntryGroup_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateEntryGroupRequest
+func request_CatalogService_UpdateEntryGroup_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateEntryGroupRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -926,8 +925,8 @@ func request_CatalogService_UpdateEntryGroup_0(ctx context.Context, marshaler ru
 
 }
 
-func local_request_CatalogService_UpdateEntryGroup_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateEntryGroupRequest
+func local_request_CatalogService_UpdateEntryGroup_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateEntryGroupRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -978,8 +977,8 @@ var (
 	filter_CatalogService_DeleteEntryGroup_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_CatalogService_DeleteEntryGroup_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteEntryGroupRequest
+func request_CatalogService_DeleteEntryGroup_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteEntryGroupRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1011,8 +1010,8 @@ func request_CatalogService_DeleteEntryGroup_0(ctx context.Context, marshaler ru
 
 }
 
-func local_request_CatalogService_DeleteEntryGroup_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteEntryGroupRequest
+func local_request_CatalogService_DeleteEntryGroup_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteEntryGroupRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1048,8 +1047,8 @@ var (
 	filter_CatalogService_ListEntryGroups_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_CatalogService_ListEntryGroups_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListEntryGroupsRequest
+func request_CatalogService_ListEntryGroups_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListEntryGroupsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1081,8 +1080,8 @@ func request_CatalogService_ListEntryGroups_0(ctx context.Context, marshaler run
 
 }
 
-func local_request_CatalogService_ListEntryGroups_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListEntryGroupsRequest
+func local_request_CatalogService_ListEntryGroups_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListEntryGroupsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1114,8 +1113,8 @@ func local_request_CatalogService_ListEntryGroups_0(ctx context.Context, marshal
 
 }
 
-func request_CatalogService_GetEntryGroup_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetEntryGroupRequest
+func request_CatalogService_GetEntryGroup_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetEntryGroupRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1140,8 +1139,8 @@ func request_CatalogService_GetEntryGroup_0(ctx context.Context, marshaler runti
 
 }
 
-func local_request_CatalogService_GetEntryGroup_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetEntryGroupRequest
+func local_request_CatalogService_GetEntryGroup_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetEntryGroupRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1170,8 +1169,8 @@ var (
 	filter_CatalogService_CreateEntry_0 = &utilities.DoubleArray{Encoding: map[string]int{"entry": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_CatalogService_CreateEntry_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateEntryRequest
+func request_CatalogService_CreateEntry_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateEntryRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1211,8 +1210,8 @@ func request_CatalogService_CreateEntry_0(ctx context.Context, marshaler runtime
 
 }
 
-func local_request_CatalogService_CreateEntry_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateEntryRequest
+func local_request_CatalogService_CreateEntry_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateEntryRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1256,8 +1255,8 @@ var (
 	filter_CatalogService_UpdateEntry_0 = &utilities.DoubleArray{Encoding: map[string]int{"entry": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_CatalogService_UpdateEntry_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateEntryRequest
+func request_CatalogService_UpdateEntry_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateEntryRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1304,8 +1303,8 @@ func request_CatalogService_UpdateEntry_0(ctx context.Context, marshaler runtime
 
 }
 
-func local_request_CatalogService_UpdateEntry_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateEntryRequest
+func local_request_CatalogService_UpdateEntry_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateEntryRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1352,8 +1351,8 @@ func local_request_CatalogService_UpdateEntry_0(ctx context.Context, marshaler r
 
 }
 
-func request_CatalogService_DeleteEntry_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteEntryRequest
+func request_CatalogService_DeleteEntry_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteEntryRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1378,8 +1377,8 @@ func request_CatalogService_DeleteEntry_0(ctx context.Context, marshaler runtime
 
 }
 
-func local_request_CatalogService_DeleteEntry_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteEntryRequest
+func local_request_CatalogService_DeleteEntry_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteEntryRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1408,8 +1407,8 @@ var (
 	filter_CatalogService_ListEntries_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_CatalogService_ListEntries_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListEntriesRequest
+func request_CatalogService_ListEntries_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListEntriesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1441,8 +1440,8 @@ func request_CatalogService_ListEntries_0(ctx context.Context, marshaler runtime
 
 }
 
-func local_request_CatalogService_ListEntries_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListEntriesRequest
+func local_request_CatalogService_ListEntries_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListEntriesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1478,8 +1477,8 @@ var (
 	filter_CatalogService_GetEntry_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_CatalogService_GetEntry_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetEntryRequest
+func request_CatalogService_GetEntry_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetEntryRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1511,8 +1510,8 @@ func request_CatalogService_GetEntry_0(ctx context.Context, marshaler runtime.Ma
 
 }
 
-func local_request_CatalogService_GetEntry_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetEntryRequest
+func local_request_CatalogService_GetEntry_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetEntryRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1548,8 +1547,8 @@ var (
 	filter_CatalogService_LookupEntry_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_CatalogService_LookupEntry_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.LookupEntryRequest
+func request_CatalogService_LookupEntry_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq LookupEntryRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1581,8 +1580,8 @@ func request_CatalogService_LookupEntry_0(ctx context.Context, marshaler runtime
 
 }
 
-func local_request_CatalogService_LookupEntry_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.LookupEntryRequest
+func local_request_CatalogService_LookupEntry_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq LookupEntryRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1618,8 +1617,8 @@ var (
 	filter_CatalogService_SearchEntries_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_CatalogService_SearchEntries_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.SearchEntriesRequest
+func request_CatalogService_SearchEntries_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SearchEntriesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1651,8 +1650,8 @@ func request_CatalogService_SearchEntries_0(ctx context.Context, marshaler runti
 
 }
 
-func local_request_CatalogService_SearchEntries_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.SearchEntriesRequest
+func local_request_CatalogService_SearchEntries_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SearchEntriesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1688,8 +1687,8 @@ var (
 	filter_CatalogService_CreateMetadataJob_0 = &utilities.DoubleArray{Encoding: map[string]int{"metadata_job": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_CatalogService_CreateMetadataJob_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateMetadataJobRequest
+func request_CatalogService_CreateMetadataJob_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateMetadataJobRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1729,8 +1728,8 @@ func request_CatalogService_CreateMetadataJob_0(ctx context.Context, marshaler r
 
 }
 
-func local_request_CatalogService_CreateMetadataJob_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateMetadataJobRequest
+func local_request_CatalogService_CreateMetadataJob_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateMetadataJobRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1770,8 +1769,8 @@ func local_request_CatalogService_CreateMetadataJob_0(ctx context.Context, marsh
 
 }
 
-func request_CatalogService_GetMetadataJob_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetMetadataJobRequest
+func request_CatalogService_GetMetadataJob_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetMetadataJobRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1796,8 +1795,8 @@ func request_CatalogService_GetMetadataJob_0(ctx context.Context, marshaler runt
 
 }
 
-func local_request_CatalogService_GetMetadataJob_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetMetadataJobRequest
+func local_request_CatalogService_GetMetadataJob_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetMetadataJobRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1826,8 +1825,8 @@ var (
 	filter_CatalogService_ListMetadataJobs_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_CatalogService_ListMetadataJobs_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListMetadataJobsRequest
+func request_CatalogService_ListMetadataJobs_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListMetadataJobsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1859,8 +1858,8 @@ func request_CatalogService_ListMetadataJobs_0(ctx context.Context, marshaler ru
 
 }
 
-func local_request_CatalogService_ListMetadataJobs_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListMetadataJobsRequest
+func local_request_CatalogService_ListMetadataJobs_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListMetadataJobsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1892,8 +1891,8 @@ func local_request_CatalogService_ListMetadataJobs_0(ctx context.Context, marsha
 
 }
 
-func request_CatalogService_CancelMetadataJob_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CancelMetadataJobRequest
+func request_CatalogService_CancelMetadataJob_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CancelMetadataJobRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1926,8 +1925,8 @@ func request_CatalogService_CancelMetadataJob_0(ctx context.Context, marshaler r
 
 }
 
-func local_request_CatalogService_CancelMetadataJob_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CancelMetadataJobRequest
+func local_request_CatalogService_CancelMetadataJob_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CancelMetadataJobRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1964,8 +1963,8 @@ var (
 	filter_CatalogService_CreateEntryLink_0 = &utilities.DoubleArray{Encoding: map[string]int{"entry_link": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_CatalogService_CreateEntryLink_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateEntryLinkRequest
+func request_CatalogService_CreateEntryLink_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateEntryLinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2005,8 +2004,8 @@ func request_CatalogService_CreateEntryLink_0(ctx context.Context, marshaler run
 
 }
 
-func local_request_CatalogService_CreateEntryLink_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateEntryLinkRequest
+func local_request_CatalogService_CreateEntryLink_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateEntryLinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2050,8 +2049,8 @@ var (
 	filter_CatalogService_UpdateEntryLink_0 = &utilities.DoubleArray{Encoding: map[string]int{"entry_link": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_CatalogService_UpdateEntryLink_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateEntryLinkRequest
+func request_CatalogService_UpdateEntryLink_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateEntryLinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2091,8 +2090,8 @@ func request_CatalogService_UpdateEntryLink_0(ctx context.Context, marshaler run
 
 }
 
-func local_request_CatalogService_UpdateEntryLink_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateEntryLinkRequest
+func local_request_CatalogService_UpdateEntryLink_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateEntryLinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2132,8 +2131,8 @@ func local_request_CatalogService_UpdateEntryLink_0(ctx context.Context, marshal
 
 }
 
-func request_CatalogService_DeleteEntryLink_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteEntryLinkRequest
+func request_CatalogService_DeleteEntryLink_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteEntryLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2158,8 +2157,8 @@ func request_CatalogService_DeleteEntryLink_0(ctx context.Context, marshaler run
 
 }
 
-func local_request_CatalogService_DeleteEntryLink_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteEntryLinkRequest
+func local_request_CatalogService_DeleteEntryLink_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteEntryLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2188,8 +2187,8 @@ var (
 	filter_CatalogService_LookupEntryLinks_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_CatalogService_LookupEntryLinks_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.LookupEntryLinksRequest
+func request_CatalogService_LookupEntryLinks_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq LookupEntryLinksRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2221,8 +2220,8 @@ func request_CatalogService_LookupEntryLinks_0(ctx context.Context, marshaler ru
 
 }
 
-func local_request_CatalogService_LookupEntryLinks_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.LookupEntryLinksRequest
+func local_request_CatalogService_LookupEntryLinks_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq LookupEntryLinksRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2254,8 +2253,8 @@ func local_request_CatalogService_LookupEntryLinks_0(ctx context.Context, marsha
 
 }
 
-func request_CatalogService_LookupContext_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.LookupContextRequest
+func request_CatalogService_LookupContext_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq LookupContextRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2288,8 +2287,8 @@ func request_CatalogService_LookupContext_0(ctx context.Context, marshaler runti
 
 }
 
-func local_request_CatalogService_LookupContext_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.LookupContextRequest
+func local_request_CatalogService_LookupContext_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq LookupContextRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2322,8 +2321,8 @@ func local_request_CatalogService_LookupContext_0(ctx context.Context, marshaler
 
 }
 
-func request_CatalogService_GetEntryLink_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetEntryLinkRequest
+func request_CatalogService_GetEntryLink_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetEntryLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2348,8 +2347,8 @@ func request_CatalogService_GetEntryLink_0(ctx context.Context, marshaler runtim
 
 }
 
-func local_request_CatalogService_GetEntryLink_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetEntryLinkRequest
+func local_request_CatalogService_GetEntryLink_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetEntryLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2378,8 +2377,8 @@ var (
 	filter_CatalogService_CreateMetadataFeed_0 = &utilities.DoubleArray{Encoding: map[string]int{"metadata_feed": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_CatalogService_CreateMetadataFeed_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateMetadataFeedRequest
+func request_CatalogService_CreateMetadataFeed_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateMetadataFeedRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2419,8 +2418,8 @@ func request_CatalogService_CreateMetadataFeed_0(ctx context.Context, marshaler 
 
 }
 
-func local_request_CatalogService_CreateMetadataFeed_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateMetadataFeedRequest
+func local_request_CatalogService_CreateMetadataFeed_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateMetadataFeedRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2460,8 +2459,8 @@ func local_request_CatalogService_CreateMetadataFeed_0(ctx context.Context, mars
 
 }
 
-func request_CatalogService_GetMetadataFeed_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetMetadataFeedRequest
+func request_CatalogService_GetMetadataFeed_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetMetadataFeedRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2486,8 +2485,8 @@ func request_CatalogService_GetMetadataFeed_0(ctx context.Context, marshaler run
 
 }
 
-func local_request_CatalogService_GetMetadataFeed_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetMetadataFeedRequest
+func local_request_CatalogService_GetMetadataFeed_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetMetadataFeedRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2516,8 +2515,8 @@ var (
 	filter_CatalogService_ListMetadataFeeds_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_CatalogService_ListMetadataFeeds_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListMetadataFeedsRequest
+func request_CatalogService_ListMetadataFeeds_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListMetadataFeedsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2549,8 +2548,8 @@ func request_CatalogService_ListMetadataFeeds_0(ctx context.Context, marshaler r
 
 }
 
-func local_request_CatalogService_ListMetadataFeeds_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListMetadataFeedsRequest
+func local_request_CatalogService_ListMetadataFeeds_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListMetadataFeedsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2582,8 +2581,8 @@ func local_request_CatalogService_ListMetadataFeeds_0(ctx context.Context, marsh
 
 }
 
-func request_CatalogService_DeleteMetadataFeed_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteMetadataFeedRequest
+func request_CatalogService_DeleteMetadataFeed_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteMetadataFeedRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2608,8 +2607,8 @@ func request_CatalogService_DeleteMetadataFeed_0(ctx context.Context, marshaler 
 
 }
 
-func local_request_CatalogService_DeleteMetadataFeed_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteMetadataFeedRequest
+func local_request_CatalogService_DeleteMetadataFeed_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteMetadataFeedRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2638,8 +2637,8 @@ var (
 	filter_CatalogService_UpdateMetadataFeed_0 = &utilities.DoubleArray{Encoding: map[string]int{"metadata_feed": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_CatalogService_UpdateMetadataFeed_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateMetadataFeedRequest
+func request_CatalogService_UpdateMetadataFeed_0(ctx context.Context, marshaler runtime.Marshaler, client CatalogServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateMetadataFeedRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2686,8 +2685,8 @@ func request_CatalogService_UpdateMetadataFeed_0(ctx context.Context, marshaler 
 
 }
 
-func local_request_CatalogService_UpdateMetadataFeed_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateMetadataFeedRequest
+func local_request_CatalogService_UpdateMetadataFeed_0(ctx context.Context, marshaler runtime.Marshaler, server CatalogServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateMetadataFeedRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2738,7 +2737,7 @@ func local_request_CatalogService_UpdateMetadataFeed_0(ctx context.Context, mars
 // UnaryRPC     :call CatalogServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterCatalogServiceHandlerFromEndpoint instead.
-func RegisterCatalogServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server extDataplexpb.CatalogServiceServer) error {
+func RegisterCatalogServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server CatalogServiceServer) error {
 
 	mux.Handle("POST", pattern_CatalogService_CreateEntryType_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -3696,15 +3695,15 @@ func RegisterCatalogServiceHandlerFromEndpoint(ctx context.Context, mux *runtime
 // RegisterCatalogServiceHandler registers the http handlers for service CatalogService to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
 func RegisterCatalogServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterCatalogServiceHandlerClient(ctx, mux, extDataplexpb.NewCatalogServiceClient(conn))
+	return RegisterCatalogServiceHandlerClient(ctx, mux, NewCatalogServiceClient(conn))
 }
 
 // RegisterCatalogServiceHandlerClient registers the http handlers for service CatalogService
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "extDataplexpb.CatalogServiceClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "extDataplexpb.CatalogServiceClient"
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "CatalogServiceClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "CatalogServiceClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "extDataplexpb.CatalogServiceClient" to call the correct interceptors.
-func RegisterCatalogServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client extDataplexpb.CatalogServiceClient) error {
+// "CatalogServiceClient" to call the correct interceptors.
+func RegisterCatalogServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client CatalogServiceClient) error {
 
 	mux.Handle("POST", pattern_CatalogService_CreateEntryType_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())

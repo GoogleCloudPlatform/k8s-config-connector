@@ -256,3 +256,31 @@ func Endpoint_CloudRunRevisionEndpoint_ToProto(mapCtx *direct.MapContext, in *kr
 	}
 	return out
 }
+
+func ProbingDetails_SingleEdgeResponseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ProbingDetails_SingleEdgeResponse) *krm.ProbingDetails_SingleEdgeResponseObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ProbingDetails_SingleEdgeResponseObservedState{}
+	out.Result = direct.Enum_FromProto(mapCtx, in.GetResult())
+	out.SentProbeCount = direct.LazyPtr(in.GetSentProbeCount())
+	out.SuccessfulProbeCount = direct.LazyPtr(in.GetSuccessfulProbeCount())
+	out.ProbingLatency = LatencyDistributionObservedState_FromProto(mapCtx, in.GetProbingLatency())
+	out.DestinationEgressLocation = ProbingDetails_EdgeLocationObservedState_FromProto(mapCtx, in.GetDestinationEgressLocation())
+	out.DestinationRouter = direct.LazyPtr(in.GetDestinationRouter())
+	return out
+}
+
+func ProbingDetails_SingleEdgeResponseObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ProbingDetails_SingleEdgeResponseObservedState) *pb.ProbingDetails_SingleEdgeResponse {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ProbingDetails_SingleEdgeResponse{}
+	out.Result = direct.Enum_ToProto[pb.ProbingDetails_ProbingResult](mapCtx, in.Result)
+	out.SentProbeCount = direct.ValueOf(in.SentProbeCount)
+	out.SuccessfulProbeCount = direct.ValueOf(in.SuccessfulProbeCount)
+	out.ProbingLatency = LatencyDistributionObservedState_ToProto(mapCtx, in.ProbingLatency)
+	out.DestinationEgressLocation = ProbingDetails_EdgeLocationObservedState_ToProto(mapCtx, in.DestinationEgressLocation)
+	out.DestinationRouter = direct.ValueOf(in.DestinationRouter)
+	return out
+}

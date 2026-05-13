@@ -83,6 +83,7 @@ func Instance_PrivateConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance
 	// MISSING: HTTPServiceAttachment
 	// MISSING: SSHServiceAttachment
 	// MISSING: PSCAllowedProjects
+	// MISSING: CustomHostConfig
 	return out
 }
 func Instance_PrivateConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PrivateConfig) *pb.Instance_PrivateConfig {
@@ -97,6 +98,7 @@ func Instance_PrivateConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_
 	// MISSING: HTTPServiceAttachment
 	// MISSING: SSHServiceAttachment
 	// MISSING: PSCAllowedProjects
+	// MISSING: CustomHostConfig
 	return out
 }
 func Instance_PrivateConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_PrivateConfig) *krm.Instance_PrivateConfigObservedState {
@@ -109,6 +111,7 @@ func Instance_PrivateConfigObservedState_FromProto(mapCtx *direct.MapContext, in
 	out.HTTPServiceAttachment = direct.LazyPtr(in.GetHttpServiceAttachment())
 	out.SSHServiceAttachment = direct.LazyPtr(in.GetSshServiceAttachment())
 	// MISSING: PSCAllowedProjects
+	// MISSING: CustomHostConfig
 	return out
 }
 func Instance_PrivateConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PrivateConfigObservedState) *pb.Instance_PrivateConfig {
@@ -121,6 +124,29 @@ func Instance_PrivateConfigObservedState_ToProto(mapCtx *direct.MapContext, in *
 	out.HttpServiceAttachment = direct.ValueOf(in.HTTPServiceAttachment)
 	out.SshServiceAttachment = direct.ValueOf(in.SSHServiceAttachment)
 	// MISSING: PSCAllowedProjects
+	// MISSING: CustomHostConfig
+	return out
+}
+func Instance_PrivateConfig_CustomHostConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_PrivateConfig_CustomHostConfig) *krm.Instance_PrivateConfig_CustomHostConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Instance_PrivateConfig_CustomHostConfig{}
+	out.HTML = direct.LazyPtr(in.GetHtml())
+	out.API = direct.LazyPtr(in.GetApi())
+	out.GitSSH = direct.LazyPtr(in.GetGitSsh())
+	out.GitHTTP = direct.LazyPtr(in.GetGitHttp())
+	return out
+}
+func Instance_PrivateConfig_CustomHostConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PrivateConfig_CustomHostConfig) *pb.Instance_PrivateConfig_CustomHostConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance_PrivateConfig_CustomHostConfig{}
+	out.Html = direct.ValueOf(in.HTML)
+	out.Api = direct.ValueOf(in.API)
+	out.GitSsh = direct.ValueOf(in.GitSSH)
+	out.GitHttp = direct.ValueOf(in.GitHTTP)
 	return out
 }
 func Instance_WorkforceIdentityFederationConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_WorkforceIdentityFederationConfig) *krm.Instance_WorkforceIdentityFederationConfig {

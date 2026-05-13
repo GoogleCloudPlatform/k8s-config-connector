@@ -206,6 +206,7 @@ func ContainerAttachedClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.At
 	out.BinaryAuthorization = BinaryAuthorization_FromProto(mapCtx, in.GetBinaryAuthorization())
 	// MISSING: SecurityPostureConfig
 	// MISSING: Tags
+	// MISSING: SystemComponentsConfig
 	return out
 }
 */
@@ -241,6 +242,7 @@ func ContainerAttachedClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.Con
 	out.BinaryAuthorization = BinaryAuthorization_ToProto(mapCtx, in.BinaryAuthorization)
 	// MISSING: SecurityPostureConfig
 	// MISSING: Tags
+	// MISSING: SystemComponentsConfig
 	return out
 }
 */
@@ -290,6 +292,24 @@ func KubernetesSecret_ToProto(mapCtx *direct.MapContext, in *krm.KubernetesSecre
 	out := &pb.KubernetesSecret{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Namespace = direct.ValueOf(in.Namespace)
+	return out
+}
+func Label_FromProto(mapCtx *direct.MapContext, in *pb.Label) *krm.Label {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Label{}
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.Value = direct.LazyPtr(in.GetValue())
+	return out
+}
+func Label_ToProto(mapCtx *direct.MapContext, in *krm.Label) *pb.Label {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Label{}
+	out.Key = direct.ValueOf(in.Key)
+	out.Value = direct.ValueOf(in.Value)
 	return out
 }
 
@@ -380,6 +400,46 @@ func SecurityPostureConfig_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPo
 	}
 	out := &pb.SecurityPostureConfig{}
 	out.VulnerabilityMode = direct.Enum_ToProto[pb.SecurityPostureConfig_VulnerabilityMode](mapCtx, in.VulnerabilityMode)
+	return out
+}
+func SystemComponentsConfig_FromProto(mapCtx *direct.MapContext, in *pb.SystemComponentsConfig) *krm.SystemComponentsConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SystemComponentsConfig{}
+	out.Tolerations = direct.Slice_FromProto(mapCtx, in.Tolerations, Toleration_FromProto)
+	out.Labels = direct.Slice_FromProto(mapCtx, in.Labels, Label_FromProto)
+	return out
+}
+func SystemComponentsConfig_ToProto(mapCtx *direct.MapContext, in *krm.SystemComponentsConfig) *pb.SystemComponentsConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SystemComponentsConfig{}
+	out.Tolerations = direct.Slice_ToProto(mapCtx, in.Tolerations, Toleration_ToProto)
+	out.Labels = direct.Slice_ToProto(mapCtx, in.Labels, Label_ToProto)
+	return out
+}
+func Toleration_FromProto(mapCtx *direct.MapContext, in *pb.Toleration) *krm.Toleration {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Toleration{}
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.Value = direct.LazyPtr(in.GetValue())
+	out.KeyOperator = direct.Enum_FromProto(mapCtx, in.GetKeyOperator())
+	out.Effect = direct.Enum_FromProto(mapCtx, in.GetEffect())
+	return out
+}
+func Toleration_ToProto(mapCtx *direct.MapContext, in *krm.Toleration) *pb.Toleration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Toleration{}
+	out.Key = direct.ValueOf(in.Key)
+	out.Value = direct.ValueOf(in.Value)
+	out.KeyOperator = direct.Enum_ToProto[pb.Toleration_KeyOperator](mapCtx, in.KeyOperator)
+	out.Effect = direct.Enum_ToProto[pb.Toleration_Effect](mapCtx, in.Effect)
 	return out
 }
 func WorkloadIdentityConfig_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadIdentityConfig) *krm.WorkloadIdentityConfig {

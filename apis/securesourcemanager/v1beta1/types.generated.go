@@ -26,6 +26,29 @@ package v1beta1
 type Instance_HostConfig struct {
 }
 
+// +kcc:proto=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.CustomHostConfig
+type Instance_PrivateConfig_CustomHostConfig struct {
+	// Required. The custom UI hostname for the instance, e.g.,
+	//  "git.source.internal.mycompany.com"
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.CustomHostConfig.html
+	HTML *string `json:"html,omitempty"`
+
+	// Required. The custom API hostname for the instance, e.g.,
+	//  "api.source.internal.mycompany.com"
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.CustomHostConfig.api
+	API *string `json:"api,omitempty"`
+
+	// Required. The custom git ssh hostname for the instance, e.g.,
+	//  "ssh.source.internal.mycompany.com"
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.CustomHostConfig.git_ssh
+	GitSSH *string `json:"gitSSH,omitempty"`
+
+	// Required. The custom git http hostname for the instance, e.g.,
+	//  "git.source.internal.mycompany.com"
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.CustomHostConfig.git_http
+	GitHTTP *string `json:"gitHTTP,omitempty"`
+}
+
 // +kcc:proto=google.cloud.securesourcemanager.v1.Instance.WorkforceIdentityFederationConfig
 type Instance_WorkforceIdentityFederationConfig struct {
 	// Optional. Immutable. Whether Workforce Identity Federation is enabled.

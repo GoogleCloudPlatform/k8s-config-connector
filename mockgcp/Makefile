@@ -181,6 +181,9 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/gkebackup/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/run/v2/*.proto \
 		./third_party/googleapis/mockgcp/cloud/speech/v2/*.proto \
+		./third_party/googleapis/mockgcp/analytics/admin/v1alpha/*.proto \
+		./third_party/googleapis/mockgcp/analytics/admin/v1beta/*.proto \
+		./third_party/googleapis/mockgcp/cloud/dataplex/v1/*.proto \
 		./third_party/googleapis/mockgcp/devtools/sourcerepo/v1/*.proto
 
 

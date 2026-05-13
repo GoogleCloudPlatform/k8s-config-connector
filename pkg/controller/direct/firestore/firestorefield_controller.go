@@ -27,13 +27,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
-	apiv1 "cloud.google.com/go/firestore/apiv1/admin"
-	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/firestore/admin/v1"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -58,6 +58,10 @@ func (m *firestoreFieldModel) AdapterForObject(ctx context.Context, op *directba
 	u := op.GetUnstructured()
 	reader := op.Reader
 	firestoreAdminClient, err := newFirestoreAdminClient(ctx, m.config)
+	if err != nil {
+		return nil, err
+	}
+	operationsClient, err := newOperationsClient(ctx, m.config)
 	if err != nil {
 		return nil, err
 	}
@@ -88,6 +92,7 @@ func (m *firestoreFieldModel) AdapterForObject(ctx context.Context, op *directba
 	return &firestoreFieldAdapter{
 		id:                   id.(*krm.FirestoreFieldIdentity),
 		firestoreAdminClient: firestoreAdminClient,
+		operationsClient:     operationsClient,
 		desired:              desired,
 	}, nil
 }
@@ -110,15 +115,21 @@ func (m *firestoreFieldModel) AdapterForURL(ctx context.Context, url string) (di
 	if err != nil {
 		return nil, err
 	}
+	operationsClient, err := newOperationsClient(ctx, m.config)
+	if err != nil {
+		return nil, err
+	}
 	return &firestoreFieldAdapter{
 		id:                   id,
 		firestoreAdminClient: firestoreAdminClient,
+		operationsClient:     operationsClient,
 	}, nil
 }
 
 type firestoreFieldAdapter struct {
 	id                   *krm.FirestoreFieldIdentity
-	firestoreAdminClient *apiv1.FirestoreAdminClient
+	firestoreAdminClient pb.FirestoreAdminClient
+	operationsClient     longrunning.OperationsClient
 	desired              *pb.Field
 	actual               *pb.Field
 }
@@ -166,8 +177,8 @@ func (a *firestoreFieldAdapter) Create(ctx context.Context, createOp *directbase
 		return fmt.Errorf("creating FirestoreField %s: %w", fqn, err)
 	}
 
-	created, err := op.Wait(ctx)
-	if err != nil {
+	created := &pb.Field{}
+	if err := direct.WaitOperation(ctx, a.operationsClient, op, created); err != nil {
 		return fmt.Errorf("FirestoreField %s waiting creation: %w", fqn, err)
 	}
 	log.V(0).Info("successfully created FirestoreField", "name", fqn)
@@ -207,8 +218,8 @@ func (a *firestoreFieldAdapter) Update(ctx context.Context, updateOp *directbase
 			return fmt.Errorf("updating FirestoreField %q: %w", fqn, err)
 		}
 
-		updated, err := op.Wait(ctx)
-		if err != nil {
+		updated := &pb.Field{}
+		if err := direct.WaitOperation(ctx, a.operationsClient, op, updated); err != nil {
 			return fmt.Errorf("waiting for update of FirestoreField %s: %w", fqn, err)
 		}
 		log.V(0).Info("successfully updated FirestoreField", "name", fqn)
@@ -294,8 +305,7 @@ func (a *firestoreFieldAdapter) Delete(ctx context.Context, deleteOp *directbase
 	}
 	log.V(0).Info("successfully deleted FirestoreField", "name", fqn)
 
-	_, err = op.Wait(ctx)
-	if err != nil {
+	if err := direct.WaitOperation(ctx, a.operationsClient, op, nil); err != nil {
 		return false, fmt.Errorf("waiting for delete of FirestoreField %s: %w", fqn, err)
 	}
 

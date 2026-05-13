@@ -66,6 +66,7 @@ func DataflowFlexTemplateJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Fle
 	out.LauncherMachineType = direct.LazyPtr(in.GetLauncherMachineType())
 	// MISSING: EnableLauncherVMSerialPortLogging
 	// MISSING: StreamingMode
+	// MISSING: AdditionalPipelineOptions
 	return out
 }
 func DataflowFlexTemplateJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataflowFlexTemplateJobSpec) *pb.FlexTemplateRuntimeEnvironment {
@@ -106,5 +107,6 @@ func DataflowFlexTemplateJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.Data
 	out.LauncherMachineType = direct.ValueOf(in.LauncherMachineType)
 	// MISSING: EnableLauncherVMSerialPortLogging
 	// MISSING: StreamingMode
+	// MISSING: AdditionalPipelineOptions
 	return out
 }

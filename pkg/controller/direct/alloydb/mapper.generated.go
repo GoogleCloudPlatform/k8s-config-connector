@@ -182,6 +182,7 @@ func AlloyDBClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Clu
 	// MISSING: TrialMetadata
 	// MISSING: Tags
 	// MISSING: ServiceAccountEmail
+	// MISSING: DataplexConfig
 	return out
 }
 func AlloyDBClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBClusterObservedState) *pb.Cluster {
@@ -216,6 +217,7 @@ func AlloyDBClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Allo
 	// MISSING: TrialMetadata
 	// MISSING: Tags
 	// MISSING: ServiceAccountEmail
+	// MISSING: DataplexConfig
 	return out
 }
 func AlloyDBClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.AlloyDBClusterSpec {
@@ -261,6 +263,7 @@ func AlloyDBClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *kr
 	// MISSING: TrialMetadata
 	// MISSING: Tags
 	// MISSING: ServiceAccountEmail
+	// MISSING: DataplexConfig
 	return out
 }
 func AlloyDBClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBClusterSpec) *pb.Cluster {
@@ -306,6 +309,7 @@ func AlloyDBClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBCluste
 	// MISSING: TrialMetadata
 	// MISSING: Tags
 	// MISSING: ServiceAccountEmail
+	// MISSING: DataplexConfig
 	return out
 }
 func AlloyDBInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.AlloyDBInstanceObservedState {
@@ -574,6 +578,22 @@ func CloudSQLBackupRunSource_ToProto(mapCtx *direct.MapContext, in *krm.CloudSQL
 	out.Project = direct.ValueOf(in.Project)
 	out.InstanceId = direct.ValueOf(in.InstanceID)
 	out.BackupRunId = direct.ValueOf(in.BackupRunID)
+	return out
+}
+func Cluster_DataplexConfig_FromProto(mapCtx *direct.MapContext, in *pb.Cluster_DataplexConfig) *krm.Cluster_DataplexConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Cluster_DataplexConfig{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	return out
+}
+func Cluster_DataplexConfig_ToProto(mapCtx *direct.MapContext, in *krm.Cluster_DataplexConfig) *pb.Cluster_DataplexConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Cluster_DataplexConfig{}
+	out.Enabled = direct.ValueOf(in.Enabled)
 	return out
 }
 func Cluster_NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.Cluster_NetworkConfig) *krm.Cluster_NetworkConfig {
@@ -863,6 +883,7 @@ func Instance_ConnectionPoolConfig_FromProto(mapCtx *direct.MapContext, in *pb.I
 	out := &krm.Instance_ConnectionPoolConfig{}
 	out.Enabled = direct.LazyPtr(in.GetEnabled())
 	out.Flags = in.Flags
+	// MISSING: PoolerCount
 	return out
 }
 func Instance_ConnectionPoolConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_ConnectionPoolConfig) *pb.Instance_ConnectionPoolConfig {
@@ -872,6 +893,7 @@ func Instance_ConnectionPoolConfig_ToProto(mapCtx *direct.MapContext, in *krm.In
 	out := &pb.Instance_ConnectionPoolConfig{}
 	out.Enabled = direct.ValueOf(in.Enabled)
 	out.Flags = in.Flags
+	// MISSING: PoolerCount
 	return out
 }
 func Instance_InstanceNetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceNetworkConfig) *krm.Instance_InstanceNetworkConfig {

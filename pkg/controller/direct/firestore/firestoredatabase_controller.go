@@ -28,8 +28,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
-	apiv1 "cloud.google.com/go/firestore/apiv1/admin"
-	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/firestore/admin/v1"
+	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -59,6 +59,10 @@ func (m *firestoreDatabaseModel) AdapterForObject(ctx context.Context, op *direc
 	if err != nil {
 		return nil, err
 	}
+	operationsClient, err := newOperationsClient(ctx, m.config)
+	if err != nil {
+		return nil, err
+	}
 
 	obj := &krm.FirestoreDatabase{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
@@ -73,6 +77,7 @@ func (m *firestoreDatabaseModel) AdapterForObject(ctx context.Context, op *direc
 	return &Adapter{
 		id:                   id.(*krm.FirestoreDatabaseIdentity),
 		firestoreAdminClient: firestoreAdminClient,
+		operationsClient:     operationsClient,
 		desired:              obj,
 	}, nil
 }
@@ -95,15 +100,21 @@ func (m *firestoreDatabaseModel) AdapterForURL(ctx context.Context, url string) 
 	if err != nil {
 		return nil, err
 	}
+	operationsClient, err := newOperationsClient(ctx, m.config)
+	if err != nil {
+		return nil, err
+	}
 	return &Adapter{
 		id:                   id,
 		firestoreAdminClient: firestoreAdminClient,
+		operationsClient:     operationsClient,
 	}, nil
 }
 
 type Adapter struct {
 	id                   *krm.FirestoreDatabaseIdentity
-	firestoreAdminClient *apiv1.FirestoreAdminClient
+	firestoreAdminClient pb.FirestoreAdminClient
+	operationsClient     longrunning.OperationsClient
 	desired              *krm.FirestoreDatabase
 	actual               *pb.Database
 }
@@ -162,8 +173,8 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		return fmt.Errorf("creating FirestoreDatabase %s: %w", fqn, err)
 	}
 
-	created, err := op.Wait(ctx)
-	if err != nil {
+	created := &pb.Database{}
+	if err := direct.WaitOperation(ctx, a.operationsClient, op, created); err != nil {
 		return fmt.Errorf("FirestoreDatabase %s waiting creation: %w", fqn, err)
 	}
 	log.V(2).Info("successfully created FirestoreDatabase", "name", fqn)
@@ -240,8 +251,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 			return fmt.Errorf("updating FirestoreDatabase %q: %w", fqn, err)
 		}
 
-		updated, err := op.Wait(ctx)
-		if err != nil {
+		updated := &pb.Database{}
+		if err := direct.WaitOperation(ctx, a.operationsClient, op, updated); err != nil {
 			return fmt.Errorf("FirestoreDatabase %s waiting update: %w", fqn, err)
 		}
 		log.V(2).Info("successfully updated FirestoreDatabase", "name", fqn)
@@ -302,8 +313,7 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	}
 	log.V(2).Info("successfully deleted FirestoreDatabase", "name", fqn)
 
-	_, err = op.Wait(ctx)
-	if err != nil {
+	if err := direct.WaitOperation(ctx, a.operationsClient, op, nil); err != nil {
 		return false, fmt.Errorf("waiting delete FirestoreDatabase %s: %w", fqn, err)
 	}
 	return true, nil

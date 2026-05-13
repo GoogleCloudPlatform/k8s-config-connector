@@ -13,7 +13,6 @@ import (
 	"io"
 	"net/http"
 
-	extDataplexpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataplex/v1"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
 	"google.golang.org/grpc"
@@ -36,8 +35,8 @@ var (
 	filter_BusinessGlossaryService_CreateGlossary_0 = &utilities.DoubleArray{Encoding: map[string]int{"glossary": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_BusinessGlossaryService_CreateGlossary_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateGlossaryRequest
+func request_BusinessGlossaryService_CreateGlossary_0(ctx context.Context, marshaler runtime.Marshaler, client BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateGlossaryRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -77,8 +76,8 @@ func request_BusinessGlossaryService_CreateGlossary_0(ctx context.Context, marsh
 
 }
 
-func local_request_BusinessGlossaryService_CreateGlossary_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateGlossaryRequest
+func local_request_BusinessGlossaryService_CreateGlossary_0(ctx context.Context, marshaler runtime.Marshaler, server BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateGlossaryRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -122,8 +121,8 @@ var (
 	filter_BusinessGlossaryService_UpdateGlossary_0 = &utilities.DoubleArray{Encoding: map[string]int{"glossary": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_BusinessGlossaryService_UpdateGlossary_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateGlossaryRequest
+func request_BusinessGlossaryService_UpdateGlossary_0(ctx context.Context, marshaler runtime.Marshaler, client BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateGlossaryRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -170,8 +169,8 @@ func request_BusinessGlossaryService_UpdateGlossary_0(ctx context.Context, marsh
 
 }
 
-func local_request_BusinessGlossaryService_UpdateGlossary_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateGlossaryRequest
+func local_request_BusinessGlossaryService_UpdateGlossary_0(ctx context.Context, marshaler runtime.Marshaler, server BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateGlossaryRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -222,8 +221,8 @@ var (
 	filter_BusinessGlossaryService_DeleteGlossary_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_BusinessGlossaryService_DeleteGlossary_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteGlossaryRequest
+func request_BusinessGlossaryService_DeleteGlossary_0(ctx context.Context, marshaler runtime.Marshaler, client BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteGlossaryRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -255,8 +254,8 @@ func request_BusinessGlossaryService_DeleteGlossary_0(ctx context.Context, marsh
 
 }
 
-func local_request_BusinessGlossaryService_DeleteGlossary_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteGlossaryRequest
+func local_request_BusinessGlossaryService_DeleteGlossary_0(ctx context.Context, marshaler runtime.Marshaler, server BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteGlossaryRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -288,8 +287,8 @@ func local_request_BusinessGlossaryService_DeleteGlossary_0(ctx context.Context,
 
 }
 
-func request_BusinessGlossaryService_GetGlossary_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetGlossaryRequest
+func request_BusinessGlossaryService_GetGlossary_0(ctx context.Context, marshaler runtime.Marshaler, client BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetGlossaryRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -314,8 +313,8 @@ func request_BusinessGlossaryService_GetGlossary_0(ctx context.Context, marshale
 
 }
 
-func local_request_BusinessGlossaryService_GetGlossary_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetGlossaryRequest
+func local_request_BusinessGlossaryService_GetGlossary_0(ctx context.Context, marshaler runtime.Marshaler, server BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetGlossaryRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -344,8 +343,8 @@ var (
 	filter_BusinessGlossaryService_ListGlossaries_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_BusinessGlossaryService_ListGlossaries_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListGlossariesRequest
+func request_BusinessGlossaryService_ListGlossaries_0(ctx context.Context, marshaler runtime.Marshaler, client BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListGlossariesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -377,8 +376,8 @@ func request_BusinessGlossaryService_ListGlossaries_0(ctx context.Context, marsh
 
 }
 
-func local_request_BusinessGlossaryService_ListGlossaries_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListGlossariesRequest
+func local_request_BusinessGlossaryService_ListGlossaries_0(ctx context.Context, marshaler runtime.Marshaler, server BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListGlossariesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -414,8 +413,8 @@ var (
 	filter_BusinessGlossaryService_CreateGlossaryCategory_0 = &utilities.DoubleArray{Encoding: map[string]int{"category": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_BusinessGlossaryService_CreateGlossaryCategory_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateGlossaryCategoryRequest
+func request_BusinessGlossaryService_CreateGlossaryCategory_0(ctx context.Context, marshaler runtime.Marshaler, client BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateGlossaryCategoryRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -455,8 +454,8 @@ func request_BusinessGlossaryService_CreateGlossaryCategory_0(ctx context.Contex
 
 }
 
-func local_request_BusinessGlossaryService_CreateGlossaryCategory_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateGlossaryCategoryRequest
+func local_request_BusinessGlossaryService_CreateGlossaryCategory_0(ctx context.Context, marshaler runtime.Marshaler, server BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateGlossaryCategoryRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -500,8 +499,8 @@ var (
 	filter_BusinessGlossaryService_UpdateGlossaryCategory_0 = &utilities.DoubleArray{Encoding: map[string]int{"category": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_BusinessGlossaryService_UpdateGlossaryCategory_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateGlossaryCategoryRequest
+func request_BusinessGlossaryService_UpdateGlossaryCategory_0(ctx context.Context, marshaler runtime.Marshaler, client BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateGlossaryCategoryRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -548,8 +547,8 @@ func request_BusinessGlossaryService_UpdateGlossaryCategory_0(ctx context.Contex
 
 }
 
-func local_request_BusinessGlossaryService_UpdateGlossaryCategory_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateGlossaryCategoryRequest
+func local_request_BusinessGlossaryService_UpdateGlossaryCategory_0(ctx context.Context, marshaler runtime.Marshaler, server BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateGlossaryCategoryRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -596,8 +595,8 @@ func local_request_BusinessGlossaryService_UpdateGlossaryCategory_0(ctx context.
 
 }
 
-func request_BusinessGlossaryService_DeleteGlossaryCategory_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteGlossaryCategoryRequest
+func request_BusinessGlossaryService_DeleteGlossaryCategory_0(ctx context.Context, marshaler runtime.Marshaler, client BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteGlossaryCategoryRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -622,8 +621,8 @@ func request_BusinessGlossaryService_DeleteGlossaryCategory_0(ctx context.Contex
 
 }
 
-func local_request_BusinessGlossaryService_DeleteGlossaryCategory_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteGlossaryCategoryRequest
+func local_request_BusinessGlossaryService_DeleteGlossaryCategory_0(ctx context.Context, marshaler runtime.Marshaler, server BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteGlossaryCategoryRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -648,8 +647,8 @@ func local_request_BusinessGlossaryService_DeleteGlossaryCategory_0(ctx context.
 
 }
 
-func request_BusinessGlossaryService_GetGlossaryCategory_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetGlossaryCategoryRequest
+func request_BusinessGlossaryService_GetGlossaryCategory_0(ctx context.Context, marshaler runtime.Marshaler, client BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetGlossaryCategoryRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -674,8 +673,8 @@ func request_BusinessGlossaryService_GetGlossaryCategory_0(ctx context.Context, 
 
 }
 
-func local_request_BusinessGlossaryService_GetGlossaryCategory_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetGlossaryCategoryRequest
+func local_request_BusinessGlossaryService_GetGlossaryCategory_0(ctx context.Context, marshaler runtime.Marshaler, server BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetGlossaryCategoryRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -704,8 +703,8 @@ var (
 	filter_BusinessGlossaryService_ListGlossaryCategories_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_BusinessGlossaryService_ListGlossaryCategories_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListGlossaryCategoriesRequest
+func request_BusinessGlossaryService_ListGlossaryCategories_0(ctx context.Context, marshaler runtime.Marshaler, client BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListGlossaryCategoriesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -737,8 +736,8 @@ func request_BusinessGlossaryService_ListGlossaryCategories_0(ctx context.Contex
 
 }
 
-func local_request_BusinessGlossaryService_ListGlossaryCategories_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListGlossaryCategoriesRequest
+func local_request_BusinessGlossaryService_ListGlossaryCategories_0(ctx context.Context, marshaler runtime.Marshaler, server BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListGlossaryCategoriesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -774,8 +773,8 @@ var (
 	filter_BusinessGlossaryService_CreateGlossaryTerm_0 = &utilities.DoubleArray{Encoding: map[string]int{"term": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_BusinessGlossaryService_CreateGlossaryTerm_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateGlossaryTermRequest
+func request_BusinessGlossaryService_CreateGlossaryTerm_0(ctx context.Context, marshaler runtime.Marshaler, client BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateGlossaryTermRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -815,8 +814,8 @@ func request_BusinessGlossaryService_CreateGlossaryTerm_0(ctx context.Context, m
 
 }
 
-func local_request_BusinessGlossaryService_CreateGlossaryTerm_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateGlossaryTermRequest
+func local_request_BusinessGlossaryService_CreateGlossaryTerm_0(ctx context.Context, marshaler runtime.Marshaler, server BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateGlossaryTermRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -860,8 +859,8 @@ var (
 	filter_BusinessGlossaryService_UpdateGlossaryTerm_0 = &utilities.DoubleArray{Encoding: map[string]int{"term": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_BusinessGlossaryService_UpdateGlossaryTerm_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateGlossaryTermRequest
+func request_BusinessGlossaryService_UpdateGlossaryTerm_0(ctx context.Context, marshaler runtime.Marshaler, client BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateGlossaryTermRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -908,8 +907,8 @@ func request_BusinessGlossaryService_UpdateGlossaryTerm_0(ctx context.Context, m
 
 }
 
-func local_request_BusinessGlossaryService_UpdateGlossaryTerm_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateGlossaryTermRequest
+func local_request_BusinessGlossaryService_UpdateGlossaryTerm_0(ctx context.Context, marshaler runtime.Marshaler, server BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateGlossaryTermRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -956,8 +955,8 @@ func local_request_BusinessGlossaryService_UpdateGlossaryTerm_0(ctx context.Cont
 
 }
 
-func request_BusinessGlossaryService_DeleteGlossaryTerm_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteGlossaryTermRequest
+func request_BusinessGlossaryService_DeleteGlossaryTerm_0(ctx context.Context, marshaler runtime.Marshaler, client BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteGlossaryTermRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -982,8 +981,8 @@ func request_BusinessGlossaryService_DeleteGlossaryTerm_0(ctx context.Context, m
 
 }
 
-func local_request_BusinessGlossaryService_DeleteGlossaryTerm_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteGlossaryTermRequest
+func local_request_BusinessGlossaryService_DeleteGlossaryTerm_0(ctx context.Context, marshaler runtime.Marshaler, server BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteGlossaryTermRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1008,8 +1007,8 @@ func local_request_BusinessGlossaryService_DeleteGlossaryTerm_0(ctx context.Cont
 
 }
 
-func request_BusinessGlossaryService_GetGlossaryTerm_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetGlossaryTermRequest
+func request_BusinessGlossaryService_GetGlossaryTerm_0(ctx context.Context, marshaler runtime.Marshaler, client BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetGlossaryTermRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1034,8 +1033,8 @@ func request_BusinessGlossaryService_GetGlossaryTerm_0(ctx context.Context, mars
 
 }
 
-func local_request_BusinessGlossaryService_GetGlossaryTerm_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetGlossaryTermRequest
+func local_request_BusinessGlossaryService_GetGlossaryTerm_0(ctx context.Context, marshaler runtime.Marshaler, server BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetGlossaryTermRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1064,8 +1063,8 @@ var (
 	filter_BusinessGlossaryService_ListGlossaryTerms_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_BusinessGlossaryService_ListGlossaryTerms_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListGlossaryTermsRequest
+func request_BusinessGlossaryService_ListGlossaryTerms_0(ctx context.Context, marshaler runtime.Marshaler, client BusinessGlossaryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListGlossaryTermsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1097,8 +1096,8 @@ func request_BusinessGlossaryService_ListGlossaryTerms_0(ctx context.Context, ma
 
 }
 
-func local_request_BusinessGlossaryService_ListGlossaryTerms_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListGlossaryTermsRequest
+func local_request_BusinessGlossaryService_ListGlossaryTerms_0(ctx context.Context, marshaler runtime.Marshaler, server BusinessGlossaryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListGlossaryTermsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1134,7 +1133,7 @@ func local_request_BusinessGlossaryService_ListGlossaryTerms_0(ctx context.Conte
 // UnaryRPC     :call BusinessGlossaryServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterBusinessGlossaryServiceHandlerFromEndpoint instead.
-func RegisterBusinessGlossaryServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server extDataplexpb.BusinessGlossaryServiceServer) error {
+func RegisterBusinessGlossaryServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server BusinessGlossaryServiceServer) error {
 
 	mux.Handle("POST", pattern_BusinessGlossaryService_CreateGlossary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -1542,15 +1541,15 @@ func RegisterBusinessGlossaryServiceHandlerFromEndpoint(ctx context.Context, mux
 // RegisterBusinessGlossaryServiceHandler registers the http handlers for service BusinessGlossaryService to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
 func RegisterBusinessGlossaryServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterBusinessGlossaryServiceHandlerClient(ctx, mux, extDataplexpb.NewBusinessGlossaryServiceClient(conn))
+	return RegisterBusinessGlossaryServiceHandlerClient(ctx, mux, NewBusinessGlossaryServiceClient(conn))
 }
 
 // RegisterBusinessGlossaryServiceHandlerClient registers the http handlers for service BusinessGlossaryService
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "extDataplexpb.BusinessGlossaryServiceClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "extDataplexpb.BusinessGlossaryServiceClient"
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "BusinessGlossaryServiceClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "BusinessGlossaryServiceClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "extDataplexpb.BusinessGlossaryServiceClient" to call the correct interceptors.
-func RegisterBusinessGlossaryServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client extDataplexpb.BusinessGlossaryServiceClient) error {
+// "BusinessGlossaryServiceClient" to call the correct interceptors.
+func RegisterBusinessGlossaryServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client BusinessGlossaryServiceClient) error {
 
 	mux.Handle("POST", pattern_BusinessGlossaryService_CreateGlossary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())

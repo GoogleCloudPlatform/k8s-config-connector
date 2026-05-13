@@ -13,7 +13,6 @@ import (
 	"io"
 	"net/http"
 
-	extAdminpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/analytics/admin/v1alpha"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
 	"google.golang.org/grpc"
@@ -32,8 +31,8 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
-func request_AnalyticsAdminService_GetAccount_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetAccountRequest
+func request_AnalyticsAdminService_GetAccount_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetAccountRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -58,8 +57,8 @@ func request_AnalyticsAdminService_GetAccount_0(ctx context.Context, marshaler r
 
 }
 
-func local_request_AnalyticsAdminService_GetAccount_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetAccountRequest
+func local_request_AnalyticsAdminService_GetAccount_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetAccountRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -88,8 +87,8 @@ var (
 	filter_AnalyticsAdminService_ListAccounts_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
-func request_AnalyticsAdminService_ListAccounts_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListAccountsRequest
+func request_AnalyticsAdminService_ListAccounts_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListAccountsRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -104,8 +103,8 @@ func request_AnalyticsAdminService_ListAccounts_0(ctx context.Context, marshaler
 
 }
 
-func local_request_AnalyticsAdminService_ListAccounts_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListAccountsRequest
+func local_request_AnalyticsAdminService_ListAccounts_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListAccountsRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -120,8 +119,8 @@ func local_request_AnalyticsAdminService_ListAccounts_0(ctx context.Context, mar
 
 }
 
-func request_AnalyticsAdminService_DeleteAccount_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteAccountRequest
+func request_AnalyticsAdminService_DeleteAccount_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteAccountRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -146,8 +145,8 @@ func request_AnalyticsAdminService_DeleteAccount_0(ctx context.Context, marshale
 
 }
 
-func local_request_AnalyticsAdminService_DeleteAccount_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteAccountRequest
+func local_request_AnalyticsAdminService_DeleteAccount_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteAccountRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -176,8 +175,8 @@ var (
 	filter_AnalyticsAdminService_UpdateAccount_0 = &utilities.DoubleArray{Encoding: map[string]int{"account": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateAccount_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateAccountRequest
+func request_AnalyticsAdminService_UpdateAccount_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateAccountRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -224,8 +223,8 @@ func request_AnalyticsAdminService_UpdateAccount_0(ctx context.Context, marshale
 
 }
 
-func local_request_AnalyticsAdminService_UpdateAccount_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateAccountRequest
+func local_request_AnalyticsAdminService_UpdateAccount_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateAccountRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -272,8 +271,8 @@ func local_request_AnalyticsAdminService_UpdateAccount_0(ctx context.Context, ma
 
 }
 
-func request_AnalyticsAdminService_ProvisionAccountTicket_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ProvisionAccountTicketRequest
+func request_AnalyticsAdminService_ProvisionAccountTicket_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ProvisionAccountTicketRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -289,8 +288,8 @@ func request_AnalyticsAdminService_ProvisionAccountTicket_0(ctx context.Context,
 
 }
 
-func local_request_AnalyticsAdminService_ProvisionAccountTicket_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ProvisionAccountTicketRequest
+func local_request_AnalyticsAdminService_ProvisionAccountTicket_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ProvisionAccountTicketRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -310,8 +309,8 @@ var (
 	filter_AnalyticsAdminService_ListAccountSummaries_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
-func request_AnalyticsAdminService_ListAccountSummaries_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListAccountSummariesRequest
+func request_AnalyticsAdminService_ListAccountSummaries_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListAccountSummariesRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -326,8 +325,8 @@ func request_AnalyticsAdminService_ListAccountSummaries_0(ctx context.Context, m
 
 }
 
-func local_request_AnalyticsAdminService_ListAccountSummaries_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListAccountSummariesRequest
+func local_request_AnalyticsAdminService_ListAccountSummaries_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListAccountSummariesRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -342,8 +341,8 @@ func local_request_AnalyticsAdminService_ListAccountSummaries_0(ctx context.Cont
 
 }
 
-func request_AnalyticsAdminService_GetProperty_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetPropertyRequest
+func request_AnalyticsAdminService_GetProperty_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetPropertyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -368,8 +367,8 @@ func request_AnalyticsAdminService_GetProperty_0(ctx context.Context, marshaler 
 
 }
 
-func local_request_AnalyticsAdminService_GetProperty_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetPropertyRequest
+func local_request_AnalyticsAdminService_GetProperty_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetPropertyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -398,8 +397,8 @@ var (
 	filter_AnalyticsAdminService_ListProperties_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
-func request_AnalyticsAdminService_ListProperties_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListPropertiesRequest
+func request_AnalyticsAdminService_ListProperties_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListPropertiesRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -414,8 +413,8 @@ func request_AnalyticsAdminService_ListProperties_0(ctx context.Context, marshal
 
 }
 
-func local_request_AnalyticsAdminService_ListProperties_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListPropertiesRequest
+func local_request_AnalyticsAdminService_ListProperties_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListPropertiesRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -430,8 +429,8 @@ func local_request_AnalyticsAdminService_ListProperties_0(ctx context.Context, m
 
 }
 
-func request_AnalyticsAdminService_CreateProperty_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreatePropertyRequest
+func request_AnalyticsAdminService_CreateProperty_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreatePropertyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -447,8 +446,8 @@ func request_AnalyticsAdminService_CreateProperty_0(ctx context.Context, marshal
 
 }
 
-func local_request_AnalyticsAdminService_CreateProperty_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreatePropertyRequest
+func local_request_AnalyticsAdminService_CreateProperty_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreatePropertyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -464,8 +463,8 @@ func local_request_AnalyticsAdminService_CreateProperty_0(ctx context.Context, m
 
 }
 
-func request_AnalyticsAdminService_DeleteProperty_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeletePropertyRequest
+func request_AnalyticsAdminService_DeleteProperty_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeletePropertyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -490,8 +489,8 @@ func request_AnalyticsAdminService_DeleteProperty_0(ctx context.Context, marshal
 
 }
 
-func local_request_AnalyticsAdminService_DeleteProperty_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeletePropertyRequest
+func local_request_AnalyticsAdminService_DeleteProperty_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeletePropertyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -520,8 +519,8 @@ var (
 	filter_AnalyticsAdminService_UpdateProperty_0 = &utilities.DoubleArray{Encoding: map[string]int{"property": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateProperty_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdatePropertyRequest
+func request_AnalyticsAdminService_UpdateProperty_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdatePropertyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -568,8 +567,8 @@ func request_AnalyticsAdminService_UpdateProperty_0(ctx context.Context, marshal
 
 }
 
-func local_request_AnalyticsAdminService_UpdateProperty_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdatePropertyRequest
+func local_request_AnalyticsAdminService_UpdateProperty_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdatePropertyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -616,8 +615,8 @@ func local_request_AnalyticsAdminService_UpdateProperty_0(ctx context.Context, m
 
 }
 
-func request_AnalyticsAdminService_CreateFirebaseLink_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateFirebaseLinkRequest
+func request_AnalyticsAdminService_CreateFirebaseLink_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateFirebaseLinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -650,8 +649,8 @@ func request_AnalyticsAdminService_CreateFirebaseLink_0(ctx context.Context, mar
 
 }
 
-func local_request_AnalyticsAdminService_CreateFirebaseLink_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateFirebaseLinkRequest
+func local_request_AnalyticsAdminService_CreateFirebaseLink_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateFirebaseLinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -684,8 +683,8 @@ func local_request_AnalyticsAdminService_CreateFirebaseLink_0(ctx context.Contex
 
 }
 
-func request_AnalyticsAdminService_DeleteFirebaseLink_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteFirebaseLinkRequest
+func request_AnalyticsAdminService_DeleteFirebaseLink_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteFirebaseLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -710,8 +709,8 @@ func request_AnalyticsAdminService_DeleteFirebaseLink_0(ctx context.Context, mar
 
 }
 
-func local_request_AnalyticsAdminService_DeleteFirebaseLink_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteFirebaseLinkRequest
+func local_request_AnalyticsAdminService_DeleteFirebaseLink_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteFirebaseLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -740,8 +739,8 @@ var (
 	filter_AnalyticsAdminService_ListFirebaseLinks_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListFirebaseLinks_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListFirebaseLinksRequest
+func request_AnalyticsAdminService_ListFirebaseLinks_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListFirebaseLinksRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -773,8 +772,8 @@ func request_AnalyticsAdminService_ListFirebaseLinks_0(ctx context.Context, mars
 
 }
 
-func local_request_AnalyticsAdminService_ListFirebaseLinks_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListFirebaseLinksRequest
+func local_request_AnalyticsAdminService_ListFirebaseLinks_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListFirebaseLinksRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -806,8 +805,8 @@ func local_request_AnalyticsAdminService_ListFirebaseLinks_0(ctx context.Context
 
 }
 
-func request_AnalyticsAdminService_GetGlobalSiteTag_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetGlobalSiteTagRequest
+func request_AnalyticsAdminService_GetGlobalSiteTag_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetGlobalSiteTagRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -832,8 +831,8 @@ func request_AnalyticsAdminService_GetGlobalSiteTag_0(ctx context.Context, marsh
 
 }
 
-func local_request_AnalyticsAdminService_GetGlobalSiteTag_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetGlobalSiteTagRequest
+func local_request_AnalyticsAdminService_GetGlobalSiteTag_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetGlobalSiteTagRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -858,8 +857,8 @@ func local_request_AnalyticsAdminService_GetGlobalSiteTag_0(ctx context.Context,
 
 }
 
-func request_AnalyticsAdminService_CreateGoogleAdsLink_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateGoogleAdsLinkRequest
+func request_AnalyticsAdminService_CreateGoogleAdsLink_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateGoogleAdsLinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -892,8 +891,8 @@ func request_AnalyticsAdminService_CreateGoogleAdsLink_0(ctx context.Context, ma
 
 }
 
-func local_request_AnalyticsAdminService_CreateGoogleAdsLink_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateGoogleAdsLinkRequest
+func local_request_AnalyticsAdminService_CreateGoogleAdsLink_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateGoogleAdsLinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -930,8 +929,8 @@ var (
 	filter_AnalyticsAdminService_UpdateGoogleAdsLink_0 = &utilities.DoubleArray{Encoding: map[string]int{"google_ads_link": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateGoogleAdsLink_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateGoogleAdsLinkRequest
+func request_AnalyticsAdminService_UpdateGoogleAdsLink_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateGoogleAdsLinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -978,8 +977,8 @@ func request_AnalyticsAdminService_UpdateGoogleAdsLink_0(ctx context.Context, ma
 
 }
 
-func local_request_AnalyticsAdminService_UpdateGoogleAdsLink_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateGoogleAdsLinkRequest
+func local_request_AnalyticsAdminService_UpdateGoogleAdsLink_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateGoogleAdsLinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1026,8 +1025,8 @@ func local_request_AnalyticsAdminService_UpdateGoogleAdsLink_0(ctx context.Conte
 
 }
 
-func request_AnalyticsAdminService_DeleteGoogleAdsLink_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteGoogleAdsLinkRequest
+func request_AnalyticsAdminService_DeleteGoogleAdsLink_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteGoogleAdsLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1052,8 +1051,8 @@ func request_AnalyticsAdminService_DeleteGoogleAdsLink_0(ctx context.Context, ma
 
 }
 
-func local_request_AnalyticsAdminService_DeleteGoogleAdsLink_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteGoogleAdsLinkRequest
+func local_request_AnalyticsAdminService_DeleteGoogleAdsLink_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteGoogleAdsLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1082,8 +1081,8 @@ var (
 	filter_AnalyticsAdminService_ListGoogleAdsLinks_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListGoogleAdsLinks_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListGoogleAdsLinksRequest
+func request_AnalyticsAdminService_ListGoogleAdsLinks_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListGoogleAdsLinksRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1115,8 +1114,8 @@ func request_AnalyticsAdminService_ListGoogleAdsLinks_0(ctx context.Context, mar
 
 }
 
-func local_request_AnalyticsAdminService_ListGoogleAdsLinks_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListGoogleAdsLinksRequest
+func local_request_AnalyticsAdminService_ListGoogleAdsLinks_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListGoogleAdsLinksRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1148,8 +1147,8 @@ func local_request_AnalyticsAdminService_ListGoogleAdsLinks_0(ctx context.Contex
 
 }
 
-func request_AnalyticsAdminService_GetDataSharingSettings_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetDataSharingSettingsRequest
+func request_AnalyticsAdminService_GetDataSharingSettings_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDataSharingSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1174,8 +1173,8 @@ func request_AnalyticsAdminService_GetDataSharingSettings_0(ctx context.Context,
 
 }
 
-func local_request_AnalyticsAdminService_GetDataSharingSettings_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetDataSharingSettingsRequest
+func local_request_AnalyticsAdminService_GetDataSharingSettings_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDataSharingSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1200,8 +1199,8 @@ func local_request_AnalyticsAdminService_GetDataSharingSettings_0(ctx context.Co
 
 }
 
-func request_AnalyticsAdminService_GetMeasurementProtocolSecret_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetMeasurementProtocolSecretRequest
+func request_AnalyticsAdminService_GetMeasurementProtocolSecret_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetMeasurementProtocolSecretRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1226,8 +1225,8 @@ func request_AnalyticsAdminService_GetMeasurementProtocolSecret_0(ctx context.Co
 
 }
 
-func local_request_AnalyticsAdminService_GetMeasurementProtocolSecret_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetMeasurementProtocolSecretRequest
+func local_request_AnalyticsAdminService_GetMeasurementProtocolSecret_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetMeasurementProtocolSecretRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1256,8 +1255,8 @@ var (
 	filter_AnalyticsAdminService_ListMeasurementProtocolSecrets_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListMeasurementProtocolSecrets_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListMeasurementProtocolSecretsRequest
+func request_AnalyticsAdminService_ListMeasurementProtocolSecrets_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListMeasurementProtocolSecretsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1289,8 +1288,8 @@ func request_AnalyticsAdminService_ListMeasurementProtocolSecrets_0(ctx context.
 
 }
 
-func local_request_AnalyticsAdminService_ListMeasurementProtocolSecrets_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListMeasurementProtocolSecretsRequest
+func local_request_AnalyticsAdminService_ListMeasurementProtocolSecrets_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListMeasurementProtocolSecretsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1322,8 +1321,8 @@ func local_request_AnalyticsAdminService_ListMeasurementProtocolSecrets_0(ctx co
 
 }
 
-func request_AnalyticsAdminService_CreateMeasurementProtocolSecret_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateMeasurementProtocolSecretRequest
+func request_AnalyticsAdminService_CreateMeasurementProtocolSecret_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateMeasurementProtocolSecretRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1356,8 +1355,8 @@ func request_AnalyticsAdminService_CreateMeasurementProtocolSecret_0(ctx context
 
 }
 
-func local_request_AnalyticsAdminService_CreateMeasurementProtocolSecret_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateMeasurementProtocolSecretRequest
+func local_request_AnalyticsAdminService_CreateMeasurementProtocolSecret_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateMeasurementProtocolSecretRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1390,8 +1389,8 @@ func local_request_AnalyticsAdminService_CreateMeasurementProtocolSecret_0(ctx c
 
 }
 
-func request_AnalyticsAdminService_DeleteMeasurementProtocolSecret_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteMeasurementProtocolSecretRequest
+func request_AnalyticsAdminService_DeleteMeasurementProtocolSecret_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteMeasurementProtocolSecretRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1416,8 +1415,8 @@ func request_AnalyticsAdminService_DeleteMeasurementProtocolSecret_0(ctx context
 
 }
 
-func local_request_AnalyticsAdminService_DeleteMeasurementProtocolSecret_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteMeasurementProtocolSecretRequest
+func local_request_AnalyticsAdminService_DeleteMeasurementProtocolSecret_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteMeasurementProtocolSecretRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1446,8 +1445,8 @@ var (
 	filter_AnalyticsAdminService_UpdateMeasurementProtocolSecret_0 = &utilities.DoubleArray{Encoding: map[string]int{"measurement_protocol_secret": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateMeasurementProtocolSecret_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateMeasurementProtocolSecretRequest
+func request_AnalyticsAdminService_UpdateMeasurementProtocolSecret_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateMeasurementProtocolSecretRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1494,8 +1493,8 @@ func request_AnalyticsAdminService_UpdateMeasurementProtocolSecret_0(ctx context
 
 }
 
-func local_request_AnalyticsAdminService_UpdateMeasurementProtocolSecret_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateMeasurementProtocolSecretRequest
+func local_request_AnalyticsAdminService_UpdateMeasurementProtocolSecret_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateMeasurementProtocolSecretRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1542,8 +1541,8 @@ func local_request_AnalyticsAdminService_UpdateMeasurementProtocolSecret_0(ctx c
 
 }
 
-func request_AnalyticsAdminService_AcknowledgeUserDataCollection_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.AcknowledgeUserDataCollectionRequest
+func request_AnalyticsAdminService_AcknowledgeUserDataCollection_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq AcknowledgeUserDataCollectionRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1576,8 +1575,8 @@ func request_AnalyticsAdminService_AcknowledgeUserDataCollection_0(ctx context.C
 
 }
 
-func local_request_AnalyticsAdminService_AcknowledgeUserDataCollection_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.AcknowledgeUserDataCollectionRequest
+func local_request_AnalyticsAdminService_AcknowledgeUserDataCollection_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq AcknowledgeUserDataCollectionRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1610,8 +1609,8 @@ func local_request_AnalyticsAdminService_AcknowledgeUserDataCollection_0(ctx con
 
 }
 
-func request_AnalyticsAdminService_GetSKAdNetworkConversionValueSchema_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetSKAdNetworkConversionValueSchemaRequest
+func request_AnalyticsAdminService_GetSKAdNetworkConversionValueSchema_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetSKAdNetworkConversionValueSchemaRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1636,8 +1635,8 @@ func request_AnalyticsAdminService_GetSKAdNetworkConversionValueSchema_0(ctx con
 
 }
 
-func local_request_AnalyticsAdminService_GetSKAdNetworkConversionValueSchema_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetSKAdNetworkConversionValueSchemaRequest
+func local_request_AnalyticsAdminService_GetSKAdNetworkConversionValueSchema_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetSKAdNetworkConversionValueSchemaRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1662,8 +1661,8 @@ func local_request_AnalyticsAdminService_GetSKAdNetworkConversionValueSchema_0(c
 
 }
 
-func request_AnalyticsAdminService_CreateSKAdNetworkConversionValueSchema_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateSKAdNetworkConversionValueSchemaRequest
+func request_AnalyticsAdminService_CreateSKAdNetworkConversionValueSchema_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateSKAdNetworkConversionValueSchemaRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1696,8 +1695,8 @@ func request_AnalyticsAdminService_CreateSKAdNetworkConversionValueSchema_0(ctx 
 
 }
 
-func local_request_AnalyticsAdminService_CreateSKAdNetworkConversionValueSchema_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateSKAdNetworkConversionValueSchemaRequest
+func local_request_AnalyticsAdminService_CreateSKAdNetworkConversionValueSchema_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateSKAdNetworkConversionValueSchemaRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1730,8 +1729,8 @@ func local_request_AnalyticsAdminService_CreateSKAdNetworkConversionValueSchema_
 
 }
 
-func request_AnalyticsAdminService_DeleteSKAdNetworkConversionValueSchema_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteSKAdNetworkConversionValueSchemaRequest
+func request_AnalyticsAdminService_DeleteSKAdNetworkConversionValueSchema_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteSKAdNetworkConversionValueSchemaRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1756,8 +1755,8 @@ func request_AnalyticsAdminService_DeleteSKAdNetworkConversionValueSchema_0(ctx 
 
 }
 
-func local_request_AnalyticsAdminService_DeleteSKAdNetworkConversionValueSchema_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteSKAdNetworkConversionValueSchemaRequest
+func local_request_AnalyticsAdminService_DeleteSKAdNetworkConversionValueSchema_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteSKAdNetworkConversionValueSchemaRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1786,8 +1785,8 @@ var (
 	filter_AnalyticsAdminService_UpdateSKAdNetworkConversionValueSchema_0 = &utilities.DoubleArray{Encoding: map[string]int{"skadnetwork_conversion_value_schema": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateSKAdNetworkConversionValueSchema_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateSKAdNetworkConversionValueSchemaRequest
+func request_AnalyticsAdminService_UpdateSKAdNetworkConversionValueSchema_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateSKAdNetworkConversionValueSchemaRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1834,8 +1833,8 @@ func request_AnalyticsAdminService_UpdateSKAdNetworkConversionValueSchema_0(ctx 
 
 }
 
-func local_request_AnalyticsAdminService_UpdateSKAdNetworkConversionValueSchema_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateSKAdNetworkConversionValueSchemaRequest
+func local_request_AnalyticsAdminService_UpdateSKAdNetworkConversionValueSchema_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateSKAdNetworkConversionValueSchemaRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1886,8 +1885,8 @@ var (
 	filter_AnalyticsAdminService_ListSKAdNetworkConversionValueSchemas_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListSKAdNetworkConversionValueSchemas_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListSKAdNetworkConversionValueSchemasRequest
+func request_AnalyticsAdminService_ListSKAdNetworkConversionValueSchemas_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListSKAdNetworkConversionValueSchemasRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1919,8 +1918,8 @@ func request_AnalyticsAdminService_ListSKAdNetworkConversionValueSchemas_0(ctx c
 
 }
 
-func local_request_AnalyticsAdminService_ListSKAdNetworkConversionValueSchemas_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListSKAdNetworkConversionValueSchemasRequest
+func local_request_AnalyticsAdminService_ListSKAdNetworkConversionValueSchemas_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListSKAdNetworkConversionValueSchemasRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1952,8 +1951,8 @@ func local_request_AnalyticsAdminService_ListSKAdNetworkConversionValueSchemas_0
 
 }
 
-func request_AnalyticsAdminService_SearchChangeHistoryEvents_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.SearchChangeHistoryEventsRequest
+func request_AnalyticsAdminService_SearchChangeHistoryEvents_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SearchChangeHistoryEventsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1986,8 +1985,8 @@ func request_AnalyticsAdminService_SearchChangeHistoryEvents_0(ctx context.Conte
 
 }
 
-func local_request_AnalyticsAdminService_SearchChangeHistoryEvents_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.SearchChangeHistoryEventsRequest
+func local_request_AnalyticsAdminService_SearchChangeHistoryEvents_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SearchChangeHistoryEventsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2020,8 +2019,8 @@ func local_request_AnalyticsAdminService_SearchChangeHistoryEvents_0(ctx context
 
 }
 
-func request_AnalyticsAdminService_GetGoogleSignalsSettings_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetGoogleSignalsSettingsRequest
+func request_AnalyticsAdminService_GetGoogleSignalsSettings_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetGoogleSignalsSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2046,8 +2045,8 @@ func request_AnalyticsAdminService_GetGoogleSignalsSettings_0(ctx context.Contex
 
 }
 
-func local_request_AnalyticsAdminService_GetGoogleSignalsSettings_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetGoogleSignalsSettingsRequest
+func local_request_AnalyticsAdminService_GetGoogleSignalsSettings_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetGoogleSignalsSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2076,8 +2075,8 @@ var (
 	filter_AnalyticsAdminService_UpdateGoogleSignalsSettings_0 = &utilities.DoubleArray{Encoding: map[string]int{"google_signals_settings": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateGoogleSignalsSettings_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateGoogleSignalsSettingsRequest
+func request_AnalyticsAdminService_UpdateGoogleSignalsSettings_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateGoogleSignalsSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2124,8 +2123,8 @@ func request_AnalyticsAdminService_UpdateGoogleSignalsSettings_0(ctx context.Con
 
 }
 
-func local_request_AnalyticsAdminService_UpdateGoogleSignalsSettings_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateGoogleSignalsSettingsRequest
+func local_request_AnalyticsAdminService_UpdateGoogleSignalsSettings_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateGoogleSignalsSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2172,8 +2171,8 @@ func local_request_AnalyticsAdminService_UpdateGoogleSignalsSettings_0(ctx conte
 
 }
 
-func request_AnalyticsAdminService_CreateConversionEvent_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateConversionEventRequest
+func request_AnalyticsAdminService_CreateConversionEvent_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateConversionEventRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2206,8 +2205,8 @@ func request_AnalyticsAdminService_CreateConversionEvent_0(ctx context.Context, 
 
 }
 
-func local_request_AnalyticsAdminService_CreateConversionEvent_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateConversionEventRequest
+func local_request_AnalyticsAdminService_CreateConversionEvent_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateConversionEventRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2244,8 +2243,8 @@ var (
 	filter_AnalyticsAdminService_UpdateConversionEvent_0 = &utilities.DoubleArray{Encoding: map[string]int{"conversion_event": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateConversionEvent_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateConversionEventRequest
+func request_AnalyticsAdminService_UpdateConversionEvent_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateConversionEventRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2292,8 +2291,8 @@ func request_AnalyticsAdminService_UpdateConversionEvent_0(ctx context.Context, 
 
 }
 
-func local_request_AnalyticsAdminService_UpdateConversionEvent_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateConversionEventRequest
+func local_request_AnalyticsAdminService_UpdateConversionEvent_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateConversionEventRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2340,8 +2339,8 @@ func local_request_AnalyticsAdminService_UpdateConversionEvent_0(ctx context.Con
 
 }
 
-func request_AnalyticsAdminService_GetConversionEvent_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetConversionEventRequest
+func request_AnalyticsAdminService_GetConversionEvent_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetConversionEventRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2366,8 +2365,8 @@ func request_AnalyticsAdminService_GetConversionEvent_0(ctx context.Context, mar
 
 }
 
-func local_request_AnalyticsAdminService_GetConversionEvent_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetConversionEventRequest
+func local_request_AnalyticsAdminService_GetConversionEvent_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetConversionEventRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2392,8 +2391,8 @@ func local_request_AnalyticsAdminService_GetConversionEvent_0(ctx context.Contex
 
 }
 
-func request_AnalyticsAdminService_DeleteConversionEvent_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteConversionEventRequest
+func request_AnalyticsAdminService_DeleteConversionEvent_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteConversionEventRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2418,8 +2417,8 @@ func request_AnalyticsAdminService_DeleteConversionEvent_0(ctx context.Context, 
 
 }
 
-func local_request_AnalyticsAdminService_DeleteConversionEvent_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteConversionEventRequest
+func local_request_AnalyticsAdminService_DeleteConversionEvent_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteConversionEventRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2448,8 +2447,8 @@ var (
 	filter_AnalyticsAdminService_ListConversionEvents_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListConversionEvents_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListConversionEventsRequest
+func request_AnalyticsAdminService_ListConversionEvents_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListConversionEventsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2481,8 +2480,8 @@ func request_AnalyticsAdminService_ListConversionEvents_0(ctx context.Context, m
 
 }
 
-func local_request_AnalyticsAdminService_ListConversionEvents_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListConversionEventsRequest
+func local_request_AnalyticsAdminService_ListConversionEvents_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListConversionEventsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2514,8 +2513,8 @@ func local_request_AnalyticsAdminService_ListConversionEvents_0(ctx context.Cont
 
 }
 
-func request_AnalyticsAdminService_CreateKeyEvent_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateKeyEventRequest
+func request_AnalyticsAdminService_CreateKeyEvent_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateKeyEventRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2548,8 +2547,8 @@ func request_AnalyticsAdminService_CreateKeyEvent_0(ctx context.Context, marshal
 
 }
 
-func local_request_AnalyticsAdminService_CreateKeyEvent_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateKeyEventRequest
+func local_request_AnalyticsAdminService_CreateKeyEvent_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateKeyEventRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2586,8 +2585,8 @@ var (
 	filter_AnalyticsAdminService_UpdateKeyEvent_0 = &utilities.DoubleArray{Encoding: map[string]int{"key_event": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateKeyEvent_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateKeyEventRequest
+func request_AnalyticsAdminService_UpdateKeyEvent_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateKeyEventRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2634,8 +2633,8 @@ func request_AnalyticsAdminService_UpdateKeyEvent_0(ctx context.Context, marshal
 
 }
 
-func local_request_AnalyticsAdminService_UpdateKeyEvent_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateKeyEventRequest
+func local_request_AnalyticsAdminService_UpdateKeyEvent_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateKeyEventRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2682,8 +2681,8 @@ func local_request_AnalyticsAdminService_UpdateKeyEvent_0(ctx context.Context, m
 
 }
 
-func request_AnalyticsAdminService_GetKeyEvent_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetKeyEventRequest
+func request_AnalyticsAdminService_GetKeyEvent_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetKeyEventRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2708,8 +2707,8 @@ func request_AnalyticsAdminService_GetKeyEvent_0(ctx context.Context, marshaler 
 
 }
 
-func local_request_AnalyticsAdminService_GetKeyEvent_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetKeyEventRequest
+func local_request_AnalyticsAdminService_GetKeyEvent_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetKeyEventRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2734,8 +2733,8 @@ func local_request_AnalyticsAdminService_GetKeyEvent_0(ctx context.Context, mars
 
 }
 
-func request_AnalyticsAdminService_DeleteKeyEvent_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteKeyEventRequest
+func request_AnalyticsAdminService_DeleteKeyEvent_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteKeyEventRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2760,8 +2759,8 @@ func request_AnalyticsAdminService_DeleteKeyEvent_0(ctx context.Context, marshal
 
 }
 
-func local_request_AnalyticsAdminService_DeleteKeyEvent_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteKeyEventRequest
+func local_request_AnalyticsAdminService_DeleteKeyEvent_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteKeyEventRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2790,8 +2789,8 @@ var (
 	filter_AnalyticsAdminService_ListKeyEvents_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListKeyEvents_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListKeyEventsRequest
+func request_AnalyticsAdminService_ListKeyEvents_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListKeyEventsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2823,8 +2822,8 @@ func request_AnalyticsAdminService_ListKeyEvents_0(ctx context.Context, marshale
 
 }
 
-func local_request_AnalyticsAdminService_ListKeyEvents_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListKeyEventsRequest
+func local_request_AnalyticsAdminService_ListKeyEvents_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListKeyEventsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2856,8 +2855,8 @@ func local_request_AnalyticsAdminService_ListKeyEvents_0(ctx context.Context, ma
 
 }
 
-func request_AnalyticsAdminService_GetDisplayVideo360AdvertiserLink_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetDisplayVideo360AdvertiserLinkRequest
+func request_AnalyticsAdminService_GetDisplayVideo360AdvertiserLink_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDisplayVideo360AdvertiserLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2882,8 +2881,8 @@ func request_AnalyticsAdminService_GetDisplayVideo360AdvertiserLink_0(ctx contex
 
 }
 
-func local_request_AnalyticsAdminService_GetDisplayVideo360AdvertiserLink_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetDisplayVideo360AdvertiserLinkRequest
+func local_request_AnalyticsAdminService_GetDisplayVideo360AdvertiserLink_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDisplayVideo360AdvertiserLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2912,8 +2911,8 @@ var (
 	filter_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinks_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinks_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListDisplayVideo360AdvertiserLinksRequest
+func request_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinks_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListDisplayVideo360AdvertiserLinksRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2945,8 +2944,8 @@ func request_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinks_0(ctx cont
 
 }
 
-func local_request_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinks_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListDisplayVideo360AdvertiserLinksRequest
+func local_request_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinks_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListDisplayVideo360AdvertiserLinksRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2978,8 +2977,8 @@ func local_request_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinks_0(ct
 
 }
 
-func request_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLink_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateDisplayVideo360AdvertiserLinkRequest
+func request_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLink_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateDisplayVideo360AdvertiserLinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -3012,8 +3011,8 @@ func request_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLink_0(ctx con
 
 }
 
-func local_request_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLink_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateDisplayVideo360AdvertiserLinkRequest
+func local_request_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLink_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateDisplayVideo360AdvertiserLinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -3046,8 +3045,8 @@ func local_request_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLink_0(c
 
 }
 
-func request_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLink_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteDisplayVideo360AdvertiserLinkRequest
+func request_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLink_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteDisplayVideo360AdvertiserLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -3072,8 +3071,8 @@ func request_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLink_0(ctx con
 
 }
 
-func local_request_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLink_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteDisplayVideo360AdvertiserLinkRequest
+func local_request_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLink_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteDisplayVideo360AdvertiserLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -3102,8 +3101,8 @@ var (
 	filter_AnalyticsAdminService_UpdateDisplayVideo360AdvertiserLink_0 = &utilities.DoubleArray{Encoding: map[string]int{"display_video_360_advertiser_link": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateDisplayVideo360AdvertiserLink_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateDisplayVideo360AdvertiserLinkRequest
+func request_AnalyticsAdminService_UpdateDisplayVideo360AdvertiserLink_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateDisplayVideo360AdvertiserLinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -3150,8 +3149,8 @@ func request_AnalyticsAdminService_UpdateDisplayVideo360AdvertiserLink_0(ctx con
 
 }
 
-func local_request_AnalyticsAdminService_UpdateDisplayVideo360AdvertiserLink_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateDisplayVideo360AdvertiserLinkRequest
+func local_request_AnalyticsAdminService_UpdateDisplayVideo360AdvertiserLink_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateDisplayVideo360AdvertiserLinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -3198,8 +3197,8 @@ func local_request_AnalyticsAdminService_UpdateDisplayVideo360AdvertiserLink_0(c
 
 }
 
-func request_AnalyticsAdminService_GetDisplayVideo360AdvertiserLinkProposal_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetDisplayVideo360AdvertiserLinkProposalRequest
+func request_AnalyticsAdminService_GetDisplayVideo360AdvertiserLinkProposal_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDisplayVideo360AdvertiserLinkProposalRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -3224,8 +3223,8 @@ func request_AnalyticsAdminService_GetDisplayVideo360AdvertiserLinkProposal_0(ct
 
 }
 
-func local_request_AnalyticsAdminService_GetDisplayVideo360AdvertiserLinkProposal_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetDisplayVideo360AdvertiserLinkProposalRequest
+func local_request_AnalyticsAdminService_GetDisplayVideo360AdvertiserLinkProposal_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDisplayVideo360AdvertiserLinkProposalRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -3254,8 +3253,8 @@ var (
 	filter_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinkProposals_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinkProposals_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListDisplayVideo360AdvertiserLinkProposalsRequest
+func request_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinkProposals_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListDisplayVideo360AdvertiserLinkProposalsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -3287,8 +3286,8 @@ func request_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinkProposals_0(
 
 }
 
-func local_request_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinkProposals_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListDisplayVideo360AdvertiserLinkProposalsRequest
+func local_request_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinkProposals_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListDisplayVideo360AdvertiserLinkProposalsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -3320,8 +3319,8 @@ func local_request_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinkPropos
 
 }
 
-func request_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLinkProposal_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateDisplayVideo360AdvertiserLinkProposalRequest
+func request_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLinkProposal_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateDisplayVideo360AdvertiserLinkProposalRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -3354,8 +3353,8 @@ func request_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLinkProposal_0
 
 }
 
-func local_request_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLinkProposal_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateDisplayVideo360AdvertiserLinkProposalRequest
+func local_request_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLinkProposal_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateDisplayVideo360AdvertiserLinkProposalRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -3388,8 +3387,8 @@ func local_request_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLinkProp
 
 }
 
-func request_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLinkProposal_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteDisplayVideo360AdvertiserLinkProposalRequest
+func request_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLinkProposal_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteDisplayVideo360AdvertiserLinkProposalRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -3414,8 +3413,8 @@ func request_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLinkProposal_0
 
 }
 
-func local_request_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLinkProposal_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteDisplayVideo360AdvertiserLinkProposalRequest
+func local_request_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLinkProposal_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteDisplayVideo360AdvertiserLinkProposalRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -3440,8 +3439,8 @@ func local_request_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLinkProp
 
 }
 
-func request_AnalyticsAdminService_ApproveDisplayVideo360AdvertiserLinkProposal_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ApproveDisplayVideo360AdvertiserLinkProposalRequest
+func request_AnalyticsAdminService_ApproveDisplayVideo360AdvertiserLinkProposal_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ApproveDisplayVideo360AdvertiserLinkProposalRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -3474,8 +3473,8 @@ func request_AnalyticsAdminService_ApproveDisplayVideo360AdvertiserLinkProposal_
 
 }
 
-func local_request_AnalyticsAdminService_ApproveDisplayVideo360AdvertiserLinkProposal_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ApproveDisplayVideo360AdvertiserLinkProposalRequest
+func local_request_AnalyticsAdminService_ApproveDisplayVideo360AdvertiserLinkProposal_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ApproveDisplayVideo360AdvertiserLinkProposalRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -3508,8 +3507,8 @@ func local_request_AnalyticsAdminService_ApproveDisplayVideo360AdvertiserLinkPro
 
 }
 
-func request_AnalyticsAdminService_CancelDisplayVideo360AdvertiserLinkProposal_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CancelDisplayVideo360AdvertiserLinkProposalRequest
+func request_AnalyticsAdminService_CancelDisplayVideo360AdvertiserLinkProposal_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CancelDisplayVideo360AdvertiserLinkProposalRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -3542,8 +3541,8 @@ func request_AnalyticsAdminService_CancelDisplayVideo360AdvertiserLinkProposal_0
 
 }
 
-func local_request_AnalyticsAdminService_CancelDisplayVideo360AdvertiserLinkProposal_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CancelDisplayVideo360AdvertiserLinkProposalRequest
+func local_request_AnalyticsAdminService_CancelDisplayVideo360AdvertiserLinkProposal_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CancelDisplayVideo360AdvertiserLinkProposalRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -3576,8 +3575,8 @@ func local_request_AnalyticsAdminService_CancelDisplayVideo360AdvertiserLinkProp
 
 }
 
-func request_AnalyticsAdminService_CreateCustomDimension_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateCustomDimensionRequest
+func request_AnalyticsAdminService_CreateCustomDimension_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateCustomDimensionRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -3610,8 +3609,8 @@ func request_AnalyticsAdminService_CreateCustomDimension_0(ctx context.Context, 
 
 }
 
-func local_request_AnalyticsAdminService_CreateCustomDimension_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateCustomDimensionRequest
+func local_request_AnalyticsAdminService_CreateCustomDimension_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateCustomDimensionRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -3648,8 +3647,8 @@ var (
 	filter_AnalyticsAdminService_UpdateCustomDimension_0 = &utilities.DoubleArray{Encoding: map[string]int{"custom_dimension": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateCustomDimension_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateCustomDimensionRequest
+func request_AnalyticsAdminService_UpdateCustomDimension_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateCustomDimensionRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -3696,8 +3695,8 @@ func request_AnalyticsAdminService_UpdateCustomDimension_0(ctx context.Context, 
 
 }
 
-func local_request_AnalyticsAdminService_UpdateCustomDimension_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateCustomDimensionRequest
+func local_request_AnalyticsAdminService_UpdateCustomDimension_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateCustomDimensionRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -3748,8 +3747,8 @@ var (
 	filter_AnalyticsAdminService_ListCustomDimensions_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListCustomDimensions_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListCustomDimensionsRequest
+func request_AnalyticsAdminService_ListCustomDimensions_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListCustomDimensionsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -3781,8 +3780,8 @@ func request_AnalyticsAdminService_ListCustomDimensions_0(ctx context.Context, m
 
 }
 
-func local_request_AnalyticsAdminService_ListCustomDimensions_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListCustomDimensionsRequest
+func local_request_AnalyticsAdminService_ListCustomDimensions_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListCustomDimensionsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -3814,8 +3813,8 @@ func local_request_AnalyticsAdminService_ListCustomDimensions_0(ctx context.Cont
 
 }
 
-func request_AnalyticsAdminService_ArchiveCustomDimension_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ArchiveCustomDimensionRequest
+func request_AnalyticsAdminService_ArchiveCustomDimension_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ArchiveCustomDimensionRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -3848,8 +3847,8 @@ func request_AnalyticsAdminService_ArchiveCustomDimension_0(ctx context.Context,
 
 }
 
-func local_request_AnalyticsAdminService_ArchiveCustomDimension_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ArchiveCustomDimensionRequest
+func local_request_AnalyticsAdminService_ArchiveCustomDimension_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ArchiveCustomDimensionRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -3882,8 +3881,8 @@ func local_request_AnalyticsAdminService_ArchiveCustomDimension_0(ctx context.Co
 
 }
 
-func request_AnalyticsAdminService_GetCustomDimension_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetCustomDimensionRequest
+func request_AnalyticsAdminService_GetCustomDimension_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetCustomDimensionRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -3908,8 +3907,8 @@ func request_AnalyticsAdminService_GetCustomDimension_0(ctx context.Context, mar
 
 }
 
-func local_request_AnalyticsAdminService_GetCustomDimension_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetCustomDimensionRequest
+func local_request_AnalyticsAdminService_GetCustomDimension_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetCustomDimensionRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -3934,8 +3933,8 @@ func local_request_AnalyticsAdminService_GetCustomDimension_0(ctx context.Contex
 
 }
 
-func request_AnalyticsAdminService_CreateCustomMetric_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateCustomMetricRequest
+func request_AnalyticsAdminService_CreateCustomMetric_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateCustomMetricRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -3968,8 +3967,8 @@ func request_AnalyticsAdminService_CreateCustomMetric_0(ctx context.Context, mar
 
 }
 
-func local_request_AnalyticsAdminService_CreateCustomMetric_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateCustomMetricRequest
+func local_request_AnalyticsAdminService_CreateCustomMetric_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateCustomMetricRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -4006,8 +4005,8 @@ var (
 	filter_AnalyticsAdminService_UpdateCustomMetric_0 = &utilities.DoubleArray{Encoding: map[string]int{"custom_metric": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateCustomMetric_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateCustomMetricRequest
+func request_AnalyticsAdminService_UpdateCustomMetric_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateCustomMetricRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -4054,8 +4053,8 @@ func request_AnalyticsAdminService_UpdateCustomMetric_0(ctx context.Context, mar
 
 }
 
-func local_request_AnalyticsAdminService_UpdateCustomMetric_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateCustomMetricRequest
+func local_request_AnalyticsAdminService_UpdateCustomMetric_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateCustomMetricRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -4106,8 +4105,8 @@ var (
 	filter_AnalyticsAdminService_ListCustomMetrics_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListCustomMetrics_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListCustomMetricsRequest
+func request_AnalyticsAdminService_ListCustomMetrics_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListCustomMetricsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -4139,8 +4138,8 @@ func request_AnalyticsAdminService_ListCustomMetrics_0(ctx context.Context, mars
 
 }
 
-func local_request_AnalyticsAdminService_ListCustomMetrics_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListCustomMetricsRequest
+func local_request_AnalyticsAdminService_ListCustomMetrics_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListCustomMetricsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -4172,8 +4171,8 @@ func local_request_AnalyticsAdminService_ListCustomMetrics_0(ctx context.Context
 
 }
 
-func request_AnalyticsAdminService_ArchiveCustomMetric_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ArchiveCustomMetricRequest
+func request_AnalyticsAdminService_ArchiveCustomMetric_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ArchiveCustomMetricRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -4206,8 +4205,8 @@ func request_AnalyticsAdminService_ArchiveCustomMetric_0(ctx context.Context, ma
 
 }
 
-func local_request_AnalyticsAdminService_ArchiveCustomMetric_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ArchiveCustomMetricRequest
+func local_request_AnalyticsAdminService_ArchiveCustomMetric_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ArchiveCustomMetricRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -4240,8 +4239,8 @@ func local_request_AnalyticsAdminService_ArchiveCustomMetric_0(ctx context.Conte
 
 }
 
-func request_AnalyticsAdminService_GetCustomMetric_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetCustomMetricRequest
+func request_AnalyticsAdminService_GetCustomMetric_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetCustomMetricRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -4266,8 +4265,8 @@ func request_AnalyticsAdminService_GetCustomMetric_0(ctx context.Context, marsha
 
 }
 
-func local_request_AnalyticsAdminService_GetCustomMetric_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetCustomMetricRequest
+func local_request_AnalyticsAdminService_GetCustomMetric_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetCustomMetricRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -4292,8 +4291,8 @@ func local_request_AnalyticsAdminService_GetCustomMetric_0(ctx context.Context, 
 
 }
 
-func request_AnalyticsAdminService_GetDataRetentionSettings_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetDataRetentionSettingsRequest
+func request_AnalyticsAdminService_GetDataRetentionSettings_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDataRetentionSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -4318,8 +4317,8 @@ func request_AnalyticsAdminService_GetDataRetentionSettings_0(ctx context.Contex
 
 }
 
-func local_request_AnalyticsAdminService_GetDataRetentionSettings_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetDataRetentionSettingsRequest
+func local_request_AnalyticsAdminService_GetDataRetentionSettings_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDataRetentionSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -4348,8 +4347,8 @@ var (
 	filter_AnalyticsAdminService_UpdateDataRetentionSettings_0 = &utilities.DoubleArray{Encoding: map[string]int{"data_retention_settings": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateDataRetentionSettings_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateDataRetentionSettingsRequest
+func request_AnalyticsAdminService_UpdateDataRetentionSettings_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateDataRetentionSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -4396,8 +4395,8 @@ func request_AnalyticsAdminService_UpdateDataRetentionSettings_0(ctx context.Con
 
 }
 
-func local_request_AnalyticsAdminService_UpdateDataRetentionSettings_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateDataRetentionSettingsRequest
+func local_request_AnalyticsAdminService_UpdateDataRetentionSettings_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateDataRetentionSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -4444,8 +4443,8 @@ func local_request_AnalyticsAdminService_UpdateDataRetentionSettings_0(ctx conte
 
 }
 
-func request_AnalyticsAdminService_CreateDataStream_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateDataStreamRequest
+func request_AnalyticsAdminService_CreateDataStream_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateDataStreamRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -4478,8 +4477,8 @@ func request_AnalyticsAdminService_CreateDataStream_0(ctx context.Context, marsh
 
 }
 
-func local_request_AnalyticsAdminService_CreateDataStream_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateDataStreamRequest
+func local_request_AnalyticsAdminService_CreateDataStream_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateDataStreamRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -4512,8 +4511,8 @@ func local_request_AnalyticsAdminService_CreateDataStream_0(ctx context.Context,
 
 }
 
-func request_AnalyticsAdminService_DeleteDataStream_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteDataStreamRequest
+func request_AnalyticsAdminService_DeleteDataStream_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteDataStreamRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -4538,8 +4537,8 @@ func request_AnalyticsAdminService_DeleteDataStream_0(ctx context.Context, marsh
 
 }
 
-func local_request_AnalyticsAdminService_DeleteDataStream_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteDataStreamRequest
+func local_request_AnalyticsAdminService_DeleteDataStream_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteDataStreamRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -4568,8 +4567,8 @@ var (
 	filter_AnalyticsAdminService_UpdateDataStream_0 = &utilities.DoubleArray{Encoding: map[string]int{"data_stream": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateDataStream_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateDataStreamRequest
+func request_AnalyticsAdminService_UpdateDataStream_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateDataStreamRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -4616,8 +4615,8 @@ func request_AnalyticsAdminService_UpdateDataStream_0(ctx context.Context, marsh
 
 }
 
-func local_request_AnalyticsAdminService_UpdateDataStream_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateDataStreamRequest
+func local_request_AnalyticsAdminService_UpdateDataStream_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateDataStreamRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -4668,8 +4667,8 @@ var (
 	filter_AnalyticsAdminService_ListDataStreams_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListDataStreams_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListDataStreamsRequest
+func request_AnalyticsAdminService_ListDataStreams_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListDataStreamsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -4701,8 +4700,8 @@ func request_AnalyticsAdminService_ListDataStreams_0(ctx context.Context, marsha
 
 }
 
-func local_request_AnalyticsAdminService_ListDataStreams_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListDataStreamsRequest
+func local_request_AnalyticsAdminService_ListDataStreams_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListDataStreamsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -4734,8 +4733,8 @@ func local_request_AnalyticsAdminService_ListDataStreams_0(ctx context.Context, 
 
 }
 
-func request_AnalyticsAdminService_GetDataStream_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetDataStreamRequest
+func request_AnalyticsAdminService_GetDataStream_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDataStreamRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -4760,8 +4759,8 @@ func request_AnalyticsAdminService_GetDataStream_0(ctx context.Context, marshale
 
 }
 
-func local_request_AnalyticsAdminService_GetDataStream_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetDataStreamRequest
+func local_request_AnalyticsAdminService_GetDataStream_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDataStreamRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -4786,8 +4785,8 @@ func local_request_AnalyticsAdminService_GetDataStream_0(ctx context.Context, ma
 
 }
 
-func request_AnalyticsAdminService_GetAudience_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetAudienceRequest
+func request_AnalyticsAdminService_GetAudience_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetAudienceRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -4812,8 +4811,8 @@ func request_AnalyticsAdminService_GetAudience_0(ctx context.Context, marshaler 
 
 }
 
-func local_request_AnalyticsAdminService_GetAudience_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetAudienceRequest
+func local_request_AnalyticsAdminService_GetAudience_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetAudienceRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -4842,8 +4841,8 @@ var (
 	filter_AnalyticsAdminService_ListAudiences_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListAudiences_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListAudiencesRequest
+func request_AnalyticsAdminService_ListAudiences_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListAudiencesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -4875,8 +4874,8 @@ func request_AnalyticsAdminService_ListAudiences_0(ctx context.Context, marshale
 
 }
 
-func local_request_AnalyticsAdminService_ListAudiences_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListAudiencesRequest
+func local_request_AnalyticsAdminService_ListAudiences_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListAudiencesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -4908,8 +4907,8 @@ func local_request_AnalyticsAdminService_ListAudiences_0(ctx context.Context, ma
 
 }
 
-func request_AnalyticsAdminService_CreateAudience_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateAudienceRequest
+func request_AnalyticsAdminService_CreateAudience_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateAudienceRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -4942,8 +4941,8 @@ func request_AnalyticsAdminService_CreateAudience_0(ctx context.Context, marshal
 
 }
 
-func local_request_AnalyticsAdminService_CreateAudience_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateAudienceRequest
+func local_request_AnalyticsAdminService_CreateAudience_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateAudienceRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -4980,8 +4979,8 @@ var (
 	filter_AnalyticsAdminService_UpdateAudience_0 = &utilities.DoubleArray{Encoding: map[string]int{"audience": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateAudience_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateAudienceRequest
+func request_AnalyticsAdminService_UpdateAudience_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateAudienceRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -5028,8 +5027,8 @@ func request_AnalyticsAdminService_UpdateAudience_0(ctx context.Context, marshal
 
 }
 
-func local_request_AnalyticsAdminService_UpdateAudience_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateAudienceRequest
+func local_request_AnalyticsAdminService_UpdateAudience_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateAudienceRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -5076,8 +5075,8 @@ func local_request_AnalyticsAdminService_UpdateAudience_0(ctx context.Context, m
 
 }
 
-func request_AnalyticsAdminService_ArchiveAudience_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ArchiveAudienceRequest
+func request_AnalyticsAdminService_ArchiveAudience_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ArchiveAudienceRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -5110,8 +5109,8 @@ func request_AnalyticsAdminService_ArchiveAudience_0(ctx context.Context, marsha
 
 }
 
-func local_request_AnalyticsAdminService_ArchiveAudience_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ArchiveAudienceRequest
+func local_request_AnalyticsAdminService_ArchiveAudience_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ArchiveAudienceRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -5144,8 +5143,8 @@ func local_request_AnalyticsAdminService_ArchiveAudience_0(ctx context.Context, 
 
 }
 
-func request_AnalyticsAdminService_GetSearchAds360Link_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetSearchAds360LinkRequest
+func request_AnalyticsAdminService_GetSearchAds360Link_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetSearchAds360LinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -5170,8 +5169,8 @@ func request_AnalyticsAdminService_GetSearchAds360Link_0(ctx context.Context, ma
 
 }
 
-func local_request_AnalyticsAdminService_GetSearchAds360Link_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetSearchAds360LinkRequest
+func local_request_AnalyticsAdminService_GetSearchAds360Link_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetSearchAds360LinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -5200,8 +5199,8 @@ var (
 	filter_AnalyticsAdminService_ListSearchAds360Links_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListSearchAds360Links_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListSearchAds360LinksRequest
+func request_AnalyticsAdminService_ListSearchAds360Links_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListSearchAds360LinksRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -5233,8 +5232,8 @@ func request_AnalyticsAdminService_ListSearchAds360Links_0(ctx context.Context, 
 
 }
 
-func local_request_AnalyticsAdminService_ListSearchAds360Links_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListSearchAds360LinksRequest
+func local_request_AnalyticsAdminService_ListSearchAds360Links_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListSearchAds360LinksRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -5266,8 +5265,8 @@ func local_request_AnalyticsAdminService_ListSearchAds360Links_0(ctx context.Con
 
 }
 
-func request_AnalyticsAdminService_CreateSearchAds360Link_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateSearchAds360LinkRequest
+func request_AnalyticsAdminService_CreateSearchAds360Link_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateSearchAds360LinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -5300,8 +5299,8 @@ func request_AnalyticsAdminService_CreateSearchAds360Link_0(ctx context.Context,
 
 }
 
-func local_request_AnalyticsAdminService_CreateSearchAds360Link_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateSearchAds360LinkRequest
+func local_request_AnalyticsAdminService_CreateSearchAds360Link_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateSearchAds360LinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -5334,8 +5333,8 @@ func local_request_AnalyticsAdminService_CreateSearchAds360Link_0(ctx context.Co
 
 }
 
-func request_AnalyticsAdminService_DeleteSearchAds360Link_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteSearchAds360LinkRequest
+func request_AnalyticsAdminService_DeleteSearchAds360Link_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteSearchAds360LinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -5360,8 +5359,8 @@ func request_AnalyticsAdminService_DeleteSearchAds360Link_0(ctx context.Context,
 
 }
 
-func local_request_AnalyticsAdminService_DeleteSearchAds360Link_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteSearchAds360LinkRequest
+func local_request_AnalyticsAdminService_DeleteSearchAds360Link_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteSearchAds360LinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -5390,8 +5389,8 @@ var (
 	filter_AnalyticsAdminService_UpdateSearchAds360Link_0 = &utilities.DoubleArray{Encoding: map[string]int{"search_ads_360_link": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateSearchAds360Link_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateSearchAds360LinkRequest
+func request_AnalyticsAdminService_UpdateSearchAds360Link_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateSearchAds360LinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -5438,8 +5437,8 @@ func request_AnalyticsAdminService_UpdateSearchAds360Link_0(ctx context.Context,
 
 }
 
-func local_request_AnalyticsAdminService_UpdateSearchAds360Link_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateSearchAds360LinkRequest
+func local_request_AnalyticsAdminService_UpdateSearchAds360Link_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateSearchAds360LinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -5486,8 +5485,8 @@ func local_request_AnalyticsAdminService_UpdateSearchAds360Link_0(ctx context.Co
 
 }
 
-func request_AnalyticsAdminService_GetAttributionSettings_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetAttributionSettingsRequest
+func request_AnalyticsAdminService_GetAttributionSettings_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetAttributionSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -5512,8 +5511,8 @@ func request_AnalyticsAdminService_GetAttributionSettings_0(ctx context.Context,
 
 }
 
-func local_request_AnalyticsAdminService_GetAttributionSettings_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetAttributionSettingsRequest
+func local_request_AnalyticsAdminService_GetAttributionSettings_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetAttributionSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -5542,8 +5541,8 @@ var (
 	filter_AnalyticsAdminService_UpdateAttributionSettings_0 = &utilities.DoubleArray{Encoding: map[string]int{"attribution_settings": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateAttributionSettings_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateAttributionSettingsRequest
+func request_AnalyticsAdminService_UpdateAttributionSettings_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateAttributionSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -5590,8 +5589,8 @@ func request_AnalyticsAdminService_UpdateAttributionSettings_0(ctx context.Conte
 
 }
 
-func local_request_AnalyticsAdminService_UpdateAttributionSettings_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateAttributionSettingsRequest
+func local_request_AnalyticsAdminService_UpdateAttributionSettings_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateAttributionSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -5638,8 +5637,8 @@ func local_request_AnalyticsAdminService_UpdateAttributionSettings_0(ctx context
 
 }
 
-func request_AnalyticsAdminService_RunAccessReport_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.RunAccessReportRequest
+func request_AnalyticsAdminService_RunAccessReport_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq RunAccessReportRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -5672,8 +5671,8 @@ func request_AnalyticsAdminService_RunAccessReport_0(ctx context.Context, marsha
 
 }
 
-func local_request_AnalyticsAdminService_RunAccessReport_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.RunAccessReportRequest
+func local_request_AnalyticsAdminService_RunAccessReport_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq RunAccessReportRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -5706,8 +5705,8 @@ func local_request_AnalyticsAdminService_RunAccessReport_0(ctx context.Context, 
 
 }
 
-func request_AnalyticsAdminService_RunAccessReport_1(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.RunAccessReportRequest
+func request_AnalyticsAdminService_RunAccessReport_1(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq RunAccessReportRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -5740,8 +5739,8 @@ func request_AnalyticsAdminService_RunAccessReport_1(ctx context.Context, marsha
 
 }
 
-func local_request_AnalyticsAdminService_RunAccessReport_1(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.RunAccessReportRequest
+func local_request_AnalyticsAdminService_RunAccessReport_1(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq RunAccessReportRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -5774,8 +5773,8 @@ func local_request_AnalyticsAdminService_RunAccessReport_1(ctx context.Context, 
 
 }
 
-func request_AnalyticsAdminService_CreateAccessBinding_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateAccessBindingRequest
+func request_AnalyticsAdminService_CreateAccessBinding_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateAccessBindingRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -5808,8 +5807,8 @@ func request_AnalyticsAdminService_CreateAccessBinding_0(ctx context.Context, ma
 
 }
 
-func local_request_AnalyticsAdminService_CreateAccessBinding_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateAccessBindingRequest
+func local_request_AnalyticsAdminService_CreateAccessBinding_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateAccessBindingRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -5842,8 +5841,8 @@ func local_request_AnalyticsAdminService_CreateAccessBinding_0(ctx context.Conte
 
 }
 
-func request_AnalyticsAdminService_CreateAccessBinding_1(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateAccessBindingRequest
+func request_AnalyticsAdminService_CreateAccessBinding_1(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateAccessBindingRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -5876,8 +5875,8 @@ func request_AnalyticsAdminService_CreateAccessBinding_1(ctx context.Context, ma
 
 }
 
-func local_request_AnalyticsAdminService_CreateAccessBinding_1(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateAccessBindingRequest
+func local_request_AnalyticsAdminService_CreateAccessBinding_1(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateAccessBindingRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -5910,8 +5909,8 @@ func local_request_AnalyticsAdminService_CreateAccessBinding_1(ctx context.Conte
 
 }
 
-func request_AnalyticsAdminService_GetAccessBinding_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetAccessBindingRequest
+func request_AnalyticsAdminService_GetAccessBinding_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetAccessBindingRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -5936,8 +5935,8 @@ func request_AnalyticsAdminService_GetAccessBinding_0(ctx context.Context, marsh
 
 }
 
-func local_request_AnalyticsAdminService_GetAccessBinding_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetAccessBindingRequest
+func local_request_AnalyticsAdminService_GetAccessBinding_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetAccessBindingRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -5962,8 +5961,8 @@ func local_request_AnalyticsAdminService_GetAccessBinding_0(ctx context.Context,
 
 }
 
-func request_AnalyticsAdminService_GetAccessBinding_1(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetAccessBindingRequest
+func request_AnalyticsAdminService_GetAccessBinding_1(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetAccessBindingRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -5988,8 +5987,8 @@ func request_AnalyticsAdminService_GetAccessBinding_1(ctx context.Context, marsh
 
 }
 
-func local_request_AnalyticsAdminService_GetAccessBinding_1(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetAccessBindingRequest
+func local_request_AnalyticsAdminService_GetAccessBinding_1(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetAccessBindingRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -6014,8 +6013,8 @@ func local_request_AnalyticsAdminService_GetAccessBinding_1(ctx context.Context,
 
 }
 
-func request_AnalyticsAdminService_UpdateAccessBinding_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateAccessBindingRequest
+func request_AnalyticsAdminService_UpdateAccessBinding_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateAccessBindingRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -6048,8 +6047,8 @@ func request_AnalyticsAdminService_UpdateAccessBinding_0(ctx context.Context, ma
 
 }
 
-func local_request_AnalyticsAdminService_UpdateAccessBinding_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateAccessBindingRequest
+func local_request_AnalyticsAdminService_UpdateAccessBinding_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateAccessBindingRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -6082,8 +6081,8 @@ func local_request_AnalyticsAdminService_UpdateAccessBinding_0(ctx context.Conte
 
 }
 
-func request_AnalyticsAdminService_UpdateAccessBinding_1(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateAccessBindingRequest
+func request_AnalyticsAdminService_UpdateAccessBinding_1(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateAccessBindingRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -6116,8 +6115,8 @@ func request_AnalyticsAdminService_UpdateAccessBinding_1(ctx context.Context, ma
 
 }
 
-func local_request_AnalyticsAdminService_UpdateAccessBinding_1(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateAccessBindingRequest
+func local_request_AnalyticsAdminService_UpdateAccessBinding_1(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateAccessBindingRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -6150,8 +6149,8 @@ func local_request_AnalyticsAdminService_UpdateAccessBinding_1(ctx context.Conte
 
 }
 
-func request_AnalyticsAdminService_DeleteAccessBinding_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteAccessBindingRequest
+func request_AnalyticsAdminService_DeleteAccessBinding_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteAccessBindingRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -6176,8 +6175,8 @@ func request_AnalyticsAdminService_DeleteAccessBinding_0(ctx context.Context, ma
 
 }
 
-func local_request_AnalyticsAdminService_DeleteAccessBinding_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteAccessBindingRequest
+func local_request_AnalyticsAdminService_DeleteAccessBinding_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteAccessBindingRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -6202,8 +6201,8 @@ func local_request_AnalyticsAdminService_DeleteAccessBinding_0(ctx context.Conte
 
 }
 
-func request_AnalyticsAdminService_DeleteAccessBinding_1(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteAccessBindingRequest
+func request_AnalyticsAdminService_DeleteAccessBinding_1(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteAccessBindingRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -6228,8 +6227,8 @@ func request_AnalyticsAdminService_DeleteAccessBinding_1(ctx context.Context, ma
 
 }
 
-func local_request_AnalyticsAdminService_DeleteAccessBinding_1(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteAccessBindingRequest
+func local_request_AnalyticsAdminService_DeleteAccessBinding_1(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteAccessBindingRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -6258,8 +6257,8 @@ var (
 	filter_AnalyticsAdminService_ListAccessBindings_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListAccessBindings_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListAccessBindingsRequest
+func request_AnalyticsAdminService_ListAccessBindings_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListAccessBindingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -6291,8 +6290,8 @@ func request_AnalyticsAdminService_ListAccessBindings_0(ctx context.Context, mar
 
 }
 
-func local_request_AnalyticsAdminService_ListAccessBindings_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListAccessBindingsRequest
+func local_request_AnalyticsAdminService_ListAccessBindings_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListAccessBindingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -6328,8 +6327,8 @@ var (
 	filter_AnalyticsAdminService_ListAccessBindings_1 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListAccessBindings_1(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListAccessBindingsRequest
+func request_AnalyticsAdminService_ListAccessBindings_1(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListAccessBindingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -6361,8 +6360,8 @@ func request_AnalyticsAdminService_ListAccessBindings_1(ctx context.Context, mar
 
 }
 
-func local_request_AnalyticsAdminService_ListAccessBindings_1(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListAccessBindingsRequest
+func local_request_AnalyticsAdminService_ListAccessBindings_1(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListAccessBindingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -6394,8 +6393,8 @@ func local_request_AnalyticsAdminService_ListAccessBindings_1(ctx context.Contex
 
 }
 
-func request_AnalyticsAdminService_BatchCreateAccessBindings_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.BatchCreateAccessBindingsRequest
+func request_AnalyticsAdminService_BatchCreateAccessBindings_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq BatchCreateAccessBindingsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -6428,8 +6427,8 @@ func request_AnalyticsAdminService_BatchCreateAccessBindings_0(ctx context.Conte
 
 }
 
-func local_request_AnalyticsAdminService_BatchCreateAccessBindings_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.BatchCreateAccessBindingsRequest
+func local_request_AnalyticsAdminService_BatchCreateAccessBindings_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq BatchCreateAccessBindingsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -6462,8 +6461,8 @@ func local_request_AnalyticsAdminService_BatchCreateAccessBindings_0(ctx context
 
 }
 
-func request_AnalyticsAdminService_BatchCreateAccessBindings_1(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.BatchCreateAccessBindingsRequest
+func request_AnalyticsAdminService_BatchCreateAccessBindings_1(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq BatchCreateAccessBindingsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -6496,8 +6495,8 @@ func request_AnalyticsAdminService_BatchCreateAccessBindings_1(ctx context.Conte
 
 }
 
-func local_request_AnalyticsAdminService_BatchCreateAccessBindings_1(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.BatchCreateAccessBindingsRequest
+func local_request_AnalyticsAdminService_BatchCreateAccessBindings_1(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq BatchCreateAccessBindingsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -6534,8 +6533,8 @@ var (
 	filter_AnalyticsAdminService_BatchGetAccessBindings_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_BatchGetAccessBindings_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.BatchGetAccessBindingsRequest
+func request_AnalyticsAdminService_BatchGetAccessBindings_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq BatchGetAccessBindingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -6567,8 +6566,8 @@ func request_AnalyticsAdminService_BatchGetAccessBindings_0(ctx context.Context,
 
 }
 
-func local_request_AnalyticsAdminService_BatchGetAccessBindings_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.BatchGetAccessBindingsRequest
+func local_request_AnalyticsAdminService_BatchGetAccessBindings_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq BatchGetAccessBindingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -6604,8 +6603,8 @@ var (
 	filter_AnalyticsAdminService_BatchGetAccessBindings_1 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_BatchGetAccessBindings_1(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.BatchGetAccessBindingsRequest
+func request_AnalyticsAdminService_BatchGetAccessBindings_1(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq BatchGetAccessBindingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -6637,8 +6636,8 @@ func request_AnalyticsAdminService_BatchGetAccessBindings_1(ctx context.Context,
 
 }
 
-func local_request_AnalyticsAdminService_BatchGetAccessBindings_1(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.BatchGetAccessBindingsRequest
+func local_request_AnalyticsAdminService_BatchGetAccessBindings_1(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq BatchGetAccessBindingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -6670,8 +6669,8 @@ func local_request_AnalyticsAdminService_BatchGetAccessBindings_1(ctx context.Co
 
 }
 
-func request_AnalyticsAdminService_BatchUpdateAccessBindings_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.BatchUpdateAccessBindingsRequest
+func request_AnalyticsAdminService_BatchUpdateAccessBindings_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq BatchUpdateAccessBindingsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -6704,8 +6703,8 @@ func request_AnalyticsAdminService_BatchUpdateAccessBindings_0(ctx context.Conte
 
 }
 
-func local_request_AnalyticsAdminService_BatchUpdateAccessBindings_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.BatchUpdateAccessBindingsRequest
+func local_request_AnalyticsAdminService_BatchUpdateAccessBindings_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq BatchUpdateAccessBindingsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -6738,8 +6737,8 @@ func local_request_AnalyticsAdminService_BatchUpdateAccessBindings_0(ctx context
 
 }
 
-func request_AnalyticsAdminService_BatchUpdateAccessBindings_1(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.BatchUpdateAccessBindingsRequest
+func request_AnalyticsAdminService_BatchUpdateAccessBindings_1(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq BatchUpdateAccessBindingsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -6772,8 +6771,8 @@ func request_AnalyticsAdminService_BatchUpdateAccessBindings_1(ctx context.Conte
 
 }
 
-func local_request_AnalyticsAdminService_BatchUpdateAccessBindings_1(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.BatchUpdateAccessBindingsRequest
+func local_request_AnalyticsAdminService_BatchUpdateAccessBindings_1(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq BatchUpdateAccessBindingsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -6806,8 +6805,8 @@ func local_request_AnalyticsAdminService_BatchUpdateAccessBindings_1(ctx context
 
 }
 
-func request_AnalyticsAdminService_BatchDeleteAccessBindings_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.BatchDeleteAccessBindingsRequest
+func request_AnalyticsAdminService_BatchDeleteAccessBindings_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq BatchDeleteAccessBindingsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -6840,8 +6839,8 @@ func request_AnalyticsAdminService_BatchDeleteAccessBindings_0(ctx context.Conte
 
 }
 
-func local_request_AnalyticsAdminService_BatchDeleteAccessBindings_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.BatchDeleteAccessBindingsRequest
+func local_request_AnalyticsAdminService_BatchDeleteAccessBindings_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq BatchDeleteAccessBindingsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -6874,8 +6873,8 @@ func local_request_AnalyticsAdminService_BatchDeleteAccessBindings_0(ctx context
 
 }
 
-func request_AnalyticsAdminService_BatchDeleteAccessBindings_1(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.BatchDeleteAccessBindingsRequest
+func request_AnalyticsAdminService_BatchDeleteAccessBindings_1(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq BatchDeleteAccessBindingsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -6908,8 +6907,8 @@ func request_AnalyticsAdminService_BatchDeleteAccessBindings_1(ctx context.Conte
 
 }
 
-func local_request_AnalyticsAdminService_BatchDeleteAccessBindings_1(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.BatchDeleteAccessBindingsRequest
+func local_request_AnalyticsAdminService_BatchDeleteAccessBindings_1(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq BatchDeleteAccessBindingsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -6942,8 +6941,8 @@ func local_request_AnalyticsAdminService_BatchDeleteAccessBindings_1(ctx context
 
 }
 
-func request_AnalyticsAdminService_GetExpandedDataSet_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetExpandedDataSetRequest
+func request_AnalyticsAdminService_GetExpandedDataSet_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetExpandedDataSetRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -6968,8 +6967,8 @@ func request_AnalyticsAdminService_GetExpandedDataSet_0(ctx context.Context, mar
 
 }
 
-func local_request_AnalyticsAdminService_GetExpandedDataSet_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetExpandedDataSetRequest
+func local_request_AnalyticsAdminService_GetExpandedDataSet_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetExpandedDataSetRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -6998,8 +6997,8 @@ var (
 	filter_AnalyticsAdminService_ListExpandedDataSets_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListExpandedDataSets_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListExpandedDataSetsRequest
+func request_AnalyticsAdminService_ListExpandedDataSets_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListExpandedDataSetsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -7031,8 +7030,8 @@ func request_AnalyticsAdminService_ListExpandedDataSets_0(ctx context.Context, m
 
 }
 
-func local_request_AnalyticsAdminService_ListExpandedDataSets_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListExpandedDataSetsRequest
+func local_request_AnalyticsAdminService_ListExpandedDataSets_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListExpandedDataSetsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -7064,8 +7063,8 @@ func local_request_AnalyticsAdminService_ListExpandedDataSets_0(ctx context.Cont
 
 }
 
-func request_AnalyticsAdminService_CreateExpandedDataSet_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateExpandedDataSetRequest
+func request_AnalyticsAdminService_CreateExpandedDataSet_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateExpandedDataSetRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -7098,8 +7097,8 @@ func request_AnalyticsAdminService_CreateExpandedDataSet_0(ctx context.Context, 
 
 }
 
-func local_request_AnalyticsAdminService_CreateExpandedDataSet_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateExpandedDataSetRequest
+func local_request_AnalyticsAdminService_CreateExpandedDataSet_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateExpandedDataSetRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -7136,8 +7135,8 @@ var (
 	filter_AnalyticsAdminService_UpdateExpandedDataSet_0 = &utilities.DoubleArray{Encoding: map[string]int{"expanded_data_set": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateExpandedDataSet_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateExpandedDataSetRequest
+func request_AnalyticsAdminService_UpdateExpandedDataSet_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateExpandedDataSetRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -7184,8 +7183,8 @@ func request_AnalyticsAdminService_UpdateExpandedDataSet_0(ctx context.Context, 
 
 }
 
-func local_request_AnalyticsAdminService_UpdateExpandedDataSet_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateExpandedDataSetRequest
+func local_request_AnalyticsAdminService_UpdateExpandedDataSet_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateExpandedDataSetRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -7232,8 +7231,8 @@ func local_request_AnalyticsAdminService_UpdateExpandedDataSet_0(ctx context.Con
 
 }
 
-func request_AnalyticsAdminService_DeleteExpandedDataSet_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteExpandedDataSetRequest
+func request_AnalyticsAdminService_DeleteExpandedDataSet_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteExpandedDataSetRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -7258,8 +7257,8 @@ func request_AnalyticsAdminService_DeleteExpandedDataSet_0(ctx context.Context, 
 
 }
 
-func local_request_AnalyticsAdminService_DeleteExpandedDataSet_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteExpandedDataSetRequest
+func local_request_AnalyticsAdminService_DeleteExpandedDataSet_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteExpandedDataSetRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -7284,8 +7283,8 @@ func local_request_AnalyticsAdminService_DeleteExpandedDataSet_0(ctx context.Con
 
 }
 
-func request_AnalyticsAdminService_GetChannelGroup_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetChannelGroupRequest
+func request_AnalyticsAdminService_GetChannelGroup_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetChannelGroupRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -7310,8 +7309,8 @@ func request_AnalyticsAdminService_GetChannelGroup_0(ctx context.Context, marsha
 
 }
 
-func local_request_AnalyticsAdminService_GetChannelGroup_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetChannelGroupRequest
+func local_request_AnalyticsAdminService_GetChannelGroup_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetChannelGroupRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -7340,8 +7339,8 @@ var (
 	filter_AnalyticsAdminService_ListChannelGroups_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListChannelGroups_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListChannelGroupsRequest
+func request_AnalyticsAdminService_ListChannelGroups_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListChannelGroupsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -7373,8 +7372,8 @@ func request_AnalyticsAdminService_ListChannelGroups_0(ctx context.Context, mars
 
 }
 
-func local_request_AnalyticsAdminService_ListChannelGroups_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListChannelGroupsRequest
+func local_request_AnalyticsAdminService_ListChannelGroups_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListChannelGroupsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -7406,8 +7405,8 @@ func local_request_AnalyticsAdminService_ListChannelGroups_0(ctx context.Context
 
 }
 
-func request_AnalyticsAdminService_CreateChannelGroup_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateChannelGroupRequest
+func request_AnalyticsAdminService_CreateChannelGroup_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateChannelGroupRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -7440,8 +7439,8 @@ func request_AnalyticsAdminService_CreateChannelGroup_0(ctx context.Context, mar
 
 }
 
-func local_request_AnalyticsAdminService_CreateChannelGroup_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateChannelGroupRequest
+func local_request_AnalyticsAdminService_CreateChannelGroup_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateChannelGroupRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -7478,8 +7477,8 @@ var (
 	filter_AnalyticsAdminService_UpdateChannelGroup_0 = &utilities.DoubleArray{Encoding: map[string]int{"channel_group": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateChannelGroup_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateChannelGroupRequest
+func request_AnalyticsAdminService_UpdateChannelGroup_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateChannelGroupRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -7526,8 +7525,8 @@ func request_AnalyticsAdminService_UpdateChannelGroup_0(ctx context.Context, mar
 
 }
 
-func local_request_AnalyticsAdminService_UpdateChannelGroup_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateChannelGroupRequest
+func local_request_AnalyticsAdminService_UpdateChannelGroup_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateChannelGroupRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -7574,8 +7573,8 @@ func local_request_AnalyticsAdminService_UpdateChannelGroup_0(ctx context.Contex
 
 }
 
-func request_AnalyticsAdminService_DeleteChannelGroup_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteChannelGroupRequest
+func request_AnalyticsAdminService_DeleteChannelGroup_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteChannelGroupRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -7600,8 +7599,8 @@ func request_AnalyticsAdminService_DeleteChannelGroup_0(ctx context.Context, mar
 
 }
 
-func local_request_AnalyticsAdminService_DeleteChannelGroup_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteChannelGroupRequest
+func local_request_AnalyticsAdminService_DeleteChannelGroup_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteChannelGroupRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -7626,8 +7625,8 @@ func local_request_AnalyticsAdminService_DeleteChannelGroup_0(ctx context.Contex
 
 }
 
-func request_AnalyticsAdminService_CreateBigQueryLink_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateBigQueryLinkRequest
+func request_AnalyticsAdminService_CreateBigQueryLink_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateBigQueryLinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -7660,8 +7659,8 @@ func request_AnalyticsAdminService_CreateBigQueryLink_0(ctx context.Context, mar
 
 }
 
-func local_request_AnalyticsAdminService_CreateBigQueryLink_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateBigQueryLinkRequest
+func local_request_AnalyticsAdminService_CreateBigQueryLink_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateBigQueryLinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -7694,8 +7693,8 @@ func local_request_AnalyticsAdminService_CreateBigQueryLink_0(ctx context.Contex
 
 }
 
-func request_AnalyticsAdminService_GetBigQueryLink_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetBigQueryLinkRequest
+func request_AnalyticsAdminService_GetBigQueryLink_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetBigQueryLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -7720,8 +7719,8 @@ func request_AnalyticsAdminService_GetBigQueryLink_0(ctx context.Context, marsha
 
 }
 
-func local_request_AnalyticsAdminService_GetBigQueryLink_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetBigQueryLinkRequest
+func local_request_AnalyticsAdminService_GetBigQueryLink_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetBigQueryLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -7750,8 +7749,8 @@ var (
 	filter_AnalyticsAdminService_ListBigQueryLinks_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListBigQueryLinks_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListBigQueryLinksRequest
+func request_AnalyticsAdminService_ListBigQueryLinks_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListBigQueryLinksRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -7783,8 +7782,8 @@ func request_AnalyticsAdminService_ListBigQueryLinks_0(ctx context.Context, mars
 
 }
 
-func local_request_AnalyticsAdminService_ListBigQueryLinks_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListBigQueryLinksRequest
+func local_request_AnalyticsAdminService_ListBigQueryLinks_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListBigQueryLinksRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -7816,8 +7815,8 @@ func local_request_AnalyticsAdminService_ListBigQueryLinks_0(ctx context.Context
 
 }
 
-func request_AnalyticsAdminService_DeleteBigQueryLink_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteBigQueryLinkRequest
+func request_AnalyticsAdminService_DeleteBigQueryLink_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteBigQueryLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -7842,8 +7841,8 @@ func request_AnalyticsAdminService_DeleteBigQueryLink_0(ctx context.Context, mar
 
 }
 
-func local_request_AnalyticsAdminService_DeleteBigQueryLink_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteBigQueryLinkRequest
+func local_request_AnalyticsAdminService_DeleteBigQueryLink_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteBigQueryLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -7872,8 +7871,8 @@ var (
 	filter_AnalyticsAdminService_UpdateBigQueryLink_0 = &utilities.DoubleArray{Encoding: map[string]int{"bigquery_link": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateBigQueryLink_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateBigQueryLinkRequest
+func request_AnalyticsAdminService_UpdateBigQueryLink_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateBigQueryLinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -7920,8 +7919,8 @@ func request_AnalyticsAdminService_UpdateBigQueryLink_0(ctx context.Context, mar
 
 }
 
-func local_request_AnalyticsAdminService_UpdateBigQueryLink_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateBigQueryLinkRequest
+func local_request_AnalyticsAdminService_UpdateBigQueryLink_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateBigQueryLinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -7968,8 +7967,8 @@ func local_request_AnalyticsAdminService_UpdateBigQueryLink_0(ctx context.Contex
 
 }
 
-func request_AnalyticsAdminService_GetEnhancedMeasurementSettings_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetEnhancedMeasurementSettingsRequest
+func request_AnalyticsAdminService_GetEnhancedMeasurementSettings_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetEnhancedMeasurementSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -7994,8 +7993,8 @@ func request_AnalyticsAdminService_GetEnhancedMeasurementSettings_0(ctx context.
 
 }
 
-func local_request_AnalyticsAdminService_GetEnhancedMeasurementSettings_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetEnhancedMeasurementSettingsRequest
+func local_request_AnalyticsAdminService_GetEnhancedMeasurementSettings_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetEnhancedMeasurementSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -8024,8 +8023,8 @@ var (
 	filter_AnalyticsAdminService_UpdateEnhancedMeasurementSettings_0 = &utilities.DoubleArray{Encoding: map[string]int{"enhanced_measurement_settings": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateEnhancedMeasurementSettings_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateEnhancedMeasurementSettingsRequest
+func request_AnalyticsAdminService_UpdateEnhancedMeasurementSettings_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateEnhancedMeasurementSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -8072,8 +8071,8 @@ func request_AnalyticsAdminService_UpdateEnhancedMeasurementSettings_0(ctx conte
 
 }
 
-func local_request_AnalyticsAdminService_UpdateEnhancedMeasurementSettings_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateEnhancedMeasurementSettingsRequest
+func local_request_AnalyticsAdminService_UpdateEnhancedMeasurementSettings_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateEnhancedMeasurementSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -8120,8 +8119,8 @@ func local_request_AnalyticsAdminService_UpdateEnhancedMeasurementSettings_0(ctx
 
 }
 
-func request_AnalyticsAdminService_GetAdSenseLink_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetAdSenseLinkRequest
+func request_AnalyticsAdminService_GetAdSenseLink_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetAdSenseLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -8146,8 +8145,8 @@ func request_AnalyticsAdminService_GetAdSenseLink_0(ctx context.Context, marshal
 
 }
 
-func local_request_AnalyticsAdminService_GetAdSenseLink_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetAdSenseLinkRequest
+func local_request_AnalyticsAdminService_GetAdSenseLink_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetAdSenseLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -8172,8 +8171,8 @@ func local_request_AnalyticsAdminService_GetAdSenseLink_0(ctx context.Context, m
 
 }
 
-func request_AnalyticsAdminService_CreateAdSenseLink_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateAdSenseLinkRequest
+func request_AnalyticsAdminService_CreateAdSenseLink_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateAdSenseLinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -8206,8 +8205,8 @@ func request_AnalyticsAdminService_CreateAdSenseLink_0(ctx context.Context, mars
 
 }
 
-func local_request_AnalyticsAdminService_CreateAdSenseLink_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateAdSenseLinkRequest
+func local_request_AnalyticsAdminService_CreateAdSenseLink_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateAdSenseLinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -8240,8 +8239,8 @@ func local_request_AnalyticsAdminService_CreateAdSenseLink_0(ctx context.Context
 
 }
 
-func request_AnalyticsAdminService_DeleteAdSenseLink_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteAdSenseLinkRequest
+func request_AnalyticsAdminService_DeleteAdSenseLink_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteAdSenseLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -8266,8 +8265,8 @@ func request_AnalyticsAdminService_DeleteAdSenseLink_0(ctx context.Context, mars
 
 }
 
-func local_request_AnalyticsAdminService_DeleteAdSenseLink_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteAdSenseLinkRequest
+func local_request_AnalyticsAdminService_DeleteAdSenseLink_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteAdSenseLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -8296,8 +8295,8 @@ var (
 	filter_AnalyticsAdminService_ListAdSenseLinks_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListAdSenseLinks_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListAdSenseLinksRequest
+func request_AnalyticsAdminService_ListAdSenseLinks_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListAdSenseLinksRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -8329,8 +8328,8 @@ func request_AnalyticsAdminService_ListAdSenseLinks_0(ctx context.Context, marsh
 
 }
 
-func local_request_AnalyticsAdminService_ListAdSenseLinks_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListAdSenseLinksRequest
+func local_request_AnalyticsAdminService_ListAdSenseLinks_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListAdSenseLinksRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -8362,8 +8361,8 @@ func local_request_AnalyticsAdminService_ListAdSenseLinks_0(ctx context.Context,
 
 }
 
-func request_AnalyticsAdminService_GetEventCreateRule_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetEventCreateRuleRequest
+func request_AnalyticsAdminService_GetEventCreateRule_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetEventCreateRuleRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -8388,8 +8387,8 @@ func request_AnalyticsAdminService_GetEventCreateRule_0(ctx context.Context, mar
 
 }
 
-func local_request_AnalyticsAdminService_GetEventCreateRule_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetEventCreateRuleRequest
+func local_request_AnalyticsAdminService_GetEventCreateRule_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetEventCreateRuleRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -8418,8 +8417,8 @@ var (
 	filter_AnalyticsAdminService_ListEventCreateRules_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListEventCreateRules_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListEventCreateRulesRequest
+func request_AnalyticsAdminService_ListEventCreateRules_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListEventCreateRulesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -8451,8 +8450,8 @@ func request_AnalyticsAdminService_ListEventCreateRules_0(ctx context.Context, m
 
 }
 
-func local_request_AnalyticsAdminService_ListEventCreateRules_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListEventCreateRulesRequest
+func local_request_AnalyticsAdminService_ListEventCreateRules_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListEventCreateRulesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -8484,8 +8483,8 @@ func local_request_AnalyticsAdminService_ListEventCreateRules_0(ctx context.Cont
 
 }
 
-func request_AnalyticsAdminService_CreateEventCreateRule_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateEventCreateRuleRequest
+func request_AnalyticsAdminService_CreateEventCreateRule_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateEventCreateRuleRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -8518,8 +8517,8 @@ func request_AnalyticsAdminService_CreateEventCreateRule_0(ctx context.Context, 
 
 }
 
-func local_request_AnalyticsAdminService_CreateEventCreateRule_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateEventCreateRuleRequest
+func local_request_AnalyticsAdminService_CreateEventCreateRule_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateEventCreateRuleRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -8556,8 +8555,8 @@ var (
 	filter_AnalyticsAdminService_UpdateEventCreateRule_0 = &utilities.DoubleArray{Encoding: map[string]int{"event_create_rule": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateEventCreateRule_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateEventCreateRuleRequest
+func request_AnalyticsAdminService_UpdateEventCreateRule_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateEventCreateRuleRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -8604,8 +8603,8 @@ func request_AnalyticsAdminService_UpdateEventCreateRule_0(ctx context.Context, 
 
 }
 
-func local_request_AnalyticsAdminService_UpdateEventCreateRule_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateEventCreateRuleRequest
+func local_request_AnalyticsAdminService_UpdateEventCreateRule_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateEventCreateRuleRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -8652,8 +8651,8 @@ func local_request_AnalyticsAdminService_UpdateEventCreateRule_0(ctx context.Con
 
 }
 
-func request_AnalyticsAdminService_DeleteEventCreateRule_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteEventCreateRuleRequest
+func request_AnalyticsAdminService_DeleteEventCreateRule_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteEventCreateRuleRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -8678,8 +8677,8 @@ func request_AnalyticsAdminService_DeleteEventCreateRule_0(ctx context.Context, 
 
 }
 
-func local_request_AnalyticsAdminService_DeleteEventCreateRule_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteEventCreateRuleRequest
+func local_request_AnalyticsAdminService_DeleteEventCreateRule_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteEventCreateRuleRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -8704,8 +8703,8 @@ func local_request_AnalyticsAdminService_DeleteEventCreateRule_0(ctx context.Con
 
 }
 
-func request_AnalyticsAdminService_GetEventEditRule_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetEventEditRuleRequest
+func request_AnalyticsAdminService_GetEventEditRule_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetEventEditRuleRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -8730,8 +8729,8 @@ func request_AnalyticsAdminService_GetEventEditRule_0(ctx context.Context, marsh
 
 }
 
-func local_request_AnalyticsAdminService_GetEventEditRule_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetEventEditRuleRequest
+func local_request_AnalyticsAdminService_GetEventEditRule_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetEventEditRuleRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -8760,8 +8759,8 @@ var (
 	filter_AnalyticsAdminService_ListEventEditRules_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListEventEditRules_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListEventEditRulesRequest
+func request_AnalyticsAdminService_ListEventEditRules_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListEventEditRulesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -8793,8 +8792,8 @@ func request_AnalyticsAdminService_ListEventEditRules_0(ctx context.Context, mar
 
 }
 
-func local_request_AnalyticsAdminService_ListEventEditRules_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListEventEditRulesRequest
+func local_request_AnalyticsAdminService_ListEventEditRules_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListEventEditRulesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -8826,8 +8825,8 @@ func local_request_AnalyticsAdminService_ListEventEditRules_0(ctx context.Contex
 
 }
 
-func request_AnalyticsAdminService_CreateEventEditRule_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateEventEditRuleRequest
+func request_AnalyticsAdminService_CreateEventEditRule_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateEventEditRuleRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -8860,8 +8859,8 @@ func request_AnalyticsAdminService_CreateEventEditRule_0(ctx context.Context, ma
 
 }
 
-func local_request_AnalyticsAdminService_CreateEventEditRule_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateEventEditRuleRequest
+func local_request_AnalyticsAdminService_CreateEventEditRule_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateEventEditRuleRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -8898,8 +8897,8 @@ var (
 	filter_AnalyticsAdminService_UpdateEventEditRule_0 = &utilities.DoubleArray{Encoding: map[string]int{"event_edit_rule": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateEventEditRule_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateEventEditRuleRequest
+func request_AnalyticsAdminService_UpdateEventEditRule_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateEventEditRuleRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -8946,8 +8945,8 @@ func request_AnalyticsAdminService_UpdateEventEditRule_0(ctx context.Context, ma
 
 }
 
-func local_request_AnalyticsAdminService_UpdateEventEditRule_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateEventEditRuleRequest
+func local_request_AnalyticsAdminService_UpdateEventEditRule_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateEventEditRuleRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -8994,8 +8993,8 @@ func local_request_AnalyticsAdminService_UpdateEventEditRule_0(ctx context.Conte
 
 }
 
-func request_AnalyticsAdminService_DeleteEventEditRule_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteEventEditRuleRequest
+func request_AnalyticsAdminService_DeleteEventEditRule_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteEventEditRuleRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -9020,8 +9019,8 @@ func request_AnalyticsAdminService_DeleteEventEditRule_0(ctx context.Context, ma
 
 }
 
-func local_request_AnalyticsAdminService_DeleteEventEditRule_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteEventEditRuleRequest
+func local_request_AnalyticsAdminService_DeleteEventEditRule_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteEventEditRuleRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -9046,8 +9045,8 @@ func local_request_AnalyticsAdminService_DeleteEventEditRule_0(ctx context.Conte
 
 }
 
-func request_AnalyticsAdminService_ReorderEventEditRules_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ReorderEventEditRulesRequest
+func request_AnalyticsAdminService_ReorderEventEditRules_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ReorderEventEditRulesRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -9080,8 +9079,8 @@ func request_AnalyticsAdminService_ReorderEventEditRules_0(ctx context.Context, 
 
 }
 
-func local_request_AnalyticsAdminService_ReorderEventEditRules_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ReorderEventEditRulesRequest
+func local_request_AnalyticsAdminService_ReorderEventEditRules_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ReorderEventEditRulesRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -9118,8 +9117,8 @@ var (
 	filter_AnalyticsAdminService_UpdateDataRedactionSettings_0 = &utilities.DoubleArray{Encoding: map[string]int{"data_redaction_settings": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateDataRedactionSettings_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateDataRedactionSettingsRequest
+func request_AnalyticsAdminService_UpdateDataRedactionSettings_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateDataRedactionSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -9166,8 +9165,8 @@ func request_AnalyticsAdminService_UpdateDataRedactionSettings_0(ctx context.Con
 
 }
 
-func local_request_AnalyticsAdminService_UpdateDataRedactionSettings_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateDataRedactionSettingsRequest
+func local_request_AnalyticsAdminService_UpdateDataRedactionSettings_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateDataRedactionSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -9214,8 +9213,8 @@ func local_request_AnalyticsAdminService_UpdateDataRedactionSettings_0(ctx conte
 
 }
 
-func request_AnalyticsAdminService_GetDataRedactionSettings_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetDataRedactionSettingsRequest
+func request_AnalyticsAdminService_GetDataRedactionSettings_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDataRedactionSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -9240,8 +9239,8 @@ func request_AnalyticsAdminService_GetDataRedactionSettings_0(ctx context.Contex
 
 }
 
-func local_request_AnalyticsAdminService_GetDataRedactionSettings_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetDataRedactionSettingsRequest
+func local_request_AnalyticsAdminService_GetDataRedactionSettings_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDataRedactionSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -9266,8 +9265,8 @@ func local_request_AnalyticsAdminService_GetDataRedactionSettings_0(ctx context.
 
 }
 
-func request_AnalyticsAdminService_GetCalculatedMetric_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetCalculatedMetricRequest
+func request_AnalyticsAdminService_GetCalculatedMetric_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetCalculatedMetricRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -9292,8 +9291,8 @@ func request_AnalyticsAdminService_GetCalculatedMetric_0(ctx context.Context, ma
 
 }
 
-func local_request_AnalyticsAdminService_GetCalculatedMetric_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetCalculatedMetricRequest
+func local_request_AnalyticsAdminService_GetCalculatedMetric_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetCalculatedMetricRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -9322,8 +9321,8 @@ var (
 	filter_AnalyticsAdminService_CreateCalculatedMetric_0 = &utilities.DoubleArray{Encoding: map[string]int{"calculated_metric": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_AnalyticsAdminService_CreateCalculatedMetric_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateCalculatedMetricRequest
+func request_AnalyticsAdminService_CreateCalculatedMetric_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateCalculatedMetricRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -9363,8 +9362,8 @@ func request_AnalyticsAdminService_CreateCalculatedMetric_0(ctx context.Context,
 
 }
 
-func local_request_AnalyticsAdminService_CreateCalculatedMetric_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateCalculatedMetricRequest
+func local_request_AnalyticsAdminService_CreateCalculatedMetric_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateCalculatedMetricRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -9408,8 +9407,8 @@ var (
 	filter_AnalyticsAdminService_ListCalculatedMetrics_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListCalculatedMetrics_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListCalculatedMetricsRequest
+func request_AnalyticsAdminService_ListCalculatedMetrics_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListCalculatedMetricsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -9441,8 +9440,8 @@ func request_AnalyticsAdminService_ListCalculatedMetrics_0(ctx context.Context, 
 
 }
 
-func local_request_AnalyticsAdminService_ListCalculatedMetrics_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListCalculatedMetricsRequest
+func local_request_AnalyticsAdminService_ListCalculatedMetrics_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListCalculatedMetricsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -9478,8 +9477,8 @@ var (
 	filter_AnalyticsAdminService_UpdateCalculatedMetric_0 = &utilities.DoubleArray{Encoding: map[string]int{"calculated_metric": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateCalculatedMetric_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateCalculatedMetricRequest
+func request_AnalyticsAdminService_UpdateCalculatedMetric_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateCalculatedMetricRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -9526,8 +9525,8 @@ func request_AnalyticsAdminService_UpdateCalculatedMetric_0(ctx context.Context,
 
 }
 
-func local_request_AnalyticsAdminService_UpdateCalculatedMetric_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateCalculatedMetricRequest
+func local_request_AnalyticsAdminService_UpdateCalculatedMetric_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateCalculatedMetricRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -9574,8 +9573,8 @@ func local_request_AnalyticsAdminService_UpdateCalculatedMetric_0(ctx context.Co
 
 }
 
-func request_AnalyticsAdminService_DeleteCalculatedMetric_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteCalculatedMetricRequest
+func request_AnalyticsAdminService_DeleteCalculatedMetric_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteCalculatedMetricRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -9600,8 +9599,8 @@ func request_AnalyticsAdminService_DeleteCalculatedMetric_0(ctx context.Context,
 
 }
 
-func local_request_AnalyticsAdminService_DeleteCalculatedMetric_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteCalculatedMetricRequest
+func local_request_AnalyticsAdminService_DeleteCalculatedMetric_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteCalculatedMetricRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -9626,8 +9625,8 @@ func local_request_AnalyticsAdminService_DeleteCalculatedMetric_0(ctx context.Co
 
 }
 
-func request_AnalyticsAdminService_CreateRollupProperty_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateRollupPropertyRequest
+func request_AnalyticsAdminService_CreateRollupProperty_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateRollupPropertyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -9643,8 +9642,8 @@ func request_AnalyticsAdminService_CreateRollupProperty_0(ctx context.Context, m
 
 }
 
-func local_request_AnalyticsAdminService_CreateRollupProperty_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateRollupPropertyRequest
+func local_request_AnalyticsAdminService_CreateRollupProperty_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateRollupPropertyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -9660,8 +9659,8 @@ func local_request_AnalyticsAdminService_CreateRollupProperty_0(ctx context.Cont
 
 }
 
-func request_AnalyticsAdminService_GetRollupPropertySourceLink_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetRollupPropertySourceLinkRequest
+func request_AnalyticsAdminService_GetRollupPropertySourceLink_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetRollupPropertySourceLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -9686,8 +9685,8 @@ func request_AnalyticsAdminService_GetRollupPropertySourceLink_0(ctx context.Con
 
 }
 
-func local_request_AnalyticsAdminService_GetRollupPropertySourceLink_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetRollupPropertySourceLinkRequest
+func local_request_AnalyticsAdminService_GetRollupPropertySourceLink_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetRollupPropertySourceLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -9716,8 +9715,8 @@ var (
 	filter_AnalyticsAdminService_ListRollupPropertySourceLinks_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListRollupPropertySourceLinks_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListRollupPropertySourceLinksRequest
+func request_AnalyticsAdminService_ListRollupPropertySourceLinks_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListRollupPropertySourceLinksRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -9749,8 +9748,8 @@ func request_AnalyticsAdminService_ListRollupPropertySourceLinks_0(ctx context.C
 
 }
 
-func local_request_AnalyticsAdminService_ListRollupPropertySourceLinks_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListRollupPropertySourceLinksRequest
+func local_request_AnalyticsAdminService_ListRollupPropertySourceLinks_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListRollupPropertySourceLinksRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -9782,8 +9781,8 @@ func local_request_AnalyticsAdminService_ListRollupPropertySourceLinks_0(ctx con
 
 }
 
-func request_AnalyticsAdminService_CreateRollupPropertySourceLink_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateRollupPropertySourceLinkRequest
+func request_AnalyticsAdminService_CreateRollupPropertySourceLink_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateRollupPropertySourceLinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -9816,8 +9815,8 @@ func request_AnalyticsAdminService_CreateRollupPropertySourceLink_0(ctx context.
 
 }
 
-func local_request_AnalyticsAdminService_CreateRollupPropertySourceLink_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateRollupPropertySourceLinkRequest
+func local_request_AnalyticsAdminService_CreateRollupPropertySourceLink_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateRollupPropertySourceLinkRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -9850,8 +9849,8 @@ func local_request_AnalyticsAdminService_CreateRollupPropertySourceLink_0(ctx co
 
 }
 
-func request_AnalyticsAdminService_DeleteRollupPropertySourceLink_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteRollupPropertySourceLinkRequest
+func request_AnalyticsAdminService_DeleteRollupPropertySourceLink_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteRollupPropertySourceLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -9876,8 +9875,8 @@ func request_AnalyticsAdminService_DeleteRollupPropertySourceLink_0(ctx context.
 
 }
 
-func local_request_AnalyticsAdminService_DeleteRollupPropertySourceLink_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteRollupPropertySourceLinkRequest
+func local_request_AnalyticsAdminService_DeleteRollupPropertySourceLink_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteRollupPropertySourceLinkRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -9902,8 +9901,8 @@ func local_request_AnalyticsAdminService_DeleteRollupPropertySourceLink_0(ctx co
 
 }
 
-func request_AnalyticsAdminService_ProvisionSubproperty_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ProvisionSubpropertyRequest
+func request_AnalyticsAdminService_ProvisionSubproperty_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ProvisionSubpropertyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -9919,8 +9918,8 @@ func request_AnalyticsAdminService_ProvisionSubproperty_0(ctx context.Context, m
 
 }
 
-func local_request_AnalyticsAdminService_ProvisionSubproperty_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ProvisionSubpropertyRequest
+func local_request_AnalyticsAdminService_ProvisionSubproperty_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ProvisionSubpropertyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -9936,8 +9935,8 @@ func local_request_AnalyticsAdminService_ProvisionSubproperty_0(ctx context.Cont
 
 }
 
-func request_AnalyticsAdminService_CreateSubpropertyEventFilter_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateSubpropertyEventFilterRequest
+func request_AnalyticsAdminService_CreateSubpropertyEventFilter_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateSubpropertyEventFilterRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -9970,8 +9969,8 @@ func request_AnalyticsAdminService_CreateSubpropertyEventFilter_0(ctx context.Co
 
 }
 
-func local_request_AnalyticsAdminService_CreateSubpropertyEventFilter_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateSubpropertyEventFilterRequest
+func local_request_AnalyticsAdminService_CreateSubpropertyEventFilter_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateSubpropertyEventFilterRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -10004,8 +10003,8 @@ func local_request_AnalyticsAdminService_CreateSubpropertyEventFilter_0(ctx cont
 
 }
 
-func request_AnalyticsAdminService_GetSubpropertyEventFilter_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetSubpropertyEventFilterRequest
+func request_AnalyticsAdminService_GetSubpropertyEventFilter_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetSubpropertyEventFilterRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -10030,8 +10029,8 @@ func request_AnalyticsAdminService_GetSubpropertyEventFilter_0(ctx context.Conte
 
 }
 
-func local_request_AnalyticsAdminService_GetSubpropertyEventFilter_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetSubpropertyEventFilterRequest
+func local_request_AnalyticsAdminService_GetSubpropertyEventFilter_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetSubpropertyEventFilterRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -10060,8 +10059,8 @@ var (
 	filter_AnalyticsAdminService_ListSubpropertyEventFilters_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListSubpropertyEventFilters_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListSubpropertyEventFiltersRequest
+func request_AnalyticsAdminService_ListSubpropertyEventFilters_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListSubpropertyEventFiltersRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -10093,8 +10092,8 @@ func request_AnalyticsAdminService_ListSubpropertyEventFilters_0(ctx context.Con
 
 }
 
-func local_request_AnalyticsAdminService_ListSubpropertyEventFilters_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListSubpropertyEventFiltersRequest
+func local_request_AnalyticsAdminService_ListSubpropertyEventFilters_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListSubpropertyEventFiltersRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -10130,8 +10129,8 @@ var (
 	filter_AnalyticsAdminService_UpdateSubpropertyEventFilter_0 = &utilities.DoubleArray{Encoding: map[string]int{"subproperty_event_filter": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateSubpropertyEventFilter_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateSubpropertyEventFilterRequest
+func request_AnalyticsAdminService_UpdateSubpropertyEventFilter_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateSubpropertyEventFilterRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -10178,8 +10177,8 @@ func request_AnalyticsAdminService_UpdateSubpropertyEventFilter_0(ctx context.Co
 
 }
 
-func local_request_AnalyticsAdminService_UpdateSubpropertyEventFilter_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateSubpropertyEventFilterRequest
+func local_request_AnalyticsAdminService_UpdateSubpropertyEventFilter_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateSubpropertyEventFilterRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -10226,8 +10225,8 @@ func local_request_AnalyticsAdminService_UpdateSubpropertyEventFilter_0(ctx cont
 
 }
 
-func request_AnalyticsAdminService_DeleteSubpropertyEventFilter_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteSubpropertyEventFilterRequest
+func request_AnalyticsAdminService_DeleteSubpropertyEventFilter_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteSubpropertyEventFilterRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -10252,8 +10251,8 @@ func request_AnalyticsAdminService_DeleteSubpropertyEventFilter_0(ctx context.Co
 
 }
 
-func local_request_AnalyticsAdminService_DeleteSubpropertyEventFilter_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteSubpropertyEventFilterRequest
+func local_request_AnalyticsAdminService_DeleteSubpropertyEventFilter_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteSubpropertyEventFilterRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -10278,8 +10277,8 @@ func local_request_AnalyticsAdminService_DeleteSubpropertyEventFilter_0(ctx cont
 
 }
 
-func request_AnalyticsAdminService_CreateReportingDataAnnotation_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateReportingDataAnnotationRequest
+func request_AnalyticsAdminService_CreateReportingDataAnnotation_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateReportingDataAnnotationRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -10312,8 +10311,8 @@ func request_AnalyticsAdminService_CreateReportingDataAnnotation_0(ctx context.C
 
 }
 
-func local_request_AnalyticsAdminService_CreateReportingDataAnnotation_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.CreateReportingDataAnnotationRequest
+func local_request_AnalyticsAdminService_CreateReportingDataAnnotation_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateReportingDataAnnotationRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -10346,8 +10345,8 @@ func local_request_AnalyticsAdminService_CreateReportingDataAnnotation_0(ctx con
 
 }
 
-func request_AnalyticsAdminService_GetReportingDataAnnotation_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetReportingDataAnnotationRequest
+func request_AnalyticsAdminService_GetReportingDataAnnotation_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetReportingDataAnnotationRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -10372,8 +10371,8 @@ func request_AnalyticsAdminService_GetReportingDataAnnotation_0(ctx context.Cont
 
 }
 
-func local_request_AnalyticsAdminService_GetReportingDataAnnotation_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetReportingDataAnnotationRequest
+func local_request_AnalyticsAdminService_GetReportingDataAnnotation_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetReportingDataAnnotationRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -10402,8 +10401,8 @@ var (
 	filter_AnalyticsAdminService_ListReportingDataAnnotations_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListReportingDataAnnotations_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListReportingDataAnnotationsRequest
+func request_AnalyticsAdminService_ListReportingDataAnnotations_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListReportingDataAnnotationsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -10435,8 +10434,8 @@ func request_AnalyticsAdminService_ListReportingDataAnnotations_0(ctx context.Co
 
 }
 
-func local_request_AnalyticsAdminService_ListReportingDataAnnotations_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListReportingDataAnnotationsRequest
+func local_request_AnalyticsAdminService_ListReportingDataAnnotations_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListReportingDataAnnotationsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -10472,8 +10471,8 @@ var (
 	filter_AnalyticsAdminService_UpdateReportingDataAnnotation_0 = &utilities.DoubleArray{Encoding: map[string]int{"reporting_data_annotation": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateReportingDataAnnotation_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateReportingDataAnnotationRequest
+func request_AnalyticsAdminService_UpdateReportingDataAnnotation_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateReportingDataAnnotationRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -10520,8 +10519,8 @@ func request_AnalyticsAdminService_UpdateReportingDataAnnotation_0(ctx context.C
 
 }
 
-func local_request_AnalyticsAdminService_UpdateReportingDataAnnotation_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateReportingDataAnnotationRequest
+func local_request_AnalyticsAdminService_UpdateReportingDataAnnotation_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateReportingDataAnnotationRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -10568,8 +10567,8 @@ func local_request_AnalyticsAdminService_UpdateReportingDataAnnotation_0(ctx con
 
 }
 
-func request_AnalyticsAdminService_DeleteReportingDataAnnotation_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteReportingDataAnnotationRequest
+func request_AnalyticsAdminService_DeleteReportingDataAnnotation_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteReportingDataAnnotationRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -10594,8 +10593,8 @@ func request_AnalyticsAdminService_DeleteReportingDataAnnotation_0(ctx context.C
 
 }
 
-func local_request_AnalyticsAdminService_DeleteReportingDataAnnotation_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.DeleteReportingDataAnnotationRequest
+func local_request_AnalyticsAdminService_DeleteReportingDataAnnotation_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteReportingDataAnnotationRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -10620,8 +10619,8 @@ func local_request_AnalyticsAdminService_DeleteReportingDataAnnotation_0(ctx con
 
 }
 
-func request_AnalyticsAdminService_SubmitUserDeletion_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.SubmitUserDeletionRequest
+func request_AnalyticsAdminService_SubmitUserDeletion_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SubmitUserDeletionRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -10654,8 +10653,8 @@ func request_AnalyticsAdminService_SubmitUserDeletion_0(ctx context.Context, mar
 
 }
 
-func local_request_AnalyticsAdminService_SubmitUserDeletion_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.SubmitUserDeletionRequest
+func local_request_AnalyticsAdminService_SubmitUserDeletion_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SubmitUserDeletionRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -10692,8 +10691,8 @@ var (
 	filter_AnalyticsAdminService_ListSubpropertySyncConfigs_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_AnalyticsAdminService_ListSubpropertySyncConfigs_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListSubpropertySyncConfigsRequest
+func request_AnalyticsAdminService_ListSubpropertySyncConfigs_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListSubpropertySyncConfigsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -10725,8 +10724,8 @@ func request_AnalyticsAdminService_ListSubpropertySyncConfigs_0(ctx context.Cont
 
 }
 
-func local_request_AnalyticsAdminService_ListSubpropertySyncConfigs_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.ListSubpropertySyncConfigsRequest
+func local_request_AnalyticsAdminService_ListSubpropertySyncConfigs_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListSubpropertySyncConfigsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -10762,8 +10761,8 @@ var (
 	filter_AnalyticsAdminService_UpdateSubpropertySyncConfig_0 = &utilities.DoubleArray{Encoding: map[string]int{"subproperty_sync_config": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_AnalyticsAdminService_UpdateSubpropertySyncConfig_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateSubpropertySyncConfigRequest
+func request_AnalyticsAdminService_UpdateSubpropertySyncConfig_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateSubpropertySyncConfigRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -10810,8 +10809,8 @@ func request_AnalyticsAdminService_UpdateSubpropertySyncConfig_0(ctx context.Con
 
 }
 
-func local_request_AnalyticsAdminService_UpdateSubpropertySyncConfig_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.UpdateSubpropertySyncConfigRequest
+func local_request_AnalyticsAdminService_UpdateSubpropertySyncConfig_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateSubpropertySyncConfigRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -10858,8 +10857,8 @@ func local_request_AnalyticsAdminService_UpdateSubpropertySyncConfig_0(ctx conte
 
 }
 
-func request_AnalyticsAdminService_GetSubpropertySyncConfig_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetSubpropertySyncConfigRequest
+func request_AnalyticsAdminService_GetSubpropertySyncConfig_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetSubpropertySyncConfigRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -10884,8 +10883,8 @@ func request_AnalyticsAdminService_GetSubpropertySyncConfig_0(ctx context.Contex
 
 }
 
-func local_request_AnalyticsAdminService_GetSubpropertySyncConfig_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetSubpropertySyncConfigRequest
+func local_request_AnalyticsAdminService_GetSubpropertySyncConfig_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetSubpropertySyncConfigRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -10910,8 +10909,8 @@ func local_request_AnalyticsAdminService_GetSubpropertySyncConfig_0(ctx context.
 
 }
 
-func request_AnalyticsAdminService_GetReportingIdentitySettings_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetReportingIdentitySettingsRequest
+func request_AnalyticsAdminService_GetReportingIdentitySettings_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetReportingIdentitySettingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -10936,8 +10935,8 @@ func request_AnalyticsAdminService_GetReportingIdentitySettings_0(ctx context.Co
 
 }
 
-func local_request_AnalyticsAdminService_GetReportingIdentitySettings_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetReportingIdentitySettingsRequest
+func local_request_AnalyticsAdminService_GetReportingIdentitySettings_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetReportingIdentitySettingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -10962,8 +10961,8 @@ func local_request_AnalyticsAdminService_GetReportingIdentitySettings_0(ctx cont
 
 }
 
-func request_AnalyticsAdminService_GetUserProvidedDataSettings_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetUserProvidedDataSettingsRequest
+func request_AnalyticsAdminService_GetUserProvidedDataSettings_0(ctx context.Context, marshaler runtime.Marshaler, client AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetUserProvidedDataSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -10988,8 +10987,8 @@ func request_AnalyticsAdminService_GetUserProvidedDataSettings_0(ctx context.Con
 
 }
 
-func local_request_AnalyticsAdminService_GetUserProvidedDataSettings_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extAdminpb.GetUserProvidedDataSettingsRequest
+func local_request_AnalyticsAdminService_GetUserProvidedDataSettings_0(ctx context.Context, marshaler runtime.Marshaler, server AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetUserProvidedDataSettingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -11018,7 +11017,7 @@ func local_request_AnalyticsAdminService_GetUserProvidedDataSettings_0(ctx conte
 // UnaryRPC     :call AnalyticsAdminServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterAnalyticsAdminServiceHandlerFromEndpoint instead.
-func RegisterAnalyticsAdminServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server extAdminpb.AnalyticsAdminServiceServer) error {
+func RegisterAnalyticsAdminServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server AnalyticsAdminServiceServer) error {
 
 	mux.Handle("GET", pattern_AnalyticsAdminService_GetAccount_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -15176,15 +15175,15 @@ func RegisterAnalyticsAdminServiceHandlerFromEndpoint(ctx context.Context, mux *
 // RegisterAnalyticsAdminServiceHandler registers the http handlers for service AnalyticsAdminService to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
 func RegisterAnalyticsAdminServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterAnalyticsAdminServiceHandlerClient(ctx, mux, extAdminpb.NewAnalyticsAdminServiceClient(conn))
+	return RegisterAnalyticsAdminServiceHandlerClient(ctx, mux, NewAnalyticsAdminServiceClient(conn))
 }
 
 // RegisterAnalyticsAdminServiceHandlerClient registers the http handlers for service AnalyticsAdminService
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "extAdminpb.AnalyticsAdminServiceClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "extAdminpb.AnalyticsAdminServiceClient"
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "AnalyticsAdminServiceClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "AnalyticsAdminServiceClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "extAdminpb.AnalyticsAdminServiceClient" to call the correct interceptors.
-func RegisterAnalyticsAdminServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client extAdminpb.AnalyticsAdminServiceClient) error {
+// "AnalyticsAdminServiceClient" to call the correct interceptors.
+func RegisterAnalyticsAdminServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client AnalyticsAdminServiceClient) error {
 
 	mux.Handle("GET", pattern_AnalyticsAdminService_GetAccount_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())

@@ -120,6 +120,12 @@ type MachineSpec struct {
 	//  consumes reservation.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MachineSpec.reservation_affinity
 	ReservationAffinity *ReservationAffinity `json:"reservationAffinity,omitempty"`
+
+	// Optional. Immutable. The minimum GPU driver version that this machine
+	//  requires. For example, "535.104.06". If not specified, the default GPU
+	//  driver version will be used by the underlying infrastructure.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MachineSpec.min_gpu_driver_version
+	MinGpuDriverVersion *string `json:"minGpuDriverVersion,omitempty"`
 }
 
 /* found existing non-generated go type "NetworkSpec", skipping
@@ -333,6 +339,7 @@ type NotebookSoftwareConfig struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookSoftwareConfig.env
 	Env []EnvVar `json:"env,omitempty"`
 
+	// Optional. Post-startup script config.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookSoftwareConfig.post_startup_script_config
 	PostStartupScriptConfig *PostStartupScriptConfig `json:"postStartupScriptConfig,omitempty"`
 }
@@ -354,12 +361,17 @@ type PersistentDiskSpec struct {
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.PostStartupScriptConfig
 type PostStartupScriptConfig struct {
+	// Optional. Post-startup script to run after runtime is started.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.PostStartupScriptConfig.post_startup_script
 	PostStartupScript *string `json:"postStartupScript,omitempty"`
 
+	// Optional. Post-startup script url to download. Example:
+	//  https://bucket/script.sh
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.PostStartupScriptConfig.post_startup_script_url
 	PostStartupScriptURL *string `json:"postStartupScriptURL,omitempty"`
 
+	// Optional. Post-startup script behavior that defines download and execution
+	//  behavior.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.PostStartupScriptConfig.post_startup_script_behavior
 	PostStartupScriptBehavior *string `json:"postStartupScriptBehavior,omitempty"`
 }

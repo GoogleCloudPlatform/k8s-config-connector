@@ -48,6 +48,8 @@ func DataformRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	}
 	out := &krm.DataformRepositoryObservedState{}
 	// MISSING: Name
+	// MISSING: ContainingFolder
+	// MISSING: TeamFolderName
 	// MISSING: CreateTime
 	// MISSING: Labels
 	// MISSING: KMSKeyName
@@ -61,6 +63,8 @@ func DataformRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	}
 	out := &pb.Repository{}
 	// MISSING: Name
+	// MISSING: ContainingFolder
+	// MISSING: TeamFolderName
 	// MISSING: CreateTime
 	// MISSING: Labels
 	// MISSING: KMSKeyName

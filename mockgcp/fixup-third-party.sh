@@ -40,6 +40,7 @@ mv google/spanner/ mockgcp/
 mv google/storage/ mockgcp/
 mv google/monitoring/ mockgcp/
 mv google/bigtable/ mockgcp/
+mv google/analytics/ mockgcp/
 
 mv google/api/apikeys/ mockgcp/api/
 mv google/api/serviceusage/ mockgcp/api/

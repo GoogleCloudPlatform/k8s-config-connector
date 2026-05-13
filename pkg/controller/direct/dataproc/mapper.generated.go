@@ -194,6 +194,7 @@ func DataprocAutoscalingPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, 
 	out.WorkerConfig = InstanceGroupAutoscalingPolicyConfig_v1beta1_FromProto(mapCtx, in.GetWorkerConfig())
 	out.SecondaryWorkerConfig = SecondaryInstanceGroupAutoscalingPolicyConfig_v1beta1_FromProto(mapCtx, in.GetSecondaryWorkerConfig())
 	// MISSING: Labels
+	// MISSING: ClusterType
 	return out
 }
 func DataprocAutoscalingPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.DataprocAutoscalingPolicySpec) *pb.AutoscalingPolicy {
@@ -209,6 +210,7 @@ func DataprocAutoscalingPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in
 	out.WorkerConfig = InstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto(mapCtx, in.WorkerConfig)
 	out.SecondaryWorkerConfig = SecondaryInstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto(mapCtx, in.SecondaryWorkerConfig)
 	// MISSING: Labels
+	// MISSING: ClusterType
 	return out
 }
 
@@ -221,6 +223,7 @@ func DataprocBatchObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 	// MISSING: Name
 	out.Uuid = direct.LazyPtr(in.GetUuid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	// MISSING: PysparkNotebookBatch
 	out.RuntimeInfo = RuntimeInfoObservedState_v1alpha1_FromProto(mapCtx, in.GetRuntimeInfo())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.StateMessage = direct.LazyPtr(in.GetStateMessage())
@@ -241,6 +244,7 @@ func DataprocBatchObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: Name
 	out.Uuid = direct.ValueOf(in.Uuid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	// MISSING: PysparkNotebookBatch
 	out.RuntimeInfo = RuntimeInfoObservedState_v1alpha1_ToProto(mapCtx, in.RuntimeInfo)
 	out.State = direct.Enum_ToProto[pb.Batch_State](mapCtx, in.State)
 	out.StateMessage = direct.ValueOf(in.StateMessage)
@@ -263,6 +267,7 @@ func DataprocBatchSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Batc
 	out.SparkBatch = SparkBatch_v1alpha1_FromProto(mapCtx, in.GetSparkBatch())
 	out.SparkRBatch = SparkRBatch_v1alpha1_FromProto(mapCtx, in.GetSparkRBatch())
 	out.SparkSQLBatch = SparkSQLBatch_v1alpha1_FromProto(mapCtx, in.GetSparkSqlBatch())
+	// MISSING: PysparkNotebookBatch
 	out.Labels = in.Labels
 	out.RuntimeConfig = RuntimeConfig_v1alpha1_FromProto(mapCtx, in.GetRuntimeConfig())
 	out.EnvironmentConfig = EnvironmentConfig_v1alpha1_FromProto(mapCtx, in.GetEnvironmentConfig())
@@ -289,6 +294,7 @@ func DataprocBatchSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatapr
 	if oneof := SparkSQLBatch_v1alpha1_ToProto(mapCtx, in.SparkSQLBatch); oneof != nil {
 		out.BatchConfig = &pb.Batch_SparkSqlBatch{SparkSqlBatch: oneof}
 	}
+	// MISSING: PysparkNotebookBatch
 	out.Labels = in.Labels
 	out.RuntimeConfig = RuntimeConfig_v1alpha1_ToProto(mapCtx, in.RuntimeConfig)
 	out.EnvironmentConfig = EnvironmentConfig_v1alpha1_ToProto(mapCtx, in.EnvironmentConfig)
@@ -555,6 +561,7 @@ func ExecutionConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Execut
 		out.StagingBucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetStagingBucket()}
 	}
 	// MISSING: AuthenticationConfig
+	// MISSING: ResourceManagerTags
 	return out
 }
 */
@@ -586,6 +593,7 @@ found existing non-generated mapping function "ExecutionConfig_v1alpha1_ToProto"
 			out.StagingBucket = in.StagingBucketRef.External
 		}
 		// MISSING: AuthenticationConfig
+		// MISSING: ResourceManagerTags
 		return out
 	}
 */
@@ -1430,27 +1438,55 @@ func PySparkJob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PySparkJob)
 }
 */
 
-/* found existing non-generated mapping function "PySparkJob_v1alpha1_ToProto", skipping
-func PySparkJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.PySparkJob) *pb.PySparkJob {
+/*
+found existing non-generated mapping function "PySparkJob_v1alpha1_ToProto", skipping
+
+	func PySparkJob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.PySparkJob) *pb.PySparkJob {
+		if in == nil {
+			return nil
+		}
+		out := &pb.PySparkJob{}
+		out.MainPythonFileUri = direct.ValueOf(in.MainPythonFileURI)
+		out.Args = in.Args
+		// MISSING: PythonFileUris
+		// (near miss): "PythonFileUris" vs "PythonFileURIs"
+		// MISSING: JarFileUris
+		// (near miss): "JarFileUris" vs "JarFileURIs"
+		// MISSING: FileUris
+		// (near miss): "FileUris" vs "FileURIs"
+		// MISSING: ArchiveUris
+		// (near miss): "ArchiveUris" vs "ArchiveURIs"
+		out.Properties = in.Properties
+		out.LoggingConfig = LoggingConfig_v1alpha1_ToProto(mapCtx, in.LoggingConfig)
+		return out
+	}
+*/
+func PySparkNotebookBatch_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PySparkNotebookBatch) *krmdataprocv1alpha1.PySparkNotebookBatch {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PySparkJob{}
-	out.MainPythonFileUri = direct.ValueOf(in.MainPythonFileURI)
-	out.Args = in.Args
-	// MISSING: PythonFileUris
-	// (near miss): "PythonFileUris" vs "PythonFileURIs"
-	// MISSING: JarFileUris
-	// (near miss): "JarFileUris" vs "JarFileURIs"
-	// MISSING: FileUris
-	// (near miss): "FileUris" vs "FileURIs"
-	// MISSING: ArchiveUris
-	// (near miss): "ArchiveUris" vs "ArchiveURIs"
-	out.Properties = in.Properties
-	out.LoggingConfig = LoggingConfig_v1alpha1_ToProto(mapCtx, in.LoggingConfig)
+	out := &krmdataprocv1alpha1.PySparkNotebookBatch{}
+	out.NotebookFileURI = direct.LazyPtr(in.GetNotebookFileUri())
+	out.Params = in.Params
+	out.PythonFileUris = in.PythonFileUris
+	out.JarFileUris = in.JarFileUris
+	out.FileUris = in.FileUris
+	out.ArchiveUris = in.ArchiveUris
 	return out
 }
-*/
+func PySparkNotebookBatch_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.PySparkNotebookBatch) *pb.PySparkNotebookBatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PySparkNotebookBatch{}
+	out.NotebookFileUri = direct.ValueOf(in.NotebookFileURI)
+	out.Params = in.Params
+	out.PythonFileUris = in.PythonFileUris
+	out.JarFileUris = in.JarFileUris
+	out.FileUris = in.FileUris
+	out.ArchiveUris = in.ArchiveUris
+	return out
+}
 
 /* found existing non-generated mapping function "QueryList_v1alpha1_FromProto", skipping
 func QueryList_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.QueryList) *krmdataprocv1alpha1.QueryList {
@@ -1970,6 +2006,7 @@ func UsageMetrics_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.UsageMetr
 	out.ShuffleStorageGBSeconds = direct.LazyPtr(in.GetShuffleStorageGbSeconds())
 	out.MilliAcceleratorSeconds = direct.LazyPtr(in.GetMilliAcceleratorSeconds())
 	out.AcceleratorType = direct.LazyPtr(in.GetAcceleratorType())
+	// MISSING: UpdateTime
 	return out
 }
 */
@@ -1984,6 +2021,7 @@ func UsageMetrics_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1a
 	out.ShuffleStorageGbSeconds = direct.ValueOf(in.ShuffleStorageGBSeconds)
 	out.MilliAcceleratorSeconds = direct.ValueOf(in.MilliAcceleratorSeconds)
 	out.AcceleratorType = direct.ValueOf(in.AcceleratorType)
+	// MISSING: UpdateTime
 	return out
 }
 */

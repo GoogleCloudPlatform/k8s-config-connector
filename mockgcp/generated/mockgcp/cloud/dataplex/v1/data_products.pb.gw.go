@@ -13,7 +13,6 @@ import (
 	"io"
 	"net/http"
 
-	extDataplexpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataplex/v1"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
 	"google.golang.org/grpc"
@@ -36,8 +35,8 @@ var (
 	filter_DataProductService_CreateDataProduct_0 = &utilities.DoubleArray{Encoding: map[string]int{"data_product": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_DataProductService_CreateDataProduct_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateDataProductRequest
+func request_DataProductService_CreateDataProduct_0(ctx context.Context, marshaler runtime.Marshaler, client DataProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateDataProductRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -77,8 +76,8 @@ func request_DataProductService_CreateDataProduct_0(ctx context.Context, marshal
 
 }
 
-func local_request_DataProductService_CreateDataProduct_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateDataProductRequest
+func local_request_DataProductService_CreateDataProduct_0(ctx context.Context, marshaler runtime.Marshaler, server DataProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateDataProductRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -122,8 +121,8 @@ var (
 	filter_DataProductService_DeleteDataProduct_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_DataProductService_DeleteDataProduct_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteDataProductRequest
+func request_DataProductService_DeleteDataProduct_0(ctx context.Context, marshaler runtime.Marshaler, client DataProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteDataProductRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -155,8 +154,8 @@ func request_DataProductService_DeleteDataProduct_0(ctx context.Context, marshal
 
 }
 
-func local_request_DataProductService_DeleteDataProduct_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteDataProductRequest
+func local_request_DataProductService_DeleteDataProduct_0(ctx context.Context, marshaler runtime.Marshaler, server DataProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteDataProductRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -188,8 +187,8 @@ func local_request_DataProductService_DeleteDataProduct_0(ctx context.Context, m
 
 }
 
-func request_DataProductService_GetDataProduct_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetDataProductRequest
+func request_DataProductService_GetDataProduct_0(ctx context.Context, marshaler runtime.Marshaler, client DataProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDataProductRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -214,8 +213,8 @@ func request_DataProductService_GetDataProduct_0(ctx context.Context, marshaler 
 
 }
 
-func local_request_DataProductService_GetDataProduct_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetDataProductRequest
+func local_request_DataProductService_GetDataProduct_0(ctx context.Context, marshaler runtime.Marshaler, server DataProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDataProductRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -244,8 +243,8 @@ var (
 	filter_DataProductService_ListDataProducts_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_DataProductService_ListDataProducts_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListDataProductsRequest
+func request_DataProductService_ListDataProducts_0(ctx context.Context, marshaler runtime.Marshaler, client DataProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListDataProductsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -277,8 +276,8 @@ func request_DataProductService_ListDataProducts_0(ctx context.Context, marshale
 
 }
 
-func local_request_DataProductService_ListDataProducts_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListDataProductsRequest
+func local_request_DataProductService_ListDataProducts_0(ctx context.Context, marshaler runtime.Marshaler, server DataProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListDataProductsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -314,8 +313,8 @@ var (
 	filter_DataProductService_UpdateDataProduct_0 = &utilities.DoubleArray{Encoding: map[string]int{"data_product": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_DataProductService_UpdateDataProduct_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateDataProductRequest
+func request_DataProductService_UpdateDataProduct_0(ctx context.Context, marshaler runtime.Marshaler, client DataProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateDataProductRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -362,8 +361,8 @@ func request_DataProductService_UpdateDataProduct_0(ctx context.Context, marshal
 
 }
 
-func local_request_DataProductService_UpdateDataProduct_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateDataProductRequest
+func local_request_DataProductService_UpdateDataProduct_0(ctx context.Context, marshaler runtime.Marshaler, server DataProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateDataProductRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -414,8 +413,8 @@ var (
 	filter_DataProductService_CreateDataAsset_0 = &utilities.DoubleArray{Encoding: map[string]int{"data_asset": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_DataProductService_CreateDataAsset_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateDataAssetRequest
+func request_DataProductService_CreateDataAsset_0(ctx context.Context, marshaler runtime.Marshaler, client DataProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateDataAssetRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -455,8 +454,8 @@ func request_DataProductService_CreateDataAsset_0(ctx context.Context, marshaler
 
 }
 
-func local_request_DataProductService_CreateDataAsset_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateDataAssetRequest
+func local_request_DataProductService_CreateDataAsset_0(ctx context.Context, marshaler runtime.Marshaler, server DataProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateDataAssetRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -500,8 +499,8 @@ var (
 	filter_DataProductService_UpdateDataAsset_0 = &utilities.DoubleArray{Encoding: map[string]int{"data_asset": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_DataProductService_UpdateDataAsset_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateDataAssetRequest
+func request_DataProductService_UpdateDataAsset_0(ctx context.Context, marshaler runtime.Marshaler, client DataProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateDataAssetRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -548,8 +547,8 @@ func request_DataProductService_UpdateDataAsset_0(ctx context.Context, marshaler
 
 }
 
-func local_request_DataProductService_UpdateDataAsset_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateDataAssetRequest
+func local_request_DataProductService_UpdateDataAsset_0(ctx context.Context, marshaler runtime.Marshaler, server DataProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateDataAssetRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -600,8 +599,8 @@ var (
 	filter_DataProductService_DeleteDataAsset_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_DataProductService_DeleteDataAsset_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteDataAssetRequest
+func request_DataProductService_DeleteDataAsset_0(ctx context.Context, marshaler runtime.Marshaler, client DataProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteDataAssetRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -633,8 +632,8 @@ func request_DataProductService_DeleteDataAsset_0(ctx context.Context, marshaler
 
 }
 
-func local_request_DataProductService_DeleteDataAsset_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteDataAssetRequest
+func local_request_DataProductService_DeleteDataAsset_0(ctx context.Context, marshaler runtime.Marshaler, server DataProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteDataAssetRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -666,8 +665,8 @@ func local_request_DataProductService_DeleteDataAsset_0(ctx context.Context, mar
 
 }
 
-func request_DataProductService_GetDataAsset_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetDataAssetRequest
+func request_DataProductService_GetDataAsset_0(ctx context.Context, marshaler runtime.Marshaler, client DataProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDataAssetRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -692,8 +691,8 @@ func request_DataProductService_GetDataAsset_0(ctx context.Context, marshaler ru
 
 }
 
-func local_request_DataProductService_GetDataAsset_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetDataAssetRequest
+func local_request_DataProductService_GetDataAsset_0(ctx context.Context, marshaler runtime.Marshaler, server DataProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDataAssetRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -722,8 +721,8 @@ var (
 	filter_DataProductService_ListDataAssets_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_DataProductService_ListDataAssets_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListDataAssetsRequest
+func request_DataProductService_ListDataAssets_0(ctx context.Context, marshaler runtime.Marshaler, client DataProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListDataAssetsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -755,8 +754,8 @@ func request_DataProductService_ListDataAssets_0(ctx context.Context, marshaler 
 
 }
 
-func local_request_DataProductService_ListDataAssets_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListDataAssetsRequest
+func local_request_DataProductService_ListDataAssets_0(ctx context.Context, marshaler runtime.Marshaler, server DataProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListDataAssetsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -792,7 +791,7 @@ func local_request_DataProductService_ListDataAssets_0(ctx context.Context, mars
 // UnaryRPC     :call DataProductServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterDataProductServiceHandlerFromEndpoint instead.
-func RegisterDataProductServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server extDataplexpb.DataProductServiceServer) error {
+func RegisterDataProductServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server DataProductServiceServer) error {
 
 	mux.Handle("POST", pattern_DataProductService_CreateDataProduct_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -1075,15 +1074,15 @@ func RegisterDataProductServiceHandlerFromEndpoint(ctx context.Context, mux *run
 // RegisterDataProductServiceHandler registers the http handlers for service DataProductService to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
 func RegisterDataProductServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterDataProductServiceHandlerClient(ctx, mux, extDataplexpb.NewDataProductServiceClient(conn))
+	return RegisterDataProductServiceHandlerClient(ctx, mux, NewDataProductServiceClient(conn))
 }
 
 // RegisterDataProductServiceHandlerClient registers the http handlers for service DataProductService
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "extDataplexpb.DataProductServiceClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "extDataplexpb.DataProductServiceClient"
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "DataProductServiceClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "DataProductServiceClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "extDataplexpb.DataProductServiceClient" to call the correct interceptors.
-func RegisterDataProductServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client extDataplexpb.DataProductServiceClient) error {
+// "DataProductServiceClient" to call the correct interceptors.
+func RegisterDataProductServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client DataProductServiceClient) error {
 
 	mux.Handle("POST", pattern_DataProductService_CreateDataProduct_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())

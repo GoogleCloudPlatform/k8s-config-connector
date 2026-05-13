@@ -48,6 +48,50 @@ func DiscoveryEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.D
 	out.Network = direct.ValueOf(in.Network)
 	return out
 }
+func EncryptionInfo_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krm.EncryptionInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionInfo{}
+	// MISSING: EncryptionType
+	// MISSING: KMSKeyVersions
+	// MISSING: KMSKeyPrimaryState
+	// MISSING: LastUpdateTime
+	return out
+}
+func EncryptionInfo_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionInfo) *pb.EncryptionInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionInfo{}
+	// MISSING: EncryptionType
+	// MISSING: KMSKeyVersions
+	// MISSING: KMSKeyPrimaryState
+	// MISSING: LastUpdateTime
+	return out
+}
+func EncryptionInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krm.EncryptionInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionInfoObservedState{}
+	out.EncryptionType = direct.Enum_FromProto(mapCtx, in.GetEncryptionType())
+	out.KMSKeyVersions = in.KmsKeyVersions
+	out.KMSKeyPrimaryState = direct.Enum_FromProto(mapCtx, in.GetKmsKeyPrimaryState())
+	out.LastUpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastUpdateTime())
+	return out
+}
+func EncryptionInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionInfoObservedState) *pb.EncryptionInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionInfo{}
+	out.EncryptionType = direct.Enum_ToProto[pb.EncryptionInfo_Type](mapCtx, in.EncryptionType)
+	out.KmsKeyVersions = in.KMSKeyVersions
+	out.KmsKeyPrimaryState = direct.Enum_ToProto[pb.EncryptionInfo_KmsKeyState](mapCtx, in.KMSKeyPrimaryState)
+	out.LastUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.LastUpdateTime)
+	return out
+}
 
 /* found existing non-generated mapping function "Endpoint_FromProto", skipping
 func Endpoint_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceEndpoint) *krmmemorystorev1alpha1.Endpoint {
@@ -438,13 +482,25 @@ func MemorystoreInstanceEndpointObservedState_FromProto(mapCtx *direct.MapContex
 	// MISSING: PSCAttachmentDetails
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, EndpointObservedState_FromProto)
 	// MISSING: Mode
+	// MISSING: SimulateMaintenanceEvent
 	// MISSING: OndemandMaintenance
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	// MISSING: MaintenancePolicy
 	// MISSING: MaintenanceSchedule
 	// MISSING: CrossInstanceReplicationConfig
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
+	// MISSING: KMSKey
+	// MISSING: EncryptionInfo
 	// MISSING: BackupCollection
 	// MISSING: AutomatedBackupConfig
+	// MISSING: MaintenanceVersion
+	// MISSING: EffectiveMaintenanceVersion
+	// MISSING: AvailableMaintenanceVersions
+	// MISSING: AllowFewerZonesDeployment
+	// MISSING: ServerCAMode
+	// MISSING: ServerCAPool
+	// MISSING: RotateServerCertificate
 	return out
 }
 */
@@ -480,13 +536,25 @@ func MemorystoreInstanceEndpointObservedState_ToProto(mapCtx *direct.MapContext,
 	// MISSING: PSCAttachmentDetails
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, EndpointObservedState_ToProto)
 	// MISSING: Mode
+	// MISSING: SimulateMaintenanceEvent
 	// MISSING: OndemandMaintenance
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	// MISSING: MaintenancePolicy
 	// MISSING: MaintenanceSchedule
 	// MISSING: CrossInstanceReplicationConfig
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
+	// MISSING: KMSKey
+	// MISSING: EncryptionInfo
 	// MISSING: BackupCollection
 	// MISSING: AutomatedBackupConfig
+	// MISSING: MaintenanceVersion
+	// MISSING: EffectiveMaintenanceVersion
+	// MISSING: AvailableMaintenanceVersions
+	// MISSING: AllowFewerZonesDeployment
+	// MISSING: ServerCAMode
+	// MISSING: ServerCAPool
+	// MISSING: RotateServerCertificate
 	return out
 }
 */
@@ -522,13 +590,25 @@ func MemorystoreInstanceEndpointSpec_FromProto(mapCtx *direct.MapContext, in *pb
 	// MISSING: PSCAttachmentDetails
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Endpoint_FromProto)
 	// MISSING: Mode
+	// MISSING: SimulateMaintenanceEvent
 	// MISSING: OndemandMaintenance
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	// MISSING: MaintenancePolicy
 	// MISSING: MaintenanceSchedule
 	// MISSING: CrossInstanceReplicationConfig
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
+	// MISSING: KMSKey
+	// MISSING: EncryptionInfo
 	// MISSING: BackupCollection
 	// MISSING: AutomatedBackupConfig
+	// MISSING: MaintenanceVersion
+	// MISSING: EffectiveMaintenanceVersion
+	// MISSING: AvailableMaintenanceVersions
+	// MISSING: AllowFewerZonesDeployment
+	// MISSING: ServerCAMode
+	// MISSING: ServerCAPool
+	// MISSING: RotateServerCertificate
 	return out
 }
 */
@@ -564,13 +644,25 @@ func MemorystoreInstanceEndpointSpec_ToProto(mapCtx *direct.MapContext, in *krmm
 	// MISSING: PSCAttachmentDetails
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Endpoint_ToProto)
 	// MISSING: Mode
+	// MISSING: SimulateMaintenanceEvent
 	// MISSING: OndemandMaintenance
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	// MISSING: MaintenancePolicy
 	// MISSING: MaintenanceSchedule
 	// MISSING: CrossInstanceReplicationConfig
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
+	// MISSING: KMSKey
+	// MISSING: EncryptionInfo
 	// MISSING: BackupCollection
 	// MISSING: AutomatedBackupConfig
+	// MISSING: MaintenanceVersion
+	// MISSING: EffectiveMaintenanceVersion
+	// MISSING: AvailableMaintenanceVersions
+	// MISSING: AllowFewerZonesDeployment
+	// MISSING: ServerCAMode
+	// MISSING: ServerCAPool
+	// MISSING: RotateServerCertificate
 	return out
 }
 */
@@ -595,12 +687,23 @@ func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	// MISSING: PSCAttachmentDetails
 	// (near miss): "PSCAttachmentDetails" vs "PscAttachmentDetails"
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_FromProto)
+	// MISSING: SimulateMaintenanceEvent
 	// MISSING: OndemandMaintenance
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	// MISSING: MaintenancePolicy
 	// MISSING: MaintenanceSchedule
 	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfigObservedState_FromProto(mapCtx, in.GetCrossInstanceReplicationConfig())
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
+	// MISSING: KMSKey
+	// MISSING: EncryptionInfo
 	// MISSING: BackupCollection
+	out.EffectiveMaintenanceVersion = in.EffectiveMaintenanceVersion
+	out.AvailableMaintenanceVersions = in.AvailableMaintenanceVersions
+	// MISSING: AllowFewerZonesDeployment
+	// MISSING: ServerCAMode
+	// MISSING: ServerCAPool
+	// MISSING: RotateServerCertificate
 	return out
 }
 */
@@ -625,12 +728,23 @@ func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: PSCAttachmentDetails
 	// (near miss): "PSCAttachmentDetails" vs "PscAttachmentDetails"
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_ToProto)
+	// MISSING: SimulateMaintenanceEvent
 	// MISSING: OndemandMaintenance
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	// MISSING: MaintenancePolicy
 	// MISSING: MaintenanceSchedule
 	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfigObservedState_ToProto(mapCtx, in.CrossInstanceReplicationConfig)
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
+	// MISSING: KMSKey
+	// MISSING: EncryptionInfo
 	// MISSING: BackupCollection
+	out.EffectiveMaintenanceVersion = in.EffectiveMaintenanceVersion
+	out.AvailableMaintenanceVersions = in.AvailableMaintenanceVersions
+	// MISSING: AllowFewerZonesDeployment
+	// MISSING: ServerCAMode
+	// MISSING: ServerCAPool
+	// MISSING: RotateServerCertificate
 	return out
 }
 */
@@ -660,13 +774,23 @@ func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instanc
 	// MISSING: PSCAttachmentDetails
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_FromProto)
 	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	// MISSING: SimulateMaintenanceEvent
 	// MISSING: OndemandMaintenance
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	// MISSING: MaintenancePolicy
 	// MISSING: MaintenanceSchedule
 	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_FromProto(mapCtx, in.GetCrossInstanceReplicationConfig())
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
+	// MISSING: KMSKey
+	// MISSING: EncryptionInfo
 	// MISSING: BackupCollection
 	out.AutomatedBackupConfig = AutomatedBackupConfig_FromProto(mapCtx, in.GetAutomatedBackupConfig())
+	out.MaintenanceVersion = in.MaintenanceVersion
+	// MISSING: AllowFewerZonesDeployment
+	// MISSING: ServerCAMode
+	// MISSING: ServerCAPool
+	// MISSING: RotateServerCertificate
 	return out
 }
 */
@@ -696,13 +820,23 @@ func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Memoryst
 	// MISSING: PSCAttachmentDetails
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_ToProto)
 	out.Mode = direct.Enum_ToProto[pb.Instance_Mode](mapCtx, in.Mode)
+	// MISSING: SimulateMaintenanceEvent
 	// MISSING: OndemandMaintenance
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	// MISSING: MaintenancePolicy
 	// MISSING: MaintenanceSchedule
 	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_ToProto(mapCtx, in.CrossInstanceReplicationConfig)
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
+	// MISSING: KMSKey
+	// MISSING: EncryptionInfo
 	// MISSING: BackupCollection
 	out.AutomatedBackupConfig = AutomatedBackupConfig_ToProto(mapCtx, in.AutomatedBackupConfig)
+	out.MaintenanceVersion = in.MaintenanceVersion
+	// MISSING: AllowFewerZonesDeployment
+	// MISSING: ServerCAMode
+	// MISSING: ServerCAPool
+	// MISSING: RotateServerCertificate
 	return out
 }
 */

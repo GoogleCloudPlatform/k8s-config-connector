@@ -34,24 +34,28 @@ type ConfigSync struct {
 	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.ConfigSync.git
 	Git *GitConfig `json:"git,omitempty"`
 
-	// Optional. Specifies whether the Config Sync Repo is
-	//  in "hierarchical" or "unstructured" mode.
+	// Optional. Specifies whether the Config Sync repo is in `hierarchical` or
+	//  `unstructured` mode. Defaults to `hierarchical`. See
+	//  https://docs.cloud.google.com/kubernetes-engine/config-sync/docs/concepts/configs#organize-configs
+	//  for an explanation.
 	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.ConfigSync.source_format
 	SourceFormat *string `json:"sourceFormat,omitempty"`
 
-	// Optional. Enables the installation of ConfigSync.
-	//  If set to true, ConfigSync resources will be created and the other
-	//  ConfigSync fields will be applied if exist.
-	//  If set to false, all other ConfigSync fields will be ignored, ConfigSync
-	//  resources will be deleted.
-	//  If omitted, ConfigSync resources will be managed depends on the presence
-	//  of the git or oci field.
+	// Optional. Enables the installation of Config Sync.
+	//  If set to true, the Feature will manage Config Sync resources,
+	//  and apply the other ConfigSync fields if they exist.
+	//  If set to false, the Feature will ignore all other ConfigSync fields and
+	//  delete the Config Sync resources.
+	//  If omitted, ConfigSync is considered enabled if the git or oci field is
+	//  present.
 	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.ConfigSync.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 
 	// Optional. Set to true to enable the Config Sync admission webhook to
-	//  prevent drifts. If set to `false`, disables the Config Sync admission
-	//  webhook and does not prevent drifts.
+	//  prevent drifts. If set to false, disables the Config Sync admission webhook
+	//  and does not prevent drifts. Defaults to false. See
+	//  https://docs.cloud.google.com/kubernetes-engine/config-sync/docs/how-to/prevent-config-drift
+	//  for details.
 	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.ConfigSync.prevent_drift
 	PreventDrift *bool `json:"preventDrift,omitempty"`
 
@@ -63,6 +67,63 @@ type ConfigSync struct {
 	//  Default to false.
 	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.ConfigSync.stop_syncing
 	StopSyncing *bool `json:"stopSyncing,omitempty"`
+
+	// Optional. Configuration for deployment overrides.
+	//  Applies only to Config Sync deployments with containers that are not a root
+	//  or namespace reconciler: `reconciler-manager`, `otel-collector`,
+	//  `resource-group-controller-manager`, `admission-webhook`.
+	//  To override a root or namespace reconciler, use the rootsync or reposync
+	//  fields at
+	//  https://docs.cloud.google.com/kubernetes-engine/config-sync/docs/reference/rootsync-reposync-fields#override-resources
+	//  instead.
+	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.ConfigSync.deployment_overrides
+	DeploymentOverrides []DeploymentOverride `json:"deploymentOverrides,omitempty"`
+}
+
+// +kcc:proto=google.cloud.gkehub.configmanagement.v1beta.ContainerOverride
+type ContainerOverride struct {
+	// Required. The name of the container.
+	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.ContainerOverride.container_name
+	ContainerName *string `json:"containerName,omitempty"`
+
+	// Optional. The cpu request of the container. Use the following CPU resource
+	//  units:
+	//  https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-cpu.
+	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.ContainerOverride.cpu_request
+	CPURequest *string `json:"cpuRequest,omitempty"`
+
+	// Optional. The cpu limit of the container. Use the following CPU resource
+	//  units:
+	//  https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-cpu.
+	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.ContainerOverride.cpu_limit
+	CPULimit *string `json:"cpuLimit,omitempty"`
+
+	// Optional. The memory request of the container. Use the following memory
+	//  resource units:
+	//  https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-memory.
+	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.ContainerOverride.memory_request
+	MemoryRequest *string `json:"memoryRequest,omitempty"`
+
+	// Optional. The memory limit of the container. Use the following memory
+	//  resource units:
+	//  https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-memory.
+	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.ContainerOverride.memory_limit
+	MemoryLimit *string `json:"memoryLimit,omitempty"`
+}
+
+// +kcc:proto=google.cloud.gkehub.configmanagement.v1beta.DeploymentOverride
+type DeploymentOverride struct {
+	// Required. The name of the deployment resource to be overridden.
+	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.DeploymentOverride.deployment_name
+	DeploymentName *string `json:"deploymentName,omitempty"`
+
+	// Required. The namespace of the deployment resource to be overridden.
+	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.DeploymentOverride.deployment_namespace
+	DeploymentNamespace *string `json:"deploymentNamespace,omitempty"`
+
+	// Optional. The containers of the deployment resource to be overridden.
+	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.DeploymentOverride.containers
+	Containers []ContainerOverride `json:"containers,omitempty"`
 }
 
 // +kcc:proto=google.cloud.gkehub.configmanagement.v1beta.GitConfig
@@ -89,19 +150,20 @@ type GitConfig struct {
 	SyncRev *string `json:"syncRev,omitempty"`
 
 	// Required. Type of secret configured for access to the Git repo.
-	//  Must be one of ssh, cookiefile, gcenode, token, gcpserviceaccount,
-	//  githubapp or none.
+	//  Must be one of `ssh`, `cookiefile`, `gcenode`, `token`,
+	//  `gcpserviceaccount`, `githubapp` or `none`.
 	//  The validation of this is case-sensitive.
 	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.GitConfig.secret_type
 	SecretType *string `json:"secretType,omitempty"`
 
 	// Optional. URL for the HTTPS proxy to be used when communicating with the
-	//  Git repo.
+	//  Git repo. Only specify when secret_type is `cookiefile`, `token`, or
+	//  `none`.
 	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.GitConfig.https_proxy
 	HTTPSProxy *string `json:"httpsProxy,omitempty"`
 
 	// Optional. The Google Cloud Service Account Email used for auth when
-	//  secret_type is gcpServiceAccount.
+	//  secret_type is `gcpserviceaccount`.
 	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.GitConfig.gcp_service_account_email
 	GcpServiceAccountEmail *string `json:"gcpServiceAccountEmail,omitempty"`
 }
@@ -138,13 +200,14 @@ type OciConfig struct {
 	SyncWaitSecs *int64 `json:"syncWaitSecs,omitempty"`
 
 	// Required. Type of secret configured for access to the OCI repo.
-	//  Must be one of gcenode, gcpserviceaccount, k8sserviceaccount or none.
+	//  Must be one of `gcenode`, `gcpserviceaccount`, `k8sserviceaccount` or
+	//  `none`.
 	//  The validation of this is case-sensitive.
 	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.OciConfig.secret_type
 	SecretType *string `json:"secretType,omitempty"`
 
 	// Optional. The Google Cloud Service Account Email used for auth when
-	//  secret_type is gcpServiceAccount.
+	//  secret_type is `gcpserviceaccount`.
 	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.OciConfig.gcp_service_account_email
 	GcpServiceAccountEmail *string `json:"gcpServiceAccountEmail,omitempty"`
 }

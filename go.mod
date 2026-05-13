@@ -9,7 +9,7 @@ replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 require (
 	cloud.google.com/go/accesscontextmanager v1.9.7
 	cloud.google.com/go/aiplatform v1.123.0
-	cloud.google.com/go/alloydb v1.20.0
+	cloud.google.com/go/alloydb v1.26.0
 	cloud.google.com/go/analytics v0.35.0
 	cloud.google.com/go/apigateway v1.7.7
 	cloud.google.com/go/apikeys v1.2.7
@@ -26,13 +26,13 @@ require (
 	cloud.google.com/go/clouddms v1.8.8
 	cloud.google.com/go/cloudquotas v1.4.0
 	cloud.google.com/go/cloudtasks v1.13.7
-	cloud.google.com/go/compute v1.54.0
+	cloud.google.com/go/compute v1.62.0
 	cloud.google.com/go/configdelivery v0.1.1
 	cloud.google.com/go/datacatalog v1.26.1
 	cloud.google.com/go/dataflow v0.11.1
 	cloud.google.com/go/dataform v0.13.0
 	cloud.google.com/go/dataplex v1.34.0
-	cloud.google.com/go/dataproc/v2 v2.19.0
+	cloud.google.com/go/dataproc/v2 v2.21.0
 	cloud.google.com/go/datastream v1.15.1
 	cloud.google.com/go/deploy v1.27.3
 	cloud.google.com/go/discoveryengine v1.22.0
@@ -67,7 +67,7 @@ require (
 	cloud.google.com/go/resourcemanager v1.10.7
 	cloud.google.com/go/run v1.15.0
 	cloud.google.com/go/secretmanager v1.16.0
-	cloud.google.com/go/securesourcemanager v1.4.1
+	cloud.google.com/go/securesourcemanager v1.9.0
 	cloud.google.com/go/security v1.19.2
 	cloud.google.com/go/spanner v1.88.0
 	cloud.google.com/go/speech v1.30.0

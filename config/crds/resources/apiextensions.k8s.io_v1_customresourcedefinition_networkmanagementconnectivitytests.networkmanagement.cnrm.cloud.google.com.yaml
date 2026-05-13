@@ -780,6 +780,65 @@ spec:
                             description: Name of the metropolitan area.
                             type: string
                         type: object
+                      edgeResponses:
+                        description: Active probing results for every edge location
+                          from which probes are sent.
+                        items:
+                          properties:
+                            destinationEgressLocation:
+                              description: The EdgeLocation from which a packet, destined
+                                to the internet, will egress the Google network. This
+                                will only be populated for a connectivity test which
+                                has an internet destination address. The absence of
+                                this field *must not* be used as an indication that
+                                the destination is part of the Google network.
+                              properties:
+                                metropolitanArea:
+                                  description: Name of the metropolitan area.
+                                  type: string
+                              type: object
+                            destinationRouter:
+                              description: 'Router name in the format ''{router}.{metroshard}''.
+                                For example: pf01.aaa01, pr02.aaa01.'
+                              type: string
+                            probingLatency:
+                              description: 'Latency as measured by active probing
+                                in one direction: from the source to the destination
+                                endpoint.'
+                              properties:
+                                latencyPercentiles:
+                                  description: Representative latency percentiles.
+                                  items:
+                                    properties:
+                                      latencyMicros:
+                                        description: percent-th percentile of latency
+                                          observed, in microseconds. Fraction of percent/100
+                                          of samples have latency lower or equal to
+                                          the value of this field.
+                                        format: int64
+                                        type: integer
+                                      percent:
+                                        description: Percentage of samples this data
+                                          point applies to.
+                                        format: int32
+                                        type: integer
+                                    type: object
+                                  type: array
+                              type: object
+                            result:
+                              description: The overall result of active probing for
+                                this egress device.
+                              type: string
+                            sentProbeCount:
+                              description: Number of probes sent.
+                              format: int32
+                              type: integer
+                            successfulProbeCount:
+                              description: Number of probes that reached the destination.
+                              format: int32
+                              type: integer
+                          type: object
+                        type: array
                       endpointInfo:
                         description: The source and destination endpoints derived
                           from the test input and used for active probing.
@@ -874,6 +933,9 @@ spec:
                               field, or localized by the client.
                             type: string
                         type: object
+                      probedAllDevices:
+                        description: Whether all relevant edge devices were probed.
+                        type: boolean
                       probingLatency:
                         description: 'Latency as measured by active probing in one
                           direction: from the source to the destination endpoint.'

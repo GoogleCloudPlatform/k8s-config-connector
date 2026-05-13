@@ -368,6 +368,48 @@ type ProbingDetailsObservedState struct {
 	//  destination/source is part of the Google network.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.ProbingDetails.destination_egress_location
 	DestinationEgressLocation *ProbingDetails_EdgeLocationObservedState `json:"destinationEgressLocation,omitempty"`
+
+	// Active probing results for every edge location from which probes are sent.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.ProbingDetails.edge_responses
+	EdgeResponses []ProbingDetails_SingleEdgeResponseObservedState `json:"edgeResponses,omitempty"`
+
+	// Whether all relevant edge devices were probed.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.ProbingDetails.probed_all_devices
+	ProbedAllDevices *bool `json:"probedAllDevices,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networkmanagement.v1.ProbingDetails.SingleEdgeResponse
+type ProbingDetails_SingleEdgeResponseObservedState struct {
+	// The overall result of active probing for this egress device.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.ProbingDetails.SingleEdgeResponse.result
+	Result *string `json:"result,omitempty"`
+
+	// Number of probes sent.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.ProbingDetails.SingleEdgeResponse.sent_probe_count
+	SentProbeCount *int32 `json:"sentProbeCount,omitempty"`
+
+	// Number of probes that reached the destination.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.ProbingDetails.SingleEdgeResponse.successful_probe_count
+	SuccessfulProbeCount *int32 `json:"successfulProbeCount,omitempty"`
+
+	// Latency as measured by active probing in one direction: from the source
+	//  to the destination endpoint.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.ProbingDetails.SingleEdgeResponse.probing_latency
+	ProbingLatency *LatencyDistributionObservedState `json:"probingLatency,omitempty"`
+
+	// The EdgeLocation from which a packet, destined to the internet, will
+	//  egress the Google network.
+	//  This will only be populated for a connectivity test which has an internet
+	//  destination address.
+	//  The absence of this field *must not* be used as an indication that the
+	//  destination is part of the Google network.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.ProbingDetails.SingleEdgeResponse.destination_egress_location
+	DestinationEgressLocation *ProbingDetails_EdgeLocationObservedState `json:"destinationEgressLocation,omitempty"`
+
+	// Router name in the format '{router}.{metroshard}'. For example:
+	//  pf01.aaa01, pr02.aaa01.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.ProbingDetails.SingleEdgeResponse.destination_router
+	DestinationRouter *string `json:"destinationRouter,omitempty"`
 }
 
 // +kcc:proto=google.cloud.networkmanagement.v1.ProbingDetails.EdgeLocation

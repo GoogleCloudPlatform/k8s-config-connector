@@ -19,20 +19,34 @@ import (
 	"fmt"
 
 	api "cloud.google.com/go/firestore/apiv1"
-	adminapi "cloud.google.com/go/firestore/apiv1/admin"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/firestore/admin/v1"
+	"google.golang.org/api/transport/grpc"
+	"google.golang.org/genproto/googleapis/longrunning"
 )
 
-func newFirestoreAdminClient(ctx context.Context, config *config.ControllerConfig) (*adminapi.FirestoreAdminClient, error) {
-	opts, err := config.RESTClientOptions()
+func newFirestoreAdminClient(ctx context.Context, config *config.ControllerConfig) (pb.FirestoreAdminClient, error) {
+	opts, err := config.GRPCClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	client, err := adminapi.NewFirestoreAdminRESTClient(ctx, opts...)
+	conn, err := grpc.Dial(ctx, opts...)
 	if err != nil {
-		return nil, fmt.Errorf("building firestore admin client: %w", err)
+		return nil, err
 	}
-	return client, err
+	return pb.NewFirestoreAdminClient(conn), nil
+}
+
+func newOperationsClient(ctx context.Context, config *config.ControllerConfig) (longrunning.OperationsClient, error) {
+	opts, err := config.GRPCClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	conn, err := grpc.Dial(ctx, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return longrunning.NewOperationsClient(conn), nil
 }
 
 func newFirestoreClient(ctx context.Context, config *config.ControllerConfig) (*api.Client, error) {

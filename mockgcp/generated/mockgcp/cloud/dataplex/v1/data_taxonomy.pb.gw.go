@@ -13,7 +13,6 @@ import (
 	"io"
 	"net/http"
 
-	extDataplexpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataplex/v1"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
 	"google.golang.org/grpc"
@@ -36,8 +35,8 @@ var (
 	filter_DataTaxonomyService_CreateDataTaxonomy_0 = &utilities.DoubleArray{Encoding: map[string]int{"data_taxonomy": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_DataTaxonomyService_CreateDataTaxonomy_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateDataTaxonomyRequest
+func request_DataTaxonomyService_CreateDataTaxonomy_0(ctx context.Context, marshaler runtime.Marshaler, client DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateDataTaxonomyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -77,8 +76,8 @@ func request_DataTaxonomyService_CreateDataTaxonomy_0(ctx context.Context, marsh
 
 }
 
-func local_request_DataTaxonomyService_CreateDataTaxonomy_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateDataTaxonomyRequest
+func local_request_DataTaxonomyService_CreateDataTaxonomy_0(ctx context.Context, marshaler runtime.Marshaler, server DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateDataTaxonomyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -122,8 +121,8 @@ var (
 	filter_DataTaxonomyService_UpdateDataTaxonomy_0 = &utilities.DoubleArray{Encoding: map[string]int{"data_taxonomy": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_DataTaxonomyService_UpdateDataTaxonomy_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateDataTaxonomyRequest
+func request_DataTaxonomyService_UpdateDataTaxonomy_0(ctx context.Context, marshaler runtime.Marshaler, client DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateDataTaxonomyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -170,8 +169,8 @@ func request_DataTaxonomyService_UpdateDataTaxonomy_0(ctx context.Context, marsh
 
 }
 
-func local_request_DataTaxonomyService_UpdateDataTaxonomy_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateDataTaxonomyRequest
+func local_request_DataTaxonomyService_UpdateDataTaxonomy_0(ctx context.Context, marshaler runtime.Marshaler, server DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateDataTaxonomyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -222,8 +221,8 @@ var (
 	filter_DataTaxonomyService_DeleteDataTaxonomy_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_DataTaxonomyService_DeleteDataTaxonomy_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteDataTaxonomyRequest
+func request_DataTaxonomyService_DeleteDataTaxonomy_0(ctx context.Context, marshaler runtime.Marshaler, client DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteDataTaxonomyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -255,8 +254,8 @@ func request_DataTaxonomyService_DeleteDataTaxonomy_0(ctx context.Context, marsh
 
 }
 
-func local_request_DataTaxonomyService_DeleteDataTaxonomy_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteDataTaxonomyRequest
+func local_request_DataTaxonomyService_DeleteDataTaxonomy_0(ctx context.Context, marshaler runtime.Marshaler, server DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteDataTaxonomyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -292,8 +291,8 @@ var (
 	filter_DataTaxonomyService_ListDataTaxonomies_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_DataTaxonomyService_ListDataTaxonomies_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListDataTaxonomiesRequest
+func request_DataTaxonomyService_ListDataTaxonomies_0(ctx context.Context, marshaler runtime.Marshaler, client DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListDataTaxonomiesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -325,8 +324,8 @@ func request_DataTaxonomyService_ListDataTaxonomies_0(ctx context.Context, marsh
 
 }
 
-func local_request_DataTaxonomyService_ListDataTaxonomies_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListDataTaxonomiesRequest
+func local_request_DataTaxonomyService_ListDataTaxonomies_0(ctx context.Context, marshaler runtime.Marshaler, server DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListDataTaxonomiesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -358,8 +357,8 @@ func local_request_DataTaxonomyService_ListDataTaxonomies_0(ctx context.Context,
 
 }
 
-func request_DataTaxonomyService_GetDataTaxonomy_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetDataTaxonomyRequest
+func request_DataTaxonomyService_GetDataTaxonomy_0(ctx context.Context, marshaler runtime.Marshaler, client DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDataTaxonomyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -384,8 +383,8 @@ func request_DataTaxonomyService_GetDataTaxonomy_0(ctx context.Context, marshale
 
 }
 
-func local_request_DataTaxonomyService_GetDataTaxonomy_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetDataTaxonomyRequest
+func local_request_DataTaxonomyService_GetDataTaxonomy_0(ctx context.Context, marshaler runtime.Marshaler, server DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDataTaxonomyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -414,8 +413,8 @@ var (
 	filter_DataTaxonomyService_CreateDataAttributeBinding_0 = &utilities.DoubleArray{Encoding: map[string]int{"data_attribute_binding": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_DataTaxonomyService_CreateDataAttributeBinding_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateDataAttributeBindingRequest
+func request_DataTaxonomyService_CreateDataAttributeBinding_0(ctx context.Context, marshaler runtime.Marshaler, client DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateDataAttributeBindingRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -455,8 +454,8 @@ func request_DataTaxonomyService_CreateDataAttributeBinding_0(ctx context.Contex
 
 }
 
-func local_request_DataTaxonomyService_CreateDataAttributeBinding_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateDataAttributeBindingRequest
+func local_request_DataTaxonomyService_CreateDataAttributeBinding_0(ctx context.Context, marshaler runtime.Marshaler, server DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateDataAttributeBindingRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -500,8 +499,8 @@ var (
 	filter_DataTaxonomyService_UpdateDataAttributeBinding_0 = &utilities.DoubleArray{Encoding: map[string]int{"data_attribute_binding": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_DataTaxonomyService_UpdateDataAttributeBinding_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateDataAttributeBindingRequest
+func request_DataTaxonomyService_UpdateDataAttributeBinding_0(ctx context.Context, marshaler runtime.Marshaler, client DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateDataAttributeBindingRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -548,8 +547,8 @@ func request_DataTaxonomyService_UpdateDataAttributeBinding_0(ctx context.Contex
 
 }
 
-func local_request_DataTaxonomyService_UpdateDataAttributeBinding_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateDataAttributeBindingRequest
+func local_request_DataTaxonomyService_UpdateDataAttributeBinding_0(ctx context.Context, marshaler runtime.Marshaler, server DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateDataAttributeBindingRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -600,8 +599,8 @@ var (
 	filter_DataTaxonomyService_DeleteDataAttributeBinding_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_DataTaxonomyService_DeleteDataAttributeBinding_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteDataAttributeBindingRequest
+func request_DataTaxonomyService_DeleteDataAttributeBinding_0(ctx context.Context, marshaler runtime.Marshaler, client DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteDataAttributeBindingRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -633,8 +632,8 @@ func request_DataTaxonomyService_DeleteDataAttributeBinding_0(ctx context.Contex
 
 }
 
-func local_request_DataTaxonomyService_DeleteDataAttributeBinding_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteDataAttributeBindingRequest
+func local_request_DataTaxonomyService_DeleteDataAttributeBinding_0(ctx context.Context, marshaler runtime.Marshaler, server DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteDataAttributeBindingRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -670,8 +669,8 @@ var (
 	filter_DataTaxonomyService_ListDataAttributeBindings_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_DataTaxonomyService_ListDataAttributeBindings_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListDataAttributeBindingsRequest
+func request_DataTaxonomyService_ListDataAttributeBindings_0(ctx context.Context, marshaler runtime.Marshaler, client DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListDataAttributeBindingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -703,8 +702,8 @@ func request_DataTaxonomyService_ListDataAttributeBindings_0(ctx context.Context
 
 }
 
-func local_request_DataTaxonomyService_ListDataAttributeBindings_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListDataAttributeBindingsRequest
+func local_request_DataTaxonomyService_ListDataAttributeBindings_0(ctx context.Context, marshaler runtime.Marshaler, server DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListDataAttributeBindingsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -736,8 +735,8 @@ func local_request_DataTaxonomyService_ListDataAttributeBindings_0(ctx context.C
 
 }
 
-func request_DataTaxonomyService_GetDataAttributeBinding_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetDataAttributeBindingRequest
+func request_DataTaxonomyService_GetDataAttributeBinding_0(ctx context.Context, marshaler runtime.Marshaler, client DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDataAttributeBindingRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -762,8 +761,8 @@ func request_DataTaxonomyService_GetDataAttributeBinding_0(ctx context.Context, 
 
 }
 
-func local_request_DataTaxonomyService_GetDataAttributeBinding_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetDataAttributeBindingRequest
+func local_request_DataTaxonomyService_GetDataAttributeBinding_0(ctx context.Context, marshaler runtime.Marshaler, server DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDataAttributeBindingRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -792,8 +791,8 @@ var (
 	filter_DataTaxonomyService_CreateDataAttribute_0 = &utilities.DoubleArray{Encoding: map[string]int{"data_attribute": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_DataTaxonomyService_CreateDataAttribute_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateDataAttributeRequest
+func request_DataTaxonomyService_CreateDataAttribute_0(ctx context.Context, marshaler runtime.Marshaler, client DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateDataAttributeRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -833,8 +832,8 @@ func request_DataTaxonomyService_CreateDataAttribute_0(ctx context.Context, mars
 
 }
 
-func local_request_DataTaxonomyService_CreateDataAttribute_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.CreateDataAttributeRequest
+func local_request_DataTaxonomyService_CreateDataAttribute_0(ctx context.Context, marshaler runtime.Marshaler, server DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateDataAttributeRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -878,8 +877,8 @@ var (
 	filter_DataTaxonomyService_UpdateDataAttribute_0 = &utilities.DoubleArray{Encoding: map[string]int{"data_attribute": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
 )
 
-func request_DataTaxonomyService_UpdateDataAttribute_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateDataAttributeRequest
+func request_DataTaxonomyService_UpdateDataAttribute_0(ctx context.Context, marshaler runtime.Marshaler, client DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateDataAttributeRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -926,8 +925,8 @@ func request_DataTaxonomyService_UpdateDataAttribute_0(ctx context.Context, mars
 
 }
 
-func local_request_DataTaxonomyService_UpdateDataAttribute_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.UpdateDataAttributeRequest
+func local_request_DataTaxonomyService_UpdateDataAttribute_0(ctx context.Context, marshaler runtime.Marshaler, server DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateDataAttributeRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -978,8 +977,8 @@ var (
 	filter_DataTaxonomyService_DeleteDataAttribute_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_DataTaxonomyService_DeleteDataAttribute_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteDataAttributeRequest
+func request_DataTaxonomyService_DeleteDataAttribute_0(ctx context.Context, marshaler runtime.Marshaler, client DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteDataAttributeRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1011,8 +1010,8 @@ func request_DataTaxonomyService_DeleteDataAttribute_0(ctx context.Context, mars
 
 }
 
-func local_request_DataTaxonomyService_DeleteDataAttribute_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.DeleteDataAttributeRequest
+func local_request_DataTaxonomyService_DeleteDataAttribute_0(ctx context.Context, marshaler runtime.Marshaler, server DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteDataAttributeRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1048,8 +1047,8 @@ var (
 	filter_DataTaxonomyService_ListDataAttributes_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_DataTaxonomyService_ListDataAttributes_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListDataAttributesRequest
+func request_DataTaxonomyService_ListDataAttributes_0(ctx context.Context, marshaler runtime.Marshaler, client DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListDataAttributesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1081,8 +1080,8 @@ func request_DataTaxonomyService_ListDataAttributes_0(ctx context.Context, marsh
 
 }
 
-func local_request_DataTaxonomyService_ListDataAttributes_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.ListDataAttributesRequest
+func local_request_DataTaxonomyService_ListDataAttributes_0(ctx context.Context, marshaler runtime.Marshaler, server DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListDataAttributesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1114,8 +1113,8 @@ func local_request_DataTaxonomyService_ListDataAttributes_0(ctx context.Context,
 
 }
 
-func request_DataTaxonomyService_GetDataAttribute_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetDataAttributeRequest
+func request_DataTaxonomyService_GetDataAttribute_0(ctx context.Context, marshaler runtime.Marshaler, client DataTaxonomyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDataAttributeRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1140,8 +1139,8 @@ func request_DataTaxonomyService_GetDataAttribute_0(ctx context.Context, marshal
 
 }
 
-func local_request_DataTaxonomyService_GetDataAttribute_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extDataplexpb.GetDataAttributeRequest
+func local_request_DataTaxonomyService_GetDataAttribute_0(ctx context.Context, marshaler runtime.Marshaler, server DataTaxonomyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDataAttributeRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1170,7 +1169,7 @@ func local_request_DataTaxonomyService_GetDataAttribute_0(ctx context.Context, m
 // UnaryRPC     :call DataTaxonomyServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterDataTaxonomyServiceHandlerFromEndpoint instead.
-func RegisterDataTaxonomyServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server extDataplexpb.DataTaxonomyServiceServer) error {
+func RegisterDataTaxonomyServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server DataTaxonomyServiceServer) error {
 
 	mux.Handle("POST", pattern_DataTaxonomyService_CreateDataTaxonomy_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -1578,15 +1577,15 @@ func RegisterDataTaxonomyServiceHandlerFromEndpoint(ctx context.Context, mux *ru
 // RegisterDataTaxonomyServiceHandler registers the http handlers for service DataTaxonomyService to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
 func RegisterDataTaxonomyServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterDataTaxonomyServiceHandlerClient(ctx, mux, extDataplexpb.NewDataTaxonomyServiceClient(conn))
+	return RegisterDataTaxonomyServiceHandlerClient(ctx, mux, NewDataTaxonomyServiceClient(conn))
 }
 
 // RegisterDataTaxonomyServiceHandlerClient registers the http handlers for service DataTaxonomyService
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "extDataplexpb.DataTaxonomyServiceClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "extDataplexpb.DataTaxonomyServiceClient"
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "DataTaxonomyServiceClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "DataTaxonomyServiceClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "extDataplexpb.DataTaxonomyServiceClient" to call the correct interceptors.
-func RegisterDataTaxonomyServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client extDataplexpb.DataTaxonomyServiceClient) error {
+// "DataTaxonomyServiceClient" to call the correct interceptors.
+func RegisterDataTaxonomyServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client DataTaxonomyServiceClient) error {
 
 	mux.Handle("POST", pattern_DataTaxonomyService_CreateDataTaxonomy_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())

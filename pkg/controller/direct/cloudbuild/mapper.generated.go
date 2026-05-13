@@ -666,6 +666,7 @@ func BuiltImage_FromProto(mapCtx *direct.MapContext, in *pb.BuiltImage) *krm.Bui
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Digest = direct.LazyPtr(in.GetDigest())
 	// MISSING: PushTiming
+	// MISSING: ArtifactRegistryPackage
 	return out
 }
 func BuiltImage_ToProto(mapCtx *direct.MapContext, in *krm.BuiltImage) *pb.BuiltImage {
@@ -676,6 +677,7 @@ func BuiltImage_ToProto(mapCtx *direct.MapContext, in *krm.BuiltImage) *pb.Built
 	out.Name = direct.ValueOf(in.Name)
 	out.Digest = direct.ValueOf(in.Digest)
 	// MISSING: PushTiming
+	// MISSING: ArtifactRegistryPackage
 	return out
 }
 func BuiltImageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BuiltImage) *krm.BuiltImageObservedState {
@@ -686,6 +688,7 @@ func BuiltImageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BuiltIm
 	// MISSING: Name
 	// MISSING: Digest
 	out.PushTiming = TimeSpan_FromProto(mapCtx, in.GetPushTiming())
+	out.ArtifactRegistryPackage = direct.LazyPtr(in.GetArtifactRegistryPackage())
 	return out
 }
 func BuiltImageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BuiltImageObservedState) *pb.BuiltImage {
@@ -696,6 +699,7 @@ func BuiltImageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BuiltIma
 	// MISSING: Name
 	// MISSING: Digest
 	out.PushTiming = TimeSpan_ToProto(mapCtx, in.PushTiming)
+	out.ArtifactRegistryPackage = direct.ValueOf(in.ArtifactRegistryPackage)
 	return out
 }
 
@@ -901,6 +905,26 @@ found existing non-generated mapping function "CloudBuildWorkerPoolSpec_ToProto"
 		return out
 	}
 */
+func ConnectedRepository_FromProto(mapCtx *direct.MapContext, in *pb.ConnectedRepository) *krm.ConnectedRepository {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConnectedRepository{}
+	out.Repository = direct.LazyPtr(in.GetRepository())
+	out.Dir = direct.LazyPtr(in.GetDir())
+	out.Revision = direct.LazyPtr(in.GetRevision())
+	return out
+}
+func ConnectedRepository_ToProto(mapCtx *direct.MapContext, in *krm.ConnectedRepository) *pb.ConnectedRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConnectedRepository{}
+	out.Repository = direct.ValueOf(in.Repository)
+	out.Dir = direct.ValueOf(in.Dir)
+	out.Revision = direct.ValueOf(in.Revision)
+	return out
+}
 func Dependency_FromProto(mapCtx *direct.MapContext, in *pb.Dependency) *krm.Dependency {
 	if in == nil {
 		return nil
@@ -1629,6 +1653,7 @@ func Source_FromProto(mapCtx *direct.MapContext, in *pb.Source) *krm.Source {
 	out.RepoSource = RepoSource_FromProto(mapCtx, in.GetRepoSource())
 	out.GitSource = GitSource_FromProto(mapCtx, in.GetGitSource())
 	out.StorageSourceManifest = StorageSourceManifest_FromProto(mapCtx, in.GetStorageSourceManifest())
+	out.ConnectedRepository = ConnectedRepository_FromProto(mapCtx, in.GetConnectedRepository())
 	return out
 }
 func Source_ToProto(mapCtx *direct.MapContext, in *krm.Source) *pb.Source {
@@ -1648,6 +1673,9 @@ func Source_ToProto(mapCtx *direct.MapContext, in *krm.Source) *pb.Source {
 	if oneof := StorageSourceManifest_ToProto(mapCtx, in.StorageSourceManifest); oneof != nil {
 		out.Source = &pb.Source_StorageSourceManifest{StorageSourceManifest: oneof}
 	}
+	if oneof := ConnectedRepository_ToProto(mapCtx, in.ConnectedRepository); oneof != nil {
+		out.Source = &pb.Source_ConnectedRepository{ConnectedRepository: oneof}
+	}
 	return out
 }
 func SourceProvenance_FromProto(mapCtx *direct.MapContext, in *pb.SourceProvenance) *krm.SourceProvenance {
@@ -1658,6 +1686,8 @@ func SourceProvenance_FromProto(mapCtx *direct.MapContext, in *pb.SourceProvenan
 	out.ResolvedStorageSource = StorageSource_FromProto(mapCtx, in.GetResolvedStorageSource())
 	out.ResolvedRepoSource = RepoSource_FromProto(mapCtx, in.GetResolvedRepoSource())
 	out.ResolvedStorageSourceManifest = StorageSourceManifest_FromProto(mapCtx, in.GetResolvedStorageSourceManifest())
+	// MISSING: ResolvedConnectedRepository
+	// MISSING: ResolvedGitSource
 	// MISSING: FileHashes
 	return out
 }
@@ -1669,6 +1699,8 @@ func SourceProvenance_ToProto(mapCtx *direct.MapContext, in *krm.SourceProvenanc
 	out.ResolvedStorageSource = StorageSource_ToProto(mapCtx, in.ResolvedStorageSource)
 	out.ResolvedRepoSource = RepoSource_ToProto(mapCtx, in.ResolvedRepoSource)
 	out.ResolvedStorageSourceManifest = StorageSourceManifest_ToProto(mapCtx, in.ResolvedStorageSourceManifest)
+	// MISSING: ResolvedConnectedRepository
+	// MISSING: ResolvedGitSource
 	// MISSING: FileHashes
 	return out
 }
@@ -1680,6 +1712,8 @@ func SourceProvenanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.S
 	// MISSING: ResolvedStorageSource
 	// MISSING: ResolvedRepoSource
 	// MISSING: ResolvedStorageSourceManifest
+	out.ResolvedConnectedRepository = ConnectedRepository_FromProto(mapCtx, in.GetResolvedConnectedRepository())
+	out.ResolvedGitSource = GitSource_FromProto(mapCtx, in.GetResolvedGitSource())
 	// MISSING: FileHashes
 	return out
 }
@@ -1691,6 +1725,8 @@ func SourceProvenanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.So
 	// MISSING: ResolvedStorageSource
 	// MISSING: ResolvedRepoSource
 	// MISSING: ResolvedStorageSourceManifest
+	out.ResolvedConnectedRepository = ConnectedRepository_ToProto(mapCtx, in.ResolvedConnectedRepository)
+	out.ResolvedGitSource = GitSource_ToProto(mapCtx, in.ResolvedGitSource)
 	// MISSING: FileHashes
 	return out
 }
@@ -1762,6 +1798,7 @@ func UploadedGoModule_FromProto(mapCtx *direct.MapContext, in *pb.UploadedGoModu
 	out.URI = direct.LazyPtr(in.GetUri())
 	out.FileHashes = FileHashes_FromProto(mapCtx, in.GetFileHashes())
 	// MISSING: PushTiming
+	// MISSING: ArtifactRegistryPackage
 	return out
 }
 func UploadedGoModule_ToProto(mapCtx *direct.MapContext, in *krm.UploadedGoModule) *pb.UploadedGoModule {
@@ -1772,6 +1809,7 @@ func UploadedGoModule_ToProto(mapCtx *direct.MapContext, in *krm.UploadedGoModul
 	out.Uri = direct.ValueOf(in.URI)
 	out.FileHashes = FileHashes_ToProto(mapCtx, in.FileHashes)
 	// MISSING: PushTiming
+	// MISSING: ArtifactRegistryPackage
 	return out
 }
 func UploadedGoModuleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.UploadedGoModule) *krm.UploadedGoModuleObservedState {
@@ -1782,6 +1820,7 @@ func UploadedGoModuleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.U
 	// MISSING: URI
 	// MISSING: FileHashes
 	out.PushTiming = TimeSpan_FromProto(mapCtx, in.GetPushTiming())
+	out.ArtifactRegistryPackage = direct.LazyPtr(in.GetArtifactRegistryPackage())
 	return out
 }
 func UploadedGoModuleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.UploadedGoModuleObservedState) *pb.UploadedGoModule {
@@ -1792,6 +1831,7 @@ func UploadedGoModuleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Up
 	// MISSING: URI
 	// MISSING: FileHashes
 	out.PushTiming = TimeSpan_ToProto(mapCtx, in.PushTiming)
+	out.ArtifactRegistryPackage = direct.ValueOf(in.ArtifactRegistryPackage)
 	return out
 }
 func UploadedMavenArtifact_FromProto(mapCtx *direct.MapContext, in *pb.UploadedMavenArtifact) *krm.UploadedMavenArtifact {
@@ -1802,6 +1842,7 @@ func UploadedMavenArtifact_FromProto(mapCtx *direct.MapContext, in *pb.UploadedM
 	out.URI = direct.LazyPtr(in.GetUri())
 	out.FileHashes = FileHashes_FromProto(mapCtx, in.GetFileHashes())
 	// MISSING: PushTiming
+	// MISSING: ArtifactRegistryPackage
 	return out
 }
 func UploadedMavenArtifact_ToProto(mapCtx *direct.MapContext, in *krm.UploadedMavenArtifact) *pb.UploadedMavenArtifact {
@@ -1812,6 +1853,7 @@ func UploadedMavenArtifact_ToProto(mapCtx *direct.MapContext, in *krm.UploadedMa
 	out.Uri = direct.ValueOf(in.URI)
 	out.FileHashes = FileHashes_ToProto(mapCtx, in.FileHashes)
 	// MISSING: PushTiming
+	// MISSING: ArtifactRegistryPackage
 	return out
 }
 func UploadedMavenArtifactObservedState_FromProto(mapCtx *direct.MapContext, in *pb.UploadedMavenArtifact) *krm.UploadedMavenArtifactObservedState {
@@ -1822,6 +1864,7 @@ func UploadedMavenArtifactObservedState_FromProto(mapCtx *direct.MapContext, in 
 	// MISSING: URI
 	// MISSING: FileHashes
 	out.PushTiming = TimeSpan_FromProto(mapCtx, in.GetPushTiming())
+	out.ArtifactRegistryPackage = direct.LazyPtr(in.GetArtifactRegistryPackage())
 	return out
 }
 func UploadedMavenArtifactObservedState_ToProto(mapCtx *direct.MapContext, in *krm.UploadedMavenArtifactObservedState) *pb.UploadedMavenArtifact {
@@ -1832,6 +1875,7 @@ func UploadedMavenArtifactObservedState_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: URI
 	// MISSING: FileHashes
 	out.PushTiming = TimeSpan_ToProto(mapCtx, in.PushTiming)
+	out.ArtifactRegistryPackage = direct.ValueOf(in.ArtifactRegistryPackage)
 	return out
 }
 func UploadedNpmPackage_FromProto(mapCtx *direct.MapContext, in *pb.UploadedNpmPackage) *krm.UploadedNpmPackage {
@@ -1842,6 +1886,7 @@ func UploadedNpmPackage_FromProto(mapCtx *direct.MapContext, in *pb.UploadedNpmP
 	out.URI = direct.LazyPtr(in.GetUri())
 	out.FileHashes = FileHashes_FromProto(mapCtx, in.GetFileHashes())
 	// MISSING: PushTiming
+	// MISSING: ArtifactRegistryPackage
 	return out
 }
 func UploadedNpmPackage_ToProto(mapCtx *direct.MapContext, in *krm.UploadedNpmPackage) *pb.UploadedNpmPackage {
@@ -1852,6 +1897,7 @@ func UploadedNpmPackage_ToProto(mapCtx *direct.MapContext, in *krm.UploadedNpmPa
 	out.Uri = direct.ValueOf(in.URI)
 	out.FileHashes = FileHashes_ToProto(mapCtx, in.FileHashes)
 	// MISSING: PushTiming
+	// MISSING: ArtifactRegistryPackage
 	return out
 }
 func UploadedNpmPackageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.UploadedNpmPackage) *krm.UploadedNpmPackageObservedState {
@@ -1862,6 +1908,7 @@ func UploadedNpmPackageObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	// MISSING: URI
 	// MISSING: FileHashes
 	out.PushTiming = TimeSpan_FromProto(mapCtx, in.GetPushTiming())
+	out.ArtifactRegistryPackage = direct.LazyPtr(in.GetArtifactRegistryPackage())
 	return out
 }
 func UploadedNpmPackageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.UploadedNpmPackageObservedState) *pb.UploadedNpmPackage {
@@ -1872,6 +1919,7 @@ func UploadedNpmPackageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	// MISSING: URI
 	// MISSING: FileHashes
 	out.PushTiming = TimeSpan_ToProto(mapCtx, in.PushTiming)
+	out.ArtifactRegistryPackage = direct.ValueOf(in.ArtifactRegistryPackage)
 	return out
 }
 func UploadedPythonPackage_FromProto(mapCtx *direct.MapContext, in *pb.UploadedPythonPackage) *krm.UploadedPythonPackage {
@@ -1882,6 +1930,7 @@ func UploadedPythonPackage_FromProto(mapCtx *direct.MapContext, in *pb.UploadedP
 	out.URI = direct.LazyPtr(in.GetUri())
 	out.FileHashes = FileHashes_FromProto(mapCtx, in.GetFileHashes())
 	// MISSING: PushTiming
+	// MISSING: ArtifactRegistryPackage
 	return out
 }
 func UploadedPythonPackage_ToProto(mapCtx *direct.MapContext, in *krm.UploadedPythonPackage) *pb.UploadedPythonPackage {
@@ -1892,6 +1941,7 @@ func UploadedPythonPackage_ToProto(mapCtx *direct.MapContext, in *krm.UploadedPy
 	out.Uri = direct.ValueOf(in.URI)
 	out.FileHashes = FileHashes_ToProto(mapCtx, in.FileHashes)
 	// MISSING: PushTiming
+	// MISSING: ArtifactRegistryPackage
 	return out
 }
 func UploadedPythonPackageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.UploadedPythonPackage) *krm.UploadedPythonPackageObservedState {
@@ -1902,6 +1952,7 @@ func UploadedPythonPackageObservedState_FromProto(mapCtx *direct.MapContext, in 
 	// MISSING: URI
 	// MISSING: FileHashes
 	out.PushTiming = TimeSpan_FromProto(mapCtx, in.GetPushTiming())
+	out.ArtifactRegistryPackage = direct.LazyPtr(in.GetArtifactRegistryPackage())
 	return out
 }
 func UploadedPythonPackageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.UploadedPythonPackageObservedState) *pb.UploadedPythonPackage {
@@ -1912,6 +1963,7 @@ func UploadedPythonPackageObservedState_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: URI
 	// MISSING: FileHashes
 	out.PushTiming = TimeSpan_ToProto(mapCtx, in.PushTiming)
+	out.ArtifactRegistryPackage = direct.ValueOf(in.ArtifactRegistryPackage)
 	return out
 }
 func Volume_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krm.Volume {

@@ -22,11 +22,11 @@
 package firestore
 
 import (
-	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
 	firestorepb "cloud.google.com/go/firestore/apiv1/firestorepb"
 	krmfirestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/firestore/admin/v1"
 	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
 	structpb "google.golang.org/protobuf/types/known/structpb"
 )
@@ -183,6 +183,7 @@ func Field_TTLConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Field_
 	}
 	out := &krmfirestorev1alpha1.Field_TTLConfig{}
 	// MISSING: State
+	out.ExpirationOffset = direct.StringDuration_FromProto(mapCtx, in.GetExpirationOffset())
 	return out
 }
 func Field_TTLConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Field_TTLConfig) *pb.Field_TtlConfig {
@@ -191,6 +192,7 @@ func Field_TTLConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestor
 	}
 	out := &pb.Field_TtlConfig{}
 	// MISSING: State
+	out.ExpirationOffset = direct.StringDuration_ToProto(mapCtx, in.ExpirationOffset)
 	return out
 }
 func Field_TTLConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Field_TtlConfig) *krmfirestorev1alpha1.Field_TTLConfigObservedState {
@@ -199,6 +201,7 @@ func Field_TTLConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, 
 	}
 	out := &krmfirestorev1alpha1.Field_TTLConfigObservedState{}
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	// MISSING: ExpirationOffset
 	return out
 }
 func Field_TTLConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Field_TTLConfigObservedState) *pb.Field_TtlConfig {
@@ -207,6 +210,7 @@ func Field_TTLConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 	}
 	out := &pb.Field_TtlConfig{}
 	out.State = direct.Enum_ToProto[pb.Field_TtlConfig_State](mapCtx, in.State)
+	// MISSING: ExpirationOffset
 	return out
 }
 func FirestoreBackupScheduleObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BackupSchedule) *krmfirestorev1alpha1.FirestoreBackupScheduleObservedState {
@@ -275,6 +279,9 @@ func FirestoreDatabaseObservedState_v1beta1_FromProto(mapCtx *direct.MapContext,
 	// MISSING: FreeTier
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	// MISSING: DatabaseEdition
+	// MISSING: RealtimeUpdatesMode
+	// MISSING: FirestoreDataAccessMode
+	// MISSING: MongodbCompatibleDataAccessMode
 	return out
 }
 func FirestoreDatabaseObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreDatabaseObservedState) *pb.Database {
@@ -299,6 +306,9 @@ func FirestoreDatabaseObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, i
 	// MISSING: FreeTier
 	out.Etag = direct.ValueOf(in.Etag)
 	// MISSING: DatabaseEdition
+	// MISSING: RealtimeUpdatesMode
+	// MISSING: FirestoreDataAccessMode
+	// MISSING: MongodbCompatibleDataAccessMode
 	return out
 }
 func FirestoreDatabaseSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Database) *krm.FirestoreDatabaseSpec {
@@ -320,6 +330,9 @@ func FirestoreDatabaseSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.D
 	// MISSING: Tags
 	// MISSING: FreeTier
 	// MISSING: DatabaseEdition
+	// MISSING: RealtimeUpdatesMode
+	// MISSING: FirestoreDataAccessMode
+	// MISSING: MongodbCompatibleDataAccessMode
 	return out
 }
 func FirestoreDatabaseSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreDatabaseSpec) *pb.Database {
@@ -341,6 +354,9 @@ func FirestoreDatabaseSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Fi
 	// MISSING: Tags
 	// MISSING: FreeTier
 	// MISSING: DatabaseEdition
+	// MISSING: RealtimeUpdatesMode
+	// MISSING: FirestoreDataAccessMode
+	// MISSING: MongodbCompatibleDataAccessMode
 	return out
 }
 func FirestoreDocumentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.Document) *krmfirestorev1alpha1.FirestoreDocumentObservedState {
@@ -416,6 +432,8 @@ func FirestoreIndexSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Inde
 	// MISSING: Density
 	// MISSING: Multikey
 	// MISSING: ShardCount
+	// MISSING: Unique
+	// MISSING: SearchIndexOptions
 	return out
 }
 func FirestoreIndexSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreIndexSpec) *pb.Index {
@@ -431,6 +449,8 @@ func FirestoreIndexSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Fires
 	// MISSING: Density
 	// MISSING: Multikey
 	// MISSING: ShardCount
+	// MISSING: Unique
+	// MISSING: SearchIndexOptions
 	return out
 }
 func FirestoreIndexStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.FirestoreIndexStatus {
@@ -446,6 +466,8 @@ func FirestoreIndexStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.In
 	// MISSING: Density
 	// MISSING: Multikey
 	// MISSING: ShardCount
+	// MISSING: Unique
+	// MISSING: SearchIndexOptions
 	return out
 }
 func FirestoreIndexStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreIndexStatus) *pb.Index {
@@ -461,6 +483,28 @@ func FirestoreIndexStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Fir
 	// MISSING: Density
 	// MISSING: Multikey
 	// MISSING: ShardCount
+	// MISSING: Unique
+	// MISSING: SearchIndexOptions
+	return out
+}
+func Function_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.Function) *krmfirestorev1alpha1.Function {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.Function{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Args = direct.Slice_FromProto(mapCtx, in.Args, Value_v1alpha1_FromProto)
+	// MISSING: Options
+	return out
+}
+func Function_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Function) *firestorepb.Function {
+	if in == nil {
+		return nil
+	}
+	out := &firestorepb.Function{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Args = direct.Slice_ToProto(mapCtx, in.Args, Value_v1alpha1_ToProto)
+	// MISSING: Options
 	return out
 }
 func Index_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krmfirestorev1alpha1.Index {
@@ -476,6 +520,8 @@ func Index_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krmfires
 	out.Density = direct.Enum_FromProto(mapCtx, in.GetDensity())
 	out.Multikey = direct.LazyPtr(in.GetMultikey())
 	out.ShardCount = direct.LazyPtr(in.GetShardCount())
+	// MISSING: Unique
+	// MISSING: SearchIndexOptions
 	return out
 }
 func Index_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index) *pb.Index {
@@ -491,6 +537,8 @@ func Index_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.
 	out.Density = direct.Enum_ToProto[pb.Index_Density](mapCtx, in.Density)
 	out.Multikey = direct.ValueOf(in.Multikey)
 	out.ShardCount = direct.ValueOf(in.ShardCount)
+	// MISSING: Unique
+	// MISSING: SearchIndexOptions
 	return out
 }
 func IndexFields_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField) *krm.IndexFields {
@@ -502,6 +550,7 @@ func IndexFields_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Index_Index
 	out.Order = direct.Enum_FromProto(mapCtx, in.GetOrder())
 	out.ArrayConfig = direct.Enum_FromProto(mapCtx, in.GetArrayConfig())
 	// MISSING: VectorConfig
+	// MISSING: SearchConfig
 	return out
 }
 func IndexFields_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.IndexFields) *pb.Index_IndexField {
@@ -517,6 +566,7 @@ func IndexFields_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.IndexFields)
 		out.ValueMode = oneof
 	}
 	// MISSING: VectorConfig
+	// MISSING: SearchConfig
 	return out
 }
 func Index_IndexField_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField) *krmfirestorev1alpha1.Index_IndexField {
@@ -528,6 +578,7 @@ func Index_IndexField_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index
 	out.Order = direct.Enum_FromProto(mapCtx, in.GetOrder())
 	out.ArrayConfig = direct.Enum_FromProto(mapCtx, in.GetArrayConfig())
 	out.VectorConfig = Index_IndexField_VectorConfig_v1alpha1_FromProto(mapCtx, in.GetVectorConfig())
+	out.SearchConfig = Index_IndexField_SearchConfig_v1alpha1_FromProto(mapCtx, in.GetSearchConfig())
 	return out
 }
 func Index_IndexField_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index_IndexField) *pb.Index_IndexField {
@@ -545,6 +596,9 @@ func Index_IndexField_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfiresto
 	if oneof := Index_IndexField_VectorConfig_v1alpha1_ToProto(mapCtx, in.VectorConfig); oneof != nil {
 		out.ValueMode = &pb.Index_IndexField_VectorConfig_{VectorConfig: oneof}
 	}
+	if oneof := Index_IndexField_SearchConfig_v1alpha1_ToProto(mapCtx, in.SearchConfig); oneof != nil {
+		out.ValueMode = &pb.Index_IndexField_SearchConfig_{SearchConfig: oneof}
+	}
 	return out
 }
 func Index_IndexField_Order_ToProto(mapCtx *direct.MapContext, in *string) *pb.Index_IndexField_Order_ {
@@ -558,6 +612,142 @@ func Index_IndexField_ArrayConfig_ToProto(mapCtx *direct.MapContext, in *string)
 		return nil
 	}
 	return &pb.Index_IndexField_ArrayConfig_{ArrayConfig: direct.Enum_ToProto[pb.Index_IndexField_ArrayConfig](mapCtx, in)}
+}
+func Index_IndexField_SearchConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_SearchConfig) *krmfirestorev1alpha1.Index_IndexField_SearchConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.Index_IndexField_SearchConfig{}
+	out.TextSpec = Index_IndexField_SearchConfig_SearchTextSpec_v1alpha1_FromProto(mapCtx, in.GetTextSpec())
+	out.GeoSpec = Index_IndexField_SearchConfig_SearchGeoSpec_v1alpha1_FromProto(mapCtx, in.GetGeoSpec())
+	return out
+}
+func Index_IndexField_SearchConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index_IndexField_SearchConfig) *pb.Index_IndexField_SearchConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index_IndexField_SearchConfig{}
+	out.TextSpec = Index_IndexField_SearchConfig_SearchTextSpec_v1alpha1_ToProto(mapCtx, in.TextSpec)
+	out.GeoSpec = Index_IndexField_SearchConfig_SearchGeoSpec_v1alpha1_ToProto(mapCtx, in.GeoSpec)
+	return out
+}
+func Index_IndexField_SearchConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_SearchConfig) *krm.Index_IndexField_SearchConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Index_IndexField_SearchConfig{}
+	out.TextSpec = Index_IndexField_SearchConfig_SearchTextSpec_v1beta1_FromProto(mapCtx, in.GetTextSpec())
+	out.GeoSpec = Index_IndexField_SearchConfig_SearchGeoSpec_v1beta1_FromProto(mapCtx, in.GetGeoSpec())
+	return out
+}
+func Index_IndexField_SearchConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Index_IndexField_SearchConfig) *pb.Index_IndexField_SearchConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index_IndexField_SearchConfig{}
+	out.TextSpec = Index_IndexField_SearchConfig_SearchTextSpec_v1beta1_ToProto(mapCtx, in.TextSpec)
+	out.GeoSpec = Index_IndexField_SearchConfig_SearchGeoSpec_v1beta1_ToProto(mapCtx, in.GeoSpec)
+	return out
+}
+func Index_IndexField_SearchConfig_SearchGeoSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_SearchConfig_SearchGeoSpec) *krmfirestorev1alpha1.Index_IndexField_SearchConfig_SearchGeoSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.Index_IndexField_SearchConfig_SearchGeoSpec{}
+	out.GeoJsonIndexingDisabled = direct.LazyPtr(in.GetGeoJsonIndexingDisabled())
+	return out
+}
+func Index_IndexField_SearchConfig_SearchGeoSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index_IndexField_SearchConfig_SearchGeoSpec) *pb.Index_IndexField_SearchConfig_SearchGeoSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index_IndexField_SearchConfig_SearchGeoSpec{}
+	out.GeoJsonIndexingDisabled = direct.ValueOf(in.GeoJsonIndexingDisabled)
+	return out
+}
+func Index_IndexField_SearchConfig_SearchGeoSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_SearchConfig_SearchGeoSpec) *krm.Index_IndexField_SearchConfig_SearchGeoSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Index_IndexField_SearchConfig_SearchGeoSpec{}
+	out.GeoJsonIndexingDisabled = direct.LazyPtr(in.GetGeoJsonIndexingDisabled())
+	return out
+}
+func Index_IndexField_SearchConfig_SearchGeoSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Index_IndexField_SearchConfig_SearchGeoSpec) *pb.Index_IndexField_SearchConfig_SearchGeoSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index_IndexField_SearchConfig_SearchGeoSpec{}
+	out.GeoJsonIndexingDisabled = direct.ValueOf(in.GeoJsonIndexingDisabled)
+	return out
+}
+func Index_IndexField_SearchConfig_SearchTextIndexSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_SearchConfig_SearchTextIndexSpec) *krmfirestorev1alpha1.Index_IndexField_SearchConfig_SearchTextIndexSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.Index_IndexField_SearchConfig_SearchTextIndexSpec{}
+	out.IndexType = direct.Enum_FromProto(mapCtx, in.GetIndexType())
+	out.MatchType = direct.Enum_FromProto(mapCtx, in.GetMatchType())
+	return out
+}
+func Index_IndexField_SearchConfig_SearchTextIndexSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index_IndexField_SearchConfig_SearchTextIndexSpec) *pb.Index_IndexField_SearchConfig_SearchTextIndexSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index_IndexField_SearchConfig_SearchTextIndexSpec{}
+	out.IndexType = direct.Enum_ToProto[pb.Index_IndexField_SearchConfig_TextIndexType](mapCtx, in.IndexType)
+	out.MatchType = direct.Enum_ToProto[pb.Index_IndexField_SearchConfig_TextMatchType](mapCtx, in.MatchType)
+	return out
+}
+func Index_IndexField_SearchConfig_SearchTextIndexSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_SearchConfig_SearchTextIndexSpec) *krm.Index_IndexField_SearchConfig_SearchTextIndexSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Index_IndexField_SearchConfig_SearchTextIndexSpec{}
+	out.IndexType = direct.Enum_FromProto(mapCtx, in.GetIndexType())
+	out.MatchType = direct.Enum_FromProto(mapCtx, in.GetMatchType())
+	return out
+}
+func Index_IndexField_SearchConfig_SearchTextIndexSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Index_IndexField_SearchConfig_SearchTextIndexSpec) *pb.Index_IndexField_SearchConfig_SearchTextIndexSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index_IndexField_SearchConfig_SearchTextIndexSpec{}
+	out.IndexType = direct.Enum_ToProto[pb.Index_IndexField_SearchConfig_TextIndexType](mapCtx, in.IndexType)
+	out.MatchType = direct.Enum_ToProto[pb.Index_IndexField_SearchConfig_TextMatchType](mapCtx, in.MatchType)
+	return out
+}
+func Index_IndexField_SearchConfig_SearchTextSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_SearchConfig_SearchTextSpec) *krmfirestorev1alpha1.Index_IndexField_SearchConfig_SearchTextSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.Index_IndexField_SearchConfig_SearchTextSpec{}
+	out.IndexSpecs = direct.Slice_FromProto(mapCtx, in.IndexSpecs, Index_IndexField_SearchConfig_SearchTextIndexSpec_v1alpha1_FromProto)
+	return out
+}
+func Index_IndexField_SearchConfig_SearchTextSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index_IndexField_SearchConfig_SearchTextSpec) *pb.Index_IndexField_SearchConfig_SearchTextSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index_IndexField_SearchConfig_SearchTextSpec{}
+	out.IndexSpecs = direct.Slice_ToProto(mapCtx, in.IndexSpecs, Index_IndexField_SearchConfig_SearchTextIndexSpec_v1alpha1_ToProto)
+	return out
+}
+func Index_IndexField_SearchConfig_SearchTextSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_SearchConfig_SearchTextSpec) *krm.Index_IndexField_SearchConfig_SearchTextSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Index_IndexField_SearchConfig_SearchTextSpec{}
+	out.IndexSpecs = direct.Slice_FromProto(mapCtx, in.IndexSpecs, Index_IndexField_SearchConfig_SearchTextIndexSpec_v1beta1_FromProto)
+	return out
+}
+func Index_IndexField_SearchConfig_SearchTextSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Index_IndexField_SearchConfig_SearchTextSpec) *pb.Index_IndexField_SearchConfig_SearchTextSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index_IndexField_SearchConfig_SearchTextSpec{}
+	out.IndexSpecs = direct.Slice_ToProto(mapCtx, in.IndexSpecs, Index_IndexField_SearchConfig_SearchTextIndexSpec_v1beta1_ToProto)
+	return out
 }
 func Index_IndexField_VectorConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_VectorConfig) *krmfirestorev1alpha1.Index_IndexField_VectorConfig {
 	if in == nil {
@@ -640,6 +830,8 @@ func Index_ObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.In
 	// MISSING: Density
 	// MISSING: Multikey
 	// MISSING: ShardCount
+	// MISSING: Unique
+	// MISSING: SearchIndexOptions
 	return out
 }
 func Index_ObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index_ObservedState) *pb.Index {
@@ -655,6 +847,44 @@ func Index_ObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfire
 	// MISSING: Density
 	// MISSING: Multikey
 	// MISSING: ShardCount
+	// MISSING: Unique
+	// MISSING: SearchIndexOptions
+	return out
+}
+func Index_SearchIndexOptions_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_SearchIndexOptions) *krmfirestorev1alpha1.Index_SearchIndexOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.Index_SearchIndexOptions{}
+	out.TextLanguage = direct.LazyPtr(in.GetTextLanguage())
+	out.TextLanguageOverrideFieldPath = direct.LazyPtr(in.GetTextLanguageOverrideFieldPath())
+	return out
+}
+func Index_SearchIndexOptions_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index_SearchIndexOptions) *pb.Index_SearchIndexOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index_SearchIndexOptions{}
+	out.TextLanguage = direct.ValueOf(in.TextLanguage)
+	out.TextLanguageOverrideFieldPath = direct.ValueOf(in.TextLanguageOverrideFieldPath)
+	return out
+}
+func Index_SearchIndexOptions_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Index_SearchIndexOptions) *krm.Index_SearchIndexOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Index_SearchIndexOptions{}
+	out.TextLanguage = direct.LazyPtr(in.GetTextLanguage())
+	out.TextLanguageOverrideFieldPath = direct.LazyPtr(in.GetTextLanguageOverrideFieldPath())
+	return out
+}
+func Index_SearchIndexOptions_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Index_SearchIndexOptions) *pb.Index_SearchIndexOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index_SearchIndexOptions{}
+	out.TextLanguage = direct.ValueOf(in.TextLanguage)
+	out.TextLanguageOverrideFieldPath = direct.ValueOf(in.TextLanguageOverrideFieldPath)
 	return out
 }
 func MapValue_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.MapValue) *krmfirestorev1alpha1.MapValue {
@@ -671,6 +901,42 @@ func MapValue_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alph
 	}
 	out := &firestorepb.MapValue{}
 	// MISSING: Fields
+	return out
+}
+func Pipeline_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.Pipeline) *krmfirestorev1alpha1.Pipeline {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.Pipeline{}
+	out.Stages = direct.Slice_FromProto(mapCtx, in.Stages, Pipeline_Stage_v1alpha1_FromProto)
+	return out
+}
+func Pipeline_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Pipeline) *firestorepb.Pipeline {
+	if in == nil {
+		return nil
+	}
+	out := &firestorepb.Pipeline{}
+	out.Stages = direct.Slice_ToProto(mapCtx, in.Stages, Pipeline_Stage_v1alpha1_ToProto)
+	return out
+}
+func Pipeline_Stage_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.Pipeline_Stage) *krmfirestorev1alpha1.Pipeline_Stage {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.Pipeline_Stage{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Args = direct.Slice_FromProto(mapCtx, in.Args, Value_v1alpha1_FromProto)
+	// MISSING: Options
+	return out
+}
+func Pipeline_Stage_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Pipeline_Stage) *firestorepb.Pipeline_Stage {
+	if in == nil {
+		return nil
+	}
+	out := &firestorepb.Pipeline_Stage{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Args = direct.Slice_ToProto(mapCtx, in.Args, Value_v1alpha1_ToProto)
+	// MISSING: Options
 	return out
 }
 func Value_NullValue_ToProto(mapCtx *direct.MapContext, in *string) *firestorepb.Value_NullValue {
@@ -708,6 +974,18 @@ func Value_ReferenceValue_ToProto(mapCtx *direct.MapContext, in *string) *firest
 		return nil
 	}
 	return &firestorepb.Value_ReferenceValue{ReferenceValue: *in}
+}
+func Value_FieldReferenceValue_ToProto(mapCtx *direct.MapContext, in *string) *firestorepb.Value_FieldReferenceValue {
+	if in == nil {
+		return nil
+	}
+	return &firestorepb.Value_FieldReferenceValue{FieldReferenceValue: *in}
+}
+func Value_VariableReferenceValue_ToProto(mapCtx *direct.MapContext, in *string) *firestorepb.Value_VariableReferenceValue {
+	if in == nil {
+		return nil
+	}
+	return &firestorepb.Value_VariableReferenceValue{VariableReferenceValue: *in}
 }
 func WeeklyRecurrence_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WeeklyRecurrence) *krmfirestorev1alpha1.WeeklyRecurrence {
 	if in == nil {
