@@ -319,6 +319,7 @@ type FunctionResponse struct {
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.GoogleMaps
+// +kubebuilder:validation:Type=object
 type GoogleMaps struct {
 }
 
@@ -678,6 +679,7 @@ type Tool struct {
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.Tool.CodeExecution
+// +kubebuilder:validation:Type=object
 type Tool_CodeExecution struct {
 }
 
@@ -717,6 +719,7 @@ type TrainingConfig struct {
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.UrlContext
+// +kubebuilder:validation:Type=object
 type URLContext struct {
 }
 
