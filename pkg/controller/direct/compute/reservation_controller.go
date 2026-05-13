@@ -23,14 +23,12 @@ package compute
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	compute "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -133,6 +131,8 @@ func (a *ReservationAdapter) Create(ctx context.Context, createOp *directbase.Cr
 		return mapCtx.Err()
 	}
 	resource.Name = direct.LazyPtr(a.id.Reservation)
+	// match realGCP log: "zone": "projects/${projectId}/global/zones/us-central1-a"
+	resource.Zone = direct.LazyPtr(fmt.Sprintf("projects/%s/global/zones/%s", a.id.Project, a.id.Zone))
 
 	req := &computepb.InsertReservationRequest{
 		Project:             a.id.Project,
@@ -174,15 +174,21 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 	desiredPb.Name = direct.LazyPtr(a.id.Reservation)
 
-		// Handle immutable default fields from GCP
+	// Handle immutable default fields from GCP
 	a.resolveGCPDefaults(desiredPb, a.actual)
 
-	paths, report, err := common.CompareProtoMessageStructuredDiff(desiredPb, a.actual, common.BasicDiff)
-	if err != nil {
-		return err
+	report := &structuredreporting.Diff{
+		Object: updateOp.GetUnstructured(),
 	}
 
-	if len(paths) == 0 {
+	desiredCount := desiredPb.GetSpecificReservation().GetCount()
+	actualCount := a.actual.GetSpecificReservation().GetCount()
+
+	if desiredCount != actualCount {
+		report.AddField("specific_reservation.count", actualCount, desiredCount)
+	}
+
+	if len(report.Fields) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		if a.desired.Status.ExternalRef == nil {
 			status := ComputeReservationStatus_v1beta1_FromProto(mapCtx, a.actual)
@@ -192,13 +198,6 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return nil
 	}
 
-	for path := range paths {
-		if path != "specific_reservation.count" && path != "specific_reservation.assured_count" && path != "specific_reservation" && !strings.HasPrefix(path, "status") && !strings.HasPrefix(path, "share_settings") && path != "self_link" && path != "creation_timestamp" && path != "id" && path != "kind" && path != "reservation_sharing_policy" && !strings.HasPrefix(path, "reservation_sharing_policy.") && path != "zone" && path != "description" {
-			return fmt.Errorf("field %q is immutable", path)
-		}
-	}
-
-	report.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, report)
 
 	updateOp.RecordUpdatingEvent()
