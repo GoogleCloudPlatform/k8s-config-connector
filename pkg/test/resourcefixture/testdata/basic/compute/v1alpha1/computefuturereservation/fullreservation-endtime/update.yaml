@@ -23,7 +23,7 @@ spec:
   description: "A full future reservation test - updated"
   namePrefix: "fr-full"
   autoDeleteAutoCreatedReservations: true
-  autoCreatedReservationsDeleteTime: 2026-05-11T00:00:02Z
+  autoCreatedReservationsDeleteTime: 2026-11-11T00:00:02Z
   specificSkuProperties:
     totalCount: 2
     instanceProperties:
@@ -39,5 +39,5 @@ spec:
   shareSettings:
     shareType: "LOCAL"
   timeWindow:
-    startTime: 2026-05-10T00:00:00Z
-    endTime: 2026-05-11T00:00:01Z
+    startTime: 2026-11-10T00:00:00Z
+    endTime: 2026-11-11T00:00:01Z
