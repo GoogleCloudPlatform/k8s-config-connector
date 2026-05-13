@@ -192,7 +192,8 @@ func (u *FieldInserter) generate() error {
 	for key, msg := range u.dependentMessages {
 		var buf bytes.Buffer
 		klog.Infof("generate Go code for messge %s", msg.proto.FullName())
-		codegen.WriteMessage(&buf, msg.proto)
+		g := &codegen.TypeGenerator{}
+		g.WriteMessage(&buf, msg.proto)
 		msg.generatedContent = buf.Bytes()
 		u.dependentMessages[key] = msg
 	}
