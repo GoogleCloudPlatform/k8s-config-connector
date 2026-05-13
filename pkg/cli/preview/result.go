@@ -139,9 +139,6 @@ func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, al
 	if altResult != nil && len(altResult.badResult) > 0 {
 		combinedBadResult = append(combinedBadResult, altResult.badResult...)
 	}
-	for _, result := range combinedBadResult {
-		klog.V(0).Info("\"PreviewResult\" ", result.FormatGKNNReconciledResult())
-	}
 
 	f, err := os.Create(summaryFile)
 	if err != nil {
@@ -228,6 +225,7 @@ func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, al
 			defCtrl = string(pair.def.ControllerType)
 			defStatus = formatReconciledStatus(pair.def)
 			defDiffs = FormatFieldIDs(pair.def.Diffs)
+			klog.V(0).Info("\"PreviewResult\" ", pair.def.FormatGKNNReconciledResult())
 		}
 
 		// Evaluate alternative results logic.
@@ -241,6 +239,9 @@ func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, al
 			altCtrl = string(pair.alt.ControllerType)
 			altStatus = formatReconciledStatus(pair.alt)
 			altDiffs = FormatFieldIDs(pair.alt.Diffs)
+			if pair.def == nil || pair.alt.ControllerType != pair.def.ControllerType {
+				klog.V(0).Info("\"PreviewResult\" ", pair.alt.FormatGKNNReconciledResult())
+			}
 		} else {
 			altCtrl = string(altExpected)
 			altStatus = "Missing"
