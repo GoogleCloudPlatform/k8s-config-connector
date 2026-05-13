@@ -83,6 +83,7 @@ func (s *PrivateCAV1) CreateCertificateAuthority(ctx context.Context, req *pb.Cr
 	obj.Tier = caPool.Tier
 	obj.State = pb.CertificateAuthority_STAGED
 	obj.SatisfiesPzi = true
+	obj.SatisfiesPzs = true
 
 	if caPool.GetPublishingOptions() != nil {
 		opts := caPool.GetPublishingOptions()
