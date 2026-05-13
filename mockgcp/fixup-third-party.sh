@@ -96,7 +96,10 @@ find . -type f -print0 | xargs -0 sed -i \
   -e 's@option go_package = "cloud.google.com/go/gkehub/metering/apiv1beta/meteringpb;meteringpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/metering;meteringpb"@g' \
   -e 's@option go_package = "cloud.google.com/go/gkehub/multiclusteringress/apiv1beta/multiclusteringresspb;multiclusteringresspb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/multiclusteringress;multiclusteringresspb"@g' \
   -e 's@option go_package = "cloud.google.com/go/gkehub/servicemesh/apiv1beta/servicemeshpb;servicemeshpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/servicemesh/v1beta;servicemeshpb"@g' \
-  -e 's@option go_package = "cloud.google.com/go/gkehub/policycontroller/apiv1beta/policycontrollerpb;policycontrollerpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/policycontroller/v1beta;policycontrollerpb"@g'
+  -e 's@option go_package = "cloud.google.com/go/gkehub/policycontroller/apiv1beta/policycontrollerpb;policycontrollerpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/policycontroller/v1beta;policycontrollerpb"@g' \
+  -e 's@option go_package = "cloud.google.com/go/analytics/admin/apiv1alpha/adminpb;adminpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/analytics/admin/v1alpha;adminpb"@g' \
+  -e 's@option go_package = "cloud.google.com/go/analytics/admin/apiv1beta/adminpb;adminpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/analytics/admin/v1beta;adminpb"@g' \
+  -e 's@option go_package = "cloud.google.com/go/dataplex/apiv1/dataplexpb;dataplexpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataplex/v1;dataplexpb"@g'
 
 
 cd ${GOOGLEAPIS}/mockgrafeas
