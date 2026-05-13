@@ -29,8 +29,8 @@ func init() {
 
 func managedKafkaClusterFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Cluster{},
-		ManagedKafkaClusterSpec_FromProto, ManagedKafkaClusterSpec_ToProto,
-		ManagedKafkaClusterObservedState_FromProto, ManagedKafkaClusterObservedState_ToProto,
+		ManagedKafkaClusterSpec_v1beta1_FromProto, ManagedKafkaClusterSpec_v1beta1_ToProto,
+		ManagedKafkaClusterObservedState_v1beta1_FromProto, ManagedKafkaClusterObservedState_v1beta1_ToProto,
 	)
 
 	f.IdentityField(".name")
