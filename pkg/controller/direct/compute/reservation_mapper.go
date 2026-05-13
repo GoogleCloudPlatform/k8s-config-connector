@@ -25,8 +25,8 @@ func ReservationSpecificReservation_v1beta1_FromProto(mapCtx *direct.MapContext,
 		return nil
 	}
 	out := &krm.ReservationSpecificReservation{}
-	out.Count = Int32_FromProto(in.Count)
-	out.InUseCount = Int32_FromProto(in.InUseCount)
+	out.Count = direct.PtrInt64ToPtrInt32(in.Count)
+	out.InUseCount = direct.PtrInt64ToPtrInt32(in.InUseCount)
 	out.InstanceProperties = ReservationInstanceProperties_v1beta1_FromProto(mapCtx, in.GetInstanceProperties())
 	return out
 }
@@ -36,8 +36,8 @@ func ReservationSpecificReservation_v1beta1_ToProto(mapCtx *direct.MapContext, i
 		return nil
 	}
 	out := &pb.AllocationSpecificSKUReservation{}
-	out.Count = Int32_ToProto(in.Count)
-	out.InUseCount = Int32_ToProto(in.InUseCount)
+	out.Count = direct.PtrInt32ToPtrInt64(in.Count)
+	out.InUseCount = direct.PtrInt32ToPtrInt64(in.InUseCount)
 	out.InstanceProperties = ReservationInstanceProperties_v1beta1_ToProto(mapCtx, in.InstanceProperties)
 	return out
 }
@@ -47,7 +47,7 @@ func ReservationLocalSsds_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Al
 		return nil
 	}
 	out := &krm.ReservationLocalSsds{}
-	out.DiskSizeGb = Int32_FromProto(in.DiskSizeGb)
+	out.DiskSizeGb = direct.PtrInt64ToPtrInt32(in.DiskSizeGb)
 	out.Interface = in.Interface
 	return out
 }
@@ -57,7 +57,7 @@ func ReservationLocalSsds_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Res
 		return nil
 	}
 	out := &pb.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk{}
-	out.DiskSizeGb = Int32_ToProto(in.DiskSizeGb)
+	out.DiskSizeGb = direct.PtrInt32ToPtrInt64(in.DiskSizeGb)
 	out.Interface = in.Interface
 	return out
 }
@@ -68,7 +68,7 @@ func ComputeReservationObservedState_v1beta1_FromProto(mapCtx *direct.MapContext
 		return nil
 	}
 	out := &krm.ComputeReservationObservedState{}
-	out.ID = Uint64_FromProto(in.Id)
+	out.ID = direct.PtrUint64ToPtrInt64(in.Id)
 	out.ResourceStatus = AllocationResourceStatus_v1beta1_FromProto(mapCtx, in.GetResourceStatus())
 	return out
 }
@@ -78,29 +78,45 @@ func ComputeReservationObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, 
 		return nil
 	}
 	out := &pb.Reservation{}
-	out.Id = Uint64_ToProto(in.ID)
+	out.Id = direct.PtrInt64ToPtrUint64(in.ID)
 	out.ResourceStatus = AllocationResourceStatus_v1beta1_ToProto(mapCtx, in.ResourceStatus)
 	return out
 }
 */
+
+func ReservationInstanceProperties_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationSpecificSKUAllocationReservedInstanceProperties) *krm.ReservationInstanceProperties {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReservationInstanceProperties{}
+	out.GuestAccelerators = direct.Slice_FromProto(mapCtx, in.GuestAccelerators, ReservationGuestAccelerators_v1beta1_FromProto)
+	out.LocalSsds = direct.Slice_FromProto(mapCtx, in.LocalSsds, ReservationLocalSsds_v1beta1_FromProto)
+	out.MachineType = in.MachineType
+	out.MinCpuPlatform = in.MinCpuPlatform
+	return out
+}
+
+func ReservationInstanceProperties_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ReservationInstanceProperties) *pb.AllocationSpecificSKUAllocationReservedInstanceProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationSpecificSKUAllocationReservedInstanceProperties{}
+	out.GuestAccelerators = direct.Slice_ToProto(mapCtx, in.GuestAccelerators, ReservationGuestAccelerators_v1beta1_ToProto)
+	out.LocalSsds = direct.Slice_ToProto(mapCtx, in.LocalSsds, ReservationLocalSsds_v1beta1_ToProto)
+	out.MachineType = in.MachineType
+	out.MinCpuPlatform = in.MinCpuPlatform
+	return out
+}
 
 func ComputeReservationStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.ComputeReservationStatus {
 	if in == nil {
 		return nil
 	}
 	status := &krm.ComputeReservationStatus{}
-	if in.Commitment != nil {
-		status.Commitment = in.Commitment
-	}
-	if in.CreationTimestamp != nil {
-		status.CreationTimestamp = in.CreationTimestamp
-	}
-	if in.SelfLink != nil {
-		status.SelfLink = in.SelfLink
-	}
-	if in.Status != nil {
-		status.Status = in.Status
-	}
+	status.Commitment = in.Commitment
+	status.CreationTimestamp = in.CreationTimestamp
+	status.SelfLink = in.SelfLink
+	status.Status = in.Status
 	return status
 }
 
@@ -109,17 +125,9 @@ func ComputeReservationStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 		return nil
 	}
 	out := &pb.Reservation{}
-	if in.Commitment != nil {
-		out.Commitment = in.Commitment
-	}
-	if in.CreationTimestamp != nil {
-		out.CreationTimestamp = in.CreationTimestamp
-	}
-	if in.SelfLink != nil {
-		out.SelfLink = in.SelfLink
-	}
-	if in.Status != nil {
-		out.Status = in.Status
-	}
+	out.Commitment = in.Commitment
+	out.CreationTimestamp = in.CreationTimestamp
+	out.SelfLink = in.SelfLink
+	out.Status = in.Status
 	return out
 }

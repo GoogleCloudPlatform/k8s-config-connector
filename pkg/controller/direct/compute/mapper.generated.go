@@ -2046,6 +2046,8 @@ func ReservationGuestAccelerators_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 	out.AcceleratorType = in.AcceleratorType
 	return out
 }
+
+/* found existing non-generated mapping function "ReservationInstanceProperties_v1beta1_FromProto", skipping
 func ReservationInstanceProperties_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationSpecificSKUAllocationReservedInstanceProperties) *krm.ReservationInstanceProperties {
 	if in == nil {
 		return nil
@@ -2059,6 +2061,9 @@ func ReservationInstanceProperties_v1beta1_FromProto(mapCtx *direct.MapContext, 
 	// (near miss): "MinCPUPlatform" vs "MinCpuPlatform"
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ReservationInstanceProperties_v1beta1_ToProto", skipping
 func ReservationInstanceProperties_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ReservationInstanceProperties) *pb.AllocationSpecificSKUAllocationReservedInstanceProperties {
 	if in == nil {
 		return nil
@@ -2072,6 +2077,7 @@ func ReservationInstanceProperties_v1beta1_ToProto(mapCtx *direct.MapContext, in
 	// (near miss): "MinCPUPlatform" vs "MinCpuPlatform"
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "ReservationLocalSsds_v1beta1_FromProto", skipping
 func ReservationLocalSsds_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk) *krm.ReservationLocalSsds {
