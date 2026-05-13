@@ -844,32 +844,6 @@ func ReservationGuestAccelerators_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 	out.AcceleratorType = in.AcceleratorType
 	return out
 }
-func ReservationInstanceProperties_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationSpecificSKUAllocationReservedInstanceProperties) *krm.ReservationInstanceProperties {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ReservationInstanceProperties{}
-	out.GuestAccelerators = direct.Slice_FromProto(mapCtx, in.GuestAccelerators, ReservationGuestAccelerators_v1beta1_FromProto)
-	out.LocalSsds = direct.Slice_FromProto(mapCtx, in.LocalSsds, ReservationLocalSsds_v1beta1_FromProto)
-	// MISSING: LocationHint
-	out.MachineType = in.MachineType
-	// MISSING: MinCPUPlatform
-	// (near miss): "MinCPUPlatform" vs "MinCpuPlatform"
-	return out
-}
-func ReservationInstanceProperties_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ReservationInstanceProperties) *pb.AllocationSpecificSKUAllocationReservedInstanceProperties {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AllocationSpecificSKUAllocationReservedInstanceProperties{}
-	out.GuestAccelerators = direct.Slice_ToProto(mapCtx, in.GuestAccelerators, ReservationGuestAccelerators_v1beta1_ToProto)
-	out.LocalSsds = direct.Slice_ToProto(mapCtx, in.LocalSsds, ReservationLocalSsds_v1beta1_ToProto)
-	// MISSING: LocationHint
-	out.MachineType = in.MachineType
-	// MISSING: MinCPUPlatform
-	// (near miss): "MinCPUPlatform" vs "MinCpuPlatform"
-	return out
-}
 func ResourcePolicySnapshotSchedulePolicyScheduleWeeklyScheduleDayOfWeek_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ResourcePolicyWeeklyCycleDayOfWeek) *krm.ResourcePolicySnapshotSchedulePolicyScheduleWeeklyScheduleDayOfWeek {
 	if in == nil {
 		return nil
