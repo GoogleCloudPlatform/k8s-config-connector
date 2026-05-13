@@ -15,6 +15,8 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeReservation
 metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
   name: computereservation-${uniqueId}
 spec:
   description: Full compute reservation
