@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,10 +22,15 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-go run . generate-mapper \
-    --multiversion \
+./generate-proto.sh
+
+go run . generate-types \
     --service google.cloud.compute.v1 \
-    --api-version compute.cnrm.cloud.google.com/v1alpha1
+    --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+    --include-skipped-output \
+    --resource ComputeInterconnect:Interconnect \
+    --resource ComputeNetworkAttachment:NetworkAttachment \
+    --resource ComputeNetworkEdgeSecurityService:NetworkEdgeSecurityService
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
