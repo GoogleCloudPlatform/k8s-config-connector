@@ -194,6 +194,9 @@ func (s *ComposerV1) populateDefaultsForEnvironment(obj *pb.Environment) {
 		obj.Config = &pb.EnvironmentConfig{}
 	}
 
+	obj.SatisfiesPzs = true
+	obj.SatisfiesPzi = true
+
 	s.populateDefaultsForEnvironmentConfig(obj.Config)
 }
 
@@ -279,6 +282,9 @@ func (s *ComposerV1) populateDefaultsForEnvironmentConfig(config *pb.Environment
 	}
 	if config.SoftwareConfig.PythonVersion == "" {
 		config.SoftwareConfig.PythonVersion = "3"
+	}
+	if config.SoftwareConfig.WebServerPluginsMode == pb.SoftwareConfig_WEB_SERVER_PLUGINS_MODE_UNSPECIFIED {
+		config.SoftwareConfig.WebServerPluginsMode = pb.SoftwareConfig_PLUGINS_ENABLED
 	}
 
 	// While 'imageVersion' is unlikely to be unset, the following handles it anyway for completeness.
