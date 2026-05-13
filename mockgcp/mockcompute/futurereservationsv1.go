@@ -58,6 +58,17 @@ func (s *FutureReservationsV1) Get(ctx context.Context, req *pb.GetFutureReserva
 }
 
 func (s *FutureReservationsV1) Insert(ctx context.Context, req *pb.InsertFutureReservationRequest) (*pb.Operation, error) {
+	// Simulate realGCP validation
+	if req.GetFutureReservationResource().GetTimeWindow() != nil && req.GetFutureReservationResource().GetTimeWindow().GetStartTime() != "" {
+		startTimeStr := req.GetFutureReservationResource().GetTimeWindow().GetStartTime()
+		startTime, err := time.Parse(time.RFC3339Nano, startTimeStr)
+		if err == nil {
+			if startTime.Before(time.Now()) {
+				return nil, status.Errorf(codes.InvalidArgument, "Invalid value for field 'resource.timeWindow.startTime': '%s'. Future reservation start time is either in the past or too early.", startTimeStr)
+			}
+		}
+	}
+
 	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/futureReservations/" + req.GetFutureReservationResource().GetName()
 	name, err := s.parseFutureReservationName(reqName)
 	if err != nil {
