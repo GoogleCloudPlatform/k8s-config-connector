@@ -56,6 +56,8 @@ gen-proto-no-fixup:
 		./apis/mockgcp/cloud/resourcemanager/v1/*.proto \
 		./apis/mockgcp/storage/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/apikeys/v2/*.proto \
+		./third_party/googleapis/mockgcp/analytics/admin/v1alpha/*.proto \
+		./third_party/googleapis/mockgcp/cloud/dataplex/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/annotation*.proto \
@@ -187,8 +189,7 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/clouddms/v1/*.proto \
 		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto \
 		./third_party/googleapis/google/iam/v2/*.proto \
-		./third_party/googleapis/google/analytics/admin/v1alpha/*.proto
-
+./third_party/googleapis/google/logging/v2/*.proto
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:
 	mkdir -p temp/

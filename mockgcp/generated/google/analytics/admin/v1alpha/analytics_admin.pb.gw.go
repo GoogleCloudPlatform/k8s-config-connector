@@ -13,7 +13,7 @@ import (
 	"io"
 	"net/http"
 
-	extAdminpb "cloud.google.com/go/analytics/admin/apiv1alpha/adminpb"
+	extAdminpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/analytics/admin/v1alpha"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
 	"google.golang.org/grpc"
@@ -10962,6 +10962,58 @@ func local_request_AnalyticsAdminService_GetReportingIdentitySettings_0(ctx cont
 
 }
 
+func request_AnalyticsAdminService_GetUserProvidedDataSettings_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.AnalyticsAdminServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extAdminpb.GetUserProvidedDataSettingsRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.GetUserProvidedDataSettings(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_AnalyticsAdminService_GetUserProvidedDataSettings_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.AnalyticsAdminServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extAdminpb.GetUserProvidedDataSettingsRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.GetUserProvidedDataSettings(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 // RegisterAnalyticsAdminServiceHandlerServer registers the http handlers for service AnalyticsAdminService to "mux".
 // UnaryRPC     :call AnalyticsAdminServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
@@ -15068,6 +15120,31 @@ func RegisterAnalyticsAdminServiceHandlerServer(ctx context.Context, mux *runtim
 
 	})
 
+	mux.Handle("GET", pattern_AnalyticsAdminService_GetUserProvidedDataSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetUserProvidedDataSettings", runtime.WithHTTPPathPattern("/v1alpha/{name=properties/*/userProvidedDataSettings}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_AnalyticsAdminService_GetUserProvidedDataSettings_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_AnalyticsAdminService_GetUserProvidedDataSettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	return nil
 }
 
@@ -18717,6 +18794,28 @@ func RegisterAnalyticsAdminServiceHandlerClient(ctx context.Context, mux *runtim
 
 	})
 
+	mux.Handle("GET", pattern_AnalyticsAdminService_GetUserProvidedDataSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetUserProvidedDataSettings", runtime.WithHTTPPathPattern("/v1alpha/{name=properties/*/userProvidedDataSettings}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_AnalyticsAdminService_GetUserProvidedDataSettings_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_AnalyticsAdminService_GetUserProvidedDataSettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	return nil
 }
 
@@ -19048,6 +19147,8 @@ var (
 	pattern_AnalyticsAdminService_GetSubpropertySyncConfig_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1alpha", "properties", "subpropertySyncConfigs", "name"}, ""))
 
 	pattern_AnalyticsAdminService_GetReportingIdentitySettings_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 4, 3, 5, 3}, []string{"v1alpha", "properties", "reportingIdentitySettings", "name"}, ""))
+
+	pattern_AnalyticsAdminService_GetUserProvidedDataSettings_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 4, 3, 5, 3}, []string{"v1alpha", "properties", "userProvidedDataSettings", "name"}, ""))
 )
 
 var (
@@ -19378,4 +19479,6 @@ var (
 	forward_AnalyticsAdminService_GetSubpropertySyncConfig_0 = runtime.ForwardResponseMessage
 
 	forward_AnalyticsAdminService_GetReportingIdentitySettings_0 = runtime.ForwardResponseMessage
+
+	forward_AnalyticsAdminService_GetUserProvidedDataSettings_0 = runtime.ForwardResponseMessage
 )

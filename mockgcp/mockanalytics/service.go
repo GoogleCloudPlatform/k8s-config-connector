@@ -25,7 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
-	grpcpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/analytics/admin/v1alpha"
+	grpcpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/analytics/admin/v1alpha"
 
 	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
 	pb "cloud.google.com/go/analytics/admin/apiv1alpha/adminpb"
