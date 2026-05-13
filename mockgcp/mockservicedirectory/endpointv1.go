@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,15 +28,15 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (s *RegistrationServiceV1) GetService(ctx context.Context, req *pb.GetServiceRequest) (*pb.Service, error) {
-	name, err := s.parseServiceName(req.Name)
+func (s *RegistrationServiceV1) GetEndpoint(ctx context.Context, req *pb.GetEndpointRequest) (*pb.Endpoint, error) {
+	name, err := s.parseEndpointName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := &pb.Service{}
+	obj := &pb.Endpoint{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
@@ -47,16 +47,16 @@ func (s *RegistrationServiceV1) GetService(ctx context.Context, req *pb.GetServi
 	return obj, nil
 }
 
-func (s *RegistrationServiceV1) CreateService(ctx context.Context, req *pb.CreateServiceRequest) (*pb.Service, error) {
-	reqName := req.Parent + "/services/" + req.GetServiceId()
-	name, err := s.parseServiceName(reqName)
+func (s *RegistrationServiceV1) CreateEndpoint(ctx context.Context, req *pb.CreateEndpointRequest) (*pb.Endpoint, error) {
+	reqName := req.Parent + "/endpoints/" + req.GetEndpointId()
+	name, err := s.parseEndpointName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Service).(*pb.Service)
+	obj := proto.Clone(req.Endpoint).(*pb.Endpoint)
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -65,26 +65,26 @@ func (s *RegistrationServiceV1) CreateService(ctx context.Context, req *pb.Creat
 	return obj, nil
 }
 
-func (s *RegistrationServiceV1) UpdateService(ctx context.Context, req *pb.UpdateServiceRequest) (*pb.Service, error) {
-	reqName := req.GetService().GetName()
+func (s *RegistrationServiceV1) UpdateEndpoint(ctx context.Context, req *pb.UpdateEndpointRequest) (*pb.Endpoint, error) {
+	reqName := req.GetEndpoint().GetName()
 
-	name, err := s.parseServiceName(reqName)
+	name, err := s.parseEndpointName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
-	obj := &pb.Service{}
+	obj := &pb.Endpoint{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	if req.UpdateMask != nil {
-		if err := fields.UpdateByFieldMask(obj, req.Service, req.UpdateMask.Paths); err != nil {
+		if err := fields.UpdateByFieldMask(obj, req.Endpoint, req.UpdateMask.Paths); err != nil {
 			return nil, err
 		}
 	} else {
-		proto.Merge(obj, req.Service)
+		proto.Merge(obj, req.Endpoint)
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
@@ -92,18 +92,17 @@ func (s *RegistrationServiceV1) UpdateService(ctx context.Context, req *pb.Updat
 	}
 
 	return obj, nil
-
 }
 
-func (s *RegistrationServiceV1) DeleteService(ctx context.Context, req *pb.DeleteServiceRequest) (*empty.Empty, error) {
-	name, err := s.parseServiceName(req.Name)
+func (s *RegistrationServiceV1) DeleteEndpoint(ctx context.Context, req *pb.DeleteEndpointRequest) (*empty.Empty, error) {
+	name, err := s.parseEndpointName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	oldObj := &pb.Service{}
+	oldObj := &pb.Endpoint{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
 		return nil, err
 	}
@@ -111,17 +110,17 @@ func (s *RegistrationServiceV1) DeleteService(ctx context.Context, req *pb.Delet
 	return &emptypb.Empty{}, nil
 }
 
-func (s *RegistrationServiceV1) ListServices(ctx context.Context, req *pb.ListServicesRequest) (*pb.ListServicesResponse, error) {
-	name, err := s.parseNamespaceName(req.Parent)
+func (s *RegistrationServiceV1) ListEndpoints(ctx context.Context, req *pb.ListEndpointsRequest) (*pb.ListEndpointsResponse, error) {
+	name, err := s.parseServiceName(req.Parent)
 	if err != nil {
 		return nil, err
 	}
 
-	prefix := name.String() + "/services/"
+	prefix := name.String() + "/endpoints/"
 
-	response := &pb.ListServicesResponse{}
-	if err := s.storage.List(ctx, (&pb.Service{}).ProtoReflect().Descriptor(), storage.ListOptions{Prefix: prefix}, func(obj proto.Message) error {
-		response.Services = append(response.Services, obj.(*pb.Service))
+	response := &pb.ListEndpointsResponse{}
+	if err := s.storage.List(ctx, (&pb.Endpoint{}).ProtoReflect().Descriptor(), storage.ListOptions{Prefix: prefix}, func(obj proto.Message) error {
+		response.Endpoints = append(response.Endpoints, obj.(*pb.Endpoint))
 		return nil
 	}); err != nil {
 		return nil, err
@@ -130,29 +129,29 @@ func (s *RegistrationServiceV1) ListServices(ctx context.Context, req *pb.ListSe
 	return response, nil
 }
 
-type serviceName struct {
-	NamespaceName
-	ServiceName string
+type endpointName struct {
+	serviceName
+	EndpointId string
 }
 
-func (n *serviceName) String() string {
-	return n.NamespaceName.String() + "/services/" + n.ServiceName
+func (n *endpointName) String() string {
+	return n.serviceName.String() + "/endpoints/" + n.EndpointId
 }
 
-// parseServiceName parses a string into a serviceName.
-// The expected form is projects/<projectID>/locations/<location>/namespaces/<namespace>/services/<service>
-func (s *MockService) parseServiceName(name string) (*serviceName, error) {
+// parseEndpointName parses a string into a endpointName.
+// The expected form is projects/<projectID>/locations/<location>/namespaces/<namespace>/services/<service>/endpoints/<endpoint>
+func (s *MockService) parseEndpointName(name string) (*endpointName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 8 && tokens[6] == "services" {
-		namespacename, err := s.parseNamespaceName(strings.Join(tokens[0:6], "/"))
+	if len(tokens) == 10 && tokens[8] == "endpoints" {
+		servicename, err := s.parseServiceName(strings.Join(tokens[0:8], "/"))
 		if err != nil {
 			return nil, err
 		}
 
-		name := &serviceName{
-			NamespaceName: *namespacename,
-			ServiceName:   tokens[7],
+		name := &endpointName{
+			serviceName: *servicename,
+			EndpointId:  tokens[9],
 		}
 
 		return name, nil

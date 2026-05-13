@@ -18,8 +18,10 @@ import (
 	"context"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/servicedirectory/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -83,6 +85,14 @@ func (s *RegistrationServiceV1) UpdateNamespace(ctx context.Context, req *pb.Upd
 		return nil, err
 	}
 
+	if req.UpdateMask != nil {
+		if err := fields.UpdateByFieldMask(obj, req.Namespace, req.UpdateMask.Paths); err != nil {
+			return nil, err
+		}
+	} else {
+		proto.Merge(obj, req.Namespace)
+	}
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -105,6 +115,25 @@ func (s *RegistrationServiceV1) DeleteNamespace(ctx context.Context, req *pb.Del
 	}
 
 	return &emptypb.Empty{}, nil
+}
+
+func (s *RegistrationServiceV1) ListNamespaces(ctx context.Context, req *pb.ListNamespacesRequest) (*pb.ListNamespacesResponse, error) {
+	tokens := strings.Split(req.Parent, "/")
+	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "locations" {
+		return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid", req.Parent)
+	}
+
+	prefix := req.Parent + "/namespaces/"
+
+	response := &pb.ListNamespacesResponse{}
+	if err := s.storage.List(ctx, (&pb.Namespace{}).ProtoReflect().Descriptor(), storage.ListOptions{Prefix: prefix}, func(obj proto.Message) error {
+		response.Namespaces = append(response.Namespaces, obj.(*pb.Namespace))
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return response, nil
 }
 
 type NamespaceName struct {
