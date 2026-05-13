@@ -41,7 +41,7 @@ spec:
   shareSettings:
     shareType: "LOCAL"
   timeWindow:
-    startTime: 2026-05-10T00:00:00Z
+    startTime: 2026-11-10T00:00:00Z
     duration:
       seconds: 86401
       nanos: 102
