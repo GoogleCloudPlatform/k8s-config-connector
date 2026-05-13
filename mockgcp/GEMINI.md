@@ -71,6 +71,9 @@ Whenever you add a new field or modify GCP communication, you MUST align the moc
 
 Mock services often need to normalize responses to ensure stable golden logs (e.g., replacing timestamps or IDs with placeholders). This is typically implemented in `normalize.go` using the `Previsit` and `ConfigureVisitor` methods.
 
+**Purpose of Normalization**
+Normalization is STRICTLY for removing randomness and non-reproducible values (like timestamps, UUIDs, generated IP addresses, etc.) to ensure tests are stable. It MUST NOT be used to paper over behavioral differences between mockgcp and real GCP. For example, if a real GCP API returns a project number in a specific field but the mock returns a project ID, you should fix the mock implementation to correctly return the project number rather than writing a normalizer to hide the discrepancy. Our goal is to make mockgcp accurately reflect real GCP behavior so controllers are forced to handle real-world API responses properly.
+
 **Critical Rule: Previsit Scoping**
 
 The `Previsit` method is **globally executed** for every event across all registered services. To prevent one service's normalization rules from affecting another service's tests, you MUST explicitly scope the `Previsit` logic to the relevant service URL.
