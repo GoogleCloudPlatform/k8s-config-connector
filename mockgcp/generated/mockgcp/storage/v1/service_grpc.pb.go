@@ -36,7 +36,7 @@ type AnywhereCachesServerClient interface {
 	PauseAnywhereCache(ctx context.Context, in *PauseAnywhereCacheRequest, opts ...grpc.CallOption) (*AnywhereCache, error)
 	// Resumes a paused or disabled Anywhere Cache instance.
 	ResumeAnywhereCache(ctx context.Context, in *ResumeAnywhereCacheRequest, opts ...grpc.CallOption) (*AnywhereCache, error)
-	// Updates the config(ttl and admissionPolicy) of an Anywhere Cache instance.
+	// Updates the config of an Anywhere Cache instance.
 	UpdateAnywhereCache(ctx context.Context, in *UpdateAnywhereCacheRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
@@ -127,7 +127,7 @@ type AnywhereCachesServerServer interface {
 	PauseAnywhereCache(context.Context, *PauseAnywhereCacheRequest) (*AnywhereCache, error)
 	// Resumes a paused or disabled Anywhere Cache instance.
 	ResumeAnywhereCache(context.Context, *ResumeAnywhereCacheRequest) (*AnywhereCache, error)
-	// Updates the config(ttl and admissionPolicy) of an Anywhere Cache instance.
+	// Updates the config of an Anywhere Cache instance.
 	UpdateAnywhereCache(context.Context, *UpdateAnywhereCacheRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedAnywhereCachesServerServer()
 }

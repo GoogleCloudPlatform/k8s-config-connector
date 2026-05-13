@@ -86,6 +86,10 @@ func (s *PubSubLiteV1) UpdateSubscription(ctx context.Context, req *pb.UpdateSub
 	// TODO: Some sort of helper for fieldmask?
 	for _, path := range paths {
 		switch path {
+		case "deliveryConfig":
+			obj.DeliveryConfig = req.GetSubscription().GetDeliveryConfig()
+		case "exportConfig":
+			obj.ExportConfig = req.GetSubscription().GetExportConfig()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}

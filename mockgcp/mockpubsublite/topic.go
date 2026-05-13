@@ -86,6 +86,12 @@ func (s *PubSubLiteV1) UpdateTopic(ctx context.Context, req *pb.UpdateTopicReque
 	// TODO: Some sort of helper for fieldmask?
 	for _, path := range paths {
 		switch path {
+		case "partitionConfig":
+			obj.PartitionConfig = req.GetTopic().GetPartitionConfig()
+		case "retentionConfig":
+			obj.RetentionConfig = req.GetTopic().GetRetentionConfig()
+		case "reservationConfig":
+			obj.ReservationConfig = req.GetTopic().GetReservationConfig()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
