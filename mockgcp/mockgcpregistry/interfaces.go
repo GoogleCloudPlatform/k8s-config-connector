@@ -56,8 +56,6 @@ type NormalizingVisitor interface {
 	// TransformString modifies the string value at the given path using the provided function
 	TransformString(path string, transform func(string) string)
 
-	// ReplaceProjectWithProjectNumberTemplate replaces the project identifier in a string at the given path with ${projectNumber}
-	ReplaceProjectWithProjectNumberTemplate(path string)
 
 	// TransformLRO identifies if the object is a Long Running Operation and applies the transform
 	TransformLRO(transform func(map[string]any))
