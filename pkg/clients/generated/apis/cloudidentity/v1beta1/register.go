@@ -53,19 +53,17 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	CloudIdentityGroupGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(CloudIdentityGroup{}).Name(),
-  	}
-  
-  	CloudIdentityMembershipGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(CloudIdentityMembership{}).Name(),
-  	}
-  
+	CloudIdentityGroupGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(CloudIdentityGroup{}).Name(),
+	}
 
-  	cloudidentityAPIVersion = SchemeGroupVersion.String()
+	CloudIdentityMembershipGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(CloudIdentityMembership{}).Name(),
+	}
+
+	cloudidentityAPIVersion = SchemeGroupVersion.String()
 )

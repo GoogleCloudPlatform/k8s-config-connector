@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,70 +29,71 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type VMwareEngineExternalAddressSpec struct {
-/* User-provided description for this resource. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* User-provided description for this resource. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* The internal IP address of a workload VM. */
-// +optional
-InternalIP *string `json:"internalIP,omitempty"`
+	/* The internal IP address of a workload VM. */
+	// +optional
+	InternalIP *string `json:"internalIP,omitempty"`
 
-/* Required. The resource name of the private cloud to create a new external IP address in. */
-PrivateCloudRef v1alpha1.ResourceRef `json:"privateCloudRef"`
+	/* Required. The resource name of the private cloud to create a new external IP address in. */
+	PrivateCloudRef v1alpha1.ResourceRef `json:"privateCloudRef"`
 
-/* The VMwareEngineExternalAddress name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The VMwareEngineExternalAddress name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ExternaladdressObservedStateStatus struct {
-/* Output only. Creation time of this resource. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. Creation time of this resource. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. The external IP address of a workload VM. */
-// +optional
-ExternalIP *string `json:"externalIP,omitempty"`
+	/* Output only. The external IP address of a workload VM. */
+	// +optional
+	ExternalIP *string `json:"externalIP,omitempty"`
 
-/* Output only. The state of the resource. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. The state of the resource. */
+	// +optional
+	State *string `json:"state,omitempty"`
 
-/* Output only. System-generated unique identifier for the resource. */
-// +optional
-Uid *string `json:"uid,omitempty"`
+	/* Output only. System-generated unique identifier for the resource. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
 
-/* Output only. Last update time of this resource. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. Last update time of this resource. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type VMwareEngineExternalAddressStatus struct {
 	/* Conditions represent the latest available observations of the
-	    VMwareEngineExternalAddress's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the VMwareEngineExternalAddress resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   VMwareEngineExternalAddress's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the VMwareEngineExternalAddress resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *ExternaladdressObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *ExternaladdressObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpvmwareengineexternaladdress;gcpvmwareengineexternaladdresses
@@ -108,20 +108,22 @@ ObservedState *ExternaladdressObservedStateStatus `json:"observedState,omitempty
 // VMwareEngineExternalAddress is the Schema for the vmwareengine API
 // +k8s:openapi-gen=true
 type VMwareEngineExternalAddress struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec VMwareEngineExternalAddressSpec `json:"spec,omitempty"`
-  Status VMwareEngineExternalAddressStatus `json:"status,omitempty"`
+	Spec   VMwareEngineExternalAddressSpec   `json:"spec,omitempty"`
+	Status VMwareEngineExternalAddressStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // VMwareEngineExternalAddressList contains a list of VMwareEngineExternalAddress
- type VMwareEngineExternalAddressList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []VMwareEngineExternalAddress `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&VMwareEngineExternalAddress{}, &VMwareEngineExternalAddressList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// VMwareEngineExternalAddressList contains a list of VMwareEngineExternalAddress
+type VMwareEngineExternalAddressList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []VMwareEngineExternalAddress `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&VMwareEngineExternalAddress{}, &VMwareEngineExternalAddressList{})
+}

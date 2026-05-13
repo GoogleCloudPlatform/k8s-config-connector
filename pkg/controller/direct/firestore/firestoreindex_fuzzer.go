@@ -20,7 +20,7 @@ package firestore
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/firestore/admin/v1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/gcpclients/firestore/admin/v1"
 )
 
 func init() {
@@ -53,6 +53,8 @@ func firestoreIndexFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".multikey")
 	f.Unimplemented_NotYetTriaged(".shard_count")
 	f.Unimplemented_NotYetTriaged(".unique")
+
+	f.Unimplemented_NotYetTriaged(".fields[].search_config")
 
 	f.Unimplemented_NotYetTriaged(".search_index_options")
 	f.Unimplemented_NotYetTriaged(".search_index_options.text_language_override_field_path")

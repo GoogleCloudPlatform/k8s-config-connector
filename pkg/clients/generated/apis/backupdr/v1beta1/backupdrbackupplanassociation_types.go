@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,40 +29,40 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type BackupplanassociationResource struct {
-/* InstanceRef defines the resource reference to ComputeInstance, which "External" field holds the GCP identifier for the KRM object. */
-// +optional
-ComputeInstanceRef *v1alpha1.ResourceRef `json:"computeInstanceRef,omitempty"`
+	/* InstanceRef defines the resource reference to ComputeInstance, which "External" field holds the GCP identifier for the KRM object. */
+	// +optional
+	ComputeInstanceRef *v1alpha1.ResourceRef `json:"computeInstanceRef,omitempty"`
 }
 
 type BackupDRBackupPlanAssociationSpec struct {
-/* Required. The backup plan which needs to be applied on workload. */
-BackupPlanRef v1alpha1.ResourceRef `json:"backupPlanRef"`
+	/* Required. The backup plan which needs to be applied on workload. */
+	BackupPlanRef v1alpha1.ResourceRef `json:"backupPlanRef"`
 
-/* Immutable. */
-Location string `json:"location"`
+	/* Immutable. */
+	Location string `json:"location"`
 
-/* The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Required. Immutable. Resource name of workload on which backupplan is applied */
-Resource BackupplanassociationResource `json:"resource"`
+	/* Required. Immutable. Resource name of workload on which backupplan is applied */
+	Resource BackupplanassociationResource `json:"resource"`
 
-/* The BackupDRBackupPlanAssociation name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The BackupDRBackupPlanAssociation name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Required. Immutable. Resource type of workload on which backupplan is applied */
-ResourceType string `json:"resourceType"`
+	/* Required. Immutable. Resource type of workload on which backupplan is applied */
+	ResourceType string `json:"resourceType"`
 }
 
 type BackupplanassociationDetailsStatus struct {
@@ -73,12 +72,12 @@ type BackupplanassociationDetailsStatus struct {
 	the fully qualified name of the type (as in
 	`path/google.protobuf.Duration`). The name should be in a canonical form
 	(e.g., leading "." is not accepted).
-	
+
 	In practice, teams usually precompile into the binary all types that they
 	expect it to use in the context of Any. However, for URLs which use the
 	scheme `http`, `https`, or no scheme, one can optionally set up a type
 	server that maps type URLs to message definitions as follows:
-	
+
 	* If no scheme is provided, `https` is assumed.
 	* An HTTP GET on the URL must yield a [google.protobuf.Type][]
 	value in binary format, or produce an error.
@@ -87,91 +86,92 @@ type BackupplanassociationDetailsStatus struct {
 	lookup. Therefore, binary compatibility needs to be preserved
 	on changes to types. (Use versioned type names to manage
 	breaking changes.)
-	
+
 	Note: this functionality is not currently available in the official
 	protobuf release, and it is not used for type URLs beginning with
 	type.googleapis.com.
-	
+
 	Schemes other than `http`, `https` (or the empty scheme) might be
 	used with implementation specific semantics. */
-// +optional
-TypeURL *string `json:"typeURL,omitempty"`
+	// +optional
+	TypeURL *string `json:"typeURL,omitempty"`
 
-/* Must be a valid serialized protocol buffer of the above specified type. */
-// +optional
-Value *string `json:"value,omitempty"`
+	/* Must be a valid serialized protocol buffer of the above specified type. */
+	// +optional
+	Value *string `json:"value,omitempty"`
 }
 
 type BackupplanassociationLastBackupErrorStatus struct {
-/* The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code]. */
-// +optional
-Code *int32 `json:"code,omitempty"`
+	/* The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code]. */
+	// +optional
+	Code *int32 `json:"code,omitempty"`
 
-/* A list of messages that carry the error details.  There is a common set of message types for APIs to use. */
-// +optional
-Details []BackupplanassociationDetailsStatus `json:"details,omitempty"`
+	/* A list of messages that carry the error details.  There is a common set of message types for APIs to use. */
+	// +optional
+	Details []BackupplanassociationDetailsStatus `json:"details,omitempty"`
 
-/* A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client. */
-// +optional
-Message *string `json:"message,omitempty"`
+	/* A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client. */
+	// +optional
+	Message *string `json:"message,omitempty"`
 }
 
 type BackupplanassociationObservedStateStatus struct {
-/* Output only. The time when the instance was created. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. The time when the instance was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. Resource name of data source which will be used as storage location for backups taken. Format : projects/{project}/locations/{location}/backupVaults/{backupvault}/dataSources/{datasource} */
-// +optional
-DataSource *string `json:"dataSource,omitempty"`
+	/* Output only. Resource name of data source which will be used as storage location for backups taken. Format : projects/{project}/locations/{location}/backupVaults/{backupvault}/dataSources/{datasource} */
+	// +optional
+	DataSource *string `json:"dataSource,omitempty"`
 
-/* Output only. The config info related to backup rules. */
-// +optional
-RulesConfigInfo []BackupplanassociationRulesConfigInfoStatus `json:"rulesConfigInfo,omitempty"`
+	/* Output only. The config info related to backup rules. */
+	// +optional
+	RulesConfigInfo []BackupplanassociationRulesConfigInfoStatus `json:"rulesConfigInfo,omitempty"`
 
-/* Output only. The BackupPlanAssociation resource state. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. The BackupPlanAssociation resource state. */
+	// +optional
+	State *string `json:"state,omitempty"`
 
-/* Output only. The time when the instance was updated. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. The time when the instance was updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type BackupplanassociationRulesConfigInfoStatus struct {
-/* Output only. google.rpc.Status object to store the last backup error. */
-// +optional
-LastBackupError *BackupplanassociationLastBackupErrorStatus `json:"lastBackupError,omitempty"`
+	/* Output only. google.rpc.Status object to store the last backup error. */
+	// +optional
+	LastBackupError *BackupplanassociationLastBackupErrorStatus `json:"lastBackupError,omitempty"`
 
-/* Output only. The last backup state for rule. */
-// +optional
-LastBackupState *string `json:"lastBackupState,omitempty"`
+	/* Output only. The last backup state for rule. */
+	// +optional
+	LastBackupState *string `json:"lastBackupState,omitempty"`
 
-/* Output only. The point in time when the last successful backup was captured from the source. */
-// +optional
-LastSuccessfulBackupConsistencyTime *string `json:"lastSuccessfulBackupConsistencyTime,omitempty"`
+	/* Output only. The point in time when the last successful backup was captured from the source. */
+	// +optional
+	LastSuccessfulBackupConsistencyTime *string `json:"lastSuccessfulBackupConsistencyTime,omitempty"`
 
-/* Output only. Backup Rule id fetched from backup plan. */
-// +optional
-RuleID *string `json:"ruleID,omitempty"`
+	/* Output only. Backup Rule id fetched from backup plan. */
+	// +optional
+	RuleID *string `json:"ruleID,omitempty"`
 }
 
 type BackupDRBackupPlanAssociationStatus struct {
 	/* Conditions represent the latest available observations of the
-	    BackupDRBackupPlanAssociation's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the BackupDRBackupPlanAssociation resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   BackupDRBackupPlanAssociation's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the BackupDRBackupPlanAssociation resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *BackupplanassociationObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *BackupplanassociationObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbackupdrbackupplanassociation;gcpbackupdrbackupplanassociations
@@ -186,20 +186,22 @@ ObservedState *BackupplanassociationObservedStateStatus `json:"observedState,omi
 // BackupDRBackupPlanAssociation is the Schema for the backupdr API
 // +k8s:openapi-gen=true
 type BackupDRBackupPlanAssociation struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec BackupDRBackupPlanAssociationSpec `json:"spec,omitempty"`
-  Status BackupDRBackupPlanAssociationStatus `json:"status,omitempty"`
+	Spec   BackupDRBackupPlanAssociationSpec   `json:"spec,omitempty"`
+	Status BackupDRBackupPlanAssociationStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // BackupDRBackupPlanAssociationList contains a list of BackupDRBackupPlanAssociation
- type BackupDRBackupPlanAssociationList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []BackupDRBackupPlanAssociation `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&BackupDRBackupPlanAssociation{}, &BackupDRBackupPlanAssociationList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// BackupDRBackupPlanAssociationList contains a list of BackupDRBackupPlanAssociation
+type BackupDRBackupPlanAssociationList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []BackupDRBackupPlanAssociation `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&BackupDRBackupPlanAssociation{}, &BackupDRBackupPlanAssociationList{})
+}

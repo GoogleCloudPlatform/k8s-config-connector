@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,106 +29,107 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type VpnconnectionVpcProject struct {
-/* Immutable. The project of the VPC to connect to. If not specified, it is the same as the cluster project. */
-// +optional
-ProjectId *string `json:"projectId,omitempty"`
+	/* Immutable. The project of the VPC to connect to. If not specified, it is the same as the cluster project. */
+	// +optional
+	ProjectId *string `json:"projectId,omitempty"`
 }
 
 type EdgeContainerVpnConnectionSpec struct {
-ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
+	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
 
-/* Immutable. Whether this VPN connection has HA enabled on cluster side. If enabled, when creating VPN connection we will attempt to use 2 ANG floating IPs. */
-// +optional
-EnableHighAvailability *bool `json:"enableHighAvailability,omitempty"`
+	/* Immutable. Whether this VPN connection has HA enabled on cluster side. If enabled, when creating VPN connection we will attempt to use 2 ANG floating IPs. */
+	// +optional
+	EnableHighAvailability *bool `json:"enableHighAvailability,omitempty"`
 
-/* Immutable. Google Cloud Platform location. */
-Location string `json:"location"`
+	/* Immutable. Google Cloud Platform location. */
+	Location string `json:"location"`
 
 	/* Immutable. NAT gateway IP, or WAN IP address. If a customer has multiple NAT IPs, the customer needs to configure NAT such that only one external IP maps to the GMEC Anthos cluster.
 	This is empty if NAT is not used. */
-// +optional
-NatGatewayIp *string `json:"natGatewayIp,omitempty"`
+	// +optional
+	NatGatewayIp *string `json:"natGatewayIp,omitempty"`
 
-/* The project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* The VPN connection Cloud Router name. */
-// +optional
-Router *string `json:"router,omitempty"`
+	/* The VPN connection Cloud Router name. */
+	// +optional
+	Router *string `json:"router,omitempty"`
 
-/* Immutable. The network ID of VPC to connect to. */
-// +optional
-Vpc *string `json:"vpc,omitempty"`
+	/* Immutable. The network ID of VPC to connect to. */
+	// +optional
+	Vpc *string `json:"vpc,omitempty"`
 
-/* Project detail of the VPC network. Required if VPC is in a different project than the cluster project. */
-// +optional
-VpcProject *VpnconnectionVpcProject `json:"vpcProject,omitempty"`
+	/* Project detail of the VPC network. Required if VPC is in a different project than the cluster project. */
+	// +optional
+	VpcProject *VpnconnectionVpcProject `json:"vpcProject,omitempty"`
 }
 
 type VpnconnectionCloudRouterStatus struct {
-/* The associated Cloud Router name. */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* The associated Cloud Router name. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 }
 
 type VpnconnectionCloudVpnsStatus struct {
-/* The created Cloud VPN gateway name. */
-// +optional
-Gateway *string `json:"gateway,omitempty"`
+	/* The created Cloud VPN gateway name. */
+	// +optional
+	Gateway *string `json:"gateway,omitempty"`
 }
 
 type VpnconnectionDetailsStatus struct {
-/* The Cloud Router info. */
-// +optional
-CloudRouter []VpnconnectionCloudRouterStatus `json:"cloudRouter,omitempty"`
+	/* The Cloud Router info. */
+	// +optional
+	CloudRouter []VpnconnectionCloudRouterStatus `json:"cloudRouter,omitempty"`
 
-/* Each connection has multiple Cloud VPN gateways. */
-// +optional
-CloudVpns []VpnconnectionCloudVpnsStatus `json:"cloudVpns,omitempty"`
+	/* Each connection has multiple Cloud VPN gateways. */
+	// +optional
+	CloudVpns []VpnconnectionCloudVpnsStatus `json:"cloudVpns,omitempty"`
 
-/* The error message. This is only populated when state=ERROR. */
-// +optional
-Error *string `json:"error,omitempty"`
+	/* The error message. This is only populated when state=ERROR. */
+	// +optional
+	Error *string `json:"error,omitempty"`
 
-/* The current connection state. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* The current connection state. */
+	// +optional
+	State *string `json:"state,omitempty"`
 }
 
 type EdgeContainerVpnConnectionStatus struct {
 	/* Conditions represent the latest available observations of the
-	    EdgeContainerVpnConnection's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* The time when the VPN connection was created. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	   EdgeContainerVpnConnection's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* The time when the VPN connection was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* A nested object resource. */
-// +optional
-Details []VpnconnectionDetailsStatus `json:"details,omitempty"`
+	/* A nested object resource. */
+	// +optional
+	Details []VpnconnectionDetailsStatus `json:"details,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* The time when the VPN connection was last updated. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* The time when the VPN connection was last updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpedgecontainervpnconnection;gcpedgecontainervpnconnections
@@ -146,20 +146,22 @@ UpdateTime *string `json:"updateTime,omitempty"`
 // EdgeContainerVpnConnection is the Schema for the edgecontainer API
 // +k8s:openapi-gen=true
 type EdgeContainerVpnConnection struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec EdgeContainerVpnConnectionSpec `json:"spec,omitempty"`
-  Status EdgeContainerVpnConnectionStatus `json:"status,omitempty"`
+	Spec   EdgeContainerVpnConnectionSpec   `json:"spec,omitempty"`
+	Status EdgeContainerVpnConnectionStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // EdgeContainerVpnConnectionList contains a list of EdgeContainerVpnConnection
- type EdgeContainerVpnConnectionList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []EdgeContainerVpnConnection `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&EdgeContainerVpnConnection{}, &EdgeContainerVpnConnectionList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// EdgeContainerVpnConnectionList contains a list of EdgeContainerVpnConnection
+type EdgeContainerVpnConnectionList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []EdgeContainerVpnConnection `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&EdgeContainerVpnConnection{}, &EdgeContainerVpnConnectionList{})
+}

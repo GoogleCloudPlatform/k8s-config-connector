@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,98 +29,99 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type FederationBackendMetastores struct {
-/* The type of the backend metastore. */
-// +optional
-MetastoreType *string `json:"metastoreType,omitempty"`
+	/* The type of the backend metastore. */
+	// +optional
+	MetastoreType *string `json:"metastoreType,omitempty"`
 
 	/* The relative resource name of the metastore that is being federated.
 	The formats of the relative resource names for the currently supported
 	metastores are listed below:
-	
+
 	* BigQuery
 	* `projects/{project_id}`
 	* Dataproc Metastore
 	* `projects/{project_id}/locations/{location}/services/{service_id}` */
-// +optional
-ServiceRef *v1alpha1.ResourceRef `json:"serviceRef,omitempty"`
+	// +optional
+	ServiceRef *v1alpha1.ResourceRef `json:"serviceRef,omitempty"`
 }
 
 type MetastoreFederationSpec struct {
-/* map type with key int32 as string and value as BackendMetastore */
-// +optional
-BackendMetastores map[string]FederationBackendMetastores `json:"backendMetastores,omitempty"`
+	/* map type with key int32 as string and value as BackendMetastore */
+	// +optional
+	BackendMetastores map[string]FederationBackendMetastores `json:"backendMetastores,omitempty"`
 
-/* User-defined labels for the metastore federation. */
-// +optional
-Labels map[string]string `json:"labels,omitempty"`
+	/* User-defined labels for the metastore federation. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
 
-Location string `json:"location"`
+	Location string `json:"location"`
 
-/* The Project that this resource belongs to. */
-// +optional
-ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	/* The Project that this resource belongs to. */
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-/* The MetastoreFederation name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The MetastoreFederation name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Immutable. The Apache Hive metastore version of the federation. All backend metastore versions must be compatible with the federation version. */
-// +optional
-Version *string `json:"version,omitempty"`
+	/* Immutable. The Apache Hive metastore version of the federation. All backend metastore versions must be compatible with the federation version. */
+	// +optional
+	Version *string `json:"version,omitempty"`
 }
 
 type FederationObservedStateStatus struct {
-/* Output only. The time when the metastore federation was created. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. The time when the metastore federation was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. The federation endpoint. */
-// +optional
-EndpointURI *string `json:"endpointURI,omitempty"`
+	/* Output only. The federation endpoint. */
+	// +optional
+	EndpointURI *string `json:"endpointURI,omitempty"`
 
-/* Output only. The current state of the federation. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. The current state of the federation. */
+	// +optional
+	State *string `json:"state,omitempty"`
 
-/* Output only. Additional information about the current state of the metastore federation, if available. */
-// +optional
-StateMessage *string `json:"stateMessage,omitempty"`
+	/* Output only. Additional information about the current state of the metastore federation, if available. */
+	// +optional
+	StateMessage *string `json:"stateMessage,omitempty"`
 
-/* Output only. The globally unique resource identifier of the metastore federation. */
-// +optional
-Uid *string `json:"uid,omitempty"`
+	/* Output only. The globally unique resource identifier of the metastore federation. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
 
-/* Output only. The time when the metastore federation was last updated. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. The time when the metastore federation was last updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type MetastoreFederationStatus struct {
 	/* Conditions represent the latest available observations of the
-	    MetastoreFederation's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the MetastoreFederation resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   MetastoreFederation's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the MetastoreFederation resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *FederationObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *FederationObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpmetastorefederation;gcpmetastorefederations
@@ -136,20 +136,22 @@ ObservedState *FederationObservedStateStatus `json:"observedState,omitempty"`
 // MetastoreFederation is the Schema for the metastore API
 // +k8s:openapi-gen=true
 type MetastoreFederation struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec MetastoreFederationSpec `json:"spec,omitempty"`
-  Status MetastoreFederationStatus `json:"status,omitempty"`
+	Spec   MetastoreFederationSpec   `json:"spec,omitempty"`
+	Status MetastoreFederationStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // MetastoreFederationList contains a list of MetastoreFederation
- type MetastoreFederationList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []MetastoreFederation `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&MetastoreFederation{}, &MetastoreFederationList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// MetastoreFederationList contains a list of MetastoreFederation
+type MetastoreFederationList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []MetastoreFederation `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&MetastoreFederation{}, &MetastoreFederationList{})
+}

@@ -53,31 +53,29 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	AlloyDBBackupGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(AlloyDBBackup{}).Name(),
-  	}
-  
-  	AlloyDBClusterGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(AlloyDBCluster{}).Name(),
-  	}
-  
-  	AlloyDBInstanceGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(AlloyDBInstance{}).Name(),
-  	}
-  
-  	AlloyDBUserGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(AlloyDBUser{}).Name(),
-  	}
-  
+	AlloyDBBackupGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(AlloyDBBackup{}).Name(),
+	}
 
-  	alloydbAPIVersion = SchemeGroupVersion.String()
+	AlloyDBClusterGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(AlloyDBCluster{}).Name(),
+	}
+
+	AlloyDBInstanceGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(AlloyDBInstance{}).Name(),
+	}
+
+	AlloyDBUserGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(AlloyDBUser{}).Name(),
+	}
+
+	alloydbAPIVersion = SchemeGroupVersion.String()
 )

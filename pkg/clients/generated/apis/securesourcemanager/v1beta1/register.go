@@ -53,19 +53,17 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	SecureSourceManagerInstanceGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(SecureSourceManagerInstance{}).Name(),
-  	}
-  
-  	SecureSourceManagerRepositoryGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(SecureSourceManagerRepository{}).Name(),
-  	}
-  
+	SecureSourceManagerInstanceGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(SecureSourceManagerInstance{}).Name(),
+	}
 
-  	securesourcemanagerAPIVersion = SchemeGroupVersion.String()
+	SecureSourceManagerRepositoryGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(SecureSourceManagerRepository{}).Name(),
+	}
+
+	securesourcemanagerAPIVersion = SchemeGroupVersion.String()
 )

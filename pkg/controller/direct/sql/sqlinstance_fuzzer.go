@@ -20,7 +20,7 @@ package sql
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/sql/v1beta4"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/gcpclients/cloud/sql/v1beta4"
 )
 
 func init() {
@@ -38,7 +38,7 @@ func sqlInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".database_version")
 	f.SpecField(".settings")
 	f.SpecField(".etag")
-	f.SpecField(".failover_replica")
+	f.Unimplemented_NotYetTriaged(".failover_replica")
 	f.SpecField(".master_instance_name")
 	f.SpecField(".replica_names")
 	f.SpecField(".max_disk_size")
@@ -50,7 +50,7 @@ func sqlInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".ipv6_address")
 	f.SpecField(".service_account_email_address")
 	f.SpecField(".on_premises_configuration")
-	f.SpecField(".replica_configuration")
+	f.Unimplemented_NotYetTriaged(".replica_configuration")
 	f.SpecField(".backend_type")
 	f.SpecField(".self_link")
 	f.SpecField(".suspension_reason")

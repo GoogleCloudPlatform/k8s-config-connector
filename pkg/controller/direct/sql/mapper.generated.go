@@ -23,7 +23,7 @@ package sql
 import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/sql/v1beta4"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/gcpclients/cloud/sql/v1beta4"
 )
 
 func AclEntry_FromProto(mapCtx *direct.MapContext, in *pb.AclEntry) *krm.AclEntry {

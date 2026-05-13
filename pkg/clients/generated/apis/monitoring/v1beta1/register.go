@@ -53,61 +53,59 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	MonitoringAlertPolicyGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(MonitoringAlertPolicy{}).Name(),
-  	}
-  
-  	MonitoringDashboardGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(MonitoringDashboard{}).Name(),
-  	}
-  
-  	MonitoringGroupGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(MonitoringGroup{}).Name(),
-  	}
-  
-  	MonitoringMetricDescriptorGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(MonitoringMetricDescriptor{}).Name(),
-  	}
-  
-  	MonitoringMonitoredProjectGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(MonitoringMonitoredProject{}).Name(),
-  	}
-  
-  	MonitoringNotificationChannelGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(MonitoringNotificationChannel{}).Name(),
-  	}
-  
-  	MonitoringServiceGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(MonitoringService{}).Name(),
-  	}
-  
-  	MonitoringServiceLevelObjectiveGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(MonitoringServiceLevelObjective{}).Name(),
-  	}
-  
-  	MonitoringUptimeCheckConfigGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(MonitoringUptimeCheckConfig{}).Name(),
-  	}
-  
+	MonitoringAlertPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(MonitoringAlertPolicy{}).Name(),
+	}
 
-  	monitoringAPIVersion = SchemeGroupVersion.String()
+	MonitoringDashboardGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(MonitoringDashboard{}).Name(),
+	}
+
+	MonitoringGroupGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(MonitoringGroup{}).Name(),
+	}
+
+	MonitoringMetricDescriptorGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(MonitoringMetricDescriptor{}).Name(),
+	}
+
+	MonitoringMonitoredProjectGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(MonitoringMonitoredProject{}).Name(),
+	}
+
+	MonitoringNotificationChannelGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(MonitoringNotificationChannel{}).Name(),
+	}
+
+	MonitoringServiceGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(MonitoringService{}).Name(),
+	}
+
+	MonitoringServiceLevelObjectiveGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(MonitoringServiceLevelObjective{}).Name(),
+	}
+
+	MonitoringUptimeCheckConfigGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(MonitoringUptimeCheckConfig{}).Name(),
+	}
+
+	monitoringAPIVersion = SchemeGroupVersion.String()
 )

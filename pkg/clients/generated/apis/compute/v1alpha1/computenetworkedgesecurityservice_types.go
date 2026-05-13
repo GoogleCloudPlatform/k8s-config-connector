@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,80 +29,81 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ComputeNetworkEdgeSecurityServiceSpec struct {
-/* An optional description of this resource. Provide this property when you create the resource. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* An optional description of this resource. Provide this property when you create the resource. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking. This field will be ignored when inserting a NetworkEdgeSecurityService. An up-to-date fingerprint must be provided in order to update the NetworkEdgeSecurityService, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve a NetworkEdgeSecurityService. */
-// +optional
-Fingerprint *string `json:"fingerprint,omitempty"`
+	/* Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking. This field will be ignored when inserting a NetworkEdgeSecurityService. An up-to-date fingerprint must be provided in order to update the NetworkEdgeSecurityService, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve a NetworkEdgeSecurityService. */
+	// +optional
+	Fingerprint *string `json:"fingerprint,omitempty"`
 
-Location string `json:"location"`
+	Location string `json:"location"`
 
-/* The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* The ComputeNetworkEdgeSecurityService name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The ComputeNetworkEdgeSecurityService name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* The resource URL for the network edge security service associated with this network edge security service. */
-// +optional
-SecurityPolicyRef *v1alpha1.ResourceRef `json:"securityPolicyRef,omitempty"`
+	/* The resource URL for the network edge security service associated with this network edge security service. */
+	// +optional
+	SecurityPolicyRef *v1alpha1.ResourceRef `json:"securityPolicyRef,omitempty"`
 }
 
 type NetworkedgesecurityserviceObservedStateStatus struct {
-/* [Output Only] Creation timestamp in RFC3339 text format. */
-// +optional
-CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+	/* [Output Only] Creation timestamp in RFC3339 text format. */
+	// +optional
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-/* [Output Only] The unique identifier for the resource. This identifier is defined by the server. */
-// +optional
-Id *int64 `json:"id,omitempty"`
+	/* [Output Only] The unique identifier for the resource. This identifier is defined by the server. */
+	// +optional
+	Id *int64 `json:"id,omitempty"`
 
-/* [Output only] Type of the resource. Always compute#networkEdgeSecurityService for NetworkEdgeSecurityServices */
-// +optional
-Kind *string `json:"kind,omitempty"`
+	/* [Output only] Type of the resource. Always compute#networkEdgeSecurityService for NetworkEdgeSecurityServices */
+	// +optional
+	Kind *string `json:"kind,omitempty"`
 
-/* [Output Only] URL of the region where the resource resides. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body. */
-// +optional
-Region *string `json:"region,omitempty"`
+	/* [Output Only] URL of the region where the resource resides. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body. */
+	// +optional
+	Region *string `json:"region,omitempty"`
 
-/* [Output Only] Server-defined URL for the resource. */
-// +optional
-SelfLink *string `json:"selfLink,omitempty"`
+	/* [Output Only] Server-defined URL for the resource. */
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 
-/* [Output Only] Server-defined URL for this resource with the resource id. */
-// +optional
-SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+	/* [Output Only] Server-defined URL for this resource with the resource id. */
+	// +optional
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
 }
 
 type ComputeNetworkEdgeSecurityServiceStatus struct {
 	/* Conditions represent the latest available observations of the
-	    ComputeNetworkEdgeSecurityService's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the ComputeNetworkEdgeSecurityService resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   ComputeNetworkEdgeSecurityService's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the ComputeNetworkEdgeSecurityService resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *NetworkedgesecurityserviceObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *NetworkedgesecurityserviceObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputenetworkedgesecurityservice;gcpcomputenetworkedgesecurityservices
@@ -118,20 +118,22 @@ ObservedState *NetworkedgesecurityserviceObservedStateStatus `json:"observedStat
 // ComputeNetworkEdgeSecurityService is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeNetworkEdgeSecurityService struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ComputeNetworkEdgeSecurityServiceSpec `json:"spec,omitempty"`
-  Status ComputeNetworkEdgeSecurityServiceStatus `json:"status,omitempty"`
+	Spec   ComputeNetworkEdgeSecurityServiceSpec   `json:"spec,omitempty"`
+	Status ComputeNetworkEdgeSecurityServiceStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ComputeNetworkEdgeSecurityServiceList contains a list of ComputeNetworkEdgeSecurityService
- type ComputeNetworkEdgeSecurityServiceList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []ComputeNetworkEdgeSecurityService `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&ComputeNetworkEdgeSecurityService{}, &ComputeNetworkEdgeSecurityServiceList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ComputeNetworkEdgeSecurityServiceList contains a list of ComputeNetworkEdgeSecurityService
+type ComputeNetworkEdgeSecurityServiceList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeNetworkEdgeSecurityService `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ComputeNetworkEdgeSecurityService{}, &ComputeNetworkEdgeSecurityServiceList{})
+}

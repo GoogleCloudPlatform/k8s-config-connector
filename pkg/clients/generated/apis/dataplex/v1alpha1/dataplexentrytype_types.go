@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,100 +29,101 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type EntrytypeAuthorization struct {
-/* Immutable. The IAM permission grantable on the Entry Group to allow access to instantiate Entries of Dataplex Universal Catalog owned Entry Types, only settable for Dataplex Universal Catalog owned Types. */
-// +optional
-AlternateUsePermission *string `json:"alternateUsePermission,omitempty"`
+	/* Immutable. The IAM permission grantable on the Entry Group to allow access to instantiate Entries of Dataplex Universal Catalog owned Entry Types, only settable for Dataplex Universal Catalog owned Types. */
+	// +optional
+	AlternateUsePermission *string `json:"alternateUsePermission,omitempty"`
 }
 
 type EntrytypeRequiredAspects struct {
-/* A reference to an externally managed DataplexAspectType resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/aspectTypes/{{aspecttypeID}}". */
-TypeRef v1alpha1.ResourceRef `json:"typeRef"`
+	/* A reference to an externally managed DataplexAspectType resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/aspectTypes/{{aspecttypeID}}". */
+	TypeRef v1alpha1.ResourceRef `json:"typeRef"`
 }
 
 type DataplexEntryTypeSpec struct {
-/* Authorization contains constraints on the visibility of Entries that conform to the EntryType. */
-// +optional
-Authorization *EntrytypeAuthorization `json:"authorization,omitempty"`
+	/* Authorization contains constraints on the visibility of Entries that conform to the EntryType. */
+	// +optional
+	Authorization *EntrytypeAuthorization `json:"authorization,omitempty"`
 
-/* Optional. Description of the EntryType. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* Optional. Description of the EntryType. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Optional. User friendly display name. */
-// +optional
-DisplayName *string `json:"displayName,omitempty"`
+	/* Optional. User friendly display name. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-/* The location that this resource belongs to. */
-Location string `json:"location"`
+	/* The location that this resource belongs to. */
+	Location string `json:"location"`
 
-/* Optional. The platform that Entries of this type belongs to. */
-// +optional
-Platform *string `json:"platform,omitempty"`
+	/* Optional. The platform that Entries of this type belongs to. */
+	// +optional
+	Platform *string `json:"platform,omitempty"`
 
-/* The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* AspectInfo contains overriding configuration for aspects. */
-// +optional
-RequiredAspects []EntrytypeRequiredAspects `json:"requiredAspects,omitempty"`
+	/* AspectInfo contains overriding configuration for aspects. */
+	// +optional
+	RequiredAspects []EntrytypeRequiredAspects `json:"requiredAspects,omitempty"`
 
-/* The DataplexEntryType name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The DataplexEntryType name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Optional. The system that Entries of this type belongs to. Examples include CloudSQL, MariaDB etc */
-// +optional
-System *string `json:"system,omitempty"`
+	/* Optional. The system that Entries of this type belongs to. Examples include CloudSQL, MariaDB etc */
+	// +optional
+	System *string `json:"system,omitempty"`
 
-/* Optional. Indicates the classes this Entry Type belongs to, for example, TABLE, DATABASE, MODEL. */
-// +optional
-TypeAliases []string `json:"typeAliases,omitempty"`
+	/* Optional. Indicates the classes this Entry Type belongs to, for example, TABLE, DATABASE, MODEL. */
+	// +optional
+	TypeAliases []string `json:"typeAliases,omitempty"`
 }
 
 type EntrytypeObservedStateStatus struct {
-/* Output only. The time when the EntryType was created. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. The time when the EntryType was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Optional. This checksum is computed by the service, and might be sent on update and delete requests to ensure the client has an up-to-date value before proceeding. */
-// +optional
-Etag *string `json:"etag,omitempty"`
+	/* Optional. This checksum is computed by the service, and might be sent on update and delete requests to ensure the client has an up-to-date value before proceeding. */
+	// +optional
+	Etag *string `json:"etag,omitempty"`
 
-/* Output only. System generated globally unique ID for the EntryType. This ID will be different if the EntryType is deleted and re-created with the same name. */
-// +optional
-Uid *string `json:"uid,omitempty"`
+	/* Output only. System generated globally unique ID for the EntryType. This ID will be different if the EntryType is deleted and re-created with the same name. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
 
-/* Output only. The time when the EntryType was last updated. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. The time when the EntryType was last updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type DataplexEntryTypeStatus struct {
 	/* Conditions represent the latest available observations of the
-	    DataplexEntryType's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the DataplexEntryType resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   DataplexEntryType's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the DataplexEntryType resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *EntrytypeObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *EntrytypeObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdataplexentrytype;gcpdataplexentrytypes
@@ -138,20 +138,22 @@ ObservedState *EntrytypeObservedStateStatus `json:"observedState,omitempty"`
 // DataplexEntryType is the Schema for the dataplex API
 // +k8s:openapi-gen=true
 type DataplexEntryType struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec DataplexEntryTypeSpec `json:"spec,omitempty"`
-  Status DataplexEntryTypeStatus `json:"status,omitempty"`
+	Spec   DataplexEntryTypeSpec   `json:"spec,omitempty"`
+	Status DataplexEntryTypeStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // DataplexEntryTypeList contains a list of DataplexEntryType
- type DataplexEntryTypeList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []DataplexEntryType `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&DataplexEntryType{}, &DataplexEntryTypeList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// DataplexEntryTypeList contains a list of DataplexEntryType
+type DataplexEntryTypeList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DataplexEntryType `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&DataplexEntryType{}, &DataplexEntryTypeList{})
+}

@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,35 +29,36 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ServiceNetworkingConnectionSpec struct {
-NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
 
-ReservedPeeringRanges []v1alpha1.ResourceRef `json:"reservedPeeringRanges"`
+	ReservedPeeringRanges []v1alpha1.ResourceRef `json:"reservedPeeringRanges"`
 
-/* Immutable. Provider peering service that is managing peering connectivity for a service provider organization. For Google services that support this functionality it is 'servicenetworking.googleapis.com'. */
-Service string `json:"service"`
+	/* Immutable. Provider peering service that is managing peering connectivity for a service provider organization. For Google services that support this functionality it is 'servicenetworking.googleapis.com'. */
+	Service string `json:"service"`
 }
 
 type ServiceNetworkingConnectionStatus struct {
 	/* Conditions represent the latest available observations of the
-	    ServiceNetworkingConnection's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   ServiceNetworkingConnection's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-// +optional
-Peering *string `json:"peering,omitempty"`
+	// +optional
+	Peering *string `json:"peering,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpservicenetworkingconnection;gcpservicenetworkingconnections
@@ -75,20 +75,22 @@ Peering *string `json:"peering,omitempty"`
 // ServiceNetworkingConnection is the Schema for the servicenetworking API
 // +k8s:openapi-gen=true
 type ServiceNetworkingConnection struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ServiceNetworkingConnectionSpec `json:"spec,omitempty"`
-  Status ServiceNetworkingConnectionStatus `json:"status,omitempty"`
+	Spec   ServiceNetworkingConnectionSpec   `json:"spec,omitempty"`
+	Status ServiceNetworkingConnectionStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ServiceNetworkingConnectionList contains a list of ServiceNetworkingConnection
- type ServiceNetworkingConnectionList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []ServiceNetworkingConnection `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&ServiceNetworkingConnection{}, &ServiceNetworkingConnectionList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ServiceNetworkingConnectionList contains a list of ServiceNetworkingConnection
+type ServiceNetworkingConnectionList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ServiceNetworkingConnection `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ServiceNetworkingConnection{}, &ServiceNetworkingConnectionList{})
+}

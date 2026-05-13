@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -43,7 +42,7 @@ type RepositoryPubsubConfigs struct {
 	/* The format of the Cloud Pub/Sub messages.
 	- PROTOBUF: The message payload is a serialized protocol buffer of SourceRepoEvent.
 	- JSON: The message payload is a JSON string of SourceRepoEvent. Possible values: ["PROTOBUF", "JSON"]. */
-MessageFormat string `json:"messageFormat"`
+	MessageFormat string `json:"messageFormat"`
 
 	/* Service account used for publishing Cloud Pub/Sub messages. This
 	service account needs to be in the same project as the
@@ -51,39 +50,40 @@ MessageFormat string `json:"messageFormat"`
 	iam.serviceAccounts.actAs permission on this service account. If
 	unspecified, it defaults to the compute engine default service
 	account. */
-// +optional
-ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	// +optional
+	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
-TopicRef v1alpha1.ResourceRef `json:"topicRef"`
+	TopicRef v1alpha1.ResourceRef `json:"topicRef"`
 }
 
 type SourceRepoRepositorySpec struct {
 	/* How this repository publishes a change in the repository through Cloud Pub/Sub.
 	Keyed by the topic names. */
-// +optional
-PubsubConfigs []RepositoryPubsubConfigs `json:"pubsubConfigs,omitempty"`
+	// +optional
+	PubsubConfigs []RepositoryPubsubConfigs `json:"pubsubConfigs,omitempty"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type SourceRepoRepositoryStatus struct {
 	/* Conditions represent the latest available observations of the
-	    SourceRepoRepository's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   SourceRepoRepository's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* The disk usage of the repo, in bytes. */
-// +optional
-Size *int64 `json:"size,omitempty"`
+	/* The disk usage of the repo, in bytes. */
+	// +optional
+	Size *int64 `json:"size,omitempty"`
 
-/* URL to clone the repository from Google Cloud Source Repositories. */
-// +optional
-Url *string `json:"url,omitempty"`
+	/* URL to clone the repository from Google Cloud Source Repositories. */
+	// +optional
+	Url *string `json:"url,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpsourcereporepository;gcpsourcereporepositories
@@ -100,20 +100,22 @@ Url *string `json:"url,omitempty"`
 // SourceRepoRepository is the Schema for the sourcerepo API
 // +k8s:openapi-gen=true
 type SourceRepoRepository struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec SourceRepoRepositorySpec `json:"spec,omitempty"`
-  Status SourceRepoRepositoryStatus `json:"status,omitempty"`
+	Spec   SourceRepoRepositorySpec   `json:"spec,omitempty"`
+	Status SourceRepoRepositoryStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // SourceRepoRepositoryList contains a list of SourceRepoRepository
- type SourceRepoRepositoryList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []SourceRepoRepository `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&SourceRepoRepository{}, &SourceRepoRepositoryList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// SourceRepoRepositoryList contains a list of SourceRepoRepository
+type SourceRepoRepositoryList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []SourceRepoRepository `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&SourceRepoRepository{}, &SourceRepoRepositoryList{})
+}

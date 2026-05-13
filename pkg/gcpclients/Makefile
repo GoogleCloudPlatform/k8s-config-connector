@@ -5,6 +5,7 @@ GOLANG_X_TOOLS_VERSION?=$(shell grep -E '^\s*golang.org/x/tools\s+' ../../go.mod
 generate-grpc-for-google-protos: tools
 	mkdir -p .build/
 	git clone https://github.com/googleapis/googleapis.git .build/googleapis || (cd .build/googleapis && git fetch --all && git reset --hard $(GOOGLEAPI_VERSION))
+	bash fixup.sh
 	mkdir -p ./generated
 
 	PATH=.build/bin/:${PATH} .build/bin/protoc/bin/protoc \
@@ -14,7 +15,7 @@ generate-grpc-for-google-protos: tools
 		--go_opt paths=source_relative \
 		--go-grpc_out ./generated \
 		--go-grpc_opt paths=source_relative \
-		./.build/googleapis/google/cloud/tpu/v2/*.proto
+		./.build/googleapis/gcpclients/cloud/tpu/v2/*.proto
 
 	PATH=.build/bin/:${PATH} .build/bin/protoc/bin/protoc \
 		-I ./.build/googleapis \
@@ -23,7 +24,7 @@ generate-grpc-for-google-protos: tools
 		--go_opt paths=source_relative \
 		--go-grpc_out ./generated \
 		--go-grpc_opt paths=source_relative \
-		./.build/googleapis/google/cloud/sql/v1beta4/*.proto
+		./.build/googleapis/gcpclients/cloud/sql/v1beta4/*.proto
 
 	PATH=.build/bin/:${PATH} .build/bin/protoc/bin/protoc \
 		-I ./.build/googleapis \
@@ -32,7 +33,7 @@ generate-grpc-for-google-protos: tools
 		--go_opt paths=source_relative \
 		--go-grpc_out ./generated \
 		--go-grpc_opt paths=source_relative \
-		./.build/googleapis/google/firestore/admin/v1/*.proto
+		./.build/googleapis/gcpclients/firestore/admin/v1/*.proto
 
 	go run -mod=readonly golang.org/x/tools/cmd/goimports@$(GOLANG_X_TOOLS_VERSION) -w generated
 

@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,166 +29,167 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type NetworkattachmentProducerAcceptLists struct {
-/* The `projectID` field of a project, when not managed by Config Connector. */
-// +optional
-External *string `json:"external,omitempty"`
+	/* The `projectID` field of a project, when not managed by Config Connector. */
+	// +optional
+	External *string `json:"external,omitempty"`
 
-/* The kind of the Project resource; optional but must be `Project` if provided. */
-// +optional
-Kind *string `json:"kind,omitempty"`
+	/* The kind of the Project resource; optional but must be `Project` if provided. */
+	// +optional
+	Kind *string `json:"kind,omitempty"`
 
-/* The `name` field of a `Project` resource. */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* The `name` field of a `Project` resource. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* The `namespace` field of a `Project` resource. */
-// +optional
-Namespace *string `json:"namespace,omitempty"`
+	/* The `namespace` field of a `Project` resource. */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type NetworkattachmentProducerRejectLists struct {
-/* The `projectID` field of a project, when not managed by Config Connector. */
-// +optional
-External *string `json:"external,omitempty"`
+	/* The `projectID` field of a project, when not managed by Config Connector. */
+	// +optional
+	External *string `json:"external,omitempty"`
 
-/* The kind of the Project resource; optional but must be `Project` if provided. */
-// +optional
-Kind *string `json:"kind,omitempty"`
+	/* The kind of the Project resource; optional but must be `Project` if provided. */
+	// +optional
+	Kind *string `json:"kind,omitempty"`
 
-/* The `name` field of a `Project` resource. */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* The `name` field of a `Project` resource. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* The `namespace` field of a `Project` resource. */
-// +optional
-Namespace *string `json:"namespace,omitempty"`
+	/* The `namespace` field of a `Project` resource. */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type ComputeNetworkAttachmentSpec struct {
-/* Check the ConnectionPreference enum for the list of possible values. */
-// +optional
-ConnectionPreference *string `json:"connectionPreference,omitempty"`
+	/* Check the ConnectionPreference enum for the list of possible values. */
+	// +optional
+	ConnectionPreference *string `json:"connectionPreference,omitempty"`
 
-/* An optional description of this resource. Provide this property when you create the resource. */
-// +optional
-Description *string `json:"description,omitempty"`
+	/* An optional description of this resource. Provide this property when you create the resource. */
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking. An up-to-date fingerprint must be provided in order to patch. */
-// +optional
-Fingerprint *string `json:"fingerprint,omitempty"`
+	/* Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking. An up-to-date fingerprint must be provided in order to patch. */
+	// +optional
+	Fingerprint *string `json:"fingerprint,omitempty"`
 
-Location string `json:"location"`
+	Location string `json:"location"`
 
-/* Projects that are allowed to connect to this network attachment. The project can be specified using its id or number. */
-// +optional
-ProducerAcceptLists []NetworkattachmentProducerAcceptLists `json:"producerAcceptLists,omitempty"`
+	/* Projects that are allowed to connect to this network attachment. The project can be specified using its id or number. */
+	// +optional
+	ProducerAcceptLists []NetworkattachmentProducerAcceptLists `json:"producerAcceptLists,omitempty"`
 
-/* Projects that are not allowed to connect to this network attachment. The project can be specified using its id or number. */
-// +optional
-ProducerRejectLists []NetworkattachmentProducerRejectLists `json:"producerRejectLists,omitempty"`
+	/* Projects that are not allowed to connect to this network attachment. The project can be specified using its id or number. */
+	// +optional
+	ProducerRejectLists []NetworkattachmentProducerRejectLists `json:"producerRejectLists,omitempty"`
 
-/* The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* The ComputeNetworkAttachment name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The ComputeNetworkAttachment name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* An array of URLs where each entry is the URL of a subnet provided by the service consumer to use for endpoints in the producers that connect to this network attachment. */
-// +optional
-SubnetworkRefs []v1alpha1.ResourceRef `json:"subnetworkRefs,omitempty"`
+	/* An array of URLs where each entry is the URL of a subnet provided by the service consumer to use for endpoints in the producers that connect to this network attachment. */
+	// +optional
+	SubnetworkRefs []v1alpha1.ResourceRef `json:"subnetworkRefs,omitempty"`
 }
 
 type NetworkattachmentConnectionEndpointsStatus struct {
-/* The IPv4 address assigned to the producer instance network interface. This value will be a range in case of Serverless. */
-// +optional
-IpAddress *string `json:"ipAddress,omitempty"`
+	/* The IPv4 address assigned to the producer instance network interface. This value will be a range in case of Serverless. */
+	// +optional
+	IpAddress *string `json:"ipAddress,omitempty"`
 
-/* The IPv6 address assigned to the producer instance network interface. This is only assigned when the stack types of both the instance network interface and the consumer subnet are IPv4_IPv6. */
-// +optional
-Ipv6Address *string `json:"ipv6Address,omitempty"`
+	/* The IPv6 address assigned to the producer instance network interface. This is only assigned when the stack types of both the instance network interface and the consumer subnet are IPv4_IPv6. */
+	// +optional
+	Ipv6Address *string `json:"ipv6Address,omitempty"`
 
-/* The project id or number of the interface to which the IP was assigned. */
-// +optional
-ProjectIDOrNum *string `json:"projectIDOrNum,omitempty"`
+	/* The project id or number of the interface to which the IP was assigned. */
+	// +optional
+	ProjectIDOrNum *string `json:"projectIDOrNum,omitempty"`
 
-/* Alias IP ranges from the same subnetwork. */
-// +optional
-SecondaryIPCIDRRanges []string `json:"secondaryIPCIDRRanges,omitempty"`
+	/* Alias IP ranges from the same subnetwork. */
+	// +optional
+	SecondaryIPCIDRRanges []string `json:"secondaryIPCIDRRanges,omitempty"`
 
-/* The status of a connected endpoint to this network attachment. Check the Status enum for the list of possible values. */
-// +optional
-Status *string `json:"status,omitempty"`
+	/* The status of a connected endpoint to this network attachment. Check the Status enum for the list of possible values. */
+	// +optional
+	Status *string `json:"status,omitempty"`
 
-/* The subnetwork used to assign the IP to the producer instance network interface. */
-// +optional
-Subnetwork *string `json:"subnetwork,omitempty"`
+	/* The subnetwork used to assign the IP to the producer instance network interface. */
+	// +optional
+	Subnetwork *string `json:"subnetwork,omitempty"`
 
-/* [Output Only] The CIDR range of the subnet from which the IPv4 internal IP was allocated from. */
-// +optional
-SubnetworkCIDRRange *string `json:"subnetworkCIDRRange,omitempty"`
+	/* [Output Only] The CIDR range of the subnet from which the IPv4 internal IP was allocated from. */
+	// +optional
+	SubnetworkCIDRRange *string `json:"subnetworkCIDRRange,omitempty"`
 }
 
 type NetworkattachmentObservedStateStatus struct {
-/* [Output Only] An array of connections for all the producers connected to this network attachment. */
-// +optional
-ConnectionEndpoints []NetworkattachmentConnectionEndpointsStatus `json:"connectionEndpoints,omitempty"`
+	/* [Output Only] An array of connections for all the producers connected to this network attachment. */
+	// +optional
+	ConnectionEndpoints []NetworkattachmentConnectionEndpointsStatus `json:"connectionEndpoints,omitempty"`
 
-/* [Output Only] Creation timestamp in RFC3339 text format. */
-// +optional
-CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+	/* [Output Only] Creation timestamp in RFC3339 text format. */
+	// +optional
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-/* [Output Only] The unique identifier for the resource type. The server generates this identifier. */
-// +optional
-Id *int64 `json:"id,omitempty"`
+	/* [Output Only] The unique identifier for the resource type. The server generates this identifier. */
+	// +optional
+	Id *int64 `json:"id,omitempty"`
 
-/* [Output Only] Type of the resource. */
-// +optional
-Kind *string `json:"kind,omitempty"`
+	/* [Output Only] Type of the resource. */
+	// +optional
+	Kind *string `json:"kind,omitempty"`
 
-/* [Output Only] The URL of the network which the Network Attachment belongs to. Practically it is inferred by fetching the network of the first subnetwork associated. Because it is required that all the subnetworks must be from the same network, it is assured that the Network Attachment belongs to the same network as all the subnetworks. */
-// +optional
-Network *string `json:"network,omitempty"`
+	/* [Output Only] The URL of the network which the Network Attachment belongs to. Practically it is inferred by fetching the network of the first subnetwork associated. Because it is required that all the subnetworks must be from the same network, it is assured that the Network Attachment belongs to the same network as all the subnetworks. */
+	// +optional
+	Network *string `json:"network,omitempty"`
 
-/* [Output Only] URL of the region where the network attachment resides. This field applies only to the region resource. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body. */
-// +optional
-Region *string `json:"region,omitempty"`
+	/* [Output Only] URL of the region where the network attachment resides. This field applies only to the region resource. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body. */
+	// +optional
+	Region *string `json:"region,omitempty"`
 
-/* [Output Only] Server-defined URL for the resource. */
-// +optional
-SelfLink *string `json:"selfLink,omitempty"`
+	/* [Output Only] Server-defined URL for the resource. */
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 
-/* [Output Only] Server-defined URL for this resource's resource id. */
-// +optional
-SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+	/* [Output Only] Server-defined URL for this resource's resource id. */
+	// +optional
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
 }
 
 type ComputeNetworkAttachmentStatus struct {
 	/* Conditions represent the latest available observations of the
-	    ComputeNetworkAttachment's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the ComputeNetworkAttachment resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   ComputeNetworkAttachment's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the ComputeNetworkAttachment resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *NetworkattachmentObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *NetworkattachmentObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputenetworkattachment;gcpcomputenetworkattachments
@@ -204,20 +204,22 @@ ObservedState *NetworkattachmentObservedStateStatus `json:"observedState,omitemp
 // ComputeNetworkAttachment is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeNetworkAttachment struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ComputeNetworkAttachmentSpec `json:"spec,omitempty"`
-  Status ComputeNetworkAttachmentStatus `json:"status,omitempty"`
+	Spec   ComputeNetworkAttachmentSpec   `json:"spec,omitempty"`
+	Status ComputeNetworkAttachmentStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ComputeNetworkAttachmentList contains a list of ComputeNetworkAttachment
- type ComputeNetworkAttachmentList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []ComputeNetworkAttachment `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&ComputeNetworkAttachment{}, &ComputeNetworkAttachmentList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ComputeNetworkAttachmentList contains a list of ComputeNetworkAttachment
+type ComputeNetworkAttachmentList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeNetworkAttachment `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ComputeNetworkAttachment{}, &ComputeNetworkAttachmentList{})
+}

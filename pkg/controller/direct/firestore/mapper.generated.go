@@ -26,7 +26,7 @@ import (
 	krmfirestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/firestore/admin/v1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/gcpclients/firestore/admin/v1"
 	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
 	structpb "google.golang.org/protobuf/types/known/structpb"
 )

@@ -53,13 +53,11 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	DatastoreIndexGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(DatastoreIndex{}).Name(),
-  	}
-  
+	DatastoreIndexGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DatastoreIndex{}).Name(),
+	}
 
-  	datastoreAPIVersion = SchemeGroupVersion.String()
+	datastoreAPIVersion = SchemeGroupVersion.String()
 )

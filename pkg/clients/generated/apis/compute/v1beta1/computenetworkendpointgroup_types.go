@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -42,16 +41,16 @@ var _ = apiextensionsv1.JSON{}
 type ComputeNetworkEndpointGroupSpec struct {
 	/* Immutable. The default port used if the port number is not specified in the
 	network endpoint. */
-// +optional
-DefaultPort *int64 `json:"defaultPort,omitempty"`
+	// +optional
+	DefaultPort *int64 `json:"defaultPort,omitempty"`
 
 	/* Immutable. An optional description of this resource. Provide this property when
 	you create the resource. */
-// +optional
-Description *string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Location represents the geographical location of the ComputeNetworkEndpointGroup. Specify a zone name. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
-Location string `json:"location"`
+	/* Location represents the geographical location of the ComputeNetworkEndpointGroup. Specify a zone name. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
+	Location string `json:"location"`
 
 	/* Immutable. Type of network endpoints in this network endpoint group.
 	NON_GCP_PRIVATE_IP_PORT is used for hybrid connectivity network
@@ -60,39 +59,40 @@ Location string `json:"location"`
 	that 1) have the following load balancing schemes: EXTERNAL, EXTERNAL_MANAGED,
 	INTERNAL_MANAGED, and INTERNAL_SELF_MANAGED and 2) support the RATE or
 	CONNECTION balancing modes.
-	
+
 	Possible values include: GCE_VM_IP, GCE_VM_IP_PORT, and NON_GCP_PRIVATE_IP_PORT. Default value: "GCE_VM_IP_PORT" Possible values: ["GCE_VM_IP", "GCE_VM_IP_PORT", "NON_GCP_PRIVATE_IP_PORT"]. */
-// +optional
-NetworkEndpointType *string `json:"networkEndpointType,omitempty"`
+	// +optional
+	NetworkEndpointType *string `json:"networkEndpointType,omitempty"`
 
 	/* The network to which all network endpoints in the NEG belong. Uses
 	"default" project network if unspecified. */
-NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Optional subnetwork to which all network endpoints in the NEG belong. */
-// +optional
-SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	/* Optional subnetwork to which all network endpoints in the NEG belong. */
+	// +optional
+	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type ComputeNetworkEndpointGroupStatus struct {
 	/* Conditions represent the latest available observations of the
-	    ComputeNetworkEndpointGroup's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   ComputeNetworkEndpointGroup's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-// +optional
-SelfLink *string `json:"selfLink,omitempty"`
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 
-/* Number of network endpoints in the network endpoint group. */
-// +optional
-Size *int64 `json:"size,omitempty"`
+	/* Number of network endpoints in the network endpoint group. */
+	// +optional
+	Size *int64 `json:"size,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputenetworkendpointgroup;gcpcomputenetworkendpointgroups
@@ -109,20 +109,22 @@ Size *int64 `json:"size,omitempty"`
 // ComputeNetworkEndpointGroup is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeNetworkEndpointGroup struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ComputeNetworkEndpointGroupSpec `json:"spec,omitempty"`
-  Status ComputeNetworkEndpointGroupStatus `json:"status,omitempty"`
+	Spec   ComputeNetworkEndpointGroupSpec   `json:"spec,omitempty"`
+	Status ComputeNetworkEndpointGroupStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ComputeNetworkEndpointGroupList contains a list of ComputeNetworkEndpointGroup
- type ComputeNetworkEndpointGroupList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []ComputeNetworkEndpointGroup `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&ComputeNetworkEndpointGroup{}, &ComputeNetworkEndpointGroupList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ComputeNetworkEndpointGroupList contains a list of ComputeNetworkEndpointGroup
+type ComputeNetworkEndpointGroupList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeNetworkEndpointGroup `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ComputeNetworkEndpointGroup{}, &ComputeNetworkEndpointGroupList{})
+}

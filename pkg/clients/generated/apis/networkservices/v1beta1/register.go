@@ -53,49 +53,47 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	
-  	NetworkServicesEndpointPolicyGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(NetworkServicesEndpointPolicy{}).Name(),
-  	}
-  
-  	NetworkServicesGRPCRouteGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(NetworkServicesGRPCRoute{}).Name(),
-  	}
-  
-  	NetworkServicesGatewayGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(NetworkServicesGateway{}).Name(),
-  	}
-  
-  	NetworkServicesHTTPRouteGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(NetworkServicesHTTPRoute{}).Name(),
-  	}
-  
-  	NetworkServicesMeshGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(NetworkServicesMesh{}).Name(),
-  	}
-  
-  	NetworkServicesTCPRouteGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(NetworkServicesTCPRoute{}).Name(),
-  	}
-  
-  	NetworkServicesTLSRouteGVK = schema.GroupVersionKind{
-  		Group:   SchemeGroupVersion.Group,
-  		Version: SchemeGroupVersion.Version,
-  		Kind:    reflect.TypeOf(NetworkServicesTLSRoute{}).Name(),
-  	}
-  
+	NetworkServicesEndpointPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkServicesEndpointPolicy{}).Name(),
+	}
 
-  	networkservicesAPIVersion = SchemeGroupVersion.String()
+	NetworkServicesGRPCRouteGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkServicesGRPCRoute{}).Name(),
+	}
+
+	NetworkServicesGatewayGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkServicesGateway{}).Name(),
+	}
+
+	NetworkServicesHTTPRouteGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkServicesHTTPRoute{}).Name(),
+	}
+
+	NetworkServicesMeshGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkServicesMesh{}).Name(),
+	}
+
+	NetworkServicesTCPRouteGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkServicesTCPRoute{}).Name(),
+	}
+
+	NetworkServicesTLSRouteGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkServicesTLSRoute{}).Name(),
+	}
+
+	networkservicesAPIVersion = SchemeGroupVersion.String()
 )

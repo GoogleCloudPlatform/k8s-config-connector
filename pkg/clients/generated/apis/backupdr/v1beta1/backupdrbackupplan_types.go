@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -43,184 +42,185 @@ type BackupplanBackupRules struct {
 	/* Required. Configures the duration for which backup data will be kept. It is
 	defined in “days”. The value should be greater than or equal to minimum
 	enforced retention of the backup vault.
-	
+
 	Minimum value is 1 and maximum value is 36159 for custom retention
 	on-demand backup.
 	Minimum and maximum values are workload specific for all other rules. */
-// +optional
-BackupRetentionDays *int32 `json:"backupRetentionDays,omitempty"`
+	// +optional
+	BackupRetentionDays *int32 `json:"backupRetentionDays,omitempty"`
 
-/* Required. Immutable. The unique id of this `BackupRule`. The `rule_id` is unique per `BackupPlan`.The `rule_id` must start with a lowercase letter followed by up to 62 lowercase letters, numbers, or hyphens. Pattern, /[a-z][a-z0-9-]{,62}/. */
-// +optional
-RuleID *string `json:"ruleID,omitempty"`
+	/* Required. Immutable. The unique id of this `BackupRule`. The `rule_id` is unique per `BackupPlan`.The `rule_id` must start with a lowercase letter followed by up to 62 lowercase letters, numbers, or hyphens. Pattern, /[a-z][a-z0-9-]{,62}/. */
+	// +optional
+	RuleID *string `json:"ruleID,omitempty"`
 
-/* Optional. Defines a schedule that runs within the confines of a defined window of time. */
-// +optional
-StandardSchedule *BackupplanStandardSchedule `json:"standardSchedule,omitempty"`
+	/* Optional. Defines a schedule that runs within the confines of a defined window of time. */
+	// +optional
+	StandardSchedule *BackupplanStandardSchedule `json:"standardSchedule,omitempty"`
 }
 
 type BackupplanBackupWindow struct {
 	/* Required. The hour of day (1-24) when the window end for e.g. if value of
 	end hour of day is 10 that mean backup window end time is 10:00.
-	
+
 	End hour of day should be greater than start hour of day.
 	0 <= start_hour_of_day < end_hour_of_day <= 24
-	
+
 	End hour of day is not include in backup window that mean if
 	end_hour_of_day= 10 jobs should start before 10:00. */
-// +optional
-EndHourOfDay *int32 `json:"endHourOfDay,omitempty"`
+	// +optional
+	EndHourOfDay *int32 `json:"endHourOfDay,omitempty"`
 
-/* Required. The hour of day (0-23) when the window starts for e.g. if value of start hour of day is 6 that mean backup window start at 6:00. */
-// +optional
-StartHourOfDay *int32 `json:"startHourOfDay,omitempty"`
+	/* Required. The hour of day (0-23) when the window starts for e.g. if value of start hour of day is 6 that mean backup window start at 6:00. */
+	// +optional
+	StartHourOfDay *int32 `json:"startHourOfDay,omitempty"`
 }
 
 type BackupplanStandardSchedule struct {
 	/* Required. A BackupWindow defines the window of day during which backup jobs
 	will run. Jobs are queued at the beginning of the window and will be marked
 	as `NOT_RUN` if they do not start by the end of the window.
-	
+
 	Note: running jobs will not be cancelled at the end of the window. */
-// +optional
-BackupWindow *BackupplanBackupWindow `json:"backupWindow,omitempty"`
+	// +optional
+	BackupWindow *BackupplanBackupWindow `json:"backupWindow,omitempty"`
 
 	/* Optional. Specifies days of months like 1, 5, or 14 on which jobs will run.
-	
+
 	Values for `days_of_month` are only applicable for `recurrence_type`,
 	`MONTHLY` and `YEARLY`. A validation error will occur if other values are
 	supplied. */
-// +optional
-DaysOfMonth []int64 `json:"daysOfMonth,omitempty"`
+	// +optional
+	DaysOfMonth []int64 `json:"daysOfMonth,omitempty"`
 
 	/* Optional. Specifies days of week like, MONDAY or TUESDAY, on which jobs
 	will run.
-	
+
 	This is required for `recurrence_type`, `WEEKLY` and is not applicable
 	otherwise. A validation error will occur if a value is supplied and
 	`recurrence_type` is not `WEEKLY`. */
-// +optional
-DaysOfWeek []string `json:"daysOfWeek,omitempty"`
+	// +optional
+	DaysOfWeek []string `json:"daysOfWeek,omitempty"`
 
 	/* Optional. Specifies frequency for hourly backups. A hourly frequency of 2
 	means jobs will run every 2 hours from start time till end time defined.
-	
+
 	This is required for `recurrence_type`, `HOURLY` and is not applicable
 	otherwise. A validation error will occur if a value is supplied and
 	`recurrence_type` is not `HOURLY`.
-	
+
 	Value of hourly frequency should be between 4 and 23.
-	
+
 	Reason for limit : We found that there is bandwidth limitation of 3GB/S for
 	GMI while taking a backup and 5GB/S while doing a restore. Given the amount
 	of parallel backups and restore we are targeting, this will potentially
 	take the backup time to mins and hours (in worst case scenario). */
-// +optional
-HourlyFrequency *int32 `json:"hourlyFrequency,omitempty"`
+	// +optional
+	HourlyFrequency *int32 `json:"hourlyFrequency,omitempty"`
 
 	/* Optional. Specifies the months of year, like `FEBRUARY` and/or `MAY`, on
 	which jobs will run.
-	
+
 	This field is only applicable when `recurrence_type` is `YEARLY`. A
 	validation error will occur if other values are supplied. */
-// +optional
-Months []string `json:"months,omitempty"`
+	// +optional
+	Months []string `json:"months,omitempty"`
 
-/* Required. Specifies the `RecurrenceType` for the schedule. */
-// +optional
-RecurrenceType *string `json:"recurrenceType,omitempty"`
+	/* Required. Specifies the `RecurrenceType` for the schedule. */
+	// +optional
+	RecurrenceType *string `json:"recurrenceType,omitempty"`
 
-/* Required. The time zone to be used when interpreting the schedule. The value of this field must be a time zone name from the IANA tz database. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for the list of valid timezone names. For e.g., Europe/Paris. */
-// +optional
-TimeZone *string `json:"timeZone,omitempty"`
+	/* Required. The time zone to be used when interpreting the schedule. The value of this field must be a time zone name from the IANA tz database. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for the list of valid timezone names. For e.g., Europe/Paris. */
+	// +optional
+	TimeZone *string `json:"timeZone,omitempty"`
 
 	/* Optional. Specifies a week day of the month like, FIRST SUNDAY or LAST
 	MONDAY, on which jobs will run. This will be specified by two fields in
 	`WeekDayOfMonth`, one for the day, e.g. `MONDAY`, and one for the week,
 	e.g. `LAST`.
-	
+
 	This field is only applicable for `recurrence_type`, `MONTHLY` and
 	`YEARLY`. A validation error will occur if other values are supplied. */
-// +optional
-WeekDayOfMonth *BackupplanWeekDayOfMonth `json:"weekDayOfMonth,omitempty"`
+	// +optional
+	WeekDayOfMonth *BackupplanWeekDayOfMonth `json:"weekDayOfMonth,omitempty"`
 }
 
 type BackupplanWeekDayOfMonth struct {
-/* Required. Specifies the day of the week. */
-// +optional
-DayOfWeek *string `json:"dayOfWeek,omitempty"`
+	/* Required. Specifies the day of the week. */
+	// +optional
+	DayOfWeek *string `json:"dayOfWeek,omitempty"`
 
-/* Required. Specifies the week of the month. */
-// +optional
-WeekOfMonth *string `json:"weekOfMonth,omitempty"`
+	/* Required. Specifies the week of the month. */
+	// +optional
+	WeekOfMonth *string `json:"weekOfMonth,omitempty"`
 }
 
 type BackupDRBackupPlanSpec struct {
-/* Required. The backup rules for this `BackupPlan`. There must be at least one `BackupRule` message. */
-// +optional
-BackupRules []BackupplanBackupRules `json:"backupRules,omitempty"`
+	/* Required. The backup rules for this `BackupPlan`. There must be at least one `BackupRule` message. */
+	// +optional
+	BackupRules []BackupplanBackupRules `json:"backupRules,omitempty"`
 
-/* Required. Resource name of backup vault which will be used as storage location for backups. */
-BackupVaultRef v1alpha1.ResourceRef `json:"backupVaultRef"`
+	/* Required. Resource name of backup vault which will be used as storage location for backups. */
+	BackupVaultRef v1alpha1.ResourceRef `json:"backupVaultRef"`
 
 	/* Optional. The description of the `BackupPlan` resource.
-	
+
 	The description allows for additional details about `BackupPlan` and its
 	use cases to be provided. An example description is the following:  "This
 	is a backup plan that performs a daily backup at 6pm and retains data for 3
 	months". The description must be at most 2048 characters. */
-// +optional
-Description *string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Immutable. */
-Location string `json:"location"`
+	/* Immutable. */
+	Location string `json:"location"`
 
-/* The Project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* The BackupDRBackupPlan name. If not given, the metadata.name will be used. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* The BackupDRBackupPlan name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Required. The resource type to which the `BackupPlan` will be applied. Examples include, "compute.googleapis.com/Instance", "sqladmin.googleapis.com/Instance", or "alloydb.googleapis.com/Cluster". */
-// +optional
-ResourceType *string `json:"resourceType,omitempty"`
+	/* Required. The resource type to which the `BackupPlan` will be applied. Examples include, "compute.googleapis.com/Instance", "sqladmin.googleapis.com/Instance", or "alloydb.googleapis.com/Cluster". */
+	// +optional
+	ResourceType *string `json:"resourceType,omitempty"`
 }
 
 type BackupplanObservedStateStatus struct {
-/* Output only. The Google Cloud Platform Service Account to be used by the BackupVault for taking backups. Specify the email address of the Backup Vault Service Account. */
-// +optional
-BackupVaultServiceAccount *string `json:"backupVaultServiceAccount,omitempty"`
+	/* Output only. The Google Cloud Platform Service Account to be used by the BackupVault for taking backups. Specify the email address of the Backup Vault Service Account. */
+	// +optional
+	BackupVaultServiceAccount *string `json:"backupVaultServiceAccount,omitempty"`
 
-/* Output only. When the `BackupPlan` was created. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	/* Output only. When the `BackupPlan` was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* Output only. The `State` for the `BackupPlan`. */
-// +optional
-State *string `json:"state,omitempty"`
+	/* Output only. The `State` for the `BackupPlan`. */
+	// +optional
+	State *string `json:"state,omitempty"`
 
-/* Output only. When the `BackupPlan` was last updated. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. When the `BackupPlan` was last updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type BackupDRBackupPlanStatus struct {
 	/* Conditions represent the latest available observations of the
-	    BackupDRBackupPlan's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the BackupDRBackupPlan resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   BackupDRBackupPlan's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the BackupDRBackupPlan resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *BackupplanObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *BackupplanObservedStateStatus `json:"observedState,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbackupdrbackupplan;gcpbackupdrbackupplans
@@ -235,20 +235,22 @@ ObservedState *BackupplanObservedStateStatus `json:"observedState,omitempty"`
 // BackupDRBackupPlan is the Schema for the backupdr API
 // +k8s:openapi-gen=true
 type BackupDRBackupPlan struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec BackupDRBackupPlanSpec `json:"spec,omitempty"`
-  Status BackupDRBackupPlanStatus `json:"status,omitempty"`
+	Spec   BackupDRBackupPlanSpec   `json:"spec,omitempty"`
+	Status BackupDRBackupPlanStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // BackupDRBackupPlanList contains a list of BackupDRBackupPlan
- type BackupDRBackupPlanList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []BackupDRBackupPlan `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&BackupDRBackupPlan{}, &BackupDRBackupPlanList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// BackupDRBackupPlanList contains a list of BackupDRBackupPlan
+type BackupDRBackupPlanList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []BackupDRBackupPlan `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&BackupDRBackupPlan{}, &BackupDRBackupPlanList{})
+}

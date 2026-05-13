@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -44,7 +43,7 @@ type EntitytypeEntities struct {
 	could be green onions.
 	For KIND_LIST entity types:
 	* This collection must contain exactly one synonym equal to value. */
-Synonyms []string `json:"synonyms"`
+	Synonyms []string `json:"synonyms"`
 
 	/* The primary value associated with this entity entry. For example, if the entity type is vegetable, the value
 	could be scallions.
@@ -52,49 +51,50 @@ Synonyms []string `json:"synonyms"`
 	* A reference value to be used in place of synonyms.
 	For KIND_LIST entity types:
 	* A string that can contain references to other entity types (with or without aliases). */
-Value string `json:"value"`
+	Value string `json:"value"`
 }
 
 type DialogflowEntityTypeSpec struct {
-/* The name of this entity type to be displayed on the console. */
-DisplayName string `json:"displayName"`
+	/* The name of this entity type to be displayed on the console. */
+	DisplayName string `json:"displayName"`
 
-/* Enables fuzzy entity extraction during classification. */
-// +optional
-EnableFuzzyExtraction *bool `json:"enableFuzzyExtraction,omitempty"`
+	/* Enables fuzzy entity extraction during classification. */
+	// +optional
+	EnableFuzzyExtraction *bool `json:"enableFuzzyExtraction,omitempty"`
 
-/* The collection of entity entries associated with the entity type. */
-// +optional
-Entities []EntitytypeEntities `json:"entities,omitempty"`
+	/* The collection of entity entries associated with the entity type. */
+	// +optional
+	Entities []EntitytypeEntities `json:"entities,omitempty"`
 
 	/* Indicates the kind of entity type.
 	* KIND_MAP: Map entity types allow mapping of a group of synonyms to a reference value.
 	* KIND_LIST: List entity types contain a set of entries that do not map to reference values. However, list entity
 	types can contain references to other entity types (with or without aliases).
 	* KIND_REGEXP: Regexp entity types allow to specify regular expressions in entries values. Possible values: ["KIND_MAP", "KIND_LIST", "KIND_REGEXP"]. */
-Kind string `json:"kind"`
+	Kind string `json:"kind"`
 
-/* The project that this resource belongs to. */
-ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type DialogflowEntityTypeStatus struct {
 	/* Conditions represent the latest available observations of the
-	    DialogflowEntityType's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	   DialogflowEntityType's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The unique identifier of the entity type.
 	Format: projects/<Project ID>/agent/entityTypes/<Entity type ID>. */
-// +optional
-Name *string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdialogflowentitytype;gcpdialogflowentitytypes
@@ -111,20 +111,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // DialogflowEntityType is the Schema for the dialogflow API
 // +k8s:openapi-gen=true
 type DialogflowEntityType struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec DialogflowEntityTypeSpec `json:"spec,omitempty"`
-  Status DialogflowEntityTypeStatus `json:"status,omitempty"`
+	Spec   DialogflowEntityTypeSpec   `json:"spec,omitempty"`
+	Status DialogflowEntityTypeStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // DialogflowEntityTypeList contains a list of DialogflowEntityType
- type DialogflowEntityTypeList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []DialogflowEntityType `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&DialogflowEntityType{}, &DialogflowEntityTypeList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// DialogflowEntityTypeList contains a list of DialogflowEntityType
+type DialogflowEntityTypeList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DialogflowEntityType `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&DialogflowEntityType{}, &DialogflowEntityTypeList{})
+}

@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +29,11 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -42,55 +41,56 @@ var _ = apiextensionsv1.JSON{}
 type TagsTagValueSpec struct {
 	/* Optional. User-assigned description of the TagValue.
 	Must not exceed 256 characters.
-	
+
 	Read-write. */
-// +optional
-Description *string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-/* Immutable. The TagValue's parent TagKey. */
-ParentRef v1alpha1.ResourceRef `json:"parentRef"`
+	/* Immutable. The TagValue's parent TagKey. */
+	ParentRef v1alpha1.ResourceRef `json:"parentRef"`
 
-/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Required. Immutable. User-assigned short name for TagValue. The short name
 	should be unique for TagValues within the same parent TagKey.
-	
+
 	The short name must be 63 characters or less, beginning and ending with
 	an alphanumeric character ([a-z0-9A-Z]) with dashes (-), underscores (_),
 	dots (.), and alphanumerics between. */
-ShortName string `json:"shortName"`
+	ShortName string `json:"shortName"`
 }
 
 type TagsTagValueStatus struct {
 	/* Conditions represent the latest available observations of the
-	    TagsTagValue's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* Output only. Creation time. */
-// +optional
-CreateTime *string `json:"createTime,omitempty"`
+	   TagsTagValue's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* Output only. Creation time. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* A unique specifier for the TagsTagValue resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	/* A unique specifier for the TagsTagValue resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* Immutable. Resource name for TagValue in the format `tagValues/456`. */
-// +optional
-Name *string `json:"name,omitempty"`
+	/* Immutable. Resource name for TagValue in the format `tagValues/456`. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
-/* Output only. The namespaced name of the TagValue. Can be in the form `{organization_id}/{tag_key_short_name}/{tag_value_short_name}` or `{project_id}/{tag_key_short_name}/{tag_value_short_name}` or `{project_number}/{tag_key_short_name}/{tag_value_short_name}`. */
-// +optional
-NamespacedName *string `json:"namespacedName,omitempty"`
+	/* Output only. The namespaced name of the TagValue. Can be in the form `{organization_id}/{tag_key_short_name}/{tag_value_short_name}` or `{project_id}/{tag_key_short_name}/{tag_value_short_name}` or `{project_number}/{tag_key_short_name}/{tag_value_short_name}`. */
+	// +optional
+	NamespacedName *string `json:"namespacedName,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* Output only. Update time. */
-// +optional
-UpdateTime *string `json:"updateTime,omitempty"`
+	/* Output only. Update time. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcptagstagvalue;gcptagstagvalues
@@ -107,20 +107,22 @@ UpdateTime *string `json:"updateTime,omitempty"`
 // TagsTagValue is the Schema for the tags API
 // +k8s:openapi-gen=true
 type TagsTagValue struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec TagsTagValueSpec `json:"spec,omitempty"`
-  Status TagsTagValueStatus `json:"status,omitempty"`
+	Spec   TagsTagValueSpec   `json:"spec,omitempty"`
+	Status TagsTagValueStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // TagsTagValueList contains a list of TagsTagValue
- type TagsTagValueList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []TagsTagValue `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&TagsTagValue{}, &TagsTagValueList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// TagsTagValueList contains a list of TagsTagValue
+type TagsTagValueList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []TagsTagValue `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&TagsTagValue{}, &TagsTagValueList{})
+}

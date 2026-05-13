@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,96 +29,97 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type AddonsconfigAddonsConfig struct {
-/* Configuration for the Monetization add-on. */
-// +optional
-AdvancedApiOpsConfig *AddonsconfigAdvancedApiOpsConfig `json:"advancedApiOpsConfig,omitempty"`
+	/* Configuration for the Monetization add-on. */
+	// +optional
+	AdvancedApiOpsConfig *AddonsconfigAdvancedApiOpsConfig `json:"advancedApiOpsConfig,omitempty"`
 
-/* Configuration for the Monetization add-on. */
-// +optional
-ApiSecurityConfig *AddonsconfigApiSecurityConfig `json:"apiSecurityConfig,omitempty"`
+	/* Configuration for the Monetization add-on. */
+	// +optional
+	ApiSecurityConfig *AddonsconfigApiSecurityConfig `json:"apiSecurityConfig,omitempty"`
 
-/* Configuration for the Monetization add-on. */
-// +optional
-ConnectorsPlatformConfig *AddonsconfigConnectorsPlatformConfig `json:"connectorsPlatformConfig,omitempty"`
+	/* Configuration for the Monetization add-on. */
+	// +optional
+	ConnectorsPlatformConfig *AddonsconfigConnectorsPlatformConfig `json:"connectorsPlatformConfig,omitempty"`
 
-/* Configuration for the Monetization add-on. */
-// +optional
-IntegrationConfig *AddonsconfigIntegrationConfig `json:"integrationConfig,omitempty"`
+	/* Configuration for the Monetization add-on. */
+	// +optional
+	IntegrationConfig *AddonsconfigIntegrationConfig `json:"integrationConfig,omitempty"`
 
-/* Configuration for the Monetization add-on. */
-// +optional
-MonetizationConfig *AddonsconfigMonetizationConfig `json:"monetizationConfig,omitempty"`
+	/* Configuration for the Monetization add-on. */
+	// +optional
+	MonetizationConfig *AddonsconfigMonetizationConfig `json:"monetizationConfig,omitempty"`
 }
 
 type AddonsconfigAdvancedApiOpsConfig struct {
-/* Flag that specifies whether the Advanced API Ops add-on is enabled. */
-// +optional
-Enabled *bool `json:"enabled,omitempty"`
+	/* Flag that specifies whether the Advanced API Ops add-on is enabled. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 type AddonsconfigApiSecurityConfig struct {
-/* Flag that specifies whether the Advanced API Ops add-on is enabled. */
-// +optional
-Enabled *bool `json:"enabled,omitempty"`
+	/* Flag that specifies whether the Advanced API Ops add-on is enabled. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
 
-/* Flag that specifies whether the Advanced API Ops add-on is enabled. */
-// +optional
-ExpiresAt *string `json:"expiresAt,omitempty"`
+	/* Flag that specifies whether the Advanced API Ops add-on is enabled. */
+	// +optional
+	ExpiresAt *string `json:"expiresAt,omitempty"`
 }
 
 type AddonsconfigConnectorsPlatformConfig struct {
-/* Flag that specifies whether the Advanced API Ops add-on is enabled. */
-// +optional
-Enabled *bool `json:"enabled,omitempty"`
+	/* Flag that specifies whether the Advanced API Ops add-on is enabled. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
 
-/* Flag that specifies whether the Advanced API Ops add-on is enabled. */
-// +optional
-ExpiresAt *string `json:"expiresAt,omitempty"`
+	/* Flag that specifies whether the Advanced API Ops add-on is enabled. */
+	// +optional
+	ExpiresAt *string `json:"expiresAt,omitempty"`
 }
 
 type AddonsconfigIntegrationConfig struct {
-/* Flag that specifies whether the Advanced API Ops add-on is enabled. */
-// +optional
-Enabled *bool `json:"enabled,omitempty"`
+	/* Flag that specifies whether the Advanced API Ops add-on is enabled. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 type AddonsconfigMonetizationConfig struct {
-/* Flag that specifies whether the Advanced API Ops add-on is enabled. */
-// +optional
-Enabled *bool `json:"enabled,omitempty"`
+	/* Flag that specifies whether the Advanced API Ops add-on is enabled. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 type ApigeeAddonsConfigSpec struct {
-/* Addon configurations of the Apigee organization. */
-// +optional
-AddonsConfig *AddonsconfigAddonsConfig `json:"addonsConfig,omitempty"`
+	/* Addon configurations of the Apigee organization. */
+	// +optional
+	AddonsConfig *AddonsconfigAddonsConfig `json:"addonsConfig,omitempty"`
 
-/* Immutable. Name of the Apigee organization. */
-Org string `json:"org"`
+	/* Immutable. Name of the Apigee organization. */
+	Org string `json:"org"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ApigeeAddonsConfigStatus struct {
 	/* Conditions represent the latest available observations of the
-	    ApigeeAddonsConfig's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	   ApigeeAddonsConfig's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpapigeeaddonsconfig;gcpapigeeaddonsconfigs
@@ -136,20 +136,22 @@ ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 // ApigeeAddonsConfig is the Schema for the apigee API
 // +k8s:openapi-gen=true
 type ApigeeAddonsConfig struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec ApigeeAddonsConfigSpec `json:"spec,omitempty"`
-  Status ApigeeAddonsConfigStatus `json:"status,omitempty"`
+	Spec   ApigeeAddonsConfigSpec   `json:"spec,omitempty"`
+	Status ApigeeAddonsConfigStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // ApigeeAddonsConfigList contains a list of ApigeeAddonsConfig
- type ApigeeAddonsConfigList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []ApigeeAddonsConfig `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&ApigeeAddonsConfig{}, &ApigeeAddonsConfigList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ApigeeAddonsConfigList contains a list of ApigeeAddonsConfig
+type ApigeeAddonsConfigList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ApigeeAddonsConfig `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ApigeeAddonsConfig{}, &ApigeeAddonsConfigList{})
+}

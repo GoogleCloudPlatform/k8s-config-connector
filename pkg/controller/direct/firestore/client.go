@@ -20,7 +20,7 @@ import (
 
 	api "cloud.google.com/go/firestore/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/firestore/admin/v1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/gcpclients/firestore/admin/v1"
 	"google.golang.org/api/transport/grpc"
 	"google.golang.org/genproto/googleapis/longrunning"
 )

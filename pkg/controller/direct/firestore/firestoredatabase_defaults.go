@@ -14,7 +14,7 @@
 
 package firestore
 
-import pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/firestore/admin/v1"
+import pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/gcpclients/firestore/admin/v1"
 
 func ApplyServerSideDefaults(in *pb.Database) {
 	// Set default values to make sure firestore database is "declarative-friendly".
