@@ -70,7 +70,7 @@ spec:
     shareType: "LOCAL"
   timeWindow:
     # Future reservation must specify a future start time.
-    startTime: 2026-05-10T00:00:00Z
+    startTime: 2026-11-10T00:00:00Z
     # One of duration or endTime must be set.
     # Auto-created reservations cannot be deleted before future reservation end time.
     duration:
