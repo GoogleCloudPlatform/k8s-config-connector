@@ -99,7 +99,9 @@ find . -type f -print0 | xargs -0 sed -i \
   -e 's@option go_package = "cloud.google.com/go/gkehub/policycontroller/apiv1beta/policycontrollerpb;policycontrollerpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/policycontroller/v1beta;policycontrollerpb"@g' \
   -e 's@option go_package = "cloud.google.com/go/analytics/admin/apiv1alpha/adminpb;adminpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/analytics/admin/v1alpha;adminpb"@g' \
   -e 's@option go_package = "cloud.google.com/go/analytics/admin/apiv1beta/adminpb;adminpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/analytics/admin/v1beta;adminpb"@g' \
-  -e 's@option go_package = "cloud.google.com/go/dataplex/apiv1/dataplexpb;dataplexpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataplex/v1;dataplexpb"@g'
+  -e 's@option go_package = "cloud.google.com/go/dataplex/apiv1/dataplexpb;dataplexpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataplex/v1;dataplexpb"@g' \
+  -e 's@option go_package = "cloud.google.com/go/firestore/apiv1/admin/adminpb;adminpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/firestore/admin/v1;adminpb"@g' \
+  -e 's@option go_package = "cloud.google.com/go/firestore/apiv1/firestorepb;firestorepb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/firestore/v1;firestorepb"@g'
 
 
 cd ${GOOGLEAPIS}/mockgrafeas

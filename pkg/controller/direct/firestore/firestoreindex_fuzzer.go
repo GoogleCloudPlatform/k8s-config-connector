@@ -53,5 +53,9 @@ func firestoreIndexFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".multikey")
 	f.Unimplemented_NotYetTriaged(".shard_count")
 	f.Unimplemented_NotYetTriaged(".unique")
+
+	f.Unimplemented_NotYetTriaged(".search_index_options")
+	f.Unimplemented_NotYetTriaged(".search_index_options.text_language_override_field_path")
+
 	return f
 }

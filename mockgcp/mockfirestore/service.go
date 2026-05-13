@@ -31,8 +31,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
-	adminpb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
 	pb "cloud.google.com/go/firestore/apiv1/firestorepb"
+	adminpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/firestore/admin/v1"
 )
 
 func init() {

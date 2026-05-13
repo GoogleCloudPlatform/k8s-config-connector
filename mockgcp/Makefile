@@ -184,6 +184,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/analytics/admin/v1alpha/*.proto \
 		./third_party/googleapis/mockgcp/analytics/admin/v1beta/*.proto \
 		./third_party/googleapis/mockgcp/cloud/dataplex/v1/*.proto \
+		./third_party/googleapis/mockgcp/firestore/admin/v1/*.proto \
 		./third_party/googleapis/mockgcp/devtools/sourcerepo/v1/*.proto
 
 

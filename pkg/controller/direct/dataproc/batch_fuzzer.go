@@ -54,5 +54,10 @@ func dataprocBatchFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".creator")
 	f.StatusFields.Insert(".state_history")
 
+	f.Unimplemented_NotYetTriaged(".pyspark_notebook_batch")
+	f.Unimplemented_NotYetTriaged(".pyspark_notebook_batch.notebook_file_uri")
+	f.Unimplemented_NotYetTriaged(".pyspark_notebook_batch.python_file_uris")
+	f.Unimplemented_NotYetTriaged(".pyspark_notebook_batch.params")
+
 	return f
 }

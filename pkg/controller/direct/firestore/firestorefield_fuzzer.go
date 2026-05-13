@@ -61,6 +61,7 @@ func firestoreFieldFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".ttl_config.expiration_offset.nanos")
 	f.Unimplemented_NotYetTriaged(".ttl_config.expiration_offset.seconds")
 	f.Unimplemented_NotYetTriaged(".index_config.indexes[].unique")
+	f.Unimplemented_NotYetTriaged(".index_config.indexes[].search_index_options")
 	f.StatusField(".index_config.ancestor_field")
 	f.StatusField(".index_config.reverting")
 	f.StatusField(".index_config.uses_ancestor_config")

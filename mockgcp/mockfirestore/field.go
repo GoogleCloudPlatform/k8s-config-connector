@@ -31,8 +31,8 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/klog/v2"
 
-	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/firestore/admin/v1"
 )
 
 func (s *firestoreAdminServer) GetField(ctx context.Context, req *pb.GetFieldRequest) (*pb.Field, error) {
