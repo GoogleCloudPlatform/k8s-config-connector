@@ -441,6 +441,12 @@ func populateDefaultsForWorkstation(obj *pb.Workstation, update bool) {
 	if obj.UpdateTime == nil || update {
 		obj.UpdateTime = t
 	}
+	if obj.StartTime == nil {
+		obj.StartTime = t
+	}
+	if obj.Host == "" {
+		obj.Host = "workstation.cloudworkstations.dev"
+	}
 	obj.Etag = computeEtag(obj)
 	obj.State = pb.Workstation_STATE_STOPPED
 }

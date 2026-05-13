@@ -24,6 +24,8 @@ status:
   observedState:
     createTime: "1970-01-01T00:00:00Z"
     etag: abcdef123456
+    host: workstation.cloudworkstations.dev
+    startTime: "1970-01-01T00:00:00Z"
     state: STATE_STOPPED
     uid: 0123456789abcdef
     updateTime: "1970-01-01T00:00:00Z"

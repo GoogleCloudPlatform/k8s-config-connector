@@ -92,6 +92,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.createTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.observedState.createTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.observedState.endTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.observedState.startTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.observedState.updateTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.updateTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.lastModifiedTime"] = "1970-01-01T00:00:00Z"

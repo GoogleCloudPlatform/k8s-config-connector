@@ -185,6 +185,8 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 
 	addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("startTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("response.startTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
 	addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("metadata.genericMetadata.createTime", "2024-04-01T12:34:56.123456Z")

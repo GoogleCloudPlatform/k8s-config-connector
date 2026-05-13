@@ -594,7 +594,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.workstations.v1.Workstation",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
+    "host": "10.1.2.3",
     "name": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
+    "startTime": "2024-04-01T12:34:56.123456Z",
     "state": "STATE_STOPPED",
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -621,7 +623,9 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
+  "host": "10.1.2.3",
   "name": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
   "state": 4,
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
