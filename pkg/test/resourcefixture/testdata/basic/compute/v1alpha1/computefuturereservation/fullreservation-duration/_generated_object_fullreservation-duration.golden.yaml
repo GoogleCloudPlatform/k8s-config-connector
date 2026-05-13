@@ -37,7 +37,7 @@ spec:
     duration:
       nanos: 102
       seconds: 86401
-    startTime: "2026-05-10T00:00:00Z"
+    startTime: "2026-11-10T00:00:00Z"
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
