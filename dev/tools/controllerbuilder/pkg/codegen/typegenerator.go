@@ -42,6 +42,11 @@ type TypeGenerator struct {
 	outputMessages          []*OutputMessageDetails
 	generatedFileAnnotation *codegenannotations.FileAnnotation
 	includeSkippedOutput    bool
+	fieldOverrides          map[string]*ProtoOverride
+}
+
+type ProtoOverride struct {
+	OutputOnly *bool
 }
 
 type OutputMessageDetails struct {
@@ -55,6 +60,12 @@ func NewTypeGenerator(goPackage string, outputBaseDir string, api *protoapi.Prot
 		api:       api,
 	}
 	g.generatorBase.init(outputBaseDir)
+	return g
+}
+
+// WithProtoOverrides sets the field overrides from config file
+func (g *TypeGenerator) WithProtoOverrides(fieldOverrides map[string]*ProtoOverride) *TypeGenerator {
+	g.fieldOverrides = fieldOverrides
 	return g
 }
 
@@ -99,7 +110,7 @@ func (g *TypeGenerator) visitMessage(message protoreflect.MessageDescriptor) err
 	}
 	g.visitedMessages = append(g.visitedMessages, msgs...)
 
-	outputMessages, err := findOutputsForMessage(message)
+	outputMessages, err := g.findOutputsForMessage(message)
 	if err != nil {
 		return err
 	}
@@ -155,7 +166,7 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 		if goType != nil {
 			klog.V(1).Infof("found existing non-generated go type %q, won't generate", goTypeName)
 			if g.includeSkippedOutput {
-				WriteMessageAsComment(&out.body, msg, fmt.Sprintf("found existing non-generated go type %q, skipping", goTypeName))
+				g.WriteMessageAsComment(&out.body, msg, fmt.Sprintf("found existing non-generated go type %q, skipping", goTypeName))
 			}
 			continue
 		}
@@ -167,12 +178,12 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 		if goType != nil {
 			klog.V(1).Infof("found existing non-generated go type with proto tag %q, won't generate", msg.FullName())
 			if g.includeSkippedOutput {
-				WriteMessageAsComment(&out.body, msg, fmt.Sprintf("found existing non-generated go type with proto tag %q, skipping", msg.FullName()))
+				g.WriteMessageAsComment(&out.body, msg, fmt.Sprintf("found existing non-generated go type with proto tag %q, skipping", msg.FullName()))
 			}
 			continue
 		}
 
-		WriteMessage(&out.body, msg)
+		g.WriteMessage(&out.body, msg)
 	}
 	return errors.Join(g.errors...)
 }
@@ -202,7 +213,7 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 		if goType != nil {
 			klog.V(1).Infof("found existing non-generated go type %q, won't generate", goTypeName)
 			if g.includeSkippedOutput {
-				WriteObservedStateMessageAsComment(&out.body, msgDetails, fmt.Sprintf("found existing non-generated go type %q, skipping", goTypeName))
+				g.WriteObservedStateMessageAsComment(&out.body, msgDetails, fmt.Sprintf("found existing non-generated go type %q, skipping", goTypeName))
 			}
 			continue
 		}
@@ -214,33 +225,33 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 		if goType != nil {
 			klog.V(1).Infof("found existing non-generated go type with proto tag %q, won't generate", msg.FullName())
 			if g.includeSkippedOutput {
-				WriteObservedStateMessageAsComment(&out.body, msgDetails, fmt.Sprintf("found existing non-generated go type with proto tag %q, skipping", msg.FullName()))
+				g.WriteObservedStateMessageAsComment(&out.body, msgDetails, fmt.Sprintf("found existing non-generated go type with proto tag %q, skipping", msg.FullName()))
 			}
 			continue
 		}
 
-		WriteObservedStateMessage(&out.body, msgDetails)
+		g.WriteObservedStateMessage(&out.body, msgDetails)
 	}
 	return errors.Join(g.errors...)
 }
 
-func WriteMessageAsComment(out io.Writer, msg protoreflect.MessageDescriptor, reason string) {
+func (g *TypeGenerator) WriteMessageAsComment(out io.Writer, msg protoreflect.MessageDescriptor, reason string) {
 	var b bytes.Buffer
-	WriteMessage(&b, msg)
+	g.WriteMessage(&b, msg)
 	fmt.Fprintf(out, "\n/* %s\n", reason)
 	fmt.Fprintf(out, "%s", strings.ReplaceAll(b.String(), "*/", "* /"))
 	fmt.Fprintf(out, "*/\n")
 }
 
-func WriteObservedStateMessageAsComment(out io.Writer, msgDetails *OutputMessageDetails, reason string) {
+func (g *TypeGenerator) WriteObservedStateMessageAsComment(out io.Writer, msgDetails *OutputMessageDetails, reason string) {
 	var b bytes.Buffer
-	WriteObservedStateMessage(&b, msgDetails)
+	g.WriteObservedStateMessage(&b, msgDetails)
 	fmt.Fprintf(out, "\n/* %s\n", reason)
 	fmt.Fprintf(out, "%s", strings.ReplaceAll(b.String(), "*/", "* /"))
 	fmt.Fprintf(out, "*/\n")
 }
 
-func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
+func (g *TypeGenerator) WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
 	goType := GoNameForProtoMessage(msg)
 
 	fmt.Fprintf(out, "\n")
@@ -248,7 +259,7 @@ func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
 	fmt.Fprintf(out, "type %s struct {\n", goType)
 	for i := 0; i < msg.Fields().Len(); i++ {
 		field := msg.Fields().Get(i)
-		if !IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
+		if !g.IsOutputOnlyField(field) {
 			// Only write non-output fields.
 			WriteField(out, field, msg, i, false)
 		}
@@ -256,7 +267,7 @@ func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
 	fmt.Fprintf(out, "}\n")
 }
 
-func WriteObservedStateMessage(out io.Writer, msgDetails *OutputMessageDetails) {
+func (g *TypeGenerator) WriteObservedStateMessage(out io.Writer, msgDetails *OutputMessageDetails) {
 	msg := msgDetails.Message
 	goType := goNameForOutputProtoMessage(msg)
 
@@ -264,15 +275,30 @@ func WriteObservedStateMessage(out io.Writer, msgDetails *OutputMessageDetails) 
 	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotationObservedState, msg.FullName())
 	fmt.Fprintf(out, "type %s struct {\n", goType)
 	for i, field := range msgDetails.OutputFields {
-		if !IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
+		if !g.IsOutputOnlyField(field) {
 			// If field is not explicitly listed as an output, but it appears in OutputMessageDetails,
 			// then it must be a parent message that contains a child message with an output.
 			WriteField(out, field, msg, i, true)
 		} else {
-			WriteField(out, field, msg, i, false)
+			WriteField(out, field, msg, i, true)
 		}
 	}
 	fmt.Fprintf(out, "}\n")
+}
+
+func (g *TypeGenerator) IsOutputOnlyField(field protoreflect.FieldDescriptor) bool {
+	fieldPath := string(field.ContainingMessage().FullName()) + ":" + string(field.Name())
+	klog.V(4).Infof("IsOutputOnlyField: %s", fieldPath)
+	fieldOverride := g.fieldOverrides[fieldPath]
+	if fieldOverride == nil {
+		fieldOverride = g.fieldOverrides[string(field.ContainingMessage().FullName())+":*"]
+	}
+	if fieldOverride != nil {
+		if fieldOverride.OutputOnly != nil {
+			return *fieldOverride.OutputOnly
+		}
+	}
+	return IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY)
 }
 
 func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool) (string, error) {
@@ -432,7 +458,13 @@ func GoNameForProtoMessage(msg protoreflect.MessageDescriptor) string {
 }
 
 func goNameForOutputProtoMessage(msg protoreflect.MessageDescriptor) string {
-	return GoNameForProtoMessage(msg) + "ObservedState"
+	base := GoNameForProtoMessage(msg)
+	switch base {
+	case "string":
+		return base
+	default:
+		return base + "ObservedState"
+	}
 }
 
 func goTypeForProtoKind(kind protoreflect.Kind) string {
@@ -572,14 +604,14 @@ func RemoveNotMappedToGoStruct(msgs map[string]protoreflect.MessageDescriptor) {
 
 // findOutputsForMessage recursively explores a given message and its dependencies and assembles a
 // list of messages that contain output-only fields and the output-only fields within them.
-func findOutputsForMessage(message protoreflect.MessageDescriptor) ([]*OutputMessageDetails, error) {
+func (g *TypeGenerator) findOutputsForMessage(message protoreflect.MessageDescriptor) ([]*OutputMessageDetails, error) {
 	outputDeps := make(map[string]*OutputMessageDetails)
 
 	seen := make(map[string]bool)
 	for i := 0; i < message.Fields().Len(); i++ {
 		field := message.Fields().Get(i)
 		// TODO: explicitly set ignored fields when generating Go types
-		if hasOutput := FindOutputsForField(field, seen, outputDeps, nil); hasOutput {
+		if hasOutput := g.FindOutputsForField(field, seen, outputDeps, nil); hasOutput {
 			fqn := string(message.FullName())
 			if _, ok := outputDeps[fqn]; !ok {
 				outputDeps[fqn] = &OutputMessageDetails{
@@ -589,7 +621,7 @@ func findOutputsForMessage(message protoreflect.MessageDescriptor) ([]*OutputMes
 			outputDeps[fqn].OutputFields = append(outputDeps[fqn].OutputFields, field)
 		}
 		// TODO: explicitly set ignored fields when generating Go types
-		FindOutputsForField(field, seen, outputDeps, nil)
+		g.FindOutputsForField(field, seen, outputDeps, nil)
 	}
 
 	res := []*OutputMessageDetails{}
@@ -601,13 +633,13 @@ func findOutputsForMessage(message protoreflect.MessageDescriptor) ([]*OutputMes
 
 // FindDependenciesForField recursively explores the dependent proto messages of the given field.
 // It returns true if the current field or any of its nested field is marked as an output field, false otherwise.
-func FindOutputsForField(field protoreflect.FieldDescriptor, seen map[string]bool, outputDeps map[string]*OutputMessageDetails, ignoredFields sets.String) bool {
+func (g *TypeGenerator) FindOutputsForField(field protoreflect.FieldDescriptor, seen map[string]bool, outputDeps map[string]*OutputMessageDetails, ignoredFields sets.String) bool {
 	if ignoredFields.Has(string(field.FullName())) {
 		return false
 	}
 
 	isOutput := false
-	if IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
+	if g.IsOutputOnlyField(field) {
 		isOutput = true
 	}
 
@@ -629,7 +661,7 @@ func FindOutputsForField(field protoreflect.FieldDescriptor, seen map[string]boo
 				seen[fqn] = true
 				for i := 0; i < msg.Fields().Len(); i++ {
 					field := msg.Fields().Get(i)
-					if FindOutputsForField(field, seen, outputDeps, ignoredFields) {
+					if g.FindOutputsForField(field, seen, outputDeps, ignoredFields) {
 						if _, ok := outputDeps[fqn]; !ok {
 							outputDeps[fqn] = &OutputMessageDetails{
 								Message: msg,
