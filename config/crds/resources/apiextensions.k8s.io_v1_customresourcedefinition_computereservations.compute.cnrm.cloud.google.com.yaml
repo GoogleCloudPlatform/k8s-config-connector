@@ -145,6 +145,8 @@ spec:
                               description: The `namespace` field of a `Project` resource.
                               type: string
                           type: object
+                      required:
+                      - keyRef
                       type: object
                     type: array
                   shareType:

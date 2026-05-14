@@ -74,8 +74,7 @@ type ReservationLocalSsds struct {
 
 type ReservationProjectMap struct {
 	/* The project that this reservation is shared with. */
-	// +optional
-	KeyRef *v1alpha1.ResourceRef `json:"keyRef,omitempty"`
+	KeyRef v1alpha1.ResourceRef `json:"keyRef"`
 
 	/* The project ID, should be same as the key of this project config in the parent map. */
 	// +optional

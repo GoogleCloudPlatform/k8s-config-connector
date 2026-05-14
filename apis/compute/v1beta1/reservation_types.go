@@ -124,7 +124,8 @@ type ReservationShareSettings struct {
 
 type ReservationProjectMap struct {
 	// The project that this reservation is shared with.
-	KeyRef *refsv1beta1.ProjectRef `json:"keyRef,omitempty"`
+	// +required
+	KeyRef *refsv1beta1.ProjectRef `json:"keyRef"`
 
 	// The project ID, should be same as the key of this project config in the parent map.
 	// +kcc:proto:field=google.cloud.compute.v1.ShareSettingsProjectConfig.project_id
