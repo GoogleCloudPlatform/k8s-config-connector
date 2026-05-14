@@ -21,26 +21,6 @@
 
 package v1alpha1
 
-// +kcc:proto=google.cloud.networkmanagement.v1.AbortInfo
-type AbortInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.AppEngineVersionInfo
-type AppEngineVersionInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.CloudFunctionInfo
-type CloudFunctionInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.CloudRunRevisionInfo
-type CloudRunRevisionInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.CloudSQLInstanceInfo
-type CloudSQLInstanceInfo struct {
-}
-
 /* found existing non-generated go type with proto tag "google.cloud.networkmanagement.v1.ConnectivityTest", skipping
 
 // +kcc:proto=google.cloud.networkmanagement.v1.ConnectivityTest
@@ -100,18 +80,6 @@ type ConnectivityTest struct {
 	BypassFirewallChecks *bool `json:"bypassFirewallChecks,omitempty"`
 }
 */
-
-// +kcc:proto=google.cloud.networkmanagement.v1.DeliverInfo
-type DeliverInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.DirectVpcEgressConnectionInfo
-type DirectVPCEgressConnectionInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.DropInfo
-type DropInfo struct {
-}
 
 /* found existing non-generated go type "Endpoint", skipping
 
@@ -236,182 +204,6 @@ type Endpoint_CloudRunRevisionEndpoint struct {
 }
 */
 
-// +kcc:proto=google.cloud.networkmanagement.v1.EndpointInfo
-type EndpointInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.FirewallInfo
-type FirewallInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.ForwardInfo
-type ForwardInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.ForwardingRuleInfo
-type ForwardingRuleInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.GKEMasterInfo
-type GKEMasterInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.GoogleServiceInfo
-type GoogleServiceInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.InstanceInfo
-type InstanceInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.LatencyDistribution
-type LatencyDistribution struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.LatencyPercentile
-type LatencyPercentile struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.LoadBalancerBackend
-type LoadBalancerBackend struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.LoadBalancerBackendInfo
-type LoadBalancerBackendInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.LoadBalancerInfo
-type LoadBalancerInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.NatInfo
-type NATInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.NetworkInfo
-type NetworkInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.ProbingDetails
-type ProbingDetails struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.ProbingDetails.EdgeLocation
-type ProbingDetails_EdgeLocation struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.ProxyConnectionInfo
-type ProxyConnectionInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.ReachabilityDetails
-type ReachabilityDetails struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.RedisClusterInfo
-type RedisClusterInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.RedisInstanceInfo
-type RedisInstanceInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.RouteInfo
-type RouteInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.ServerlessExternalConnectionInfo
-type ServerlessExternalConnectionInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.ServerlessNegInfo
-type ServerlessNegInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.Step
-type Step struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.StorageBucketInfo
-type StorageBucketInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.Trace
-type Trace struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.VpcConnectorInfo
-type VPCConnectorInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.VpnGatewayInfo
-type VPNGatewayInfo struct {
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.VpnTunnelInfo
-type VPNTunnelInfo struct {
-}
-
-// +kcc:proto=google.protobuf.Any
-type Any struct {
-	// A URL/resource name that uniquely identifies the type of the serialized
-	//  protocol buffer message. This string must contain at least
-	//  one "/" character. The last segment of the URL's path must represent
-	//  the fully qualified name of the type (as in
-	//  `path/google.protobuf.Duration`). The name should be in a canonical form
-	//  (e.g., leading "." is not accepted).
-	//
-	//  In practice, teams usually precompile into the binary all types that they
-	//  expect it to use in the context of Any. However, for URLs which use the
-	//  scheme `http`, `https`, or no scheme, one can optionally set up a type
-	//  server that maps type URLs to message definitions as follows:
-	//
-	//  * If no scheme is provided, `https` is assumed.
-	//  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-	//    value in binary format, or produce an error.
-	//  * Applications are allowed to cache lookup results based on the
-	//    URL, or have them precompiled into a binary to avoid any
-	//    lookup. Therefore, binary compatibility needs to be preserved
-	//    on changes to types. (Use versioned type names to manage
-	//    breaking changes.)
-	//
-	//  Note: this functionality is not currently available in the official
-	//  protobuf release, and it is not used for type URLs beginning with
-	//  type.googleapis.com.
-	//
-	//  Schemes other than `http`, `https` (or the empty scheme) might be
-	//  used with implementation specific semantics.
-	// +kcc:proto:field=google.protobuf.Any.type_url
-	TypeURL *string `json:"typeURL,omitempty"`
-
-	// Must be a valid serialized protocol buffer of the above specified type.
-	// +kcc:proto:field=google.protobuf.Any.value
-	Value []byte `json:"value,omitempty"`
-}
-
-/* found existing non-generated go type with proto tag "google.rpc.Status", skipping
-
-// +kcc:proto=google.rpc.Status
-type Status struct {
-	// The status code, which should be an enum value of
-	//  [google.rpc.Code][google.rpc.Code].
-	// +kcc:proto:field=google.rpc.Status.code
-	Code *int32 `json:"code,omitempty"`
-
-	// A developer-facing error message, which should be in English. Any
-	//  user-facing error message should be localized and sent in the
-	//  [google.rpc.Status.details][google.rpc.Status.details] field, or localized
-	//  by the client.
-	// +kcc:proto:field=google.rpc.Status.message
-	Message *string `json:"message,omitempty"`
-
-	// A list of messages that carry the error details.  There is a common set of
-	//  message types for APIs to use.
-	// +kcc:proto:field=google.rpc.Status.details
-	Details []Any `json:"details,omitempty"`
-}
-*/
-
 // +kcc:observedstate:proto=google.cloud.networkmanagement.v1.AbortInfo
 type AbortInfoObservedState struct {
 	// Causes that the analysis is aborted.
@@ -521,16 +313,6 @@ type CloudSQLInstanceInfoObservedState struct {
 
 // +kcc:observedstate:proto=google.cloud.networkmanagement.v1.ConnectivityTest
 type ConnectivityTestObservedState struct {
-	// Required. Source specification of the Connectivity Test.
-	//
-	//  You can use a combination of source IP address, URI of a supported
-	//  endpoint, project ID, or VPC network to identify the source location.
-	//
-	//  Reachability analysis might proceed even if the source location is
-	//  ambiguous. However, the test result might include endpoints or use a source
-	//  that you don't intend to test.
-	// +kcc:proto:field=google.cloud.networkmanagement.v1.ConnectivityTest.source
-	Source *EndpointObservedState `json:"source,omitempty"`
 
 	// Output only. The display name of a Connectivity Test.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.ConnectivityTest.display_name
@@ -652,12 +434,6 @@ type EndpointObservedState struct {
 	// Output only. Type of the load balancer the forwarding rule points to.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.load_balancer_type
 	LoadBalancerType *string `json:"loadBalancerType,omitempty"`
-
-	// A [Cloud Run](https://cloud.google.com/run)
-	//  [revision](https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get)
-	//  Applicable only to source endpoint.
-	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.cloud_run_revision
-	CloudRunRevision *Endpoint_CloudRunRevisionEndpointObservedState `json:"cloudRunRevision,omitempty"`
 }
 */
 

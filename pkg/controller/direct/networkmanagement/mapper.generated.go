@@ -26,28 +26,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AbortInfo_FromProto(mapCtx *direct.MapContext, in *pb.AbortInfo) *krm.AbortInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AbortInfo{}
-	// MISSING: Cause
-	// MISSING: ResourceURI
-	// MISSING: IPAddress
-	// MISSING: ProjectsMissingPermission
-	return out
-}
-func AbortInfo_ToProto(mapCtx *direct.MapContext, in *krm.AbortInfo) *pb.AbortInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AbortInfo{}
-	// MISSING: Cause
-	// MISSING: ResourceURI
-	// MISSING: IPAddress
-	// MISSING: ProjectsMissingPermission
-	return out
-}
 func AbortInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AbortInfo) *krm.AbortInfoObservedState {
 	if in == nil {
 		return nil
@@ -68,28 +46,6 @@ func AbortInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AbortInfo
 	out.ResourceUri = direct.ValueOf(in.ResourceURI)
 	out.IpAddress = direct.ValueOf(in.IPAddress)
 	out.ProjectsMissingPermission = in.ProjectsMissingPermission
-	return out
-}
-func AppEngineVersionInfo_FromProto(mapCtx *direct.MapContext, in *pb.AppEngineVersionInfo) *krm.AppEngineVersionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AppEngineVersionInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: Runtime
-	// MISSING: Environment
-	return out
-}
-func AppEngineVersionInfo_ToProto(mapCtx *direct.MapContext, in *krm.AppEngineVersionInfo) *pb.AppEngineVersionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AppEngineVersionInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: Runtime
-	// MISSING: Environment
 	return out
 }
 func AppEngineVersionInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AppEngineVersionInfo) *krm.AppEngineVersionInfoObservedState {
@@ -114,28 +70,6 @@ func AppEngineVersionInfoObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Environment = direct.ValueOf(in.Environment)
 	return out
 }
-func CloudFunctionInfo_FromProto(mapCtx *direct.MapContext, in *pb.CloudFunctionInfo) *krm.CloudFunctionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CloudFunctionInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: Location
-	// MISSING: VersionID
-	return out
-}
-func CloudFunctionInfo_ToProto(mapCtx *direct.MapContext, in *krm.CloudFunctionInfo) *pb.CloudFunctionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CloudFunctionInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: Location
-	// MISSING: VersionID
-	return out
-}
 func CloudFunctionInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CloudFunctionInfo) *krm.CloudFunctionInfoObservedState {
 	if in == nil {
 		return nil
@@ -158,28 +92,6 @@ func CloudFunctionInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.C
 	out.VersionId = direct.ValueOf(in.VersionID)
 	return out
 }
-func CloudRunRevisionInfo_FromProto(mapCtx *direct.MapContext, in *pb.CloudRunRevisionInfo) *krm.CloudRunRevisionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CloudRunRevisionInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: Location
-	// MISSING: ServiceURI
-	return out
-}
-func CloudRunRevisionInfo_ToProto(mapCtx *direct.MapContext, in *krm.CloudRunRevisionInfo) *pb.CloudRunRevisionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CloudRunRevisionInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: Location
-	// MISSING: ServiceURI
-	return out
-}
 func CloudRunRevisionInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CloudRunRevisionInfo) *krm.CloudRunRevisionInfoObservedState {
 	if in == nil {
 		return nil
@@ -200,32 +112,6 @@ func CloudRunRevisionInfoObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Uri = direct.ValueOf(in.URI)
 	out.Location = direct.ValueOf(in.Location)
 	out.ServiceUri = direct.ValueOf(in.ServiceURI)
-	return out
-}
-func CloudSQLInstanceInfo_FromProto(mapCtx *direct.MapContext, in *pb.CloudSQLInstanceInfo) *krm.CloudSQLInstanceInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CloudSQLInstanceInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: NetworkURI
-	// MISSING: InternalIP
-	// MISSING: ExternalIP
-	// MISSING: Region
-	return out
-}
-func CloudSQLInstanceInfo_ToProto(mapCtx *direct.MapContext, in *krm.CloudSQLInstanceInfo) *pb.CloudSQLInstanceInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CloudSQLInstanceInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: NetworkURI
-	// MISSING: InternalIP
-	// MISSING: ExternalIP
-	// MISSING: Region
 	return out
 }
 func CloudSQLInstanceInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CloudSQLInstanceInfo) *krm.CloudSQLInstanceInfoObservedState {
@@ -254,30 +140,6 @@ func CloudSQLInstanceInfoObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Region = direct.ValueOf(in.Region)
 	return out
 }
-func DeliverInfo_FromProto(mapCtx *direct.MapContext, in *pb.DeliverInfo) *krm.DeliverInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DeliverInfo{}
-	// MISSING: Target
-	// MISSING: ResourceURI
-	// MISSING: IPAddress
-	// MISSING: StorageBucket
-	// MISSING: PSCGoogleAPITarget
-	return out
-}
-func DeliverInfo_ToProto(mapCtx *direct.MapContext, in *krm.DeliverInfo) *pb.DeliverInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DeliverInfo{}
-	// MISSING: Target
-	// MISSING: ResourceURI
-	// MISSING: IPAddress
-	// MISSING: StorageBucket
-	// MISSING: PSCGoogleAPITarget
-	return out
-}
 func DeliverInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DeliverInfo) *krm.DeliverInfoObservedState {
 	if in == nil {
 		return nil
@@ -300,30 +162,6 @@ func DeliverInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Deliver
 	out.IpAddress = direct.ValueOf(in.IPAddress)
 	out.StorageBucket = direct.ValueOf(in.StorageBucket)
 	out.PscGoogleApiTarget = direct.ValueOf(in.PSCGoogleAPITarget)
-	return out
-}
-func DirectVPCEgressConnectionInfo_FromProto(mapCtx *direct.MapContext, in *pb.DirectVpcEgressConnectionInfo) *krm.DirectVPCEgressConnectionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DirectVPCEgressConnectionInfo{}
-	// MISSING: NetworkURI
-	// MISSING: SubnetworkURI
-	// MISSING: SelectedIPRange
-	// MISSING: SelectedIPAddress
-	// MISSING: Region
-	return out
-}
-func DirectVPCEgressConnectionInfo_ToProto(mapCtx *direct.MapContext, in *krm.DirectVPCEgressConnectionInfo) *pb.DirectVpcEgressConnectionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DirectVpcEgressConnectionInfo{}
-	// MISSING: NetworkURI
-	// MISSING: SubnetworkURI
-	// MISSING: SelectedIPRange
-	// MISSING: SelectedIPAddress
-	// MISSING: Region
 	return out
 }
 func DirectVPCEgressConnectionInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DirectVpcEgressConnectionInfo) *krm.DirectVPCEgressConnectionInfoObservedState {
@@ -350,30 +188,6 @@ func DirectVPCEgressConnectionInfoObservedState_ToProto(mapCtx *direct.MapContex
 	out.Region = direct.ValueOf(in.Region)
 	return out
 }
-func DropInfo_FromProto(mapCtx *direct.MapContext, in *pb.DropInfo) *krm.DropInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DropInfo{}
-	// MISSING: Cause
-	// MISSING: ResourceURI
-	// MISSING: SourceIP
-	// MISSING: DestinationIP
-	// MISSING: Region
-	return out
-}
-func DropInfo_ToProto(mapCtx *direct.MapContext, in *krm.DropInfo) *pb.DropInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DropInfo{}
-	// MISSING: Cause
-	// MISSING: ResourceURI
-	// MISSING: SourceIP
-	// MISSING: DestinationIP
-	// MISSING: Region
-	return out
-}
 func DropInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DropInfo) *krm.DropInfoObservedState {
 	if in == nil {
 		return nil
@@ -396,36 +210,6 @@ func DropInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DropInfoOb
 	out.SourceIp = direct.ValueOf(in.SourceIP)
 	out.DestinationIp = direct.ValueOf(in.DestinationIP)
 	out.Region = direct.ValueOf(in.Region)
-	return out
-}
-func EndpointInfo_FromProto(mapCtx *direct.MapContext, in *pb.EndpointInfo) *krm.EndpointInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EndpointInfo{}
-	// MISSING: SourceIP
-	// MISSING: DestinationIP
-	// MISSING: Protocol
-	// MISSING: SourcePort
-	// MISSING: DestinationPort
-	// MISSING: SourceNetworkURI
-	// MISSING: DestinationNetworkURI
-	// MISSING: SourceAgentURI
-	return out
-}
-func EndpointInfo_ToProto(mapCtx *direct.MapContext, in *krm.EndpointInfo) *pb.EndpointInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EndpointInfo{}
-	// MISSING: SourceIP
-	// MISSING: DestinationIP
-	// MISSING: Protocol
-	// MISSING: SourcePort
-	// MISSING: DestinationPort
-	// MISSING: SourceNetworkURI
-	// MISSING: DestinationNetworkURI
-	// MISSING: SourceAgentURI
 	return out
 }
 func EndpointInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EndpointInfo) *krm.EndpointInfoObservedState {
@@ -508,42 +292,6 @@ func Endpoint_CloudRunRevisionEndpointObservedState_ToProto(mapCtx *direct.MapCo
 	out.ServiceUri = direct.ValueOf(in.ServiceURI)
 	return out
 }
-func FirewallInfo_FromProto(mapCtx *direct.MapContext, in *pb.FirewallInfo) *krm.FirewallInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FirewallInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: Direction
-	// MISSING: Action
-	// MISSING: Priority
-	// MISSING: NetworkURI
-	// MISSING: TargetTags
-	// MISSING: TargetServiceAccounts
-	// MISSING: Policy
-	// MISSING: PolicyURI
-	// MISSING: FirewallRuleType
-	return out
-}
-func FirewallInfo_ToProto(mapCtx *direct.MapContext, in *krm.FirewallInfo) *pb.FirewallInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FirewallInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: Direction
-	// MISSING: Action
-	// MISSING: Priority
-	// MISSING: NetworkURI
-	// MISSING: TargetTags
-	// MISSING: TargetServiceAccounts
-	// MISSING: Policy
-	// MISSING: PolicyURI
-	// MISSING: FirewallRuleType
-	return out
-}
 func FirewallInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FirewallInfo) *krm.FirewallInfoObservedState {
 	if in == nil {
 		return nil
@@ -580,26 +328,6 @@ func FirewallInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Firewa
 	out.FirewallRuleType = direct.Enum_ToProto[pb.FirewallInfo_FirewallRuleType](mapCtx, in.FirewallRuleType)
 	return out
 }
-func ForwardInfo_FromProto(mapCtx *direct.MapContext, in *pb.ForwardInfo) *krm.ForwardInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ForwardInfo{}
-	// MISSING: Target
-	// MISSING: ResourceURI
-	// MISSING: IPAddress
-	return out
-}
-func ForwardInfo_ToProto(mapCtx *direct.MapContext, in *krm.ForwardInfo) *pb.ForwardInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ForwardInfo{}
-	// MISSING: Target
-	// MISSING: ResourceURI
-	// MISSING: IPAddress
-	return out
-}
 func ForwardInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ForwardInfo) *krm.ForwardInfoObservedState {
 	if in == nil {
 		return nil
@@ -618,42 +346,6 @@ func ForwardInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Forward
 	out.Target = direct.Enum_ToProto[pb.ForwardInfo_Target](mapCtx, in.Target)
 	out.ResourceUri = direct.ValueOf(in.ResourceURI)
 	out.IpAddress = direct.ValueOf(in.IPAddress)
-	return out
-}
-func ForwardingRuleInfo_FromProto(mapCtx *direct.MapContext, in *pb.ForwardingRuleInfo) *krm.ForwardingRuleInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ForwardingRuleInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: MatchedProtocol
-	// MISSING: MatchedPortRange
-	// MISSING: VIP
-	// MISSING: Target
-	// MISSING: NetworkURI
-	// MISSING: Region
-	// MISSING: LoadBalancerName
-	// MISSING: PSCServiceAttachmentURI
-	// MISSING: PSCGoogleAPITarget
-	return out
-}
-func ForwardingRuleInfo_ToProto(mapCtx *direct.MapContext, in *krm.ForwardingRuleInfo) *pb.ForwardingRuleInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ForwardingRuleInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: MatchedProtocol
-	// MISSING: MatchedPortRange
-	// MISSING: VIP
-	// MISSING: Target
-	// MISSING: NetworkURI
-	// MISSING: Region
-	// MISSING: LoadBalancerName
-	// MISSING: PSCServiceAttachmentURI
-	// MISSING: PSCGoogleAPITarget
 	return out
 }
 func ForwardingRuleInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ForwardingRuleInfo) *krm.ForwardingRuleInfoObservedState {
@@ -692,30 +384,6 @@ func ForwardingRuleInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.PscGoogleApiTarget = direct.ValueOf(in.PSCGoogleAPITarget)
 	return out
 }
-func GKEMasterInfo_FromProto(mapCtx *direct.MapContext, in *pb.GKEMasterInfo) *krm.GKEMasterInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GKEMasterInfo{}
-	// MISSING: ClusterURI
-	// MISSING: ClusterNetworkURI
-	// MISSING: InternalIP
-	// MISSING: ExternalIP
-	// MISSING: DNSEndpoint
-	return out
-}
-func GKEMasterInfo_ToProto(mapCtx *direct.MapContext, in *krm.GKEMasterInfo) *pb.GKEMasterInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GKEMasterInfo{}
-	// MISSING: ClusterURI
-	// MISSING: ClusterNetworkURI
-	// MISSING: InternalIP
-	// MISSING: ExternalIP
-	// MISSING: DNSEndpoint
-	return out
-}
 func GKEMasterInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GKEMasterInfo) *krm.GKEMasterInfoObservedState {
 	if in == nil {
 		return nil
@@ -740,24 +408,6 @@ func GKEMasterInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GKEMa
 	out.DnsEndpoint = direct.ValueOf(in.DNSEndpoint)
 	return out
 }
-func GoogleServiceInfo_FromProto(mapCtx *direct.MapContext, in *pb.GoogleServiceInfo) *krm.GoogleServiceInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GoogleServiceInfo{}
-	// MISSING: SourceIP
-	// MISSING: GoogleServiceType
-	return out
-}
-func GoogleServiceInfo_ToProto(mapCtx *direct.MapContext, in *krm.GoogleServiceInfo) *pb.GoogleServiceInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GoogleServiceInfo{}
-	// MISSING: SourceIP
-	// MISSING: GoogleServiceType
-	return out
-}
 func GoogleServiceInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GoogleServiceInfo) *krm.GoogleServiceInfoObservedState {
 	if in == nil {
 		return nil
@@ -774,38 +424,6 @@ func GoogleServiceInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.G
 	out := &pb.GoogleServiceInfo{}
 	out.SourceIp = direct.ValueOf(in.SourceIP)
 	out.GoogleServiceType = direct.Enum_ToProto[pb.GoogleServiceInfo_GoogleServiceType](mapCtx, in.GoogleServiceType)
-	return out
-}
-func InstanceInfo_FromProto(mapCtx *direct.MapContext, in *pb.InstanceInfo) *krm.InstanceInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.InstanceInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: Interface
-	// MISSING: NetworkURI
-	// MISSING: InternalIP
-	// MISSING: ExternalIP
-	// MISSING: NetworkTags
-	// MISSING: ServiceAccount
-	// MISSING: PSCNetworkAttachmentURI
-	return out
-}
-func InstanceInfo_ToProto(mapCtx *direct.MapContext, in *krm.InstanceInfo) *pb.InstanceInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.InstanceInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: Interface
-	// MISSING: NetworkURI
-	// MISSING: InternalIP
-	// MISSING: ExternalIP
-	// MISSING: NetworkTags
-	// MISSING: ServiceAccount
-	// MISSING: PSCNetworkAttachmentURI
 	return out
 }
 func InstanceInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InstanceInfo) *krm.InstanceInfoObservedState {
@@ -840,22 +458,6 @@ func InstanceInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instan
 	out.PscNetworkAttachmentUri = direct.ValueOf(in.PSCNetworkAttachmentURI)
 	return out
 }
-func LatencyDistribution_FromProto(mapCtx *direct.MapContext, in *pb.LatencyDistribution) *krm.LatencyDistribution {
-	if in == nil {
-		return nil
-	}
-	out := &krm.LatencyDistribution{}
-	// MISSING: LatencyPercentiles
-	return out
-}
-func LatencyDistribution_ToProto(mapCtx *direct.MapContext, in *krm.LatencyDistribution) *pb.LatencyDistribution {
-	if in == nil {
-		return nil
-	}
-	out := &pb.LatencyDistribution{}
-	// MISSING: LatencyPercentiles
-	return out
-}
 func LatencyDistributionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.LatencyDistribution) *krm.LatencyDistributionObservedState {
 	if in == nil {
 		return nil
@@ -870,24 +472,6 @@ func LatencyDistributionObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	}
 	out := &pb.LatencyDistribution{}
 	out.LatencyPercentiles = direct.Slice_ToProto(mapCtx, in.LatencyPercentiles, LatencyPercentileObservedState_ToProto)
-	return out
-}
-func LatencyPercentile_FromProto(mapCtx *direct.MapContext, in *pb.LatencyPercentile) *krm.LatencyPercentile {
-	if in == nil {
-		return nil
-	}
-	out := &krm.LatencyPercentile{}
-	// MISSING: Percent
-	// MISSING: LatencyMicros
-	return out
-}
-func LatencyPercentile_ToProto(mapCtx *direct.MapContext, in *krm.LatencyPercentile) *pb.LatencyPercentile {
-	if in == nil {
-		return nil
-	}
-	out := &pb.LatencyPercentile{}
-	// MISSING: Percent
-	// MISSING: LatencyMicros
 	return out
 }
 func LatencyPercentileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.LatencyPercentile) *krm.LatencyPercentileObservedState {
@@ -906,64 +490,6 @@ func LatencyPercentileObservedState_ToProto(mapCtx *direct.MapContext, in *krm.L
 	out := &pb.LatencyPercentile{}
 	out.Percent = direct.ValueOf(in.Percent)
 	out.LatencyMicros = direct.ValueOf(in.LatencyMicros)
-	return out
-}
-func LoadBalancerBackend_FromProto(mapCtx *direct.MapContext, in *pb.LoadBalancerBackend) *krm.LoadBalancerBackend {
-	if in == nil {
-		return nil
-	}
-	out := &krm.LoadBalancerBackend{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: HealthCheckFirewallState
-	// MISSING: HealthCheckAllowingFirewallRules
-	// MISSING: HealthCheckBlockingFirewallRules
-	return out
-}
-func LoadBalancerBackend_ToProto(mapCtx *direct.MapContext, in *krm.LoadBalancerBackend) *pb.LoadBalancerBackend {
-	if in == nil {
-		return nil
-	}
-	out := &pb.LoadBalancerBackend{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: HealthCheckFirewallState
-	// MISSING: HealthCheckAllowingFirewallRules
-	// MISSING: HealthCheckBlockingFirewallRules
-	return out
-}
-func LoadBalancerBackendInfo_FromProto(mapCtx *direct.MapContext, in *pb.LoadBalancerBackendInfo) *krm.LoadBalancerBackendInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.LoadBalancerBackendInfo{}
-	// MISSING: Name
-	// MISSING: InstanceURI
-	// MISSING: BackendServiceURI
-	// MISSING: InstanceGroupURI
-	// MISSING: NetworkEndpointGroupURI
-	// MISSING: BackendBucketURI
-	// MISSING: PSCServiceAttachmentURI
-	// MISSING: PSCGoogleAPITarget
-	// MISSING: HealthCheckURI
-	// MISSING: HealthCheckFirewallsConfigState
-	return out
-}
-func LoadBalancerBackendInfo_ToProto(mapCtx *direct.MapContext, in *krm.LoadBalancerBackendInfo) *pb.LoadBalancerBackendInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.LoadBalancerBackendInfo{}
-	// MISSING: Name
-	// MISSING: InstanceURI
-	// MISSING: BackendServiceURI
-	// MISSING: InstanceGroupURI
-	// MISSING: NetworkEndpointGroupURI
-	// MISSING: BackendBucketURI
-	// MISSING: PSCServiceAttachmentURI
-	// MISSING: PSCGoogleAPITarget
-	// MISSING: HealthCheckURI
-	// MISSING: HealthCheckFirewallsConfigState
 	return out
 }
 func LoadBalancerBackendInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.LoadBalancerBackendInfo) *krm.LoadBalancerBackendInfoObservedState {
@@ -1024,30 +550,6 @@ func LoadBalancerBackendObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.HealthCheckBlockingFirewallRules = in.HealthCheckBlockingFirewallRules
 	return out
 }
-func LoadBalancerInfo_FromProto(mapCtx *direct.MapContext, in *pb.LoadBalancerInfo) *krm.LoadBalancerInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.LoadBalancerInfo{}
-	// MISSING: LoadBalancerType
-	// MISSING: HealthCheckURI
-	// MISSING: Backends
-	// MISSING: BackendType
-	// MISSING: BackendURI
-	return out
-}
-func LoadBalancerInfo_ToProto(mapCtx *direct.MapContext, in *krm.LoadBalancerInfo) *pb.LoadBalancerInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.LoadBalancerInfo{}
-	// MISSING: LoadBalancerType
-	// MISSING: HealthCheckURI
-	// MISSING: Backends
-	// MISSING: BackendType
-	// MISSING: BackendURI
-	return out
-}
 func LoadBalancerInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.LoadBalancerInfo) *krm.LoadBalancerInfoObservedState {
 	if in == nil {
 		return nil
@@ -1070,46 +572,6 @@ func LoadBalancerInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Lo
 	out.Backends = direct.Slice_ToProto(mapCtx, in.Backends, LoadBalancerBackendObservedState_ToProto)
 	out.BackendType = direct.Enum_ToProto[pb.LoadBalancerInfo_BackendType](mapCtx, in.BackendType)
 	out.BackendUri = direct.ValueOf(in.BackendURI)
-	return out
-}
-func NATInfo_FromProto(mapCtx *direct.MapContext, in *pb.NatInfo) *krm.NATInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NATInfo{}
-	// MISSING: Type
-	// MISSING: Protocol
-	// MISSING: NetworkURI
-	// MISSING: OldSourceIP
-	// MISSING: NewSourceIP
-	// MISSING: OldDestinationIP
-	// MISSING: NewDestinationIP
-	// MISSING: OldSourcePort
-	// MISSING: NewSourcePort
-	// MISSING: OldDestinationPort
-	// MISSING: NewDestinationPort
-	// MISSING: RouterURI
-	// MISSING: NATGatewayName
-	return out
-}
-func NATInfo_ToProto(mapCtx *direct.MapContext, in *krm.NATInfo) *pb.NatInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NatInfo{}
-	// MISSING: Type
-	// MISSING: Protocol
-	// MISSING: NetworkURI
-	// MISSING: OldSourceIP
-	// MISSING: NewSourceIP
-	// MISSING: OldDestinationIP
-	// MISSING: NewDestinationIP
-	// MISSING: OldSourcePort
-	// MISSING: NewSourcePort
-	// MISSING: OldDestinationPort
-	// MISSING: NewDestinationPort
-	// MISSING: RouterURI
-	// MISSING: NATGatewayName
 	return out
 }
 func NATInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NatInfo) *krm.NATInfoObservedState {
@@ -1150,30 +612,6 @@ func NATInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NATInfoObse
 	out.NewDestinationPort = direct.ValueOf(in.NewDestinationPort)
 	out.RouterUri = direct.ValueOf(in.RouterURI)
 	out.NatGatewayName = direct.ValueOf(in.NATGatewayName)
-	return out
-}
-func NetworkInfo_FromProto(mapCtx *direct.MapContext, in *pb.NetworkInfo) *krm.NetworkInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: MatchedSubnetURI
-	// MISSING: MatchedIPRange
-	// MISSING: Region
-	return out
-}
-func NetworkInfo_ToProto(mapCtx *direct.MapContext, in *krm.NetworkInfo) *pb.NetworkInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NetworkInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: MatchedSubnetURI
-	// MISSING: MatchedIPRange
-	// MISSING: Region
 	return out
 }
 func NetworkInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NetworkInfo) *krm.NetworkInfoObservedState {
@@ -1264,38 +702,6 @@ func NetworkManagementConnectivityTestSpec_ToProto(mapCtx *direct.MapContext, in
 	out.BypassFirewallChecks = direct.ValueOf(in.BypassFirewallChecks)
 	return out
 }
-func ProbingDetails_FromProto(mapCtx *direct.MapContext, in *pb.ProbingDetails) *krm.ProbingDetails {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ProbingDetails{}
-	// MISSING: Result
-	// MISSING: VerifyTime
-	// MISSING: Error
-	// MISSING: AbortCause
-	// MISSING: SentProbeCount
-	// MISSING: SuccessfulProbeCount
-	// MISSING: EndpointInfo
-	// MISSING: ProbingLatency
-	// MISSING: DestinationEgressLocation
-	return out
-}
-func ProbingDetails_ToProto(mapCtx *direct.MapContext, in *krm.ProbingDetails) *pb.ProbingDetails {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ProbingDetails{}
-	// MISSING: Result
-	// MISSING: VerifyTime
-	// MISSING: Error
-	// MISSING: AbortCause
-	// MISSING: SentProbeCount
-	// MISSING: SuccessfulProbeCount
-	// MISSING: EndpointInfo
-	// MISSING: ProbingLatency
-	// MISSING: DestinationEgressLocation
-	return out
-}
 func ProbingDetailsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ProbingDetails) *krm.ProbingDetailsObservedState {
 	if in == nil {
 		return nil
@@ -1328,22 +734,6 @@ func ProbingDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Prob
 	out.DestinationEgressLocation = ProbingDetails_EdgeLocationObservedState_ToProto(mapCtx, in.DestinationEgressLocation)
 	return out
 }
-func ProbingDetails_EdgeLocation_FromProto(mapCtx *direct.MapContext, in *pb.ProbingDetails_EdgeLocation) *krm.ProbingDetails_EdgeLocation {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ProbingDetails_EdgeLocation{}
-	// MISSING: MetropolitanArea
-	return out
-}
-func ProbingDetails_EdgeLocation_ToProto(mapCtx *direct.MapContext, in *krm.ProbingDetails_EdgeLocation) *pb.ProbingDetails_EdgeLocation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ProbingDetails_EdgeLocation{}
-	// MISSING: MetropolitanArea
-	return out
-}
 func ProbingDetails_EdgeLocationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ProbingDetails_EdgeLocation) *krm.ProbingDetails_EdgeLocationObservedState {
 	if in == nil {
 		return nil
@@ -1358,42 +748,6 @@ func ProbingDetails_EdgeLocationObservedState_ToProto(mapCtx *direct.MapContext,
 	}
 	out := &pb.ProbingDetails_EdgeLocation{}
 	out.MetropolitanArea = direct.ValueOf(in.MetropolitanArea)
-	return out
-}
-func ProxyConnectionInfo_FromProto(mapCtx *direct.MapContext, in *pb.ProxyConnectionInfo) *krm.ProxyConnectionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ProxyConnectionInfo{}
-	// MISSING: Protocol
-	// MISSING: OldSourceIP
-	// MISSING: NewSourceIP
-	// MISSING: OldDestinationIP
-	// MISSING: NewDestinationIP
-	// MISSING: OldSourcePort
-	// MISSING: NewSourcePort
-	// MISSING: OldDestinationPort
-	// MISSING: NewDestinationPort
-	// MISSING: SubnetURI
-	// MISSING: NetworkURI
-	return out
-}
-func ProxyConnectionInfo_ToProto(mapCtx *direct.MapContext, in *krm.ProxyConnectionInfo) *pb.ProxyConnectionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ProxyConnectionInfo{}
-	// MISSING: Protocol
-	// MISSING: OldSourceIP
-	// MISSING: NewSourceIP
-	// MISSING: OldDestinationIP
-	// MISSING: NewDestinationIP
-	// MISSING: OldSourcePort
-	// MISSING: NewSourcePort
-	// MISSING: OldDestinationPort
-	// MISSING: NewDestinationPort
-	// MISSING: SubnetURI
-	// MISSING: NetworkURI
 	return out
 }
 func ProxyConnectionInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ProxyConnectionInfo) *krm.ProxyConnectionInfoObservedState {
@@ -1432,28 +786,6 @@ func ProxyConnectionInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.NetworkUri = direct.ValueOf(in.NetworkURI)
 	return out
 }
-func ReachabilityDetails_FromProto(mapCtx *direct.MapContext, in *pb.ReachabilityDetails) *krm.ReachabilityDetails {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ReachabilityDetails{}
-	// MISSING: Result
-	// MISSING: VerifyTime
-	// MISSING: Error
-	// MISSING: Traces
-	return out
-}
-func ReachabilityDetails_ToProto(mapCtx *direct.MapContext, in *krm.ReachabilityDetails) *pb.ReachabilityDetails {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ReachabilityDetails{}
-	// MISSING: Result
-	// MISSING: VerifyTime
-	// MISSING: Error
-	// MISSING: Traces
-	return out
-}
 func ReachabilityDetailsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ReachabilityDetails) *krm.ReachabilityDetailsObservedState {
 	if in == nil {
 		return nil
@@ -1474,32 +806,6 @@ func ReachabilityDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.VerifyTime = direct.StringTimestamp_ToProto(mapCtx, in.VerifyTime)
 	out.Error = StatusObservedState_ToProto(mapCtx, in.Error)
 	out.Traces = direct.Slice_ToProto(mapCtx, in.Traces, TraceObservedState_ToProto)
-	return out
-}
-func RedisClusterInfo_FromProto(mapCtx *direct.MapContext, in *pb.RedisClusterInfo) *krm.RedisClusterInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RedisClusterInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: NetworkURI
-	// MISSING: DiscoveryEndpointIPAddress
-	// MISSING: SecondaryEndpointIPAddress
-	// MISSING: Location
-	return out
-}
-func RedisClusterInfo_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterInfo) *pb.RedisClusterInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RedisClusterInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: NetworkURI
-	// MISSING: DiscoveryEndpointIPAddress
-	// MISSING: SecondaryEndpointIPAddress
-	// MISSING: Location
 	return out
 }
 func RedisClusterInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RedisClusterInfo) *krm.RedisClusterInfoObservedState {
@@ -1528,32 +834,6 @@ func RedisClusterInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Re
 	out.Location = direct.ValueOf(in.Location)
 	return out
 }
-func RedisInstanceInfo_FromProto(mapCtx *direct.MapContext, in *pb.RedisInstanceInfo) *krm.RedisInstanceInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RedisInstanceInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: NetworkURI
-	// MISSING: PrimaryEndpointIP
-	// MISSING: ReadEndpointIP
-	// MISSING: Region
-	return out
-}
-func RedisInstanceInfo_ToProto(mapCtx *direct.MapContext, in *krm.RedisInstanceInfo) *pb.RedisInstanceInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RedisInstanceInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: NetworkURI
-	// MISSING: PrimaryEndpointIP
-	// MISSING: ReadEndpointIP
-	// MISSING: Region
-	return out
-}
 func RedisInstanceInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RedisInstanceInfo) *krm.RedisInstanceInfoObservedState {
 	if in == nil {
 		return nil
@@ -1578,68 +858,6 @@ func RedisInstanceInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.R
 	out.PrimaryEndpointIp = direct.ValueOf(in.PrimaryEndpointIP)
 	out.ReadEndpointIp = direct.ValueOf(in.ReadEndpointIP)
 	out.Region = direct.ValueOf(in.Region)
-	return out
-}
-func RouteInfo_FromProto(mapCtx *direct.MapContext, in *pb.RouteInfo) *krm.RouteInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RouteInfo{}
-	// MISSING: RouteType
-	// MISSING: NextHopType
-	// MISSING: RouteScope
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: Region
-	// MISSING: DestIPRange
-	// MISSING: NextHop
-	// MISSING: NetworkURI
-	// MISSING: Priority
-	// MISSING: InstanceTags
-	// MISSING: SrcIPRange
-	// MISSING: DestPortRanges
-	// MISSING: SrcPortRanges
-	// MISSING: Protocols
-	// MISSING: NccHubURI
-	// MISSING: NccSpokeURI
-	// MISSING: AdvertisedRouteSourceRouterURI
-	// MISSING: AdvertisedRouteNextHopURI
-	// MISSING: NextHopURI
-	// MISSING: NextHopNetworkURI
-	// MISSING: OriginatingRouteURI
-	// MISSING: OriginatingRouteDisplayName
-	// MISSING: NccHubRouteURI
-	return out
-}
-func RouteInfo_ToProto(mapCtx *direct.MapContext, in *krm.RouteInfo) *pb.RouteInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RouteInfo{}
-	// MISSING: RouteType
-	// MISSING: NextHopType
-	// MISSING: RouteScope
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: Region
-	// MISSING: DestIPRange
-	// MISSING: NextHop
-	// MISSING: NetworkURI
-	// MISSING: Priority
-	// MISSING: InstanceTags
-	// MISSING: SrcIPRange
-	// MISSING: DestPortRanges
-	// MISSING: SrcPortRanges
-	// MISSING: Protocols
-	// MISSING: NccHubURI
-	// MISSING: NccSpokeURI
-	// MISSING: AdvertisedRouteSourceRouterURI
-	// MISSING: AdvertisedRouteNextHopURI
-	// MISSING: NextHopURI
-	// MISSING: NextHopNetworkURI
-	// MISSING: OriginatingRouteURI
-	// MISSING: OriginatingRouteDisplayName
-	// MISSING: NccHubRouteURI
 	return out
 }
 func RouteInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RouteInfo) *krm.RouteInfoObservedState {
@@ -1704,22 +922,6 @@ func RouteInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RouteInfo
 	out.NccHubRouteUri = direct.ValueOf(in.NccHubRouteURI)
 	return out
 }
-func ServerlessExternalConnectionInfo_FromProto(mapCtx *direct.MapContext, in *pb.ServerlessExternalConnectionInfo) *krm.ServerlessExternalConnectionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ServerlessExternalConnectionInfo{}
-	// MISSING: SelectedIPAddress
-	return out
-}
-func ServerlessExternalConnectionInfo_ToProto(mapCtx *direct.MapContext, in *krm.ServerlessExternalConnectionInfo) *pb.ServerlessExternalConnectionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ServerlessExternalConnectionInfo{}
-	// MISSING: SelectedIPAddress
-	return out
-}
 func ServerlessExternalConnectionInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServerlessExternalConnectionInfo) *krm.ServerlessExternalConnectionInfoObservedState {
 	if in == nil {
 		return nil
@@ -1736,22 +938,6 @@ func ServerlessExternalConnectionInfoObservedState_ToProto(mapCtx *direct.MapCon
 	out.SelectedIpAddress = direct.ValueOf(in.SelectedIPAddress)
 	return out
 }
-func ServerlessNegInfo_FromProto(mapCtx *direct.MapContext, in *pb.ServerlessNegInfo) *krm.ServerlessNegInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ServerlessNegInfo{}
-	// MISSING: NegURI
-	return out
-}
-func ServerlessNegInfo_ToProto(mapCtx *direct.MapContext, in *krm.ServerlessNegInfo) *pb.ServerlessNegInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ServerlessNegInfo{}
-	// MISSING: NegURI
-	return out
-}
 func ServerlessNegInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServerlessNegInfo) *krm.ServerlessNegInfoObservedState {
 	if in == nil {
 		return nil
@@ -1766,86 +952,6 @@ func ServerlessNegInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.S
 	}
 	out := &pb.ServerlessNegInfo{}
 	out.NegUri = direct.ValueOf(in.NegURI)
-	return out
-}
-func Step_FromProto(mapCtx *direct.MapContext, in *pb.Step) *krm.Step {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Step{}
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: CausesDrop
-	// MISSING: ProjectID
-	// MISSING: Instance
-	// MISSING: Firewall
-	// MISSING: Route
-	// MISSING: Endpoint
-	// MISSING: GoogleService
-	// MISSING: ForwardingRule
-	// MISSING: VPNGateway
-	// MISSING: VPNTunnel
-	// MISSING: VPCConnector
-	// MISSING: DirectVPCEgressConnection
-	// MISSING: ServerlessExternalConnection
-	// MISSING: Deliver
-	// MISSING: Forward
-	// MISSING: Abort
-	// MISSING: Drop
-	// MISSING: LoadBalancer
-	// MISSING: Network
-	// MISSING: GKEMaster
-	// MISSING: CloudSQLInstance
-	// MISSING: RedisInstance
-	// MISSING: RedisCluster
-	// MISSING: CloudFunction
-	// MISSING: AppEngineVersion
-	// MISSING: CloudRunRevision
-	// MISSING: NAT
-	// MISSING: ProxyConnection
-	// MISSING: LoadBalancerBackendInfo
-	// MISSING: StorageBucket
-	// MISSING: ServerlessNeg
-	return out
-}
-func Step_ToProto(mapCtx *direct.MapContext, in *krm.Step) *pb.Step {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Step{}
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: CausesDrop
-	// MISSING: ProjectID
-	// MISSING: Instance
-	// MISSING: Firewall
-	// MISSING: Route
-	// MISSING: Endpoint
-	// MISSING: GoogleService
-	// MISSING: ForwardingRule
-	// MISSING: VPNGateway
-	// MISSING: VPNTunnel
-	// MISSING: VPCConnector
-	// MISSING: DirectVPCEgressConnection
-	// MISSING: ServerlessExternalConnection
-	// MISSING: Deliver
-	// MISSING: Forward
-	// MISSING: Abort
-	// MISSING: Drop
-	// MISSING: LoadBalancer
-	// MISSING: Network
-	// MISSING: GKEMaster
-	// MISSING: CloudSQLInstance
-	// MISSING: RedisInstance
-	// MISSING: RedisCluster
-	// MISSING: CloudFunction
-	// MISSING: AppEngineVersion
-	// MISSING: CloudRunRevision
-	// MISSING: NAT
-	// MISSING: ProxyConnection
-	// MISSING: LoadBalancerBackendInfo
-	// MISSING: StorageBucket
-	// MISSING: ServerlessNeg
 	return out
 }
 func StepObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Step) *krm.StepObservedState {
@@ -1986,22 +1092,6 @@ func StepObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StepObservedSt
 	}
 	return out
 }
-func StorageBucketInfo_FromProto(mapCtx *direct.MapContext, in *pb.StorageBucketInfo) *krm.StorageBucketInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.StorageBucketInfo{}
-	// MISSING: Bucket
-	return out
-}
-func StorageBucketInfo_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketInfo) *pb.StorageBucketInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.StorageBucketInfo{}
-	// MISSING: Bucket
-	return out
-}
 func StorageBucketInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.StorageBucketInfo) *krm.StorageBucketInfoObservedState {
 	if in == nil {
 		return nil
@@ -2016,26 +1106,6 @@ func StorageBucketInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.S
 	}
 	out := &pb.StorageBucketInfo{}
 	out.Bucket = direct.ValueOf(in.Bucket)
-	return out
-}
-func Trace_FromProto(mapCtx *direct.MapContext, in *pb.Trace) *krm.Trace {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Trace{}
-	// MISSING: EndpointInfo
-	// MISSING: Steps
-	// MISSING: ForwardTraceID
-	return out
-}
-func Trace_ToProto(mapCtx *direct.MapContext, in *krm.Trace) *pb.Trace {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Trace{}
-	// MISSING: EndpointInfo
-	// MISSING: Steps
-	// MISSING: ForwardTraceID
 	return out
 }
 func TraceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Trace) *krm.TraceObservedState {
@@ -2058,26 +1128,6 @@ func TraceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TraceObserved
 	out.ForwardTraceId = direct.ValueOf(in.ForwardTraceID)
 	return out
 }
-func VPCConnectorInfo_FromProto(mapCtx *direct.MapContext, in *pb.VpcConnectorInfo) *krm.VPCConnectorInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VPCConnectorInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: Location
-	return out
-}
-func VPCConnectorInfo_ToProto(mapCtx *direct.MapContext, in *krm.VPCConnectorInfo) *pb.VpcConnectorInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.VpcConnectorInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: Location
-	return out
-}
 func VPCConnectorInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VpcConnectorInfo) *krm.VPCConnectorInfoObservedState {
 	if in == nil {
 		return nil
@@ -2096,32 +1146,6 @@ func VPCConnectorInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VP
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Uri = direct.ValueOf(in.URI)
 	out.Location = direct.ValueOf(in.Location)
-	return out
-}
-func VPNGatewayInfo_FromProto(mapCtx *direct.MapContext, in *pb.VpnGatewayInfo) *krm.VPNGatewayInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VPNGatewayInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: NetworkURI
-	// MISSING: IPAddress
-	// MISSING: VPNTunnelURI
-	// MISSING: Region
-	return out
-}
-func VPNGatewayInfo_ToProto(mapCtx *direct.MapContext, in *krm.VPNGatewayInfo) *pb.VpnGatewayInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.VpnGatewayInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: NetworkURI
-	// MISSING: IPAddress
-	// MISSING: VPNTunnelURI
-	// MISSING: Region
 	return out
 }
 func VPNGatewayInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VpnGatewayInfo) *krm.VPNGatewayInfoObservedState {
@@ -2148,38 +1172,6 @@ func VPNGatewayInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VPNG
 	out.IpAddress = direct.ValueOf(in.IPAddress)
 	out.VpnTunnelUri = direct.ValueOf(in.VPNTunnelURI)
 	out.Region = direct.ValueOf(in.Region)
-	return out
-}
-func VPNTunnelInfo_FromProto(mapCtx *direct.MapContext, in *pb.VpnTunnelInfo) *krm.VPNTunnelInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VPNTunnelInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: SourceGateway
-	// MISSING: RemoteGateway
-	// MISSING: RemoteGatewayIP
-	// MISSING: SourceGatewayIP
-	// MISSING: NetworkURI
-	// MISSING: Region
-	// MISSING: RoutingType
-	return out
-}
-func VPNTunnelInfo_ToProto(mapCtx *direct.MapContext, in *krm.VPNTunnelInfo) *pb.VpnTunnelInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.VpnTunnelInfo{}
-	// MISSING: DisplayName
-	// MISSING: URI
-	// MISSING: SourceGateway
-	// MISSING: RemoteGateway
-	// MISSING: RemoteGatewayIP
-	// MISSING: SourceGatewayIP
-	// MISSING: NetworkURI
-	// MISSING: Region
-	// MISSING: RoutingType
 	return out
 }
 func VPNTunnelInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VpnTunnelInfo) *krm.VPNTunnelInfoObservedState {
