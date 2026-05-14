@@ -82,6 +82,32 @@ func (s *ReservationV1) CreateReservation(ctx context.Context, req *pb.CreateRes
 	return obj, nil
 }
 
+func (s *ReservationV1) ListReservations(ctx context.Context, req *pb.ListReservationsRequest) (*pb.ListReservationsResponse, error) {
+	parent, err := s.parseReservationName(req.GetParent() + "/reservations/placeholder")
+	if err != nil {
+		return nil, err
+	}
+
+	response := &pb.ListReservationsResponse{}
+
+	kind := (&pb.Reservation{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, kind, storage.ListOptions{}, func(obj proto.Message) error {
+		res := obj.(*pb.Reservation)
+		name, err := s.parseReservationName(res.Name)
+		if err != nil {
+			return err
+		}
+		if name.Project.ID == parent.Project.ID && name.Location == parent.Location {
+			response.Reservations = append(response.Reservations, res)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
 func (s *ReservationV1) GetReservation(ctx context.Context, req *pb.GetReservationRequest) (*pb.Reservation, error) {
 	name, err := s.parseReservationName(req.Name)
 	if err != nil {
@@ -353,4 +379,145 @@ func (s *ReservationV1) DeleteAssignment(ctx context.Context, req *pb.DeleteAssi
 	}
 
 	return &emptypb.Empty{}, nil
+}
+
+func (s *ReservationV1) CreateCapacityCommitment(ctx context.Context, req *pb.CreateCapacityCommitmentRequest) (*pb.CapacityCommitment, error) {
+	// reqName = req.Parent + "/capacityCommitments/" + uuid.New().String()
+	// Using fixed UUID to test "acquire" in spec.resourceID.
+	var reqName string
+	if req.CapacityCommitmentId != "" {
+		reqName = req.Parent + "/capacityCommitments/" + req.CapacityCommitmentId
+	} else {
+		reqName = req.Parent + "/capacityCommitments/" + "92389360-641d-541e-2kfzymot3v66w6q"
+	}
+
+	name, err := s.parseCapacityCommitmentName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := proto.Clone(req.CapacityCommitment).(*pb.CapacityCommitment)
+	obj.Name = fqn
+	obj.State = pb.CapacityCommitment_ACTIVE
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *ReservationV1) GetCapacityCommitment(ctx context.Context, req *pb.GetCapacityCommitmentRequest) (*pb.CapacityCommitment, error) {
+	name, err := s.parseCapacityCommitmentName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.CapacityCommitment{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Not found: CapacityCommitment %s", fqn)
+		}
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *ReservationV1) ListCapacityCommitments(ctx context.Context, req *pb.ListCapacityCommitmentsRequest) (*pb.ListCapacityCommitmentsResponse, error) {
+	parent, err := s.parseCapacityCommitmentName(req.GetParent() + "/capacityCommitments/placeholder")
+	if err != nil {
+		return nil, err
+	}
+
+	response := &pb.ListCapacityCommitmentsResponse{}
+
+	kind := (&pb.CapacityCommitment{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, kind, storage.ListOptions{}, func(obj proto.Message) error {
+		res := obj.(*pb.CapacityCommitment)
+		name, err := s.parseCapacityCommitmentName(res.Name)
+		if err != nil {
+			return err
+		}
+		if name.Project.ID == parent.Project.ID && name.Location == parent.Location {
+			response.CapacityCommitments = append(response.CapacityCommitments, res)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
+func (s *ReservationV1) UpdateCapacityCommitment(ctx context.Context, req *pb.UpdateCapacityCommitmentRequest) (*pb.CapacityCommitment, error) {
+	name, err := s.parseCapacityCommitmentName(req.CapacityCommitment.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.CapacityCommitment{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	if err := fields.UpdateByFieldMask(obj, req.CapacityCommitment, req.UpdateMask.Paths); err != nil {
+		return nil, fmt.Errorf("update field_mask.paths: %w", err)
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+func (s *ReservationV1) DeleteCapacityCommitment(ctx context.Context, req *pb.DeleteCapacityCommitmentRequest) (*empty.Empty, error) {
+	name, err := s.parseCapacityCommitmentName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	oldObj := &pb.CapacityCommitment{}
+	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
+		return nil, err
+	}
+
+	return &emptypb.Empty{}, nil
+}
+
+type capacityCommitmentName struct {
+	Project    *projects.ProjectData
+	Location   string
+	ResourceID string
+}
+
+func (n *capacityCommitmentName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/capacityCommitments/" + n.ResourceID
+}
+
+func (s *MockService) parseCapacityCommitmentName(name string) (*capacityCommitmentName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "capacityCommitments" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &capacityCommitmentName{
+			Project:    project,
+			Location:   tokens[3],
+			ResourceID: tokens[5],
+		}
+		return name, nil
+	}
+
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
