@@ -331,6 +331,8 @@ import (
 	fakeresourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/resourcemanager/v1beta1/fake"
 	runv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/run/v1beta1"
 	fakerunv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/run/v1beta1/fake"
+	secretmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/secretmanager/v1alpha1"
+	fakesecretmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/secretmanager/v1alpha1/fake"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/secretmanager/v1beta1"
 	fakesecretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/secretmanager/v1beta1/fake"
 	securesourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securesourcemanager/v1beta1"
@@ -1226,6 +1228,11 @@ func (c *Clientset) ResourcemanagerV1beta1() resourcemanagerv1beta1.Resourcemana
 // RunV1beta1 retrieves the RunV1beta1Client
 func (c *Clientset) RunV1beta1() runv1beta1.RunV1beta1Interface {
 	return &fakerunv1beta1.FakeRunV1beta1{Fake: &c.Fake}
+}
+
+// SecretmanagerV1alpha1 retrieves the SecretmanagerV1alpha1Client
+func (c *Clientset) SecretmanagerV1alpha1() secretmanagerv1alpha1.SecretmanagerV1alpha1Interface {
+	return &fakesecretmanagerv1alpha1.FakeSecretmanagerV1alpha1{Fake: &c.Fake}
 }
 
 // SecretmanagerV1beta1 retrieves the SecretmanagerV1beta1Client
