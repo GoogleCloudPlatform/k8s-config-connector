@@ -25,6 +25,11 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 go run . generate-types \
+    --service google.cloud.aiplatform.v1 \
+    --api-version vertexai.cnrm.cloud.google.com/v1alpha1 \
+    --resource VertexAICustomJob:CustomJob
+
+go run . generate-types \
     --service google.cloud.aiplatform.v1beta1 \
     --api-version vertexai.cnrm.cloud.google.com/v1alpha1 \
     --resource VertexAIFeaturestore:Featurestore \
@@ -35,7 +40,11 @@ go run . generate-types \
     --api-version vertexai.cnrm.cloud.google.com/v1alpha1 \
     --resource VertexAIDataLabelingJob:DataLabelingJob
 
+go run . generate-mapper \
+    --service google.cloud.aiplatform.v1beta1 \
+    --api-version vertexai.cnrm.cloud.google.com/v1alpha1
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/vertexai/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/vertexai/
