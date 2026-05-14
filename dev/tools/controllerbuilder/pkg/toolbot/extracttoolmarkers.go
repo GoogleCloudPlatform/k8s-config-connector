@@ -85,7 +85,7 @@ func (x *ExtractToolMarkers) Extract(ctx context.Context, description string, sr
 			comment := strings.TrimPrefix(line, "//")
 			comment = strings.TrimSpace(comment)
 
-			if proto, ok := codegen.GetProtoMessageFromAnnotation(comment); ok {
+			if _, proto, ok := codegen.GetProtoAnnotation(comment); ok {
 				klog.V(2).Infof("found tool line %q", comment)
 				toolName := "kcc-proto"
 				if strings.Contains(comment, codegen.KCCProtoMessageAnnotationSpec) {

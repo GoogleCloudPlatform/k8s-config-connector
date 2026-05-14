@@ -46,6 +46,8 @@ type MapperGenerator struct {
 	importedPackages map[string]importedPackage
 
 	includeSkippedOutput bool
+
+	*TypeDiscovery
 }
 
 type importedPackage struct {
@@ -60,6 +62,9 @@ func NewMapperGenerator(goPathForMessage OutputFunc, outputBaseDir string, gener
 		generatedFileAnnotation: generatedFileAnnotation,
 		multiversion:            multiversion,
 		importedPackages:        make(map[string]importedPackage),
+		TypeDiscovery: &TypeDiscovery{
+			ReachableMessages: make(map[string]*MessageDetails),
+		},
 	}
 	g.generatorBase.init(outputBaseDir)
 	return g
@@ -102,7 +107,7 @@ func (v *MapperGenerator) VisitGoCode(goPackage string, basePath string) error {
 				for _, c := range s.Comments {
 					for _, line := range strings.Split(c, "\n") {
 						line = strings.TrimSpace(line)
-						if proto, ok := GetProtoMessageFromAnnotation(line); ok {
+						if _, proto, ok := GetProtoAnnotation(line); ok {
 							protoName := protoreflect.FullName(proto)
 							v.precomputedMappings[protoName] = append(v.precomputedMappings[protoName], s)
 						}
@@ -115,18 +120,21 @@ func (v *MapperGenerator) VisitGoCode(goPackage string, basePath string) error {
 	return nil
 }
 
-func (v *MapperGenerator) VisitProto(api *protoapi.Proto) error {
+func (g *MapperGenerator) VisitProto(api *protoapi.Proto) error {
 	sortedFiles := api.SortedFiles()
 	for _, f := range sortedFiles {
-		v.visitFile(f)
+		for _, msg := range sortIntoMessageSlice(f.Messages()) {
+			g.TypeDiscovery.visitMessage(msg)
+		}
 	}
-	return nil
-}
 
-func (g *MapperGenerator) visitFile(f protoreflect.FileDescriptor) {
-	for _, msg := range sortIntoMessageSlice(f.Messages()) {
-		g.visitMessage(msg)
+	for _, f := range sortedFiles {
+		for _, msg := range sortIntoMessageSlice(f.Messages()) {
+			g.visitMessage(msg)
+		}
 	}
+
+	return nil
 }
 
 func (v *MapperGenerator) findKRMStructsForProto(msg protoreflect.MessageDescriptor) []*gocode.GoStruct {

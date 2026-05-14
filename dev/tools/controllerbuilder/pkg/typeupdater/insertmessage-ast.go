@@ -178,7 +178,7 @@ func protoNameFromComment(cg *ast.CommentGroup) (string, error) {
 		return "", fmt.Errorf("empty comment group")
 	}
 	for _, c := range cg.List {
-		proto, ok := codegen.GetProtoMessageFromAnnotation(c.Text)
+		_, proto, ok := codegen.GetProtoAnnotation(c.Text)
 		if ok {
 			return proto, nil // found the comment with proto name
 		}

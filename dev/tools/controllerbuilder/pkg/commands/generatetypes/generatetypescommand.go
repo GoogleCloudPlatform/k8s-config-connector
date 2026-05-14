@@ -173,11 +173,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	}
 	typeGenerator = typeGenerator.WithGeneratedFileAnnotation(generatedFileAnnotation)
 
-	if err := typeGenerator.WriteInputMessages(); err != nil {
-		return err
-	}
-
-	if err := typeGenerator.WriteOutputMessages(); err != nil {
+	if err := typeGenerator.WriteReachableMessages(); err != nil {
 		return err
 	}
 
