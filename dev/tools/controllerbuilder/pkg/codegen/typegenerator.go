@@ -38,8 +38,8 @@ type TypeGenerator struct {
 	generatorBase
 	api                     *protoapi.Proto
 	goPackage               string
-	inputMessages           []protoreflect.MessageDescriptor
-	outputMessages          []*OutputMessageDetails
+	inputMessages           []*MessageDetails
+	outputMessages          []*MessageDetails
 	generatedFileAnnotation *codegenannotations.FileAnnotation
 	includeSkippedOutput    bool
 	fieldOverrides          map[string]*ProtoOverride
@@ -49,9 +49,19 @@ type ProtoOverride struct {
 	OutputOnly *bool
 }
 
-type OutputMessageDetails struct {
-	Message      protoreflect.MessageDescriptor
-	OutputFields []protoreflect.FieldDescriptor
+type MessageDetails struct {
+	Message protoreflect.MessageDescriptor
+	// InputFields  []protoreflect.FieldDescriptor
+	// OutputFields []protoreflect.FieldDescriptor
+}
+
+func (m *MessageDetails) AllFields() []protoreflect.FieldDescriptor {
+	var out []protoreflect.FieldDescriptor
+	fields := m.Message.Fields()
+	for i := 0; i < fields.Len(); i++ {
+		out = append(out, fields.Get(i))
+	}
+	return out
 }
 
 func NewTypeGenerator(goPackage string, outputBaseDir string, api *protoapi.Proto) *TypeGenerator {
@@ -104,9 +114,11 @@ func (g *TypeGenerator) visitMessage(message protoreflect.MessageDescriptor, inp
 	//klog.Infof("found message %q", messageDescriptor.FullName())
 
 	if inputOutputType != OutputOnly {
-		g.inputMessages = append(g.inputMessages, message)
+		g.inputMessages = append(g.inputMessages, &MessageDetails{
+			Message: message,
+		})
 
-		msgs, err := g.FindInputDependenciesForMessage(message, nil) // TODO: explicitly set ignored fields when generating Go types
+		msgs, err := g.FindDependenciesForMessage(message, nil, InputOnly) // TODO: explicitly set ignored fields when generating Go types
 		if err != nil {
 			return err
 		}
@@ -114,11 +126,16 @@ func (g *TypeGenerator) visitMessage(message protoreflect.MessageDescriptor, inp
 	}
 
 	if inputOutputType != InputOnly {
-		statusMessages, err := g.findOutputsForMessage(message)
+		g.outputMessages = append(g.outputMessages, &MessageDetails{
+			Message: message,
+		})
+
+		msgs, err := g.FindDependenciesForMessage(message, nil, OutputOnly) // TODO: explicitly set ignored fields when generating Go types
 		if err != nil {
 			return err
 		}
-		g.outputMessages = append(g.outputMessages, statusMessages...)
+
+		g.outputMessages = append(g.outputMessages, msgs...)
 	}
 
 	return nil
@@ -147,7 +164,8 @@ func writeCopyright(w io.Writer, year int) {
 }
 
 func (g *TypeGenerator) WriteInputMessages() error {
-	for _, msg := range deduplicateAndSort(g.inputMessages) {
+	for _, msgDetails := range deduplicateAndSortMessages(g.inputMessages) {
+		msg := msgDetails.Message
 		if msg.IsMapEntry() {
 			continue
 		}
@@ -194,7 +212,7 @@ func (g *TypeGenerator) WriteInputMessages() error {
 }
 
 func (g *TypeGenerator) WriteOutputMessages() error {
-	for _, msgDetails := range deduplicateAndSortOutputMessages(g.outputMessages) {
+	for _, msgDetails := range deduplicateAndSortMessages(g.outputMessages) {
 		msg := msgDetails.Message
 		if msg.IsMapEntry() {
 			continue
@@ -248,7 +266,7 @@ func (g *TypeGenerator) WriteSpecMessageAsComment(out io.Writer, msg protoreflec
 	fmt.Fprintf(out, "*/\n")
 }
 
-func (g *TypeGenerator) WriteObservedStateMessageAsComment(out io.Writer, msgDetails *OutputMessageDetails, reason string) {
+func (g *TypeGenerator) WriteObservedStateMessageAsComment(out io.Writer, msgDetails *MessageDetails, reason string) {
 	var b bytes.Buffer
 	g.WriteObservedStateMessage(&b, msgDetails)
 	fmt.Fprintf(out, "\n/* %s\n", reason)
@@ -259,17 +277,13 @@ func (g *TypeGenerator) WriteObservedStateMessageAsComment(out io.Writer, msgDet
 func (g *TypeGenerator) WriteSpecMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
 	goType := GoNameForProtoMessage(msg)
 
-	messageInputOutput := g.MessageType(msg)
-
 	fmt.Fprintf(out, "\n")
 	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotationMisc, msg.FullName())
 	fmt.Fprintf(out, "type %s struct {\n", goType)
 	for i := 0; i < msg.Fields().Len(); i++ {
 		field := msg.Fields().Get(i)
-		if messageInputOutput == MixedInputOutput {
-			if g.IsOutputOnlyField(field) {
-				continue
-			}
+		if g.IsOutputOnlyField(field) {
+			continue
 		}
 
 		g.WriteField(out, field, msg, i, false)
@@ -277,20 +291,16 @@ func (g *TypeGenerator) WriteSpecMessage(out io.Writer, msg protoreflect.Message
 	fmt.Fprintf(out, "}\n")
 }
 
-func (g *TypeGenerator) WriteObservedStateMessage(out io.Writer, msgDetails *OutputMessageDetails) {
+func (g *TypeGenerator) WriteObservedStateMessage(out io.Writer, msgDetails *MessageDetails) {
 	msg := msgDetails.Message
 	goType := g.goNameForOutputProtoMessage(msg)
-
-	messageInputOutput := g.MessageType(msg)
 
 	fmt.Fprintf(out, "\n")
 	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotationObservedState, msg.FullName())
 	fmt.Fprintf(out, "type %s struct {\n", goType)
-	for i, field := range msgDetails.OutputFields {
-		if messageInputOutput == MixedInputOutput {
-			if !g.IsOutputOnlyField(field) {
-				continue
-			}
+	for i, field := range msgDetails.AllFields() {
+		if !g.IsOutputOnlyField(field) {
+			continue
 		}
 
 		g.WriteField(out, field, msg, i, true)
@@ -428,27 +438,8 @@ func (g *TypeGenerator) WriteField(out io.Writer, field protoreflect.FieldDescri
 	)
 }
 
-func deduplicateAndSort(messages []protoreflect.MessageDescriptor) []protoreflect.MessageDescriptor {
-	m := make(map[string]protoreflect.MessageDescriptor)
-	for _, msg := range messages {
-		key := string(msg.FullName())
-		m[key] = msg
-	}
-	var keys []string
-	for key := range m {
-		keys = append(keys, key)
-	}
-	sort.Strings(keys)
-
-	messages = []protoreflect.MessageDescriptor{}
-	for _, key := range keys {
-		messages = append(messages, m[key])
-	}
-	return messages
-}
-
-func deduplicateAndSortOutputMessages(messages []*OutputMessageDetails) []*OutputMessageDetails {
-	m := make(map[string]*OutputMessageDetails)
+func deduplicateAndSortMessages(messages []*MessageDetails) []*MessageDetails {
+	m := make(map[string]*MessageDetails)
 	for _, msg := range messages {
 		key := string(msg.Message.FullName())
 		m[key] = msg
@@ -459,11 +450,11 @@ func deduplicateAndSortOutputMessages(messages []*OutputMessageDetails) []*Outpu
 	}
 	sort.Strings(keys)
 
-	messages = []*OutputMessageDetails{}
+	var out []*MessageDetails
 	for _, key := range keys {
-		messages = append(messages, m[key])
+		out = append(out, m[key])
 	}
-	return messages
+	return out
 }
 
 // AsSnakeCase returns the given string converted to lowercase snake_case. If the input is already snake_case, no
@@ -592,34 +583,47 @@ func goFieldName(protoField protoreflect.FieldDescriptor) string {
 	return strings.Join(tokens, "")
 }
 
-// FindInputDependenciesForMessage recursively explores the dependent proto messages of the given message.
-func (g *TypeGenerator) FindInputDependenciesForMessage(message protoreflect.MessageDescriptor, ignoredFields sets.String) ([]protoreflect.MessageDescriptor, error) {
+// FindDependenciesForMessage recursively explores the dependent proto messages of the given message.
+func (g *TypeGenerator) FindDependenciesForMessage(message protoreflect.MessageDescriptor, ignoredFields sets.String, inputOutput InputOutputType) ([]*MessageDetails, error) {
 	msgs := make(map[string]protoreflect.MessageDescriptor)
 	for i := 0; i < message.Fields().Len(); i++ {
 		field := message.Fields().Get(i)
-		g.FindInputDependenciesForField(field, msgs, ignoredFields)
+		if inputOutput == InputOnly && g.IsOutputOnlyField(field) {
+			continue
+		}
+		if inputOutput == OutputOnly && !g.IsOutputOnlyField(field) {
+			continue
+		}
+		g.FindDependenciesForField(field, msgs, ignoredFields, inputOutput)
 	}
 
 	RemoveNotMappedToGoStruct(msgs)
 
-	res := []protoreflect.MessageDescriptor{}
+	var out []*MessageDetails
 	for _, msg := range msgs {
-		res = append(res, msg)
+		out = append(out, &MessageDetails{
+			Message: msg,
+		})
 	}
-	return res, nil
+	return out, nil
 }
 
-// FindInputDependenciesForField recursively explores the dependent proto messages of the given field.
-func (g *TypeGenerator) FindInputDependenciesForField(field protoreflect.FieldDescriptor, deps map[string]protoreflect.MessageDescriptor, ignoredFields sets.String) {
+// FindDependenciesForField recursively explores the dependent proto messages of the given field.
+func (g *TypeGenerator) FindDependenciesForField(field protoreflect.FieldDescriptor, deps map[string]protoreflect.MessageDescriptor, ignoredFields sets.String, inputOutput InputOutputType) {
 	if ignoredFields.Has(string(field.FullName())) {
 		return
 	}
 
-	if g.IsOutputOnlyField(field) {
+	if inputOutput == InputOnly && g.IsOutputOnlyField(field) {
 		return
 	}
 
-	if field.Message() != nil { // no need to find dependencies for proto messages that are not mapped to KRM Go struct
+	if inputOutput == OutputOnly && !g.IsOutputOnlyField(field) {
+		return
+	}
+
+	if field.Message() != nil {
+		// no need to find dependencies for proto messages that are not mapped to KRM Go struct
 		if _, ok := protoMessagesNotMappedToGoStruct[string(field.Message().FullName())]; ok {
 			return
 		}
@@ -628,10 +632,10 @@ func (g *TypeGenerator) FindInputDependenciesForField(field protoreflect.FieldDe
 	if field.IsMap() {
 		mapEntry := field.Message()
 		if keyField := mapEntry.Fields().ByName("key"); keyField != nil {
-			g.FindInputDependenciesForField(keyField, deps, ignoredFields)
+			g.FindDependenciesForField(keyField, deps, ignoredFields, inputOutput)
 		}
 		if valueField := mapEntry.Fields().ByName("value"); valueField != nil {
-			g.FindInputDependenciesForField(valueField, deps, ignoredFields)
+			g.FindDependenciesForField(valueField, deps, ignoredFields, inputOutput)
 		}
 	} else {
 		switch field.Kind() {
@@ -642,7 +646,7 @@ func (g *TypeGenerator) FindInputDependenciesForField(field protoreflect.FieldDe
 				deps[fqn] = msg
 				for i := 0; i < msg.Fields().Len(); i++ {
 					field := msg.Fields().Get(i)
-					g.FindInputDependenciesForField(field, deps, ignoredFields)
+					g.FindDependenciesForField(field, deps, ignoredFields, inputOutput)
 				}
 			}
 		case protoreflect.EnumKind:
@@ -657,83 +661,83 @@ func RemoveNotMappedToGoStruct(msgs map[string]protoreflect.MessageDescriptor) {
 	}
 }
 
-// findOutputsForMessage recursively explores a given message and its dependencies and assembles a
-// list of messages that contain output-only fields and the output-only fields within them.
-func (g *TypeGenerator) findOutputsForMessage(message protoreflect.MessageDescriptor) ([]*OutputMessageDetails, error) {
-	outputDeps := make(map[string]*OutputMessageDetails)
+// // findOutputsForMessage recursively explores a given message and its dependencies and assembles a
+// // list of messages that contain output-only fields and the output-only fields within them.
+// func (g *TypeGenerator) findOutputsForMessage(message protoreflect.MessageDescriptor) ([]*OutputMessageDetails, error) {
+// 	outputDeps := make(map[string]*OutputMessageDetails)
 
-	seen := make(map[string]bool)
-	for i := 0; i < message.Fields().Len(); i++ {
-		field := message.Fields().Get(i)
-		// TODO: explicitly set ignored fields when generating Go types
-		if hasOutput := g.FindOutputsForField(field, seen, outputDeps, nil); hasOutput {
-			fqn := string(message.FullName())
-			if _, ok := outputDeps[fqn]; !ok {
-				outputDeps[fqn] = &OutputMessageDetails{
-					Message: message,
-				}
-			}
-			outputDeps[fqn].OutputFields = append(outputDeps[fqn].OutputFields, field)
-		}
-		// TODO: explicitly set ignored fields when generating Go types
-		g.FindOutputsForField(field, seen, outputDeps, nil)
-	}
+// 	seen := make(map[string]bool)
+// 	for i := 0; i < message.Fields().Len(); i++ {
+// 		field := message.Fields().Get(i)
+// 		// TODO: explicitly set ignored fields when generating Go types
+// 		if hasOutput := g.FindOutputsForField(field, seen, outputDeps, nil); hasOutput {
+// 			fqn := string(message.FullName())
+// 			if _, ok := outputDeps[fqn]; !ok {
+// 				outputDeps[fqn] = &OutputMessageDetails{
+// 					Message: message,
+// 				}
+// 			}
+// 			outputDeps[fqn].OutputFields = append(outputDeps[fqn].OutputFields, field)
+// 		}
+// 		// TODO: explicitly set ignored fields when generating Go types
+// 		g.FindOutputsForField(field, seen, outputDeps, nil)
+// 	}
 
-	res := []*OutputMessageDetails{}
-	for _, msgDetails := range outputDeps {
-		res = append(res, msgDetails)
-	}
-	return res, nil
-}
+// 	res := []*OutputMessageDetails{}
+// 	for _, msgDetails := range outputDeps {
+// 		res = append(res, msgDetails)
+// 	}
+// 	return res, nil
+// }
 
-// FindDependenciesForField recursively explores the dependent proto messages of the given field.
-// It returns true if the current field or any of its nested field is marked as an output field, false otherwise.
-func (g *TypeGenerator) FindOutputsForField(field protoreflect.FieldDescriptor, seen map[string]bool, outputDeps map[string]*OutputMessageDetails, ignoredFields sets.String) bool {
-	if ignoredFields.Has(string(field.FullName())) {
-		return false
-	}
+// // FindDependenciesForField recursively explores the dependent proto messages of the given field.
+// // It returns true if the current field or any of its nested field is marked as an output field, false otherwise.
+// func (g *TypeGenerator) FindOutputsForField(field protoreflect.FieldDescriptor, seen map[string]bool, outputDeps map[string]*OutputMessageDetails, ignoredFields sets.String) bool {
+// 	if ignoredFields.Has(string(field.FullName())) {
+// 		return false
+// 	}
 
-	isOutput := false
-	if g.IsOutputOnlyField(field) {
-		isOutput = true
-	}
+// 	isOutput := false
+// 	if g.IsOutputOnlyField(field) {
+// 		isOutput = true
+// 	}
 
-	if field.Message() != nil {
-		// There is no need to recurse for proto messages that are not mapped to KRM Go struct.
-		if _, ok := protoMessagesNotMappedToGoStruct[string(field.Message().FullName())]; ok {
-			return isOutput
-		}
-	}
+// 	if field.Message() != nil {
+// 		// There is no need to recurse for proto messages that are not mapped to KRM Go struct.
+// 		if _, ok := protoMessagesNotMappedToGoStruct[string(field.Message().FullName())]; ok {
+// 			return isOutput
+// 		}
+// 	}
 
-	if field.IsMap() {
-		// Map outputs are not supported.
-	} else {
-		switch field.Kind() {
-		case protoreflect.MessageKind:
-			msg := field.Message()
-			fqn := string(msg.FullName())
-			if _, ok := seen[fqn]; !ok {
-				seen[fqn] = true
-				for i := 0; i < msg.Fields().Len(); i++ {
-					field := msg.Fields().Get(i)
-					if g.FindOutputsForField(field, seen, outputDeps, ignoredFields) {
-						if _, ok := outputDeps[fqn]; !ok {
-							outputDeps[fqn] = &OutputMessageDetails{
-								Message: msg,
-							}
-						}
-						outputDeps[fqn].OutputFields = append(outputDeps[fqn].OutputFields, field)
-						isOutput = true
-					}
-				}
-			}
-		case protoreflect.EnumKind:
-			// There is no need to recurse for enum messages since they are mapped to Go string.
-		}
-	}
+// 	if field.IsMap() {
+// 		// Map outputs are not supported.
+// 	} else {
+// 		switch field.Kind() {
+// 		case protoreflect.MessageKind:
+// 			msg := field.Message()
+// 			fqn := string(msg.FullName())
+// 			if _, ok := seen[fqn]; !ok {
+// 				seen[fqn] = true
+// 				for i := 0; i < msg.Fields().Len(); i++ {
+// 					field := msg.Fields().Get(i)
+// 					if g.FindOutputsForField(field, seen, outputDeps, ignoredFields) {
+// 						if _, ok := outputDeps[fqn]; !ok {
+// 							outputDeps[fqn] = &OutputMessageDetails{
+// 								Message: msg,
+// 							}
+// 						}
+// 						outputDeps[fqn].OutputFields = append(outputDeps[fqn].OutputFields, field)
+// 						isOutput = true
+// 					}
+// 				}
+// 			}
+// 		case protoreflect.EnumKind:
+// 			// There is no need to recurse for enum messages since they are mapped to Go string.
+// 		}
+// 	}
 
-	return isOutput
-}
+// 	return isOutput
+// }
 
 func IsFieldBehavior(field protoreflect.FieldDescriptor, fieldBehavior annotations.FieldBehavior) bool {
 	d := field.Options()
