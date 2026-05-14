@@ -21,12 +21,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
-	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/reflect/protoregistry"
 	"k8s.io/apimachinery/pkg/util/sets"
-	"k8s.io/klog"
 )
 
 // GenerateTypesFlags represents the flags used in "generate-types" command
@@ -81,31 +78,32 @@ func extractMessagesFromGenerateTypesScript() (sets.String, error) {
 
 // expandToIncludeNestedMessages expands initial target messages to include all nested messages
 func (d *FieldDetector) expandToIncludeNestedMessages(initialTargets sets.String, files *protoregistry.Files) (sets.String, error) {
-	allTargets := sets.NewString()
-	allTargets.Insert(initialTargets.List()...) // make a copy
+	panic("no longer supported")
+	// allTargets := sets.NewString()
+	// allTargets.Insert(initialTargets.List()...) // make a copy
 
-	for name := range initialTargets {
-		desc, err := files.FindDescriptorByName(protoreflect.FullName(name))
-		if err != nil {
-			klog.Warningf("Proto message not found %s: %v", name, err)
-			continue
-		}
+	// for name := range initialTargets {
+	// 	desc, err := files.FindDescriptorByName(protoreflect.FullName(name))
+	// 	if err != nil {
+	// 		klog.Warningf("Proto message not found %s: %v", name, err)
+	// 		continue
+	// 	}
 
-		message, ok := desc.(protoreflect.MessageDescriptor)
-		if !ok {
-			return nil, fmt.Errorf("unexpected descriptor type: %T", desc)
-		}
+	// 	message, ok := desc.(protoreflect.MessageDescriptor)
+	// 	if !ok {
+	// 		return nil, fmt.Errorf("unexpected descriptor type: %T", desc)
+	// 	}
 
-		deps, err := codegen.FindDependenciesForMessage(message, d.opts.IgnoredFields)
-		if err != nil {
-			return nil, fmt.Errorf("failed to find dependencies for message %s: %w", name, err)
-		}
-		for _, dep := range deps {
-			allTargets.Insert(string(dep.FullName()))
-		}
-	}
+	// 	deps, err := codegen.FindDependenciesForMessage(message, d.opts.IgnoredFields)
+	// 	if err != nil {
+	// 		return nil, fmt.Errorf("failed to find dependencies for message %s: %w", name, err)
+	// 	}
+	// 	for _, dep := range deps {
+	// 		allTargets.Insert(string(dep.FullName()))
+	// 	}
+	// }
 
-	return allTargets, nil
+	// return allTargets, nil
 }
 
 func parseGenerateTypesScript(scriptPath string) ([]GenerateTypesFlags, error) {

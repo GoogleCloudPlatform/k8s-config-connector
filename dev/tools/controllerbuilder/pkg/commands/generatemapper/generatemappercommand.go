@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/klog/v2"
 
 	"github.com/spf13/cobra"
 )
@@ -96,10 +97,14 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 }
 
 func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
+	log := klog.FromContext(ctx)
+
 	gv, err := schema.ParseGroupVersion(o.APIVersion)
 	if err != nil {
 		return fmt.Errorf("APIVersion %q is not valid: %w", o.APIVersion, err)
 	}
+
+	log.Info("generating mapper", "groupVersion", gv)
 
 	api, err := protoapi.LoadProto(o.GenerateOptions.ProtoSourcePath)
 	if err != nil {

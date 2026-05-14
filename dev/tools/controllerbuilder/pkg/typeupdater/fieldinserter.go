@@ -18,7 +18,6 @@ import (
 	"bytes"
 	"fmt"
 	"os"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/gocode"
@@ -47,6 +46,8 @@ type FieldInserter struct {
 	// key: fully qualified name of proto message
 	// value: internal representation of the messages to be inserted
 	dependentMessages map[string]newMessage
+
+	*codegen.TypeGenerator
 }
 
 type newField struct {
@@ -100,22 +101,23 @@ func (u *FieldInserter) analyze() error {
 		parent: parent,
 	}
 
-	// find the dependent proto messags of this new field
-	msgs, err := findDependentMsgs(newProtoField, sets.NewString(strings.Split(u.opts.IgnoredFields, ",")...))
-	if err != nil {
-		return err
-	}
-	codegen.RemoveNotMappedToGoStruct(msgs)
-	if err := removeAlreadyGenerated(u.opts.GoPackagePath, u.opts.APIDirectory, msgs); err != nil {
-		return err
-	}
-	u.dependentMessages = make(map[string]newMessage, len(msgs))
-	for _, msg := range msgs {
-		u.dependentMessages[string(msg.FullName())] = newMessage{
-			proto: msg,
-		}
-	}
-	return nil
+	panic("no longer supported")
+	// // find the dependent proto messags of this new field
+	// msgs, err := u.findDependentMsgs(newProtoField, sets.NewString(strings.Split(u.opts.IgnoredFields, ",")...))
+	// if err != nil {
+	// 	return err
+	// }
+	// codegen.RemoveNotMappedToGoStruct(msgs)
+	// if err := removeAlreadyGenerated(u.opts.GoPackagePath, u.opts.APIDirectory, msgs); err != nil {
+	// 	return err
+	// }
+	// u.dependentMessages = make(map[string]newMessage, len(msgs))
+	// for _, msg := range msgs {
+	// 	u.dependentMessages[string(msg.FullName())] = newMessage{
+	// 		proto: msg,
+	// 	}
+	// }
+	// return nil
 }
 
 // findNewField locates the parent message and the new field in the proto file
@@ -154,11 +156,12 @@ func findNewField(pbSourcePath, parentMsgFullName, newFieldName string) (protore
 	return fieldDesc, msgDesc, nil
 }
 
-// findDependentMsgs finds all dependent proto messages for the given field, ignoring specified fields
-func findDependentMsgs(field protoreflect.FieldDescriptor, ignoredProtoFields sets.String) (map[string]protoreflect.MessageDescriptor, error) {
-	deps := make(map[string]protoreflect.MessageDescriptor)
-	codegen.FindDependenciesForField(field, deps, ignoredProtoFields)
-	return deps, nil
+// findInputDependentMsgs finds all dependent proto messages for the given field, ignoring specified fields
+func findInputDependentMsgs(field protoreflect.FieldDescriptor, ignoredProtoFields sets.String) (map[string]protoreflect.MessageDescriptor, error) {
+	panic("no longer supported")
+	// deps := make(map[string]protoreflect.MessageDescriptor)
+	// codegen.FindDependenciesForField(field, deps, ignoredProtoFields)
+	// return deps, nil
 }
 
 // removeAlreadyGenerated removes proto messages that have already been generated (including manually edited)
@@ -186,14 +189,13 @@ func removeAlreadyGenerated(goPackagePath, outputAPIDirectory string, targets ma
 func (u *FieldInserter) generate() error {
 	var buf bytes.Buffer
 	klog.Infof("generate Go code for field %s", u.newField.proto.Name())
-	codegen.WriteField(&buf, u.newField.proto, u.newField.parent, 0, false) // TODO: add support for transitive output fields
+	u.WriteField(&buf, u.newField.proto, u.newField.parent, 0, false) // TODO: add support for transitive output fields
 	u.newField.generatedContent = buf.Bytes()
 
 	for key, msg := range u.dependentMessages {
 		var buf bytes.Buffer
 		klog.Infof("generate Go code for messge %s", msg.proto.FullName())
-		g := &codegen.TypeGenerator{}
-		g.WriteMessage(&buf, msg.proto)
+		u.WriteSpecMessage(&buf, msg.proto)
 		msg.generatedContent = buf.Bytes()
 		u.dependentMessages[key] = msg
 	}

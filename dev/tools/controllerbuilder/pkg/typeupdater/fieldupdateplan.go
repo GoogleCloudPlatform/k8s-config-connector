@@ -86,7 +86,7 @@ func (s *ProtoPackageSyncer) createFieldUpdatePlan(msgInfo messageInfo, fieldInf
 		       fieldInfo.RefType,
 		       jsonName) */
 	} else if fieldInfo.IsIgnored { // for ignored fields, generate only the field declaration without comments
-		goType, err := codegen.GoTypeForField(protoField, false) // TODO: add support for transitive output fields
+		goType, err := s.GoTypeForField(protoField, false) // TODO: add support for transitive output fields
 		if err != nil {
 			return nil, fmt.Errorf("determining Go type for ignored field %s (proto: %s): %w", fieldInfo.GoName, fieldInfo.ProtoName, err)
 		}
@@ -96,7 +96,7 @@ func (s *ProtoPackageSyncer) createFieldUpdatePlan(msgInfo messageInfo, fieldInf
 			goType,
 			jsonName)
 	} else { // for regular fields, generate complete field with comments
-		codegen.WriteField(&buf, protoField, msgDesc, 0, false) // HACK: use fieldIndex=0 to avoid generating a leading blank line on comments
+		s.WriteField(&buf, protoField, msgDesc, 0, false) // HACK: use fieldIndex=0 to avoid generating a leading blank line on comments
 		// TODO: add support for transitive output fields when writing the field
 	}
 

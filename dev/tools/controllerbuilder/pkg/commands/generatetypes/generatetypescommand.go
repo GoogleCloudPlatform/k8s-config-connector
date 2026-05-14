@@ -109,6 +109,8 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		return fmt.Errorf("loading proto: %w", err)
 	}
 
+	log.Info("generating types for groupVersion", "groupVersion", gv)
+
 	goPackage := strings.TrimSuffix(gv.Group, ".cnrm.cloud.google.com") + "/" + gv.Version
 
 	scaffolder := &scaffold.APIScaffolder{
@@ -171,7 +173,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	}
 	typeGenerator = typeGenerator.WithGeneratedFileAnnotation(generatedFileAnnotation)
 
-	if err := typeGenerator.WriteVisitedMessages(); err != nil {
+	if err := typeGenerator.WriteInputMessages(); err != nil {
 		return err
 	}
 

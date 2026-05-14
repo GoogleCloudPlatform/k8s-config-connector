@@ -19,11 +19,12 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/reflect/protoregistry"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"k8s.io/klog"
+	"k8s.io/klog/v2"
 )
 
 type SyncProtoPackageOptions struct {
@@ -42,6 +43,8 @@ type ProtoPackageSyncer struct {
 	// key is the go struct name
 	existingGoMessages map[string]messageInfo
 	api                *protoapi.Proto // Store the loaded proto API
+
+	*codegen.TypeGenerator
 }
 
 func NewProtoPackageSyncer(opts *SyncProtoPackageOptions) *ProtoPackageSyncer {
