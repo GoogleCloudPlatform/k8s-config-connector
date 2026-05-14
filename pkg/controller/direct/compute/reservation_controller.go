@@ -32,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+	"google.golang.org/protobuf/proto"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -174,16 +175,25 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 	desiredPb.Name = direct.LazyPtr(a.id.Reservation)
 
-	// Handle immutable default fields from GCP
-	a.resolveGCPDefaults(desiredPb, a.actual)
-
 	report := &structuredreporting.Diff{
 		Object: updateOp.GetUnstructured(),
 	}
 
+	// Check for immutable field changes during resource acquisition (not guaranteed by KCC webhook)
+	if desiredPb.GetDescription() != a.actual.GetDescription() {
+		return fmt.Errorf("attempting to update immutable field 'description' for Compute Reservation %q", a.id)
+	}
+	if desiredPb.GetSpecificReservationRequired() != a.actual.GetSpecificReservationRequired() {
+		return fmt.Errorf("attempting to update immutable field 'specificReservationRequired' for Compute Reservation %q", a.id)
+	}
+	if !proto.Equal(desiredPb.GetSpecificReservation().GetInstanceProperties(), a.actual.GetSpecificReservation().GetInstanceProperties()) {
+		return fmt.Errorf("attempting to update immutable field 'specificReservation.instanceProperties' for Compute Reservation %q", a.id)
+	}
+	// spec.zone's immutability is handled in reservation_identity.go
+
+	// spec.specificReservation.count is the only mutable field
 	desiredCount := desiredPb.GetSpecificReservation().GetCount()
 	actualCount := a.actual.GetSpecificReservation().GetCount()
-
 	if desiredCount != actualCount {
 		report.AddField("specific_reservation.count", actualCount, desiredCount)
 	}
@@ -272,9 +282,13 @@ func (a *ReservationAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 	}
 	op, err := a.gcpClient.Delete(ctx, req)
 	if err != nil {
+		if direct.IsNotFound(err) {
+			// Return success if not found (assume it was already deleted).
+			log.V(2).Info("skipping delete for non-existent compute Reservation, assuming it was already deleted", "name", a.id.String())
+			return true, nil
+		}
 		return false, fmt.Errorf("deleting compute Reservation %s: %w", a.id.String(), err)
 	}
-	log.Info("successfully deleted compute Reservation", "name", a.id)
 
 	if !op.Done() {
 		err = op.Wait(ctx)
@@ -282,6 +296,7 @@ func (a *ReservationAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 			return false, fmt.Errorf("waiting for deletion of compute Reservation %s: %w", a.id.String(), err)
 		}
 	}
+	log.Info("successfully deleted compute Reservation", "name", a.id)
 
 	return true, nil
 }
@@ -297,28 +312,4 @@ func (a *ReservationAdapter) get(ctx context.Context) (*computepb.Reservation, e
 		return nil, fmt.Errorf("getting ComputeReservation %s: %w", a.id, err)
 	}
 	return resource, nil
-}
-
-func (a *ReservationAdapter) resolveGCPDefaults(desired *computepb.Reservation, actual *computepb.Reservation) {
-	if desired.SelfLink == nil && actual.SelfLink != nil {
-		desired.SelfLink = actual.SelfLink
-	}
-	if desired.CreationTimestamp == nil && actual.CreationTimestamp != nil {
-		desired.CreationTimestamp = actual.CreationTimestamp
-	}
-	if desired.Status == nil && actual.Status != nil {
-		desired.Status = actual.Status
-	}
-	if desired.Kind == nil && actual.Kind != nil {
-		desired.Kind = actual.Kind
-	}
-	if desired.Id == nil && actual.Id != nil {
-		desired.Id = actual.Id
-	}
-	if desired.Commitment == nil && actual.Commitment != nil {
-		desired.Commitment = actual.Commitment
-	}
-	if desired.ResourceStatus == nil && actual.ResourceStatus != nil {
-		desired.ResourceStatus = actual.ResourceStatus
-	}
 }
