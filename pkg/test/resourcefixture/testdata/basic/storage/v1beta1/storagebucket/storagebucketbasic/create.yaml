@@ -19,8 +19,6 @@ metadata:
     label-one: "value-one"
   name: storagebucket-sample-${uniqueId}
 spec:
-  projectRef:
-    external: ${projectId}
   versioning:
     enabled: false
   lifecycleRule:
