@@ -22,6 +22,7 @@ import (
 	. "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 
+	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
@@ -36,6 +37,7 @@ func TestResolveGCPManagedFields(t *testing.T) {
 		resourceExists    bool
 		inputConfig       map[string]interface{}
 		expectedConfig    map[string]interface{}
+		annotations       map[string]string
 	}{
 		{
 			name: "ContainerCluster treats node version as GCP-managed when release channel set",
@@ -530,18 +532,84 @@ func TestResolveGCPManagedFields(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "ContainerCluster does not remove nodeConfig when remove-default-node-pool is true and nodeConfig is applied",
+			kind: "ContainerCluster",
+			lastAppliedConfig: map[string]interface{}{
+				"spec": map[string]interface{}{
+					"nodeConfig": map[string]interface{}{
+						"machineType": "n1-standard-1",
+					},
+				},
+			},
+			resourceExists: true,
+			inputConfig: map[string]interface{}{
+				"nodeConfig": map[string]interface{}{
+					"machineType": "n1-standard-1",
+				},
+			},
+			expectedConfig: map[string]interface{}{
+				"nodeConfig": map[string]interface{}{
+					"machineType": "n1-standard-1",
+				},
+			},
+			annotations: map[string]string{
+				"cnrm.cloud.google.com/remove-default-node-pool": "true",
+			},
+		},
+		{
+			name: "ContainerCluster removes nodeConfig when remove-default-node-pool is true and remove-default-node-pool-allow-node-config is true",
+			kind: "ContainerCluster",
+			lastAppliedConfig: map[string]interface{}{
+				"spec": map[string]interface{}{
+					"nodeConfig": map[string]interface{}{
+						"machineType": "n1-standard-1",
+					},
+				},
+			},
+			resourceExists: true,
+			inputConfig: map[string]interface{}{
+				"nodeConfig": map[string]interface{}{
+					"machineType": "n1-standard-1",
+				},
+			},
+			expectedConfig: map[string]interface{}{},
+			annotations: map[string]string{
+				"cnrm.cloud.google.com/remove-default-node-pool":                  "true",
+				"cnrm.cloud.google.com/remove-default-node-pool-allow-node-config": "true",
+			},
+		},
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			r := resourceSkeleton()
+			if tc.kind == "ContainerCluster" {
+				r.TFResource.Schema["node_config"] = &tfschema.Schema{
+					Type:     tfschema.TypeList,
+					MaxItems: 1,
+					Optional: true,
+					Elem: &tfschema.Resource{
+						Schema: map[string]*tfschema.Schema{
+							"machine_type": {
+								Type:     tfschema.TypeString,
+								Optional: true,
+							},
+						},
+					},
+				}
+			}
 			r.SetGroupVersionKind(schema.GroupVersionKind{Kind: tc.kind})
 			lastAppliedConfigJSON, err := json.Marshal(tc.lastAppliedConfig)
 			if err != nil {
 				t.Fatalf("error marshaling last applied config: %v", err)
 			}
-			r.SetAnnotations(map[string]string{
+			annotations := map[string]string{
 				k8s.LastAppliedConfigurationAnnotation: string(lastAppliedConfigJSON),
-			})
+			}
+			for k, v := range tc.annotations {
+				annotations[k] = v
+			}
+			r.SetAnnotations(annotations)
 			var liveState *terraform.InstanceState
 			if tc.resourceExists {
 				// The content of the instance state does not matter here,

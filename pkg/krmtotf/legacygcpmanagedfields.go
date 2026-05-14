@@ -150,6 +150,7 @@ func resolveContainerNodePoolVersion(r *Resource, config map[string]interface{})
 // resource. So in this case, we need to manually clean up `nodeConfig` field.
 func resolveContainerClusterNodeConfig(r *Resource, liveState *terraform.InstanceState, config map[string]interface{}) error {
 	removeDefaultNodePoolDirective := "remove-default-node-pool"
+	removeDefaultNodePoolAllowNodeConfigDirective := "remove-default-node-pool-allow-node-config"
 	nodeConfigFieldInTFState := "node_config"
 	nodeConfigFieldInKRMConfig := text.SnakeCaseToLowerCamelCase(nodeConfigFieldInTFState)
 
@@ -168,6 +169,15 @@ func resolveContainerClusterNodeConfig(r *Resource, liveState *terraform.Instanc
 		return nil
 	}
 
+	allowKey := k8s.FormatAnnotation(removeDefaultNodePoolAllowNodeConfigDirective)
+	allowVal, _ := k8s.GetAnnotation(allowKey, r)
+	if allowVal == "true" {
+		// If the user has opted-in to allowing nodeConfig to be removed even if it was
+		// applied, then we remove it from the config.
+		unstructured.RemoveNestedField(config, nodeConfigFieldInKRMConfig)
+		return nil
+	}
+
 	if err := removeFromConfigIfNotApplied(r, config, nodeConfigFieldInKRMConfig); err != nil {
 		return fmt.Errorf("error removing field '%v' in config: %w", nodeConfigFieldInKRMConfig, err)
 	}
@@ -176,7 +186,7 @@ func resolveContainerClusterNodeConfig(r *Resource, liveState *terraform.Instanc
 
 func topLevelObjectFieldExistsInStateMap(state map[string]interface{}, field string) (bool, error) {
 	value, ok := state[field]
-	if !ok {
+	if !ok || value == nil {
 		return false, nil
 	}
 	listVal, ok := value.([]interface{})
