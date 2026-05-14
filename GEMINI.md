@@ -26,6 +26,7 @@ Generated files do not need a copyright header (and it's easier not to include o
 # Formatting
 
 Before sending a PR, you MUST run `make fmt` to ensure all code is properly formatted and passes the presubmit validations.
+You MUST also run `go vet ./...` to catch any simple compilation issues (like unused imports or missing variables).
 
 # GCP Projects and Namespaces
 
