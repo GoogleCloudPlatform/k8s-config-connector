@@ -15,6 +15,8 @@
 package compute
 
 import (
+	"sort"
+
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -445,7 +447,13 @@ func ReservationShareSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *p
 	out := &krm.ReservationShareSettings{}
 	out.ShareType = in.ShareType
 	if in.ProjectMap != nil {
-		for k, v := range in.ProjectMap {
+		keys := make([]string, 0, len(in.ProjectMap))
+		for k := range in.ProjectMap {
+			keys = append(keys, k)
+		}
+		sort.Strings(keys)
+		for _, k := range keys {
+			v := in.ProjectMap[k]
 			out.ProjectMap = append(out.ProjectMap, krm.ReservationProjectMap{
 				KeyRef: &refsv1beta1.ProjectRef{
 					External: k,
