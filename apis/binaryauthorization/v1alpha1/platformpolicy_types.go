@@ -26,10 +26,12 @@ var BinaryAuthorizationPlatformPolicyGVK = GroupVersion.WithKind("BinaryAuthoriz
 // +kcc:spec:proto=google.cloud.binaryauthorization.v1.PlatformPolicy
 type BinaryAuthorizationPlatformPolicySpec struct {
 	// The project that this resource belongs to.
+	// +kubebuilder:validation:Required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The platform of this resource.
-	Platform string `json:"platform"`
+	// +kubebuilder:validation:Required
+	Platform *string `json:"platform"`
 
 	// The BinaryAuthorizationPlatformPolicy name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -64,7 +66,7 @@ type BinaryAuthorizationPlatformPolicyObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpbinaryauthorizationplatformpolicy;gcpbinaryauthorizationplatformpolicys
+// +kubebuilder:resource:categories=gcp,shortName=gcpbinaryauthorizationplatformpolicy;gcpbinaryauthorizationplatformpolicies
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"

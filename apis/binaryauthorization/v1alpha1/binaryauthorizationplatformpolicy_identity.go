@@ -67,7 +67,7 @@ func getIdentityFromBinaryAuthorizationPlatformPolicySpec(ctx context.Context, r
 	}
 
 	platform := obj.(*BinaryAuthorizationPlatformPolicy).Spec.Platform
-	if platform == "" {
+	if platform == nil {
 		return nil, fmt.Errorf("platform is required in the spec")
 	}
 
@@ -78,7 +78,7 @@ func getIdentityFromBinaryAuthorizationPlatformPolicySpec(ctx context.Context, r
 
 	identity := &BinaryAuthorizationPlatformPolicyIdentity{
 		Project:  projectID,
-		Platform: platform,
+		Platform: *platform,
 		Policy:   resourceID,
 	}
 	return identity, nil
