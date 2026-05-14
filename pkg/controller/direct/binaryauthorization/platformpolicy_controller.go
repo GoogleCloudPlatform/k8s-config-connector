@@ -215,7 +215,7 @@ func (a *PlatformPolicyAdapter) Export(ctx context.Context) (*unstructured.Unstr
 		return nil, mapCtx.Err()
 	}
 	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
-	obj.Spec.Platform = a.id.Platform
+	obj.Spec.Platform = &a.id.Platform
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
