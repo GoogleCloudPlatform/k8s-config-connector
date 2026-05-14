@@ -1,9 +1,4 @@
-*   Special shout-outs to @acpana, @app/dependabot, @barney-s, @cheftako, @codebot-robot, @eugenenuke, @gemmahou, @justinsb, @katrielt, @ldanielmadariaga, @maqiuyujoyce, @suwandim, @xiaoweim for their contributions to this release.
-
-## New Beta Resources (Direct Reconciler):
-
-*   [`ComputeReservation`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computereservation)
-    *   Manage [Compute Engine Reservations](https://cloud.google.com/compute/docs/instances/reserving-zonal-resources).
+*   Special shout-outs to @acpana, @barney-s, @cheftako, @eugenenuke, @gemmahou, @justinsb, @katrielt, @ldanielmadariaga, @maqiuyujoyce, @suwandim, @xiaoweim for their contributions to this release.
 
 ## New Alpha Resources (Direct Reconciler):
 
