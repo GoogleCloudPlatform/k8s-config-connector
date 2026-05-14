@@ -288,7 +288,9 @@ func Scope_FromProto(mapCtx *direct.MapContext, in *api.Scope) *krm.Scope {
 		return nil
 	}
 	out := &krm.Scope{}
-	out.KubernetesServiceAccount = direct.LazyPtr(in.KubernetesServiceAccount)
+	if in.KubernetesServiceAccount != "" {
+		// TODO: parse namespace:name
+	}
 	out.KubernetesNamespace = direct.LazyPtr(in.KubernetesNamespace)
 	return out
 }
@@ -297,7 +299,9 @@ func Scope_ToProto(mapCtx *direct.MapContext, in *krm.Scope) *api.Scope {
 		return nil
 	}
 	out := &api.Scope{}
-	out.KubernetesServiceAccount = direct.ValueOf(in.KubernetesServiceAccount)
+	if in.KubernetesServiceAccountRef != nil {
+		out.KubernetesServiceAccount = in.KubernetesServiceAccountRef.Namespace + ":" + in.KubernetesServiceAccountRef.Name
+	}
 	out.KubernetesNamespace = direct.ValueOf(in.KubernetesNamespace)
 	return out
 }
