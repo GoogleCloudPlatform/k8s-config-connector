@@ -31,6 +31,7 @@ go run . generate-types \
   --resource ComputeResourcePolicy:ResourcePolicy \
   --resource ComputeSecurityPolicy:SecurityPolicy \
   --resource ComputeSubnetwork:Subnetwork \
+  --resource ComputeNetwork:Network \
   --resource ComputeTargetTcpProxy:TargetTcpProxy \
   --resource ComputeTargetHTTPSProxy:TargetHttpsProxy \
   --resource ComputeNodeTemplate:NodeTemplate \
