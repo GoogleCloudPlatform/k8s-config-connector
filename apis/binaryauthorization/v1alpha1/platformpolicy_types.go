@@ -62,6 +62,11 @@ type BinaryAuthorizationPlatformPolicyStatus struct {
 // BinaryAuthorizationPlatformPolicyObservedState is the state of the BinaryAuthorizationPlatformPolicy resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.binaryauthorization.v1.PlatformPolicy
 type BinaryAuthorizationPlatformPolicyObservedState struct {
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1.PlatformPolicy.name
+	Name *string `json:"name,omitempty"`
+
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1.PlatformPolicy.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient
