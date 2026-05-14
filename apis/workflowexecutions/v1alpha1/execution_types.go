@@ -115,7 +115,7 @@ type WorkflowsExecutionObservedState struct {
 	//  The value is only present if the execution's state is `FAILED`
 	//  or `CANCELLED`.
 	// +kcc:proto:field=google.cloud.workflows.executions.v1.Execution.error
-	Error *Execution_Error `json:"error,omitempty"`
+	Error *Execution_ErrorObservedState `json:"error,omitempty"`
 
 	// Output only. Revision of the workflow this execution is using.
 	// +kcc:proto:field=google.cloud.workflows.executions.v1.Execution.workflow_revision_id
@@ -124,13 +124,13 @@ type WorkflowsExecutionObservedState struct {
 	// Output only. Status tracks the current steps and progress data of this
 	//  execution.
 	// +kcc:proto:field=google.cloud.workflows.executions.v1.Execution.status
-	Status *Execution_Status `json:"status,omitempty"`
+	Status *Execution_StatusObservedState `json:"status,omitempty"`
 
 	// Output only. Error regarding the state of the Execution resource. For
 	//  example, this field will have error details if the execution data is
 	//  unavailable due to revoked KMS key permissions.
 	// +kcc:proto:field=google.cloud.workflows.executions.v1.Execution.state_error
-	StateError *Execution_StateError `json:"stateError,omitempty"`
+	StateError *Execution_StateErrorObservedState `json:"stateError,omitempty"`
 }
 
 // +genclient

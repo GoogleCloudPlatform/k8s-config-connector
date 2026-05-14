@@ -127,7 +127,7 @@ type RedisClusterObservedState struct {
 	//  accessing the cluster.
 	PSCConnections []PSCConnection `json:"pscConnections,omitempty"`
 	// Output only. Additional information about the current state of the cluster.
-	StateInfo *Cluster_StateInfo `json:"stateInfo,omitempty"`
+	StateInfo *Cluster_StateInfoObservedState `json:"stateInfo,omitempty"`
 
 	// Output only. Precise value of redis memory size in GB for the entire
 	//  cluster.

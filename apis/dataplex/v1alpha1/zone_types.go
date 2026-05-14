@@ -103,7 +103,7 @@ type DataplexZoneObservedState struct {
 
 	// Output only. Aggregated status of the underlying assets of the zone.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.asset_status
-	AssetStatus *AssetStatus `json:"assetStatus,omitempty"`
+	AssetStatus *AssetStatusObservedState `json:"assetStatus,omitempty"`
 }
 
 // +genclient

@@ -103,11 +103,11 @@ type DataplexLakeObservedState struct {
 
 	// Output only. Aggregated status of the underlying assets of the lake.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.asset_status
-	AssetStatus *AssetStatus `json:"assetStatus,omitempty"`
+	AssetStatus *AssetStatusObservedState `json:"assetStatus,omitempty"`
 
 	// Output only. Metastore status of the lake.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.metastore_status
-	MetastoreStatus *Lake_MetastoreStatus `json:"metastoreStatus,omitempty"`
+	MetastoreStatus *Lake_MetastoreStatusObservedState `json:"metastoreStatus,omitempty"`
 }
 
 // +genclient

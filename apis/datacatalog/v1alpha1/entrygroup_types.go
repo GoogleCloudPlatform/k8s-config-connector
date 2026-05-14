@@ -80,7 +80,7 @@ type DataCatalogEntryGroupStatus struct {
 type DataCatalogEntryGroupObservedState struct {
 	// Output only. Timestamps of the entry group. Default value is empty.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.EntryGroup.data_catalog_timestamps
-	DataCatalogTimestamps *SystemTimestamps `json:"dataCatalogTimestamps,omitempty"`
+	DataCatalogTimestamps *SystemTimestampsObservedState `json:"dataCatalogTimestamps,omitempty"`
 }
 
 // +genclient
