@@ -29,6 +29,7 @@ go run . generate-types \
     --api-version compute.cnrm.cloud.google.com/v1alpha1 \
     --include-skipped-output \
     --resource ComputeInterconnect:Interconnect \
+    --resource ComputeFutureReservation:google.cloud.compute.v1beta.FutureReservation \
     --resource ComputeNetworkAttachment:NetworkAttachment \
     --resource ComputeNetworkEdgeSecurityService:NetworkEdgeSecurityService
 

@@ -340,11 +340,12 @@ spec:
                               format: int32
                               type: integer
                             acceleratorType:
-                              description: Full or partial URL of the accelerator
-                                type resource to attach to this instance. For example:projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100
+                              description: 'Full or partial URL of the accelerator
+                                type resource to attach to this instance. For example:
+                                projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100
                                 If you are creating an instance template, specify
                                 only the accelerator name. See GPUs on Compute Engine
-                                for a full list of accelerator types.
+                                for a full list of accelerator types.'
                               type: string
                           type: object
                         type: array
@@ -361,8 +362,8 @@ spec:
                             interface:
                               description: Specifies the disk interface to use for
                                 attaching this disk, which is either SCSI or NVME.
-                                The default isSCSI. For performance characteristics
-                                of SCSI over NVMe, seeLocal SSD performance. Check
+                                The default is SCSI. For performance characteristics
+                                of SCSI over NVMe, see Local SSD performance. Check
                                 the Interface enum for the list of possible values.
                               type: string
                           type: object
@@ -519,62 +520,59 @@ spec:
                     description: Output only. [Output only] Status of the Future Reservation
                     properties:
                       amendmentStatus:
-                        description: Output only. [Output Only] The current status
-                          of the requested amendment. Check the AmendmentStatus enum
-                          for the list of possible values.
+                        description: '[Output Only] The current status of the requested
+                          amendment. Check the AmendmentStatus enum for the list of
+                          possible values.'
                         type: string
                       autoCreatedReservations:
-                        description: Output only. Fully qualified urls of the automatically
-                          created reservations at start_time.
+                        description: Fully qualified urls of the automatically created
+                          reservations at start_time.
                         items:
                           type: string
                         type: array
                       existingMatchingUsageInfo:
-                        description: Output only. [Output Only] Represents the existing
-                          matching usage for the future reservation.
+                        description: '[Output Only] Represents the existing matching
+                          usage for the future reservation.'
                         properties:
                           count:
-                            description: Output only. Count to represent min(FR total_count,
-                              matching_reserved_capacity+matching_unreserved_instances)
+                            description: Count to represent min(FR total_count, matching_reserved_capacity+matching_unreserved_instances)
                             format: int64
                             type: integer
                           timestamp:
-                            description: Output only. Timestamp when the matching
-                              usage was calculated
+                            description: Timestamp when the matching usage was calculated
                             type: string
                         type: object
                       fulfilledCount:
-                        description: Output only. This count indicates the fulfilled
-                          capacity so far. This is set during "PROVISIONING" state.
-                          This count also includes capacity delivered as part of existing
-                          matching reservations.
+                        description: This count indicates the fulfilled capacity so
+                          far. This is set during "PROVISIONING" state. This count
+                          also includes capacity delivered as part of existing matching
+                          reservations.
                         format: int64
                         type: integer
                       lastKnownGoodState:
-                        description: Output only. [Output Only] This field represents
-                          the future reservation before an amendment was requested.
-                          If the amendment is declined, the Future Reservation will
-                          be reverted to the last known good state. The last known
-                          good state is not set when updating a future reservation
-                          whose Procurement Status is DRAFTING.
+                        description: '[Output Only] This field represents the future
+                          reservation before an amendment was requested. If the amendment
+                          is declined, the Future Reservation will be reverted to
+                          the last known good state. The last known good state is
+                          not set when updating a future reservation whose Procurement
+                          Status is DRAFTING.'
                         properties:
                           description:
-                            description: Output only. [Output Only] The description
-                              of the FutureReservation before an amendment was requested.
+                            description: '[Output Only] The description of the FutureReservation
+                              before an amendment was requested.'
                             type: string
                           existingMatchingUsageInfo:
-                            description: Output only. [Output Only] Represents the
-                              matching usage for the future reservation before an
-                              amendment was requested.
+                            description: '[Output Only] Represents the matching usage
+                              for the future reservation before an amendment was requested.'
                             properties:
                               count:
-                                description: Output only. Count to represent min(FR
-                                  total_count, matching_reserved_capacity+matching_unreserved_instances)
+                                description: Count to represent min(FR total_count,
+                                  matching_reserved_capacity+matching_unreserved_instances)
                                 format: int64
                                 type: integer
                               timestamp:
-                                description: Output only. Timestamp when the matching
-                                  usage was calculated
+                                description: Timestamp when the matching usage was
+                                  calculated
                                 type: string
                             type: object
                           futureReservationSpecs:
@@ -622,13 +620,13 @@ spec:
                                               format: int32
                                               type: integer
                                             acceleratorType:
-                                              description: Full or partial URL of
+                                              description: 'Full or partial URL of
                                                 the accelerator type resource to attach
-                                                to this instance. For example:projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100
+                                                to this instance. For example: projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100
                                                 If you are creating an instance template,
                                                 specify only the accelerator name.
                                                 See GPUs on Compute Engine for a full
-                                                list of accelerator types.
+                                                list of accelerator types.'
                                               type: string
                                           type: object
                                         type: array
@@ -647,8 +645,8 @@ spec:
                                               description: Specifies the disk interface
                                                 to use for attaching this disk, which
                                                 is either SCSI or NVME. The default
-                                                isSCSI. For performance characteristics
-                                                of SCSI over NVMe, seeLocal SSD performance.
+                                                is SCSI. For performance characteristics
+                                                of SCSI over NVMe, see Local SSD performance.
                                                 Check the Interface enum for the list
                                                 of possible values.
                                               type: string
@@ -715,32 +713,30 @@ spec:
                                 type: object
                             type: object
                           lockTime:
-                            description: Output only. [Output Only] The lock time
-                              of the FutureReservation before an amendment was requested.
+                            description: '[Output Only] The lock time of the FutureReservation
+                              before an amendment was requested.'
                             type: string
                           namePrefix:
-                            description: Output only. [Output Only] The name prefix
-                              of the Future Reservation before an amendment was requested.
+                            description: '[Output Only] The name prefix of the Future
+                              Reservation before an amendment was requested.'
                             type: string
                           procurementStatus:
-                            description: Output only. [Output Only] The status of
-                              the last known good state for the Future Reservation.
-                              Check the ProcurementStatus enum for the list of possible
-                              values.
+                            description: '[Output Only] The status of the last known
+                              good state for the Future Reservation. Check the ProcurementStatus
+                              enum for the list of possible values.'
                             type: string
                         type: object
                       lockTime:
-                        description: Output only. Time when Future Reservation would
-                          become LOCKED, after which no modifications to Future Reservation
-                          will be allowed. Applicable only after the Future Reservation
+                        description: Time when Future Reservation would become LOCKED,
+                          after which no modifications to Future Reservation will
+                          be allowed. Applicable only after the Future Reservation
                           is in the APPROVED state. The lock_time is an RFC3339 string.
                           The procurement_status will transition to PROCURING state
                           at this time.
                         type: string
                       procurementStatus:
-                        description: Output only. Current state of this Future Reservation
-                          Check the ProcurementStatus enum for the list of possible
-                          values.
+                        description: Current state of this Future Reservation Check
+                          the ProcurementStatus enum for the list of possible values.
                         type: string
                       specificSkuProperties:
                         properties:

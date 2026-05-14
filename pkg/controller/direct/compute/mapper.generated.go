@@ -30,145 +30,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AcceleratorConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AcceleratorConfig) *krmcomputev1alpha1.AcceleratorConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krmcomputev1alpha1.AcceleratorConfig{}
-	out.AcceleratorCount = in.AcceleratorCount
-	out.AcceleratorType = in.AcceleratorType
-	return out
-}
-func AcceleratorConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.AcceleratorConfig) *pb.AcceleratorConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AcceleratorConfig{}
-	out.AcceleratorCount = in.AcceleratorCount
-	out.AcceleratorType = in.AcceleratorType
-	return out
-}
-func AllocationAggregateReservation_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationAggregateReservation) *krmcomputev1alpha1.AllocationAggregateReservation {
-	if in == nil {
-		return nil
-	}
-	out := &krmcomputev1alpha1.AllocationAggregateReservation{}
-	// MISSING: InUseResources
-	out.ReservedResources = direct.Slice_FromProto(mapCtx, in.ReservedResources, AllocationAggregateReservationReservedResourceInfo_v1alpha1_FromProto)
-	out.VMFamily = in.VmFamily
-	out.WorkloadType = in.WorkloadType
-	return out
-}
-func AllocationAggregateReservation_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.AllocationAggregateReservation) *pb.AllocationAggregateReservation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AllocationAggregateReservation{}
-	// MISSING: InUseResources
-	out.ReservedResources = direct.Slice_ToProto(mapCtx, in.ReservedResources, AllocationAggregateReservationReservedResourceInfo_v1alpha1_ToProto)
-	out.VmFamily = in.VMFamily
-	out.WorkloadType = in.WorkloadType
-	return out
-}
-func AllocationAggregateReservationObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationAggregateReservation) *krmcomputev1alpha1.AllocationAggregateReservationObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmcomputev1alpha1.AllocationAggregateReservationObservedState{}
-	out.InUseResources = direct.Slice_FromProto(mapCtx, in.InUseResources, AllocationAggregateReservationReservedResourceInfo_v1alpha1_FromProto)
-	// MISSING: ReservedResources
-	// MISSING: VMFamily
-	// MISSING: WorkloadType
-	return out
-}
-func AllocationAggregateReservationObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.AllocationAggregateReservationObservedState) *pb.AllocationAggregateReservation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AllocationAggregateReservation{}
-	out.InUseResources = direct.Slice_ToProto(mapCtx, in.InUseResources, AllocationAggregateReservationReservedResourceInfo_v1alpha1_ToProto)
-	// MISSING: ReservedResources
-	// MISSING: VMFamily
-	// MISSING: WorkloadType
-	return out
-}
-func AllocationAggregateReservationReservedResourceInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationAggregateReservationReservedResourceInfo) *krmcomputev1alpha1.AllocationAggregateReservationReservedResourceInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krmcomputev1alpha1.AllocationAggregateReservationReservedResourceInfo{}
-	out.Accelerator = AllocationAggregateReservationReservedResourceInfoAccelerator_v1alpha1_FromProto(mapCtx, in.GetAccelerator())
-	return out
-}
-func AllocationAggregateReservationReservedResourceInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.AllocationAggregateReservationReservedResourceInfo) *pb.AllocationAggregateReservationReservedResourceInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AllocationAggregateReservationReservedResourceInfo{}
-	out.Accelerator = AllocationAggregateReservationReservedResourceInfoAccelerator_v1alpha1_ToProto(mapCtx, in.Accelerator)
-	return out
-}
-func AllocationAggregateReservationReservedResourceInfoAccelerator_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationAggregateReservationReservedResourceInfoAccelerator) *krmcomputev1alpha1.AllocationAggregateReservationReservedResourceInfoAccelerator {
-	if in == nil {
-		return nil
-	}
-	out := &krmcomputev1alpha1.AllocationAggregateReservationReservedResourceInfoAccelerator{}
-	out.AcceleratorCount = in.AcceleratorCount
-	out.AcceleratorType = in.AcceleratorType
-	return out
-}
-func AllocationAggregateReservationReservedResourceInfoAccelerator_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.AllocationAggregateReservationReservedResourceInfoAccelerator) *pb.AllocationAggregateReservationReservedResourceInfoAccelerator {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AllocationAggregateReservationReservedResourceInfoAccelerator{}
-	out.AcceleratorCount = in.AcceleratorCount
-	out.AcceleratorType = in.AcceleratorType
-	return out
-}
-func AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDisk_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk) *krmcomputev1alpha1.AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDisk {
-	if in == nil {
-		return nil
-	}
-	out := &krmcomputev1alpha1.AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDisk{}
-	out.DiskSizeGB = in.DiskSizeGb
-	out.Interface = in.Interface
-	return out
-}
-func AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDisk_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDisk) *pb.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk{}
-	out.DiskSizeGb = in.DiskSizeGB
-	out.Interface = in.Interface
-	return out
-}
-func AllocationSpecificSkuAllocationReservedInstanceProperties_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationSpecificSKUAllocationReservedInstanceProperties) *krmcomputev1alpha1.AllocationSpecificSkuAllocationReservedInstanceProperties {
-	if in == nil {
-		return nil
-	}
-	out := &krmcomputev1alpha1.AllocationSpecificSkuAllocationReservedInstanceProperties{}
-	out.GuestAccelerators = direct.Slice_FromProto(mapCtx, in.GuestAccelerators, AcceleratorConfig_v1alpha1_FromProto)
-	out.LocalSsds = direct.Slice_FromProto(mapCtx, in.LocalSsds, AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDisk_v1alpha1_FromProto)
-	out.LocationHint = in.LocationHint
-	out.MachineType = in.MachineType
-	out.MinCPUPlatform = in.MinCpuPlatform
-	return out
-}
-func AllocationSpecificSkuAllocationReservedInstanceProperties_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.AllocationSpecificSkuAllocationReservedInstanceProperties) *pb.AllocationSpecificSKUAllocationReservedInstanceProperties {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AllocationSpecificSKUAllocationReservedInstanceProperties{}
-	out.GuestAccelerators = direct.Slice_ToProto(mapCtx, in.GuestAccelerators, AcceleratorConfig_v1alpha1_ToProto)
-	out.LocalSsds = direct.Slice_ToProto(mapCtx, in.LocalSsds, AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDisk_v1alpha1_ToProto)
-	out.LocationHint = in.LocationHint
-	out.MachineType = in.MachineType
-	out.MinCpuPlatform = in.MinCPUPlatform
-	return out
-}
-
 /* found existing non-generated mapping function "ComputeFirewallPolicyRuleSpec_v1beta1_FromProto", skipping
 func ComputeFirewallPolicyRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krm.ComputeFirewallPolicyRuleSpec {
 	if in == nil {
@@ -1600,24 +1461,6 @@ found existing non-generated mapping function "ComputeTargetTCPProxyStatus_v1bet
 		return out
 	}
 */
-func Duration_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Duration) *krmcomputev1alpha1.Duration {
-	if in == nil {
-		return nil
-	}
-	out := &krmcomputev1alpha1.Duration{}
-	out.Nanos = in.Nanos
-	out.Seconds = in.Seconds
-	return out
-}
-func Duration_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.Duration) *pb.Duration {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Duration{}
-	out.Nanos = in.Nanos
-	out.Seconds = in.Seconds
-	return out
-}
 func FirewallPolicyRuleMatcher_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRuleMatcher) *krm.FirewallPolicyRuleMatcher {
 	if in == nil {
 		return nil
@@ -2833,30 +2676,6 @@ func SecurityPolicyRuleRedirectOptions_v1beta1_ToProto(mapCtx *direct.MapContext
 	return out
 }
 
-/* found existing non-generated mapping function "ShareSettings_v1alpha1_FromProto", skipping
-func ShareSettings_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettings) *krmcomputev1alpha1.ShareSettings {
-	if in == nil {
-		return nil
-	}
-	out := &krmcomputev1alpha1.ShareSettings{}
-	// TODO: map type string message for field ProjectMap
-	out.ShareType = in.ShareType
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "ShareSettings_v1alpha1_ToProto", skipping
-func ShareSettings_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ShareSettings) *pb.ShareSettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ShareSettings{}
-	// TODO: map type string message for field ProjectMap
-	out.ShareType = in.ShareType
-	return out
-}
-*/
-
 /* found existing non-generated mapping function "ShareSettings_v1beta1_FromProto", skipping
 func ShareSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettings) *krm.ShareSettings {
 	if in == nil {
@@ -2877,56 +2696,6 @@ func ShareSettings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ShareSetti
 	out := &pb.ShareSettings{}
 	// TODO: map type string message for field ProjectMap
 	out.ShareType = in.ShareType
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "ShareSettingsObservedState_v1alpha1_FromProto", skipping
-func ShareSettingsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettings) *krmcomputev1alpha1.ShareSettingsObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmcomputev1alpha1.ShareSettingsObservedState{}
-	// TODO: map type string message for field ProjectMap
-	out.ShareType = in.ShareType
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "ShareSettingsObservedState_v1alpha1_ToProto", skipping
-func ShareSettingsObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ShareSettingsObservedState) *pb.ShareSettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ShareSettings{}
-	// TODO: map type string message for field ProjectMap
-	out.ShareType = in.ShareType
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "ShareSettingsProjectConfig_v1alpha1_FromProto", skipping
-func ShareSettingsProjectConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettingsProjectConfig) *krmcomputev1alpha1.ShareSettingsProjectConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krmcomputev1alpha1.ShareSettingsProjectConfig{}
-	if in.GetProjectId() != "" {
-		out.ProjectIDRef = &refsv1beta1.ProjectRef{External: in.GetProjectId()}
-	}
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "ShareSettingsProjectConfig_v1alpha1_ToProto", skipping
-func ShareSettingsProjectConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ShareSettingsProjectConfig) *pb.ShareSettingsProjectConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ShareSettingsProjectConfig{}
-	if in.ProjectIDRef != nil {
-		out.ProjectId = &in.ProjectIDRef.External
-	}
 	return out
 }
 */
@@ -2958,22 +2727,6 @@ found existing non-generated mapping function "ShareSettingsProjectConfig_v1beta
 		return out
 	}
 */
-func ShareSettingsProjectConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettingsProjectConfig) *krmcomputev1alpha1.ShareSettingsProjectConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmcomputev1alpha1.ShareSettingsProjectConfigObservedState{}
-	out.ProjectID = in.ProjectId
-	return out
-}
-func ShareSettingsProjectConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ShareSettingsProjectConfigObservedState) *pb.ShareSettingsProjectConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ShareSettingsProjectConfig{}
-	out.ProjectId = in.ProjectID
-	return out
-}
 func SubnetworkLogConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SubnetworkLogConfig) *krm.SubnetworkLogConfig {
 	if in == nil {
 		return nil

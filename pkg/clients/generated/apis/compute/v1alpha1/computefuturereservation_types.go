@@ -101,7 +101,7 @@ type FuturereservationGuestAccelerators struct {
 	// +optional
 	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
 
-	/* Full or partial URL of the accelerator type resource to attach to this instance. For example:projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100 If you are creating an instance template, specify only the accelerator name. See GPUs on Compute Engine for a full list of accelerator types. */
+	/* Full or partial URL of the accelerator type resource to attach to this instance. For example: projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100 If you are creating an instance template, specify only the accelerator name. See GPUs on Compute Engine for a full list of accelerator types. */
 	// +optional
 	AcceleratorType *string `json:"acceleratorType,omitempty"`
 }
@@ -133,7 +133,7 @@ type FuturereservationLocalSsds struct {
 	// +optional
 	DiskSizeGB *int64 `json:"diskSizeGB,omitempty"`
 
-	/* Specifies the disk interface to use for attaching this disk, which is either SCSI or NVME. The default isSCSI. For performance characteristics of SCSI over NVMe, seeLocal SSD performance. Check the Interface enum for the list of possible values. */
+	/* Specifies the disk interface to use for attaching this disk, which is either SCSI or NVME. The default is SCSI. For performance characteristics of SCSI over NVMe, see Local SSD performance. Check the Interface enum for the list of possible values. */
 	// +optional
 	Interface *string `json:"interface,omitempty"`
 }
@@ -300,11 +300,11 @@ type FuturereservationDurationStatus struct {
 }
 
 type FuturereservationExistingMatchingUsageInfoStatus struct {
-	/* Output only. Count to represent min(FR total_count, matching_reserved_capacity+matching_unreserved_instances) */
+	/* Count to represent min(FR total_count, matching_reserved_capacity+matching_unreserved_instances) */
 	// +optional
 	Count *int64 `json:"count,omitempty"`
 
-	/* Output only. Timestamp when the matching usage was calculated */
+	/* Timestamp when the matching usage was calculated */
 	// +optional
 	Timestamp *string `json:"timestamp,omitempty"`
 }
@@ -328,7 +328,7 @@ type FuturereservationGuestAcceleratorsStatus struct {
 	// +optional
 	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
 
-	/* Full or partial URL of the accelerator type resource to attach to this instance. For example:projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100 If you are creating an instance template, specify only the accelerator name. See GPUs on Compute Engine for a full list of accelerator types. */
+	/* Full or partial URL of the accelerator type resource to attach to this instance. For example: projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100 If you are creating an instance template, specify only the accelerator name. See GPUs on Compute Engine for a full list of accelerator types. */
 	// +optional
 	AcceleratorType *string `json:"acceleratorType,omitempty"`
 }
@@ -362,26 +362,26 @@ type FuturereservationInstancePropertiesStatus struct {
 }
 
 type FuturereservationLastKnownGoodStateStatus struct {
-	/* Output only. [Output Only] The description of the FutureReservation before an amendment was requested. */
+	/* [Output Only] The description of the FutureReservation before an amendment was requested. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Output only. [Output Only] Represents the matching usage for the future reservation before an amendment was requested. */
+	/* [Output Only] Represents the matching usage for the future reservation before an amendment was requested. */
 	// +optional
 	ExistingMatchingUsageInfo *FuturereservationExistingMatchingUsageInfoStatus `json:"existingMatchingUsageInfo,omitempty"`
 
 	// +optional
 	FutureReservationSpecs *FuturereservationFutureReservationSpecsStatus `json:"futureReservationSpecs,omitempty"`
 
-	/* Output only. [Output Only] The lock time of the FutureReservation before an amendment was requested. */
+	/* [Output Only] The lock time of the FutureReservation before an amendment was requested. */
 	// +optional
 	LockTime *string `json:"lockTime,omitempty"`
 
-	/* Output only. [Output Only] The name prefix of the Future Reservation before an amendment was requested. */
+	/* [Output Only] The name prefix of the Future Reservation before an amendment was requested. */
 	// +optional
 	NamePrefix *string `json:"namePrefix,omitempty"`
 
-	/* Output only. [Output Only] The status of the last known good state for the Future Reservation. Check the ProcurementStatus enum for the list of possible values. */
+	/* [Output Only] The status of the last known good state for the Future Reservation. Check the ProcurementStatus enum for the list of possible values. */
 	// +optional
 	ProcurementStatus *string `json:"procurementStatus,omitempty"`
 }
@@ -391,7 +391,7 @@ type FuturereservationLocalSsdsStatus struct {
 	// +optional
 	DiskSizeGB *int64 `json:"diskSizeGB,omitempty"`
 
-	/* Specifies the disk interface to use for attaching this disk, which is either SCSI or NVME. The default isSCSI. For performance characteristics of SCSI over NVMe, seeLocal SSD performance. Check the Interface enum for the list of possible values. */
+	/* Specifies the disk interface to use for attaching this disk, which is either SCSI or NVME. The default is SCSI. For performance characteristics of SCSI over NVMe, see Local SSD performance. Check the Interface enum for the list of possible values. */
 	// +optional
 	Interface *string `json:"interface,omitempty"`
 }
@@ -453,31 +453,31 @@ type FuturereservationSpecificSkuPropertiesStatus struct {
 }
 
 type FuturereservationStatusStatus struct {
-	/* Output only. [Output Only] The current status of the requested amendment. Check the AmendmentStatus enum for the list of possible values. */
+	/* [Output Only] The current status of the requested amendment. Check the AmendmentStatus enum for the list of possible values. */
 	// +optional
 	AmendmentStatus *string `json:"amendmentStatus,omitempty"`
 
-	/* Output only. Fully qualified urls of the automatically created reservations at start_time. */
+	/* Fully qualified urls of the automatically created reservations at start_time. */
 	// +optional
 	AutoCreatedReservations []string `json:"autoCreatedReservations,omitempty"`
 
-	/* Output only. [Output Only] Represents the existing matching usage for the future reservation. */
+	/* [Output Only] Represents the existing matching usage for the future reservation. */
 	// +optional
 	ExistingMatchingUsageInfo *FuturereservationExistingMatchingUsageInfoStatus `json:"existingMatchingUsageInfo,omitempty"`
 
-	/* Output only. This count indicates the fulfilled capacity so far. This is set during "PROVISIONING" state. This count also includes capacity delivered as part of existing matching reservations. */
+	/* This count indicates the fulfilled capacity so far. This is set during "PROVISIONING" state. This count also includes capacity delivered as part of existing matching reservations. */
 	// +optional
 	FulfilledCount *int64 `json:"fulfilledCount,omitempty"`
 
-	/* Output only. [Output Only] This field represents the future reservation before an amendment was requested. If the amendment is declined, the Future Reservation will be reverted to the last known good state. The last known good state is not set when updating a future reservation whose Procurement Status is DRAFTING. */
+	/* [Output Only] This field represents the future reservation before an amendment was requested. If the amendment is declined, the Future Reservation will be reverted to the last known good state. The last known good state is not set when updating a future reservation whose Procurement Status is DRAFTING. */
 	// +optional
 	LastKnownGoodState *FuturereservationLastKnownGoodStateStatus `json:"lastKnownGoodState,omitempty"`
 
-	/* Output only. Time when Future Reservation would become LOCKED, after which no modifications to Future Reservation will be allowed. Applicable only after the Future Reservation is in the APPROVED state. The lock_time is an RFC3339 string. The procurement_status will transition to PROCURING state at this time. */
+	/* Time when Future Reservation would become LOCKED, after which no modifications to Future Reservation will be allowed. Applicable only after the Future Reservation is in the APPROVED state. The lock_time is an RFC3339 string. The procurement_status will transition to PROCURING state at this time. */
 	// +optional
 	LockTime *string `json:"lockTime,omitempty"`
 
-	/* Output only. Current state of this Future Reservation Check the ProcurementStatus enum for the list of possible values. */
+	/* Current state of this Future Reservation Check the ProcurementStatus enum for the list of possible values. */
 	// +optional
 	ProcurementStatus *string `json:"procurementStatus,omitempty"`
 
