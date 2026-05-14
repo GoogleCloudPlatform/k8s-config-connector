@@ -25,6 +25,7 @@ import (
 
 	"google.golang.org/grpc"
 
+	"cloud.google.com/go/iam/apiv1/iampb"
 	pb "cloud.google.com/go/notebooks/apiv1/notebookspb"
 	pb_v1beta1 "cloud.google.com/go/notebooks/apiv1beta1/notebookspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
@@ -44,6 +45,7 @@ type MockService struct {
 type NotebookServiceV1 struct {
 	*MockService
 	pb.UnimplementedNotebookServiceServer
+	iampb.UnimplementedIAMPolicyServer
 }
 
 type NotebookServiceV1beta1 struct {
@@ -68,8 +70,8 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterNotebookServiceServer(grpcServer, &NotebookServiceV1{MockService: s})
 	pb_v1beta1.RegisterNotebookServiceServer(grpcServer, &NotebookServiceV1beta1{MockService: s})
+	iampb.RegisterIAMPolicyServer(grpcServer, &NotebookServiceV1{MockService: s})
 }
-
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
