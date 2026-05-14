@@ -20,31 +20,113 @@
 // resource: VertexAIFeaturestore:Featurestore
 // resource: VertexAIMetadataStore:MetadataStore
 // resource: VertexAIDataLabelingJob:DataLabelingJob
+// resource: VertexAIDeploymentResourcePool:DeploymentResourcePool
 
 package v1alpha1
 
 import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 
-// +kcc:proto=google.cloud.aiplatform.v1.ActiveLearningConfig
-type ActiveLearningConfig struct {
-	// Max number of human labeled DataItems.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.max_data_item_count
-	MaxDataItemCount *int64 `json:"maxDataItemCount,omitempty"`
+// +kcc:proto=google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec
+type AutoscalingMetricSpec struct {
+	// Required. The resource metric name.
+	//  Supported metrics:
+	//
+	//  * For Online Prediction:
+	//  * `aiplatform.googleapis.com/prediction/online/accelerator/duty_cycle`
+	//  * `aiplatform.googleapis.com/prediction/online/cpu/utilization`
+	//  * `aiplatform.googleapis.com/prediction/online/request_count`
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec.metric_name
+	MetricName *string `json:"metricName,omitempty"`
 
-	// Max percent of total DataItems for human labeling.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.max_data_item_percentage
-	MaxDataItemPercentage *int32 `json:"maxDataItemPercentage,omitempty"`
+	// The target resource utilization in percentage (1% - 100%) for the given
+	//  metric; once the real usage deviates from the target by a certain
+	//  percentage, the machine replicas change. The default value is 60
+	//  (representing 60%) if not provided.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec.target
+	Target *int32 `json:"target,omitempty"`
 
-	// Active learning data sampling config. For every active learning labeling
-	//  iteration, it will select a batch of data based on the sampling strategy.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.sample_config
-	SampleConfig *SampleConfig `json:"sampleConfig,omitempty"`
+	// Optional. The Cloud Monitoring monitored resource labels as key value pairs
+	//  used for metrics filtering. See Cloud Monitoring Labels
+	//  https://cloud.google.com/monitoring/api/v3/metric-model#generic-label-info
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec.monitored_resource_labels
+	MonitoredResourceLabels map[string]string `json:"monitoredResourceLabels,omitempty"`
+}
 
-	// CMLE training config. For every active learning labeling iteration, system
-	//  will train a machine learning model on CMLE. The trained model will be used
-	//  by data sampling algorithm to select DataItems.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.training_config
-	TrainingConfig *TrainingConfig `json:"trainingConfig,omitempty"`
+// +kcc:proto=google.cloud.aiplatform.v1beta1.DedicatedResources
+type DedicatedResources struct {
+	// Required. Immutable. The specification of a single machine being used.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DedicatedResources.machine_spec
+	MachineSpec *MachineSpec `json:"machineSpec,omitempty"`
+
+	// Required. Immutable. The minimum number of machine replicas that will be
+	//  always deployed on. This value must be greater than or equal to 1.
+	//
+	//  If traffic increases, it may dynamically be deployed onto more replicas,
+	//  and as traffic decreases, some of these extra replicas may be freed.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DedicatedResources.min_replica_count
+	MinReplicaCount *int32 `json:"minReplicaCount,omitempty"`
+
+	// Immutable. The maximum number of replicas that may be deployed on when the
+	//  traffic against it increases. If the requested value is too large, the
+	//  deployment will error, but if deployment succeeds then the ability to scale
+	//  to that many replicas is guaranteed (barring service outages). If traffic
+	//  increases beyond what its replicas at maximum may handle, a portion of the
+	//  traffic will be dropped. If this value is not provided, will use
+	//  [min_replica_count][google.cloud.aiplatform.v1beta1.DedicatedResources.min_replica_count]
+	//  as the default value.
+	//
+	//  The value of this field impacts the charge against Vertex CPU and GPU
+	//  quotas. Specifically, you will be charged for (max_replica_count *
+	//  number of cores in the selected machine type) and (max_replica_count *
+	//  number of GPUs per replica in the selected machine type).
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DedicatedResources.max_replica_count
+	MaxReplicaCount *int32 `json:"maxReplicaCount,omitempty"`
+
+	// Optional. Number of required available replicas for the deployment to
+	//  succeed. This field is only needed when partial deployment/mutation is
+	//  desired. If set, the deploy/mutate operation will succeed once
+	//  available_replica_count reaches required_replica_count, and the rest of
+	//  the replicas will be retried. If not set, the default
+	//  required_replica_count will be min_replica_count.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DedicatedResources.required_replica_count
+	RequiredReplicaCount *int32 `json:"requiredReplicaCount,omitempty"`
+
+	// Immutable. The metric specifications that overrides a resource
+	//  utilization metric (CPU utilization, accelerator's duty cycle, and so on)
+	//  target value (default to 60 if not set). At most one entry is allowed per
+	//  metric.
+	//
+	//  If
+	//  [machine_spec.accelerator_count][google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_count]
+	//  is above 0, the autoscaling will be based on both CPU utilization and
+	//  accelerator's duty cycle metrics and scale up when either metrics exceeds
+	//  its target value while scale down if both metrics are under their target
+	//  value. The default target value is 60 for both metrics.
+	//
+	//  If
+	//  [machine_spec.accelerator_count][google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_count]
+	//  is 0, the autoscaling will be based on CPU utilization metric only with
+	//  default target value 60 if not explicitly set.
+	//
+	//  For example, in the case of Online Prediction, if you want to override
+	//  target CPU utilization to 80, you should set
+	//  [autoscaling_metric_specs.metric_name][google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec.metric_name]
+	//  to `aiplatform.googleapis.com/prediction/online/cpu/utilization` and
+	//  [autoscaling_metric_specs.target][google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec.target]
+	//  to `80`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DedicatedResources.autoscaling_metric_specs
+	AutoscalingMetricSpecs []AutoscalingMetricSpec `json:"autoscalingMetricSpecs,omitempty"`
+
+	// Optional. If true, schedule the deployment workload on [spot
+	//  VMs](https://cloud.google.com/kubernetes-engine/docs/concepts/spot-vms).
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DedicatedResources.spot
+	Spot *bool `json:"spot,omitempty"`
+
+	// Optional. Immutable. If set, use DWS resource to schedule the deployment
+	//  workload. reference:
+	//  (https://cloud.google.com/blog/products/compute/introducing-dynamic-workload-scheduler)
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DedicatedResources.flex_start
+	FlexStart *FlexStart `json:"flexStart,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.Featurestore.OnlineServingConfig
@@ -86,6 +168,76 @@ type Featurestore_OnlineServingConfig_Scaling struct {
 	CPUUtilizationTarget *int32 `json:"cpuUtilizationTarget,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1beta1.FlexStart
+type FlexStart struct {
+	// The max duration of the deployment is max_runtime_duration. The
+	//  deployment will be terminated after the duration. The
+	//  max_runtime_duration can be set up to 7 days.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FlexStart.max_runtime_duration
+	MaxRuntimeDuration *string `json:"maxRuntimeDuration,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.MachineSpec
+type MachineSpec struct {
+	// Immutable. The type of the machine.
+	//
+	//  See the [list of machine types supported for
+	//  prediction](https://cloud.google.com/vertex-ai/docs/predictions/configure-compute#machine-types)
+	//
+	//  See the [list of machine types supported for custom
+	//  training](https://cloud.google.com/vertex-ai/docs/training/configure-compute#machine-types).
+	//
+	//  For [DeployedModel][google.cloud.aiplatform.v1beta1.DeployedModel] this
+	//  field is optional, and the default value is `n1-standard-2`. For
+	//  [BatchPredictionJob][google.cloud.aiplatform.v1beta1.BatchPredictionJob] or
+	//  as part of [WorkerPoolSpec][google.cloud.aiplatform.v1beta1.WorkerPoolSpec]
+	//  this field is required.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MachineSpec.machine_type
+	MachineType *string `json:"machineType,omitempty"`
+
+	// Immutable. The type of accelerator(s) that may be attached to the machine
+	//  as per
+	//  [accelerator_count][google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_count].
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_type
+	AcceleratorType *string `json:"acceleratorType,omitempty"`
+
+	// The number of accelerators to attach to the machine.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_count
+	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
+
+	// Optional. Immutable. The Nvidia GPU partition size.
+	//
+	//  When specified, the requested accelerators will be partitioned into
+	//  smaller GPU partitions. For example, if the request is for 8 units of
+	//  NVIDIA A100 GPUs, and gpu_partition_size="1g.10gb", the service will
+	//  create 8 * 7 = 56 partitioned MIG instances.
+	//
+	//  The partition size must be a value supported by the requested accelerator.
+	//  Refer to
+	//  [Nvidia GPU
+	//  Partitioning](https://cloud.google.com/kubernetes-engine/docs/how-to/gpus-multi#multi-instance_gpu_partitions)
+	//  for the available partition sizes.
+	//
+	//  If set, the accelerator_count should be set to 1.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MachineSpec.gpu_partition_size
+	GpuPartitionSize *string `json:"gpuPartitionSize,omitempty"`
+
+	// Immutable. The topology of the TPUs. Corresponds to the TPU topologies
+	//  available from GKE. (Example: tpu_topology: "2x2x1").
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MachineSpec.tpu_topology
+	TpuTopology *string `json:"tpuTopology,omitempty"`
+
+	// Optional. Immutable. The number of nodes per replica for multihost GPU
+	//  deployments.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MachineSpec.multihost_gpu_node_count
+	MultihostGpuNodeCount *int32 `json:"multihostGpuNodeCount,omitempty"`
+
+	// Optional. Immutable. Configuration controlling how this resource pool
+	//  consumes reservation.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MachineSpec.reservation_affinity
+	ReservationAffinity *ReservationAffinity `json:"reservationAffinity,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1beta1.MetadataStore.DataplexConfig
 type MetadataStore_DataplexConfig struct {
 	// Optional. Whether or not Data Lineage synchronization is enabled for
@@ -99,6 +251,47 @@ type MetadataStore_MetadataStoreState struct {
 	// The disk utilization of the MetadataStore in bytes.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetadataStore.MetadataStoreState.disk_utilization_bytes
 	DiskUtilizationBytes *int64 `json:"diskUtilizationBytes,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ReservationAffinity
+type ReservationAffinity struct {
+	// Required. Specifies the reservation affinity type.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ReservationAffinity.reservation_affinity_type
+	ReservationAffinityType *string `json:"reservationAffinityType,omitempty"`
+
+	// Optional. Corresponds to the label key of a reservation resource. To target
+	//  a SPECIFIC_RESERVATION by name, use
+	//  `compute.googleapis.com/reservation-name` as the key and specify the name
+	//  of your reservation as its value.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ReservationAffinity.key
+	Key *string `json:"key,omitempty"`
+
+	// Optional. Corresponds to the label values of a reservation resource. This
+	//  must be the full resource name of the reservation.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ReservationAffinity.values
+	Values []string `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.ActiveLearningConfig
+type ActiveLearningConfig struct {
+	// Max number of human labeled DataItems.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.max_data_item_count
+	MaxDataItemCount *int64 `json:"maxDataItemCount,omitempty"`
+
+	// Max percent of total DataItems for human labeling.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.max_data_item_percentage
+	MaxDataItemPercentage *int32 `json:"maxDataItemPercentage,omitempty"`
+
+	// Active learning data sampling config. For every active learning labeling
+	//  iteration, it will select a batch of data based on the sampling strategy.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.sample_config
+	SampleConfig *SampleConfig `json:"sampleConfig,omitempty"`
+
+	// CMLE training config. For every active learning labeling iteration, system
+	//  will train a machine learning model on CMLE. The trained model will be used
+	//  by data sampling algorithm to select DataItems.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.training_config
+	TrainingConfig *TrainingConfig `json:"trainingConfig,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.SampleConfig
