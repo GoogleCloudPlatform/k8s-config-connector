@@ -11,6 +11,9 @@ Note: The ContainerCluster annotation can include
 <a href="/config-connector/docs/concepts/resources#object_metadata">directives</a>.
 If set to <code>true</code>, the <code>remove-default-node-pool</code> directive
 removes the default node pool created during cluster creation.
+If set to <code>true</code>, the <code>remove-default-node-pool-allow-node-config</code> directive
+allows the <code>nodeConfig</code> field to be programmatically removed from the desired
+configuration once the default node pool has been removed, avoiding unresolvable diffs.
 
 Note: In <code>maintenancePolicy</code>, specify <code>startTime</code> and
 <code>endTime</code> in RFC3339 Zulu date format. Specify <code>recurrence</code>

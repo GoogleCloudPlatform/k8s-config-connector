@@ -575,7 +575,7 @@ func TestResolveGCPManagedFields(t *testing.T) {
 			},
 			expectedConfig: map[string]interface{}{},
 			annotations: map[string]string{
-				"cnrm.cloud.google.com/remove-default-node-pool":                  "true",
+				"cnrm.cloud.google.com/remove-default-node-pool":                   "true",
 				"cnrm.cloud.google.com/remove-default-node-pool-allow-node-config": "true",
 			},
 		},
