@@ -55,7 +55,7 @@ type BucketAutoclass struct {
 type BucketCondition struct {
 	/* Minimum age of an object in days to satisfy this condition. */
 	// +optional
-	Age *int32 `json:"age,omitempty"`
+	Age *int64 `json:"age,omitempty"`
 
 	/* Creation date of an object in RFC 3339 (e.g. 2017-06-13) to satisfy this condition. */
 	// +optional
@@ -67,11 +67,12 @@ type BucketCondition struct {
 
 	/* Number of days elapsed since the user-specified timestamp set on an object. */
 	// +optional
-	DaysSinceCustomTime *int32 `json:"daysSinceCustomTime,omitempty"`
+	DaysSinceCustomTime *int64 `json:"daysSinceCustomTime,omitempty"`
 
-	/* Number of days elapsed since the noncurrent timestamp of an object. This condition is relevant only for versioned objects. */
+	/* Number of days elapsed since the noncurrent timestamp of an object. This
+	condition is relevant only for versioned objects. */
 	// +optional
-	DaysSinceNoncurrentTime *int32 `json:"daysSinceNoncurrentTime,omitempty"`
+	DaysSinceNoncurrentTime *int64 `json:"daysSinceNoncurrentTime,omitempty"`
 
 	/* One or more matching name prefixes to satisfy this condition. */
 	// +optional
@@ -91,7 +92,7 @@ type BucketCondition struct {
 
 	/* Relevant only for versioned objects. The number of newer versions of an object to satisfy this condition. */
 	// +optional
-	NumNewerVersions *int32 `json:"numNewerVersions,omitempty"`
+	NumNewerVersions *int64 `json:"numNewerVersions,omitempty"`
 
 	/* Match to live and/or archived objects. Unversioned buckets have only live objects. Supported values include: "LIVE", "ARCHIVED", "ANY". */
 	// +optional
@@ -101,7 +102,7 @@ type BucketCondition struct {
 type BucketCors struct {
 	/* The value, in seconds, to return in the Access-Control-Max-Age header used in preflight responses. */
 	// +optional
-	MaxAgeSeconds *int32 `json:"maxAgeSeconds,omitempty"`
+	MaxAgeSeconds *int64 `json:"maxAgeSeconds,omitempty"`
 
 	/* The list of HTTP methods on which to include CORS response headers, (GET, OPTIONS, POST, etc) Note: "*" is permitted in the list of methods, and means "any method". */
 	// +optional
@@ -122,7 +123,6 @@ type BucketCustomPlacementConfig struct {
 }
 
 type BucketEncryption struct {
-	/* A reference to the KMS Crypto Key that will be used to encrypt objects inserted into this bucket. */
 	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
 }
 
@@ -155,7 +155,7 @@ type BucketRetentionPolicy struct {
 type BucketSoftDeletePolicy struct {
 	/* The duration in seconds that soft-deleted objects in the bucket will be retained and cannot be permanently deleted. Default value is 604800. */
 	// +optional
-	RetentionDurationSeconds *int32 `json:"retentionDurationSeconds,omitempty"`
+	RetentionDurationSeconds *int64 `json:"retentionDurationSeconds,omitempty"`
 }
 
 type BucketVersioning struct {
@@ -178,7 +178,8 @@ type StorageBucketSpec struct {
 	// +optional
 	Autoclass *BucketAutoclass `json:"autoclass,omitempty"`
 
-	/* DEPRECATED. Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field. Enables Bucket PolicyOnly access to a bucket. */
+	/* DEPRECATED. Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field.
+	Enables Bucket PolicyOnly access to a bucket. */
 	// +optional
 	BucketPolicyOnly *bool `json:"bucketPolicyOnly,omitempty"`
 
@@ -209,10 +210,6 @@ type StorageBucketSpec struct {
 	/* The bucket's Access & Storage Logs configuration. */
 	// +optional
 	Logging *BucketLogging `json:"logging,omitempty"`
-
-	/* The project that this resource belongs to. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* Prevents public access to a bucket. */
 	// +optional
@@ -264,22 +261,18 @@ type BucketSoftDeletePolicyStatus struct {
 
 	/* The duration in seconds that soft-deleted objects in the bucket will be retained and cannot be permanently deleted. Default value is 604800. */
 	// +optional
-	RetentionDurationSeconds *int32 `json:"retentionDurationSeconds,omitempty"`
+	RetentionDurationSeconds *int64 `json:"retentionDurationSeconds,omitempty"`
 }
 
 type StorageBucketStatus struct {
 	/* Conditions represent the latest available observations of the
 	   StorageBucket's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the StorageBucket resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
-
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
 	ObservedState *BucketObservedStateStatus `json:"observedState,omitempty"`
 
