@@ -22,12 +22,70 @@
 
 package v1beta1
 
-// +kcc:proto=google.cloud.bigquery.reservation.v1.Reservation.ReplicationStatus
-type Reservation_ReplicationStatus struct {
+// +kcc:proto=google.cloud.bigquery.reservation.v1.Reservation.Autoscale
+type Reservation_Autoscale struct {
+
+	// Number of slots to be scaled when needed.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.Autoscale.max_slots
+	MaxSlots *int64 `json:"maxSlots,omitempty"`
 }
 
-// +kcc:proto=google.protobuf.Any
-type Any struct {
+// +kcc:observedstate:proto=google.cloud.bigquery.reservation.v1.Reservation
+type ReservationObservedState struct {
+	// Output only. Creation time of the reservation.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.creation_time
+	CreationTime *string `json:"creationTime,omitempty"`
+
+	// Output only. Last update time of the reservation.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The current location of the reservation's primary replica.
+	//  This field is only set for reservations using the managed disaster recovery
+	//  feature.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.primary_location
+	PrimaryLocation *string `json:"primaryLocation,omitempty"`
+
+	// Output only. The location where the reservation was originally created.
+	//  This is set only during the failover reservation's creation. All billing
+	//  charges for the failover reservation will be applied to this location.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.original_primary_location
+	OriginalPrimaryLocation *string `json:"originalPrimaryLocation,omitempty"`
+
+	// Output only. The Disaster Recovery(DR) replication status of the
+	//  reservation. This is only available for the primary replicas of DR/failover
+	//  reservations and provides information about the both the staleness of the
+	//  secondary and the last error encountered while trying to replicate changes
+	//  from the primary to the secondary. If this field is blank, it means that
+	//  the reservation is either not a DR reservation or the reservation is a DR
+	//  secondary or that any replication operations on the reservation have
+	//  succeeded.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.replication_status
+	ReplicationStatus *Reservation_ReplicationStatusObservedState `json:"replicationStatus,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.bigquery.reservation.v1.Reservation.ReplicationStatus
+type Reservation_ReplicationStatusObservedState struct {
+	// Output only. The last error encountered while trying to replicate changes
+	//  from the primary to the secondary. This field is only available if the
+	//  replication has not succeeded since.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.ReplicationStatus.error
+	Error *StatusObservedState `json:"error,omitempty"`
+
+	// Output only. The time at which the last error was encountered while
+	//  trying to replicate changes from the primary to the secondary. This field
+	//  is only available if the replication has not succeeded since.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.ReplicationStatus.last_error_time
+	LastErrorTime *string `json:"lastErrorTime,omitempty"`
+
+	// Output only. A timestamp corresponding to the last change on the primary
+	//  that was successfully replicated to the secondary.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.ReplicationStatus.last_replication_time
+	LastReplicationTime *string `json:"lastReplicationTime,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.protobuf.Any
+type AnyObservedState struct {
 	// A URL/resource name that uniquely identifies the type of the serialized
 	//  protocol buffer message. This string must contain at least
 	//  one "/" character. The last segment of the URL's path must represent
@@ -61,44 +119,4 @@ type Any struct {
 	// Must be a valid serialized protocol buffer of the above specified type.
 	// +kcc:proto:field=google.protobuf.Any.value
 	Value []byte `json:"value,omitempty"`
-}
-
-// +kcc:proto=google.rpc.Status
-type Status struct {
-	// The status code, which should be an enum value of
-	//  [google.rpc.Code][google.rpc.Code].
-	// +kcc:proto:field=google.rpc.Status.code
-	Code *int32 `json:"code,omitempty"`
-
-	// A developer-facing error message, which should be in English. Any
-	//  user-facing error message should be localized and sent in the
-	//  [google.rpc.Status.details][google.rpc.Status.details] field, or localized
-	//  by the client.
-	// +kcc:proto:field=google.rpc.Status.message
-	Message *string `json:"message,omitempty"`
-
-	// A list of messages that carry the error details.  There is a common set of
-	//  message types for APIs to use.
-	// +kcc:proto:field=google.rpc.Status.details
-	Details []Any `json:"details,omitempty"`
-}
-
-// +kcc:observedstate:proto=google.cloud.bigquery.reservation.v1.Reservation.ReplicationStatus
-type Reservation_ReplicationStatusObservedState struct {
-	// Output only. The last error encountered while trying to replicate changes
-	//  from the primary to the secondary. This field is only available if the
-	//  replication has not succeeded since.
-	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.ReplicationStatus.error
-	Error *Status `json:"error,omitempty"`
-
-	// Output only. The time at which the last error was encountered while
-	//  trying to replicate changes from the primary to the secondary. This field
-	//  is only available if the replication has not succeeded since.
-	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.ReplicationStatus.last_error_time
-	LastErrorTime *string `json:"lastErrorTime,omitempty"`
-
-	// Output only. A timestamp corresponding to the last change on the primary
-	//  that was successfully replicated to the secondary.
-	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.ReplicationStatus.last_replication_time
-	LastReplicationTime *string `json:"lastReplicationTime,omitempty"`
 }

@@ -80,6 +80,10 @@ type VMImage struct {
 	ImageFamily *string `json:"imageFamily,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.notebooks.v1.ContainerImage
+type ContainerImageObservedState struct {
+}
+
 /* found existing non-generated go type with proto tag "google.cloud.notebooks.v1.Environment", skipping
 
 // +kcc:observedstate:proto=google.cloud.notebooks.v1.Environment
@@ -95,3 +99,7 @@ type EnvironmentObservedState struct {
 	CreateTime *string `json:"createTime,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.notebooks.v1.VmImage
+type VMImageObservedState struct {
+}

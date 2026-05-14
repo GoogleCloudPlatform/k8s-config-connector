@@ -171,6 +171,30 @@ func Attributes_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Attributes) *
 	out.BusinessOwners = direct.Slice_ToProto(mapCtx, in.BusinessOwners, ContactInfo_v1beta1_ToProto)
 	return out
 }
+func AttributesObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Attributes) *krm.AttributesObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AttributesObservedState{}
+	// MISSING: Criticality
+	// MISSING: Environment
+	// MISSING: DeveloperOwners
+	// MISSING: OperatorOwners
+	// MISSING: BusinessOwners
+	return out
+}
+func AttributesObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AttributesObservedState) *pb.Attributes {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Attributes{}
+	// MISSING: Criticality
+	// MISSING: Environment
+	// MISSING: DeveloperOwners
+	// MISSING: OperatorOwners
+	// MISSING: BusinessOwners
+	return out
+}
 func ContactInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ContactInfo) *krm.ContactInfo {
 	if in == nil {
 		return nil
@@ -189,6 +213,24 @@ func ContactInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ContactInfo)
 	out.Email = direct.ValueOf(in.Email)
 	return out
 }
+func ContactInfoObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ContactInfo) *krm.ContactInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContactInfoObservedState{}
+	// MISSING: DisplayName
+	// MISSING: Email
+	return out
+}
+func ContactInfoObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ContactInfoObservedState) *pb.ContactInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContactInfo{}
+	// MISSING: DisplayName
+	// MISSING: Email
+	return out
+}
 func Criticality_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Criticality) *krm.Criticality {
 	if in == nil {
 		return nil
@@ -203,6 +245,22 @@ func Criticality_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Criticality)
 	}
 	out := &pb.Criticality{}
 	out.Type = direct.Enum_ToProto[pb.Criticality_Type](mapCtx, in.Type)
+	return out
+}
+func CriticalityObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Criticality) *krm.CriticalityObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CriticalityObservedState{}
+	// MISSING: Type
+	return out
+}
+func CriticalityObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CriticalityObservedState) *pb.Criticality {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Criticality{}
+	// MISSING: Type
 	return out
 }
 func Environment_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.Environment {
@@ -221,6 +279,22 @@ func Environment_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Environment)
 	out.Type = direct.Enum_ToProto[pb.Environment_Type](mapCtx, in.Type)
 	return out
 }
+func EnvironmentObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.EnvironmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EnvironmentObservedState{}
+	// MISSING: Type
+	return out
+}
+func EnvironmentObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.EnvironmentObservedState) *pb.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment{}
+	// MISSING: Type
+	return out
+}
 func Scope_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Scope) *krm.Scope {
 	if in == nil {
 		return nil
@@ -235,6 +309,22 @@ func Scope_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Scope) *pb.Scope {
 	}
 	out := &pb.Scope{}
 	out.Type = direct.Enum_ToProto[pb.Scope_Type](mapCtx, in.Type)
+	return out
+}
+func ScopeObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Scope) *krm.ScopeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ScopeObservedState{}
+	// MISSING: Type
+	return out
+}
+func ScopeObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ScopeObservedState) *pb.Scope {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Scope{}
+	// MISSING: Type
 	return out
 }
 func ServiceProperties_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceProperties) *krmapphubv1alpha1.ServiceProperties {
@@ -309,26 +399,6 @@ func ServiceReferenceObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, i
 	out.Uri = direct.ValueOf(in.URI)
 	return out
 }
-func WorkloadProperties_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadProperties) *krmapphubv1alpha1.WorkloadProperties {
-	if in == nil {
-		return nil
-	}
-	out := &krmapphubv1alpha1.WorkloadProperties{}
-	// MISSING: GcpProject
-	// MISSING: Location
-	// MISSING: Zone
-	return out
-}
-func WorkloadProperties_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.WorkloadProperties) *pb.WorkloadProperties {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WorkloadProperties{}
-	// MISSING: GcpProject
-	// MISSING: Location
-	// MISSING: Zone
-	return out
-}
 func WorkloadPropertiesObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadProperties) *krmapphubv1alpha1.WorkloadPropertiesObservedState {
 	if in == nil {
 		return nil
@@ -347,22 +417,6 @@ func WorkloadPropertiesObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext,
 	out.GcpProject = direct.ValueOf(in.GcpProject)
 	out.Location = direct.ValueOf(in.Location)
 	out.Zone = direct.ValueOf(in.Zone)
-	return out
-}
-func WorkloadReference_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadReference) *krmapphubv1alpha1.WorkloadReference {
-	if in == nil {
-		return nil
-	}
-	out := &krmapphubv1alpha1.WorkloadReference{}
-	// MISSING: URI
-	return out
-}
-func WorkloadReference_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.WorkloadReference) *pb.WorkloadReference {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WorkloadReference{}
-	// MISSING: URI
 	return out
 }
 func WorkloadReferenceObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadReference) *krmapphubv1alpha1.WorkloadReferenceObservedState {

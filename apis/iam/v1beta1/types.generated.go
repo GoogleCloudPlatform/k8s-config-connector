@@ -20,3 +20,7 @@
 // resource: IAMServiceAccountKey:ServiceAccountKey
 
 package v1beta1
+
+// +kcc:observedstate:proto=google.iam.admin.v1.ServiceAccountKey
+type ServiceAccountKeyObservedState struct {
+}

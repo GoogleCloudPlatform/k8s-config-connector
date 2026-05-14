@@ -177,8 +177,6 @@ type InstanceGroupAutoscalingPolicyConfig struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.AutoscalingPolicy", skipping
-
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.AutoscalingPolicy
 type AutoscalingPolicyObservedState struct {
 	// Output only. The "resource name" of the autoscaling policy, as described
@@ -194,4 +192,15 @@ type AutoscalingPolicyObservedState struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.AutoscalingPolicy.name
 	Name *string `json:"name,omitempty"`
 }
-*/
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.BasicAutoscalingAlgorithm
+type BasicAutoscalingAlgorithmObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.BasicYarnAutoscalingConfig
+type BasicYarnAutoscalingConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceGroupAutoscalingPolicyConfig
+type InstanceGroupAutoscalingPolicyConfigObservedState struct {
+}

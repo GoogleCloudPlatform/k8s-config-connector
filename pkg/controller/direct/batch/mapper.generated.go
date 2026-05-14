@@ -29,6 +29,34 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AllocationPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy) *krm.AllocationPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllocationPolicyObservedState{}
+	// MISSING: Location
+	// MISSING: Instances
+	// MISSING: ServiceAccount
+	// MISSING: Labels
+	// MISSING: Network
+	// MISSING: Placement
+	// MISSING: Tags
+	return out
+}
+func AllocationPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicyObservedState) *pb.AllocationPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationPolicy{}
+	// MISSING: Location
+	// MISSING: Instances
+	// MISSING: ServiceAccount
+	// MISSING: Labels
+	// MISSING: Network
+	// MISSING: Placement
+	// MISSING: Tags
+	return out
+}
 func AllocationPolicy_Accelerator_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_Accelerator) *krm.AllocationPolicy_Accelerator {
 	if in == nil {
 		return nil
@@ -49,6 +77,28 @@ func AllocationPolicy_Accelerator_ToProto(mapCtx *direct.MapContext, in *krm.All
 	out.Count = direct.ValueOf(in.Count)
 	out.InstallGpuDrivers = direct.ValueOf(in.InstallGpuDrivers)
 	out.DriverVersion = direct.ValueOf(in.DriverVersion)
+	return out
+}
+func AllocationPolicy_AcceleratorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_Accelerator) *krm.AllocationPolicy_AcceleratorObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllocationPolicy_AcceleratorObservedState{}
+	// MISSING: Type
+	// MISSING: Count
+	// MISSING: InstallGpuDrivers
+	// MISSING: DriverVersion
+	return out
+}
+func AllocationPolicy_AcceleratorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_AcceleratorObservedState) *pb.AllocationPolicy_Accelerator {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationPolicy_Accelerator{}
+	// MISSING: Type
+	// MISSING: Count
+	// MISSING: InstallGpuDrivers
+	// MISSING: DriverVersion
 	return out
 }
 func AllocationPolicy_AttachedDisk_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_AttachedDisk) *krm.AllocationPolicy_AttachedDisk {
@@ -81,11 +131,55 @@ func AllocationPolicy_AttachedDisk_ExistingDisk_ToProto(mapCtx *direct.MapContex
 	}
 	return &pb.AllocationPolicy_AttachedDisk_ExistingDisk{ExistingDisk: *in}
 }
+func AllocationPolicy_AttachedDiskObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_AttachedDisk) *krm.AllocationPolicy_AttachedDiskObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllocationPolicy_AttachedDiskObservedState{}
+	// MISSING: NewDisk
+	// MISSING: ExistingDisk
+	// MISSING: DeviceName
+	return out
+}
+func AllocationPolicy_AttachedDiskObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_AttachedDiskObservedState) *pb.AllocationPolicy_AttachedDisk {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationPolicy_AttachedDisk{}
+	// MISSING: NewDisk
+	// MISSING: ExistingDisk
+	// MISSING: DeviceName
+	return out
+}
 func AllocationPolicy_Disk_Snapshot_ToProto(mapCtx *direct.MapContext, in *string) *pb.AllocationPolicy_Disk_Snapshot {
 	if in == nil {
 		return nil
 	}
 	return &pb.AllocationPolicy_Disk_Snapshot{Snapshot: *in}
+}
+func AllocationPolicy_DiskObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_Disk) *krm.AllocationPolicy_DiskObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllocationPolicy_DiskObservedState{}
+	// MISSING: Image
+	// MISSING: Snapshot
+	// MISSING: Type
+	// MISSING: SizeGB
+	// MISSING: DiskInterface
+	return out
+}
+func AllocationPolicy_DiskObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_DiskObservedState) *pb.AllocationPolicy_Disk {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationPolicy_Disk{}
+	// MISSING: Image
+	// MISSING: Snapshot
+	// MISSING: Type
+	// MISSING: SizeGB
+	// MISSING: DiskInterface
+	return out
 }
 func AllocationPolicy_InstancePolicy_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_InstancePolicy) *krm.AllocationPolicy_InstancePolicy {
 	if in == nil {
@@ -113,6 +207,34 @@ func AllocationPolicy_InstancePolicy_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.BootDisk = AllocationPolicy_Disk_ToProto(mapCtx, in.BootDisk)
 	out.Disks = direct.Slice_ToProto(mapCtx, in.Disks, AllocationPolicy_AttachedDisk_ToProto)
 	out.Reservation = direct.ValueOf(in.Reservation)
+	return out
+}
+func AllocationPolicy_InstancePolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_InstancePolicy) *krm.AllocationPolicy_InstancePolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllocationPolicy_InstancePolicyObservedState{}
+	// MISSING: MachineType
+	// MISSING: MinCPUPlatform
+	// MISSING: ProvisioningModel
+	// MISSING: Accelerators
+	// MISSING: BootDisk
+	// MISSING: Disks
+	// MISSING: Reservation
+	return out
+}
+func AllocationPolicy_InstancePolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_InstancePolicyObservedState) *pb.AllocationPolicy_InstancePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationPolicy_InstancePolicy{}
+	// MISSING: MachineType
+	// MISSING: MinCPUPlatform
+	// MISSING: ProvisioningModel
+	// MISSING: Accelerators
+	// MISSING: BootDisk
+	// MISSING: Disks
+	// MISSING: Reservation
 	return out
 }
 func AllocationPolicy_InstancePolicyOrTemplate_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_InstancePolicyOrTemplate) *krm.AllocationPolicy_InstancePolicyOrTemplate {
@@ -149,6 +271,30 @@ func AllocationPolicy_InstancePolicyOrTemplate_InstanceTemplate_ToProto(mapCtx *
 	}
 	return &pb.AllocationPolicy_InstancePolicyOrTemplate_InstanceTemplate{InstanceTemplate: *in}
 }
+func AllocationPolicy_InstancePolicyOrTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_InstancePolicyOrTemplate) *krm.AllocationPolicy_InstancePolicyOrTemplateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllocationPolicy_InstancePolicyOrTemplateObservedState{}
+	// MISSING: Policy
+	// MISSING: InstanceTemplate
+	// MISSING: InstallGpuDrivers
+	// MISSING: InstallOpsAgent
+	// MISSING: BlockProjectSSHKeys
+	return out
+}
+func AllocationPolicy_InstancePolicyOrTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_InstancePolicyOrTemplateObservedState) *pb.AllocationPolicy_InstancePolicyOrTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationPolicy_InstancePolicyOrTemplate{}
+	// MISSING: Policy
+	// MISSING: InstanceTemplate
+	// MISSING: InstallGpuDrivers
+	// MISSING: InstallOpsAgent
+	// MISSING: BlockProjectSSHKeys
+	return out
+}
 func AllocationPolicy_LocationPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_LocationPolicy) *krm.AllocationPolicy_LocationPolicy {
 	if in == nil {
 		return nil
@@ -163,6 +309,22 @@ func AllocationPolicy_LocationPolicy_ToProto(mapCtx *direct.MapContext, in *krm.
 	}
 	out := &pb.AllocationPolicy_LocationPolicy{}
 	out.AllowedLocations = in.AllowedLocations
+	return out
+}
+func AllocationPolicy_LocationPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_LocationPolicy) *krm.AllocationPolicy_LocationPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllocationPolicy_LocationPolicyObservedState{}
+	// MISSING: AllowedLocations
+	return out
+}
+func AllocationPolicy_LocationPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_LocationPolicyObservedState) *pb.AllocationPolicy_LocationPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationPolicy_LocationPolicy{}
+	// MISSING: AllowedLocations
 	return out
 }
 func AllocationPolicy_NetworkInterface_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_NetworkInterface) *krm.AllocationPolicy_NetworkInterface {
@@ -193,6 +355,26 @@ func AllocationPolicy_NetworkInterface_ToProto(mapCtx *direct.MapContext, in *kr
 	out.NoExternalIpAddress = direct.ValueOf(in.NoExternalIPAddress)
 	return out
 }
+func AllocationPolicy_NetworkInterfaceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_NetworkInterface) *krm.AllocationPolicy_NetworkInterfaceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllocationPolicy_NetworkInterfaceObservedState{}
+	// MISSING: Network
+	// MISSING: Subnetwork
+	// MISSING: NoExternalIPAddress
+	return out
+}
+func AllocationPolicy_NetworkInterfaceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_NetworkInterfaceObservedState) *pb.AllocationPolicy_NetworkInterface {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationPolicy_NetworkInterface{}
+	// MISSING: Network
+	// MISSING: Subnetwork
+	// MISSING: NoExternalIPAddress
+	return out
+}
 func AllocationPolicy_NetworkPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_NetworkPolicy) *krm.AllocationPolicy_NetworkPolicy {
 	if in == nil {
 		return nil
@@ -207,6 +389,22 @@ func AllocationPolicy_NetworkPolicy_ToProto(mapCtx *direct.MapContext, in *krm.A
 	}
 	out := &pb.AllocationPolicy_NetworkPolicy{}
 	out.NetworkInterfaces = direct.Slice_ToProto(mapCtx, in.NetworkInterfaces, AllocationPolicy_NetworkInterface_ToProto)
+	return out
+}
+func AllocationPolicy_NetworkPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_NetworkPolicy) *krm.AllocationPolicy_NetworkPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllocationPolicy_NetworkPolicyObservedState{}
+	// MISSING: NetworkInterfaces
+	return out
+}
+func AllocationPolicy_NetworkPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_NetworkPolicyObservedState) *pb.AllocationPolicy_NetworkPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationPolicy_NetworkPolicy{}
+	// MISSING: NetworkInterfaces
 	return out
 }
 func AllocationPolicy_PlacementPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_PlacementPolicy) *krm.AllocationPolicy_PlacementPolicy {
@@ -227,6 +425,24 @@ func AllocationPolicy_PlacementPolicy_ToProto(mapCtx *direct.MapContext, in *krm
 	out.MaxDistance = direct.ValueOf(in.MaxDistance)
 	return out
 }
+func AllocationPolicy_PlacementPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_PlacementPolicy) *krm.AllocationPolicy_PlacementPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllocationPolicy_PlacementPolicyObservedState{}
+	// MISSING: Collocation
+	// MISSING: MaxDistance
+	return out
+}
+func AllocationPolicy_PlacementPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_PlacementPolicyObservedState) *pb.AllocationPolicy_PlacementPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationPolicy_PlacementPolicy{}
+	// MISSING: Collocation
+	// MISSING: MaxDistance
+	return out
+}
 func BatchJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.BatchJobObservedState {
 	if in == nil {
 		return nil
@@ -236,7 +452,7 @@ func BatchJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.TaskGroups = direct.Slice_FromProto(mapCtx, in.TaskGroups, TaskGroupObservedState_FromProto)
 	// MISSING: Labels
-	out.Status = JobStatus_FromProto(mapCtx, in.GetStatus())
+	out.Status = JobStatusObservedState_FromProto(mapCtx, in.GetStatus())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
@@ -250,7 +466,7 @@ func BatchJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BatchJobOb
 	out.Uid = direct.ValueOf(in.Uid)
 	out.TaskGroups = direct.Slice_ToProto(mapCtx, in.TaskGroups, TaskGroupObservedState_ToProto)
 	// MISSING: Labels
-	out.Status = JobStatus_ToProto(mapCtx, in.Status)
+	out.Status = JobStatusObservedState_ToProto(mapCtx, in.Status)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
@@ -339,6 +555,26 @@ func ComputeResource_ToProto(mapCtx *direct.MapContext, in *krm.ComputeResource)
 	// (near miss): "BootDiskMIB" vs "BootDiskMiB"
 	return out
 }
+func ComputeResourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ComputeResource) *krm.ComputeResourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeResourceObservedState{}
+	// MISSING: CPUMilli
+	// MISSING: MemoryMIB
+	// MISSING: BootDiskMIB
+	return out
+}
+func ComputeResourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ComputeResourceObservedState) *pb.ComputeResource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ComputeResource{}
+	// MISSING: CPUMilli
+	// MISSING: MemoryMIB
+	// MISSING: BootDiskMIB
+	return out
+}
 func Environment_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.Environment {
 	if in == nil {
 		return nil
@@ -359,6 +595,26 @@ func Environment_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Env
 	out.EncryptedVariables = Environment_KMSEnvMap_ToProto(mapCtx, in.EncryptedVariables)
 	return out
 }
+func EnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.EnvironmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EnvironmentObservedState{}
+	// MISSING: Variables
+	// MISSING: SecretVariables
+	// MISSING: EncryptedVariables
+	return out
+}
+func EnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EnvironmentObservedState) *pb.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment{}
+	// MISSING: Variables
+	// MISSING: SecretVariables
+	// MISSING: EncryptedVariables
+	return out
+}
 func Environment_KMSEnvMap_FromProto(mapCtx *direct.MapContext, in *pb.Environment_KMSEnvMap) *krm.Environment_KMSEnvMap {
 	if in == nil {
 		return nil
@@ -377,6 +633,24 @@ func Environment_KMSEnvMap_ToProto(mapCtx *direct.MapContext, in *krm.Environmen
 	out.CipherText = direct.ValueOf(in.CipherText)
 	return out
 }
+func Environment_KMSEnvMapObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment_KMSEnvMap) *krm.Environment_KMSEnvMapObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Environment_KMSEnvMapObservedState{}
+	// MISSING: KeyName
+	// MISSING: CipherText
+	return out
+}
+func Environment_KMSEnvMapObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Environment_KMSEnvMapObservedState) *pb.Environment_KMSEnvMap {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_KMSEnvMap{}
+	// MISSING: KeyName
+	// MISSING: CipherText
+	return out
+}
 func GCS_FromProto(mapCtx *direct.MapContext, in *pb.GCS) *krm.GCS {
 	if in == nil {
 		return nil
@@ -391,6 +665,22 @@ func GCS_ToProto(mapCtx *direct.MapContext, in *krm.GCS) *pb.GCS {
 	}
 	out := &pb.GCS{}
 	out.RemotePath = direct.ValueOf(in.RemotePath)
+	return out
+}
+func GCSObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GCS) *krm.GCSObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GCSObservedState{}
+	// MISSING: RemotePath
+	return out
+}
+func GCSObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GCSObservedState) *pb.GCS {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GCS{}
+	// MISSING: RemotePath
 	return out
 }
 func JobNotification_FromProto(mapCtx *direct.MapContext, in *pb.JobNotification) *krm.JobNotification {
@@ -415,6 +705,24 @@ func JobNotification_ToProto(mapCtx *direct.MapContext, in *krm.JobNotification)
 	out.Message = JobNotification_Message_ToProto(mapCtx, in.Message)
 	return out
 }
+func JobNotificationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.JobNotification) *krm.JobNotificationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.JobNotificationObservedState{}
+	// MISSING: PubsubTopic
+	// MISSING: Message
+	return out
+}
+func JobNotificationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.JobNotificationObservedState) *pb.JobNotification {
+	if in == nil {
+		return nil
+	}
+	out := &pb.JobNotification{}
+	// MISSING: PubsubTopic
+	// MISSING: Message
+	return out
+}
 func JobNotification_Message_FromProto(mapCtx *direct.MapContext, in *pb.JobNotification_Message) *krm.JobNotification_Message {
 	if in == nil {
 		return nil
@@ -435,40 +743,60 @@ func JobNotification_Message_ToProto(mapCtx *direct.MapContext, in *krm.JobNotif
 	out.NewTaskState = direct.Enum_ToProto[pb.TaskStatus_State](mapCtx, in.NewTaskState)
 	return out
 }
-func JobStatus_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus) *krm.JobStatus {
+func JobNotification_MessageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.JobNotification_Message) *krm.JobNotification_MessageObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.JobStatus{}
+	out := &krm.JobNotification_MessageObservedState{}
+	// MISSING: Type
+	// MISSING: NewJobState
+	// MISSING: NewTaskState
+	return out
+}
+func JobNotification_MessageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.JobNotification_MessageObservedState) *pb.JobNotification_Message {
+	if in == nil {
+		return nil
+	}
+	out := &pb.JobNotification_Message{}
+	// MISSING: Type
+	// MISSING: NewJobState
+	// MISSING: NewTaskState
+	return out
+}
+func JobStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus) *krm.JobStatusObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.JobStatusObservedState{}
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.StatusEvents = direct.Slice_FromProto(mapCtx, in.StatusEvents, StatusEvent_FromProto)
+	out.StatusEvents = direct.Slice_FromProto(mapCtx, in.StatusEvents, StatusEventObservedState_FromProto)
 	// MISSING: TaskGroups
 	out.RunDuration = direct.StringDuration_FromProto(mapCtx, in.GetRunDuration())
 	return out
 }
-func JobStatus_ToProto(mapCtx *direct.MapContext, in *krm.JobStatus) *pb.JobStatus {
+func JobStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.JobStatusObservedState) *pb.JobStatus {
 	if in == nil {
 		return nil
 	}
 	out := &pb.JobStatus{}
 	out.State = direct.Enum_ToProto[pb.JobStatus_State](mapCtx, in.State)
-	out.StatusEvents = direct.Slice_ToProto(mapCtx, in.StatusEvents, StatusEvent_ToProto)
+	out.StatusEvents = direct.Slice_ToProto(mapCtx, in.StatusEvents, StatusEventObservedState_ToProto)
 	// MISSING: TaskGroups
 	out.RunDuration = direct.StringDuration_ToProto(mapCtx, in.RunDuration)
 	return out
 }
-func JobStatus_InstanceStatus_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus_InstanceStatus) *krm.JobStatus_InstanceStatus {
+func JobStatus_InstanceStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus_InstanceStatus) *krm.JobStatus_InstanceStatusObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.JobStatus_InstanceStatus{}
+	out := &krm.JobStatus_InstanceStatusObservedState{}
 	out.MachineType = direct.LazyPtr(in.GetMachineType())
 	out.ProvisioningModel = direct.Enum_FromProto(mapCtx, in.GetProvisioningModel())
 	out.TaskPack = direct.LazyPtr(in.GetTaskPack())
-	out.BootDisk = AllocationPolicy_Disk_FromProto(mapCtx, in.GetBootDisk())
+	out.BootDisk = AllocationPolicy_DiskObservedState_FromProto(mapCtx, in.GetBootDisk())
 	return out
 }
-func JobStatus_InstanceStatus_ToProto(mapCtx *direct.MapContext, in *krm.JobStatus_InstanceStatus) *pb.JobStatus_InstanceStatus {
+func JobStatus_InstanceStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.JobStatus_InstanceStatusObservedState) *pb.JobStatus_InstanceStatus {
 	if in == nil {
 		return nil
 	}
@@ -476,25 +804,25 @@ func JobStatus_InstanceStatus_ToProto(mapCtx *direct.MapContext, in *krm.JobStat
 	out.MachineType = direct.ValueOf(in.MachineType)
 	out.ProvisioningModel = direct.Enum_ToProto[pb.AllocationPolicy_ProvisioningModel](mapCtx, in.ProvisioningModel)
 	out.TaskPack = direct.ValueOf(in.TaskPack)
-	out.BootDisk = AllocationPolicy_Disk_ToProto(mapCtx, in.BootDisk)
+	out.BootDisk = AllocationPolicy_DiskObservedState_ToProto(mapCtx, in.BootDisk)
 	return out
 }
-func JobStatus_TaskGroupStatus_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus_TaskGroupStatus) *krm.JobStatus_TaskGroupStatus {
+func JobStatus_TaskGroupStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus_TaskGroupStatus) *krm.JobStatus_TaskGroupStatusObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.JobStatus_TaskGroupStatus{}
+	out := &krm.JobStatus_TaskGroupStatusObservedState{}
 	out.Counts = in.Counts
-	out.Instances = direct.Slice_FromProto(mapCtx, in.Instances, JobStatus_InstanceStatus_FromProto)
+	out.Instances = direct.Slice_FromProto(mapCtx, in.Instances, JobStatus_InstanceStatusObservedState_FromProto)
 	return out
 }
-func JobStatus_TaskGroupStatus_ToProto(mapCtx *direct.MapContext, in *krm.JobStatus_TaskGroupStatus) *pb.JobStatus_TaskGroupStatus {
+func JobStatus_TaskGroupStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.JobStatus_TaskGroupStatusObservedState) *pb.JobStatus_TaskGroupStatus {
 	if in == nil {
 		return nil
 	}
 	out := &pb.JobStatus_TaskGroupStatus{}
 	out.Counts = in.Counts
-	out.Instances = direct.Slice_ToProto(mapCtx, in.Instances, JobStatus_InstanceStatus_ToProto)
+	out.Instances = direct.Slice_ToProto(mapCtx, in.Instances, JobStatus_InstanceStatusObservedState_ToProto)
 	return out
 }
 func LifecyclePolicy_FromProto(mapCtx *direct.MapContext, in *pb.LifecyclePolicy) *krm.LifecyclePolicy {
@@ -515,6 +843,24 @@ func LifecyclePolicy_ToProto(mapCtx *direct.MapContext, in *krm.LifecyclePolicy)
 	out.ActionCondition = LifecyclePolicy_ActionCondition_ToProto(mapCtx, in.ActionCondition)
 	return out
 }
+func LifecyclePolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.LifecyclePolicy) *krm.LifecyclePolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LifecyclePolicyObservedState{}
+	// MISSING: Action
+	// MISSING: ActionCondition
+	return out
+}
+func LifecyclePolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LifecyclePolicyObservedState) *pb.LifecyclePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LifecyclePolicy{}
+	// MISSING: Action
+	// MISSING: ActionCondition
+	return out
+}
 func LifecyclePolicy_ActionCondition_FromProto(mapCtx *direct.MapContext, in *pb.LifecyclePolicy_ActionCondition) *krm.LifecyclePolicy_ActionCondition {
 	if in == nil {
 		return nil
@@ -529,6 +875,22 @@ func LifecyclePolicy_ActionCondition_ToProto(mapCtx *direct.MapContext, in *krm.
 	}
 	out := &pb.LifecyclePolicy_ActionCondition{}
 	out.ExitCodes = in.ExitCodes
+	return out
+}
+func LifecyclePolicy_ActionConditionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.LifecyclePolicy_ActionCondition) *krm.LifecyclePolicy_ActionConditionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LifecyclePolicy_ActionConditionObservedState{}
+	// MISSING: ExitCodes
+	return out
+}
+func LifecyclePolicy_ActionConditionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LifecyclePolicy_ActionConditionObservedState) *pb.LifecyclePolicy_ActionCondition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LifecyclePolicy_ActionCondition{}
+	// MISSING: ExitCodes
 	return out
 }
 func LogsPolicy_FromProto(mapCtx *direct.MapContext, in *pb.LogsPolicy) *krm.LogsPolicy {
@@ -551,6 +913,26 @@ func LogsPolicy_ToProto(mapCtx *direct.MapContext, in *krm.LogsPolicy) *pb.LogsP
 	out.CloudLoggingOption = LogsPolicy_CloudLoggingOption_ToProto(mapCtx, in.CloudLoggingOption)
 	return out
 }
+func LogsPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.LogsPolicy) *krm.LogsPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LogsPolicyObservedState{}
+	// MISSING: Destination
+	// MISSING: LogsPath
+	// MISSING: CloudLoggingOption
+	return out
+}
+func LogsPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LogsPolicyObservedState) *pb.LogsPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LogsPolicy{}
+	// MISSING: Destination
+	// MISSING: LogsPath
+	// MISSING: CloudLoggingOption
+	return out
+}
 func LogsPolicy_CloudLoggingOption_FromProto(mapCtx *direct.MapContext, in *pb.LogsPolicy_CloudLoggingOption) *krm.LogsPolicy_CloudLoggingOption {
 	if in == nil {
 		return nil
@@ -565,6 +947,22 @@ func LogsPolicy_CloudLoggingOption_ToProto(mapCtx *direct.MapContext, in *krm.Lo
 	}
 	out := &pb.LogsPolicy_CloudLoggingOption{}
 	out.UseGenericTaskMonitoredResource = direct.ValueOf(in.UseGenericTaskMonitoredResource)
+	return out
+}
+func LogsPolicy_CloudLoggingOptionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.LogsPolicy_CloudLoggingOption) *krm.LogsPolicy_CloudLoggingOptionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LogsPolicy_CloudLoggingOptionObservedState{}
+	// MISSING: UseGenericTaskMonitoredResource
+	return out
+}
+func LogsPolicy_CloudLoggingOptionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LogsPolicy_CloudLoggingOptionObservedState) *pb.LogsPolicy_CloudLoggingOption {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LogsPolicy_CloudLoggingOption{}
+	// MISSING: UseGenericTaskMonitoredResource
 	return out
 }
 func Nfs_FromProto(mapCtx *direct.MapContext, in *pb.NFS) *krm.Nfs {
@@ -583,6 +981,24 @@ func Nfs_ToProto(mapCtx *direct.MapContext, in *krm.Nfs) *pb.NFS {
 	out := &pb.NFS{}
 	out.Server = direct.ValueOf(in.Server)
 	out.RemotePath = direct.ValueOf(in.RemotePath)
+	return out
+}
+func NfsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NFS) *krm.NfsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NfsObservedState{}
+	// MISSING: Server
+	// MISSING: RemotePath
+	return out
+}
+func NfsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NfsObservedState) *pb.NFS {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NFS{}
+	// MISSING: Server
+	// MISSING: RemotePath
 	return out
 }
 func Runnable_FromProto(mapCtx *direct.MapContext, in *pb.Runnable) *krm.Runnable {
@@ -625,6 +1041,40 @@ func Runnable_ToProto(mapCtx *direct.MapContext, in *krm.Runnable) *pb.Runnable 
 	out.Labels = in.Labels
 	return out
 }
+func RunnableObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Runnable) *krm.RunnableObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RunnableObservedState{}
+	// MISSING: Container
+	// MISSING: Script
+	// MISSING: Barrier
+	// MISSING: DisplayName
+	// MISSING: IgnoreExitStatus
+	// MISSING: Background
+	// MISSING: AlwaysRun
+	// MISSING: Environment
+	// MISSING: Timeout
+	// MISSING: Labels
+	return out
+}
+func RunnableObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RunnableObservedState) *pb.Runnable {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Runnable{}
+	// MISSING: Container
+	// MISSING: Script
+	// MISSING: Barrier
+	// MISSING: DisplayName
+	// MISSING: IgnoreExitStatus
+	// MISSING: Background
+	// MISSING: AlwaysRun
+	// MISSING: Environment
+	// MISSING: Timeout
+	// MISSING: Labels
+	return out
+}
 func Runnable_Barrier_FromProto(mapCtx *direct.MapContext, in *pb.Runnable_Barrier) *krm.Runnable_Barrier {
 	if in == nil {
 		return nil
@@ -639,6 +1089,22 @@ func Runnable_Barrier_ToProto(mapCtx *direct.MapContext, in *krm.Runnable_Barrie
 	}
 	out := &pb.Runnable_Barrier{}
 	out.Name = direct.ValueOf(in.Name)
+	return out
+}
+func Runnable_BarrierObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Runnable_Barrier) *krm.Runnable_BarrierObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Runnable_BarrierObservedState{}
+	// MISSING: Name
+	return out
+}
+func Runnable_BarrierObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Runnable_BarrierObservedState) *pb.Runnable_Barrier {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Runnable_Barrier{}
+	// MISSING: Name
 	return out
 }
 func Runnable_Container_FromProto(mapCtx *direct.MapContext, in *pb.Runnable_Container) *krm.Runnable_Container {
@@ -671,6 +1137,38 @@ func Runnable_Container_ToProto(mapCtx *direct.MapContext, in *krm.Runnable_Cont
 	out.Username = direct.ValueOf(in.Username)
 	// MISSING: Password
 	out.EnableImageStreaming = direct.ValueOf(in.EnableImageStreaming)
+	return out
+}
+func Runnable_ContainerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Runnable_Container) *krm.Runnable_ContainerObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Runnable_ContainerObservedState{}
+	// MISSING: ImageURI
+	// MISSING: Commands
+	// MISSING: Entrypoint
+	// MISSING: Volumes
+	// MISSING: Options
+	// MISSING: BlockExternalNetwork
+	// MISSING: Username
+	// MISSING: Password
+	// MISSING: EnableImageStreaming
+	return out
+}
+func Runnable_ContainerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Runnable_ContainerObservedState) *pb.Runnable_Container {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Runnable_Container{}
+	// MISSING: ImageURI
+	// MISSING: Commands
+	// MISSING: Entrypoint
+	// MISSING: Volumes
+	// MISSING: Options
+	// MISSING: BlockExternalNetwork
+	// MISSING: Username
+	// MISSING: Password
+	// MISSING: EnableImageStreaming
 	return out
 }
 func Runnable_Script_FromProto(mapCtx *direct.MapContext, in *pb.Runnable_Script) *krm.Runnable_Script {
@@ -707,6 +1205,24 @@ func Runnable_Script_Text_ToProto(mapCtx *direct.MapContext, in *string) *pb.Run
 	}
 	return &pb.Runnable_Script_Text{Text: *in}
 }
+func Runnable_ScriptObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Runnable_Script) *krm.Runnable_ScriptObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Runnable_ScriptObservedState{}
+	// MISSING: Path
+	// MISSING: Text
+	return out
+}
+func Runnable_ScriptObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Runnable_ScriptObservedState) *pb.Runnable_Script {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Runnable_Script{}
+	// MISSING: Path
+	// MISSING: Text
+	return out
+}
 func ServiceAccount_FromProto(mapCtx *direct.MapContext, in *pb.ServiceAccount) *krm.ServiceAccount {
 	if in == nil {
 		return nil
@@ -723,6 +1239,24 @@ func ServiceAccount_ToProto(mapCtx *direct.MapContext, in *krm.ServiceAccount) *
 	out := &pb.ServiceAccount{}
 	out.Email = direct.ValueOf(in.Email)
 	out.Scopes = in.Scopes
+	return out
+}
+func ServiceAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceAccount) *krm.ServiceAccountObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceAccountObservedState{}
+	// MISSING: Email
+	// MISSING: Scopes
+	return out
+}
+func ServiceAccountObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServiceAccountObservedState) *pb.ServiceAccount {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceAccount{}
+	// MISSING: Email
+	// MISSING: Scopes
 	return out
 }
 func StatusEvent_FromProto(mapCtx *direct.MapContext, in *pb.StatusEvent) *krm.StatusEvent {
@@ -749,6 +1283,30 @@ func StatusEvent_ToProto(mapCtx *direct.MapContext, in *krm.StatusEvent) *pb.Sta
 	out.TaskState = direct.Enum_ToProto[pb.TaskStatus_State](mapCtx, in.TaskState)
 	return out
 }
+func StatusEventObservedState_FromProto(mapCtx *direct.MapContext, in *pb.StatusEvent) *krm.StatusEventObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StatusEventObservedState{}
+	// MISSING: Type
+	// MISSING: Description
+	// MISSING: EventTime
+	// MISSING: TaskExecution
+	// MISSING: TaskState
+	return out
+}
+func StatusEventObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StatusEventObservedState) *pb.StatusEvent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StatusEvent{}
+	// MISSING: Type
+	// MISSING: Description
+	// MISSING: EventTime
+	// MISSING: TaskExecution
+	// MISSING: TaskState
+	return out
+}
 func TaskExecution_FromProto(mapCtx *direct.MapContext, in *pb.TaskExecution) *krm.TaskExecution {
 	if in == nil {
 		return nil
@@ -763,6 +1321,22 @@ func TaskExecution_ToProto(mapCtx *direct.MapContext, in *krm.TaskExecution) *pb
 	}
 	out := &pb.TaskExecution{}
 	out.ExitCode = direct.ValueOf(in.ExitCode)
+	return out
+}
+func TaskExecutionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TaskExecution) *krm.TaskExecutionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TaskExecutionObservedState{}
+	// MISSING: ExitCode
+	return out
+}
+func TaskExecutionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TaskExecutionObservedState) *pb.TaskExecution {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TaskExecution{}
+	// MISSING: ExitCode
 	return out
 }
 func TaskGroup_FromProto(mapCtx *direct.MapContext, in *pb.TaskGroup) *krm.TaskGroup {
@@ -863,6 +1437,36 @@ func TaskSpec_ToProto(mapCtx *direct.MapContext, in *krm.TaskSpec) *pb.TaskSpec 
 	out.Environment = Environment_ToProto(mapCtx, in.Environment)
 	return out
 }
+func TaskSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TaskSpec) *krm.TaskSpecObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TaskSpecObservedState{}
+	// MISSING: Runnables
+	// MISSING: ComputeResource
+	// MISSING: MaxRunDuration
+	// MISSING: MaxRetryCount
+	// MISSING: LifecyclePolicies
+	// MISSING: Environments
+	// MISSING: Volumes
+	// MISSING: Environment
+	return out
+}
+func TaskSpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TaskSpecObservedState) *pb.TaskSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TaskSpec{}
+	// MISSING: Runnables
+	// MISSING: ComputeResource
+	// MISSING: MaxRunDuration
+	// MISSING: MaxRetryCount
+	// MISSING: LifecyclePolicies
+	// MISSING: Environments
+	// MISSING: Volumes
+	// MISSING: Environment
+	return out
+}
 func TaskStatus_FromProto(mapCtx *direct.MapContext, in *pb.TaskStatus) *krm.TaskStatus {
 	if in == nil {
 		return nil
@@ -879,6 +1483,24 @@ func TaskStatus_ToProto(mapCtx *direct.MapContext, in *krm.TaskStatus) *pb.TaskS
 	out := &pb.TaskStatus{}
 	out.State = direct.Enum_ToProto[pb.TaskStatus_State](mapCtx, in.State)
 	out.StatusEvents = direct.Slice_ToProto(mapCtx, in.StatusEvents, StatusEvent_ToProto)
+	return out
+}
+func TaskStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TaskStatus) *krm.TaskStatusObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TaskStatusObservedState{}
+	// MISSING: State
+	// MISSING: StatusEvents
+	return out
+}
+func TaskStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TaskStatusObservedState) *pb.TaskStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TaskStatus{}
+	// MISSING: State
+	// MISSING: StatusEvents
 	return out
 }
 func Volume_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krm.Volume {
@@ -916,4 +1538,28 @@ func Volume_DeviceName_ToProto(mapCtx *direct.MapContext, in *string) *pb.Volume
 		return nil
 	}
 	return &pb.Volume_DeviceName{DeviceName: *in}
+}
+func VolumeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krm.VolumeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VolumeObservedState{}
+	// MISSING: Nfs
+	// MISSING: GCS
+	// MISSING: DeviceName
+	// MISSING: MountPath
+	// MISSING: MountOptions
+	return out
+}
+func VolumeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VolumeObservedState) *pb.Volume {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Volume{}
+	// MISSING: Nfs
+	// MISSING: GCS
+	// MISSING: DeviceName
+	// MISSING: MountPath
+	// MISSING: MountOptions
+	return out
 }

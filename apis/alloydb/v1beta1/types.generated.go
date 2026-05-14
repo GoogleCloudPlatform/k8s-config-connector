@@ -84,55 +84,12 @@ type AutomatedBackupPolicy_TimeBasedRetention struct {
 	RetentionPeriod *string `json:"retentionPeriod,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.Backup.QuantityBasedExpiry
-type Backup_QuantityBasedExpiry struct {
-}
-
-// +kcc:proto=google.cloud.alloydb.v1beta.CloudSQLBackupRunSource
-type CloudSQLBackupRunSource struct {
-	// The project ID of the source CloudSQL instance. This should be the same as
-	//  the AlloyDB cluster's project.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.CloudSQLBackupRunSource.project
-	Project *string `json:"project,omitempty"`
-
-	// Required. The CloudSQL instance ID.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.CloudSQLBackupRunSource.instance_id
-	InstanceID *string `json:"instanceID,omitempty"`
-
-	// Required. The CloudSQL backup run ID.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.CloudSQLBackupRunSource.backup_run_id
-	BackupRunID *int64 `json:"backupRunID,omitempty"`
-}
-
-// +kcc:proto=google.cloud.alloydb.v1beta.Cluster.PrimaryConfig
-type Cluster_PrimaryConfig struct {
-}
-
 // +kcc:proto=google.cloud.alloydb.v1beta.Cluster.PscConfig
 type Cluster_PSCConfig struct {
 	// Optional. Create an instance that allows connections from Private Service
 	//  Connect endpoints to the instance.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.PscConfig.psc_enabled
 	PSCEnabled *bool `json:"pscEnabled,omitempty"`
-}
-
-// +kcc:proto=google.cloud.alloydb.v1beta.Cluster.TrialMetadata
-type Cluster_TrialMetadata struct {
-	// start time of the trial cluster.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.TrialMetadata.start_time
-	StartTime *string `json:"startTime,omitempty"`
-
-	// End time of the trial cluster.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.TrialMetadata.end_time
-	EndTime *string `json:"endTime,omitempty"`
-
-	// Upgrade time of trial cluster to Standard cluster.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.TrialMetadata.upgrade_time
-	UpgradeTime *string `json:"upgradeTime,omitempty"`
-
-	// grace end time of the cluster.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.TrialMetadata.grace_end_time
-	GraceEndTime *string `json:"graceEndTime,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.ContinuousBackupConfig
@@ -152,14 +109,6 @@ type ContinuousBackupConfig struct {
 	//  not specified, the backup will use the cluster's encryption config.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.ContinuousBackupConfig.encryption_config
 	EncryptionConfig *EncryptionConfig `json:"encryptionConfig,omitempty"`
-}
-
-// +kcc:proto=google.cloud.alloydb.v1beta.EncryptionInfo
-type EncryptionInfo struct {
-}
-
-// +kcc:proto=google.cloud.alloydb.v1beta.GCAInstanceConfig
-type GcaInstanceConfig struct {
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.GeminiClusterConfig
@@ -200,10 +149,6 @@ type Instance_MachineConfig struct {
 	//  cpu_count must match the number of vCPUs in the machine type.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.MachineConfig.machine_type
 	MachineType *string `json:"machineType,omitempty"`
-}
-
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.Node
-type Instance_Node struct {
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig
@@ -337,10 +282,6 @@ type Instance_UpdatePolicy struct {
 	Mode *string `json:"mode,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.MaintenanceSchedule
-type MaintenanceSchedule struct {
-}
-
 // +kcc:proto=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy.DenyMaintenancePeriod
 type MaintenanceUpdatePolicy_DenyMaintenancePeriod struct {
 	// Deny period start date.
@@ -396,6 +337,22 @@ type Date struct {
 	Day *int32 `json:"day,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.AutomatedBackupPolicy
+type AutomatedBackupPolicyObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.AutomatedBackupPolicy.QuantityBasedRetention
+type AutomatedBackupPolicy_QuantityBasedRetentionObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.AutomatedBackupPolicy.TimeBasedRetention
+type AutomatedBackupPolicy_TimeBasedRetentionObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.AutomatedBackupPolicy.WeeklySchedule
+type AutomatedBackupPolicy_WeeklyScheduleObservedState struct {
+}
+
 // +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Backup.QuantityBasedExpiry
 type Backup_QuantityBasedExpiryObservedState struct {
 	// Output only. The backup's position among its backups with the same source
@@ -408,6 +365,26 @@ type Backup_QuantityBasedExpiryObservedState struct {
 	//  backup's retention policy.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Backup.QuantityBasedExpiry.total_retention_count
 	TotalRetentionCount *int32 `json:"totalRetentionCount,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.CloudSQLBackupRunSource
+type CloudSQLBackupRunSourceObservedState struct {
+	// The project ID of the source CloudSQL instance. This should be the same as
+	//  the AlloyDB cluster's project.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.CloudSQLBackupRunSource.project
+	Project *string `json:"project,omitempty"`
+
+	// Required. The CloudSQL instance ID.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.CloudSQLBackupRunSource.instance_id
+	InstanceID *string `json:"instanceID,omitempty"`
+
+	// Required. The CloudSQL backup run ID.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.CloudSQLBackupRunSource.backup_run_id
+	BackupRunID *int64 `json:"backupRunID,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Cluster.NetworkConfig
+type Cluster_NetworkConfigObservedState struct {
 }
 
 // +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Cluster.PrimaryConfig
@@ -424,6 +401,37 @@ type Cluster_PSCConfigObservedState struct {
 	//  network attachment to enable outbound connectivity.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.PscConfig.service_owned_project_number
 	ServiceOwnedProjectNumber *int64 `json:"serviceOwnedProjectNumber,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Cluster.SecondaryConfig
+type Cluster_SecondaryConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Cluster.TrialMetadata
+type Cluster_TrialMetadataObservedState struct {
+	// start time of the trial cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.TrialMetadata.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// End time of the trial cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.TrialMetadata.end_time
+	EndTime *string `json:"endTime,omitempty"`
+
+	// Upgrade time of trial cluster to Standard cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.TrialMetadata.upgrade_time
+	UpgradeTime *string `json:"upgradeTime,omitempty"`
+
+	// grace end time of the cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.TrialMetadata.grace_end_time
+	GraceEndTime *string `json:"graceEndTime,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.ContinuousBackupConfig
+type ContinuousBackupConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.EncryptionConfig
+type EncryptionConfigObservedState struct {
 }
 
 // +kcc:observedstate:proto=google.cloud.alloydb.v1beta.EncryptionInfo
@@ -459,6 +467,106 @@ type GeminiInstanceConfigObservedState struct {
 	//  future.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.GeminiInstanceConfig.entitled
 	Entitled *bool `json:"entitled,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance
+type InstanceObservedState struct {
+	// Output only. The name of the instance resource with the format:
+	//   * projects/{project}/locations/{region}/clusters/{cluster_id}/instances/{instance_id}
+	//  where the cluster and instance ID segments should satisfy the regex
+	//  expression `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`, e.g. 1-63 characters of
+	//  lowercase letters, numbers, and dashes, starting with a letter, and ending
+	//  with a letter or number. For more details see https://google.aip.dev/122.
+	//  The prefix of the instance resource name is the name of the parent
+	//  resource:
+	//   * projects/{project}/locations/{region}/clusters/{cluster_id}
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The system-generated UID of the resource. The UID is assigned
+	//  when the resource is created, and it is retained until it is deleted.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. Create time stamp
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Update time stamp
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Delete time stamp
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.delete_time
+	DeleteTime *string `json:"deleteTime,omitempty"`
+
+	// Output only. The current serving state of the instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. This is set for the read-write VM of the PRIMARY instance
+	//  only.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.writable_node
+	WritableNode *Instance_NodeObservedState `json:"writableNode,omitempty"`
+
+	// Output only. List of available read-only VMs in this instance, including
+	//  the standby for a PRIMARY instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.nodes
+	Nodes []Instance_NodeObservedState `json:"nodes,omitempty"`
+
+	// Output only. The IP address for the Instance.
+	//  This is the connection endpoint for an end-user application.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ip_address
+	IPAddress *string `json:"ipAddress,omitempty"`
+
+	// Output only. The public IP addresses for the Instance. This is available
+	//  ONLY when enable_public_ip is set. This is the connection endpoint for an
+	//  end-user application.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.public_ip_address
+	PublicIPAddress *string `json:"publicIPAddress,omitempty"`
+
+	// Output only. Reconciling (https://google.aip.dev/128#reconciliation).
+	//  Set to true if the current state of Instance does not match the user's
+	//  intended state, and the service is actively updating the resource to
+	//  reconcile them. This can happen due to user-triggered updates or
+	//  system actions like failover or maintenance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.reconciling
+	Reconciling *bool `json:"reconciling,omitempty"`
+
+	// Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// Output only. All outbound public IP addresses configured for the instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.outbound_public_ip_addresses
+	OutboundPublicIPAddresses []string `json:"outboundPublicIPAddresses,omitempty"`
+
+	// Output only. Configuration parameters related to Gemini Cloud Assist.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.gca_config
+	GcaConfig *GcaInstanceConfigObservedState `json:"gcaConfig,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.ClientConnectionConfig
+type Instance_ClientConnectionConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig
+type Instance_InstanceNetworkConfigObservedState struct {
+	// Output only. The resource link for the VPC network in which instance
+	//  resources are created and from which they are accessible via Private IP.
+	//  This will be the same value as the parent cluster's network. It is
+	//  specified in the form: //
+	//  `projects/{project_number}/global/networks/{network_id}`.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig.network
+	Network *string `json:"network,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig.AuthorizedNetwork
+type Instance_InstanceNetworkConfig_AuthorizedNetworkObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.MachineConfig
+type Instance_MachineConfigObservedState struct {
 }
 
 // +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.Node
@@ -546,10 +654,22 @@ type Instance_PSCInstanceConfigObservedState struct {
 	//  Name convention: <uid>.<uid>.<region>.alloydb-psc.goog
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.psc_dns_name
 	PSCDNSName *string `json:"pscDNSName,omitempty"`
+}
 
-	// Optional. Configurations for setting up PSC service automation.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.psc_auto_connections
-	PSCAutoConnections []Instance_PSCAutoConnectionConfigObservedState `json:"pscAutoConnections,omitempty"`
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.PscInterfaceConfig
+type Instance_PSCInterfaceConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.QueryInsightsInstanceConfig
+type Instance_QueryInsightsInstanceConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.ReadPoolConfig
+type Instance_ReadPoolConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.UpdatePolicy
+type Instance_UpdatePolicyObservedState struct {
 }
 
 // +kcc:observedstate:proto=google.cloud.alloydb.v1beta.MaintenanceSchedule
@@ -557,4 +677,40 @@ type MaintenanceScheduleObservedState struct {
 	// Output only. The scheduled start time for the maintenance.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.MaintenanceSchedule.start_time
 	StartTime *string `json:"startTime,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy
+type MaintenanceUpdatePolicyObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy.DenyMaintenancePeriod
+type MaintenanceUpdatePolicy_DenyMaintenancePeriodObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy.MaintenanceWindow
+type MaintenanceUpdatePolicy_MaintenanceWindowObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.SslConfig
+type SSLConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.User
+type UserObservedState struct {
+	// Output only. Name of the resource in the form of
+	//  projects/{project}/locations/{location}/cluster/{cluster}/users/{user}.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.User.name
+	Name *string `json:"name,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.UserPassword
+type UserPasswordObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.type.Date
+type DateObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.type.TimeOfDay
+type TimeOfDayObservedState struct {
 }

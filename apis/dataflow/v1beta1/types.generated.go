@@ -20,3 +20,7 @@
 // resource: DataflowFlexTemplateJob:FlexTemplateRuntimeEnvironment
 
 package v1beta1
+
+// +kcc:observedstate:proto=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment
+type FlexTemplateRuntimeEnvironmentObservedState struct {
+}

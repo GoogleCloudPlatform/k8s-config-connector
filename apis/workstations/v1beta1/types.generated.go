@@ -531,66 +531,6 @@ type WorkstationConfig_ReadinessCheck struct {
 }
 */
 
-// +kcc:proto=google.protobuf.Any
-type Any struct {
-	// A URL/resource name that uniquely identifies the type of the serialized
-	//  protocol buffer message. This string must contain at least
-	//  one "/" character. The last segment of the URL's path must represent
-	//  the fully qualified name of the type (as in
-	//  `path/google.protobuf.Duration`). The name should be in a canonical form
-	//  (e.g., leading "." is not accepted).
-	//
-	//  In practice, teams usually precompile into the binary all types that they
-	//  expect it to use in the context of Any. However, for URLs which use the
-	//  scheme `http`, `https`, or no scheme, one can optionally set up a type
-	//  server that maps type URLs to message definitions as follows:
-	//
-	//  * If no scheme is provided, `https` is assumed.
-	//  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-	//    value in binary format, or produce an error.
-	//  * Applications are allowed to cache lookup results based on the
-	//    URL, or have them precompiled into a binary to avoid any
-	//    lookup. Therefore, binary compatibility needs to be preserved
-	//    on changes to types. (Use versioned type names to manage
-	//    breaking changes.)
-	//
-	//  Note: this functionality is not currently available in the official
-	//  protobuf release, and it is not used for type URLs beginning with
-	//  type.googleapis.com.
-	//
-	//  Schemes other than `http`, `https` (or the empty scheme) might be
-	//  used with implementation specific semantics.
-	// +kcc:proto:field=google.protobuf.Any.type_url
-	TypeURL *string `json:"typeURL,omitempty"`
-
-	// Must be a valid serialized protocol buffer of the above specified type.
-	// +kcc:proto:field=google.protobuf.Any.value
-	Value []byte `json:"value,omitempty"`
-}
-
-/* found existing non-generated go type with proto tag "google.rpc.Status", skipping
-
-// +kcc:proto=google.rpc.Status
-type Status struct {
-	// The status code, which should be an enum value of
-	//  [google.rpc.Code][google.rpc.Code].
-	// +kcc:proto:field=google.rpc.Status.code
-	Code *int32 `json:"code,omitempty"`
-
-	// A developer-facing error message, which should be in English. Any
-	//  user-facing error message should be localized and sent in the
-	//  [google.rpc.Status.details][google.rpc.Status.details] field, or localized
-	//  by the client.
-	// +kcc:proto:field=google.rpc.Status.message
-	Message *string `json:"message,omitempty"`
-
-	// A list of messages that carry the error details.  There is a common set of
-	//  message types for APIs to use.
-	// +kcc:proto:field=google.rpc.Status.details
-	Details []Any `json:"details,omitempty"`
-}
-*/
-
 /* found existing non-generated go type "WorkstationObservedState", skipping
 
 // +kcc:observedstate:proto=google.cloud.workstations.v1.Workstation
@@ -668,10 +608,6 @@ type WorkstationClusterObservedState struct {
 	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationCluster.control_plane_ip
 	ControlPlaneIP *string `json:"controlPlaneIP,omitempty"`
 
-	// Optional. Configuration for private workstation cluster.
-	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationCluster.private_cluster_config
-	PrivateClusterConfig *WorkstationCluster_PrivateClusterConfigObservedState `json:"privateClusterConfig,omitempty"`
-
 	// Output only. Whether this workstation cluster is in degraded mode, in which
 	//  case it may require user action to restore full functionality. Details can
 	//  be found in
@@ -682,11 +618,9 @@ type WorkstationClusterObservedState struct {
 	// Output only. Status conditions describing the workstation cluster's current
 	//  state.
 	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationCluster.conditions
-	Conditions []Status `json:"conditions,omitempty"`
+	Conditions []StatusObservedState `json:"conditions,omitempty"`
 }
 */
-
-/* found existing non-generated go type with proto tag "google.cloud.workstations.v1.WorkstationCluster.PrivateClusterConfig", skipping
 
 // +kcc:observedstate:proto=google.cloud.workstations.v1.WorkstationCluster.PrivateClusterConfig
 type WorkstationCluster_PrivateClusterConfigObservedState struct {
@@ -706,7 +640,6 @@ type WorkstationCluster_PrivateClusterConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationCluster.PrivateClusterConfig.service_attachment_uri
 	ServiceAttachmentURI *string `json:"serviceAttachmentURI,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "WorkstationConfigObservedState", skipping
 
@@ -735,10 +668,6 @@ type WorkstationConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.delete_time
 	DeleteTime *string `json:"deleteTime,omitempty"`
 
-	// Optional. Runtime host for the workstation.
-	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.host
-	Host *WorkstationConfig_HostObservedState `json:"host,omitempty"`
-
 	// Output only. Whether this resource is degraded, in which case it may
 	//  require user action to restore full functionality. See also the
 	//  [conditions][google.cloud.workstations.v1.WorkstationConfig.conditions]
@@ -748,17 +677,22 @@ type WorkstationConfigObservedState struct {
 
 	// Output only. Status conditions describing the current resource state.
 	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.conditions
-	Conditions []Status `json:"conditions,omitempty"`
+	Conditions []StatusObservedState `json:"conditions,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.workstations.v1.WorkstationConfig.Container
+type WorkstationConfig_ContainerObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.workstations.v1.WorkstationConfig.CustomerEncryptionKey
+type WorkstationConfig_CustomerEncryptionKeyObservedState struct {
+}
 
 /* found existing non-generated go type "WorkstationConfig_HostObservedState", skipping
 
 // +kcc:observedstate:proto=google.cloud.workstations.v1.WorkstationConfig.Host
 type WorkstationConfig_HostObservedState struct {
-	// Specifies a Compute Engine instance as the host.
-	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Host.gce_instance
-	GCEInstance *WorkstationConfig_Host_GCEInstanceObservedState `json:"gceInstance,omitempty"`
 }
 */
 
@@ -772,3 +706,80 @@ type WorkstationConfig_Host_GCEInstanceObservedState struct {
 	PooledInstances *int32 `json:"pooledInstances,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.GceConfidentialInstanceConfig
+type WorkstationConfig_Host_GCEInstance_GCEConfidentialInstanceConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.GceShieldedInstanceConfig
+type WorkstationConfig_Host_GCEInstance_GCEShieldedInstanceConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory
+type WorkstationConfig_PersistentDirectoryObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk
+type WorkstationConfig_PersistentDirectory_GCERegionalPersistentDiskObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.workstations.v1.WorkstationConfig.ReadinessCheck
+type WorkstationConfig_ReadinessCheckObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.protobuf.Any
+type AnyObservedState struct {
+	// A URL/resource name that uniquely identifies the type of the serialized
+	//  protocol buffer message. This string must contain at least
+	//  one "/" character. The last segment of the URL's path must represent
+	//  the fully qualified name of the type (as in
+	//  `path/google.protobuf.Duration`). The name should be in a canonical form
+	//  (e.g., leading "." is not accepted).
+	//
+	//  In practice, teams usually precompile into the binary all types that they
+	//  expect it to use in the context of Any. However, for URLs which use the
+	//  scheme `http`, `https`, or no scheme, one can optionally set up a type
+	//  server that maps type URLs to message definitions as follows:
+	//
+	//  * If no scheme is provided, `https` is assumed.
+	//  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+	//    value in binary format, or produce an error.
+	//  * Applications are allowed to cache lookup results based on the
+	//    URL, or have them precompiled into a binary to avoid any
+	//    lookup. Therefore, binary compatibility needs to be preserved
+	//    on changes to types. (Use versioned type names to manage
+	//    breaking changes.)
+	//
+	//  Note: this functionality is not currently available in the official
+	//  protobuf release, and it is not used for type URLs beginning with
+	//  type.googleapis.com.
+	//
+	//  Schemes other than `http`, `https` (or the empty scheme) might be
+	//  used with implementation specific semantics.
+	// +kcc:proto:field=google.protobuf.Any.type_url
+	TypeURL *string `json:"typeURL,omitempty"`
+
+	// Must be a valid serialized protocol buffer of the above specified type.
+	// +kcc:proto:field=google.protobuf.Any.value
+	Value []byte `json:"value,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.rpc.Status
+type StatusObservedState struct {
+	// The status code, which should be an enum value of
+	//  [google.rpc.Code][google.rpc.Code].
+	// +kcc:proto:field=google.rpc.Status.code
+	Code *int32 `json:"code,omitempty"`
+
+	// A developer-facing error message, which should be in English. Any
+	//  user-facing error message should be localized and sent in the
+	//  [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+	//  by the client.
+	// +kcc:proto:field=google.rpc.Status.message
+	Message *string `json:"message,omitempty"`
+
+	// A list of messages that carry the error details.  There is a common set of
+	//  message types for APIs to use.
+	// +kcc:proto:field=google.rpc.Status.details
+	Details []AnyObservedState `json:"details,omitempty"`
+}

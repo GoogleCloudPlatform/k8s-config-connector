@@ -21,10 +21,6 @@
 
 package v1beta1
 
-// +kcc:proto=google.cloud.certificatemanager.v1.DnsAuthorization.DnsResourceRecord
-type DNSAuthorization_DNSResourceRecord struct {
-}
-
 // +kcc:observedstate:proto=google.cloud.certificatemanager.v1.DnsAuthorization.DnsResourceRecord
 type DNSAuthorization_DNSResourceRecordObservedState struct {
 	// Output only. Fully qualified name of the DNS Resource Record.

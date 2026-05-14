@@ -140,6 +140,50 @@ func CloudSQLInstanceInfoObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Region = direct.ValueOf(in.Region)
 	return out
 }
+func ConnectivityTestObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConnectivityTest) *krm.ConnectivityTestObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConnectivityTestObservedState{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: Source
+	// MISSING: Destination
+	// MISSING: Protocol
+	// MISSING: RelatedProjects
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.ReachabilityDetails = ReachabilityDetailsObservedState_FromProto(mapCtx, in.GetReachabilityDetails())
+	out.ProbingDetails = ProbingDetailsObservedState_FromProto(mapCtx, in.GetProbingDetails())
+	// MISSING: RoundTrip
+	out.ReturnReachabilityDetails = ReachabilityDetailsObservedState_FromProto(mapCtx, in.GetReturnReachabilityDetails())
+	// MISSING: BypassFirewallChecks
+	return out
+}
+func ConnectivityTestObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ConnectivityTestObservedState) *pb.ConnectivityTest {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConnectivityTest{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: Source
+	// MISSING: Destination
+	// MISSING: Protocol
+	// MISSING: RelatedProjects
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.ReachabilityDetails = ReachabilityDetailsObservedState_ToProto(mapCtx, in.ReachabilityDetails)
+	out.ProbingDetails = ProbingDetailsObservedState_ToProto(mapCtx, in.ProbingDetails)
+	// MISSING: RoundTrip
+	out.ReturnReachabilityDetails = ReachabilityDetailsObservedState_ToProto(mapCtx, in.ReturnReachabilityDetails)
+	// MISSING: BypassFirewallChecks
+	return out
+}
 func DeliverInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DeliverInfo) *krm.DeliverInfoObservedState {
 	if in == nil {
 		return nil
@@ -258,6 +302,22 @@ func Endpoint_AppEngineVersionEndpoint_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Uri = direct.ValueOf(in.URI)
 	return out
 }
+func Endpoint_AppEngineVersionEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint_AppEngineVersionEndpoint) *krm.Endpoint_AppEngineVersionEndpointObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Endpoint_AppEngineVersionEndpointObservedState{}
+	// MISSING: URI
+	return out
+}
+func Endpoint_AppEngineVersionEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Endpoint_AppEngineVersionEndpointObservedState) *pb.Endpoint_AppEngineVersionEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Endpoint_AppEngineVersionEndpoint{}
+	// MISSING: URI
+	return out
+}
 func Endpoint_CloudFunctionEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint_CloudFunctionEndpoint) *krm.Endpoint_CloudFunctionEndpoint {
 	if in == nil {
 		return nil
@@ -272,6 +332,22 @@ func Endpoint_CloudFunctionEndpoint_ToProto(mapCtx *direct.MapContext, in *krm.E
 	}
 	out := &pb.Endpoint_CloudFunctionEndpoint{}
 	out.Uri = direct.ValueOf(in.URI)
+	return out
+}
+func Endpoint_CloudFunctionEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint_CloudFunctionEndpoint) *krm.Endpoint_CloudFunctionEndpointObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Endpoint_CloudFunctionEndpointObservedState{}
+	// MISSING: URI
+	return out
+}
+func Endpoint_CloudFunctionEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Endpoint_CloudFunctionEndpointObservedState) *pb.Endpoint_CloudFunctionEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Endpoint_CloudFunctionEndpoint{}
+	// MISSING: URI
 	return out
 }
 func Endpoint_CloudRunRevisionEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint_CloudRunRevisionEndpoint) *krm.Endpoint_CloudRunRevisionEndpointObservedState {

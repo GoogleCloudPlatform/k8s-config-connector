@@ -42,6 +42,22 @@ func AttachedClusterError_ToProto(mapCtx *direct.MapContext, in *krm.AttachedClu
 	out.Message = direct.ValueOf(in.Message)
 	return out
 }
+func AttachedClusterErrorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AttachedClusterError) *krm.AttachedClusterErrorObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AttachedClusterErrorObservedState{}
+	out.Message = direct.LazyPtr(in.GetMessage())
+	return out
+}
+func AttachedClusterErrorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AttachedClusterErrorObservedState) *pb.AttachedClusterError {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttachedClusterError{}
+	out.Message = direct.ValueOf(in.Message)
+	return out
+}
 func AttachedClusterGroup_FromProto(mapCtx *direct.MapContext, in *pb.AttachedClusterGroup) *krm.AttachedClusterGroup {
 	if in == nil {
 		return nil
@@ -56,6 +72,84 @@ func AttachedClusterGroup_ToProto(mapCtx *direct.MapContext, in *krm.AttachedClu
 	}
 	out := &pb.AttachedClusterGroup{}
 	out.Group = direct.ValueOf(in.Group)
+	return out
+}
+func AttachedClusterGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AttachedClusterGroup) *krm.AttachedClusterGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AttachedClusterGroupObservedState{}
+	// MISSING: Group
+	return out
+}
+func AttachedClusterGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AttachedClusterGroupObservedState) *pb.AttachedClusterGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttachedClusterGroup{}
+	// MISSING: Group
+	return out
+}
+func AttachedClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AttachedCluster) *krm.AttachedClusterObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AttachedClusterObservedState{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: OIDCConfig
+	// MISSING: PlatformVersion
+	// MISSING: Distribution
+	out.ClusterRegion = direct.LazyPtr(in.GetClusterRegion())
+	// MISSING: Fleet
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Etag
+	out.KubernetesVersion = direct.LazyPtr(in.GetKubernetesVersion())
+	// MISSING: Annotations
+	out.WorkloadIdentityConfig = WorkloadIdentityConfigObservedState_FromProto(mapCtx, in.GetWorkloadIdentityConfig())
+	// MISSING: LoggingConfig
+	out.Errors = direct.Slice_FromProto(mapCtx, in.Errors, AttachedClusterErrorObservedState_FromProto)
+	// MISSING: Authorization
+	// MISSING: MonitoringConfig
+	// MISSING: ProxyConfig
+	// MISSING: BinaryAuthorization
+	// MISSING: SecurityPostureConfig
+	// MISSING: Tags
+	return out
+}
+func AttachedClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AttachedClusterObservedState) *pb.AttachedCluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttachedCluster{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: OIDCConfig
+	// MISSING: PlatformVersion
+	// MISSING: Distribution
+	out.ClusterRegion = direct.ValueOf(in.ClusterRegion)
+	// MISSING: Fleet
+	out.State = direct.Enum_ToProto[pb.AttachedCluster_State](mapCtx, in.State)
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Etag
+	out.KubernetesVersion = direct.ValueOf(in.KubernetesVersion)
+	// MISSING: Annotations
+	out.WorkloadIdentityConfig = WorkloadIdentityConfigObservedState_ToProto(mapCtx, in.WorkloadIdentityConfig)
+	// MISSING: LoggingConfig
+	out.Errors = direct.Slice_ToProto(mapCtx, in.Errors, AttachedClusterErrorObservedState_ToProto)
+	// MISSING: Authorization
+	// MISSING: MonitoringConfig
+	// MISSING: ProxyConfig
+	// MISSING: BinaryAuthorization
+	// MISSING: SecurityPostureConfig
+	// MISSING: Tags
 	return out
 }
 func AttachedClusterUser_FromProto(mapCtx *direct.MapContext, in *pb.AttachedClusterUser) *krm.AttachedClusterUser {
@@ -74,6 +168,22 @@ func AttachedClusterUser_ToProto(mapCtx *direct.MapContext, in *krm.AttachedClus
 	out.Username = direct.ValueOf(in.Username)
 	return out
 }
+func AttachedClusterUserObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AttachedClusterUser) *krm.AttachedClusterUserObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AttachedClusterUserObservedState{}
+	// MISSING: Username
+	return out
+}
+func AttachedClusterUserObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AttachedClusterUserObservedState) *pb.AttachedClusterUser {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttachedClusterUser{}
+	// MISSING: Username
+	return out
+}
 
 /* found existing non-generated mapping function "AttachedClustersAuthorization_FromProto", skipping
 func AttachedClustersAuthorization_FromProto(mapCtx *direct.MapContext, in *pb.AttachedClustersAuthorization) *krm.AttachedClustersAuthorization {
@@ -87,17 +197,55 @@ func AttachedClustersAuthorization_FromProto(mapCtx *direct.MapContext, in *pb.A
 }
 */
 
-/* found existing non-generated mapping function "AttachedClustersAuthorization_ToProto", skipping
-func AttachedClustersAuthorization_ToProto(mapCtx *direct.MapContext, in *krm.AttachedClustersAuthorization) *pb.AttachedClustersAuthorization {
+/*
+found existing non-generated mapping function "AttachedClustersAuthorization_ToProto", skipping
+
+	func AttachedClustersAuthorization_ToProto(mapCtx *direct.MapContext, in *krm.AttachedClustersAuthorization) *pb.AttachedClustersAuthorization {
+		if in == nil {
+			return nil
+		}
+		out := &pb.AttachedClustersAuthorization{}
+		out.AdminUsers = direct.Slice_ToProto(mapCtx, in.AdminUsers, string_ToProto)
+		// MISSING: AdminGroups
+		return out
+	}
+*/
+func AttachedClustersAuthorizationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AttachedClustersAuthorization) *krm.AttachedClustersAuthorizationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AttachedClustersAuthorizationObservedState{}
+	// MISSING: AdminUsers
+	// MISSING: AdminGroups
+	return out
+}
+func AttachedClustersAuthorizationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AttachedClustersAuthorizationObservedState) *pb.AttachedClustersAuthorization {
 	if in == nil {
 		return nil
 	}
 	out := &pb.AttachedClustersAuthorization{}
-	out.AdminUsers = direct.Slice_ToProto(mapCtx, in.AdminUsers, string_ToProto)
+	// MISSING: AdminUsers
 	// MISSING: AdminGroups
 	return out
 }
-*/
+func AttachedOIDCConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AttachedOidcConfig) *krm.AttachedOIDCConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AttachedOIDCConfigObservedState{}
+	// MISSING: IssuerURL
+	// MISSING: Jwks
+	return out
+}
+func AttachedOIDCConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AttachedOIDCConfigObservedState) *pb.AttachedOidcConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttachedOidcConfig{}
+	// MISSING: IssuerURL
+	// MISSING: Jwks
+	return out
+}
 
 /* found existing non-generated mapping function "AttachedOidcConfig_FromProto", skipping
 func AttachedOidcConfig_FromProto(mapCtx *direct.MapContext, in *pb.AttachedOidcConfig) *krm.AttachedOidcConfig {
@@ -142,6 +290,22 @@ func AttachedProxyConfig_ToProto(mapCtx *direct.MapContext, in *krm.AttachedProx
 	out.KubernetesSecret = KubernetesSecret_ToProto(mapCtx, in.KubernetesSecret)
 	return out
 }
+func AttachedProxyConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AttachedProxyConfig) *krm.AttachedProxyConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AttachedProxyConfigObservedState{}
+	// MISSING: KubernetesSecret
+	return out
+}
+func AttachedProxyConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AttachedProxyConfigObservedState) *pb.AttachedProxyConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttachedProxyConfig{}
+	// MISSING: KubernetesSecret
+	return out
+}
 func BinaryAuthorization_FromProto(mapCtx *direct.MapContext, in *pb.BinaryAuthorization) *krm.BinaryAuthorization {
 	if in == nil {
 		return nil
@@ -158,6 +322,22 @@ func BinaryAuthorization_ToProto(mapCtx *direct.MapContext, in *krm.BinaryAuthor
 	out.EvaluationMode = direct.Enum_ToProto[pb.BinaryAuthorization_EvaluationMode](mapCtx, in.EvaluationMode)
 	return out
 }
+func BinaryAuthorizationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BinaryAuthorization) *krm.BinaryAuthorizationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BinaryAuthorizationObservedState{}
+	// MISSING: EvaluationMode
+	return out
+}
+func BinaryAuthorizationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BinaryAuthorizationObservedState) *pb.BinaryAuthorization {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BinaryAuthorization{}
+	// MISSING: EvaluationMode
+	return out
+}
 func CloudMonitoringConfig_FromProto(mapCtx *direct.MapContext, in *pb.CloudMonitoringConfig) *krm.CloudMonitoringConfig {
 	if in == nil {
 		return nil
@@ -172,6 +352,22 @@ func CloudMonitoringConfig_ToProto(mapCtx *direct.MapContext, in *krm.CloudMonit
 	}
 	out := &pb.CloudMonitoringConfig{}
 	out.Enabled = in.Enabled
+	return out
+}
+func CloudMonitoringConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CloudMonitoringConfig) *krm.CloudMonitoringConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudMonitoringConfigObservedState{}
+	// MISSING: Enabled
+	return out
+}
+func CloudMonitoringConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudMonitoringConfigObservedState) *pb.CloudMonitoringConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudMonitoringConfig{}
+	// MISSING: Enabled
 	return out
 }
 
@@ -274,6 +470,24 @@ found existing non-generated mapping function "Fleet_ToProto", skipping
 		return out
 	}
 */
+func FleetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Fleet) *krm.FleetObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FleetObservedState{}
+	// MISSING: Project
+	out.Membership = direct.LazyPtr(in.GetMembership())
+	return out
+}
+func FleetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FleetObservedState) *pb.Fleet {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Fleet{}
+	// MISSING: Project
+	out.Membership = direct.ValueOf(in.Membership)
+	return out
+}
 func KubernetesSecret_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesSecret) *krm.KubernetesSecret {
 	if in == nil {
 		return nil
@@ -290,6 +504,24 @@ func KubernetesSecret_ToProto(mapCtx *direct.MapContext, in *krm.KubernetesSecre
 	out := &pb.KubernetesSecret{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Namespace = direct.ValueOf(in.Namespace)
+	return out
+}
+func KubernetesSecretObservedState_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesSecret) *krm.KubernetesSecretObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.KubernetesSecretObservedState{}
+	// MISSING: Name
+	// MISSING: Namespace
+	return out
+}
+func KubernetesSecretObservedState_ToProto(mapCtx *direct.MapContext, in *krm.KubernetesSecretObservedState) *pb.KubernetesSecret {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KubernetesSecret{}
+	// MISSING: Name
+	// MISSING: Namespace
 	return out
 }
 
@@ -316,6 +548,22 @@ found existing non-generated mapping function "LoggingComponentConfig_ToProto", 
 		return out
 	}
 */
+func LoggingComponentConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.LoggingComponentConfig) *krm.LoggingComponentConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LoggingComponentConfigObservedState{}
+	// MISSING: EnableComponents
+	return out
+}
+func LoggingComponentConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LoggingComponentConfigObservedState) *pb.LoggingComponentConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LoggingComponentConfig{}
+	// MISSING: EnableComponents
+	return out
+}
 func LoggingConfig_FromProto(mapCtx *direct.MapContext, in *pb.LoggingConfig) *krm.LoggingConfig {
 	if in == nil {
 		return nil
@@ -332,6 +580,22 @@ func LoggingConfig_ToProto(mapCtx *direct.MapContext, in *krm.LoggingConfig) *pb
 	out.ComponentConfig = LoggingComponentConfig_ToProto(mapCtx, in.ComponentConfig)
 	return out
 }
+func LoggingConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.LoggingConfig) *krm.LoggingConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LoggingConfigObservedState{}
+	// MISSING: ComponentConfig
+	return out
+}
+func LoggingConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LoggingConfigObservedState) *pb.LoggingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LoggingConfig{}
+	// MISSING: ComponentConfig
+	return out
+}
 func ManagedPrometheusConfig_FromProto(mapCtx *direct.MapContext, in *pb.ManagedPrometheusConfig) *krm.ManagedPrometheusConfig {
 	if in == nil {
 		return nil
@@ -346,6 +610,22 @@ func ManagedPrometheusConfig_ToProto(mapCtx *direct.MapContext, in *krm.ManagedP
 	}
 	out := &pb.ManagedPrometheusConfig{}
 	out.Enabled = direct.ValueOf(in.Enabled)
+	return out
+}
+func ManagedPrometheusConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ManagedPrometheusConfig) *krm.ManagedPrometheusConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ManagedPrometheusConfigObservedState{}
+	// MISSING: Enabled
+	return out
+}
+func ManagedPrometheusConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ManagedPrometheusConfigObservedState) *pb.ManagedPrometheusConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ManagedPrometheusConfig{}
+	// MISSING: Enabled
 	return out
 }
 func MonitoringConfig_FromProto(mapCtx *direct.MapContext, in *pb.MonitoringConfig) *krm.MonitoringConfig {
@@ -366,6 +646,24 @@ func MonitoringConfig_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringConfi
 	// MISSING: CloudMonitoringConfig
 	return out
 }
+func MonitoringConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MonitoringConfig) *krm.MonitoringConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MonitoringConfigObservedState{}
+	// MISSING: ManagedPrometheusConfig
+	// MISSING: CloudMonitoringConfig
+	return out
+}
+func MonitoringConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringConfigObservedState) *pb.MonitoringConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MonitoringConfig{}
+	// MISSING: ManagedPrometheusConfig
+	// MISSING: CloudMonitoringConfig
+	return out
+}
 func SecurityPostureConfig_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPostureConfig) *krm.SecurityPostureConfig {
 	if in == nil {
 		return nil
@@ -380,6 +678,22 @@ func SecurityPostureConfig_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPo
 	}
 	out := &pb.SecurityPostureConfig{}
 	out.VulnerabilityMode = direct.Enum_ToProto[pb.SecurityPostureConfig_VulnerabilityMode](mapCtx, in.VulnerabilityMode)
+	return out
+}
+func SecurityPostureConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPostureConfig) *krm.SecurityPostureConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecurityPostureConfigObservedState{}
+	// MISSING: VulnerabilityMode
+	return out
+}
+func SecurityPostureConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPostureConfigObservedState) *pb.SecurityPostureConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPostureConfig{}
+	// MISSING: VulnerabilityMode
 	return out
 }
 func WorkloadIdentityConfig_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadIdentityConfig) *krm.WorkloadIdentityConfig {
@@ -400,6 +714,26 @@ func WorkloadIdentityConfig_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadI
 	out := &pb.WorkloadIdentityConfig{}
 	// MISSING: IssuerURI
 	// (near miss): "IssuerURI" vs "IssuerUri"
+	out.WorkloadPool = direct.ValueOf(in.WorkloadPool)
+	out.IdentityProvider = direct.ValueOf(in.IdentityProvider)
+	return out
+}
+func WorkloadIdentityConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadIdentityConfig) *krm.WorkloadIdentityConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WorkloadIdentityConfigObservedState{}
+	out.IssuerURI = direct.LazyPtr(in.GetIssuerUri())
+	out.WorkloadPool = direct.LazyPtr(in.GetWorkloadPool())
+	out.IdentityProvider = direct.LazyPtr(in.GetIdentityProvider())
+	return out
+}
+func WorkloadIdentityConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadIdentityConfigObservedState) *pb.WorkloadIdentityConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WorkloadIdentityConfig{}
+	out.IssuerUri = direct.ValueOf(in.IssuerURI)
 	out.WorkloadPool = direct.ValueOf(in.WorkloadPool)
 	out.IdentityProvider = direct.ValueOf(in.IdentityProvider)
 	return out

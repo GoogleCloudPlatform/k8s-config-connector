@@ -135,6 +135,26 @@ type ServerKeyRestrictions struct {
 	AllowedIps []string `json:"allowedIps,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.api.apikeys.v2.AndroidApplication
+type AndroidApplicationObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.api.apikeys.v2.AndroidKeyRestrictions
+type AndroidKeyRestrictionsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.api.apikeys.v2.ApiTarget
+type APITargetObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.api.apikeys.v2.BrowserKeyRestrictions
+type BrowserKeyRestrictionsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.api.apikeys.v2.IosKeyRestrictions
+type IosKeyRestrictionsObservedState struct {
+}
+
 /* found existing non-generated go type with proto tag "google.api.apikeys.v2.Key", skipping
 
 // +kcc:observedstate:proto=google.api.apikeys.v2.Key
@@ -182,3 +202,11 @@ type KeyObservedState struct {
 	Etag *string `json:"etag,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.api.apikeys.v2.Restrictions
+type RestrictionsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.api.apikeys.v2.ServerKeyRestrictions
+type ServerKeyRestrictionsObservedState struct {
+}

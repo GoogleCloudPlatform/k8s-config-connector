@@ -208,6 +208,24 @@ func ConversionWorkspaceInfo_ToProto(mapCtx *direct.MapContext, in *krm.Conversi
 	out.CommitId = direct.ValueOf(in.CommitID)
 	return out
 }
+func ConversionWorkspaceInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConversionWorkspaceInfo) *krm.ConversionWorkspaceInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConversionWorkspaceInfoObservedState{}
+	// MISSING: Name
+	// MISSING: CommitID
+	return out
+}
+func ConversionWorkspaceInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ConversionWorkspaceInfoObservedState) *pb.ConversionWorkspaceInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConversionWorkspaceInfo{}
+	// MISSING: Name
+	// MISSING: CommitID
+	return out
+}
 func DatabaseEngineInfo_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseEngineInfo) *krm.DatabaseEngineInfo {
 	if in == nil {
 		return nil
@@ -224,6 +242,24 @@ func DatabaseEngineInfo_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseEngin
 	out := &pb.DatabaseEngineInfo{}
 	out.Engine = direct.Enum_ToProto[pb.DatabaseEngine](mapCtx, in.Engine)
 	out.Version = direct.ValueOf(in.Version)
+	return out
+}
+func DatabaseEngineInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseEngineInfo) *krm.DatabaseEngineInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DatabaseEngineInfoObservedState{}
+	// MISSING: Engine
+	// MISSING: Version
+	return out
+}
+func DatabaseEngineInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseEngineInfoObservedState) *pb.DatabaseEngineInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DatabaseEngineInfo{}
+	// MISSING: Engine
+	// MISSING: Version
 	return out
 }
 func DatabaseType_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseType) *krm.DatabaseType {
@@ -244,6 +280,24 @@ func DatabaseType_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseType) *pb.D
 	out.Engine = direct.Enum_ToProto[pb.DatabaseEngine](mapCtx, in.Engine)
 	return out
 }
+func DatabaseTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseType) *krm.DatabaseTypeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DatabaseTypeObservedState{}
+	// MISSING: Provider
+	// MISSING: Engine
+	return out
+}
+func DatabaseTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseTypeObservedState) *pb.DatabaseType {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DatabaseType{}
+	// MISSING: Provider
+	// MISSING: Engine
+	return out
+}
 func MigrationJob_DumpFlag_FromProto(mapCtx *direct.MapContext, in *pb.MigrationJob_DumpFlag) *krm.MigrationJob_DumpFlag {
 	if in == nil {
 		return nil
@@ -262,6 +316,24 @@ func MigrationJob_DumpFlag_ToProto(mapCtx *direct.MapContext, in *krm.MigrationJ
 	out.Value = direct.ValueOf(in.Value)
 	return out
 }
+func MigrationJob_DumpFlagObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MigrationJob_DumpFlag) *krm.MigrationJob_DumpFlagObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MigrationJob_DumpFlagObservedState{}
+	// MISSING: Name
+	// MISSING: Value
+	return out
+}
+func MigrationJob_DumpFlagObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MigrationJob_DumpFlagObservedState) *pb.MigrationJob_DumpFlag {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MigrationJob_DumpFlag{}
+	// MISSING: Name
+	// MISSING: Value
+	return out
+}
 func MigrationJob_DumpFlags_FromProto(mapCtx *direct.MapContext, in *pb.MigrationJob_DumpFlags) *krm.MigrationJob_DumpFlags {
 	if in == nil {
 		return nil
@@ -278,6 +350,22 @@ func MigrationJob_DumpFlags_ToProto(mapCtx *direct.MapContext, in *krm.Migration
 	out.DumpFlags = direct.Slice_ToProto(mapCtx, in.DumpFlags, MigrationJob_DumpFlag_ToProto)
 	return out
 }
+func MigrationJob_DumpFlagsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MigrationJob_DumpFlags) *krm.MigrationJob_DumpFlagsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MigrationJob_DumpFlagsObservedState{}
+	// MISSING: DumpFlags
+	return out
+}
+func MigrationJob_DumpFlagsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MigrationJob_DumpFlagsObservedState) *pb.MigrationJob_DumpFlags {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MigrationJob_DumpFlags{}
+	// MISSING: DumpFlags
+	return out
+}
 func MigrationJob_PerformanceConfig_FromProto(mapCtx *direct.MapContext, in *pb.MigrationJob_PerformanceConfig) *krm.MigrationJob_PerformanceConfig {
 	if in == nil {
 		return nil
@@ -292,6 +380,22 @@ func MigrationJob_PerformanceConfig_ToProto(mapCtx *direct.MapContext, in *krm.M
 	}
 	out := &pb.MigrationJob_PerformanceConfig{}
 	out.DumpParallelLevel = direct.Enum_ToProto[pb.MigrationJob_PerformanceConfig_DumpParallelLevel](mapCtx, in.DumpParallelLevel)
+	return out
+}
+func MigrationJob_PerformanceConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MigrationJob_PerformanceConfig) *krm.MigrationJob_PerformanceConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MigrationJob_PerformanceConfigObservedState{}
+	// MISSING: DumpParallelLevel
+	return out
+}
+func MigrationJob_PerformanceConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MigrationJob_PerformanceConfigObservedState) *pb.MigrationJob_PerformanceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MigrationJob_PerformanceConfig{}
+	// MISSING: DumpParallelLevel
 	return out
 }
 func ReverseSSHConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.ReverseSshConnectivity) *krm.ReverseSSHConnectivity {
@@ -324,6 +428,28 @@ func ReverseSSHConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.ReverseSS
 	}
 	return out
 }
+func ReverseSSHConnectivityObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ReverseSshConnectivity) *krm.ReverseSSHConnectivityObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReverseSSHConnectivityObservedState{}
+	// MISSING: VMIP
+	// MISSING: VMPort
+	// MISSING: VM
+	// MISSING: VPC
+	return out
+}
+func ReverseSSHConnectivityObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ReverseSSHConnectivityObservedState) *pb.ReverseSshConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReverseSshConnectivity{}
+	// MISSING: VMIP
+	// MISSING: VMPort
+	// MISSING: VM
+	// MISSING: VPC
+	return out
+}
 func StaticIPConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.StaticIpConnectivity) *krm.StaticIPConnectivity {
 	if in == nil {
 		return nil
@@ -336,6 +462,38 @@ func StaticIPConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.StaticIPCon
 		return nil
 	}
 	out := &pb.StaticIpConnectivity{}
+	return out
+}
+func StaticIPConnectivityObservedState_FromProto(mapCtx *direct.MapContext, in *pb.StaticIpConnectivity) *krm.StaticIPConnectivityObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StaticIPConnectivityObservedState{}
+	return out
+}
+func StaticIPConnectivityObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StaticIPConnectivityObservedState) *pb.StaticIpConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StaticIpConnectivity{}
+	return out
+}
+func VPCPeeringConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VpcPeeringConfig) *krm.VPCPeeringConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VPCPeeringConfigObservedState{}
+	// MISSING: VPCName
+	// MISSING: Subnet
+	return out
+}
+func VPCPeeringConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VPCPeeringConfigObservedState) *pb.VpcPeeringConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VpcPeeringConfig{}
+	// MISSING: VPCName
+	// MISSING: Subnet
 	return out
 }
 func VPCPeeringConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.VpcPeeringConnectivity) *krm.VPCPeeringConnectivity {
@@ -356,5 +514,21 @@ func VPCPeeringConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.VPCPeerin
 	if in.VPCRef != nil {
 		out.Vpc = in.VPCRef.External
 	}
+	return out
+}
+func VPCPeeringConnectivityObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VpcPeeringConnectivity) *krm.VPCPeeringConnectivityObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VPCPeeringConnectivityObservedState{}
+	// MISSING: VPC
+	return out
+}
+func VPCPeeringConnectivityObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VPCPeeringConnectivityObservedState) *pb.VpcPeeringConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VpcPeeringConnectivity{}
+	// MISSING: VPC
 	return out
 }

@@ -64,6 +64,32 @@ func FirewallAction_ToProto(mapCtx *direct.MapContext, in *krm.FirewallAction) *
 	}
 	return out
 }
+func FirewallActionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction) *krm.FirewallActionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FirewallActionObservedState{}
+	// MISSING: Allow
+	// MISSING: Block
+	// MISSING: IncludeRecaptchaScript
+	// MISSING: Redirect
+	// MISSING: Substitute
+	// MISSING: SetHeader
+	return out
+}
+func FirewallActionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FirewallActionObservedState) *pb.FirewallAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallAction{}
+	// MISSING: Allow
+	// MISSING: Block
+	// MISSING: IncludeRecaptchaScript
+	// MISSING: Redirect
+	// MISSING: Substitute
+	// MISSING: SetHeader
+	return out
+}
 func FirewallAction_AllowAction_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction_AllowAction) *krm.FirewallAction_AllowAction {
 	if in == nil {
 		return nil
@@ -72,6 +98,20 @@ func FirewallAction_AllowAction_FromProto(mapCtx *direct.MapContext, in *pb.Fire
 	return out
 }
 func FirewallAction_AllowAction_ToProto(mapCtx *direct.MapContext, in *krm.FirewallAction_AllowAction) *pb.FirewallAction_AllowAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallAction_AllowAction{}
+	return out
+}
+func FirewallAction_AllowActionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction_AllowAction) *krm.FirewallAction_AllowActionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FirewallAction_AllowActionObservedState{}
+	return out
+}
+func FirewallAction_AllowActionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FirewallAction_AllowActionObservedState) *pb.FirewallAction_AllowAction {
 	if in == nil {
 		return nil
 	}
@@ -92,6 +132,20 @@ func FirewallAction_BlockAction_ToProto(mapCtx *direct.MapContext, in *krm.Firew
 	out := &pb.FirewallAction_BlockAction{}
 	return out
 }
+func FirewallAction_BlockActionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction_BlockAction) *krm.FirewallAction_BlockActionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FirewallAction_BlockActionObservedState{}
+	return out
+}
+func FirewallAction_BlockActionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FirewallAction_BlockActionObservedState) *pb.FirewallAction_BlockAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallAction_BlockAction{}
+	return out
+}
 func FirewallAction_IncludeRecaptchaScriptAction_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction_IncludeRecaptchaScriptAction) *krm.FirewallAction_IncludeRecaptchaScriptAction {
 	if in == nil {
 		return nil
@@ -106,6 +160,20 @@ func FirewallAction_IncludeRecaptchaScriptAction_ToProto(mapCtx *direct.MapConte
 	out := &pb.FirewallAction_IncludeRecaptchaScriptAction{}
 	return out
 }
+func FirewallAction_IncludeRecaptchaScriptActionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction_IncludeRecaptchaScriptAction) *krm.FirewallAction_IncludeRecaptchaScriptActionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FirewallAction_IncludeRecaptchaScriptActionObservedState{}
+	return out
+}
+func FirewallAction_IncludeRecaptchaScriptActionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FirewallAction_IncludeRecaptchaScriptActionObservedState) *pb.FirewallAction_IncludeRecaptchaScriptAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallAction_IncludeRecaptchaScriptAction{}
+	return out
+}
 func FirewallAction_RedirectAction_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction_RedirectAction) *krm.FirewallAction_RedirectAction {
 	if in == nil {
 		return nil
@@ -114,6 +182,20 @@ func FirewallAction_RedirectAction_FromProto(mapCtx *direct.MapContext, in *pb.F
 	return out
 }
 func FirewallAction_RedirectAction_ToProto(mapCtx *direct.MapContext, in *krm.FirewallAction_RedirectAction) *pb.FirewallAction_RedirectAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallAction_RedirectAction{}
+	return out
+}
+func FirewallAction_RedirectActionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction_RedirectAction) *krm.FirewallAction_RedirectActionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FirewallAction_RedirectActionObservedState{}
+	return out
+}
+func FirewallAction_RedirectActionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FirewallAction_RedirectActionObservedState) *pb.FirewallAction_RedirectAction {
 	if in == nil {
 		return nil
 	}
@@ -138,6 +220,24 @@ func FirewallAction_SetHeaderAction_ToProto(mapCtx *direct.MapContext, in *krm.F
 	out.Value = direct.ValueOf(in.Value)
 	return out
 }
+func FirewallAction_SetHeaderActionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction_SetHeaderAction) *krm.FirewallAction_SetHeaderActionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FirewallAction_SetHeaderActionObservedState{}
+	// MISSING: Key
+	// MISSING: Value
+	return out
+}
+func FirewallAction_SetHeaderActionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FirewallAction_SetHeaderActionObservedState) *pb.FirewallAction_SetHeaderAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallAction_SetHeaderAction{}
+	// MISSING: Key
+	// MISSING: Value
+	return out
+}
 func FirewallAction_SubstituteAction_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction_SubstituteAction) *krm.FirewallAction_SubstituteAction {
 	if in == nil {
 		return nil
@@ -152,6 +252,46 @@ func FirewallAction_SubstituteAction_ToProto(mapCtx *direct.MapContext, in *krm.
 	}
 	out := &pb.FirewallAction_SubstituteAction{}
 	out.Path = direct.ValueOf(in.Path)
+	return out
+}
+func FirewallAction_SubstituteActionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction_SubstituteAction) *krm.FirewallAction_SubstituteActionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FirewallAction_SubstituteActionObservedState{}
+	// MISSING: Path
+	return out
+}
+func FirewallAction_SubstituteActionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FirewallAction_SubstituteActionObservedState) *pb.FirewallAction_SubstituteAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallAction_SubstituteAction{}
+	// MISSING: Path
+	return out
+}
+func FirewallPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicy) *krm.FirewallPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FirewallPolicyObservedState{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: Path
+	// MISSING: Condition
+	// MISSING: Actions
+	return out
+}
+func FirewallPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FirewallPolicyObservedState) *pb.FirewallPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallPolicy{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: Path
+	// MISSING: Condition
+	// MISSING: Actions
 	return out
 }
 func ReCAPTCHAEnterpriseFirewallPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicy) *krm.ReCAPTCHAEnterpriseFirewallPolicySpec {

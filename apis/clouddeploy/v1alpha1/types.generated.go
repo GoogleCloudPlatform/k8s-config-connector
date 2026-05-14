@@ -258,3 +258,165 @@ type TimeOfDay struct {
 	// +kcc:proto:field=google.type.TimeOfDay.nanos
 	Nanos *int32 `json:"nanos,omitempty"`
 }
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.AnthosCluster
+type AnthosClusterObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.AssociatedEntities
+type AssociatedEntitiesObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.AutomationResourceSelector
+type AutomationResourceSelectorObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.AutomationRuleCondition
+type AutomationRuleConditionObservedState struct {
+	// Optional. Details around targets enumerated in the rule.
+	// +kcc:proto:field=google.cloud.deploy.v1.AutomationRuleCondition.targets_present_condition
+	TargetsPresentCondition *TargetsPresentConditionObservedState `json:"targetsPresentCondition,omitempty"`
+
+	// Optional. TimedPromoteReleaseCondition contains rule conditions specific
+	//  to a an Automation with a timed promote release rule defined.
+	// +kcc:proto:field=google.cloud.deploy.v1.AutomationRuleCondition.timed_promote_release_condition
+	TimedPromoteReleaseCondition *TimedPromoteReleaseConditionObservedState `json:"timedPromoteReleaseCondition,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.CloudRunLocation
+type CloudRunLocationObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.CustomTarget
+type CustomTargetObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.CustomTargetSkaffoldActions
+type CustomTargetSkaffoldActionsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.DefaultPool
+type DefaultPoolObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.DeliveryPipelineAttribute
+type DeliveryPipelineAttributeObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.DeployPolicyResourceSelector
+type DeployPolicyResourceSelectorObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.ExecutionConfig
+type ExecutionConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.GkeCluster
+type GKEClusterObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.MultiTarget
+type MultiTargetObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.OneTimeWindow
+type OneTimeWindowObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.PolicyRule
+type PolicyRuleObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.PrivatePool
+type PrivatePoolObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.RepairPhaseConfig
+type RepairPhaseConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.Retry
+type RetryObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.Rollback
+type RollbackObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.RolloutRestriction
+type RolloutRestrictionObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.SkaffoldModules
+type SkaffoldModulesObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCBRepoSource
+type SkaffoldModules_SkaffoldGcbRepoSourceObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCSSource
+type SkaffoldModules_SkaffoldGCSSourceObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGitSource
+type SkaffoldModules_SkaffoldGitSourceObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.TargetAttribute
+type TargetAttributeObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.TargetsPresentCondition
+type TargetsPresentConditionObservedState struct {
+	// True if there aren't any missing Targets.
+	// +kcc:proto:field=google.cloud.deploy.v1.TargetsPresentCondition.status
+	Status *bool `json:"status,omitempty"`
+
+	// The list of Target names that do not exist. For example,
+	//  `projects/{project_id}/locations/{location_name}/targets/{target_name}`.
+	// +kcc:proto:field=google.cloud.deploy.v1.TargetsPresentCondition.missing_targets
+	MissingTargets []string `json:"missingTargets,omitempty"`
+
+	// Last time the condition was updated.
+	// +kcc:proto:field=google.cloud.deploy.v1.TargetsPresentCondition.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.TimeWindows
+type TimeWindowsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.TimedPromoteReleaseCondition
+type TimedPromoteReleaseConditionObservedState struct {
+	// Output only. When the next scheduled promotion(s) will occur.
+	// +kcc:proto:field=google.cloud.deploy.v1.TimedPromoteReleaseCondition.next_promotion_time
+	NextPromotionTime *string `json:"nextPromotionTime,omitempty"`
+
+	// Output only. A list of targets involved in the upcoming timed promotion(s).
+	// +kcc:proto:field=google.cloud.deploy.v1.TimedPromoteReleaseCondition.targets_list
+	TargetsList []TimedPromoteReleaseCondition_TargetsObservedState `json:"targetsList,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.TimedPromoteReleaseCondition.Targets
+type TimedPromoteReleaseCondition_TargetsObservedState struct {
+	// Optional. The source target ID.
+	// +kcc:proto:field=google.cloud.deploy.v1.TimedPromoteReleaseCondition.Targets.source_target_id
+	SourceTargetID *string `json:"sourceTargetID,omitempty"`
+
+	// Optional. The destination target ID.
+	// +kcc:proto:field=google.cloud.deploy.v1.TimedPromoteReleaseCondition.Targets.destination_target_id
+	DestinationTargetID *string `json:"destinationTargetID,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.WeeklyWindow
+type WeeklyWindowObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.type.Date
+type DateObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.type.TimeOfDay
+type TimeOfDayObservedState struct {
+}

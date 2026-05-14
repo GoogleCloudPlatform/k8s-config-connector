@@ -47,6 +47,22 @@ func ArrayValue_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1al
 	out.Values = direct.Slice_ToProto(mapCtx, in.Values, Value_v1alpha1_ToProto)
 	return out
 }
+func ArrayValueObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.ArrayValue) *krmfirestorev1alpha1.ArrayValueObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.ArrayValueObservedState{}
+	// MISSING: Values
+	return out
+}
+func ArrayValueObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.ArrayValueObservedState) *firestorepb.ArrayValue {
+	if in == nil {
+		return nil
+	}
+	out := &firestorepb.ArrayValue{}
+	// MISSING: Values
+	return out
+}
 func DailyRecurrence_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DailyRecurrence) *krmfirestorev1alpha1.DailyRecurrence {
 	if in == nil {
 		return nil
@@ -55,6 +71,20 @@ func DailyRecurrence_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DailyR
 	return out
 }
 func DailyRecurrence_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.DailyRecurrence) *pb.DailyRecurrence {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DailyRecurrence{}
+	return out
+}
+func DailyRecurrenceObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DailyRecurrence) *krmfirestorev1alpha1.DailyRecurrenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.DailyRecurrenceObservedState{}
+	return out
+}
+func DailyRecurrenceObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.DailyRecurrenceObservedState) *pb.DailyRecurrence {
 	if in == nil {
 		return nil
 	}
@@ -97,35 +127,35 @@ func Database_CmekConfigObservedState_v1beta1_ToProto(mapCtx *direct.MapContext,
 	out.ActiveKeyVersion = in.ActiveKeyVersion
 	return out
 }
-func Database_SourceInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Database_SourceInfo) *krm.Database_SourceInfo {
+func Database_SourceInfoObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Database_SourceInfo) *krm.Database_SourceInfoObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Database_SourceInfo{}
-	out.Backup = Database_SourceInfo_BackupSource_v1beta1_FromProto(mapCtx, in.GetBackup())
+	out := &krm.Database_SourceInfoObservedState{}
+	out.Backup = Database_SourceInfo_BackupSourceObservedState_v1beta1_FromProto(mapCtx, in.GetBackup())
 	out.Operation = direct.LazyPtr(in.GetOperation())
 	return out
 }
-func Database_SourceInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Database_SourceInfo) *pb.Database_SourceInfo {
+func Database_SourceInfoObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Database_SourceInfoObservedState) *pb.Database_SourceInfo {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Database_SourceInfo{}
-	if oneof := Database_SourceInfo_BackupSource_v1beta1_ToProto(mapCtx, in.Backup); oneof != nil {
+	if oneof := Database_SourceInfo_BackupSourceObservedState_v1beta1_ToProto(mapCtx, in.Backup); oneof != nil {
 		out.Source = &pb.Database_SourceInfo_Backup{Backup: oneof}
 	}
 	out.Operation = direct.ValueOf(in.Operation)
 	return out
 }
-func Database_SourceInfo_BackupSource_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Database_SourceInfo_BackupSource) *krm.Database_SourceInfo_BackupSource {
+func Database_SourceInfo_BackupSourceObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Database_SourceInfo_BackupSource) *krm.Database_SourceInfo_BackupSourceObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Database_SourceInfo_BackupSource{}
+	out := &krm.Database_SourceInfo_BackupSourceObservedState{}
 	out.Backup = direct.LazyPtr(in.GetBackup())
 	return out
 }
-func Database_SourceInfo_BackupSource_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Database_SourceInfo_BackupSource) *pb.Database_SourceInfo_BackupSource {
+func Database_SourceInfo_BackupSourceObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Database_SourceInfo_BackupSourceObservedState) *pb.Database_SourceInfo_BackupSource {
 	if in == nil {
 		return nil
 	}
@@ -150,6 +180,28 @@ func Field_IndexConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirest
 	}
 	out := &pb.Field_IndexConfig{}
 	out.Indexes = direct.Slice_ToProto(mapCtx, in.Indexes, Index_v1alpha1_ToProto)
+	// MISSING: UsesAncestorConfig
+	// MISSING: AncestorField
+	// MISSING: Reverting
+	return out
+}
+func Field_IndexConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Field_IndexConfig) *krmfirestorev1alpha1.Field_IndexConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.Field_IndexConfigObservedState{}
+	// MISSING: Indexes
+	// MISSING: UsesAncestorConfig
+	// MISSING: AncestorField
+	// MISSING: Reverting
+	return out
+}
+func Field_IndexConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Field_IndexConfigObservedState) *pb.Field_IndexConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Field_IndexConfig{}
+	// MISSING: Indexes
 	// MISSING: UsesAncestorConfig
 	// MISSING: AncestorField
 	// MISSING: Reverting
@@ -519,6 +571,66 @@ func IndexFields_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.IndexFields)
 	// MISSING: VectorConfig
 	return out
 }
+func IndexObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krmfirestorev1alpha1.IndexObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.IndexObservedState{}
+	// MISSING: Name
+	// MISSING: QueryScope
+	// MISSING: APIScope
+	// MISSING: Fields
+	// MISSING: State
+	// MISSING: Density
+	// MISSING: Multikey
+	// MISSING: ShardCount
+	return out
+}
+func IndexObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.IndexObservedState) *pb.Index {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index{}
+	// MISSING: Name
+	// MISSING: QueryScope
+	// MISSING: APIScope
+	// MISSING: Fields
+	// MISSING: State
+	// MISSING: Density
+	// MISSING: Multikey
+	// MISSING: ShardCount
+	return out
+}
+func IndexObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.IndexObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.IndexObservedState{}
+	// MISSING: Name
+	// MISSING: QueryScope
+	// MISSING: APIScope
+	// MISSING: Fields
+	// MISSING: State
+	// MISSING: Density
+	// MISSING: Multikey
+	// MISSING: ShardCount
+	return out
+}
+func IndexObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.IndexObservedState) *pb.Index {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index{}
+	// MISSING: Name
+	// MISSING: QueryScope
+	// MISSING: APIScope
+	// MISSING: Fields
+	// MISSING: State
+	// MISSING: Density
+	// MISSING: Multikey
+	// MISSING: ShardCount
+	return out
+}
 func Index_IndexField_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField) *krmfirestorev1alpha1.Index_IndexField {
 	if in == nil {
 		return nil
@@ -558,6 +670,50 @@ func Index_IndexField_ArrayConfig_ToProto(mapCtx *direct.MapContext, in *string)
 		return nil
 	}
 	return &pb.Index_IndexField_ArrayConfig_{ArrayConfig: direct.Enum_ToProto[pb.Index_IndexField_ArrayConfig](mapCtx, in)}
+}
+func Index_IndexFieldObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField) *krmfirestorev1alpha1.Index_IndexFieldObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.Index_IndexFieldObservedState{}
+	// MISSING: FieldPath
+	// MISSING: Order
+	// MISSING: ArrayConfig
+	// MISSING: VectorConfig
+	return out
+}
+func Index_IndexFieldObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index_IndexFieldObservedState) *pb.Index_IndexField {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index_IndexField{}
+	// MISSING: FieldPath
+	// MISSING: Order
+	// MISSING: ArrayConfig
+	// MISSING: VectorConfig
+	return out
+}
+func Index_IndexFieldObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField) *krm.Index_IndexFieldObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Index_IndexFieldObservedState{}
+	// MISSING: FieldPath
+	// MISSING: Order
+	// MISSING: ArrayConfig
+	// MISSING: VectorConfig
+	return out
+}
+func Index_IndexFieldObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Index_IndexFieldObservedState) *pb.Index_IndexField {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index_IndexField{}
+	// MISSING: FieldPath
+	// MISSING: Order
+	// MISSING: ArrayConfig
+	// MISSING: VectorConfig
+	return out
 }
 func Index_IndexField_VectorConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_VectorConfig) *krmfirestorev1alpha1.Index_IndexField_VectorConfig {
 	if in == nil {
@@ -599,6 +755,42 @@ func Index_IndexField_VectorConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in
 	}
 	return out
 }
+func Index_IndexField_VectorConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_VectorConfig) *krmfirestorev1alpha1.Index_IndexField_VectorConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.Index_IndexField_VectorConfigObservedState{}
+	// MISSING: Dimension
+	// MISSING: Flat
+	return out
+}
+func Index_IndexField_VectorConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index_IndexField_VectorConfigObservedState) *pb.Index_IndexField_VectorConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index_IndexField_VectorConfig{}
+	// MISSING: Dimension
+	// MISSING: Flat
+	return out
+}
+func Index_IndexField_VectorConfigObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_VectorConfig) *krm.Index_IndexField_VectorConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Index_IndexField_VectorConfigObservedState{}
+	// MISSING: Dimension
+	// MISSING: Flat
+	return out
+}
+func Index_IndexField_VectorConfigObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Index_IndexField_VectorConfigObservedState) *pb.Index_IndexField_VectorConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index_IndexField_VectorConfig{}
+	// MISSING: Dimension
+	// MISSING: Flat
+	return out
+}
 func Index_IndexField_VectorConfig_FlatIndex_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_VectorConfig_FlatIndex) *krmfirestorev1alpha1.Index_IndexField_VectorConfig_FlatIndex {
 	if in == nil {
 		return nil
@@ -621,6 +813,34 @@ func Index_IndexField_VectorConfig_FlatIndex_v1beta1_FromProto(mapCtx *direct.Ma
 	return out
 }
 func Index_IndexField_VectorConfig_FlatIndex_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Index_IndexField_VectorConfig_FlatIndex) *pb.Index_IndexField_VectorConfig_FlatIndex {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index_IndexField_VectorConfig_FlatIndex{}
+	return out
+}
+func Index_IndexField_VectorConfig_FlatIndexObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_VectorConfig_FlatIndex) *krmfirestorev1alpha1.Index_IndexField_VectorConfig_FlatIndexObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.Index_IndexField_VectorConfig_FlatIndexObservedState{}
+	return out
+}
+func Index_IndexField_VectorConfig_FlatIndexObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index_IndexField_VectorConfig_FlatIndexObservedState) *pb.Index_IndexField_VectorConfig_FlatIndex {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index_IndexField_VectorConfig_FlatIndex{}
+	return out
+}
+func Index_IndexField_VectorConfig_FlatIndexObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_VectorConfig_FlatIndex) *krm.Index_IndexField_VectorConfig_FlatIndexObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Index_IndexField_VectorConfig_FlatIndexObservedState{}
+	return out
+}
+func Index_IndexField_VectorConfig_FlatIndexObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Index_IndexField_VectorConfig_FlatIndexObservedState) *pb.Index_IndexField_VectorConfig_FlatIndex {
 	if in == nil {
 		return nil
 	}
@@ -673,6 +893,22 @@ func MapValue_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alph
 	// MISSING: Fields
 	return out
 }
+func MapValueObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.MapValue) *krmfirestorev1alpha1.MapValueObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.MapValueObservedState{}
+	// MISSING: Fields
+	return out
+}
+func MapValueObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.MapValueObservedState) *firestorepb.MapValue {
+	if in == nil {
+		return nil
+	}
+	out := &firestorepb.MapValue{}
+	// MISSING: Fields
+	return out
+}
 func Value_NullValue_ToProto(mapCtx *direct.MapContext, in *string) *firestorepb.Value_NullValue {
 	if in == nil {
 		return nil
@@ -709,6 +945,42 @@ func Value_ReferenceValue_ToProto(mapCtx *direct.MapContext, in *string) *firest
 	}
 	return &firestorepb.Value_ReferenceValue{ReferenceValue: *in}
 }
+func ValueObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.Value) *krmfirestorev1alpha1.ValueObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.ValueObservedState{}
+	// MISSING: NullValue
+	// MISSING: BooleanValue
+	// MISSING: IntegerValue
+	// MISSING: DoubleValue
+	// MISSING: TimestampValue
+	// MISSING: StringValue
+	// MISSING: BytesValue
+	// MISSING: ReferenceValue
+	// MISSING: GeoPointValue
+	// MISSING: ArrayValue
+	// MISSING: MapValue
+	return out
+}
+func ValueObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.ValueObservedState) *firestorepb.Value {
+	if in == nil {
+		return nil
+	}
+	out := &firestorepb.Value{}
+	// MISSING: NullValue
+	// MISSING: BooleanValue
+	// MISSING: IntegerValue
+	// MISSING: DoubleValue
+	// MISSING: TimestampValue
+	// MISSING: StringValue
+	// MISSING: BytesValue
+	// MISSING: ReferenceValue
+	// MISSING: GeoPointValue
+	// MISSING: ArrayValue
+	// MISSING: MapValue
+	return out
+}
 func WeeklyRecurrence_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WeeklyRecurrence) *krmfirestorev1alpha1.WeeklyRecurrence {
 	if in == nil {
 		return nil
@@ -723,5 +995,21 @@ func WeeklyRecurrence_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfiresto
 	}
 	out := &pb.WeeklyRecurrence{}
 	out.Day = direct.Enum_ToProto[dayofweekpb.DayOfWeek](mapCtx, in.Day)
+	return out
+}
+func WeeklyRecurrenceObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WeeklyRecurrence) *krmfirestorev1alpha1.WeeklyRecurrenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.WeeklyRecurrenceObservedState{}
+	// MISSING: Day
+	return out
+}
+func WeeklyRecurrenceObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.WeeklyRecurrenceObservedState) *pb.WeeklyRecurrence {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WeeklyRecurrence{}
+	// MISSING: Day
 	return out
 }

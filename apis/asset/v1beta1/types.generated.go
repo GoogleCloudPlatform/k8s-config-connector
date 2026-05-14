@@ -193,3 +193,47 @@ type Expr struct {
 	// +kcc:proto:field=google.type.Expr.location
 	Location *string `json:"location,omitempty"`
 }
+
+// +kcc:observedstate:proto=google.cloud.asset.v1.Feed
+type FeedObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.asset.v1.FeedOutputConfig
+type FeedOutputConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.asset.v1.IamPolicyAnalysisQuery
+type IAMPolicyAnalysisQueryObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.asset.v1.IamPolicyAnalysisQuery.AccessSelector
+type IAMPolicyAnalysisQuery_AccessSelectorObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.asset.v1.IamPolicyAnalysisQuery.ConditionContext
+type IAMPolicyAnalysisQuery_ConditionContextObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.asset.v1.IamPolicyAnalysisQuery.IdentitySelector
+type IAMPolicyAnalysisQuery_IdentitySelectorObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.asset.v1.IamPolicyAnalysisQuery.Options
+type IAMPolicyAnalysisQuery_OptionsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.asset.v1.IamPolicyAnalysisQuery.ResourceSelector
+type IAMPolicyAnalysisQuery_ResourceSelectorObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.asset.v1.PubsubDestination
+type PubsubDestinationObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.asset.v1.SavedQuery.QueryContent
+type SavedQuery_QueryContentObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.type.Expr
+type ExprObservedState struct {
+}

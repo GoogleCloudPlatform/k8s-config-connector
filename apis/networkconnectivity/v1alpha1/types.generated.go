@@ -348,3 +348,49 @@ type ServiceConnectionPolicy struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.protobuf.Any
+type AnyObservedState struct {
+}
+
+// +kcc:observedstate:proto=mockgcp.cloud.networkconnectivity.v1.AllocationOptions
+type AllocationOptionsObservedState struct {
+}
+
+// +kcc:observedstate:proto=mockgcp.cloud.networkconnectivity.v1.AutoCreatedSubnetworkInfo
+type AutoCreatedSubnetworkInfoObservedState struct {
+}
+
+// +kcc:observedstate:proto=mockgcp.cloud.networkconnectivity.v1.GoogleRpcErrorInfo
+type GoogleRpcErrorInfoObservedState struct {
+}
+
+// +kcc:observedstate:proto=mockgcp.cloud.networkconnectivity.v1.GoogleRpcStatus
+type GoogleRpcStatusObservedState struct {
+}
+
+/* found existing non-generated go type with proto tag "mockgcp.cloud.networkconnectivity.v1.InternalRange", skipping
+
+// +kcc:observedstate:proto=mockgcp.cloud.networkconnectivity.v1.InternalRange
+type InternalRangeObservedState struct {
+}
+*/
+
+// +kcc:observedstate:proto=mockgcp.cloud.networkconnectivity.v1.Migration
+type MigrationObservedState struct {
+}
+
+// +kcc:observedstate:proto=mockgcp.cloud.networkconnectivity.v1.PscConfig
+type PSCConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=mockgcp.cloud.networkconnectivity.v1.PscConnection
+type PSCConnectionObservedState struct {
+}
+
+/* found existing non-generated go type with proto tag "mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy", skipping
+
+// +kcc:observedstate:proto=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy
+type ServiceConnectionPolicyObservedState struct {
+}
+*/

@@ -27,28 +27,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func Instance_HostConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_HostConfig) *krm.Instance_HostConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Instance_HostConfig{}
-	// MISSING: HTML
-	// MISSING: API
-	// MISSING: GitHTTP
-	// MISSING: GitSSH
-	return out
-}
-func Instance_HostConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_HostConfig) *pb.Instance_HostConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance_HostConfig{}
-	// MISSING: HTML
-	// MISSING: API
-	// MISSING: GitHTTP
-	// MISSING: GitSSH
-	return out
-}
 func Instance_HostConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_HostConfig) *krm.Instance_HostConfigObservedState {
 	if in == nil {
 		return nil
@@ -139,6 +117,54 @@ func Instance_WorkforceIdentityFederationConfig_ToProto(mapCtx *direct.MapContex
 	out.Enabled = direct.ValueOf(in.Enabled)
 	return out
 }
+func Instance_WorkforceIdentityFederationConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_WorkforceIdentityFederationConfig) *krm.Instance_WorkforceIdentityFederationConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Instance_WorkforceIdentityFederationConfigObservedState{}
+	// MISSING: Enabled
+	return out
+}
+func Instance_WorkforceIdentityFederationConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_WorkforceIdentityFederationConfigObservedState) *pb.Instance_WorkforceIdentityFederationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance_WorkforceIdentityFederationConfig{}
+	// MISSING: Enabled
+	return out
+}
+func RepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.RepositoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RepositoryObservedState{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: Instance
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Etag
+	out.Uris = Repository_UrIsObservedState_FromProto(mapCtx, in.GetUris())
+	// MISSING: InitialConfig
+	return out
+}
+func RepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RepositoryObservedState) *pb.Repository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Repository{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: Instance
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Etag
+	out.Uris = Repository_UrIsObservedState_ToProto(mapCtx, in.Uris)
+	// MISSING: InitialConfig
+	return out
+}
 func Repository_InitialConfig_FromProto(mapCtx *direct.MapContext, in *pb.Repository_InitialConfig) *krm.Repository_InitialConfig {
 	if in == nil {
 		return nil
@@ -161,24 +187,26 @@ func Repository_InitialConfig_ToProto(mapCtx *direct.MapContext, in *krm.Reposit
 	out.Readme = direct.ValueOf(in.Readme)
 	return out
 }
-func Repository_UrIs_FromProto(mapCtx *direct.MapContext, in *pb.Repository_URIs) *krm.Repository_UrIs {
+func Repository_InitialConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Repository_InitialConfig) *krm.Repository_InitialConfigObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Repository_UrIs{}
-	// MISSING: HTML
-	// MISSING: GitHTTPS
-	// MISSING: API
+	out := &krm.Repository_InitialConfigObservedState{}
+	// MISSING: DefaultBranch
+	// MISSING: Gitignores
+	// MISSING: License
+	// MISSING: Readme
 	return out
 }
-func Repository_UrIs_ToProto(mapCtx *direct.MapContext, in *krm.Repository_UrIs) *pb.Repository_URIs {
+func Repository_InitialConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Repository_InitialConfigObservedState) *pb.Repository_InitialConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Repository_URIs{}
-	// MISSING: HTML
-	// MISSING: GitHTTPS
-	// MISSING: API
+	out := &pb.Repository_InitialConfig{}
+	// MISSING: DefaultBranch
+	// MISSING: Gitignores
+	// MISSING: License
+	// MISSING: Readme
 	return out
 }
 func Repository_UrIsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Repository_URIs) *krm.Repository_UrIsObservedState {

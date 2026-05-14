@@ -27,3 +27,11 @@ type CertificateIssuanceConfig_CertificateAuthorityConfig struct {
 	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateIssuanceConfig.CertificateAuthorityConfig.certificate_authority_service_config
 	CertificateAuthorityServiceConfig *CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig `json:"certificateAuthorityServiceConfig,omitempty"`
 }
+
+// +kcc:observedstate:proto=google.cloud.certificatemanager.v1.CertificateIssuanceConfig.CertificateAuthorityConfig
+type CertificateIssuanceConfig_CertificateAuthorityConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.certificatemanager.v1.CertificateIssuanceConfig.CertificateAuthorityConfig.CertificateAuthorityServiceConfig
+type CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfigObservedState struct {
+}

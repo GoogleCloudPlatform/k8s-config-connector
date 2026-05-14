@@ -167,6 +167,24 @@ func BasicLevel_ToProto(mapCtx *direct.MapContext, in *krm.BasicLevel) *pb.Basic
 	out.CombiningFunction = direct.Enum_ToProto[pb.BasicLevel_ConditionCombiningFunction](mapCtx, in.CombiningFunction)
 	return out
 }
+func BasicLevelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BasicLevel) *krm.BasicLevelObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BasicLevelObservedState{}
+	// MISSING: Conditions
+	// MISSING: CombiningFunction
+	return out
+}
+func BasicLevelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BasicLevelObservedState) *pb.BasicLevel {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BasicLevel{}
+	// MISSING: Conditions
+	// MISSING: CombiningFunction
+	return out
+}
 func Condition_FromProto(mapCtx *direct.MapContext, in *pb.Condition) *krm.Condition {
 	if in == nil {
 		return nil
@@ -193,6 +211,48 @@ func Condition_ToProto(mapCtx *direct.MapContext, in *krm.Condition) *pb.Conditi
 	out.Negate = direct.ValueOf(in.Negate)
 	out.Members = Condition_Members_ToProto(mapCtx, in.Members)
 	out.Regions = in.Regions
+	return out
+}
+func ConditionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Condition) *krm.ConditionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConditionObservedState{}
+	// MISSING: IPSubnetworks
+	// MISSING: DevicePolicy
+	// MISSING: RequiredAccessLevels
+	// MISSING: Negate
+	// MISSING: Members
+	// MISSING: Regions
+	return out
+}
+func ConditionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ConditionObservedState) *pb.Condition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Condition{}
+	// MISSING: IPSubnetworks
+	// MISSING: DevicePolicy
+	// MISSING: RequiredAccessLevels
+	// MISSING: Negate
+	// MISSING: Members
+	// MISSING: Regions
+	return out
+}
+func CustomLevelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomLevel) *krm.CustomLevelObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomLevelObservedState{}
+	// MISSING: Expr
+	return out
+}
+func CustomLevelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CustomLevelObservedState) *pb.CustomLevel {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomLevel{}
+	// MISSING: Expr
 	return out
 }
 func DevicePolicy_FromProto(mapCtx *direct.MapContext, in *pb.DevicePolicy) *krm.DevicePolicy {
@@ -223,6 +283,52 @@ func DevicePolicy_ToProto(mapCtx *direct.MapContext, in *krm.DevicePolicy) *pb.D
 	out.AllowedDeviceManagementLevels = direct.EnumSlice_ToProto[typepb.DeviceManagementLevel](mapCtx, in.AllowedDeviceManagementLevels)
 	out.RequireAdminApproval = direct.ValueOf(in.RequireAdminApproval)
 	out.RequireCorpOwned = direct.ValueOf(in.RequireCorpOwned)
+	return out
+}
+func DevicePolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DevicePolicy) *krm.DevicePolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DevicePolicyObservedState{}
+	// MISSING: RequireScreenlock
+	// MISSING: AllowedEncryptionStatuses
+	// MISSING: OSConstraints
+	// MISSING: AllowedDeviceManagementLevels
+	// MISSING: RequireAdminApproval
+	// MISSING: RequireCorpOwned
+	return out
+}
+func DevicePolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DevicePolicyObservedState) *pb.DevicePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DevicePolicy{}
+	// MISSING: RequireScreenlock
+	// MISSING: AllowedEncryptionStatuses
+	// MISSING: OSConstraints
+	// MISSING: AllowedDeviceManagementLevels
+	// MISSING: RequireAdminApproval
+	// MISSING: RequireCorpOwned
+	return out
+}
+func OSConstraintObservedState_FromProto(mapCtx *direct.MapContext, in *pb.OsConstraint) *krm.OSConstraintObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OSConstraintObservedState{}
+	// MISSING: OSType
+	// MISSING: MinimumVersion
+	// MISSING: RequireVerifiedChromeOS
+	return out
+}
+func OSConstraintObservedState_ToProto(mapCtx *direct.MapContext, in *krm.OSConstraintObservedState) *pb.OsConstraint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OsConstraint{}
+	// MISSING: OSType
+	// MISSING: MinimumVersion
+	// MISSING: RequireVerifiedChromeOS
 	return out
 }
 func OsConstraints_FromProto(mapCtx *direct.MapContext, in *pb.OsConstraint) *krm.OsConstraints {

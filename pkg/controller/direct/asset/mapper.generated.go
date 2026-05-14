@@ -100,6 +100,34 @@ func AssetSavedQuerySpec_ToProto(mapCtx *direct.MapContext, in *krm.AssetSavedQu
 	out.Content = SavedQuery_QueryContent_ToProto(mapCtx, in.Content)
 	return out
 }
+func FeedObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Feed) *krm.FeedObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FeedObservedState{}
+	// MISSING: Name
+	// MISSING: AssetNames
+	// MISSING: AssetTypes
+	// MISSING: ContentType
+	// MISSING: FeedOutputConfig
+	// MISSING: Condition
+	// MISSING: RelationshipTypes
+	return out
+}
+func FeedObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FeedObservedState) *pb.Feed {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Feed{}
+	// MISSING: Name
+	// MISSING: AssetNames
+	// MISSING: AssetTypes
+	// MISSING: ContentType
+	// MISSING: FeedOutputConfig
+	// MISSING: Condition
+	// MISSING: RelationshipTypes
+	return out
+}
 func FeedOutputConfig_FromProto(mapCtx *direct.MapContext, in *pb.FeedOutputConfig) *krm.FeedOutputConfig {
 	if in == nil {
 		return nil
@@ -116,6 +144,22 @@ func FeedOutputConfig_ToProto(mapCtx *direct.MapContext, in *krm.FeedOutputConfi
 	if oneof := PubsubDestination_ToProto(mapCtx, in.PubsubDestination); oneof != nil {
 		out.Destination = &pb.FeedOutputConfig_PubsubDestination{PubsubDestination: oneof}
 	}
+	return out
+}
+func FeedOutputConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FeedOutputConfig) *krm.FeedOutputConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FeedOutputConfigObservedState{}
+	// MISSING: PubsubDestination
+	return out
+}
+func FeedOutputConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FeedOutputConfigObservedState) *pb.FeedOutputConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeedOutputConfig{}
+	// MISSING: PubsubDestination
 	return out
 }
 func IAMPolicyAnalysisQuery_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery) *krm.IAMPolicyAnalysisQuery {
@@ -144,6 +188,32 @@ func IAMPolicyAnalysisQuery_ToProto(mapCtx *direct.MapContext, in *krm.IAMPolicy
 	out.ConditionContext = IAMPolicyAnalysisQuery_ConditionContext_ToProto(mapCtx, in.ConditionContext)
 	return out
 }
+func IAMPolicyAnalysisQueryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery) *krm.IAMPolicyAnalysisQueryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.IAMPolicyAnalysisQueryObservedState{}
+	// MISSING: Scope
+	// MISSING: ResourceSelector
+	// MISSING: IdentitySelector
+	// MISSING: AccessSelector
+	// MISSING: Options
+	// MISSING: ConditionContext
+	return out
+}
+func IAMPolicyAnalysisQueryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.IAMPolicyAnalysisQueryObservedState) *pb.IamPolicyAnalysisQuery {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IamPolicyAnalysisQuery{}
+	// MISSING: Scope
+	// MISSING: ResourceSelector
+	// MISSING: IdentitySelector
+	// MISSING: AccessSelector
+	// MISSING: Options
+	// MISSING: ConditionContext
+	return out
+}
 func IAMPolicyAnalysisQuery_AccessSelector_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_AccessSelector) *krm.IAMPolicyAnalysisQuery_AccessSelector {
 	if in == nil {
 		return nil
@@ -160,6 +230,24 @@ func IAMPolicyAnalysisQuery_AccessSelector_ToProto(mapCtx *direct.MapContext, in
 	out := &pb.IamPolicyAnalysisQuery_AccessSelector{}
 	out.Roles = in.Roles
 	out.Permissions = in.Permissions
+	return out
+}
+func IAMPolicyAnalysisQuery_AccessSelectorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_AccessSelector) *krm.IAMPolicyAnalysisQuery_AccessSelectorObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.IAMPolicyAnalysisQuery_AccessSelectorObservedState{}
+	// MISSING: Roles
+	// MISSING: Permissions
+	return out
+}
+func IAMPolicyAnalysisQuery_AccessSelectorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.IAMPolicyAnalysisQuery_AccessSelectorObservedState) *pb.IamPolicyAnalysisQuery_AccessSelector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IamPolicyAnalysisQuery_AccessSelector{}
+	// MISSING: Roles
+	// MISSING: Permissions
 	return out
 }
 func IAMPolicyAnalysisQuery_ConditionContext_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_ConditionContext) *krm.IAMPolicyAnalysisQuery_ConditionContext {
@@ -180,6 +268,22 @@ func IAMPolicyAnalysisQuery_ConditionContext_ToProto(mapCtx *direct.MapContext, 
 	}
 	return out
 }
+func IAMPolicyAnalysisQuery_ConditionContextObservedState_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_ConditionContext) *krm.IAMPolicyAnalysisQuery_ConditionContextObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.IAMPolicyAnalysisQuery_ConditionContextObservedState{}
+	// MISSING: AccessTime
+	return out
+}
+func IAMPolicyAnalysisQuery_ConditionContextObservedState_ToProto(mapCtx *direct.MapContext, in *krm.IAMPolicyAnalysisQuery_ConditionContextObservedState) *pb.IamPolicyAnalysisQuery_ConditionContext {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IamPolicyAnalysisQuery_ConditionContext{}
+	// MISSING: AccessTime
+	return out
+}
 func IAMPolicyAnalysisQuery_IdentitySelector_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_IdentitySelector) *krm.IAMPolicyAnalysisQuery_IdentitySelector {
 	if in == nil {
 		return nil
@@ -194,6 +298,22 @@ func IAMPolicyAnalysisQuery_IdentitySelector_ToProto(mapCtx *direct.MapContext, 
 	}
 	out := &pb.IamPolicyAnalysisQuery_IdentitySelector{}
 	out.Identity = direct.ValueOf(in.Identity)
+	return out
+}
+func IAMPolicyAnalysisQuery_IdentitySelectorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_IdentitySelector) *krm.IAMPolicyAnalysisQuery_IdentitySelectorObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.IAMPolicyAnalysisQuery_IdentitySelectorObservedState{}
+	// MISSING: Identity
+	return out
+}
+func IAMPolicyAnalysisQuery_IdentitySelectorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.IAMPolicyAnalysisQuery_IdentitySelectorObservedState) *pb.IamPolicyAnalysisQuery_IdentitySelector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IamPolicyAnalysisQuery_IdentitySelector{}
+	// MISSING: Identity
 	return out
 }
 func IAMPolicyAnalysisQuery_Options_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_Options) *krm.IAMPolicyAnalysisQuery_Options {
@@ -222,6 +342,32 @@ func IAMPolicyAnalysisQuery_Options_ToProto(mapCtx *direct.MapContext, in *krm.I
 	out.AnalyzeServiceAccountImpersonation = direct.ValueOf(in.AnalyzeServiceAccountImpersonation)
 	return out
 }
+func IAMPolicyAnalysisQuery_OptionsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_Options) *krm.IAMPolicyAnalysisQuery_OptionsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.IAMPolicyAnalysisQuery_OptionsObservedState{}
+	// MISSING: ExpandGroups
+	// MISSING: ExpandRoles
+	// MISSING: ExpandResources
+	// MISSING: OutputResourceEdges
+	// MISSING: OutputGroupEdges
+	// MISSING: AnalyzeServiceAccountImpersonation
+	return out
+}
+func IAMPolicyAnalysisQuery_OptionsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.IAMPolicyAnalysisQuery_OptionsObservedState) *pb.IamPolicyAnalysisQuery_Options {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IamPolicyAnalysisQuery_Options{}
+	// MISSING: ExpandGroups
+	// MISSING: ExpandRoles
+	// MISSING: ExpandResources
+	// MISSING: OutputResourceEdges
+	// MISSING: OutputGroupEdges
+	// MISSING: AnalyzeServiceAccountImpersonation
+	return out
+}
 func IAMPolicyAnalysisQuery_ResourceSelector_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_ResourceSelector) *krm.IAMPolicyAnalysisQuery_ResourceSelector {
 	if in == nil {
 		return nil
@@ -236,6 +382,38 @@ func IAMPolicyAnalysisQuery_ResourceSelector_ToProto(mapCtx *direct.MapContext, 
 	}
 	out := &pb.IamPolicyAnalysisQuery_ResourceSelector{}
 	out.FullResourceName = direct.ValueOf(in.FullResourceName)
+	return out
+}
+func IAMPolicyAnalysisQuery_ResourceSelectorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_ResourceSelector) *krm.IAMPolicyAnalysisQuery_ResourceSelectorObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.IAMPolicyAnalysisQuery_ResourceSelectorObservedState{}
+	// MISSING: FullResourceName
+	return out
+}
+func IAMPolicyAnalysisQuery_ResourceSelectorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.IAMPolicyAnalysisQuery_ResourceSelectorObservedState) *pb.IamPolicyAnalysisQuery_ResourceSelector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IamPolicyAnalysisQuery_ResourceSelector{}
+	// MISSING: FullResourceName
+	return out
+}
+func PubsubDestinationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PubsubDestination) *krm.PubsubDestinationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PubsubDestinationObservedState{}
+	// MISSING: Topic
+	return out
+}
+func PubsubDestinationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PubsubDestinationObservedState) *pb.PubsubDestination {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PubsubDestination{}
+	// MISSING: Topic
 	return out
 }
 func SavedQuery_QueryContent_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuery_QueryContent) *krm.SavedQuery_QueryContent {
@@ -254,5 +432,21 @@ func SavedQuery_QueryContent_ToProto(mapCtx *direct.MapContext, in *krm.SavedQue
 	if oneof := IAMPolicyAnalysisQuery_ToProto(mapCtx, in.IAMPolicyAnalysisQuery); oneof != nil {
 		out.QueryContent = &pb.SavedQuery_QueryContent_IamPolicyAnalysisQuery{IamPolicyAnalysisQuery: oneof}
 	}
+	return out
+}
+func SavedQuery_QueryContentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuery_QueryContent) *krm.SavedQuery_QueryContentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SavedQuery_QueryContentObservedState{}
+	// MISSING: IAMPolicyAnalysisQuery
+	return out
+}
+func SavedQuery_QueryContentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SavedQuery_QueryContentObservedState) *pb.SavedQuery_QueryContent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SavedQuery_QueryContent{}
+	// MISSING: IAMPolicyAnalysisQuery
 	return out
 }

@@ -105,3 +105,19 @@ func ParameterManagerParameterVersionSpec_ToProto(mapCtx *direct.MapContext, in 
 	out.Payload = ParameterVersionPayload_ToProto(mapCtx, in.Payload)
 	return out
 }
+func ParameterVersionPayloadObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ParameterVersionPayload) *krm.ParameterVersionPayloadObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ParameterVersionPayloadObservedState{}
+	// MISSING: Data
+	return out
+}
+func ParameterVersionPayloadObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ParameterVersionPayloadObservedState) *pb.ParameterVersionPayload {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ParameterVersionPayload{}
+	// MISSING: Data
+	return out
+}

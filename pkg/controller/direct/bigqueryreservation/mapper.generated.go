@@ -55,24 +55,66 @@ func BigQueryReservationAssignmentObservedState_ToProto(mapCtx *direct.MapContex
 	// MISSING: EnableGeminiInBigquery
 	return out
 }
-func Reservation_ReplicationStatus_FromProto(mapCtx *direct.MapContext, in *pb.Reservation_ReplicationStatus) *krm.Reservation_ReplicationStatus {
+func ReservationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.ReservationObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Reservation_ReplicationStatus{}
-	// MISSING: Error
-	// MISSING: LastErrorTime
-	// MISSING: LastReplicationTime
+	out := &krm.ReservationObservedState{}
+	// MISSING: Name
+	// MISSING: SlotCapacity
+	// MISSING: IgnoreIdleSlots
+	// MISSING: Autoscale
+	// MISSING: Concurrency
+	out.CreationTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreationTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: MultiRegionAuxiliary
+	// MISSING: Edition
+	out.PrimaryLocation = direct.LazyPtr(in.GetPrimaryLocation())
+	// MISSING: SecondaryLocation
+	out.OriginalPrimaryLocation = direct.LazyPtr(in.GetOriginalPrimaryLocation())
+	// MISSING: MaxSlots
+	// MISSING: ScalingMode
+	out.ReplicationStatus = Reservation_ReplicationStatusObservedState_FromProto(mapCtx, in.GetReplicationStatus())
 	return out
 }
-func Reservation_ReplicationStatus_ToProto(mapCtx *direct.MapContext, in *krm.Reservation_ReplicationStatus) *pb.Reservation_ReplicationStatus {
+func ReservationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ReservationObservedState) *pb.Reservation {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Reservation_ReplicationStatus{}
-	// MISSING: Error
-	// MISSING: LastErrorTime
-	// MISSING: LastReplicationTime
+	out := &pb.Reservation{}
+	// MISSING: Name
+	// MISSING: SlotCapacity
+	// MISSING: IgnoreIdleSlots
+	// MISSING: Autoscale
+	// MISSING: Concurrency
+	out.CreationTime = direct.StringTimestamp_ToProto(mapCtx, in.CreationTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: MultiRegionAuxiliary
+	// MISSING: Edition
+	out.PrimaryLocation = direct.ValueOf(in.PrimaryLocation)
+	// MISSING: SecondaryLocation
+	out.OriginalPrimaryLocation = direct.ValueOf(in.OriginalPrimaryLocation)
+	// MISSING: MaxSlots
+	// MISSING: ScalingMode
+	out.ReplicationStatus = Reservation_ReplicationStatusObservedState_ToProto(mapCtx, in.ReplicationStatus)
+	return out
+}
+func Reservation_Autoscale_FromProto(mapCtx *direct.MapContext, in *pb.Reservation_Autoscale) *krm.Reservation_Autoscale {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Reservation_Autoscale{}
+	// MISSING: CurrentSlots
+	out.MaxSlots = direct.LazyPtr(in.GetMaxSlots())
+	return out
+}
+func Reservation_Autoscale_ToProto(mapCtx *direct.MapContext, in *krm.Reservation_Autoscale) *pb.Reservation_Autoscale {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Reservation_Autoscale{}
+	// MISSING: CurrentSlots
+	out.MaxSlots = direct.ValueOf(in.MaxSlots)
 	return out
 }
 func Reservation_ReplicationStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservation_ReplicationStatus) *krm.Reservation_ReplicationStatusObservedState {
@@ -80,7 +122,7 @@ func Reservation_ReplicationStatusObservedState_FromProto(mapCtx *direct.MapCont
 		return nil
 	}
 	out := &krm.Reservation_ReplicationStatusObservedState{}
-	out.Error = Status_FromProto(mapCtx, in.GetError())
+	out.Error = StatusObservedState_FromProto(mapCtx, in.GetError())
 	out.LastErrorTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastErrorTime())
 	out.LastReplicationTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastReplicationTime())
 	return out
@@ -90,7 +132,7 @@ func Reservation_ReplicationStatusObservedState_ToProto(mapCtx *direct.MapContex
 		return nil
 	}
 	out := &pb.Reservation_ReplicationStatus{}
-	out.Error = Status_ToProto(mapCtx, in.Error)
+	out.Error = StatusObservedState_ToProto(mapCtx, in.Error)
 	out.LastErrorTime = direct.StringTimestamp_ToProto(mapCtx, in.LastErrorTime)
 	out.LastReplicationTime = direct.StringTimestamp_ToProto(mapCtx, in.LastReplicationTime)
 	return out

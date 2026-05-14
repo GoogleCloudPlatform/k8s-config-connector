@@ -106,6 +106,24 @@ func APITarget_ToProto(mapCtx *direct.MapContext, in *krm.APITarget) *pb.ApiTarg
 	out.Methods = in.Methods
 	return out
 }
+func APITargetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ApiTarget) *krm.APITargetObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APITargetObservedState{}
+	// MISSING: Service
+	// MISSING: Methods
+	return out
+}
+func APITargetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APITargetObservedState) *pb.ApiTarget {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApiTarget{}
+	// MISSING: Service
+	// MISSING: Methods
+	return out
+}
 func AndroidApplication_FromProto(mapCtx *direct.MapContext, in *pb.AndroidApplication) *krm.AndroidApplication {
 	if in == nil {
 		return nil
@@ -124,6 +142,24 @@ func AndroidApplication_ToProto(mapCtx *direct.MapContext, in *krm.AndroidApplic
 	out.PackageName = direct.ValueOf(in.PackageName)
 	return out
 }
+func AndroidApplicationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AndroidApplication) *krm.AndroidApplicationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AndroidApplicationObservedState{}
+	// MISSING: Sha1Fingerprint
+	// MISSING: PackageName
+	return out
+}
+func AndroidApplicationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AndroidApplicationObservedState) *pb.AndroidApplication {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AndroidApplication{}
+	// MISSING: Sha1Fingerprint
+	// MISSING: PackageName
+	return out
+}
 func AndroidKeyRestrictions_FromProto(mapCtx *direct.MapContext, in *pb.AndroidKeyRestrictions) *krm.AndroidKeyRestrictions {
 	if in == nil {
 		return nil
@@ -138,6 +174,22 @@ func AndroidKeyRestrictions_ToProto(mapCtx *direct.MapContext, in *krm.AndroidKe
 	}
 	out := &pb.AndroidKeyRestrictions{}
 	out.AllowedApplications = direct.Slice_ToProto(mapCtx, in.AllowedApplications, AndroidApplication_ToProto)
+	return out
+}
+func AndroidKeyRestrictionsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AndroidKeyRestrictions) *krm.AndroidKeyRestrictionsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AndroidKeyRestrictionsObservedState{}
+	// MISSING: AllowedApplications
+	return out
+}
+func AndroidKeyRestrictionsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AndroidKeyRestrictionsObservedState) *pb.AndroidKeyRestrictions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AndroidKeyRestrictions{}
+	// MISSING: AllowedApplications
 	return out
 }
 func BrowserKeyRestrictions_FromProto(mapCtx *direct.MapContext, in *pb.BrowserKeyRestrictions) *krm.BrowserKeyRestrictions {
@@ -156,6 +208,22 @@ func BrowserKeyRestrictions_ToProto(mapCtx *direct.MapContext, in *krm.BrowserKe
 	out.AllowedReferrers = in.AllowedReferrers
 	return out
 }
+func BrowserKeyRestrictionsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BrowserKeyRestrictions) *krm.BrowserKeyRestrictionsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BrowserKeyRestrictionsObservedState{}
+	// MISSING: AllowedReferrers
+	return out
+}
+func BrowserKeyRestrictionsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BrowserKeyRestrictionsObservedState) *pb.BrowserKeyRestrictions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BrowserKeyRestrictions{}
+	// MISSING: AllowedReferrers
+	return out
+}
 func IosKeyRestrictions_FromProto(mapCtx *direct.MapContext, in *pb.IosKeyRestrictions) *krm.IosKeyRestrictions {
 	if in == nil {
 		return nil
@@ -170,6 +238,22 @@ func IosKeyRestrictions_ToProto(mapCtx *direct.MapContext, in *krm.IosKeyRestric
 	}
 	out := &pb.IosKeyRestrictions{}
 	out.AllowedBundleIds = in.AllowedBundleIds
+	return out
+}
+func IosKeyRestrictionsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.IosKeyRestrictions) *krm.IosKeyRestrictionsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.IosKeyRestrictionsObservedState{}
+	// MISSING: AllowedBundleIds
+	return out
+}
+func IosKeyRestrictionsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.IosKeyRestrictionsObservedState) *pb.IosKeyRestrictions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IosKeyRestrictions{}
+	// MISSING: AllowedBundleIds
 	return out
 }
 func Restrictions_FromProto(mapCtx *direct.MapContext, in *pb.Restrictions) *krm.Restrictions {
@@ -204,6 +288,30 @@ func Restrictions_ToProto(mapCtx *direct.MapContext, in *krm.Restrictions) *pb.R
 	out.ApiTargets = direct.Slice_ToProto(mapCtx, in.APITargets, APITarget_ToProto)
 	return out
 }
+func RestrictionsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Restrictions) *krm.RestrictionsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RestrictionsObservedState{}
+	// MISSING: BrowserKeyRestrictions
+	// MISSING: ServerKeyRestrictions
+	// MISSING: AndroidKeyRestrictions
+	// MISSING: IosKeyRestrictions
+	// MISSING: APITargets
+	return out
+}
+func RestrictionsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RestrictionsObservedState) *pb.Restrictions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Restrictions{}
+	// MISSING: BrowserKeyRestrictions
+	// MISSING: ServerKeyRestrictions
+	// MISSING: AndroidKeyRestrictions
+	// MISSING: IosKeyRestrictions
+	// MISSING: APITargets
+	return out
+}
 func ServerKeyRestrictions_FromProto(mapCtx *direct.MapContext, in *pb.ServerKeyRestrictions) *krm.ServerKeyRestrictions {
 	if in == nil {
 		return nil
@@ -218,5 +326,21 @@ func ServerKeyRestrictions_ToProto(mapCtx *direct.MapContext, in *krm.ServerKeyR
 	}
 	out := &pb.ServerKeyRestrictions{}
 	out.AllowedIps = in.AllowedIps
+	return out
+}
+func ServerKeyRestrictionsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServerKeyRestrictions) *krm.ServerKeyRestrictionsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServerKeyRestrictionsObservedState{}
+	// MISSING: AllowedIps
+	return out
+}
+func ServerKeyRestrictionsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServerKeyRestrictionsObservedState) *pb.ServerKeyRestrictions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServerKeyRestrictions{}
+	// MISSING: AllowedIps
 	return out
 }

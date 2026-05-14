@@ -136,3 +136,23 @@ type ApplicationObservedState struct {
 	State *string `json:"state,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.apphub.v1.Attributes
+type AttributesObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.apphub.v1.ContactInfo
+type ContactInfoObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.apphub.v1.Criticality
+type CriticalityObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.apphub.v1.Environment
+type EnvironmentObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.apphub.v1.Scope
+type ScopeObservedState struct {
+}

@@ -328,6 +328,32 @@ func CleanupPolicyCondition_ToProto(mapCtx *direct.MapContext, in *krm.CleanupPo
 	out.NewerThan = direct.StringDuration_ToProto(mapCtx, in.NewerThan)
 	return out
 }
+func CleanupPolicyConditionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CleanupPolicyCondition) *krm.CleanupPolicyConditionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CleanupPolicyConditionObservedState{}
+	// MISSING: TagState
+	// MISSING: TagPrefixes
+	// MISSING: VersionNamePrefixes
+	// MISSING: PackageNamePrefixes
+	// MISSING: OlderThan
+	// MISSING: NewerThan
+	return out
+}
+func CleanupPolicyConditionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CleanupPolicyConditionObservedState) *pb.CleanupPolicyCondition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CleanupPolicyCondition{}
+	// MISSING: TagState
+	// MISSING: TagPrefixes
+	// MISSING: VersionNamePrefixes
+	// MISSING: PackageNamePrefixes
+	// MISSING: OlderThan
+	// MISSING: NewerThan
+	return out
+}
 func CleanupPolicyMostRecentVersions_FromProto(mapCtx *direct.MapContext, in *pb.CleanupPolicyMostRecentVersions) *krm.CleanupPolicyMostRecentVersions {
 	if in == nil {
 		return nil
@@ -344,6 +370,80 @@ func CleanupPolicyMostRecentVersions_ToProto(mapCtx *direct.MapContext, in *krm.
 	out := &pb.CleanupPolicyMostRecentVersions{}
 	out.PackageNamePrefixes = in.PackageNamePrefixes
 	out.KeepCount = in.KeepCount
+	return out
+}
+func CleanupPolicyMostRecentVersionsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CleanupPolicyMostRecentVersions) *krm.CleanupPolicyMostRecentVersionsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CleanupPolicyMostRecentVersionsObservedState{}
+	// MISSING: PackageNamePrefixes
+	// MISSING: KeepCount
+	return out
+}
+func CleanupPolicyMostRecentVersionsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CleanupPolicyMostRecentVersionsObservedState) *pb.CleanupPolicyMostRecentVersions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CleanupPolicyMostRecentVersions{}
+	// MISSING: PackageNamePrefixes
+	// MISSING: KeepCount
+	return out
+}
+func CleanupPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CleanupPolicy) *krm.CleanupPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CleanupPolicyObservedState{}
+	// MISSING: Condition
+	// MISSING: MostRecentVersions
+	// MISSING: ID
+	// MISSING: Action
+	return out
+}
+func CleanupPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CleanupPolicyObservedState) *pb.CleanupPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CleanupPolicy{}
+	// MISSING: Condition
+	// MISSING: MostRecentVersions
+	// MISSING: ID
+	// MISSING: Action
+	return out
+}
+func RemoteRepositoryConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig) *krm.RemoteRepositoryConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RemoteRepositoryConfigObservedState{}
+	// MISSING: DockerRepository
+	// MISSING: MavenRepository
+	// MISSING: NpmRepository
+	// MISSING: PythonRepository
+	// MISSING: AptRepository
+	// MISSING: YumRepository
+	// MISSING: CommonRepository
+	// MISSING: Description
+	// MISSING: UpstreamCredentials
+	// MISSING: DisableUpstreamValidation
+	return out
+}
+func RemoteRepositoryConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfigObservedState) *pb.RemoteRepositoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig{}
+	// MISSING: DockerRepository
+	// MISSING: MavenRepository
+	// MISSING: NpmRepository
+	// MISSING: PythonRepository
+	// MISSING: AptRepository
+	// MISSING: YumRepository
+	// MISSING: CommonRepository
+	// MISSING: Description
+	// MISSING: UpstreamCredentials
+	// MISSING: DisableUpstreamValidation
 	return out
 }
 func RemoteRepositoryConfig_AptRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_AptRepository) *krm.RemoteRepositoryConfig_AptRepository {
@@ -368,6 +468,24 @@ func RemoteRepositoryConfig_AptRepository_ToProto(mapCtx *direct.MapContext, in 
 	}
 	return out
 }
+func RemoteRepositoryConfig_AptRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_AptRepository) *krm.RemoteRepositoryConfig_AptRepositoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RemoteRepositoryConfig_AptRepositoryObservedState{}
+	// MISSING: PublicRepository
+	// MISSING: CustomRepository
+	return out
+}
+func RemoteRepositoryConfig_AptRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfig_AptRepositoryObservedState) *pb.RemoteRepositoryConfig_AptRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig_AptRepository{}
+	// MISSING: PublicRepository
+	// MISSING: CustomRepository
+	return out
+}
 func RemoteRepositoryConfig_AptRepository_CustomRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_AptRepository_CustomRepository) *krm.RemoteRepositoryConfig_AptRepository_CustomRepository {
 	if in == nil {
 		return nil
@@ -382,6 +500,22 @@ func RemoteRepositoryConfig_AptRepository_CustomRepository_ToProto(mapCtx *direc
 	}
 	out := &pb.RemoteRepositoryConfig_AptRepository_CustomRepository{}
 	out.Uri = direct.ValueOf(in.URI)
+	return out
+}
+func RemoteRepositoryConfig_AptRepository_CustomRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_AptRepository_CustomRepository) *krm.RemoteRepositoryConfig_AptRepository_CustomRepositoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RemoteRepositoryConfig_AptRepository_CustomRepositoryObservedState{}
+	// MISSING: URI
+	return out
+}
+func RemoteRepositoryConfig_AptRepository_CustomRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfig_AptRepository_CustomRepositoryObservedState) *pb.RemoteRepositoryConfig_AptRepository_CustomRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig_AptRepository_CustomRepository{}
+	// MISSING: URI
 	return out
 }
 func RemoteRepositoryConfig_AptRepository_PublicRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_AptRepository_PublicRepository) *krm.RemoteRepositoryConfig_AptRepository_PublicRepository {
@@ -402,6 +536,24 @@ func RemoteRepositoryConfig_AptRepository_PublicRepository_ToProto(mapCtx *direc
 	out.RepositoryPath = direct.ValueOf(in.RepositoryPath)
 	return out
 }
+func RemoteRepositoryConfig_AptRepository_PublicRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_AptRepository_PublicRepository) *krm.RemoteRepositoryConfig_AptRepository_PublicRepositoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RemoteRepositoryConfig_AptRepository_PublicRepositoryObservedState{}
+	// MISSING: RepositoryBase
+	// MISSING: RepositoryPath
+	return out
+}
+func RemoteRepositoryConfig_AptRepository_PublicRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfig_AptRepository_PublicRepositoryObservedState) *pb.RemoteRepositoryConfig_AptRepository_PublicRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig_AptRepository_PublicRepository{}
+	// MISSING: RepositoryBase
+	// MISSING: RepositoryPath
+	return out
+}
 func RemoteRepositoryConfig_CommonRemoteRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_CommonRemoteRepository) *krm.RemoteRepositoryConfig_CommonRemoteRepository {
 	if in == nil {
 		return nil
@@ -416,6 +568,40 @@ func RemoteRepositoryConfig_CommonRemoteRepository_ToProto(mapCtx *direct.MapCon
 	}
 	out := &pb.RemoteRepositoryConfig_CommonRemoteRepository{}
 	out.Uri = direct.ValueOf(in.URI)
+	return out
+}
+func RemoteRepositoryConfig_CommonRemoteRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_CommonRemoteRepository) *krm.RemoteRepositoryConfig_CommonRemoteRepositoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RemoteRepositoryConfig_CommonRemoteRepositoryObservedState{}
+	// MISSING: URI
+	return out
+}
+func RemoteRepositoryConfig_CommonRemoteRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfig_CommonRemoteRepositoryObservedState) *pb.RemoteRepositoryConfig_CommonRemoteRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig_CommonRemoteRepository{}
+	// MISSING: URI
+	return out
+}
+func RemoteRepositoryConfig_DockerRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_DockerRepository) *krm.RemoteRepositoryConfig_DockerRepositoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RemoteRepositoryConfig_DockerRepositoryObservedState{}
+	// MISSING: PublicRepository
+	// MISSING: CustomRepository
+	return out
+}
+func RemoteRepositoryConfig_DockerRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfig_DockerRepositoryObservedState) *pb.RemoteRepositoryConfig_DockerRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig_DockerRepository{}
+	// MISSING: PublicRepository
+	// MISSING: CustomRepository
 	return out
 }
 func RemoteRepositoryConfig_DockerRepository_CustomRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_DockerRepository_CustomRepository) *krm.RemoteRepositoryConfig_DockerRepository_CustomRepository {
@@ -434,6 +620,40 @@ func RemoteRepositoryConfig_DockerRepository_CustomRepository_ToProto(mapCtx *di
 	out.Uri = direct.ValueOf(in.URI)
 	return out
 }
+func RemoteRepositoryConfig_DockerRepository_CustomRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_DockerRepository_CustomRepository) *krm.RemoteRepositoryConfig_DockerRepository_CustomRepositoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RemoteRepositoryConfig_DockerRepository_CustomRepositoryObservedState{}
+	// MISSING: URI
+	return out
+}
+func RemoteRepositoryConfig_DockerRepository_CustomRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfig_DockerRepository_CustomRepositoryObservedState) *pb.RemoteRepositoryConfig_DockerRepository_CustomRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig_DockerRepository_CustomRepository{}
+	// MISSING: URI
+	return out
+}
+func RemoteRepositoryConfig_MavenRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_MavenRepository) *krm.RemoteRepositoryConfig_MavenRepositoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RemoteRepositoryConfig_MavenRepositoryObservedState{}
+	// MISSING: PublicRepository
+	// MISSING: CustomRepository
+	return out
+}
+func RemoteRepositoryConfig_MavenRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfig_MavenRepositoryObservedState) *pb.RemoteRepositoryConfig_MavenRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig_MavenRepository{}
+	// MISSING: PublicRepository
+	// MISSING: CustomRepository
+	return out
+}
 func RemoteRepositoryConfig_MavenRepository_CustomRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_MavenRepository_CustomRepository) *krm.RemoteRepositoryConfig_MavenRepository_CustomRepository {
 	if in == nil {
 		return nil
@@ -448,6 +668,40 @@ func RemoteRepositoryConfig_MavenRepository_CustomRepository_ToProto(mapCtx *dir
 	}
 	out := &pb.RemoteRepositoryConfig_MavenRepository_CustomRepository{}
 	out.Uri = direct.ValueOf(in.URI)
+	return out
+}
+func RemoteRepositoryConfig_MavenRepository_CustomRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_MavenRepository_CustomRepository) *krm.RemoteRepositoryConfig_MavenRepository_CustomRepositoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RemoteRepositoryConfig_MavenRepository_CustomRepositoryObservedState{}
+	// MISSING: URI
+	return out
+}
+func RemoteRepositoryConfig_MavenRepository_CustomRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfig_MavenRepository_CustomRepositoryObservedState) *pb.RemoteRepositoryConfig_MavenRepository_CustomRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig_MavenRepository_CustomRepository{}
+	// MISSING: URI
+	return out
+}
+func RemoteRepositoryConfig_NpmRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_NpmRepository) *krm.RemoteRepositoryConfig_NpmRepositoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RemoteRepositoryConfig_NpmRepositoryObservedState{}
+	// MISSING: PublicRepository
+	// MISSING: CustomRepository
+	return out
+}
+func RemoteRepositoryConfig_NpmRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfig_NpmRepositoryObservedState) *pb.RemoteRepositoryConfig_NpmRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig_NpmRepository{}
+	// MISSING: PublicRepository
+	// MISSING: CustomRepository
 	return out
 }
 func RemoteRepositoryConfig_NpmRepository_CustomRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_NpmRepository_CustomRepository) *krm.RemoteRepositoryConfig_NpmRepository_CustomRepository {
@@ -466,6 +720,40 @@ func RemoteRepositoryConfig_NpmRepository_CustomRepository_ToProto(mapCtx *direc
 	out.Uri = direct.ValueOf(in.URI)
 	return out
 }
+func RemoteRepositoryConfig_NpmRepository_CustomRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_NpmRepository_CustomRepository) *krm.RemoteRepositoryConfig_NpmRepository_CustomRepositoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RemoteRepositoryConfig_NpmRepository_CustomRepositoryObservedState{}
+	// MISSING: URI
+	return out
+}
+func RemoteRepositoryConfig_NpmRepository_CustomRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfig_NpmRepository_CustomRepositoryObservedState) *pb.RemoteRepositoryConfig_NpmRepository_CustomRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig_NpmRepository_CustomRepository{}
+	// MISSING: URI
+	return out
+}
+func RemoteRepositoryConfig_PythonRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_PythonRepository) *krm.RemoteRepositoryConfig_PythonRepositoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RemoteRepositoryConfig_PythonRepositoryObservedState{}
+	// MISSING: PublicRepository
+	// MISSING: CustomRepository
+	return out
+}
+func RemoteRepositoryConfig_PythonRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfig_PythonRepositoryObservedState) *pb.RemoteRepositoryConfig_PythonRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig_PythonRepository{}
+	// MISSING: PublicRepository
+	// MISSING: CustomRepository
+	return out
+}
 func RemoteRepositoryConfig_PythonRepository_CustomRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_PythonRepository_CustomRepository) *krm.RemoteRepositoryConfig_PythonRepository_CustomRepository {
 	if in == nil {
 		return nil
@@ -480,6 +768,22 @@ func RemoteRepositoryConfig_PythonRepository_CustomRepository_ToProto(mapCtx *di
 	}
 	out := &pb.RemoteRepositoryConfig_PythonRepository_CustomRepository{}
 	out.Uri = direct.ValueOf(in.URI)
+	return out
+}
+func RemoteRepositoryConfig_PythonRepository_CustomRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_PythonRepository_CustomRepository) *krm.RemoteRepositoryConfig_PythonRepository_CustomRepositoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RemoteRepositoryConfig_PythonRepository_CustomRepositoryObservedState{}
+	// MISSING: URI
+	return out
+}
+func RemoteRepositoryConfig_PythonRepository_CustomRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfig_PythonRepository_CustomRepositoryObservedState) *pb.RemoteRepositoryConfig_PythonRepository_CustomRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig_PythonRepository_CustomRepository{}
+	// MISSING: URI
 	return out
 }
 func RemoteRepositoryConfig_UpstreamCredentials_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_UpstreamCredentials) *krm.RemoteRepositoryConfig_UpstreamCredentials {
@@ -500,6 +804,22 @@ func RemoteRepositoryConfig_UpstreamCredentials_ToProto(mapCtx *direct.MapContex
 	}
 	return out
 }
+func RemoteRepositoryConfig_UpstreamCredentialsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_UpstreamCredentials) *krm.RemoteRepositoryConfig_UpstreamCredentialsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RemoteRepositoryConfig_UpstreamCredentialsObservedState{}
+	// MISSING: UsernamePasswordCredentials
+	return out
+}
+func RemoteRepositoryConfig_UpstreamCredentialsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfig_UpstreamCredentialsObservedState) *pb.RemoteRepositoryConfig_UpstreamCredentials {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig_UpstreamCredentials{}
+	// MISSING: UsernamePasswordCredentials
+	return out
+}
 func RemoteRepositoryConfig_UpstreamCredentials_UsernamePasswordCredentials_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_UpstreamCredentials_UsernamePasswordCredentials) *krm.RemoteRepositoryConfig_UpstreamCredentials_UsernamePasswordCredentials {
 	if in == nil {
 		return nil
@@ -516,6 +836,24 @@ func RemoteRepositoryConfig_UpstreamCredentials_UsernamePasswordCredentials_ToPr
 	out := &pb.RemoteRepositoryConfig_UpstreamCredentials_UsernamePasswordCredentials{}
 	out.Username = direct.ValueOf(in.Username)
 	out.PasswordSecretVersion = direct.ValueOf(in.PasswordSecretVersion)
+	return out
+}
+func RemoteRepositoryConfig_UpstreamCredentials_UsernamePasswordCredentialsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_UpstreamCredentials_UsernamePasswordCredentials) *krm.RemoteRepositoryConfig_UpstreamCredentials_UsernamePasswordCredentialsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RemoteRepositoryConfig_UpstreamCredentials_UsernamePasswordCredentialsObservedState{}
+	// MISSING: Username
+	// MISSING: PasswordSecretVersion
+	return out
+}
+func RemoteRepositoryConfig_UpstreamCredentials_UsernamePasswordCredentialsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfig_UpstreamCredentials_UsernamePasswordCredentialsObservedState) *pb.RemoteRepositoryConfig_UpstreamCredentials_UsernamePasswordCredentials {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig_UpstreamCredentials_UsernamePasswordCredentials{}
+	// MISSING: Username
+	// MISSING: PasswordSecretVersion
 	return out
 }
 func RemoteRepositoryConfig_YumRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_YumRepository) *krm.RemoteRepositoryConfig_YumRepository {
@@ -540,6 +878,24 @@ func RemoteRepositoryConfig_YumRepository_ToProto(mapCtx *direct.MapContext, in 
 	}
 	return out
 }
+func RemoteRepositoryConfig_YumRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_YumRepository) *krm.RemoteRepositoryConfig_YumRepositoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RemoteRepositoryConfig_YumRepositoryObservedState{}
+	// MISSING: PublicRepository
+	// MISSING: CustomRepository
+	return out
+}
+func RemoteRepositoryConfig_YumRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfig_YumRepositoryObservedState) *pb.RemoteRepositoryConfig_YumRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig_YumRepository{}
+	// MISSING: PublicRepository
+	// MISSING: CustomRepository
+	return out
+}
 func RemoteRepositoryConfig_YumRepository_CustomRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_YumRepository_CustomRepository) *krm.RemoteRepositoryConfig_YumRepository_CustomRepository {
 	if in == nil {
 		return nil
@@ -554,6 +910,22 @@ func RemoteRepositoryConfig_YumRepository_CustomRepository_ToProto(mapCtx *direc
 	}
 	out := &pb.RemoteRepositoryConfig_YumRepository_CustomRepository{}
 	out.Uri = direct.ValueOf(in.URI)
+	return out
+}
+func RemoteRepositoryConfig_YumRepository_CustomRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_YumRepository_CustomRepository) *krm.RemoteRepositoryConfig_YumRepository_CustomRepositoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RemoteRepositoryConfig_YumRepository_CustomRepositoryObservedState{}
+	// MISSING: URI
+	return out
+}
+func RemoteRepositoryConfig_YumRepository_CustomRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfig_YumRepository_CustomRepositoryObservedState) *pb.RemoteRepositoryConfig_YumRepository_CustomRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig_YumRepository_CustomRepository{}
+	// MISSING: URI
 	return out
 }
 func RemoteRepositoryConfig_YumRepository_PublicRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_YumRepository_PublicRepository) *krm.RemoteRepositoryConfig_YumRepository_PublicRepository {
@@ -574,6 +946,78 @@ func RemoteRepositoryConfig_YumRepository_PublicRepository_ToProto(mapCtx *direc
 	out.RepositoryPath = direct.ValueOf(in.RepositoryPath)
 	return out
 }
+func RemoteRepositoryConfig_YumRepository_PublicRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_YumRepository_PublicRepository) *krm.RemoteRepositoryConfig_YumRepository_PublicRepositoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RemoteRepositoryConfig_YumRepository_PublicRepositoryObservedState{}
+	// MISSING: RepositoryBase
+	// MISSING: RepositoryPath
+	return out
+}
+func RemoteRepositoryConfig_YumRepository_PublicRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfig_YumRepository_PublicRepositoryObservedState) *pb.RemoteRepositoryConfig_YumRepository_PublicRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig_YumRepository_PublicRepository{}
+	// MISSING: RepositoryBase
+	// MISSING: RepositoryPath
+	return out
+}
+func RepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.RepositoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RepositoryObservedState{}
+	// MISSING: MavenConfig
+	// MISSING: DockerConfig
+	// MISSING: VirtualRepositoryConfig
+	// MISSING: RemoteRepositoryConfig
+	// MISSING: Name
+	// MISSING: Format
+	// MISSING: Description
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: KMSKeyName
+	// MISSING: Mode
+	// MISSING: CleanupPolicies
+	out.SizeBytes = direct.LazyPtr(in.GetSizeBytes())
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	// MISSING: CleanupPolicyDryRun
+	// MISSING: VulnerabilityScanningConfig
+	// MISSING: DisallowUnspecifiedMode
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	out.RegistryURI = direct.LazyPtr(in.GetRegistryUri())
+	return out
+}
+func RepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RepositoryObservedState) *pb.Repository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Repository{}
+	// MISSING: MavenConfig
+	// MISSING: DockerConfig
+	// MISSING: VirtualRepositoryConfig
+	// MISSING: RemoteRepositoryConfig
+	// MISSING: Name
+	// MISSING: Format
+	// MISSING: Description
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: KMSKeyName
+	// MISSING: Mode
+	// MISSING: CleanupPolicies
+	out.SizeBytes = direct.ValueOf(in.SizeBytes)
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	// MISSING: CleanupPolicyDryRun
+	// MISSING: VulnerabilityScanningConfig
+	// MISSING: DisallowUnspecifiedMode
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+	out.RegistryUri = direct.ValueOf(in.RegistryURI)
+	return out
+}
 func Repository_DockerRepositoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.Repository_DockerRepositoryConfig) *krm.Repository_DockerRepositoryConfig {
 	if in == nil {
 		return nil
@@ -588,6 +1032,22 @@ func Repository_DockerRepositoryConfig_ToProto(mapCtx *direct.MapContext, in *kr
 	}
 	out := &pb.Repository_DockerRepositoryConfig{}
 	out.ImmutableTags = direct.ValueOf(in.ImmutableTags)
+	return out
+}
+func Repository_DockerRepositoryConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Repository_DockerRepositoryConfig) *krm.Repository_DockerRepositoryConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Repository_DockerRepositoryConfigObservedState{}
+	// MISSING: ImmutableTags
+	return out
+}
+func Repository_DockerRepositoryConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Repository_DockerRepositoryConfigObservedState) *pb.Repository_DockerRepositoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Repository_DockerRepositoryConfig{}
+	// MISSING: ImmutableTags
 	return out
 }
 func Repository_MavenRepositoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.Repository_MavenRepositoryConfig) *krm.Repository_MavenRepositoryConfig {
@@ -606,6 +1066,24 @@ func Repository_MavenRepositoryConfig_ToProto(mapCtx *direct.MapContext, in *krm
 	out := &pb.Repository_MavenRepositoryConfig{}
 	out.AllowSnapshotOverwrites = direct.ValueOf(in.AllowSnapshotOverwrites)
 	out.VersionPolicy = direct.Enum_ToProto[pb.Repository_MavenRepositoryConfig_VersionPolicy](mapCtx, in.VersionPolicy)
+	return out
+}
+func Repository_MavenRepositoryConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Repository_MavenRepositoryConfig) *krm.Repository_MavenRepositoryConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Repository_MavenRepositoryConfigObservedState{}
+	// MISSING: AllowSnapshotOverwrites
+	// MISSING: VersionPolicy
+	return out
+}
+func Repository_MavenRepositoryConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Repository_MavenRepositoryConfigObservedState) *pb.Repository_MavenRepositoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Repository_MavenRepositoryConfig{}
+	// MISSING: AllowSnapshotOverwrites
+	// MISSING: VersionPolicy
 	return out
 }
 func Repository_VulnerabilityScanningConfig_FromProto(mapCtx *direct.MapContext, in *pb.Repository_VulnerabilityScanningConfig) *krm.Repository_VulnerabilityScanningConfig {
@@ -650,5 +1128,41 @@ func Repository_VulnerabilityScanningConfigObservedState_ToProto(mapCtx *direct.
 	out.LastEnableTime = direct.StringTimestamp_ToProto(mapCtx, in.LastEnableTime)
 	out.EnablementState = direct.Enum_ToProto[pb.Repository_VulnerabilityScanningConfig_EnablementState](mapCtx, in.EnablementState)
 	out.EnablementStateReason = direct.ValueOf(in.EnablementStateReason)
+	return out
+}
+func UpstreamPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.UpstreamPolicy) *krm.UpstreamPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UpstreamPolicyObservedState{}
+	// MISSING: ID
+	// MISSING: Repository
+	// MISSING: Priority
+	return out
+}
+func UpstreamPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.UpstreamPolicyObservedState) *pb.UpstreamPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UpstreamPolicy{}
+	// MISSING: ID
+	// MISSING: Repository
+	// MISSING: Priority
+	return out
+}
+func VirtualRepositoryConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VirtualRepositoryConfig) *krm.VirtualRepositoryConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VirtualRepositoryConfigObservedState{}
+	// MISSING: UpstreamPolicies
+	return out
+}
+func VirtualRepositoryConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VirtualRepositoryConfigObservedState) *pb.VirtualRepositoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VirtualRepositoryConfig{}
+	// MISSING: UpstreamPolicies
 	return out
 }

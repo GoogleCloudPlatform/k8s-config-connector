@@ -20,6 +20,12 @@
 
 package workstations
 
+import (
+	pb "cloud.google.com/go/workstations/apiv1/workstationspb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workstations/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+)
+
 /* found existing non-generated mapping function "WorkstationClusterObservedState_FromProto", skipping
 func WorkstationClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationCluster) *krm.WorkstationClusterObservedState {
 	if in == nil {
@@ -118,19 +124,43 @@ func WorkstationCluster_PrivateClusterConfig_FromProto(mapCtx *direct.MapContext
 }
 */
 
-/* found existing non-generated mapping function "WorkstationCluster_PrivateClusterConfig_ToProto", skipping
-func WorkstationCluster_PrivateClusterConfig_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationCluster_PrivateClusterConfig) *pb.WorkstationCluster_PrivateClusterConfig {
+/*
+found existing non-generated mapping function "WorkstationCluster_PrivateClusterConfig_ToProto", skipping
+
+	func WorkstationCluster_PrivateClusterConfig_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationCluster_PrivateClusterConfig) *pb.WorkstationCluster_PrivateClusterConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.WorkstationCluster_PrivateClusterConfig{}
+		out.EnablePrivateEndpoint = direct.ValueOf(in.EnablePrivateEndpoint)
+		// MISSING: ClusterHostname
+		// MISSING: ServiceAttachmentURI
+		out.AllowedProjects = WorkstationCluster_PrivateClusterConfig_AllowedProjects_ToProto(mapCtx, in.AllowedProjects)
+		return out
+	}
+*/
+func WorkstationCluster_PrivateClusterConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationCluster_PrivateClusterConfig) *krm.WorkstationCluster_PrivateClusterConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WorkstationCluster_PrivateClusterConfigObservedState{}
+	// MISSING: EnablePrivateEndpoint
+	out.ClusterHostname = direct.LazyPtr(in.GetClusterHostname())
+	out.ServiceAttachmentURI = direct.LazyPtr(in.GetServiceAttachmentUri())
+	// MISSING: AllowedProjects
+	return out
+}
+func WorkstationCluster_PrivateClusterConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationCluster_PrivateClusterConfigObservedState) *pb.WorkstationCluster_PrivateClusterConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.WorkstationCluster_PrivateClusterConfig{}
-	out.EnablePrivateEndpoint = direct.ValueOf(in.EnablePrivateEndpoint)
-	// MISSING: ClusterHostname
-	// MISSING: ServiceAttachmentURI
-	out.AllowedProjects = WorkstationCluster_PrivateClusterConfig_AllowedProjects_ToProto(mapCtx, in.AllowedProjects)
+	// MISSING: EnablePrivateEndpoint
+	out.ClusterHostname = direct.ValueOf(in.ClusterHostname)
+	out.ServiceAttachmentUri = direct.ValueOf(in.ServiceAttachmentURI)
+	// MISSING: AllowedProjects
 	return out
 }
-*/
 
 /* found existing non-generated mapping function "WorkstationConfigObservedState_FromProto", skipping
 func WorkstationConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig) *krm.WorkstationConfigObservedState {
@@ -240,21 +270,49 @@ func WorkstationConfig_Container_FromProto(mapCtx *direct.MapContext, in *pb.Wor
 }
 */
 
-/* found existing non-generated mapping function "WorkstationConfig_Container_ToProto", skipping
-func WorkstationConfig_Container_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_Container) *pb.WorkstationConfig_Container {
+/*
+found existing non-generated mapping function "WorkstationConfig_Container_ToProto", skipping
+
+	func WorkstationConfig_Container_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_Container) *pb.WorkstationConfig_Container {
+		if in == nil {
+			return nil
+		}
+		out := &pb.WorkstationConfig_Container{}
+		out.Image = direct.ValueOf(in.Image)
+		out.Command = in.Command
+		out.Args = in.Args
+		out.Env = in.Env
+		out.WorkingDir = direct.ValueOf(in.WorkingDir)
+		out.RunAsUser = direct.ValueOf(in.RunAsUser)
+		return out
+	}
+*/
+func WorkstationConfig_ContainerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig_Container) *krm.WorkstationConfig_ContainerObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WorkstationConfig_ContainerObservedState{}
+	// MISSING: Image
+	// MISSING: Command
+	// MISSING: Args
+	// MISSING: Env
+	// MISSING: WorkingDir
+	// MISSING: RunAsUser
+	return out
+}
+func WorkstationConfig_ContainerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_ContainerObservedState) *pb.WorkstationConfig_Container {
 	if in == nil {
 		return nil
 	}
 	out := &pb.WorkstationConfig_Container{}
-	out.Image = direct.ValueOf(in.Image)
-	out.Command = in.Command
-	out.Args = in.Args
-	out.Env = in.Env
-	out.WorkingDir = direct.ValueOf(in.WorkingDir)
-	out.RunAsUser = direct.ValueOf(in.RunAsUser)
+	// MISSING: Image
+	// MISSING: Command
+	// MISSING: Args
+	// MISSING: Env
+	// MISSING: WorkingDir
+	// MISSING: RunAsUser
 	return out
 }
-*/
 
 /* found existing non-generated mapping function "WorkstationConfig_CustomerEncryptionKey_FromProto", skipping
 func WorkstationConfig_CustomerEncryptionKey_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig_CustomerEncryptionKey) *krm.WorkstationConfig_CustomerEncryptionKey {
@@ -268,8 +326,29 @@ func WorkstationConfig_CustomerEncryptionKey_FromProto(mapCtx *direct.MapContext
 }
 */
 
-/* found existing non-generated mapping function "WorkstationConfig_CustomerEncryptionKey_ToProto", skipping
-func WorkstationConfig_CustomerEncryptionKey_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_CustomerEncryptionKey) *pb.WorkstationConfig_CustomerEncryptionKey {
+/*
+found existing non-generated mapping function "WorkstationConfig_CustomerEncryptionKey_ToProto", skipping
+
+	func WorkstationConfig_CustomerEncryptionKey_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_CustomerEncryptionKey) *pb.WorkstationConfig_CustomerEncryptionKey {
+		if in == nil {
+			return nil
+		}
+		out := &pb.WorkstationConfig_CustomerEncryptionKey{}
+		// MISSING: KMSKey
+		// MISSING: KMSKeyServiceAccount
+		return out
+	}
+*/
+func WorkstationConfig_CustomerEncryptionKeyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig_CustomerEncryptionKey) *krm.WorkstationConfig_CustomerEncryptionKeyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WorkstationConfig_CustomerEncryptionKeyObservedState{}
+	// MISSING: KMSKey
+	// MISSING: KMSKeyServiceAccount
+	return out
+}
+func WorkstationConfig_CustomerEncryptionKeyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_CustomerEncryptionKeyObservedState) *pb.WorkstationConfig_CustomerEncryptionKey {
 	if in == nil {
 		return nil
 	}
@@ -278,7 +357,6 @@ func WorkstationConfig_CustomerEncryptionKey_ToProto(mapCtx *direct.MapContext, 
 	// MISSING: KMSKeyServiceAccount
 	return out
 }
-*/
 
 /* found existing non-generated mapping function "WorkstationConfig_Host_FromProto", skipping
 func WorkstationConfig_Host_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig_Host) *krm.WorkstationConfig_Host {
@@ -316,17 +394,55 @@ func WorkstationConfig_HostObservedState_FromProto(mapCtx *direct.MapContext, in
 }
 */
 
-/* found existing non-generated mapping function "WorkstationConfig_HostObservedState_ToProto", skipping
-func WorkstationConfig_HostObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_HostObservedState) *pb.WorkstationConfig_Host {
+/*
+found existing non-generated mapping function "WorkstationConfig_HostObservedState_ToProto", skipping
+
+	func WorkstationConfig_HostObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_HostObservedState) *pb.WorkstationConfig_Host {
+		if in == nil {
+			return nil
+		}
+		out := &pb.WorkstationConfig_Host{}
+		// MISSING: GCEInstance
+		// (near miss): "GCEInstance" vs "GceInstance"
+		return out
+	}
+*/
+func WorkstationConfig_Host_GCEInstance_GCEConfidentialInstanceConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig_Host_GceInstance_GceConfidentialInstanceConfig) *krm.WorkstationConfig_Host_GCEInstance_GCEConfidentialInstanceConfigObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.WorkstationConfig_Host{}
-	// MISSING: GCEInstance
-	// (near miss): "GCEInstance" vs "GceInstance"
+	out := &krm.WorkstationConfig_Host_GCEInstance_GCEConfidentialInstanceConfigObservedState{}
+	// MISSING: EnableConfidentialCompute
 	return out
 }
-*/
+func WorkstationConfig_Host_GCEInstance_GCEConfidentialInstanceConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_Host_GCEInstance_GCEConfidentialInstanceConfigObservedState) *pb.WorkstationConfig_Host_GceInstance_GceConfidentialInstanceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WorkstationConfig_Host_GceInstance_GceConfidentialInstanceConfig{}
+	// MISSING: EnableConfidentialCompute
+	return out
+}
+func WorkstationConfig_Host_GCEInstance_GCEShieldedInstanceConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig_Host_GceInstance_GceShieldedInstanceConfig) *krm.WorkstationConfig_Host_GCEInstance_GCEShieldedInstanceConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WorkstationConfig_Host_GCEInstance_GCEShieldedInstanceConfigObservedState{}
+	// MISSING: EnableSecureBoot
+	// MISSING: EnableVTPM
+	// MISSING: EnableIntegrityMonitoring
+	return out
+}
+func WorkstationConfig_Host_GCEInstance_GCEShieldedInstanceConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_Host_GCEInstance_GCEShieldedInstanceConfigObservedState) *pb.WorkstationConfig_Host_GceInstance_GceShieldedInstanceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WorkstationConfig_Host_GceInstance_GceShieldedInstanceConfig{}
+	// MISSING: EnableSecureBoot
+	// MISSING: EnableVTPM
+	// MISSING: EnableIntegrityMonitoring
+	return out
+}
 
 /* found existing non-generated mapping function "WorkstationConfig_Host_GceInstance_FromProto", skipping
 func WorkstationConfig_Host_GceInstance_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig_Host_GceInstance) *krm.WorkstationConfig_Host_GceInstance {
@@ -477,18 +593,62 @@ func WorkstationConfig_PersistentDirectory_FromProto(mapCtx *direct.MapContext, 
 }
 */
 
-/* found existing non-generated mapping function "WorkstationConfig_PersistentDirectory_ToProto", skipping
-func WorkstationConfig_PersistentDirectory_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_PersistentDirectory) *pb.WorkstationConfig_PersistentDirectory {
+/*
+found existing non-generated mapping function "WorkstationConfig_PersistentDirectory_ToProto", skipping
+
+	func WorkstationConfig_PersistentDirectory_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_PersistentDirectory) *pb.WorkstationConfig_PersistentDirectory {
+		if in == nil {
+			return nil
+		}
+		out := &pb.WorkstationConfig_PersistentDirectory{}
+		// MISSING: GCEPD
+		// (near miss): "GCEPD" vs "GcePD"
+		out.MountPath = direct.ValueOf(in.MountPath)
+		return out
+	}
+*/
+func WorkstationConfig_PersistentDirectoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig_PersistentDirectory) *krm.WorkstationConfig_PersistentDirectoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WorkstationConfig_PersistentDirectoryObservedState{}
+	// MISSING: GCEPD
+	// MISSING: MountPath
+	return out
+}
+func WorkstationConfig_PersistentDirectoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_PersistentDirectoryObservedState) *pb.WorkstationConfig_PersistentDirectory {
 	if in == nil {
 		return nil
 	}
 	out := &pb.WorkstationConfig_PersistentDirectory{}
 	// MISSING: GCEPD
-	// (near miss): "GCEPD" vs "GcePD"
-	out.MountPath = direct.ValueOf(in.MountPath)
+	// MISSING: MountPath
 	return out
 }
-*/
+func WorkstationConfig_PersistentDirectory_GCERegionalPersistentDiskObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk) *krm.WorkstationConfig_PersistentDirectory_GCERegionalPersistentDiskObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WorkstationConfig_PersistentDirectory_GCERegionalPersistentDiskObservedState{}
+	// MISSING: SizeGB
+	// MISSING: FSType
+	// MISSING: DiskType
+	// MISSING: SourceSnapshot
+	// MISSING: ReclaimPolicy
+	return out
+}
+func WorkstationConfig_PersistentDirectory_GCERegionalPersistentDiskObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_PersistentDirectory_GCERegionalPersistentDiskObservedState) *pb.WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk{}
+	// MISSING: SizeGB
+	// MISSING: FSType
+	// MISSING: DiskType
+	// MISSING: SourceSnapshot
+	// MISSING: ReclaimPolicy
+	return out
+}
 
 /* found existing non-generated mapping function "WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk_FromProto", skipping
 func WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk) *krm.WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk {
@@ -532,17 +692,37 @@ func WorkstationConfig_ReadinessCheck_FromProto(mapCtx *direct.MapContext, in *p
 }
 */
 
-/* found existing non-generated mapping function "WorkstationConfig_ReadinessCheck_ToProto", skipping
-func WorkstationConfig_ReadinessCheck_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_ReadinessCheck) *pb.WorkstationConfig_ReadinessCheck {
+/*
+found existing non-generated mapping function "WorkstationConfig_ReadinessCheck_ToProto", skipping
+
+	func WorkstationConfig_ReadinessCheck_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_ReadinessCheck) *pb.WorkstationConfig_ReadinessCheck {
+		if in == nil {
+			return nil
+		}
+		out := &pb.WorkstationConfig_ReadinessCheck{}
+		out.Path = direct.ValueOf(in.Path)
+		out.Port = direct.ValueOf(in.Port)
+		return out
+	}
+*/
+func WorkstationConfig_ReadinessCheckObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkstationConfig_ReadinessCheck) *krm.WorkstationConfig_ReadinessCheckObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WorkstationConfig_ReadinessCheckObservedState{}
+	// MISSING: Path
+	// MISSING: Port
+	return out
+}
+func WorkstationConfig_ReadinessCheckObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationConfig_ReadinessCheckObservedState) *pb.WorkstationConfig_ReadinessCheck {
 	if in == nil {
 		return nil
 	}
 	out := &pb.WorkstationConfig_ReadinessCheck{}
-	out.Path = direct.ValueOf(in.Path)
-	out.Port = direct.ValueOf(in.Port)
+	// MISSING: Path
+	// MISSING: Port
 	return out
 }
-*/
 
 /* found existing non-generated mapping function "WorkstationObservedState_FromProto", skipping
 func WorkstationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Workstation) *krm.WorkstationObservedState {

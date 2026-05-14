@@ -46,6 +46,22 @@ func CertificateIssuanceConfig_CertificateAuthorityConfig_ToProto(mapCtx *direct
 	}
 	return out
 }
+func CertificateIssuanceConfig_CertificateAuthorityConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CertificateIssuanceConfig_CertificateAuthorityConfig) *krmcertificatemanagerv1alpha1.CertificateIssuanceConfig_CertificateAuthorityConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcertificatemanagerv1alpha1.CertificateIssuanceConfig_CertificateAuthorityConfigObservedState{}
+	// MISSING: CertificateAuthorityServiceConfig
+	return out
+}
+func CertificateIssuanceConfig_CertificateAuthorityConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1alpha1.CertificateIssuanceConfig_CertificateAuthorityConfigObservedState) *pb.CertificateIssuanceConfig_CertificateAuthorityConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateIssuanceConfig_CertificateAuthorityConfig{}
+	// MISSING: CertificateAuthorityServiceConfig
+	return out
+}
 func CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig_FromProto(mapCtx *direct.MapContext, in *pb.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig) *krmcertificatemanagerv1alpha1.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig {
 	if in == nil {
 		return nil
@@ -64,6 +80,22 @@ func CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthoritySe
 	if in.CAPoolRef != nil {
 		out.CaPool = in.CAPoolRef.External
 	}
+	return out
+}
+func CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig) *krmcertificatemanagerv1alpha1.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcertificatemanagerv1alpha1.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfigObservedState{}
+	// MISSING: CAPool
+	return out
+}
+func CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1alpha1.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfigObservedState) *pb.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig{}
+	// MISSING: CAPool
 	return out
 }
 func CertificateManagerCertificateIssuanceConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CertificateIssuanceConfig) *krmcertificatemanagerv1alpha1.CertificateManagerCertificateIssuanceConfigObservedState {
@@ -178,26 +210,6 @@ func CertificateManagerDNSAuthorizationStatus_ToProto(mapCtx *direct.MapContext,
 		out.DnsResourceRecord = DNSAuthorization_DNSResourceRecordObservedState_ToProto(mapCtx, in.DNSResourceRecord[0])
 	}
 	// MISSING: Type
-	return out
-}
-func DNSAuthorization_DNSResourceRecord_FromProto(mapCtx *direct.MapContext, in *pb.DnsAuthorization_DnsResourceRecord) *krm.DNSAuthorization_DNSResourceRecord {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DNSAuthorization_DNSResourceRecord{}
-	// MISSING: Name
-	// MISSING: Type
-	// MISSING: Data
-	return out
-}
-func DNSAuthorization_DNSResourceRecord_ToProto(mapCtx *direct.MapContext, in *krm.DNSAuthorization_DNSResourceRecord) *pb.DnsAuthorization_DnsResourceRecord {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DnsAuthorization_DnsResourceRecord{}
-	// MISSING: Name
-	// MISSING: Type
-	// MISSING: Data
 	return out
 }
 func DNSAuthorization_DNSResourceRecordObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DnsAuthorization_DnsResourceRecord) *krm.DNSAuthorization_DNSResourceRecordObservedState {

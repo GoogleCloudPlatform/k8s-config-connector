@@ -20,6 +20,12 @@
 
 package bigquerydatapolicy
 
+import (
+	pb "cloud.google.com/go/bigquery/datapolicies/apiv1beta1/datapoliciespb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerydatapolicy/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+)
+
 /* found existing non-generated mapping function "BigQueryDataPolicyObservedState_FromProto", skipping
 func BigQueryDataPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataPolicy) *krm.BigQueryDataPolicyObservedState {
 	if in == nil {
@@ -102,11 +108,29 @@ func DataMaskingPolicy_ToProto(mapCtx *direct.MapContext, in *krm.DataMaskingPol
 }
 */
 
-/* found existing non-generated mapping function "DataMaskingPolicy_PredefinedExpression_ToProto", skipping
-func DataMaskingPolicy_PredefinedExpression_ToProto(mapCtx *direct.MapContext, in *string) *pb.DataMaskingPolicy_PredefinedExpression_ {
+/*
+found existing non-generated mapping function "DataMaskingPolicy_PredefinedExpression_ToProto", skipping
+
+	func DataMaskingPolicy_PredefinedExpression_ToProto(mapCtx *direct.MapContext, in *string) *pb.DataMaskingPolicy_PredefinedExpression_ {
+		if in == nil {
+			return nil
+		}
+		return &pb.DataMaskingPolicy_PredefinedExpression_{PredefinedExpression: direct.Enum_ToProto[pb.DataMaskingPolicy_PredefinedExpression](mapCtx, in)}
+	}
+*/
+func DataMaskingPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataMaskingPolicy) *krm.DataMaskingPolicyObservedState {
 	if in == nil {
 		return nil
 	}
-	return &pb.DataMaskingPolicy_PredefinedExpression_{PredefinedExpression: direct.Enum_ToProto[pb.DataMaskingPolicy_PredefinedExpression](mapCtx, in)}
+	out := &krm.DataMaskingPolicyObservedState{}
+	// MISSING: PredefinedExpression
+	return out
 }
-*/
+func DataMaskingPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataMaskingPolicyObservedState) *pb.DataMaskingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataMaskingPolicy{}
+	// MISSING: PredefinedExpression
+	return out
+}

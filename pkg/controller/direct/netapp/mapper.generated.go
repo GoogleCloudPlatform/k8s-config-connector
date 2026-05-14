@@ -116,6 +116,30 @@ func BackupVault_BackupRetentionPolicy_ToProto(mapCtx *direct.MapContext, in *kr
 	out.ManualBackupImmutable = direct.ValueOf(in.ManualBackupImmutable)
 	return out
 }
+func BackupVault_BackupRetentionPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault_BackupRetentionPolicy) *krm.BackupVault_BackupRetentionPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackupVault_BackupRetentionPolicyObservedState{}
+	// MISSING: BackupMinimumEnforcedRetentionDays
+	// MISSING: DailyBackupImmutable
+	// MISSING: WeeklyBackupImmutable
+	// MISSING: MonthlyBackupImmutable
+	// MISSING: ManualBackupImmutable
+	return out
+}
+func BackupVault_BackupRetentionPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupVault_BackupRetentionPolicyObservedState) *pb.BackupVault_BackupRetentionPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackupVault_BackupRetentionPolicy{}
+	// MISSING: BackupMinimumEnforcedRetentionDays
+	// MISSING: DailyBackupImmutable
+	// MISSING: WeeklyBackupImmutable
+	// MISSING: MonthlyBackupImmutable
+	// MISSING: ManualBackupImmutable
+	return out
+}
 func NetAppBackupPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupPolicy) *krm.NetAppBackupPolicyObservedState {
 	if in == nil {
 		return nil

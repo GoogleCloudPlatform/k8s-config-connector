@@ -42,6 +42,54 @@ func EmailPreferences_ToProto(mapCtx *direct.MapContext, in *krm.EmailPreference
 	out.EnableFailureEmail = direct.ValueOf(in.EnableFailureEmail)
 	return out
 }
+func EmailPreferencesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EmailPreferences) *krm.EmailPreferencesObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EmailPreferencesObservedState{}
+	// MISSING: EnableFailureEmail
+	return out
+}
+func EmailPreferencesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EmailPreferencesObservedState) *pb.EmailPreferences {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EmailPreferences{}
+	// MISSING: EnableFailureEmail
+	return out
+}
+func EncryptionConfigurationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfiguration) *krm.EncryptionConfigurationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionConfigurationObservedState{}
+	// MISSING: KMSKeyName
+	return out
+}
+func EncryptionConfigurationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfigurationObservedState) *pb.EncryptionConfiguration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionConfiguration{}
+	// MISSING: KMSKeyName
+	return out
+}
+func EventDrivenScheduleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EventDrivenSchedule) *krm.EventDrivenScheduleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EventDrivenScheduleObservedState{}
+	// MISSING: PubsubSubscription
+	return out
+}
+func EventDrivenScheduleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EventDrivenScheduleObservedState) *pb.EventDrivenSchedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EventDrivenSchedule{}
+	// MISSING: PubsubSubscription
+	return out
+}
 func ManualSchedule_FromProto(mapCtx *direct.MapContext, in *pb.ManualSchedule) *krm.ManualSchedule {
 	if in == nil {
 		return nil
@@ -50,6 +98,20 @@ func ManualSchedule_FromProto(mapCtx *direct.MapContext, in *pb.ManualSchedule) 
 	return out
 }
 func ManualSchedule_ToProto(mapCtx *direct.MapContext, in *krm.ManualSchedule) *pb.ManualSchedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ManualSchedule{}
+	return out
+}
+func ManualScheduleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ManualSchedule) *krm.ManualScheduleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ManualScheduleObservedState{}
+	return out
+}
+func ManualScheduleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ManualScheduleObservedState) *pb.ManualSchedule {
 	if in == nil {
 		return nil
 	}
@@ -74,6 +136,26 @@ func ScheduleOptions_ToProto(mapCtx *direct.MapContext, in *krm.ScheduleOptions)
 	out.DisableAutoScheduling = direct.ValueOf(in.DisableAutoScheduling)
 	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	return out
+}
+func ScheduleOptionsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ScheduleOptions) *krm.ScheduleOptionsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ScheduleOptionsObservedState{}
+	// MISSING: DisableAutoScheduling
+	// MISSING: StartTime
+	// MISSING: EndTime
+	return out
+}
+func ScheduleOptionsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ScheduleOptionsObservedState) *pb.ScheduleOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ScheduleOptions{}
+	// MISSING: DisableAutoScheduling
+	// MISSING: StartTime
+	// MISSING: EndTime
 	return out
 }
 func ScheduleOptionsV2_FromProto(mapCtx *direct.MapContext, in *pb.ScheduleOptionsV2) *krm.ScheduleOptionsV2 {
@@ -102,6 +184,26 @@ func ScheduleOptionsV2_ToProto(mapCtx *direct.MapContext, in *krm.ScheduleOption
 	}
 	return out
 }
+func ScheduleOptionsV2ObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ScheduleOptionsV2) *krm.ScheduleOptionsV2ObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ScheduleOptionsV2ObservedState{}
+	// MISSING: TimeBasedSchedule
+	// MISSING: ManualSchedule
+	// MISSING: EventDrivenSchedule
+	return out
+}
+func ScheduleOptionsV2ObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ScheduleOptionsV2ObservedState) *pb.ScheduleOptionsV2 {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ScheduleOptionsV2{}
+	// MISSING: TimeBasedSchedule
+	// MISSING: ManualSchedule
+	// MISSING: EventDrivenSchedule
+	return out
+}
 func TimeBasedSchedule_FromProto(mapCtx *direct.MapContext, in *pb.TimeBasedSchedule) *krm.TimeBasedSchedule {
 	if in == nil {
 		return nil
@@ -122,15 +224,35 @@ func TimeBasedSchedule_ToProto(mapCtx *direct.MapContext, in *krm.TimeBasedSched
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	return out
 }
-func UserInfo_FromProto(mapCtx *direct.MapContext, in *pb.UserInfo) *krm.UserInfo {
+func TimeBasedScheduleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TimeBasedSchedule) *krm.TimeBasedScheduleObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.UserInfo{}
+	out := &krm.TimeBasedScheduleObservedState{}
+	// MISSING: Schedule
+	// MISSING: StartTime
+	// MISSING: EndTime
+	return out
+}
+func TimeBasedScheduleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TimeBasedScheduleObservedState) *pb.TimeBasedSchedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TimeBasedSchedule{}
+	// MISSING: Schedule
+	// MISSING: StartTime
+	// MISSING: EndTime
+	return out
+}
+func UserInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.UserInfo) *krm.UserInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UserInfoObservedState{}
 	out.Email = in.Email
 	return out
 }
-func UserInfo_ToProto(mapCtx *direct.MapContext, in *krm.UserInfo) *pb.UserInfo {
+func UserInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.UserInfoObservedState) *pb.UserInfo {
 	if in == nil {
 		return nil
 	}

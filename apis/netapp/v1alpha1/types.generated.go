@@ -177,3 +177,7 @@ type BackupVaultObservedState struct {
 	DestinationBackupVault *string `json:"destinationBackupVault,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.netapp.v1.BackupVault.BackupRetentionPolicy
+type BackupVault_BackupRetentionPolicyObservedState struct {
+}

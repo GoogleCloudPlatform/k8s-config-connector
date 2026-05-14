@@ -38,29 +38,6 @@ type Database_CmekConfig struct {
 	KMSKeyName *string `json:"kmsKeyName,omitempty"`
 }
 
-// +kcc:proto=google.firestore.admin.v1.Database.SourceInfo
-type Database_SourceInfo struct {
-	// If set, this database was restored from the specified backup (or a
-	//  snapshot thereof).
-	// +kcc:proto:field=google.firestore.admin.v1.Database.SourceInfo.backup
-	Backup *Database_SourceInfo_BackupSource `json:"backup,omitempty"`
-
-	// The associated long-running operation. This field may not be set after
-	//  the operation has completed. Format:
-	//  `projects/{project}/databases/{database}/operations/{operation}`.
-	// +kcc:proto:field=google.firestore.admin.v1.Database.SourceInfo.operation
-	Operation *string `json:"operation,omitempty"`
-}
-
-// +kcc:proto=google.firestore.admin.v1.Database.SourceInfo.BackupSource
-type Database_SourceInfo_BackupSource struct {
-	// The resource name of the backup that was used to restore this
-	//  database. Format:
-	//  `projects/{project}/locations/{location}/backups/{backup}`.
-	// +kcc:proto:field=google.firestore.admin.v1.Database.SourceInfo.BackupSource.backup
-	Backup *string `json:"backup,omitempty"`
-}
-
 // +kcc:proto=google.firestore.admin.v1.Index.IndexField.VectorConfig
 type Index_IndexField_VectorConfig struct {
 	// Required. The vector dimension this configuration applies to.
@@ -90,4 +67,43 @@ type Database_CmekConfigObservedState struct {
 	//  `projects/{project_id}/locations/{kms_location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{key_version}`.
 	// +kcc:proto:field=google.firestore.admin.v1.Database.CmekConfig.active_key_version
 	ActiveKeyVersion []string `json:"activeKeyVersion,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.firestore.admin.v1.Database.SourceInfo
+type Database_SourceInfoObservedState struct {
+	// If set, this database was restored from the specified backup (or a
+	//  snapshot thereof).
+	// +kcc:proto:field=google.firestore.admin.v1.Database.SourceInfo.backup
+	Backup *Database_SourceInfo_BackupSourceObservedState `json:"backup,omitempty"`
+
+	// The associated long-running operation. This field may not be set after
+	//  the operation has completed. Format:
+	//  `projects/{project}/databases/{database}/operations/{operation}`.
+	// +kcc:proto:field=google.firestore.admin.v1.Database.SourceInfo.operation
+	Operation *string `json:"operation,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.firestore.admin.v1.Database.SourceInfo.BackupSource
+type Database_SourceInfo_BackupSourceObservedState struct {
+	// The resource name of the backup that was used to restore this
+	//  database. Format:
+	//  `projects/{project}/locations/{location}/backups/{backup}`.
+	// +kcc:proto:field=google.firestore.admin.v1.Database.SourceInfo.BackupSource.backup
+	Backup *string `json:"backup,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.firestore.admin.v1.Index
+type IndexObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.firestore.admin.v1.Index.IndexField
+type Index_IndexFieldObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.firestore.admin.v1.Index.IndexField.VectorConfig
+type Index_IndexField_VectorConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.firestore.admin.v1.Index.IndexField.VectorConfig.FlatIndex
+type Index_IndexField_VectorConfig_FlatIndexObservedState struct {
 }

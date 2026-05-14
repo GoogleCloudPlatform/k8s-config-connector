@@ -22,3 +22,45 @@
 // resource: NetworkServicesWasmPlugin:WasmPlugin
 
 package v1alpha1
+
+// +kcc:observedstate:proto=google.cloud.networkservices.v1.ExtensionChain
+type ExtensionChainObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.networkservices.v1.ExtensionChain.Extension
+type ExtensionChain_ExtensionObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.networkservices.v1.ExtensionChain.MatchCondition
+type ExtensionChain_MatchConditionObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.networkservices.v1.WasmPlugin.LogConfig
+type WasmPlugin_LogConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.networkservices.v1.WasmPlugin.VersionDetails
+type WasmPlugin_VersionDetailsObservedState struct {
+	// Output only. The timestamp when the resource was created.
+	// +kcc:proto:field=google.cloud.networkservices.v1.WasmPlugin.VersionDetails.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when the resource was updated.
+	// +kcc:proto:field=google.cloud.networkservices.v1.WasmPlugin.VersionDetails.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The resolved digest for the image specified in `image`.
+	//  The digest is resolved during the creation of a
+	//  `WasmPluginVersion` resource.
+	//  This field holds the digest value regardless of whether a tag or
+	//  digest was originally specified in the `image` field.
+	// +kcc:proto:field=google.cloud.networkservices.v1.WasmPlugin.VersionDetails.image_digest
+	ImageDigest *string `json:"imageDigest,omitempty"`
+
+	// Output only. This field holds the digest (usually checksum) value for the
+	//  plugin configuration. The value is calculated based on the contents of
+	//  the `plugin_config_data` field or the container image defined by the
+	//  `plugin_config_uri` field.
+	// +kcc:proto:field=google.cloud.networkservices.v1.WasmPlugin.VersionDetails.plugin_config_digest
+	PluginConfigDigest *string `json:"pluginConfigDigest,omitempty"`
+}

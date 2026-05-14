@@ -19,3 +19,44 @@
 // proto.service: google.iam.admin.v1
 
 package iam
+
+import (
+	pb "cloud.google.com/go/iam/admin/apiv1/adminpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+)
+
+func ServiceAccountKeyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceAccountKey) *krm.ServiceAccountKeyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceAccountKeyObservedState{}
+	// MISSING: Name
+	// MISSING: PrivateKeyType
+	// MISSING: KeyAlgorithm
+	// MISSING: PrivateKeyData
+	// MISSING: PublicKeyData
+	// MISSING: ValidAfterTime
+	// MISSING: ValidBeforeTime
+	// MISSING: KeyOrigin
+	// MISSING: KeyType
+	// MISSING: Disabled
+	return out
+}
+func ServiceAccountKeyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServiceAccountKeyObservedState) *pb.ServiceAccountKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceAccountKey{}
+	// MISSING: Name
+	// MISSING: PrivateKeyType
+	// MISSING: KeyAlgorithm
+	// MISSING: PrivateKeyData
+	// MISSING: PublicKeyData
+	// MISSING: ValidAfterTime
+	// MISSING: ValidBeforeTime
+	// MISSING: KeyOrigin
+	// MISSING: KeyType
+	// MISSING: Disabled
+	return out
+}

@@ -144,3 +144,15 @@ type Expr struct {
 	// +kcc:proto:field=google.type.Expr.location
 	Location *string `json:"location,omitempty"`
 }
+
+// +kcc:observedstate:proto=google.iam.v2.DenyRule
+type DenyRuleObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.iam.v2.PolicyRule
+type PolicyRuleObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.type.Expr
+type ExprObservedState struct {
+}

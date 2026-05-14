@@ -133,3 +133,35 @@ type FirewallPolicy struct {
 	Actions []FirewallAction `json:"actions,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.recaptchaenterprise.v1.FirewallAction
+type FirewallActionObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.recaptchaenterprise.v1.FirewallAction.AllowAction
+type FirewallAction_AllowActionObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.recaptchaenterprise.v1.FirewallAction.BlockAction
+type FirewallAction_BlockActionObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.recaptchaenterprise.v1.FirewallAction.IncludeRecaptchaScriptAction
+type FirewallAction_IncludeRecaptchaScriptActionObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.recaptchaenterprise.v1.FirewallAction.RedirectAction
+type FirewallAction_RedirectActionObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.recaptchaenterprise.v1.FirewallAction.SetHeaderAction
+type FirewallAction_SetHeaderActionObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.recaptchaenterprise.v1.FirewallAction.SubstituteAction
+type FirewallAction_SubstituteActionObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.recaptchaenterprise.v1.FirewallPolicy
+type FirewallPolicyObservedState struct {
+}

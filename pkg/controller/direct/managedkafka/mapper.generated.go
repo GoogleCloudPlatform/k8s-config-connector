@@ -60,6 +60,38 @@ func AccessConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AccessConfi
 	out.NetworkConfigs = direct.Slice_ToProto(mapCtx, in.NetworkConfigs, NetworkConfig_v1beta1_ToProto)
 	return out
 }
+func AccessConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AccessConfig) *krmmanagedkafkav1alpha1.AccessConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmmanagedkafkav1alpha1.AccessConfigObservedState{}
+	// MISSING: NetworkConfigs
+	return out
+}
+func AccessConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.AccessConfigObservedState) *pb.AccessConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AccessConfig{}
+	// MISSING: NetworkConfigs
+	return out
+}
+func AccessConfigObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AccessConfig) *krm.AccessConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccessConfigObservedState{}
+	// MISSING: NetworkConfigs
+	return out
+}
+func AccessConfigObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AccessConfigObservedState) *pb.AccessConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AccessConfig{}
+	// MISSING: NetworkConfigs
+	return out
+}
 func CapacityConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CapacityConfig) *krmmanagedkafkav1alpha1.CapacityConfig {
 	if in == nil {
 		return nil
@@ -94,6 +126,42 @@ func CapacityConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CapacityC
 	out := &pb.CapacityConfig{}
 	out.VcpuCount = direct.ValueOf(in.VcpuCount)
 	out.MemoryBytes = direct.ValueOf(in.MemoryBytes)
+	return out
+}
+func CapacityConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CapacityConfig) *krmmanagedkafkav1alpha1.CapacityConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmmanagedkafkav1alpha1.CapacityConfigObservedState{}
+	// MISSING: VcpuCount
+	// MISSING: MemoryBytes
+	return out
+}
+func CapacityConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.CapacityConfigObservedState) *pb.CapacityConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CapacityConfig{}
+	// MISSING: VcpuCount
+	// MISSING: MemoryBytes
+	return out
+}
+func CapacityConfigObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CapacityConfig) *krm.CapacityConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CapacityConfigObservedState{}
+	// MISSING: VcpuCount
+	// MISSING: MemoryBytes
+	return out
+}
+func CapacityConfigObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CapacityConfigObservedState) *pb.CapacityConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CapacityConfig{}
+	// MISSING: VcpuCount
+	// MISSING: MemoryBytes
 	return out
 }
 func GcpConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GcpConfig) *krmmanagedkafkav1alpha1.GcpConfig {
@@ -148,6 +216,42 @@ found existing non-generated mapping function "GcpConfig_v1beta1_ToProto", skipp
 		return out
 	}
 */
+func GcpConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GcpConfig) *krmmanagedkafkav1alpha1.GcpConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmmanagedkafkav1alpha1.GcpConfigObservedState{}
+	// MISSING: AccessConfig
+	// MISSING: KMSKey
+	return out
+}
+func GcpConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.GcpConfigObservedState) *pb.GcpConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GcpConfig{}
+	// MISSING: AccessConfig
+	// MISSING: KMSKey
+	return out
+}
+func GcpConfigObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GcpConfig) *krm.GcpConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GcpConfigObservedState{}
+	// MISSING: AccessConfig
+	// MISSING: KMSKey
+	return out
+}
+func GcpConfigObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.GcpConfigObservedState) *pb.GcpConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GcpConfig{}
+	// MISSING: AccessConfig
+	// MISSING: KMSKey
+	return out
+}
 func ManagedKafkaClusterObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krmmanagedkafkav1alpha1.ManagedKafkaClusterObservedState {
 	if in == nil {
 		return nil
@@ -408,6 +512,38 @@ found existing non-generated mapping function "NetworkConfig_v1beta1_ToProto", s
 		return out
 	}
 */
+func NetworkConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krmmanagedkafkav1alpha1.NetworkConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmmanagedkafkav1alpha1.NetworkConfigObservedState{}
+	// MISSING: Subnet
+	return out
+}
+func NetworkConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.NetworkConfigObservedState) *pb.NetworkConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkConfig{}
+	// MISSING: Subnet
+	return out
+}
+func NetworkConfigObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkConfigObservedState{}
+	// MISSING: Subnet
+	return out
+}
+func NetworkConfigObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfigObservedState) *pb.NetworkConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkConfig{}
+	// MISSING: Subnet
+	return out
+}
 func RebalanceConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RebalanceConfig) *krmmanagedkafkav1alpha1.RebalanceConfig {
 	if in == nil {
 		return nil
@@ -438,6 +574,38 @@ func RebalanceConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Rebalanc
 	}
 	out := &pb.RebalanceConfig{}
 	out.Mode = direct.Enum_ToProto[pb.RebalanceConfig_Mode](mapCtx, in.Mode)
+	return out
+}
+func RebalanceConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RebalanceConfig) *krmmanagedkafkav1alpha1.RebalanceConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmmanagedkafkav1alpha1.RebalanceConfigObservedState{}
+	// MISSING: Mode
+	return out
+}
+func RebalanceConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.RebalanceConfigObservedState) *pb.RebalanceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RebalanceConfig{}
+	// MISSING: Mode
+	return out
+}
+func RebalanceConfigObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RebalanceConfig) *krm.RebalanceConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RebalanceConfigObservedState{}
+	// MISSING: Mode
+	return out
+}
+func RebalanceConfigObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RebalanceConfigObservedState) *pb.RebalanceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RebalanceConfig{}
+	// MISSING: Mode
 	return out
 }
 func TLSConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TlsConfig) *krmmanagedkafkav1alpha1.TLSConfig {
@@ -476,6 +644,86 @@ func TLSConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.TLSConfig) *pb
 	out.SslPrincipalMappingRules = direct.ValueOf(in.SSLPrincipalMappingRules)
 	return out
 }
+func TLSConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TlsConfig) *krmmanagedkafkav1alpha1.TLSConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmmanagedkafkav1alpha1.TLSConfigObservedState{}
+	// MISSING: TrustConfig
+	// MISSING: SSLPrincipalMappingRules
+	return out
+}
+func TLSConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.TLSConfigObservedState) *pb.TlsConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TlsConfig{}
+	// MISSING: TrustConfig
+	// MISSING: SSLPrincipalMappingRules
+	return out
+}
+func TLSConfigObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TlsConfig) *krm.TLSConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TLSConfigObservedState{}
+	// MISSING: TrustConfig
+	// MISSING: SSLPrincipalMappingRules
+	return out
+}
+func TLSConfigObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.TLSConfigObservedState) *pb.TlsConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TlsConfig{}
+	// MISSING: TrustConfig
+	// MISSING: SSLPrincipalMappingRules
+	return out
+}
+func TopicObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Topic) *krmmanagedkafkav1alpha1.TopicObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmmanagedkafkav1alpha1.TopicObservedState{}
+	// MISSING: Name
+	// MISSING: PartitionCount
+	// MISSING: ReplicationFactor
+	// MISSING: Configs
+	return out
+}
+func TopicObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.TopicObservedState) *pb.Topic {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Topic{}
+	// MISSING: Name
+	// MISSING: PartitionCount
+	// MISSING: ReplicationFactor
+	// MISSING: Configs
+	return out
+}
+func TopicObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Topic) *krm.TopicObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TopicObservedState{}
+	// MISSING: Name
+	// MISSING: PartitionCount
+	// MISSING: ReplicationFactor
+	// MISSING: Configs
+	return out
+}
+func TopicObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.TopicObservedState) *pb.Topic {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Topic{}
+	// MISSING: Name
+	// MISSING: PartitionCount
+	// MISSING: ReplicationFactor
+	// MISSING: Configs
+	return out
+}
 func TrustConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TrustConfig) *krmmanagedkafkav1alpha1.TrustConfig {
 	if in == nil {
 		return nil
@@ -508,6 +756,38 @@ func TrustConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.TrustConfig)
 	out.CasConfigs = direct.Slice_ToProto(mapCtx, in.CasConfigs, TrustConfig_CertificateAuthorityServiceConfig_v1beta1_ToProto)
 	return out
 }
+func TrustConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TrustConfig) *krmmanagedkafkav1alpha1.TrustConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmmanagedkafkav1alpha1.TrustConfigObservedState{}
+	// MISSING: CasConfigs
+	return out
+}
+func TrustConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.TrustConfigObservedState) *pb.TrustConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TrustConfig{}
+	// MISSING: CasConfigs
+	return out
+}
+func TrustConfigObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TrustConfig) *krm.TrustConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TrustConfigObservedState{}
+	// MISSING: CasConfigs
+	return out
+}
+func TrustConfigObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.TrustConfigObservedState) *pb.TrustConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TrustConfig{}
+	// MISSING: CasConfigs
+	return out
+}
 func TrustConfig_CertificateAuthorityServiceConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TrustConfig_CertificateAuthorityServiceConfig) *krmmanagedkafkav1alpha1.TrustConfig_CertificateAuthorityServiceConfig {
 	if in == nil {
 		return nil
@@ -538,5 +818,37 @@ func TrustConfig_CertificateAuthorityServiceConfig_v1beta1_ToProto(mapCtx *direc
 	}
 	out := &pb.TrustConfig_CertificateAuthorityServiceConfig{}
 	out.CaPool = direct.ValueOf(in.CAPool)
+	return out
+}
+func TrustConfig_CertificateAuthorityServiceConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TrustConfig_CertificateAuthorityServiceConfig) *krmmanagedkafkav1alpha1.TrustConfig_CertificateAuthorityServiceConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmmanagedkafkav1alpha1.TrustConfig_CertificateAuthorityServiceConfigObservedState{}
+	// MISSING: CAPool
+	return out
+}
+func TrustConfig_CertificateAuthorityServiceConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.TrustConfig_CertificateAuthorityServiceConfigObservedState) *pb.TrustConfig_CertificateAuthorityServiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TrustConfig_CertificateAuthorityServiceConfig{}
+	// MISSING: CAPool
+	return out
+}
+func TrustConfig_CertificateAuthorityServiceConfigObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TrustConfig_CertificateAuthorityServiceConfig) *krm.TrustConfig_CertificateAuthorityServiceConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TrustConfig_CertificateAuthorityServiceConfigObservedState{}
+	// MISSING: CAPool
+	return out
+}
+func TrustConfig_CertificateAuthorityServiceConfigObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.TrustConfig_CertificateAuthorityServiceConfigObservedState) *pb.TrustConfig_CertificateAuthorityServiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TrustConfig_CertificateAuthorityServiceConfig{}
+	// MISSING: CAPool
 	return out
 }

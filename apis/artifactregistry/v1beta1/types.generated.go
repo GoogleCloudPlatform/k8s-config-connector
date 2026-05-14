@@ -229,6 +229,128 @@ type Repository_VulnerabilityScanningConfig struct {
 	EnablementConfig *string `json:"enablementConfig,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.CleanupPolicy
+type CleanupPolicyObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.CleanupPolicyCondition
+type CleanupPolicyConditionObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.CleanupPolicyMostRecentVersions
+type CleanupPolicyMostRecentVersionsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig
+type RemoteRepositoryConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.AptRepository
+type RemoteRepositoryConfig_AptRepositoryObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.AptRepository.CustomRepository
+type RemoteRepositoryConfig_AptRepository_CustomRepositoryObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.AptRepository.PublicRepository
+type RemoteRepositoryConfig_AptRepository_PublicRepositoryObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.CommonRemoteRepository
+type RemoteRepositoryConfig_CommonRemoteRepositoryObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.DockerRepository
+type RemoteRepositoryConfig_DockerRepositoryObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.DockerRepository.CustomRepository
+type RemoteRepositoryConfig_DockerRepository_CustomRepositoryObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.MavenRepository
+type RemoteRepositoryConfig_MavenRepositoryObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.MavenRepository.CustomRepository
+type RemoteRepositoryConfig_MavenRepository_CustomRepositoryObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.NpmRepository
+type RemoteRepositoryConfig_NpmRepositoryObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.NpmRepository.CustomRepository
+type RemoteRepositoryConfig_NpmRepository_CustomRepositoryObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.PythonRepository
+type RemoteRepositoryConfig_PythonRepositoryObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.PythonRepository.CustomRepository
+type RemoteRepositoryConfig_PythonRepository_CustomRepositoryObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.UpstreamCredentials
+type RemoteRepositoryConfig_UpstreamCredentialsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.UpstreamCredentials.UsernamePasswordCredentials
+type RemoteRepositoryConfig_UpstreamCredentials_UsernamePasswordCredentialsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.YumRepository
+type RemoteRepositoryConfig_YumRepositoryObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.YumRepository.CustomRepository
+type RemoteRepositoryConfig_YumRepository_CustomRepositoryObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.YumRepository.PublicRepository
+type RemoteRepositoryConfig_YumRepository_PublicRepositoryObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.Repository
+type RepositoryObservedState struct {
+	// Output only. The time when the repository was created.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the repository was last updated.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The size, in bytes, of all artifact storage in this
+	//  repository. Repositories that are generally available or in public preview
+	//   use this to calculate storage costs.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.size_bytes
+	SizeBytes *int64 `json:"sizeBytes,omitempty"`
+
+	// Output only. If set, the repository satisfies physical zone separation.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// Output only. If set, the repository satisfies physical zone isolation.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.satisfies_pzi
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+
+	// Output only. The repository endpoint, for example:
+	//  `us-docker.pkg.dev/my-proj/my-repo`.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.registry_uri
+	RegistryURI *string `json:"registryURI,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.Repository.DockerRepositoryConfig
+type Repository_DockerRepositoryConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.Repository.MavenRepositoryConfig
+type Repository_MavenRepositoryConfigObservedState struct {
+}
+
 // +kcc:observedstate:proto=google.devtools.artifactregistry.v1.Repository.VulnerabilityScanningConfig
 type Repository_VulnerabilityScanningConfigObservedState struct {
 	// Output only. The last time this repository config was enabled.
@@ -243,4 +365,12 @@ type Repository_VulnerabilityScanningConfigObservedState struct {
 	// Output only. Reason for the repository state.
 	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.VulnerabilityScanningConfig.enablement_state_reason
 	EnablementStateReason *string `json:"enablementStateReason,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.UpstreamPolicy
+type UpstreamPolicyObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.VirtualRepositoryConfig
+type VirtualRepositoryConfigObservedState struct {
 }

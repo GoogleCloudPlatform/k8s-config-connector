@@ -124,16 +124,6 @@ type AttachedCluster struct {
 }
 */
 
-/* found existing non-generated go type "AttachedClusterError", skipping
-
-// +kcc:proto=google.cloud.gkemulticloud.v1.AttachedClusterError
-type AttachedClusterError struct {
-	// Human-friendly description of the error.
-	// +kcc:proto:field=google.cloud.gkemulticloud.v1.AttachedClusterError.message
-	Message *string `json:"message,omitempty"`
-}
-*/
-
 // +kcc:proto=google.cloud.gkemulticloud.v1.AttachedClusterGroup
 type AttachedClusterGroup struct {
 	// Required. The name of the group, e.g. `my-group@domain.com`.
@@ -307,27 +297,6 @@ type SecurityPostureConfig struct {
 	VulnerabilityMode *string `json:"vulnerabilityMode,omitempty"`
 }
 
-/* found existing non-generated go type "WorkloadIdentityConfig", skipping
-
-// +kcc:proto=google.cloud.gkemulticloud.v1.WorkloadIdentityConfig
-type WorkloadIdentityConfig struct {
-	// The OIDC issuer URL for this cluster.
-	// +kcc:proto:field=google.cloud.gkemulticloud.v1.WorkloadIdentityConfig.issuer_uri
-	IssuerURI *string `json:"issuerURI,omitempty"`
-
-	// The Workload Identity Pool associated to the cluster.
-	// +kcc:proto:field=google.cloud.gkemulticloud.v1.WorkloadIdentityConfig.workload_pool
-	WorkloadPool *string `json:"workloadPool,omitempty"`
-
-	// The ID of the OIDC Identity Provider (IdP) associated to the Workload
-	//  Identity Pool.
-	// +kcc:proto:field=google.cloud.gkemulticloud.v1.WorkloadIdentityConfig.identity_provider
-	IdentityProvider *string `json:"identityProvider,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.gkemulticloud.v1.AttachedCluster", skipping
-
 // +kcc:observedstate:proto=google.cloud.gkemulticloud.v1.AttachedCluster
 type AttachedClusterObservedState struct {
 	// Output only. The region where this cluster runs.
@@ -336,10 +305,6 @@ type AttachedClusterObservedState struct {
 	//  this is an Azure region.
 	// +kcc:proto:field=google.cloud.gkemulticloud.v1.AttachedCluster.cluster_region
 	ClusterRegion *string `json:"clusterRegion,omitempty"`
-
-	// Required. Fleet configuration.
-	// +kcc:proto:field=google.cloud.gkemulticloud.v1.AttachedCluster.fleet
-	Fleet *FleetObservedState `json:"fleet,omitempty"`
 
 	// Output only. The current state of the cluster.
 	// +kcc:proto:field=google.cloud.gkemulticloud.v1.AttachedCluster.state
@@ -367,15 +332,47 @@ type AttachedClusterObservedState struct {
 
 	// Output only. Workload Identity settings.
 	// +kcc:proto:field=google.cloud.gkemulticloud.v1.AttachedCluster.workload_identity_config
-	WorkloadIdentityConfig *WorkloadIdentityConfig `json:"workloadIdentityConfig,omitempty"`
+	WorkloadIdentityConfig *WorkloadIdentityConfigObservedState `json:"workloadIdentityConfig,omitempty"`
 
 	// Output only. A set of errors found in the cluster.
 	// +kcc:proto:field=google.cloud.gkemulticloud.v1.AttachedCluster.errors
-	Errors []AttachedClusterError `json:"errors,omitempty"`
+	Errors []AttachedClusterErrorObservedState `json:"errors,omitempty"`
 }
-*/
 
-/* found existing non-generated go type with proto tag "google.cloud.gkemulticloud.v1.Fleet", skipping
+// +kcc:observedstate:proto=google.cloud.gkemulticloud.v1.AttachedClusterError
+type AttachedClusterErrorObservedState struct {
+	// Human-friendly description of the error.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.AttachedClusterError.message
+	Message *string `json:"message,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.gkemulticloud.v1.AttachedClusterGroup
+type AttachedClusterGroupObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkemulticloud.v1.AttachedClusterUser
+type AttachedClusterUserObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkemulticloud.v1.AttachedClustersAuthorization
+type AttachedClustersAuthorizationObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkemulticloud.v1.AttachedOidcConfig
+type AttachedOIDCConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkemulticloud.v1.AttachedProxyConfig
+type AttachedProxyConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkemulticloud.v1.BinaryAuthorization
+type BinaryAuthorizationObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkemulticloud.v1.CloudMonitoringConfig
+type CloudMonitoringConfigObservedState struct {
+}
 
 // +kcc:observedstate:proto=google.cloud.gkemulticloud.v1.Fleet
 type FleetObservedState struct {
@@ -387,4 +384,43 @@ type FleetObservedState struct {
 	// +kcc:proto:field=google.cloud.gkemulticloud.v1.Fleet.membership
 	Membership *string `json:"membership,omitempty"`
 }
-*/
+
+// +kcc:observedstate:proto=google.cloud.gkemulticloud.v1.KubernetesSecret
+type KubernetesSecretObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkemulticloud.v1.LoggingComponentConfig
+type LoggingComponentConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkemulticloud.v1.LoggingConfig
+type LoggingConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkemulticloud.v1.ManagedPrometheusConfig
+type ManagedPrometheusConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkemulticloud.v1.MonitoringConfig
+type MonitoringConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkemulticloud.v1.SecurityPostureConfig
+type SecurityPostureConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkemulticloud.v1.WorkloadIdentityConfig
+type WorkloadIdentityConfigObservedState struct {
+	// The OIDC issuer URL for this cluster.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.WorkloadIdentityConfig.issuer_uri
+	IssuerURI *string `json:"issuerURI,omitempty"`
+
+	// The Workload Identity Pool associated to the cluster.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.WorkloadIdentityConfig.workload_pool
+	WorkloadPool *string `json:"workloadPool,omitempty"`
+
+	// The ID of the OIDC Identity Provider (IdP) associated to the Workload
+	//  Identity Pool.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.WorkloadIdentityConfig.identity_provider
+	IdentityProvider *string `json:"identityProvider,omitempty"`
+}

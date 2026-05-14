@@ -60,22 +60,24 @@ func BinaryAuthorization_UseDefault_ToProto(mapCtx *direct.MapContext, in *bool)
 	}
 	return &pb.BinaryAuthorization_UseDefault{UseDefault: *in}
 }
-func BuildInfo_FromProto(mapCtx *direct.MapContext, in *pb.BuildInfo) *krm.BuildInfo {
+func BinaryAuthorizationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BinaryAuthorization) *krm.BinaryAuthorizationObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BuildInfo{}
-	// MISSING: FunctionTarget
-	// MISSING: SourceLocation
+	out := &krm.BinaryAuthorizationObservedState{}
+	// MISSING: UseDefault
+	// MISSING: Policy
+	// MISSING: BreakglassJustification
 	return out
 }
-func BuildInfo_ToProto(mapCtx *direct.MapContext, in *krm.BuildInfo) *pb.BuildInfo {
+func BinaryAuthorizationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BinaryAuthorizationObservedState) *pb.BinaryAuthorization {
 	if in == nil {
 		return nil
 	}
-	out := &pb.BuildInfo{}
-	// MISSING: FunctionTarget
-	// MISSING: SourceLocation
+	out := &pb.BinaryAuthorization{}
+	// MISSING: UseDefault
+	// MISSING: Policy
+	// MISSING: BreakglassJustification
 	return out
 }
 func BuildInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BuildInfo) *krm.BuildInfoObservedState {
@@ -122,6 +124,22 @@ func CloudSQLInstance_ToProto(mapCtx *direct.MapContext, in *krm.CloudSQLInstanc
 		}
 	}
 
+	return out
+}
+func CloudSQLInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CloudSqlInstance) *krm.CloudSQLInstanceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudSQLInstanceObservedState{}
+	// MISSING: Instances
+	return out
+}
+func CloudSQLInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudSQLInstanceObservedState) *pb.CloudSqlInstance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudSqlInstance{}
+	// MISSING: Instances
 	return out
 }
 func Condition_FromProto(mapCtx *direct.MapContext, in *pb.Condition) *krm.Condition {
@@ -178,6 +196,60 @@ func Condition_ExecutionReason_ToProto(mapCtx *direct.MapContext, in *string) *p
 	}
 	return &pb.Condition_ExecutionReason_{ExecutionReason: direct.Enum_ToProto[pb.Condition_ExecutionReason](mapCtx, in)}
 }
+func ConditionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Condition) *krm.ConditionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConditionObservedState{}
+	out.Type = direct.LazyPtr(in.GetType())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Message = direct.LazyPtr(in.GetMessage())
+	out.LastTransitionTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastTransitionTime())
+	out.Severity = direct.Enum_FromProto(mapCtx, in.GetSeverity())
+	out.Reason = direct.Enum_FromProto(mapCtx, in.GetReason())
+	out.RevisionReason = direct.Enum_FromProto(mapCtx, in.GetRevisionReason())
+	out.ExecutionReason = direct.Enum_FromProto(mapCtx, in.GetExecutionReason())
+	return out
+}
+func ConditionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ConditionObservedState) *pb.Condition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Condition{}
+	out.Type = direct.ValueOf(in.Type)
+	out.State = direct.Enum_ToProto[pb.Condition_State](mapCtx, in.State)
+	out.Message = direct.ValueOf(in.Message)
+	out.LastTransitionTime = direct.StringTimestamp_ToProto(mapCtx, in.LastTransitionTime)
+	out.Severity = direct.Enum_ToProto[pb.Condition_Severity](mapCtx, in.Severity)
+	if oneof := ConditionObservedState_Reason_ToProto(mapCtx, in.Reason); oneof != nil {
+		out.Reasons = oneof
+	}
+	if oneof := ConditionObservedState_RevisionReason_ToProto(mapCtx, in.RevisionReason); oneof != nil {
+		out.Reasons = oneof
+	}
+	if oneof := ConditionObservedState_ExecutionReason_ToProto(mapCtx, in.ExecutionReason); oneof != nil {
+		out.Reasons = oneof
+	}
+	return out
+}
+func ConditionObservedState_Reason_ToProto(mapCtx *direct.MapContext, in *string) *pb.Condition_Reason {
+	if in == nil {
+		return nil
+	}
+	return &pb.Condition_Reason{Reason: direct.Enum_ToProto[pb.Condition_CommonReason](mapCtx, in)}
+}
+func ConditionObservedState_RevisionReason_ToProto(mapCtx *direct.MapContext, in *string) *pb.Condition_RevisionReason_ {
+	if in == nil {
+		return nil
+	}
+	return &pb.Condition_RevisionReason_{RevisionReason: direct.Enum_ToProto[pb.Condition_RevisionReason](mapCtx, in)}
+}
+func ConditionObservedState_ExecutionReason_ToProto(mapCtx *direct.MapContext, in *string) *pb.Condition_ExecutionReason_ {
+	if in == nil {
+		return nil
+	}
+	return &pb.Condition_ExecutionReason_{ExecutionReason: direct.Enum_ToProto[pb.Condition_ExecutionReason](mapCtx, in)}
+}
 func Container_FromProto(mapCtx *direct.MapContext, in *pb.Container) *krm.Container {
 	if in == nil {
 		return nil
@@ -220,6 +292,48 @@ func Container_ToProto(mapCtx *direct.MapContext, in *krm.Container) *pb.Contain
 	// MISSING: BuildInfo
 	return out
 }
+func ContainerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Container) *krm.ContainerObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContainerObservedState{}
+	// MISSING: Name
+	// MISSING: Image
+	// MISSING: Command
+	// MISSING: Args
+	// MISSING: Env
+	// MISSING: Resources
+	// MISSING: Ports
+	// MISSING: VolumeMounts
+	// MISSING: WorkingDir
+	// MISSING: LivenessProbe
+	// MISSING: StartupProbe
+	// MISSING: DependsOn
+	// MISSING: BaseImageURI
+	out.BuildInfo = BuildInfoObservedState_FromProto(mapCtx, in.GetBuildInfo())
+	return out
+}
+func ContainerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ContainerObservedState) *pb.Container {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Container{}
+	// MISSING: Name
+	// MISSING: Image
+	// MISSING: Command
+	// MISSING: Args
+	// MISSING: Env
+	// MISSING: Resources
+	// MISSING: Ports
+	// MISSING: VolumeMounts
+	// MISSING: WorkingDir
+	// MISSING: LivenessProbe
+	// MISSING: StartupProbe
+	// MISSING: DependsOn
+	// MISSING: BaseImageURI
+	out.BuildInfo = BuildInfoObservedState_ToProto(mapCtx, in.BuildInfo)
+	return out
+}
 func ContainerPort_FromProto(mapCtx *direct.MapContext, in *pb.ContainerPort) *krm.ContainerPort {
 	if in == nil {
 		return nil
@@ -238,6 +352,24 @@ func ContainerPort_ToProto(mapCtx *direct.MapContext, in *krm.ContainerPort) *pb
 	out.ContainerPort = direct.ValueOf(in.ContainerPort)
 	return out
 }
+func ContainerPortObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ContainerPort) *krm.ContainerPortObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContainerPortObservedState{}
+	// MISSING: Name
+	// MISSING: ContainerPort
+	return out
+}
+func ContainerPortObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ContainerPortObservedState) *pb.ContainerPort {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContainerPort{}
+	// MISSING: Name
+	// MISSING: ContainerPort
+	return out
+}
 func EmptyDirVolumeSource_FromProto(mapCtx *direct.MapContext, in *pb.EmptyDirVolumeSource) *krm.EmptyDirVolumeSource {
 	if in == nil {
 		return nil
@@ -254,6 +386,24 @@ func EmptyDirVolumeSource_ToProto(mapCtx *direct.MapContext, in *krm.EmptyDirVol
 	out := &pb.EmptyDirVolumeSource{}
 	out.Medium = direct.Enum_ToProto[pb.EmptyDirVolumeSource_Medium](mapCtx, in.Medium)
 	out.SizeLimit = direct.ValueOf(in.SizeLimit)
+	return out
+}
+func EmptyDirVolumeSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EmptyDirVolumeSource) *krm.EmptyDirVolumeSourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EmptyDirVolumeSourceObservedState{}
+	// MISSING: Medium
+	// MISSING: SizeLimit
+	return out
+}
+func EmptyDirVolumeSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EmptyDirVolumeSourceObservedState) *pb.EmptyDirVolumeSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EmptyDirVolumeSource{}
+	// MISSING: Medium
+	// MISSING: SizeLimit
 	return out
 }
 func EnvVar_FromProto(mapCtx *direct.MapContext, in *pb.EnvVar) *krm.EnvVar {
@@ -286,6 +436,26 @@ func EnvVar_Value_ToProto(mapCtx *direct.MapContext, in *string) *pb.EnvVar_Valu
 	}
 	return &pb.EnvVar_Value{Value: *in}
 }
+func EnvVarObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EnvVar) *krm.EnvVarObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EnvVarObservedState{}
+	// MISSING: Name
+	// MISSING: Value
+	// MISSING: ValueSource
+	return out
+}
+func EnvVarObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EnvVarObservedState) *pb.EnvVar {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EnvVar{}
+	// MISSING: Name
+	// MISSING: Value
+	// MISSING: ValueSource
+	return out
+}
 func EnvVarSource_FromProto(mapCtx *direct.MapContext, in *pb.EnvVarSource) *krm.EnvVarSource {
 	if in == nil {
 		return nil
@@ -302,11 +472,27 @@ func EnvVarSource_ToProto(mapCtx *direct.MapContext, in *krm.EnvVarSource) *pb.E
 	out.SecretKeyRef = SecretKeySelector_ToProto(mapCtx, in.SecretKeyRef)
 	return out
 }
-func ExecutionReference_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionReference) *krm.ExecutionReference {
+func EnvVarSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EnvVarSource) *krm.EnvVarSourceObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ExecutionReference{}
+	out := &krm.EnvVarSourceObservedState{}
+	// MISSING: SecretKeyRef
+	return out
+}
+func EnvVarSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EnvVarSourceObservedState) *pb.EnvVarSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EnvVarSource{}
+	// MISSING: SecretKeyRef
+	return out
+}
+func ExecutionReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionReference) *krm.ExecutionReferenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExecutionReferenceObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.CompletionTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCompletionTime())
@@ -314,7 +500,7 @@ func ExecutionReference_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionRef
 	out.CompletionStatus = direct.Enum_FromProto(mapCtx, in.GetCompletionStatus())
 	return out
 }
-func ExecutionReference_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionReference) *pb.ExecutionReference {
+func ExecutionReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionReferenceObservedState) *pb.ExecutionReference {
 	if in == nil {
 		return nil
 	}
@@ -350,6 +536,30 @@ func ExecutionTemplate_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionTempl
 	out.Template = TaskTemplate_ToProto(mapCtx, in.Template)
 	return out
 }
+func ExecutionTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionTemplate) *krm.ExecutionTemplateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExecutionTemplateObservedState{}
+	// MISSING: Labels
+	// MISSING: Annotations
+	// MISSING: Parallelism
+	// MISSING: TaskCount
+	// MISSING: Template
+	return out
+}
+func ExecutionTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionTemplateObservedState) *pb.ExecutionTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExecutionTemplate{}
+	// MISSING: Labels
+	// MISSING: Annotations
+	// MISSING: Parallelism
+	// MISSING: TaskCount
+	// MISSING: Template
+	return out
+}
 func GCSVolumeSource_FromProto(mapCtx *direct.MapContext, in *pb.GCSVolumeSource) *krm.GCSVolumeSource {
 	if in == nil {
 		return nil
@@ -374,6 +584,26 @@ func GCSVolumeSource_ToProto(mapCtx *direct.MapContext, in *krm.GCSVolumeSource)
 	out.MountOptions = in.MountOptions
 	return out
 }
+func GCSVolumeSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GCSVolumeSource) *krm.GCSVolumeSourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GCSVolumeSourceObservedState{}
+	// MISSING: Bucket
+	// MISSING: ReadOnly
+	// MISSING: MountOptions
+	return out
+}
+func GCSVolumeSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GCSVolumeSourceObservedState) *pb.GCSVolumeSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GCSVolumeSource{}
+	// MISSING: Bucket
+	// MISSING: ReadOnly
+	// MISSING: MountOptions
+	return out
+}
 func GrpcAction_FromProto(mapCtx *direct.MapContext, in *pb.GRPCAction) *krm.GrpcAction {
 	if in == nil {
 		return nil
@@ -390,6 +620,24 @@ func GrpcAction_ToProto(mapCtx *direct.MapContext, in *krm.GrpcAction) *pb.GRPCA
 	out := &pb.GRPCAction{}
 	out.Port = direct.ValueOf(in.Port)
 	out.Service = direct.ValueOf(in.Service)
+	return out
+}
+func GrpcActionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GRPCAction) *krm.GrpcActionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GrpcActionObservedState{}
+	// MISSING: Port
+	// MISSING: Service
+	return out
+}
+func GrpcActionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GrpcActionObservedState) *pb.GRPCAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GRPCAction{}
+	// MISSING: Port
+	// MISSING: Service
 	return out
 }
 func HTTPGetAction_FromProto(mapCtx *direct.MapContext, in *pb.HTTPGetAction) *krm.HTTPGetAction {
@@ -414,6 +662,26 @@ func HTTPGetAction_ToProto(mapCtx *direct.MapContext, in *krm.HTTPGetAction) *pb
 	out.Port = direct.ValueOf(in.Port)
 	return out
 }
+func HTTPGetActionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.HTTPGetAction) *krm.HTTPGetActionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HTTPGetActionObservedState{}
+	// MISSING: Path
+	// MISSING: HTTPHeaders
+	// MISSING: Port
+	return out
+}
+func HTTPGetActionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.HTTPGetActionObservedState) *pb.HTTPGetAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HTTPGetAction{}
+	// MISSING: Path
+	// MISSING: HTTPHeaders
+	// MISSING: Port
+	return out
+}
 func HTTPHeader_FromProto(mapCtx *direct.MapContext, in *pb.HTTPHeader) *krm.HTTPHeader {
 	if in == nil {
 		return nil
@@ -430,6 +698,90 @@ func HTTPHeader_ToProto(mapCtx *direct.MapContext, in *krm.HTTPHeader) *pb.HTTPH
 	out := &pb.HTTPHeader{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Value = direct.ValueOf(in.Value)
+	return out
+}
+func HTTPHeaderObservedState_FromProto(mapCtx *direct.MapContext, in *pb.HTTPHeader) *krm.HTTPHeaderObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HTTPHeaderObservedState{}
+	// MISSING: Name
+	// MISSING: Value
+	return out
+}
+func HTTPHeaderObservedState_ToProto(mapCtx *direct.MapContext, in *krm.HTTPHeaderObservedState) *pb.HTTPHeader {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HTTPHeader{}
+	// MISSING: Name
+	// MISSING: Value
+	return out
+}
+func JobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.JobObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.JobObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Generation = direct.LazyPtr(in.GetGeneration())
+	// MISSING: Labels
+	// MISSING: Annotations
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	out.Creator = direct.LazyPtr(in.GetCreator())
+	out.LastModifier = direct.LazyPtr(in.GetLastModifier())
+	// MISSING: Client
+	// MISSING: ClientVersion
+	// MISSING: LaunchStage
+	// MISSING: BinaryAuthorization
+	// MISSING: Template
+	out.ObservedGeneration = direct.LazyPtr(in.GetObservedGeneration())
+	out.TerminalCondition = ConditionObservedState_FromProto(mapCtx, in.GetTerminalCondition())
+	out.Conditions = direct.Slice_FromProto(mapCtx, in.Conditions, ConditionObservedState_FromProto)
+	out.ExecutionCount = direct.LazyPtr(in.GetExecutionCount())
+	out.LatestCreatedExecution = ExecutionReferenceObservedState_FromProto(mapCtx, in.GetLatestCreatedExecution())
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	// MISSING: StartExecutionToken
+	// MISSING: RunExecutionToken
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+func JobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.JobObservedState) *pb.Job {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Job{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Generation = direct.ValueOf(in.Generation)
+	// MISSING: Labels
+	// MISSING: Annotations
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
+	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
+	out.Creator = direct.ValueOf(in.Creator)
+	out.LastModifier = direct.ValueOf(in.LastModifier)
+	// MISSING: Client
+	// MISSING: ClientVersion
+	// MISSING: LaunchStage
+	// MISSING: BinaryAuthorization
+	// MISSING: Template
+	out.ObservedGeneration = direct.ValueOf(in.ObservedGeneration)
+	out.TerminalCondition = ConditionObservedState_ToProto(mapCtx, in.TerminalCondition)
+	out.Conditions = direct.Slice_ToProto(mapCtx, in.Conditions, ConditionObservedState_ToProto)
+	out.ExecutionCount = direct.ValueOf(in.ExecutionCount)
+	out.LatestCreatedExecution = ExecutionReferenceObservedState_ToProto(mapCtx, in.LatestCreatedExecution)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	// MISSING: StartExecutionToken
+	// MISSING: RunExecutionToken
+	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
 func NfsVolumeSource_FromProto(mapCtx *direct.MapContext, in *pb.NFSVolumeSource) *krm.NfsVolumeSource {
@@ -452,6 +804,26 @@ func NfsVolumeSource_ToProto(mapCtx *direct.MapContext, in *krm.NfsVolumeSource)
 	out.ReadOnly = direct.ValueOf(in.ReadOnly)
 	return out
 }
+func NfsVolumeSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NFSVolumeSource) *krm.NfsVolumeSourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NfsVolumeSourceObservedState{}
+	// MISSING: Server
+	// MISSING: Path
+	// MISSING: ReadOnly
+	return out
+}
+func NfsVolumeSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NfsVolumeSourceObservedState) *pb.NFSVolumeSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NFSVolumeSource{}
+	// MISSING: Server
+	// MISSING: Path
+	// MISSING: ReadOnly
+	return out
+}
 func NodeSelector_FromProto(mapCtx *direct.MapContext, in *pb.NodeSelector) *krm.NodeSelector {
 	if in == nil {
 		return nil
@@ -466,6 +838,22 @@ func NodeSelector_ToProto(mapCtx *direct.MapContext, in *krm.NodeSelector) *pb.N
 	}
 	out := &pb.NodeSelector{}
 	out.Accelerator = direct.ValueOf(in.Accelerator)
+	return out
+}
+func NodeSelectorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NodeSelector) *krm.NodeSelectorObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodeSelectorObservedState{}
+	// MISSING: Accelerator
+	return out
+}
+func NodeSelectorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NodeSelectorObservedState) *pb.NodeSelector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodeSelector{}
+	// MISSING: Accelerator
 	return out
 }
 func Probe_FromProto(mapCtx *direct.MapContext, in *pb.Probe) *krm.Probe {
@@ -500,6 +888,34 @@ func Probe_ToProto(mapCtx *direct.MapContext, in *krm.Probe) *pb.Probe {
 	// MISSING: Grpc
 	return out
 }
+func ProbeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Probe) *krm.ProbeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ProbeObservedState{}
+	// MISSING: InitialDelaySeconds
+	// MISSING: TimeoutSeconds
+	// MISSING: PeriodSeconds
+	// MISSING: FailureThreshold
+	// MISSING: HTTPGet
+	// MISSING: TCPSocket
+	// MISSING: Grpc
+	return out
+}
+func ProbeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ProbeObservedState) *pb.Probe {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Probe{}
+	// MISSING: InitialDelaySeconds
+	// MISSING: TimeoutSeconds
+	// MISSING: PeriodSeconds
+	// MISSING: FailureThreshold
+	// MISSING: HTTPGet
+	// MISSING: TCPSocket
+	// MISSING: Grpc
+	return out
+}
 func ResourceRequirements_FromProto(mapCtx *direct.MapContext, in *pb.ResourceRequirements) *krm.ResourceRequirements {
 	if in == nil {
 		return nil
@@ -516,6 +932,26 @@ func ResourceRequirements_ToProto(mapCtx *direct.MapContext, in *krm.ResourceReq
 	}
 	out := &pb.ResourceRequirements{}
 	out.Limits = in.Limits
+	// MISSING: CPUIdle
+	// MISSING: StartupCPUBoost
+	return out
+}
+func ResourceRequirementsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResourceRequirements) *krm.ResourceRequirementsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourceRequirementsObservedState{}
+	// MISSING: Limits
+	// MISSING: CPUIdle
+	// MISSING: StartupCPUBoost
+	return out
+}
+func ResourceRequirementsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResourceRequirementsObservedState) *pb.ResourceRequirements {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourceRequirements{}
+	// MISSING: Limits
 	// MISSING: CPUIdle
 	// MISSING: StartupCPUBoost
 	return out
@@ -542,7 +978,7 @@ func RunJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.R
 	// MISSING: Conditions
 	out.ExecutionCount = direct.LazyPtr(in.GetExecutionCount())
 	if v := in.GetLatestCreatedExecution(); v != nil {
-		out.LatestCreatedExecution = []*krm.ExecutionReference{ExecutionReference_FromProto(mapCtx, v)}
+		out.LatestCreatedExecution = []*krm.ExecutionReferenceObservedState{ExecutionReferenceObservedState_FromProto(mapCtx, v)}
 	}
 	out.Reconciling = direct.LazyPtr(in.GetReconciling())
 	// MISSING: SatisfiesPzs
@@ -573,7 +1009,7 @@ func RunJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RunJobObserv
 	// MISSING: Conditions
 	out.ExecutionCount = direct.ValueOf(in.ExecutionCount)
 	if len(in.LatestCreatedExecution) > 0 && in.LatestCreatedExecution[0] != nil {
-		out.LatestCreatedExecution = ExecutionReference_ToProto(mapCtx, in.LatestCreatedExecution[0])
+		out.LatestCreatedExecution = ExecutionReferenceObservedState_ToProto(mapCtx, in.LatestCreatedExecution[0])
 	}
 	out.Reconciling = direct.ValueOf(in.Reconciling)
 	// MISSING: SatisfiesPzs
@@ -650,6 +1086,24 @@ func SecretKeySelector_ToProto(mapCtx *direct.MapContext, in *krm.SecretKeySelec
 	}
 	return out
 }
+func SecretKeySelectorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SecretKeySelector) *krm.SecretKeySelectorObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecretKeySelectorObservedState{}
+	// MISSING: Secret
+	// MISSING: Version
+	return out
+}
+func SecretKeySelectorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecretKeySelectorObservedState) *pb.SecretKeySelector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecretKeySelector{}
+	// MISSING: Secret
+	// MISSING: Version
+	return out
+}
 func SecretVolumeSource_FromProto(mapCtx *direct.MapContext, in *pb.SecretVolumeSource) *krm.SecretVolumeSource {
 	if in == nil {
 		return nil
@@ -674,6 +1128,26 @@ func SecretVolumeSource_ToProto(mapCtx *direct.MapContext, in *krm.SecretVolumeS
 	out.DefaultMode = direct.ValueOf(in.DefaultMode)
 	return out
 }
+func SecretVolumeSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SecretVolumeSource) *krm.SecretVolumeSourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecretVolumeSourceObservedState{}
+	// MISSING: Secret
+	// MISSING: Items
+	// MISSING: DefaultMode
+	return out
+}
+func SecretVolumeSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecretVolumeSourceObservedState) *pb.SecretVolumeSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecretVolumeSource{}
+	// MISSING: Secret
+	// MISSING: Items
+	// MISSING: DefaultMode
+	return out
+}
 func TCPSocketAction_FromProto(mapCtx *direct.MapContext, in *pb.TCPSocketAction) *krm.TCPSocketAction {
 	if in == nil {
 		return nil
@@ -688,6 +1162,22 @@ func TCPSocketAction_ToProto(mapCtx *direct.MapContext, in *krm.TCPSocketAction)
 	}
 	out := &pb.TCPSocketAction{}
 	out.Port = direct.ValueOf(in.Port)
+	return out
+}
+func TCPSocketActionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TCPSocketAction) *krm.TCPSocketActionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TCPSocketActionObservedState{}
+	// MISSING: Port
+	return out
+}
+func TCPSocketActionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TCPSocketActionObservedState) *pb.TCPSocketAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TCPSocketAction{}
+	// MISSING: Port
 	return out
 }
 func TaskTemplate_FromProto(mapCtx *direct.MapContext, in *pb.TaskTemplate) *krm.TaskTemplate {
@@ -740,6 +1230,40 @@ func TaskTemplate_MaxRetries_ToProto(mapCtx *direct.MapContext, in *int32) *pb.T
 	}
 	return &pb.TaskTemplate_MaxRetries{MaxRetries: *in}
 }
+func TaskTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TaskTemplate) *krm.TaskTemplateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TaskTemplateObservedState{}
+	// MISSING: Containers
+	// MISSING: Volumes
+	// MISSING: MaxRetries
+	// MISSING: Timeout
+	// MISSING: ServiceAccount
+	// MISSING: ExecutionEnvironment
+	// MISSING: EncryptionKey
+	// MISSING: VPCAccess
+	// MISSING: NodeSelector
+	// MISSING: GpuZonalRedundancyDisabled
+	return out
+}
+func TaskTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TaskTemplateObservedState) *pb.TaskTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TaskTemplate{}
+	// MISSING: Containers
+	// MISSING: Volumes
+	// MISSING: MaxRetries
+	// MISSING: Timeout
+	// MISSING: ServiceAccount
+	// MISSING: ExecutionEnvironment
+	// MISSING: EncryptionKey
+	// MISSING: VPCAccess
+	// MISSING: NodeSelector
+	// MISSING: GpuZonalRedundancyDisabled
+	return out
+}
 func VPCAccess_FromProto(mapCtx *direct.MapContext, in *pb.VpcAccess) *krm.VPCAccess {
 	if in == nil {
 		return nil
@@ -762,6 +1286,26 @@ func VPCAccess_ToProto(mapCtx *direct.MapContext, in *krm.VPCAccess) *pb.VpcAcce
 	}
 	out.Egress = direct.Enum_ToProto[pb.VpcAccess_VpcEgress](mapCtx, in.Egress)
 	out.NetworkInterfaces = direct.Slice_ToProto(mapCtx, in.NetworkInterfaces, VPCAccess_NetworkInterface_ToProto)
+	return out
+}
+func VPCAccessObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VpcAccess) *krm.VPCAccessObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VPCAccessObservedState{}
+	// MISSING: Connector
+	// MISSING: Egress
+	// MISSING: NetworkInterfaces
+	return out
+}
+func VPCAccessObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VPCAccessObservedState) *pb.VpcAccess {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VpcAccess{}
+	// MISSING: Connector
+	// MISSING: Egress
+	// MISSING: NetworkInterfaces
 	return out
 }
 func VPCAccess_NetworkInterface_FromProto(mapCtx *direct.MapContext, in *pb.VpcAccess_NetworkInterface) *krm.VPCAccess_NetworkInterface {
@@ -792,6 +1336,26 @@ func VPCAccess_NetworkInterface_ToProto(mapCtx *direct.MapContext, in *krm.VPCAc
 	out.Tags = in.Tags
 	return out
 }
+func VPCAccess_NetworkInterfaceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VpcAccess_NetworkInterface) *krm.VPCAccess_NetworkInterfaceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VPCAccess_NetworkInterfaceObservedState{}
+	// MISSING: Network
+	// MISSING: Subnetwork
+	// MISSING: Tags
+	return out
+}
+func VPCAccess_NetworkInterfaceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VPCAccess_NetworkInterfaceObservedState) *pb.VpcAccess_NetworkInterface {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VpcAccess_NetworkInterface{}
+	// MISSING: Network
+	// MISSING: Subnetwork
+	// MISSING: Tags
+	return out
+}
 func VersionToPath_FromProto(mapCtx *direct.MapContext, in *pb.VersionToPath) *krm.VersionToPath {
 	if in == nil {
 		return nil
@@ -816,6 +1380,26 @@ func VersionToPath_ToProto(mapCtx *direct.MapContext, in *krm.VersionToPath) *pb
 	out.Mode = direct.ValueOf(in.Mode)
 	return out
 }
+func VersionToPathObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VersionToPath) *krm.VersionToPathObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VersionToPathObservedState{}
+	// MISSING: Path
+	// MISSING: Version
+	// MISSING: Mode
+	return out
+}
+func VersionToPathObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VersionToPathObservedState) *pb.VersionToPath {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VersionToPath{}
+	// MISSING: Path
+	// MISSING: Version
+	// MISSING: Mode
+	return out
+}
 func VolumeMount_FromProto(mapCtx *direct.MapContext, in *pb.VolumeMount) *krm.VolumeMount {
 	if in == nil {
 		return nil
@@ -832,5 +1416,49 @@ func VolumeMount_ToProto(mapCtx *direct.MapContext, in *krm.VolumeMount) *pb.Vol
 	out := &pb.VolumeMount{}
 	out.Name = direct.ValueOf(in.Name)
 	out.MountPath = direct.ValueOf(in.MountPath)
+	return out
+}
+func VolumeMountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VolumeMount) *krm.VolumeMountObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VolumeMountObservedState{}
+	// MISSING: Name
+	// MISSING: MountPath
+	return out
+}
+func VolumeMountObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VolumeMountObservedState) *pb.VolumeMount {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VolumeMount{}
+	// MISSING: Name
+	// MISSING: MountPath
+	return out
+}
+func VolumeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krm.VolumeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VolumeObservedState{}
+	// MISSING: Name
+	// MISSING: Secret
+	// MISSING: CloudSQLInstance
+	// MISSING: EmptyDir
+	// MISSING: Nfs
+	// MISSING: GCS
+	return out
+}
+func VolumeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VolumeObservedState) *pb.Volume {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Volume{}
+	// MISSING: Name
+	// MISSING: Secret
+	// MISSING: CloudSQLInstance
+	// MISSING: EmptyDir
+	// MISSING: Nfs
+	// MISSING: GCS
 	return out
 }

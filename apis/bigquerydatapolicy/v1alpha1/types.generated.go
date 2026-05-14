@@ -56,6 +56,10 @@ type DataPolicy struct {
 }
 */
 
+// +kcc:observedstate:proto=google.cloud.bigquery.datapolicies.v1beta1.DataMaskingPolicy
+type DataMaskingPolicyObservedState struct {
+}
+
 /* found existing non-generated go type with proto tag "google.cloud.bigquery.datapolicies.v1beta1.DataPolicy", skipping
 
 // +kcc:observedstate:proto=google.cloud.bigquery.datapolicies.v1beta1.DataPolicy

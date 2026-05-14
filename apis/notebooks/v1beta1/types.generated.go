@@ -223,108 +223,6 @@ type Instance_AcceleratorConfig struct {
 	CoreCount *int64 `json:"coreCount,omitempty"`
 }
 
-// +kcc:proto=google.cloud.notebooks.v1.Instance.Disk
-type Instance_Disk struct {
-	// Indicates whether the disk will be auto-deleted when the instance is
-	//  deleted (but not when the disk is detached from the instance).
-	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.auto_delete
-	AutoDelete *bool `json:"autoDelete,omitempty"`
-
-	// Indicates that this is a boot disk. The virtual machine will use the
-	//  first partition of the disk for its root filesystem.
-	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.boot
-	Boot *bool `json:"boot,omitempty"`
-
-	// Indicates a unique device name of your choice that is reflected into the
-	//  `/dev/disk/by-id/google-*` tree of a Linux operating system running
-	//  within the instance. This name can be used to reference the device for
-	//  mounting, resizing, and so on, from within the instance.
-	//
-	//  If not specified, the server chooses a default device name to apply to
-	//  this disk, in the form persistent-disk-x, where x is a number assigned by
-	//  Google Compute Engine.This field is only applicable for persistent disks.
-	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.device_name
-	DeviceName *string `json:"deviceName,omitempty"`
-
-	// Indicates the size of the disk in base-2 GB.
-	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.disk_size_gb
-	DiskSizeGB *int64 `json:"diskSizeGB,omitempty"`
-
-	// Indicates a list of features to enable on the guest operating system.
-	//  Applicable only for bootable images. Read  Enabling guest operating
-	//  system features to see a list of available options.
-	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.guest_os_features
-	GuestOSFeatures []Instance_Disk_GuestOSFeature `json:"guestOSFeatures,omitempty"`
-
-	// A zero-based index to this disk, where 0 is reserved for the
-	//  boot disk. If you have many disks attached to an instance, each disk
-	//  would have a unique index number.
-	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.index
-	Index *int64 `json:"index,omitempty"`
-
-	// Indicates the disk interface to use for attaching this disk, which is
-	//  either SCSI or NVME. The default is SCSI. Persistent disks must always
-	//  use SCSI and the request will fail if you attempt to attach a persistent
-	//  disk in any other format than SCSI. Local SSDs can use either NVME or
-	//  SCSI. For performance characteristics of SCSI over NVMe, see Local SSD
-	//  performance.
-	//  Valid values:
-	//
-	//  * `NVME`
-	//  * `SCSI`
-	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.interface
-	Interface *string `json:"interface,omitempty"`
-
-	// Type of the resource. Always compute#attachedDisk for attached
-	//  disks.
-	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.kind
-	Kind *string `json:"kind,omitempty"`
-
-	// A list of publicly visible licenses. Reserved for Google's use.
-	//  A License represents billing and aggregate usage data for public
-	//  and marketplace images.
-	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.licenses
-	Licenses []string `json:"licenses,omitempty"`
-
-	// The mode in which to attach this disk, either `READ_WRITE` or
-	//  `READ_ONLY`. If not specified, the default is to attach the disk in
-	//  `READ_WRITE` mode. Valid values:
-	//
-	//  * `READ_ONLY`
-	//  * `READ_WRITE`
-	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.mode
-	Mode *string `json:"mode,omitempty"`
-
-	// Indicates a valid partial or full URL to an existing Persistent Disk
-	//  resource.
-	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.source
-	Source *string `json:"source,omitempty"`
-
-	// Indicates the type of the disk, either `SCRATCH` or `PERSISTENT`.
-	//  Valid values:
-	//
-	//  * `PERSISTENT`
-	//  * `SCRATCH`
-	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.type
-	Type *string `json:"type,omitempty"`
-}
-
-// +kcc:proto=google.cloud.notebooks.v1.Instance.Disk.GuestOsFeature
-type Instance_Disk_GuestOSFeature struct {
-	// The ID of a supported feature. Read  Enabling guest operating system
-	//  features to see a list of available options.
-	//  Valid values:
-	//
-	//  * `FEATURE_TYPE_UNSPECIFIED`
-	//  * `MULTI_IP_SUBNET`
-	//  * `SECURE_BOOT`
-	//  * `UEFI_COMPATIBLE`
-	//  * `VIRTIO_SCSI_MULTIQUEUE`
-	//  * `WINDOWS`
-	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.GuestOsFeature.type
-	Type *string `json:"type,omitempty"`
-}
-
 // +kcc:proto=google.cloud.notebooks.v1.Instance.ShieldedInstanceConfig
 type Instance_ShieldedInstanceConfig struct {
 	// Defines whether the instance has Secure Boot enabled.
@@ -424,7 +322,9 @@ type VMImage struct {
 	ImageFamily *string `json:"imageFamily,omitempty"`
 }
 
-/* found existing non-generated go type with proto tag "google.cloud.notebooks.v1.Instance", skipping
+// +kcc:observedstate:proto=google.cloud.notebooks.v1.ContainerImage
+type ContainerImageObservedState struct {
+}
 
 // +kcc:observedstate:proto=google.cloud.notebooks.v1.Instance
 type InstanceObservedState struct {
@@ -443,7 +343,7 @@ type InstanceObservedState struct {
 
 	// Output only. Attached disks to notebook instance.
 	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.disks
-	Disks []Instance_Disk `json:"disks,omitempty"`
+	Disks []Instance_DiskObservedState `json:"disks,omitempty"`
 
 	// Output only. Email address of entity that sent original CreateInstance request.
 	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.creator
@@ -457,4 +357,125 @@ type InstanceObservedState struct {
 	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
-*/
+
+// +kcc:observedstate:proto=google.cloud.notebooks.v1.Instance.AcceleratorConfig
+type Instance_AcceleratorConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.notebooks.v1.Instance.Disk
+type Instance_DiskObservedState struct {
+	// Indicates whether the disk will be auto-deleted when the instance is
+	//  deleted (but not when the disk is detached from the instance).
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.auto_delete
+	AutoDelete *bool `json:"autoDelete,omitempty"`
+
+	// Indicates that this is a boot disk. The virtual machine will use the
+	//  first partition of the disk for its root filesystem.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.boot
+	Boot *bool `json:"boot,omitempty"`
+
+	// Indicates a unique device name of your choice that is reflected into the
+	//  `/dev/disk/by-id/google-*` tree of a Linux operating system running
+	//  within the instance. This name can be used to reference the device for
+	//  mounting, resizing, and so on, from within the instance.
+	//
+	//  If not specified, the server chooses a default device name to apply to
+	//  this disk, in the form persistent-disk-x, where x is a number assigned by
+	//  Google Compute Engine.This field is only applicable for persistent disks.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.device_name
+	DeviceName *string `json:"deviceName,omitempty"`
+
+	// Indicates the size of the disk in base-2 GB.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.disk_size_gb
+	DiskSizeGB *int64 `json:"diskSizeGB,omitempty"`
+
+	// Indicates a list of features to enable on the guest operating system.
+	//  Applicable only for bootable images. Read  Enabling guest operating
+	//  system features to see a list of available options.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.guest_os_features
+	GuestOSFeatures []Instance_Disk_GuestOSFeatureObservedState `json:"guestOSFeatures,omitempty"`
+
+	// A zero-based index to this disk, where 0 is reserved for the
+	//  boot disk. If you have many disks attached to an instance, each disk
+	//  would have a unique index number.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.index
+	Index *int64 `json:"index,omitempty"`
+
+	// Indicates the disk interface to use for attaching this disk, which is
+	//  either SCSI or NVME. The default is SCSI. Persistent disks must always
+	//  use SCSI and the request will fail if you attempt to attach a persistent
+	//  disk in any other format than SCSI. Local SSDs can use either NVME or
+	//  SCSI. For performance characteristics of SCSI over NVMe, see Local SSD
+	//  performance.
+	//  Valid values:
+	//
+	//  * `NVME`
+	//  * `SCSI`
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.interface
+	Interface *string `json:"interface,omitempty"`
+
+	// Type of the resource. Always compute#attachedDisk for attached
+	//  disks.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// A list of publicly visible licenses. Reserved for Google's use.
+	//  A License represents billing and aggregate usage data for public
+	//  and marketplace images.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.licenses
+	Licenses []string `json:"licenses,omitempty"`
+
+	// The mode in which to attach this disk, either `READ_WRITE` or
+	//  `READ_ONLY`. If not specified, the default is to attach the disk in
+	//  `READ_WRITE` mode. Valid values:
+	//
+	//  * `READ_ONLY`
+	//  * `READ_WRITE`
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.mode
+	Mode *string `json:"mode,omitempty"`
+
+	// Indicates a valid partial or full URL to an existing Persistent Disk
+	//  resource.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.source
+	Source *string `json:"source,omitempty"`
+
+	// Indicates the type of the disk, either `SCRATCH` or `PERSISTENT`.
+	//  Valid values:
+	//
+	//  * `PERSISTENT`
+	//  * `SCRATCH`
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.type
+	Type *string `json:"type,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.notebooks.v1.Instance.Disk.GuestOsFeature
+type Instance_Disk_GuestOSFeatureObservedState struct {
+	// The ID of a supported feature. Read  Enabling guest operating system
+	//  features to see a list of available options.
+	//  Valid values:
+	//
+	//  * `FEATURE_TYPE_UNSPECIFIED`
+	//  * `MULTI_IP_SUBNET`
+	//  * `SECURE_BOOT`
+	//  * `UEFI_COMPATIBLE`
+	//  * `VIRTIO_SCSI_MULTIQUEUE`
+	//  * `WINDOWS`
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.GuestOsFeature.type
+	Type *string `json:"type,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.notebooks.v1.Instance.ShieldedInstanceConfig
+type Instance_ShieldedInstanceConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.notebooks.v1.Instance.UpgradeHistoryEntry
+type Instance_UpgradeHistoryEntryObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.notebooks.v1.ReservationAffinity
+type ReservationAffinityObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.notebooks.v1.VmImage
+type VMImageObservedState struct {
+}

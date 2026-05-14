@@ -44,28 +44,6 @@ type DiscoveredWorkload struct {
 }
 */
 
-/* found existing non-generated go type "ServiceProperties", skipping
-
-// +kcc:proto=google.cloud.apphub.v1.ServiceProperties
-type ServiceProperties struct {
-}
-*/
-
-/* found existing non-generated go type "ServiceReference", skipping
-
-// +kcc:proto=google.cloud.apphub.v1.ServiceReference
-type ServiceReference struct {
-}
-*/
-
-// +kcc:proto=google.cloud.apphub.v1.WorkloadProperties
-type WorkloadProperties struct {
-}
-
-// +kcc:proto=google.cloud.apphub.v1.WorkloadReference
-type WorkloadReference struct {
-}
-
 /* found existing non-generated go type with proto tag "google.cloud.apphub.v1.DiscoveredService", skipping
 
 // +kcc:observedstate:proto=google.cloud.apphub.v1.DiscoveredService
@@ -73,12 +51,12 @@ type DiscoveredServiceObservedState struct {
 	// Output only. Reference to an underlying networking resource that can
 	//  comprise a Service. These are immutable.
 	// +kcc:proto:field=google.cloud.apphub.v1.DiscoveredService.service_reference
-	ServiceReference *ServiceReference `json:"serviceReference,omitempty"`
+	ServiceReference *ServiceReferenceObservedState `json:"serviceReference,omitempty"`
 
 	// Output only. Properties of an underlying compute resource that can comprise
 	//  a Service. These are immutable.
 	// +kcc:proto:field=google.cloud.apphub.v1.DiscoveredService.service_properties
-	ServiceProperties *ServiceProperties `json:"serviceProperties,omitempty"`
+	ServiceProperties *ServicePropertiesObservedState `json:"serviceProperties,omitempty"`
 }
 */
 
@@ -89,12 +67,12 @@ type DiscoveredWorkloadObservedState struct {
 	// Output only. Reference of an underlying compute resource represented by the
 	//  Workload. These are immutable.
 	// +kcc:proto:field=google.cloud.apphub.v1.DiscoveredWorkload.workload_reference
-	WorkloadReference *WorkloadReference `json:"workloadReference,omitempty"`
+	WorkloadReference *WorkloadReferenceObservedState `json:"workloadReference,omitempty"`
 
 	// Output only. Properties of an underlying compute resource represented by
 	//  the Workload. These are immutable.
 	// +kcc:proto:field=google.cloud.apphub.v1.DiscoveredWorkload.workload_properties
-	WorkloadProperties *WorkloadProperties `json:"workloadProperties,omitempty"`
+	WorkloadProperties *WorkloadPropertiesObservedState `json:"workloadProperties,omitempty"`
 }
 */
 

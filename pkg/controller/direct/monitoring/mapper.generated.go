@@ -112,3 +112,55 @@ func MutationRecord_ToProto(mapCtx *direct.MapContext, in *krm.MutationRecord) *
 	out.MutatedBy = direct.ValueOf(in.MutatedBy)
 	return out
 }
+func MutationRecordObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MutationRecord) *krm.MutationRecordObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MutationRecordObservedState{}
+	// MISSING: MutateTime
+	// MISSING: MutatedBy
+	return out
+}
+func MutationRecordObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MutationRecordObservedState) *pb.MutationRecord {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MutationRecord{}
+	// MISSING: MutateTime
+	// MISSING: MutatedBy
+	return out
+}
+func NotificationChannelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotificationChannel) *krm.NotificationChannelObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NotificationChannelObservedState{}
+	// MISSING: Type
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Labels
+	// MISSING: UserLabels
+	// MISSING: VerificationStatus
+	// MISSING: Enabled
+	// MISSING: CreationRecord
+	// MISSING: MutationRecords
+	return out
+}
+func NotificationChannelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NotificationChannelObservedState) *pb.NotificationChannel {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotificationChannel{}
+	// MISSING: Type
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Labels
+	// MISSING: UserLabels
+	// MISSING: VerificationStatus
+	// MISSING: Enabled
+	// MISSING: CreationRecord
+	// MISSING: MutationRecords
+	return out
+}

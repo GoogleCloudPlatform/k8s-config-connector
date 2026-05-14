@@ -192,6 +192,14 @@ type TrustConfig_CertificateAuthorityServiceConfig struct {
 	CAPool *string `json:"caPool,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.managedkafka.v1.AccessConfig
+type AccessConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.managedkafka.v1.CapacityConfig
+type CapacityConfigObservedState struct {
+}
+
 /* found existing non-generated go type with proto tag "google.cloud.managedkafka.v1.Cluster", skipping
 
 // +kcc:observedstate:proto=google.cloud.managedkafka.v1.Cluster
@@ -217,3 +225,31 @@ type ClusterObservedState struct {
 	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.managedkafka.v1.GcpConfig
+type GcpConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.managedkafka.v1.NetworkConfig
+type NetworkConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.managedkafka.v1.RebalanceConfig
+type RebalanceConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.managedkafka.v1.TlsConfig
+type TLSConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.managedkafka.v1.Topic
+type TopicObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.managedkafka.v1.TrustConfig
+type TrustConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.managedkafka.v1.TrustConfig.CertificateAuthorityServiceConfig
+type TrustConfig_CertificateAuthorityServiceConfigObservedState struct {
+}

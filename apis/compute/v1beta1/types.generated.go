@@ -492,3 +492,303 @@ type UpcomingMaintenance struct {
 	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.window_start_time
 	WindowStartTime *string `json:"windowStartTime,omitempty"`
 }
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.AcceleratorConfig
+type AcceleratorConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.AllocationAggregateReservation
+type AllocationAggregateReservationObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.AllocationAggregateReservationReservedResourceInfo
+type AllocationAggregateReservationReservedResourceInfoObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.AllocationAggregateReservationReservedResourceInfoAccelerator
+type AllocationAggregateReservationReservedResourceInfoAcceleratorObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.AllocationReservationSharingPolicy
+type AllocationReservationSharingPolicyObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.AllocationResourceStatus
+type AllocationResourceStatusObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.AllocationResourceStatusHealthInfo
+type AllocationResourceStatusHealthInfoObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.AllocationResourceStatusSpecificSKUAllocation
+type AllocationResourceStatusSpecificSkuAllocationObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk
+type AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDiskObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.AllocationSpecificSKUAllocationReservedInstanceProperties
+type AllocationSpecificSkuAllocationReservedInstancePropertiesObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.AllocationSpecificSKUReservation
+type AllocationSpecificSkuReservationObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.Duration
+type DurationObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.Expr
+type ExprObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.FirewallPolicyRule
+type FirewallPolicyRuleObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.FirewallPolicyRuleMatcher
+type FirewallPolicyRuleMatcherObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.FirewallPolicyRuleMatcherLayer4Config
+type FirewallPolicyRuleMatcherLayer4ConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.FirewallPolicyRuleSecureTag
+type FirewallPolicyRuleSecureTagObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.ForwardingRule
+type ForwardingRuleObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.ForwardingRuleServiceDirectoryRegistration
+type ForwardingRuleServiceDirectoryRegistrationObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.GroupMaintenanceInfo
+type GroupMaintenanceInfoObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.LocalDisk
+type LocalDiskObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.MetadataFilter
+type MetadataFilterObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.MetadataFilterLabelMatch
+type MetadataFilterLabelMatchObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.NodeTemplate
+type NodeTemplateObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.NodeTemplateNodeTypeFlexibility
+type NodeTemplateNodeTypeFlexibilityObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.ReservationAdvancedDeploymentControl
+type ReservationAdvancedDeploymentControlObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.ResourcePolicyDailyCycle
+type ResourcePolicyDailyCycleObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.ResourcePolicyDiskConsistencyGroupPolicy
+type ResourcePolicyDiskConsistencyGroupPolicyObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.ResourcePolicyGroupPlacementPolicy
+type ResourcePolicyGroupPlacementPolicyObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.ResourcePolicyHourlyCycle
+type ResourcePolicyHourlyCycleObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.ResourcePolicyInstanceSchedulePolicy
+type ResourcePolicyInstanceSchedulePolicyObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.ResourcePolicyInstanceSchedulePolicySchedule
+type ResourcePolicyInstanceSchedulePolicyScheduleObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.ResourcePolicyResourceStatus
+type ResourcePolicyResourceStatusObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus
+type ResourcePolicyResourceStatusInstanceSchedulePolicyStatusObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicy
+type ResourcePolicySnapshotSchedulePolicyObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicyRetentionPolicy
+type ResourcePolicySnapshotSchedulePolicyRetentionPolicyObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicySchedule
+type ResourcePolicySnapshotSchedulePolicyScheduleObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.ResourcePolicySnapshotSchedulePolicySnapshotProperties
+type ResourcePolicySnapshotSchedulePolicySnapshotPropertiesObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.ResourcePolicyWeeklyCycle
+type ResourcePolicyWeeklyCycleObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.ResourcePolicyWeeklyCycleDayOfWeek
+type ResourcePolicyWeeklyCycleDayOfWeekObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.ResourcePolicyWorkloadPolicy
+type ResourcePolicyWorkloadPolicyObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfig
+type SecurityPolicyAdaptiveProtectionConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig
+type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig
+type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig
+type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyAdvancedOptionsConfig
+type SecurityPolicyAdvancedOptionsConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyAdvancedOptionsConfigJsonCustomConfig
+type SecurityPolicyAdvancedOptionsConfigJsonCustomConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyDdosProtectionConfig
+type SecurityPolicyDdosProtectionConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyRecaptchaOptionsConfig
+type SecurityPolicyRecaptchaOptionsConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyRule
+type SecurityPolicyRuleObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyRuleHttpHeaderAction
+type SecurityPolicyRuleHTTPHeaderActionObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyRuleHttpHeaderActionHttpHeaderOption
+type SecurityPolicyRuleHTTPHeaderActionHTTPHeaderOptionObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyRuleMatcher
+type SecurityPolicyRuleMatcherObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyRuleMatcherConfig
+type SecurityPolicyRuleMatcherConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyRuleMatcherExprOptions
+type SecurityPolicyRuleMatcherExprOptionsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions
+type SecurityPolicyRuleMatcherExprOptionsRecaptchaOptionsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcher
+type SecurityPolicyRuleNetworkMatcherObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch
+type SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatchObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfig
+type SecurityPolicyRulePreconfiguredWafConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusion
+type SecurityPolicyRulePreconfiguredWafConfigExclusionObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams
+type SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParamsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions
+type SecurityPolicyRuleRateLimitOptionsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig
+type SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptionsThreshold
+type SecurityPolicyRuleRateLimitOptionsThresholdObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyRuleRedirectOptions
+type SecurityPolicyRuleRedirectOptionsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyUserDefinedField
+type SecurityPolicyUserDefinedFieldObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.ServerBinding
+type ServerBindingObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.ShareSettings
+type ShareSettingsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.ShareSettingsProjectConfig
+type ShareSettingsProjectConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.Subnetwork
+type SubnetworkObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SubnetworkLogConfig
+type SubnetworkLogConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SubnetworkParams
+type SubnetworkParamsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.SubnetworkSecondaryRange
+type SubnetworkSecondaryRangeObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.TargetTcpProxy
+type TargetTCPProxyObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.UpcomingMaintenance
+type UpcomingMaintenanceObservedState struct {
+}

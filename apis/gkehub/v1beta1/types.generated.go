@@ -287,9 +287,73 @@ type MembershipSpec struct {
 	Management *string `json:"management,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.gkehub.configmanagement.v1beta.BinauthzConfig
+type BinauthzConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkehub.configmanagement.v1beta.ConfigSync
+type ConfigSyncObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkehub.configmanagement.v1beta.GitConfig
+type GitConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkehub.configmanagement.v1beta.HierarchyControllerConfig
+type HierarchyControllerConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkehub.configmanagement.v1beta.OciConfig
+type OciConfigObservedState struct {
+}
+
 // +kcc:observedstate:proto=google.cloud.gkehub.configmanagement.v1beta.PolicyController
 type PolicyControllerObservedState struct {
 	// Output only. Last time this membership spec was updated.
 	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.PolicyController.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.gkehub.configmanagement.v1beta.PolicyControllerMonitoring
+type PolicyControllerMonitoringObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkehub.policycontroller.v1beta.BundleInstallSpec
+type BundleInstallSpecObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkehub.policycontroller.v1beta.HubConfig
+type HubConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkehub.policycontroller.v1beta.MonitoringConfig
+type MonitoringConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkehub.policycontroller.v1beta.PolicyContentSpec
+type PolicyContentSpecObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkehub.policycontroller.v1beta.PolicyControllerDeploymentConfig
+type PolicyControllerDeploymentConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkehub.policycontroller.v1beta.PolicyControllerDeploymentConfig.Toleration
+type PolicyControllerDeploymentConfig_TolerationObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkehub.policycontroller.v1beta.ResourceList
+type ResourceListObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkehub.policycontroller.v1beta.ResourceRequirements
+type ResourceRequirementsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkehub.policycontroller.v1beta.TemplateLibraryConfig
+type TemplateLibraryConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkehub.servicemesh.v1beta.MembershipSpec
+type MembershipSpecObservedState struct {
 }

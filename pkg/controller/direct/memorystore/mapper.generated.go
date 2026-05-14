@@ -28,6 +28,66 @@ import (
 	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
 )
 
+func AutomatedBackupConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AutomatedBackupConfig) *krm.AutomatedBackupConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AutomatedBackupConfigObservedState{}
+	// MISSING: FixedFrequencySchedule
+	// MISSING: AutomatedBackupMode
+	// MISSING: Retention
+	return out
+}
+func AutomatedBackupConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AutomatedBackupConfigObservedState) *pb.AutomatedBackupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutomatedBackupConfig{}
+	// MISSING: FixedFrequencySchedule
+	// MISSING: AutomatedBackupMode
+	// MISSING: Retention
+	return out
+}
+
+/* found existing non-generated mapping function "AutomatedBackupConfig_FixedFrequencySchedule_FromProto", skipping
+func AutomatedBackupConfig_FixedFrequencySchedule_FromProto(mapCtx *direct.MapContext, in *pb.AutomatedBackupConfig_FixedFrequencySchedule) *krm.AutomatedBackupConfig_FixedFrequencySchedule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AutomatedBackupConfig_FixedFrequencySchedule{}
+	out.StartTime = TimeOfDay_FromProto(mapCtx, in.GetStartTime())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "AutomatedBackupConfig_FixedFrequencySchedule_ToProto", skipping
+
+	func AutomatedBackupConfig_FixedFrequencySchedule_ToProto(mapCtx *direct.MapContext, in *krm.AutomatedBackupConfig_FixedFrequencySchedule) *pb.AutomatedBackupConfig_FixedFrequencySchedule {
+		if in == nil {
+			return nil
+		}
+		out := &pb.AutomatedBackupConfig_FixedFrequencySchedule{}
+		out.StartTime = TimeOfDay_ToProto(mapCtx, in.StartTime)
+		return out
+	}
+*/
+func AutomatedBackupConfig_FixedFrequencyScheduleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AutomatedBackupConfig_FixedFrequencySchedule) *krm.AutomatedBackupConfig_FixedFrequencyScheduleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AutomatedBackupConfig_FixedFrequencyScheduleObservedState{}
+	// MISSING: StartTime
+	return out
+}
+func AutomatedBackupConfig_FixedFrequencyScheduleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AutomatedBackupConfig_FixedFrequencyScheduleObservedState) *pb.AutomatedBackupConfig_FixedFrequencySchedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutomatedBackupConfig_FixedFrequencySchedule{}
+	// MISSING: StartTime
+	return out
+}
 func DiscoveryEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveryEndpoint) *krm.DiscoveryEndpointObservedState {
 	if in == nil {
 		return nil
@@ -214,6 +274,22 @@ func Instance_GCSBackupSource_ToProto(mapCtx *direct.MapContext, in *krm.Instanc
 	out.Uris = in.Uris
 	return out
 }
+func Instance_GCSBackupSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_GcsBackupSource) *krm.Instance_GCSBackupSourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Instance_GCSBackupSourceObservedState{}
+	// MISSING: Uris
+	return out
+}
+func Instance_GCSBackupSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_GCSBackupSourceObservedState) *pb.Instance_GcsBackupSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance_GcsBackupSource{}
+	// MISSING: Uris
+	return out
+}
 
 /* found existing non-generated mapping function "Instance_InstanceEndpoint_FromProto", skipping
 func Instance_InstanceEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceEndpoint) *krm.Instance_InstanceEndpoint {
@@ -274,6 +350,22 @@ func Instance_ManagedBackupSource_ToProto(mapCtx *direct.MapContext, in *krm.Ins
 	}
 	out := &pb.Instance_ManagedBackupSource{}
 	out.Backup = direct.ValueOf(in.Backup)
+	return out
+}
+func Instance_ManagedBackupSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ManagedBackupSource) *krm.Instance_ManagedBackupSourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Instance_ManagedBackupSourceObservedState{}
+	// MISSING: Backup
+	return out
+}
+func Instance_ManagedBackupSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_ManagedBackupSourceObservedState) *pb.Instance_ManagedBackupSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance_ManagedBackupSource{}
+	// MISSING: Backup
 	return out
 }
 
@@ -368,24 +460,6 @@ func MaintenancePolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.M
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: WeeklyMaintenanceWindow
-	return out
-}
-func MaintenanceSchedule_FromProto(mapCtx *direct.MapContext, in *pb.MaintenanceSchedule) *krm.MaintenanceSchedule {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MaintenanceSchedule{}
-	// MISSING: StartTime
-	// MISSING: EndTime
-	return out
-}
-func MaintenanceSchedule_ToProto(mapCtx *direct.MapContext, in *krm.MaintenanceSchedule) *pb.MaintenanceSchedule {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MaintenanceSchedule{}
-	// MISSING: StartTime
-	// MISSING: EndTime
 	return out
 }
 func MaintenanceScheduleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MaintenanceSchedule) *krm.MaintenanceScheduleObservedState {
@@ -816,18 +890,40 @@ func PersistenceConfig_FromProto(mapCtx *direct.MapContext, in *pb.PersistenceCo
 }
 */
 
-/* found existing non-generated mapping function "PersistenceConfig_ToProto", skipping
-func PersistenceConfig_ToProto(mapCtx *direct.MapContext, in *krm.PersistenceConfig) *pb.PersistenceConfig {
+/*
+found existing non-generated mapping function "PersistenceConfig_ToProto", skipping
+
+	func PersistenceConfig_ToProto(mapCtx *direct.MapContext, in *krm.PersistenceConfig) *pb.PersistenceConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.PersistenceConfig{}
+		out.Mode = direct.Enum_ToProto[pb.PersistenceConfig_PersistenceMode](mapCtx, in.Mode)
+		out.RdbConfig = PersistenceConfig_RdbConfig_ToProto(mapCtx, in.RdbConfig)
+		out.AofConfig = PersistenceConfig_AofConfig_ToProto(mapCtx, in.AofConfig)
+		return out
+	}
+*/
+func PersistenceConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PersistenceConfig) *krm.PersistenceConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PersistenceConfigObservedState{}
+	// MISSING: Mode
+	// MISSING: RdbConfig
+	// MISSING: AofConfig
+	return out
+}
+func PersistenceConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PersistenceConfigObservedState) *pb.PersistenceConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.PersistenceConfig{}
-	out.Mode = direct.Enum_ToProto[pb.PersistenceConfig_PersistenceMode](mapCtx, in.Mode)
-	out.RdbConfig = PersistenceConfig_RdbConfig_ToProto(mapCtx, in.RdbConfig)
-	out.AofConfig = PersistenceConfig_AofConfig_ToProto(mapCtx, in.AofConfig)
+	// MISSING: Mode
+	// MISSING: RdbConfig
+	// MISSING: AofConfig
 	return out
 }
-*/
 
 /* found existing non-generated mapping function "PersistenceConfig_AofConfig_FromProto", skipping
 func PersistenceConfig_AofConfig_FromProto(mapCtx *direct.MapContext, in *pb.PersistenceConfig_AOFConfig) *krm.PersistenceConfig_AofConfig {
@@ -840,16 +936,34 @@ func PersistenceConfig_AofConfig_FromProto(mapCtx *direct.MapContext, in *pb.Per
 }
 */
 
-/* found existing non-generated mapping function "PersistenceConfig_AofConfig_ToProto", skipping
-func PersistenceConfig_AofConfig_ToProto(mapCtx *direct.MapContext, in *krm.PersistenceConfig_AofConfig) *pb.PersistenceConfig_AOFConfig {
+/*
+found existing non-generated mapping function "PersistenceConfig_AofConfig_ToProto", skipping
+
+	func PersistenceConfig_AofConfig_ToProto(mapCtx *direct.MapContext, in *krm.PersistenceConfig_AofConfig) *pb.PersistenceConfig_AOFConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.PersistenceConfig_AOFConfig{}
+		out.AppendFsync = direct.Enum_ToProto[pb.PersistenceConfig_AOFConfig_AppendFsync](mapCtx, in.AppendFsync)
+		return out
+	}
+*/
+func PersistenceConfig_AofConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PersistenceConfig_AOFConfig) *krm.PersistenceConfig_AofConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PersistenceConfig_AofConfigObservedState{}
+	// MISSING: AppendFsync
+	return out
+}
+func PersistenceConfig_AofConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PersistenceConfig_AofConfigObservedState) *pb.PersistenceConfig_AOFConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.PersistenceConfig_AOFConfig{}
-	out.AppendFsync = direct.Enum_ToProto[pb.PersistenceConfig_AOFConfig_AppendFsync](mapCtx, in.AppendFsync)
+	// MISSING: AppendFsync
 	return out
 }
-*/
 
 /* found existing non-generated mapping function "PersistenceConfig_RdbConfig_FromProto", skipping
 func PersistenceConfig_RdbConfig_FromProto(mapCtx *direct.MapContext, in *pb.PersistenceConfig_RDBConfig) *krm.PersistenceConfig_RdbConfig {
@@ -876,6 +990,24 @@ found existing non-generated mapping function "PersistenceConfig_RdbConfig_ToPro
 		return out
 	}
 */
+func PersistenceConfig_RdbConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PersistenceConfig_RDBConfig) *krm.PersistenceConfig_RdbConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PersistenceConfig_RdbConfigObservedState{}
+	// MISSING: RdbSnapshotPeriod
+	// MISSING: RdbSnapshotStartTime
+	return out
+}
+func PersistenceConfig_RdbConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PersistenceConfig_RdbConfigObservedState) *pb.PersistenceConfig_RDBConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PersistenceConfig_RDBConfig{}
+	// MISSING: RdbSnapshotPeriod
+	// MISSING: RdbSnapshotStartTime
+	return out
+}
 func PscAttachmentDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PscAttachmentDetail) *krm.PscAttachmentDetailObservedState {
 	if in == nil {
 		return nil
@@ -1095,6 +1227,24 @@ func WeeklyMaintenanceWindow_ToProto(mapCtx *direct.MapContext, in *krm.WeeklyMa
 	out.StartTime = TimeOfDay_ToProto(mapCtx, in.StartTime)
 	return out
 }
+func WeeklyMaintenanceWindowObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WeeklyMaintenanceWindow) *krm.WeeklyMaintenanceWindowObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WeeklyMaintenanceWindowObservedState{}
+	// MISSING: Day
+	// MISSING: StartTime
+	return out
+}
+func WeeklyMaintenanceWindowObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WeeklyMaintenanceWindowObservedState) *pb.WeeklyMaintenanceWindow {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WeeklyMaintenanceWindow{}
+	// MISSING: Day
+	// MISSING: StartTime
+	return out
+}
 
 /* found existing non-generated mapping function "ZoneDistributionConfig_FromProto", skipping
 func ZoneDistributionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ZoneDistributionConfig) *krm.ZoneDistributionConfig {
@@ -1108,14 +1258,34 @@ func ZoneDistributionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ZoneDist
 }
 */
 
-/* found existing non-generated mapping function "ZoneDistributionConfig_ToProto", skipping
-func ZoneDistributionConfig_ToProto(mapCtx *direct.MapContext, in *krm.ZoneDistributionConfig) *pb.ZoneDistributionConfig {
+/*
+found existing non-generated mapping function "ZoneDistributionConfig_ToProto", skipping
+
+	func ZoneDistributionConfig_ToProto(mapCtx *direct.MapContext, in *krm.ZoneDistributionConfig) *pb.ZoneDistributionConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ZoneDistributionConfig{}
+		out.Zone = direct.ValueOf(in.Zone)
+		out.Mode = direct.Enum_ToProto[pb.ZoneDistributionConfig_ZoneDistributionMode](mapCtx, in.Mode)
+		return out
+	}
+*/
+func ZoneDistributionConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ZoneDistributionConfig) *krm.ZoneDistributionConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ZoneDistributionConfigObservedState{}
+	// MISSING: Zone
+	// MISSING: Mode
+	return out
+}
+func ZoneDistributionConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ZoneDistributionConfigObservedState) *pb.ZoneDistributionConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.ZoneDistributionConfig{}
-	out.Zone = direct.ValueOf(in.Zone)
-	out.Mode = direct.Enum_ToProto[pb.ZoneDistributionConfig_ZoneDistributionMode](mapCtx, in.Mode)
+	// MISSING: Zone
+	// MISSING: Mode
 	return out
 }
-*/

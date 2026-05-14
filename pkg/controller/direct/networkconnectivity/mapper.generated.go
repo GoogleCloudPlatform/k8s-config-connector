@@ -44,6 +44,24 @@ func AllocationOptions_ToProto(mapCtx *direct.MapContext, in *krm.AllocationOpti
 	out.FirstAvailableRangesLookupSize = direct.ValueOf(in.FirstAvailableRangesLookupSize)
 	return out
 }
+func AllocationOptionsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AllocationOptions) *krm.AllocationOptionsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllocationOptionsObservedState{}
+	// MISSING: AllocationStrategy
+	// MISSING: FirstAvailableRangesLookupSize
+	return out
+}
+func AllocationOptionsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AllocationOptionsObservedState) *pb.AllocationOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationOptions{}
+	// MISSING: AllocationStrategy
+	// MISSING: FirstAvailableRangesLookupSize
+	return out
+}
 func AutoCreatedSubnetworkInfo_FromProto(mapCtx *direct.MapContext, in *pb.AutoCreatedSubnetworkInfo) *krm.AutoCreatedSubnetworkInfo {
 	if in == nil {
 		return nil
@@ -68,6 +86,30 @@ func AutoCreatedSubnetworkInfo_ToProto(mapCtx *direct.MapContext, in *krm.AutoCr
 	out.SubnetworkRef = direct.ValueOf(in.SubnetworkRef)
 	return out
 }
+func AutoCreatedSubnetworkInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AutoCreatedSubnetworkInfo) *krm.AutoCreatedSubnetworkInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AutoCreatedSubnetworkInfoObservedState{}
+	// MISSING: Delinked
+	// MISSING: InternalRange
+	// MISSING: InternalRangeRef
+	// MISSING: Subnetwork
+	// MISSING: SubnetworkRef
+	return out
+}
+func AutoCreatedSubnetworkInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AutoCreatedSubnetworkInfoObservedState) *pb.AutoCreatedSubnetworkInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoCreatedSubnetworkInfo{}
+	// MISSING: Delinked
+	// MISSING: InternalRange
+	// MISSING: InternalRangeRef
+	// MISSING: Subnetwork
+	// MISSING: SubnetworkRef
+	return out
+}
 func GoogleRpcErrorInfo_FromProto(mapCtx *direct.MapContext, in *pb.GoogleRpcErrorInfo) *krm.GoogleRpcErrorInfo {
 	if in == nil {
 		return nil
@@ -86,6 +128,26 @@ func GoogleRpcErrorInfo_ToProto(mapCtx *direct.MapContext, in *krm.GoogleRpcErro
 	out.Domain = direct.ValueOf(in.Domain)
 	out.Metadata = in.Metadata
 	out.Reason = direct.ValueOf(in.Reason)
+	return out
+}
+func GoogleRpcErrorInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GoogleRpcErrorInfo) *krm.GoogleRpcErrorInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GoogleRpcErrorInfoObservedState{}
+	// MISSING: Domain
+	// MISSING: Metadata
+	// MISSING: Reason
+	return out
+}
+func GoogleRpcErrorInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GoogleRpcErrorInfoObservedState) *pb.GoogleRpcErrorInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GoogleRpcErrorInfo{}
+	// MISSING: Domain
+	// MISSING: Metadata
+	// MISSING: Reason
 	return out
 }
 func GoogleRpcStatus_FromProto(mapCtx *direct.MapContext, in *pb.GoogleRpcStatus) *krm.GoogleRpcStatus {
@@ -108,6 +170,26 @@ func GoogleRpcStatus_ToProto(mapCtx *direct.MapContext, in *krm.GoogleRpcStatus)
 	out.Message = direct.ValueOf(in.Message)
 	return out
 }
+func GoogleRpcStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GoogleRpcStatus) *krm.GoogleRpcStatusObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GoogleRpcStatusObservedState{}
+	// MISSING: Code
+	// MISSING: Details
+	// MISSING: Message
+	return out
+}
+func GoogleRpcStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GoogleRpcStatusObservedState) *pb.GoogleRpcStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GoogleRpcStatus{}
+	// MISSING: Code
+	// MISSING: Details
+	// MISSING: Message
+	return out
+}
 
 /* found existing non-generated mapping function "Migration_FromProto", skipping
 func Migration_FromProto(mapCtx *direct.MapContext, in *pb.Migration) *krm.Migration {
@@ -121,17 +203,37 @@ func Migration_FromProto(mapCtx *direct.MapContext, in *pb.Migration) *krm.Migra
 }
 */
 
-/* found existing non-generated mapping function "Migration_ToProto", skipping
-func Migration_ToProto(mapCtx *direct.MapContext, in *krm.Migration) *pb.Migration {
+/*
+found existing non-generated mapping function "Migration_ToProto", skipping
+
+	func Migration_ToProto(mapCtx *direct.MapContext, in *krm.Migration) *pb.Migration {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Migration{}
+		out.Source = direct.ValueOf(in.Source)
+		out.Target = direct.ValueOf(in.Target)
+		return out
+	}
+*/
+func MigrationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Migration) *krm.MigrationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MigrationObservedState{}
+	// MISSING: Source
+	// MISSING: Target
+	return out
+}
+func MigrationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MigrationObservedState) *pb.Migration {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Migration{}
-	out.Source = direct.ValueOf(in.Source)
-	out.Target = direct.ValueOf(in.Target)
+	// MISSING: Source
+	// MISSING: Target
 	return out
 }
-*/
 
 /* found existing non-generated mapping function "NetworkConnectivityInternalRangeObservedState_FromProto", skipping
 func NetworkConnectivityInternalRangeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InternalRange) *krm.NetworkConnectivityInternalRangeObservedState {
@@ -305,6 +407,28 @@ func PSCConfig_ToProto(mapCtx *direct.MapContext, in *krm.PSCConfig) *pb.PscConf
 	out.Subnetworks = PSCConfig_Subnetworks_ToProto(mapCtx, in.Subnetworks)
 	return out
 }
+func PSCConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.PSCConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PSCConfigObservedState{}
+	// MISSING: AllowedGoogleProducersResourceHierarchyLevel
+	// MISSING: Limit
+	// MISSING: ProducerInstanceLocation
+	// MISSING: Subnetworks
+	return out
+}
+func PSCConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PSCConfigObservedState) *pb.PscConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PscConfig{}
+	// MISSING: AllowedGoogleProducersResourceHierarchyLevel
+	// MISSING: Limit
+	// MISSING: ProducerInstanceLocation
+	// MISSING: Subnetworks
+	return out
+}
 func PSCConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *krm.PSCConnection {
 	if in == nil {
 		return nil
@@ -345,5 +469,47 @@ func PSCConnection_ToProto(mapCtx *direct.MapContext, in *krm.PSCConnection) *pb
 	out.SelectedSubnetwork = direct.ValueOf(in.SelectedSubnetwork)
 	// MISSING: ServiceClass
 	out.State = direct.ValueOf(in.State)
+	return out
+}
+func PSCConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *krm.PSCConnectionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PSCConnectionObservedState{}
+	// MISSING: ConsumerAddress
+	// MISSING: ConsumerForwardingRule
+	// MISSING: ConsumerTargetProject
+	// MISSING: Error
+	// MISSING: ErrorInfo
+	// MISSING: ErrorType
+	// MISSING: GCEOperation
+	// MISSING: IPVersion
+	// MISSING: ProducerInstanceID
+	// MISSING: ProducerInstanceMetadata
+	// MISSING: PSCConnectionID
+	// MISSING: SelectedSubnetwork
+	// MISSING: ServiceClass
+	// MISSING: State
+	return out
+}
+func PSCConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PSCConnectionObservedState) *pb.PscConnection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PscConnection{}
+	// MISSING: ConsumerAddress
+	// MISSING: ConsumerForwardingRule
+	// MISSING: ConsumerTargetProject
+	// MISSING: Error
+	// MISSING: ErrorInfo
+	// MISSING: ErrorType
+	// MISSING: GCEOperation
+	// MISSING: IPVersion
+	// MISSING: ProducerInstanceID
+	// MISSING: ProducerInstanceMetadata
+	// MISSING: PSCConnectionID
+	// MISSING: SelectedSubnetwork
+	// MISSING: ServiceClass
+	// MISSING: State
 	return out
 }

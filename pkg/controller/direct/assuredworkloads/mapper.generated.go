@@ -33,14 +33,14 @@ func AssuredWorkloadsWorkloadObservedState_FromProto(mapCtx *direct.MapContext, 
 	}
 	out := &krm.AssuredWorkloadsWorkloadObservedState{}
 	// MISSING: Name
-	out.Resources = direct.Slice_FromProto(mapCtx, in.Resources, Workload_ResourceInfo_FromProto)
+	out.Resources = direct.Slice_FromProto(mapCtx, in.Resources, Workload_ResourceInfoObservedState_FromProto)
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	// MISSING: Etag
 	// MISSING: Labels
 	// MISSING: ProvisionedResourcesParent
 	// MISSING: KMSSettings
 	out.KajEnrollmentState = direct.Enum_FromProto(mapCtx, in.GetKajEnrollmentState())
-	out.SaaEnrollmentResponse = Workload_SaaEnrollmentResponse_FromProto(mapCtx, in.GetSaaEnrollmentResponse())
+	out.SaaEnrollmentResponse = Workload_SaaEnrollmentResponseObservedState_FromProto(mapCtx, in.GetSaaEnrollmentResponse())
 	out.CompliantButDisallowedServices = in.CompliantButDisallowedServices
 	return out
 }
@@ -50,14 +50,14 @@ func AssuredWorkloadsWorkloadObservedState_ToProto(mapCtx *direct.MapContext, in
 	}
 	out := &pb.Workload{}
 	// MISSING: Name
-	out.Resources = direct.Slice_ToProto(mapCtx, in.Resources, Workload_ResourceInfo_ToProto)
+	out.Resources = direct.Slice_ToProto(mapCtx, in.Resources, Workload_ResourceInfoObservedState_ToProto)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	// MISSING: Etag
 	// MISSING: Labels
 	// MISSING: ProvisionedResourcesParent
 	// MISSING: KMSSettings
 	out.KajEnrollmentState = direct.Enum_ToProto[pb.Workload_KajEnrollmentState](mapCtx, in.KajEnrollmentState)
-	out.SaaEnrollmentResponse = Workload_SaaEnrollmentResponse_ToProto(mapCtx, in.SaaEnrollmentResponse)
+	out.SaaEnrollmentResponse = Workload_SaaEnrollmentResponseObservedState_ToProto(mapCtx, in.SaaEnrollmentResponse)
 	out.CompliantButDisallowedServices = in.CompliantButDisallowedServices
 	return out
 }
@@ -119,16 +119,34 @@ func Workload_KMSSettings_ToProto(mapCtx *direct.MapContext, in *krm.Workload_KM
 	out.RotationPeriod = direct.StringDuration_ToProto(mapCtx, in.RotationPeriod)
 	return out
 }
-func Workload_ResourceInfo_FromProto(mapCtx *direct.MapContext, in *pb.Workload_ResourceInfo) *krm.Workload_ResourceInfo {
+func Workload_KMSSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Workload_KMSSettings) *krm.Workload_KMSSettingsObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Workload_ResourceInfo{}
+	out := &krm.Workload_KMSSettingsObservedState{}
+	// MISSING: NextRotationTime
+	// MISSING: RotationPeriod
+	return out
+}
+func Workload_KMSSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Workload_KMSSettingsObservedState) *pb.Workload_KMSSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Workload_KMSSettings{}
+	// MISSING: NextRotationTime
+	// MISSING: RotationPeriod
+	return out
+}
+func Workload_ResourceInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Workload_ResourceInfo) *krm.Workload_ResourceInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Workload_ResourceInfoObservedState{}
 	out.ResourceID = direct.LazyPtr(in.GetResourceId())
 	out.ResourceType = direct.Enum_FromProto(mapCtx, in.GetResourceType())
 	return out
 }
-func Workload_ResourceInfo_ToProto(mapCtx *direct.MapContext, in *krm.Workload_ResourceInfo) *pb.Workload_ResourceInfo {
+func Workload_ResourceInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Workload_ResourceInfoObservedState) *pb.Workload_ResourceInfo {
 	if in == nil {
 		return nil
 	}
@@ -155,5 +173,25 @@ func Workload_ResourceSettings_ToProto(mapCtx *direct.MapContext, in *krm.Worklo
 	out.ResourceId = direct.ValueOf(in.ResourceID)
 	out.ResourceType = direct.Enum_ToProto[pb.Workload_ResourceInfo_ResourceType](mapCtx, in.ResourceType)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
+	return out
+}
+func Workload_ResourceSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Workload_ResourceSettings) *krm.Workload_ResourceSettingsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Workload_ResourceSettingsObservedState{}
+	// MISSING: ResourceID
+	// MISSING: ResourceType
+	// MISSING: DisplayName
+	return out
+}
+func Workload_ResourceSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Workload_ResourceSettingsObservedState) *pb.Workload_ResourceSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Workload_ResourceSettings{}
+	// MISSING: ResourceID
+	// MISSING: ResourceType
+	// MISSING: DisplayName
 	return out
 }

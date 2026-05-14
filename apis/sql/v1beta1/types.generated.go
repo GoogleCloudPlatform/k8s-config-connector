@@ -49,22 +49,6 @@ type AdvancedMachineFeatures struct {
 	ThreadsPerCore *int32 `json:"threadsPerCore,omitempty"`
 }
 
-// +kcc:proto=google.cloud.sql.v1beta4.AvailableDatabaseVersion
-type AvailableDatabaseVersion struct {
-	// The version's major version name.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.AvailableDatabaseVersion.major_version
-	MajorVersion *string `json:"majorVersion,omitempty"`
-
-	// The database version name. For MySQL 8.0, this string provides the database
-	//  major and minor version.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.AvailableDatabaseVersion.name
-	Name *string `json:"name,omitempty"`
-
-	// The database version's display name.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.AvailableDatabaseVersion.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-}
-
 // +kcc:proto=google.cloud.sql.v1beta4.BackupConfiguration
 type BackupConfiguration struct {
 	// Start time for the daily backup configuration in UTC timezone in the 24
@@ -1075,6 +1059,30 @@ type Int32Value struct {
 	Value *int32 `json:"value,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.AclEntry
+type AclEntryObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.AdvancedMachineFeatures
+type AdvancedMachineFeaturesObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.AvailableDatabaseVersion
+type AvailableDatabaseVersionObservedState struct {
+	// The version's major version name.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.AvailableDatabaseVersion.major_version
+	MajorVersion *string `json:"majorVersion,omitempty"`
+
+	// The database version name. For MySQL 8.0, this string provides the database
+	//  major and minor version.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.AvailableDatabaseVersion.name
+	Name *string `json:"name,omitempty"`
+
+	// The database version's display name.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.AvailableDatabaseVersion.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.sql.v1beta4.BackupConfiguration
 type BackupConfigurationObservedState struct {
 	// Output only. This value contains the storage location of transactional logs
@@ -1083,12 +1091,20 @@ type BackupConfigurationObservedState struct {
 	TransactionalLogStorageState *string `json:"transactionalLogStorageState,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.BackupRetentionSettings
+type BackupRetentionSettingsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.DataCacheConfig
+type DataCacheConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.DatabaseFlags
+type DatabaseFlagsObservedState struct {
+}
+
 // +kcc:observedstate:proto=google.cloud.sql.v1beta4.DatabaseInstance
 type DatabaseInstanceObservedState struct {
-	// The user settings.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.settings
-	Settings *SettingsObservedState `json:"settings,omitempty"`
-
 	// Output only. Stores the current database version running on the instance
 	//  including minor version such as `MYSQL_8_0_18`.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.database_installed_version
@@ -1106,7 +1122,7 @@ type DatabaseInstanceObservedState struct {
 
 	// Output only. All database versions that are available for upgrade.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.upgradable_database_versions
-	UpgradableDatabaseVersions []AvailableDatabaseVersion `json:"upgradableDatabaseVersions,omitempty"`
+	UpgradableDatabaseVersions []AvailableDatabaseVersionObservedState `json:"upgradableDatabaseVersions,omitempty"`
 
 	// Output only. The link to service attachment of PSC instance.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.psc_service_attachment_link
@@ -1123,17 +1139,30 @@ type DatabaseInstanceObservedState struct {
 	// Output only. The dns name of the primary instance in a replication group.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.write_endpoint
 	WriteEndpoint *string `json:"writeEndpoint,omitempty"`
+}
 
-	// A primary instance and disaster recovery (DR) replica pair.
-	//  A DR replica is a cross-region replica that you designate
-	//  for failover in the event that the primary instance
-	//  experiences regional failure. Only applicable to MySQL.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.replication_cluster
-	ReplicationCluster *ReplicationClusterObservedState `json:"replicationCluster,omitempty"`
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.DatabaseInstance.SqlFailoverReplica
+type DatabaseInstance_SQLFailoverReplicaObservedState struct {
+}
 
-	// Gemini instance configuration.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.gemini_config
-	GeminiConfig *GeminiInstanceConfigObservedState `json:"geminiConfig,omitempty"`
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.DatabaseInstance.SqlOutOfDiskReport
+type DatabaseInstance_SQLOutOfDiskReportObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.DatabaseInstance.SqlScheduledMaintenance
+type DatabaseInstance_SQLScheduledMaintenanceObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.DenyMaintenancePeriod
+type DenyMaintenancePeriodObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.DiskEncryptionConfiguration
+type DiskEncryptionConfigurationObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.DiskEncryptionStatus
+type DiskEncryptionStatusObservedState struct {
 }
 
 // +kcc:observedstate:proto=google.cloud.sql.v1beta4.GeminiInstanceConfig
@@ -1163,6 +1192,50 @@ type GeminiInstanceConfigObservedState struct {
 	FlagRecommenderEnabled *bool `json:"flagRecommenderEnabled,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.InsightsConfig
+type InsightsConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.InstanceReference
+type InstanceReferenceObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.IpConfiguration
+type IPConfigurationObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.IpMapping
+type IPMappingObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.LocationPreference
+type LocationPreferenceObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.MaintenanceWindow
+type MaintenanceWindowObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.MySqlReplicaConfiguration
+type MySQLReplicaConfigurationObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.OnPremisesConfiguration
+type OnPremisesConfigurationObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.PasswordValidationPolicy
+type PasswordValidationPolicyObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.PscConfig
+type PSCConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.ReplicaConfiguration
+type ReplicaConfigurationObservedState struct {
+}
+
 // +kcc:observedstate:proto=google.cloud.sql.v1beta4.ReplicationCluster
 type ReplicationClusterObservedState struct {
 	// Output only. If set, it indicates this instance has a private service
@@ -1183,7 +1256,20 @@ type ReplicationClusterObservedState struct {
 
 // +kcc:observedstate:proto=google.cloud.sql.v1beta4.Settings
 type SettingsObservedState struct {
-	// The daily backup configuration for the instance.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.Settings.backup_configuration
-	BackupConfiguration *BackupConfigurationObservedState `json:"backupConfiguration,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.SqlActiveDirectoryConfig
+type SQLActiveDirectoryConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.SqlServerAuditConfig
+type SQLServerAuditConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.SslCert
+type SSLCertObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.protobuf.Int32Value
+type Int32ValueObservedState struct {
 }

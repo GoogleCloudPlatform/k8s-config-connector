@@ -25,22 +25,6 @@
 
 package v1alpha1
 
-// +kcc:proto=google.cloud.dataplex.v1.AssetStatus
-type AssetStatus struct {
-	// Last update time of the status.
-	// +kcc:proto:field=google.cloud.dataplex.v1.AssetStatus.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Number of active assets.
-	// +kcc:proto:field=google.cloud.dataplex.v1.AssetStatus.active_assets
-	ActiveAssets *int32 `json:"activeAssets,omitempty"`
-
-	// Number of assets that are in process of updating the security policy on
-	//  attached resources.
-	// +kcc:proto:field=google.cloud.dataplex.v1.AssetStatus.security_policy_applying_assets
-	SecurityPolicyApplyingAssets *int32 `json:"securityPolicyApplyingAssets,omitempty"`
-}
-
 // +kcc:proto=google.cloud.dataplex.v1.EntryType.Authorization
 type EntryType_Authorization struct {
 	// Immutable. The IAM permission grantable on the Entry Group to allow
@@ -48,25 +32,6 @@ type EntryType_Authorization struct {
 	//  settable for Dataplex owned Types.
 	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.Authorization.alternate_use_permission
 	AlternateUsePermission *string `json:"alternateUsePermission,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dataplex.v1.Lake.MetastoreStatus
-type Lake_MetastoreStatus struct {
-	// Current state of association.
-	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.MetastoreStatus.state
-	State *string `json:"state,omitempty"`
-
-	// Additional information about the current status.
-	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.MetastoreStatus.message
-	Message *string `json:"message,omitempty"`
-
-	// Last update time of the metastore status of the lake.
-	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.MetastoreStatus.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// The URI of the endpoint used to access the Metastore service.
-	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.MetastoreStatus.endpoint
-	Endpoint *string `json:"endpoint,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataplex.v1.Task.InfrastructureSpec
@@ -259,4 +224,152 @@ type Zone_ResourceSpec struct {
 	//  to be attached to the assets within this zone.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.ResourceSpec.location_type
 	LocationType *string `json:"locationType,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.AssetStatus
+type AssetStatusObservedState struct {
+	// Last update time of the status.
+	// +kcc:proto:field=google.cloud.dataplex.v1.AssetStatus.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Number of active assets.
+	// +kcc:proto:field=google.cloud.dataplex.v1.AssetStatus.active_assets
+	ActiveAssets *int32 `json:"activeAssets,omitempty"`
+
+	// Number of assets that are in process of updating the security policy on
+	//  attached resources.
+	// +kcc:proto:field=google.cloud.dataplex.v1.AssetStatus.security_policy_applying_assets
+	SecurityPolicyApplyingAssets *int32 `json:"securityPolicyApplyingAssets,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.EntryGroup
+type EntryGroupObservedState struct {
+	// Output only. The relative resource name of the EntryGroup, in the format
+	//  projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryGroup.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. System generated globally unique ID for the EntryGroup. If you
+	//  delete and recreate the EntryGroup with the same name, this ID will be
+	//  different.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryGroup.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. The time when the EntryGroup was created.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryGroup.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the EntryGroup was last updated.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryGroup.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Denotes the transfer status of the Entry Group. It is
+	//  unspecified for Entry Group created from Dataplex API.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryGroup.transfer_status
+	TransferStatus *string `json:"transferStatus,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.EntryType.AspectInfo
+type EntryType_AspectInfoObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.EntryType.Authorization
+type EntryType_AuthorizationObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Lake.Metastore
+type Lake_MetastoreObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Lake.MetastoreStatus
+type Lake_MetastoreStatusObservedState struct {
+	// Current state of association.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.MetastoreStatus.state
+	State *string `json:"state,omitempty"`
+
+	// Additional information about the current status.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.MetastoreStatus.message
+	Message *string `json:"message,omitempty"`
+
+	// Last update time of the metastore status of the lake.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.MetastoreStatus.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// The URI of the endpoint used to access the Metastore service.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.MetastoreStatus.endpoint
+	Endpoint *string `json:"endpoint,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Task
+type TaskObservedState struct {
+	// Output only. The relative resource name of the task, of the form:
+	//  projects/{project_number}/locations/{location_id}/lakes/{lake_id}/
+	//  tasks/{task_id}.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. System generated globally unique ID for the task. This ID will
+	//  be different if the task is deleted and re-created with the same name.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. The time when the task was created.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the task was last updated.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Current state of the task.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Status of the latest task executions.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.execution_status
+	ExecutionStatus *Task_ExecutionStatusObservedState `json:"executionStatus,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Task.InfrastructureSpec
+type Task_InfrastructureSpecObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Task.InfrastructureSpec.BatchComputeResources
+type Task_InfrastructureSpec_BatchComputeResourcesObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Task.InfrastructureSpec.ContainerImageRuntime
+type Task_InfrastructureSpec_ContainerImageRuntimeObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Task.InfrastructureSpec.VpcNetwork
+type Task_InfrastructureSpec_VPCNetworkObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Task.NotebookTaskConfig
+type Task_NotebookTaskConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Task.SparkTaskConfig
+type Task_SparkTaskConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Task.TriggerSpec
+type Task_TriggerSpecObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Zone.DiscoverySpec
+type Zone_DiscoverySpecObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Zone.DiscoverySpec.CsvOptions
+type Zone_DiscoverySpec_CsvOptionsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Zone.DiscoverySpec.JsonOptions
+type Zone_DiscoverySpec_JsonOptionsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Zone.ResourceSpec
+type Zone_ResourceSpecObservedState struct {
 }

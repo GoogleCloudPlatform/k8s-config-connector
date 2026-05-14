@@ -30,7 +30,6 @@ go run . generate-types \
     --resource BatchJob:Job \
     --resource BatchTask:Task
 
-
 go run . generate-mapper \
     --service google.cloud.batch.v1 \
     --api-version "batch.cnrm.cloud.google.com/v1alpha1"

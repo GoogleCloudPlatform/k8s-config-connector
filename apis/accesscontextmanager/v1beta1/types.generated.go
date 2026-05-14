@@ -21,3 +21,27 @@
 // resource: AccessContextManagerAccessLevel:AccessLevel
 
 package v1beta1
+
+// +kcc:observedstate:proto=google.identity.accesscontextmanager.v1.BasicLevel
+type BasicLevelObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.identity.accesscontextmanager.v1.Condition
+type ConditionObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.identity.accesscontextmanager.v1.CustomLevel
+type CustomLevelObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.identity.accesscontextmanager.v1.DevicePolicy
+type DevicePolicyObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.identity.accesscontextmanager.v1.OsConstraint
+type OSConstraintObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.type.Expr
+type ExprObservedState struct {
+}

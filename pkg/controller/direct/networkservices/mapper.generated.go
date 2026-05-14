@@ -27,6 +27,72 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func ExtensionChainObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExtensionChain) *krm.ExtensionChainObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExtensionChainObservedState{}
+	// MISSING: Name
+	// MISSING: MatchCondition
+	// MISSING: Extensions
+	return out
+}
+func ExtensionChainObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ExtensionChainObservedState) *pb.ExtensionChain {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExtensionChain{}
+	// MISSING: Name
+	// MISSING: MatchCondition
+	// MISSING: Extensions
+	return out
+}
+func ExtensionChain_ExtensionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExtensionChain_Extension) *krm.ExtensionChain_ExtensionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExtensionChain_ExtensionObservedState{}
+	// MISSING: Name
+	// MISSING: Authority
+	// MISSING: Service
+	// MISSING: SupportedEvents
+	// MISSING: Timeout
+	// MISSING: FailOpen
+	// MISSING: ForwardHeaders
+	// MISSING: Metadata
+	return out
+}
+func ExtensionChain_ExtensionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ExtensionChain_ExtensionObservedState) *pb.ExtensionChain_Extension {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExtensionChain_Extension{}
+	// MISSING: Name
+	// MISSING: Authority
+	// MISSING: Service
+	// MISSING: SupportedEvents
+	// MISSING: Timeout
+	// MISSING: FailOpen
+	// MISSING: ForwardHeaders
+	// MISSING: Metadata
+	return out
+}
+func ExtensionChain_MatchConditionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExtensionChain_MatchCondition) *krm.ExtensionChain_MatchConditionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExtensionChain_MatchConditionObservedState{}
+	// MISSING: CelExpression
+	return out
+}
+func ExtensionChain_MatchConditionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ExtensionChain_MatchConditionObservedState) *pb.ExtensionChain_MatchCondition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExtensionChain_MatchCondition{}
+	// MISSING: CelExpression
+	return out
+}
 func NetworkServicesServiceBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krm.NetworkServicesServiceBindingObservedState {
 	if in == nil {
 		return nil
@@ -97,6 +163,26 @@ func WasmPlugin_LogConfig_ToProto(mapCtx *direct.MapContext, in *krm.WasmPlugin_
 	out.MinLogLevel = direct.Enum_ToProto[pb.WasmPlugin_LogConfig_LogLevel](mapCtx, in.MinLogLevel)
 	return out
 }
+func WasmPlugin_LogConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin_LogConfig) *krm.WasmPlugin_LogConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WasmPlugin_LogConfigObservedState{}
+	// MISSING: Enable
+	// MISSING: SampleRate
+	// MISSING: MinLogLevel
+	return out
+}
+func WasmPlugin_LogConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WasmPlugin_LogConfigObservedState) *pb.WasmPlugin_LogConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WasmPlugin_LogConfig{}
+	// MISSING: Enable
+	// MISSING: SampleRate
+	// MISSING: MinLogLevel
+	return out
+}
 func WasmPlugin_UsedByObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin_UsedBy) *krm.WasmPlugin_UsedByObservedState {
 	if in == nil {
 		return nil
@@ -111,5 +197,37 @@ func WasmPlugin_UsedByObservedState_ToProto(mapCtx *direct.MapContext, in *krm.W
 	}
 	out := &pb.WasmPlugin_UsedBy{}
 	out.Name = direct.ValueOf(in.Name)
+	return out
+}
+func WasmPlugin_VersionDetailsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin_VersionDetails) *krm.WasmPlugin_VersionDetailsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WasmPlugin_VersionDetailsObservedState{}
+	// MISSING: PluginConfigData
+	// MISSING: PluginConfigURI
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Description
+	// MISSING: Labels
+	// MISSING: ImageURI
+	out.ImageDigest = direct.LazyPtr(in.GetImageDigest())
+	out.PluginConfigDigest = direct.LazyPtr(in.GetPluginConfigDigest())
+	return out
+}
+func WasmPlugin_VersionDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WasmPlugin_VersionDetailsObservedState) *pb.WasmPlugin_VersionDetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WasmPlugin_VersionDetails{}
+	// MISSING: PluginConfigData
+	// MISSING: PluginConfigURI
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Description
+	// MISSING: Labels
+	// MISSING: ImageURI
+	out.ImageDigest = direct.ValueOf(in.ImageDigest)
+	out.PluginConfigDigest = direct.ValueOf(in.PluginConfigDigest)
 	return out
 }

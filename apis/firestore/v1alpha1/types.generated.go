@@ -167,9 +167,53 @@ type LatLng struct {
 	Longitude *float64 `json:"longitude,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.firestore.admin.v1.DailyRecurrence
+type DailyRecurrenceObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.firestore.admin.v1.Field.IndexConfig
+type Field_IndexConfigObservedState struct {
+}
+
 // +kcc:observedstate:proto=google.firestore.admin.v1.Field.TtlConfig
 type Field_TTLConfigObservedState struct {
 	// Output only. The state of the TTL configuration.
 	// +kcc:proto:field=google.firestore.admin.v1.Field.TtlConfig.state
 	State *string `json:"state,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.firestore.admin.v1.Index
+type IndexObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.firestore.admin.v1.Index.IndexField
+type Index_IndexFieldObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.firestore.admin.v1.Index.IndexField.VectorConfig
+type Index_IndexField_VectorConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.firestore.admin.v1.Index.IndexField.VectorConfig.FlatIndex
+type Index_IndexField_VectorConfig_FlatIndexObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.firestore.admin.v1.WeeklyRecurrence
+type WeeklyRecurrenceObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.firestore.v1.ArrayValue
+type ArrayValueObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.firestore.v1.MapValue
+type MapValueObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.firestore.v1.Value
+type ValueObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.type.LatLng
+type LatLngObservedState struct {
 }

@@ -31,3 +31,11 @@ type MutationRecord struct {
 	// +kcc:proto:field=google.monitoring.v3.MutationRecord.mutated_by
 	MutatedBy *string `json:"mutatedBy,omitempty"`
 }
+
+// +kcc:observedstate:proto=google.monitoring.v3.MutationRecord
+type MutationRecordObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.monitoring.v3.NotificationChannel
+type NotificationChannelObservedState struct {
+}

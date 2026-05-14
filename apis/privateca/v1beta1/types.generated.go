@@ -290,3 +290,71 @@ type Expr struct {
 	// +kcc:proto:field=google.type.Expr.location
 	Location *string `json:"location,omitempty"`
 }
+
+// +kcc:observedstate:proto=google.cloud.security.privateca.v1.CaPool.IssuancePolicy
+type CAPool_IssuancePolicyObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.security.privateca.v1.CaPool.IssuancePolicy.AllowedKeyType
+type CAPool_IssuancePolicy_AllowedKeyTypeObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.security.privateca.v1.CaPool.IssuancePolicy.AllowedKeyType.EcKeyType
+type CAPool_IssuancePolicy_AllowedKeyType_EcKeyTypeObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.security.privateca.v1.CaPool.IssuancePolicy.AllowedKeyType.RsaKeyType
+type CAPool_IssuancePolicy_AllowedKeyType_RsaKeyTypeObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.security.privateca.v1.CaPool.IssuancePolicy.IssuanceModes
+type CAPool_IssuancePolicy_IssuanceModesObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.security.privateca.v1.CaPool.PublishingOptions
+type CAPool_PublishingOptionsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.security.privateca.v1.CertificateExtensionConstraints
+type CertificateExtensionConstraintsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.security.privateca.v1.CertificateIdentityConstraints
+type CertificateIdentityConstraintsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.security.privateca.v1.KeyUsage
+type KeyUsageObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.security.privateca.v1.KeyUsage.ExtendedKeyUsageOptions
+type KeyUsage_ExtendedKeyUsageOptionsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.security.privateca.v1.KeyUsage.KeyUsageOptions
+type KeyUsage_KeyUsageOptionsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.security.privateca.v1.ObjectId
+type ObjectIDObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.security.privateca.v1.X509Extension
+type X509ExtensionObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.security.privateca.v1.X509Parameters
+type X509ParametersObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.security.privateca.v1.X509Parameters.CaOptions
+type X509Parameters_CAOptionsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.security.privateca.v1.X509Parameters.NameConstraints
+type X509Parameters_NameConstraintsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.type.Expr
+type ExprObservedState struct {
+}

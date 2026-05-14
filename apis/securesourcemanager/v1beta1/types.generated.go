@@ -22,10 +22,6 @@
 
 package v1beta1
 
-// +kcc:proto=google.cloud.securesourcemanager.v1.Instance.HostConfig
-type Instance_HostConfig struct {
-}
-
 // +kcc:proto=google.cloud.securesourcemanager.v1.Instance.WorkforceIdentityFederationConfig
 type Instance_WorkforceIdentityFederationConfig struct {
 	// Optional. Immutable. Whether Workforce Identity Federation is enabled.
@@ -176,10 +172,6 @@ type Repository_InitialConfig struct {
 	Readme *string `json:"readme,omitempty"`
 }
 
-// +kcc:proto=google.cloud.securesourcemanager.v1.Repository.URIs
-type Repository_UrIs struct {
-}
-
 // +kcc:observedstate:proto=google.cloud.securesourcemanager.v1.Instance.HostConfig
 type Instance_HostConfigObservedState struct {
 	// Output only. HTML hostname.
@@ -197,6 +189,33 @@ type Instance_HostConfigObservedState struct {
 	// Output only. Git SSH hostname.
 	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.HostConfig.git_ssh
 	GitSSH *string `json:"gitSSH,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.securesourcemanager.v1.Instance.WorkforceIdentityFederationConfig
+type Instance_WorkforceIdentityFederationConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.securesourcemanager.v1.Repository
+type RepositoryObservedState struct {
+	// Output only. Unique identifier of the repository.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. Create timestamp.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Update timestamp.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. URIs for the repository.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.uris
+	Uris *Repository_UrIsObservedState `json:"uris,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.securesourcemanager.v1.Repository.InitialConfig
+type Repository_InitialConfigObservedState struct {
 }
 
 // +kcc:observedstate:proto=google.cloud.securesourcemanager.v1.Repository.URIs

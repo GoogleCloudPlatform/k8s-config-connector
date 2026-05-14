@@ -54,6 +54,34 @@ func CAPool_IssuancePolicy_ToProto(mapCtx *direct.MapContext, in *krm.CAPool_Iss
 	out.PassthroughExtensions = CertificateExtensionConstraints_ToProto(mapCtx, in.PassthroughExtensions)
 	return out
 }
+func CAPool_IssuancePolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CaPool_IssuancePolicy) *krm.CAPool_IssuancePolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CAPool_IssuancePolicyObservedState{}
+	// MISSING: AllowedKeyTypes
+	// MISSING: BackdateDuration
+	// MISSING: MaximumLifetime
+	// MISSING: AllowedIssuanceModes
+	// MISSING: BaselineValues
+	// MISSING: IdentityConstraints
+	// MISSING: PassthroughExtensions
+	return out
+}
+func CAPool_IssuancePolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CAPool_IssuancePolicyObservedState) *pb.CaPool_IssuancePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CaPool_IssuancePolicy{}
+	// MISSING: AllowedKeyTypes
+	// MISSING: BackdateDuration
+	// MISSING: MaximumLifetime
+	// MISSING: AllowedIssuanceModes
+	// MISSING: BaselineValues
+	// MISSING: IdentityConstraints
+	// MISSING: PassthroughExtensions
+	return out
+}
 func CAPool_IssuancePolicy_AllowedKeyType_FromProto(mapCtx *direct.MapContext, in *pb.CaPool_IssuancePolicy_AllowedKeyType) *krm.CAPool_IssuancePolicy_AllowedKeyType {
 	if in == nil {
 		return nil
@@ -76,6 +104,24 @@ func CAPool_IssuancePolicy_AllowedKeyType_ToProto(mapCtx *direct.MapContext, in 
 	}
 	return out
 }
+func CAPool_IssuancePolicy_AllowedKeyTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CaPool_IssuancePolicy_AllowedKeyType) *krm.CAPool_IssuancePolicy_AllowedKeyTypeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CAPool_IssuancePolicy_AllowedKeyTypeObservedState{}
+	// MISSING: Rsa
+	// MISSING: EllipticCurve
+	return out
+}
+func CAPool_IssuancePolicy_AllowedKeyTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CAPool_IssuancePolicy_AllowedKeyTypeObservedState) *pb.CaPool_IssuancePolicy_AllowedKeyType {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CaPool_IssuancePolicy_AllowedKeyType{}
+	// MISSING: Rsa
+	// MISSING: EllipticCurve
+	return out
+}
 func CAPool_IssuancePolicy_AllowedKeyType_EcKeyType_FromProto(mapCtx *direct.MapContext, in *pb.CaPool_IssuancePolicy_AllowedKeyType_EcKeyType) *krm.CAPool_IssuancePolicy_AllowedKeyType_EcKeyType {
 	if in == nil {
 		return nil
@@ -90,6 +136,22 @@ func CAPool_IssuancePolicy_AllowedKeyType_EcKeyType_ToProto(mapCtx *direct.MapCo
 	}
 	out := &pb.CaPool_IssuancePolicy_AllowedKeyType_EcKeyType{}
 	out.SignatureAlgorithm = direct.Enum_ToProto[pb.CaPool_IssuancePolicy_AllowedKeyType_EcKeyType_EcSignatureAlgorithm](mapCtx, in.SignatureAlgorithm)
+	return out
+}
+func CAPool_IssuancePolicy_AllowedKeyType_EcKeyTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CaPool_IssuancePolicy_AllowedKeyType_EcKeyType) *krm.CAPool_IssuancePolicy_AllowedKeyType_EcKeyTypeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CAPool_IssuancePolicy_AllowedKeyType_EcKeyTypeObservedState{}
+	// MISSING: SignatureAlgorithm
+	return out
+}
+func CAPool_IssuancePolicy_AllowedKeyType_EcKeyTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CAPool_IssuancePolicy_AllowedKeyType_EcKeyTypeObservedState) *pb.CaPool_IssuancePolicy_AllowedKeyType_EcKeyType {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CaPool_IssuancePolicy_AllowedKeyType_EcKeyType{}
+	// MISSING: SignatureAlgorithm
 	return out
 }
 func CAPool_IssuancePolicy_AllowedKeyType_RsaKeyType_FromProto(mapCtx *direct.MapContext, in *pb.CaPool_IssuancePolicy_AllowedKeyType_RsaKeyType) *krm.CAPool_IssuancePolicy_AllowedKeyType_RsaKeyType {
@@ -110,6 +172,24 @@ func CAPool_IssuancePolicy_AllowedKeyType_RsaKeyType_ToProto(mapCtx *direct.MapC
 	out.MaxModulusSize = direct.ValueOf(in.MaxModulusSize)
 	return out
 }
+func CAPool_IssuancePolicy_AllowedKeyType_RsaKeyTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CaPool_IssuancePolicy_AllowedKeyType_RsaKeyType) *krm.CAPool_IssuancePolicy_AllowedKeyType_RsaKeyTypeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CAPool_IssuancePolicy_AllowedKeyType_RsaKeyTypeObservedState{}
+	// MISSING: MinModulusSize
+	// MISSING: MaxModulusSize
+	return out
+}
+func CAPool_IssuancePolicy_AllowedKeyType_RsaKeyTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CAPool_IssuancePolicy_AllowedKeyType_RsaKeyTypeObservedState) *pb.CaPool_IssuancePolicy_AllowedKeyType_RsaKeyType {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CaPool_IssuancePolicy_AllowedKeyType_RsaKeyType{}
+	// MISSING: MinModulusSize
+	// MISSING: MaxModulusSize
+	return out
+}
 func CAPool_IssuancePolicy_IssuanceModes_FromProto(mapCtx *direct.MapContext, in *pb.CaPool_IssuancePolicy_IssuanceModes) *krm.CAPool_IssuancePolicy_IssuanceModes {
 	if in == nil {
 		return nil
@@ -126,6 +206,24 @@ func CAPool_IssuancePolicy_IssuanceModes_ToProto(mapCtx *direct.MapContext, in *
 	out := &pb.CaPool_IssuancePolicy_IssuanceModes{}
 	out.AllowCsrBasedIssuance = direct.ValueOf(in.AllowCsrBasedIssuance)
 	out.AllowConfigBasedIssuance = direct.ValueOf(in.AllowConfigBasedIssuance)
+	return out
+}
+func CAPool_IssuancePolicy_IssuanceModesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CaPool_IssuancePolicy_IssuanceModes) *krm.CAPool_IssuancePolicy_IssuanceModesObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CAPool_IssuancePolicy_IssuanceModesObservedState{}
+	// MISSING: AllowCsrBasedIssuance
+	// MISSING: AllowConfigBasedIssuance
+	return out
+}
+func CAPool_IssuancePolicy_IssuanceModesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CAPool_IssuancePolicy_IssuanceModesObservedState) *pb.CaPool_IssuancePolicy_IssuanceModes {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CaPool_IssuancePolicy_IssuanceModes{}
+	// MISSING: AllowCsrBasedIssuance
+	// MISSING: AllowConfigBasedIssuance
 	return out
 }
 func CAPool_PublishingOptions_FromProto(mapCtx *direct.MapContext, in *pb.CaPool_PublishingOptions) *krm.CAPool_PublishingOptions {
@@ -148,6 +246,26 @@ func CAPool_PublishingOptions_ToProto(mapCtx *direct.MapContext, in *krm.CAPool_
 	// MISSING: EncodingFormat
 	return out
 }
+func CAPool_PublishingOptionsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CaPool_PublishingOptions) *krm.CAPool_PublishingOptionsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CAPool_PublishingOptionsObservedState{}
+	// MISSING: PublishCACert
+	// MISSING: PublishCrl
+	// MISSING: EncodingFormat
+	return out
+}
+func CAPool_PublishingOptionsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CAPool_PublishingOptionsObservedState) *pb.CaPool_PublishingOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CaPool_PublishingOptions{}
+	// MISSING: PublishCACert
+	// MISSING: PublishCrl
+	// MISSING: EncodingFormat
+	return out
+}
 func CertificateExtensionConstraints_FromProto(mapCtx *direct.MapContext, in *pb.CertificateExtensionConstraints) *krm.CertificateExtensionConstraints {
 	if in == nil {
 		return nil
@@ -164,6 +282,24 @@ func CertificateExtensionConstraints_ToProto(mapCtx *direct.MapContext, in *krm.
 	out := &pb.CertificateExtensionConstraints{}
 	out.KnownExtensions = direct.EnumSlice_ToProto[pb.CertificateExtensionConstraints_KnownCertificateExtension](mapCtx, in.KnownExtensions)
 	out.AdditionalExtensions = direct.Slice_ToProto(mapCtx, in.AdditionalExtensions, ObjectID_ToProto)
+	return out
+}
+func CertificateExtensionConstraintsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CertificateExtensionConstraints) *krm.CertificateExtensionConstraintsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateExtensionConstraintsObservedState{}
+	// MISSING: KnownExtensions
+	// MISSING: AdditionalExtensions
+	return out
+}
+func CertificateExtensionConstraintsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CertificateExtensionConstraintsObservedState) *pb.CertificateExtensionConstraints {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateExtensionConstraints{}
+	// MISSING: KnownExtensions
+	// MISSING: AdditionalExtensions
 	return out
 }
 func CertificateIdentityConstraints_FromProto(mapCtx *direct.MapContext, in *pb.CertificateIdentityConstraints) *krm.CertificateIdentityConstraints {
@@ -186,6 +322,26 @@ func CertificateIdentityConstraints_ToProto(mapCtx *direct.MapContext, in *krm.C
 	out.AllowSubjectAltNamesPassthrough = in.AllowSubjectAltNamesPassthrough
 	return out
 }
+func CertificateIdentityConstraintsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CertificateIdentityConstraints) *krm.CertificateIdentityConstraintsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateIdentityConstraintsObservedState{}
+	// MISSING: CelExpression
+	// MISSING: AllowSubjectPassthrough
+	// MISSING: AllowSubjectAltNamesPassthrough
+	return out
+}
+func CertificateIdentityConstraintsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CertificateIdentityConstraintsObservedState) *pb.CertificateIdentityConstraints {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateIdentityConstraints{}
+	// MISSING: CelExpression
+	// MISSING: AllowSubjectPassthrough
+	// MISSING: AllowSubjectAltNamesPassthrough
+	return out
+}
 func KeyUsage_FromProto(mapCtx *direct.MapContext, in *pb.KeyUsage) *krm.KeyUsage {
 	if in == nil {
 		return nil
@@ -204,6 +360,26 @@ func KeyUsage_ToProto(mapCtx *direct.MapContext, in *krm.KeyUsage) *pb.KeyUsage 
 	out.BaseKeyUsage = KeyUsage_KeyUsageOptions_ToProto(mapCtx, in.BaseKeyUsage)
 	out.ExtendedKeyUsage = KeyUsage_ExtendedKeyUsageOptions_ToProto(mapCtx, in.ExtendedKeyUsage)
 	out.UnknownExtendedKeyUsages = direct.Slice_ToProto(mapCtx, in.UnknownExtendedKeyUsages, ObjectID_ToProto)
+	return out
+}
+func KeyUsageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.KeyUsage) *krm.KeyUsageObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.KeyUsageObservedState{}
+	// MISSING: BaseKeyUsage
+	// MISSING: ExtendedKeyUsage
+	// MISSING: UnknownExtendedKeyUsages
+	return out
+}
+func KeyUsageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.KeyUsageObservedState) *pb.KeyUsage {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KeyUsage{}
+	// MISSING: BaseKeyUsage
+	// MISSING: ExtendedKeyUsage
+	// MISSING: UnknownExtendedKeyUsages
 	return out
 }
 func KeyUsage_ExtendedKeyUsageOptions_FromProto(mapCtx *direct.MapContext, in *pb.KeyUsage_ExtendedKeyUsageOptions) *krm.KeyUsage_ExtendedKeyUsageOptions {
@@ -230,6 +406,32 @@ func KeyUsage_ExtendedKeyUsageOptions_ToProto(mapCtx *direct.MapContext, in *krm
 	out.EmailProtection = direct.ValueOf(in.EmailProtection)
 	out.TimeStamping = direct.ValueOf(in.TimeStamping)
 	out.OcspSigning = direct.ValueOf(in.OcspSigning)
+	return out
+}
+func KeyUsage_ExtendedKeyUsageOptionsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.KeyUsage_ExtendedKeyUsageOptions) *krm.KeyUsage_ExtendedKeyUsageOptionsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.KeyUsage_ExtendedKeyUsageOptionsObservedState{}
+	// MISSING: ServerAuth
+	// MISSING: ClientAuth
+	// MISSING: CodeSigning
+	// MISSING: EmailProtection
+	// MISSING: TimeStamping
+	// MISSING: OcspSigning
+	return out
+}
+func KeyUsage_ExtendedKeyUsageOptionsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.KeyUsage_ExtendedKeyUsageOptionsObservedState) *pb.KeyUsage_ExtendedKeyUsageOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KeyUsage_ExtendedKeyUsageOptions{}
+	// MISSING: ServerAuth
+	// MISSING: ClientAuth
+	// MISSING: CodeSigning
+	// MISSING: EmailProtection
+	// MISSING: TimeStamping
+	// MISSING: OcspSigning
 	return out
 }
 func KeyUsage_KeyUsageOptions_FromProto(mapCtx *direct.MapContext, in *pb.KeyUsage_KeyUsageOptions) *krm.KeyUsage_KeyUsageOptions {
@@ -264,6 +466,38 @@ func KeyUsage_KeyUsageOptions_ToProto(mapCtx *direct.MapContext, in *krm.KeyUsag
 	out.DecipherOnly = direct.ValueOf(in.DecipherOnly)
 	return out
 }
+func KeyUsage_KeyUsageOptionsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.KeyUsage_KeyUsageOptions) *krm.KeyUsage_KeyUsageOptionsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.KeyUsage_KeyUsageOptionsObservedState{}
+	// MISSING: DigitalSignature
+	// MISSING: ContentCommitment
+	// MISSING: KeyEncipherment
+	// MISSING: DataEncipherment
+	// MISSING: KeyAgreement
+	// MISSING: CertSign
+	// MISSING: CrlSign
+	// MISSING: EncipherOnly
+	// MISSING: DecipherOnly
+	return out
+}
+func KeyUsage_KeyUsageOptionsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.KeyUsage_KeyUsageOptionsObservedState) *pb.KeyUsage_KeyUsageOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KeyUsage_KeyUsageOptions{}
+	// MISSING: DigitalSignature
+	// MISSING: ContentCommitment
+	// MISSING: KeyEncipherment
+	// MISSING: DataEncipherment
+	// MISSING: KeyAgreement
+	// MISSING: CertSign
+	// MISSING: CrlSign
+	// MISSING: EncipherOnly
+	// MISSING: DecipherOnly
+	return out
+}
 func ObjectID_FromProto(mapCtx *direct.MapContext, in *pb.ObjectId) *krm.ObjectID {
 	if in == nil {
 		return nil
@@ -278,6 +512,22 @@ func ObjectID_ToProto(mapCtx *direct.MapContext, in *krm.ObjectID) *pb.ObjectId 
 	}
 	out := &pb.ObjectId{}
 	out.ObjectIdPath = in.ObjectIDPath
+	return out
+}
+func ObjectIDObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ObjectId) *krm.ObjectIDObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ObjectIDObservedState{}
+	// MISSING: ObjectIDPath
+	return out
+}
+func ObjectIDObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ObjectIDObservedState) *pb.ObjectId {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ObjectId{}
+	// MISSING: ObjectIDPath
 	return out
 }
 func PrivateCACAPoolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CaPool) *krm.PrivateCACAPoolObservedState {
@@ -322,6 +572,26 @@ func PrivateCACAPoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.PrivateCACAP
 	// MISSING: Labels
 	return out
 }
+func X509ExtensionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.X509Extension) *krm.X509ExtensionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.X509ExtensionObservedState{}
+	// MISSING: ObjectID
+	// MISSING: Critical
+	// MISSING: Value
+	return out
+}
+func X509ExtensionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.X509ExtensionObservedState) *pb.X509Extension {
+	if in == nil {
+		return nil
+	}
+	out := &pb.X509Extension{}
+	// MISSING: ObjectID
+	// MISSING: Critical
+	// MISSING: Value
+	return out
+}
 func X509Parameters_FromProto(mapCtx *direct.MapContext, in *pb.X509Parameters) *krm.X509Parameters {
 	if in == nil {
 		return nil
@@ -348,6 +618,32 @@ func X509Parameters_ToProto(mapCtx *direct.MapContext, in *krm.X509Parameters) *
 	out.AdditionalExtensions = direct.Slice_ToProto(mapCtx, in.AdditionalExtensions, X509Extension_ToProto)
 	return out
 }
+func X509ParametersObservedState_FromProto(mapCtx *direct.MapContext, in *pb.X509Parameters) *krm.X509ParametersObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.X509ParametersObservedState{}
+	// MISSING: KeyUsage
+	// MISSING: CAOptions
+	// MISSING: PolicyIds
+	// MISSING: AiaOcspServers
+	// MISSING: NameConstraints
+	// MISSING: AdditionalExtensions
+	return out
+}
+func X509ParametersObservedState_ToProto(mapCtx *direct.MapContext, in *krm.X509ParametersObservedState) *pb.X509Parameters {
+	if in == nil {
+		return nil
+	}
+	out := &pb.X509Parameters{}
+	// MISSING: KeyUsage
+	// MISSING: CAOptions
+	// MISSING: PolicyIds
+	// MISSING: AiaOcspServers
+	// MISSING: NameConstraints
+	// MISSING: AdditionalExtensions
+	return out
+}
 func X509Parameters_CAOptions_FromProto(mapCtx *direct.MapContext, in *pb.X509Parameters_CaOptions) *krm.X509Parameters_CAOptions {
 	if in == nil {
 		return nil
@@ -364,6 +660,24 @@ func X509Parameters_CAOptions_ToProto(mapCtx *direct.MapContext, in *krm.X509Par
 	out := &pb.X509Parameters_CaOptions{}
 	out.IsCa = in.IsCA
 	out.MaxIssuerPathLength = in.MaxIssuerPathLength
+	return out
+}
+func X509Parameters_CAOptionsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.X509Parameters_CaOptions) *krm.X509Parameters_CAOptionsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.X509Parameters_CAOptionsObservedState{}
+	// MISSING: IsCA
+	// MISSING: MaxIssuerPathLength
+	return out
+}
+func X509Parameters_CAOptionsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.X509Parameters_CAOptionsObservedState) *pb.X509Parameters_CaOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.X509Parameters_CaOptions{}
+	// MISSING: IsCA
+	// MISSING: MaxIssuerPathLength
 	return out
 }
 func X509Parameters_NameConstraints_FromProto(mapCtx *direct.MapContext, in *pb.X509Parameters_NameConstraints) *krm.X509Parameters_NameConstraints {
@@ -396,5 +710,37 @@ func X509Parameters_NameConstraints_ToProto(mapCtx *direct.MapContext, in *krm.X
 	out.ExcludedEmailAddresses = in.ExcludedEmailAddresses
 	out.PermittedUris = in.PermittedUris
 	out.ExcludedUris = in.ExcludedUris
+	return out
+}
+func X509Parameters_NameConstraintsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.X509Parameters_NameConstraints) *krm.X509Parameters_NameConstraintsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.X509Parameters_NameConstraintsObservedState{}
+	// MISSING: Critical
+	// MISSING: PermittedDNSNames
+	// MISSING: ExcludedDNSNames
+	// MISSING: PermittedIPRanges
+	// MISSING: ExcludedIPRanges
+	// MISSING: PermittedEmailAddresses
+	// MISSING: ExcludedEmailAddresses
+	// MISSING: PermittedUris
+	// MISSING: ExcludedUris
+	return out
+}
+func X509Parameters_NameConstraintsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.X509Parameters_NameConstraintsObservedState) *pb.X509Parameters_NameConstraints {
+	if in == nil {
+		return nil
+	}
+	out := &pb.X509Parameters_NameConstraints{}
+	// MISSING: Critical
+	// MISSING: PermittedDNSNames
+	// MISSING: ExcludedDNSNames
+	// MISSING: PermittedIPRanges
+	// MISSING: ExcludedIPRanges
+	// MISSING: PermittedEmailAddresses
+	// MISSING: ExcludedEmailAddresses
+	// MISSING: PermittedUris
+	// MISSING: ExcludedUris
 	return out
 }

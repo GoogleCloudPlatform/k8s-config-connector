@@ -107,13 +107,6 @@ type Batch struct {
 }
 */
 
-/* found existing non-generated go type "Batch_StateHistory", skipping
-
-// +kcc:proto=google.cloud.dataproc.v1.Batch.StateHistory
-type Batch_StateHistory struct {
-}
-*/
-
 /* found existing non-generated go type "DiskConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.DiskConfig
@@ -430,10 +423,6 @@ type InstanceFlexibilityPolicy_InstanceSelection struct {
 	Rank *int32 `json:"rank,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult
-type InstanceFlexibilityPolicy_InstanceSelectionResult struct {
-}
-
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.ProvisioningModelMix
 type InstanceFlexibilityPolicy_ProvisioningModelMix struct {
 	// Optional. The base capacity that will always use Standard VMs to avoid
@@ -556,25 +545,6 @@ type InstanceGroupConfig struct {
 	//  create and update process.
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.startup_config
 	StartupConfig *StartupConfig `json:"startupConfig,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dataproc.v1.InstanceReference
-type InstanceReference struct {
-	// The user-friendly name of the Compute Engine instance.
-	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceReference.instance_name
-	InstanceName *string `json:"instanceName,omitempty"`
-
-	// The unique identifier of the Compute Engine instance.
-	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceReference.instance_id
-	InstanceID *string `json:"instanceID,omitempty"`
-
-	// The public RSA key used for sharing data with this instance.
-	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceReference.public_key
-	PublicKey *string `json:"publicKey,omitempty"`
-
-	// The public ECIES key used for sharing data with this instance.
-	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceReference.public_ecies_key
-	PublicEciesKey *string `json:"publicEciesKey,omitempty"`
 }
 
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.Job", skipping
@@ -722,13 +692,6 @@ type JobScheduling struct {
 }
 */
 
-/* found existing non-generated go type "JobStatus", skipping
-
-// +kcc:proto=google.cloud.dataproc.v1.JobStatus
-type JobStatus struct {
-}
-*/
-
 /* found existing non-generated go type "LoggingConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.LoggingConfig
@@ -738,10 +701,6 @@ type LoggingConfig struct {
 
 }
 */
-
-// +kcc:proto=google.cloud.dataproc.v1.ManagedGroupConfig
-type ManagedGroupConfig struct {
-}
 
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.NodeGroup", skipping
 
@@ -1033,13 +992,6 @@ type RuntimeConfig struct {
 }
 */
 
-/* found existing non-generated go type "RuntimeInfo", skipping
-
-// +kcc:proto=google.cloud.dataproc.v1.RuntimeInfo
-type RuntimeInfo struct {
-}
-*/
-
 /* found existing non-generated go type "SparkBatch", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.SparkBatch
@@ -1312,100 +1264,17 @@ type TrinoJob struct {
 }
 */
 
-/* found existing non-generated go type "UsageMetrics", skipping
-
-// +kcc:proto=google.cloud.dataproc.v1.UsageMetrics
-type UsageMetrics struct {
-	// Optional. DCU (Dataproc Compute Units) usage in (`milliDCU` x `seconds`)
-	//  (see [Dataproc Serverless pricing]
-	//  (https://cloud.google.com/dataproc-serverless/pricing)).
-	// +kcc:proto:field=google.cloud.dataproc.v1.UsageMetrics.milli_dcu_seconds
-	MilliDcuSeconds *int64 `json:"milliDcuSeconds,omitempty"`
-
-	// Optional. Shuffle storage usage in (`GB` x `seconds`) (see
-	//  [Dataproc Serverless pricing]
-	//  (https://cloud.google.com/dataproc-serverless/pricing)).
-	// +kcc:proto:field=google.cloud.dataproc.v1.UsageMetrics.shuffle_storage_gb_seconds
-	ShuffleStorageGBSeconds *int64 `json:"shuffleStorageGBSeconds,omitempty"`
-
-	// Optional. Accelerator usage in (`milliAccelerator` x `seconds`) (see
-	//  [Dataproc Serverless pricing]
-	//  (https://cloud.google.com/dataproc-serverless/pricing)).
-	// +kcc:proto:field=google.cloud.dataproc.v1.UsageMetrics.milli_accelerator_seconds
-	MilliAcceleratorSeconds *int64 `json:"milliAcceleratorSeconds,omitempty"`
-
-	// Optional. Accelerator type being used, if any
-	// +kcc:proto:field=google.cloud.dataproc.v1.UsageMetrics.accelerator_type
-	AcceleratorType *string `json:"acceleratorType,omitempty"`
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.AcceleratorConfig
+type AcceleratorConfigObservedState struct {
 }
-*/
 
-/* found existing non-generated go type "UsageSnapshot", skipping
-
-// +kcc:proto=google.cloud.dataproc.v1.UsageSnapshot
-type UsageSnapshot struct {
-	// Optional. Milli (one-thousandth) Dataproc Compute Units (DCUs) (see
-	//  [Dataproc Serverless pricing]
-	//  (https://cloud.google.com/dataproc-serverless/pricing)).
-	// +kcc:proto:field=google.cloud.dataproc.v1.UsageSnapshot.milli_dcu
-	MilliDcu *int64 `json:"milliDcu,omitempty"`
-
-	// Optional. Shuffle Storage in gigabytes (GB). (see [Dataproc Serverless
-	//  pricing] (https://cloud.google.com/dataproc-serverless/pricing))
-	// +kcc:proto:field=google.cloud.dataproc.v1.UsageSnapshot.shuffle_storage_gb
-	ShuffleStorageGB *int64 `json:"shuffleStorageGB,omitempty"`
-
-	// Optional. Milli (one-thousandth) Dataproc Compute Units (DCUs) charged at
-	//  premium tier (see [Dataproc Serverless pricing]
-	//  (https://cloud.google.com/dataproc-serverless/pricing)).
-	// +kcc:proto:field=google.cloud.dataproc.v1.UsageSnapshot.milli_dcu_premium
-	MilliDcuPremium *int64 `json:"milliDcuPremium,omitempty"`
-
-	// Optional. Shuffle Storage in gigabytes (GB) charged at premium tier. (see
-	//  [Dataproc Serverless pricing]
-	//  (https://cloud.google.com/dataproc-serverless/pricing))
-	// +kcc:proto:field=google.cloud.dataproc.v1.UsageSnapshot.shuffle_storage_gb_premium
-	ShuffleStorageGBPremium *int64 `json:"shuffleStorageGBPremium,omitempty"`
-
-	// Optional. Milli (one-thousandth) accelerator. (see [Dataproc
-	//  Serverless pricing] (https://cloud.google.com/dataproc-serverless/pricing))
-	// +kcc:proto:field=google.cloud.dataproc.v1.UsageSnapshot.milli_accelerator
-	MilliAccelerator *int64 `json:"milliAccelerator,omitempty"`
-
-	// Optional. Accelerator type being used, if any
-	// +kcc:proto:field=google.cloud.dataproc.v1.UsageSnapshot.accelerator_type
-	AcceleratorType *string `json:"acceleratorType,omitempty"`
-
-	// Optional. The timestamp of the usage snapshot.
-	// +kcc:proto:field=google.cloud.dataproc.v1.UsageSnapshot.snapshot_time
-	SnapshotTime *string `json:"snapshotTime,omitempty"`
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.AuthenticationConfig
+type AuthenticationConfigObservedState struct {
 }
-*/
 
-/* found existing non-generated go type "YarnApplication", skipping
-
-// +kcc:proto=google.cloud.dataproc.v1.YarnApplication
-type YarnApplication struct {
-	// Required. The application name.
-	// +kcc:proto:field=google.cloud.dataproc.v1.YarnApplication.name
-	Name *string `json:"name,omitempty"`
-
-	// Required. The application state.
-	// +kcc:proto:field=google.cloud.dataproc.v1.YarnApplication.state
-	State *string `json:"state,omitempty"`
-
-	// Required. The numerical progress of the application, from 1 to 100.
-	// +kcc:proto:field=google.cloud.dataproc.v1.YarnApplication.progress
-	Progress *float32 `json:"progress,omitempty"`
-
-	// Optional. The HTTP URL of the ApplicationMaster, HistoryServer, or
-	//  TimelineServer that provides application-specific information. The URL uses
-	//  the internal hostname, and requires a proxy server for resolution and,
-	//  possibly, access.
-	// +kcc:proto:field=google.cloud.dataproc.v1.YarnApplication.tracking_url
-	TrackingURL *string `json:"trackingURL,omitempty"`
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.AutotuningConfig
+type AutotuningConfigObservedState struct {
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.Batch", skipping
 
@@ -1426,7 +1295,7 @@ type BatchObservedState struct {
 
 	// Output only. Runtime information about batch execution.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.runtime_info
-	RuntimeInfo *RuntimeInfo `json:"runtimeInfo,omitempty"`
+	RuntimeInfo *RuntimeInfoObservedState `json:"runtimeInfo,omitempty"`
 
 	// Output only. The state of the batch.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.state
@@ -1451,7 +1320,7 @@ type BatchObservedState struct {
 
 	// Output only. Historical state information for the batch.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.state_history
-	StateHistory []Batch_StateHistory `json:"stateHistory,omitempty"`
+	StateHistory []Batch_StateHistoryObservedState `json:"stateHistory,omitempty"`
 }
 */
 
@@ -1473,11 +1342,43 @@ type Batch_StateHistoryObservedState struct {
 }
 */
 
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.DiskConfig
+type DiskConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.DriverSchedulingConfig
+type DriverSchedulingConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.EnvironmentConfig
+type EnvironmentConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.ExecutionConfig
+type ExecutionConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.FlinkJob
+type FlinkJobObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.HadoopJob
+type HadoopJobObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.HiveJob
+type HiveJobObservedState struct {
+}
+
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy
 type InstanceFlexibilityPolicyObservedState struct {
 	// Output only. A list of instance selection results in the group.
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.instance_selection_results
-	InstanceSelectionResults []InstanceFlexibilityPolicy_InstanceSelectionResult `json:"instanceSelectionResults,omitempty"`
+	InstanceSelectionResults []InstanceFlexibilityPolicy_InstanceSelectionResultObservedState `json:"instanceSelectionResults,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelection
+type InstanceFlexibilityPolicy_InstanceSelectionObservedState struct {
 }
 
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult
@@ -1491,6 +1392,10 @@ type InstanceFlexibilityPolicy_InstanceSelectionResultObservedState struct {
 	VMCount *int32 `json:"vmCount,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.ProvisioningModelMix
+type InstanceFlexibilityPolicy_ProvisioningModelMixObservedState struct {
+}
+
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceGroupConfig
 type InstanceGroupConfigObservedState struct {
 	// Output only. The list of instance names. Dataproc derives the names
@@ -1500,7 +1405,7 @@ type InstanceGroupConfigObservedState struct {
 
 	// Output only. List of references to Compute Engine instances.
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.instance_references
-	InstanceReferences []InstanceReference `json:"instanceReferences,omitempty"`
+	InstanceReferences []InstanceReferenceObservedState `json:"instanceReferences,omitempty"`
 
 	// Output only. Specifies that this instance group contains preemptible
 	//  instances.
@@ -1511,39 +1416,48 @@ type InstanceGroupConfigObservedState struct {
 	//  Manager that manages this group.
 	//  This is only used for preemptible instance groups.
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.managed_group_config
-	ManagedGroupConfig *ManagedGroupConfig `json:"managedGroupConfig,omitempty"`
+	ManagedGroupConfig *ManagedGroupConfigObservedState `json:"managedGroupConfig,omitempty"`
+}
 
-	// Optional. Instance flexibility Policy allowing a mixture of VM shapes and
-	//  provisioning models.
-	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.instance_flexibility_policy
-	InstanceFlexibilityPolicy *InstanceFlexibilityPolicyObservedState `json:"instanceFlexibilityPolicy,omitempty"`
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceReference
+type InstanceReferenceObservedState struct {
+	// The user-friendly name of the Compute Engine instance.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceReference.instance_name
+	InstanceName *string `json:"instanceName,omitempty"`
+
+	// The unique identifier of the Compute Engine instance.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceReference.instance_id
+	InstanceID *string `json:"instanceID,omitempty"`
+
+	// The public RSA key used for sharing data with this instance.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceReference.public_key
+	PublicKey *string `json:"publicKey,omitempty"`
+
+	// The public ECIES key used for sharing data with this instance.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceReference.public_ecies_key
+	PublicEciesKey *string `json:"publicEciesKey,omitempty"`
 }
 
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.Job", skipping
 
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.Job
 type JobObservedState struct {
-	// Required. Job information, including how, when, and where to
-	//  run the job.
-	// +kcc:proto:field=google.cloud.dataproc.v1.Job.placement
-	Placement *JobPlacementObservedState `json:"placement,omitempty"`
-
 	// Output only. The job status. Additional application-specific
 	//  status information might be contained in the <code>type_job</code>
 	//  and <code>yarn_applications</code> fields.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Job.status
-	Status *JobStatus `json:"status,omitempty"`
+	Status *JobStatusObservedState `json:"status,omitempty"`
 
 	// Output only. The previous job status.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Job.status_history
-	StatusHistory []JobStatus `json:"statusHistory,omitempty"`
+	StatusHistory []JobStatusObservedState `json:"statusHistory,omitempty"`
 
 	// Output only. The collection of YARN applications spun up by this job.
 	//
 	//  **Beta** Feature: This report is available for testing purposes only. It
 	//  might be changed before final release.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Job.yarn_applications
-	YarnApplications []YarnApplication `json:"yarnApplications,omitempty"`
+	YarnApplications []YarnApplicationObservedState `json:"yarnApplications,omitempty"`
 
 	// Output only. A URI pointing to the location of the stdout of the job's
 	//  driver program.
@@ -1582,6 +1496,14 @@ type JobPlacementObservedState struct {
 }
 */
 
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.JobReference
+type JobReferenceObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.JobScheduling
+type JobSchedulingObservedState struct {
+}
+
 /* found existing non-generated go type "JobStatusObservedState", skipping
 
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.JobStatus
@@ -1606,6 +1528,10 @@ type JobStatusObservedState struct {
 }
 */
 
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.LoggingConfig
+type LoggingConfigObservedState struct {
+}
+
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.ManagedGroupConfig
 type ManagedGroupConfigObservedState struct {
 	// Output only. The name of the Instance Template used for the Managed
@@ -1627,11 +1553,44 @@ type ManagedGroupConfigObservedState struct {
 
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.NodeGroup
 type NodeGroupObservedState struct {
-	// Optional. The node group instance group configuration.
-	// +kcc:proto:field=google.cloud.dataproc.v1.NodeGroup.node_group_config
-	NodeGroupConfig *InstanceGroupConfigObservedState `json:"nodeGroupConfig,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.PeripheralsConfig
+type PeripheralsConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.PigJob
+type PigJobObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.PrestoJob
+type PrestoJobObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.PyPiRepositoryConfig
+type PyPiRepositoryConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.PySparkBatch
+type PySparkBatchObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.PySparkJob
+type PySparkJobObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.QueryList
+type QueryListObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.RepositoryConfig
+type RepositoryConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.RuntimeConfig
+type RuntimeConfigObservedState struct {
+}
 
 /* found existing non-generated go type "RuntimeInfoObservedState", skipping
 
@@ -1663,10 +1622,132 @@ type RuntimeInfoObservedState struct {
 	//  for announcements, changes, fixes
 	//  and other Dataproc developments).
 	// +kcc:proto:field=google.cloud.dataproc.v1.RuntimeInfo.approximate_usage
-	ApproximateUsage *UsageMetrics `json:"approximateUsage,omitempty"`
+	ApproximateUsage *UsageMetricsObservedState `json:"approximateUsage,omitempty"`
 
 	// Output only. Snapshot of current workload resource usage.
 	// +kcc:proto:field=google.cloud.dataproc.v1.RuntimeInfo.current_usage
-	CurrentUsage *UsageSnapshot `json:"currentUsage,omitempty"`
+	CurrentUsage *UsageSnapshotObservedState `json:"currentUsage,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.SparkBatch
+type SparkBatchObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.SparkHistoryServerConfig
+type SparkHistoryServerConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.SparkJob
+type SparkJobObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.SparkRBatch
+type SparkRBatchObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.SparkRJob
+type SparkRJobObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.SparkSqlBatch
+type SparkSQLBatchObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.SparkSqlJob
+type SparkSQLJobObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.StartupConfig
+type StartupConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.TrinoJob
+type TrinoJobObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.UsageMetrics
+type UsageMetricsObservedState struct {
+	// Optional. DCU (Dataproc Compute Units) usage in (`milliDCU` x `seconds`)
+	//  (see [Dataproc Serverless pricing]
+	//  (https://cloud.google.com/dataproc-serverless/pricing)).
+	// +kcc:proto:field=google.cloud.dataproc.v1.UsageMetrics.milli_dcu_seconds
+	MilliDcuSeconds *int64 `json:"milliDcuSeconds,omitempty"`
+
+	// Optional. Shuffle storage usage in (`GB` x `seconds`) (see
+	//  [Dataproc Serverless pricing]
+	//  (https://cloud.google.com/dataproc-serverless/pricing)).
+	// +kcc:proto:field=google.cloud.dataproc.v1.UsageMetrics.shuffle_storage_gb_seconds
+	ShuffleStorageGBSeconds *int64 `json:"shuffleStorageGBSeconds,omitempty"`
+
+	// Optional. Accelerator usage in (`milliAccelerator` x `seconds`) (see
+	//  [Dataproc Serverless pricing]
+	//  (https://cloud.google.com/dataproc-serverless/pricing)).
+	// +kcc:proto:field=google.cloud.dataproc.v1.UsageMetrics.milli_accelerator_seconds
+	MilliAcceleratorSeconds *int64 `json:"milliAcceleratorSeconds,omitempty"`
+
+	// Optional. Accelerator type being used, if any
+	// +kcc:proto:field=google.cloud.dataproc.v1.UsageMetrics.accelerator_type
+	AcceleratorType *string `json:"acceleratorType,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.UsageSnapshot
+type UsageSnapshotObservedState struct {
+	// Optional. Milli (one-thousandth) Dataproc Compute Units (DCUs) (see
+	//  [Dataproc Serverless pricing]
+	//  (https://cloud.google.com/dataproc-serverless/pricing)).
+	// +kcc:proto:field=google.cloud.dataproc.v1.UsageSnapshot.milli_dcu
+	MilliDcu *int64 `json:"milliDcu,omitempty"`
+
+	// Optional. Shuffle Storage in gigabytes (GB). (see [Dataproc Serverless
+	//  pricing] (https://cloud.google.com/dataproc-serverless/pricing))
+	// +kcc:proto:field=google.cloud.dataproc.v1.UsageSnapshot.shuffle_storage_gb
+	ShuffleStorageGB *int64 `json:"shuffleStorageGB,omitempty"`
+
+	// Optional. Milli (one-thousandth) Dataproc Compute Units (DCUs) charged at
+	//  premium tier (see [Dataproc Serverless pricing]
+	//  (https://cloud.google.com/dataproc-serverless/pricing)).
+	// +kcc:proto:field=google.cloud.dataproc.v1.UsageSnapshot.milli_dcu_premium
+	MilliDcuPremium *int64 `json:"milliDcuPremium,omitempty"`
+
+	// Optional. Shuffle Storage in gigabytes (GB) charged at premium tier. (see
+	//  [Dataproc Serverless pricing]
+	//  (https://cloud.google.com/dataproc-serverless/pricing))
+	// +kcc:proto:field=google.cloud.dataproc.v1.UsageSnapshot.shuffle_storage_gb_premium
+	ShuffleStorageGBPremium *int64 `json:"shuffleStorageGBPremium,omitempty"`
+
+	// Optional. Milli (one-thousandth) accelerator. (see [Dataproc
+	//  Serverless pricing] (https://cloud.google.com/dataproc-serverless/pricing))
+	// +kcc:proto:field=google.cloud.dataproc.v1.UsageSnapshot.milli_accelerator
+	MilliAccelerator *int64 `json:"milliAccelerator,omitempty"`
+
+	// Optional. Accelerator type being used, if any
+	// +kcc:proto:field=google.cloud.dataproc.v1.UsageSnapshot.accelerator_type
+	AcceleratorType *string `json:"acceleratorType,omitempty"`
+
+	// Optional. The timestamp of the usage snapshot.
+	// +kcc:proto:field=google.cloud.dataproc.v1.UsageSnapshot.snapshot_time
+	SnapshotTime *string `json:"snapshotTime,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.YarnApplication
+type YarnApplicationObservedState struct {
+	// Required. The application name.
+	// +kcc:proto:field=google.cloud.dataproc.v1.YarnApplication.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The application state.
+	// +kcc:proto:field=google.cloud.dataproc.v1.YarnApplication.state
+	State *string `json:"state,omitempty"`
+
+	// Required. The numerical progress of the application, from 1 to 100.
+	// +kcc:proto:field=google.cloud.dataproc.v1.YarnApplication.progress
+	Progress *float32 `json:"progress,omitempty"`
+
+	// Optional. The HTTP URL of the ApplicationMaster, HistoryServer, or
+	//  TimelineServer that provides application-specific information. The URL uses
+	//  the internal hostname, and requires a proxy server for resolution and,
+	//  possibly, access.
+	// +kcc:proto:field=google.cloud.dataproc.v1.YarnApplication.tracking_url
+	TrackingURL *string `json:"trackingURL,omitempty"`
+}

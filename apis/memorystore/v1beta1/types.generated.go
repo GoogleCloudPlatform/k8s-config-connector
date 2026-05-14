@@ -77,13 +77,6 @@ type CrossInstanceReplicationConfig struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership", skipping
-
-// +kcc:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership
-type CrossInstanceReplicationConfig_Membership struct {
-}
-*/
-
 /* found existing non-generated go type "CrossInstanceReplicationConfig_RemoteInstance", skipping
 
 // +kcc:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance
@@ -92,13 +85,6 @@ type CrossInstanceReplicationConfig_RemoteInstance struct {
 	//  the format: projects/<project>/locations/<region>/instances/<instance-id>
 	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance.instance
 	Instance *string `json:"instance,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.DiscoveryEndpoint", skipping
-
-// +kcc:proto=google.cloud.memorystore.v1.DiscoveryEndpoint
-type DiscoveryEndpoint struct {
 }
 */
 
@@ -254,20 +240,6 @@ type Instance_ManagedBackupSource struct {
 	Backup *string `json:"backup,omitempty"`
 }
 
-/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.Instance.StateInfo", skipping
-
-// +kcc:proto=google.cloud.memorystore.v1.Instance.StateInfo
-type Instance_StateInfo struct {
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.Instance.StateInfo.UpdateInfo", skipping
-
-// +kcc:proto=google.cloud.memorystore.v1.Instance.StateInfo.UpdateInfo
-type Instance_StateInfo_UpdateInfo struct {
-}
-*/
-
 // +kcc:proto=google.cloud.memorystore.v1.MaintenancePolicy
 type MaintenancePolicy struct {
 
@@ -277,17 +249,6 @@ type MaintenancePolicy struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.MaintenancePolicy.weekly_maintenance_window
 	WeeklyMaintenanceWindow []WeeklyMaintenanceWindow `json:"weeklyMaintenanceWindow,omitempty"`
 }
-
-// +kcc:proto=google.cloud.memorystore.v1.MaintenanceSchedule
-type MaintenanceSchedule struct {
-}
-
-/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.NodeConfig", skipping
-
-// +kcc:proto=google.cloud.memorystore.v1.NodeConfig
-type NodeConfig struct {
-}
-*/
 
 /* found existing non-generated go type "PersistenceConfig", skipping
 
@@ -330,13 +291,6 @@ type PersistenceConfig_RdbConfig struct {
 	//  will be used.
 	// +kcc:proto:field=google.cloud.memorystore.v1.PersistenceConfig.RDBConfig.rdb_snapshot_start_time
 	RdbSnapshotStartTime *string `json:"rdbSnapshotStartTime,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.PscAttachmentDetail", skipping
-
-// +kcc:proto=google.cloud.memorystore.v1.PscAttachmentDetail
-type PSCAttachmentDetail struct {
 }
 */
 
@@ -441,17 +395,18 @@ type TimeOfDay struct {
 	Nanos *int32 `json:"nanos,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.memorystore.v1.AutomatedBackupConfig
+type AutomatedBackupConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.memorystore.v1.AutomatedBackupConfig.FixedFrequencySchedule
+type AutomatedBackupConfig_FixedFrequencyScheduleObservedState struct {
+}
+
 /* found existing non-generated go type "CrossInstanceReplicationConfigObservedState", skipping
 
 // +kcc:observedstate:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig
 type CrossInstanceReplicationConfigObservedState struct {
-	// Optional. Details of the primary instance that is used as the replication
-	//  source for this secondary instance.
-	//
-	//  This field is only set for a secondary instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.primary_instance
-	PrimaryInstance *CrossInstanceReplicationConfig_RemoteInstanceObservedState `json:"primaryInstance,omitempty"`
-
 	// Output only. The last time cross instance replication config was updated.
 	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
@@ -468,7 +423,7 @@ type CrossInstanceReplicationConfigObservedState struct {
 	//  field will list all the member instances participating in cross instance
 	//  replication.
 	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.membership
-	Membership *CrossInstanceReplicationConfig_Membership `json:"membership,omitempty"`
+	Membership *CrossInstanceReplicationConfig_MembershipObservedState `json:"membership,omitempty"`
 }
 */
 
@@ -479,12 +434,12 @@ type CrossInstanceReplicationConfig_MembershipObservedState struct {
 	// Output only. The primary instance that acts as the source of replication
 	//  for the secondary instances.
 	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership.primary_instance
-	PrimaryInstance *CrossInstanceReplicationConfig_RemoteInstance `json:"primaryInstance,omitempty"`
+	PrimaryInstance *CrossInstanceReplicationConfig_RemoteInstanceObservedState `json:"primaryInstance,omitempty"`
 
 	// Output only. The list of secondary instances replicating from the primary
 	//  instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership.secondary_instances
-	SecondaryInstances []CrossInstanceReplicationConfig_RemoteInstance `json:"secondaryInstances,omitempty"`
+	SecondaryInstances []CrossInstanceReplicationConfig_RemoteInstanceObservedState `json:"secondaryInstances,omitempty"`
 }
 */
 
@@ -536,7 +491,7 @@ type InstanceObservedState struct {
 
 	// Output only. Additional information about the state of the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.state_info
-	StateInfo *Instance_StateInfo `json:"stateInfo,omitempty"`
+	StateInfo *Instance_StateInfoObservedState `json:"stateInfo,omitempty"`
 
 	// Output only. System assigned, unique identifier for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.uid
@@ -545,38 +500,19 @@ type InstanceObservedState struct {
 	// Output only. Deprecated: Use the endpoints.connections.psc_auto_connection
 	//  or endpoints.connections.psc_connection values instead.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.discovery_endpoints
-	DiscoveryEndpoints []DiscoveryEndpoint `json:"discoveryEndpoints,omitempty"`
+	DiscoveryEndpoints []DiscoveryEndpointObservedState `json:"discoveryEndpoints,omitempty"`
 
 	// Output only. Configuration of individual nodes of the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.node_config
-	NodeConfig *NodeConfig `json:"nodeConfig,omitempty"`
-
-	// Optional. Immutable. Deprecated: Use the
-	//  endpoints.connections.psc_auto_connection value instead.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.psc_auto_connections
-	PSCAutoConnections []PSCAutoConnectionObservedState `json:"pscAutoConnections,omitempty"`
+	NodeConfig *NodeConfigObservedState `json:"nodeConfig,omitempty"`
 
 	// Output only. Service attachment details to configure PSC connections.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.psc_attachment_details
-	PSCAttachmentDetails []PSCAttachmentDetail `json:"pscAttachmentDetails,omitempty"`
-
-	// Optional. Endpoints for the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.endpoints
-	Endpoints []Instance_InstanceEndpointObservedState `json:"endpoints,omitempty"`
-
-	// Optional. The maintenance policy for the instance. If not provided,
-	//  the maintenance event will be performed based on Memorystore
-	//  internal rollout schedule.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.maintenance_policy
-	MaintenancePolicy *MaintenancePolicyObservedState `json:"maintenancePolicy,omitempty"`
+	PSCAttachmentDetails []PSCAttachmentDetailObservedState `json:"pscAttachmentDetails,omitempty"`
 
 	// Output only. Published maintenance schedule.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.maintenance_schedule
-	MaintenanceSchedule *MaintenanceSchedule `json:"maintenanceSchedule,omitempty"`
-
-	// Optional. The config for cross instance replication.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.cross_instance_replication_config
-	CrossInstanceReplicationConfig *CrossInstanceReplicationConfigObservedState `json:"crossInstanceReplicationConfig,omitempty"`
+	MaintenanceSchedule *MaintenanceScheduleObservedState `json:"maintenanceSchedule,omitempty"`
 
 	// Output only. The backup collection full resource name. Example:
 	//  projects/{project}/locations/{location}/backupCollections/{collection}
@@ -589,22 +525,23 @@ type InstanceObservedState struct {
 
 // +kcc:observedstate:proto=google.cloud.memorystore.v1.Instance.ConnectionDetail
 type Instance_ConnectionDetailObservedState struct {
-	// Detailed information of a PSC connection that is created by the user.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.ConnectionDetail.psc_connection
-	PSCConnection *PSCConnectionObservedState `json:"pscConnection,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.memorystore.v1.Instance.GcsBackupSource
+type Instance_GCSBackupSourceObservedState struct {
+}
 
 /* found existing non-generated go type "Instance_InstanceEndpointObservedState", skipping
 
 // +kcc:observedstate:proto=google.cloud.memorystore.v1.Instance.InstanceEndpoint
 type Instance_InstanceEndpointObservedState struct {
-	// Optional. A group of PSC connections. They are created in the same VPC
-	//  network, one for each service attachment in the cluster.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.InstanceEndpoint.connections
-	Connections []Instance_ConnectionDetailObservedState `json:"connections,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.memorystore.v1.Instance.ManagedBackupSource
+type Instance_ManagedBackupSourceObservedState struct {
+}
 
 /* found existing non-generated go type "Instance_StateInfoObservedState", skipping
 
@@ -612,7 +549,7 @@ type Instance_InstanceEndpointObservedState struct {
 type Instance_StateInfoObservedState struct {
 	// Output only. Describes ongoing update when instance state is UPDATING.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.StateInfo.update_info
-	UpdateInfo *Instance_StateInfo_UpdateInfo `json:"updateInfo,omitempty"`
+	UpdateInfo *Instance_StateInfo_UpdateInfoObservedState `json:"updateInfo,omitempty"`
 }
 */
 
@@ -671,6 +608,18 @@ type NodeConfigObservedState struct {
 	SizeGB *float64 `json:"sizeGB,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.memorystore.v1.PersistenceConfig
+type PersistenceConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.memorystore.v1.PersistenceConfig.AOFConfig
+type PersistenceConfig_AofConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.memorystore.v1.PersistenceConfig.RDBConfig
+type PersistenceConfig_RdbConfigObservedState struct {
+}
 
 /* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.PscAttachmentDetail", skipping
 
@@ -743,4 +692,16 @@ type PSCConnectionObservedState struct {
 	// Output only. Type of the PSC connection.
 	// +kcc:proto:field=google.cloud.memorystore.v1.PscConnection.connection_type
 	ConnectionType *string `json:"connectionType,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.memorystore.v1.WeeklyMaintenanceWindow
+type WeeklyMaintenanceWindowObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.memorystore.v1.ZoneDistributionConfig
+type ZoneDistributionConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.type.TimeOfDay
+type TimeOfDayObservedState struct {
 }

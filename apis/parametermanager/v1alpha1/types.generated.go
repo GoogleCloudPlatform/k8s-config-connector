@@ -22,8 +22,8 @@
 
 package v1alpha1
 
-// +kcc:proto=google.iam.v1.ResourcePolicyMember
-type ResourcePolicyMember struct {
+// +kcc:observedstate:proto=google.cloud.parametermanager.v1.ParameterVersionPayload
+type ParameterVersionPayloadObservedState struct {
 }
 
 // +kcc:observedstate:proto=google.iam.v1.ResourcePolicyMember

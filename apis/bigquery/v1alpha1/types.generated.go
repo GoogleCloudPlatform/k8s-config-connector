@@ -192,3 +192,27 @@ type Expr struct {
 	// +kcc:proto:field=google.type.Expr.location
 	Location *string `json:"location,omitempty"`
 }
+
+// +kcc:observedstate:proto=google.cloud.bigquery.v2.Access
+type AccessObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.bigquery.v2.DatasetAccessEntry
+type DatasetAccessEntryObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.bigquery.v2.DatasetReference
+type DatasetReferenceObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.bigquery.v2.RoutineReference
+type RoutineReferenceObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.bigquery.v2.TableReference
+type TableReferenceObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.type.Expr
+type ExprObservedState struct {
+}

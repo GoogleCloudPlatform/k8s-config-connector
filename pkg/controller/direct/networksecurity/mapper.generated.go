@@ -26,6 +26,34 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AuthorizationPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy) *krm.AuthorizationPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AuthorizationPolicyObservedState{}
+	// MISSING: Name
+	// MISSING: Description
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	// MISSING: Action
+	// MISSING: Rules
+	return out
+}
+func AuthorizationPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AuthorizationPolicyObservedState) *pb.AuthorizationPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthorizationPolicy{}
+	// MISSING: Name
+	// MISSING: Description
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	// MISSING: Action
+	// MISSING: Rules
+	return out
+}
 func AuthorizationPolicy_Rule_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy_Rule) *krm.AuthorizationPolicy_Rule {
 	if in == nil {
 		return nil
@@ -42,6 +70,24 @@ func AuthorizationPolicy_Rule_ToProto(mapCtx *direct.MapContext, in *krm.Authori
 	out := &pb.AuthorizationPolicy_Rule{}
 	out.Sources = direct.Slice_ToProto(mapCtx, in.Sources, AuthorizationPolicy_Rule_Source_ToProto)
 	out.Destinations = direct.Slice_ToProto(mapCtx, in.Destinations, AuthorizationPolicy_Rule_Destination_ToProto)
+	return out
+}
+func AuthorizationPolicy_RuleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy_Rule) *krm.AuthorizationPolicy_RuleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AuthorizationPolicy_RuleObservedState{}
+	// MISSING: Sources
+	// MISSING: Destinations
+	return out
+}
+func AuthorizationPolicy_RuleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AuthorizationPolicy_RuleObservedState) *pb.AuthorizationPolicy_Rule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthorizationPolicy_Rule{}
+	// MISSING: Sources
+	// MISSING: Destinations
 	return out
 }
 func AuthorizationPolicy_Rule_Destination_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy_Rule_Destination) *krm.AuthorizationPolicy_Rule_Destination {
@@ -66,6 +112,28 @@ func AuthorizationPolicy_Rule_Destination_ToProto(mapCtx *direct.MapContext, in 
 	out.HttpHeaderMatch = AuthorizationPolicy_Rule_Destination_HTTPHeaderMatch_ToProto(mapCtx, in.HTTPHeaderMatch)
 	return out
 }
+func AuthorizationPolicy_Rule_DestinationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy_Rule_Destination) *krm.AuthorizationPolicy_Rule_DestinationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AuthorizationPolicy_Rule_DestinationObservedState{}
+	// MISSING: Hosts
+	// MISSING: Ports
+	// MISSING: Methods
+	// MISSING: HTTPHeaderMatch
+	return out
+}
+func AuthorizationPolicy_Rule_DestinationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AuthorizationPolicy_Rule_DestinationObservedState) *pb.AuthorizationPolicy_Rule_Destination {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthorizationPolicy_Rule_Destination{}
+	// MISSING: Hosts
+	// MISSING: Ports
+	// MISSING: Methods
+	// MISSING: HTTPHeaderMatch
+	return out
+}
 func AuthorizationPolicy_Rule_Destination_HTTPHeaderMatch_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy_Rule_Destination_HttpHeaderMatch) *krm.AuthorizationPolicy_Rule_Destination_HTTPHeaderMatch {
 	if in == nil {
 		return nil
@@ -86,6 +154,24 @@ func AuthorizationPolicy_Rule_Destination_HTTPHeaderMatch_ToProto(mapCtx *direct
 	out.HeaderName = direct.ValueOf(in.HeaderName)
 	return out
 }
+func AuthorizationPolicy_Rule_Destination_HTTPHeaderMatchObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy_Rule_Destination_HttpHeaderMatch) *krm.AuthorizationPolicy_Rule_Destination_HTTPHeaderMatchObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AuthorizationPolicy_Rule_Destination_HTTPHeaderMatchObservedState{}
+	// MISSING: RegexMatch
+	// MISSING: HeaderName
+	return out
+}
+func AuthorizationPolicy_Rule_Destination_HTTPHeaderMatchObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AuthorizationPolicy_Rule_Destination_HTTPHeaderMatchObservedState) *pb.AuthorizationPolicy_Rule_Destination_HttpHeaderMatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthorizationPolicy_Rule_Destination_HttpHeaderMatch{}
+	// MISSING: RegexMatch
+	// MISSING: HeaderName
+	return out
+}
 func AuthorizationPolicy_Rule_Source_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy_Rule_Source) *krm.AuthorizationPolicy_Rule_Source {
 	if in == nil {
 		return nil
@@ -102,6 +188,24 @@ func AuthorizationPolicy_Rule_Source_ToProto(mapCtx *direct.MapContext, in *krm.
 	out := &pb.AuthorizationPolicy_Rule_Source{}
 	out.Principals = in.Principals
 	out.IpBlocks = in.IPBlocks
+	return out
+}
+func AuthorizationPolicy_Rule_SourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy_Rule_Source) *krm.AuthorizationPolicy_Rule_SourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AuthorizationPolicy_Rule_SourceObservedState{}
+	// MISSING: Principals
+	// MISSING: IPBlocks
+	return out
+}
+func AuthorizationPolicy_Rule_SourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AuthorizationPolicy_Rule_SourceObservedState) *pb.AuthorizationPolicy_Rule_Source {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthorizationPolicy_Rule_Source{}
+	// MISSING: Principals
+	// MISSING: IPBlocks
 	return out
 }
 func NetworkSecurityAuthorizationPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy) *krm.NetworkSecurityAuthorizationPolicySpec {

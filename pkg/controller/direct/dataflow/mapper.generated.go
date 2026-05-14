@@ -108,3 +108,67 @@ func DataflowFlexTemplateJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.Data
 	// MISSING: StreamingMode
 	return out
 }
+func FlexTemplateRuntimeEnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FlexTemplateRuntimeEnvironment) *krm.FlexTemplateRuntimeEnvironmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FlexTemplateRuntimeEnvironmentObservedState{}
+	// MISSING: NumWorkers
+	// MISSING: MaxWorkers
+	// MISSING: Zone
+	// MISSING: ServiceAccountEmail
+	// MISSING: TempLocation
+	// MISSING: MachineType
+	// MISSING: AdditionalExperiments
+	// MISSING: Network
+	// MISSING: Subnetwork
+	// MISSING: AdditionalUserLabels
+	// MISSING: KMSKeyName
+	// MISSING: IPConfiguration
+	// MISSING: WorkerRegion
+	// MISSING: WorkerZone
+	// MISSING: EnableStreamingEngine
+	// MISSING: FlexrsGoal
+	// MISSING: StagingLocation
+	// MISSING: SdkContainerImage
+	// MISSING: DiskSizeGB
+	// MISSING: AutoscalingAlgorithm
+	// MISSING: DumpHeapOnOom
+	// MISSING: SaveHeapDumpsToGCSPath
+	// MISSING: LauncherMachineType
+	// MISSING: EnableLauncherVMSerialPortLogging
+	// MISSING: StreamingMode
+	return out
+}
+func FlexTemplateRuntimeEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FlexTemplateRuntimeEnvironmentObservedState) *pb.FlexTemplateRuntimeEnvironment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FlexTemplateRuntimeEnvironment{}
+	// MISSING: NumWorkers
+	// MISSING: MaxWorkers
+	// MISSING: Zone
+	// MISSING: ServiceAccountEmail
+	// MISSING: TempLocation
+	// MISSING: MachineType
+	// MISSING: AdditionalExperiments
+	// MISSING: Network
+	// MISSING: Subnetwork
+	// MISSING: AdditionalUserLabels
+	// MISSING: KMSKeyName
+	// MISSING: IPConfiguration
+	// MISSING: WorkerRegion
+	// MISSING: WorkerZone
+	// MISSING: EnableStreamingEngine
+	// MISSING: FlexrsGoal
+	// MISSING: StagingLocation
+	// MISSING: SdkContainerImage
+	// MISSING: DiskSizeGB
+	// MISSING: AutoscalingAlgorithm
+	// MISSING: DumpHeapOnOom
+	// MISSING: SaveHeapDumpsToGCSPath
+	// MISSING: LauncherMachineType
+	// MISSING: EnableLauncherVMSerialPortLogging
+	// MISSING: StreamingMode
+	return out
+}

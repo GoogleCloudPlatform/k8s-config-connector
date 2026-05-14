@@ -26,44 +26,20 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func ApprovalConfig_FromProto(mapCtx *direct.MapContext, in *pb.ApprovalConfig) *krm.ApprovalConfig {
+func ApprovalConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ApprovalConfig) *krm.ApprovalConfigObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ApprovalConfig{}
+	out := &krm.ApprovalConfigObservedState{}
 	out.ApprovalRequired = direct.LazyPtr(in.GetApprovalRequired())
 	return out
 }
-func ApprovalConfig_ToProto(mapCtx *direct.MapContext, in *krm.ApprovalConfig) *pb.ApprovalConfig {
+func ApprovalConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApprovalConfigObservedState) *pb.ApprovalConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.ApprovalConfig{}
 	out.ApprovalRequired = direct.ValueOf(in.ApprovalRequired)
-	return out
-}
-func ApprovalResult_FromProto(mapCtx *direct.MapContext, in *pb.ApprovalResult) *krm.ApprovalResult {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ApprovalResult{}
-	// MISSING: ApproverAccount
-	// MISSING: ApprovalTime
-	out.Decision = direct.Enum_FromProto(mapCtx, in.GetDecision())
-	out.Comment = direct.LazyPtr(in.GetComment())
-	out.URL = direct.LazyPtr(in.GetUrl())
-	return out
-}
-func ApprovalResult_ToProto(mapCtx *direct.MapContext, in *krm.ApprovalResult) *pb.ApprovalResult {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ApprovalResult{}
-	// MISSING: ApproverAccount
-	// MISSING: ApprovalTime
-	out.Decision = direct.Enum_ToProto[pb.ApprovalResult_Decision](mapCtx, in.Decision)
-	out.Comment = direct.ValueOf(in.Comment)
-	out.Url = direct.ValueOf(in.URL)
 	return out
 }
 func ApprovalResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ApprovalResult) *krm.ApprovalResultObservedState {
@@ -73,9 +49,9 @@ func ApprovalResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.App
 	out := &krm.ApprovalResultObservedState{}
 	out.ApproverAccount = direct.LazyPtr(in.GetApproverAccount())
 	out.ApprovalTime = direct.StringTimestamp_FromProto(mapCtx, in.GetApprovalTime())
-	// MISSING: Decision
-	// MISSING: Comment
-	// MISSING: URL
+	out.Decision = direct.Enum_FromProto(mapCtx, in.GetDecision())
+	out.Comment = direct.LazyPtr(in.GetComment())
+	out.URL = direct.LazyPtr(in.GetUrl())
 	return out
 }
 func ApprovalResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApprovalResultObservedState) *pb.ApprovalResult {
@@ -85,9 +61,9 @@ func ApprovalResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Appr
 	out := &pb.ApprovalResult{}
 	out.ApproverAccount = direct.ValueOf(in.ApproverAccount)
 	out.ApprovalTime = direct.StringTimestamp_ToProto(mapCtx, in.ApprovalTime)
-	// MISSING: Decision
-	// MISSING: Comment
-	// MISSING: URL
+	out.Decision = direct.Enum_ToProto[pb.ApprovalResult_Decision](mapCtx, in.Decision)
+	out.Comment = direct.ValueOf(in.Comment)
+	out.Url = direct.ValueOf(in.URL)
 	return out
 }
 func Artifacts_FromProto(mapCtx *direct.MapContext, in *pb.Artifacts) *krm.Artifacts {
@@ -122,7 +98,7 @@ func ArtifactsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Artifact
 	}
 	out := &krm.ArtifactsObservedState{}
 	// MISSING: Images
-	out.Objects = Artifacts_ArtifactObjectsObservedState_FromProto(mapCtx, in.GetObjects())
+	// MISSING: Objects
 	// MISSING: MavenArtifacts
 	// MISSING: GoModules
 	// MISSING: PythonPackages
@@ -135,7 +111,7 @@ func ArtifactsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Artifacts
 	}
 	out := &pb.Artifacts{}
 	// MISSING: Images
-	out.Objects = Artifacts_ArtifactObjectsObservedState_ToProto(mapCtx, in.Objects)
+	// MISSING: Objects
 	// MISSING: MavenArtifacts
 	// MISSING: GoModules
 	// MISSING: PythonPackages
@@ -169,7 +145,7 @@ func Artifacts_ArtifactObjectsObservedState_FromProto(mapCtx *direct.MapContext,
 	out := &krm.Artifacts_ArtifactObjectsObservedState{}
 	// MISSING: Location
 	// MISSING: Paths
-	out.Timing = TimeSpan_FromProto(mapCtx, in.GetTiming())
+	out.Timing = TimeSpanObservedState_FromProto(mapCtx, in.GetTiming())
 	return out
 }
 func Artifacts_ArtifactObjectsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Artifacts_ArtifactObjectsObservedState) *pb.Artifacts_ArtifactObjects {
@@ -179,7 +155,7 @@ func Artifacts_ArtifactObjectsObservedState_ToProto(mapCtx *direct.MapContext, i
 	out := &pb.Artifacts_ArtifactObjects{}
 	// MISSING: Location
 	// MISSING: Paths
-	out.Timing = TimeSpan_ToProto(mapCtx, in.Timing)
+	out.Timing = TimeSpanObservedState_ToProto(mapCtx, in.Timing)
 	return out
 }
 func Artifacts_GoModule_FromProto(mapCtx *direct.MapContext, in *pb.Artifacts_GoModule) *krm.Artifacts_GoModule {
@@ -208,6 +184,32 @@ func Artifacts_GoModule_ToProto(mapCtx *direct.MapContext, in *krm.Artifacts_GoM
 	out.ModuleVersion = direct.ValueOf(in.ModuleVersion)
 	return out
 }
+func Artifacts_GoModuleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Artifacts_GoModule) *krm.Artifacts_GoModuleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Artifacts_GoModuleObservedState{}
+	// MISSING: RepositoryName
+	// MISSING: RepositoryLocation
+	// MISSING: RepositoryProjectID
+	// MISSING: SourcePath
+	// MISSING: ModulePath
+	// MISSING: ModuleVersion
+	return out
+}
+func Artifacts_GoModuleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Artifacts_GoModuleObservedState) *pb.Artifacts_GoModule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Artifacts_GoModule{}
+	// MISSING: RepositoryName
+	// MISSING: RepositoryLocation
+	// MISSING: RepositoryProjectID
+	// MISSING: SourcePath
+	// MISSING: ModulePath
+	// MISSING: ModuleVersion
+	return out
+}
 func Artifacts_MavenArtifact_FromProto(mapCtx *direct.MapContext, in *pb.Artifacts_MavenArtifact) *krm.Artifacts_MavenArtifact {
 	if in == nil {
 		return nil
@@ -232,6 +234,30 @@ func Artifacts_MavenArtifact_ToProto(mapCtx *direct.MapContext, in *krm.Artifact
 	out.Version = direct.ValueOf(in.Version)
 	return out
 }
+func Artifacts_MavenArtifactObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Artifacts_MavenArtifact) *krm.Artifacts_MavenArtifactObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Artifacts_MavenArtifactObservedState{}
+	// MISSING: Repository
+	// MISSING: Path
+	// MISSING: ArtifactID
+	// MISSING: GroupID
+	// MISSING: Version
+	return out
+}
+func Artifacts_MavenArtifactObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Artifacts_MavenArtifactObservedState) *pb.Artifacts_MavenArtifact {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Artifacts_MavenArtifact{}
+	// MISSING: Repository
+	// MISSING: Path
+	// MISSING: ArtifactID
+	// MISSING: GroupID
+	// MISSING: Version
+	return out
+}
 func Artifacts_NpmPackage_FromProto(mapCtx *direct.MapContext, in *pb.Artifacts_NpmPackage) *krm.Artifacts_NpmPackage {
 	if in == nil {
 		return nil
@@ -250,6 +276,24 @@ func Artifacts_NpmPackage_ToProto(mapCtx *direct.MapContext, in *krm.Artifacts_N
 	out.PackagePath = direct.ValueOf(in.PackagePath)
 	return out
 }
+func Artifacts_NpmPackageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Artifacts_NpmPackage) *krm.Artifacts_NpmPackageObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Artifacts_NpmPackageObservedState{}
+	// MISSING: Repository
+	// MISSING: PackagePath
+	return out
+}
+func Artifacts_NpmPackageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Artifacts_NpmPackageObservedState) *pb.Artifacts_NpmPackage {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Artifacts_NpmPackage{}
+	// MISSING: Repository
+	// MISSING: PackagePath
+	return out
+}
 func Artifacts_PythonPackage_FromProto(mapCtx *direct.MapContext, in *pb.Artifacts_PythonPackage) *krm.Artifacts_PythonPackage {
 	if in == nil {
 		return nil
@@ -266,6 +310,24 @@ func Artifacts_PythonPackage_ToProto(mapCtx *direct.MapContext, in *krm.Artifact
 	out := &pb.Artifacts_PythonPackage{}
 	out.Repository = direct.ValueOf(in.Repository)
 	out.Paths = in.Paths
+	return out
+}
+func Artifacts_PythonPackageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Artifacts_PythonPackage) *krm.Artifacts_PythonPackageObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Artifacts_PythonPackageObservedState{}
+	// MISSING: Repository
+	// MISSING: Paths
+	return out
+}
+func Artifacts_PythonPackageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Artifacts_PythonPackageObservedState) *pb.Artifacts_PythonPackage {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Artifacts_PythonPackage{}
+	// MISSING: Repository
+	// MISSING: Paths
 	return out
 }
 func Build_FromProto(mapCtx *direct.MapContext, in *pb.Build) *krm.Build {
@@ -344,34 +406,14 @@ func Build_ToProto(mapCtx *direct.MapContext, in *krm.Build) *pb.Build {
 	out.Dependencies = direct.Slice_ToProto(mapCtx, in.Dependencies, Dependency_ToProto)
 	return out
 }
-func BuildApproval_FromProto(mapCtx *direct.MapContext, in *pb.BuildApproval) *krm.BuildApproval {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BuildApproval{}
-	// MISSING: State
-	// MISSING: Config
-	// MISSING: Result
-	return out
-}
-func BuildApproval_ToProto(mapCtx *direct.MapContext, in *krm.BuildApproval) *pb.BuildApproval {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BuildApproval{}
-	// MISSING: State
-	// MISSING: Config
-	// MISSING: Result
-	return out
-}
 func BuildApprovalObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BuildApproval) *krm.BuildApprovalObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.BuildApprovalObservedState{}
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.Config = ApprovalConfig_FromProto(mapCtx, in.GetConfig())
-	out.Result = ApprovalResult_FromProto(mapCtx, in.GetResult())
+	out.Config = ApprovalConfigObservedState_FromProto(mapCtx, in.GetConfig())
+	out.Result = ApprovalResultObservedState_FromProto(mapCtx, in.GetResult())
 	return out
 }
 func BuildApprovalObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BuildApprovalObservedState) *pb.BuildApproval {
@@ -380,8 +422,8 @@ func BuildApprovalObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Build
 	}
 	out := &pb.BuildApproval{}
 	out.State = direct.Enum_ToProto[pb.BuildApproval_State](mapCtx, in.State)
-	out.Config = ApprovalConfig_ToProto(mapCtx, in.Config)
-	out.Result = ApprovalResult_ToProto(mapCtx, in.Result)
+	out.Config = ApprovalConfigObservedState_ToProto(mapCtx, in.Config)
+	out.Result = ApprovalResultObservedState_ToProto(mapCtx, in.Result)
 	return out
 }
 func BuildObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Build) *krm.BuildObservedState {
@@ -395,17 +437,17 @@ func BuildObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Build) *krm.
 	out.Status = direct.Enum_FromProto(mapCtx, in.GetStatus())
 	out.StatusDetail = direct.LazyPtr(in.GetStatusDetail())
 	// MISSING: Source
-	out.Steps = direct.Slice_FromProto(mapCtx, in.Steps, BuildStepObservedState_FromProto)
-	out.Results = Results_FromProto(mapCtx, in.GetResults())
+	// MISSING: Steps
+	out.Results = ResultsObservedState_FromProto(mapCtx, in.GetResults())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
 	out.FinishTime = direct.StringTimestamp_FromProto(mapCtx, in.GetFinishTime())
 	// MISSING: Timeout
 	// MISSING: Images
 	// MISSING: QueueTTL
-	out.Artifacts = ArtifactsObservedState_FromProto(mapCtx, in.GetArtifacts())
+	// MISSING: Artifacts
 	// MISSING: LogsBucket
-	out.SourceProvenance = SourceProvenance_FromProto(mapCtx, in.GetSourceProvenance())
+	out.SourceProvenance = SourceProvenanceObservedState_FromProto(mapCtx, in.GetSourceProvenance())
 	out.BuildTriggerID = direct.LazyPtr(in.GetBuildTriggerId())
 	// MISSING: Options
 	out.LogURL = direct.LazyPtr(in.GetLogUrl())
@@ -413,12 +455,12 @@ func BuildObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Build) *krm.
 	// MISSING: Tags
 	// MISSING: Secrets
 	// MISSING: Timing
-	out.Approval = BuildApproval_FromProto(mapCtx, in.GetApproval())
+	out.Approval = BuildApprovalObservedState_FromProto(mapCtx, in.GetApproval())
 	// MISSING: ServiceAccount
 	// MISSING: AvailableSecrets
-	out.Warnings = direct.Slice_FromProto(mapCtx, in.Warnings, Build_Warning_FromProto)
+	out.Warnings = direct.Slice_FromProto(mapCtx, in.Warnings, Build_WarningObservedState_FromProto)
 	// MISSING: GitConfig
-	out.FailureInfo = Build_FailureInfo_FromProto(mapCtx, in.GetFailureInfo())
+	out.FailureInfo = Build_FailureInfoObservedState_FromProto(mapCtx, in.GetFailureInfo())
 	// MISSING: Dependencies
 	return out
 }
@@ -433,17 +475,17 @@ func BuildObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BuildObserved
 	out.Status = direct.Enum_ToProto[pb.Build_Status](mapCtx, in.Status)
 	out.StatusDetail = direct.ValueOf(in.StatusDetail)
 	// MISSING: Source
-	out.Steps = direct.Slice_ToProto(mapCtx, in.Steps, BuildStepObservedState_ToProto)
-	out.Results = Results_ToProto(mapCtx, in.Results)
+	// MISSING: Steps
+	out.Results = ResultsObservedState_ToProto(mapCtx, in.Results)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
 	out.FinishTime = direct.StringTimestamp_ToProto(mapCtx, in.FinishTime)
 	// MISSING: Timeout
 	// MISSING: Images
 	// MISSING: QueueTTL
-	out.Artifacts = ArtifactsObservedState_ToProto(mapCtx, in.Artifacts)
+	// MISSING: Artifacts
 	// MISSING: LogsBucket
-	out.SourceProvenance = SourceProvenance_ToProto(mapCtx, in.SourceProvenance)
+	out.SourceProvenance = SourceProvenanceObservedState_ToProto(mapCtx, in.SourceProvenance)
 	out.BuildTriggerId = direct.ValueOf(in.BuildTriggerID)
 	// MISSING: Options
 	out.LogUrl = direct.ValueOf(in.LogURL)
@@ -451,12 +493,12 @@ func BuildObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BuildObserved
 	// MISSING: Tags
 	// MISSING: Secrets
 	// MISSING: Timing
-	out.Approval = BuildApproval_ToProto(mapCtx, in.Approval)
+	out.Approval = BuildApprovalObservedState_ToProto(mapCtx, in.Approval)
 	// MISSING: ServiceAccount
 	// MISSING: AvailableSecrets
-	out.Warnings = direct.Slice_ToProto(mapCtx, in.Warnings, Build_Warning_ToProto)
+	out.Warnings = direct.Slice_ToProto(mapCtx, in.Warnings, Build_WarningObservedState_ToProto)
 	// MISSING: GitConfig
-	out.FailureInfo = Build_FailureInfo_ToProto(mapCtx, in.FailureInfo)
+	out.FailureInfo = Build_FailureInfoObservedState_ToProto(mapCtx, in.FailureInfo)
 	// MISSING: Dependencies
 	return out
 }
@@ -506,6 +548,52 @@ func BuildOptions_ToProto(mapCtx *direct.MapContext, in *krm.BuildOptions) *pb.B
 	out.EnableStructuredLogging = direct.ValueOf(in.EnableStructuredLogging)
 	return out
 }
+func BuildOptionsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BuildOptions) *krm.BuildOptionsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BuildOptionsObservedState{}
+	// MISSING: SourceProvenanceHash
+	// MISSING: RequestedVerifyOption
+	// MISSING: MachineType
+	// MISSING: DiskSizeGB
+	// MISSING: SubstitutionOption
+	// MISSING: DynamicSubstitutions
+	// MISSING: AutomapSubstitutions
+	// MISSING: LogStreamingOption
+	// MISSING: WorkerPool
+	// MISSING: Pool
+	// MISSING: Logging
+	// MISSING: Env
+	// MISSING: SecretEnv
+	// MISSING: Volumes
+	// MISSING: DefaultLogsBucketBehavior
+	// MISSING: EnableStructuredLogging
+	return out
+}
+func BuildOptionsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BuildOptionsObservedState) *pb.BuildOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BuildOptions{}
+	// MISSING: SourceProvenanceHash
+	// MISSING: RequestedVerifyOption
+	// MISSING: MachineType
+	// MISSING: DiskSizeGB
+	// MISSING: SubstitutionOption
+	// MISSING: DynamicSubstitutions
+	// MISSING: AutomapSubstitutions
+	// MISSING: LogStreamingOption
+	// MISSING: WorkerPool
+	// MISSING: Pool
+	// MISSING: Logging
+	// MISSING: Env
+	// MISSING: SecretEnv
+	// MISSING: Volumes
+	// MISSING: DefaultLogsBucketBehavior
+	// MISSING: EnableStructuredLogging
+	return out
+}
 func BuildOptions_PoolOption_FromProto(mapCtx *direct.MapContext, in *pb.BuildOptions_PoolOption) *krm.BuildOptions_PoolOption {
 	if in == nil {
 		return nil
@@ -520,6 +608,22 @@ func BuildOptions_PoolOption_ToProto(mapCtx *direct.MapContext, in *krm.BuildOpt
 	}
 	out := &pb.BuildOptions_PoolOption{}
 	out.Name = direct.ValueOf(in.Name)
+	return out
+}
+func BuildOptions_PoolOptionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BuildOptions_PoolOption) *krm.BuildOptions_PoolOptionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BuildOptions_PoolOptionObservedState{}
+	// MISSING: Name
+	return out
+}
+func BuildOptions_PoolOptionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BuildOptions_PoolOptionObservedState) *pb.BuildOptions_PoolOption {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BuildOptions_PoolOption{}
+	// MISSING: Name
 	return out
 }
 func BuildStep_FromProto(mapCtx *direct.MapContext, in *pb.BuildStep) *krm.BuildStep {
@@ -586,8 +690,8 @@ func BuildStepObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BuildSte
 	// MISSING: Entrypoint
 	// MISSING: SecretEnv
 	// MISSING: Volumes
-	out.Timing = TimeSpan_FromProto(mapCtx, in.GetTiming())
-	out.PullTiming = TimeSpan_FromProto(mapCtx, in.GetPullTiming())
+	out.Timing = TimeSpanObservedState_FromProto(mapCtx, in.GetTiming())
+	out.PullTiming = TimeSpanObservedState_FromProto(mapCtx, in.GetPullTiming())
 	// MISSING: Timeout
 	out.Status = direct.Enum_FromProto(mapCtx, in.GetStatus())
 	// MISSING: AllowFailure
@@ -611,8 +715,8 @@ func BuildStepObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BuildStep
 	// MISSING: Entrypoint
 	// MISSING: SecretEnv
 	// MISSING: Volumes
-	out.Timing = TimeSpan_ToProto(mapCtx, in.Timing)
-	out.PullTiming = TimeSpan_ToProto(mapCtx, in.PullTiming)
+	out.Timing = TimeSpanObservedState_ToProto(mapCtx, in.Timing)
+	out.PullTiming = TimeSpanObservedState_ToProto(mapCtx, in.PullTiming)
 	// MISSING: Timeout
 	out.Status = direct.Enum_ToProto[pb.Build_Status](mapCtx, in.Status)
 	// MISSING: AllowFailure
@@ -622,16 +726,16 @@ func BuildStepObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BuildStep
 	// MISSING: AutomapSubstitutions
 	return out
 }
-func Build_FailureInfo_FromProto(mapCtx *direct.MapContext, in *pb.Build_FailureInfo) *krm.Build_FailureInfo {
+func Build_FailureInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Build_FailureInfo) *krm.Build_FailureInfoObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Build_FailureInfo{}
+	out := &krm.Build_FailureInfoObservedState{}
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	out.Detail = direct.LazyPtr(in.GetDetail())
 	return out
 }
-func Build_FailureInfo_ToProto(mapCtx *direct.MapContext, in *krm.Build_FailureInfo) *pb.Build_FailureInfo {
+func Build_FailureInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Build_FailureInfoObservedState) *pb.Build_FailureInfo {
 	if in == nil {
 		return nil
 	}
@@ -640,16 +744,16 @@ func Build_FailureInfo_ToProto(mapCtx *direct.MapContext, in *krm.Build_FailureI
 	out.Detail = direct.ValueOf(in.Detail)
 	return out
 }
-func Build_Warning_FromProto(mapCtx *direct.MapContext, in *pb.Build_Warning) *krm.Build_Warning {
+func Build_WarningObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Build_Warning) *krm.Build_WarningObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Build_Warning{}
+	out := &krm.Build_WarningObservedState{}
 	out.Text = direct.LazyPtr(in.GetText())
 	out.Priority = direct.Enum_FromProto(mapCtx, in.GetPriority())
 	return out
 }
-func Build_Warning_ToProto(mapCtx *direct.MapContext, in *krm.Build_Warning) *pb.Build_Warning {
+func Build_WarningObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Build_WarningObservedState) *pb.Build_Warning {
 	if in == nil {
 		return nil
 	}
@@ -658,34 +762,14 @@ func Build_Warning_ToProto(mapCtx *direct.MapContext, in *krm.Build_Warning) *pb
 	out.Priority = direct.Enum_ToProto[pb.Build_Warning_Priority](mapCtx, in.Priority)
 	return out
 }
-func BuiltImage_FromProto(mapCtx *direct.MapContext, in *pb.BuiltImage) *krm.BuiltImage {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BuiltImage{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Digest = direct.LazyPtr(in.GetDigest())
-	// MISSING: PushTiming
-	return out
-}
-func BuiltImage_ToProto(mapCtx *direct.MapContext, in *krm.BuiltImage) *pb.BuiltImage {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BuiltImage{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Digest = direct.ValueOf(in.Digest)
-	// MISSING: PushTiming
-	return out
-}
 func BuiltImageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BuiltImage) *krm.BuiltImageObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.BuiltImageObservedState{}
-	// MISSING: Name
-	// MISSING: Digest
-	out.PushTiming = TimeSpan_FromProto(mapCtx, in.GetPushTiming())
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Digest = direct.LazyPtr(in.GetDigest())
+	out.PushTiming = TimeSpanObservedState_FromProto(mapCtx, in.GetPushTiming())
 	return out
 }
 func BuiltImageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BuiltImageObservedState) *pb.BuiltImage {
@@ -693,9 +777,9 @@ func BuiltImageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BuiltIma
 		return nil
 	}
 	out := &pb.BuiltImage{}
-	// MISSING: Name
-	// MISSING: Digest
-	out.PushTiming = TimeSpan_ToProto(mapCtx, in.PushTiming)
+	out.Name = direct.ValueOf(in.Name)
+	out.Digest = direct.ValueOf(in.Digest)
+	out.PushTiming = TimeSpanObservedState_ToProto(mapCtx, in.PushTiming)
 	return out
 }
 
@@ -929,6 +1013,24 @@ func Dependency_Empty_ToProto(mapCtx *direct.MapContext, in *bool) *pb.Dependenc
 	}
 	return &pb.Dependency_Empty{Empty: *in}
 }
+func DependencyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Dependency) *krm.DependencyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DependencyObservedState{}
+	// MISSING: Empty
+	// MISSING: GitSource
+	return out
+}
+func DependencyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DependencyObservedState) *pb.Dependency {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Dependency{}
+	// MISSING: Empty
+	// MISSING: GitSource
+	return out
+}
 func Dependency_GitSourceDependency_FromProto(mapCtx *direct.MapContext, in *pb.Dependency_GitSourceDependency) *krm.Dependency_GitSourceDependency {
 	if in == nil {
 		return nil
@@ -951,6 +1053,30 @@ func Dependency_GitSourceDependency_ToProto(mapCtx *direct.MapContext, in *krm.D
 	out.RecurseSubmodules = direct.ValueOf(in.RecurseSubmodules)
 	out.Depth = direct.ValueOf(in.Depth)
 	out.DestPath = direct.ValueOf(in.DestPath)
+	return out
+}
+func Dependency_GitSourceDependencyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Dependency_GitSourceDependency) *krm.Dependency_GitSourceDependencyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Dependency_GitSourceDependencyObservedState{}
+	// MISSING: Repository
+	// MISSING: Revision
+	// MISSING: RecurseSubmodules
+	// MISSING: Depth
+	// MISSING: DestPath
+	return out
+}
+func Dependency_GitSourceDependencyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Dependency_GitSourceDependencyObservedState) *pb.Dependency_GitSourceDependency {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Dependency_GitSourceDependency{}
+	// MISSING: Repository
+	// MISSING: Revision
+	// MISSING: RecurseSubmodules
+	// MISSING: Depth
+	// MISSING: DestPath
 	return out
 }
 func Dependency_GitSourceRepository_FromProto(mapCtx *direct.MapContext, in *pb.Dependency_GitSourceRepository) *krm.Dependency_GitSourceRepository {
@@ -987,20 +1113,38 @@ func Dependency_GitSourceRepository_DeveloperConnect_ToProto(mapCtx *direct.MapC
 	}
 	return &pb.Dependency_GitSourceRepository_DeveloperConnect{DeveloperConnect: *in}
 }
-func FileHashes_FromProto(mapCtx *direct.MapContext, in *pb.FileHashes) *krm.FileHashes {
+func Dependency_GitSourceRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Dependency_GitSourceRepository) *krm.Dependency_GitSourceRepositoryObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.FileHashes{}
-	out.FileHash = direct.Slice_FromProto(mapCtx, in.FileHash, Hash_FromProto)
+	out := &krm.Dependency_GitSourceRepositoryObservedState{}
+	// MISSING: URL
+	// MISSING: DeveloperConnect
 	return out
 }
-func FileHashes_ToProto(mapCtx *direct.MapContext, in *krm.FileHashes) *pb.FileHashes {
+func Dependency_GitSourceRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Dependency_GitSourceRepositoryObservedState) *pb.Dependency_GitSourceRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Dependency_GitSourceRepository{}
+	// MISSING: URL
+	// MISSING: DeveloperConnect
+	return out
+}
+func FileHashesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FileHashes) *krm.FileHashesObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FileHashesObservedState{}
+	out.FileHash = direct.Slice_FromProto(mapCtx, in.FileHash, HashObservedState_FromProto)
+	return out
+}
+func FileHashesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FileHashesObservedState) *pb.FileHashes {
 	if in == nil {
 		return nil
 	}
 	out := &pb.FileHashes{}
-	out.FileHash = direct.Slice_ToProto(mapCtx, in.FileHash, Hash_ToProto)
+	out.FileHash = direct.Slice_ToProto(mapCtx, in.FileHash, HashObservedState_ToProto)
 	return out
 }
 func GitConfig_FromProto(mapCtx *direct.MapContext, in *pb.GitConfig) *krm.GitConfig {
@@ -1019,6 +1163,22 @@ func GitConfig_ToProto(mapCtx *direct.MapContext, in *krm.GitConfig) *pb.GitConf
 	out.Http = GitConfig_HTTPConfig_ToProto(mapCtx, in.HTTP)
 	return out
 }
+func GitConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GitConfig) *krm.GitConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GitConfigObservedState{}
+	// MISSING: HTTP
+	return out
+}
+func GitConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GitConfigObservedState) *pb.GitConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GitConfig{}
+	// MISSING: HTTP
+	return out
+}
 func GitConfig_HTTPConfig_FromProto(mapCtx *direct.MapContext, in *pb.GitConfig_HttpConfig) *krm.GitConfig_HTTPConfig {
 	if in == nil {
 		return nil
@@ -1033,6 +1193,22 @@ func GitConfig_HTTPConfig_ToProto(mapCtx *direct.MapContext, in *krm.GitConfig_H
 	}
 	out := &pb.GitConfig_HttpConfig{}
 	out.ProxySecretVersionName = direct.ValueOf(in.ProxySecretVersionName)
+	return out
+}
+func GitConfig_HTTPConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GitConfig_HttpConfig) *krm.GitConfig_HTTPConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GitConfig_HTTPConfigObservedState{}
+	// MISSING: ProxySecretVersionName
+	return out
+}
+func GitConfig_HTTPConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GitConfig_HTTPConfigObservedState) *pb.GitConfig_HttpConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GitConfig_HttpConfig{}
+	// MISSING: ProxySecretVersionName
 	return out
 }
 func GitFileSource_FromProto(mapCtx *direct.MapContext, in *pb.GitFileSource) *krm.GitFileSource {
@@ -1077,6 +1253,32 @@ func GitFileSource_GithubEnterpriseConfig_ToProto(mapCtx *direct.MapContext, in 
 	}
 	return &pb.GitFileSource_GithubEnterpriseConfig{GithubEnterpriseConfig: *in}
 }
+func GitFileSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GitFileSource) *krm.GitFileSourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GitFileSourceObservedState{}
+	// MISSING: Path
+	// MISSING: URI
+	// MISSING: Repository
+	// MISSING: RepoType
+	// MISSING: Revision
+	// MISSING: GithubEnterpriseConfig
+	return out
+}
+func GitFileSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GitFileSourceObservedState) *pb.GitFileSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GitFileSource{}
+	// MISSING: Path
+	// MISSING: URI
+	// MISSING: Repository
+	// MISSING: RepoType
+	// MISSING: Revision
+	// MISSING: GithubEnterpriseConfig
+	return out
+}
 func GitHubEventsConfig_FromProto(mapCtx *direct.MapContext, in *pb.GitHubEventsConfig) *krm.GitHubEventsConfig {
 	if in == nil {
 		return nil
@@ -1103,6 +1305,30 @@ func GitHubEventsConfig_ToProto(mapCtx *direct.MapContext, in *krm.GitHubEventsC
 	if oneof := PushFilter_ToProto(mapCtx, in.Push); oneof != nil {
 		out.Event = &pb.GitHubEventsConfig_Push{Push: oneof}
 	}
+	return out
+}
+func GitHubEventsConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GitHubEventsConfig) *krm.GitHubEventsConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GitHubEventsConfigObservedState{}
+	// MISSING: InstallationID
+	// MISSING: Owner
+	// MISSING: Name
+	// MISSING: PullRequest
+	// MISSING: Push
+	return out
+}
+func GitHubEventsConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GitHubEventsConfigObservedState) *pb.GitHubEventsConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GitHubEventsConfig{}
+	// MISSING: InstallationID
+	// MISSING: Owner
+	// MISSING: Name
+	// MISSING: PullRequest
+	// MISSING: Push
 	return out
 }
 func GitRepoSource_FromProto(mapCtx *direct.MapContext, in *pb.GitRepoSource) *krm.GitRepoSource {
@@ -1145,6 +1371,30 @@ func GitRepoSource_GithubEnterpriseConfig_ToProto(mapCtx *direct.MapContext, in 
 	}
 	return &pb.GitRepoSource_GithubEnterpriseConfig{GithubEnterpriseConfig: *in}
 }
+func GitRepoSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GitRepoSource) *krm.GitRepoSourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GitRepoSourceObservedState{}
+	// MISSING: URI
+	// MISSING: Repository
+	// MISSING: Ref
+	// MISSING: RepoType
+	// MISSING: GithubEnterpriseConfig
+	return out
+}
+func GitRepoSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GitRepoSourceObservedState) *pb.GitRepoSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GitRepoSource{}
+	// MISSING: URI
+	// MISSING: Repository
+	// MISSING: Ref
+	// MISSING: RepoType
+	// MISSING: GithubEnterpriseConfig
+	return out
+}
 func GitSource_FromProto(mapCtx *direct.MapContext, in *pb.GitSource) *krm.GitSource {
 	if in == nil {
 		return nil
@@ -1165,13 +1415,33 @@ func GitSource_ToProto(mapCtx *direct.MapContext, in *krm.GitSource) *pb.GitSour
 	out.Revision = direct.ValueOf(in.Revision)
 	return out
 }
-
-/* found existing non-generated mapping function "Hash_FromProto", skipping
-func Hash_FromProto(mapCtx *direct.MapContext, in *pb.Hash) *krm.Hash {
+func GitSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GitSource) *krm.GitSourceObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Hash{}
+	out := &krm.GitSourceObservedState{}
+	// MISSING: URL
+	// MISSING: Dir
+	// MISSING: Revision
+	return out
+}
+func GitSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GitSourceObservedState) *pb.GitSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GitSource{}
+	// MISSING: URL
+	// MISSING: Dir
+	// MISSING: Revision
+	return out
+}
+
+/* found existing non-generated mapping function "HashObservedState_FromProto", skipping
+func HashObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Hash) *krm.HashObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HashObservedState{}
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	out.Value = []krm.byte{direct.LazyPtr(in.GetValue())}
 	return out
@@ -1179,9 +1449,9 @@ func Hash_FromProto(mapCtx *direct.MapContext, in *pb.Hash) *krm.Hash {
 */
 
 /*
-found existing non-generated mapping function "Hash_ToProto", skipping
+found existing non-generated mapping function "HashObservedState_ToProto", skipping
 
-	func Hash_ToProto(mapCtx *direct.MapContext, in *krm.Hash) *pb.Hash {
+	func HashObservedState_ToProto(mapCtx *direct.MapContext, in *krm.HashObservedState) *pb.Hash {
 		if in == nil {
 			return nil
 		}
@@ -1208,6 +1478,24 @@ func InlineSecret_ToProto(mapCtx *direct.MapContext, in *krm.InlineSecret) *pb.I
 	}
 	out := &pb.InlineSecret{}
 	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
+	// MISSING: EnvMap
+	return out
+}
+func InlineSecretObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InlineSecret) *krm.InlineSecretObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InlineSecretObservedState{}
+	// MISSING: KMSKeyName
+	// MISSING: EnvMap
+	return out
+}
+func InlineSecretObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InlineSecretObservedState) *pb.InlineSecret {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InlineSecret{}
+	// MISSING: KMSKeyName
 	// MISSING: EnvMap
 	return out
 }
@@ -1394,6 +1682,26 @@ func PullRequestFilter_Branch_ToProto(mapCtx *direct.MapContext, in *string) *pb
 	}
 	return &pb.PullRequestFilter_Branch{Branch: *in}
 }
+func PullRequestFilterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PullRequestFilter) *krm.PullRequestFilterObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PullRequestFilterObservedState{}
+	// MISSING: Branch
+	// MISSING: CommentControl
+	// MISSING: InvertRegex
+	return out
+}
+func PullRequestFilterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PullRequestFilterObservedState) *pb.PullRequestFilter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PullRequestFilter{}
+	// MISSING: Branch
+	// MISSING: CommentControl
+	// MISSING: InvertRegex
+	return out
+}
 func PushFilter_FromProto(mapCtx *direct.MapContext, in *pb.PushFilter) *krm.PushFilter {
 	if in == nil {
 		return nil
@@ -1429,6 +1737,26 @@ func PushFilter_Tag_ToProto(mapCtx *direct.MapContext, in *string) *pb.PushFilte
 		return nil
 	}
 	return &pb.PushFilter_Tag{Tag: *in}
+}
+func PushFilterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PushFilter) *krm.PushFilterObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PushFilterObservedState{}
+	// MISSING: Branch
+	// MISSING: Tag
+	// MISSING: InvertRegex
+	return out
+}
+func PushFilterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PushFilterObservedState) *pb.PushFilter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PushFilter{}
+	// MISSING: Branch
+	// MISSING: Tag
+	// MISSING: InvertRegex
+	return out
 }
 func RepoSource_FromProto(mapCtx *direct.MapContext, in *pb.RepoSource) *krm.RepoSource {
 	if in == nil {
@@ -1484,6 +1812,36 @@ func RepoSource_CommitSha_ToProto(mapCtx *direct.MapContext, in *string) *pb.Rep
 	}
 	return &pb.RepoSource_CommitSha{CommitSha: *in}
 }
+func RepoSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RepoSource) *krm.RepoSourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RepoSourceObservedState{}
+	// MISSING: ProjectID
+	// MISSING: RepoName
+	// MISSING: BranchName
+	// MISSING: TagName
+	// MISSING: CommitSha
+	// MISSING: Dir
+	// MISSING: InvertRegex
+	// MISSING: Substitutions
+	return out
+}
+func RepoSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RepoSourceObservedState) *pb.RepoSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RepoSource{}
+	// MISSING: ProjectID
+	// MISSING: RepoName
+	// MISSING: BranchName
+	// MISSING: TagName
+	// MISSING: CommitSha
+	// MISSING: Dir
+	// MISSING: InvertRegex
+	// MISSING: Substitutions
+	return out
+}
 func RepositoryEventConfig_FromProto(mapCtx *direct.MapContext, in *pb.RepositoryEventConfig) *krm.RepositoryEventConfig {
 	if in == nil {
 		return nil
@@ -1532,38 +1890,38 @@ func RepositoryEventConfigObservedState_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: Push
 	return out
 }
-func Results_FromProto(mapCtx *direct.MapContext, in *pb.Results) *krm.Results {
+func ResultsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Results) *krm.ResultsObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Results{}
-	// MISSING: Images
+	out := &krm.ResultsObservedState{}
+	out.Images = direct.Slice_FromProto(mapCtx, in.Images, BuiltImageObservedState_FromProto)
 	out.BuildStepImages = in.BuildStepImages
-	// MISSING: ArtifactManifest
-	// MISSING: NumArtifacts
+	out.ArtifactManifest = direct.LazyPtr(in.GetArtifactManifest())
+	out.NumArtifacts = direct.LazyPtr(in.GetNumArtifacts())
 	out.BuildStepOutputs = in.BuildStepOutputs
-	// MISSING: ArtifactTiming
-	// MISSING: PythonPackages
-	// MISSING: MavenArtifacts
-	// MISSING: GoModules
-	// MISSING: NpmPackages
+	out.ArtifactTiming = TimeSpanObservedState_FromProto(mapCtx, in.GetArtifactTiming())
+	out.PythonPackages = direct.Slice_FromProto(mapCtx, in.PythonPackages, UploadedPythonPackageObservedState_FromProto)
+	out.MavenArtifacts = direct.Slice_FromProto(mapCtx, in.MavenArtifacts, UploadedMavenArtifactObservedState_FromProto)
+	out.GoModules = direct.Slice_FromProto(mapCtx, in.GoModules, UploadedGoModuleObservedState_FromProto)
+	out.NpmPackages = direct.Slice_FromProto(mapCtx, in.NpmPackages, UploadedNpmPackageObservedState_FromProto)
 	return out
 }
-func Results_ToProto(mapCtx *direct.MapContext, in *krm.Results) *pb.Results {
+func ResultsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResultsObservedState) *pb.Results {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Results{}
-	// MISSING: Images
+	out.Images = direct.Slice_ToProto(mapCtx, in.Images, BuiltImageObservedState_ToProto)
 	out.BuildStepImages = in.BuildStepImages
-	// MISSING: ArtifactManifest
-	// MISSING: NumArtifacts
+	out.ArtifactManifest = direct.ValueOf(in.ArtifactManifest)
+	out.NumArtifacts = direct.ValueOf(in.NumArtifacts)
 	out.BuildStepOutputs = in.BuildStepOutputs
-	// MISSING: ArtifactTiming
-	// MISSING: PythonPackages
-	// MISSING: MavenArtifacts
-	// MISSING: GoModules
-	// MISSING: NpmPackages
+	out.ArtifactTiming = TimeSpanObservedState_ToProto(mapCtx, in.ArtifactTiming)
+	out.PythonPackages = direct.Slice_ToProto(mapCtx, in.PythonPackages, UploadedPythonPackageObservedState_ToProto)
+	out.MavenArtifacts = direct.Slice_ToProto(mapCtx, in.MavenArtifacts, UploadedMavenArtifactObservedState_ToProto)
+	out.GoModules = direct.Slice_ToProto(mapCtx, in.GoModules, UploadedGoModuleObservedState_ToProto)
+	out.NpmPackages = direct.Slice_ToProto(mapCtx, in.NpmPackages, UploadedNpmPackageObservedState_ToProto)
 	return out
 }
 func Secret_FromProto(mapCtx *direct.MapContext, in *pb.Secret) *krm.Secret {
@@ -1602,6 +1960,42 @@ func SecretManagerSecret_ToProto(mapCtx *direct.MapContext, in *krm.SecretManage
 	out.Env = direct.ValueOf(in.Env)
 	return out
 }
+func SecretManagerSecretObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SecretManagerSecret) *krm.SecretManagerSecretObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecretManagerSecretObservedState{}
+	// MISSING: VersionName
+	// MISSING: Env
+	return out
+}
+func SecretManagerSecretObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecretManagerSecretObservedState) *pb.SecretManagerSecret {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecretManagerSecret{}
+	// MISSING: VersionName
+	// MISSING: Env
+	return out
+}
+func SecretObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Secret) *krm.SecretObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecretObservedState{}
+	// MISSING: KMSKeyName
+	// MISSING: SecretEnv
+	return out
+}
+func SecretObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecretObservedState) *pb.Secret {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Secret{}
+	// MISSING: KMSKeyName
+	// MISSING: SecretEnv
+	return out
+}
 func Secrets_FromProto(mapCtx *direct.MapContext, in *pb.Secrets) *krm.Secrets {
 	if in == nil {
 		return nil
@@ -1618,6 +2012,24 @@ func Secrets_ToProto(mapCtx *direct.MapContext, in *krm.Secrets) *pb.Secrets {
 	out := &pb.Secrets{}
 	out.SecretManager = direct.Slice_ToProto(mapCtx, in.SecretManager, SecretManagerSecret_ToProto)
 	out.Inline = direct.Slice_ToProto(mapCtx, in.Inline, InlineSecret_ToProto)
+	return out
+}
+func SecretsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Secrets) *krm.SecretsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecretsObservedState{}
+	// MISSING: SecretManager
+	// MISSING: Inline
+	return out
+}
+func SecretsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecretsObservedState) *pb.Secrets {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Secrets{}
+	// MISSING: SecretManager
+	// MISSING: Inline
 	return out
 }
 func Source_FromProto(mapCtx *direct.MapContext, in *pb.Source) *krm.Source {
@@ -1650,26 +2062,26 @@ func Source_ToProto(mapCtx *direct.MapContext, in *krm.Source) *pb.Source {
 	}
 	return out
 }
-func SourceProvenance_FromProto(mapCtx *direct.MapContext, in *pb.SourceProvenance) *krm.SourceProvenance {
+func SourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Source) *krm.SourceObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.SourceProvenance{}
-	out.ResolvedStorageSource = StorageSource_FromProto(mapCtx, in.GetResolvedStorageSource())
-	out.ResolvedRepoSource = RepoSource_FromProto(mapCtx, in.GetResolvedRepoSource())
-	out.ResolvedStorageSourceManifest = StorageSourceManifest_FromProto(mapCtx, in.GetResolvedStorageSourceManifest())
-	// MISSING: FileHashes
+	out := &krm.SourceObservedState{}
+	// MISSING: StorageSource
+	// MISSING: RepoSource
+	// MISSING: GitSource
+	// MISSING: StorageSourceManifest
 	return out
 }
-func SourceProvenance_ToProto(mapCtx *direct.MapContext, in *krm.SourceProvenance) *pb.SourceProvenance {
+func SourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SourceObservedState) *pb.Source {
 	if in == nil {
 		return nil
 	}
-	out := &pb.SourceProvenance{}
-	out.ResolvedStorageSource = StorageSource_ToProto(mapCtx, in.ResolvedStorageSource)
-	out.ResolvedRepoSource = RepoSource_ToProto(mapCtx, in.ResolvedRepoSource)
-	out.ResolvedStorageSourceManifest = StorageSourceManifest_ToProto(mapCtx, in.ResolvedStorageSourceManifest)
-	// MISSING: FileHashes
+	out := &pb.Source{}
+	// MISSING: StorageSource
+	// MISSING: RepoSource
+	// MISSING: GitSource
+	// MISSING: StorageSourceManifest
 	return out
 }
 func SourceProvenanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SourceProvenance) *krm.SourceProvenanceObservedState {
@@ -1677,9 +2089,9 @@ func SourceProvenanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.S
 		return nil
 	}
 	out := &krm.SourceProvenanceObservedState{}
-	// MISSING: ResolvedStorageSource
-	// MISSING: ResolvedRepoSource
-	// MISSING: ResolvedStorageSourceManifest
+	out.ResolvedStorageSource = StorageSourceObservedState_FromProto(mapCtx, in.GetResolvedStorageSource())
+	out.ResolvedRepoSource = RepoSourceObservedState_FromProto(mapCtx, in.GetResolvedRepoSource())
+	out.ResolvedStorageSourceManifest = StorageSourceManifestObservedState_FromProto(mapCtx, in.GetResolvedStorageSourceManifest())
 	// MISSING: FileHashes
 	return out
 }
@@ -1688,9 +2100,9 @@ func SourceProvenanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.So
 		return nil
 	}
 	out := &pb.SourceProvenance{}
-	// MISSING: ResolvedStorageSource
-	// MISSING: ResolvedRepoSource
-	// MISSING: ResolvedStorageSourceManifest
+	out.ResolvedStorageSource = StorageSourceObservedState_ToProto(mapCtx, in.ResolvedStorageSource)
+	out.ResolvedRepoSource = RepoSourceObservedState_ToProto(mapCtx, in.ResolvedRepoSource)
+	out.ResolvedStorageSourceManifest = StorageSourceManifestObservedState_ToProto(mapCtx, in.ResolvedStorageSourceManifest)
 	// MISSING: FileHashes
 	return out
 }
@@ -1736,16 +2148,58 @@ func StorageSourceManifest_ToProto(mapCtx *direct.MapContext, in *krm.StorageSou
 	out.Generation = direct.ValueOf(in.Generation)
 	return out
 }
-func TimeSpan_FromProto(mapCtx *direct.MapContext, in *pb.TimeSpan) *krm.TimeSpan {
+func StorageSourceManifestObservedState_FromProto(mapCtx *direct.MapContext, in *pb.StorageSourceManifest) *krm.StorageSourceManifestObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TimeSpan{}
+	out := &krm.StorageSourceManifestObservedState{}
+	// MISSING: Bucket
+	// MISSING: Object
+	// MISSING: Generation
+	return out
+}
+func StorageSourceManifestObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StorageSourceManifestObservedState) *pb.StorageSourceManifest {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StorageSourceManifest{}
+	// MISSING: Bucket
+	// MISSING: Object
+	// MISSING: Generation
+	return out
+}
+func StorageSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.StorageSource) *krm.StorageSourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageSourceObservedState{}
+	// MISSING: Bucket
+	// MISSING: Object
+	// MISSING: Generation
+	// MISSING: SourceFetcher
+	return out
+}
+func StorageSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StorageSourceObservedState) *pb.StorageSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StorageSource{}
+	// MISSING: Bucket
+	// MISSING: Object
+	// MISSING: Generation
+	// MISSING: SourceFetcher
+	return out
+}
+func TimeSpanObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TimeSpan) *krm.TimeSpanObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TimeSpanObservedState{}
 	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
 	return out
 }
-func TimeSpan_ToProto(mapCtx *direct.MapContext, in *krm.TimeSpan) *pb.TimeSpan {
+func TimeSpanObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TimeSpanObservedState) *pb.TimeSpan {
 	if in == nil {
 		return nil
 	}
@@ -1754,34 +2208,14 @@ func TimeSpan_ToProto(mapCtx *direct.MapContext, in *krm.TimeSpan) *pb.TimeSpan 
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	return out
 }
-func UploadedGoModule_FromProto(mapCtx *direct.MapContext, in *pb.UploadedGoModule) *krm.UploadedGoModule {
-	if in == nil {
-		return nil
-	}
-	out := &krm.UploadedGoModule{}
-	out.URI = direct.LazyPtr(in.GetUri())
-	out.FileHashes = FileHashes_FromProto(mapCtx, in.GetFileHashes())
-	// MISSING: PushTiming
-	return out
-}
-func UploadedGoModule_ToProto(mapCtx *direct.MapContext, in *krm.UploadedGoModule) *pb.UploadedGoModule {
-	if in == nil {
-		return nil
-	}
-	out := &pb.UploadedGoModule{}
-	out.Uri = direct.ValueOf(in.URI)
-	out.FileHashes = FileHashes_ToProto(mapCtx, in.FileHashes)
-	// MISSING: PushTiming
-	return out
-}
 func UploadedGoModuleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.UploadedGoModule) *krm.UploadedGoModuleObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.UploadedGoModuleObservedState{}
-	// MISSING: URI
-	// MISSING: FileHashes
-	out.PushTiming = TimeSpan_FromProto(mapCtx, in.GetPushTiming())
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.FileHashes = FileHashesObservedState_FromProto(mapCtx, in.GetFileHashes())
+	out.PushTiming = TimeSpanObservedState_FromProto(mapCtx, in.GetPushTiming())
 	return out
 }
 func UploadedGoModuleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.UploadedGoModuleObservedState) *pb.UploadedGoModule {
@@ -1789,29 +2223,9 @@ func UploadedGoModuleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Up
 		return nil
 	}
 	out := &pb.UploadedGoModule{}
-	// MISSING: URI
-	// MISSING: FileHashes
-	out.PushTiming = TimeSpan_ToProto(mapCtx, in.PushTiming)
-	return out
-}
-func UploadedMavenArtifact_FromProto(mapCtx *direct.MapContext, in *pb.UploadedMavenArtifact) *krm.UploadedMavenArtifact {
-	if in == nil {
-		return nil
-	}
-	out := &krm.UploadedMavenArtifact{}
-	out.URI = direct.LazyPtr(in.GetUri())
-	out.FileHashes = FileHashes_FromProto(mapCtx, in.GetFileHashes())
-	// MISSING: PushTiming
-	return out
-}
-func UploadedMavenArtifact_ToProto(mapCtx *direct.MapContext, in *krm.UploadedMavenArtifact) *pb.UploadedMavenArtifact {
-	if in == nil {
-		return nil
-	}
-	out := &pb.UploadedMavenArtifact{}
 	out.Uri = direct.ValueOf(in.URI)
-	out.FileHashes = FileHashes_ToProto(mapCtx, in.FileHashes)
-	// MISSING: PushTiming
+	out.FileHashes = FileHashesObservedState_ToProto(mapCtx, in.FileHashes)
+	out.PushTiming = TimeSpanObservedState_ToProto(mapCtx, in.PushTiming)
 	return out
 }
 func UploadedMavenArtifactObservedState_FromProto(mapCtx *direct.MapContext, in *pb.UploadedMavenArtifact) *krm.UploadedMavenArtifactObservedState {
@@ -1819,9 +2233,9 @@ func UploadedMavenArtifactObservedState_FromProto(mapCtx *direct.MapContext, in 
 		return nil
 	}
 	out := &krm.UploadedMavenArtifactObservedState{}
-	// MISSING: URI
-	// MISSING: FileHashes
-	out.PushTiming = TimeSpan_FromProto(mapCtx, in.GetPushTiming())
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.FileHashes = FileHashesObservedState_FromProto(mapCtx, in.GetFileHashes())
+	out.PushTiming = TimeSpanObservedState_FromProto(mapCtx, in.GetPushTiming())
 	return out
 }
 func UploadedMavenArtifactObservedState_ToProto(mapCtx *direct.MapContext, in *krm.UploadedMavenArtifactObservedState) *pb.UploadedMavenArtifact {
@@ -1829,29 +2243,9 @@ func UploadedMavenArtifactObservedState_ToProto(mapCtx *direct.MapContext, in *k
 		return nil
 	}
 	out := &pb.UploadedMavenArtifact{}
-	// MISSING: URI
-	// MISSING: FileHashes
-	out.PushTiming = TimeSpan_ToProto(mapCtx, in.PushTiming)
-	return out
-}
-func UploadedNpmPackage_FromProto(mapCtx *direct.MapContext, in *pb.UploadedNpmPackage) *krm.UploadedNpmPackage {
-	if in == nil {
-		return nil
-	}
-	out := &krm.UploadedNpmPackage{}
-	out.URI = direct.LazyPtr(in.GetUri())
-	out.FileHashes = FileHashes_FromProto(mapCtx, in.GetFileHashes())
-	// MISSING: PushTiming
-	return out
-}
-func UploadedNpmPackage_ToProto(mapCtx *direct.MapContext, in *krm.UploadedNpmPackage) *pb.UploadedNpmPackage {
-	if in == nil {
-		return nil
-	}
-	out := &pb.UploadedNpmPackage{}
 	out.Uri = direct.ValueOf(in.URI)
-	out.FileHashes = FileHashes_ToProto(mapCtx, in.FileHashes)
-	// MISSING: PushTiming
+	out.FileHashes = FileHashesObservedState_ToProto(mapCtx, in.FileHashes)
+	out.PushTiming = TimeSpanObservedState_ToProto(mapCtx, in.PushTiming)
 	return out
 }
 func UploadedNpmPackageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.UploadedNpmPackage) *krm.UploadedNpmPackageObservedState {
@@ -1859,9 +2253,9 @@ func UploadedNpmPackageObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 		return nil
 	}
 	out := &krm.UploadedNpmPackageObservedState{}
-	// MISSING: URI
-	// MISSING: FileHashes
-	out.PushTiming = TimeSpan_FromProto(mapCtx, in.GetPushTiming())
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.FileHashes = FileHashesObservedState_FromProto(mapCtx, in.GetFileHashes())
+	out.PushTiming = TimeSpanObservedState_FromProto(mapCtx, in.GetPushTiming())
 	return out
 }
 func UploadedNpmPackageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.UploadedNpmPackageObservedState) *pb.UploadedNpmPackage {
@@ -1869,29 +2263,9 @@ func UploadedNpmPackageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 		return nil
 	}
 	out := &pb.UploadedNpmPackage{}
-	// MISSING: URI
-	// MISSING: FileHashes
-	out.PushTiming = TimeSpan_ToProto(mapCtx, in.PushTiming)
-	return out
-}
-func UploadedPythonPackage_FromProto(mapCtx *direct.MapContext, in *pb.UploadedPythonPackage) *krm.UploadedPythonPackage {
-	if in == nil {
-		return nil
-	}
-	out := &krm.UploadedPythonPackage{}
-	out.URI = direct.LazyPtr(in.GetUri())
-	out.FileHashes = FileHashes_FromProto(mapCtx, in.GetFileHashes())
-	// MISSING: PushTiming
-	return out
-}
-func UploadedPythonPackage_ToProto(mapCtx *direct.MapContext, in *krm.UploadedPythonPackage) *pb.UploadedPythonPackage {
-	if in == nil {
-		return nil
-	}
-	out := &pb.UploadedPythonPackage{}
 	out.Uri = direct.ValueOf(in.URI)
-	out.FileHashes = FileHashes_ToProto(mapCtx, in.FileHashes)
-	// MISSING: PushTiming
+	out.FileHashes = FileHashesObservedState_ToProto(mapCtx, in.FileHashes)
+	out.PushTiming = TimeSpanObservedState_ToProto(mapCtx, in.PushTiming)
 	return out
 }
 func UploadedPythonPackageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.UploadedPythonPackage) *krm.UploadedPythonPackageObservedState {
@@ -1899,9 +2273,9 @@ func UploadedPythonPackageObservedState_FromProto(mapCtx *direct.MapContext, in 
 		return nil
 	}
 	out := &krm.UploadedPythonPackageObservedState{}
-	// MISSING: URI
-	// MISSING: FileHashes
-	out.PushTiming = TimeSpan_FromProto(mapCtx, in.GetPushTiming())
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.FileHashes = FileHashesObservedState_FromProto(mapCtx, in.GetFileHashes())
+	out.PushTiming = TimeSpanObservedState_FromProto(mapCtx, in.GetPushTiming())
 	return out
 }
 func UploadedPythonPackageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.UploadedPythonPackageObservedState) *pb.UploadedPythonPackage {
@@ -1909,9 +2283,9 @@ func UploadedPythonPackageObservedState_ToProto(mapCtx *direct.MapContext, in *k
 		return nil
 	}
 	out := &pb.UploadedPythonPackage{}
-	// MISSING: URI
-	// MISSING: FileHashes
-	out.PushTiming = TimeSpan_ToProto(mapCtx, in.PushTiming)
+	out.Uri = direct.ValueOf(in.URI)
+	out.FileHashes = FileHashesObservedState_ToProto(mapCtx, in.FileHashes)
+	out.PushTiming = TimeSpanObservedState_ToProto(mapCtx, in.PushTiming)
 	return out
 }
 func Volume_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krm.Volume {
@@ -1930,6 +2304,24 @@ func Volume_ToProto(mapCtx *direct.MapContext, in *krm.Volume) *pb.Volume {
 	out := &pb.Volume{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Path = direct.ValueOf(in.Path)
+	return out
+}
+func VolumeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krm.VolumeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VolumeObservedState{}
+	// MISSING: Name
+	// MISSING: Path
+	return out
+}
+func VolumeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VolumeObservedState) *pb.Volume {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Volume{}
+	// MISSING: Name
+	// MISSING: Path
 	return out
 }
 func WebhookConfig_FromProto(mapCtx *direct.MapContext, in *pb.WebhookConfig) *krm.WebhookConfig {
@@ -1957,4 +2349,22 @@ func WebhookConfig_Secret_ToProto(mapCtx *direct.MapContext, in *string) *pb.Web
 		return nil
 	}
 	return &pb.WebhookConfig_Secret{Secret: *in}
+}
+func WebhookConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WebhookConfig) *krm.WebhookConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WebhookConfigObservedState{}
+	// MISSING: Secret
+	// MISSING: State
+	return out
+}
+func WebhookConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WebhookConfigObservedState) *pb.WebhookConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WebhookConfig{}
+	// MISSING: Secret
+	// MISSING: State
+	return out
 }

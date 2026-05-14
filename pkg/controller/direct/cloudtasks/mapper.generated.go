@@ -48,6 +48,28 @@ func AppEngineRouting_ToProto(mapCtx *direct.MapContext, in *krm.AppEngineRoutin
 	out.Host = direct.ValueOf(in.Host)
 	return out
 }
+func AppEngineRoutingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AppEngineRouting) *krm.AppEngineRoutingObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AppEngineRoutingObservedState{}
+	// MISSING: Service
+	// MISSING: Version
+	// MISSING: Instance
+	// MISSING: Host
+	return out
+}
+func AppEngineRoutingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AppEngineRoutingObservedState) *pb.AppEngineRouting {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AppEngineRouting{}
+	// MISSING: Service
+	// MISSING: Version
+	// MISSING: Instance
+	// MISSING: Host
+	return out
+}
 func RateLimits_FromProto(mapCtx *direct.MapContext, in *pb.RateLimits) *krm.RateLimits {
 	if in == nil {
 		return nil
@@ -66,6 +88,26 @@ func RateLimits_ToProto(mapCtx *direct.MapContext, in *krm.RateLimits) *pb.RateL
 	out.MaxDispatchesPerSecond = direct.ValueOf(in.MaxDispatchesPerSecond)
 	out.MaxBurstSize = direct.ValueOf(in.MaxBurstSize)
 	out.MaxConcurrentDispatches = direct.ValueOf(in.MaxConcurrentDispatches)
+	return out
+}
+func RateLimitsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RateLimits) *krm.RateLimitsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RateLimitsObservedState{}
+	// MISSING: MaxDispatchesPerSecond
+	// MISSING: MaxBurstSize
+	// MISSING: MaxConcurrentDispatches
+	return out
+}
+func RateLimitsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RateLimitsObservedState) *pb.RateLimits {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RateLimits{}
+	// MISSING: MaxDispatchesPerSecond
+	// MISSING: MaxBurstSize
+	// MISSING: MaxConcurrentDispatches
 	return out
 }
 func RetryConfig_FromProto(mapCtx *direct.MapContext, in *pb.RetryConfig) *krm.RetryConfig {
@@ -92,6 +134,30 @@ func RetryConfig_ToProto(mapCtx *direct.MapContext, in *krm.RetryConfig) *pb.Ret
 	out.MaxDoublings = direct.ValueOf(in.MaxDoublings)
 	return out
 }
+func RetryConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RetryConfig) *krm.RetryConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RetryConfigObservedState{}
+	// MISSING: MaxAttempts
+	// MISSING: MaxRetryDuration
+	// MISSING: MinBackoff
+	// MISSING: MaxBackoff
+	// MISSING: MaxDoublings
+	return out
+}
+func RetryConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RetryConfigObservedState) *pb.RetryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RetryConfig{}
+	// MISSING: MaxAttempts
+	// MISSING: MaxRetryDuration
+	// MISSING: MinBackoff
+	// MISSING: MaxBackoff
+	// MISSING: MaxDoublings
+	return out
+}
 func StackdriverLoggingConfig_FromProto(mapCtx *direct.MapContext, in *pb.StackdriverLoggingConfig) *krm.StackdriverLoggingConfig {
 	if in == nil {
 		return nil
@@ -106,6 +172,22 @@ func StackdriverLoggingConfig_ToProto(mapCtx *direct.MapContext, in *krm.Stackdr
 	}
 	out := &pb.StackdriverLoggingConfig{}
 	out.SamplingRatio = direct.ValueOf(in.SamplingRatio)
+	return out
+}
+func StackdriverLoggingConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.StackdriverLoggingConfig) *krm.StackdriverLoggingConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StackdriverLoggingConfigObservedState{}
+	// MISSING: SamplingRatio
+	return out
+}
+func StackdriverLoggingConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StackdriverLoggingConfigObservedState) *pb.StackdriverLoggingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StackdriverLoggingConfig{}
+	// MISSING: SamplingRatio
 	return out
 }
 func TasksQueueObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Queue) *krm.TasksQueueObservedState {

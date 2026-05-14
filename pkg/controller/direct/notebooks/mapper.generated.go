@@ -65,6 +65,128 @@ func ContainerImage_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Container
 	out.Tag = direct.ValueOf(in.Tag)
 	return out
 }
+func ContainerImageObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ContainerImage) *krmnotebooksv1alpha1.ContainerImageObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnotebooksv1alpha1.ContainerImageObservedState{}
+	// MISSING: Repository
+	// MISSING: Tag
+	return out
+}
+func ContainerImageObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.ContainerImageObservedState) *pb.ContainerImage {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContainerImage{}
+	// MISSING: Repository
+	// MISSING: Tag
+	return out
+}
+func ContainerImageObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ContainerImage) *krm.ContainerImageObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContainerImageObservedState{}
+	// MISSING: Repository
+	// MISSING: Tag
+	return out
+}
+func ContainerImageObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ContainerImageObservedState) *pb.ContainerImage {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContainerImage{}
+	// MISSING: Repository
+	// MISSING: Tag
+	return out
+}
+func InstanceObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.InstanceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstanceObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: VMImage
+	// MISSING: ContainerImage
+	// MISSING: PostStartupScript
+	out.ProxyURI = direct.LazyPtr(in.GetProxyUri())
+	// MISSING: InstanceOwners
+	// MISSING: ServiceAccount
+	// MISSING: ServiceAccountScopes
+	// MISSING: MachineType
+	// MISSING: AcceleratorConfig
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	// MISSING: InstallGpuDriver
+	// MISSING: CustomGpuDriverPath
+	// MISSING: BootDiskType
+	// MISSING: BootDiskSizeGB
+	// MISSING: DataDiskType
+	// MISSING: DataDiskSizeGB
+	// MISSING: NoRemoveDataDisk
+	// MISSING: DiskEncryption
+	// MISSING: KMSKey
+	out.Disks = direct.Slice_FromProto(mapCtx, in.Disks, Instance_DiskObservedState_v1beta1_FromProto)
+	// MISSING: ShieldedInstanceConfig
+	// MISSING: NoPublicIP
+	// MISSING: NoProxyAccess
+	// MISSING: Network
+	// MISSING: Subnet
+	// MISSING: Labels
+	// MISSING: Metadata
+	// MISSING: Tags
+	// MISSING: UpgradeHistory
+	// MISSING: NicType
+	// MISSING: ReservationAffinity
+	out.Creator = direct.LazyPtr(in.GetCreator())
+	// MISSING: CanIPForward
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func InstanceObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceObservedState) *pb.Instance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: VMImage
+	// MISSING: ContainerImage
+	// MISSING: PostStartupScript
+	out.ProxyUri = direct.ValueOf(in.ProxyURI)
+	// MISSING: InstanceOwners
+	// MISSING: ServiceAccount
+	// MISSING: ServiceAccountScopes
+	// MISSING: MachineType
+	// MISSING: AcceleratorConfig
+	out.State = direct.Enum_ToProto[pb.Instance_State](mapCtx, in.State)
+	// MISSING: InstallGpuDriver
+	// MISSING: CustomGpuDriverPath
+	// MISSING: BootDiskType
+	// MISSING: BootDiskSizeGB
+	// MISSING: DataDiskType
+	// MISSING: DataDiskSizeGB
+	// MISSING: NoRemoveDataDisk
+	// MISSING: DiskEncryption
+	// MISSING: KMSKey
+	out.Disks = direct.Slice_ToProto(mapCtx, in.Disks, Instance_DiskObservedState_v1beta1_ToProto)
+	// MISSING: ShieldedInstanceConfig
+	// MISSING: NoPublicIP
+	// MISSING: NoProxyAccess
+	// MISSING: Network
+	// MISSING: Subnet
+	// MISSING: Labels
+	// MISSING: Metadata
+	// MISSING: Tags
+	// MISSING: UpgradeHistory
+	// MISSING: NicType
+	// MISSING: ReservationAffinity
+	out.Creator = direct.ValueOf(in.Creator)
+	// MISSING: CanIPForward
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
 func Instance_AcceleratorConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_AcceleratorConfig) *krm.Instance_AcceleratorConfig {
 	if in == nil {
 		return nil
@@ -83,16 +205,34 @@ func Instance_AcceleratorConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *k
 	out.CoreCount = direct.ValueOf(in.CoreCount)
 	return out
 }
-func Instance_Disk_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_Disk) *krm.Instance_Disk {
+func Instance_AcceleratorConfigObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_AcceleratorConfig) *krm.Instance_AcceleratorConfigObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Instance_Disk{}
+	out := &krm.Instance_AcceleratorConfigObservedState{}
+	// MISSING: Type
+	// MISSING: CoreCount
+	return out
+}
+func Instance_AcceleratorConfigObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Instance_AcceleratorConfigObservedState) *pb.Instance_AcceleratorConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance_AcceleratorConfig{}
+	// MISSING: Type
+	// MISSING: CoreCount
+	return out
+}
+func Instance_DiskObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_Disk) *krm.Instance_DiskObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Instance_DiskObservedState{}
 	out.AutoDelete = direct.LazyPtr(in.GetAutoDelete())
 	out.Boot = direct.LazyPtr(in.GetBoot())
 	out.DeviceName = direct.LazyPtr(in.GetDeviceName())
 	out.DiskSizeGB = direct.LazyPtr(in.GetDiskSizeGb())
-	out.GuestOSFeatures = direct.Slice_FromProto(mapCtx, in.GuestOsFeatures, Instance_Disk_GuestOSFeature_v1beta1_FromProto)
+	out.GuestOSFeatures = direct.Slice_FromProto(mapCtx, in.GuestOsFeatures, Instance_Disk_GuestOSFeatureObservedState_v1beta1_FromProto)
 	out.Index = direct.LazyPtr(in.GetIndex())
 	out.Interface = direct.LazyPtr(in.GetInterface())
 	out.Kind = direct.LazyPtr(in.GetKind())
@@ -102,7 +242,7 @@ func Instance_Disk_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_
 	out.Type = direct.LazyPtr(in.GetType())
 	return out
 }
-func Instance_Disk_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Instance_Disk) *pb.Instance_Disk {
+func Instance_DiskObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Instance_DiskObservedState) *pb.Instance_Disk {
 	if in == nil {
 		return nil
 	}
@@ -111,7 +251,7 @@ func Instance_Disk_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Instance_D
 	out.Boot = direct.ValueOf(in.Boot)
 	out.DeviceName = direct.ValueOf(in.DeviceName)
 	out.DiskSizeGb = direct.ValueOf(in.DiskSizeGB)
-	out.GuestOsFeatures = direct.Slice_ToProto(mapCtx, in.GuestOSFeatures, Instance_Disk_GuestOSFeature_v1beta1_ToProto)
+	out.GuestOsFeatures = direct.Slice_ToProto(mapCtx, in.GuestOSFeatures, Instance_Disk_GuestOSFeatureObservedState_v1beta1_ToProto)
 	out.Index = direct.ValueOf(in.Index)
 	out.Interface = direct.ValueOf(in.Interface)
 	out.Kind = direct.ValueOf(in.Kind)
@@ -121,15 +261,15 @@ func Instance_Disk_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Instance_D
 	out.Type = direct.ValueOf(in.Type)
 	return out
 }
-func Instance_Disk_GuestOSFeature_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_Disk_GuestOsFeature) *krm.Instance_Disk_GuestOSFeature {
+func Instance_Disk_GuestOSFeatureObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_Disk_GuestOsFeature) *krm.Instance_Disk_GuestOSFeatureObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Instance_Disk_GuestOSFeature{}
+	out := &krm.Instance_Disk_GuestOSFeatureObservedState{}
 	out.Type = direct.LazyPtr(in.GetType())
 	return out
 }
-func Instance_Disk_GuestOSFeature_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Instance_Disk_GuestOSFeature) *pb.Instance_Disk_GuestOsFeature {
+func Instance_Disk_GuestOSFeatureObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Instance_Disk_GuestOSFeatureObservedState) *pb.Instance_Disk_GuestOsFeature {
 	if in == nil {
 		return nil
 	}
@@ -155,6 +295,26 @@ func Instance_ShieldedInstanceConfig_v1beta1_ToProto(mapCtx *direct.MapContext, 
 	out.EnableSecureBoot = direct.ValueOf(in.EnableSecureBoot)
 	out.EnableVtpm = direct.ValueOf(in.EnableVTPM)
 	out.EnableIntegrityMonitoring = direct.ValueOf(in.EnableIntegrityMonitoring)
+	return out
+}
+func Instance_ShieldedInstanceConfigObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ShieldedInstanceConfig) *krm.Instance_ShieldedInstanceConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Instance_ShieldedInstanceConfigObservedState{}
+	// MISSING: EnableSecureBoot
+	// MISSING: EnableVTPM
+	// MISSING: EnableIntegrityMonitoring
+	return out
+}
+func Instance_ShieldedInstanceConfigObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Instance_ShieldedInstanceConfigObservedState) *pb.Instance_ShieldedInstanceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance_ShieldedInstanceConfig{}
+	// MISSING: EnableSecureBoot
+	// MISSING: EnableVTPM
+	// MISSING: EnableIntegrityMonitoring
 	return out
 }
 func Instance_UpgradeHistoryEntry_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_UpgradeHistoryEntry) *krm.Instance_UpgradeHistoryEntry {
@@ -191,6 +351,40 @@ func Instance_UpgradeHistoryEntry_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 	out.TargetVersion = direct.ValueOf(in.TargetVersion)
 	return out
 }
+func Instance_UpgradeHistoryEntryObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_UpgradeHistoryEntry) *krm.Instance_UpgradeHistoryEntryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Instance_UpgradeHistoryEntryObservedState{}
+	// MISSING: Snapshot
+	// MISSING: VMImage
+	// MISSING: ContainerImage
+	// MISSING: Framework
+	// MISSING: Version
+	// MISSING: State
+	// MISSING: CreateTime
+	// MISSING: TargetImage
+	// MISSING: Action
+	// MISSING: TargetVersion
+	return out
+}
+func Instance_UpgradeHistoryEntryObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Instance_UpgradeHistoryEntryObservedState) *pb.Instance_UpgradeHistoryEntry {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance_UpgradeHistoryEntry{}
+	// MISSING: Snapshot
+	// MISSING: VMImage
+	// MISSING: ContainerImage
+	// MISSING: Framework
+	// MISSING: Version
+	// MISSING: State
+	// MISSING: CreateTime
+	// MISSING: TargetImage
+	// MISSING: Action
+	// MISSING: TargetVersion
+	return out
+}
 func NotebookInstanceObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.NotebookInstanceObservedState {
 	if in == nil {
 		return nil
@@ -199,7 +393,7 @@ func NotebookInstanceObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, 
 	// MISSING: Name
 	out.ProxyURI = direct.LazyPtr(in.GetProxyUri())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.Disks = direct.Slice_FromProto(mapCtx, in.Disks, Instance_Disk_v1beta1_FromProto)
+	out.Disks = direct.Slice_FromProto(mapCtx, in.Disks, Instance_DiskObservedState_v1beta1_FromProto)
 	out.Creator = direct.LazyPtr(in.GetCreator())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -213,7 +407,7 @@ func NotebookInstanceObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in
 	// MISSING: Name
 	out.ProxyUri = direct.ValueOf(in.ProxyURI)
 	out.State = direct.Enum_ToProto[pb.Instance_State](mapCtx, in.State)
-	out.Disks = direct.Slice_ToProto(mapCtx, in.Disks, Instance_Disk_v1beta1_ToProto)
+	out.Disks = direct.Slice_ToProto(mapCtx, in.Disks, Instance_DiskObservedState_v1beta1_ToProto)
 	out.Creator = direct.ValueOf(in.Creator)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
@@ -397,6 +591,26 @@ func ReservationAffinity_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Rese
 	out.Values = in.Values
 	return out
 }
+func ReservationAffinityObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krm.ReservationAffinityObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReservationAffinityObservedState{}
+	// MISSING: ConsumeReservationType
+	// MISSING: Key
+	// MISSING: Values
+	return out
+}
+func ReservationAffinityObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ReservationAffinityObservedState) *pb.ReservationAffinity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReservationAffinity{}
+	// MISSING: ConsumeReservationType
+	// MISSING: Key
+	// MISSING: Values
+	return out
+}
 func VMImage_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VmImage) *krmnotebooksv1alpha1.VMImage {
 	if in == nil {
 		return nil
@@ -475,11 +689,53 @@ func VMImage_ImageName_ToProto(mapCtx *direct.MapContext, in *string) *pb.VmImag
 }
 */
 
-/* found existing non-generated mapping function "VMImage_ImageFamily_ToProto", skipping
-func VMImage_ImageFamily_ToProto(mapCtx *direct.MapContext, in *string) *pb.VmImage_ImageFamily {
+/*
+found existing non-generated mapping function "VMImage_ImageFamily_ToProto", skipping
+
+	func VMImage_ImageFamily_ToProto(mapCtx *direct.MapContext, in *string) *pb.VmImage_ImageFamily {
+		if in == nil {
+			return nil
+		}
+		return &pb.VmImage_ImageFamily{ImageFamily: *in}
+	}
+*/
+func VMImageObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VmImage) *krmnotebooksv1alpha1.VMImageObservedState {
 	if in == nil {
 		return nil
 	}
-	return &pb.VmImage_ImageFamily{ImageFamily: *in}
+	out := &krmnotebooksv1alpha1.VMImageObservedState{}
+	// MISSING: Project
+	// MISSING: ImageName
+	// MISSING: ImageFamily
+	return out
 }
-*/
+func VMImageObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.VMImageObservedState) *pb.VmImage {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VmImage{}
+	// MISSING: Project
+	// MISSING: ImageName
+	// MISSING: ImageFamily
+	return out
+}
+func VMImageObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.VmImage) *krm.VMImageObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VMImageObservedState{}
+	// MISSING: Project
+	// MISSING: ImageName
+	// MISSING: ImageFamily
+	return out
+}
+func VMImageObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.VMImageObservedState) *pb.VmImage {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VmImage{}
+	// MISSING: Project
+	// MISSING: ImageName
+	// MISSING: ImageFamily
+	return out
+}

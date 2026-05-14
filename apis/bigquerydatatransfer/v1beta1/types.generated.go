@@ -109,15 +109,43 @@ type TimeBasedSchedule struct {
 	EndTime *string `json:"endTime,omitempty"`
 }
 
-// +kcc:proto=google.cloud.bigquery.datatransfer.v1.UserInfo
-type UserInfo struct {
+// +kcc:observedstate:proto=google.cloud.bigquery.datatransfer.v1.EmailPreferences
+type EmailPreferencesObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.bigquery.datatransfer.v1.EncryptionConfiguration
+type EncryptionConfigurationObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.bigquery.datatransfer.v1.EventDrivenSchedule
+type EventDrivenScheduleObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.bigquery.datatransfer.v1.ManualSchedule
+type ManualScheduleObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.bigquery.datatransfer.v1.ScheduleOptions
+type ScheduleOptionsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.bigquery.datatransfer.v1.ScheduleOptionsV2
+type ScheduleOptionsV2ObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.bigquery.datatransfer.v1.TimeBasedSchedule
+type TimeBasedScheduleObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.bigquery.datatransfer.v1.UserInfo
+type UserInfoObservedState struct {
 	// E-mail address of the user.
 	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.UserInfo.email
 	Email *string `json:"email,omitempty"`
 }
 
-// +kcc:proto=google.protobuf.Any
-type Any struct {
+// +kcc:observedstate:proto=google.protobuf.Any
+type AnyObservedState struct {
 	// A URL/resource name that uniquely identifies the type of the serialized
 	//  protocol buffer message. This string must contain at least
 	//  one "/" character. The last segment of the URL's path must represent
@@ -151,4 +179,24 @@ type Any struct {
 	// Must be a valid serialized protocol buffer of the above specified type.
 	// +kcc:proto:field=google.protobuf.Any.value
 	Value []byte `json:"value,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.rpc.Status
+type StatusObservedState struct {
+	// The status code, which should be an enum value of
+	//  [google.rpc.Code][google.rpc.Code].
+	// +kcc:proto:field=google.rpc.Status.code
+	Code *int32 `json:"code,omitempty"`
+
+	// A developer-facing error message, which should be in English. Any
+	//  user-facing error message should be localized and sent in the
+	//  [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+	//  by the client.
+	// +kcc:proto:field=google.rpc.Status.message
+	Message *string `json:"message,omitempty"`
+
+	// A list of messages that carry the error details.  There is a common set of
+	//  message types for APIs to use.
+	// +kcc:proto:field=google.rpc.Status.details
+	Details []AnyObservedState `json:"details,omitempty"`
 }

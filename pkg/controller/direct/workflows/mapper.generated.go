@@ -44,6 +44,24 @@ func Workflow_StateError_ToProto(mapCtx *direct.MapContext, in *krm.Workflow_Sta
 	out.Type = direct.Enum_ToProto[pb.Workflow_StateError_Type](mapCtx, in.Type)
 	return out
 }
+func Workflow_StateErrorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Workflow_StateError) *krm.Workflow_StateErrorObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Workflow_StateErrorObservedState{}
+	out.Details = direct.LazyPtr(in.GetDetails())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+func Workflow_StateErrorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Workflow_StateErrorObservedState) *pb.Workflow_StateError {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Workflow_StateError{}
+	out.Details = direct.ValueOf(in.Details)
+	out.Type = direct.Enum_ToProto[pb.Workflow_StateError_Type](mapCtx, in.Type)
+	return out
+}
 
 /* found existing non-generated mapping function "WorkflowsWorkflowObservedState_FromProto", skipping
 func WorkflowsWorkflowObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Workflow) *krm.WorkflowsWorkflowObservedState {

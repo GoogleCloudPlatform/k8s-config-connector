@@ -248,54 +248,6 @@ type JobNotification_Message struct {
 	NewTaskState *string `json:"newTaskState,omitempty"`
 }
 
-// +kcc:proto=google.cloud.batch.v1.JobStatus
-type JobStatus struct {
-	// Job state
-	// +kcc:proto:field=google.cloud.batch.v1.JobStatus.state
-	State *string `json:"state,omitempty"`
-
-	// Job status events
-	// +kcc:proto:field=google.cloud.batch.v1.JobStatus.status_events
-	StatusEvents []StatusEvent `json:"statusEvents,omitempty"`
-
-	// TODO: unsupported map type with key string and value message
-
-	// The duration of time that the Job spent in status RUNNING.
-	// +kcc:proto:field=google.cloud.batch.v1.JobStatus.run_duration
-	RunDuration *string `json:"runDuration,omitempty"`
-}
-
-// +kcc:proto=google.cloud.batch.v1.JobStatus.InstanceStatus
-type JobStatus_InstanceStatus struct {
-	// The Compute Engine machine type.
-	// +kcc:proto:field=google.cloud.batch.v1.JobStatus.InstanceStatus.machine_type
-	MachineType *string `json:"machineType,omitempty"`
-
-	// The VM instance provisioning model.
-	// +kcc:proto:field=google.cloud.batch.v1.JobStatus.InstanceStatus.provisioning_model
-	ProvisioningModel *string `json:"provisioningModel,omitempty"`
-
-	// The max number of tasks can be assigned to this instance type.
-	// +kcc:proto:field=google.cloud.batch.v1.JobStatus.InstanceStatus.task_pack
-	TaskPack *int64 `json:"taskPack,omitempty"`
-
-	// The VM boot disk.
-	// +kcc:proto:field=google.cloud.batch.v1.JobStatus.InstanceStatus.boot_disk
-	BootDisk *AllocationPolicy_Disk `json:"bootDisk,omitempty"`
-}
-
-// +kcc:proto=google.cloud.batch.v1.JobStatus.TaskGroupStatus
-type JobStatus_TaskGroupStatus struct {
-	// Count of task in each state in the TaskGroup.
-	//  The map key is task state name.
-	// +kcc:proto:field=google.cloud.batch.v1.JobStatus.TaskGroupStatus.counts
-	Counts map[string]int64 `json:"counts,omitempty"`
-
-	// Status of instances allocated for the TaskGroup.
-	// +kcc:proto:field=google.cloud.batch.v1.JobStatus.TaskGroupStatus.instances
-	Instances []JobStatus_InstanceStatus `json:"instances,omitempty"`
-}
-
 // +kcc:proto=google.cloud.batch.v1.LifecyclePolicy
 type LifecyclePolicy struct {
 	// Action to execute when ActionCondition is true.
@@ -700,6 +652,166 @@ type Volume struct {
 	MountOptions []string `json:"mountOptions,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.batch.v1.AllocationPolicy
+type AllocationPolicyObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.AllocationPolicy.Accelerator
+type AllocationPolicy_AcceleratorObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.AllocationPolicy.AttachedDisk
+type AllocationPolicy_AttachedDiskObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.AllocationPolicy.Disk
+type AllocationPolicy_DiskObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.AllocationPolicy.InstancePolicy
+type AllocationPolicy_InstancePolicyObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.AllocationPolicy.InstancePolicyOrTemplate
+type AllocationPolicy_InstancePolicyOrTemplateObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.AllocationPolicy.LocationPolicy
+type AllocationPolicy_LocationPolicyObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.AllocationPolicy.NetworkInterface
+type AllocationPolicy_NetworkInterfaceObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.AllocationPolicy.NetworkPolicy
+type AllocationPolicy_NetworkPolicyObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.AllocationPolicy.PlacementPolicy
+type AllocationPolicy_PlacementPolicyObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.ComputeResource
+type ComputeResourceObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.Environment
+type EnvironmentObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.Environment.KMSEnvMap
+type Environment_KMSEnvMapObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.GCS
+type GCSObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.JobNotification
+type JobNotificationObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.JobNotification.Message
+type JobNotification_MessageObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.JobStatus
+type JobStatusObservedState struct {
+	// Job state
+	// +kcc:proto:field=google.cloud.batch.v1.JobStatus.state
+	State *string `json:"state,omitempty"`
+
+	// Job status events
+	// +kcc:proto:field=google.cloud.batch.v1.JobStatus.status_events
+	StatusEvents []StatusEventObservedState `json:"statusEvents,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+	// The duration of time that the Job spent in status RUNNING.
+	// +kcc:proto:field=google.cloud.batch.v1.JobStatus.run_duration
+	RunDuration *string `json:"runDuration,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.JobStatus.InstanceStatus
+type JobStatus_InstanceStatusObservedState struct {
+	// The Compute Engine machine type.
+	// +kcc:proto:field=google.cloud.batch.v1.JobStatus.InstanceStatus.machine_type
+	MachineType *string `json:"machineType,omitempty"`
+
+	// The VM instance provisioning model.
+	// +kcc:proto:field=google.cloud.batch.v1.JobStatus.InstanceStatus.provisioning_model
+	ProvisioningModel *string `json:"provisioningModel,omitempty"`
+
+	// The max number of tasks can be assigned to this instance type.
+	// +kcc:proto:field=google.cloud.batch.v1.JobStatus.InstanceStatus.task_pack
+	TaskPack *int64 `json:"taskPack,omitempty"`
+
+	// The VM boot disk.
+	// +kcc:proto:field=google.cloud.batch.v1.JobStatus.InstanceStatus.boot_disk
+	BootDisk *AllocationPolicy_DiskObservedState `json:"bootDisk,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.JobStatus.TaskGroupStatus
+type JobStatus_TaskGroupStatusObservedState struct {
+	// Count of task in each state in the TaskGroup.
+	//  The map key is task state name.
+	// +kcc:proto:field=google.cloud.batch.v1.JobStatus.TaskGroupStatus.counts
+	Counts map[string]int64 `json:"counts,omitempty"`
+
+	// Status of instances allocated for the TaskGroup.
+	// +kcc:proto:field=google.cloud.batch.v1.JobStatus.TaskGroupStatus.instances
+	Instances []JobStatus_InstanceStatusObservedState `json:"instances,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.LifecyclePolicy
+type LifecyclePolicyObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.LifecyclePolicy.ActionCondition
+type LifecyclePolicy_ActionConditionObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.LogsPolicy
+type LogsPolicyObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.LogsPolicy.CloudLoggingOption
+type LogsPolicy_CloudLoggingOptionObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.NFS
+type NfsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.Runnable
+type RunnableObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.Runnable.Barrier
+type Runnable_BarrierObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.Runnable.Container
+type Runnable_ContainerObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.Runnable.Script
+type Runnable_ScriptObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.ServiceAccount
+type ServiceAccountObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.StatusEvent
+type StatusEventObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.TaskExecution
+type TaskExecutionObservedState struct {
+}
+
 // +kcc:observedstate:proto=google.cloud.batch.v1.TaskGroup
 type TaskGroupObservedState struct {
 	// Output only. TaskGroup name.
@@ -708,4 +820,16 @@ type TaskGroupObservedState struct {
 	//  "projects/123456/locations/us-west1/jobs/job01/taskGroups/group01".
 	// +kcc:proto:field=google.cloud.batch.v1.TaskGroup.name
 	Name *string `json:"name,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.TaskSpec
+type TaskSpecObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.TaskStatus
+type TaskStatusObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.Volume
+type VolumeObservedState struct {
 }

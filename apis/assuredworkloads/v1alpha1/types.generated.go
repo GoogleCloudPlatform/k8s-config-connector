@@ -35,18 +35,6 @@ type Workload_KMSSettings struct {
 	RotationPeriod *string `json:"rotationPeriod,omitempty"`
 }
 
-// +kcc:proto=google.cloud.assuredworkloads.v1.Workload.ResourceInfo
-type Workload_ResourceInfo struct {
-	// Resource identifier.
-	//  For a project this represents project_number.
-	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.ResourceInfo.resource_id
-	ResourceID *int64 `json:"resourceID,omitempty"`
-
-	// Indicates the type of resource.
-	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.ResourceInfo.resource_type
-	ResourceType *string `json:"resourceType,omitempty"`
-}
-
 // +kcc:proto=google.cloud.assuredworkloads.v1.Workload.ResourceSettings
 type Workload_ResourceSettings struct {
 	// Resource identifier.
@@ -70,8 +58,28 @@ type Workload_ResourceSettings struct {
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
-// +kcc:proto=google.cloud.assuredworkloads.v1.Workload.SaaEnrollmentResponse
-type Workload_SaaEnrollmentResponse struct {
+// +kcc:observedstate:proto=google.cloud.assuredworkloads.v1.Workload.KMSSettings
+type Workload_KMSSettingsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.assuredworkloads.v1.Workload.ResourceInfo
+type Workload_ResourceInfoObservedState struct {
+	// Resource identifier.
+	//  For a project this represents project_number.
+	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.ResourceInfo.resource_id
+	ResourceID *int64 `json:"resourceID,omitempty"`
+
+	// Indicates the type of resource.
+	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.ResourceInfo.resource_type
+	ResourceType *string `json:"resourceType,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.assuredworkloads.v1.Workload.ResourceSettings
+type Workload_ResourceSettingsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.assuredworkloads.v1.Workload.SaaEnrollmentResponse
+type Workload_SaaEnrollmentResponseObservedState struct {
 	// Indicates SAA enrollment status of a given workload.
 	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.SaaEnrollmentResponse.setup_status
 	SetupStatus *string `json:"setupStatus,omitempty"`

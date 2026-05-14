@@ -103,20 +103,6 @@ type Workflow struct {
 }
 */
 
-/* found existing non-generated go type "Workflow_StateError", skipping
-
-// +kcc:proto=google.cloud.workflows.v1.Workflow.StateError
-type Workflow_StateError struct {
-	// Provides specifics about the error.
-	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.StateError.details
-	Details *string `json:"details,omitempty"`
-
-	// The type of this state error.
-	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.StateError.type
-	Type *string `json:"type,omitempty"`
-}
-*/
-
 /* found existing non-generated go type with proto tag "google.cloud.workflows.v1.Workflow", skipping
 
 // +kcc:observedstate:proto=google.cloud.workflows.v1.Workflow
@@ -158,7 +144,7 @@ type WorkflowObservedState struct {
 	//  field will have error details if the execution data is unavailable due to
 	//  revoked KMS key permissions.
 	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.state_error
-	StateError *Workflow_StateError `json:"stateError,omitempty"`
+	StateError *Workflow_StateErrorObservedState `json:"stateError,omitempty"`
 
 	// Output only. A list of all KMS crypto keys used to encrypt or decrypt the
 	//  data associated with the workflow.
@@ -179,3 +165,14 @@ type WorkflowObservedState struct {
 	CryptoKeyVersion *string `json:"cryptoKeyVersion,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.workflows.v1.Workflow.StateError
+type Workflow_StateErrorObservedState struct {
+	// Provides specifics about the error.
+	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.StateError.details
+	Details *string `json:"details,omitempty"`
+
+	// The type of this state error.
+	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.StateError.type
+	Type *string `json:"type,omitempty"`
+}

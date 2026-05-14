@@ -26,15 +26,15 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func DataEncryptionState_FromProto(mapCtx *direct.MapContext, in *pb.DataEncryptionState) *krm.DataEncryptionState {
+func DataEncryptionStateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataEncryptionState) *krm.DataEncryptionStateObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataEncryptionState{}
+	out := &krm.DataEncryptionStateObservedState{}
 	out.KMSKeyVersionName = direct.LazyPtr(in.GetKmsKeyVersionName())
 	return out
 }
-func DataEncryptionState_ToProto(mapCtx *direct.MapContext, in *krm.DataEncryptionState) *pb.DataEncryptionState {
+func DataEncryptionStateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataEncryptionStateObservedState) *pb.DataEncryptionState {
 	if in == nil {
 		return nil
 	}
@@ -68,6 +68,30 @@ func DataformRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	// MISSING: InternalMetadata
 	return out
 }
+func Repository_GitRemoteSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Repository_GitRemoteSettings) *krm.Repository_GitRemoteSettingsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Repository_GitRemoteSettingsObservedState{}
+	// MISSING: URL
+	// MISSING: DefaultBranch
+	// MISSING: AuthenticationTokenSecretVersion
+	// MISSING: SSHAuthenticationConfig
+	out.TokenStatus = direct.Enum_FromProto(mapCtx, in.GetTokenStatus())
+	return out
+}
+func Repository_GitRemoteSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Repository_GitRemoteSettingsObservedState) *pb.Repository_GitRemoteSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Repository_GitRemoteSettings{}
+	// MISSING: URL
+	// MISSING: DefaultBranch
+	// MISSING: AuthenticationTokenSecretVersion
+	// MISSING: SSHAuthenticationConfig
+	out.TokenStatus = direct.Enum_ToProto[pb.Repository_GitRemoteSettings_TokenStatus](mapCtx, in.TokenStatus)
+	return out
+}
 func Repository_GitRemoteSettings_SSHAuthenticationConfig_FromProto(mapCtx *direct.MapContext, in *pb.Repository_GitRemoteSettings_SshAuthenticationConfig) *krm.Repository_GitRemoteSettings_SSHAuthenticationConfig {
 	if in == nil {
 		return nil
@@ -84,5 +108,43 @@ func Repository_GitRemoteSettings_SSHAuthenticationConfig_ToProto(mapCtx *direct
 	out := &pb.Repository_GitRemoteSettings_SshAuthenticationConfig{}
 	out.UserPrivateKeySecretVersion = direct.ValueOf(in.UserPrivateKeySecretVersion)
 	out.HostPublicKey = direct.ValueOf(in.HostPublicKey)
+	return out
+}
+func Repository_GitRemoteSettings_SSHAuthenticationConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Repository_GitRemoteSettings_SshAuthenticationConfig) *krm.Repository_GitRemoteSettings_SSHAuthenticationConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Repository_GitRemoteSettings_SSHAuthenticationConfigObservedState{}
+	// MISSING: UserPrivateKeySecretVersion
+	// MISSING: HostPublicKey
+	return out
+}
+func Repository_GitRemoteSettings_SSHAuthenticationConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Repository_GitRemoteSettings_SSHAuthenticationConfigObservedState) *pb.Repository_GitRemoteSettings_SshAuthenticationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Repository_GitRemoteSettings_SshAuthenticationConfig{}
+	// MISSING: UserPrivateKeySecretVersion
+	// MISSING: HostPublicKey
+	return out
+}
+func Repository_WorkspaceCompilationOverridesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Repository_WorkspaceCompilationOverrides) *krm.Repository_WorkspaceCompilationOverridesObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Repository_WorkspaceCompilationOverridesObservedState{}
+	// MISSING: DefaultDatabase
+	// MISSING: SchemaSuffix
+	// MISSING: TablePrefix
+	return out
+}
+func Repository_WorkspaceCompilationOverridesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Repository_WorkspaceCompilationOverridesObservedState) *pb.Repository_WorkspaceCompilationOverrides {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Repository_WorkspaceCompilationOverrides{}
+	// MISSING: DefaultDatabase
+	// MISSING: SchemaSuffix
+	// MISSING: TablePrefix
 	return out
 }

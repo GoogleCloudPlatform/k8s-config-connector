@@ -225,36 +225,6 @@ type KubernetesConfig_ServiceNetworking struct {
 	PodSelectorLabel *string `json:"podSelectorLabel,omitempty"`
 }
 
-// +kcc:proto=google.cloud.deploy.v1.PipelineCondition
-type PipelineCondition struct {
-	// Details around the Pipeline's overall status.
-	// +kcc:proto:field=google.cloud.deploy.v1.PipelineCondition.pipeline_ready_condition
-	PipelineReadyCondition *PipelineReadyCondition `json:"pipelineReadyCondition,omitempty"`
-
-	// Details around targets enumerated in the pipeline.
-	// +kcc:proto:field=google.cloud.deploy.v1.PipelineCondition.targets_present_condition
-	TargetsPresentCondition *TargetsPresentCondition `json:"targetsPresentCondition,omitempty"`
-
-	// Details on the whether the targets enumerated in the pipeline are of the
-	//  same type.
-	// +kcc:proto:field=google.cloud.deploy.v1.PipelineCondition.targets_type_condition
-	TargetsTypeCondition *TargetsTypeCondition `json:"targetsTypeCondition,omitempty"`
-}
-
-// +kcc:proto=google.cloud.deploy.v1.PipelineReadyCondition
-type PipelineReadyCondition struct {
-	// True if the Pipeline is in a valid state. Otherwise at least one condition
-	//  in `PipelineCondition` is in an invalid state. Iterate over those
-	//  conditions and see which condition(s) has status = false to find out what
-	//  is wrong with the Pipeline.
-	// +kcc:proto:field=google.cloud.deploy.v1.PipelineReadyCondition.status
-	Status *bool `json:"status,omitempty"`
-
-	// Last time the condition was updated.
-	// +kcc:proto:field=google.cloud.deploy.v1.PipelineReadyCondition.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-}
-
 // +kcc:proto=google.cloud.deploy.v1.Postdeploy
 type Postdeploy struct {
 	// Optional. A sequence of Skaffold custom actions to invoke during execution
@@ -345,8 +315,106 @@ type Strategy struct {
 	Canary *Canary `json:"canary,omitempty"`
 }
 
-// +kcc:proto=google.cloud.deploy.v1.TargetsPresentCondition
-type TargetsPresentCondition struct {
+// +kcc:observedstate:proto=google.cloud.deploy.v1.Canary
+type CanaryObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.CanaryDeployment
+type CanaryDeploymentObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.CloudRunConfig
+type CloudRunConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.CustomCanaryDeployment
+type CustomCanaryDeploymentObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.CustomCanaryDeployment.PhaseConfig
+type CustomCanaryDeployment_PhaseConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.DeployParameters
+type DeployParametersObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.KubernetesConfig
+type KubernetesConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.KubernetesConfig.GatewayServiceMesh
+type KubernetesConfig_GatewayServiceMeshObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.KubernetesConfig.GatewayServiceMesh.RouteDestinations
+type KubernetesConfig_GatewayServiceMesh_RouteDestinationsObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.KubernetesConfig.ServiceNetworking
+type KubernetesConfig_ServiceNetworkingObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.PipelineCondition
+type PipelineConditionObservedState struct {
+	// Details around the Pipeline's overall status.
+	// +kcc:proto:field=google.cloud.deploy.v1.PipelineCondition.pipeline_ready_condition
+	PipelineReadyCondition *PipelineReadyConditionObservedState `json:"pipelineReadyCondition,omitempty"`
+
+	// Details around targets enumerated in the pipeline.
+	// +kcc:proto:field=google.cloud.deploy.v1.PipelineCondition.targets_present_condition
+	TargetsPresentCondition *TargetsPresentConditionObservedState `json:"targetsPresentCondition,omitempty"`
+
+	// Details on the whether the targets enumerated in the pipeline are of the
+	//  same type.
+	// +kcc:proto:field=google.cloud.deploy.v1.PipelineCondition.targets_type_condition
+	TargetsTypeCondition *TargetsTypeConditionObservedState `json:"targetsTypeCondition,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.PipelineReadyCondition
+type PipelineReadyConditionObservedState struct {
+	// True if the Pipeline is in a valid state. Otherwise at least one condition
+	//  in `PipelineCondition` is in an invalid state. Iterate over those
+	//  conditions and see which condition(s) has status = false to find out what
+	//  is wrong with the Pipeline.
+	// +kcc:proto:field=google.cloud.deploy.v1.PipelineReadyCondition.status
+	Status *bool `json:"status,omitempty"`
+
+	// Last time the condition was updated.
+	// +kcc:proto:field=google.cloud.deploy.v1.PipelineReadyCondition.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.Postdeploy
+type PostdeployObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.Predeploy
+type PredeployObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.RuntimeConfig
+type RuntimeConfigObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.SerialPipeline
+type SerialPipelineObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.Stage
+type StageObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.Standard
+type StandardObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.Strategy
+type StrategyObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.deploy.v1.TargetsPresentCondition
+type TargetsPresentConditionObservedState struct {
 	// True if there aren't any missing Targets.
 	// +kcc:proto:field=google.cloud.deploy.v1.TargetsPresentCondition.status
 	Status *bool `json:"status,omitempty"`
@@ -361,8 +429,8 @@ type TargetsPresentCondition struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-// +kcc:proto=google.cloud.deploy.v1.TargetsTypeCondition
-type TargetsTypeCondition struct {
+// +kcc:observedstate:proto=google.cloud.deploy.v1.TargetsTypeCondition
+type TargetsTypeConditionObservedState struct {
 	// True if the targets are all a comparable type. For example this is true if
 	//  all targets are GKE clusters. This is false if some targets are Cloud Run
 	//  targets and others are GKE clusters.
