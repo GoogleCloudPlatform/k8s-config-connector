@@ -38,6 +38,8 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 
 	replacements.ReplacePath(".wasmPlugins[].createTime", TimePlaceholder)
 	replacements.ReplacePath(".wasmPlugins[].updateTime", TimePlaceholder)
+	replacements.ReplacePath(".wasmPluginVersions[].createTime", TimePlaceholder)
+	replacements.ReplacePath(".wasmPluginVersions[].updateTime", TimePlaceholder)
 	replacements.ReplacePath(".versions.*.createTime", TimePlaceholder)
 	replacements.ReplacePath(".versions.*.updateTime", TimePlaceholder)
 

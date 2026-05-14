@@ -99,19 +99,20 @@ func (s *NetworkServicesServer) CreateWasmPlugin(ctx context.Context, req *pb.Cr
 	for versionID, details := range obj.Versions {
 		versionName := fqn + "/versions/" + versionID
 		version := &pb.WasmPluginVersion{
-			Name:               versionName,
-			Description:        details.Description,
-			Labels:             details.Labels,
-			ImageUri:           details.ImageUri,
-			ImageDigest:        "sha256:abcdef1234567890", // Mock digest
-			PluginConfigDigest: "sha256:config1234567890", // Mock digest
-			CreateTime:         timestamppb.New(now),
-			UpdateTime:         timestamppb.New(now),
+			Name:        versionName,
+			Description: details.Description,
+			Labels:      details.Labels,
+			ImageUri:    details.ImageUri,
+			ImageDigest: "sha256:abcdef1234567890", // Mock digest
+			CreateTime:  timestamppb.New(now),
+			UpdateTime:  timestamppb.New(now),
 		}
 		if data := details.GetPluginConfigData(); data != nil {
 			version.PluginConfigSource = &pb.WasmPluginVersion_PluginConfigData{PluginConfigData: data}
+			version.PluginConfigDigest = "sha256:config1234567890"
 		} else if uri := details.GetPluginConfigUri(); uri != "" {
 			version.PluginConfigSource = &pb.WasmPluginVersion_PluginConfigUri{PluginConfigUri: uri}
+			version.PluginConfigDigest = "sha256:config1234567890"
 		}
 
 		if err := s.storage.Create(ctx, versionName, version); err != nil {
@@ -194,19 +195,20 @@ func (s *NetworkServicesServer) UpdateWasmPlugin(ctx context.Context, req *pb.Up
 				for versionID, details := range req.GetWasmPlugin().GetVersions() {
 					versionName := fqn + "/versions/" + versionID
 					version := &pb.WasmPluginVersion{
-						Name:               versionName,
-						Description:        details.Description,
-						Labels:             details.Labels,
-						ImageUri:           details.ImageUri,
-						ImageDigest:        "sha256:abcdef1234567890",
-						PluginConfigDigest: "sha256:config1234567890",
-						CreateTime:         timestamppb.New(now),
-						UpdateTime:         timestamppb.New(now),
+						Name:        versionName,
+						Description: details.Description,
+						Labels:      details.Labels,
+						ImageUri:    details.ImageUri,
+						ImageDigest: "sha256:abcdef1234567890",
+						CreateTime:  timestamppb.New(now),
+						UpdateTime:  timestamppb.New(now),
 					}
 					if data := details.GetPluginConfigData(); data != nil {
 						version.PluginConfigSource = &pb.WasmPluginVersion_PluginConfigData{PluginConfigData: data}
+						version.PluginConfigDigest = "sha256:config1234567890"
 					} else if uri := details.GetPluginConfigUri(); uri != "" {
 						version.PluginConfigSource = &pb.WasmPluginVersion_PluginConfigUri{PluginConfigUri: uri}
+						version.PluginConfigDigest = "sha256:config1234567890"
 					}
 
 					if err := s.storage.Create(ctx, versionName, version); err != nil {
@@ -344,7 +346,9 @@ func (s *NetworkServicesServer) CreateWasmPluginVersion(ctx context.Context, req
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 	obj.ImageDigest = "sha256:abcdef1234567890"
-	obj.PluginConfigDigest = "sha256:config1234567890"
+	if obj.PluginConfigSource != nil {
+		obj.PluginConfigDigest = "sha256:config1234567890"
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
