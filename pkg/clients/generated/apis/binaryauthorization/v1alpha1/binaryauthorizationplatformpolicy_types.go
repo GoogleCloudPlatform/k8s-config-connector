@@ -144,8 +144,9 @@ type PlatformpolicyScope struct {
 	// +optional
 	KubernetesNamespace *string `json:"kubernetesNamespace,omitempty"`
 
+	/* ObjectReference contains enough information to let you inspect or modify the referred object. */
 	// +optional
-	KubernetesServiceAccount *string `json:"kubernetesServiceAccount,omitempty"`
+	KubernetesServiceAccountRef *v1alpha1.ResourceRef `json:"kubernetesServiceAccountRef,omitempty"`
 }
 
 type PlatformpolicySigstoreAuthorities struct {
@@ -217,6 +218,11 @@ type BinaryAuthorizationPlatformPolicySpec struct {
 }
 
 type PlatformpolicyObservedStateStatus struct {
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type BinaryAuthorizationPlatformPolicyStatus struct {
@@ -238,7 +244,7 @@ type BinaryAuthorizationPlatformPolicyStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpbinaryauthorizationplatformpolicy;gcpbinaryauthorizationplatformpolicys
+// +kubebuilder:resource:categories=gcp,shortName=gcpbinaryauthorizationplatformpolicy;gcpbinaryauthorizationplatformpolicies
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
