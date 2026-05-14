@@ -1266,11 +1266,6 @@ func (in *StorageBucketSpec) DeepCopyInto(out *StorageBucketSpec) {
 		*out = new(StorageBucketLogging)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.ProjectRef != nil {
-		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(refsv1beta1.ProjectRef)
-		**out = **in
-	}
 	if in.PublicAccessPrevention != nil {
 		in, out := &in.PublicAccessPrevention, &out.PublicAccessPrevention
 		*out = new(string)
