@@ -61,9 +61,6 @@ type StorageBucketSpec struct {
 	// +kcc:proto:field=google.storage.v1.Bucket.logging
 	Logging *StorageBucketLogging `json:"logging,omitempty"`
 
-	/* The project that this resource belongs to. */
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
-
 	/* Prevents public access to a bucket. */
 	// +kcc:proto:field=google.storage.v1.Bucket.iam_configuration.public_access_prevention
 	PublicAccessPrevention *string `json:"publicAccessPrevention,omitempty"`
@@ -201,7 +198,7 @@ type StorageBucketRetentionPolicy struct {
 
 	/* The period of time, in seconds, that objects in the bucket must be retained and cannot be deleted, overwritten, or archived. The value must be less than 3,155,760,000 seconds. */
 	// +required
-	RetentionPeriod int64 `json:"retentionPeriod"`
+	RetentionPeriod int `json:"retentionPeriod"`
 }
 
 type StorageBucketSoftDeletePolicy struct {
