@@ -343,6 +343,11 @@ spec:
               observedState:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
+                properties:
+                  name:
+                    type: string
+                  updateTime:
+                    type: string
                 type: object
             type: object
         required:
