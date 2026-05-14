@@ -19,7 +19,6 @@ import (
 	"os"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/apply"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/detectnewfields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/exportcsv"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/generatecontroller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/generatedirectreconciler"
@@ -48,7 +47,6 @@ func Execute() {
 	rootCmd.AddCommand(exportcsv.BuildCommand(&generateOptions))
 	rootCmd.AddCommand(exportcsv.BuildPromptCommand(&generateOptions))
 	rootCmd.AddCommand(apply.BuildCommand(&generateOptions))
-	rootCmd.AddCommand(detectnewfields.BuildCommand(&generateOptions))
 	rootCmd.AddCommand(generatefuzzer.BuildCommand(&generateOptions))
 
 	if err := rootCmd.Execute(); err != nil {
