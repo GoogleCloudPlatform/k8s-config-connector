@@ -35,6 +35,10 @@ func (c *FakeCertificatemanagerV1alpha1) CertificateManagerCertificateIssuanceCo
 	return newFakeCertificateManagerCertificateIssuanceConfigs(c, namespace)
 }
 
+func (c *FakeCertificatemanagerV1alpha1) CertificateManagerTrustConfigs(namespace string) v1alpha1.CertificateManagerTrustConfigInterface {
+	return &FakeCertificateManagerTrustConfigs{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeCertificatemanagerV1alpha1) RESTClient() rest.Interface {

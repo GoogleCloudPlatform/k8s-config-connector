@@ -229,26 +229,6 @@ func CertificateManagerTrustConfigSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	out.TrustStores = direct.Slice_ToProto(mapCtx, in.TrustStores, TrustConfig_TrustStore_ToProto)
 	return out
 }
-func DNSAuthorization_DNSResourceRecord_FromProto(mapCtx *direct.MapContext, in *pb.DnsAuthorization_DnsResourceRecord) *krm.DNSAuthorization_DNSResourceRecord {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DNSAuthorization_DNSResourceRecord{}
-	// MISSING: Name
-	// MISSING: Type
-	// MISSING: Data
-	return out
-}
-func DNSAuthorization_DNSResourceRecord_ToProto(mapCtx *direct.MapContext, in *krm.DNSAuthorization_DNSResourceRecord) *pb.DnsAuthorization_DnsResourceRecord {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DnsAuthorization_DnsResourceRecord{}
-	// MISSING: Name
-	// MISSING: Type
-	// MISSING: Data
-	return out
-}
 func DNSAuthorization_DNSResourceRecordObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DnsAuthorization_DnsResourceRecord) *krm.DNSAuthorization_DNSResourceRecordObservedState {
 	if in == nil {
 		return nil

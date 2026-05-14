@@ -32,6 +32,7 @@ import (
 type CertificatemanagerV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	CertificateManagerCertificateIssuanceConfigsGetter
+	CertificateManagerTrustConfigsGetter
 }
 
 // CertificatemanagerV1alpha1Client is used to interact with features provided by the certificatemanager.cnrm.cloud.google.com group.
@@ -41,6 +42,10 @@ type CertificatemanagerV1alpha1Client struct {
 
 func (c *CertificatemanagerV1alpha1Client) CertificateManagerCertificateIssuanceConfigs(namespace string) CertificateManagerCertificateIssuanceConfigInterface {
 	return newCertificateManagerCertificateIssuanceConfigs(c, namespace)
+}
+
+func (c *CertificatemanagerV1alpha1Client) CertificateManagerTrustConfigs(namespace string) CertificateManagerTrustConfigInterface {
+	return newCertificateManagerTrustConfigs(c, namespace)
 }
 
 // NewForConfig creates a new CertificatemanagerV1alpha1Client for the given config.
