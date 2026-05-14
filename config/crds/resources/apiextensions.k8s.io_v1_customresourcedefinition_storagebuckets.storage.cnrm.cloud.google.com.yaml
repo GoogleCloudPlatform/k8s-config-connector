@@ -270,38 +270,6 @@ spec:
                 required:
                 - logBucket
                 type: object
-              projectRef:
-                description: The project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
-                  name:
-                    description: The `name` field of a `Project` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `Project` resource.
-                    type: string
-                type: object
               publicAccessPrevention:
                 description: Prevents public access to a bucket.
                 type: string
@@ -326,7 +294,6 @@ spec:
                     description: The period of time, in seconds, that objects in the
                       bucket must be retained and cannot be deleted, overwritten,
                       or archived. The value must be less than 3,155,760,000 seconds.
-                    format: int64
                     type: integer
                 required:
                 - retentionPeriod
