@@ -21,6 +21,10 @@
 
 package v1alpha1
 
+import (
+	corev1 "k8s.io/api/core/v1"
+)
+
 // +kcc:proto=google.cloud.binaryauthorization.v1.AttestationAuthenticator
 type AttestationAuthenticator struct {
 	// +kcc:proto:field=google.cloud.binaryauthorization.v1.AttestationAuthenticator.display_name
@@ -134,7 +138,7 @@ type PlatformPolicy struct {
 // +kcc:proto=google.cloud.binaryauthorization.v1.Scope
 type Scope struct {
 	// +kcc:proto:field=google.cloud.binaryauthorization.v1.Scope.kubernetes_service_account
-	KubernetesServiceAccount *string `json:"kubernetesServiceAccount,omitempty"`
+	KubernetesServiceAccountRef *corev1.ObjectReference `json:"kubernetesServiceAccountRef,omitempty"`
 
 	// +kcc:proto:field=google.cloud.binaryauthorization.v1.Scope.kubernetes_namespace
 	KubernetesNamespace *string `json:"kubernetesNamespace,omitempty"`
