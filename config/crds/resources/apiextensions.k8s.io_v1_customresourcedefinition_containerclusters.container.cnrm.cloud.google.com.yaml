@@ -1840,6 +1840,39 @@ spec:
                     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
+              userManagedKeysConfig:
+                description: The custom keys configuration of the cluster.
+                properties:
+                  controlPlaneDiskEncryptionKeyRef:
+                    description: The Cloud KMS cryptoKey to use for Confidential Hyperdisk
+                      on the control plane nodes.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'Allowed value: The `selfLink` field of a `KMSCryptoKey`
+                          resource.'
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
+                type: object
               verticalPodAutoscaling:
                 description: Vertical Pod Autoscaling automatically adjusts the resources
                   of pods controlled by it.
