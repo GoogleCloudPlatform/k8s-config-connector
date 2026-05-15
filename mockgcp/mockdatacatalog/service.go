@@ -45,7 +45,9 @@ type MockService struct {
 
 	operations *operations.Operations
 
-	v1 *DataCatalogV1
+	v1                       *DataCatalogV1
+	policyTagManagerV1       *PolicyTagManagerV1
+	policyTagSerializationV1 *PolicyTagManagerSerializationV1
 }
 
 // New creates a MockService.
@@ -56,6 +58,8 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 		operations:      operations.NewOperationsService(storage),
 	}
 	s.v1 = &DataCatalogV1{MockService: s}
+	s.policyTagManagerV1 = &PolicyTagManagerV1{MockService: s}
+	s.policyTagSerializationV1 = &PolicyTagManagerSerializationV1{MockService: s}
 	return s
 }
 
@@ -65,11 +69,15 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDataCatalogServer(grpcServer, s.v1)
+	pb.RegisterPolicyTagManagerServer(grpcServer, s.policyTagManagerV1)
+	pb.RegisterPolicyTagManagerSerializationServer(grpcServer, s.policyTagSerializationV1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterDataCatalogHandler,
+		pb.RegisterPolicyTagManagerHandler,
+		pb.RegisterPolicyTagManagerSerializationHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
 	)
 	if err != nil {

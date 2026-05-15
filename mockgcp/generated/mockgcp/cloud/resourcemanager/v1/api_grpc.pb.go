@@ -7,7 +7,6 @@
 package cloudresourcemanagerpb
 
 import (
-	longrunningpb "cloud.google.com/go/longrunning/autogen/longrunningpb"
 	context "context"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
@@ -23,18 +22,6 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FoldersServerClient interface {
-	// Clears a `Policy` from a resource.
-	ClearOrgPolicyFolder(ctx context.Context, in *ClearOrgPolicyFolderRequest, opts ...grpc.CallOption) (*Empty, error)
-	// Gets the effective `Policy` on a resource. This is the result of merging `Policies` in the resource hierarchy. The returned `Policy` will not have an `etag`set because it is a computed `Policy` across multiple resources. Subtrees of Resource Manager resource hierarchy with 'under:' prefix will not be expanded.
-	GetEffectiveOrgPolicyFolder(ctx context.Context, in *GetEffectiveOrgPolicyFolderRequest, opts ...grpc.CallOption) (*OrgPolicy, error)
-	// Gets a `Policy` on a resource. If no `Policy` is set on the resource, a `Policy` is returned with default values including `POLICY_TYPE_NOT_SET` for the `policy_type oneof`. The `etag` value can be used with `SetOrgPolicy()` to create or update a `Policy` during read-modify-write.
-	GetOrgPolicyFolder(ctx context.Context, in *GetOrgPolicyFolderRequest, opts ...grpc.CallOption) (*OrgPolicy, error)
-	// Lists `Constraints` that could be applied on the specified resource.
-	ListAvailableOrgPolicyConstraintsFolder(ctx context.Context, in *ListAvailableOrgPolicyConstraintsFolderRequest, opts ...grpc.CallOption) (*ListAvailableOrgPolicyConstraintsResponse, error)
-	// Lists all the `Policies` set for a particular resource.
-	ListOrgPoliciesFolder(ctx context.Context, in *ListOrgPoliciesFolderRequest, opts ...grpc.CallOption) (*ListOrgPoliciesResponse, error)
-	// Updates the specified `Policy` on the resource. Creates a new `Policy` for that `Constraint` on the resource if one does not exist. Not supplying an `etag` on the request `Policy` results in an unconditional write of the `Policy`.
-	SetOrgPolicyFolder(ctx context.Context, in *SetOrgPolicyFolderRequest, opts ...grpc.CallOption) (*OrgPolicy, error)
 	// Returns permissions that a caller has on the specified project.
 	TestIamPermissions(ctx context.Context, in *TestIamPermissionsRequest, opts ...grpc.CallOption) (*TestIamPermissionsResponse, error)
 }
@@ -45,60 +32,6 @@ type foldersServerClient struct {
 
 func NewFoldersServerClient(cc grpc.ClientConnInterface) FoldersServerClient {
 	return &foldersServerClient{cc}
-}
-
-func (c *foldersServerClient) ClearOrgPolicyFolder(ctx context.Context, in *ClearOrgPolicyFolderRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.FoldersServer/ClearOrgPolicyFolder", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *foldersServerClient) GetEffectiveOrgPolicyFolder(ctx context.Context, in *GetEffectiveOrgPolicyFolderRequest, opts ...grpc.CallOption) (*OrgPolicy, error) {
-	out := new(OrgPolicy)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.FoldersServer/GetEffectiveOrgPolicyFolder", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *foldersServerClient) GetOrgPolicyFolder(ctx context.Context, in *GetOrgPolicyFolderRequest, opts ...grpc.CallOption) (*OrgPolicy, error) {
-	out := new(OrgPolicy)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.FoldersServer/GetOrgPolicyFolder", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *foldersServerClient) ListAvailableOrgPolicyConstraintsFolder(ctx context.Context, in *ListAvailableOrgPolicyConstraintsFolderRequest, opts ...grpc.CallOption) (*ListAvailableOrgPolicyConstraintsResponse, error) {
-	out := new(ListAvailableOrgPolicyConstraintsResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.FoldersServer/ListAvailableOrgPolicyConstraintsFolder", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *foldersServerClient) ListOrgPoliciesFolder(ctx context.Context, in *ListOrgPoliciesFolderRequest, opts ...grpc.CallOption) (*ListOrgPoliciesResponse, error) {
-	out := new(ListOrgPoliciesResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.FoldersServer/ListOrgPoliciesFolder", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *foldersServerClient) SetOrgPolicyFolder(ctx context.Context, in *SetOrgPolicyFolderRequest, opts ...grpc.CallOption) (*OrgPolicy, error) {
-	out := new(OrgPolicy)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.FoldersServer/SetOrgPolicyFolder", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *foldersServerClient) TestIamPermissions(ctx context.Context, in *TestIamPermissionsRequest, opts ...grpc.CallOption) (*TestIamPermissionsResponse, error) {
@@ -114,18 +47,6 @@ func (c *foldersServerClient) TestIamPermissions(ctx context.Context, in *TestIa
 // All implementations must embed UnimplementedFoldersServerServer
 // for forward compatibility
 type FoldersServerServer interface {
-	// Clears a `Policy` from a resource.
-	ClearOrgPolicyFolder(context.Context, *ClearOrgPolicyFolderRequest) (*Empty, error)
-	// Gets the effective `Policy` on a resource. This is the result of merging `Policies` in the resource hierarchy. The returned `Policy` will not have an `etag`set because it is a computed `Policy` across multiple resources. Subtrees of Resource Manager resource hierarchy with 'under:' prefix will not be expanded.
-	GetEffectiveOrgPolicyFolder(context.Context, *GetEffectiveOrgPolicyFolderRequest) (*OrgPolicy, error)
-	// Gets a `Policy` on a resource. If no `Policy` is set on the resource, a `Policy` is returned with default values including `POLICY_TYPE_NOT_SET` for the `policy_type oneof`. The `etag` value can be used with `SetOrgPolicy()` to create or update a `Policy` during read-modify-write.
-	GetOrgPolicyFolder(context.Context, *GetOrgPolicyFolderRequest) (*OrgPolicy, error)
-	// Lists `Constraints` that could be applied on the specified resource.
-	ListAvailableOrgPolicyConstraintsFolder(context.Context, *ListAvailableOrgPolicyConstraintsFolderRequest) (*ListAvailableOrgPolicyConstraintsResponse, error)
-	// Lists all the `Policies` set for a particular resource.
-	ListOrgPoliciesFolder(context.Context, *ListOrgPoliciesFolderRequest) (*ListOrgPoliciesResponse, error)
-	// Updates the specified `Policy` on the resource. Creates a new `Policy` for that `Constraint` on the resource if one does not exist. Not supplying an `etag` on the request `Policy` results in an unconditional write of the `Policy`.
-	SetOrgPolicyFolder(context.Context, *SetOrgPolicyFolderRequest) (*OrgPolicy, error)
 	// Returns permissions that a caller has on the specified project.
 	TestIamPermissions(context.Context, *TestIamPermissionsRequest) (*TestIamPermissionsResponse, error)
 	mustEmbedUnimplementedFoldersServerServer()
@@ -135,24 +56,6 @@ type FoldersServerServer interface {
 type UnimplementedFoldersServerServer struct {
 }
 
-func (UnimplementedFoldersServerServer) ClearOrgPolicyFolder(context.Context, *ClearOrgPolicyFolderRequest) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ClearOrgPolicyFolder not implemented")
-}
-func (UnimplementedFoldersServerServer) GetEffectiveOrgPolicyFolder(context.Context, *GetEffectiveOrgPolicyFolderRequest) (*OrgPolicy, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetEffectiveOrgPolicyFolder not implemented")
-}
-func (UnimplementedFoldersServerServer) GetOrgPolicyFolder(context.Context, *GetOrgPolicyFolderRequest) (*OrgPolicy, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetOrgPolicyFolder not implemented")
-}
-func (UnimplementedFoldersServerServer) ListAvailableOrgPolicyConstraintsFolder(context.Context, *ListAvailableOrgPolicyConstraintsFolderRequest) (*ListAvailableOrgPolicyConstraintsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListAvailableOrgPolicyConstraintsFolder not implemented")
-}
-func (UnimplementedFoldersServerServer) ListOrgPoliciesFolder(context.Context, *ListOrgPoliciesFolderRequest) (*ListOrgPoliciesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListOrgPoliciesFolder not implemented")
-}
-func (UnimplementedFoldersServerServer) SetOrgPolicyFolder(context.Context, *SetOrgPolicyFolderRequest) (*OrgPolicy, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SetOrgPolicyFolder not implemented")
-}
 func (UnimplementedFoldersServerServer) TestIamPermissions(context.Context, *TestIamPermissionsRequest) (*TestIamPermissionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
 }
@@ -167,114 +70,6 @@ type UnsafeFoldersServerServer interface {
 
 func RegisterFoldersServerServer(s grpc.ServiceRegistrar, srv FoldersServerServer) {
 	s.RegisterService(&FoldersServer_ServiceDesc, srv)
-}
-
-func _FoldersServer_ClearOrgPolicyFolder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ClearOrgPolicyFolderRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FoldersServerServer).ClearOrgPolicyFolder(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.FoldersServer/ClearOrgPolicyFolder",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FoldersServerServer).ClearOrgPolicyFolder(ctx, req.(*ClearOrgPolicyFolderRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _FoldersServer_GetEffectiveOrgPolicyFolder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetEffectiveOrgPolicyFolderRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FoldersServerServer).GetEffectiveOrgPolicyFolder(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.FoldersServer/GetEffectiveOrgPolicyFolder",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FoldersServerServer).GetEffectiveOrgPolicyFolder(ctx, req.(*GetEffectiveOrgPolicyFolderRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _FoldersServer_GetOrgPolicyFolder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetOrgPolicyFolderRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FoldersServerServer).GetOrgPolicyFolder(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.FoldersServer/GetOrgPolicyFolder",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FoldersServerServer).GetOrgPolicyFolder(ctx, req.(*GetOrgPolicyFolderRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _FoldersServer_ListAvailableOrgPolicyConstraintsFolder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListAvailableOrgPolicyConstraintsFolderRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FoldersServerServer).ListAvailableOrgPolicyConstraintsFolder(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.FoldersServer/ListAvailableOrgPolicyConstraintsFolder",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FoldersServerServer).ListAvailableOrgPolicyConstraintsFolder(ctx, req.(*ListAvailableOrgPolicyConstraintsFolderRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _FoldersServer_ListOrgPoliciesFolder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListOrgPoliciesFolderRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FoldersServerServer).ListOrgPoliciesFolder(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.FoldersServer/ListOrgPoliciesFolder",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FoldersServerServer).ListOrgPoliciesFolder(ctx, req.(*ListOrgPoliciesFolderRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _FoldersServer_SetOrgPolicyFolder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SetOrgPolicyFolderRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FoldersServerServer).SetOrgPolicyFolder(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.FoldersServer/SetOrgPolicyFolder",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FoldersServerServer).SetOrgPolicyFolder(ctx, req.(*SetOrgPolicyFolderRequest))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _FoldersServer_TestIamPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -302,30 +97,6 @@ var FoldersServer_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "mockgcp.cloudresourcemanager.v1.FoldersServer",
 	HandlerType: (*FoldersServerServer)(nil),
 	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "ClearOrgPolicyFolder",
-			Handler:    _FoldersServer_ClearOrgPolicyFolder_Handler,
-		},
-		{
-			MethodName: "GetEffectiveOrgPolicyFolder",
-			Handler:    _FoldersServer_GetEffectiveOrgPolicyFolder_Handler,
-		},
-		{
-			MethodName: "GetOrgPolicyFolder",
-			Handler:    _FoldersServer_GetOrgPolicyFolder_Handler,
-		},
-		{
-			MethodName: "ListAvailableOrgPolicyConstraintsFolder",
-			Handler:    _FoldersServer_ListAvailableOrgPolicyConstraintsFolder_Handler,
-		},
-		{
-			MethodName: "ListOrgPoliciesFolder",
-			Handler:    _FoldersServer_ListOrgPoliciesFolder_Handler,
-		},
-		{
-			MethodName: "SetOrgPolicyFolder",
-			Handler:    _FoldersServer_SetOrgPolicyFolder_Handler,
-		},
 		{
 			MethodName: "TestIamPermissions",
 			Handler:    _FoldersServer_TestIamPermissions_Handler,
@@ -541,22 +312,6 @@ var LiensServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OrganizationsServerClient interface {
-	// Clears a `Policy` from a resource.
-	ClearOrgPolicyOrganization(ctx context.Context, in *ClearOrgPolicyOrganizationRequest, opts ...grpc.CallOption) (*Empty, error)
-	// Fetches an Organization resource identified by the specified resource name.
-	GetOrganization(ctx context.Context, in *GetOrganizationRequest, opts ...grpc.CallOption) (*Organization, error)
-	// Gets the effective `Policy` on a resource. This is the result of merging `Policies` in the resource hierarchy. The returned `Policy` will not have an `etag`set because it is a computed `Policy` across multiple resources. Subtrees of Resource Manager resource hierarchy with 'under:' prefix will not be expanded.
-	GetEffectiveOrgPolicyOrganization(ctx context.Context, in *GetEffectiveOrgPolicyOrganizationRequest, opts ...grpc.CallOption) (*OrgPolicy, error)
-	// Gets a `Policy` on a resource. If no `Policy` is set on the resource, a `Policy` is returned with default values including `POLICY_TYPE_NOT_SET` for the `policy_type oneof`. The `etag` value can be used with `SetOrgPolicy()` to create or update a `Policy` during read-modify-write.
-	GetOrgPolicyOrganization(ctx context.Context, in *GetOrgPolicyOrganizationRequest, opts ...grpc.CallOption) (*OrgPolicy, error)
-	// Lists `Constraints` that could be applied on the specified resource.
-	ListAvailableOrgPolicyConstraintsOrganization(ctx context.Context, in *ListAvailableOrgPolicyConstraintsOrganizationRequest, opts ...grpc.CallOption) (*ListAvailableOrgPolicyConstraintsResponse, error)
-	// Lists all the `Policies` set for a particular resource.
-	ListOrgPoliciesOrganization(ctx context.Context, in *ListOrgPoliciesOrganizationRequest, opts ...grpc.CallOption) (*ListOrgPoliciesResponse, error)
-	// Searches Organization resources that are visible to the user and satisfy the specified filter. This method returns Organizations in an unspecified order. New Organizations do not necessarily appear at the end of the results. Search will only return organizations on which the user has the permission `resourcemanager.organizations.get` or has super admin privileges.
-	SearchOrganization(ctx context.Context, in *SearchOrganizationRequest, opts ...grpc.CallOption) (*SearchOrganizationsResponse, error)
-	// Updates the specified `Policy` on the resource. Creates a new `Policy` for that `Constraint` on the resource if one does not exist. Not supplying an `etag` on the request `Policy` results in an unconditional write of the `Policy`.
-	SetOrgPolicyOrganization(ctx context.Context, in *SetOrgPolicyOrganizationRequest, opts ...grpc.CallOption) (*OrgPolicy, error)
 	// Returns permissions that a caller has on the specified project.
 	TestIamPermissions(ctx context.Context, in *TestIamPermissionsRequest, opts ...grpc.CallOption) (*TestIamPermissionsResponse, error)
 }
@@ -567,78 +322,6 @@ type organizationsServerClient struct {
 
 func NewOrganizationsServerClient(cc grpc.ClientConnInterface) OrganizationsServerClient {
 	return &organizationsServerClient{cc}
-}
-
-func (c *organizationsServerClient) ClearOrgPolicyOrganization(ctx context.Context, in *ClearOrgPolicyOrganizationRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.OrganizationsServer/ClearOrgPolicyOrganization", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *organizationsServerClient) GetOrganization(ctx context.Context, in *GetOrganizationRequest, opts ...grpc.CallOption) (*Organization, error) {
-	out := new(Organization)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.OrganizationsServer/GetOrganization", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *organizationsServerClient) GetEffectiveOrgPolicyOrganization(ctx context.Context, in *GetEffectiveOrgPolicyOrganizationRequest, opts ...grpc.CallOption) (*OrgPolicy, error) {
-	out := new(OrgPolicy)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.OrganizationsServer/GetEffectiveOrgPolicyOrganization", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *organizationsServerClient) GetOrgPolicyOrganization(ctx context.Context, in *GetOrgPolicyOrganizationRequest, opts ...grpc.CallOption) (*OrgPolicy, error) {
-	out := new(OrgPolicy)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.OrganizationsServer/GetOrgPolicyOrganization", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *organizationsServerClient) ListAvailableOrgPolicyConstraintsOrganization(ctx context.Context, in *ListAvailableOrgPolicyConstraintsOrganizationRequest, opts ...grpc.CallOption) (*ListAvailableOrgPolicyConstraintsResponse, error) {
-	out := new(ListAvailableOrgPolicyConstraintsResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.OrganizationsServer/ListAvailableOrgPolicyConstraintsOrganization", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *organizationsServerClient) ListOrgPoliciesOrganization(ctx context.Context, in *ListOrgPoliciesOrganizationRequest, opts ...grpc.CallOption) (*ListOrgPoliciesResponse, error) {
-	out := new(ListOrgPoliciesResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.OrganizationsServer/ListOrgPoliciesOrganization", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *organizationsServerClient) SearchOrganization(ctx context.Context, in *SearchOrganizationRequest, opts ...grpc.CallOption) (*SearchOrganizationsResponse, error) {
-	out := new(SearchOrganizationsResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.OrganizationsServer/SearchOrganization", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *organizationsServerClient) SetOrgPolicyOrganization(ctx context.Context, in *SetOrgPolicyOrganizationRequest, opts ...grpc.CallOption) (*OrgPolicy, error) {
-	out := new(OrgPolicy)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.OrganizationsServer/SetOrgPolicyOrganization", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *organizationsServerClient) TestIamPermissions(ctx context.Context, in *TestIamPermissionsRequest, opts ...grpc.CallOption) (*TestIamPermissionsResponse, error) {
@@ -654,22 +337,6 @@ func (c *organizationsServerClient) TestIamPermissions(ctx context.Context, in *
 // All implementations must embed UnimplementedOrganizationsServerServer
 // for forward compatibility
 type OrganizationsServerServer interface {
-	// Clears a `Policy` from a resource.
-	ClearOrgPolicyOrganization(context.Context, *ClearOrgPolicyOrganizationRequest) (*Empty, error)
-	// Fetches an Organization resource identified by the specified resource name.
-	GetOrganization(context.Context, *GetOrganizationRequest) (*Organization, error)
-	// Gets the effective `Policy` on a resource. This is the result of merging `Policies` in the resource hierarchy. The returned `Policy` will not have an `etag`set because it is a computed `Policy` across multiple resources. Subtrees of Resource Manager resource hierarchy with 'under:' prefix will not be expanded.
-	GetEffectiveOrgPolicyOrganization(context.Context, *GetEffectiveOrgPolicyOrganizationRequest) (*OrgPolicy, error)
-	// Gets a `Policy` on a resource. If no `Policy` is set on the resource, a `Policy` is returned with default values including `POLICY_TYPE_NOT_SET` for the `policy_type oneof`. The `etag` value can be used with `SetOrgPolicy()` to create or update a `Policy` during read-modify-write.
-	GetOrgPolicyOrganization(context.Context, *GetOrgPolicyOrganizationRequest) (*OrgPolicy, error)
-	// Lists `Constraints` that could be applied on the specified resource.
-	ListAvailableOrgPolicyConstraintsOrganization(context.Context, *ListAvailableOrgPolicyConstraintsOrganizationRequest) (*ListAvailableOrgPolicyConstraintsResponse, error)
-	// Lists all the `Policies` set for a particular resource.
-	ListOrgPoliciesOrganization(context.Context, *ListOrgPoliciesOrganizationRequest) (*ListOrgPoliciesResponse, error)
-	// Searches Organization resources that are visible to the user and satisfy the specified filter. This method returns Organizations in an unspecified order. New Organizations do not necessarily appear at the end of the results. Search will only return organizations on which the user has the permission `resourcemanager.organizations.get` or has super admin privileges.
-	SearchOrganization(context.Context, *SearchOrganizationRequest) (*SearchOrganizationsResponse, error)
-	// Updates the specified `Policy` on the resource. Creates a new `Policy` for that `Constraint` on the resource if one does not exist. Not supplying an `etag` on the request `Policy` results in an unconditional write of the `Policy`.
-	SetOrgPolicyOrganization(context.Context, *SetOrgPolicyOrganizationRequest) (*OrgPolicy, error)
 	// Returns permissions that a caller has on the specified project.
 	TestIamPermissions(context.Context, *TestIamPermissionsRequest) (*TestIamPermissionsResponse, error)
 	mustEmbedUnimplementedOrganizationsServerServer()
@@ -679,30 +346,6 @@ type OrganizationsServerServer interface {
 type UnimplementedOrganizationsServerServer struct {
 }
 
-func (UnimplementedOrganizationsServerServer) ClearOrgPolicyOrganization(context.Context, *ClearOrgPolicyOrganizationRequest) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ClearOrgPolicyOrganization not implemented")
-}
-func (UnimplementedOrganizationsServerServer) GetOrganization(context.Context, *GetOrganizationRequest) (*Organization, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetOrganization not implemented")
-}
-func (UnimplementedOrganizationsServerServer) GetEffectiveOrgPolicyOrganization(context.Context, *GetEffectiveOrgPolicyOrganizationRequest) (*OrgPolicy, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetEffectiveOrgPolicyOrganization not implemented")
-}
-func (UnimplementedOrganizationsServerServer) GetOrgPolicyOrganization(context.Context, *GetOrgPolicyOrganizationRequest) (*OrgPolicy, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetOrgPolicyOrganization not implemented")
-}
-func (UnimplementedOrganizationsServerServer) ListAvailableOrgPolicyConstraintsOrganization(context.Context, *ListAvailableOrgPolicyConstraintsOrganizationRequest) (*ListAvailableOrgPolicyConstraintsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListAvailableOrgPolicyConstraintsOrganization not implemented")
-}
-func (UnimplementedOrganizationsServerServer) ListOrgPoliciesOrganization(context.Context, *ListOrgPoliciesOrganizationRequest) (*ListOrgPoliciesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListOrgPoliciesOrganization not implemented")
-}
-func (UnimplementedOrganizationsServerServer) SearchOrganization(context.Context, *SearchOrganizationRequest) (*SearchOrganizationsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SearchOrganization not implemented")
-}
-func (UnimplementedOrganizationsServerServer) SetOrgPolicyOrganization(context.Context, *SetOrgPolicyOrganizationRequest) (*OrgPolicy, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SetOrgPolicyOrganization not implemented")
-}
 func (UnimplementedOrganizationsServerServer) TestIamPermissions(context.Context, *TestIamPermissionsRequest) (*TestIamPermissionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
 }
@@ -717,150 +360,6 @@ type UnsafeOrganizationsServerServer interface {
 
 func RegisterOrganizationsServerServer(s grpc.ServiceRegistrar, srv OrganizationsServerServer) {
 	s.RegisterService(&OrganizationsServer_ServiceDesc, srv)
-}
-
-func _OrganizationsServer_ClearOrgPolicyOrganization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ClearOrgPolicyOrganizationRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(OrganizationsServerServer).ClearOrgPolicyOrganization(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.OrganizationsServer/ClearOrgPolicyOrganization",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrganizationsServerServer).ClearOrgPolicyOrganization(ctx, req.(*ClearOrgPolicyOrganizationRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _OrganizationsServer_GetOrganization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetOrganizationRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(OrganizationsServerServer).GetOrganization(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.OrganizationsServer/GetOrganization",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrganizationsServerServer).GetOrganization(ctx, req.(*GetOrganizationRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _OrganizationsServer_GetEffectiveOrgPolicyOrganization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetEffectiveOrgPolicyOrganizationRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(OrganizationsServerServer).GetEffectiveOrgPolicyOrganization(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.OrganizationsServer/GetEffectiveOrgPolicyOrganization",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrganizationsServerServer).GetEffectiveOrgPolicyOrganization(ctx, req.(*GetEffectiveOrgPolicyOrganizationRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _OrganizationsServer_GetOrgPolicyOrganization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetOrgPolicyOrganizationRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(OrganizationsServerServer).GetOrgPolicyOrganization(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.OrganizationsServer/GetOrgPolicyOrganization",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrganizationsServerServer).GetOrgPolicyOrganization(ctx, req.(*GetOrgPolicyOrganizationRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _OrganizationsServer_ListAvailableOrgPolicyConstraintsOrganization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListAvailableOrgPolicyConstraintsOrganizationRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(OrganizationsServerServer).ListAvailableOrgPolicyConstraintsOrganization(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.OrganizationsServer/ListAvailableOrgPolicyConstraintsOrganization",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrganizationsServerServer).ListAvailableOrgPolicyConstraintsOrganization(ctx, req.(*ListAvailableOrgPolicyConstraintsOrganizationRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _OrganizationsServer_ListOrgPoliciesOrganization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListOrgPoliciesOrganizationRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(OrganizationsServerServer).ListOrgPoliciesOrganization(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.OrganizationsServer/ListOrgPoliciesOrganization",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrganizationsServerServer).ListOrgPoliciesOrganization(ctx, req.(*ListOrgPoliciesOrganizationRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _OrganizationsServer_SearchOrganization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SearchOrganizationRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(OrganizationsServerServer).SearchOrganization(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.OrganizationsServer/SearchOrganization",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrganizationsServerServer).SearchOrganization(ctx, req.(*SearchOrganizationRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _OrganizationsServer_SetOrgPolicyOrganization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SetOrgPolicyOrganizationRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(OrganizationsServerServer).SetOrgPolicyOrganization(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.OrganizationsServer/SetOrgPolicyOrganization",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrganizationsServerServer).SetOrgPolicyOrganization(ctx, req.(*SetOrgPolicyOrganizationRequest))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _OrganizationsServer_TestIamPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -889,38 +388,6 @@ var OrganizationsServer_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*OrganizationsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "ClearOrgPolicyOrganization",
-			Handler:    _OrganizationsServer_ClearOrgPolicyOrganization_Handler,
-		},
-		{
-			MethodName: "GetOrganization",
-			Handler:    _OrganizationsServer_GetOrganization_Handler,
-		},
-		{
-			MethodName: "GetEffectiveOrgPolicyOrganization",
-			Handler:    _OrganizationsServer_GetEffectiveOrgPolicyOrganization_Handler,
-		},
-		{
-			MethodName: "GetOrgPolicyOrganization",
-			Handler:    _OrganizationsServer_GetOrgPolicyOrganization_Handler,
-		},
-		{
-			MethodName: "ListAvailableOrgPolicyConstraintsOrganization",
-			Handler:    _OrganizationsServer_ListAvailableOrgPolicyConstraintsOrganization_Handler,
-		},
-		{
-			MethodName: "ListOrgPoliciesOrganization",
-			Handler:    _OrganizationsServer_ListOrgPoliciesOrganization_Handler,
-		},
-		{
-			MethodName: "SearchOrganization",
-			Handler:    _OrganizationsServer_SearchOrganization_Handler,
-		},
-		{
-			MethodName: "SetOrgPolicyOrganization",
-			Handler:    _OrganizationsServer_SetOrgPolicyOrganization_Handler,
-		},
-		{
 			MethodName: "TestIamPermissions",
 			Handler:    _OrganizationsServer_TestIamPermissions_Handler,
 		},
@@ -933,32 +400,6 @@ var OrganizationsServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProjectsServerClient interface {
-	// Clears a `Policy` from a resource.
-	ClearOrgPolicyProject(ctx context.Context, in *ClearOrgPolicyProjectRequest, opts ...grpc.CallOption) (*Empty, error)
-	// Request that a new Project be created. The result is an Operation which can be used to track the creation process. This process usually takes a few seconds, but can sometimes take much longer. The tracking Operation is automatically deleted after a few hours, so there is no need to call DeleteOperation. Authorization requires the Google IAM permission `resourcemanager.projects.create` on the specified parent for the new project. The parent is identified by a specified ResourceId, which must include both an ID and a type, such as organization. This method does not associate the new project with a billing account. You can set or update the billing account associated with a project using the [`projects.updateBillingInfo`] (/billing/reference/rest/v1/projects/updateBillingInfo) method.
-	CreateProject(ctx context.Context, in *CreateProjectRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
-	// Marks the Project identified by the specified `project_id` (for example, `my-project-123`) for deletion. This method will only affect the Project if it has a lifecycle state of ACTIVE. This method changes the Project's lifecycle state from ACTIVE to DELETE_REQUESTED. The deletion starts at an unspecified time, at which point the Project is no longer accessible. Until the deletion completes, you can check the lifecycle state checked by retrieving the Project with GetProject, and the Project remains visible to ListProjects. However, you cannot update the project. After the deletion completes, the Project is not retrievable by the GetProject and ListProjects methods. The caller must have delete permissions for this Project.
-	DeleteProject(ctx context.Context, in *DeleteProjectRequest, opts ...grpc.CallOption) (*Empty, error)
-	// Retrieves the Project identified by the specified `project_id` (for example, `my-project-123`). The caller must have read permissions for this Project.
-	GetProject(ctx context.Context, in *GetProjectRequest, opts ...grpc.CallOption) (*Project, error)
-	// Gets a list of ancestors in the resource hierarchy for the Project identified by the specified `project_id` (for example, `my-project-123`). The caller must have read permissions for this Project.
-	GetAncestryProject(ctx context.Context, in *GetAncestryProjectRequest, opts ...grpc.CallOption) (*GetAncestryResponse, error)
-	// Gets the effective `Policy` on a resource. This is the result of merging `Policies` in the resource hierarchy. The returned `Policy` will not have an `etag`set because it is a computed `Policy` across multiple resources. Subtrees of Resource Manager resource hierarchy with 'under:' prefix will not be expanded.
-	GetEffectiveOrgPolicyProject(ctx context.Context, in *GetEffectiveOrgPolicyProjectRequest, opts ...grpc.CallOption) (*OrgPolicy, error)
-	// Gets a `Policy` on a resource. If no `Policy` is set on the resource, a `Policy` is returned with default values including `POLICY_TYPE_NOT_SET` for the `policy_type oneof`. The `etag` value can be used with `SetOrgPolicy()` to create or update a `Policy` during read-modify-write.
-	GetOrgPolicyProject(ctx context.Context, in *GetOrgPolicyProjectRequest, opts ...grpc.CallOption) (*OrgPolicy, error)
-	// Lists Projects that the caller has the `resourcemanager.projects.get` permission on and satisfy the specified filter. This method returns Projects in an unspecified order. This method is eventually consistent with project mutations; this means that a newly created project may not appear in the results or recent updates to an existing project may not be reflected in the results. To retrieve the latest state of a project, use the GetProject method. NOTE: If the request filter contains a `parent.type` and `parent.id` and the caller has the `resourcemanager.projects.list` permission on the parent, the results will be drawn from an alternate index which provides more consistent results. In future versions of this API, this List method will be split into List and Search to properly capture the behavioral difference.
-	ListProjects(ctx context.Context, in *ListProjectsRequest, opts ...grpc.CallOption) (*ListProjectsResponse, error)
-	// Lists `Constraints` that could be applied on the specified resource.
-	ListAvailableOrgPolicyConstraintsProject(ctx context.Context, in *ListAvailableOrgPolicyConstraintsProjectRequest, opts ...grpc.CallOption) (*ListAvailableOrgPolicyConstraintsResponse, error)
-	// Lists all the `Policies` set for a particular resource.
-	ListOrgPoliciesProject(ctx context.Context, in *ListOrgPoliciesProjectRequest, opts ...grpc.CallOption) (*ListOrgPoliciesResponse, error)
-	// Updates the specified `Policy` on the resource. Creates a new `Policy` for that `Constraint` on the resource if one does not exist. Not supplying an `etag` on the request `Policy` results in an unconditional write of the `Policy`.
-	SetOrgPolicyProject(ctx context.Context, in *SetOrgPolicyProjectRequest, opts ...grpc.CallOption) (*OrgPolicy, error)
-	// Restores the Project identified by the specified `project_id` (for example, `my-project-123`). You can only use this method for a Project that has a lifecycle state of DELETE_REQUESTED. After deletion starts, the Project cannot be restored. The caller must have undelete permissions for this Project.
-	UndeleteProject(ctx context.Context, in *UndeleteProjectServiceRequest, opts ...grpc.CallOption) (*Empty, error)
-	// Updates the attributes of the Project identified by the specified `project_id` (for example, `my-project-123`). The caller must have modify permissions for this Project.
-	UpdateProject(ctx context.Context, in *UpdateProjectRequest, opts ...grpc.CallOption) (*Project, error)
 	// Returns permissions that a caller has on the specified project.
 	TestIamPermissions(ctx context.Context, in *TestIamPermissionsRequest, opts ...grpc.CallOption) (*TestIamPermissionsResponse, error)
 }
@@ -969,123 +410,6 @@ type projectsServerClient struct {
 
 func NewProjectsServerClient(cc grpc.ClientConnInterface) ProjectsServerClient {
 	return &projectsServerClient{cc}
-}
-
-func (c *projectsServerClient) ClearOrgPolicyProject(ctx context.Context, in *ClearOrgPolicyProjectRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.ProjectsServer/ClearOrgPolicyProject", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *projectsServerClient) CreateProject(ctx context.Context, in *CreateProjectRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
-	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.ProjectsServer/CreateProject", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *projectsServerClient) DeleteProject(ctx context.Context, in *DeleteProjectRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.ProjectsServer/DeleteProject", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *projectsServerClient) GetProject(ctx context.Context, in *GetProjectRequest, opts ...grpc.CallOption) (*Project, error) {
-	out := new(Project)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.ProjectsServer/GetProject", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *projectsServerClient) GetAncestryProject(ctx context.Context, in *GetAncestryProjectRequest, opts ...grpc.CallOption) (*GetAncestryResponse, error) {
-	out := new(GetAncestryResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.ProjectsServer/GetAncestryProject", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *projectsServerClient) GetEffectiveOrgPolicyProject(ctx context.Context, in *GetEffectiveOrgPolicyProjectRequest, opts ...grpc.CallOption) (*OrgPolicy, error) {
-	out := new(OrgPolicy)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.ProjectsServer/GetEffectiveOrgPolicyProject", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *projectsServerClient) GetOrgPolicyProject(ctx context.Context, in *GetOrgPolicyProjectRequest, opts ...grpc.CallOption) (*OrgPolicy, error) {
-	out := new(OrgPolicy)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.ProjectsServer/GetOrgPolicyProject", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *projectsServerClient) ListProjects(ctx context.Context, in *ListProjectsRequest, opts ...grpc.CallOption) (*ListProjectsResponse, error) {
-	out := new(ListProjectsResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.ProjectsServer/ListProjects", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *projectsServerClient) ListAvailableOrgPolicyConstraintsProject(ctx context.Context, in *ListAvailableOrgPolicyConstraintsProjectRequest, opts ...grpc.CallOption) (*ListAvailableOrgPolicyConstraintsResponse, error) {
-	out := new(ListAvailableOrgPolicyConstraintsResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.ProjectsServer/ListAvailableOrgPolicyConstraintsProject", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *projectsServerClient) ListOrgPoliciesProject(ctx context.Context, in *ListOrgPoliciesProjectRequest, opts ...grpc.CallOption) (*ListOrgPoliciesResponse, error) {
-	out := new(ListOrgPoliciesResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.ProjectsServer/ListOrgPoliciesProject", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *projectsServerClient) SetOrgPolicyProject(ctx context.Context, in *SetOrgPolicyProjectRequest, opts ...grpc.CallOption) (*OrgPolicy, error) {
-	out := new(OrgPolicy)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.ProjectsServer/SetOrgPolicyProject", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *projectsServerClient) UndeleteProject(ctx context.Context, in *UndeleteProjectServiceRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.ProjectsServer/UndeleteProject", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *projectsServerClient) UpdateProject(ctx context.Context, in *UpdateProjectRequest, opts ...grpc.CallOption) (*Project, error) {
-	out := new(Project)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.ProjectsServer/UpdateProject", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *projectsServerClient) TestIamPermissions(ctx context.Context, in *TestIamPermissionsRequest, opts ...grpc.CallOption) (*TestIamPermissionsResponse, error) {
@@ -1101,32 +425,6 @@ func (c *projectsServerClient) TestIamPermissions(ctx context.Context, in *TestI
 // All implementations must embed UnimplementedProjectsServerServer
 // for forward compatibility
 type ProjectsServerServer interface {
-	// Clears a `Policy` from a resource.
-	ClearOrgPolicyProject(context.Context, *ClearOrgPolicyProjectRequest) (*Empty, error)
-	// Request that a new Project be created. The result is an Operation which can be used to track the creation process. This process usually takes a few seconds, but can sometimes take much longer. The tracking Operation is automatically deleted after a few hours, so there is no need to call DeleteOperation. Authorization requires the Google IAM permission `resourcemanager.projects.create` on the specified parent for the new project. The parent is identified by a specified ResourceId, which must include both an ID and a type, such as organization. This method does not associate the new project with a billing account. You can set or update the billing account associated with a project using the [`projects.updateBillingInfo`] (/billing/reference/rest/v1/projects/updateBillingInfo) method.
-	CreateProject(context.Context, *CreateProjectRequest) (*longrunningpb.Operation, error)
-	// Marks the Project identified by the specified `project_id` (for example, `my-project-123`) for deletion. This method will only affect the Project if it has a lifecycle state of ACTIVE. This method changes the Project's lifecycle state from ACTIVE to DELETE_REQUESTED. The deletion starts at an unspecified time, at which point the Project is no longer accessible. Until the deletion completes, you can check the lifecycle state checked by retrieving the Project with GetProject, and the Project remains visible to ListProjects. However, you cannot update the project. After the deletion completes, the Project is not retrievable by the GetProject and ListProjects methods. The caller must have delete permissions for this Project.
-	DeleteProject(context.Context, *DeleteProjectRequest) (*Empty, error)
-	// Retrieves the Project identified by the specified `project_id` (for example, `my-project-123`). The caller must have read permissions for this Project.
-	GetProject(context.Context, *GetProjectRequest) (*Project, error)
-	// Gets a list of ancestors in the resource hierarchy for the Project identified by the specified `project_id` (for example, `my-project-123`). The caller must have read permissions for this Project.
-	GetAncestryProject(context.Context, *GetAncestryProjectRequest) (*GetAncestryResponse, error)
-	// Gets the effective `Policy` on a resource. This is the result of merging `Policies` in the resource hierarchy. The returned `Policy` will not have an `etag`set because it is a computed `Policy` across multiple resources. Subtrees of Resource Manager resource hierarchy with 'under:' prefix will not be expanded.
-	GetEffectiveOrgPolicyProject(context.Context, *GetEffectiveOrgPolicyProjectRequest) (*OrgPolicy, error)
-	// Gets a `Policy` on a resource. If no `Policy` is set on the resource, a `Policy` is returned with default values including `POLICY_TYPE_NOT_SET` for the `policy_type oneof`. The `etag` value can be used with `SetOrgPolicy()` to create or update a `Policy` during read-modify-write.
-	GetOrgPolicyProject(context.Context, *GetOrgPolicyProjectRequest) (*OrgPolicy, error)
-	// Lists Projects that the caller has the `resourcemanager.projects.get` permission on and satisfy the specified filter. This method returns Projects in an unspecified order. This method is eventually consistent with project mutations; this means that a newly created project may not appear in the results or recent updates to an existing project may not be reflected in the results. To retrieve the latest state of a project, use the GetProject method. NOTE: If the request filter contains a `parent.type` and `parent.id` and the caller has the `resourcemanager.projects.list` permission on the parent, the results will be drawn from an alternate index which provides more consistent results. In future versions of this API, this List method will be split into List and Search to properly capture the behavioral difference.
-	ListProjects(context.Context, *ListProjectsRequest) (*ListProjectsResponse, error)
-	// Lists `Constraints` that could be applied on the specified resource.
-	ListAvailableOrgPolicyConstraintsProject(context.Context, *ListAvailableOrgPolicyConstraintsProjectRequest) (*ListAvailableOrgPolicyConstraintsResponse, error)
-	// Lists all the `Policies` set for a particular resource.
-	ListOrgPoliciesProject(context.Context, *ListOrgPoliciesProjectRequest) (*ListOrgPoliciesResponse, error)
-	// Updates the specified `Policy` on the resource. Creates a new `Policy` for that `Constraint` on the resource if one does not exist. Not supplying an `etag` on the request `Policy` results in an unconditional write of the `Policy`.
-	SetOrgPolicyProject(context.Context, *SetOrgPolicyProjectRequest) (*OrgPolicy, error)
-	// Restores the Project identified by the specified `project_id` (for example, `my-project-123`). You can only use this method for a Project that has a lifecycle state of DELETE_REQUESTED. After deletion starts, the Project cannot be restored. The caller must have undelete permissions for this Project.
-	UndeleteProject(context.Context, *UndeleteProjectServiceRequest) (*Empty, error)
-	// Updates the attributes of the Project identified by the specified `project_id` (for example, `my-project-123`). The caller must have modify permissions for this Project.
-	UpdateProject(context.Context, *UpdateProjectRequest) (*Project, error)
 	// Returns permissions that a caller has on the specified project.
 	TestIamPermissions(context.Context, *TestIamPermissionsRequest) (*TestIamPermissionsResponse, error)
 	mustEmbedUnimplementedProjectsServerServer()
@@ -1136,45 +434,6 @@ type ProjectsServerServer interface {
 type UnimplementedProjectsServerServer struct {
 }
 
-func (UnimplementedProjectsServerServer) ClearOrgPolicyProject(context.Context, *ClearOrgPolicyProjectRequest) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ClearOrgPolicyProject not implemented")
-}
-func (UnimplementedProjectsServerServer) CreateProject(context.Context, *CreateProjectRequest) (*longrunningpb.Operation, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateProject not implemented")
-}
-func (UnimplementedProjectsServerServer) DeleteProject(context.Context, *DeleteProjectRequest) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteProject not implemented")
-}
-func (UnimplementedProjectsServerServer) GetProject(context.Context, *GetProjectRequest) (*Project, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetProject not implemented")
-}
-func (UnimplementedProjectsServerServer) GetAncestryProject(context.Context, *GetAncestryProjectRequest) (*GetAncestryResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAncestryProject not implemented")
-}
-func (UnimplementedProjectsServerServer) GetEffectiveOrgPolicyProject(context.Context, *GetEffectiveOrgPolicyProjectRequest) (*OrgPolicy, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetEffectiveOrgPolicyProject not implemented")
-}
-func (UnimplementedProjectsServerServer) GetOrgPolicyProject(context.Context, *GetOrgPolicyProjectRequest) (*OrgPolicy, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetOrgPolicyProject not implemented")
-}
-func (UnimplementedProjectsServerServer) ListProjects(context.Context, *ListProjectsRequest) (*ListProjectsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListProjects not implemented")
-}
-func (UnimplementedProjectsServerServer) ListAvailableOrgPolicyConstraintsProject(context.Context, *ListAvailableOrgPolicyConstraintsProjectRequest) (*ListAvailableOrgPolicyConstraintsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListAvailableOrgPolicyConstraintsProject not implemented")
-}
-func (UnimplementedProjectsServerServer) ListOrgPoliciesProject(context.Context, *ListOrgPoliciesProjectRequest) (*ListOrgPoliciesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListOrgPoliciesProject not implemented")
-}
-func (UnimplementedProjectsServerServer) SetOrgPolicyProject(context.Context, *SetOrgPolicyProjectRequest) (*OrgPolicy, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SetOrgPolicyProject not implemented")
-}
-func (UnimplementedProjectsServerServer) UndeleteProject(context.Context, *UndeleteProjectServiceRequest) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UndeleteProject not implemented")
-}
-func (UnimplementedProjectsServerServer) UpdateProject(context.Context, *UpdateProjectRequest) (*Project, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateProject not implemented")
-}
 func (UnimplementedProjectsServerServer) TestIamPermissions(context.Context, *TestIamPermissionsRequest) (*TestIamPermissionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
 }
@@ -1189,240 +448,6 @@ type UnsafeProjectsServerServer interface {
 
 func RegisterProjectsServerServer(s grpc.ServiceRegistrar, srv ProjectsServerServer) {
 	s.RegisterService(&ProjectsServer_ServiceDesc, srv)
-}
-
-func _ProjectsServer_ClearOrgPolicyProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ClearOrgPolicyProjectRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProjectsServerServer).ClearOrgPolicyProject(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.ProjectsServer/ClearOrgPolicyProject",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProjectsServerServer).ClearOrgPolicyProject(ctx, req.(*ClearOrgPolicyProjectRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ProjectsServer_CreateProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateProjectRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProjectsServerServer).CreateProject(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.ProjectsServer/CreateProject",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProjectsServerServer).CreateProject(ctx, req.(*CreateProjectRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ProjectsServer_DeleteProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteProjectRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProjectsServerServer).DeleteProject(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.ProjectsServer/DeleteProject",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProjectsServerServer).DeleteProject(ctx, req.(*DeleteProjectRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ProjectsServer_GetProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetProjectRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProjectsServerServer).GetProject(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.ProjectsServer/GetProject",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProjectsServerServer).GetProject(ctx, req.(*GetProjectRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ProjectsServer_GetAncestryProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetAncestryProjectRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProjectsServerServer).GetAncestryProject(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.ProjectsServer/GetAncestryProject",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProjectsServerServer).GetAncestryProject(ctx, req.(*GetAncestryProjectRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ProjectsServer_GetEffectiveOrgPolicyProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetEffectiveOrgPolicyProjectRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProjectsServerServer).GetEffectiveOrgPolicyProject(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.ProjectsServer/GetEffectiveOrgPolicyProject",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProjectsServerServer).GetEffectiveOrgPolicyProject(ctx, req.(*GetEffectiveOrgPolicyProjectRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ProjectsServer_GetOrgPolicyProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetOrgPolicyProjectRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProjectsServerServer).GetOrgPolicyProject(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.ProjectsServer/GetOrgPolicyProject",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProjectsServerServer).GetOrgPolicyProject(ctx, req.(*GetOrgPolicyProjectRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ProjectsServer_ListProjects_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListProjectsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProjectsServerServer).ListProjects(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.ProjectsServer/ListProjects",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProjectsServerServer).ListProjects(ctx, req.(*ListProjectsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ProjectsServer_ListAvailableOrgPolicyConstraintsProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListAvailableOrgPolicyConstraintsProjectRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProjectsServerServer).ListAvailableOrgPolicyConstraintsProject(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.ProjectsServer/ListAvailableOrgPolicyConstraintsProject",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProjectsServerServer).ListAvailableOrgPolicyConstraintsProject(ctx, req.(*ListAvailableOrgPolicyConstraintsProjectRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ProjectsServer_ListOrgPoliciesProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListOrgPoliciesProjectRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProjectsServerServer).ListOrgPoliciesProject(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.ProjectsServer/ListOrgPoliciesProject",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProjectsServerServer).ListOrgPoliciesProject(ctx, req.(*ListOrgPoliciesProjectRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ProjectsServer_SetOrgPolicyProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SetOrgPolicyProjectRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProjectsServerServer).SetOrgPolicyProject(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.ProjectsServer/SetOrgPolicyProject",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProjectsServerServer).SetOrgPolicyProject(ctx, req.(*SetOrgPolicyProjectRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ProjectsServer_UndeleteProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UndeleteProjectServiceRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProjectsServerServer).UndeleteProject(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.ProjectsServer/UndeleteProject",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProjectsServerServer).UndeleteProject(ctx, req.(*UndeleteProjectServiceRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ProjectsServer_UpdateProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateProjectRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProjectsServerServer).UpdateProject(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.cloudresourcemanager.v1.ProjectsServer/UpdateProject",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProjectsServerServer).UpdateProject(ctx, req.(*UpdateProjectRequest))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _ProjectsServer_TestIamPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -1450,58 +475,6 @@ var ProjectsServer_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "mockgcp.cloudresourcemanager.v1.ProjectsServer",
 	HandlerType: (*ProjectsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "ClearOrgPolicyProject",
-			Handler:    _ProjectsServer_ClearOrgPolicyProject_Handler,
-		},
-		{
-			MethodName: "CreateProject",
-			Handler:    _ProjectsServer_CreateProject_Handler,
-		},
-		{
-			MethodName: "DeleteProject",
-			Handler:    _ProjectsServer_DeleteProject_Handler,
-		},
-		{
-			MethodName: "GetProject",
-			Handler:    _ProjectsServer_GetProject_Handler,
-		},
-		{
-			MethodName: "GetAncestryProject",
-			Handler:    _ProjectsServer_GetAncestryProject_Handler,
-		},
-		{
-			MethodName: "GetEffectiveOrgPolicyProject",
-			Handler:    _ProjectsServer_GetEffectiveOrgPolicyProject_Handler,
-		},
-		{
-			MethodName: "GetOrgPolicyProject",
-			Handler:    _ProjectsServer_GetOrgPolicyProject_Handler,
-		},
-		{
-			MethodName: "ListProjects",
-			Handler:    _ProjectsServer_ListProjects_Handler,
-		},
-		{
-			MethodName: "ListAvailableOrgPolicyConstraintsProject",
-			Handler:    _ProjectsServer_ListAvailableOrgPolicyConstraintsProject_Handler,
-		},
-		{
-			MethodName: "ListOrgPoliciesProject",
-			Handler:    _ProjectsServer_ListOrgPoliciesProject_Handler,
-		},
-		{
-			MethodName: "SetOrgPolicyProject",
-			Handler:    _ProjectsServer_SetOrgPolicyProject_Handler,
-		},
-		{
-			MethodName: "UndeleteProject",
-			Handler:    _ProjectsServer_UndeleteProject_Handler,
-		},
-		{
-			MethodName: "UpdateProject",
-			Handler:    _ProjectsServer_UpdateProject_Handler,
-		},
 		{
 			MethodName: "TestIamPermissions",
 			Handler:    _ProjectsServer_TestIamPermissions_Handler,

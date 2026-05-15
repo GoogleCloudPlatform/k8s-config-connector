@@ -127,7 +127,7 @@ go run . --file ${API_PROTO} --message "TestIamPermissionsRequest" --mode "repla
   repeated string permissions = 2 [json_name="permissions"];
 EOF
 
-go run . --file ${API_PROTO} --service "FoldersServer" --mode "append" <<EOF
+go run . --file ${API_PROTO} --service "FoldersServer" --mode "replace" <<EOF
   // Returns permissions that a caller has on the specified project.
   rpc TestIamPermissions(TestIamPermissionsRequest) returns (TestIamPermissionsResponse) {
     option (google.api.http) = {
@@ -137,7 +137,7 @@ go run . --file ${API_PROTO} --service "FoldersServer" --mode "append" <<EOF
   };
 EOF
 
-go run . --file ${API_PROTO} --service "OrganizationsServer" --mode "append" <<EOF
+go run . --file ${API_PROTO} --service "OrganizationsServer" --mode "replace" <<EOF
   // Returns permissions that a caller has on the specified project.
   rpc TestIamPermissions(TestIamPermissionsRequest) returns (TestIamPermissionsResponse) {
     option (google.api.http) = {
@@ -147,7 +147,7 @@ go run . --file ${API_PROTO} --service "OrganizationsServer" --mode "append" <<E
   };
 EOF
 
-go run . --file ${API_PROTO} --service "ProjectsServer" --mode "append" <<EOF
+go run . --file ${API_PROTO} --service "ProjectsServer" --mode "replace" <<EOF
   // Returns permissions that a caller has on the specified project.
   rpc TestIamPermissions(TestIamPermissionsRequest) returns (TestIamPermissionsResponse) {
     option (google.api.http) = {
@@ -156,5 +156,6 @@ go run . --file ${API_PROTO} --service "ProjectsServer" --mode "append" <<EOF
     };
   };
 EOF
+
 
 sed -i 's/^syntax = "proto3";/syntax = "proto2";/' ${API_PROTO}
