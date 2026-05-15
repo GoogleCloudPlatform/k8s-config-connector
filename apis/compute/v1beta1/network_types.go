@@ -23,6 +23,7 @@ import (
 // +kcc:spec:proto=google.cloud.compute.v1.Network
 type ComputeNetworkSpec struct {
 	// The ComputeNetwork name. If not given, the metadata.name will be used.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.name
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Immutable. When set to 'true', the network is created in "auto subnet mode" and
@@ -46,7 +47,7 @@ type ComputeNetworkSpec struct {
 	// Enable ULA internal ipv6 on this network. Enabling this feature will assign
 	// a /48 from google defined ULA prefix fd20::/20.
 	// +kcc:proto:field=google.cloud.compute.v1.Network.enable_ula_internal_ipv6
-	EnableUlaInternalIpv6 *bool `json:"enableUlaInternalIpv6,omitempty"`
+	EnableUlaInternalIPV6 *bool `json:"enableUlaInternalIPV6,omitempty"`
 
 	// Immutable. When enabling ula internal ipv6, caller optionally can specify the /48 range
 	// they want from the google defined ULA prefix fd20::/20. The input must be a
@@ -54,7 +55,7 @@ type ComputeNetworkSpec struct {
 	// fail if the speficied /48 is already in used by another resource.
 	// If the field is not speficied, then a /48 range will be randomly allocated from fd20::/20 and returned via this field.
 	// +kcc:proto:field=google.cloud.compute.v1.Network.internal_ipv6_range
-	InternalIpv6Range *string `json:"internalIpv6Range,omitempty"`
+	InternalIPV6Range *string `json:"internalIPV6Range,omitempty"`
 
 	// Immutable. Maximum Transmission Unit in bytes. The default value is 1460 bytes.
 	// The minimum value for this field is 1300 and the maximum value is 8896 bytes (jumbo frames).
@@ -75,7 +76,7 @@ type ComputeNetworkSpec struct {
 	// of this network in the same region as the router. If set to 'GLOBAL',
 	// this network's cloud routers will advertise routes with all
 	// subnetworks of this network, across regions. Possible values: ["REGIONAL", "GLOBAL"].
-	// +kcc:proto:field=google.cloud.compute.v1.Network.routing_config.routing_mode
+	// +kcc:proto:field=google.cloud.compute.v1.Network.RoutingConfig.routing_mode
 	RoutingMode *string `json:"routingMode,omitempty"`
 }
 
