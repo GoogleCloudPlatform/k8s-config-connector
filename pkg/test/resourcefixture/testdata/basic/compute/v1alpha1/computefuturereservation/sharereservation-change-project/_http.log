@@ -1,36 +1,6 @@
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
-429 Too Many Requests
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 429,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute' of service 'cloudresourcemanager.googleapis.com' for consumer 'project_number:764086051850'.",
-        "reason": "rateLimitExceeded"
-      }
-    ],
-    "message": "Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute' of service 'cloudresourcemanager.googleapis.com' for consumer 'project_number:764086051850'.",
-    "status": "RESOURCE_EXHAUSTED"
-  }
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
 403 Forbidden
 Content-Type: application/json; charset=UTF-8
 Server: ESF
@@ -44,13 +14,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 403,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "The caller does not have permission",
-        "reason": "forbidden"
-      }
-    ],
     "message": "The caller does not have permission",
     "status": "PERMISSION_DENIED"
   }
@@ -287,17 +250,10 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "${projectId}",
   "etag": "abcdef0123A=",
-  "labels": {
-    "generative-language": "enabled",
-    "managed-by-cnrm": "true"
-  },
   "name": "projects/${projectNumber}",
-  "parent": "folders/185572751725",
   "projectId": "${projectId}",
-  "state": 1,
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "state": 1
 }
 
 ---
@@ -431,6 +387,10 @@ X-Xss-Protection: 0
     "totalCount": "1"
   },
   "status": {
+    "existingMatchingUsageInfo": {
+      "count": "0",
+      "timestamp": "2024-04-01T12:34:56.123456Z"
+    },
     "procurementStatus": "DRAFTING"
   },
   "timeWindow": {
@@ -468,8 +428,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectNumber}",
   "parent": "organizations/${organizationID}",
   "projectId": "project-${uniqueId}",
-  "state": 1,
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "state": 1
 }
 
 ---
