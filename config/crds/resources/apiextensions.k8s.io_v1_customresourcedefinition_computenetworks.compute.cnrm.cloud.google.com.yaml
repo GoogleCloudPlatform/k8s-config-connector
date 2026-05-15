@@ -101,6 +101,7 @@ spec:
                   clamping or dropped with an ICMP 'Fragmentation-Needed' message
                   if the packets are routed to the Internet or other VPCs with varying
                   MTUs.
+                format: int32
                 type: integer
               networkFirewallPolicyEnforcementOrder:
                 description: 'Set the order that Firewall Rules and Firewall Policies

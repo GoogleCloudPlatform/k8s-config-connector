@@ -845,7 +845,7 @@ func (in *ComputeNetworkSpec) DeepCopyInto(out *ComputeNetworkSpec) {
 	}
 	if in.Mtu != nil {
 		in, out := &in.Mtu, &out.Mtu
-		*out = new(int)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.NetworkFirewallPolicyEnforcementOrder != nil {
