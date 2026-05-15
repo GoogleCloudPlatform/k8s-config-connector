@@ -1436,12 +1436,12 @@ func GitSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GitSource
 	return out
 }
 
-/* found existing non-generated mapping function "HashObservedState_FromProto", skipping
-func HashObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Hash) *krm.HashObservedState {
+/* found existing non-generated mapping function "Hash_FromProto", skipping
+func Hash_FromProto(mapCtx *direct.MapContext, in *pb.Hash) *krm.Hash {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HashObservedState{}
+	out := &krm.Hash{}
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	out.Value = []krm.byte{direct.LazyPtr(in.GetValue())}
 	return out
@@ -1449,9 +1449,9 @@ func HashObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Hash) *krm.Ha
 */
 
 /*
-found existing non-generated mapping function "HashObservedState_ToProto", skipping
+found existing non-generated mapping function "Hash_ToProto", skipping
 
-	func HashObservedState_ToProto(mapCtx *direct.MapContext, in *krm.HashObservedState) *pb.Hash {
+	func Hash_ToProto(mapCtx *direct.MapContext, in *krm.Hash) *pb.Hash {
 		if in == nil {
 			return nil
 		}
@@ -1463,6 +1463,26 @@ found existing non-generated mapping function "HashObservedState_ToProto", skipp
 		return out
 	}
 */
+func HashObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Hash) *krm.HashObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HashObservedState{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Value = []krm.byte{direct.LazyPtr(in.GetValue())}
+	return out
+}
+func HashObservedState_ToProto(mapCtx *direct.MapContext, in *krm.HashObservedState) *pb.Hash {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Hash{}
+	out.Type = direct.Enum_ToProto[pb.Hash_HashType](mapCtx, in.Type)
+	if len(in.Value) > 0 && in.Value[0] != nil {
+		out.Value = direct.ValueOf(in.Value[0])
+	}
+	return out
+}
 func InlineSecret_FromProto(mapCtx *direct.MapContext, in *pb.InlineSecret) *krm.InlineSecret {
 	if in == nil {
 		return nil
@@ -1888,6 +1908,40 @@ func RepositoryEventConfigObservedState_ToProto(mapCtx *direct.MapContext, in *k
 	out.RepositoryType = direct.Enum_ToProto[pb.RepositoryEventConfig_RepositoryType](mapCtx, in.RepositoryType)
 	// MISSING: PullRequest
 	// MISSING: Push
+	return out
+}
+func Results_FromProto(mapCtx *direct.MapContext, in *pb.Results) *krm.Results {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Results{}
+	// MISSING: Images
+	out.BuildStepImages = in.BuildStepImages
+	// MISSING: ArtifactManifest
+	// MISSING: NumArtifacts
+	out.BuildStepOutputs = in.BuildStepOutputs
+	// MISSING: ArtifactTiming
+	// MISSING: PythonPackages
+	// MISSING: MavenArtifacts
+	// MISSING: GoModules
+	// MISSING: NpmPackages
+	return out
+}
+func Results_ToProto(mapCtx *direct.MapContext, in *krm.Results) *pb.Results {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Results{}
+	// MISSING: Images
+	out.BuildStepImages = in.BuildStepImages
+	// MISSING: ArtifactManifest
+	// MISSING: NumArtifacts
+	out.BuildStepOutputs = in.BuildStepOutputs
+	// MISSING: ArtifactTiming
+	// MISSING: PythonPackages
+	// MISSING: MavenArtifacts
+	// MISSING: GoModules
+	// MISSING: NpmPackages
 	return out
 }
 func ResultsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Results) *krm.ResultsObservedState {

@@ -303,6 +303,10 @@ type GitConfigObservedState struct {
 type HierarchyControllerConfigObservedState struct {
 }
 
+// +kcc:observedstate:proto=google.cloud.gkehub.configmanagement.v1beta.MembershipSpec
+type MembershipSpecObservedState struct {
+}
+
 // +kcc:observedstate:proto=google.cloud.gkehub.configmanagement.v1beta.OciConfig
 type OciConfigObservedState struct {
 }
@@ -352,8 +356,4 @@ type ResourceRequirementsObservedState struct {
 
 // +kcc:observedstate:proto=google.cloud.gkehub.policycontroller.v1beta.TemplateLibraryConfig
 type TemplateLibraryConfigObservedState struct {
-}
-
-// +kcc:observedstate:proto=google.cloud.gkehub.servicemesh.v1beta.MembershipSpec
-type MembershipSpecObservedState struct {
 }
