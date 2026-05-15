@@ -107,7 +107,7 @@ func (in *BucketCondition) DeepCopyInto(out *BucketCondition) {
 	*out = *in
 	if in.Age != nil {
 		in, out := &in.Age, &out.Age
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.CreatedBefore != nil {
@@ -122,12 +122,12 @@ func (in *BucketCondition) DeepCopyInto(out *BucketCondition) {
 	}
 	if in.DaysSinceCustomTime != nil {
 		in, out := &in.DaysSinceCustomTime, &out.DaysSinceCustomTime
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.DaysSinceNoncurrentTime != nil {
 		in, out := &in.DaysSinceNoncurrentTime, &out.DaysSinceNoncurrentTime
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.MatchesPrefix != nil {
@@ -152,7 +152,7 @@ func (in *BucketCondition) DeepCopyInto(out *BucketCondition) {
 	}
 	if in.NumNewerVersions != nil {
 		in, out := &in.NumNewerVersions, &out.NumNewerVersions
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.WithState != nil {
@@ -178,7 +178,7 @@ func (in *BucketCors) DeepCopyInto(out *BucketCors) {
 	*out = *in
 	if in.MaxAgeSeconds != nil {
 		in, out := &in.MaxAgeSeconds, &out.MaxAgeSeconds
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Method != nil {
@@ -333,7 +333,7 @@ func (in *BucketSoftDeletePolicy) DeepCopyInto(out *BucketSoftDeletePolicy) {
 	*out = *in
 	if in.RetentionDurationSeconds != nil {
 		in, out := &in.RetentionDurationSeconds, &out.RetentionDurationSeconds
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	return
@@ -359,7 +359,7 @@ func (in *BucketSoftDeletePolicyStatus) DeepCopyInto(out *BucketSoftDeletePolicy
 	}
 	if in.RetentionDurationSeconds != nil {
 		in, out := &in.RetentionDurationSeconds, &out.RetentionDurationSeconds
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	return
@@ -874,6 +874,11 @@ func (in *StorageBucketStatus) DeepCopyInto(out *StorageBucketStatus) {
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
+		*out = new(string)
+		**out = **in
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
