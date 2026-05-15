@@ -1,4 +1,4 @@
-// Copyright 2026 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import (
 var ServiceGVK = GroupVersion.WithKind("Service")
 
 // ServiceSpec defines the desired state of Service
-// +kcc:spec:proto=google.api.serviceusage.v1beta1.Service
 type ServiceSpec struct {
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
