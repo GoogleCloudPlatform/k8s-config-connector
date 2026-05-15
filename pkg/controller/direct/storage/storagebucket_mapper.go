@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +generated:mapper
 // krm.group: storage.cnrm.cloud.google.com
 // krm.version: v1beta1
 // proto.service: google.storage.v1
@@ -145,7 +144,7 @@ func StorageBucketRetentionPolicy_FromProto(mapCtx *direct.MapContext, in *pb.Bu
 	}
 	out := &krm.StorageBucketRetentionPolicy{}
 	out.IsLocked = direct.PtrTo(in.IsLocked)
-	out.RetentionPeriod = in.RetentionPeriod
+	out.RetentionPeriod = int(in.RetentionPeriod)
 	return out
 }
 func StorageBucketRetentionPolicy_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketRetentionPolicy) *pb.Bucket_RetentionPolicy {
@@ -156,7 +155,7 @@ func StorageBucketRetentionPolicy_ToProto(mapCtx *direct.MapContext, in *krm.Sto
 	if in.IsLocked != nil {
 		out.IsLocked = *in.IsLocked
 	}
-	out.RetentionPeriod = in.RetentionPeriod
+	out.RetentionPeriod = int64(in.RetentionPeriod)
 	return out
 }
 
