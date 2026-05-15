@@ -98,7 +98,11 @@ func RunExportCSV(ctx context.Context, o *ExportCSVOptions) error {
 	if err != nil {
 		return err
 	}
-	x, err := toolbot.NewCSVExporter(extractor, addProtoDefinition)
+	addSource, err := toolbot.NewEnhanceWithSource(o.SrcDir)
+	if err != nil {
+		return err
+	}
+	x, err := toolbot.NewCSVExporter(extractor, addProtoDefinition, addSource)
 	if err != nil {
 		return err
 	}

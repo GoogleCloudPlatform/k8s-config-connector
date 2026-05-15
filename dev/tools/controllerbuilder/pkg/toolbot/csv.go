@@ -231,8 +231,14 @@ func (x *CSVExporter) pickExamples(input *DataPoint) []*DataPoint {
 
 	// If we have examples with the same API group, use only those
 	if len(sameAPIGroupExamples) > 0 {
-		return sameAPIGroupExamples
+		examples = sameAPIGroupExamples
 	}
+
+	// Never return more than 32 examples (we will invariably run into token limits otherwise)
+	if len(examples) > 32 {
+		examples = examples[:32]
+	}
+
 	return examples
 }
 
@@ -322,11 +328,15 @@ func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, llmClient 
 
 	examples := x.pickExamples(input)
 
+	log.Info("building prompt with examples", "examples.#", len(examples))
+
 	for _, dataPoint := range examples {
 		inputColumnKeys := dataPoint.InputColumnKeys()
 		if x.StrictInputColumnKeys != nil && !x.StrictInputColumnKeys.Equal(inputColumnKeys) {
 			return fmt.Errorf("unexpected input columns for %v; got %v, want %v", dataPoint.Description, inputColumnKeys, x.StrictInputColumnKeys)
 		}
+
+		log.Info("adding example to prompt", "columns", sets.List(inputColumnKeys))
 
 		s := dataPoint.ToGenAIFormat()
 		s = "<example>\n" + s + "\n</example>\n\n"
@@ -334,6 +344,8 @@ func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, llmClient 
 	}
 
 	{
+		log.Info("adding query", "columns", sets.List(input.InputColumnKeys()))
+
 		// Prompt with the input data point.
 		s := input.ToGenAIFormat()
 		// We also include the beginning of the output for Gemini to fill in.
@@ -342,7 +354,14 @@ func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, llmClient 
 		fmt.Fprintf(&prompt, "\nCan you complete the item?  Don't output any additional commentary.\n\n%s", s)
 	}
 
-	log.Info("sending completion request", "prompt", prompt.String())
+	{
+		s := prompt.String()
+		if len(s) > 1000 {
+			s = s[:1000] + "... (truncated)"
+		}
+
+		log.Info("sending completion request", "prompt", s, "prompt.length", len(prompt.String()))
+	}
 
 	resp, err := llmClient.GenerateCompletion(ctx, &gollm.CompletionRequest{
 		Model:  model,
