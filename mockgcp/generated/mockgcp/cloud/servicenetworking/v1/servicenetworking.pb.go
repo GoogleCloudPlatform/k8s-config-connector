@@ -1268,7 +1268,7 @@ type BackendRule struct {
 	OperationDeadline float64 `protobuf:"fixed64,7,opt,name=operation_deadline,json=operationDeadline,proto3" json:"operation_deadline,omitempty"`
 	// The map between request protocol and the backend address.
 	OverridesByRequestProtocol map[string]*BackendRule `protobuf:"bytes,8,rep,name=overrides_by_request_protocol,json=overridesByRequestProtocol,proto3" json:"overrides_by_request_protocol,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
-	// no-lint
+	// Path translation specifies how to combine the backend address with the request path in order to produce the appropriate forwarding URL for the request. See PathTranslation for more details.
 	PathTranslation string `protobuf:"bytes,9,opt,name=path_translation,json=pathTranslation,proto3" json:"path_translation,omitempty"`
 	// The protocol used for sending a request to the backend. The supported values are "http/1.1" and "h2". The default value is inferred from the scheme in the address field: SCHEME PROTOCOL http:// http/1.1 https:// http/1.1 grpc:// h2 grpcs:// h2 For secure HTTP backends (https://) that support HTTP/2, set this field to "h2" for improved performance. Configuring this field to non-default values is only supported for secure HTTP backends. This field will be ignored for all other backends. See https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids for more details on the supported values.
 	Protocol string `protobuf:"bytes,10,opt,name=protocol,proto3" json:"protocol,omitempty"`
@@ -2023,7 +2023,7 @@ type CommonLanguageSettings struct {
 	Destinations []string `protobuf:"bytes,1,rep,name=destinations,proto3" json:"destinations,omitempty"`
 	// Link to automatically generated reference documentation. Example: https://cloud.google.com/nodejs/docs/reference/asset/latest
 	ReferenceDocsUri string `protobuf:"bytes,2,opt,name=reference_docs_uri,json=referenceDocsUri,proto3" json:"reference_docs_uri,omitempty"`
-	// Configuration for which RPCs should be generated in the GAPIC client.
+	// Configuration for which RPCs should be generated in the GAPIC client. Note: This field should not be used in most cases.
 	SelectiveGapicGeneration *SelectiveGapicGeneration `protobuf:"bytes,3,opt,name=selective_gapic_generation,json=selectiveGapicGeneration,proto3" json:"selective_gapic_generation,omitempty"`
 }
 
@@ -7705,7 +7705,7 @@ func (x *SecondaryIpRangeSpec) GetRequestedAddress() string {
 	return ""
 }
 
-// This message is used to configure the generation of a subset of the RPCs in a service for client libraries.
+// This message is used to configure the generation of a subset of the RPCs in a service for client libraries. Note: This feature should not be used in most cases.
 type SelectiveGapicGeneration struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -7789,7 +7789,7 @@ type Service struct {
 	CustomError *CustomError `protobuf:"bytes,9,opt,name=custom_error,json=customError,proto3" json:"custom_error,omitempty"`
 	// Additional API documentation.
 	Documentation *Documentation `protobuf:"bytes,10,opt,name=documentation,proto3" json:"documentation,omitempty"`
-	// Configuration for network endpoints. If this is empty, then an endpoint with the same name as the service is automatically generated to service all defined APIs. WARNING: Defining any entries in the `endpoints` list disables the automatic generation of default endpoint variations (e.g., `{service}.clients6.google.com`, `content-{service}.googleapis.com`, and mTLS variants like `{service}.mtls.googleapis.com`). To retain these default variations, you are required to explicitly include your main service endpoint (e.g., `myservice.googleapis.com`) in this list alongside any other custom endpoints (like REP, GFE, etc.).
+	// Configuration for network endpoints. If this is empty, then an endpoint with the same name as the service is automatically generated to service all defined APIs.
 	Endpoints []*Endpoint `protobuf:"bytes,11,rep,name=endpoints,proto3" json:"endpoints,omitempty"`
 	// A list of all enum types included in this API service. Enums referenced directly or indirectly by the `apis` are automatically included. Enums which are not referenced but shall be included should be listed here by name by the configuration author. Example: enums: - name: google.someapi.v1.SomeEnum
 	Enums []*Enum `protobuf:"bytes,12,rep,name=enums,proto3" json:"enums,omitempty"`
