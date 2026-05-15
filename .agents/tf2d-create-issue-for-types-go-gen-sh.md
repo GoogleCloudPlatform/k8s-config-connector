@@ -67,8 +67,9 @@ where `<Group>` and `<Kind>` are replaced with the actual Group and Kind of the 
 The issue should be labeled with the following labels:
 * `overseer` to indicate that the issue was created by Overseer.
 * `area/direct` to indicate that the issue is related to Direct migration.
+* `direct-migration` to trigger direct migration specific presubmit checks.
 * `priority/medium` to indicate the priority level of the issue.
-* `step/gen-types` to indicate the the step in generating a resource
+* `step/gen-types` to indicate the step in generating a resource.
 
 Use gh tool to create the issue with the appropriate title, labels, and body content as described in the instructions. Make sure to link the issue as a subtask to the main epic for tracking purposes.
 
