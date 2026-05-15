@@ -178,7 +178,6 @@ func (t *Harness) Init() {
 		testgcp.TestDependentFolderProjectID.Set("example-project-02")
 		testgcp.IdentityPlatformTestProject.Set("kcc-identity-platform")
 		testgcp.RecaptchaEnterpriseTestProject.Set("kcc-recaptcha-enterprise")
-		testgcp.TestSharedReservationsProject.Set("mock-project")
 
 		crm := t.getCloudResourceManagerClient(t.HTTPClient)
 		req := &cloudresourcemanagerv1.Project{
