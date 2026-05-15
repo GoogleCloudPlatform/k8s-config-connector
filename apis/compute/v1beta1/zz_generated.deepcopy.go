@@ -833,13 +833,13 @@ func (in *ComputeNetworkSpec) DeepCopyInto(out *ComputeNetworkSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.EnableUlaInternalIpv6 != nil {
-		in, out := &in.EnableUlaInternalIpv6, &out.EnableUlaInternalIpv6
+	if in.EnableUlaInternalIPV6 != nil {
+		in, out := &in.EnableUlaInternalIPV6, &out.EnableUlaInternalIPV6
 		*out = new(bool)
 		**out = **in
 	}
-	if in.InternalIpv6Range != nil {
-		in, out := &in.InternalIpv6Range, &out.InternalIpv6Range
+	if in.InternalIPV6Range != nil {
+		in, out := &in.InternalIPV6Range, &out.InternalIPV6Range
 		*out = new(string)
 		**out = **in
 	}

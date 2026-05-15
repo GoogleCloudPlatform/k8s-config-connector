@@ -827,11 +827,9 @@ func ComputeNetworkObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	out := &krm.ComputeNetworkObservedState{}
 	// MISSING: IPv4Range
 	// MISSING: CreationTimestamp
-	// MISSING: EnableUlaInternalIPV6
 	// MISSING: FirewallPolicy
 	out.GatewayIPv4 = in.GatewayIPv4
 	// MISSING: ID
-	// MISSING: InternalIPV6Range
 	// MISSING: Kind
 	// MISSING: Name
 	// MISSING: NetworkProfile
@@ -850,11 +848,9 @@ func ComputeNetworkObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	out := &pb.Network{}
 	// MISSING: IPv4Range
 	// MISSING: CreationTimestamp
-	// MISSING: EnableUlaInternalIPV6
 	// MISSING: FirewallPolicy
 	out.GatewayIPv4 = in.GatewayIPv4
 	// MISSING: ID
-	// MISSING: InternalIPV6Range
 	// MISSING: Kind
 	// MISSING: Name
 	// MISSING: NetworkProfile
@@ -875,12 +871,10 @@ func ComputeNetworkSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Netw
 	out.AutoCreateSubnetworks = in.AutoCreateSubnetworks
 	// MISSING: CreationTimestamp
 	out.Description = in.Description
-	// MISSING: EnableUlaInternalIPV6
-	// (near miss): "EnableUlaInternalIPV6" vs "EnableUlaInternalIpv6"
+	out.EnableUlaInternalIPV6 = in.EnableUlaInternalIpv6
 	// MISSING: FirewallPolicy
 	// MISSING: ID
-	// MISSING: InternalIPV6Range
-	// (near miss): "InternalIPV6Range" vs "InternalIpv6Range"
+	out.InternalIPV6Range = in.InternalIpv6Range
 	// MISSING: Kind
 	out.Mtu = in.Mtu
 	// MISSING: Name
@@ -902,12 +896,10 @@ func ComputeNetworkSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Compu
 	out.AutoCreateSubnetworks = in.AutoCreateSubnetworks
 	// MISSING: CreationTimestamp
 	out.Description = in.Description
-	// MISSING: EnableUlaInternalIPV6
-	// (near miss): "EnableUlaInternalIPV6" vs "EnableUlaInternalIpv6"
+	out.EnableUlaInternalIpv6 = in.EnableUlaInternalIPV6
 	// MISSING: FirewallPolicy
 	// MISSING: ID
-	// MISSING: InternalIPV6Range
-	// (near miss): "InternalIPV6Range" vs "InternalIpv6Range"
+	out.InternalIpv6Range = in.InternalIPV6Range
 	// MISSING: Kind
 	out.Mtu = in.Mtu
 	// MISSING: Name
