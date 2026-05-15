@@ -162,7 +162,7 @@ type ClusterObservedStateStatus struct {
 	// +optional
 	PreciseSizeGb *float64 `json:"preciseSizeGb,omitempty"`
 
-	/* Output only. PSC connections for discovery of the cluster topology and accessing the cluster. */
+	/* Output only. The list of PSC connections that are auto-created through service connectivity automation. */
 	// +optional
 	PscConnections []ClusterPscConnectionsStatus `json:"pscConnections,omitempty"`
 
@@ -184,7 +184,7 @@ type ClusterObservedStateStatus struct {
 }
 
 type ClusterPscConfigStatus struct {
-	/* Required. The network where the IP address of the discovery endpoint will be reserved, in the form of projects/{network_project}/global/networks/{network_id}. */
+	/* The network where the IP address of the discovery endpoint will be reserved, in the form of projects/{network_project}/global/networks/{network_id}. */
 	// +optional
 	Network *string `json:"network,omitempty"`
 }
@@ -193,6 +193,10 @@ type ClusterPscConnectionsStatus struct {
 	/* Required. The IP allocated on the consumer network for the PSC forwarding rule. */
 	// +optional
 	Address *string `json:"address,omitempty"`
+
+	/* Output only. Type of the PSC connection. */
+	// +optional
+	ConnectionType *string `json:"connectionType,omitempty"`
 
 	/* Required. The URI of the consumer side forwarding rule. Example: projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}. */
 	// +optional
@@ -209,6 +213,10 @@ type ClusterPscConnectionsStatus struct {
 	/* Required. The PSC connection id of the forwarding rule connected to the service attachment. */
 	// +optional
 	PscConnectionID *string `json:"pscConnectionID,omitempty"`
+
+	/* Output only. The status of the PSC connection. Please note that this value is updated periodically. To get the latest status of a PSC connection, follow https://cloud.google.com/vpc/docs/configure-private-service-connect-services#endpoint-details. */
+	// +optional
+	PscConnectionStatus *string `json:"pscConnectionStatus,omitempty"`
 
 	/* Required. The service attachment which is the target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}. */
 	// +optional
