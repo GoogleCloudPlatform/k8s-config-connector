@@ -61,26 +61,28 @@ func AppHubDiscoveredWorkloadSpec_ToProto(mapCtx *direct.MapContext, in *krm.App
 	// MISSING: Name
 	return out
 }
-func WorkloadProperties_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadProperties) *krm.WorkloadProperties {
-	if in == nil {
-		return nil
-	}
-	out := &krm.WorkloadProperties{}
-	// MISSING: GcpProject
-	// MISSING: Location
-	// MISSING: Zone
-	return out
-}
-func WorkloadProperties_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadProperties) *pb.WorkloadProperties {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WorkloadProperties{}
-	// MISSING: GcpProject
-	// MISSING: Location
-	// MISSING: Zone
-	return out
-}
+
+//	func WorkloadProperties_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadProperties) *krm.WorkloadProperties {
+//		if in == nil {
+//			return nil
+//		}
+//		out := &krm.WorkloadProperties{}
+//		// MISSING: GcpProject
+//		// MISSING: Location
+//		// MISSING: Zone
+//		return out
+//	}
+//
+//	func WorkloadProperties_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadPropertiesObservedState) *pb.WorkloadProperties {
+//		if in == nil {
+//			return nil
+//		}
+//		out := &pb.WorkloadProperties{}
+//		// MISSING: GcpProject
+//		// MISSING: Location
+//		// MISSING: Zone
+//		return out
+//	}
 func WorkloadPropertiesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadProperties) *krm.WorkloadPropertiesObservedState {
 	if in == nil {
 		return nil
@@ -101,22 +103,25 @@ func WorkloadPropertiesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.Zone = direct.ValueOf(in.Zone)
 	return out
 }
-func WorkloadReference_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadReference) *krm.WorkloadReference {
-	if in == nil {
-		return nil
-	}
-	out := &krm.WorkloadReference{}
-	// MISSING: URI
-	return out
-}
-func WorkloadReference_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadReference) *pb.WorkloadReference {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WorkloadReference{}
-	// MISSING: URI
-	return out
-}
+
+//	func WorkloadReference_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadReference) *krm.WorkloadReference {
+//		if in == nil {
+//			return nil
+//		}
+//		out := &krm.WorkloadReference{}
+//		// MISSING: URI
+//		return out
+//	}
+//
+//	func WorkloadReference_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadReference) *pb.WorkloadReference {
+//		if in == nil {
+//			return nil
+//		}
+//		out := &pb.WorkloadReference{}
+//		// MISSING: URI
+//		return out
+//	}
+
 func WorkloadReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadReference) *krm.WorkloadReferenceObservedState {
 	if in == nil {
 		return nil

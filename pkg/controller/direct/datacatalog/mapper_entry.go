@@ -40,7 +40,7 @@ func DataCatalogEntryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.E
 	out.FeatureOnlineStoreSpec = FeatureOnlineStoreSpecObservedState_v1alpha1_FromProto(mapCtx, in.GetFeatureOnlineStoreSpec())
 	out.UsageSignal = UsageSignalObservedState_v1alpha1_FromProto(mapCtx, in.GetUsageSignal())
 	out.DataSource = DataSourceObservedState_v1alpha1_FromProto(mapCtx, in.GetDataSource())
-	out.PersonalDetails = PersonalDetails_v1alpha1_FromProto(mapCtx, in.GetPersonalDetails())
+	out.PersonalDetails = PersonalDetailsObservedState_v1alpha1_FromProto(mapCtx, in.GetPersonalDetails())
 	return out
 }
 func DataCatalogEntryObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataCatalogEntryObservedState) *pb.Entry {
@@ -70,7 +70,7 @@ func DataCatalogEntryObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1a
 	}
 	out.UsageSignal = UsageSignalObservedState_v1alpha1_ToProto(mapCtx, in.UsageSignal)
 	out.DataSource = DataSourceObservedState_v1alpha1_ToProto(mapCtx, in.DataSource)
-	out.PersonalDetails = PersonalDetails_v1alpha1_ToProto(mapCtx, in.PersonalDetails)
+	out.PersonalDetails = PersonalDetailsObservedState_v1alpha1_ToProto(mapCtx, in.PersonalDetails)
 	return out
 }
 func DataCatalogEntrySpec_FromProto(mapCtx *direct.MapContext, in *pb.Entry) *krmv1alpha1.DataCatalogEntrySpec {
@@ -184,6 +184,6 @@ func GCSFilesetSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Gcs
 	}
 	out := &krmv1alpha1.GCSFilesetSpecObservedState{}
 	// MISSING: FilePatterns
-	out.SampleGCSFileSpecs = direct.Slice_FromProto(mapCtx, in.SampleGcsFileSpecs, GCSFileSpec_v1alpha1_FromProto)
+	out.SampleGCSFileSpecs = direct.Slice_FromProto(mapCtx, in.SampleGcsFileSpecs, GCSFileSpecObservedState_v1alpha1_FromProto)
 	return out
 }

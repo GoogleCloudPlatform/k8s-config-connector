@@ -80,7 +80,7 @@ func FailoverSpec_ToProto(mapCtx *direct.MapContext, in *krm.FailoverSpec) strin
 	return direct.ValueOf(in.SecondaryLocation)
 }
 
-func Status_ToProto(mapCtx *direct.MapContext, in *krm.Status) *statuspb.Status {
+func StatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StatusObservedState) *statuspb.Status {
 	if in == nil {
 		return nil
 	}
@@ -141,11 +141,11 @@ func AutoscaleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservat
 	return out
 }
 
-func Status_FromProto(mapCtx *direct.MapContext, in *statuspb.Status) *krm.Status {
+func StatusObservedState_FromProto(mapCtx *direct.MapContext, in *statuspb.Status) *krm.StatusObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Status{}
+	out := &krm.StatusObservedState{}
 	out.Code = direct.LazyPtr(in.GetCode())
 	out.Message = direct.LazyPtr(in.GetMessage())
 	// NOTYET

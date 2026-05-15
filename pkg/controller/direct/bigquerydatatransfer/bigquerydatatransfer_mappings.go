@@ -36,7 +36,7 @@ func BigQueryDataTransferConfigObservedState_FromProto(mapCtx *direct.MapContext
 	out.NextRunTime = direct.StringTimestamp_FromProto(mapCtx, in.GetNextRunTime())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.DatasetRegion = direct.LazyPtr(in.GetDatasetRegion())
-	out.OwnerInfo = UserInfo_FromProto(mapCtx, in.GetOwnerInfo())
+	out.OwnerInfo = UserInfoObservedState_FromProto(mapCtx, in.GetOwnerInfo())
 	out.UserID = direct.LazyPtr(in.GetUserId())
 	out.Error = Status_FromProto(mapCtx, in.GetError())
 	return out
@@ -51,7 +51,7 @@ func BigQueryDataTransferConfigObservedState_ToProto(mapCtx *direct.MapContext, 
 	out.NextRunTime = direct.StringTimestamp_ToProto(mapCtx, in.NextRunTime)
 	out.State = direct.Enum_ToProto[pb.TransferState](mapCtx, in.State)
 	out.DatasetRegion = direct.ValueOf(in.DatasetRegion)
-	out.OwnerInfo = UserInfo_ToProto(mapCtx, in.OwnerInfo)
+	out.OwnerInfo = UserInfoObservedState_ToProto(mapCtx, in.OwnerInfo)
 	out.UserId = direct.ValueOf(in.UserID)
 	out.Error = Status_ToProto(mapCtx, in.Error)
 	return out
