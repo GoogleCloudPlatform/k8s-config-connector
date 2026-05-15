@@ -26,40 +26,6 @@ import (
 	pb "google.golang.org/genproto/googleapis/api/serviceusage/v1beta1"
 )
 
-func ServiceConfig_FromProto(mapCtx *direct.MapContext, in *pb.ServiceConfig) *krm.ServiceConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ServiceConfig{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Title = direct.LazyPtr(in.GetTitle())
-	out.Apis = direct.Slice_FromProto(mapCtx, in.Apis, API_FromProto)
-	out.Documentation = Documentation_FromProto(mapCtx, in.GetDocumentation())
-	out.Quota = Quota_FromProto(mapCtx, in.GetQuota())
-	out.Authentication = Authentication_FromProto(mapCtx, in.GetAuthentication())
-	out.Usage = Usage_FromProto(mapCtx, in.GetUsage())
-	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Endpoint_FromProto)
-	out.MonitoredResources = direct.Slice_FromProto(mapCtx, in.MonitoredResources, MonitoredResourceDescriptor_FromProto)
-	out.Monitoring = Monitoring_FromProto(mapCtx, in.GetMonitoring())
-	return out
-}
-func ServiceConfig_ToProto(mapCtx *direct.MapContext, in *krm.ServiceConfig) *pb.ServiceConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ServiceConfig{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Title = direct.ValueOf(in.Title)
-	out.Apis = direct.Slice_ToProto(mapCtx, in.Apis, API_ToProto)
-	out.Documentation = Documentation_ToProto(mapCtx, in.Documentation)
-	out.Quota = Quota_ToProto(mapCtx, in.Quota)
-	out.Authentication = Authentication_ToProto(mapCtx, in.Authentication)
-	out.Usage = Usage_ToProto(mapCtx, in.Usage)
-	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Endpoint_ToProto)
-	out.MonitoredResources = direct.Slice_ToProto(mapCtx, in.MonitoredResources, MonitoredResourceDescriptor_ToProto)
-	out.Monitoring = Monitoring_ToProto(mapCtx, in.Monitoring)
-	return out
-}
 func ServiceIdentityObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceIdentity) *krm.ServiceIdentityObservedState {
 	if in == nil {
 		return nil
@@ -90,27 +56,5 @@ func ServiceIdentitySpec_ToProto(mapCtx *direct.MapContext, in *krm.ServiceIdent
 		return nil
 	}
 	out := &pb.ServiceIdentity{}
-	return out
-}
-func ServiceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.ServiceSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ServiceSpec{}
-	// MISSING: Name
-	// MISSING: Parent
-	// MISSING: Config
-	// MISSING: State
-	return out
-}
-func ServiceSpec_ToProto(mapCtx *direct.MapContext, in *krm.ServiceSpec) *pb.Service {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Service{}
-	// MISSING: Name
-	// MISSING: Parent
-	// MISSING: Config
-	// MISSING: State
 	return out
 }
