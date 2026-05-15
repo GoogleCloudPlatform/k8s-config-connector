@@ -74,7 +74,7 @@ func (m *modelBigtableSchemaBundle) AdapterForObject(ctx context.Context, op *di
 		return nil, err
 	}
 
-	gcpClient, err := m.client(ctx, id.ProjectID, id.InstanceID)
+	gcpClient, err := m.client(ctx, id.Parent().Parent.Parent.ProjectID, id.Parent().Parent.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -101,7 +101,7 @@ var _ directbase.Adapter = &BigtableSchemaBundleAdapter{}
 
 func (a *BigtableSchemaBundleAdapter) Find(ctx context.Context) (bool, error) {
 
-	bigtableschemabundleinfo, err := a.gcpClient.GetSchemaBundle(ctx, a.id.TableID, a.id.ID())
+	bigtableschemabundleinfo, err := a.gcpClient.GetSchemaBundle(ctx, a.id.Parent().Id, a.id.ID())
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -123,7 +123,7 @@ func (a *BigtableSchemaBundleAdapter) Create(ctx context.Context, createOp *dire
 	}
 
 	conf := &gcp.SchemaBundleConf{
-		TableID:        a.id.TableID,
+		TableID:        a.id.Parent().Id,
 		SchemaBundleID: a.id.ID(),
 		ProtoSchema: &gcp.ProtoSchemaInfo{
 			ProtoDescriptors: resource.GetProtoSchema().GetProtoDescriptors(),
@@ -136,7 +136,7 @@ func (a *BigtableSchemaBundleAdapter) Create(ctx context.Context, createOp *dire
 	}
 
 	// Get the created resource to get the etag/status
-	created, err := a.gcpClient.GetSchemaBundle(ctx, a.id.TableID, a.id.ID())
+	created, err := a.gcpClient.GetSchemaBundle(ctx, a.id.Parent().Id, a.id.ID())
 	if err != nil {
 		return fmt.Errorf("getting created BigtableSchemaBundle %s: %w", a.id, err)
 	}
@@ -215,7 +215,7 @@ func (a *BigtableSchemaBundleAdapter) Update(ctx context.Context, updateOp *dire
 
 	conf := gcp.UpdateSchemaBundleConf{
 		SchemaBundleConf: gcp.SchemaBundleConf{
-			TableID:        a.id.TableID,
+			TableID:        a.id.Parent().Id,
 			SchemaBundleID: a.id.ID(),
 			ProtoSchema: &gcp.ProtoSchemaInfo{
 				ProtoDescriptors: desiredSchema,
@@ -230,7 +230,7 @@ func (a *BigtableSchemaBundleAdapter) Update(ctx context.Context, updateOp *dire
 	}
 
 	// Get the updated resource
-	updated, err := a.gcpClient.GetSchemaBundle(ctx, a.id.TableID, a.id.ID())
+	updated, err := a.gcpClient.GetSchemaBundle(ctx, a.id.Parent().Id, a.id.ID())
 	if err != nil {
 		return fmt.Errorf("getting updated BigtableSchemaBundle %s: %w", a.id, err)
 	}
@@ -279,8 +279,8 @@ func (a *BigtableSchemaBundleAdapter) Export(ctx context.Context) (*unstructured
 	}
 
 	// parent tableRef
-	obj.Spec.TableRef = krmv1beta1.TableRef{External: a.id.Parent()}
-	obj.Spec.ResourceID = direct.LazyPtr(a.id.SchemaBundleID)
+	obj.Spec.TableRef = krmv1beta1.TableRef{External: a.id.Parent().String()}
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.ID())
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
@@ -296,7 +296,7 @@ func (a *BigtableSchemaBundleAdapter) Export(ctx context.Context) (*unstructured
 
 func (a *BigtableSchemaBundleAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 
-	err := a.gcpClient.DeleteSchemaBundle(ctx, a.id.TableID, a.id.ID())
+	err := a.gcpClient.DeleteSchemaBundle(ctx, a.id.Parent().Id, a.id.ID())
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
