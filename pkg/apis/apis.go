@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // Generate deepcopy for apis
-//go:generate go run k8s.io/code-generator/cmd/deepcopy-gen@v0.29.0 -O zz_generated.deepcopy -h ../../hack/boilerplate.go.txt -i  github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/... --trim-path-prefix github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis
+//go:generate go run k8s.io/code-generator/cmd/deepcopy-gen@v0.36.1 --output-file zz_generated.deepcopy.go --go-header-file ../../hack/boilerplate.go.txt github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/...
 
 // Package apis contains Kubernetes API groups.
 package apis
