@@ -33,8 +33,24 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkebackup/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
+
+func (s *BackupForGKEV1) ListBackups(ctx context.Context, req *pb.ListBackupsRequest) (*pb.ListBackupsResponse, error) {
+	res := &pb.ListBackupsResponse{}
+	kind := (&pb.Backup{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, kind, storage.ListOptions{
+		Prefix: req.Parent,
+	}, func(obj proto.Message) error {
+		res.Backups = append(res.Backups, obj.(*pb.Backup))
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
 
 func (s *BackupForGKEV1) GetBackup(ctx context.Context, req *pb.GetBackupRequest) (*pb.Backup, error) {
 	name, err := s.parseBackupName(req.Name)
@@ -298,4 +314,6 @@ func setBackupDefaultValuesAndInherit(obj *pb.Backup, parentPlan *pb.BackupPlan)
 		obj.ContainsVolumeData = parentPlan.BackupConfig.IncludeVolumeData
 		obj.ContainsSecrets = parentPlan.BackupConfig.IncludeSecrets
 	}
+	obj.SatisfiesPzs = true
+	obj.SatisfiesPzi = true
 }

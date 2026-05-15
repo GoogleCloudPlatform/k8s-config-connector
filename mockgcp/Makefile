@@ -35,6 +35,7 @@ gen-proto: tools sync-repo
 
 .PHONY: gen-proto-no-fixup
 gen-proto-no-fixup:
+	rm -rf ./third_party/googleapis/mockgcp/cloud/gkebackup/
 	PATH=bin/:${PATH} bin/protoc/bin/protoc \
 		-I ./third_party/googleapis \
 		-I ./apis \
@@ -54,9 +55,9 @@ gen-proto-no-fixup:
 		./apis/mockgcp/cloud/networkconnectivity/v1/*.proto \
 		./apis/mockgcp/cloud/servicenetworking/v1/*.proto \
 		./apis/mockgcp/cloud/resourcemanager/v1/*.proto \
-		./apis/mockgcp/storage/v1/*.proto \
-		./third_party/googleapis/mockgcp/api/apikeys/v2/*.proto \
-		./third_party/googleapis/mockgcp/api/serviceusage/v1/*.proto \
+        ./apis/mockgcp/cloud/gkebackup/v1/*.proto \
+        ./apis/mockgcp/storage/v1/*.proto \
+        ./third_party/googleapis/mockgcp/api/apikeys/v2/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/annotation*.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/data_item.proto \
@@ -177,9 +178,8 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/vmwareengine/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/datastream/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/modelarmor/v1/service.proto \
-		./third_party/googleapis/mockgcp/cloud/gkebackup/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/run/v2/*.proto \
-		./third_party/googleapis/mockgcp/cloud/speech/v2/*.proto \
+        ./third_party/googleapis/mockgcp/cloud/run/v2/*.proto \
+        ./third_party/googleapis/mockgcp/cloud/speech/v2/*.proto \
 		./third_party/googleapis/mockgcp/devtools/sourcerepo/v1/*.proto
 
 

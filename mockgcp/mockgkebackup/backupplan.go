@@ -33,8 +33,24 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkebackup/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
+
+func (s *BackupForGKEV1) ListBackupPlans(ctx context.Context, req *pb.ListBackupPlansRequest) (*pb.ListBackupPlansResponse, error) {
+	res := &pb.ListBackupPlansResponse{}
+	kind := (&pb.BackupPlan{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, kind, storage.ListOptions{
+		Prefix: req.Parent,
+	}, func(obj proto.Message) error {
+		res.BackupPlans = append(res.BackupPlans, obj.(*pb.BackupPlan))
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
 
 func (s *BackupForGKEV1) GetBackupPlan(ctx context.Context, req *pb.GetBackupPlanRequest) (*pb.BackupPlan, error) {
 	name, err := s.parseBackupPlanName(req.Name)
@@ -188,8 +204,35 @@ func (n *backupPlanName) String() string {
 	return fmt.Sprintf("projects/%s/locations/%s/backupPlans/%s", n.Project.ID, n.Location, n.BackupPlanID)
 }
 
-// parseBackupPlanName parses a string into an backupPlanName.
-// The expected form is `projects/*/locations/*/backupPlans/*`.
+type locationName struct {
+	Project  *projects.ProjectData
+	Location string
+}
+
+func (n *locationName) String() string {
+	return fmt.Sprintf("projects/%s/locations/%s", n.Project.ID, n.Location)
+}
+
+func (s *MockService) parseLocationName(name string) (*locationName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "locations" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &locationName{
+			Project:  project,
+			Location: tokens[3],
+		}
+
+		return name, nil
+	}
+
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
 func (s *MockService) parseBackupPlanName(name string) (*backupPlanName, error) {
 	tokens := strings.Split(name, "/")
 

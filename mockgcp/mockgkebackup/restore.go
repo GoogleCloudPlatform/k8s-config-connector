@@ -33,8 +33,24 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkebackup/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
+
+func (s *BackupForGKEV1) ListRestores(ctx context.Context, req *pb.ListRestoresRequest) (*pb.ListRestoresResponse, error) {
+	res := &pb.ListRestoresResponse{}
+	kind := (&pb.Restore{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, kind, storage.ListOptions{
+		Prefix: req.Parent,
+	}, func(obj proto.Message) error {
+		res.Restores = append(res.Restores, obj.(*pb.Restore))
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
 
 func (s *BackupForGKEV1) GetRestore(ctx context.Context, req *pb.GetRestoreRequest) (*pb.Restore, error) {
 	name, err := s.parseRestoreName(req.Name)

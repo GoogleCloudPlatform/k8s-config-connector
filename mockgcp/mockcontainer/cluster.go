@@ -664,9 +664,11 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 			//   Error when reading or editing Container Cluster \"cl-dball-7anl5sn4tkp33jq\": json: cannot unmarshal number
 			//   into Go struct field DatabaseEncryption.databaseEncryption.state of type string
 			obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_ENCRYPTED)
-		case pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED:
-			// CURRENT_STATE_ALL_OBJECTS_ENCRYPTION_ENABLED value is not yet supported in googleapis library.
-			obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_ENCRYPTED)
+		/*
+			case pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED:
+				// CURRENT_STATE_ALL_OBJECTS_ENCRYPTION_ENABLED value is not yet supported in googleapis library.
+				obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_ENCRYPTED)
+		*/
 		default:
 			obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_DECRYPTED)
 		}
