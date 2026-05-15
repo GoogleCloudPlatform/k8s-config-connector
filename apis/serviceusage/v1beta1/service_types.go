@@ -25,7 +25,7 @@ var ServiceGVK = GroupVersion.WithKind("Service")
 // ServiceSpec defines the desired state of Service
 type ServiceSpec struct {
 	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
 
 	// Immutable. Optional. The service of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -60,7 +60,6 @@ type Service struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	// +required
 	Spec   ServiceSpec   `json:"spec,omitempty"`
 	Status ServiceStatus `json:"status,omitempty"`
 }
