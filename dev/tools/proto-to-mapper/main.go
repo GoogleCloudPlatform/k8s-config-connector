@@ -194,7 +194,7 @@ func (v *visitor) findKRMStructsForProto(msg protoreflect.MessageDescriptor) map
 			if len(s.Comments) != 0 {
 				for _, c := range s.Comments {
 					for _, line := range strings.Split(c, "\n") {
-						proto, ok := codegen.GetProtoMessageFromAnnotation(line)
+						_, proto, ok := codegen.GetProtoAnnotation(line)
 						if ok && proto == string(msg.FullName()) {
 							matches[s.Name] = s
 						}

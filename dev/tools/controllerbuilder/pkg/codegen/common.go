@@ -34,21 +34,21 @@ const (
 	KCCProtoIgnoreAnnotation = "+kcc:proto:ignore"
 )
 
-// GetProtoMessageFromAnnotation will extract a proto message annotation, including the spec and observedstate "subclasses"
-func GetProtoMessageFromAnnotation(commentLine string) (string, bool) {
+// GetProtoAnnotation will extract a proto message annotation, including the spec and observedstate "subclasses"
+func GetProtoAnnotation(commentLine string) (string, string, bool) {
 	trimmed := strings.TrimPrefix(commentLine, "//")
 	trimmed = strings.TrimSpace(trimmed)
-	for _, annotation := range []string{
+	for _, annotationKey := range []string{
 		KCCProtoMessageAnnotationMisc,
 		KCCProtoMessageAnnotationSpec,
 		KCCProtoMessageAnnotationObservedState,
 		KCCProtoMessageAnnotationStatus,
 	} {
-		if strings.HasPrefix(trimmed, annotation+"=") {
-			return strings.TrimSpace(strings.TrimPrefix(trimmed, annotation+"=")), true
+		if strings.HasPrefix(trimmed, annotationKey+"=") {
+			return annotationKey, strings.TrimSpace(strings.TrimPrefix(trimmed, annotationKey+"=")), true
 		}
 	}
-	return "", false
+	return "", "", false
 }
 
 // special-case proto messages that are currently not mapped to KRM Go structs
