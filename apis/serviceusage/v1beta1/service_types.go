@@ -23,7 +23,7 @@ import (
 var ServiceGVK = GroupVersion.WithKind("Service")
 
 // ServiceSpec defines the desired state of Service
-// +kcc:spec:proto=google.api.serviceusage.v1.Service
+// +kcc:spec:proto=google.api.serviceusage.v1beta1.Service
 type ServiceSpec struct {
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
