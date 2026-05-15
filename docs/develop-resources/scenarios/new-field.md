@@ -4,32 +4,9 @@ _<span style="text-decoration:underline;">Note: If this is a Terraform-based or 
 
 ## 1. Generate the field
 
-Run the following command. This should add the new field and all of its dependency messages (if any) to the existing API files of the resource.
+Manually update the API definitions in the `/apis` directory to include the new field. You may also need to run the `generate-types-and-mappers` tool depending on your workflow.
 
-```bash
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd $REPO_ROOT/dev/tools/controllerbuilder
-
-go run . update-types insert \
-    --parent "google.monitoring.dashboard.v1.Dashboard" \
-    --field "row_layout" \
-    --api-dir ${REPO_ROOT}/apis/monitoring/v1beta1
-```
-
-* `--parent`
-
-Fully qualified name of the proto message holding the new field.
-
-* `--field`
-
-Name of the proto field to be inserted under the parent message.
-
-* `--api-dir`
-
-The `/apis` directory containing the existing API types for the resource. If a resource has multiple API versions, the `--api-dir` flag should specify the desired version. For example: `${REPO_ROOT}/apis/monitoring/v1beta1`.
-
-
-    1. Run 3.1 Generate the API and proto mapper to update the mapper files.
+    1. Run `dev/tasks/generate-types-and-mappers` to update the mapper files and generated code.
     2. Add the fields to `create.yaml `and `update.yaml `in corresponding test suites.
     3. Modify the MockGCP when necessary. The new fields should show up in `_http.log` and   `_generated_object_<resource>.golden.yaml` 
 
