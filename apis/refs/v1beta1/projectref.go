@@ -89,7 +89,6 @@ func AsProjectRef(in *deprecatedrefs.ResourceRef) *ProjectRef {
 // The resource reference that defaults to Project if Kind is not specified.
 type ExtendedProjectRef struct {
 	// Kind of the referenced resource
-	// +kubebuilder:default=Project
 	Kind      string `json:"kind,omitempty"`
 	Namespace string `json:"namespace,omitempty"`
 	Name      string `json:"name,omitempty"`
