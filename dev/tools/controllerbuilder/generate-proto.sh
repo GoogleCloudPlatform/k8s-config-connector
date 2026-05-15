@@ -13,6 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+if [[ -n ${SKIP_GENERATE_PROTOS:-} ]]; then
+  echo "SKIP_GENERATE_PROTOS is set; skipping generation of protos"
+  exit 0
+fi
+
 
 set -o errexit
 set -o nounset
