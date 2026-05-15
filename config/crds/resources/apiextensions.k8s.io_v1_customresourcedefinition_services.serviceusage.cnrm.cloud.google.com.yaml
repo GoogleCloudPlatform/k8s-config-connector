@@ -100,8 +100,6 @@ spec:
                   for creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
-            required:
-            - projectRef
             type: object
           status:
             description: ServiceStatus defines the config connector machine state
@@ -142,8 +140,6 @@ spec:
                 format: int64
                 type: integer
             type: object
-        required:
-        - spec
         type: object
     served: true
     storage: true
