@@ -63,7 +63,7 @@ type ComputeNetworkSpec struct {
 	// with an ICMP 'Fragmentation-Needed' message if the packets are routed to the Internet or other VPCs
 	// with varying MTUs.
 	// +kcc:proto:field=google.cloud.compute.v1.Network.mtu
-	Mtu *int `json:"mtu,omitempty"`
+	Mtu *int32 `json:"mtu,omitempty"`
 
 	// Set the order that Firewall Rules and Firewall Policies
 	// are evaluated. Default value: "AFTER_CLASSIC_FIREWALL" Possible
