@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,5 +35,22 @@ func ServiceSpec_ToProto(mapCtx *direct.MapContext, in *krm.ServiceSpec) *pb.Ser
 	}
 	out := &pb.Service{}
 	// ProjectRef and ResourceID are handled by the reconciler/resolver
+	return out
+}
+
+func ServiceStatus_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.ServiceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceStatus{}
+	// Conditions and ObservedGeneration are handled by the reconciler
+	return out
+}
+
+func ServiceStatus_ToProto(mapCtx *direct.MapContext, in *krm.ServiceStatus) *pb.Service {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Service{}
 	return out
 }
