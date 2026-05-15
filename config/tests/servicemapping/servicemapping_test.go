@@ -308,7 +308,7 @@ func TestTerraformFieldsAreInResourceSchema(t *testing.T) {
 				}
 				// Check the fields to ensure they're in the schema
 				for _, f := range fields {
-					if f == "" || f == "strip_default_node_pool_config_on_update" {
+					if f == "" {
 						continue
 					}
 					if !tfresource.TFResourceHasField(tfResource, f) {

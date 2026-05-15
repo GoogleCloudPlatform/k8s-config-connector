@@ -38,7 +38,6 @@ spec:
         targetField: name
       directives:
         - remove_default_node_pool
-        - strip_default_node_pool_config_on_update
       mutableButUnreadableFields:
         - min_master_version
       ignoredOutputOnlySpecFields:
