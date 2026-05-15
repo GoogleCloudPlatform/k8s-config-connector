@@ -72,5 +72,12 @@ func dataCatalogEntryFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".name")           // special field
 	f.UnimplementedFields.Insert(".schema.columns") // Status field schemaless
 
+	// We don't want to expose some of these format fields becfore we understand what they are
+	f.Unimplemented_NotYetTriaged(".fileset_spec.dataplex_fileset.dataplex_spec.data_format.avro")
+	f.Unimplemented_NotYetTriaged(".fileset_spec.dataplex_fileset.dataplex_spec.data_format.csv")
+	f.Unimplemented_NotYetTriaged(".fileset_spec.dataplex_fileset.dataplex_spec.data_format.protobuf")
+	f.Unimplemented_NotYetTriaged(".fileset_spec.dataplex_fileset.dataplex_spec.data_format.parquet")
+	f.Unimplemented_NotYetTriaged(".fileset_spec.dataplex_fileset.dataplex_spec.data_format.thrift")
+
 	return f
 }

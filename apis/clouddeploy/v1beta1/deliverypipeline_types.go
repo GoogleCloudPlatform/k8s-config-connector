@@ -104,7 +104,7 @@ type DeliveryPipelineObservedState struct {
 
 	// Output only. Information around the state of the Delivery Pipeline.
 	// +kcc:proto:field=google.cloud.deploy.v1.DeliveryPipeline.condition
-	Condition *PipelineCondition `json:"condition,omitempty"`
+	Condition *PipelineConditionObservedState `json:"condition,omitempty"`
 }
 
 // +genclient

@@ -25,11 +25,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func Workload_SaaEnrollmentResponse_FromProto(mapCtx *direct.MapContext, in *pb.Workload_SaaEnrollmentResponse) *krm.Workload_SaaEnrollmentResponse {
+func Workload_SaaEnrollmentResponseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Workload_SaaEnrollmentResponse) *krm.Workload_SaaEnrollmentResponseObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Workload_SaaEnrollmentResponse{}
+	out := &krm.Workload_SaaEnrollmentResponseObservedState{}
 	if in.SetupErrors != nil {
 		out.SetupErrors = []string{}
 		for _, e := range in.SetupErrors {
@@ -40,7 +40,7 @@ func Workload_SaaEnrollmentResponse_FromProto(mapCtx *direct.MapContext, in *pb.
 	return out
 }
 
-func Workload_SaaEnrollmentResponse_ToProto(mapCtx *direct.MapContext, in *krm.Workload_SaaEnrollmentResponse) *pb.Workload_SaaEnrollmentResponse {
+func Workload_SaaEnrollmentResponseObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Workload_SaaEnrollmentResponseObservedState) *pb.Workload_SaaEnrollmentResponse {
 	if in == nil {
 		return nil
 	}

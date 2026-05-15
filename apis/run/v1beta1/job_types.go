@@ -113,7 +113,7 @@ type RunJobObservedState struct {
 	// Note: ExecutionReference in Run v2 proto uses a single object, but legacy KCC CRD uses an array
 
 	// Output only. Name of the last created execution.
-	LatestCreatedExecution []*ExecutionReference `json:"latestCreatedExecution,omitempty"`
+	LatestCreatedExecution []*ExecutionReferenceObservedState `json:"latestCreatedExecution,omitempty"`
 
 	// Note: TerminalCondition in Run v2 proto uses a single object, but legacy KCC CRD uses an array
 

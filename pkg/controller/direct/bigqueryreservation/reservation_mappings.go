@@ -48,7 +48,7 @@ func BigQueryReservationReservationObservedState_ToProto(mapCtx *direct.MapConte
 	}
 	out := &pb.Reservation{}
 	// MISSING: Name
-	out.Autoscale = AutoscaleObservedState_ToProto(mapCtx, in.Autoscale)
+	out.Autoscale = Reservation_AutoscaleObservedState_ToProto(mapCtx, in.Autoscale)
 	out.PrimaryLocation, out.SecondaryLocation, out.OriginalPrimaryLocation = FailoverObservedState_ToProto(mapCtx, in.FailOver)
 	// MISSING: CreationTime
 	// MISSING: UpdateTime
@@ -80,7 +80,7 @@ func FailoverSpec_ToProto(mapCtx *direct.MapContext, in *krm.FailoverSpec) strin
 	return direct.ValueOf(in.SecondaryLocation)
 }
 
-func Status_ToProto(mapCtx *direct.MapContext, in *krm.Status) *statuspb.Status {
+func StatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StatusObservedState) *statuspb.Status {
 	if in == nil {
 		return nil
 	}
@@ -130,22 +130,22 @@ func AutoscaleSpec_FromProto(mapctx *direct.MapContext, in *pb.Reservation_Autos
 	return out
 }
 
-func AutoscaleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservation_Autoscale) *krm.AutoscaleObservedState {
+func AutoscaleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservation_Autoscale) *krm.Reservation_AutoscaleObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AutoscaleObservedState{}
+	out := &krm.Reservation_AutoscaleObservedState{}
 	if out.CurrentSlots = direct.LazyPtr(in.GetCurrentSlots()); out.CurrentSlots == nil {
 		return nil
 	}
 	return out
 }
 
-func Status_FromProto(mapCtx *direct.MapContext, in *statuspb.Status) *krm.Status {
+func StatusObservedState_FromProto(mapCtx *direct.MapContext, in *statuspb.Status) *krm.StatusObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Status{}
+	out := &krm.StatusObservedState{}
 	out.Code = direct.LazyPtr(in.GetCode())
 	out.Message = direct.LazyPtr(in.GetMessage())
 	// NOTYET

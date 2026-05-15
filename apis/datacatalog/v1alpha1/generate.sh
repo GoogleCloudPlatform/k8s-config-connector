@@ -30,4 +30,7 @@ go run . generate-types \
   --resource DataCatalogEntryGroup:EntryGroup \
   --resource DataCatalogTag:Tag \
   --resource DataCatalogTagTemplate:TagTemplate \
+  --proto-ignore google.cloud.datacatalog.v1.PhysicalSchema:avro \
+  --proto-ignore google.cloud.datacatalog.v1.PhysicalSchema:protobuf \
+  --proto-ignore google.cloud.datacatalog.v1.PhysicalSchema:thrift \
   --include-skipped-output

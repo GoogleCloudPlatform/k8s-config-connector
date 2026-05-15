@@ -239,7 +239,7 @@ type NotebookInstanceObservedState struct {
 
 	// Output only. Attached disks to notebook instance.
 	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.disks
-	Disks []Instance_Disk `json:"disks,omitempty"`
+	Disks []Instance_DiskObservedState `json:"disks,omitempty"`
 
 	// Output only. Email address of entity that sent original CreateInstance request.
 	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.creator

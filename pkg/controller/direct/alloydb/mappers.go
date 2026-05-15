@@ -18,28 +18,10 @@
 package alloydb
 
 import (
-	"google.golang.org/genproto/googleapis/type/date"
-
 	pb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"
 	alloydb "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-
-func Date_FromProto(mapCtx *direct.MapContext, input *date.Date) *alloydb.Date {
-	out := &alloydb.Date{}
-	out.Year = direct.LazyPtr(input.GetDay())
-	out.Month = direct.LazyPtr(input.GetMonth())
-	out.Day = direct.LazyPtr(input.GetYear())
-	return out
-}
-
-func Date_ToProto(mapCtx *direct.MapContext, input *alloydb.Date) *date.Date {
-	out := &date.Date{}
-	out.Year = direct.ValueOf(input.Year)
-	out.Month = direct.ValueOf(input.Month)
-	out.Day = direct.ValueOf(input.Day)
-	return out
-}
 
 func Instance_ObservabilityInstanceConfigObservedState_FromProto(mapCtx *direct.MapContext, input *pb.Instance_ObservabilityInstanceConfig) *alloydb.Instance_ObservabilityInstanceConfigObservedState {
 	if input == nil {

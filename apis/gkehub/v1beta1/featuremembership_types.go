@@ -346,6 +346,14 @@ type FeaturemembershipPolicycontroller struct {
 	Version *string `json:"version,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.gkehub.policycontroller.v1beta.MembershipSpec
+type PolicyControllerMembershipSpecObservedState struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.gkehub.servicemesh.v1beta.MembershipSpec
+type ServiceMeshMembershipSpecObservedState struct {
+}
+
 type FeaturemembershipTemplateLibrary struct {
 	/* Configures the manner in which the template library is installed on the cluster. Possible values: INSTALLATION_UNSPECIFIED, NOT_INSTALLED, ALL */
 	// +optional

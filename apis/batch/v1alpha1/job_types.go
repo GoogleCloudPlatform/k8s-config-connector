@@ -448,7 +448,7 @@ type BatchJobObservedState struct {
 
 	// Output only. Job status. It is read only for users.
 	// +kcc:proto:field=google.cloud.batch.v1.Job.status
-	Status *JobStatus `json:"status,omitempty"`
+	Status *JobStatusObservedState `json:"status,omitempty"`
 
 	// Output only. When the Job was created.
 	// +kcc:proto:field=google.cloud.batch.v1.Job.create_time

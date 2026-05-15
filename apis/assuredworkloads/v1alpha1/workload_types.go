@@ -119,7 +119,7 @@ type AssuredWorkloadsWorkloadObservedState struct {
 	//  If any of the projects already exist, the workload creation will fail.
 	//  Always read only.
 	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.resources
-	Resources []Workload_ResourceInfo `json:"resources,omitempty"`
+	Resources []Workload_ResourceInfoObservedState `json:"resources,omitempty"`
 
 	// Output only. Immutable. The Workload creation timestamp.
 	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.create_time
@@ -133,7 +133,7 @@ type AssuredWorkloadsWorkloadObservedState struct {
 	//  SAA enrollment response is queried during GetWorkload call.
 	//  In failure cases, user friendly error message is shown in SAA details page.
 	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.saa_enrollment_response
-	SaaEnrollmentResponse *Workload_SaaEnrollmentResponse `json:"saaEnrollmentResponse,omitempty"`
+	SaaEnrollmentResponse *Workload_SaaEnrollmentResponseObservedState `json:"saaEnrollmentResponse,omitempty"`
 
 	// Output only. Urls for services which are compliant for this Assured Workload, but which
 	//  are currently disallowed by the ResourceUsageRestriction org policy.

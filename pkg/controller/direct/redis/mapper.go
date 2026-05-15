@@ -22,7 +22,6 @@ import (
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	"google.golang.org/genproto/googleapis/type/timeofday"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -78,39 +77,6 @@ func PscConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.PscConfigSpec) *pb
 	out := &pb.PscConfig{}
 	if in.NetworkRef != nil {
 		out.Network = in.NetworkRef.External
-	}
-	return out
-}
-
-func TimeOfDay_FromProto(mapCtx *direct.MapContext, in *timeofday.TimeOfDay) *krm.TimeOfDay {
-	if in == nil {
-		return nil
-	}
-	out := &krm.TimeOfDay{
-		Hours:   &in.Hours,
-		Minutes: &in.Minutes,
-		Seconds: &in.Seconds,
-		Nanos:   &in.Nanos,
-	}
-	return out
-}
-
-func TimeOfDay_ToProto(mapCtx *direct.MapContext, in *krm.TimeOfDay) *timeofday.TimeOfDay {
-	if in == nil {
-		return nil
-	}
-	out := &timeofday.TimeOfDay{}
-	if in.Hours != nil {
-		out.Hours = *in.Hours
-	}
-	if in.Minutes != nil {
-		out.Minutes = *in.Minutes
-	}
-	if in.Seconds != nil {
-		out.Seconds = *in.Seconds
-	}
-	if in.Nanos != nil {
-		out.Nanos = *in.Nanos
 	}
 	return out
 }
