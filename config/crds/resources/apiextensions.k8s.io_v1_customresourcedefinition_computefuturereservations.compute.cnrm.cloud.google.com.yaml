@@ -248,15 +248,12 @@ spec:
                               - external
                             required:
                             - name
-                            - kind
                           - not:
                               anyOf:
                               - required:
                                 - name
                               - required:
                                 - namespace
-                              - required:
-                                - kind
                             required:
                             - external
                           properties:
@@ -267,7 +264,6 @@ spec:
                               description: The external name of the referenced resource
                               type: string
                             kind:
-                              default: Project
                               description: Kind of the referenced resource
                               type: string
                             name:
