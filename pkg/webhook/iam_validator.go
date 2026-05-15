@@ -175,6 +175,17 @@ func getResourceConfigs(smLoader *servicemappingloader.ServiceMappingLoader, gvk
 		return []*v1alpha1.ResourceConfig{}, fmt.Errorf("error getting ResourceConfig for GroupVersionKind %v: %w", gvk, err)
 	}
 	if len(rcs) == 0 {
+		if registry.IsIAMDirect(gvk.GroupKind()) {
+			return []*v1alpha1.ResourceConfig{
+				{
+					IAMConfig: v1alpha1.IAMConfig{
+						PolicyName:         "direct",
+						PolicyMemberName:   "direct",
+						SupportsConditions: true,
+					},
+				},
+			}, nil
+		}
 		return []*v1alpha1.ResourceConfig{}, fmt.Errorf("couldn't find any ResourceConfig defined for GroupVersionKind %v", gvk)
 	}
 	return rcs, nil
