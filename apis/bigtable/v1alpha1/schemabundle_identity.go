@@ -18,7 +18,7 @@ import (
 	"context"
 	"fmt"
 
-	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -38,22 +38,20 @@ var schemaBundleURL = gcpurls.Template[SchemaBundleIdentity](
 // holds the GCP identifier for the KRM object.
 // +k8s:deepcopy-gen=false
 type SchemaBundleIdentity struct {
-	ProjectID      string
-	InstanceID     string
-	TableID        string
-	SchemaBundleID string
+	parent *v1beta1.TableIdentity
+	id string
 }
 
 func (i *SchemaBundleIdentity) String() string {
-	return schemaBundleURL.ToString(*i)
+	return i.parent.String() + "/schemaBundles/" + i.id
 }
 
 func (i *SchemaBundleIdentity) ID() string {
-	return i.SchemaBundleID
+	return i.id
 }
 
 func (i *SchemaBundleIdentity) Parent() string {
-	return fmt.Sprintf("projects/%s/instances/%s/tables/%s", i.ProjectID, i.InstanceID, i.TableID)
+	return i.parent.String()
 }
 
 func (i *SchemaBundleIdentity) FromExternal(external string) error {
@@ -76,7 +74,7 @@ func NewSchemaBundleIdentity(ctx context.Context, reader client.Reader, obj *Big
 	if err != nil {
 		return nil, err
 	}
-	tableParent, tableID, err := krmv1beta1.ParseTableExternal(tableRef)
+	tableParent, tableID, err := v1beta1.ParseTableExternal(tableRef)
 	if err != nil {
 		return nil, err
 	}
@@ -87,35 +85,54 @@ func NewSchemaBundleIdentity(ctx context.Context, reader client.Reader, obj *Big
 		resourceID = obj.GetName()
 	}
 	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve schema bundle name")
+		return nil, fmt.Errorf("cannot resolve schema bundle id")
 	}
 
 	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualIdentity := &SchemaBundleIdentity{}
-		if err := actualIdentity.FromExternal(externalRef); err != nil {
+		actualParent, actualResourceID, err := ParseSchemaBundleExternal(externalRef)
+		if err != nil {
 			return nil, err
 		}
-		if actualIdentity.ProjectID != tableParent.Parent.ProjectID {
-			return nil, fmt.Errorf("ProjectID changed, expect %s, got %s", actualIdentity.ProjectID, tableParent.Parent.ProjectID)
+		if actualParent.Parent.Parent.ProjectID != tableParent.Parent.ProjectID {
+			return nil, fmt.Errorf("spec.tableRef ProjectID changed, expect %s, got %s", actualParent.Parent.Parent.ProjectID, tableParent.Parent.ProjectID)
 		}
-		if actualIdentity.InstanceID != tableParent.Id {
-			return nil, fmt.Errorf("InstanceID changed, expect %s, got %s", actualIdentity.InstanceID, tableParent.Id)
+		if actualParent.Parent.Id != tableParent.Id {
+			return nil, fmt.Errorf("spec.tableRef InstanceID changed, expect %s, got %s", actualParent.Parent.Id, tableParent.Id)
 		}
-		if actualIdentity.TableID != tableID {
-			return nil, fmt.Errorf("TableID changed, expect %s, got %s", actualIdentity.TableID, tableID)
+		if actualParent.Id != tableID {
+			return nil, fmt.Errorf("spec.tableRef tableID changed, expect %s, got %s", actualParent.Id, tableID)
 		}
-		if actualIdentity.SchemaBundleID != resourceID {
+		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualIdentity.SchemaBundleID)
+				resourceID, actualResourceID)
 		}
 	}
 	return &SchemaBundleIdentity{
-		ProjectID:      tableParent.Parent.ProjectID,
-		InstanceID:     tableParent.Id,
-		TableID:        tableID,
-		SchemaBundleID: resourceID,
+		parent: &v1beta1.TableIdentity{
+			Parent: tableParent,
+			Id:     tableID,
+		},
+		id: resourceID,
 	}, nil
+}
+
+func ParseSchemaBundleExternal(external string) (*v1beta1.TableIdentity, string, error) {
+	tokens := strings.Split(external, "/")
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "instances" || tokens[4] != "tables" || tokens[6] != "schemaBundles" {
+		return nil, "", fmt.Errorf("format of BigtableSchemaBundle external=%q was not known (use projects/{{projectID}}/instances/{{instanceID}}/tables/{{tableID}}/schemaBundles/{{schemaBundleID}})", external)
+	}
+	p := &v1beta1.TableIdentity{
+		Parent: &v1beta1.InstanceIdentity{
+			Parent: &parent.ProjectParent{
+				ProjectID: tokens[1],
+			},
+			Id: tokens[3],
+		},
+		Id: tokens[5],
+	}
+	resourceID := tokens[7]
+	return p, resourceID, nil
 }

@@ -52,7 +52,7 @@ func (r *SchemaBundleRef) NormalizedExternal(ctx context.Context, reader client.
 	// From given External
 	if r.External != "" {
 		actualIdentity := &SchemaBundleIdentity{}
-		if err := actualIdentity.FromExternal(r.External); err != nil {
+		if _, _, err := ParseSchemaBundleExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil

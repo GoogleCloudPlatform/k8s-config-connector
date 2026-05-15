@@ -22,28 +22,23 @@ import (
 
 var BigtableSchemaBundleGVK = GroupVersion.WithKind("BigtableSchemaBundle")
 
+type BigtableSchemaBundleParent struct {
+	// +required
+	TableRef bigtablev1beta1.TableRef `json:"tableRef"`
+}
+
 // BigtableSchemaBundleSpec defines the desired state of BigtableSchemaBundle
 // +kcc:spec:proto=google.bigtable.admin.v2.SchemaBundle
 type BigtableSchemaBundleSpec struct {
-	// The table to create the schema bundle in.
-	// +required
-	TableRef bigtablev1beta1.TableRef `json:"tableRef"`
-
 	// The BigtableSchemaBundle name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	// Optional. The protobuf schema for the table.
-	// +required
-	ProtoSchema *ProtoSchema `json:"protoSchema,omitempty"`
-}
+	BigtableSchemaBundleParent `json:",inline"`
 
-// ProtoSchema contains a protobuf-serialized FileDescriptorSet.
-type ProtoSchema struct {
-	// Optional. The protobuf schema descriptor.
-	// The schema descriptor must be a file descriptor set, which can be generated using `protoc --descriptor_set_out=myschema.fd myschema.proto`.
-	// The file descriptor set must be base64 encoded.
+	// The protobuf schema for the table.
 	// +required
-	ProtoDescriptors []byte `json:"protoDescriptors"`
+	// +kcc:proto:field=google.bigtable.admin.v2.SchemaBundle.proto_schema
+	ProtoSchema *ProtoSchema `json:"protoSchema,omitempty"`
 }
 
 // BigtableSchemaBundleStatus defines the config connector machine state of BigtableSchemaBundle
@@ -66,7 +61,11 @@ type BigtableSchemaBundleStatus struct {
 // +kcc:observedstate:proto=google.bigtable.admin.v2.SchemaBundle
 type BigtableSchemaBundleObservedState struct {
 	// Optional. The etag for this schema bundle.
-	Etag *string `json:"etag,omitempty"`
+	//  This may be sent on update and delete requests to ensure the
+	//  client has an up-to-date value before proceeding. The server
+	//  returns an ABORTED error on a mismatched etag.
+	// +kcc:proto:field=google.bigtable.admin.v2.SchemaBundle.etag
+	// Etag *string `json:"etag,omitempty"`
 }
 
 // +genclient

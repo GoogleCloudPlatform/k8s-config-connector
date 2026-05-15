@@ -121,3 +121,33 @@ func TestBigtableMaterializedView_ToBigtableMaterializedViewInfo(t *testing.T) {
 		}
 	})
 }
+
+func TestProtoSchema_v1alpha1_Mappers(t *testing.T) {
+	testBytes := []byte{0x00, 0x01, 0x02, 0x03, 0xff}
+
+	t.Run("ToProto", func(t *testing.T) {
+		in := &krm.ProtoSchema{
+			ProtoDescriptors: testBytes,
+		}
+		got := ProtoSchema_v1alpha1_ToProto(nil, in)
+		if got == nil {
+			t.Fatalf("unexpected nil result")
+		}
+		if !reflect.DeepEqual(got.ProtoDescriptors, testBytes) {
+			t.Errorf("ProtoDescriptors: got %v, want %v", got.ProtoDescriptors, testBytes)
+		}
+	})
+
+	t.Run("FromProto", func(t *testing.T) {
+		in := &pb.ProtoSchema{
+			ProtoDescriptors: testBytes,
+		}
+		got := ProtoSchema_v1alpha1_FromProto(nil, in)
+		if got == nil {
+			t.Fatalf("unexpected nil result")
+		}
+		if !reflect.DeepEqual(got.ProtoDescriptors, testBytes) {
+			t.Errorf("ProtoDescriptors: got %v, want %v", got.ProtoDescriptors, testBytes)
+		}
+	})
+}

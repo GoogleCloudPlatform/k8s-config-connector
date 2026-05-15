@@ -19,5 +19,7 @@ metadata:
 spec:
   tableRef:
     name: bigtabletable-dep-${uniqueId}
+  # The protoSchema is updated with a new version of the protobuf descriptors.
+  # This new version adds a "phone_number" field to the Person message.
   protoSchema:
-    protoDescriptors: "CmsKDnRl c3Rfc2NoZW1hLnByb3RvEhBteS50ZXN0LnNjaGVtYSI6CgZQZXJzb24SEgoEbmFtZRgBIAEoCVIEbmFtZRIOCgJpZBgCIAEoBVICaWQSFAoFZW1haWwYAyABKAlSBWVtYWlsYgZwcm90bzM="
+    protoDescriptors: "CokBChR0ZXN0X3NjaGVtYV92Mi5wcm90bxIQbXkudGVzdC5zY2hlbWEiYAoGUGVyc29uEhIKBG5hbWUYASABKAlSBG5hbWUSDgoCaWQYAiABKAVSAmlkEhQKBWVtYWlsGAMgASgJUgVlbWFpbBIhCgxwaG9uZV9udW1iZXIYBCABKAlSC3Bob25lTnVtYmVyYgZwcm90bzM="
