@@ -64,7 +64,7 @@ require (
 	cloud.google.com/go/pubsub/v2 v2.3.0
 	cloud.google.com/go/recaptchaenterprise/v2 v2.21.0
 	cloud.google.com/go/redis v1.18.3
-	cloud.google.com/go/resourcemanager v1.10.7
+	cloud.google.com/go/resourcemanager v1.15.0
 	cloud.google.com/go/run v1.15.0
 	cloud.google.com/go/secretmanager v1.16.0
 	cloud.google.com/go/securesourcemanager v1.4.1

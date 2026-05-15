@@ -22,7 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type JobsV1Beta3Client interface {
-	// Creates a Cloud Dataflow job.
+	// Creates a Dataflow job.
 	//
 	// To create a job, we recommend using `projects.locations.jobs.create` with a
 	// [regional endpoint]
@@ -148,7 +148,7 @@ func (c *jobsV1Beta3Client) SnapshotJob(ctx context.Context, in *SnapshotJobRequ
 // All implementations must embed UnimplementedJobsV1Beta3Server
 // for forward compatibility
 type JobsV1Beta3Server interface {
-	// Creates a Cloud Dataflow job.
+	// Creates a Dataflow job.
 	//
 	// To create a job, we recommend using `projects.locations.jobs.create` with a
 	// [regional endpoint]
