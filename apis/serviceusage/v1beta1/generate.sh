@@ -24,12 +24,17 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
+# We only generate ServiceIdentity as a resource here because Service (proto) has a lot of dependencies (ServiceConfig, API, etc.)
+# that we don't want to generate KRM types or mappers for.
+# We will manually add Service as a resource annotation afterwards.
 go run . generate-types \
   --service google.api.serviceusage.v1beta1 \
   --api-version serviceusage.cnrm.cloud.google.com/v1beta1  \
   --resource ServiceIdentity:ServiceIdentity \
-  --resource Service:Service \
   --include-skipped-output
+
+# Add back the Service resource annotation so it's registered
+sed -i 's/\/\/ resource: ServiceIdentity:ServiceIdentity/\/\/ resource: ServiceIdentity:ServiceIdentity\n\/\/ resource: Service:Service/' "${REPO_ROOT}/apis/serviceusage/v1beta1/types.generated.go"
 
 go run . generate-mapper \
   --service google.api.serviceusage.v1beta1 \
