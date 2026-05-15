@@ -21,6 +21,7 @@
 
 package v1beta1
 
+/* unreachable type MutationRecord
 // +kcc:proto=google.monitoring.v3.MutationRecord
 type MutationRecord struct {
 	// When the change occurred.
@@ -31,3 +32,10 @@ type MutationRecord struct {
 	// +kcc:proto:field=google.monitoring.v3.MutationRecord.mutated_by
 	MutatedBy *string `json:"mutatedBy,omitempty"`
 }
+*/
+
+/* unreachable type NotificationChannelObservedState
+// +kcc:observedstate:proto=google.monitoring.v3.NotificationChannel
+type NotificationChannelObservedState struct {
+}
+*/

@@ -366,35 +366,3 @@ func X509Parameters_CAOptions_ToProto(mapCtx *direct.MapContext, in *krm.X509Par
 	out.MaxIssuerPathLength = in.MaxIssuerPathLength
 	return out
 }
-func X509Parameters_NameConstraints_FromProto(mapCtx *direct.MapContext, in *pb.X509Parameters_NameConstraints) *krm.X509Parameters_NameConstraints {
-	if in == nil {
-		return nil
-	}
-	out := &krm.X509Parameters_NameConstraints{}
-	out.Critical = direct.LazyPtr(in.GetCritical())
-	out.PermittedDNSNames = in.PermittedDnsNames
-	out.ExcludedDNSNames = in.ExcludedDnsNames
-	out.PermittedIPRanges = in.PermittedIpRanges
-	out.ExcludedIPRanges = in.ExcludedIpRanges
-	out.PermittedEmailAddresses = in.PermittedEmailAddresses
-	out.ExcludedEmailAddresses = in.ExcludedEmailAddresses
-	out.PermittedUris = in.PermittedUris
-	out.ExcludedUris = in.ExcludedUris
-	return out
-}
-func X509Parameters_NameConstraints_ToProto(mapCtx *direct.MapContext, in *krm.X509Parameters_NameConstraints) *pb.X509Parameters_NameConstraints {
-	if in == nil {
-		return nil
-	}
-	out := &pb.X509Parameters_NameConstraints{}
-	out.Critical = direct.ValueOf(in.Critical)
-	out.PermittedDnsNames = in.PermittedDNSNames
-	out.ExcludedDnsNames = in.ExcludedDNSNames
-	out.PermittedIpRanges = in.PermittedIPRanges
-	out.ExcludedIpRanges = in.ExcludedIPRanges
-	out.PermittedEmailAddresses = in.PermittedEmailAddresses
-	out.ExcludedEmailAddresses = in.ExcludedEmailAddresses
-	out.PermittedUris = in.PermittedUris
-	out.ExcludedUris = in.ExcludedUris
-	return out
-}

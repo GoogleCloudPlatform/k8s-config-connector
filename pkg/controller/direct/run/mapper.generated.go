@@ -60,42 +60,6 @@ func BinaryAuthorization_UseDefault_ToProto(mapCtx *direct.MapContext, in *bool)
 	}
 	return &pb.BinaryAuthorization_UseDefault{UseDefault: *in}
 }
-func BuildInfo_FromProto(mapCtx *direct.MapContext, in *pb.BuildInfo) *krm.BuildInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BuildInfo{}
-	// MISSING: FunctionTarget
-	// MISSING: SourceLocation
-	return out
-}
-func BuildInfo_ToProto(mapCtx *direct.MapContext, in *krm.BuildInfo) *pb.BuildInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BuildInfo{}
-	// MISSING: FunctionTarget
-	// MISSING: SourceLocation
-	return out
-}
-func BuildInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BuildInfo) *krm.BuildInfoObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BuildInfoObservedState{}
-	out.FunctionTarget = direct.LazyPtr(in.GetFunctionTarget())
-	out.SourceLocation = direct.LazyPtr(in.GetSourceLocation())
-	return out
-}
-func BuildInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BuildInfoObservedState) *pb.BuildInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BuildInfo{}
-	out.FunctionTarget = direct.ValueOf(in.FunctionTarget)
-	out.SourceLocation = direct.ValueOf(in.SourceLocation)
-	return out
-}
 func CloudSQLInstance_FromProto(mapCtx *direct.MapContext, in *pb.CloudSqlInstance) *krm.CloudSQLInstance {
 	if in == nil {
 		return nil
@@ -302,11 +266,11 @@ func EnvVarSource_ToProto(mapCtx *direct.MapContext, in *krm.EnvVarSource) *pb.E
 	out.SecretKeyRef = SecretKeySelector_ToProto(mapCtx, in.SecretKeyRef)
 	return out
 }
-func ExecutionReference_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionReference) *krm.ExecutionReference {
+func ExecutionReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionReference) *krm.ExecutionReferenceObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ExecutionReference{}
+	out := &krm.ExecutionReferenceObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.CompletionTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCompletionTime())
@@ -314,7 +278,7 @@ func ExecutionReference_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionRef
 	out.CompletionStatus = direct.Enum_FromProto(mapCtx, in.GetCompletionStatus())
 	return out
 }
-func ExecutionReference_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionReference) *pb.ExecutionReference {
+func ExecutionReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionReferenceObservedState) *pb.ExecutionReference {
 	if in == nil {
 		return nil
 	}
@@ -372,24 +336,6 @@ func GCSVolumeSource_ToProto(mapCtx *direct.MapContext, in *krm.GCSVolumeSource)
 	}
 	out.ReadOnly = direct.ValueOf(in.ReadOnly)
 	out.MountOptions = in.MountOptions
-	return out
-}
-func GrpcAction_FromProto(mapCtx *direct.MapContext, in *pb.GRPCAction) *krm.GrpcAction {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GrpcAction{}
-	out.Port = direct.LazyPtr(in.GetPort())
-	out.Service = direct.LazyPtr(in.GetService())
-	return out
-}
-func GrpcAction_ToProto(mapCtx *direct.MapContext, in *krm.GrpcAction) *pb.GRPCAction {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GRPCAction{}
-	out.Port = direct.ValueOf(in.Port)
-	out.Service = direct.ValueOf(in.Service)
 	return out
 }
 func HTTPGetAction_FromProto(mapCtx *direct.MapContext, in *pb.HTTPGetAction) *krm.HTTPGetAction {
@@ -450,22 +396,6 @@ func NfsVolumeSource_ToProto(mapCtx *direct.MapContext, in *krm.NfsVolumeSource)
 	out.Server = direct.ValueOf(in.Server)
 	out.Path = direct.ValueOf(in.Path)
 	out.ReadOnly = direct.ValueOf(in.ReadOnly)
-	return out
-}
-func NodeSelector_FromProto(mapCtx *direct.MapContext, in *pb.NodeSelector) *krm.NodeSelector {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NodeSelector{}
-	out.Accelerator = direct.LazyPtr(in.GetAccelerator())
-	return out
-}
-func NodeSelector_ToProto(mapCtx *direct.MapContext, in *krm.NodeSelector) *pb.NodeSelector {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NodeSelector{}
-	out.Accelerator = direct.ValueOf(in.Accelerator)
 	return out
 }
 func Probe_FromProto(mapCtx *direct.MapContext, in *pb.Probe) *krm.Probe {
@@ -542,7 +472,7 @@ func RunJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.R
 	// MISSING: Conditions
 	out.ExecutionCount = direct.LazyPtr(in.GetExecutionCount())
 	if v := in.GetLatestCreatedExecution(); v != nil {
-		out.LatestCreatedExecution = []*krm.ExecutionReference{ExecutionReference_FromProto(mapCtx, v)}
+		out.LatestCreatedExecution = []*krm.ExecutionReferenceObservedState{ExecutionReferenceObservedState_FromProto(mapCtx, v)}
 	}
 	out.Reconciling = direct.LazyPtr(in.GetReconciling())
 	// MISSING: SatisfiesPzs
@@ -573,7 +503,7 @@ func RunJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RunJobObserv
 	// MISSING: Conditions
 	out.ExecutionCount = direct.ValueOf(in.ExecutionCount)
 	if len(in.LatestCreatedExecution) > 0 && in.LatestCreatedExecution[0] != nil {
-		out.LatestCreatedExecution = ExecutionReference_ToProto(mapCtx, in.LatestCreatedExecution[0])
+		out.LatestCreatedExecution = ExecutionReferenceObservedState_ToProto(mapCtx, in.LatestCreatedExecution[0])
 	}
 	out.Reconciling = direct.ValueOf(in.Reconciling)
 	// MISSING: SatisfiesPzs

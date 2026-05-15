@@ -58,3 +58,16 @@ type AuthorizationPolicy_Rule_Source struct {
 	// +kcc:proto:field=google.cloud.networksecurity.v1beta1.AuthorizationPolicy.Rule.Source.ip_blocks
 	IPBlocks []string `json:"ipBlocks,omitempty"`
 }
+
+/* unreachable type AuthorizationPolicyObservedState
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1beta1.AuthorizationPolicy
+type AuthorizationPolicyObservedState struct {
+	// Output only. The timestamp when the resource was created.
+	// +kcc:proto:field=google.cloud.networksecurity.v1beta1.AuthorizationPolicy.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when the resource was updated.
+	// +kcc:proto:field=google.cloud.networksecurity.v1beta1.AuthorizationPolicy.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/

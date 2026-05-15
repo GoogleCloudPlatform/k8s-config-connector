@@ -22,6 +22,7 @@
 
 package v1alpha1
 
+/* unreachable type ColabImage
 // +kcc:proto=google.cloud.aiplatform.v1beta1.ColabImage
 type ColabImage struct {
 	// Optional. The release name of the NotebookRuntime Colab image, e.g.
@@ -29,6 +30,7 @@ type ColabImage struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ColabImage.release_name
 	ReleaseName *string `json:"releaseName,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "EncryptionSpec", skipping
 
@@ -44,6 +46,7 @@ type EncryptionSpec struct {
 }
 */
 
+/* unreachable type EnvVar
 // +kcc:proto=google.cloud.aiplatform.v1beta1.EnvVar
 type EnvVar struct {
 	// Required. Name of the environment variable. Must be a valid C identifier.
@@ -60,6 +63,7 @@ type EnvVar struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.EnvVar.value
 	Value *string `json:"value,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.MachineSpec
 type MachineSpec struct {
@@ -312,16 +316,7 @@ type NotebookRuntimeTemplate struct {
 }
 */
 
-/* found existing non-generated go type "NotebookRuntimeTemplateRef", skipping
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.NotebookRuntimeTemplateRef
-type NotebookRuntimeTemplateRef struct {
-	// Immutable. A resource name of the NotebookRuntimeTemplate.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookRuntimeTemplateRef.notebook_runtime_template
-	NotebookRuntimeTemplate *string `json:"notebookRuntimeTemplate,omitempty"`
-}
-*/
-
+/* unreachable type NotebookSoftwareConfig
 // +kcc:proto=google.cloud.aiplatform.v1beta1.NotebookSoftwareConfig
 type NotebookSoftwareConfig struct {
 	// Optional. Google-managed NotebookRuntime colab image.
@@ -336,6 +331,7 @@ type NotebookSoftwareConfig struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookSoftwareConfig.post_startup_script_config
 	PostStartupScriptConfig *PostStartupScriptConfig `json:"postStartupScriptConfig,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.PersistentDiskSpec
 type PersistentDiskSpec struct {
@@ -352,6 +348,7 @@ type PersistentDiskSpec struct {
 	DiskSizeGB *int64 `json:"diskSizeGB,omitempty"`
 }
 
+/* unreachable type PostStartupScriptConfig
 // +kcc:proto=google.cloud.aiplatform.v1beta1.PostStartupScriptConfig
 type PostStartupScriptConfig struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.PostStartupScriptConfig.post_startup_script
@@ -363,6 +360,7 @@ type PostStartupScriptConfig struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.PostStartupScriptConfig.post_startup_script_behavior
 	PostStartupScriptBehavior *string `json:"postStartupScriptBehavior,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.ReservationAffinity
 type ReservationAffinity struct {
@@ -396,6 +394,7 @@ type ShieldedVMConfig struct {
 	EnableSecureBoot *bool `json:"enableSecureBoot,omitempty"`
 }
 
+/* unreachable type ColabImageObservedState
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.ColabImage
 type ColabImageObservedState struct {
 	// Output only. A human-readable description of the specified colab image
@@ -404,6 +403,32 @@ type ColabImageObservedState struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ColabImage.description
 	Description *string `json:"description,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "EncryptionSpecObservedState", skipping
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.EncryptionSpec
+type EncryptionSpecObservedState struct {
+}
+*/
+
+/* unreachable type EnvVarObservedState
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.EnvVar
+type EnvVarObservedState struct {
+}
+*/
+
+/* unreachable type MachineSpecObservedState
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.MachineSpec
+type MachineSpecObservedState struct {
+}
+*/
+
+/* unreachable type NetworkSpecObservedState
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.NetworkSpec
+type NetworkSpecObservedState struct {
+}
+*/
 
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.NotebookEucConfig
 type NotebookEUCConfigObservedState struct {
@@ -418,6 +443,12 @@ type NotebookEUCConfigObservedState struct {
 	BypassActasCheck *bool `json:"bypassActasCheck,omitempty"`
 }
 
+/* unreachable type NotebookIdleShutdownConfigObservedState
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.NotebookIdleShutdownConfig
+type NotebookIdleShutdownConfigObservedState struct {
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.aiplatform.v1beta1.NotebookRuntime", skipping
 
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.NotebookRuntime
@@ -429,7 +460,7 @@ type NotebookRuntimeObservedState struct {
 	// Output only. The pointer to NotebookRuntimeTemplate this NotebookRuntime is
 	//  created from.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookRuntime.notebook_runtime_template_ref
-	NotebookRuntimeTemplateRef *NotebookRuntimeTemplateRef `json:"notebookRuntimeTemplateRef,omitempty"`
+	NotebookRuntimeTemplateRef *NotebookRuntimeTemplateRefObservedState `json:"notebookRuntimeTemplateRef,omitempty"`
 
 	// Output only. The proxy endpoint used to access the NotebookRuntime.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookRuntime.proxy_uri
@@ -486,37 +517,37 @@ type NotebookRuntimeObservedState struct {
 	// Output only. The specification of a single machine used by the notebook
 	//  runtime.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookRuntime.machine_spec
-	MachineSpec *MachineSpec `json:"machineSpec,omitempty"`
+	MachineSpec *MachineSpecObservedState `json:"machineSpec,omitempty"`
 
 	// Output only. The specification of [persistent
 	//  disk][https://cloud.google.com/compute/docs/disks/persistent-disks]
 	//  attached to the notebook runtime as data disk storage.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookRuntime.data_persistent_disk_spec
-	DataPersistentDiskSpec *PersistentDiskSpec `json:"dataPersistentDiskSpec,omitempty"`
+	DataPersistentDiskSpec *PersistentDiskSpecObservedState `json:"dataPersistentDiskSpec,omitempty"`
 
 	// Output only. Network spec of the notebook runtime.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookRuntime.network_spec
-	NetworkSpec *NetworkSpec `json:"networkSpec,omitempty"`
+	NetworkSpec *NetworkSpecObservedState `json:"networkSpec,omitempty"`
 
 	// Output only. The idle shutdown configuration of the notebook runtime.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookRuntime.idle_shutdown_config
-	IdleShutdownConfig *NotebookIdleShutdownConfig `json:"idleShutdownConfig,omitempty"`
+	IdleShutdownConfig *NotebookIdleShutdownConfigObservedState `json:"idleShutdownConfig,omitempty"`
 
 	// Output only. EUC configuration of the notebook runtime.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookRuntime.euc_config
-	EUCConfig *NotebookEUCConfig `json:"eucConfig,omitempty"`
+	EUCConfig *NotebookEUCConfigObservedState `json:"eucConfig,omitempty"`
 
 	// Output only. Runtime Shielded VM spec.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookRuntime.shielded_vm_config
-	ShieldedVMConfig *ShieldedVMConfig `json:"shieldedVMConfig,omitempty"`
+	ShieldedVMConfig *ShieldedVMConfigObservedState `json:"shieldedVMConfig,omitempty"`
 
 	// Output only. Software config of the notebook runtime.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookRuntime.software_config
-	SoftwareConfig *NotebookSoftwareConfig `json:"softwareConfig,omitempty"`
+	SoftwareConfig *NotebookSoftwareConfigObservedState `json:"softwareConfig,omitempty"`
 
 	// Output only. Customer-managed encryption key spec for the notebook runtime.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookRuntime.encryption_spec
-	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
+	EncryptionSpec *EncryptionSpecObservedState `json:"encryptionSpec,omitempty"`
 
 	// Output only. Reserved for future use.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookRuntime.satisfies_pzs
@@ -558,9 +589,44 @@ type NotebookRuntimeTemplateObservedState struct {
 }
 */
 
+/* unreachable type NotebookRuntimeTemplateRefObservedState
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.NotebookRuntimeTemplateRef
+type NotebookRuntimeTemplateRefObservedState struct {
+	// Immutable. A resource name of the NotebookRuntimeTemplate.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookRuntimeTemplateRef.notebook_runtime_template
+	NotebookRuntimeTemplate *string `json:"notebookRuntimeTemplate,omitempty"`
+}
+*/
+
+/* unreachable type NotebookSoftwareConfigObservedState
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.NotebookSoftwareConfig
 type NotebookSoftwareConfigObservedState struct {
 	// Optional. Google-managed NotebookRuntime colab image.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookSoftwareConfig.colab_image
 	ColabImage *ColabImageObservedState `json:"colabImage,omitempty"`
 }
+*/
+
+/* unreachable type PersistentDiskSpecObservedState
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.PersistentDiskSpec
+type PersistentDiskSpecObservedState struct {
+}
+*/
+
+/* unreachable type PostStartupScriptConfigObservedState
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.PostStartupScriptConfig
+type PostStartupScriptConfigObservedState struct {
+}
+*/
+
+/* unreachable type ReservationAffinityObservedState
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.ReservationAffinity
+type ReservationAffinityObservedState struct {
+}
+*/
+
+/* unreachable type ShieldedVMConfigObservedState
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.ShieldedVmConfig
+type ShieldedVMConfigObservedState struct {
+}
+*/

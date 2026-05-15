@@ -29,6 +29,7 @@
 
 package v1beta1
 
+/* unreachable type AllocationAggregateReservation
 // +kcc:proto=google.cloud.compute.v1.AllocationAggregateReservation
 type AllocationAggregateReservation struct {
 	// [Output only] List of resources currently in use.
@@ -49,14 +50,18 @@ type AllocationAggregateReservation struct {
 	// +kcc:proto:field=google.cloud.compute.v1.AllocationAggregateReservation.workload_type
 	WorkloadType *string `json:"workloadType,omitempty"`
 }
+*/
 
+/* unreachable type AllocationAggregateReservationReservedResourceInfo
 // +kcc:proto=google.cloud.compute.v1.AllocationAggregateReservationReservedResourceInfo
 type AllocationAggregateReservationReservedResourceInfo struct {
 	// Properties of accelerator resources in this reservation.
 	// +kcc:proto:field=google.cloud.compute.v1.AllocationAggregateReservationReservedResourceInfo.accelerator
 	Accelerator *AllocationAggregateReservationReservedResourceInfoAccelerator `json:"accelerator,omitempty"`
 }
+*/
 
+/* unreachable type AllocationAggregateReservationReservedResourceInfoAccelerator
 // +kcc:proto=google.cloud.compute.v1.AllocationAggregateReservationReservedResourceInfoAccelerator
 type AllocationAggregateReservationReservedResourceInfoAccelerator struct {
 	// Number of accelerators of specified type.
@@ -67,7 +72,9 @@ type AllocationAggregateReservationReservedResourceInfoAccelerator struct {
 	// +kcc:proto:field=google.cloud.compute.v1.AllocationAggregateReservationReservedResourceInfoAccelerator.accelerator_type
 	AcceleratorType *string `json:"acceleratorType,omitempty"`
 }
+*/
 
+/* unreachable type AllocationReservationSharingPolicy
 // +kcc:proto=google.cloud.compute.v1.AllocationReservationSharingPolicy
 type AllocationReservationSharingPolicy struct {
 	// Sharing config for all Google Cloud services.
@@ -75,7 +82,9 @@ type AllocationReservationSharingPolicy struct {
 	// +kcc:proto:field=google.cloud.compute.v1.AllocationReservationSharingPolicy.service_share_type
 	ServiceShareType *string `json:"serviceShareType,omitempty"`
 }
+*/
 
+/* unreachable type AllocationResourceStatus
 // +kcc:proto=google.cloud.compute.v1.AllocationResourceStatus
 type AllocationResourceStatus struct {
 	// [Output only] Health information for the reservation.
@@ -94,7 +103,9 @@ type AllocationResourceStatus struct {
 	// +kcc:proto:field=google.cloud.compute.v1.AllocationResourceStatus.specific_sku_allocation
 	SpecificSkuAllocation *AllocationResourceStatusSpecificSkuAllocation `json:"specificSkuAllocation,omitempty"`
 }
+*/
 
+/* unreachable type AllocationResourceStatusHealthInfo
 // +kcc:proto=google.cloud.compute.v1.AllocationResourceStatusHealthInfo
 type AllocationResourceStatusHealthInfo struct {
 	// The number of reservation blocks that are degraded.
@@ -110,7 +121,9 @@ type AllocationResourceStatusHealthInfo struct {
 	// +kcc:proto:field=google.cloud.compute.v1.AllocationResourceStatusHealthInfo.healthy_block_count
 	HealthyBlockCount *int32 `json:"healthyBlockCount,omitempty"`
 }
+*/
 
+/* unreachable type AllocationResourceStatusSpecificSkuAllocation
 // +kcc:proto=google.cloud.compute.v1.AllocationResourceStatusSpecificSKUAllocation
 type AllocationResourceStatusSpecificSkuAllocation struct {
 	// ID of the instance template used to populate reservation properties.
@@ -121,7 +134,9 @@ type AllocationResourceStatusSpecificSkuAllocation struct {
 	// +kcc:proto:field=google.cloud.compute.v1.AllocationResourceStatusSpecificSKUAllocation.utilizations
 	Utilizations map[string]int64 `json:"utilizations,omitempty"`
 }
+*/
 
+/* unreachable type Duration
 // +kcc:proto=google.cloud.compute.v1.Duration
 type Duration struct {
 	// Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 `seconds` field and a positive `nanos` field. Must be from 0 to 999,999,999 inclusive.
@@ -132,6 +147,7 @@ type Duration struct {
 	// +kcc:proto:field=google.cloud.compute.v1.Duration.seconds
 	Seconds *int64 `json:"seconds,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.compute.v1.Expr
 type Expr struct {
@@ -152,6 +168,7 @@ type Expr struct {
 	Title *string `json:"title,omitempty"`
 }
 
+/* unreachable type FirewallPolicyRuleSecureTag
 // +kcc:proto=google.cloud.compute.v1.FirewallPolicyRuleSecureTag
 type FirewallPolicyRuleSecureTag struct {
 	// Name of the secure tag, created with TagManager's TagValue API.
@@ -163,7 +180,9 @@ type FirewallPolicyRuleSecureTag struct {
 	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleSecureTag.state
 	State *string `json:"state,omitempty"`
 }
+*/
 
+/* unreachable type GroupMaintenanceInfo
 // +kcc:proto=google.cloud.compute.v1.GroupMaintenanceInfo
 type GroupMaintenanceInfo struct {
 	// Describes number of instances that have ongoing maintenance.
@@ -199,7 +218,9 @@ type GroupMaintenanceInfo struct {
 	// +kcc:proto:field=google.cloud.compute.v1.GroupMaintenanceInfo.upcoming_group_maintenance
 	UpcomingGroupMaintenance *UpcomingMaintenance `json:"upcomingGroupMaintenance,omitempty"`
 }
+*/
 
+/* unreachable type LocalDisk
 // +kcc:proto=google.cloud.compute.v1.LocalDisk
 type LocalDisk struct {
 	// Specifies the number of such disks.
@@ -214,7 +235,9 @@ type LocalDisk struct {
 	// +kcc:proto:field=google.cloud.compute.v1.LocalDisk.disk_type
 	DiskType *string `json:"diskType,omitempty"`
 }
+*/
 
+/* unreachable type ReservationAdvancedDeploymentControl
 // +kcc:proto=google.cloud.compute.v1.ReservationAdvancedDeploymentControl
 type ReservationAdvancedDeploymentControl struct {
 	// Indicates chosen reservation operational mode for the reservation.
@@ -222,14 +245,18 @@ type ReservationAdvancedDeploymentControl struct {
 	// +kcc:proto:field=google.cloud.compute.v1.ReservationAdvancedDeploymentControl.reservation_operational_mode
 	ReservationOperationalMode *string `json:"reservationOperationalMode,omitempty"`
 }
+*/
 
+/* unreachable type ResourcePolicyResourceStatus
 // +kcc:proto=google.cloud.compute.v1.ResourcePolicyResourceStatus
 type ResourcePolicyResourceStatus struct {
 	// [Output Only] Specifies a set of output values reffering to the instance_schedule_policy system status. This field should have the same name as corresponding policy field.
 	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyResourceStatus.instance_schedule_policy
 	InstanceSchedulePolicy *ResourcePolicyResourceStatusInstanceSchedulePolicyStatus `json:"instanceSchedulePolicy,omitempty"`
 }
+*/
 
+/* unreachable type ResourcePolicyResourceStatusInstanceSchedulePolicyStatus
 // +kcc:proto=google.cloud.compute.v1.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus
 type ResourcePolicyResourceStatusInstanceSchedulePolicyStatus struct {
 	// [Output Only] The last time the schedule successfully ran. The timestamp is an RFC3339 string.
@@ -240,7 +267,9 @@ type ResourcePolicyResourceStatusInstanceSchedulePolicyStatus struct {
 	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus.next_run_start_time
 	NextRunStartTime *string `json:"nextRunStartTime,omitempty"`
 }
+*/
 
+/* unreachable type ResourcePolicyWorkloadPolicy
 // +kcc:proto=google.cloud.compute.v1.ResourcePolicyWorkloadPolicy
 type ResourcePolicyWorkloadPolicy struct {
 	// Specifies the topology required to create a partition for VMs that have interconnected GPUs.
@@ -257,7 +286,9 @@ type ResourcePolicyWorkloadPolicy struct {
 	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyWorkloadPolicy.type
 	Type *string `json:"type,omitempty"`
 }
+*/
 
+/* unreachable type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig
 type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig struct {
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig.auto_deploy_confidence_threshold
@@ -289,7 +320,9 @@ type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfi
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig.traffic_granularity_configs
 	TrafficGranularityConfigs []SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig `json:"trafficGranularityConfigs,omitempty"`
 }
+*/
 
+/* unreachable type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig
 type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig struct {
 	// If enabled, traffic matching each unique value for the specified type constitutes a separate traffic unit. It can only be set to true if `value` is empty.
@@ -305,13 +338,16 @@ type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfi
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig.value
 	Value *string `json:"value,omitempty"`
 }
+*/
 
+/* unreachable type SecurityPolicyDdosProtectionConfig
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyDdosProtectionConfig
 type SecurityPolicyDdosProtectionConfig struct {
 	// Check the DdosProtection enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyDdosProtectionConfig.ddos_protection
 	DdosProtection *string `json:"ddosProtection,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleHttpHeaderAction
 type SecurityPolicyRuleHTTPHeaderAction struct {
@@ -331,13 +367,16 @@ type SecurityPolicyRuleHTTPHeaderActionHTTPHeaderOption struct {
 	HeaderValue *string `json:"headerValue,omitempty"`
 }
 
+/* unreachable type SecurityPolicyRuleMatcherExprOptions
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleMatcherExprOptions
 type SecurityPolicyRuleMatcherExprOptions struct {
 	// reCAPTCHA configuration options to be applied for the rule. If the rule does not evaluate reCAPTCHA tokens, this field has no effect.
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcherExprOptions.recaptcha_options
 	RecaptchaOptions *SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions `json:"recaptchaOptions,omitempty"`
 }
+*/
 
+/* unreachable type SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions
 type SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions struct {
 	// A list of site keys to be used during the validation of reCAPTCHA action-tokens. The provided site keys need to be created from reCAPTCHA API under the same project where the security policy is created.
@@ -348,7 +387,9 @@ type SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions struct {
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions.session_token_site_keys
 	SessionTokenSiteKeys []string `json:"sessionTokenSiteKeys,omitempty"`
 }
+*/
 
+/* unreachable type SecurityPolicyRuleNetworkMatcher
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcher
 type SecurityPolicyRuleNetworkMatcher struct {
 	// Destination IPv4/IPv6 addresses or CIDR prefixes, in standard text format.
@@ -383,7 +424,9 @@ type SecurityPolicyRuleNetworkMatcher struct {
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcher.user_defined_fields
 	UserDefinedFields []SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch `json:"userDefinedFields,omitempty"`
 }
+*/
 
+/* unreachable type SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch
 type SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch struct {
 	// Name of the user-defined field, as given in the definition.
@@ -394,6 +437,7 @@ type SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch struct {
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch.values
 	Values []string `json:"values,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig
 type SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig struct {
@@ -407,6 +451,7 @@ type SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig struct {
 	EnforceOnKeyType *string `json:"enforceOnKeyType,omitempty"`
 }
 
+/* unreachable type SecurityPolicyUserDefinedField
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyUserDefinedField
 type SecurityPolicyUserDefinedField struct {
 	// The base relative to which 'offset' is measured. Possible values are: - IPV4: Points to the beginning of the IPv4 header. - IPV6: Points to the beginning of the IPv6 header. - TCP: Points to the beginning of the TCP header, skipping over any IPv4 options or IPv6 extension headers. Not present for non-first fragments. - UDP: Points to the beginning of the UDP header, skipping over any IPv4 options or IPv6 extension headers. Not present for non-first fragments. required
@@ -430,7 +475,9 @@ type SecurityPolicyUserDefinedField struct {
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyUserDefinedField.size
 	Size *int32 `json:"size,omitempty"`
 }
+*/
 
+/* unreachable type ShareSettings
 // +kcc:proto=google.cloud.compute.v1.ShareSettings
 type ShareSettings struct {
 
@@ -441,21 +488,27 @@ type ShareSettings struct {
 	// +kcc:proto:field=google.cloud.compute.v1.ShareSettings.share_type
 	ShareType *string `json:"shareType,omitempty"`
 }
+*/
 
+/* unreachable type ShareSettingsProjectConfig
 // +kcc:proto=google.cloud.compute.v1.ShareSettingsProjectConfig
 type ShareSettingsProjectConfig struct {
 	// The project ID, should be same as the key of this project config in the parent map.
 	// +kcc:proto:field=google.cloud.compute.v1.ShareSettingsProjectConfig.project_id
 	ProjectID *string `json:"projectID,omitempty"`
 }
+*/
 
+/* unreachable type SubnetworkParams
 // +kcc:proto=google.cloud.compute.v1.SubnetworkParams
 type SubnetworkParams struct {
 	// Tag keys/values directly bound to this resource. Tag keys and values have the same definition as resource manager tags. The field is allowed for INSERT only. The keys/values to set on the resource should be specified in either ID { : } or Namespaced format { : }. For example the following are valid inputs: * {"tagKeys/333" : "tagValues/444", "tagKeys/123" : "tagValues/456"} * {"123/environment" : "production", "345/abc" : "xyz"} Note: * Invalid combinations of ID & namespaced format is not supported. For instance: {"123/environment" : "tagValues/444"} is invalid.
 	// +kcc:proto:field=google.cloud.compute.v1.SubnetworkParams.resource_manager_tags
 	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
 }
+*/
 
+/* unreachable type UpcomingMaintenance
 // +kcc:proto=google.cloud.compute.v1.UpcomingMaintenance
 type UpcomingMaintenance struct {
 	// Indicates if the maintenance can be customer triggered.
@@ -492,3 +545,34 @@ type UpcomingMaintenance struct {
 	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.window_start_time
 	WindowStartTime *string `json:"windowStartTime,omitempty"`
 }
+*/
+
+/* unreachable type FirewallPolicyRuleObservedState
+// +kcc:observedstate:proto=google.cloud.compute.v1.FirewallPolicyRule
+type FirewallPolicyRuleObservedState struct {
+}
+*/
+
+/* unreachable type ForwardingRuleObservedState
+// +kcc:observedstate:proto=google.cloud.compute.v1.ForwardingRule
+type ForwardingRuleObservedState struct {
+}
+*/
+
+/* unreachable type NodeTemplateObservedState
+// +kcc:observedstate:proto=google.cloud.compute.v1.NodeTemplate
+type NodeTemplateObservedState struct {
+}
+*/
+
+/* unreachable type SubnetworkObservedState
+// +kcc:observedstate:proto=google.cloud.compute.v1.Subnetwork
+type SubnetworkObservedState struct {
+}
+*/
+
+/* unreachable type TargetTCPProxyObservedState
+// +kcc:observedstate:proto=google.cloud.compute.v1.TargetTcpProxy
+type TargetTCPProxyObservedState struct {
+}
+*/

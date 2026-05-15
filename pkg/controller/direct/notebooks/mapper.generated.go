@@ -83,16 +83,16 @@ func Instance_AcceleratorConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *k
 	out.CoreCount = direct.ValueOf(in.CoreCount)
 	return out
 }
-func Instance_Disk_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_Disk) *krm.Instance_Disk {
+func Instance_DiskObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_Disk) *krm.Instance_DiskObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Instance_Disk{}
+	out := &krm.Instance_DiskObservedState{}
 	out.AutoDelete = direct.LazyPtr(in.GetAutoDelete())
 	out.Boot = direct.LazyPtr(in.GetBoot())
 	out.DeviceName = direct.LazyPtr(in.GetDeviceName())
 	out.DiskSizeGB = direct.LazyPtr(in.GetDiskSizeGb())
-	out.GuestOSFeatures = direct.Slice_FromProto(mapCtx, in.GuestOsFeatures, Instance_Disk_GuestOSFeature_v1beta1_FromProto)
+	out.GuestOSFeatures = direct.Slice_FromProto(mapCtx, in.GuestOsFeatures, Instance_Disk_GuestOSFeatureObservedState_v1beta1_FromProto)
 	out.Index = direct.LazyPtr(in.GetIndex())
 	out.Interface = direct.LazyPtr(in.GetInterface())
 	out.Kind = direct.LazyPtr(in.GetKind())
@@ -102,7 +102,7 @@ func Instance_Disk_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_
 	out.Type = direct.LazyPtr(in.GetType())
 	return out
 }
-func Instance_Disk_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Instance_Disk) *pb.Instance_Disk {
+func Instance_DiskObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Instance_DiskObservedState) *pb.Instance_Disk {
 	if in == nil {
 		return nil
 	}
@@ -111,7 +111,7 @@ func Instance_Disk_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Instance_D
 	out.Boot = direct.ValueOf(in.Boot)
 	out.DeviceName = direct.ValueOf(in.DeviceName)
 	out.DiskSizeGb = direct.ValueOf(in.DiskSizeGB)
-	out.GuestOsFeatures = direct.Slice_ToProto(mapCtx, in.GuestOSFeatures, Instance_Disk_GuestOSFeature_v1beta1_ToProto)
+	out.GuestOsFeatures = direct.Slice_ToProto(mapCtx, in.GuestOSFeatures, Instance_Disk_GuestOSFeatureObservedState_v1beta1_ToProto)
 	out.Index = direct.ValueOf(in.Index)
 	out.Interface = direct.ValueOf(in.Interface)
 	out.Kind = direct.ValueOf(in.Kind)
@@ -121,15 +121,15 @@ func Instance_Disk_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Instance_D
 	out.Type = direct.ValueOf(in.Type)
 	return out
 }
-func Instance_Disk_GuestOSFeature_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_Disk_GuestOsFeature) *krm.Instance_Disk_GuestOSFeature {
+func Instance_Disk_GuestOSFeatureObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_Disk_GuestOsFeature) *krm.Instance_Disk_GuestOSFeatureObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Instance_Disk_GuestOSFeature{}
+	out := &krm.Instance_Disk_GuestOSFeatureObservedState{}
 	out.Type = direct.LazyPtr(in.GetType())
 	return out
 }
-func Instance_Disk_GuestOSFeature_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Instance_Disk_GuestOSFeature) *pb.Instance_Disk_GuestOsFeature {
+func Instance_Disk_GuestOSFeatureObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Instance_Disk_GuestOSFeatureObservedState) *pb.Instance_Disk_GuestOsFeature {
 	if in == nil {
 		return nil
 	}
@@ -199,7 +199,7 @@ func NotebookInstanceObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, 
 	// MISSING: Name
 	out.ProxyURI = direct.LazyPtr(in.GetProxyUri())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.Disks = direct.Slice_FromProto(mapCtx, in.Disks, Instance_Disk_v1beta1_FromProto)
+	out.Disks = direct.Slice_FromProto(mapCtx, in.Disks, Instance_DiskObservedState_v1beta1_FromProto)
 	out.Creator = direct.LazyPtr(in.GetCreator())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -213,7 +213,7 @@ func NotebookInstanceObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in
 	// MISSING: Name
 	out.ProxyUri = direct.ValueOf(in.ProxyURI)
 	out.State = direct.Enum_ToProto[pb.Instance_State](mapCtx, in.State)
-	out.Disks = direct.Slice_ToProto(mapCtx, in.Disks, Instance_Disk_v1beta1_ToProto)
+	out.Disks = direct.Slice_ToProto(mapCtx, in.Disks, Instance_DiskObservedState_v1beta1_ToProto)
 	out.Creator = direct.ValueOf(in.Creator)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)

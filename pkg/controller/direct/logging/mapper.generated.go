@@ -26,22 +26,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func BigQueryDataset_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDataset) *krm.BigQueryDataset {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BigQueryDataset{}
-	// MISSING: DatasetID
-	return out
-}
-func BigQueryDataset_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDataset) *pb.BigQueryDataset {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BigQueryDataset{}
-	// MISSING: DatasetID
-	return out
-}
 func BigQueryDatasetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDataset) *krm.BigQueryDatasetObservedState {
 	if in == nil {
 		return nil

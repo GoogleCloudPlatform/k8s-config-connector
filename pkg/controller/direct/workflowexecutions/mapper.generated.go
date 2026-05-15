@@ -26,73 +26,57 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func Execution_Error_FromProto(mapCtx *direct.MapContext, in *pb.Execution_Error) *krm.Execution_Error {
+func Execution_ErrorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Execution_Error) *krm.Execution_ErrorObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Execution_Error{}
+	out := &krm.Execution_ErrorObservedState{}
 	out.Payload = direct.LazyPtr(in.GetPayload())
 	out.Context = direct.LazyPtr(in.GetContext())
-	out.StackTrace = Execution_StackTrace_FromProto(mapCtx, in.GetStackTrace())
+	out.StackTrace = Execution_StackTraceObservedState_FromProto(mapCtx, in.GetStackTrace())
 	return out
 }
-func Execution_Error_ToProto(mapCtx *direct.MapContext, in *krm.Execution_Error) *pb.Execution_Error {
+func Execution_ErrorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Execution_ErrorObservedState) *pb.Execution_Error {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Execution_Error{}
 	out.Payload = direct.ValueOf(in.Payload)
 	out.Context = direct.ValueOf(in.Context)
-	out.StackTrace = Execution_StackTrace_ToProto(mapCtx, in.StackTrace)
+	out.StackTrace = Execution_StackTraceObservedState_ToProto(mapCtx, in.StackTrace)
 	return out
 }
-func Execution_StackTrace_FromProto(mapCtx *direct.MapContext, in *pb.Execution_StackTrace) *krm.Execution_StackTrace {
+func Execution_StackTraceElementObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Execution_StackTraceElement) *krm.Execution_StackTraceElementObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Execution_StackTrace{}
-	out.Elements = direct.Slice_FromProto(mapCtx, in.Elements, Execution_StackTraceElement_FromProto)
-	return out
-}
-func Execution_StackTrace_ToProto(mapCtx *direct.MapContext, in *krm.Execution_StackTrace) *pb.Execution_StackTrace {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Execution_StackTrace{}
-	out.Elements = direct.Slice_ToProto(mapCtx, in.Elements, Execution_StackTraceElement_ToProto)
-	return out
-}
-func Execution_StackTraceElement_FromProto(mapCtx *direct.MapContext, in *pb.Execution_StackTraceElement) *krm.Execution_StackTraceElement {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Execution_StackTraceElement{}
+	out := &krm.Execution_StackTraceElementObservedState{}
 	out.Step = direct.LazyPtr(in.GetStep())
 	out.Routine = direct.LazyPtr(in.GetRoutine())
-	out.Position = Execution_StackTraceElement_Position_FromProto(mapCtx, in.GetPosition())
+	out.Position = Execution_StackTraceElement_PositionObservedState_FromProto(mapCtx, in.GetPosition())
 	return out
 }
-func Execution_StackTraceElement_ToProto(mapCtx *direct.MapContext, in *krm.Execution_StackTraceElement) *pb.Execution_StackTraceElement {
+func Execution_StackTraceElementObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Execution_StackTraceElementObservedState) *pb.Execution_StackTraceElement {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Execution_StackTraceElement{}
 	out.Step = direct.ValueOf(in.Step)
 	out.Routine = direct.ValueOf(in.Routine)
-	out.Position = Execution_StackTraceElement_Position_ToProto(mapCtx, in.Position)
+	out.Position = Execution_StackTraceElement_PositionObservedState_ToProto(mapCtx, in.Position)
 	return out
 }
-func Execution_StackTraceElement_Position_FromProto(mapCtx *direct.MapContext, in *pb.Execution_StackTraceElement_Position) *krm.Execution_StackTraceElement_Position {
+func Execution_StackTraceElement_PositionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Execution_StackTraceElement_Position) *krm.Execution_StackTraceElement_PositionObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Execution_StackTraceElement_Position{}
+	out := &krm.Execution_StackTraceElement_PositionObservedState{}
 	out.Line = direct.LazyPtr(in.GetLine())
 	out.Column = direct.LazyPtr(in.GetColumn())
 	out.Length = direct.LazyPtr(in.GetLength())
 	return out
 }
-func Execution_StackTraceElement_Position_ToProto(mapCtx *direct.MapContext, in *krm.Execution_StackTraceElement_Position) *pb.Execution_StackTraceElement_Position {
+func Execution_StackTraceElement_PositionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Execution_StackTraceElement_PositionObservedState) *pb.Execution_StackTraceElement_Position {
 	if in == nil {
 		return nil
 	}
@@ -102,16 +86,32 @@ func Execution_StackTraceElement_Position_ToProto(mapCtx *direct.MapContext, in 
 	out.Length = direct.ValueOf(in.Length)
 	return out
 }
-func Execution_StateError_FromProto(mapCtx *direct.MapContext, in *pb.Execution_StateError) *krm.Execution_StateError {
+func Execution_StackTraceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Execution_StackTrace) *krm.Execution_StackTraceObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Execution_StateError{}
+	out := &krm.Execution_StackTraceObservedState{}
+	out.Elements = direct.Slice_FromProto(mapCtx, in.Elements, Execution_StackTraceElementObservedState_FromProto)
+	return out
+}
+func Execution_StackTraceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Execution_StackTraceObservedState) *pb.Execution_StackTrace {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Execution_StackTrace{}
+	out.Elements = direct.Slice_ToProto(mapCtx, in.Elements, Execution_StackTraceElementObservedState_ToProto)
+	return out
+}
+func Execution_StateErrorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Execution_StateError) *krm.Execution_StateErrorObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Execution_StateErrorObservedState{}
 	out.Details = direct.LazyPtr(in.GetDetails())
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	return out
 }
-func Execution_StateError_ToProto(mapCtx *direct.MapContext, in *krm.Execution_StateError) *pb.Execution_StateError {
+func Execution_StateErrorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Execution_StateErrorObservedState) *pb.Execution_StateError {
 	if in == nil {
 		return nil
 	}
@@ -120,32 +120,32 @@ func Execution_StateError_ToProto(mapCtx *direct.MapContext, in *krm.Execution_S
 	out.Type = direct.Enum_ToProto[pb.Execution_StateError_Type](mapCtx, in.Type)
 	return out
 }
-func Execution_Status_FromProto(mapCtx *direct.MapContext, in *pb.Execution_Status) *krm.Execution_Status {
+func Execution_StatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Execution_Status) *krm.Execution_StatusObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Execution_Status{}
-	out.CurrentSteps = direct.Slice_FromProto(mapCtx, in.CurrentSteps, Execution_Status_Step_FromProto)
+	out := &krm.Execution_StatusObservedState{}
+	out.CurrentSteps = direct.Slice_FromProto(mapCtx, in.CurrentSteps, Execution_Status_StepObservedState_FromProto)
 	return out
 }
-func Execution_Status_ToProto(mapCtx *direct.MapContext, in *krm.Execution_Status) *pb.Execution_Status {
+func Execution_StatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Execution_StatusObservedState) *pb.Execution_Status {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Execution_Status{}
-	out.CurrentSteps = direct.Slice_ToProto(mapCtx, in.CurrentSteps, Execution_Status_Step_ToProto)
+	out.CurrentSteps = direct.Slice_ToProto(mapCtx, in.CurrentSteps, Execution_Status_StepObservedState_ToProto)
 	return out
 }
-func Execution_Status_Step_FromProto(mapCtx *direct.MapContext, in *pb.Execution_Status_Step) *krm.Execution_Status_Step {
+func Execution_Status_StepObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Execution_Status_Step) *krm.Execution_Status_StepObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Execution_Status_Step{}
+	out := &krm.Execution_Status_StepObservedState{}
 	out.Routine = direct.LazyPtr(in.GetRoutine())
 	out.Step = direct.LazyPtr(in.GetStep())
 	return out
 }
-func Execution_Status_Step_ToProto(mapCtx *direct.MapContext, in *krm.Execution_Status_Step) *pb.Execution_Status_Step {
+func Execution_Status_StepObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Execution_Status_StepObservedState) *pb.Execution_Status_Step {
 	if in == nil {
 		return nil
 	}
@@ -165,10 +165,10 @@ func WorkflowsExecutionObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	out.Duration = direct.StringDuration_FromProto(mapCtx, in.GetDuration())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.Result = direct.LazyPtr(in.GetResult())
-	out.Error = Execution_Error_FromProto(mapCtx, in.GetError())
+	out.Error = Execution_ErrorObservedState_FromProto(mapCtx, in.GetError())
 	out.WorkflowRevisionID = direct.LazyPtr(in.GetWorkflowRevisionId())
-	out.Status = Execution_Status_FromProto(mapCtx, in.GetStatus())
-	out.StateError = Execution_StateError_FromProto(mapCtx, in.GetStateError())
+	out.Status = Execution_StatusObservedState_FromProto(mapCtx, in.GetStatus())
+	out.StateError = Execution_StateErrorObservedState_FromProto(mapCtx, in.GetStateError())
 	return out
 }
 func WorkflowsExecutionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsExecutionObservedState) *pb.Execution {
@@ -182,10 +182,10 @@ func WorkflowsExecutionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.Duration = direct.StringDuration_ToProto(mapCtx, in.Duration)
 	out.State = direct.Enum_ToProto[pb.Execution_State](mapCtx, in.State)
 	out.Result = direct.ValueOf(in.Result)
-	out.Error = Execution_Error_ToProto(mapCtx, in.Error)
+	out.Error = Execution_ErrorObservedState_ToProto(mapCtx, in.Error)
 	out.WorkflowRevisionId = direct.ValueOf(in.WorkflowRevisionID)
-	out.Status = Execution_Status_ToProto(mapCtx, in.Status)
-	out.StateError = Execution_StateError_ToProto(mapCtx, in.StateError)
+	out.Status = Execution_StatusObservedState_ToProto(mapCtx, in.Status)
+	out.StateError = Execution_StateErrorObservedState_ToProto(mapCtx, in.StateError)
 	return out
 }
 func WorkflowsExecutionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Execution) *krm.WorkflowsExecutionSpec {

@@ -366,7 +366,7 @@ func DeliveryPipelineObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, 
 	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.Condition = PipelineCondition_v1beta1_FromProto(mapCtx, in.GetCondition())
+	out.Condition = PipelineConditionObservedState_v1beta1_FromProto(mapCtx, in.GetCondition())
 	// MISSING: Etag
 	return out
 }
@@ -380,7 +380,7 @@ func DeliveryPipelineObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in
 	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.Condition = PipelineCondition_v1beta1_ToProto(mapCtx, in.Condition)
+	out.Condition = PipelineConditionObservedState_v1beta1_ToProto(mapCtx, in.Condition)
 	// MISSING: Etag
 	return out
 }
@@ -662,36 +662,36 @@ func OneTimeWindow_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeplo
 	out.EndTime = TimeOfDay_v1alpha1_ToProto(mapCtx, in.EndTime)
 	return out
 }
-func PipelineCondition_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PipelineCondition) *krm.PipelineCondition {
+func PipelineConditionObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PipelineCondition) *krm.PipelineConditionObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PipelineCondition{}
-	out.PipelineReadyCondition = PipelineReadyCondition_v1beta1_FromProto(mapCtx, in.GetPipelineReadyCondition())
-	out.TargetsPresentCondition = TargetsPresentCondition_v1beta1_FromProto(mapCtx, in.GetTargetsPresentCondition())
-	out.TargetsTypeCondition = TargetsTypeCondition_v1beta1_FromProto(mapCtx, in.GetTargetsTypeCondition())
+	out := &krm.PipelineConditionObservedState{}
+	out.PipelineReadyCondition = PipelineReadyConditionObservedState_v1beta1_FromProto(mapCtx, in.GetPipelineReadyCondition())
+	out.TargetsPresentCondition = TargetsPresentConditionObservedState_v1beta1_FromProto(mapCtx, in.GetTargetsPresentCondition())
+	out.TargetsTypeCondition = TargetsTypeConditionObservedState_v1beta1_FromProto(mapCtx, in.GetTargetsTypeCondition())
 	return out
 }
-func PipelineCondition_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PipelineCondition) *pb.PipelineCondition {
+func PipelineConditionObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PipelineConditionObservedState) *pb.PipelineCondition {
 	if in == nil {
 		return nil
 	}
 	out := &pb.PipelineCondition{}
-	out.PipelineReadyCondition = PipelineReadyCondition_v1beta1_ToProto(mapCtx, in.PipelineReadyCondition)
-	out.TargetsPresentCondition = TargetsPresentCondition_v1beta1_ToProto(mapCtx, in.TargetsPresentCondition)
-	out.TargetsTypeCondition = TargetsTypeCondition_v1beta1_ToProto(mapCtx, in.TargetsTypeCondition)
+	out.PipelineReadyCondition = PipelineReadyConditionObservedState_v1beta1_ToProto(mapCtx, in.PipelineReadyCondition)
+	out.TargetsPresentCondition = TargetsPresentConditionObservedState_v1beta1_ToProto(mapCtx, in.TargetsPresentCondition)
+	out.TargetsTypeCondition = TargetsTypeConditionObservedState_v1beta1_ToProto(mapCtx, in.TargetsTypeCondition)
 	return out
 }
-func PipelineReadyCondition_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PipelineReadyCondition) *krm.PipelineReadyCondition {
+func PipelineReadyConditionObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PipelineReadyCondition) *krm.PipelineReadyConditionObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PipelineReadyCondition{}
+	out := &krm.PipelineReadyConditionObservedState{}
 	out.Status = direct.LazyPtr(in.GetStatus())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
-func PipelineReadyCondition_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PipelineReadyCondition) *pb.PipelineReadyCondition {
+func PipelineReadyConditionObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PipelineReadyConditionObservedState) *pb.PipelineReadyCondition {
 	if in == nil {
 		return nil
 	}
@@ -1026,17 +1026,17 @@ func TargetsPresentCondition_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
-func TargetsPresentCondition_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetsPresentCondition) *krm.TargetsPresentCondition {
+func TargetsPresentConditionObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetsPresentCondition) *krm.TargetsPresentConditionObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TargetsPresentCondition{}
+	out := &krm.TargetsPresentConditionObservedState{}
 	out.Status = direct.LazyPtr(in.GetStatus())
 	out.MissingTargets = in.MissingTargets
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
-func TargetsPresentCondition_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.TargetsPresentCondition) *pb.TargetsPresentCondition {
+func TargetsPresentConditionObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.TargetsPresentConditionObservedState) *pb.TargetsPresentCondition {
 	if in == nil {
 		return nil
 	}
@@ -1046,16 +1046,16 @@ func TargetsPresentCondition_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
-func TargetsTypeCondition_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetsTypeCondition) *krm.TargetsTypeCondition {
+func TargetsTypeConditionObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetsTypeCondition) *krm.TargetsTypeConditionObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TargetsTypeCondition{}
+	out := &krm.TargetsTypeConditionObservedState{}
 	out.Status = direct.LazyPtr(in.GetStatus())
 	out.ErrorDetails = direct.LazyPtr(in.GetErrorDetails())
 	return out
 }
-func TargetsTypeCondition_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.TargetsTypeCondition) *pb.TargetsTypeCondition {
+func TargetsTypeConditionObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.TargetsTypeConditionObservedState) *pb.TargetsTypeCondition {
 	if in == nil {
 		return nil
 	}

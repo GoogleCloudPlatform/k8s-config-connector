@@ -124,29 +124,23 @@ type AttachedCluster struct {
 }
 */
 
-/* found existing non-generated go type "AttachedClusterError", skipping
-
-// +kcc:proto=google.cloud.gkemulticloud.v1.AttachedClusterError
-type AttachedClusterError struct {
-	// Human-friendly description of the error.
-	// +kcc:proto:field=google.cloud.gkemulticloud.v1.AttachedClusterError.message
-	Message *string `json:"message,omitempty"`
-}
-*/
-
+/* unreachable type AttachedClusterGroup
 // +kcc:proto=google.cloud.gkemulticloud.v1.AttachedClusterGroup
 type AttachedClusterGroup struct {
 	// Required. The name of the group, e.g. `my-group@domain.com`.
 	// +kcc:proto:field=google.cloud.gkemulticloud.v1.AttachedClusterGroup.group
 	Group *string `json:"group,omitempty"`
 }
+*/
 
+/* unreachable type AttachedClusterUser
 // +kcc:proto=google.cloud.gkemulticloud.v1.AttachedClusterUser
 type AttachedClusterUser struct {
 	// Required. The name of the user, e.g. `my-gcp-id@gmail.com`.
 	// +kcc:proto:field=google.cloud.gkemulticloud.v1.AttachedClusterUser.username
 	Username *string `json:"username,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "AttachedClustersAuthorization", skipping
 
@@ -219,6 +213,7 @@ type BinaryAuthorization struct {
 }
 */
 
+/* unreachable type CloudMonitoringConfig
 // +kcc:proto=google.cloud.gkemulticloud.v1.CloudMonitoringConfig
 type CloudMonitoringConfig struct {
 	// Enable GKE-native logging and metrics.
@@ -226,6 +221,7 @@ type CloudMonitoringConfig struct {
 	// +kcc:proto:field=google.cloud.gkemulticloud.v1.CloudMonitoringConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "Fleet", skipping
 
@@ -300,34 +296,16 @@ type MonitoringConfig struct {
 }
 */
 
+/* unreachable type SecurityPostureConfig
 // +kcc:proto=google.cloud.gkemulticloud.v1.SecurityPostureConfig
 type SecurityPostureConfig struct {
 	// Sets which mode to use for vulnerability scanning.
 	// +kcc:proto:field=google.cloud.gkemulticloud.v1.SecurityPostureConfig.vulnerability_mode
 	VulnerabilityMode *string `json:"vulnerabilityMode,omitempty"`
 }
-
-/* found existing non-generated go type "WorkloadIdentityConfig", skipping
-
-// +kcc:proto=google.cloud.gkemulticloud.v1.WorkloadIdentityConfig
-type WorkloadIdentityConfig struct {
-	// The OIDC issuer URL for this cluster.
-	// +kcc:proto:field=google.cloud.gkemulticloud.v1.WorkloadIdentityConfig.issuer_uri
-	IssuerURI *string `json:"issuerURI,omitempty"`
-
-	// The Workload Identity Pool associated to the cluster.
-	// +kcc:proto:field=google.cloud.gkemulticloud.v1.WorkloadIdentityConfig.workload_pool
-	WorkloadPool *string `json:"workloadPool,omitempty"`
-
-	// The ID of the OIDC Identity Provider (IdP) associated to the Workload
-	//  Identity Pool.
-	// +kcc:proto:field=google.cloud.gkemulticloud.v1.WorkloadIdentityConfig.identity_provider
-	IdentityProvider *string `json:"identityProvider,omitempty"`
-}
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.gkemulticloud.v1.AttachedCluster", skipping
-
+/* unreachable type AttachedClusterObservedState
 // +kcc:observedstate:proto=google.cloud.gkemulticloud.v1.AttachedCluster
 type AttachedClusterObservedState struct {
 	// Output only. The region where this cluster runs.
@@ -367,16 +345,24 @@ type AttachedClusterObservedState struct {
 
 	// Output only. Workload Identity settings.
 	// +kcc:proto:field=google.cloud.gkemulticloud.v1.AttachedCluster.workload_identity_config
-	WorkloadIdentityConfig *WorkloadIdentityConfig `json:"workloadIdentityConfig,omitempty"`
+	WorkloadIdentityConfig *WorkloadIdentityConfigObservedState `json:"workloadIdentityConfig,omitempty"`
 
 	// Output only. A set of errors found in the cluster.
 	// +kcc:proto:field=google.cloud.gkemulticloud.v1.AttachedCluster.errors
-	Errors []AttachedClusterError `json:"errors,omitempty"`
+	Errors []AttachedClusterErrorObservedState `json:"errors,omitempty"`
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.gkemulticloud.v1.Fleet", skipping
+/* unreachable type AttachedClusterErrorObservedState
+// +kcc:observedstate:proto=google.cloud.gkemulticloud.v1.AttachedClusterError
+type AttachedClusterErrorObservedState struct {
+	// Human-friendly description of the error.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.AttachedClusterError.message
+	Message *string `json:"message,omitempty"`
+}
+*/
 
+/* unreachable type FleetObservedState
 // +kcc:observedstate:proto=google.cloud.gkemulticloud.v1.Fleet
 type FleetObservedState struct {
 	// Output only. The name of the managed Hub Membership resource associated to
@@ -386,5 +372,23 @@ type FleetObservedState struct {
 	//  `projects/<project-number>/locations/global/membership/<cluster-id>`.
 	// +kcc:proto:field=google.cloud.gkemulticloud.v1.Fleet.membership
 	Membership *string `json:"membership,omitempty"`
+}
+*/
+
+/* unreachable type WorkloadIdentityConfigObservedState
+// +kcc:observedstate:proto=google.cloud.gkemulticloud.v1.WorkloadIdentityConfig
+type WorkloadIdentityConfigObservedState struct {
+	// The OIDC issuer URL for this cluster.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.WorkloadIdentityConfig.issuer_uri
+	IssuerURI *string `json:"issuerURI,omitempty"`
+
+	// The Workload Identity Pool associated to the cluster.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.WorkloadIdentityConfig.workload_pool
+	WorkloadPool *string `json:"workloadPool,omitempty"`
+
+	// The ID of the OIDC Identity Provider (IdP) associated to the Workload
+	//  Identity Pool.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.WorkloadIdentityConfig.identity_provider
+	IdentityProvider *string `json:"identityProvider,omitempty"`
 }
 */

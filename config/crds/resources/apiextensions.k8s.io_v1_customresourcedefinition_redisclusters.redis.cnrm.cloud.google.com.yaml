@@ -289,9 +289,9 @@ spec:
                             the endpoint is created and accessed from.
                           properties:
                             network:
-                              description: Required. The network where the IP address
-                                of the discovery endpoint will be reserved, in the
-                                form of projects/{network_project}/global/networks/{network_id}.
+                              description: The network where the IP address of the
+                                discovery endpoint will be reserved, in the form of
+                                projects/{network_project}/global/networks/{network_id}.
                               type: string
                           type: object
                       type: object
@@ -301,13 +301,16 @@ spec:
                       GB for the entire cluster.
                     type: number
                   pscConnections:
-                    description: Output only. PSC connections for discovery of the
-                      cluster topology and accessing the cluster.
+                    description: Output only. The list of PSC connections that are
+                      auto-created through service connectivity automation.
                     items:
                       properties:
                         address:
                           description: Required. The IP allocated on the consumer
                             network for the PSC forwarding rule.
+                          type: string
+                        connectionType:
+                          description: Output only. Type of the PSC connection.
                           type: string
                         forwardingRule:
                           description: 'Required. The URI of the consumer side forwarding
@@ -324,6 +327,11 @@ spec:
                         pscConnectionID:
                           description: Required. The PSC connection id of the forwarding
                             rule connected to the service attachment.
+                          type: string
+                        pscConnectionStatus:
+                          description: Output only. The status of the PSC connection.
+                            Please note that this value is updated periodically. To
+                            get the latest status of a PSC connection, follow https://cloud.google.com/vpc/docs/configure-private-service-connect-services#endpoint-details.
                           type: string
                         serviceAttachment:
                           description: Required. The service attachment which is the
@@ -632,9 +640,9 @@ spec:
                             the endpoint is created and accessed from.
                           properties:
                             network:
-                              description: Required. The network where the IP address
-                                of the discovery endpoint will be reserved, in the
-                                form of projects/{network_project}/global/networks/{network_id}.
+                              description: The network where the IP address of the
+                                discovery endpoint will be reserved, in the form of
+                                projects/{network_project}/global/networks/{network_id}.
                               type: string
                           type: object
                       type: object
@@ -644,13 +652,16 @@ spec:
                       GB for the entire cluster.
                     type: number
                   pscConnections:
-                    description: Output only. PSC connections for discovery of the
-                      cluster topology and accessing the cluster.
+                    description: Output only. The list of PSC connections that are
+                      auto-created through service connectivity automation.
                     items:
                       properties:
                         address:
                           description: Required. The IP allocated on the consumer
                             network for the PSC forwarding rule.
+                          type: string
+                        connectionType:
+                          description: Output only. Type of the PSC connection.
                           type: string
                         forwardingRule:
                           description: 'Required. The URI of the consumer side forwarding
@@ -667,6 +678,11 @@ spec:
                         pscConnectionID:
                           description: Required. The PSC connection id of the forwarding
                             rule connected to the service attachment.
+                          type: string
+                        pscConnectionStatus:
+                          description: Output only. The status of the PSC connection.
+                            Please note that this value is updated periodically. To
+                            get the latest status of a PSC connection, follow https://cloud.google.com/vpc/docs/configure-private-service-connect-services#endpoint-details.
                           type: string
                         serviceAttachment:
                           description: Required. The service attachment which is the

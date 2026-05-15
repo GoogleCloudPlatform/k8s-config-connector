@@ -28,17 +28,17 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AssetStatus_FromProto(mapCtx *direct.MapContext, in *pb.AssetStatus) *krm.AssetStatus {
+func AssetStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AssetStatus) *krm.AssetStatusObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AssetStatus{}
+	out := &krm.AssetStatusObservedState{}
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.ActiveAssets = direct.LazyPtr(in.GetActiveAssets())
 	out.SecurityPolicyApplyingAssets = direct.LazyPtr(in.GetSecurityPolicyApplyingAssets())
 	return out
 }
-func AssetStatus_ToProto(mapCtx *direct.MapContext, in *krm.AssetStatus) *pb.AssetStatus {
+func AssetStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AssetStatusObservedState) *pb.AssetStatus {
 	if in == nil {
 		return nil
 	}
@@ -170,8 +170,8 @@ func DataplexLakeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Lake)
 	// MISSING: Labels
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
-	out.AssetStatus = AssetStatus_FromProto(mapCtx, in.GetAssetStatus())
-	out.MetastoreStatus = Lake_MetastoreStatus_FromProto(mapCtx, in.GetMetastoreStatus())
+	out.AssetStatus = AssetStatusObservedState_FromProto(mapCtx, in.GetAssetStatus())
+	out.MetastoreStatus = Lake_MetastoreStatusObservedState_FromProto(mapCtx, in.GetMetastoreStatus())
 	return out
 }
 func DataplexLakeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexLakeObservedState) *pb.Lake {
@@ -186,8 +186,8 @@ func DataplexLakeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Datapl
 	// MISSING: Labels
 	out.State = direct.Enum_ToProto[pb.State](mapCtx, in.State)
 	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
-	out.AssetStatus = AssetStatus_ToProto(mapCtx, in.AssetStatus)
-	out.MetastoreStatus = Lake_MetastoreStatus_ToProto(mapCtx, in.MetastoreStatus)
+	out.AssetStatus = AssetStatusObservedState_ToProto(mapCtx, in.AssetStatus)
+	out.MetastoreStatus = Lake_MetastoreStatusObservedState_ToProto(mapCtx, in.MetastoreStatus)
 	return out
 }
 func DataplexLakeSpec_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krm.DataplexLakeSpec {
@@ -269,7 +269,7 @@ func DataplexZoneObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Zone)
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: Labels
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.AssetStatus = AssetStatus_FromProto(mapCtx, in.GetAssetStatus())
+	out.AssetStatus = AssetStatusObservedState_FromProto(mapCtx, in.GetAssetStatus())
 	return out
 }
 func DataplexZoneObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexZoneObservedState) *pb.Zone {
@@ -283,7 +283,7 @@ func DataplexZoneObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Datapl
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: Labels
 	out.State = direct.Enum_ToProto[pb.State](mapCtx, in.State)
-	out.AssetStatus = AssetStatus_ToProto(mapCtx, in.AssetStatus)
+	out.AssetStatus = AssetStatusObservedState_ToProto(mapCtx, in.AssetStatus)
 	return out
 }
 func DataplexZoneSpec_FromProto(mapCtx *direct.MapContext, in *pb.Zone) *krm.DataplexZoneSpec {
@@ -408,18 +408,18 @@ func Lake_Metastore_ToProto(mapCtx *direct.MapContext, in *krm.Lake_Metastore) *
 	}
 	return out
 }
-func Lake_MetastoreStatus_FromProto(mapCtx *direct.MapContext, in *pb.Lake_MetastoreStatus) *krm.Lake_MetastoreStatus {
+func Lake_MetastoreStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Lake_MetastoreStatus) *krm.Lake_MetastoreStatusObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Lake_MetastoreStatus{}
+	out := &krm.Lake_MetastoreStatusObservedState{}
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.Message = direct.LazyPtr(in.GetMessage())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.Endpoint = direct.LazyPtr(in.GetEndpoint())
 	return out
 }
-func Lake_MetastoreStatus_ToProto(mapCtx *direct.MapContext, in *krm.Lake_MetastoreStatus) *pb.Lake_MetastoreStatus {
+func Lake_MetastoreStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Lake_MetastoreStatusObservedState) *pb.Lake_MetastoreStatus {
 	if in == nil {
 		return nil
 	}

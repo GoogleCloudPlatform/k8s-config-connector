@@ -42,38 +42,6 @@ func AttachedClusterError_ToProto(mapCtx *direct.MapContext, in *krm.AttachedClu
 	out.Message = direct.ValueOf(in.Message)
 	return out
 }
-func AttachedClusterGroup_FromProto(mapCtx *direct.MapContext, in *pb.AttachedClusterGroup) *krm.AttachedClusterGroup {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AttachedClusterGroup{}
-	out.Group = direct.LazyPtr(in.GetGroup())
-	return out
-}
-func AttachedClusterGroup_ToProto(mapCtx *direct.MapContext, in *krm.AttachedClusterGroup) *pb.AttachedClusterGroup {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AttachedClusterGroup{}
-	out.Group = direct.ValueOf(in.Group)
-	return out
-}
-func AttachedClusterUser_FromProto(mapCtx *direct.MapContext, in *pb.AttachedClusterUser) *krm.AttachedClusterUser {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AttachedClusterUser{}
-	out.Username = direct.LazyPtr(in.GetUsername())
-	return out
-}
-func AttachedClusterUser_ToProto(mapCtx *direct.MapContext, in *krm.AttachedClusterUser) *pb.AttachedClusterUser {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AttachedClusterUser{}
-	out.Username = direct.ValueOf(in.Username)
-	return out
-}
 
 /* found existing non-generated mapping function "AttachedClustersAuthorization_FromProto", skipping
 func AttachedClustersAuthorization_FromProto(mapCtx *direct.MapContext, in *pb.AttachedClustersAuthorization) *krm.AttachedClustersAuthorization {
@@ -156,22 +124,6 @@ func BinaryAuthorization_ToProto(mapCtx *direct.MapContext, in *krm.BinaryAuthor
 	}
 	out := &pb.BinaryAuthorization{}
 	out.EvaluationMode = direct.Enum_ToProto[pb.BinaryAuthorization_EvaluationMode](mapCtx, in.EvaluationMode)
-	return out
-}
-func CloudMonitoringConfig_FromProto(mapCtx *direct.MapContext, in *pb.CloudMonitoringConfig) *krm.CloudMonitoringConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CloudMonitoringConfig{}
-	out.Enabled = in.Enabled
-	return out
-}
-func CloudMonitoringConfig_ToProto(mapCtx *direct.MapContext, in *krm.CloudMonitoringConfig) *pb.CloudMonitoringConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CloudMonitoringConfig{}
-	out.Enabled = in.Enabled
 	return out
 }
 
@@ -364,22 +316,6 @@ func MonitoringConfig_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringConfi
 	out := &pb.MonitoringConfig{}
 	out.ManagedPrometheusConfig = ManagedPrometheusConfig_ToProto(mapCtx, in.ManagedPrometheusConfig)
 	// MISSING: CloudMonitoringConfig
-	return out
-}
-func SecurityPostureConfig_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPostureConfig) *krm.SecurityPostureConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecurityPostureConfig{}
-	out.VulnerabilityMode = direct.Enum_FromProto(mapCtx, in.GetVulnerabilityMode())
-	return out
-}
-func SecurityPostureConfig_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPostureConfig) *pb.SecurityPostureConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SecurityPostureConfig{}
-	out.VulnerabilityMode = direct.Enum_ToProto[pb.SecurityPostureConfig_VulnerabilityMode](mapCtx, in.VulnerabilityMode)
 	return out
 }
 func WorkloadIdentityConfig_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadIdentityConfig) *krm.WorkloadIdentityConfig {

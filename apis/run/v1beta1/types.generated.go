@@ -21,10 +21,6 @@
 
 package v1beta1
 
-// +kcc:proto=google.cloud.run.v2.BuildInfo
-type BuildInfo struct {
-}
-
 // +kcc:proto=google.cloud.run.v2.ContainerPort
 type ContainerPort struct {
 	// If specified, used to specify which protocol to use.
@@ -77,30 +73,7 @@ type EnvVar struct {
 	ValueSource *EnvVarSource `json:"valueSource,omitempty"`
 }
 
-// +kcc:proto=google.cloud.run.v2.ExecutionReference
-type ExecutionReference struct {
-	// Name of the execution.
-	// +kcc:proto:field=google.cloud.run.v2.ExecutionReference.name
-	Name *string `json:"name,omitempty"`
-
-	// Creation timestamp of the execution.
-	// +kcc:proto:field=google.cloud.run.v2.ExecutionReference.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Creation timestamp of the execution.
-	// +kcc:proto:field=google.cloud.run.v2.ExecutionReference.completion_time
-	CompletionTime *string `json:"completionTime,omitempty"`
-
-	// The deletion time of the execution. It is only
-	//  populated as a response to a Delete request.
-	// +kcc:proto:field=google.cloud.run.v2.ExecutionReference.delete_time
-	DeleteTime *string `json:"deleteTime,omitempty"`
-
-	// Status for the execution completion.
-	// +kcc:proto:field=google.cloud.run.v2.ExecutionReference.completion_status
-	CompletionStatus *string `json:"completionStatus,omitempty"`
-}
-
+/* unreachable type GrpcAction
 // +kcc:proto=google.cloud.run.v2.GRPCAction
 type GrpcAction struct {
 	// Optional. Port number of the gRPC service. Number must be in the range 1 to
@@ -116,6 +89,7 @@ type GrpcAction struct {
 	// +kcc:proto:field=google.cloud.run.v2.GRPCAction.service
 	Service *string `json:"service,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.run.v2.HTTPHeader
 type HTTPHeader struct {
@@ -143,12 +117,14 @@ type NfsVolumeSource struct {
 	ReadOnly *bool `json:"readOnly,omitempty"`
 }
 
+/* unreachable type NodeSelector
 // +kcc:proto=google.cloud.run.v2.NodeSelector
 type NodeSelector struct {
 	// Required. GPU accelerator type to attach to an instance.
 	// +kcc:proto:field=google.cloud.run.v2.NodeSelector.accelerator
 	Accelerator *string `json:"accelerator,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.run.v2.TCPSocketAction
 type TCPSocketAction struct {
@@ -174,6 +150,7 @@ type VolumeMount struct {
 	MountPath *string `json:"mountPath,omitempty"`
 }
 
+/* unreachable type BuildInfoObservedState
 // +kcc:observedstate:proto=google.cloud.run.v2.BuildInfo
 type BuildInfoObservedState struct {
 	// Output only. Entry point of the function when the image is a Cloud Run
@@ -185,3 +162,202 @@ type BuildInfoObservedState struct {
 	// +kcc:proto:field=google.cloud.run.v2.BuildInfo.source_location
 	SourceLocation *string `json:"sourceLocation,omitempty"`
 }
+*/
+
+/* unreachable type ConditionObservedState
+// +kcc:observedstate:proto=google.cloud.run.v2.Condition
+type ConditionObservedState struct {
+	// type is used to communicate the status of the reconciliation process.
+	//  See also:
+	//  https://github.com/knative/serving/blob/main/docs/spec/errors.md#error-conditions-and-reporting
+	//  Types common to all resources include:
+	//  * "Ready": True when the Resource is ready.
+	// +kcc:proto:field=google.cloud.run.v2.Condition.type
+	Type *string `json:"type,omitempty"`
+
+	// State of the condition.
+	// +kcc:proto:field=google.cloud.run.v2.Condition.state
+	State *string `json:"state,omitempty"`
+
+	// Human readable message indicating details about the current status.
+	// +kcc:proto:field=google.cloud.run.v2.Condition.message
+	Message *string `json:"message,omitempty"`
+
+	// Last time the condition transitioned from one status to another.
+	// +kcc:proto:field=google.cloud.run.v2.Condition.last_transition_time
+	LastTransitionTime *string `json:"lastTransitionTime,omitempty"`
+
+	// How to interpret failures of this condition, one of Error, Warning, Info
+	// +kcc:proto:field=google.cloud.run.v2.Condition.severity
+	Severity *string `json:"severity,omitempty"`
+
+	// Output only. A common (service-level) reason for this condition.
+	// +kcc:proto:field=google.cloud.run.v2.Condition.reason
+	Reason *string `json:"reason,omitempty"`
+
+	// Output only. A reason for the revision condition.
+	// +kcc:proto:field=google.cloud.run.v2.Condition.revision_reason
+	RevisionReason *string `json:"revisionReason,omitempty"`
+
+	// Output only. A reason for the execution condition.
+	// +kcc:proto:field=google.cloud.run.v2.Condition.execution_reason
+	ExecutionReason *string `json:"executionReason,omitempty"`
+}
+*/
+
+/* unreachable type ContainerObservedState
+// +kcc:observedstate:proto=google.cloud.run.v2.Container
+type ContainerObservedState struct {
+	// Output only. The build info of the container image.
+	// +kcc:proto:field=google.cloud.run.v2.Container.build_info
+	BuildInfo *BuildInfoObservedState `json:"buildInfo,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.run.v2.ExecutionReference
+type ExecutionReferenceObservedState struct {
+	// Name of the execution.
+	// +kcc:proto:field=google.cloud.run.v2.ExecutionReference.name
+	Name *string `json:"name,omitempty"`
+
+	// Creation timestamp of the execution.
+	// +kcc:proto:field=google.cloud.run.v2.ExecutionReference.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Creation timestamp of the execution.
+	// +kcc:proto:field=google.cloud.run.v2.ExecutionReference.completion_time
+	CompletionTime *string `json:"completionTime,omitempty"`
+
+	// The deletion time of the execution. It is only
+	//  populated as a response to a Delete request.
+	// +kcc:proto:field=google.cloud.run.v2.ExecutionReference.delete_time
+	DeleteTime *string `json:"deleteTime,omitempty"`
+
+	// Status for the execution completion.
+	// +kcc:proto:field=google.cloud.run.v2.ExecutionReference.completion_status
+	CompletionStatus *string `json:"completionStatus,omitempty"`
+}
+
+/* unreachable type ExecutionTemplateObservedState
+// +kcc:observedstate:proto=google.cloud.run.v2.ExecutionTemplate
+type ExecutionTemplateObservedState struct {
+	// Required. Describes the task(s) that will be created when executing an
+	//  execution.
+	// +kcc:proto:field=google.cloud.run.v2.ExecutionTemplate.template
+	Template *TaskTemplateObservedState `json:"template,omitempty"`
+}
+*/
+
+/* unreachable type JobObservedState
+// +kcc:observedstate:proto=google.cloud.run.v2.Job
+type JobObservedState struct {
+	// Output only. Server assigned unique identifier for the Execution. The value
+	//  is a UUID4 string and guaranteed to remain unchanged until the resource is
+	//  deleted.
+	// +kcc:proto:field=google.cloud.run.v2.Job.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. A number that monotonically increases every time the user
+	//  modifies the desired state.
+	// +kcc:proto:field=google.cloud.run.v2.Job.generation
+	Generation *int64 `json:"generation,omitempty"`
+
+	// Output only. The creation time.
+	// +kcc:proto:field=google.cloud.run.v2.Job.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The last-modified time.
+	// +kcc:proto:field=google.cloud.run.v2.Job.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The deletion time. It is only populated as a response to a
+	//  Delete request.
+	// +kcc:proto:field=google.cloud.run.v2.Job.delete_time
+	DeleteTime *string `json:"deleteTime,omitempty"`
+
+	// Output only. For a deleted resource, the time after which it will be
+	//  permamently deleted.
+	// +kcc:proto:field=google.cloud.run.v2.Job.expire_time
+	ExpireTime *string `json:"expireTime,omitempty"`
+
+	// Output only. Email address of the authenticated creator.
+	// +kcc:proto:field=google.cloud.run.v2.Job.creator
+	Creator *string `json:"creator,omitempty"`
+
+	// Output only. Email address of the last authenticated modifier.
+	// +kcc:proto:field=google.cloud.run.v2.Job.last_modifier
+	LastModifier *string `json:"lastModifier,omitempty"`
+
+	// Required. The template used to create executions for this Job.
+	// +kcc:proto:field=google.cloud.run.v2.Job.template
+	Template *ExecutionTemplateObservedState `json:"template,omitempty"`
+
+	// Output only. The generation of this Job. See comments in `reconciling` for
+	//  additional information on reconciliation process in Cloud Run.
+	// +kcc:proto:field=google.cloud.run.v2.Job.observed_generation
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	// Output only. The Condition of this Job, containing its readiness status,
+	//  and detailed error information in case it did not reach the desired state.
+	// +kcc:proto:field=google.cloud.run.v2.Job.terminal_condition
+	TerminalCondition *ConditionObservedState `json:"terminalCondition,omitempty"`
+
+	// Output only. The Conditions of all other associated sub-resources. They
+	//  contain additional diagnostics information in case the Job does not reach
+	//  its desired state. See comments in `reconciling` for additional information
+	//  on reconciliation process in Cloud Run.
+	// +kcc:proto:field=google.cloud.run.v2.Job.conditions
+	Conditions []ConditionObservedState `json:"conditions,omitempty"`
+
+	// Output only. Number of executions created for this job.
+	// +kcc:proto:field=google.cloud.run.v2.Job.execution_count
+	ExecutionCount *int32 `json:"executionCount,omitempty"`
+
+	// Output only. Name of the last created execution.
+	// +kcc:proto:field=google.cloud.run.v2.Job.latest_created_execution
+	LatestCreatedExecution *ExecutionReferenceObservedState `json:"latestCreatedExecution,omitempty"`
+
+	// Output only. Returns true if the Job is currently being acted upon by the
+	//  system to bring it into the desired state.
+	//
+	//  When a new Job is created, or an existing one is updated, Cloud Run
+	//  will asynchronously perform all necessary steps to bring the Job to the
+	//  desired state. This process is called reconciliation.
+	//  While reconciliation is in process, `observed_generation` and
+	//  `latest_succeeded_execution`, will have transient values that might
+	//  mismatch the intended state: Once reconciliation is over (and this field is
+	//  false), there are two possible outcomes: reconciliation succeeded and the
+	//  state matches the Job, or there was an error,  and reconciliation failed.
+	//  This state can be found in `terminal_condition.state`.
+	//
+	//  If reconciliation succeeded, the following fields will match:
+	//  `observed_generation` and `generation`, `latest_succeeded_execution` and
+	//  `latest_created_execution`.
+	//
+	//  If reconciliation failed, `observed_generation` and
+	//  `latest_succeeded_execution` will have the state of the last succeeded
+	//  execution or empty for newly created Job. Additional information on the
+	//  failure can be found in `terminal_condition` and `conditions`.
+	// +kcc:proto:field=google.cloud.run.v2.Job.reconciling
+	Reconciling *bool `json:"reconciling,omitempty"`
+
+	// Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.run.v2.Job.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// Output only. A system-generated fingerprint for this version of the
+	//  resource. May be used to detect modification conflict during updates.
+	// +kcc:proto:field=google.cloud.run.v2.Job.etag
+	Etag *string `json:"etag,omitempty"`
+}
+*/
+
+/* unreachable type TaskTemplateObservedState
+// +kcc:observedstate:proto=google.cloud.run.v2.TaskTemplate
+type TaskTemplateObservedState struct {
+	// Holds the single container that defines the unit of execution for this
+	//  task.
+	// +kcc:proto:field=google.cloud.run.v2.TaskTemplate.containers
+	Containers []ContainerObservedState `json:"containers,omitempty"`
+}
+*/

@@ -258,3 +258,61 @@ type TimeOfDay struct {
 	// +kcc:proto:field=google.type.TimeOfDay.nanos
 	Nanos *int32 `json:"nanos,omitempty"`
 }
+
+/* unreachable type AutomationRuleConditionObservedState
+// +kcc:observedstate:proto=google.cloud.deploy.v1.AutomationRuleCondition
+type AutomationRuleConditionObservedState struct {
+	// Optional. Details around targets enumerated in the rule.
+	// +kcc:proto:field=google.cloud.deploy.v1.AutomationRuleCondition.targets_present_condition
+	TargetsPresentCondition *TargetsPresentConditionObservedState `json:"targetsPresentCondition,omitempty"`
+
+	// Optional. TimedPromoteReleaseCondition contains rule conditions specific
+	//  to a an Automation with a timed promote release rule defined.
+	// +kcc:proto:field=google.cloud.deploy.v1.AutomationRuleCondition.timed_promote_release_condition
+	TimedPromoteReleaseCondition *TimedPromoteReleaseConditionObservedState `json:"timedPromoteReleaseCondition,omitempty"`
+}
+*/
+
+/* unreachable type TargetsPresentConditionObservedState
+// +kcc:observedstate:proto=google.cloud.deploy.v1.TargetsPresentCondition
+type TargetsPresentConditionObservedState struct {
+	// True if there aren't any missing Targets.
+	// +kcc:proto:field=google.cloud.deploy.v1.TargetsPresentCondition.status
+	Status *bool `json:"status,omitempty"`
+
+	// The list of Target names that do not exist. For example,
+	//  `projects/{project_id}/locations/{location_name}/targets/{target_name}`.
+	// +kcc:proto:field=google.cloud.deploy.v1.TargetsPresentCondition.missing_targets
+	MissingTargets []string `json:"missingTargets,omitempty"`
+
+	// Last time the condition was updated.
+	// +kcc:proto:field=google.cloud.deploy.v1.TargetsPresentCondition.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* unreachable type TimedPromoteReleaseConditionObservedState
+// +kcc:observedstate:proto=google.cloud.deploy.v1.TimedPromoteReleaseCondition
+type TimedPromoteReleaseConditionObservedState struct {
+	// Output only. When the next scheduled promotion(s) will occur.
+	// +kcc:proto:field=google.cloud.deploy.v1.TimedPromoteReleaseCondition.next_promotion_time
+	NextPromotionTime *string `json:"nextPromotionTime,omitempty"`
+
+	// Output only. A list of targets involved in the upcoming timed promotion(s).
+	// +kcc:proto:field=google.cloud.deploy.v1.TimedPromoteReleaseCondition.targets_list
+	TargetsList []TimedPromoteReleaseCondition_TargetsObservedState `json:"targetsList,omitempty"`
+}
+*/
+
+/* unreachable type TimedPromoteReleaseCondition_TargetsObservedState
+// +kcc:observedstate:proto=google.cloud.deploy.v1.TimedPromoteReleaseCondition.Targets
+type TimedPromoteReleaseCondition_TargetsObservedState struct {
+	// Optional. The source target ID.
+	// +kcc:proto:field=google.cloud.deploy.v1.TimedPromoteReleaseCondition.Targets.source_target_id
+	SourceTargetID *string `json:"sourceTargetID,omitempty"`
+
+	// Optional. The destination target ID.
+	// +kcc:proto:field=google.cloud.deploy.v1.TimedPromoteReleaseCondition.Targets.destination_target_id
+	DestinationTargetID *string `json:"destinationTargetID,omitempty"`
+}
+*/
