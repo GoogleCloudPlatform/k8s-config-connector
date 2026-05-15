@@ -30,7 +30,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/cloudquotas/v1beta"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/cloudquotas/v1beta"
 	"github.com/google/uuid"
 )
 

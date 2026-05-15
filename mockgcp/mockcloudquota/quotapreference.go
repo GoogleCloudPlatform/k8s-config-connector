@@ -29,7 +29,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/cloudquotas/v1beta"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/cloudquotas/v1beta"
 	"github.com/golang/protobuf/ptypes/wrappers"
 	"github.com/google/uuid"
 )

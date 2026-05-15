@@ -1,0 +1,48 @@
+{
+  "methodConfig": [
+    {
+      "name": [
+        {
+          "service": "mockgcp.cloud.cloudquotas.v1beta.CloudQuotas",
+          "method": "ListQuotaInfos"
+        },
+        {
+          "service": "mockgcp.cloud.cloudquotas.v1beta.CloudQuotas",
+          "method": "GetQuotaInfo"
+        },
+        {
+          "service": "mockgcp.cloud.cloudquotas.v1beta.CloudQuotas",
+          "method": "ListQuotaPreferences"
+        },
+        {
+          "service": "mockgcp.cloud.cloudquotas.v1beta.CloudQuotas",
+          "method": "GetQuotaPreference"
+        },
+        {
+          "service": "mockgcp.cloud.cloudquotas.v1beta.CloudQuotas",
+          "method": "CreateQuotaPreference"
+        },
+        {
+          "service": "mockgcp.cloud.cloudquotas.v1beta.CloudQuotas",
+          "method": "UpdateQuotaPreference"
+        },
+        {
+          "service": "mockgcp.cloud.cloudquotas.v1beta.QuotaAdjusterSettingsManager",
+          "method": "GetQuotaAdjusterSettings"
+        },
+        {
+          "service": "mockgcp.cloud.cloudquotas.v1beta.QuotaAdjusterSettingsManager",
+          "method": "UpdateQuotaAdjusterSettings"
+        }
+      ],
+      "timeout": "60s",
+      "retryPolicy": {
+        "maxAttempts": 5,
+        "initialBackoff": "1s",
+        "maxBackoff": "10s",
+        "backoffMultiplier": 1.3,
+        "retryableStatusCodes": ["UNAVAILABLE"]
+      }
+    }
+  ]
+}

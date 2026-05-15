@@ -36,8 +36,8 @@ gen-proto: tools sync-repo
 .PHONY: gen-proto-no-fixup
 gen-proto-no-fixup:
 	PATH=bin/:${PATH} bin/protoc/bin/protoc \
-		-I ./third_party/googleapis \
 		-I ./apis \
+		-I ./third_party/googleapis \
 		--go_out ./generated \
 		--go_opt paths=source_relative \
 		--go-grpc_out ./generated \
@@ -165,7 +165,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/bigquery/biglake/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/reservation/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/orchestration/airflow/service/v1/*.proto \
-		./third_party/googleapis/mockgcp/api/cloudquotas/v1beta/*.proto \
+		./apis/mockgcp/cloud/cloudquotas/v1beta/*.proto \
 		./third_party/googleapis/mockgcp/cloud/asset/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/datacatalog/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/eventarc/v1/*.proto \
@@ -211,13 +211,11 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/apigateway/v1/apigateway_service.proto \
 		./third_party/googleapis/google/cloud/networksecurity/v1beta1/*.proto \
 		./third_party/googleapis/google/cloud/networkservices/v1/*.proto \
-		./third_party/googleapis/google/cloud/dataplex/v1/*.proto \
 		./third_party/googleapis/google/cloud/clouddms/v1/*.proto \
 		./third_party/googleapis/google/cloud/notebooks/v1/*.proto \
 		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto \
 		./third_party/googleapis/google/iam/v2/*.proto \
-		./third_party/googleapis/google/logging/v2/*.proto \
-		./third_party/googleapis/google/analytics/admin/v1alpha/*.proto
+		./third_party/googleapis/google/logging/v2/*.proto
 
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:

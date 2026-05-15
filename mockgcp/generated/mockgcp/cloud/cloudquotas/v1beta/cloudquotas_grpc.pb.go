@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.12.4
-// source: mockgcp/api/cloudquotas/v1/cloudquotas.proto
+// source: mockgcp/cloud/cloudquotas/v1beta/cloudquotas.proto
 
 package cloudquotaspb
 
@@ -47,7 +47,7 @@ func NewCloudQuotasClient(cc grpc.ClientConnInterface) CloudQuotasClient {
 
 func (c *cloudQuotasClient) ListQuotaInfos(ctx context.Context, in *ListQuotaInfosRequest, opts ...grpc.CallOption) (*ListQuotaInfosResponse, error) {
 	out := new(ListQuotaInfosResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.api.cloudquotas.v1.CloudQuotas/ListQuotaInfos", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudquotas.v1beta.CloudQuotas/ListQuotaInfos", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func (c *cloudQuotasClient) ListQuotaInfos(ctx context.Context, in *ListQuotaInf
 
 func (c *cloudQuotasClient) GetQuotaInfo(ctx context.Context, in *GetQuotaInfoRequest, opts ...grpc.CallOption) (*QuotaInfo, error) {
 	out := new(QuotaInfo)
-	err := c.cc.Invoke(ctx, "/mockgcp.api.cloudquotas.v1.CloudQuotas/GetQuotaInfo", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudquotas.v1beta.CloudQuotas/GetQuotaInfo", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +65,7 @@ func (c *cloudQuotasClient) GetQuotaInfo(ctx context.Context, in *GetQuotaInfoRe
 
 func (c *cloudQuotasClient) ListQuotaPreferences(ctx context.Context, in *ListQuotaPreferencesRequest, opts ...grpc.CallOption) (*ListQuotaPreferencesResponse, error) {
 	out := new(ListQuotaPreferencesResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.api.cloudquotas.v1.CloudQuotas/ListQuotaPreferences", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudquotas.v1beta.CloudQuotas/ListQuotaPreferences", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -74,7 +74,7 @@ func (c *cloudQuotasClient) ListQuotaPreferences(ctx context.Context, in *ListQu
 
 func (c *cloudQuotasClient) GetQuotaPreference(ctx context.Context, in *GetQuotaPreferenceRequest, opts ...grpc.CallOption) (*QuotaPreference, error) {
 	out := new(QuotaPreference)
-	err := c.cc.Invoke(ctx, "/mockgcp.api.cloudquotas.v1.CloudQuotas/GetQuotaPreference", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudquotas.v1beta.CloudQuotas/GetQuotaPreference", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -83,7 +83,7 @@ func (c *cloudQuotasClient) GetQuotaPreference(ctx context.Context, in *GetQuota
 
 func (c *cloudQuotasClient) CreateQuotaPreference(ctx context.Context, in *CreateQuotaPreferenceRequest, opts ...grpc.CallOption) (*QuotaPreference, error) {
 	out := new(QuotaPreference)
-	err := c.cc.Invoke(ctx, "/mockgcp.api.cloudquotas.v1.CloudQuotas/CreateQuotaPreference", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudquotas.v1beta.CloudQuotas/CreateQuotaPreference", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -92,7 +92,7 @@ func (c *cloudQuotasClient) CreateQuotaPreference(ctx context.Context, in *Creat
 
 func (c *cloudQuotasClient) UpdateQuotaPreference(ctx context.Context, in *UpdateQuotaPreferenceRequest, opts ...grpc.CallOption) (*QuotaPreference, error) {
 	out := new(QuotaPreference)
-	err := c.cc.Invoke(ctx, "/mockgcp.api.cloudquotas.v1.CloudQuotas/UpdateQuotaPreference", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudquotas.v1beta.CloudQuotas/UpdateQuotaPreference", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -164,7 +164,7 @@ func _CloudQuotas_ListQuotaInfos_Handler(srv interface{}, ctx context.Context, d
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.api.cloudquotas.v1.CloudQuotas/ListQuotaInfos",
+		FullMethod: "/mockgcp.cloud.cloudquotas.v1beta.CloudQuotas/ListQuotaInfos",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CloudQuotasServer).ListQuotaInfos(ctx, req.(*ListQuotaInfosRequest))
@@ -182,7 +182,7 @@ func _CloudQuotas_GetQuotaInfo_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.api.cloudquotas.v1.CloudQuotas/GetQuotaInfo",
+		FullMethod: "/mockgcp.cloud.cloudquotas.v1beta.CloudQuotas/GetQuotaInfo",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CloudQuotasServer).GetQuotaInfo(ctx, req.(*GetQuotaInfoRequest))
@@ -200,7 +200,7 @@ func _CloudQuotas_ListQuotaPreferences_Handler(srv interface{}, ctx context.Cont
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.api.cloudquotas.v1.CloudQuotas/ListQuotaPreferences",
+		FullMethod: "/mockgcp.cloud.cloudquotas.v1beta.CloudQuotas/ListQuotaPreferences",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CloudQuotasServer).ListQuotaPreferences(ctx, req.(*ListQuotaPreferencesRequest))
@@ -218,7 +218,7 @@ func _CloudQuotas_GetQuotaPreference_Handler(srv interface{}, ctx context.Contex
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.api.cloudquotas.v1.CloudQuotas/GetQuotaPreference",
+		FullMethod: "/mockgcp.cloud.cloudquotas.v1beta.CloudQuotas/GetQuotaPreference",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CloudQuotasServer).GetQuotaPreference(ctx, req.(*GetQuotaPreferenceRequest))
@@ -236,7 +236,7 @@ func _CloudQuotas_CreateQuotaPreference_Handler(srv interface{}, ctx context.Con
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.api.cloudquotas.v1.CloudQuotas/CreateQuotaPreference",
+		FullMethod: "/mockgcp.cloud.cloudquotas.v1beta.CloudQuotas/CreateQuotaPreference",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CloudQuotasServer).CreateQuotaPreference(ctx, req.(*CreateQuotaPreferenceRequest))
@@ -254,7 +254,7 @@ func _CloudQuotas_UpdateQuotaPreference_Handler(srv interface{}, ctx context.Con
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.api.cloudquotas.v1.CloudQuotas/UpdateQuotaPreference",
+		FullMethod: "/mockgcp.cloud.cloudquotas.v1beta.CloudQuotas/UpdateQuotaPreference",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CloudQuotasServer).UpdateQuotaPreference(ctx, req.(*UpdateQuotaPreferenceRequest))
@@ -266,7 +266,7 @@ func _CloudQuotas_UpdateQuotaPreference_Handler(srv interface{}, ctx context.Con
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var CloudQuotas_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "mockgcp.api.cloudquotas.v1.CloudQuotas",
+	ServiceName: "mockgcp.cloud.cloudquotas.v1beta.CloudQuotas",
 	HandlerType: (*CloudQuotasServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -295,5 +295,5 @@ var CloudQuotas_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "mockgcp/api/cloudquotas/v1/cloudquotas.proto",
+	Metadata: "mockgcp/cloud/cloudquotas/v1beta/cloudquotas.proto",
 }

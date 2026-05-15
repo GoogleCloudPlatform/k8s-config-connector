@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.12.4
-// source: mockgcp/api/cloudquotas/v1beta/quota_adjuster_settings.proto
+// source: mockgcp/cloud/cloudquotas/v1beta/quota_adjuster_settings.proto
 
 package cloudquotaspb
 
@@ -22,9 +22,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type QuotaAdjusterSettingsManagerClient interface {
-	// RPC Method for updating QuotaAdjusterSettings based on the request
+	// Updates the QuotaAdjusterSettings for the specified resource.
 	UpdateQuotaAdjusterSettings(ctx context.Context, in *UpdateQuotaAdjusterSettingsRequest, opts ...grpc.CallOption) (*QuotaAdjusterSettings, error)
-	// RPC Method for getting QuotaAdjusterSettings based on the request
+	// Gets the QuotaAdjusterSettings for the specified resource.
 	GetQuotaAdjusterSettings(ctx context.Context, in *GetQuotaAdjusterSettingsRequest, opts ...grpc.CallOption) (*QuotaAdjusterSettings, error)
 }
 
@@ -38,7 +38,7 @@ func NewQuotaAdjusterSettingsManagerClient(cc grpc.ClientConnInterface) QuotaAdj
 
 func (c *quotaAdjusterSettingsManagerClient) UpdateQuotaAdjusterSettings(ctx context.Context, in *UpdateQuotaAdjusterSettingsRequest, opts ...grpc.CallOption) (*QuotaAdjusterSettings, error) {
 	out := new(QuotaAdjusterSettings)
-	err := c.cc.Invoke(ctx, "/mockgcp.api.cloudquotas.v1beta.QuotaAdjusterSettingsManager/UpdateQuotaAdjusterSettings", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudquotas.v1beta.QuotaAdjusterSettingsManager/UpdateQuotaAdjusterSettings", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func (c *quotaAdjusterSettingsManagerClient) UpdateQuotaAdjusterSettings(ctx con
 
 func (c *quotaAdjusterSettingsManagerClient) GetQuotaAdjusterSettings(ctx context.Context, in *GetQuotaAdjusterSettingsRequest, opts ...grpc.CallOption) (*QuotaAdjusterSettings, error) {
 	out := new(QuotaAdjusterSettings)
-	err := c.cc.Invoke(ctx, "/mockgcp.api.cloudquotas.v1beta.QuotaAdjusterSettingsManager/GetQuotaAdjusterSettings", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudquotas.v1beta.QuotaAdjusterSettingsManager/GetQuotaAdjusterSettings", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -58,9 +58,9 @@ func (c *quotaAdjusterSettingsManagerClient) GetQuotaAdjusterSettings(ctx contex
 // All implementations must embed UnimplementedQuotaAdjusterSettingsManagerServer
 // for forward compatibility
 type QuotaAdjusterSettingsManagerServer interface {
-	// RPC Method for updating QuotaAdjusterSettings based on the request
+	// Updates the QuotaAdjusterSettings for the specified resource.
 	UpdateQuotaAdjusterSettings(context.Context, *UpdateQuotaAdjusterSettingsRequest) (*QuotaAdjusterSettings, error)
-	// RPC Method for getting QuotaAdjusterSettings based on the request
+	// Gets the QuotaAdjusterSettings for the specified resource.
 	GetQuotaAdjusterSettings(context.Context, *GetQuotaAdjusterSettingsRequest) (*QuotaAdjusterSettings, error)
 	mustEmbedUnimplementedQuotaAdjusterSettingsManagerServer()
 }
@@ -99,7 +99,7 @@ func _QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_Handler(srv inter
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.api.cloudquotas.v1beta.QuotaAdjusterSettingsManager/UpdateQuotaAdjusterSettings",
+		FullMethod: "/mockgcp.cloud.cloudquotas.v1beta.QuotaAdjusterSettingsManager/UpdateQuotaAdjusterSettings",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QuotaAdjusterSettingsManagerServer).UpdateQuotaAdjusterSettings(ctx, req.(*UpdateQuotaAdjusterSettingsRequest))
@@ -117,7 +117,7 @@ func _QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_Handler(srv interfac
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.api.cloudquotas.v1beta.QuotaAdjusterSettingsManager/GetQuotaAdjusterSettings",
+		FullMethod: "/mockgcp.cloud.cloudquotas.v1beta.QuotaAdjusterSettingsManager/GetQuotaAdjusterSettings",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QuotaAdjusterSettingsManagerServer).GetQuotaAdjusterSettings(ctx, req.(*GetQuotaAdjusterSettingsRequest))
@@ -129,7 +129,7 @@ func _QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_Handler(srv interfac
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var QuotaAdjusterSettingsManager_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "mockgcp.api.cloudquotas.v1beta.QuotaAdjusterSettingsManager",
+	ServiceName: "mockgcp.cloud.cloudquotas.v1beta.QuotaAdjusterSettingsManager",
 	HandlerType: (*QuotaAdjusterSettingsManagerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -142,5 +142,5 @@ var QuotaAdjusterSettingsManager_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "mockgcp/api/cloudquotas/v1beta/quota_adjuster_settings.proto",
+	Metadata: "mockgcp/cloud/cloudquotas/v1beta/quota_adjuster_settings.proto",
 }
