@@ -114,6 +114,34 @@ func (s *bigLakeService) GetTable(ctx context.Context, req *pb.GetTableRequest) 
 	return obj, nil
 }
 
+func (s *bigLakeService) RenameTable(ctx context.Context, req *pb.RenameTableRequest) (*pb.Table, error) {
+	name, err := s.parseTableName(req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	newName, err := s.parseTableName(req.GetNewName())
+	if err != nil {
+		return nil, err
+	}
+
+	obj := &pb.Table{}
+	if err := s.storage.Delete(ctx, name.String(), obj); err != nil {
+		return nil, err
+	}
+
+	obj.Name = newName.String()
+	if err := s.storage.Create(ctx, obj.Name, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *bigLakeService) ListTables(ctx context.Context, req *pb.ListTablesRequest) (*pb.ListTablesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListTables not implemented")
+}
+
 type tableName struct {
 	Project    *projects.ProjectData
 	Location   string

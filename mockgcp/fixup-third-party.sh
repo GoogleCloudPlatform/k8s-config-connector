@@ -29,6 +29,7 @@ GOOGLEAPIS=$(pwd)
 
 rm -rf mockgcp/ && mkdir -p mockgcp/api/ && mkdir -p mockgcp/devtools
 
+rm -rf google/cloud/bigquery/biglake
 mv google/cloud/ mockgcp/
 mv google/container/ mockgcp/
 mv google/dataflow/ mockgcp/
