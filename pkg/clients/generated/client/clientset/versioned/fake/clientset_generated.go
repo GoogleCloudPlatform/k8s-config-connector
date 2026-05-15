@@ -91,6 +91,8 @@ import (
 	fakebillingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/billing/v1alpha1/fake"
 	billingbudgetsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/billingbudgets/v1beta1"
 	fakebillingbudgetsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/billingbudgets/v1beta1/fake"
+	binaryauthorizationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1alpha1"
+	fakebinaryauthorizationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1alpha1/fake"
 	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1beta1"
 	fakebinaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1beta1/fake"
 	certificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/certificatemanager/v1alpha1"
@@ -582,6 +584,11 @@ func (c *Clientset) BillingV1alpha1() billingv1alpha1.BillingV1alpha1Interface {
 // BillingbudgetsV1beta1 retrieves the BillingbudgetsV1beta1Client
 func (c *Clientset) BillingbudgetsV1beta1() billingbudgetsv1beta1.BillingbudgetsV1beta1Interface {
 	return &fakebillingbudgetsv1beta1.FakeBillingbudgetsV1beta1{Fake: &c.Fake}
+}
+
+// BinaryauthorizationV1alpha1 retrieves the BinaryauthorizationV1alpha1Client
+func (c *Clientset) BinaryauthorizationV1alpha1() binaryauthorizationv1alpha1.BinaryauthorizationV1alpha1Interface {
+	return &fakebinaryauthorizationv1alpha1.FakeBinaryauthorizationV1alpha1{Fake: &c.Fake}
 }
 
 // BinaryauthorizationV1beta1 retrieves the BinaryauthorizationV1beta1Client
