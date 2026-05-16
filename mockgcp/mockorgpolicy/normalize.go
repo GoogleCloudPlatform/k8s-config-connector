@@ -26,6 +26,20 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".spec.etag", "abcdef0123A=")
 	replacements.ReplacePath(".dryRunSpec.updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".dryRunSpec.etag", "abcdef0123A=")
+	replacements.ReplacePath(".etag", "abcdef0123A=")
+
+	// ListPolicies
+	replacements.ReplacePath(".policies[].spec.updateTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".policies[].spec.etag", "abcdef0123A=")
+	replacements.ReplacePath(".policies[].dryRunSpec.updateTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".policies[].dryRunSpec.etag", "abcdef0123A=")
+	replacements.ReplacePath(".policies[].etag", "abcdef0123A=")
+
+	// custom constraint
+	replacements.ReplacePath(".updateTime", "2024-04-01T12:34:56.123456Z")
+
+	// ListCustomConstraints
+	replacements.ReplacePath(".customConstraints[].updateTime", "2024-04-01T12:34:56.123456Z")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

@@ -29,6 +29,57 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 )
 
+func (s *orgPolicyV2) ListPolicies(ctx context.Context, req *pb.ListPoliciesRequest) (*pb.ListPoliciesResponse, error) {
+	prefix := req.GetParent() + "/policies/"
+
+	response := &pb.ListPoliciesResponse{}
+	kind := (&pb.Policy{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, kind, storage.ListOptions{Prefix: prefix}, func(obj proto.Message) error {
+		policy := obj.(*pb.Policy)
+		response.Policies = append(response.Policies, policy)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
+func (s *orgPolicyV2) GetEffectivePolicy(ctx context.Context, req *pb.GetEffectivePolicyRequest) (*pb.Policy, error) {
+	// For now, we don't implement hierarchy traversal, just return the policy if it exists.
+	// This is often enough for mocks.
+	name, err := s.parsePolicyName(req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.Policy{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			// If not found, return a default policy (empty spec)
+			// GCP returns an empty policy object with the name set.
+			return &pb.Policy{
+				Name: fqn,
+			}, nil
+		}
+		return nil, err
+	}
+
+	// Effective policy should not have etags according to proto comments
+	effective := proto.Clone(obj).(*pb.Policy)
+	effective.Etag = ""
+	if effective.Spec != nil {
+		effective.Spec.Etag = ""
+	}
+	if effective.DryRunSpec != nil {
+		effective.DryRunSpec.Etag = ""
+	}
+
+	return effective, nil
+}
+
 func (s *orgPolicyV2) GetPolicy(ctx context.Context, req *pb.GetPolicyRequest) (*pb.Policy, error) {
 	name, err := s.parsePolicyName(req.Name)
 	if err != nil {
