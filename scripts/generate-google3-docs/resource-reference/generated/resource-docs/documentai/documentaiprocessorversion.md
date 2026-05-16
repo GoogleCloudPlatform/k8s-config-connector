@@ -32,7 +32,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpdocumentaiprocessorversion<br>gcpdocumentaiprocessorversions<br>documentaiprocessorversion</td>
+<td>documentaiprocessorversion<br>gcpdocumentaiprocessorversion<br>gcpdocumentaiprocessorversions</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
