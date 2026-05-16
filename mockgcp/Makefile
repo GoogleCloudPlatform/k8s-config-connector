@@ -135,7 +135,6 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/orgpolicy/v2/*.proto \
 		./third_party/googleapis/mockgcp/cloud/parametermanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/privilegedaccessmanager/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/pubsublite/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/redis/cluster/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/redis/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/resourcemanager/v3/*.proto \
