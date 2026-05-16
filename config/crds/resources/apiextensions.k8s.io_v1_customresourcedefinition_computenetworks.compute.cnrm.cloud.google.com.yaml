@@ -153,7 +153,7 @@ spec:
                 description: A unique specifier for the ComputeNetwork resource in
                   GCP.
                 type: string
-              gatewayIpv4:
+              gatewayIPV4:
                 description: The gateway address for default routing out of the network.
                   This value is selected by GCP.
                 type: string
@@ -169,7 +169,7 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
-                  gatewayIPv4:
+                  gatewayIPV4:
                     description: '[Output Only] The gateway address for default routing
                       out of the network, selected by Google Cloud.'
                     type: string
