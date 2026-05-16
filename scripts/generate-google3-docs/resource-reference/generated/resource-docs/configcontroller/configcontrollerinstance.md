@@ -38,7 +38,7 @@ Before you upgrade Config Connector to a later version, we recommended that you 
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpconfigcontrollerinstance<br>gcpconfigcontrollerinstances<br>configcontrollerinstance</td>
+<td>configcontrollerinstance<br>gcpconfigcontrollerinstance<br>gcpconfigcontrollerinstances</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
@@ -519,20 +519,6 @@ state: string
 
 ### Autopilot Config Controller Instance
 ```yaml
-# Copyright 2022 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: configcontroller.cnrm.cloud.google.com/v1beta1
 kind: ConfigControllerInstance
 metadata:
@@ -553,20 +539,6 @@ spec:
 
 ### Standard Config Controller Instance
 ```yaml
-# Copyright 2020 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: configcontroller.cnrm.cloud.google.com/v1beta1
 kind: ConfigControllerInstance
 metadata:
