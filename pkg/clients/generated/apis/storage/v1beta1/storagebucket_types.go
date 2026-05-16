@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,264 +29,265 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type BucketAction struct {
-/* The target Storage Class of objects affected by this Lifecycle Rule. Supported values include: MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE. */
-// +optional
-StorageClass *string `json:"storageClass,omitempty"`
+	/* The target Storage Class of objects affected by this Lifecycle Rule. Supported values include: MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE. */
+	// +optional
+	StorageClass *string `json:"storageClass,omitempty"`
 
-/* The type of the action of this Lifecycle Rule. Supported values include: Delete, SetStorageClass and AbortIncompleteMultipartUpload. */
-Type string `json:"type"`
+	/* The type of the action of this Lifecycle Rule. Supported values include: Delete, SetStorageClass and AbortIncompleteMultipartUpload. */
+	Type string `json:"type"`
 }
 
 type BucketAutoclass struct {
-/* While set to true, autoclass automatically transitions objects in your bucket to appropriate storage classes based on each object's access pattern. */
-Enabled bool `json:"enabled"`
+	/* While set to true, autoclass automatically transitions objects in your bucket to appropriate storage classes based on each object's access pattern. */
+	Enabled bool `json:"enabled"`
 }
 
 type BucketCondition struct {
-/* Minimum age of an object in days to satisfy this condition. */
-// +optional
-Age *int64 `json:"age,omitempty"`
+	/* Minimum age of an object in days to satisfy this condition. */
+	// +optional
+	Age *int64 `json:"age,omitempty"`
 
-/* Creation date of an object in RFC 3339 (e.g. 2017-06-13) to satisfy this condition. */
-// +optional
-CreatedBefore *string `json:"createdBefore,omitempty"`
+	/* Creation date of an object in RFC 3339 (e.g. 2017-06-13) to satisfy this condition. */
+	// +optional
+	CreatedBefore *string `json:"createdBefore,omitempty"`
 
-/* Creation date of an object in RFC 3339 (e.g. 2017-06-13) to satisfy this condition. */
-// +optional
-CustomTimeBefore *string `json:"customTimeBefore,omitempty"`
+	/* Creation date of an object in RFC 3339 (e.g. 2017-06-13) to satisfy this condition. */
+	// +optional
+	CustomTimeBefore *string `json:"customTimeBefore,omitempty"`
 
-/* Number of days elapsed since the user-specified timestamp set on an object. */
-// +optional
-DaysSinceCustomTime *int64 `json:"daysSinceCustomTime,omitempty"`
+	/* Number of days elapsed since the user-specified timestamp set on an object. */
+	// +optional
+	DaysSinceCustomTime *int64 `json:"daysSinceCustomTime,omitempty"`
 
-/* Number of days elapsed since the noncurrent timestamp of an object. This condition is relevant only for versioned objects. */
-// +optional
-DaysSinceNoncurrentTime *int64 `json:"daysSinceNoncurrentTime,omitempty"`
+	/* Number of days elapsed since the noncurrent timestamp of an object. This condition is relevant only for versioned objects. */
+	// +optional
+	DaysSinceNoncurrentTime *int64 `json:"daysSinceNoncurrentTime,omitempty"`
 
-/* One or more matching name prefixes to satisfy this condition. */
-// +optional
-MatchesPrefix []string `json:"matchesPrefix,omitempty"`
+	/* One or more matching name prefixes to satisfy this condition. */
+	// +optional
+	MatchesPrefix []string `json:"matchesPrefix,omitempty"`
 
-/* Storage Class of objects to satisfy this condition. Supported values include: MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE, STANDARD, DURABLE_REDUCED_AVAILABILITY. */
-// +optional
-MatchesStorageClass []string `json:"matchesStorageClass,omitempty"`
+	/* Storage Class of objects to satisfy this condition. Supported values include: MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE, STANDARD, DURABLE_REDUCED_AVAILABILITY. */
+	// +optional
+	MatchesStorageClass []string `json:"matchesStorageClass,omitempty"`
 
-/* One or more matching name suffixes to satisfy this condition. */
-// +optional
-MatchesSuffix []string `json:"matchesSuffix,omitempty"`
+	/* One or more matching name suffixes to satisfy this condition. */
+	// +optional
+	MatchesSuffix []string `json:"matchesSuffix,omitempty"`
 
-/* Creation date of an object in RFC 3339 (e.g. 2017-06-13) to satisfy this condition. */
-// +optional
-NoncurrentTimeBefore *string `json:"noncurrentTimeBefore,omitempty"`
+	/* Creation date of an object in RFC 3339 (e.g. 2017-06-13) to satisfy this condition. */
+	// +optional
+	NoncurrentTimeBefore *string `json:"noncurrentTimeBefore,omitempty"`
 
-/* Relevant only for versioned objects. The number of newer versions of an object to satisfy this condition. */
-// +optional
-NumNewerVersions *int64 `json:"numNewerVersions,omitempty"`
+	/* Relevant only for versioned objects. The number of newer versions of an object to satisfy this condition. */
+	// +optional
+	NumNewerVersions *int64 `json:"numNewerVersions,omitempty"`
 
-/* Match to live and/or archived objects. Unversioned buckets have only live objects. Supported values include: "LIVE", "ARCHIVED", "ANY". */
-// +optional
-WithState *string `json:"withState,omitempty"`
+	/* Match to live and/or archived objects. Unversioned buckets have only live objects. Supported values include: "LIVE", "ARCHIVED", "ANY". */
+	// +optional
+	WithState *string `json:"withState,omitempty"`
 }
 
 type BucketCors struct {
-/* The value, in seconds, to return in the Access-Control-Max-Age header used in preflight responses. */
-// +optional
-MaxAgeSeconds *int64 `json:"maxAgeSeconds,omitempty"`
+	/* The value, in seconds, to return in the Access-Control-Max-Age header used in preflight responses. */
+	// +optional
+	MaxAgeSeconds *int64 `json:"maxAgeSeconds,omitempty"`
 
-/* The list of HTTP methods on which to include CORS response headers, (GET, OPTIONS, POST, etc) Note: "*" is permitted in the list of methods, and means "any method". */
-// +optional
-Method []string `json:"method,omitempty"`
+	/* The list of HTTP methods on which to include CORS response headers, (GET, OPTIONS, POST, etc) Note: "*" is permitted in the list of methods, and means "any method". */
+	// +optional
+	Method []string `json:"method,omitempty"`
 
-/* The list of Origins eligible to receive CORS response headers. Note: "*" is permitted in the list of origins, and means "any Origin". */
-// +optional
-Origin []string `json:"origin,omitempty"`
+	/* The list of Origins eligible to receive CORS response headers. Note: "*" is permitted in the list of origins, and means "any Origin". */
+	// +optional
+	Origin []string `json:"origin,omitempty"`
 
-/* The list of HTTP headers other than the simple response headers to give permission for the user-agent to share across domains. */
-// +optional
-ResponseHeader []string `json:"responseHeader,omitempty"`
+	/* The list of HTTP headers other than the simple response headers to give permission for the user-agent to share across domains. */
+	// +optional
+	ResponseHeader []string `json:"responseHeader,omitempty"`
 }
 
 type BucketCustomPlacementConfig struct {
-/* The list of individual regions that comprise a dual-region bucket. See the docs for a list of acceptable regions. */
-DataLocations []string `json:"dataLocations"`
+	/* The list of individual regions that comprise a dual-region bucket. See the docs for a list of acceptable regions. */
+	DataLocations []string `json:"dataLocations"`
 }
 
 type BucketEncryption struct {
-/* A reference to the KMS Crypto Key that will be used to encrypt objects inserted into this bucket. */
-KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
+	/* A reference to the KMS Crypto Key that will be used to encrypt objects inserted into this bucket. */
+	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
 }
 
 type BucketLifecycleRule struct {
-/* The Lifecycle Rule's action configuration. A single block of this type is supported. */
-Action BucketAction `json:"action"`
+	/* The Lifecycle Rule's action configuration. A single block of this type is supported. */
+	Action BucketAction `json:"action"`
 
-/* The Lifecycle Rule's condition configuration. */
-Condition BucketCondition `json:"condition"`
+	/* The Lifecycle Rule's condition configuration. */
+	Condition BucketCondition `json:"condition"`
 }
 
 type BucketLogging struct {
-/* The bucket that will receive log objects. */
-LogBucket string `json:"logBucket"`
+	/* The bucket that will receive log objects. */
+	LogBucket string `json:"logBucket"`
 
-/* The object prefix for log objects. If it's not provided, by default Google Cloud Storage sets this to this bucket's name. */
-// +optional
-LogObjectPrefix *string `json:"logObjectPrefix,omitempty"`
+	/* The object prefix for log objects. If it's not provided, by default Google Cloud Storage sets this to this bucket's name. */
+	// +optional
+	LogObjectPrefix *string `json:"logObjectPrefix,omitempty"`
 }
 
 type BucketRetentionPolicy struct {
-/* If set to true, the bucket will be locked and permanently restrict edits to the bucket's retention policy.  Caution: Locking a bucket is an irreversible action. */
-// +optional
-IsLocked *bool `json:"isLocked,omitempty"`
+	/* If set to true, the bucket will be locked and permanently restrict edits to the bucket's retention policy.  Caution: Locking a bucket is an irreversible action. */
+	// +optional
+	IsLocked *bool `json:"isLocked,omitempty"`
 
-/* The period of time, in seconds, that objects in the bucket must be retained and cannot be deleted, overwritten, or archived. The value must be less than 3,155,760,000 seconds. */
-RetentionPeriod int64 `json:"retentionPeriod"`
+	/* The period of time, in seconds, that objects in the bucket must be retained and cannot be deleted, overwritten, or archived. The value must be less than 3,155,760,000 seconds. */
+	RetentionPeriod int64 `json:"retentionPeriod"`
 }
 
 type BucketSoftDeletePolicy struct {
-/* The duration in seconds that soft-deleted objects in the bucket will be retained and cannot be permanently deleted. Default value is 604800. */
-// +optional
-RetentionDurationSeconds *int64 `json:"retentionDurationSeconds,omitempty"`
+	/* The duration in seconds that soft-deleted objects in the bucket will be retained and cannot be permanently deleted. Default value is 604800. */
+	// +optional
+	RetentionDurationSeconds *int64 `json:"retentionDurationSeconds,omitempty"`
 }
 
 type BucketVersioning struct {
-/* While set to true, versioning is fully enabled for this bucket. */
-Enabled bool `json:"enabled"`
+	/* While set to true, versioning is fully enabled for this bucket. */
+	Enabled bool `json:"enabled"`
 }
 
 type BucketWebsite struct {
-/* Behaves as the bucket's directory index where missing objects are treated as potential directories. */
-// +optional
-MainPageSuffix *string `json:"mainPageSuffix,omitempty"`
+	/* Behaves as the bucket's directory index where missing objects are treated as potential directories. */
+	// +optional
+	MainPageSuffix *string `json:"mainPageSuffix,omitempty"`
 
-/* The custom object to return when a requested resource is not found. */
-// +optional
-NotFoundPage *string `json:"notFoundPage,omitempty"`
+	/* The custom object to return when a requested resource is not found. */
+	// +optional
+	NotFoundPage *string `json:"notFoundPage,omitempty"`
 }
 
 type StorageBucketSpec struct {
-/* The bucket's autoclass configuration. */
-// +optional
-Autoclass *BucketAutoclass `json:"autoclass,omitempty"`
+	/* The bucket's autoclass configuration. */
+	// +optional
+	Autoclass *BucketAutoclass `json:"autoclass,omitempty"`
 
-/* DEPRECATED. Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field. Enables Bucket PolicyOnly access to a bucket. */
-// +optional
-BucketPolicyOnly *bool `json:"bucketPolicyOnly,omitempty"`
+	/* DEPRECATED. Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field. Enables Bucket PolicyOnly access to a bucket. */
+	// +optional
+	BucketPolicyOnly *bool `json:"bucketPolicyOnly,omitempty"`
 
-/* The bucket's Cross-Origin Resource Sharing (CORS) configuration. */
-// +optional
-Cors []BucketCors `json:"cors,omitempty"`
+	/* The bucket's Cross-Origin Resource Sharing (CORS) configuration. */
+	// +optional
+	Cors []BucketCors `json:"cors,omitempty"`
 
-/* The bucket's custom location configuration, which specifies the individual regions that comprise a dual-region bucket. If the bucket is designated a single or multi-region, the parameters are empty. */
-// +optional
-CustomPlacementConfig *BucketCustomPlacementConfig `json:"customPlacementConfig,omitempty"`
+	/* The bucket's custom location configuration, which specifies the individual regions that comprise a dual-region bucket. If the bucket is designated a single or multi-region, the parameters are empty. */
+	// +optional
+	CustomPlacementConfig *BucketCustomPlacementConfig `json:"customPlacementConfig,omitempty"`
 
-/* Whether or not to automatically apply an eventBasedHold to new objects added to the bucket. */
-// +optional
-DefaultEventBasedHold *bool `json:"defaultEventBasedHold,omitempty"`
+	/* Whether or not to automatically apply an eventBasedHold to new objects added to the bucket. */
+	// +optional
+	DefaultEventBasedHold *bool `json:"defaultEventBasedHold,omitempty"`
 
-/* The bucket's encryption configuration. */
-// +optional
-Encryption *BucketEncryption `json:"encryption,omitempty"`
+	/* The bucket's encryption configuration. */
+	// +optional
+	Encryption *BucketEncryption `json:"encryption,omitempty"`
 
-/* The bucket's Lifecycle Rules configuration. */
-// +optional
-LifecycleRule []BucketLifecycleRule `json:"lifecycleRule,omitempty"`
+	/* The bucket's Lifecycle Rules configuration. */
+	// +optional
+	LifecycleRule []BucketLifecycleRule `json:"lifecycleRule,omitempty"`
 
-/* The Google Cloud Storage location. */
-// +optional
-Location *string `json:"location,omitempty"`
+	/* The Google Cloud Storage location. */
+	// +optional
+	Location *string `json:"location,omitempty"`
 
-/* The bucket's Access & Storage Logs configuration. */
-// +optional
-Logging *BucketLogging `json:"logging,omitempty"`
+	/* The bucket's Access & Storage Logs configuration. */
+	// +optional
+	Logging *BucketLogging `json:"logging,omitempty"`
 
-/* Prevents public access to a bucket. */
-// +optional
-PublicAccessPrevention *string `json:"publicAccessPrevention,omitempty"`
+	/* Prevents public access to a bucket. */
+	// +optional
+	PublicAccessPrevention *string `json:"publicAccessPrevention,omitempty"`
 
-/* Enables Requester Pays on a storage bucket. */
-// +optional
-RequesterPays *bool `json:"requesterPays,omitempty"`
+	/* Enables Requester Pays on a storage bucket. */
+	// +optional
+	RequesterPays *bool `json:"requesterPays,omitempty"`
 
-/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-/* Configuration of the bucket's data retention policy for how long objects in the bucket should be retained. */
-// +optional
-RetentionPolicy *BucketRetentionPolicy `json:"retentionPolicy,omitempty"`
+	/* Configuration of the bucket's data retention policy for how long objects in the bucket should be retained. */
+	// +optional
+	RetentionPolicy *BucketRetentionPolicy `json:"retentionPolicy,omitempty"`
 
-/* The bucket's soft delete policy, which defines the period of time that soft-deleted objects will be retained, and cannot be permanently deleted. If it is not provided, by default Google Cloud Storage sets this to default soft delete policy. */
-// +optional
-SoftDeletePolicy *BucketSoftDeletePolicy `json:"softDeletePolicy,omitempty"`
+	/* The bucket's soft delete policy, which defines the period of time that soft-deleted objects will be retained, and cannot be permanently deleted. If it is not provided, by default Google Cloud Storage sets this to default soft delete policy. */
+	// +optional
+	SoftDeletePolicy *BucketSoftDeletePolicy `json:"softDeletePolicy,omitempty"`
 
-/* The Storage Class of the new bucket. Supported values include: STANDARD, MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE. */
-// +optional
-StorageClass *string `json:"storageClass,omitempty"`
+	/* The Storage Class of the new bucket. Supported values include: STANDARD, MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE. */
+	// +optional
+	StorageClass *string `json:"storageClass,omitempty"`
 
-/* Enables uniform bucket-level access on a bucket. */
-// +optional
-UniformBucketLevelAccess *bool `json:"uniformBucketLevelAccess,omitempty"`
+	/* Enables uniform bucket-level access on a bucket. */
+	// +optional
+	UniformBucketLevelAccess *bool `json:"uniformBucketLevelAccess,omitempty"`
 
-/* The bucket's Versioning configuration. */
-// +optional
-Versioning *BucketVersioning `json:"versioning,omitempty"`
+	/* The bucket's Versioning configuration. */
+	// +optional
+	Versioning *BucketVersioning `json:"versioning,omitempty"`
 
-/* Configuration if the bucket acts as a website. */
-// +optional
-Website *BucketWebsite `json:"website,omitempty"`
+	/* Configuration if the bucket acts as a website. */
+	// +optional
+	Website *BucketWebsite `json:"website,omitempty"`
 }
 
 type BucketObservedStateStatus struct {
-/* The bucket's soft delete policy, which defines the period of time that soft-deleted objects will be retained, and cannot be permanently deleted. If it is not provided, by default Google Cloud Storage sets this to default soft delete policy. */
-// +optional
-SoftDeletePolicy *BucketSoftDeletePolicyStatus `json:"softDeletePolicy,omitempty"`
+	/* The bucket's soft delete policy, which defines the period of time that soft-deleted objects will be retained, and cannot be permanently deleted. If it is not provided, by default Google Cloud Storage sets this to default soft delete policy. */
+	// +optional
+	SoftDeletePolicy *BucketSoftDeletePolicyStatus `json:"softDeletePolicy,omitempty"`
 }
 
 type BucketSoftDeletePolicyStatus struct {
-/* Server-determined value that indicates the time from which the policy, or one with a greater retention, was effective. This value is in RFC 3339 format. */
-// +optional
-EffectiveTime *string `json:"effectiveTime,omitempty"`
+	/* Server-determined value that indicates the time from which the policy, or one with a greater retention, was effective. This value is in RFC 3339 format. */
+	// +optional
+	EffectiveTime *string `json:"effectiveTime,omitempty"`
 
-/* The duration in seconds that soft-deleted objects in the bucket will be retained and cannot be permanently deleted. Default value is 604800. */
-// +optional
-RetentionDurationSeconds *int64 `json:"retentionDurationSeconds,omitempty"`
+	/* The duration in seconds that soft-deleted objects in the bucket will be retained and cannot be permanently deleted. Default value is 604800. */
+	// +optional
+	RetentionDurationSeconds *int64 `json:"retentionDurationSeconds,omitempty"`
 }
 
 type StorageBucketStatus struct {
 	/* Conditions represent the latest available observations of the
-	    StorageBucket's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* A unique specifier for the StorageBucket resource in GCP. */
-// +optional
-ExternalRef *string `json:"externalRef,omitempty"`
+	   StorageBucket's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the StorageBucket resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* ObservedState is the state of the resource as most recently observed in GCP. */
-// +optional
-ObservedState *BucketObservedStateStatus `json:"observedState,omitempty"`
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *BucketObservedStateStatus `json:"observedState,omitempty"`
 
-/* The URI of the created resource. */
-// +optional
-SelfLink *string `json:"selfLink,omitempty"`
+	/* The URI of the created resource. */
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 
-/* The base URL of the bucket, in the format gs://<bucket-name>. */
-// +optional
-Url *string `json:"url,omitempty"`
+	/* The base URL of the bucket, in the format gs://<bucket-name>. */
+	// +optional
+	Url *string `json:"url,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpstoragebucket;gcpstoragebuckets
@@ -304,20 +304,22 @@ Url *string `json:"url,omitempty"`
 // StorageBucket is the Schema for the storage API
 // +k8s:openapi-gen=true
 type StorageBucket struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec StorageBucketSpec `json:"spec,omitempty"`
-  Status StorageBucketStatus `json:"status,omitempty"`
+	Spec   StorageBucketSpec   `json:"spec,omitempty"`
+	Status StorageBucketStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // StorageBucketList contains a list of StorageBucket
- type StorageBucketList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []StorageBucket `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&StorageBucket{}, &StorageBucketList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// StorageBucketList contains a list of StorageBucket
+type StorageBucketList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []StorageBucket `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&StorageBucket{}, &StorageBucketList{})
+}
