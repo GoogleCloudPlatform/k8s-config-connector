@@ -87,7 +87,6 @@ spec:
                     maxAgeSeconds:
                       description: The value, in seconds, to return in the Access-Control-Max-Age
                         header used in preflight responses.
-                      format: int32
                       type: integer
                     method:
                       description: 'The list of HTTP methods on which to include CORS
@@ -193,7 +192,6 @@ spec:
                         age:
                           description: Minimum age of an object in days to satisfy
                             this condition.
-                          format: int32
                           type: integer
                         createdBefore:
                           description: Creation date of an object in RFC 3339 (e.g.
@@ -206,13 +204,11 @@ spec:
                         daysSinceCustomTime:
                           description: Number of days elapsed since the user-specified
                             timestamp set on an object.
-                          format: int32
                           type: integer
                         daysSinceNoncurrentTime:
                           description: Number of days elapsed since the noncurrent
                             timestamp of an object. This condition is relevant only
                             for versioned objects.
-                          format: int32
                           type: integer
                         matchesPrefix:
                           description: One or more matching name prefixes to satisfy
@@ -240,7 +236,6 @@ spec:
                         numNewerVersions:
                           description: Relevant only for versioned objects. The number
                             of newer versions of an object to satisfy this condition.
-                          format: int32
                           type: integer
                         withState:
                           description: 'Match to live and/or archived objects. Unversioned
@@ -308,7 +303,6 @@ spec:
                     description: The duration in seconds that soft-deleted objects
                       in the bucket will be retained and cannot be permanently deleted.
                       Default value is 604800.
-                    format: int32
                     type: integer
                 type: object
               storageClass:
@@ -403,7 +397,6 @@ spec:
                         description: The duration in seconds that soft-deleted objects
                           in the bucket will be retained and cannot be permanently
                           deleted. Default value is 604800.
-                        format: int32
                         type: integer
                     type: object
                 type: object

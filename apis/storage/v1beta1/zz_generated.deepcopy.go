@@ -877,7 +877,7 @@ func (in *StorageBucketCors) DeepCopyInto(out *StorageBucketCors) {
 	*out = *in
 	if in.MaxAgeSeconds != nil {
 		in, out := &in.MaxAgeSeconds, &out.MaxAgeSeconds
-		*out = new(int32)
+		*out = new(int)
 		**out = **in
 	}
 	if in.Method != nil {
@@ -997,7 +997,7 @@ func (in *StorageBucketLifecycleRuleCondition) DeepCopyInto(out *StorageBucketLi
 	*out = *in
 	if in.Age != nil {
 		in, out := &in.Age, &out.Age
-		*out = new(int32)
+		*out = new(int)
 		**out = **in
 	}
 	if in.CreatedBefore != nil {
@@ -1012,12 +1012,12 @@ func (in *StorageBucketLifecycleRuleCondition) DeepCopyInto(out *StorageBucketLi
 	}
 	if in.DaysSinceCustomTime != nil {
 		in, out := &in.DaysSinceCustomTime, &out.DaysSinceCustomTime
-		*out = new(int32)
+		*out = new(int)
 		**out = **in
 	}
 	if in.DaysSinceNoncurrentTime != nil {
 		in, out := &in.DaysSinceNoncurrentTime, &out.DaysSinceNoncurrentTime
-		*out = new(int32)
+		*out = new(int)
 		**out = **in
 	}
 	if in.MatchesPrefix != nil {
@@ -1042,7 +1042,7 @@ func (in *StorageBucketLifecycleRuleCondition) DeepCopyInto(out *StorageBucketLi
 	}
 	if in.NumNewerVersions != nil {
 		in, out := &in.NumNewerVersions, &out.NumNewerVersions
-		*out = new(int32)
+		*out = new(int)
 		**out = **in
 	}
 	if in.WithState != nil {
@@ -1174,7 +1174,7 @@ func (in *StorageBucketSoftDeletePolicy) DeepCopyInto(out *StorageBucketSoftDele
 	*out = *in
 	if in.RetentionDurationSeconds != nil {
 		in, out := &in.RetentionDurationSeconds, &out.RetentionDurationSeconds
-		*out = new(int32)
+		*out = new(int)
 		**out = **in
 	}
 }
@@ -1199,7 +1199,7 @@ func (in *StorageBucketSoftDeletePolicyObservedState) DeepCopyInto(out *StorageB
 	}
 	if in.RetentionDurationSeconds != nil {
 		in, out := &in.RetentionDurationSeconds, &out.RetentionDurationSeconds
-		*out = new(int32)
+		*out = new(int)
 		**out = **in
 	}
 }

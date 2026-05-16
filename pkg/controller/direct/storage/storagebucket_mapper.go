@@ -30,7 +30,7 @@ func StorageBucketCors_FromProto(mapCtx *direct.MapContext, in *pb.Bucket_Cors) 
 		return nil
 	}
 	out := &krm.StorageBucketCors{}
-	out.MaxAgeSeconds = &in.MaxAgeSeconds
+	out.MaxAgeSeconds = direct.PtrTo(int(in.MaxAgeSeconds))
 	out.Method = in.Method
 	out.Origin = in.Origin
 	out.ResponseHeader = in.ResponseHeader
@@ -42,7 +42,7 @@ func StorageBucketCors_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketC
 	}
 	out := &pb.Bucket_Cors{}
 	if in.MaxAgeSeconds != nil {
-		out.MaxAgeSeconds = *in.MaxAgeSeconds
+		out.MaxAgeSeconds = int32(*in.MaxAgeSeconds)
 	}
 	out.Method = in.Method
 	out.Origin = in.Origin
