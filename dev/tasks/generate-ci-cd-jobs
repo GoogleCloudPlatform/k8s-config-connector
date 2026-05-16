@@ -37,6 +37,7 @@ for group in $(rgrep --no-filename '^[ ]*group:' config/crds | sort | uniq | awk
   extra_services=""
   case ${short} in
     "memorystore") extra_services="memorystore.googleapis.com" ;;
+    "servicedirectory") extra_services="servicedirectory.googleapis.com" ;;
   esac
 
 cat > ${REPO_ROOT}/dev/ci/periodics/e2e-service-${short} <<EOF
