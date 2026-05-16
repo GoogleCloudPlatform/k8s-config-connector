@@ -18,65 +18,61 @@ package mockvmwareengine
 // proto.service: google.cloud.vmwareengine.v1.VmwareEngine
 
 import (
-	"context"
-	"net/http"
+        "context"
+        "fmt"
+        "net/http"
 
-	"google.golang.org/grpc"
+        "google.golang.org/grpc"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/vmwareengine/v1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+        "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
+        "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
+        "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
+        pb "cloud.google.com/go/vmwareengine/apiv1/vmwareenginepb"
+        "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 // MockService represents a mocked VmwareEngine service.
 type MockService struct {
-	*common.MockEnvironment
-	storage storage.Storage
+        *common.MockEnvironment
+        storage storage.Storage
 
-	operations *operations.Operations
+        operations *operations.Operations
 
-	v1 *VMwareEngineV1
+        v1 *VMwareEngineV1
 }
 
 type VMwareEngineV1 struct {
-	*MockService
-	pb.UnimplementedVmwareEngineServer
+        *MockService
+        pb.UnimplementedVmwareEngineServer
 }
 
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
-	s := &MockService{
-		MockEnvironment: env,
-		storage:         storage,
-		operations:      operations.NewOperationsService(storage),
-	}
-	s.v1 = &VMwareEngineV1{MockService: s}
-	return s
+        s := &MockService{
+                MockEnvironment: env,
+                storage:         storage,
+                operations:      operations.NewOperationsService(storage),
+        }
+        s.v1 = &VMwareEngineV1{MockService: s}
+        return s
 }
 
 func (s *MockService) ExpectedHosts() []string {
-	return []string{"vmwareengine.googleapis.com"}
+        return []string{"vmwareengine.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterVmwareEngineServer(grpcServer, s.v1)
+        pb.RegisterVmwareEngineServer(grpcServer, s.v1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterVmwareEngineHandler,
-		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
-	if err != nil {
-		return nil, err
-	}
+        grpcMux, err := httptogrpc.NewGRPCMux(conn)
+        if err != nil {
+                return nil, fmt.Errorf("error building grpc service: %w", err)
+        }
 
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			error.Errors = nil
-		}
-	}
+        grpcMux.AddService(pb.NewVmwareEngineClient(conn))
+        grpcMux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
-	return mux, nil
+        return grpcMux, nil
 }

@@ -32,7 +32,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/vmwareengine/v1"
+	pb "cloud.google.com/go/vmwareengine/apiv1/vmwareenginepb"
 	"github.com/google/uuid"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
