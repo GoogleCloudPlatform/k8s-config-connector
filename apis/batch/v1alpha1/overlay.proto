@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package google.cloud.batch.v1;
+
+message Task {
+  TaskStatus status = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
+}

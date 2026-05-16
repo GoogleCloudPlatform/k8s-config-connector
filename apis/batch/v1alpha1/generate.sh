@@ -27,13 +27,16 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.cloud.batch.v1 \
     --api-version "batch.cnrm.cloud.google.com/v1alpha1" \
+    --overlay ${REPO_ROOT}/apis/batch/v1alpha1/overlay.proto \
+    --include-skipped-output \
     --resource BatchJob:Job \
     --resource BatchTask:Task
 
 
 go run . generate-mapper \
     --service google.cloud.batch.v1 \
-    --api-version "batch.cnrm.cloud.google.com/v1alpha1"
+    --api-version "batch.cnrm.cloud.google.com/v1alpha1" \
+    --overlay ${REPO_ROOT}/apis/batch/v1alpha1/overlay.proto
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
