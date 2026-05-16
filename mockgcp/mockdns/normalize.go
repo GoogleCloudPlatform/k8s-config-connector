@@ -20,8 +20,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
-const PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
-
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 var placeholderNameServers = []string{"ns-cloud-a1.googledomains.com.", "ns-cloud-a2.googledomains.com.", "ns-cloud-a3.googledomains.com.", "ns-cloud-a4.googledomains.com."}
@@ -38,10 +36,10 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 		replacements.ReplacePath(".zoneContext.newValue.nameServers", placeholderNameServers)
 		replacements.ReplacePath(".zoneContext.oldValue.nameServers", placeholderNameServers)
 
-		replacements.ReplacePath(".creationTime", PlaceholderTimestamp)
-		replacements.ReplacePath(".managedZones[].creationTime", PlaceholderTimestamp)
-		replacements.ReplacePath(".zoneContext.newValue.creationTime", PlaceholderTimestamp)
-		replacements.ReplacePath(".zoneContext.oldValue.creationTime", PlaceholderTimestamp)
+		replacements.ReplacePath(".creationTime", mockgcpregistry.PlaceholderTimestamp)
+		replacements.ReplacePath(".managedZones[].creationTime", mockgcpregistry.PlaceholderTimestamp)
+		replacements.ReplacePath(".zoneContext.newValue.creationTime", mockgcpregistry.PlaceholderTimestamp)
+		replacements.ReplacePath(".zoneContext.oldValue.creationTime", mockgcpregistry.PlaceholderTimestamp)
 	}
 }
 

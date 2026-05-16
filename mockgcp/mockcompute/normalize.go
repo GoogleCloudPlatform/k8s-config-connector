@@ -25,7 +25,6 @@ import (
 	"k8s.io/klog/v2"
 )
 
-const PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
 const PlaceholderFingerprint = "abcdef0123A="
 const PlaceholderID = "1234567890"
 
@@ -37,8 +36,8 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	}
 
 	// General
-	replacements.ReplacePath(".creationTimestamp", PlaceholderTimestamp)
-	replacements.ReplacePath(".items[].creationTimestamp", PlaceholderTimestamp)
+	replacements.ReplacePath(".creationTimestamp", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".items[].creationTimestamp", mockgcpregistry.PlaceholderTimestamp)
 
 	// Addresses
 	replacements.ReplacePath(".labelFingerprint", PlaceholderFingerprint)
@@ -55,7 +54,7 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".gatewayAddress", "10.0.0.1")
 	for _, region := range regions.GetAllRegions(context.Background()) {
 		prefix := fmt.Sprintf(".items.regions/%s.subnetworks[]", region.Name)
-		replacements.ReplacePath(prefix+".creationTimestamp", PlaceholderTimestamp)
+		replacements.ReplacePath(prefix+".creationTimestamp", mockgcpregistry.PlaceholderTimestamp)
 		replacements.ReplacePath(prefix+".fingerprint", PlaceholderFingerprint)
 		replacements.ReplacePath(prefix+".id", PlaceholderID)
 	}
@@ -67,8 +66,8 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.SortSlice(".backends")
 
 	// FutureReservation
-	replacements.ReplacePath(".status.existingMatchingUsageInfo.timestamp", PlaceholderTimestamp)
-	replacements.ReplacePath(".status.observedState.status.existingMatchingUsageInfo.timestamp", PlaceholderTimestamp)
+	replacements.ReplacePath(".status.existingMatchingUsageInfo.timestamp", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".status.observedState.status.existingMatchingUsageInfo.timestamp", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

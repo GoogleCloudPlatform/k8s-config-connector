@@ -18,14 +18,12 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
-const FakeTimestamp = "2024-04-01T12:34:56.123456Z"
-
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
 	// Bucket
-	replacements.ReplacePath(".buckets[].createTime", FakeTimestamp)
-	replacements.ReplacePath(".buckets[].updateTime", FakeTimestamp)
+	replacements.ReplacePath(".buckets[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".buckets[].updateTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

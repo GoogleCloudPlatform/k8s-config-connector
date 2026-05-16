@@ -22,14 +22,12 @@ import (
 	"k8s.io/klog/v2"
 )
 
-const TimePlaceholder = "2024-04-01T12:34:56.123456Z"
-
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
 	// Database
-	replacements.ReplacePath(".response.earliestVersionTime", TimePlaceholder)
-	replacements.ReplacePath(".earliestVersionTime", TimePlaceholder)
+	replacements.ReplacePath(".response.earliestVersionTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".earliestVersionTime", mockgcpregistry.PlaceholderTimestamp)
 
 	// freeTier cannot be set (the first database is always freeTier=true)
 	replacements.ReplacePath(".freeTier", true)
@@ -40,13 +38,13 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.RemovePath(".response.realtimeUpdatesMode")
 
 	// Fields
-	replacements.ReplacePath(".response.startTime", TimePlaceholder)
+	replacements.ReplacePath(".response.startTime", mockgcpregistry.PlaceholderTimestamp)
 
 	// BackupSchedules
-	replacements.ReplacePath(".backupSchedules[].createTime", TimePlaceholder)
-	replacements.ReplacePath(".backupSchedules[].updateTime", TimePlaceholder)
-	replacements.ReplacePath(".createTime", TimePlaceholder)
-	replacements.ReplacePath(".updateTime", TimePlaceholder)
+	replacements.ReplacePath(".backupSchedules[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".backupSchedules[].updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
 
 }
 
