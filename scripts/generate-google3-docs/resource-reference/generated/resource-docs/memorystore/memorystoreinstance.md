@@ -298,6 +298,169 @@ zoneDistributionConfig:
     </tr>
     <tr>
         <td>
+            <p><code>automatedBackupConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. The automated backup config for the instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>automatedBackupConfig.automatedBackupMode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The automated backup mode. If the mode is disabled, the other fields will be ignored.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>automatedBackupConfig.fixedFrequencySchedule</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Trigger automated backups at a fixed frequency.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>automatedBackupConfig.fixedFrequencySchedule.startTime</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Required. The start time of every automated backup in UTC. It must be set to the start of an hour. This field is required.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>automatedBackupConfig.fixedFrequencySchedule.startTime.hours</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>automatedBackupConfig.fixedFrequencySchedule.startTime.minutes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Minutes of hour of day. Must be from 0 to 59.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>automatedBackupConfig.fixedFrequencySchedule.startTime.nanos</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>automatedBackupConfig.fixedFrequencySchedule.startTime.seconds</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>automatedBackupConfig.retention</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. How long to keep automated backups before the backups are deleted. The value should be between 1 day and 365 days. If not specified, the default value is 35 days.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossInstanceReplicationConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. The cross instance replication config for the instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossInstanceReplicationConfig.instanceRole</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. The role of the instance in cross instance replication.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossInstanceReplicationConfig.primaryInstance</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Details of the primary instance that is used as the replication
+ source for this secondary instance.
+
+ This field is only set for a secondary instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossInstanceReplicationConfig.primaryInstance.instanceRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. The full resource path of the remote instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossInstanceReplicationConfig.primaryInstance.instanceRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A reference to an externally managed MemorystoreInstance resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossInstanceReplicationConfig.primaryInstance.instanceRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The name of a MemorystoreInstance resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossInstanceReplicationConfig.primaryInstance.instanceRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The namespace of a MemorystoreInstance resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>deletionProtectionEnabled</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -494,6 +657,16 @@ zoneDistributionConfig:
         <td>
             <p><code class="apitype">string</code></p>
             <p>Optional. The maintenance version of the instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenanceVersion</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The maintenance version of the instance.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -857,6 +1030,20 @@ observedState:
         </td>
     </tr>
     <tr>
+        <td><code>observedState.availableMaintenanceVersions</code></td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Output only. The list of available maintenance versions for the instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.availableMaintenanceVersions[]</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedState.createTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -989,6 +1176,131 @@ observedState:
         </td>
     </tr>
     <tr>
+        <td><code>observedState.crossInstanceReplicationConfig</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. The cross instance replication config for the instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossInstanceReplicationConfig.membership</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Output only. An output only view of all the member instances participating in the cross instance replication. This view will be provided by every member instance irrespective of its instance role(primary or secondary).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossInstanceReplicationConfig.membership.primaryInstance</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Output only. The primary instance that acts as the source of replication for the secondary instances.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossInstanceReplicationConfig.membership.primaryInstance.instance</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The full resource path of the remote instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossInstanceReplicationConfig.membership.primaryInstance.uid</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The unique identifier of the remote instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossInstanceReplicationConfig.membership.secondaryInstances</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Output only. The list of secondary instances replicating from the primary instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossInstanceReplicationConfig.membership.secondaryInstances[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossInstanceReplicationConfig.membership.secondaryInstances[].instance</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The full resource path of the remote instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossInstanceReplicationConfig.membership.secondaryInstances[].uid</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The unique identifier of the remote instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossInstanceReplicationConfig.primaryInstance</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Details of the primary instance that is used as the replication
+ source for this secondary instance.
+
+ This field is only set for a secondary instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossInstanceReplicationConfig.primaryInstance.instance</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The full resource path of the remote instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossInstanceReplicationConfig.primaryInstance.uid</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The unique identifier of the remote instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossInstanceReplicationConfig.secondaryInstances</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Optional. List of secondary instances that are replicating from this
+ primary instance.
+
+ This field is only set for a primary instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossInstanceReplicationConfig.secondaryInstances[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossInstanceReplicationConfig.secondaryInstances[].instance</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The full resource path of the remote instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossInstanceReplicationConfig.secondaryInstances[].uid</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The unique identifier of the remote instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.effectiveMaintenanceVersion</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The current version of the maintenance schedule.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedState.endpoints</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
@@ -1115,6 +1427,34 @@ observedState:
         </td>
     </tr>
     <tr>
+        <td><code>observedState.pscAttachmentDetails</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Output only. List of PSC connections for the instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscAttachmentDetails[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscAttachmentDetails[].connectionType</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. Type of Psc endpoint.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscAttachmentDetails[].serviceAttachment</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. Service attachment URI which your self-created PscConnection should use as target.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedState.state</code></td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -1147,6 +1487,20 @@ observedState:
         <td>
             <p><code class="apitype">integer</code></p>
             <p>Output only. Target number of shards for the instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.stateInfo.updateInfo.targetReplicaCount</code></td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Output only. Target number of replica nodes per shard for the instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.stateInfo.updateInfo.targetShardCount</code></td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Output only. Target number of shards for the instance.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
