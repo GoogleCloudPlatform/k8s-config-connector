@@ -101,11 +101,6 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_Etag() {
 	f.UnimplementedFields.Insert(".etag")
 }
 
-// IdentityField marks the specified fieldPath as round-tripping to/from the resource Identity
-func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) IdentityField(fieldPath string) {
-	f.UnimplementedFields.Insert(fieldPath)
-}
-
 // Ignore_JSONBookkeeping marks the specified fieldPath as fields we expect to be missing, such as ServerResponse or ForceSendFields.
 func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Ignore_JSONBookkeeping(fieldPath string) {
 	f.UnimplementedFields.Insert(fieldPath)
