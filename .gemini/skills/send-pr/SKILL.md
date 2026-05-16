@@ -15,8 +15,9 @@ When you are ready to send your changes as a Pull Request, use the provided `sen
 
 1. **Write the PR Body**:
    Create a temporary markdown file containing the body/description of your PR. Make sure to reference the issue you are solving (e.g., `Fixes #1234`).
+   **CRITICAL**: Do NOT check in this file. It is recommended to use the project's temporary directory to avoid accidentally committing it.
    ```bash
-   cat << 'EOF' > /tmp/pr-body.txt
+   cat << 'EOF' > /root/.gemini/tmp/k8s-config-connector/pr-body.txt
    Description of the PR.
 
    Fixes #1234
@@ -26,7 +27,7 @@ When you are ready to send your changes as a Pull Request, use the provided `sen
 2. **Run the `send-pr.sh` Script**:
    Execute the script by providing the PR title and the path to the body file you just created.
    ```bash
-   ./.gemini/skills/send-pr/scripts/send-pr.sh --title "Brief PR Title" --body /tmp/pr-body.txt
+   ./.gemini/skills/send-pr/scripts/send-pr.sh --title "Brief PR Title" --body /root/.gemini/tmp/k8s-config-connector/pr-body.txt
    ```
 
 3. **What the Script Does**:
