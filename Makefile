@@ -259,7 +259,12 @@ generate-go-client:
 # Generate google3 docs
 .PHONY: resource-docs
 resource-docs:
-	@go run ./scripts/generate-google3-docs/resource-reference/main.go
+	@go run ./scripts/generate-google3-docs/resource-reference/main.go --flavor=github
+	@go run ./scripts/generate-google3-docs/resource-lists/main.go
+
+.PHONY: google-resource-docs
+google-resource-docs:
+	@go run ./scripts/generate-google3-docs/resource-reference/main.go --flavor=google
 	@go run ./scripts/generate-google3-docs/resource-lists/main.go
 
 # Run against the configured Kubernetes cluster in ~/.kube/config
