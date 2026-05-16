@@ -15,6 +15,8 @@
 package main
 
 import (
+	"bytes"
+	"flag"
 	"fmt"
 	"io/fs"
 	"io/ioutil"
@@ -42,6 +44,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/markdown"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/fileutil"
@@ -148,9 +151,11 @@ var (
 
 var (
 	dclSchemaLoader dclschemaloader.DCLSchemaLoader
+	flavor          = flag.String("flavor", "github", "Flavor of markdown to generate (github or google)")
 )
 
 func main() {
+	flag.Parse()
 	if err := clearGeneratedDocsDir(); err != nil {
 		log.Fatal(fmt.Errorf("error clearing generated docs dir: %w", err))
 	}
@@ -237,13 +242,27 @@ func (d *DocGenerator) generateDocForGVK(gvk schema.GroupVersionKind, crd *apiex
 	if err != nil {
 		return fmt.Errorf("error preparing template data: %w", err)
 	}
+
+	var buf bytes.Buffer
+	if err := template.Execute(&buf, templateData); err != nil {
+		return fmt.Errorf("error while executing template: %w", err)
+	}
+
+	content := buf.String()
+	if *flavor == "github" {
+		content = markdown.ConvertToGithubMarkdown(content)
+	}
+
 	outputFile, err := fileutil.NewEmptyFile(generatedDocPathForGVK(gvk))
 	if err != nil {
 		return fmt.Errorf("error creating empty file for output: %w", err)
 	}
-	if err := template.Execute(outputFile, templateData); err != nil {
-		return fmt.Errorf("error while executing template: %w", err)
+	defer outputFile.Close()
+
+	if _, err := outputFile.Write([]byte(content)); err != nil {
+		return fmt.Errorf("error writing to output file: %w", err)
 	}
+
 	return nil
 }
 
