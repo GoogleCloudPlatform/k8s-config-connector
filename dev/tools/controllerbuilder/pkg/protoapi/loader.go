@@ -30,7 +30,7 @@ type Proto struct {
 	files *protoregistry.Files
 }
 
-func LoadProto(p string) (*Proto, error) {
+func LoadProto(p string, overlayPath string) (*Proto, error) {
 	b, err := os.ReadFile(p)
 	if err != nil {
 		return nil, fmt.Errorf("reading %q: %w", p, err)
@@ -39,6 +39,12 @@ func LoadProto(p string) (*Proto, error) {
 	fds := &descriptorpb.FileDescriptorSet{}
 	if err := proto.Unmarshal(b, fds); err != nil {
 		return nil, fmt.Errorf("unmarshalling %q: %w", p, err)
+	}
+
+	if overlayPath != "" {
+		if err := ApplyOverlay(fds, overlayPath); err != nil {
+			return nil, fmt.Errorf("applying overlay %q: %w", overlayPath, err)
+		}
 	}
 
 	files, err := protodesc.NewFiles(fds)
@@ -50,7 +56,6 @@ func LoadProto(p string) (*Proto, error) {
 		files: files,
 	}, nil
 }
-
 func (p *Proto) SortedFiles() []protoreflect.FileDescriptor {
 	var sortedFiles []protoreflect.FileDescriptor
 	p.files.RangeFiles(func(f protoreflect.FileDescriptor) bool {
