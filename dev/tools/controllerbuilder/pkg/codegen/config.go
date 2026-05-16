@@ -25,9 +25,9 @@ type ServiceConfig struct {
 	Service        string           `yaml:"service"`
 	APIVersion     string           `yaml:"apiVersion"`
 	GenerateMapper bool             `yaml:"generateMapper"`
+	ProtoOverlay   string           `yaml:"protoOverlay,omitempty"`
 	Resources      []ResourceConfig `yaml:"resources"`
 }
-
 type ResourceConfig struct {
 	Kind              string `yaml:"kind"`
 	ProtoName         string `yaml:"protoName"`
