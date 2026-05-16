@@ -84,7 +84,7 @@ type ComputeNetworkSpec struct {
 type NetworkObservedStateStatus struct {
 	/* [Output Only] The gateway address for default routing out of the network, selected by Google Cloud. */
 	// +optional
-	GatewayIPv4 *string `json:"gatewayIPv4,omitempty"`
+	GatewayIPV4 *string `json:"gatewayIPV4,omitempty"`
 
 	/* [Output Only] Server-defined URL for the resource. */
 	// +optional
@@ -101,7 +101,7 @@ type ComputeNetworkStatus struct {
 
 	/* The gateway address for default routing out of the network. This value is selected by GCP. */
 	// +optional
-	GatewayIpv4 *string `json:"gatewayIpv4,omitempty"`
+	GatewayIPV4 *string `json:"gatewayIPV4,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
