@@ -32,7 +32,7 @@ type FakePrivilegedaccessmanagerV1beta1 struct {
 }
 
 func (c *FakePrivilegedaccessmanagerV1beta1) PrivilegedAccessManagerEntitlements(namespace string) v1beta1.PrivilegedAccessManagerEntitlementInterface {
-	return &FakePrivilegedAccessManagerEntitlements{c, namespace}
+	return newFakePrivilegedAccessManagerEntitlements(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

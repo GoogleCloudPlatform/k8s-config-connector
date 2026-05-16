@@ -22,123 +22,32 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/alloydb/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeAlloyDBUsers implements AlloyDBUserInterface
-type FakeAlloyDBUsers struct {
+// fakeAlloyDBUsers implements AlloyDBUserInterface
+type fakeAlloyDBUsers struct {
+	*gentype.FakeClientWithList[*v1beta1.AlloyDBUser, *v1beta1.AlloyDBUserList]
 	Fake *FakeAlloydbV1beta1
-	ns   string
 }
 
-var alloydbusersResource = v1beta1.SchemeGroupVersion.WithResource("alloydbusers")
-
-var alloydbusersKind = v1beta1.SchemeGroupVersion.WithKind("AlloyDBUser")
-
-// Get takes name of the alloyDBUser, and returns the corresponding alloyDBUser object, and an error if there is any.
-func (c *FakeAlloyDBUsers) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.AlloyDBUser, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(alloydbusersResource, c.ns, name), &v1beta1.AlloyDBUser{})
-
-	if obj == nil {
-		return nil, err
+func newFakeAlloyDBUsers(fake *FakeAlloydbV1beta1, namespace string) alloydbv1beta1.AlloyDBUserInterface {
+	return &fakeAlloyDBUsers{
+		gentype.NewFakeClientWithList[*v1beta1.AlloyDBUser, *v1beta1.AlloyDBUserList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("alloydbusers"),
+			v1beta1.SchemeGroupVersion.WithKind("AlloyDBUser"),
+			func() *v1beta1.AlloyDBUser { return &v1beta1.AlloyDBUser{} },
+			func() *v1beta1.AlloyDBUserList { return &v1beta1.AlloyDBUserList{} },
+			func(dst, src *v1beta1.AlloyDBUserList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.AlloyDBUserList) []*v1beta1.AlloyDBUser { return gentype.ToPointerSlice(list.Items) },
+			func(list *v1beta1.AlloyDBUserList, items []*v1beta1.AlloyDBUser) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.AlloyDBUser), err
-}
-
-// List takes label and field selectors, and returns the list of AlloyDBUsers that match those selectors.
-func (c *FakeAlloyDBUsers) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.AlloyDBUserList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(alloydbusersResource, alloydbusersKind, c.ns, opts), &v1beta1.AlloyDBUserList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.AlloyDBUserList{ListMeta: obj.(*v1beta1.AlloyDBUserList).ListMeta}
-	for _, item := range obj.(*v1beta1.AlloyDBUserList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested alloyDBUsers.
-func (c *FakeAlloyDBUsers) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(alloydbusersResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a alloyDBUser and creates it.  Returns the server's representation of the alloyDBUser, and an error, if there is any.
-func (c *FakeAlloyDBUsers) Create(ctx context.Context, alloyDBUser *v1beta1.AlloyDBUser, opts v1.CreateOptions) (result *v1beta1.AlloyDBUser, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(alloydbusersResource, c.ns, alloyDBUser), &v1beta1.AlloyDBUser{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.AlloyDBUser), err
-}
-
-// Update takes the representation of a alloyDBUser and updates it. Returns the server's representation of the alloyDBUser, and an error, if there is any.
-func (c *FakeAlloyDBUsers) Update(ctx context.Context, alloyDBUser *v1beta1.AlloyDBUser, opts v1.UpdateOptions) (result *v1beta1.AlloyDBUser, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(alloydbusersResource, c.ns, alloyDBUser), &v1beta1.AlloyDBUser{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.AlloyDBUser), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeAlloyDBUsers) UpdateStatus(ctx context.Context, alloyDBUser *v1beta1.AlloyDBUser, opts v1.UpdateOptions) (*v1beta1.AlloyDBUser, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(alloydbusersResource, "status", c.ns, alloyDBUser), &v1beta1.AlloyDBUser{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.AlloyDBUser), err
-}
-
-// Delete takes name of the alloyDBUser and deletes it. Returns an error if one occurs.
-func (c *FakeAlloyDBUsers) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(alloydbusersResource, c.ns, name, opts), &v1beta1.AlloyDBUser{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeAlloyDBUsers) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(alloydbusersResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.AlloyDBUserList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched alloyDBUser.
-func (c *FakeAlloyDBUsers) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.AlloyDBUser, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(alloydbusersResource, c.ns, name, pt, data, subresources...), &v1beta1.AlloyDBUser{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.AlloyDBUser), err
 }

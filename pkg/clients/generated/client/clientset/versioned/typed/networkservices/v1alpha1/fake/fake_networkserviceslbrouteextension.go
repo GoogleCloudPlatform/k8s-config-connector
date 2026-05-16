@@ -22,123 +22,36 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkservices/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	networkservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkservices/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeNetworkServicesLBRouteExtensions implements NetworkServicesLBRouteExtensionInterface
-type FakeNetworkServicesLBRouteExtensions struct {
+// fakeNetworkServicesLBRouteExtensions implements NetworkServicesLBRouteExtensionInterface
+type fakeNetworkServicesLBRouteExtensions struct {
+	*gentype.FakeClientWithList[*v1alpha1.NetworkServicesLBRouteExtension, *v1alpha1.NetworkServicesLBRouteExtensionList]
 	Fake *FakeNetworkservicesV1alpha1
-	ns   string
 }
 
-var networkserviceslbrouteextensionsResource = v1alpha1.SchemeGroupVersion.WithResource("networkserviceslbrouteextensions")
-
-var networkserviceslbrouteextensionsKind = v1alpha1.SchemeGroupVersion.WithKind("NetworkServicesLBRouteExtension")
-
-// Get takes name of the networkServicesLBRouteExtension, and returns the corresponding networkServicesLBRouteExtension object, and an error if there is any.
-func (c *FakeNetworkServicesLBRouteExtensions) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.NetworkServicesLBRouteExtension, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(networkserviceslbrouteextensionsResource, c.ns, name), &v1alpha1.NetworkServicesLBRouteExtension{})
-
-	if obj == nil {
-		return nil, err
+func newFakeNetworkServicesLBRouteExtensions(fake *FakeNetworkservicesV1alpha1, namespace string) networkservicesv1alpha1.NetworkServicesLBRouteExtensionInterface {
+	return &fakeNetworkServicesLBRouteExtensions{
+		gentype.NewFakeClientWithList[*v1alpha1.NetworkServicesLBRouteExtension, *v1alpha1.NetworkServicesLBRouteExtensionList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("networkserviceslbrouteextensions"),
+			v1alpha1.SchemeGroupVersion.WithKind("NetworkServicesLBRouteExtension"),
+			func() *v1alpha1.NetworkServicesLBRouteExtension { return &v1alpha1.NetworkServicesLBRouteExtension{} },
+			func() *v1alpha1.NetworkServicesLBRouteExtensionList {
+				return &v1alpha1.NetworkServicesLBRouteExtensionList{}
+			},
+			func(dst, src *v1alpha1.NetworkServicesLBRouteExtensionList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.NetworkServicesLBRouteExtensionList) []*v1alpha1.NetworkServicesLBRouteExtension {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.NetworkServicesLBRouteExtensionList, items []*v1alpha1.NetworkServicesLBRouteExtension) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.NetworkServicesLBRouteExtension), err
-}
-
-// List takes label and field selectors, and returns the list of NetworkServicesLBRouteExtensions that match those selectors.
-func (c *FakeNetworkServicesLBRouteExtensions) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.NetworkServicesLBRouteExtensionList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(networkserviceslbrouteextensionsResource, networkserviceslbrouteextensionsKind, c.ns, opts), &v1alpha1.NetworkServicesLBRouteExtensionList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.NetworkServicesLBRouteExtensionList{ListMeta: obj.(*v1alpha1.NetworkServicesLBRouteExtensionList).ListMeta}
-	for _, item := range obj.(*v1alpha1.NetworkServicesLBRouteExtensionList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested networkServicesLBRouteExtensions.
-func (c *FakeNetworkServicesLBRouteExtensions) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(networkserviceslbrouteextensionsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a networkServicesLBRouteExtension and creates it.  Returns the server's representation of the networkServicesLBRouteExtension, and an error, if there is any.
-func (c *FakeNetworkServicesLBRouteExtensions) Create(ctx context.Context, networkServicesLBRouteExtension *v1alpha1.NetworkServicesLBRouteExtension, opts v1.CreateOptions) (result *v1alpha1.NetworkServicesLBRouteExtension, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(networkserviceslbrouteextensionsResource, c.ns, networkServicesLBRouteExtension), &v1alpha1.NetworkServicesLBRouteExtension{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.NetworkServicesLBRouteExtension), err
-}
-
-// Update takes the representation of a networkServicesLBRouteExtension and updates it. Returns the server's representation of the networkServicesLBRouteExtension, and an error, if there is any.
-func (c *FakeNetworkServicesLBRouteExtensions) Update(ctx context.Context, networkServicesLBRouteExtension *v1alpha1.NetworkServicesLBRouteExtension, opts v1.UpdateOptions) (result *v1alpha1.NetworkServicesLBRouteExtension, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(networkserviceslbrouteextensionsResource, c.ns, networkServicesLBRouteExtension), &v1alpha1.NetworkServicesLBRouteExtension{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.NetworkServicesLBRouteExtension), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeNetworkServicesLBRouteExtensions) UpdateStatus(ctx context.Context, networkServicesLBRouteExtension *v1alpha1.NetworkServicesLBRouteExtension, opts v1.UpdateOptions) (*v1alpha1.NetworkServicesLBRouteExtension, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(networkserviceslbrouteextensionsResource, "status", c.ns, networkServicesLBRouteExtension), &v1alpha1.NetworkServicesLBRouteExtension{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.NetworkServicesLBRouteExtension), err
-}
-
-// Delete takes name of the networkServicesLBRouteExtension and deletes it. Returns an error if one occurs.
-func (c *FakeNetworkServicesLBRouteExtensions) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(networkserviceslbrouteextensionsResource, c.ns, name, opts), &v1alpha1.NetworkServicesLBRouteExtension{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeNetworkServicesLBRouteExtensions) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(networkserviceslbrouteextensionsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.NetworkServicesLBRouteExtensionList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched networkServicesLBRouteExtension.
-func (c *FakeNetworkServicesLBRouteExtensions) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.NetworkServicesLBRouteExtension, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(networkserviceslbrouteextensionsResource, c.ns, name, pt, data, subresources...), &v1alpha1.NetworkServicesLBRouteExtension{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.NetworkServicesLBRouteExtension), err
 }

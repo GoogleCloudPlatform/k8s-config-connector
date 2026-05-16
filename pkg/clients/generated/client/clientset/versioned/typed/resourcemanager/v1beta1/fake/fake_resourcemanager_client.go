@@ -32,19 +32,19 @@ type FakeResourcemanagerV1beta1 struct {
 }
 
 func (c *FakeResourcemanagerV1beta1) Folders(namespace string) v1beta1.FolderInterface {
-	return &FakeFolders{c, namespace}
+	return newFakeFolders(c, namespace)
 }
 
 func (c *FakeResourcemanagerV1beta1) Projects(namespace string) v1beta1.ProjectInterface {
-	return &FakeProjects{c, namespace}
+	return newFakeProjects(c, namespace)
 }
 
 func (c *FakeResourcemanagerV1beta1) ResourceManagerLiens(namespace string) v1beta1.ResourceManagerLienInterface {
-	return &FakeResourceManagerLiens{c, namespace}
+	return newFakeResourceManagerLiens(c, namespace)
 }
 
 func (c *FakeResourcemanagerV1beta1) ResourceManagerPolicies(namespace string) v1beta1.ResourceManagerPolicyInterface {
-	return &FakeResourceManagerPolicies{c, namespace}
+	return newFakeResourceManagerPolicies(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

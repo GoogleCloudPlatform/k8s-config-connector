@@ -22,15 +22,14 @@
 package v1alpha1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1alpha1"
+	kmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // KMSKeyRingImportJobsGetter has a method to return a KMSKeyRingImportJobInterface.
@@ -41,158 +40,34 @@ type KMSKeyRingImportJobsGetter interface {
 
 // KMSKeyRingImportJobInterface has methods to work with KMSKeyRingImportJob resources.
 type KMSKeyRingImportJobInterface interface {
-	Create(ctx context.Context, kMSKeyRingImportJob *v1alpha1.KMSKeyRingImportJob, opts v1.CreateOptions) (*v1alpha1.KMSKeyRingImportJob, error)
-	Update(ctx context.Context, kMSKeyRingImportJob *v1alpha1.KMSKeyRingImportJob, opts v1.UpdateOptions) (*v1alpha1.KMSKeyRingImportJob, error)
-	UpdateStatus(ctx context.Context, kMSKeyRingImportJob *v1alpha1.KMSKeyRingImportJob, opts v1.UpdateOptions) (*v1alpha1.KMSKeyRingImportJob, error)
+	Create(ctx context.Context, kMSKeyRingImportJob *kmsv1alpha1.KMSKeyRingImportJob, opts v1.CreateOptions) (*kmsv1alpha1.KMSKeyRingImportJob, error)
+	Update(ctx context.Context, kMSKeyRingImportJob *kmsv1alpha1.KMSKeyRingImportJob, opts v1.UpdateOptions) (*kmsv1alpha1.KMSKeyRingImportJob, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, kMSKeyRingImportJob *kmsv1alpha1.KMSKeyRingImportJob, opts v1.UpdateOptions) (*kmsv1alpha1.KMSKeyRingImportJob, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.KMSKeyRingImportJob, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.KMSKeyRingImportJobList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*kmsv1alpha1.KMSKeyRingImportJob, error)
+	List(ctx context.Context, opts v1.ListOptions) (*kmsv1alpha1.KMSKeyRingImportJobList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.KMSKeyRingImportJob, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *kmsv1alpha1.KMSKeyRingImportJob, err error)
 	KMSKeyRingImportJobExpansion
 }
 
 // kMSKeyRingImportJobs implements KMSKeyRingImportJobInterface
 type kMSKeyRingImportJobs struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*kmsv1alpha1.KMSKeyRingImportJob, *kmsv1alpha1.KMSKeyRingImportJobList]
 }
 
 // newKMSKeyRingImportJobs returns a KMSKeyRingImportJobs
 func newKMSKeyRingImportJobs(c *KmsV1alpha1Client, namespace string) *kMSKeyRingImportJobs {
 	return &kMSKeyRingImportJobs{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*kmsv1alpha1.KMSKeyRingImportJob, *kmsv1alpha1.KMSKeyRingImportJobList](
+			"kmskeyringimportjobs",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *kmsv1alpha1.KMSKeyRingImportJob { return &kmsv1alpha1.KMSKeyRingImportJob{} },
+			func() *kmsv1alpha1.KMSKeyRingImportJobList { return &kmsv1alpha1.KMSKeyRingImportJobList{} },
+		),
 	}
-}
-
-// Get takes name of the kMSKeyRingImportJob, and returns the corresponding kMSKeyRingImportJob object, and an error if there is any.
-func (c *kMSKeyRingImportJobs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.KMSKeyRingImportJob, err error) {
-	result = &v1alpha1.KMSKeyRingImportJob{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("kmskeyringimportjobs").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of KMSKeyRingImportJobs that match those selectors.
-func (c *kMSKeyRingImportJobs) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.KMSKeyRingImportJobList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1alpha1.KMSKeyRingImportJobList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("kmskeyringimportjobs").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested kMSKeyRingImportJobs.
-func (c *kMSKeyRingImportJobs) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("kmskeyringimportjobs").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a kMSKeyRingImportJob and creates it.  Returns the server's representation of the kMSKeyRingImportJob, and an error, if there is any.
-func (c *kMSKeyRingImportJobs) Create(ctx context.Context, kMSKeyRingImportJob *v1alpha1.KMSKeyRingImportJob, opts v1.CreateOptions) (result *v1alpha1.KMSKeyRingImportJob, err error) {
-	result = &v1alpha1.KMSKeyRingImportJob{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("kmskeyringimportjobs").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(kMSKeyRingImportJob).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a kMSKeyRingImportJob and updates it. Returns the server's representation of the kMSKeyRingImportJob, and an error, if there is any.
-func (c *kMSKeyRingImportJobs) Update(ctx context.Context, kMSKeyRingImportJob *v1alpha1.KMSKeyRingImportJob, opts v1.UpdateOptions) (result *v1alpha1.KMSKeyRingImportJob, err error) {
-	result = &v1alpha1.KMSKeyRingImportJob{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("kmskeyringimportjobs").
-		Name(kMSKeyRingImportJob.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(kMSKeyRingImportJob).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *kMSKeyRingImportJobs) UpdateStatus(ctx context.Context, kMSKeyRingImportJob *v1alpha1.KMSKeyRingImportJob, opts v1.UpdateOptions) (result *v1alpha1.KMSKeyRingImportJob, err error) {
-	result = &v1alpha1.KMSKeyRingImportJob{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("kmskeyringimportjobs").
-		Name(kMSKeyRingImportJob.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(kMSKeyRingImportJob).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the kMSKeyRingImportJob and deletes it. Returns an error if one occurs.
-func (c *kMSKeyRingImportJobs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("kmskeyringimportjobs").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *kMSKeyRingImportJobs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("kmskeyringimportjobs").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched kMSKeyRingImportJob.
-func (c *kMSKeyRingImportJobs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.KMSKeyRingImportJob, err error) {
-	result = &v1alpha1.KMSKeyRingImportJob{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("kmskeyringimportjobs").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

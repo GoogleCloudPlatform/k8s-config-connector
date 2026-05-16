@@ -22,15 +22,14 @@
 package v1beta1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/alloydb/v1beta1"
+	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/alloydb/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // AlloyDBUsersGetter has a method to return a AlloyDBUserInterface.
@@ -41,158 +40,34 @@ type AlloyDBUsersGetter interface {
 
 // AlloyDBUserInterface has methods to work with AlloyDBUser resources.
 type AlloyDBUserInterface interface {
-	Create(ctx context.Context, alloyDBUser *v1beta1.AlloyDBUser, opts v1.CreateOptions) (*v1beta1.AlloyDBUser, error)
-	Update(ctx context.Context, alloyDBUser *v1beta1.AlloyDBUser, opts v1.UpdateOptions) (*v1beta1.AlloyDBUser, error)
-	UpdateStatus(ctx context.Context, alloyDBUser *v1beta1.AlloyDBUser, opts v1.UpdateOptions) (*v1beta1.AlloyDBUser, error)
+	Create(ctx context.Context, alloyDBUser *alloydbv1beta1.AlloyDBUser, opts v1.CreateOptions) (*alloydbv1beta1.AlloyDBUser, error)
+	Update(ctx context.Context, alloyDBUser *alloydbv1beta1.AlloyDBUser, opts v1.UpdateOptions) (*alloydbv1beta1.AlloyDBUser, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, alloyDBUser *alloydbv1beta1.AlloyDBUser, opts v1.UpdateOptions) (*alloydbv1beta1.AlloyDBUser, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.AlloyDBUser, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.AlloyDBUserList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*alloydbv1beta1.AlloyDBUser, error)
+	List(ctx context.Context, opts v1.ListOptions) (*alloydbv1beta1.AlloyDBUserList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.AlloyDBUser, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *alloydbv1beta1.AlloyDBUser, err error)
 	AlloyDBUserExpansion
 }
 
 // alloyDBUsers implements AlloyDBUserInterface
 type alloyDBUsers struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*alloydbv1beta1.AlloyDBUser, *alloydbv1beta1.AlloyDBUserList]
 }
 
 // newAlloyDBUsers returns a AlloyDBUsers
 func newAlloyDBUsers(c *AlloydbV1beta1Client, namespace string) *alloyDBUsers {
 	return &alloyDBUsers{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*alloydbv1beta1.AlloyDBUser, *alloydbv1beta1.AlloyDBUserList](
+			"alloydbusers",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *alloydbv1beta1.AlloyDBUser { return &alloydbv1beta1.AlloyDBUser{} },
+			func() *alloydbv1beta1.AlloyDBUserList { return &alloydbv1beta1.AlloyDBUserList{} },
+		),
 	}
-}
-
-// Get takes name of the alloyDBUser, and returns the corresponding alloyDBUser object, and an error if there is any.
-func (c *alloyDBUsers) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.AlloyDBUser, err error) {
-	result = &v1beta1.AlloyDBUser{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("alloydbusers").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of AlloyDBUsers that match those selectors.
-func (c *alloyDBUsers) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.AlloyDBUserList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1beta1.AlloyDBUserList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("alloydbusers").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested alloyDBUsers.
-func (c *alloyDBUsers) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("alloydbusers").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a alloyDBUser and creates it.  Returns the server's representation of the alloyDBUser, and an error, if there is any.
-func (c *alloyDBUsers) Create(ctx context.Context, alloyDBUser *v1beta1.AlloyDBUser, opts v1.CreateOptions) (result *v1beta1.AlloyDBUser, err error) {
-	result = &v1beta1.AlloyDBUser{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("alloydbusers").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(alloyDBUser).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a alloyDBUser and updates it. Returns the server's representation of the alloyDBUser, and an error, if there is any.
-func (c *alloyDBUsers) Update(ctx context.Context, alloyDBUser *v1beta1.AlloyDBUser, opts v1.UpdateOptions) (result *v1beta1.AlloyDBUser, err error) {
-	result = &v1beta1.AlloyDBUser{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("alloydbusers").
-		Name(alloyDBUser.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(alloyDBUser).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *alloyDBUsers) UpdateStatus(ctx context.Context, alloyDBUser *v1beta1.AlloyDBUser, opts v1.UpdateOptions) (result *v1beta1.AlloyDBUser, err error) {
-	result = &v1beta1.AlloyDBUser{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("alloydbusers").
-		Name(alloyDBUser.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(alloyDBUser).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the alloyDBUser and deletes it. Returns an error if one occurs.
-func (c *alloyDBUsers) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("alloydbusers").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *alloyDBUsers) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("alloydbusers").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched alloyDBUser.
-func (c *alloyDBUsers) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.AlloyDBUser, err error) {
-	result = &v1beta1.AlloyDBUser{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("alloydbusers").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }
