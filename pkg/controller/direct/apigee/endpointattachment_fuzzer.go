@@ -15,31 +15,31 @@
 package apigee
 
 import (
-        api "google.golang.org/api/apigee/v1"
-        "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
+	api "google.golang.org/api/apigee/v1"
 )
 
 func init() {
-        fuzztesting.RegisterKRMFuzzer_NoProto(endpointAttachmentFuzzer())
+	fuzztesting.RegisterKRMFuzzer_NoProto(endpointAttachmentFuzzer())
 }
 
 func endpointAttachmentFuzzer() fuzztesting.KRMFuzzer_NoProto {
-        f := fuzztesting.NewKRMTypedFuzzer_NoProto(&api.GoogleCloudApigeeV1EndpointAttachment{},
-                ApigeeEndpointAttachmentSpec_FromAPI, ApigeeEndpointAttachmentSpec_ToAPI,
-                ApigeeEndpointAttachmentObservedState_FromAPI, ApigeeEndpointAttachmentObservedState_ToAPI,
-        )
+	f := fuzztesting.NewKRMTypedFuzzer_NoProto(&api.GoogleCloudApigeeV1EndpointAttachment{},
+		ApigeeEndpointAttachmentSpec_FromAPI, ApigeeEndpointAttachmentSpec_ToAPI,
+		ApigeeEndpointAttachmentObservedState_FromAPI, ApigeeEndpointAttachmentObservedState_ToAPI,
+	)
 
-        f.SpecField(".Location")
-        f.SpecField(".ServiceAttachment")
-        
-        f.StatusField(".ConnectionState")
-        f.StatusField(".Host")
-        f.StatusField(".State")
+	f.SpecField(".Location")
+	f.SpecField(".ServiceAttachment")
 
-        f.Unimplemented_NotYetTriaged(".Name")
-        f.Unimplemented_NotYetTriaged(".ForceSendFields")
-        f.Unimplemented_NotYetTriaged(".NullFields")
-        f.Unimplemented_NotYetTriaged(".ServerResponse")
+	f.StatusField(".ConnectionState")
+	f.StatusField(".Host")
+	f.StatusField(".State")
 
-        return f
+	f.Unimplemented_NotYetTriaged(".Name")
+	f.Unimplemented_NotYetTriaged(".ForceSendFields")
+	f.Unimplemented_NotYetTriaged(".NullFields")
+	f.Unimplemented_NotYetTriaged(".ServerResponse")
+
+	return f
 }
