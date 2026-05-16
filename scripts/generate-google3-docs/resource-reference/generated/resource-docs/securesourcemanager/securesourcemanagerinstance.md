@@ -404,7 +404,7 @@ observedState:
         <td><code>observedState.hostConfig.api</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. API hostname. This is the hostname to use for **Host: Data Plane** endpoints.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. API hostname.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -434,6 +434,7 @@ observedState:
     network: string
     projectID: string
     pscConnectionID: string
+    serviceAttachment: string
   sizeGb: integer
   state: string
   stateInfo:
@@ -594,35 +595,42 @@ observedState:
         <td><code>observedState.pscConnections[].address</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The IP allocated on the consumer network for the PSC forwarding rule.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The IP allocated on the consumer network for the PSC forwarding rule.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>observedState.pscConnections[].forwardingRule</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The URI of the consumer side forwarding rule. Example: projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The URI of the consumer side forwarding rule. Example: projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>observedState.pscConnections[].network</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The consumer network where the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The consumer network where the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>observedState.pscConnections[].projectID</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The consumer project_id where the forwarding rule is created from.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Project ID of the consumer project where the forwarding rule is created in.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>observedState.pscConnections[].pscConnectionID</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The PSC connection id of the forwarding rule connected to the service attachment.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The PSC connection id of the forwarding rule connected to the service attachment.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscConnections[].serviceAttachment</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. The service attachment which is the target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
