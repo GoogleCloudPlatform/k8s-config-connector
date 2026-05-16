@@ -21,9 +21,11 @@
 
 package v1beta1
 
+/* unreachable type DNSAuthorization_DNSResourceRecord
 // +kcc:proto=google.cloud.certificatemanager.v1.DnsAuthorization.DnsResourceRecord
 type DNSAuthorization_DNSResourceRecord struct {
 }
+*/
 
 // +kcc:observedstate:proto=google.cloud.certificatemanager.v1.DnsAuthorization.DnsResourceRecord
 type DNSAuthorization_DNSResourceRecordObservedState struct {
